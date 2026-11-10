@@ -44,7 +44,7 @@ class Offering extends Relational
      * @var  array
      */
     protected $rules = [
-        'title'   => 'notempty'
+        'title'   => 'notempty',
     ];
 
     /**
@@ -53,7 +53,7 @@ class Offering extends Relational
      * @var  array
      */
     public $always = [
-        'alias'
+        'alias',
     ];
 
     /**
@@ -63,7 +63,7 @@ class Offering extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**

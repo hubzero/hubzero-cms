@@ -243,7 +243,7 @@ class Pucas extends Plugin
                 $datum->set([
                     'link_id'      => $hzal->id,
                     'domain_key'   => 'i2a2',
-                    'domain_value' => (string)$val
+                    'domain_value' => (string)$val,
                 ]);
                 $datum->save();
             }
@@ -254,12 +254,12 @@ class Pucas extends Plugin
                 $prefs = [
                     'user_id'       => $user->get('id'),
                     'user_img'      => $user->picture(0, false),
-                    'authenticator' => 'pucas'
+                    'authenticator' => 'pucas',
                 ];
             } else {
                 // A partially baked cookie when a new user account is created.
                 $prefs = [
-                    'authenticator' => 'pucas'
+                    'authenticator' => 'pucas',
                 ];
             }
 
@@ -295,7 +295,7 @@ class Pucas extends Plugin
                 App::redirect(
                     Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
                     Lang::txt('PLG_AUTHENTICATION_PUCAS_ACCOUNT_ALREADY_LINKED'),
-                    'error'
+                    'error',
                 );
             } else {
                 $hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'pucas', null, $username);
@@ -316,7 +316,7 @@ class Pucas extends Plugin
             App::redirect(
                 Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
                 Lang::txt('PLG_AUTHENTICATION_PUCAS_ERROR_LINKING'),
-                'error'
+                'error',
             );
         }
     }

@@ -70,12 +70,12 @@ defined('_HZEXEC_') or die;
                                     echo $readmore;
                                     echo \Hubzero\Utility\Str::truncate(
                                         $item->title,
-                                        $params->get('readmore_limit')
+                                        $params->get('readmore_limit'),
                                     );
                                 if ($params->get('show_readmore_title', 0) != 0) :
                                     echo \Hubzero\Utility\Str::truncate(
                                         $this->item->title,
-                                        $params->get('readmore_limit')
+                                        $params->get('readmore_limit'),
                                     );
                                 endif;
                             elseif ($params->get('show_readmore_title', 0) == 0) :
@@ -84,7 +84,7 @@ defined('_HZEXEC_') or die;
                                     echo Lang::txt('MOD_ARTICLES_CATEGORY_READ_MORE');
                                     echo \Hubzero\Utility\Str::truncate(
                                         $item->title,
-                                        $params->get('readmore_limit')
+                                        $params->get('readmore_limit'),
                                     );
                             endif; ?>
                             </a>
@@ -144,7 +144,7 @@ defined('_HZEXEC_') or die;
                         echo $readmore;
                         echo \Hubzero\Utility\Str::truncate(
                             $item->title,
-                            $params->get('readmore_limit')
+                            $params->get('readmore_limit'),
                         );
                     elseif ($params->get('show_readmore_title', 0) == 0) :
                         echo Lang::txt('MOD_ARTICLES_CATEGORY_READ_MORE_TITLE');
@@ -152,7 +152,7 @@ defined('_HZEXEC_') or die;
                         echo Lang::txt('MOD_ARTICLES_CATEGORY_READ_MORE');
                         echo \Hubzero\Utility\Str::truncate(
                             $item->title,
-                            $params->get('readmore_limit')
+                            $params->get('readmore_limit'),
                         );
                     endif; ?>
                 </a>

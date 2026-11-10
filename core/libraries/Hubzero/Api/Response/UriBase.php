@@ -24,7 +24,7 @@ class UriBase extends Middleware
      */
     private $keys = [
         'uri',
-        'url'
+        'url',
     ];
 
     /**

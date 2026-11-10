@@ -73,7 +73,7 @@ class Mailings extends SiteController
                         'email'       => $recipient->email,
                         'ip'          => Request::ip(),
                         'user_agent'  => $_SERVER['HTTP_USER_AGENT'],
-                        'date'        => Date::toSql()
+                        'date'        => Date::toSql(),
                     ]);
 
                 //save action
@@ -118,7 +118,7 @@ class Mailings extends SiteController
                     'email'       => $recipient->email,
                     'ip'          => Request::ip(),
                     'user_agent'  => $_SERVER['HTTP_USER_AGENT'] ?? '',
-                    'date'        => Date::toSql()
+                    'date'        => Date::toSql(),
                 ]);
 
             //save action
@@ -155,7 +155,7 @@ class Mailings extends SiteController
                     'email'       => $recipient->email,
                     'ip'          => Request::ip(),
                     'user_agent'  => $_SERVER['HTTP_USER_AGENT'],
-                    'date'        => Date::toSql()
+                    'date'        => Date::toSql(),
                 ]);
 
             //save action
@@ -186,7 +186,7 @@ class Mailings extends SiteController
                     'email'       => $recipient->email,
                     'ip'          => Request::ip(),
                     'user_agent'  => $_SERVER['HTTP_USER_AGENT'],
-                    'date'        => Date::toSql()
+                    'date'        => Date::toSql(),
                 ]);
 
             // save action

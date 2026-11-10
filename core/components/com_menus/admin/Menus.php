@@ -49,12 +49,12 @@ class Menus extends AbstractComponent
         Submenu::addEntry(
             Lang::txt('COM_MENUS_SUBMENU_MENUS'),
             Route::url('index.php?option=com_menus&controller=menus', false),
-            $controllerName == 'menus'
+            $controllerName == 'menus',
         );
         Submenu::addEntry(
             Lang::txt('COM_MENUS_SUBMENU_ITEMS'),
             Route::url('index.php?option=com_menus&controller=items', false),
-            $controllerName == 'items'
+            $controllerName == 'items',
         );
 
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);

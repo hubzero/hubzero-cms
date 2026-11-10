@@ -675,7 +675,7 @@ class Sessionsv1r0 extends ApiController
             " ip=" . escapeshellarg($app->ip) .
             " app=" . escapeshellarg($app->name) .
             " version=" . escapeshellarg($app->version),
-            $output
+            $output,
         );
 
         // A failed start can still carry a session number; maxwell's
@@ -685,7 +685,7 @@ class Sessionsv1r0 extends ApiController
                 !empty($output->user_message)
                     ? $output->user_message
                     : Lang::txt('There was a issue while trying to start the tool session. Please try again later.'),
-                500
+                500,
             );
         }
 
@@ -936,7 +936,7 @@ class Sessionsv1r0 extends ApiController
 
         $this->send([
             'success' => true,
-            'session' => $output->session
+            'session' => $output->session,
         ]);
     }
 
@@ -986,7 +986,7 @@ class Sessionsv1r0 extends ApiController
         // resolved without following links out of it
         $sessions = \Hubzero\Filesystem\SafePath::directory(
             DS . 'webdav' . DS . 'home',
-            $profile->get('username') . DS . 'data' . DS . 'sessions'
+            $profile->get('username') . DS . 'data' . DS . 'sessions',
         );
 
         $dir = $sessions ? \Hubzero\Filesystem\SafePath::directory($sessions, (string) $session) : false;
@@ -1022,7 +1022,7 @@ class Sessionsv1r0 extends ApiController
             'success'  => true,
             'status'   => $parsed,
             'finished' => $finished,
-            'run_file' => $runFile
+            'run_file' => $runFile,
         ]);
     }
 
@@ -1077,7 +1077,7 @@ class Sessionsv1r0 extends ApiController
         // to lead through a link into another account
         $results = \Hubzero\Filesystem\SafePath::directory(
             DS . 'webdav' . DS . 'home',
-            User::get('username') . DS . 'data' . DS . 'results'
+            User::get('username') . DS . 'data' . DS . 'results',
         );
 
         $dir = $results ? \Hubzero\Filesystem\SafePath::directory($results, (string) $session) : false;
@@ -1096,7 +1096,7 @@ class Sessionsv1r0 extends ApiController
 
         $this->send([
             'success' => true,
-            'output'  => $output
+            'output'  => $output,
         ]);
     }
 
@@ -1181,7 +1181,7 @@ class Sessionsv1r0 extends ApiController
         if (!$status) {
             throw new Exception(
                 isset($output->user_message) ? $output->user_message : Lang::txt('COM_TOOLS_ERROR_SESSION_VIEW_FAILED'),
-                500
+                500,
             );
         }
 
@@ -1270,7 +1270,7 @@ class Sessionsv1r0 extends ApiController
         $steps = [
             'session' => 'wait',
             'token'   => 'wait',
-            'display' => ($mode == 'vnc' ? 'wait' : 'na')
+            'display' => ($mode == 'vnc' ? 'wait' : 'na'),
         ];
 
         // A live session row exists only while the session is alive; once it
@@ -1280,7 +1280,7 @@ class Sessionsv1r0 extends ApiController
         if (!$alive || !$row->sessnum) {
             $mwdb->setQuery(
                 "SELECT COUNT(*) FROM `sessionlog` WHERE sessnum=" . $mwdb->quote($sess) .
-                " AND username=" . $mwdb->quote($username)
+                " AND username=" . $mwdb->quote($username),
             );
             $exited = ((int) $mwdb->loadResult() > 0);
 
@@ -1289,7 +1289,7 @@ class Sessionsv1r0 extends ApiController
                 'state'   => ($exited ? 'exited' : 'starting'),
                 'ready'   => false,
                 'exited'  => $exited,
-                'steps'   => $steps
+                'steps'   => $steps,
             ]);
             return;
         }
@@ -1313,7 +1313,7 @@ class Sessionsv1r0 extends ApiController
             $mwdb->setQuery(
                 "SELECT status FROM `display` WHERE hostname=" . $mwdb->quote($exechost) .
                 " AND dispnum=" . (int) $dispnum .
-                " AND sessnum=" . $mwdb->quote($sess) . " LIMIT 1"
+                " AND sessnum=" . $mwdb->quote($sess) . " LIMIT 1",
             );
             $dstatus = $mwdb->loadResult();
 
@@ -1331,7 +1331,7 @@ class Sessionsv1r0 extends ApiController
             // rows carry NULL proxy columns even for working sessions -- so it
             // must not gate readiness.
             $mwdb->setQuery(
-                "SELECT status FROM `host` WHERE hostname=" . $mwdb->quote($exechost) . " LIMIT 1"
+                "SELECT status FROM `host` WHERE hostname=" . $mwdb->quote($exechost) . " LIMIT 1",
             );
             $hostStatus = $mwdb->loadResult();
         }
@@ -1362,7 +1362,7 @@ class Sessionsv1r0 extends ApiController
             'exited'      => false,
             'dispnum'     => $dispnum,
             'host_status' => $hostStatus,
-            'steps'       => $steps
+            'steps'       => $steps,
         ]);
     }
 
@@ -1444,7 +1444,7 @@ class Sessionsv1r0 extends ApiController
             'accesstime'        => $row->accesstime,
             'expires_at'        => ($expiry !== null ? gmdate('Y-m-d H:i:s', $expiry) : null),
             'expires_epoch'     => $expiry,
-            'seconds_remaining' => ($expiry !== null ? max(0, $expiry - time()) : null)
+            'seconds_remaining' => ($expiry !== null ? max(0, $expiry - time()) : null),
         ]);
     }
 
@@ -1506,7 +1506,7 @@ class Sessionsv1r0 extends ApiController
                 'session' => $sessionid,
                 'status'  => 'stopped',
                 'output' => $out,
-                'stopped' => with(new Date())->toSql()
+                'stopped' => with(new Date())->toSql(),
             ];
 
             $this->send($object);
@@ -1519,7 +1519,7 @@ class Sessionsv1r0 extends ApiController
                 'session' => $sessionid,
                 'status' => $status,
                 'output' => $out,
-                'time' => with(new Date())->toSql()
+                'time' => with(new Date())->toSql(),
             ];
             $this->send($object);
         }
@@ -1567,7 +1567,7 @@ class Sessionsv1r0 extends ApiController
             $object->session = [
                 'session'      => $sessionid,
                 'status'       => 'disconnected',
-                'disconnected' => with(new Date())->toSql()
+                'disconnected' => with(new Date())->toSql(),
             ];
 
             $this->send($object);
@@ -1613,7 +1613,7 @@ class Sessionsv1r0 extends ApiController
         $object = new stdClass();
         $object->storage = [
             'quota' => $disk_usage,
-            'files' => $files
+            'files' => $files,
         ];
 
         $this->send($object);
@@ -1657,7 +1657,7 @@ class Sessionsv1r0 extends ApiController
             'olderthan1' => 'Older than 1 Day',
             'olderthan7' => 'Older than 7 Days',
             'olderthan30' => 'Older than 30 Days',
-            'all' => 'All'
+            'all' => 'All',
         ];
 
         // check to make sure we have a degree
@@ -1772,7 +1772,7 @@ class Sessionsv1r0 extends ApiController
         $descriptorspec = [
             0 => ["pipe", "r"],  // stdin is a pipe that the child will read from
             1 => ["pipe", "w"],  // stdout is a pipe that the child will write to
-            2 => ["pipe", "w"]   // stderr is a pipe that the child with write to
+            2 => ["pipe", "w"],   // stderr is a pipe that the child with write to
         ];
 
         $process = proc_open($command, $descriptorspec, $pipes, "/", null);
@@ -1804,7 +1804,7 @@ class Sessionsv1r0 extends ApiController
                 'session'      => $sessionid,
                 'ipsec_ip1'    => $public_ip,
                 'ipsec_ip2'    => $private_ip,
-                'smb_username' => 'smb-' . $sessionid
+                'smb_username' => 'smb-' . $sessionid,
             ];
 
             // no JSON back (helper missing or failed): report no password rather than a 500
@@ -1818,7 +1818,7 @@ class Sessionsv1r0 extends ApiController
                 'ipsec_ip2'      => $private_ip,
                 'ipsec_password' => null,
                 'smb_username'   => 'smb-' . $sessionid,
-                'smb_password'   => null
+                'smb_password'   => null,
             ];
         }
         $this->send($object);

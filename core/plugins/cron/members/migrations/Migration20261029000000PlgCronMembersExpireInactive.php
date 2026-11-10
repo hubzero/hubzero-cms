@@ -22,7 +22,7 @@ class Migration20261029000000PlgCronMembersExpireInactive extends Base
     {
         if ($this->db->tableExists('#__cron_jobs')) {
             $this->db->setQuery(
-                "SELECT `id` FROM `#__cron_jobs` WHERE `plugin` = 'members' AND `event` = 'expireInactiveAccounts';"
+                "SELECT `id` FROM `#__cron_jobs` WHERE `plugin` = 'members' AND `event` = 'expireInactiveAccounts';",
             );
 
             if (!$this->db->loadResult()) {
@@ -33,7 +33,7 @@ class Migration20261029000000PlgCronMembersExpireInactive extends Base
                     "INSERT INTO `#__cron_jobs`
 						(`title`, `state`, `plugin`, `event`, `last_run`, `next_run`, `recurrence`, `created`, `created_by`, `modified`, `modified_by`, `active`, `ordering`, `params`)
 					 VALUES
-						('Expire inactive accounts', 0, 'members', 'expireInactiveAccounts', NULL, NULL, '0 3 1 * *', NULL, 1, NULL, 0, 0, 0, '{\"members_expireinactive_months\":\"36\",\"members_expireinactive_exempt_group\":\"Service accounts\"}');"
+						('Expire inactive accounts', 0, 'members', 'expireInactiveAccounts', NULL, NULL, '0 3 1 * *', NULL, 1, NULL, 0, 0, 0, '{\"members_expireinactive_months\":\"36\",\"members_expireinactive_exempt_group\":\"Service accounts\"}');",
                 );
                 $this->db->query();
             }
@@ -47,7 +47,7 @@ class Migration20261029000000PlgCronMembersExpireInactive extends Base
     {
         if ($this->db->tableExists('#__cron_jobs')) {
             $this->db->setQuery(
-                "DELETE FROM `#__cron_jobs` WHERE `plugin` = 'members' AND `event` = 'expireInactiveAccounts';"
+                "DELETE FROM `#__cron_jobs` WHERE `plugin` = 'members' AND `event` = 'expireInactiveAccounts';",
             );
             $this->db->query();
         }

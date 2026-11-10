@@ -54,7 +54,7 @@ Toolbar::help('import');
 
 <?php
 $formAction = Route::url(
-    'index.php?option=' . $this->option . '&controller=' . $this->controller
+    'index.php?option=' . $this->option . '&controller=' . $this->controller,
 );
 ?>
 <form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
@@ -136,7 +136,7 @@ $formAction = Route::url(
                                 $rawUrl = Route::url(
                                     'index.php?option=' . $this->option
                                     . '&controller=' . $this->controller
-                                    . '&task=raw&id=' . $hook->get('id')
+                                    . '&task=raw&id=' . $hook->get('id'),
                                 );
                                 ?>
                                 <a rel="noopener noreferrer" target="_blank" href="<?php echo $rawUrl; ?>">

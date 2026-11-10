@@ -115,7 +115,7 @@ Html::behavior('modal', 'a.version', ['handler' => 'iframe', 'fullScreen' => tru
                         $states = [
                             1 => Lang::txt('COM_GROUPS_PAGES_STATE_PUBLISHED'),
                             0 => Lang::txt('COM_GROUPS_PAGES_STATE_UNPUBLISHED'),
-                            2 => Lang::txt('COM_GROUPS_PAGES_STATE_DELETED')
+                            2 => Lang::txt('COM_GROUPS_PAGES_STATE_DELETED'),
                         ];
 
                         foreach ($states as $k => $v) {

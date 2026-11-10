@@ -42,22 +42,22 @@ class Languages extends AbstractComponent
         Submenu::addEntry(
             Lang::txt('COM_LANGUAGES_SUBMENU_INSTALLED_SITE'),
             Route::url('index.php?option=com_languages&controller=installed&client=0'),
-            ($controllerName == 'installed')
+            ($controllerName == 'installed'),
         );
         Submenu::addEntry(
             Lang::txt('COM_LANGUAGES_SUBMENU_INSTALLED_ADMINISTRATOR'),
             Route::url('index.php?option=com_languages&controller=installed&client=1'),
-            ($controllerName == 'installed' && Request::getInt('client'))
+            ($controllerName == 'installed' && Request::getInt('client')),
         );
         Submenu::addEntry(
             Lang::txt('COM_LANGUAGES_SUBMENU_CONTENT'),
             Route::url('index.php?option=com_languages&controller=languages'),
-            ($controllerName == 'languages')
+            ($controllerName == 'languages'),
         );
         Submenu::addEntry(
             Lang::txt('COM_LANGUAGES_SUBMENU_OVERRIDES'),
             Route::url('index.php?option=com_languages&controller=overrides'),
-            ($controllerName == 'overrides')
+            ($controllerName == 'overrides'),
         );
 
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);

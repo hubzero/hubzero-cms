@@ -29,27 +29,27 @@ class SolariumBoostQueriesTest extends Basic
     public function testToArrayInvokesToArrayOnQueryInstances()
     {
         $boostMock1 = $this->mock([
-            'class' => 'Boost'
+            'class' => 'Boost',
         ]);
         $boostMock2 = $this->mock([
-            'class' => 'Boost'
+            'class' => 'Boost',
         ]);
         $queryMock1 = $this->mock([
             'class' => 'SolariumBoostQuery',
-            'methods' => ['toArray']
+            'methods' => ['toArray'],
         ]);
         $queryMock2 = $this->mock([
             'class' => 'SolariumBoostQuery',
-            'methods' => ['toArray']
+            'methods' => ['toArray'],
         ]);
         $queryFactoryMock = $this->mock([
             'class' => 'SolariumBoostQuery',
-            'methods' => ['one']
+            'methods' => ['one'],
         ]);
 
         $queries = new Queries([
             'boosts' => [$boostMock1, $boostMock2],
-            'query' => $queryFactoryMock
+            'query' => $queryFactoryMock,
         ]);
 
         $queryFactoryMock->expects($this->exactly(2))

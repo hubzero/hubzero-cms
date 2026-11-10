@@ -53,10 +53,10 @@ class Generator
             'sections' => [],
             'versions' => [
                 'max'       => '',
-                'available' => []
+                'available' => [],
             ],
             'errors'   => [],
-            'files'    => []
+            'files'    => [],
         ];
     }
 
@@ -299,8 +299,8 @@ class Generator
                     'controller' => $controller,
                     'component' => $component,
                     'version'   => $version,
-                    'method'    => $method->getName()
-                ]
+                    'method'    => $method->getName(),
+                ],
             ];
 
             // Loop through each tag
@@ -317,7 +317,7 @@ class Generator
                         $this->output['errors'][] = sprintf(
                             'Unable to parse parameter info for method "%s" in "%s"',
                             $method->getName(),
-                            $file
+                            $file,
                         );
                         continue;
                     }
@@ -368,10 +368,10 @@ class Generator
             [
                 PATH_CORE . DS . 'components' . DS . 'com_',
                 PATH_APP . DS . 'components' . DS . 'com_',
-                '.php'
+                '.php',
             ],
             ['', '', ''],
-            $file
+            $file,
         );
 
         // split by "/"

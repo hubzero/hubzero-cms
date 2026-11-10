@@ -23,7 +23,7 @@ class Validate
      * @var  array
      */
     protected static $_pattern = [
-        'hostname' => '(?:[_a-z0-9][-_a-z0-9]*\.)*(?:[a-z0-9][-a-z0-9]{0,62})\.(?:(?:[a-z]{2}\.)?[a-z]{2,})'
+        'hostname' => '(?:[_a-z0-9][-_a-z0-9]*\.)*(?:[a-z0-9][-a-z0-9]{0,62})\.(?:(?:[a-z]{2}\.)?[a-z]{2,})',
     ];
 
     /**
@@ -518,7 +518,7 @@ class Validate
                 'wheel',
                 'www-data',
                 'zookeeper',
-            ]
+            ],
         ];
 
         $type = strtolower(trim($type));
@@ -744,7 +744,7 @@ class Validate
             'regex'   => null,
             'country' => null,
             'deep'    => false,
-            'type'    => null
+            'type'    => null,
         ];
         $params = array_merge($defaults, $params);
         if ($params['country'] !== null) {
@@ -816,7 +816,7 @@ class Validate
 
         return !preg_match(
             '/(<|>|:|&\w|\w&|\p{C})/u',
-            $source
+            $source,
         );
     }
 }

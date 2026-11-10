@@ -30,7 +30,7 @@ class MozifyHelper
             foreach ($matches as $match) {
                 $config = [
                     'imageUrl'   => $match[1],
-                    'mosaicSize' => $mosaicSize
+                    'mosaicSize' => $mosaicSize,
                 ];
                 $him = new Mozify($config);
                 $html = str_replace($match[0], $him->mozify(), $html);

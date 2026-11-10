@@ -38,7 +38,7 @@ class Saml extends AdminController
             if ($parsed) {
                 $cert = [
                     'subject'  => isset($parsed['subject']['CN']) ? $parsed['subject']['CN'] : '',
-                    'valid_to' => isset($parsed['validTo_time_t']) ? (int) $parsed['validTo_time_t'] : 0
+                    'valid_to' => isset($parsed['validTo_time_t']) ? (int) $parsed['validTo_time_t'] : 0,
                 ];
             }
         }

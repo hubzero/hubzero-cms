@@ -100,7 +100,7 @@ Html::behavior('tooltip');
                         'COM_COURSES_COL_ID',
                         'id',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     ); ?>
                 </th>
                 <th scope="col">
@@ -109,7 +109,7 @@ Html::behavior('tooltip');
                         'COM_COURSES_COL_TITLE',
                         'title',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     ); ?>
                 </th>
                 <th
@@ -120,7 +120,7 @@ Html::behavior('tooltip');
                         'COM_COURSES_COL_ALIAS',
                         'alias',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     ); ?>
                 </th>
                 <th
@@ -131,7 +131,7 @@ Html::behavior('tooltip');
                         'COM_COURSES_COL_PUBLISHED',
                         'state',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     ); ?>
                 </th>
                 <th scope="col" class="priority-4"><?php echo Lang::txt('COM_COURSES_COL_CERTIFICATE'); ?></th>
@@ -148,7 +148,7 @@ Html::behavior('tooltip');
                     echo $this->pagination(
                         $this->total,
                         $this->filters['start'],
-                        $this->filters['limit']
+                        $this->filters['limit'],
                     );
                     ?>
                 </td>
@@ -185,7 +185,7 @@ Html::behavior('tooltip');
                         <?php
                             $routeUrl = Route::url(
                                 'index.php?option=' . $this->option . '&controller=' . $this->controller
-                                . '&task=edit&id=' . $row->get('id')
+                                . '&task=edit&id=' . $row->get('id'),
                             );
                         ?>
                         <a href="<?php echo $routeUrl; ?>">
@@ -202,7 +202,7 @@ Html::behavior('tooltip');
                         <?php
                             $routeUrl = Route::url(
                                 'index.php?option=' . $this->option . '&controller=' . $this->controller
-                                . '&task=edit&id=' . $row->get('id')
+                                . '&task=edit&id=' . $row->get('id'),
                             );
                         ?>
                         <a href="<?php echo $routeUrl; ?>">
@@ -218,7 +218,7 @@ Html::behavior('tooltip');
                             <?php
                                 $routeUrl = Route::url(
                                     'index.php?option=' . $this->option . '&controller=' . $this->controller
-                                    . '&task=unpublish&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'
+                                    . '&task=unpublish&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1',
                                 );
                             ?>
                             <a
@@ -234,7 +234,7 @@ Html::behavior('tooltip');
                             <?php
                                 $routeUrl = Route::url(
                                     'index.php?option=' . $this->option . '&controller=' . $this->controller
-                                    . '&task=publish&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'
+                                    . '&task=publish&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1',
                                 );
                             ?>
                             <a
@@ -250,7 +250,7 @@ Html::behavior('tooltip');
                             <?php
                                 $routeUrl = Route::url(
                                     'index.php?option=' . $this->option . '&controller=' . $this->controller
-                                    . '&task=publish&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'
+                                    . '&task=publish&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1',
                                 );
                             ?>
                             <a
@@ -266,7 +266,7 @@ Html::behavior('tooltip');
                             <?php
                                 $routeUrl = Route::url(
                                     'index.php?option=' . $this->option . '&controller=' . $this->controller
-                                    . '&task=publish&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'
+                                    . '&task=publish&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1',
                                 );
                             ?>
                             <a
@@ -286,7 +286,7 @@ Html::behavior('tooltip');
                         <?php
                             $routeUrl = Route::url(
                                 'index.php?option=' . $this->option . '&controller=certificates&course='
-                                . $row->get('id')
+                                . $row->get('id'),
                             );
                         ?>
                         <a
@@ -301,7 +301,7 @@ Html::behavior('tooltip');
                         <?php
                             $routeUrl = Route::url(
                                 'index.php?option=' . $this->option . '&controller=certificates&course='
-                                . $row->get('id')
+                                . $row->get('id'),
                             );
                         ?>
                         <a
@@ -323,7 +323,7 @@ Html::behavior('tooltip');
                     <?php if ($canDo->get('core.manage') && $offerings > 0) { ?>
                         <?php
                             $routeUrl = Route::url(
-                                'index.php?option=' . $this->option . '&controller=offerings&course=' . $row->get('id')
+                                'index.php?option=' . $this->option . '&controller=offerings&course=' . $row->get('id'),
                             );
                         ?>
                         <a class="glyph list" href="<?php echo $routeUrl; ?>">
@@ -336,7 +336,7 @@ Html::behavior('tooltip');
                             <?php
                                 $routeUrl = Route::url(
                                     'index.php?option=' . $this->option . '&controller=offerings&course='
-                                    . $row->get('id') . '&task=add'
+                                    . $row->get('id') . '&task=add',
                                 );
                             ?>
                             <a class="state add" href="<?php echo $routeUrl; ?>">
@@ -350,7 +350,7 @@ Html::behavior('tooltip');
                         <?php
                             $routeUrl = Route::url(
                                 'index.php?option=' . $this->option . '&controller=pages&course=' . $row->get('id')
-                                . '&offering=0'
+                                . '&offering=0',
                             );
                         ?>
                         <a class="glyph list" href="<?php echo $routeUrl; ?>">
@@ -363,7 +363,7 @@ Html::behavior('tooltip');
                             <?php
                                 $routeUrl = Route::url(
                                     'index.php?option=' . $this->option . '&controller=pages&course=' . $row->get('id')
-                                    . '&offering=0&task=add'
+                                    . '&offering=0&task=add',
                                 );
                             ?>
                             <a class="state add" href="<?php echo $routeUrl; ?>">

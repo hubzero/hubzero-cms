@@ -134,15 +134,15 @@ class Migration20130924000002Core extends Base
                 // Build default ruleset
                 $defaulRules = [
                     "core.admin"      => [
-                        "7" => 1
+                        "7" => 1,
                         ],
                     "core.manage"     => [
-                        "6" => 1
+                        "6" => 1,
                         ],
                     "core.create"     => [],
                     "core.delete"     => [],
                     "core.edit"       => [],
-                    "core.edit.state" => []
+                    "core.edit.state" => [],
                     ];
 
                 foreach ($components as $com) {
@@ -312,23 +312,23 @@ class Migration20130924000002Core extends Base
             // Rule set for super admins only
             $rules = [
                 "core.admin"      => [
-                    "7" => 1
+                    "7" => 1,
                     ],
                 "core.manage"     => [
-                    "7" => 1
+                    "7" => 1,
                     ],
                 "core.create"     => [
-                    "7" => 1
+                    "7" => 1,
                     ],
                 "core.delete"     => [
-                    "7" => 1
+                    "7" => 1,
                     ],
                 "core.edit"       => [
-                    "7" => 1
+                    "7" => 1,
                     ],
                 "core.edit.state" => [
-                    "7" => 1
-                    ]
+                    "7" => 1,
+                    ],
                 ];
             $this->db->getQuery(true)
                 ->update('#__assets')
@@ -374,7 +374,7 @@ class Migration20130924000002Core extends Base
             ->set([
                 'lft'   => (int) $leftId,
                 'rgt'   => (int) $rightId,
-                'level' => (int) $level
+                'level' => (int) $level,
             ])
             ->where('id', '=', (int) $parentId)
             ->execute();

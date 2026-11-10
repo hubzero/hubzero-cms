@@ -31,7 +31,7 @@ class UsersCategory extends Relational
      */
     protected $rules = [
         'category_id' => 'notempty',
-        'user_id'     => 'notempty'
+        'user_id'     => 'notempty',
     ];
 
     /**
@@ -40,7 +40,7 @@ class UsersCategory extends Relational
      * @var  array
      */
     public $initiate = [
-        'created'
+        'created',
     ];
 
     /**

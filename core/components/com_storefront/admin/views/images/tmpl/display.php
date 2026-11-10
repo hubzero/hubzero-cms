@@ -23,7 +23,7 @@ if ($this->getError()) {
 }
 
 $action = Route::url(
-    'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=upload&tmpl=component'
+    'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=upload&tmpl=component',
 );
 ?>
 <form action="<?php echo $action; ?>" name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">

@@ -50,7 +50,7 @@ $devLabel = $row->versionProperty('version_label', 'dev');
 if ($devLabel && $devLabel != $row->get('version_label')) {
     $devUrl = Route::url(
         $this->project->link('publications')
-        . '&pid=' . $row->get('id') . '&version=dev'
+        . '&pid=' . $row->get('id') . '&version=dev',
     );
     echo '<a href="' . $devUrl
     . '">&raquo; ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION_DRAFT')
@@ -89,7 +89,7 @@ if ($devLabel && $devLabel != $row->get('version_label')) {
     $workedUrl = Route::url(
         $this->project->link('publications')
         . '&pid=' . $row->get('id')
-        . '&action=continue&version=' . $row->get('version_number')
+        . '&action=continue&version=' . $row->get('version_number'),
     );
     echo ' <span><a href="' . $workedUrl
     . '" class="btn mini icon-next btn-action">'
@@ -100,7 +100,7 @@ if ($devLabel && $devLabel != $row->get('version_label')) {
 <?php
     $versionsUrl = Route::url(
         $this->project->link('publications')
-        . '&pid=' . $row->get('id') . '&action=versions'
+        . '&pid=' . $row->get('id') . '&action=versions',
     );
     $versionsTitle = Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_VERSIONS');
     ?>
@@ -118,7 +118,7 @@ if ($devLabel && $devLabel != $row->get('version_label')) {
     <?php
         $pubPageUrl = Route::url(
             'index.php?option=com_publications&id=' . $row->get('id')
-            . '&v=' . $row->get('version_number')
+            . '&v=' . $row->get('version_number'),
         );
         $pubPageTitle = Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE');
         ?>

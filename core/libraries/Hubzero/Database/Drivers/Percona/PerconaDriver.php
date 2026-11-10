@@ -62,7 +62,7 @@ class PerconaDriver extends \Hubzero\Database\Drivers\Mysql\MysqlDriver
             'xtradb',   // Enhanced InnoDB (maps to InnoDB in 8.0+)
             'tokudb',   // Fractal tree indexing (deprecated in 8.0)
             'rocksdb',  // LSM tree storage engine
-            'myrocks'   // Alias for RocksDB
+            'myrocks',   // Alias for RocksDB
         ];
 
         $engineLower = strtolower($engine);
@@ -71,7 +71,7 @@ class PerconaDriver extends \Hubzero\Database\Drivers\Mysql\MysqlDriver
             throw new UnsupportedEngineException(sprintf(
                 'Unsupported engine type of "%s" specified. Engine type must be one of: %s',
                 $engine,
-                implode(', ', $supported)
+                implode(', ', $supported),
             ));
         }
 

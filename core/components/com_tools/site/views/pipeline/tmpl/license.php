@@ -19,11 +19,11 @@ $newstate         = ($this->action == 'confirm') ? 'Approved' :  $this->status['
 
 $codeChoices = [
     '@OPEN' => Lang::txt('COM_TOOLS_OPEN_SOURCE'),
-    '@DEV'  => Lang::txt('COM_TOOLS_CLOSED_SOURCE')
+    '@DEV'  => Lang::txt('COM_TOOLS_CLOSED_SOURCE'),
 ];
 
 $licenseChoices = [
-    '0' => Lang::txt('Choose a template')
+    '0' => Lang::txt('Choose a template'),
 ];
 
 if ($this->licenses) {
@@ -46,12 +46,12 @@ $this->css('pipeline.css')
             $statusUrl = Route::url(
                 'index.php?option=' . $this->option
                 . '&controller=' . $this->controller
-                . '&task=status&app=' . $this->status['toolname']
+                . '&task=status&app=' . $this->status['toolname'],
             );
             $newUrl = Route::url(
                 'index.php?option=' . $this->option
                 . '&controller=' . $this->controller
-                . '&task=create'
+                . '&task=create',
             );
             ?>
             <li><a class="icon-status btn" href="<?php echo $statusUrl; ?>">
@@ -83,7 +83,7 @@ $this->css('pipeline.css')
             $licenseFormAction = Route::url(
                 'index.php?option=' . $this->option
                 . '&controller=' . $this->controller
-                . '&task=license&app=' . $this->status['toolname']
+                . '&task=license&app=' . $this->status['toolname'],
             );
             $licTemplate = $this->license_choice['template'];
             $licText = $this->escape(stripslashes($this->license_choice['text']));
@@ -103,7 +103,7 @@ $this->css('pipeline.css')
                         $codeChoices,
                         $this->code,
                         'shifted',
-                        ''
+                        '',
                     ); ?>
 
                     <div id="closed-source">
@@ -125,7 +125,7 @@ $this->css('pipeline.css')
                                 $licenseChoices,
                                 $licTemplate,
                                 'shifted',
-                                ''
+                                '',
                             ); ?>
                         </div>
                         <div class="licinput">

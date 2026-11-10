@@ -79,44 +79,44 @@ class Items extends AdminController
                 $this->_option . '.resources.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.resources.limitstart',
                 'limitstart',
                 0,
-                'int'
+                'int',
             ),
             'search' => urldecode(Request::getState(
                 $this->_option . '.resources.search',
                 'search',
-                ''
+                '',
             )),
             'sort' => Request::getState(
                 $this->_option . '.resources.sort',
                 'filter_order',
-                'created'
+                'created',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.resources.sortdir',
                 'filter_order_Dir',
-                'DESC'
+                'DESC',
             ),
             'status' => Request::getState(
                 $this->_option . '.resources.status',
                 'status',
-                'all'
+                'all',
             ),
             'type' => Request::getState(
                 $this->_option . '.resources.type',
                 'type',
-                ''
+                '',
             ),
             'license' => Request::getState(
                 $this->_option . '.resources.license',
                 'license',
-                'all'
-            )
+                'all',
+            ),
         ];
 
         $query = Entry::all()
@@ -179,7 +179,7 @@ class Items extends AdminController
             $this->_option . '.children.pid',
             'pid',
             0,
-            'int'
+            'int',
         );
 
         // Incoming
@@ -189,34 +189,34 @@ class Items extends AdminController
                 $this->_option . '.children.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.children.limitstart',
                 'limitstart',
                 0,
-                'int'
+                'int',
             ),
             'search' => urldecode(Request::getState(
                 $this->_option . '.children.search',
                 'search',
-                ''
+                '',
             )),
             'sort' => Request::getState(
                 $this->_option . '.children.sort',
                 'filter_order',
-                'ordering'
+                'ordering',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.children.sortdir',
                 'filter_order_Dir',
-                'ASC'
+                'ASC',
             ),
             'status' => Request::getState(
                 $this->_option . '.children.status',
                 'status',
-                'all'
-            )
+                'all',
+            ),
         ];
 
         // Get parent info
@@ -267,23 +267,23 @@ class Items extends AdminController
             'search' => urldecode(Request::getState(
                 $this->_option . '.orphans.search',
                 'search',
-                ''
+                '',
             )),
             'sort' => Request::getState(
                 $this->_option . '.orphans.sort',
                 'filter_order',
-                'id'
+                'id',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.orphans.sortdir',
                 'filter_order_Dir',
-                'ASC'
+                'ASC',
             ),
             'status' => Request::getState(
                 $this->_option . '.orphans.status',
                 'status',
-                'all'
-            )
+                'all',
+            ),
         ];
 
         $associations = Association::all()
@@ -466,7 +466,7 @@ class Items extends AdminController
             Notify::warning(Lang::txt('COM_RESOURCES_ERROR_MISSING_CHILD_ID'));
 
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid, false)
+                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid, false),
             );
         }
 
@@ -475,7 +475,7 @@ class Items extends AdminController
             ->set([
                 'parent_id' => $pid,
                 'child_id'  => $id,
-                'grouping'  => 0
+                'grouping'  => 0,
             ]);
 
         if (!$assoc->save()) {
@@ -490,7 +490,7 @@ class Items extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid, false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid, false),
         );
     }
 
@@ -511,7 +511,7 @@ class Items extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, true),
                 Lang::txt('COM_RESOURCES_ERROR_MISSING_PARENT_ID'),
-                'error'
+                'error',
             );
             return;
         }
@@ -521,7 +521,7 @@ class Items extends AdminController
             Notify::warning(Lang::txt('COM_RESOURCES_ERROR_MISSING_CHILD_ID'));
 
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid, true)
+                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid, true),
             );
         }
 
@@ -547,7 +547,7 @@ class Items extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid, true)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid, true),
         );
     }
 
@@ -600,7 +600,7 @@ class Items extends AdminController
                 $task = '&task=children&pid=' . $pid;
             }
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . $task, false)
+                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . $task, false),
             );
             return;
         }
@@ -658,7 +658,7 @@ class Items extends AdminController
                 'authorized' => 'admin',
                 'fields'     => ['cn', 'description', 'published', 'gidNumber', 'type'],
                 'type'       => [1, 3],
-                'sortby'     => 'description'
+                'sortby'     => 'description',
             ];
             $groups = \Hubzero\User\Group::find($filters);
 
@@ -688,7 +688,7 @@ class Items extends AdminController
                 // Get the badges on this item
                 $badges = new Badges([
                     'scope' => 'resources',
-                    'scopeId' => $row->id
+                    'scopeId' => $row->id,
                 ]);
                 $lists['badges'] = $badges->render('string');
             }
@@ -696,7 +696,7 @@ class Items extends AdminController
             // Build <select> of contributors
             $authorslist = new \Hubzero\Component\View([
                 'name'   => $this->_controller,
-                'layout' => 'authors'
+                'layout' => 'authors',
             ]);
             $authorslist->authnames = $authnames;
             $authorslist->attribs   = $row->attribs;
@@ -708,7 +708,7 @@ class Items extends AdminController
 
         $aclusers = new \Hubzero\Component\View([
             'name'   => $this->_controller,
-            'layout' => 'aclusers'
+            'layout' => 'aclusers',
         ]);
         $aclusers->aclusernames = $row->aclusers();
         $aclusers->option    = $this->_option;
@@ -717,7 +717,7 @@ class Items extends AdminController
 
         $aclgroups = new \Hubzero\Component\View([
             'name'   => $this->_controller,
-            'layout' => 'aclgroups'
+            'layout' => 'aclgroups',
         ]);
         $aclgroups->aclgroupnames = $row->aclgroups();
         $aclgroups->option    = $this->_option;
@@ -932,7 +932,7 @@ class Items extends AdminController
         // Save the badges
         $badges = new Badges([
             'scope' => 'resources',
-            'scopeId' => $row->get('id')
+            'scopeId' => $row->get('id'),
         ]);
         $badges->updateBadges($badgeString, User::get('id'), 0);
 
@@ -1039,7 +1039,7 @@ class Items extends AdminController
                 // Log activity
                 $recipients = [
                     ['resource', $row->get('id')],
-                    ['user', $row->get('created_by')]
+                    ['user', $row->get('created_by')],
                 ];
 
                 foreach ($row->authors()->where('authorid', '>', 0)->rows() as $author) {
@@ -1053,14 +1053,14 @@ class Items extends AdminController
                         'scope_id'    => $row->title,
                         'description' => Lang::txt(
                             'COM_RESOURCES_ACTIVITY_ENTRY_PUBLISHED',
-                            '<a href="' . Route::url($row->link()) . '">' . $row->title . '</a>'
+                            '<a href="' . Route::url($row->link()) . '">' . $row->title . '</a>',
                         ),
                         'details'     => [
                             'title' => $row->title,
-                            'url'   => Route::url($row->link())
-                        ]
+                            'url'   => Route::url($row->link()),
+                        ],
                     ],
-                    'recipients' => $recipients
+                    'recipients' => $recipients,
                 ]);
             }
         }
@@ -1068,7 +1068,7 @@ class Items extends AdminController
         // Redirect
         App::redirect(
             $this->buildRedirectURL($pid),
-            Lang::txt('COM_RESOURCES_ITEM_SAVED')
+            Lang::txt('COM_RESOURCES_ITEM_SAVED'),
         );
     }
 
@@ -1159,7 +1159,7 @@ class Items extends AdminController
 
         // Redirect
         App::redirect(
-            $this->buildRedirectURL($pid)
+            $this->buildRedirectURL($pid),
         );
     }
 
@@ -1221,7 +1221,7 @@ class Items extends AdminController
 
         // Redirect
         App::redirect(
-            $this->buildRedirectURL($pid)
+            $this->buildRedirectURL($pid),
         );
     }
 
@@ -1298,7 +1298,7 @@ class Items extends AdminController
                         // Log activity
                         $recipients = [
                             ['resource', $resource->id],
-                            ['user', $resource->created_by]
+                            ['user', $resource->created_by],
                         ];
 
                         foreach ($resource->authors()->where('authorid', '>', 0)->rows() as $author) {
@@ -1312,14 +1312,14 @@ class Items extends AdminController
                                 'scope_id'    => $resource->title,
                                 'description' => Lang::txt(
                                     'COM_RESOURCES_ACTIVITY_ENTRY_PUBLISHED',
-                                    '<a href="' . Route::url($resource->link()) . '">' . $resource->title . '</a>'
+                                    '<a href="' . Route::url($resource->link()) . '">' . $resource->title . '</a>',
                                 ),
                                 'details'     => [
                                     'title' => $resource->title,
-                                    'url'   => Route::url($resource->link())
-                                ]
+                                    'url'   => Route::url($resource->link()),
+                                ],
                             ],
-                            'recipients' => $recipients
+                            'recipients' => $recipients,
                         ]);
                     }
                 }
@@ -1338,7 +1338,7 @@ class Items extends AdminController
 
         // Redirect
         App::redirect(
-            $this->buildRedirectURL($pid)
+            $this->buildRedirectURL($pid),
         );
     }
 
@@ -1363,7 +1363,7 @@ class Items extends AdminController
 
         // Redirect
         App::redirect(
-            $this->buildRedirectURL($pid)
+            $this->buildRedirectURL($pid),
         );
     }
 
@@ -1399,7 +1399,7 @@ class Items extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $id, false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $id, false),
         );
     }
 
@@ -1436,7 +1436,7 @@ class Items extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $id, false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $id, false),
         );
     }
 
@@ -1472,7 +1472,7 @@ class Items extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $id, false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $id, false),
         );
     }
 
@@ -1544,7 +1544,7 @@ class Items extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url($this->buildRedirectURL($pid), false)
+            Route::url($this->buildRedirectURL($pid), false),
         );
     }
 

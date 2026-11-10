@@ -61,46 +61,46 @@ class Threads extends AdminController
                 $this->_option . '.' . $this->_controller . '.state',
                 'state',
                 '-1',
-                'int'
+                'int',
             ),
             'access' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.access',
                 'access',
                 '-1',
-                'int'
+                'int',
             ),
             'section_id' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.section_id',
                 'section_id',
                 -1,
-                'int'
+                'int',
             ),
             'category_id' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.category_id',
                 'category_id',
                 -1,
-                'int'
+                'int',
             ),
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'id'
+                'id',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'DESC'
+                'DESC',
             ),
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             ),
             'scopeinfo' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.scopeinfo',
                 'scopeinfo',
-                ''
-            )
+                '',
+            ),
         ];
         if (strstr($filters['scopeinfo'], ':')) {
             $bits = explode(':', $filters['scopeinfo']);
@@ -219,48 +219,48 @@ class Threads extends AdminController
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             ),
             'state' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.state',
                 'state',
                 -1,
-                'int'
+                'int',
             ),
             'access' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.access',
                 'access',
                 -1,
-                'int'
+                'int',
             ),
             'section_id' => Request::getState(
                 $this->_option . '.thread.section_id',
                 'section_id',
                 -1,
-                'int'
+                'int',
             ),
             'category_id' => Request::getState(
                 $this->_option . '.thread.category_id',
                 'category_id',
                 -1,
-                'int'
+                'int',
             ),
             'thread' => Request::getState(
                 $this->_option . '.thread.thread',
                 'thread',
                 0,
-                'int'
+                'int',
             ),
             'sort' => Request::getState(
                 $this->_option . '.thread.sort',
                 'filter_order',
-                'id'
+                'id',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.thread.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         // Get the categories
@@ -406,7 +406,7 @@ class Threads extends AdminController
 
         User::setState('com_forum.edit.thread.data', [
             'id'       => $post->get('id'),
-            'asset_id' => $post->get('asset_id')
+            'asset_id' => $post->get('asset_id'),
         ]);
 
         $form = $post->getForm();
@@ -512,7 +512,7 @@ class Threads extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . $p, false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . $p, false),
         );
     }
 
@@ -771,7 +771,7 @@ class Threads extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $fields['category_id'] . ($thread ? '&task=thread&thread=' . $thread : ''), false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $fields['category_id'] . ($thread ? '&task=thread&thread=' . $thread : ''), false),
         );
     }
 }

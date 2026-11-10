@@ -45,7 +45,7 @@ defined('_HZEXEC_') or die();
                             <?php
                             $memberUrl = Route::url(
                                 'index.php?option=com_members&id='
-                                . $loggedin->get('id')
+                                . $loggedin->get('id'),
                             );
                             ?>
                             <a href="<?php echo $memberUrl; ?>">

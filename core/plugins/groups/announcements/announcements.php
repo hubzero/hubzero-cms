@@ -74,7 +74,7 @@ class Announcements extends Plugin
             'title'            => Lang::txt('COM_GROUPS_ANNOUNCEMENTS'),
             'default_access'   => $this->params->get('plugin_access', 'members'),
             'display_menu_tab' => $this->params->get('display_tab', 1),
-            'icon'             => 'f095'
+            'icon'             => 'f095',
         ];
         return $area;
     }
@@ -152,7 +152,7 @@ class Announcements extends Plugin
         // The output array we're returning
         $arr = [
             'html' => '',
-            'metadata' => []
+            'metadata' => [],
         ];
 
         // Get this area details
@@ -199,7 +199,7 @@ class Announcements extends Plugin
                     App::redirect(
                         Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
                         Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
-                        'warning'
+                        'warning',
                     );
                     return;
                 }
@@ -269,7 +269,7 @@ class Announcements extends Plugin
             'search'   => strtolower(Request::getString('q', '')),
             'scope'    => 'group',
             'scope_id' => $this->group->get('gidNumber'),
-            'state'    => 1
+            'state'    => 1,
         ];
 
         // Find announcements
@@ -481,17 +481,17 @@ class Announcements extends Plugin
                     'url'   => Route::url($url),
                     'id'    => $this->group->get('gidNumber'),
                     'alias' => $this->group->get('cn'),
-                    'title' => $this->group->get('description')
-                ]
+                    'title' => $this->group->get('description'),
+                ],
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         // Redirect to the main listing
         App::redirect(
             Route::url($url),
             Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_SUCCESSFULLY_SAVED'),
-            'success'
+            'success',
         );
     }
 
@@ -567,17 +567,17 @@ class Announcements extends Plugin
                     'url'   => Route::url($url),
                     'id'    => $this->group->get('gidNumber'),
                     'alias' => $this->group->get('cn'),
-                    'title' => $this->group->get('description')
-                ]
+                    'title' => $this->group->get('description'),
+                ],
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         // Redirect to the main listing
         App::redirect(
             Route::url($url),
             Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_SUCCESSFULLY_DELETED'),
-            'success'
+            'success',
         );
     }
 
@@ -624,7 +624,7 @@ class Announcements extends Plugin
         $eview = new \Hubzero\Mail\View([
             'base_path' => __DIR__,
             'name'      => 'email',
-            'layout'    => 'announcement_plain'
+            'layout'    => 'announcement_plain',
         ]);
 
         // Plain text
@@ -640,7 +640,7 @@ class Announcements extends Plugin
         // Set from address
         $from = [
             'name'  => Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EMAIL_NAME', Config::get('sitename')),
-            'email' => Config::get('mailfrom')
+            'email' => Config::get('mailfrom'),
         ];
 
         // Define subject
@@ -684,7 +684,7 @@ class Announcements extends Plugin
             'search'   => strtolower(Request::getString('q', '')),
             'scope'    => 'group',
             'scope_id' => $group->get('gidNumber'),
-            'state'    => \Hubzero\Item\Announcement::STATE_PUBLISHED
+            'state'    => \Hubzero\Item\Announcement::STATE_PUBLISHED,
         ];
 
         // Find announcements

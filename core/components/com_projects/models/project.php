@@ -837,14 +837,14 @@ class Project extends Model
                         'pagename' => 'projects',
                         'pageid'   => $this->get('id'),
                         'filepath' => $this->config('webpath'),
-                        'domain'   => $this->get('alias')
+                        'domain'   => $this->get('alias'),
                     ];
 
                     $content = (string) stripslashes($this->get('about', ''));
                     $this->importPlugin('content')->trigger('onContentPrepare', [
                         'com_projects.project.about',
                         &$this,
-                        &$config
+                        &$config,
                     ]);
 
                     $this->set('about.parsed', (string) $this->get('about', ''));
@@ -931,7 +931,7 @@ class Project extends Model
             'delete', 'intro', 'activate', 'process',
             'upload', 'img', 'verify', 'autocomplete',
             'showcount', 'preview', 'auth', 'public',
-            'get', 'media'
+            'get', 'media',
         ];
 
         if ($name) {
@@ -1129,7 +1129,7 @@ class Project extends Model
                     $group,
                     User::get('id'),
                     $filters,
-                    $setupComplete
+                    $setupComplete,
                 );
                 break;
 
@@ -1166,7 +1166,7 @@ class Project extends Model
             $refid = $refid ? $refid : $this->get('id');
 
             $recipients = [
-                ['user', User::get('id')]
+                ['user', User::get('id')],
             ];
 
             if ($managers_only) {
@@ -1352,8 +1352,8 @@ class Project extends Model
                     'commentable' => $commentable,
                     'admin'       => $admin,
                     'referenceid' => $refid,
-                    'projectid'   => $this->get('id')
-                ]
+                    'projectid'   => $this->get('id'),
+                ],
             ]);
 
             if (!$act->save()) {
@@ -1377,7 +1377,7 @@ class Project extends Model
                     'scope'    => $receiver[0],
                     'scope_id' => $receiver[1],
                     'log_id'   => $aid,
-                    'state'    => 1
+                    'state'    => 1,
                 ]);
 
                 $recipient->save();
@@ -1453,7 +1453,7 @@ class Project extends Model
                         $this->get('id'),
                         User::get('id'),
                         'join_activityid',
-                        $aid
+                        $aid,
                     );
                 }
 
@@ -1577,7 +1577,7 @@ class Project extends Model
                 'components/com_projects/site/assets/img/project.png',
                 'components/com_projects/assets/img/project.png',
                 'components/com_projects/site/assets/img/projects-large.gif',
-                'components/com_projects/assets/img/projects-large.gif'
+                'components/com_projects/assets/img/projects-large.gif',
             ];
 
             $path = trim($this->config()->get('defaultpic', 'components/com_projects/site/assets/img/project.png'), DS);

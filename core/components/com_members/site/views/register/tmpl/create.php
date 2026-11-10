@@ -38,7 +38,7 @@ $this->css('register.css');
                         $createdMsg = Lang::txt(
                             'COM_MEMBERS_REGISTER_ACCOUNT_CREATED_MESSAGE',
                             $this->sitename,
-                            \Hubzero\Utility\Str::obfuscate($this->xprofile->get('email'))
+                            \Hubzero\Utility\Str::obfuscate($this->xprofile->get('email')),
                         );
                         ?>
                         <p><?php echo $createdMsg; ?></p>
@@ -53,7 +53,7 @@ $this->css('register.css');
                         <?php
                         $val = Lang::txt(
                             'COM_MEMBERS_REGISTER_ACCOUNT_INSTRUCT_NOTE',
-                            Route::url('index.php?option=com_support')
+                            Route::url('index.php?option=com_support'),
                         );
                         ?>
                         <p><?php echo $val; ?></p>

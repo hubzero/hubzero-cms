@@ -49,7 +49,7 @@ class Php extends Base
                 [
                     'message'   => 'PHP file threw an exception',
                     'exception' => $exception,
-                ]
+                ],
             );
         }
 

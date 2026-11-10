@@ -49,42 +49,42 @@ class Sessions extends AdminController
             'username' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.username',
                 'username',
-                ''
+                '',
             )),
             'appname' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.appname',
                 'appname',
-                ''
+                '',
             )),
             'exechost' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.exechost',
                 'exechost',
-                ''
+                '',
             )),
             // Sorting
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'start'
+                'start',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'DESC'
+                'DESC',
             ),
             // Get paging variables
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limitstart',
                 'limitstart',
                 0,
-                'int'
-            )
+                'int',
+            ),
         ];
 
         // In case limit has been changed, adjust limitstart accordingly
@@ -184,7 +184,7 @@ class Sessions extends AdminController
         // Incoming
         $filters = [
             'limit' => Request::getState($this->_option . '.classes.limit', 'limit', Config::get('list_limit'), 'int'),
-            'start' => Request::getState($this->_option . '.classes.limitstart', 'limitstart', 0, 'int')
+            'start' => Request::getState($this->_option . '.classes.limitstart', 'limitstart', 0, 'int'),
         ];
 
         $obj = new Tables\SessionClass($this->database);
@@ -344,7 +344,7 @@ class Sessions extends AdminController
     public function cancelclassTask()
     {
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=classes', false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=classes', false),
         );
     }
 }

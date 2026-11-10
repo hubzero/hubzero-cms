@@ -53,7 +53,7 @@ if (!empty($this->notifications)) {
                             <?php echo Lang::txt('First name:'); ?>
                             <?php
                             $firstVal = $this->escape(
-                                Request::getString('shippingToFirst', User::get('givenName'), 'post')
+                                Request::getString('shippingToFirst', User::get('givenName'), 'post'),
                             );
                             ?>
                             <input type="text"
@@ -66,7 +66,7 @@ if (!empty($this->notifications)) {
                             <?php echo Lang::txt('Last name:'); ?>
                             <?php
                             $lastVal = $this->escape(
-                                Request::getString('shippingToLast', User::get('surname'), 'post')
+                                Request::getString('shippingToLast', User::get('surname'), 'post'),
                             );
                             ?>
                             <input type="text"
@@ -151,7 +151,7 @@ if (!empty($this->notifications)) {
 
                         $selectUrl = Route::url(
                             'index.php?option=com_cart&controller=checkout/shipping/select/'
-                            . $address->saId
+                            . $address->saId,
                         );
                         echo '<a href="' . $selectUrl . '">';
                         echo Lang::txt('Ship to this address');

@@ -60,7 +60,7 @@ $link = $base . '/' . trim($sef, '/');
                     <?php echo Lang::txt(
                         'PLG_CRON_RESOURCES_EMAIL_MEMBERS_EXPLANATION',
                         $link,
-                        $this->member->get('name') . ' (' . $this->member->get('username') . ')'
+                        $this->member->get('name') . ' (' . $this->member->get('username') . ')',
                     ); ?>
                 </td>
             </tr>
@@ -128,7 +128,7 @@ $link = $base . '/' . trim($sef, '/');
 
                     echo \Hubzero\Utility\Str::truncate(
                         strip_tags(\Hubzero\Utility\Sanitize::stripAll(stripslashes($content))),
-                        300
+                        300,
                     );
                     ?>
                 </td>

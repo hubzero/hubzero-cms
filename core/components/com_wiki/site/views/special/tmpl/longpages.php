@@ -17,7 +17,7 @@ defined('_HZEXEC_') or die();
 
 Pathway::append(
     Lang::txt('COM_WIKI_SPECIAL_LONG_PAGES'),
-    $this->page->link('base') . '&pagename=Special:LongPages'
+    $this->page->link('base') . '&pagename=Special:LongPages',
 );
 
 $limit = Request::getInt('limit', Config::get('list_limit'));

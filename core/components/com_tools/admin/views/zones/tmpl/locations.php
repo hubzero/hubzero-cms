@@ -24,11 +24,11 @@ Toolbar::cancel();
 <?php
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 $profileUrl = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=zones&task=edit&id=' . $this->row->id
+    . '&controller=zones&task=edit&id=' . $this->row->id,
 );
 ?>
 <form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="item-form">

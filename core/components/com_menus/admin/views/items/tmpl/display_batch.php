@@ -14,7 +14,7 @@ defined('_HZEXEC_') or die();
 
 $options = [
     Html::select('option', 'c', Lang::txt('JLIB_HTML_BATCH_COPY')),
-    Html::select('option', 'm', Lang::txt('JLIB_HTML_BATCH_MOVE'))
+    Html::select('option', 'm', Lang::txt('JLIB_HTML_BATCH_MOVE')),
 ];
 $published = $this->filters['published'];
 
@@ -65,7 +65,7 @@ $hasMenuTarget = ($published === '' || $published === null || $published >= 0);
                                 '',
                                 'value',
                                 'text',
-                                'm'
+                                'm',
                             );
                             ?>
                         </div>

@@ -28,7 +28,7 @@ class Helper
 
         $crypt = new \Hubzero\Encryption\Encrypter(
             new \Hubzero\Encryption\Cipher\Simple(),
-            new \Hubzero\Encryption\Key('simple', $key, $key)
+            new \Hubzero\Encryption\Key('simple', $key, $key),
         );
 
         return $crypt;
@@ -218,13 +218,13 @@ class Helper
         // create from details
         $from = [
             'name'  => Config::get('sitename') . ' Mailing Lists',
-            'email' => 'hubmail-mailinglists@' . $_SERVER['HTTP_HOST']
+            'email' => 'hubmail-mailinglists@' . $_SERVER['HTTP_HOST'],
         ];
 
         // create replyto details
         $replyto = [
             'name'  => 'DO NOT REPLY',
-            'email' => 'do-not-reply@' . $_SERVER['HTTP_HOST']
+            'email' => 'do-not-reply@' . $_SERVER['HTTP_HOST'],
         ];
 
         //build subject

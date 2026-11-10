@@ -58,7 +58,7 @@ class Vote extends Relational
      */
     protected $rules = [
         'referenceid' => 'positive|nonzero',
-        'category'    => 'notempty'
+        'category'    => 'notempty',
     ];
 
     /**
@@ -69,7 +69,7 @@ class Vote extends Relational
     public $initiate = [
         'voted',
         'voter',
-        'ip'
+        'ip',
     ];
 
     /**

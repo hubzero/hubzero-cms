@@ -33,7 +33,7 @@ class Option extends Relational
      */
     public $always = [
         'modified',
-        'modified_by'
+        'modified_by',
     ];
 
     /**
@@ -43,7 +43,7 @@ class Option extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**

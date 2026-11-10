@@ -102,7 +102,7 @@ class Handler extends Plugin
         $description = '',
         $group_id = 0,
         $bypassGroupsCheck = false,
-        $anonymous = 0
+        $anonymous = 0,
     ) {
         // Do we have a message?
         if (!$message) {
@@ -121,7 +121,7 @@ class Handler extends Plugin
             // First, let's see if they've surpassed their daily limit for sending messages
             $filters = [
                 'created_by'  => User::get('id'),
-                'daily_limit' => $daily_limit
+                'daily_limit' => $daily_limit,
             ];
 
             $number_sent = $xmessage->getSentMessagesCount($filters);
@@ -152,7 +152,7 @@ class Handler extends Plugin
         // Store the message in the database
         $xmessage->set(
             'message',
-            (is_array($message) && isset($message['plaintext'])) ? $message['plaintext'] : $message
+            (is_array($message) && isset($message['plaintext'])) ? $message['plaintext'] : $message,
         );
 
         // Outlook 2016 Windows 10 Desktop client fails to parse some
@@ -275,7 +275,7 @@ class Handler extends Plugin
                                 $this->setError(Lang::txt(
                                     'PLG_XMESSAGE_HANDLER_ERROR_UNABLE_TO_MESSAGE',
                                     $uid,
-                                    $action
+                                    $action,
                                 ));
                             }
                         }

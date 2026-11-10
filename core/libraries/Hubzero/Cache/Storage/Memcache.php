@@ -46,14 +46,14 @@ class Memcache extends None
                 $config = \Hubzero\Facades\App::get('config');
                 $this->options['compress'] = $config->get(
                     'memcache_compress',
-                    false
+                    false,
                 ) == false ? 0 : MEMCACHE_COMPRESSED;
                 $this->options['servers'] = [
                     [
                         'host'    => $conf->get('memcache_server_host', 'localhost'),
                         'port'    => $conf->get('memcache_server_port', 11211),
-                        'persist' => $conf->get('memcache_persist', true)
-                    ]
+                        'persist' => $conf->get('memcache_persist', true),
+                    ],
                 ];
             }
 
@@ -92,7 +92,7 @@ class Memcache extends None
             $memcache->addServer(
                 $server['host'],
                 $server['port'],
-                $server['weight']
+                $server['weight'],
             );
         }
 

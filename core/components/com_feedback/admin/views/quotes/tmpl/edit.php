@@ -210,7 +210,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                         50,
                         10,
                         'field-quote',
-                        ['class' => 'required']
+                        ['class' => 'required'],
                     );
                     ?>
                 </div>

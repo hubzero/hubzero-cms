@@ -14,14 +14,14 @@ use Hubzero\Facades\Session;
 defined('_HZEXEC_') or die();
 
 $filenameVal = $this->escape(
-    stripslashes($this->asset->get('filename'))
+    stripslashes($this->asset->get('filename')),
 );
 $deleteUrl = Route::url(
     'index.php?option=' . $this->option
     . '&controller=' . $this->controller
     . '&task=delete&asset=' . $this->asset->get('id')
     . '&no_html=' . $this->no_html
-    . '&' . Session::getFormToken() . '=1'
+    . '&' . Session::getFormToken() . '=1',
 );
 $deleteTxt = Lang::txt('JACTION_DELETE');
 ?>

@@ -17,7 +17,7 @@ defined('_HZEXEC_') or die();
 
 Pathway::append(
     Lang::txt('COM_WIKI_SPECIAL_RECENT_CHANGES'),
-    $this->page->link()
+    $this->page->link(),
 );
 
 $dir = strtoupper(Request::getString('dir', 'DESC'));
@@ -41,7 +41,7 @@ $rows = $this->book->pages($filters)
                 ->select('version')
                 ->select('created_by')
                 ->select('summary');
-        }
+        },
     ])
     ->order('modified', $dir)
     ->paginated()
@@ -94,7 +94,7 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
                                 $diffId = $row->version->get('version');
                                 $compareUrl = Route::url(
                                     $row->link() . '&' . $taskKey . '=compare'
-                                    . '&oldid=' . $oldId . '&diff=' . $diffId
+                                    . '&oldid=' . $oldId . '&diff=' . $diffId,
                                 );
                                 ?>
                                 <a href="<?php echo $compareUrl; ?>"><?php

@@ -172,7 +172,7 @@ class Database
                 $dsn,
                 $existing['username'],
                 $existing['password'] ?? '',
-                []
+                [],
             );
 
             // Quick test query
@@ -794,7 +794,7 @@ class Database
             'Enter MySQL admin credentials to create a new user',
             'Enter credentials for an existing MySQL account',
             'Back',
-            'Exit'
+            'Exit',
         ];
 
         // If we have existing credentials, default to "existing account" option
@@ -880,7 +880,7 @@ class Database
                         'Try a different admin account',
                         'Use this account for Hubzero instead',
                         'Back',
-                        'Exit'
+                        'Exit',
                     ];
                     $selected = self::interactiveMenu($options, 0, $ansi, true);
 
@@ -1074,7 +1074,7 @@ class Database
                                 $adminDsn,
                                 $adminUser,
                                 $adminPass,
-                                $options
+                                $options,
                             );
                             self::output("\e[32mOK\e[39m\n", $ansi);
                             // Check privileges immediately - if lacking, try next strategy
@@ -1082,7 +1082,7 @@ class Database
                                 self::output(
                                     "  \e[33mConnection succeeded but lacks required "
                                         . "privileges, trying next...\e[39m\n",
-                                    $ansi
+                                    $ansi,
                                 );
                                 $adminPdo = null;
                             }
@@ -1107,7 +1107,7 @@ class Database
                 if (!self::checkAdminPrivileges($adminPdo, $ansi)) {
                     self::output(
                         "  \e[33mConnection succeeded but lacks required privileges, trying next...\e[39m\n",
-                        $ansi
+                        $ansi,
                     );
                     $adminPdo = null;
                 }
@@ -1140,7 +1140,7 @@ class Database
                     if (!self::checkAdminPrivileges($adminPdo, $ansi)) {
                         self::output(
                             "  \e[33mConnection succeeded but lacks required privileges, trying next...\e[39m\n",
-                            $ansi
+                            $ansi,
                         );
                         $adminPdo = null;
                     }
@@ -1167,7 +1167,7 @@ class Database
                     if ($myCnf === null) {
                         self::output(
                             "  Trying (sudo) {$rootMyCnfPath} ... \e[90mno [client] credentials\e[39m\n",
-                            $ansi
+                            $ansi,
                         );
                     } else {
                         $myCnfHost = $myCnf['host'] ?? 'localhost';
@@ -1210,7 +1210,7 @@ class Database
                                     $adminDsn,
                                     $adminUser,
                                     $adminPass,
-                                    $options
+                                    $options,
                                 );
                                 self::output("\e[32mOK\e[39m\n", $ansi);
                                 // Check privileges immediately - if lacking, try next strategy
@@ -1218,7 +1218,7 @@ class Database
                                     self::output(
                                         "  \e[33mConnection succeeded but lacks required "
                                             . "privileges, trying next...\e[39m\n",
-                                        $ansi
+                                        $ansi,
                                     );
                                     $adminPdo = null;
                                 }
@@ -1241,7 +1241,7 @@ class Database
                         if (!self::checkAdminPrivileges($adminPdo, $ansi)) {
                             self::output(
                                 "  \e[33mConnection succeeded but lacks required privileges, trying next...\e[39m\n",
-                                $ansi
+                                $ansi,
                             );
                             $adminPdo = null;
                         }
@@ -1270,14 +1270,14 @@ class Database
                                 $connection['dsn'],
                                 $currentUser,
                                 '',
-                                $options
+                                $options,
                             );
                             self::output("\e[32mOK\e[39m\n", $ansi);
                             // Check privileges immediately - if lacking, continue (no more strategies)
                             if (!self::checkAdminPrivileges($adminPdo, $ansi)) {
                                 self::output(
                                     "  \e[33mConnection succeeded but lacks required privileges.\e[39m\n",
-                                    $ansi
+                                    $ansi,
                                 );
                                 $adminPdo = null;
                             }
@@ -1414,7 +1414,7 @@ class Database
             'Create a new database and credentials for this site',
             'Enter existing database name and credentials',
             'Back',
-            'Exit'
+            'Exit',
         ];
 
         // If we have existing credentials, default to "existing" option
@@ -1527,7 +1527,7 @@ class Database
                         $database,
                         $username,
                         $userHost,
-                        $ansi
+                        $ansi,
                     );
                     // null = go back to username, false = exit, array = success
                     if ($existingResult === null) {
@@ -1558,7 +1558,7 @@ class Database
                         $username,
                         $password,
                         $userHost,
-                        $ansi
+                        $ansi,
                     );
                 }
                 // Password was null (back), continue to username prompt
@@ -1592,7 +1592,7 @@ class Database
             'Reset password for this user',
             'Choose a different username',
             'Back',
-            'Exit'
+            'Exit',
         ];
         $selected = self::interactiveMenu($options, 0, $ansi, true);
 
@@ -1688,7 +1688,7 @@ class Database
                 'Reset password for this user',
                 'Choose a different username',
                 'Back',
-                'Exit'
+                'Exit',
             ];
             $selected = self::interactiveMenu($options, 0, $ansi, true);
 
@@ -1785,7 +1785,7 @@ class Database
         $username,
         $password,
         $userHost,
-        $ansi
+        $ansi,
     ) {
         self::output("\n", $ansi);
         self::output("Creating user '\e[32m{$username}\e[39m'@'\e[32m{$userHost}\e[39m'... ", $ansi);
@@ -2048,7 +2048,7 @@ class Database
                     self::output(
                         "Please create it first, or use "
                             . "'Create a new database and credentials' option.\n",
-                        $ansi
+                        $ansi,
                     );
                     self::output("\n", $ansi);
 
@@ -2724,7 +2724,7 @@ class Database
         string $dsn,
         string $username = '',
         string $password = '',
-        array $options = []
+        array $options = [],
     ): \PDO {
         self::resolveInstallerDriverFromDsn($dsn);
 
@@ -2759,7 +2759,7 @@ class Database
         if (in_array($driver, ['pgsql', 'sqlite', 'firebird', 'informix'], true)) {
             throw new \PDOException(
                 "CLI installer currently supports MySQL-family drivers only"
-                . " (mysql/mariadb/percona). Requested DSN driver: {$driver}"
+                . " (mysql/mariadb/percona). Requested DSN driver: {$driver}",
             );
         }
 

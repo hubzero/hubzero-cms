@@ -74,7 +74,7 @@ class Reviews extends Plugin
         $arr = [
             'area'     => $this->_name,
             'html'     => '',
-            'metadata' => ''
+            'metadata' => '',
         ];
 
         $resource = \Components\Resources\Models\Entry::oneOrFail($id);
@@ -102,7 +102,7 @@ class Reviews extends Plugin
         $arr = [
             'area'     => $this->_name,
             'html'     => '',
-            'metadata' => ''
+            'metadata' => '',
         ];
 
         // Check if our area is in the array of areas we want to return results for
@@ -142,7 +142,7 @@ class Reviews extends Plugin
             ->whereEquals('resource_id', $model->get('id'))
             ->whereIn('state', [
                 \Components\Resources\Models\Review::STATE_PUBLISHED,
-                \Components\Resources\Models\Review::STATE_FLAGGED
+                \Components\Resources\Models\Review::STATE_FLAGGED,
             ])
             ->ordered()
             ->rows();
@@ -161,7 +161,7 @@ class Reviews extends Plugin
                 }
 
                 App::redirect(
-                    Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
+                    Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
                 );
             }
 

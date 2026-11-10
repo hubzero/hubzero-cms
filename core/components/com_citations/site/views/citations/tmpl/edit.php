@@ -349,9 +349,9 @@ $pid = Request::getInt('publication', 0);
                                 'hubzero.onGetMultiEntry',
                                 [
                                                     ['tags', 'tags', 'actags', '',
-                                                        implode(",", $this->tags)
-                                                    ]
-                                                ]
+                                                        implode(",", $this->tags),
+                                                    ],
+                                                ],
                             );
 
                         if (count($tags_list) > 0) {
@@ -372,9 +372,9 @@ $pid = Request::getInt('publication', 0);
                                 'hubzero.onGetMultiEntry',
                                 [
                                                     ['tags', 'badges', 'actags1', '',
-                                                        implode(",", $this->badges)
-                                                    ]
-                                                ]
+                                                        implode(",", $this->badges),
+                                                    ],
+                                                ],
                             );
                         if (count($badges_list) > 0) {
                             echo $badges_list[0];

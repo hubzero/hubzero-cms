@@ -105,7 +105,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                     <label for="field-about"><?php echo Lang::txt('COM_WISHLIST_DESCRIPTION'); ?>:</label><br />
                     <?php
                     $aboutVal = $this->escape(
-                        preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', stripslashes($this->row->get('about', '')))
+                        preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', stripslashes($this->row->get('about', ''))),
                     );
                     echo $this->editor(
                         'fields[about]',
@@ -113,7 +113,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                         50,
                         30,
                         'field-about',
-                        ['class' => 'minimal no-footer', 'buttons' => false]
+                        ['class' => 'minimal no-footer', 'buttons' => false],
                     );
                     ?>
                 </div>
@@ -207,8 +207,8 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                         preg_replace(
                             '/^(<!-- \{FORMAT:.*\} -->)/i',
                             '',
-                            stripslashes($this->row->plan->pagetext)
-                        )
+                            stripslashes($this->row->plan->pagetext),
+                        ),
                     );
                     echo $this->editor(
                         'plan[pagetext]',
@@ -216,7 +216,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                         50,
                         30,
                         'plan-pagetext',
-                        ['class' => 'minimal no-footer', 'buttons' => false]
+                        ['class' => 'minimal no-footer', 'buttons' => false],
                     );
                     ?>
                 </div>

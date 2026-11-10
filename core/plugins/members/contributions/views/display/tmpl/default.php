@@ -21,7 +21,7 @@ $this->css()
 $all = [
     'category' => '',
     'title'    => Lang::txt('PLG_MEMBERS_CONTRIBUTIONS_ALL_CATEGORIES'),
-    'total'    => $this->total
+    'total'    => $this->total,
 ];
 
 array_unshift($this->cats, $all);
@@ -44,7 +44,7 @@ foreach ($this->cats as $cat) {
             $this->member->link()
             . '&active=contributions&area='
             . urlencode(stripslashes($blob))
-            . '&sort=' . $this->sort
+            . '&sort=' . $this->sort,
         );
         $catTitle = $this->escape(stripslashes($cat['title']));
         $catTotal = $this->escape($cat['total']);
@@ -73,10 +73,10 @@ foreach ($this->cats as $cat) {
                         $this->member->link()
                         . '&active=contributions&area='
                         . urlencode(stripslashes($blob))
-                        . '&sort=' . $this->sort
+                        . '&sort=' . $this->sort,
                     );
                     $subTitle = $this->escape(
-                        stripslashes($subcat['title'])
+                        stripslashes($subcat['title']),
                     );
                     $subTotal = $this->escape($subcat['total']);
                     $k[] = "\t\t\t" . '<li' . $a . '>'
@@ -115,10 +115,10 @@ foreach ($this->cats as $cat) {
                         <?php
                         $categoriesUrl = Route::url(
                             $this->member->link()
-                            . '&active=contributions&sort=date'
+                            . '&active=contributions&sort=date',
                         );
                         $categoriesLabel = Lang::txt(
-                            'PLG_MEMBERS_CONTRIBUTIONS_CATEGORIES'
+                            'PLG_MEMBERS_CONTRIBUTIONS_CATEGORIES',
                         );
                         ?>
                         <a href="<?php echo $categoriesUrl; ?>"><?php echo $categoriesLabel; ?></a>
@@ -141,10 +141,10 @@ foreach ($this->cats as $cat) {
             $dateUrl = Route::url($sortBase . '&sort=date')
                 . $pageSuffix;
             $dateByTitle = Lang::txt(
-                'PLG_MEMBERS_CONTRIBUTIONS_SORT_BY_DATE'
+                'PLG_MEMBERS_CONTRIBUTIONS_SORT_BY_DATE',
             );
             $dateLabel = Lang::txt(
-                'PLG_MEMBERS_CONTRIBUTIONS_SORT_DATE'
+                'PLG_MEMBERS_CONTRIBUTIONS_SORT_DATE',
             );
 
             $titleClass = ($this->sort == 'title')
@@ -152,10 +152,10 @@ foreach ($this->cats as $cat) {
             $titleUrl = Route::url($sortBase . '&sort=title')
                 . $pageSuffix;
             $titleByTitle = Lang::txt(
-                'PLG_MEMBERS_CONTRIBUTIONS_SORT_BY_TITLE'
+                'PLG_MEMBERS_CONTRIBUTIONS_SORT_BY_TITLE',
             );
             $titleLabel = Lang::txt(
-                'PLG_MEMBERS_CONTRIBUTIONS_SORT_TITLE'
+                'PLG_MEMBERS_CONTRIBUTIONS_SORT_TITLE',
             );
 
             $usageClass = ($this->sort == 'usage')
@@ -163,10 +163,10 @@ foreach ($this->cats as $cat) {
             $usageUrl = Route::url($sortBase . '&sort=usage')
                 . $pageSuffix;
             $usageByTitle = Lang::txt(
-                'PLG_MEMBERS_CONTRIBUTIONS_SORT_BY_POPULARITY'
+                'PLG_MEMBERS_CONTRIBUTIONS_SORT_BY_POPULARITY',
             );
             $usageLabel = Lang::txt(
-                'PLG_MEMBERS_CONTRIBUTIONS_SORT_POPULARITY'
+                'PLG_MEMBERS_CONTRIBUTIONS_SORT_POPULARITY',
             );
             ?>
             <ul class="entries-menu order-options">

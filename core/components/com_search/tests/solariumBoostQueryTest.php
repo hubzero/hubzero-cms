@@ -33,8 +33,8 @@ class SolariumBoostQueryTest extends Basic
             'methods' => [
                 'getField' => 'resource',
                 'getFieldValue' => 'Tools',
-                'getStrength' => 83
-            ]
+                'getStrength' => 83,
+            ],
         ]);
         $expected = ['query' => 'resource:Tools^83'];
         $query = new Query(['boost' => $boostMock]);

@@ -37,10 +37,10 @@ if ($canDo->get('core.admin')) {
 <?php
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 $searchPlaceholder = Lang::txt(
-    'COM_NEWSLETTER_FILTER_SEARCH_PLACEHOLDER'
+    'COM_NEWSLETTER_FILTER_SEARCH_PLACEHOLDER',
 );
 ?>
 <form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
@@ -114,7 +114,7 @@ $searchPlaceholder = Lang::txt(
                             $editUrl = Route::url(
                                 'index.php?option=' . $this->option
                                 . '&controller=' . $this->controller
-                                . '&task=edit&id=' . $list->id
+                                . '&task=edit&id=' . $list->id,
                             );
                             ?>
                             <a href="<?php echo $editUrl; ?>">

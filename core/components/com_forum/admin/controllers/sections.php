@@ -51,34 +51,34 @@ class Sections extends AdminController
                 $this->_option . '.' . $this->_controller . '.state',
                 'state',
                 '-1',
-                'int'
+                'int',
             ),
             'access' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.access',
                 'access',
                 '-1',
-                'int'
+                'int',
             ),
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'id'
+                'id',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'DESC'
+                'DESC',
             ),
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             ),
             'scopeinfo' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.scopeinfo',
                 'scopeinfo',
-                ''
-            )
+                '',
+            ),
         ];
 
         if (strstr($filters['scopeinfo'], ':')) {
@@ -167,7 +167,7 @@ class Sections extends AdminController
 
         User::setState('com_forum.edit.section.data', [
             'id'       => $row->get('id'),
-            'asset_id' => $row->get('asset_id')
+            'asset_id' => $row->get('asset_id'),
         ]);
 
         $form = $row->getForm();

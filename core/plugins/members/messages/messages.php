@@ -70,7 +70,7 @@ class Messages extends Plugin
 
         $arr = [
             'html' => '',
-            'metadata' => ''
+            'metadata' => '',
         ];
 
         // Check if our area is in the array of areas we want to return results for
@@ -161,14 +161,14 @@ class Messages extends Plugin
                     $option . '.plugin.messages.limit',
                     'limit',
                     Config::get('list_limit'),
-                    'int'
+                    'int',
                 ),
                 'start' => Request::getState(
                     $option . '.plugin.messages.limitstart',
                     'limitstart',
                     0,
-                    'int'
-                )
+                    'int',
+                ),
             ];
 
             $notifications = []; //Notify::messages('plg_' . $this->_type . '_' . $this->_name);
@@ -223,16 +223,16 @@ class Messages extends Plugin
                 $option . '.plugin.messages.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $option . '.plugin.messages.limitstart',
                 'limitstart',
                 0,
-                'int'
+                'int',
             ),
             'state' => 0,
-            'filter' => Request::getString('filter', '')
+            'filter' => Request::getString('filter', ''),
         ];
 
         $filters['filter'] = ($filters['filter'] ? 'com_' . $filters['filter'] : '');
@@ -274,16 +274,16 @@ class Messages extends Plugin
                 $option . '.plugin.messages.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $option . '.plugin.messages.limitstart',
                 'limitstart',
                 0,
-                'int'
+                'int',
             ),
             'state' => 1,
-            'filter' => Request::getString('filter', '')
+            'filter' => Request::getString('filter', ''),
         ];
 
         $filters['filter'] = ($filters['filter'] ? 'com_' . $filters['filter'] : '');
@@ -325,16 +325,16 @@ class Messages extends Plugin
                 $option . '.plugin.messages.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $option . '.plugin.messages.limitstart',
                 'limitstart',
                 0,
-                'int'
+                'int',
             ),
             'state' => 2,
-            'filter' => Request::getString('filter', '')
+            'filter' => Request::getString('filter', ''),
         ];
 
         $filters['filter'] = ($filters['filter'] ? 'com_' . $filters['filter'] : '');
@@ -376,15 +376,15 @@ class Messages extends Plugin
                 $option . '.plugin.messages.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $option . '.plugin.messages.limitstart',
                 'limitstart',
                 0,
-                'int'
+                'int',
             ),
-            'created_by' => $member->get('id')
+            'created_by' => $member->get('id'),
         ];
 
         $recipient = \Hubzero\Message\Message::blank();
@@ -593,8 +593,8 @@ class Messages extends Plugin
             Notify::success(
                 Lang::txt(
                     'You have successfully moved <b><u>%s</u></b> message(s) to your archive.',
-                    count($mids)
-                )
+                    count($mids),
+                ),
             );
         } else {
             Notify::warning(Lang::txt('No messages selected.'));
@@ -604,8 +604,8 @@ class Messages extends Plugin
             Route::url(
                 $member->link() . '&active=messages&task=' . Request::getWord('activetab', 'archive')
                 . '&start=' . $start . '&limit=' . $limit,
-                false
-            )
+                false,
+            ),
         );
         return;
     }
@@ -648,8 +648,8 @@ class Messages extends Plugin
             Notify::success(
                 Lang::txt(
                     'You have successfully moved <b><u>%s</u></b> message(s) to your inbox.',
-                    count($mids)
-                )
+                    count($mids),
+                ),
             );
         } else {
             Notify::warning(Lang::txt('No messages selected.'));
@@ -659,8 +659,8 @@ class Messages extends Plugin
             Route::url(
                 $member->link() . '&active=messages&task=' . Request::getWord('activetab', 'inbox')
                 . '&start=' . $start . '&limit=' . $limit,
-                false
-            )
+                false,
+            ),
         );
         return;
     }
@@ -710,8 +710,8 @@ class Messages extends Plugin
             Notify::success(
                 Lang::txt(
                     'You have successfully moved <b><u>%s</u></b> message(s) to your trash.',
-                    count($mids)
-                )
+                    count($mids),
+                ),
             );
         } else {
             Notify::warning(Lang::txt('No messages selected.'));
@@ -721,8 +721,8 @@ class Messages extends Plugin
             Route::url(
                 $member->link() . '&active=messages&task=' . Request::getWord('activetab', 'trash')
                 . '&start=' . $start . '&limit=' . $limit,
-                false
-            )
+                false,
+            ),
         );
         return;
     }
@@ -777,8 +777,8 @@ class Messages extends Plugin
             Notify::success(
                 Lang::txt(
                     'You have successfully deleted <b><u>%s</u></b> message(s).',
-                    count($mids)
-                )
+                    count($mids),
+                ),
             );
         } else {
             Notify::warning(Lang::txt('No messages selected.'));
@@ -788,8 +788,8 @@ class Messages extends Plugin
             Route::url(
                 $member->link() . '&active=messages&task=' . Request::getWord('activetab', 'inbox')
                 . '&start=' . $start . '&limit=' . $limit,
-                false
-            )
+                false,
+            ),
         );
         return;
     }
@@ -827,8 +827,8 @@ class Messages extends Plugin
             Notify::success(
                 Lang::txt(
                     'You have successfully marked <b><u>%s</u></b> message(s) as read.',
-                    count($ids)
-                )
+                    count($ids),
+                ),
             );
         } else {
             Notify::warning(Lang::txt('No messages selected.'));
@@ -838,8 +838,8 @@ class Messages extends Plugin
             Route::url(
                 $member->link() . '&active=messages&task=' . Request::getWord('activetab', 'inbox')
                 . '&start=' . $start . '&limit=' . $limit,
-                false
-            )
+                false,
+            ),
         );
         return;
     }
@@ -873,8 +873,8 @@ class Messages extends Plugin
             Notify::success(
                 Lang::txt(
                     'You have successfully marked <b><u>%s</u></b> message(s) as unread.',
-                    count($ids)
-                )
+                    count($ids),
+                ),
             );
         } else {
             Notify::warning(Lang::txt('No messages selected.'));
@@ -884,8 +884,8 @@ class Messages extends Plugin
             Route::url(
                 $member->link() . '&active=messages&task=' . Request::getWord('activetab', 'inbox')
                 . '&start=' . $start . '&limit=' . $limit,
-                false
-            )
+                false,
+            ),
         );
         return;
     }
@@ -932,8 +932,8 @@ class Messages extends Plugin
                             $this->setError(
                                 Lang::txt(
                                     'PLG_MEMBERS_MESSAGES_ERROR_NOTIFY_FAILED',
-                                    $notify->get('method')
-                                )
+                                    $notify->get('method'),
+                                ),
                             );
                         }
                     }
@@ -980,8 +980,8 @@ class Messages extends Plugin
                     $this->setError(
                         Lang::txt(
                             'PLG_MEMBERS_MESSAGES_ERROR_NOTIFY_FAILED',
-                            $notify->get('method')
-                        )
+                            $notify->get('method'),
+                        ),
                     );
                 }
             }
@@ -1072,8 +1072,8 @@ class Messages extends Plugin
                 $message,
                 $from,
                 $email_users,
-                $option
-                ]
+                $option,
+                ],
             )
         ) {
             $this->setError(Lang::txt('PLG_MEMBERS_MESSAGES_ERROR_MSG_USER_FAILED'));

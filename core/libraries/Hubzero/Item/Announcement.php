@@ -37,7 +37,7 @@ class Announcement extends Relational
      * @var  array
      */
     protected $rules = [
-        'content' => 'notempty'
+        'content' => 'notempty',
     ];
 
     /**
@@ -47,7 +47,7 @@ class Announcement extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**
@@ -57,7 +57,7 @@ class Announcement extends Relational
      */
     public $always = [
         'publish_up',
-        'publish_down'
+        'publish_down',
     ];
 
     /**
@@ -66,7 +66,7 @@ class Announcement extends Relational
      * @var array
      */
     protected $parsed = [
-        'content'
+        'content',
     ];
 
     /**

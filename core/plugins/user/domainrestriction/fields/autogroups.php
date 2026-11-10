@@ -70,7 +70,7 @@ class AutoGroups extends Field
         $script[] = implode(',', [
             "id:\"" . $this->id . "\"",
             "autogroups:" . $value,
-            "strings:" . trim(json_encode($strings))
+            "strings:" . trim(json_encode($strings)),
         ]);
         $script[] = "})";
         $script[] = '});';

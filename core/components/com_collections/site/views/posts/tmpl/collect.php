@@ -22,7 +22,7 @@ if ($this->collection_id) {
 $formAction = Route::url(
     'index.php?option=' . $this->option
     . '&controller=' . $this->controller
-    . '&task=collect&post=' . $this->post_id
+    . '&task=collect&post=' . $this->post_id,
 );
 ?>
 
@@ -53,7 +53,7 @@ $formAction = Route::url(
                             }
                             $boardId = $this->escape($board->id);
                             $boardTitle = $this->escape(
-                                stripslashes($board->title)
+                                stripslashes($board->title),
                             );
                             ?>
                             <option value="<?php echo $boardId; ?>">
@@ -68,7 +68,7 @@ $formAction = Route::url(
                 if ($this->groupboards) {
                     foreach ($this->groupboards as $optgroup => $boards) {
                         $groupLabel = $this->escape(
-                            stripslashes($optgroup)
+                            stripslashes($optgroup),
                         );
                         ?>
                         <optgroup label="<?php echo $groupLabel; ?>">
@@ -76,7 +76,7 @@ $formAction = Route::url(
                         foreach ($boards as $board) {
                             $boardId = $this->escape($board->id);
                             $boardTitle = $this->escape(
-                                stripslashes($board->title)
+                                stripslashes($board->title),
                             );
                             ?>
                             <option value="<?php echo $boardId; ?>">
@@ -118,7 +118,7 @@ $formAction = Route::url(
                 35,
                 5,
                 'field_description',
-                ['class' => 'minimal no-footer']
+                ['class' => 'minimal no-footer'],
             );
             ?>
         </label>

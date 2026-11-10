@@ -357,7 +357,7 @@ body {
                         <li><strong>Via SSH/Terminal:</strong>
                             <?php
                             $bvTouchPath = htmlspecialchars(
-                                $security->getDocumentRoot() . '/' . $security->getVerificationFilename()
+                                $security->getDocumentRoot() . '/' . $security->getVerificationFilename(),
                             );
                             ?>
                             <code>touch <?php echo $bvTouchPath; ?></code>

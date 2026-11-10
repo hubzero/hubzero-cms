@@ -196,7 +196,7 @@ class Identicon
                         $lineKey * $this->pixelRatio,
                         ($colKey + 1) * $this->pixelRatio,
                         ($lineKey + 1) * $this->pixelRatio,
-                        $color
+                        $color,
                     );
                 }
             }

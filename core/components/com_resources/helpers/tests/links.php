@@ -80,7 +80,7 @@ class Links implements Test
                     $response = $this->client->head($path, [
                         'exceptions' => false,
                         'timeout'    => 10,
-                        'verify'     => $this->verify
+                        'verify'     => $this->verify,
                     ]);
 
                     $meta['code'] = $response->getStatusCode();
@@ -110,7 +110,7 @@ class Links implements Test
         $result->set([
             'scope_id' => $data['id'],
             'status'   => $status,
-            'notes'    => json_encode($meta)
+            'notes'    => json_encode($meta),
         ]);
 
         return $result;

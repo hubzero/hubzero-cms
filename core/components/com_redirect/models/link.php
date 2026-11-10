@@ -44,7 +44,7 @@ class Link extends Relational
      * @var  array
      */
     protected $rules = [
-        'old_url' => 'notempty'
+        'old_url' => 'notempty',
     ];
 
     /**
@@ -57,7 +57,7 @@ class Link extends Relational
         'new_url',
         'status_code',
         'created_date',
-        'modified_date'
+        'modified_date',
     ];
 
     /**

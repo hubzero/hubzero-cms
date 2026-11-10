@@ -43,7 +43,7 @@ class Collections extends Plugin
             'title'   => Lang::txt('PLG_TAGS_COLLECTIONS'),
             'total'   => 0,
             'results' => null,
-            'sql'     => ''
+            'sql'     => '',
         ];
 
         if (empty($tags)) {
@@ -137,7 +137,7 @@ class Collections extends Plugin
         $view = new \Hubzero\Plugin\View([
             'folder'  => 'tags',
             'element' => 'collections',
-            'name'    => 'result'
+            'name'    => 'result',
         ]);
         $view->entry = new \Components\Collections\Models\Post($row);
 

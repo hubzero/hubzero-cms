@@ -42,7 +42,7 @@ class Mailinglist extends Relational
      * @var  array
      */
     protected $rules = [
-        'name' => 'notempty'
+        'name' => 'notempty',
     ];
 
     /**

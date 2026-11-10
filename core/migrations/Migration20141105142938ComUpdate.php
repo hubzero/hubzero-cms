@@ -23,8 +23,8 @@ class Migration20141105142938ComUpdate extends Base
     {
         $rules = [
             'core.admin' => [
-                'Super Users' => 1
-            ]
+                'Super Users' => 1,
+            ],
         ];
 
         $this->setAssetRules('com_update', $rules);

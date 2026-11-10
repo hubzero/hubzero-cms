@@ -17,7 +17,7 @@ defined('_HZEXEC_') or die();
 $plugins = Event::trigger('courses.onCourse', [
     $this->course,
     $this->offering,
-    true
+    true,
 ]);
 ?>
 <div id="guide-overlay"
@@ -64,7 +64,7 @@ $plugins = Event::trigger('courses.onCourse', [
                         echo Lang::txt(
                             'We\'ve tried to organize things to group related'
                             . ' content and make it easier to find what you need.'
-                            . ' Feel free to explore the various menu options.'
+                            . ' Feel free to explore the various menu options.',
                         );
                         ?>
                     </p>
@@ -76,7 +76,7 @@ $plugins = Event::trigger('courses.onCourse', [
                         echo Lang::txt(
                             'You can always get back to the %s by clicking'
                             . ' the link found under the title of this course.',
-                            $overviewLink
+                            $overviewLink,
                         );
                         ?>
                     </p>

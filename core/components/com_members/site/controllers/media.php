@@ -205,7 +205,7 @@ class Media extends SiteController
         echo json_encode([
             'success'   => true,
             'file'      => str_replace($uploadDirectory, '', $final_file),
-            'directory' => str_replace(PATH_ROOT, '', $uploadDirectory)
+            'directory' => str_replace(PATH_ROOT, '', $uploadDirectory),
         ]);
     }
 
@@ -455,7 +455,7 @@ class Media extends SiteController
         // Build the file path
         $files = [
             'profile.png',
-            'thumb.png'
+            'thumb.png',
         ];
 
         $dir  = \Hubzero\Utility\Str::pad($id);

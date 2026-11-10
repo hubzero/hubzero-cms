@@ -40,6 +40,6 @@ class Group extends Relational
      **/
     protected $rules = [
         'toolid' => 'positive|nonzero',
-        'cn'     => 'notempty'
+        'cn'     => 'notempty',
     ];
 }

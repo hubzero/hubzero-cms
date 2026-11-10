@@ -74,30 +74,30 @@ class PgsqlDriverTest extends AbstractDriverTestCase
         $driver->exec("CREATE INDEX idx_pg_items_status ON pg_test_items (status)");
 
         $driver->exec(
-            "INSERT INTO pg_test_categories (name, slug, sort_order) VALUES ('Electronics', 'electronics', 1)"
+            "INSERT INTO pg_test_categories (name, slug, sort_order) VALUES ('Electronics', 'electronics', 1)",
         );
         $driver->exec(
-            "INSERT INTO pg_test_categories (name, slug, sort_order) VALUES ('Books', 'books', 2)"
+            "INSERT INTO pg_test_categories (name, slug, sort_order) VALUES ('Books', 'books', 2)",
         );
         $driver->exec(
-            "INSERT INTO pg_test_categories (name, slug, sort_order, active) VALUES ('Archived', 'archived', 99, FALSE)"
+            "INSERT INTO pg_test_categories (name, slug, sort_order, active) VALUES ('Archived', 'archived', 99, FALSE)",
         );
 
         $driver->exec(
             "INSERT INTO pg_test_items (category_id, title, price, stock, status)"
-            . " VALUES (1, 'Laptop', 999.99, 10, 'active')"
+            . " VALUES (1, 'Laptop', 999.99, 10, 'active')",
         );
         $driver->exec(
             "INSERT INTO pg_test_items (category_id, title, price, stock, status)"
-            . " VALUES (1, 'Phone', 599.99, 25, 'active')"
+            . " VALUES (1, 'Phone', 599.99, 25, 'active')",
         );
         $driver->exec(
             "INSERT INTO pg_test_items (category_id, title, price, stock, status)"
-            . " VALUES (2, 'Novel', 19.99, 100, 'active')"
+            . " VALUES (2, 'Novel', 19.99, 100, 'active')",
         );
         $driver->exec(
             "INSERT INTO pg_test_items (category_id, title, price, stock, status)"
-            . " VALUES (2, 'Textbook', 79.99, 5, 'draft')"
+            . " VALUES (2, 'Textbook', 79.99, 5, 'draft')",
         );
     }
 
@@ -696,7 +696,7 @@ class PgsqlDriverTest extends AbstractDriverTestCase
         // Create
         $this->assertTrue($driver->createOrReplaceView(
             'pg_active_items',
-            "SELECT id, title FROM pg_test_items WHERE status = 'active'"
+            "SELECT id, title FROM pg_test_items WHERE status = 'active'",
         ));
         $this->assertTrue($driver->viewExists('pg_active_items'));
 
@@ -711,7 +711,7 @@ class PgsqlDriverTest extends AbstractDriverTestCase
         // Replace
         $this->assertTrue($driver->createOrReplaceView(
             'pg_active_items',
-            "SELECT id, title, price FROM pg_test_items WHERE status = 'active'"
+            "SELECT id, title, price FROM pg_test_items WHERE status = 'active'",
         ));
 
         // Missing view
@@ -835,7 +835,7 @@ class PgsqlDriverTest extends AbstractDriverTestCase
 
         $driver->exec(
             "ALTER TABLE pg_fk_child ADD CONSTRAINT fk_pg_child_parent"
-            . " FOREIGN KEY (parent_id) REFERENCES pg_fk_parent(id)"
+            . " FOREIGN KEY (parent_id) REFERENCES pg_fk_parent(id)",
         );
 
         $fks = $driver->getForeignKeys('pg_fk_child');

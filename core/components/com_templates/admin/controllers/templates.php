@@ -48,23 +48,23 @@ class Templates extends AdminController
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'filter_search',
-                ''
+                '',
             )),
             'client_id' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.client_id',
                 'filter_client_id',
-                '*'
+                '*',
             ),
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'name'
+                'name',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         $model = Template::all()

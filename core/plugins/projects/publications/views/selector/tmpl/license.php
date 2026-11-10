@@ -39,7 +39,7 @@ $pubParams = $this->publication->params;
         $icon = str_replace(
             '/components/com_publications/assets/img/',
             '/core/components/com_publications/site/assets/img/',
-            $icon
+            $icon,
         );
 
         ?>

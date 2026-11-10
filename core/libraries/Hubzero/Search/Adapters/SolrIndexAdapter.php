@@ -59,9 +59,9 @@ class SolrIndexAdapter implements IndexInterface
                     'port' => $port,
                     'path' => $path,
                     'context' => $context,
-                    'core' => $core
-                ]
-            ]
+                    'core' => $core,
+                ],
+            ],
         ];
 
         // Create the client

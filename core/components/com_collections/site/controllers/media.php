@@ -197,7 +197,7 @@ class Media extends SiteController
                         'errors'    => $item->getErrors(),
                         'file'      => 'http://',
                         'directory' => '',
-                        'id'        => $listdir
+                        'id'        => $listdir,
                     ]);
                     return;
                 }
@@ -225,7 +225,7 @@ class Media extends SiteController
                 'errors'    => $asset->getErrors(),
                 'file'      => 'http://',
                 'directory' => '',
-                'id'        => $listdir
+                'id'        => $listdir,
             ]);
             return;
         }
@@ -234,7 +234,7 @@ class Media extends SiteController
             'success'   => true,
             'file'      => 'http://',
             'directory' => '',
-            'id'        => $listdir
+            'id'        => $listdir,
         ]);
     }
 
@@ -264,7 +264,7 @@ class Media extends SiteController
                 $item->set('title', $listdir);
                 if (!$item->store()) {
                     echo json_encode([
-                        'error' => $item->getError()
+                        'error' => $item->getError(),
                     ]);
                     return;
                 }
@@ -393,14 +393,14 @@ class Media extends SiteController
 
         if (!$asset->store()) {
             echo json_encode([
-                'error' => $asset->getError()
+                'error' => $asset->getError(),
             ]);
             return;
         }
 
         $view = new View([
             'name'   => 'media',
-            'layout' => '_asset'
+            'layout' => '_asset',
         ]);
         $view->i          = Request::getInt('i', 0);
         $view->set('option', $this->_option);
@@ -415,7 +415,7 @@ class Media extends SiteController
             'directory' => str_replace(PATH_APP, '', $path),
             'id'        => $listdir,
             // Entities have to be encoded or IE 8 goes nuts
-            'html'      => str_replace('>', '&gt;', $view->loadTemplate())
+            'html'      => str_replace('>', '&gt;', $view->loadTemplate()),
         ]);
     }
 
@@ -664,7 +664,7 @@ class Media extends SiteController
                 if (!$model->store()) {
                     echo json_encode([
                         'success' => false,
-                        'error'   => $model->getError()
+                        'error'   => $model->getError(),
                     ]);
                     return;
                 }
@@ -674,7 +674,7 @@ class Media extends SiteController
         //echo result
         echo json_encode([
             'success' => true,
-            'asset'   => $id
+            'asset'   => $id,
         ]);
     }
 

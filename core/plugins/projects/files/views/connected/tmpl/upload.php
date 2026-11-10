@@ -31,7 +31,7 @@ $jsPath = $basePath
     . '/core/plugins/projects/files/assets/js/';
 
 $saveActionUrl = Route::url(
-    $this->url . '&action=save&no_html=1&ajax=1' . $subdirlink
+    $this->url . '&action=save&no_html=1&ajax=1' . $subdirlink,
 );
 
 // Directory path breadcrumbs
@@ -40,7 +40,7 @@ $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs(
     $this->url,
     $parent,
     false,
-    $this->connection->adapter()
+    $this->connection->adapter(),
 );
 
 ?>

@@ -80,7 +80,7 @@ class Pages
         // create view object
         $view = new \Hubzero\Component\View([
             'name'   => 'pages',
-            'layout' => '_view_default'
+            'layout' => '_view_default',
         ]);
         $groupConfig = Component::params('com_groups');
         $customFields = $groupConfig->get('custom_fields');
@@ -285,13 +285,13 @@ class Pages
         // from details
         $from = [
             'name'  => Config::get('sitename') . ' ' . Lang::txt('Groups'),
-            'email' => Config::get('mailfrom')
+            'email' => Config::get('mailfrom'),
         ];
 
         // build html email
         $eview = new \Hubzero\Mail\View([
             'name'   => 'emails',
-            'layout' => $type . '_plain'
+            'layout' => $type . '_plain',
         ]);
         $eview->option     = Request::getCmd('option', 'com_groups');
         $eview->controller = Request::getCmd('controller', 'groups');
@@ -356,14 +356,14 @@ class Pages
         // from details
         $from = [
             'name'  => Config::get('sitename') . ' ' . Lang::txt('Groups'),
-            'email' => Config::get('mailfrom')
+            'email' => Config::get('mailfrom'),
         ];
 
         // build html email
         $eview = new \Hubzero\Component\View([
             'base_path' => dirname(__DIR__) . DS . 'site',
             'name'      => 'emails',
-            'layout'    => $type
+            'layout'    => $type,
         ]);
 
         $eview->set('option', Request::getCmd('option', 'com_groups'));
@@ -415,7 +415,7 @@ class Pages
                     'symlink',
                     'tempnam',
                     'touch',
-                    'unlink'
+                    'unlink',
                 ],
                 'severe'   => [
                     'die',
@@ -463,9 +463,9 @@ class Pages
                     'drop',
                     'rename',
                     'truncate',
-                    'delete'
-                ]
-            ]
+                    'delete',
+                ],
+            ],
         ];
     }
 
@@ -567,7 +567,7 @@ class Pages
         // create view object
         $view = new \Hubzero\Component\View([
             'name'   => 'pages',
-            'layout' => '_view'
+            'layout' => '_view',
         ]);
 
         // if super group add super group folder
@@ -669,7 +669,7 @@ class Pages
                 'pagename' => $group->get('cn'),
                 'pageid'   => 0,
                 'filepath' => $path . DS . $group->get('gidNumber') . DS . 'uploads',
-                'domain'   => $group->get('cn')
+                'domain'   => $group->get('cn'),
             ];
 
             // create wiki parser

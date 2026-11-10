@@ -73,7 +73,7 @@ class Format
         "month" => "{MONTH}",
         "search_string" => "{SECONDARY LINK}",
         "sec_cnt" => "{SECONDARY COUNT}",
-        "version" => "{VERSION}"
+        "version" => "{VERSION}",
     ];
 
     /**
@@ -93,7 +93,7 @@ class Format
         'type'         => 'rft.genre',
         'author'       => 'rft.au',
         'url'          => 'rft_id',
-        'doi'          => 'rft_id=info:doi/'
+        'doi'          => 'rft_id=info:doi/',
     ];
 
     /**
@@ -103,7 +103,7 @@ class Format
      */
     protected $_default_format = [
         'apa'  => "{AUTHORS}, {EDITORS} ({YEAR}), {TITLE/CHAPTER}, <i>{JOURNAL}</i>, <i>{BOOK TITLE}</i>, {EDITION}, {CHAPTER}, {SERIES}, {PUBLISHER}, {ADDRESS}, <b>{VOLUME}</b>, <b>{ISSUE/NUMBER}</b>: {PAGES}, {ORGANIZATION}, {INSTITUTION}, {SCHOOL}, {LOCATION}, {MONTH}, {ISBN/ISSN}, (DOI: {DOI}). Cited by: <a href='{SECONDARY LINK}'>{SECONDARY COUNT}</a>",
-        'ieee' => "{AUTHORS}, {EDITORS} ({YEAR}), {TITLE/CHAPTER}, <i>{JOURNAL}</i>, <i>{BOOK TITLE}</i>, {EDITION}, {CHAPTER}, {SERIES}, {PUBLISHER}, {ADDRESS}, <b>{VOLUME}</b>, <b>{ISSUE/NUMBER}</b>: {PAGES}, {ORGANIZATION}, {INSTITUTION}, {SCHOOL}, {LOCATION}, {MONTH}, {ISBN/ISSN}, (DOI: {DOI})"
+        'ieee' => "{AUTHORS}, {EDITORS} ({YEAR}), {TITLE/CHAPTER}, <i>{JOURNAL}</i>, <i>{BOOK TITLE}</i>, {EDITION}, {CHAPTER}, {SERIES}, {PUBLISHER}, {ADDRESS}, <b>{VOLUME}</b>, <b>{ISSUE/NUMBER}</b>: {PAGES}, {ORGANIZATION}, {INSTITUTION}, {SCHOOL}, {LOCATION}, {MONTH}, {ISBN/ISSN}, (DOI: {DOI})",
     ];
 
     /**
@@ -202,7 +202,7 @@ class Format
         $coins_data = [
             "ctx_ver=Z39.88-2004",
             "rft_val_fmt=info:ofi/fmt:kev:mtx:{$c_type}",
-            "rfr_id=info:sid/{$hub_url}:{$hub_name}"
+            "rfr_id=info:sid/{$hub_url}:{$hub_name}",
         ];
 
         //array to hold replace vals
@@ -402,7 +402,7 @@ class Format
             ',.' => '.',
             '","' => '',
             'doi:.' => '',
-            '(DOI:).' => ''
+            '(DOI:).' => '',
         ];
 
         foreach ($b as $k => $i) {
@@ -420,7 +420,7 @@ class Format
             '? ',
             '! ',
             ': ',
-            '; '
+            '; ',
         ];
 
         foreach ($c as $k) {

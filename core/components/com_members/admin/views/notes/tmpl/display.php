@@ -79,7 +79,7 @@ Toolbar::help('notes');
                         Html::category('options', 'com_members'),
                         'value',
                         'text',
-                        $this->filters['category_id']
+                        $this->filters['category_id'],
                     );
                     ?>
                     <?php echo $val; ?>
@@ -94,7 +94,7 @@ Toolbar::help('notes');
                         'value',
                         'text',
                         $this->filters['state'],
-                        true
+                        true,
                     );
                     ?>
                     <?php echo $val; ?>

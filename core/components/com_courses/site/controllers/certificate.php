@@ -100,7 +100,7 @@ class Certificate extends SiteController
     public function cancelTask()
     {
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=courses')
+            Route::url('index.php?option=' . $this->_option . '&controller=courses'),
         );
     }
 }

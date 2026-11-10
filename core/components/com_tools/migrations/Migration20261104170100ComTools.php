@@ -94,7 +94,7 @@ class Migration20261104170100ComTools extends Base
 				`ipTO_hex` = CASE
 					WHEN " . $everyone . " THEN REPEAT('f', 32)
 					WHEN `ipTO` = 0 THEN IF(`ipFROM` = 0, '', " . sprintf($mapped, '`ipFROM`') . ")
-					ELSE " . sprintf($mapped, '`ipTO`') . " END"
+					ELSE " . sprintf($mapped, '`ipTO`') . " END",
         );
         $mwdb->query();
 
@@ -104,7 +104,7 @@ class Migration20261104170100ComTools extends Base
 				DROP `ipFROM`,
 				DROP `ipTO`,
 				CHANGE `ipFROM_hex` `ipFROM` " . self::COLUMN . " AFTER `zone_id`,
-				CHANGE `ipTO_hex` `ipTO` " . self::COLUMN . " AFTER `ipFROM`"
+				CHANGE `ipTO_hex` `ipTO` " . self::COLUMN . " AFTER `ipFROM`",
         );
         $mwdb->query();
 

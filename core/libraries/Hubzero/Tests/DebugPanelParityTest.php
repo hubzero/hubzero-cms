@@ -139,7 +139,7 @@ namespace Hubzero\Tests {
                 ['HX-Request' => 'true', 'X-Inertia' => 'true'],
                 ['htmx_debug' => '1', 'inertia_debug' => '1'],
                 ['REQUEST_URI' => '/debug/parity'],
-                'GET'
+                'GET',
             ));
 
             $htmx = (new HtmxService())->renderDebugPanel();
@@ -167,7 +167,7 @@ namespace Hubzero\Tests {
                 ['HX-Request' => 'true', 'X-Inertia' => 'true'],
                 ['htmx_debug' => '1', 'inertia_debug' => '1'],
                 ['REQUEST_URI' => '/debug/parity'],
-                'GET'
+                'GET',
             ));
 
             $htmx = (new HtmxService())->renderDebugPanel();
@@ -196,7 +196,7 @@ namespace Hubzero\Tests {
                 [],
                 ['htmx_debug' => '1', 'inertia_debug' => '1'],
                 ['REQUEST_URI' => '/debug/parity'],
-                'GET'
+                'GET',
             ));
 
             $htmx = new HtmxService();

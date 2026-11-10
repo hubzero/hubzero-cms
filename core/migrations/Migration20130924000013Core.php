@@ -136,7 +136,7 @@ class Migration20130924000013Core extends Base
                 ->insert('#__schemas')
                 ->values([
                     'extension_id' => 700,
-                    'version_id'   => '2.5.11'
+                    'version_id'   => '2.5.11',
                 ])
                 ->execute();
         }
@@ -212,7 +212,7 @@ class Migration20130924000013Core extends Base
                         'Hathor - Default',
                         '{"showSiteName":"0","colourChoice":"","boldText":"0"}',
                     ],
-                    [6, 'beez5', 0, 0, 'Beez5 - Default', $beez5Params]
+                    [6, 'beez5', 0, 0, 'Beez5 - Default', $beez5Params],
                 ];
 
                 foreach ($styles as $style) {
@@ -224,7 +224,7 @@ class Migration20130924000013Core extends Base
                             'client_id' => $style[2],
                             'home'      => $style[3],
                             'title'     => $style[4],
-                            'params'    => $style[5]
+                            'params'    => $style[5],
                         ])
                         ->execute();
                 }
@@ -254,7 +254,7 @@ class Migration20130924000013Core extends Base
                             'client_id' => $r->client_id,
                             'home'      => '0',
                             'title'     => ucfirst($r->element),
-                            'params'    => '{}'
+                            'params'    => '{}',
                         ])
                         ->execute();
                 }
@@ -339,8 +339,8 @@ class Migration20130924000013Core extends Base
                     'collection',
                     'http://update.joomla.org/language/translationlist.xml',
                     1,
-                    0
-                ]
+                    0,
+                ],
             ];
 
             foreach ($updateSites as $site) {
@@ -352,7 +352,7 @@ class Migration20130924000013Core extends Base
                         'type'                 => $site[2],
                         'location'             => $site[3],
                         'enabled'              => $site[4],
-                        'last_check_timestamp' => $site[5]
+                        'last_check_timestamp' => $site[5],
                     ])
                     ->execute();
             }
@@ -374,7 +374,7 @@ class Migration20130924000013Core extends Base
                     ->insert('#__update_sites_extensions')
                     ->values([
                         'update_site_id' => $ext[0],
-                        'extension_id'   => $ext[1]
+                        'extension_id'   => $ext[1],
                     ])
                     ->execute();
             }

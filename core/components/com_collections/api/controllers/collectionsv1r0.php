@@ -103,7 +103,7 @@ class Collectionsv1r0 extends ApiController
             'sort_Dir'   => strtoupper(Request::getWord('sortDir', 'DESC')),
             'is_default' => 0,
             'access'     => 0,
-            'count'      => true
+            'count'      => true,
         ];
 
         $response = new stdClass();
@@ -230,7 +230,7 @@ class Collectionsv1r0 extends ApiController
             'state'          => Request::getInt('state', 0, 'post'),
             'access'         => Request::getInt('access', 0, 'post'),
             'layout'         => Request::getWord('layout', 'grid', 'post'),
-            'sort'           => Request::getString('sort', 'created', 'post')
+            'sort'           => Request::getString('sort', 'created', 'post'),
         ];
 
         // May only create a collection for an object the caller owns/manages
@@ -401,7 +401,7 @@ class Collectionsv1r0 extends ApiController
             'state'          => Request::getInt('state', 0, 'put'),
             'access'         => Request::getInt('access', 0, 'put'),
             'layout'         => Request::getWord('layout', 'grid', 'put'),
-            'sort'           => Request::getString('sort', 'created', 'put')
+            'sort'           => Request::getString('sort', 'created', 'put'),
         ];
 
         $row = new Collection($fields['id']);

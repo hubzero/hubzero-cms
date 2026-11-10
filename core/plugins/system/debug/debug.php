@@ -44,7 +44,7 @@ class Debug extends Plugin
         if ($this->params->get('log-database-queries')) {
             $logger = new \Hubzero\Log\Writer(
                 new \Monolog\Logger(Config::get('application_env')),
-                Event::getRoot()
+                Event::getRoot(),
             );
             $path = is_dir('/var/log/hubzero-cms') ? '/var/log/hubzero-cms' : Config::get('log_path');
             $logger->useFiles($path . DS . 'sql.log', 'info', "%datetime% %message%\n", "Y-m-d\TH:i:s.uP", 0640);
@@ -563,7 +563,7 @@ class Debug extends Plugin
                 ($mark->memory() / 1048576),
                 ($mark->memory() > $previousMem) ? '+' : '',
                 (($mark->memory() - $previousMem) / 1048576),
-                $mark->label()
+                $mark->label(),
             );
 
             $previousMem  = $mark->memory();
@@ -922,7 +922,7 @@ class Debug extends Plugin
 
             // Tables are identified by the prefix
             '/(' . App::get('db')->getPrefix() . '[a-z_0-9]+)/'
-            => '<span class="dbgTable">$1</span>'
+            => '<span class="dbgTable">$1</span>',
 
         ];
 
@@ -976,7 +976,7 @@ class Debug extends Plugin
             'file'       => 'cmsprofile.log',
             'level'      => 'info',
             'format'     => "%datetime% %message%\n",
-            'dateFormat' => "Y-m-d\TH:i:s.uP"
+            'dateFormat' => "Y-m-d\TH:i:s.uP",
         ]);
         $logger = App::get('log')->logger('profile');
 
@@ -1000,7 +1000,7 @@ class Debug extends Plugin
                 'file'       => 'cmspost.log',
                 'level'      => 'info',
                 'format'     => "%datetime% %message%\n",
-                'dateFormat' => "Y-m-d\TH:i:s.uP"
+                'dateFormat' => "Y-m-d\TH:i:s.uP",
             ]);
             $logger = App::get('log')->logger('post');
 

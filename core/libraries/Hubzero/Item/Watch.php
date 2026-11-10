@@ -55,7 +55,7 @@ class Watch extends Relational
      */
     protected $rules = [
         'item_id'   => 'positive|nonzero',
-        'item_type' => 'notempty'
+        'item_type' => 'notempty',
     ];
 
     /**
@@ -65,7 +65,7 @@ class Watch extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**
@@ -75,7 +75,7 @@ class Watch extends Relational
      */
     public $always = [
         'email',
-        'item_type'
+        'item_type',
     ];
 
     /**

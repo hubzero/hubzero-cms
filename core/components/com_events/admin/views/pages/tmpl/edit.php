@@ -26,20 +26,20 @@ Html::behavior('keepalive');
 $this->js('edit.js');
 
 $formAction = Route::url(
-    'index.php?option=' . $this->option . '&controller=' . $this->controller
+    'index.php?option=' . $this->option . '&controller=' . $this->controller,
 );
 $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
 $eventEditUrl = Route::url(
-    'index.php?option=' . $this->option . '&task=edit&id=' . $this->event->id
+    'index.php?option=' . $this->option . '&task=edit&id=' . $this->event->id,
 );
 $titleValue = $this->escape(
-    stripslashes($this->page->title == null ? '' : $this->page->title)
+    stripslashes($this->page->title == null ? '' : $this->page->title),
 );
 $aliasValue = $this->escape(
-    stripslashes($this->page->alias == null ? '' : $this->page->alias)
+    stripslashes($this->page->alias == null ? '' : $this->page->alias),
 );
 $pagetextValue = $this->escape(
-    stripslashes($this->page->pagetext == null ? '' : $this->page->pagetext)
+    stripslashes($this->page->pagetext == null ? '' : $this->page->pagetext),
 );
 ?>
 
@@ -98,7 +98,7 @@ $pagetextValue = $this->escape(
                         40,
                         20,
                         'field-pagetext',
-                        ['class' => 'required']
+                        ['class' => 'required'],
                     );
                     ?>
                 </div>

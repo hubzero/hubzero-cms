@@ -45,10 +45,10 @@ $this->js();
 <?php
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 $searchPlaceholder = Lang::txt(
-    'COM_NEWSLETTER_FILTER_SEARCH_PLACEHOLDER'
+    'COM_NEWSLETTER_FILTER_SEARCH_PLACEHOLDER',
 );
 ?>
 <form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="admin-form">
@@ -88,21 +88,21 @@ $searchPlaceholder = Lang::txt(
                     'COM_NEWSLETTER_CAMPAIGN_ID',
                     'id',
                     @$this->filters['sort_Dir'],
-                    @$this->filters['sort']
+                    @$this->filters['sort'],
                 );?></th>
                 <th scope="col"><?php echo Html::grid(
                     'sort',
                     'COM_NEWSLETTER_CAMPAIGN_NAME',
                     'title',
                     @$this->filters['sort_Dir'],
-                    @$this->filters['sort']
+                    @$this->filters['sort'],
                 );?></th>
                 <th scope="col" class="priority-3"><?php echo Html::grid(
                     'sort',
                     'COM_NEWSLETTER_CAMPAIGN_EXPIRE_DATE',
                     'expire_date',
                     @$this->filters['sort_Dir'],
-                    @$this->filters['sort']
+                    @$this->filters['sort'],
                 ); ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_CAMPAIGN_DESCRIPTION');?></th>
                 <th scope="col" class="priority-3"><?php echo Html::grid(
@@ -110,21 +110,21 @@ $searchPlaceholder = Lang::txt(
                     'COM_NEWSLETTER_CAMPAIGN_DATE',
                     'campaign_date',
                     @$this->filters['sort_Dir'],
-                    @$this->filters['sort']
+                    @$this->filters['sort'],
                 ); ?></th>
                 <th scope="col" class="priority-3"><?php echo Html::grid(
                     'sort',
                     'COM_NEWSLETTER_CAMPAIGN_MOD_DATE',
                     'modified',
                     @$this->filters['sort_Dir'],
-                    @$this->filters['sort']
+                    @$this->filters['sort'],
                 ); ?></th>
                 <th scope="col" class="priority-3"><?php echo Html::grid(
                     'sort',
                     'COM_NEWSLETTER_CAMPAIGN_MOD_BY',
                     'modified_by',
                     @$this->filters['sort_Dir'],
-                    @$this->filters['sort']
+                    @$this->filters['sort'],
                 ); ?></th>
             </tr>
         </thead>
@@ -164,7 +164,7 @@ $searchPlaceholder = Lang::txt(
                             $editUrl = Route::url(
                                 'index.php?option=' . $this->option
                                 . '&controller=' . $this->controller
-                                . '&task=edit&id=' . $campaign->id
+                                . '&task=edit&id=' . $campaign->id,
                             );
                             ?>
                             <a href="<?php echo $editUrl; ?>">

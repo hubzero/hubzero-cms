@@ -116,7 +116,7 @@ class Email extends Plugin
                             '/<a class="img" data\-filename="' . str_replace('.', '\.', $file)
                             . '" href="(.*?)"\>(.*?)<\/a>/i',
                             '<img src="' . $message->getEmbed($path) . '" alt="" />',
-                            $m['multipart']
+                            $m['multipart'],
                         );
                     } else {
                         $message->addAttachment($path);

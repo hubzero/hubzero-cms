@@ -32,7 +32,7 @@ $this->css('register')
         . $this->option
         . '&controller='
         . $this->controller
-        . '&task=change'
+        . '&task=change',
     );
     ?>
     <form action="<?php echo $href; ?>" method="post" id="hubForm">

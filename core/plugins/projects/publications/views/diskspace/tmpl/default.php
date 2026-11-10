@@ -35,10 +35,10 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
 $publicationsUrl = Route::url(
     'index.php?option=' . $this->option
     . '&alias=' . $this->project->get('alias')
-    . '&active=publications'
+    . '&active=publications',
 );
 $diskUsageLabel = Lang::txt(
-    'PLG_PROJECTS_PUBLICATIONS_DISK_USAGE'
+    'PLG_PROJECTS_PUBLICATIONS_DISK_USAGE',
 );
 
 ?>
@@ -84,10 +84,10 @@ $quotaMsg = ($inuse == 100)
 
 <?php
 $contentLabel = Lang::txt(
-    'PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_CONTENT'
+    'PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_CONTENT',
 ) . ' (' . $used . ')';
 $unusedLabel = Lang::txt(
-    'PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_UNUSED_SPACE'
+    'PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_UNUSED_SPACE',
 ) . ' (' . $unused . ')';
 ?>
                 <div id="usage-labels">

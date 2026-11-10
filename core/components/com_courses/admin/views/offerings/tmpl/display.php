@@ -100,7 +100,7 @@ Html::behavior('tooltip');
                     echo $this->pagination(
                         $this->total,
                         $this->filters['start'],
-                        $this->filters['limit']
+                        $this->filters['limit'],
                     );
                     ?>
                 </td>
@@ -124,7 +124,7 @@ Html::behavior('tooltip');
                 $students = $row->members([
                                 'count' => true,
                                 'student' => 1,
-                                'section_id' => $sids
+                                'section_id' => $sids,
                             ]);
             }
 

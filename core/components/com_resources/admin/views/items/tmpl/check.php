@@ -26,7 +26,7 @@ $actionUrl = Route::url(
     . $this->option
     . '&controller='
     . $this->controller
-    . '&task=check'
+    . '&task=check',
 );
 ?>
 <form action="<?php echo $actionUrl; ?>" method="post" name="adminForm" id="item-form">
@@ -42,7 +42,7 @@ $actionUrl = Route::url(
                         <?php
                         $totalTxt = Lang::txt(
                             'COM_RESOURCES_NUM_TOTAL',
-                            '<strong>' . $test['total'] . '</strong>'
+                            '<strong>' . $test['total'] . '</strong>',
                         );
                         ?>
                         <span class="test-total"><?php echo $totalTxt; ?></span>
@@ -51,11 +51,11 @@ $actionUrl = Route::url(
                         <?php
                         $passed = $test['total'] <= 0 ? 0 : round(
                             ($test['totals']['passed'] / $test['total']) * 100,
-                            2
+                            2,
                         );
                         $failed = $test['total'] <= 0 ? 0 : round(
                             ($test['totals']['failed'] / $test['total']) * 100,
-                            2
+                            2,
                         );
                         $passed = $passed + $failed;
 
@@ -82,15 +82,15 @@ $actionUrl = Route::url(
                 $skippedTitle = Lang::txt('COM_RESOURCES_NUM_SKIPPED_TITLE');
                 $failedCount = Lang::txt(
                     'COM_RESOURCES_NUM_FAILED',
-                    $test['totals']['failed']
+                    $test['totals']['failed'],
                 );
                 $passedCount = Lang::txt(
                     'COM_RESOURCES_NUM_FAILED',
-                    $test['totals']['passed']
+                    $test['totals']['passed'],
                 );
                 $skippedCount = Lang::txt(
                     'COM_RESOURCES_NUM_FAILED',
-                    $test['totals']['skipped']
+                    $test['totals']['skipped'],
                 );
                 ?>
                 <div class="test-key col span2">
@@ -161,7 +161,7 @@ $actionUrl = Route::url(
                                         $editUrl = Route::url(
                                             'index.php?option=com_resources'
                                             . '&task=edit&id='
-                                            . $result->get('scope_id')
+                                            . $result->get('scope_id'),
                                         );
                                         ?>
                                         <a href="<?php echo $editUrl; ?>">

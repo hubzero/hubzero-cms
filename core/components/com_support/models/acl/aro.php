@@ -43,7 +43,7 @@ class Aro extends Relational
      */
     protected $rules = [
         'model'       => 'notempty',
-        'foreign_key' => 'positive|nonzero'
+        'foreign_key' => 'positive|nonzero',
     ];
 
     /**

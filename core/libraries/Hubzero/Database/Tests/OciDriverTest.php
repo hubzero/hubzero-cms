@@ -74,37 +74,37 @@ class OciDriverTest extends AbstractDriverTestCase
         ");
 
         $driver->exec(
-            "CREATE INDEX idx_ora_items_status ON ora_items (status)"
+            "CREATE INDEX idx_ora_items_status ON ora_items (status)",
         );
 
         $driver->exec(
             "INSERT INTO ora_categories (name, slug, sort_order)"
-            . " VALUES ('Electronics', 'electronics', 1)"
+            . " VALUES ('Electronics', 'electronics', 1)",
         );
         $driver->exec(
             "INSERT INTO ora_categories (name, slug, sort_order)"
-            . " VALUES ('Books', 'books', 2)"
+            . " VALUES ('Books', 'books', 2)",
         );
         $driver->exec(
             "INSERT INTO ora_categories (name, slug, sort_order, active)"
-            . " VALUES ('Archived', 'archived', 99, 0)"
+            . " VALUES ('Archived', 'archived', 99, 0)",
         );
 
         $driver->exec(
             "INSERT INTO ora_items (category_id, title, price, stock, status)"
-            . " VALUES (1, 'Laptop', 999.99, 10, 'active')"
+            . " VALUES (1, 'Laptop', 999.99, 10, 'active')",
         );
         $driver->exec(
             "INSERT INTO ora_items (category_id, title, price, stock, status)"
-            . " VALUES (1, 'Phone', 599.99, 25, 'active')"
+            . " VALUES (1, 'Phone', 599.99, 25, 'active')",
         );
         $driver->exec(
             "INSERT INTO ora_items (category_id, title, price, stock, status)"
-            . " VALUES (2, 'Novel', 19.99, 100, 'active')"
+            . " VALUES (2, 'Novel', 19.99, 100, 'active')",
         );
         $driver->exec(
             "INSERT INTO ora_items (category_id, title, price, stock, status)"
-            . " VALUES (2, 'Textbook', 79.99, 5, 'draft')"
+            . " VALUES (2, 'Textbook', 79.99, 5, 'draft')",
         );
     }
 
@@ -201,7 +201,7 @@ class OciDriverTest extends AbstractDriverTestCase
             public function __construct(
                 Driver $driver,
                 string $table,
-                \Hubzero\Database\Drivers\Base\BaseSchemaGrammar $grammar
+                \Hubzero\Database\Drivers\Base\BaseSchemaGrammar $grammar,
             ) {
                 parent::__construct($driver, $table);
                 $this->grammar = $grammar;
@@ -232,7 +232,7 @@ class OciDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function driverIsOracleInstance(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresOracle($driver)) {
             return;
@@ -245,7 +245,7 @@ class OciDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canExecuteBasicQuery(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresOracle($driver)) {
             return;
@@ -275,7 +275,7 @@ class OciDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function tableExistsReturnsTrueForExistingTable(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresOracle($driver)) {
             return;
@@ -288,14 +288,14 @@ class OciDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function tableExistsReturnsFalseForMissingTable(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresOracle($driver)) {
             return;
         }
 
         $this->assertFalse(
-            $driver->tableExists('ora_nonexistent_table')
+            $driver->tableExists('ora_nonexistent_table'),
         );
     }
 
@@ -303,7 +303,7 @@ class OciDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getTableListIncludesTestTables(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresOracle($driver)) {
             return;
@@ -319,7 +319,7 @@ class OciDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getTableColumnsTypeOnly(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresOracle($driver)) {
             return;
@@ -336,7 +336,7 @@ class OciDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getPrimaryKeyReturnsColumnName(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresOracle($driver)) {
             return;
@@ -350,7 +350,7 @@ class OciDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getForeignKeysForChildTable(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresOracle($driver)) {
             return;
@@ -359,7 +359,7 @@ class OciDriverTest extends AbstractDriverTestCase
         $fks = $driver->getForeignKeys('ora_items');
         $this->assertNotEmpty(
             $fks,
-            'ora_items should have a foreign key on category_id'
+            'ora_items should have a foreign key on category_id',
         );
     }
 
@@ -376,7 +376,7 @@ class OciDriverTest extends AbstractDriverTestCase
         }
 
         $driver->setQuery(
-            'SELECT * FROM ora_categories ORDER BY id'
+            'SELECT * FROM ora_categories ORDER BY id',
         );
         $rows = $driver->loadObjectList();
 
@@ -388,14 +388,14 @@ class OciDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canSelectWithWhere(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresOracle($driver)) {
             return;
         }
 
         $driver->setQuery(
-            "SELECT * FROM ora_items WHERE status = 'active'"
+            "SELECT * FROM ora_items WHERE status = 'active'",
         );
         $this->assertCount(3, $driver->loadObjectList());
     }
@@ -404,7 +404,7 @@ class OciDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canSelectWithJoin(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresOracle($driver)) {
             return;
@@ -425,7 +425,7 @@ class OciDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canInsertRecord(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresOracle($driver)) {
             return;
@@ -433,16 +433,16 @@ class OciDriverTest extends AbstractDriverTestCase
 
         $driver->exec(
             "INSERT INTO ora_categories (name, slug)"
-            . " VALUES ('Test', 'test-insert')"
+            . " VALUES ('Test', 'test-insert')",
         );
 
         $driver->setQuery(
-            "SELECT name FROM ora_categories WHERE slug = 'test-insert'"
+            "SELECT name FROM ora_categories WHERE slug = 'test-insert'",
         );
         $this->assertEquals('Test', $driver->loadResult());
 
         $driver->exec(
-            "DELETE FROM ora_categories WHERE slug = 'test-insert'"
+            "DELETE FROM ora_categories WHERE slug = 'test-insert'",
         );
     }
 
@@ -450,7 +450,7 @@ class OciDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUpdateRecord(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresOracle($driver)) {
             return;
@@ -458,21 +458,21 @@ class OciDriverTest extends AbstractDriverTestCase
 
         $driver->exec(
             "INSERT INTO ora_categories (name, slug)"
-            . " VALUES ('Before', 'update-test')"
+            . " VALUES ('Before', 'update-test')",
         );
         $driver->exec(
             "UPDATE ora_categories SET name = 'After'"
-            . " WHERE slug = 'update-test'"
+            . " WHERE slug = 'update-test'",
         );
 
         $driver->setQuery(
             "SELECT name FROM ora_categories"
-            . " WHERE slug = 'update-test'"
+            . " WHERE slug = 'update-test'",
         );
         $this->assertEquals('After', $driver->loadResult());
 
         $driver->exec(
-            "DELETE FROM ora_categories WHERE slug = 'update-test'"
+            "DELETE FROM ora_categories WHERE slug = 'update-test'",
         );
     }
 
@@ -480,7 +480,7 @@ class OciDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canDeleteRecord(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresOracle($driver)) {
             return;
@@ -488,15 +488,15 @@ class OciDriverTest extends AbstractDriverTestCase
 
         $driver->exec(
             "INSERT INTO ora_categories (name, slug)"
-            . " VALUES ('Delete Me', 'delete-test')"
+            . " VALUES ('Delete Me', 'delete-test')",
         );
         $driver->exec(
-            "DELETE FROM ora_categories WHERE slug = 'delete-test'"
+            "DELETE FROM ora_categories WHERE slug = 'delete-test'",
         );
 
         $driver->setQuery(
             "SELECT COUNT(*) FROM ora_categories"
-            . " WHERE slug = 'delete-test'"
+            . " WHERE slug = 'delete-test'",
         );
         $this->assertEquals(0, $driver->loadResult());
     }
@@ -509,7 +509,7 @@ class OciDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canCommitTransaction(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresOracle($driver)) {
             return;
@@ -518,18 +518,18 @@ class OciDriverTest extends AbstractDriverTestCase
         $driver->transactionStart();
         $driver->exec(
             "INSERT INTO ora_categories (name, slug)"
-            . " VALUES ('Committed', 'trans-commit')"
+            . " VALUES ('Committed', 'trans-commit')",
         );
         $driver->transactionCommit();
 
         $driver->setQuery(
             "SELECT COUNT(*) FROM ora_categories"
-            . " WHERE slug = 'trans-commit'"
+            . " WHERE slug = 'trans-commit'",
         );
         $this->assertEquals(1, $driver->loadResult());
 
         $driver->exec(
-            "DELETE FROM ora_categories WHERE slug = 'trans-commit'"
+            "DELETE FROM ora_categories WHERE slug = 'trans-commit'",
         );
     }
 
@@ -537,7 +537,7 @@ class OciDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canRollbackTransaction(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresOracle($driver)) {
             return;
@@ -550,13 +550,13 @@ class OciDriverTest extends AbstractDriverTestCase
         $driver2->transactionStart();
         $driver2->exec(
             "INSERT INTO ora_categories (name, slug)"
-            . " VALUES ('Rolled Back', 'trans-rollback')"
+            . " VALUES ('Rolled Back', 'trans-rollback')",
         );
         $driver2->transactionRollback();
 
         $driver->setQuery(
             "SELECT COUNT(*) FROM ora_categories"
-            . " WHERE slug = 'trans-rollback'"
+            . " WHERE slug = 'trans-rollback'",
         );
         $count = (int) $driver->loadResult();
 
@@ -565,7 +565,7 @@ class OciDriverTest extends AbstractDriverTestCase
         $this->assertEquals(
             0,
             $count,
-            'Rolled back row should not be visible'
+            'Rolled back row should not be visible',
         );
     }
 
@@ -577,7 +577,7 @@ class OciDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseAggregateFunctions(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresOracle($driver)) {
             return;
@@ -600,7 +600,7 @@ class OciDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseDualTable(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresOracle($driver)) {
             return;
@@ -614,14 +614,14 @@ class OciDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseNvlForNullCoalescing(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresOracle($driver)) {
             return;
         }
 
         $driver->setQuery(
-            "SELECT NVL(NULL, 'fallback') AS result FROM DUAL"
+            "SELECT NVL(NULL, 'fallback') AS result FROM DUAL",
         );
         $this->assertEquals('fallback', $driver->loadResult());
     }
@@ -630,14 +630,14 @@ class OciDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canConcatenateWithDoubleBar(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresOracle($driver)) {
             return;
         }
 
         $driver->setQuery(
-            "SELECT 'Hello' || ' ' || 'World' AS greeting FROM DUAL"
+            "SELECT 'Hello' || ' ' || 'World' AS greeting FROM DUAL",
         );
         $this->assertEquals('Hello World', $driver->loadResult());
     }
@@ -646,7 +646,7 @@ class OciDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseCaseExpression(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresOracle($driver)) {
             return;
@@ -671,7 +671,7 @@ class OciDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canGroupByWithHaving(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresOracle($driver)) {
             return;
@@ -691,7 +691,7 @@ class OciDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseSubquery(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresOracle($driver)) {
             return;
@@ -710,7 +710,7 @@ class OciDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseFetchFirstForLimit(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresOracle($driver)) {
             return;
@@ -719,7 +719,7 @@ class OciDriverTest extends AbstractDriverTestCase
         // Oracle 12c+ FETCH FIRST syntax
         $driver->setQuery(
             'SELECT * FROM ora_items ORDER BY id'
-            . ' FETCH FIRST 2 ROWS ONLY'
+            . ' FETCH FIRST 2 ROWS ONLY',
         );
         $this->assertCount(2, $driver->loadObjectList());
     }
@@ -728,7 +728,7 @@ class OciDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseOffsetFetch(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresOracle($driver)) {
             return;
@@ -736,7 +736,7 @@ class OciDriverTest extends AbstractDriverTestCase
 
         $driver->setQuery(
             'SELECT * FROM ora_items ORDER BY id'
-            . ' OFFSET 1 ROWS FETCH NEXT 2 ROWS ONLY'
+            . ' OFFSET 1 ROWS FETCH NEXT 2 ROWS ONLY',
         );
         $items = $driver->loadObjectList();
 
@@ -752,14 +752,14 @@ class OciDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canCreateAndUseSequence(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresOracle($driver)) {
             return;
         }
 
         $this->assertTrue(
-            $driver->createSequence('ora_test_seq', 100)
+            $driver->createSequence('ora_test_seq', 100),
         );
         $this->assertTrue($driver->sequenceExists('ora_test_seq'));
 
@@ -790,7 +790,7 @@ class OciDriverTest extends AbstractDriverTestCase
 
         $this->assertTrue($driver->createOrReplaceView(
             'ora_active_items',
-            "SELECT id, title FROM ora_items WHERE status = 'active'"
+            "SELECT id, title FROM ora_items WHERE status = 'active'",
         ));
         $this->assertTrue($driver->viewExists('ora_active_items'));
 
@@ -801,7 +801,7 @@ class OciDriverTest extends AbstractDriverTestCase
         $this->assertContains('ora_active_items', $views);
 
         $this->assertFalse(
-            $driver->viewExists('ora_nonexistent_view')
+            $driver->viewExists('ora_nonexistent_view'),
         );
 
         $this->assertTrue($driver->dropView('ora_active_items'));
@@ -816,7 +816,7 @@ class OciDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canAddAndDropColumn(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresOracle($driver)) {
             return;
@@ -825,17 +825,17 @@ class OciDriverTest extends AbstractDriverTestCase
         $driver->exec(
             "CREATE TABLE ora_ddl_test"
             . " (id NUMBER(10) GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,"
-            . " name VARCHAR2(100))"
+            . " name VARCHAR2(100))",
         );
 
         $this->assertTrue(
-            $driver->addColumn('ora_ddl_test', 'email', 'VARCHAR2(200)')
+            $driver->addColumn('ora_ddl_test', 'email', 'VARCHAR2(200)'),
         );
         $columns = $driver->getTableColumns('ora_ddl_test', true);
         $this->assertArrayHasKey('email', $columns);
 
         $this->assertTrue(
-            $driver->dropColumn('ora_ddl_test', 'email')
+            $driver->dropColumn('ora_ddl_test', 'email'),
         );
         $columns = $driver->getTableColumns('ora_ddl_test', true);
         $this->assertArrayNotHasKey('email', $columns);
@@ -849,7 +849,7 @@ class OciDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canTruncateTable(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresOracle($driver)) {
             return;
@@ -858,13 +858,13 @@ class OciDriverTest extends AbstractDriverTestCase
         $driver->exec(
             "CREATE TABLE ora_trunc_test"
             . " (id NUMBER(10) GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,"
-            . " name VARCHAR2(50))"
+            . " name VARCHAR2(50))",
         );
         $driver->exec(
-            "INSERT INTO ora_trunc_test (name) VALUES ('one')"
+            "INSERT INTO ora_trunc_test (name) VALUES ('one')",
         );
         $driver->exec(
-            "INSERT INTO ora_trunc_test (name) VALUES ('two')"
+            "INSERT INTO ora_trunc_test (name) VALUES ('two')",
         );
 
         $driver->setQuery("SELECT COUNT(*) FROM ora_trunc_test");
@@ -880,7 +880,7 @@ class OciDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canRenameTable(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresOracle($driver)) {
             return;
@@ -889,10 +889,10 @@ class OciDriverTest extends AbstractDriverTestCase
         $driver->exec(
             "CREATE TABLE ora_rename_src"
             . " (id NUMBER(10) GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,"
-            . " name VARCHAR2(50))"
+            . " name VARCHAR2(50))",
         );
         $driver->exec(
-            "INSERT INTO ora_rename_src (name) VALUES ('test')"
+            "INSERT INTO ora_rename_src (name) VALUES ('test')",
         );
 
         $driver->renameTable('ora_rename_src', 'ora_rename_dest');
@@ -912,7 +912,7 @@ class OciDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function queryBuilderSelectWithLimit(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresOracle($driver)) {
             return;
@@ -932,7 +932,7 @@ class OciDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function queryBuilderSelectWithOffset(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresOracle($driver)) {
             return;
@@ -954,7 +954,7 @@ class OciDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function queryBuilderWhereInSubquery(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresOracle($driver)) {
             return;
@@ -977,7 +977,7 @@ class OciDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function queryBuilderHandlesEmptyWhereIn(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresOracle($driver)) {
             return;
@@ -1000,7 +1000,7 @@ class OciDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function featureDetectionReturnsExpectedValues(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresOracle($driver)) {
             return;
@@ -1024,7 +1024,7 @@ class OciDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseCreateTableBuilder(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresOracle($driver)) {
             return;

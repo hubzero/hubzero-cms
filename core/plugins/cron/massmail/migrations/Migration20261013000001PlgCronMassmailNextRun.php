@@ -26,7 +26,7 @@ class Migration20261013000001PlgCronMassmailNextRun extends Base
         if ($this->db->tableExists('#__cron_jobs')) {
             $this->db->setQuery(
                 "UPDATE `#__cron_jobs` SET `next_run` = UTC_TIMESTAMP()
-				 WHERE `plugin` = 'massmail' AND `state` = 1 AND `next_run` IS NULL;"
+				 WHERE `plugin` = 'massmail' AND `state` = 1 AND `next_run` IS NULL;",
             );
             $this->db->query();
         }

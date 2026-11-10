@@ -61,7 +61,7 @@ class Refreshtokens extends Base implements CommandInterface
         $this
             ->output
             ->addOverview(
-                'Api refresh tokens related commands.'
+                'Api refresh tokens related commands.',
             );
     }
 }

@@ -28,7 +28,7 @@ $all = [
     'title'   => Lang::txt('COM_TAGS_ALL_CATEGORIES'),
     'total'   => $this->total,
     'results' => null,
-    'sql'     => ''
+    'sql'     => '',
 ];
 $cats = $this->categories;
 array_unshift($cats, $all);
@@ -208,7 +208,7 @@ foreach ($cats as $cat) {
                     $pageNav = $this->pagination(
                         $total,
                         $this->filters['start'],
-                        $this->filters['limit']
+                        $this->filters['limit'],
                     );
                     $pageNav->setAdditionalUrlParam('task', '');
                     $pageNav->setAdditionalUrlParam('tag', $this->tagstring);

@@ -78,7 +78,7 @@ class Todo extends Plugin
             'title'   => Lang::txt('COM_PROJECTS_TAB_TODO'),
             'submenu' => null,
             'show'    => true,
-            'icon'    => 'f08d'
+            'icon'    => 'f08d',
         ];
 
         return $area;
@@ -121,7 +121,7 @@ class Todo extends Plugin
 
         $arr = [
             'html'     => '',
-            'metadata' => ''
+            'metadata' => '',
         ];
 
         // Get this area details
@@ -216,8 +216,8 @@ class Todo extends Plugin
             [
                 'folder'  => 'projects',
                 'element' => 'todo',
-                'name'    => 'mini'
-            ]
+                'name'    => 'mini',
+            ],
         );
 
         // Filters for returning results
@@ -226,7 +226,7 @@ class Todo extends Plugin
             'limit'    => $model->config()->get('sidebox_limit', 5),
             'start'    => 0,
             'sortby'   => 'due',
-            'sortdir'  => 'ASC'
+            'sortdir'  => 'ASC',
         ];
 
         $view->items = $this->todo->entries('list', $view->filters);
@@ -257,8 +257,8 @@ class Todo extends Plugin
                 'folder'  => 'projects',
                 'element' => 'todo',
                 'name'    => 'view',
-                'layout'  => 'shared'
-            ]
+                'layout'  => 'shared',
+            ],
         );
         $view->limit    = isset($filters['limit']) ? $filters['limit'] : 0;
         $view->filters  = $filters;
@@ -292,8 +292,8 @@ class Todo extends Plugin
                 'folder'  => 'projects',
                 'element' => 'todo',
                 'name'    => 'view',
-                'layout'  => $layout
-            ]
+                'layout'  => $layout,
+            ],
         );
 
         // Filters for returning results
@@ -307,7 +307,7 @@ class Todo extends Plugin
             'assignedto' => $mine == 1  ? $this->_uid : 0,
             'sortby'     => Request::getString('sortby', 'priority'),
             'sortdir'    => Request::getString('sortdir', 'ASC'),
-            'layout'     => $layout
+            'layout'     => $layout,
         ];
 
         $view->option   = $this->_option;
@@ -324,7 +324,7 @@ class Todo extends Plugin
                 $this->model->get('id'),
                 $this->_uid,
                 $param = 'todo_layout',
-                $layout
+                $layout,
             );
         }
 
@@ -353,8 +353,8 @@ class Todo extends Plugin
                 'folder'  => $this->_type,
                 'element' => $this->_name,
                 'name'    => 'item',
-                'layout'  => $layout
-            ]
+                'layout'  => $layout,
+            ],
         );
         $view->option = $this->option;
         $view->todo   = $this->todo;
@@ -378,7 +378,7 @@ class Todo extends Plugin
         // Append breadcrumbs
         Pathway::append(
             stripslashes(\Hubzero\Utility\Str::truncate($view->row->get('content', ''), 40)),
-            Route::url($this->model->link('todo') . '&action=view&todoid=' . $todoid)
+            Route::url($this->model->link('todo') . '&action=view&todoid=' . $todoid),
         );
 
         $view->uid   = $this->_uid;
@@ -565,7 +565,7 @@ class Todo extends Plugin
                             'to do',
                             Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=todo' . '&action=view&todoid=' . $objTD->id),
                             'todo',
-                            1
+                            1,
                         );
                     }
                 }
@@ -603,7 +603,7 @@ class Todo extends Plugin
                 'to do',
                 Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=todo' . '&action=view&todoid=' . $objTD->id),
                 'todo',
-                1
+                1,
             );
             // Store activity ID
             if ($aid) {
@@ -905,7 +905,7 @@ class Todo extends Plugin
                     $what,
                     $url,
                     'quote',
-                    0
+                    0,
                 );
             }
 

@@ -50,7 +50,7 @@ class Migration20260707000000ComMassmail extends Base
 					PRIMARY KEY (`id`),
 					KEY `idx_status` (`status`),
 					KEY `idx_created_by` (`created_by`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;"
+				) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
             );
             $this->db->query();
         }
@@ -71,7 +71,7 @@ class Migration20260707000000ComMassmail extends Base
 					KEY `idx_mailing_status` (`mailing_id`,`status`),
 					KEY `idx_sent_on` (`sent_on`),
 					UNIQUE KEY `uniq_mailing_email` (`mailing_id`,`email`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;"
+				) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
             );
             $this->db->query();
         }
@@ -88,7 +88,7 @@ class Migration20260707000000ComMassmail extends Base
 					`created` datetime DEFAULT NULL,
 					PRIMARY KEY (`id`),
 					KEY `idx_mailing` (`mailing_id`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;"
+				) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
             );
             $this->db->query();
         }
@@ -103,7 +103,7 @@ class Migration20260707000000ComMassmail extends Base
 					`last_run` datetime DEFAULT NULL,
 					`note` varchar(255) NOT NULL DEFAULT '',
 					PRIMARY KEY (`id`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;"
+				) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
             );
             $this->db->query();
 

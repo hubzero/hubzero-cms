@@ -55,7 +55,7 @@ class InviteEmail extends Relational
     protected $rules = [
         'gidNumber' => 'positive|nonzero',
         'email'     => 'notempty',
-        'token'     => 'notempty'
+        'token'     => 'notempty',
     ];
 
     /**
@@ -123,7 +123,7 @@ class InviteEmail extends Relational
                 $model->set([
                     'email'     => $a,
                     'gidNumber' => $gid,
-                    'token'     => bin2hex(random_bytes(16))
+                    'token'     => bin2hex(random_bytes(16)),
                 ]);
                 $model->save();
             }

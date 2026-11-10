@@ -299,7 +299,7 @@ trait SoftDeletes
         $result = $this->getQuery()->remove(
             $this->getTableName(),
             $this->getPrimaryKey(),
-            $this->getPkValue()
+            $this->getPkValue(),
         );
 
         if ($result) {

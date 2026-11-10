@@ -96,7 +96,7 @@ class Migration20150904235936ComUsage extends Base
                 $this->db->setQuery(
                     'GRANT ALL PRIVILEGES ON ' . $this->db->quoteName($options['database'])
                     . '.* TO ' . $this->db->quote($options['user'])
-                    . '@' . $this->db->quote('localhost')
+                    . '@' . $this->db->quote('localhost'),
                 )->execute();
             }
 
@@ -817,7 +817,7 @@ class Migration20150904235936ComUsage extends Base
                     '1',
                     'fr',
                     '',
-                    'Centre InformatiqueScientifique et Medical de l\\\'Universite Claude Bernard Lyon1'
+                    'Centre InformatiqueScientifique et Medical de l\\\'Universite Claude Bernard Lyon1',
                 ],
                 ['cea.fr', '3', 'fr', '', 'Commissariat a L\\\'EnergieAtomique'],
                 ['ec-lyon.fr', '1', 'fr', '', 'Ecole Centrale de Lyon'],
@@ -826,7 +826,7 @@ class Migration20150904235936ComUsage extends Base
                     '2',
                     'fr',
                     '',
-                    'EcoleNationale Superieure d\\\'Electricite et de Radioelectricite deGrenoble'
+                    'EcoleNationale Superieure d\\\'Electricite et de Radioelectricite deGrenoble',
                 ],
                 ['ensta.fr', '2', 'fr', '', 'Ecole Nationale Superieure des TechniquesAvancees'],
                 ['exabot.com', '5', 'fr', '', 'Exalead S.A., Paris'],
@@ -919,7 +919,7 @@ class Migration20150904235936ComUsage extends Base
                     '2',
                     'it',
                     '',
-                    'ENEA Italian National Agency for New Technologies, Energyand the Environment'
+                    'ENEA Italian National Agency for New Technologies, Energyand the Environment',
                 ],
                 ['fastres.net', '0', 'it', '', 'FASTWEB S.P.A.,Milano'],
                 ['trieste.it', '0', 'it', '', 'Geographical DomainTrieste'],

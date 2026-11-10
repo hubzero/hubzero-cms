@@ -521,7 +521,7 @@ class File extends Base
         $attachments = $this->_parent->getElementAttachments(
             $elementId,
             $attachments,
-            $this->_name
+            $this->_name,
         );
         $attachments = $attachments ? (array) $attachments : [];
 
@@ -634,7 +634,7 @@ class File extends Base
                             . "fetch(u,{headers:{'X-Requested-With':'XMLHttpRequest'},credentials:'same-origin'})"
                             . ".then(function(r){return r.json();}).then(function(d){"
                             . "if(d&&d.ready&&d.url){window.location=d.url;}else{setTimeout(p,8000);}"
-                            . "}).catch(function(){setTimeout(p,15000);});}setTimeout(p,8000);})();"
+                            . "}).catch(function(){setTimeout(p,15000);});}setTimeout(p,8000);})();",
                         );
                     } elseif ($bstate === 'failed') {
                         $label    = Lang::txt('COM_PUBLICATIONS_BUNDLE_BTN_UNAVAILABLE');
@@ -661,7 +661,7 @@ class File extends Base
                 $elementId,
                 $pub,
                 $blockParams,
-                $authorized
+                $authorized,
             );
             $html .= '</ul>';
         }
@@ -703,7 +703,7 @@ class File extends Base
             $newVersion->id,
             '',
             $newConfigs->dirPath,
-            1
+            1,
         );
 
         $newConfigs->pubPath = $newPath;
@@ -776,7 +776,7 @@ class File extends Base
                             $newVersion->id,
                             '',
                             '',
-                            1
+                            1,
                         );
                     }
                 }
@@ -1002,11 +1002,11 @@ class File extends Base
         // by showing "unavailable" / falling back to per-file downloads.
         $maxBytes = (int) Component::params('com_publications')->get(
             'bundle_max_bytes',
-            self::BUNDLE_DEFAULT_MAX_BYTES
+            self::BUNDLE_DEFAULT_MAX_BYTES,
         );
         if ($maxBytes > 0 && $totalBytes > $maxBytes) {
             $this->setError(Lang::txt(
-                'PLG_PROJECTS_PUBLICATIONS_PUBLICATION_BUNDLE_TOO_LARGE'
+                'PLG_PROJECTS_PUBLICATIONS_PUBLICATION_BUNDLE_TOO_LARGE',
             ));
             return false;
         }
@@ -1231,7 +1231,7 @@ class File extends Base
                     $result = $pub->_project->repo()->insert([
                         'subdir'   => $subdir,
                         'dataPath' => $tempFile->getAbsolutePath(),
-                        'update'   => false
+                        'update'   => false,
                     ]);
 
                     if (!$conFile->isLocal()) {
@@ -1712,7 +1712,7 @@ class File extends Base
             $view->manifest->params,
             $view->elementId,
             $view->pub,
-            $view->master->params
+            $view->master->params,
         );
 
         $data = new \Components\Projects\Models\File($att->path, $configs->path);
@@ -1722,13 +1722,13 @@ class File extends Base
                         ? str_replace(
                             '{pubtitle}',
                             $view->pub->title,
-                            $view->manifest->params->title
+                            $view->manifest->params->title,
                         ) : null;
         $defaultTitle   = $view->manifest->params->title
                         ? str_replace(
                             '{pubversion}',
                             $view->pub->version_label,
-                            $defaultTitle
+                            $defaultTitle,
                         ) : null;
 
         // Set default title
@@ -1780,8 +1780,8 @@ class File extends Base
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => 'attachments',
-                'layout'  => $this->_name
-            ]
+                'layout'  => $this->_name,
+            ],
         );
 
         $view->data   = $data;

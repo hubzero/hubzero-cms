@@ -25,7 +25,7 @@ $canDo = \Components\Courses\Helpers\Permissions::getActions();
 $pageNav = $this->pagination(
     $this->total,
     $this->filters['start'],
-    $this->filters['limit']
+    $this->filters['limit'],
 );
 
 Html::behavior('modal');
@@ -69,7 +69,7 @@ $this->js();
                         . '&task=add&scope=' . $this->filters['asset_scope']
                         . '&scope_id=' . $this->filters['asset_scope_id']
                         . '&course_id=' . $this->filters['course_id']
-                        . '&tmpl=' . $this->filters['tmpl']
+                        . '&tmpl=' . $this->filters['tmpl'],
                     ); ?>
                     <a
                         href="<?php echo $url; ?>"
@@ -113,7 +113,7 @@ foreach ($this->rows as $row) {
                         . '&scope=' . $this->filters['asset_scope']
                         . '&scope_id=' . $this->filters['asset_scope_id']
                         . '&course_id=' . $this->filters['course_id']
-                        . '&tmpl=' . $this->filters['tmpl']
+                        . '&tmpl=' . $this->filters['tmpl'],
                     ); ?>
                     <a class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}" href="<?php echo $url; ?>">
                         <?php echo $this->escape(stripslashes($row->title)); ?>
@@ -162,7 +162,7 @@ foreach ($this->rows as $row) {
                         . '&scope_id=' . $this->filters['asset_scope_id']
                         . '&course_id=' . $this->filters['course_id']
                         . '&tmpl=' . $this->filters['tmpl']
-                        . '&' . Session::getFormToken() . '=1'
+                        . '&' . Session::getFormToken() . '=1',
                     ); ?>
                     <a class="state delete" href="<?php echo $url; ?>">
                         <span><?php echo Lang::txt('COM_COURSES_REMOVE'); ?></span>

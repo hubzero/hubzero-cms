@@ -71,7 +71,7 @@ $this->css('certificates.css')
         <?php
             $layout = [
                 'width'  => $this->certificate->properties()->width,
-                'height' => $this->certificate->properties()->height
+                'height' => $this->certificate->properties()->height,
             ];
 
             $this->certificate->eachPage(function ($src, $idx) use ($layout) {

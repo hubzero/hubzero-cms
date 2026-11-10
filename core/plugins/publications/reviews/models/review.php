@@ -240,14 +240,14 @@ class Review extends \Hubzero\Base\Model
                         'pagename' => $this->get('publication_id'),
                         'pageid'   => 0,
                         'filepath' => '',
-                        'domain'   => ''
+                        'domain'   => '',
                     ];
 
                     $content = (string) stripslashes($this->get('comment', ''));
                     $this->importPlugin('content')->trigger('onContentPrepare', [
                         $this->context,
                         &$this,
-                        &$config
+                        &$config,
                     ]);
 
                     $this->set('comment.parsed', (string) $this->get('comment', ''));

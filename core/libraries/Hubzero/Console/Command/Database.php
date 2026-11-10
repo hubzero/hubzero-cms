@@ -380,7 +380,7 @@ class Database extends Base implements CommandInterface
                     if ($jsonOutput) {
                         $this->output->addLine(json_encode([
                             'success' => true,
-                            'affected_rows' => $affected
+                            'affected_rows' => $affected,
                         ], JSON_PRETTY_PRINT));
                     } else {
                         $this->output->addLine("Query executed successfully. {$affected} row(s) affected.", 'success');
@@ -389,7 +389,7 @@ class Database extends Base implements CommandInterface
                     if ($jsonOutput) {
                         $this->output->addLine(json_encode([
                             'success' => false,
-                            'error' => $db->getErrorMsg()
+                            'error' => $db->getErrorMsg(),
                         ], JSON_PRETTY_PRINT));
                     } else {
                         $this->output->error('Query failed: ' . $db->getErrorMsg());
@@ -400,7 +400,7 @@ class Database extends Base implements CommandInterface
             if ($jsonOutput) {
                 $this->output->addLine(json_encode([
                     'success' => false,
-                    'error' => $e->getMessage()
+                    'error' => $e->getMessage(),
                 ], JSON_PRETTY_PRINT));
             } else {
                 $this->output->error('Query error: ' . $e->getMessage());
@@ -427,7 +427,7 @@ class Database extends Base implements CommandInterface
 
         $this->output->addLine(
             sprintf('  %-12s %-36s %s', 'Name', 'Class', 'Status'),
-            ['format' => 'underline']
+            ['format' => 'underline'],
         );
 
         foreach ($availability as $name => $info) {
@@ -456,9 +456,9 @@ class Database extends Base implements CommandInterface
                 count($availability),
                 count(array_filter($availability, function ($d) {
                     return $d['available'] === true;
-                }))
+                })),
             ),
-            'info'
+            'info',
         );
         $this->output->addLine('');
     }
@@ -555,14 +555,14 @@ class Database extends Base implements CommandInterface
                 'Database utility functions for migrating and restoring database backups.
 				The necessity for this function arose primarily from the need to copy
 				a production database down to development environments without overwriting
-				certain development configuration with inappropriate production values.'
+				certain development configuration with inappropriate production values.',
             )
             ->addTasks($this)
             ->addArgument(
                 '--include-table: Include a specific table',
                 'Specify a given table to be included in the dump. This primarily
 				would be used to include a given table from the non-prefixed namespace.',
-                'Example: --include-table=migration'
+                'Example: --include-table=migration',
             )
             ->addArgument(
                 '--all-tables: Include all tables',
@@ -570,53 +570,53 @@ class Database extends Base implements CommandInterface
 				(example: host, display, etc...). This option can be used to include
 				these tables. Use with caution when planning to eventually load this
 				data into another host (ex: dev) as it rarely makes sense to reload
-				tool sessions into another environment.'
+				tool sessions into another environment.',
             )
             ->addArgument(
                 '--exact: Load the dump just as it was',
                 'When loading in a database dump, keep none of the current settings
 				that a load otherwise carries over. Use it to restore a hub from its
-				own backup.'
+				own backup.',
             )
             ->addArgument(
                 '--drop-all-tables: Drop all tables',
                 'When loading in a database dump, this option will drop all tables
 				prior to loading in the given dump. This is often helpful when the
 				applied dump is divergent in schema from the current database being
-				overwritten.'
+				overwritten.',
             )
             ->addArgument(
                 '--from: Source database type (for schema command)',
                 'Specify the source database type for schema conversion.
 				Currently supported: mysql',
-                'Example: --from=mysql'
+                'Example: --from=mysql',
             )
             ->addArgument(
                 '--to: Target database type (for schema command)',
                 'Specify the target database type for schema conversion.
 				Currently supported: sqlite',
-                'Example: --to=sqlite'
+                'Example: --to=sqlite',
             )
             ->addArgument(
                 '--input: Input schema file (for schema command)',
                 'Path to the input schema file. Defaults to Install/sql/{from}/schema.sql',
-                'Example: --input=/path/to/schema.sql'
+                'Example: --input=/path/to/schema.sql',
             )
             ->addArgument(
                 '--output: Output schema file (for schema command)',
                 'Path to the output schema file. Defaults to Install/sql/{to}/schema.sql',
-                'Example: --output=/path/to/schema.sql'
+                'Example: --output=/path/to/schema.sql',
             )
             ->addArgument(
                 '--sql: SQL query to execute (for query command)',
                 'The SQL query to run. Table prefix #__ will be replaced automatically.
 				Can also be provided as the third positional argument.',
-                'Example: --sql="SELECT * FROM #__users LIMIT 5"'
+                'Example: --sql="SELECT * FROM #__users LIMIT 5"',
             )
             ->addArgument(
                 '--json: Output results as JSON (for query command)',
                 'When used with the query command, outputs results in JSON format
-				instead of a formatted table. Useful for scripting.'
+				instead of a formatted table. Useful for scripting.',
             );
     }
 }

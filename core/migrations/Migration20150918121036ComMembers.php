@@ -48,7 +48,7 @@ class Migration20150918121036ComMembers extends Base
                         ['id' => 4, 'reason' => 'Using simulation tools for research'],
                         ['id' => 5, 'reason' => 'Using as background for my research'],
                         ['id' => 6, 'reason' => 'Learning about subject matter'],
-                        ['id' => 7, 'reason' => 'Keeping current in subject matter']
+                        ['id' => 7, 'reason' => 'Keeping current in subject matter'],
                     ])
                     ->execute();
             }

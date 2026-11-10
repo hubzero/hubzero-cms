@@ -331,7 +331,7 @@ class BillBoards extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
         );
     }
 

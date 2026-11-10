@@ -37,7 +37,7 @@ class Content extends Plugin
     public function onWhatsnewAreas()
     {
         return [
-            'content' => Lang::txt('PLG_WHATSNEW_CONTENT')
+            'content' => Lang::txt('PLG_WHATSNEW_CONTENT'),
         ];
     }
 
@@ -141,7 +141,7 @@ class Content extends Plugin
         if ($row->text) {
             $text = \Hubzero\Utility\Str::truncate(
                 \Hubzero\Utility\Sanitize::stripAll(stripslashes($row->text)),
-                200
+                200,
             );
             $html .= "\t\t" . '<p>' . $text . '</p>' . "\n";
         }
@@ -169,7 +169,7 @@ class Content extends Plugin
 
         $database = App::get('db');
         $database->setQuery(
-            "SELECT alias, parent FROM `#__menu` WHERE id=" . $database->quote($id) . " LIMIT 1"
+            "SELECT alias, parent FROM `#__menu` WHERE id=" . $database->quote($id) . " LIMIT 1",
         );
         $level = $database->loadRow();
 

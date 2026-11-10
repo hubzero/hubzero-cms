@@ -37,7 +37,7 @@ $this->css()
         $routeUrl = Route::url(
             'index.php?option=com_projects'
             . '&alias=' . $this->project->get('alias') . ''
-            . '&action=activate'
+            . '&action=activate',
         );
         ?>
         <a href="<?php echo $routeUrl; ?>">

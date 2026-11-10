@@ -26,17 +26,17 @@ if (count($this->folders) > 0) { ?>
                 $deleteFolderUrl = Route::url(
                     'index.php?option=' . $this->option
                     . '&controller=queries&task=removefolder&id=' . $folder->id
-                    . '&' . Session::getFormToken() . '=1'
+                    . '&' . Session::getFormToken() . '=1',
                 );
                 $editFolderUrl = Route::url(
                     'index.php?option=' . $this->option
                     . '&controller=queries&task=editfolder&id=' . $folder->id
-                    . '&tmpl=component&' . Session::getFormToken() . '=1'
+                    . '&tmpl=component&' . Session::getFormToken() . '=1',
                 );
                 $saveFolderUrl = Route::url(
                     'index.php?option=' . $this->option
                     . '&controller=queries&task=savefolder&' . Session::getFormToken()
-                    . '=1&fields[id]=' . $folder->id
+                    . '=1&fields[id]=' . $folder->id,
                 );
                 ?>
                 <a
@@ -64,11 +64,11 @@ if (count($this->folders) > 0) { ?>
                         $searchParam = (intval($this->show) != $query->id) ? '&search=' : '';
                         $queryUrl = Route::url(
                             'index.php?option=' . $this->option
-                            . '&controller=tickets&show=' . $query->id . $searchParam
+                            . '&controller=tickets&show=' . $query->id . $searchParam,
                         );
                         $ticketCount = \Components\Support\Models\Ticket::countWithQuery(
                             $query,
-                            []
+                            [],
                         );
                         ?>
                         <a class="query" href="<?php echo $queryUrl; ?>">
@@ -80,12 +80,12 @@ if (count($this->folders) > 0) { ?>
                             $deleteQueryUrl = Route::url(
                                 'index.php?option=' . $this->option
                                 . '&controller=queries&task=remove&id=' . $query->id
-                                . '&' . Session::getFormToken() . '=1'
+                                . '&' . Session::getFormToken() . '=1',
                             );
                             $editQueryUrl = Route::url(
                                 'index.php?option=' . $this->option
                                 . '&controller=queries&task=edit&id=' . $query->id
-                                . '&tmpl=component&' . Session::getFormToken() . '=1'
+                                . '&tmpl=component&' . Session::getFormToken() . '=1',
                             );
                             ?>
                             <a

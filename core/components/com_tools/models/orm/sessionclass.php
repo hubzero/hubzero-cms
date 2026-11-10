@@ -42,7 +42,7 @@ class SessionClass extends Relational
      * @var  array
      **/
     protected $rules = [
-        'alias' => 'notempty'
+        'alias' => 'notempty',
     ];
 
     /**
@@ -111,7 +111,7 @@ class SessionClass extends Relational
 
         $record = self::blank()->set([
             'alias' => 'default',
-            'jobs'  => 3
+            'jobs'  => 3,
         ]);
 
         if (!$record->save()) {

@@ -57,7 +57,7 @@ class Comment extends Relational
      */
     protected $rules = [
         'page_id' => 'positive|nonzero',
-        'ctext'   => 'notempty'
+        'ctext'   => 'notempty',
     ];
 
     /**
@@ -67,7 +67,7 @@ class Comment extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**
@@ -200,7 +200,7 @@ class Comment extends Relational
                     'pagename' => Request::getString('pagename'),
                     'pageid'   => $this->get('page_id'),
                     'filepath' => '',
-                    'domain'   => Request::getString('group', '')
+                    'domain'   => Request::getString('group', ''),
                 ]);
 
                 $this->set('chtml', $parsed);
@@ -314,7 +314,7 @@ class Comment extends Relational
             $results = Event::trigger('content.onContentBeforeSave', [
                 'com_wiki.comment.ctext',
                 &$this,
-                $this->isNew()
+                $this->isNew(),
             ]);
 
             foreach ($results as $result) {

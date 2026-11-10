@@ -146,14 +146,14 @@ class Record extends Obj
         if ($this->options['requiredfields'] && isset($this->record->type->id)) {
             $resourcesElements = new \Components\Resources\Models\Elements(
                 (array) $this->record->custom,
-                $this->record->type->customFields
+                $this->record->type->customFields,
             );
             foreach ($resourcesElements->getSchema()->fields as $field) {
                 $value = $resourcesElements->get($field->label);
                 if ($field->required && (!isset($value) || $value == '')) {
                     $errorMsg = Lang::txt(
                         'COM_RESOURCES_IMPORT_RECORD_MODEL_MISSING_REQUIREDCUSTOMFIELDS',
-                        $field->label
+                        $field->label,
                     );
                     array_push($this->record->errors, $errorMsg);
                 }
@@ -256,7 +256,7 @@ class Record extends Obj
                     . $resourceLink . '</a>';
                 $matchNotice = Lang::txt(
                     'COM_RESOURCES_IMPORT_RECORD_MODEL_MATCHEDBYTITLE',
-                    $link
+                    $link,
                 );
                 array_push($this->record->notices, $matchNotice);
             }
@@ -334,7 +334,7 @@ class Record extends Obj
         if ($this->record->type->id) {
             $resourcesElements = new \Components\Resources\Models\Elements(
                 (array) $this->raw->custom_fields,
-                $this->record->type->customFields
+                $this->record->type->customFields,
             );
             $customFieldsHtml = $resourcesElements->toDatabaseHtml();
 
@@ -508,7 +508,7 @@ class Record extends Obj
                     // Do we already have a relationship by authorid?
                     $resourceContributor = Author::oneByRelationship(
                         $this->record->resource->id,
-                        $contributor->authorid
+                        $contributor->authorid,
                     );
                 }
 
@@ -541,7 +541,7 @@ class Record extends Obj
                 'name'         => $contribName,
                 'organization' => $contribOrg,
                 'role'         => $contribRole,
-                'subtable'     => 'resources'
+                'subtable'     => 'resources',
             ]);
 
             array_push($this->record->contributors, $resourceContributor);

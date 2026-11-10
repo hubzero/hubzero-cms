@@ -75,7 +75,7 @@ class Feed extends Plugin
             'title'   => Lang::txt('PLG_PROJECTS_UPDATES'),
             'submenu' => null,
             'show'    => true,
-            'icon'    => 'f053'
+            'icon'    => 'f053',
         ];
         return $area;
     }
@@ -108,7 +108,7 @@ class Feed extends Plugin
 
         $arr = [
             'html'     => '',
-            'metadata' => ''
+            'metadata' => '',
         ];
 
         // Get this area details
@@ -153,7 +153,7 @@ class Feed extends Plugin
                     $model->get('id'),
                     User::get('id'),
                     $param = 'hide_welcome',
-                    1
+                    1,
                 );
                 App::redirect(Route::url($model->link()));
                 return;
@@ -290,7 +290,7 @@ class Feed extends Plugin
             'role'  => ($this->model->member() ? $this->model->member()->role : 0),
             'limit' => Request::getInt('limit', $limit),
             'start' => Request::getInt('start', 0),
-            'search' => Request::getString('search', '')
+            'search' => Request::getString('search', ''),
         ];
 
         $recipient = \Hubzero\Activity\Recipient::all();
@@ -422,7 +422,7 @@ class Feed extends Plugin
                     foreach ($currentRecipients as $recipient) {
                         $recipient->set([
                             'created'  => Date::toSql(),
-                            'viewed'   => null
+                            'viewed'   => null,
                         ]);
                         $recipient->save();
                     }
@@ -438,17 +438,17 @@ class Feed extends Plugin
                         'description' => $row->get('description'),
                         'details'     => [
                             'url'   => Route::url($this->model->link() . '&active=' . $this->_name . '#activity' . $row->get('id')),
-                            'class' => ($row->get('parent') ? 'quote' : 'blog')
-                        ]
+                            'class' => ($row->get('parent') ? 'quote' : 'blog'),
+                        ],
                     ],
-                    'recipients' => $recipients
+                    'recipients' => $recipients,
                 ]);
 
                 Event::trigger('projects.onWatch', [
                     $this->model,
                     ($row->get('parent') ? 'quote' : 'blog'),
                     [$row->get('id')],
-                    User::get('id')
+                    User::get('id'),
                 ]);
             }
         }
@@ -544,7 +544,7 @@ class Feed extends Plugin
         $filters = [
             'limit' => Request::getInt('limit', $limit),
             'start' => Request::getInt('start', 0),
-            'created' => ''
+            'created' => '',
         ];
 
         if ($start = Request::getString('recorded')) {
@@ -612,7 +612,7 @@ class Feed extends Plugin
                         //'comments'   => $comments,
                         'class'      => $a->log->details->get('class', ($a->log->get('parent') ? 'quote' : '')),
                         //'preview'    => $preview,
-                        'parent'     => $a->log->get('parent')
+                        'parent'     => $a->log->get('parent'),
                     ];
 
                     $prep['body'] = $this->view('_activity', 'activity')
@@ -768,10 +768,10 @@ class Feed extends Plugin
                 'description' => $entry,
                 'details'     => [
                     'url'   => Route::url($model->link() . '&active=feed'),
-                    'class' => 'blog'
-                ]
+                    'class' => 'blog',
+                ],
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
     }
 

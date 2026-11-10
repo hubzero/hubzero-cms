@@ -18,7 +18,7 @@ $model = $this->model;
 $handlerPath = str_replace(
     ['{project}', '{file}'],
     [$model->get('alias'), $this->itemPath],
-    $this->handlerBase
+    $this->handlerBase,
 );
 $handlers = Handler::getLaunchUrlsForFile($handlerPath);
 $urlEncodedItemName = urlencode($this->itemName);
@@ -43,7 +43,7 @@ if ($itemMimeType && strpos($itemMimeType, 'application/vnd.google') === 0) {
         //'fusiontable'  => 'fusiontable',   // Google Fusion Tables
     ];
     $unlinkable = [
-        'drive-sdk'    => 'drive-sdk'      // 3rd party shortcut
+        'drive-sdk'    => 'drive-sdk',      // 3rd party shortcut
     ];
 
     $match = [];

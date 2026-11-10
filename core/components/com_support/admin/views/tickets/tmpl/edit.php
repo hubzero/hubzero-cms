@@ -464,8 +464,8 @@ if (!$no_html) {
                                         'cc',        // Name of the input field
                                         'comment-field-message', // ID of the input field
                                         '',          // CSS class(es) for the input field
-                                        implode(', ', $cc) // The value of the input field
-                                    ]
+                                        implode(', ', $cc), // The value of the input field
+                                    ],
                                 ]);
                                 if (count($mc) > 0) {
                                     echo '<span class="hint">' . Lang::txt('COM_SUPPORT_TICKET_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS_AUTOCOMPLETE') . '</span>' . $mc[0];

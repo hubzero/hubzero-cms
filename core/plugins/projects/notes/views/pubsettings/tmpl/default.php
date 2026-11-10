@@ -42,7 +42,7 @@ if (!$this->getError()) {
         <?php
             $pubUrl = trim(Request::base(), DS) . Route::url(
                 'index.php?option=' . $this->option
-                . '&action=get&s=' . $this->publicStamp->stamp
+                . '&action=get&s=' . $this->publicStamp->stamp,
             );
         ?>
         <p class="publink"><?php echo $pubUrl; ?></p>

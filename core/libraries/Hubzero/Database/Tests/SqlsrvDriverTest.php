@@ -72,40 +72,40 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
         ");
 
         $driver->exec(
-            "CREATE INDEX idx_ss_items_status ON ss_items (status)"
+            "CREATE INDEX idx_ss_items_status ON ss_items (status)",
         );
         $driver->exec(
-            "CREATE INDEX idx_ss_items_cat ON ss_items (category_id)"
+            "CREATE INDEX idx_ss_items_cat ON ss_items (category_id)",
         );
 
         $driver->exec(
             "INSERT INTO ss_categories (name, slug, sort_order)"
-            . " VALUES ('Electronics', 'electronics', 1)"
+            . " VALUES ('Electronics', 'electronics', 1)",
         );
         $driver->exec(
             "INSERT INTO ss_categories (name, slug, sort_order)"
-            . " VALUES ('Books', 'books', 2)"
+            . " VALUES ('Books', 'books', 2)",
         );
         $driver->exec(
             "INSERT INTO ss_categories (name, slug, sort_order, active)"
-            . " VALUES ('Archived', 'archived', 99, 0)"
+            . " VALUES ('Archived', 'archived', 99, 0)",
         );
 
         $driver->exec(
             "INSERT INTO ss_items (category_id, title, price, stock, status)"
-            . " VALUES (1, 'Laptop', 999.99, 10, 'active')"
+            . " VALUES (1, 'Laptop', 999.99, 10, 'active')",
         );
         $driver->exec(
             "INSERT INTO ss_items (category_id, title, price, stock, status)"
-            . " VALUES (1, 'Phone', 599.99, 25, 'active')"
+            . " VALUES (1, 'Phone', 599.99, 25, 'active')",
         );
         $driver->exec(
             "INSERT INTO ss_items (category_id, title, price, stock, status)"
-            . " VALUES (2, 'Novel', 19.99, 100, 'active')"
+            . " VALUES (2, 'Novel', 19.99, 100, 'active')",
         );
         $driver->exec(
             "INSERT INTO ss_items (category_id, title, price, stock, status)"
-            . " VALUES (2, 'Textbook', 79.99, 5, 'draft')"
+            . " VALUES (2, 'Textbook', 79.99, 5, 'draft')",
         );
     }
 
@@ -173,7 +173,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function driverIsSqlsrvInstance(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -186,7 +186,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canExecuteBasicQuery(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -230,7 +230,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function tableExistsReturnsTrueForExistingTable(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -243,7 +243,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function tableExistsReturnsFalseForMissingTable(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -256,7 +256,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getTableListIncludesTestTables(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -272,7 +272,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getTableColumnsTypeOnly(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -290,7 +290,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getTableColumnsFullInfo(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -308,7 +308,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getPrimaryKeyReturnsColumnName(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -322,7 +322,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getPrimaryKeyColumns(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -336,7 +336,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getForeignKeysForChildTable(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -345,7 +345,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
         $fks = $driver->getForeignKeys('ss_items');
         $this->assertNotEmpty(
             $fks,
-            'ss_items should have a foreign key on category_id'
+            'ss_items should have a foreign key on category_id',
         );
     }
 
@@ -372,14 +372,14 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canSelectWithWhere(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
         }
 
         $driver->setQuery(
-            "SELECT * FROM ss_items WHERE status = 'active'"
+            "SELECT * FROM ss_items WHERE status = 'active'",
         );
         $this->assertCount(3, $driver->loadObjectList());
     }
@@ -388,7 +388,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canSelectWithJoin(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -409,7 +409,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canInsertAndGetIdentityId(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -417,19 +417,19 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
 
         $driver->exec(
             "INSERT INTO ss_categories (name, slug)"
-            . " VALUES ('Test', 'test-identity')"
+            . " VALUES ('Test', 'test-identity')",
         );
         $id = $driver->insertid();
 
         $this->assertGreaterThan(0, $id);
 
         $driver->setQuery(
-            "SELECT name FROM ss_categories WHERE id = $id"
+            "SELECT name FROM ss_categories WHERE id = $id",
         );
         $this->assertEquals('Test', $driver->loadResult());
 
         $driver->exec(
-            "DELETE FROM ss_categories WHERE id = $id"
+            "DELETE FROM ss_categories WHERE id = $id",
         );
     }
 
@@ -443,20 +443,20 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
 
         $driver->exec(
             "INSERT INTO ss_categories (name, slug)"
-            . " VALUES ('Before', 'update-test')"
+            . " VALUES ('Before', 'update-test')",
         );
         $driver->exec(
             "UPDATE ss_categories SET name = 'After'"
-            . " WHERE slug = 'update-test'"
+            . " WHERE slug = 'update-test'",
         );
 
         $driver->setQuery(
-            "SELECT name FROM ss_categories WHERE slug = 'update-test'"
+            "SELECT name FROM ss_categories WHERE slug = 'update-test'",
         );
         $this->assertEquals('After', $driver->loadResult());
 
         $driver->exec(
-            "DELETE FROM ss_categories WHERE slug = 'update-test'"
+            "DELETE FROM ss_categories WHERE slug = 'update-test'",
         );
     }
 
@@ -470,15 +470,15 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
 
         $driver->exec(
             "INSERT INTO ss_categories (name, slug)"
-            . " VALUES ('Delete Me', 'delete-test')"
+            . " VALUES ('Delete Me', 'delete-test')",
         );
         $driver->exec(
-            "DELETE FROM ss_categories WHERE slug = 'delete-test'"
+            "DELETE FROM ss_categories WHERE slug = 'delete-test'",
         );
 
         $driver->setQuery(
             "SELECT COUNT(*) FROM ss_categories"
-            . " WHERE slug = 'delete-test'"
+            . " WHERE slug = 'delete-test'",
         );
         $this->assertEquals(0, $driver->loadResult());
     }
@@ -491,7 +491,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canCommitTransaction(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -500,18 +500,18 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
         $driver->transactionStart();
         $driver->exec(
             "INSERT INTO ss_categories (name, slug)"
-            . " VALUES ('Committed', 'trans-commit')"
+            . " VALUES ('Committed', 'trans-commit')",
         );
         $driver->transactionCommit();
 
         $driver->setQuery(
             "SELECT COUNT(*) FROM ss_categories"
-            . " WHERE slug = 'trans-commit'"
+            . " WHERE slug = 'trans-commit'",
         );
         $this->assertEquals(1, $driver->loadResult());
 
         $driver->exec(
-            "DELETE FROM ss_categories WHERE slug = 'trans-commit'"
+            "DELETE FROM ss_categories WHERE slug = 'trans-commit'",
         );
     }
 
@@ -519,7 +519,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canRollbackTransaction(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -532,13 +532,13 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
         $driver2->transactionStart();
         $driver2->exec(
             "INSERT INTO ss_categories (name, slug)"
-            . " VALUES ('Rolled Back', 'trans-rollback')"
+            . " VALUES ('Rolled Back', 'trans-rollback')",
         );
         $driver2->transactionRollback();
 
         $driver->setQuery(
             "SELECT COUNT(*) FROM ss_categories"
-            . " WHERE slug = 'trans-rollback'"
+            . " WHERE slug = 'trans-rollback'",
         );
         $count = (int) $driver->loadResult();
 
@@ -547,7 +547,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
         $this->assertEquals(
             0,
             $count,
-            'Rolled back row should not be visible'
+            'Rolled back row should not be visible',
         );
     }
 
@@ -559,7 +559,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseAggregateFunctions(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -582,14 +582,14 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseTopForLimit(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
         }
 
         $driver->setQuery(
-            'SELECT TOP 2 * FROM ss_items ORDER BY id'
+            'SELECT TOP 2 * FROM ss_items ORDER BY id',
         );
         $this->assertCount(2, $driver->loadObjectList());
     }
@@ -598,7 +598,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseOffsetFetch(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -606,7 +606,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
 
         $driver->setQuery(
             'SELECT * FROM ss_items ORDER BY id'
-            . ' OFFSET 1 ROWS FETCH NEXT 2 ROWS ONLY'
+            . ' OFFSET 1 ROWS FETCH NEXT 2 ROWS ONLY',
         );
         $items = $driver->loadObjectList();
 
@@ -618,20 +618,20 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseBitLiterals(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
         }
 
         $driver->setQuery(
-            "SELECT * FROM ss_categories WHERE active = 1 ORDER BY id"
+            "SELECT * FROM ss_categories WHERE active = 1 ORDER BY id",
         );
         $rows = $driver->loadObjectList();
         $this->assertCount(2, $rows);
 
         $driver->setQuery(
-            "SELECT * FROM ss_categories WHERE active = 0"
+            "SELECT * FROM ss_categories WHERE active = 0",
         );
         $this->assertCount(1, $driver->loadObjectList());
     }
@@ -640,14 +640,14 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseIsNull(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
         }
 
         $driver->setQuery(
-            "SELECT ISNULL(NULL, 'fallback') AS result"
+            "SELECT ISNULL(NULL, 'fallback') AS result",
         );
         $this->assertEquals('fallback', $driver->loadResult());
     }
@@ -656,14 +656,14 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canConcatenateWithConcat(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
         }
 
         $driver->setQuery(
-            "SELECT CONCAT('Hello', ' ', 'World') AS greeting"
+            "SELECT CONCAT('Hello', ' ', 'World') AS greeting",
         );
         $this->assertEquals('Hello World', $driver->loadResult());
     }
@@ -672,7 +672,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseCaseExpression(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -697,7 +697,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canGroupByWithHaving(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -717,7 +717,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseSubquery(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -736,7 +736,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseDatePartFunctions(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -770,7 +770,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
         // Create
         $this->assertTrue($driver->createOrReplaceView(
             'ss_active_items',
-            "SELECT id, title FROM ss_items WHERE status = 'active'"
+            "SELECT id, title FROM ss_items WHERE status = 'active'",
         ));
         $this->assertTrue($driver->viewExists('ss_active_items'));
 
@@ -784,7 +784,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
 
         // Missing view
         $this->assertFalse(
-            $driver->viewExists('ss_nonexistent_view')
+            $driver->viewExists('ss_nonexistent_view'),
         );
 
         // Drop
@@ -800,7 +800,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canAddAndDropColumn(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -809,17 +809,17 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
         $driver->exec(
             "CREATE TABLE ss_ddl_test"
             . " (id INT IDENTITY(1,1) PRIMARY KEY,"
-            . " name NVARCHAR(100))"
+            . " name NVARCHAR(100))",
         );
 
         $this->assertTrue(
-            $driver->addColumn('ss_ddl_test', 'email', 'NVARCHAR(200)')
+            $driver->addColumn('ss_ddl_test', 'email', 'NVARCHAR(200)'),
         );
         $columns = $driver->getTableColumns('ss_ddl_test', true);
         $this->assertArrayHasKey('email', $columns);
 
         $this->assertTrue(
-            $driver->dropColumn('ss_ddl_test', 'email')
+            $driver->dropColumn('ss_ddl_test', 'email'),
         );
         $columns = $driver->getTableColumns('ss_ddl_test', true);
         $this->assertArrayNotHasKey('email', $columns);
@@ -833,7 +833,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canAddAndDropIndex(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -842,15 +842,15 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
         $driver->exec(
             "CREATE TABLE ss_ddl_test"
             . " (id INT IDENTITY(1,1) PRIMARY KEY,"
-            . " name NVARCHAR(100), email NVARCHAR(200))"
+            . " name NVARCHAR(100), email NVARCHAR(200))",
         );
 
         $this->assertTrue(
-            $driver->addIndex('ss_ddl_test', 'idx_ss_name', 'name')
+            $driver->addIndex('ss_ddl_test', 'idx_ss_name', 'name'),
         );
 
         $this->assertTrue(
-            $driver->dropIndex('ss_ddl_test', 'idx_ss_name')
+            $driver->dropIndex('ss_ddl_test', 'idx_ss_name'),
         );
     }
 
@@ -858,7 +858,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canAddUniqueIndex(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -867,15 +867,15 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
         $driver->exec(
             "CREATE TABLE ss_ddl_test"
             . " (id INT IDENTITY(1,1) PRIMARY KEY,"
-            . " email NVARCHAR(200))"
+            . " email NVARCHAR(200))",
         );
 
         $this->assertTrue(
             $driver->addUniqueIndex(
                 'ss_ddl_test',
                 'idx_ss_email_uniq',
-                'email'
-            )
+                'email',
+            ),
         );
     }
 
@@ -887,7 +887,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canAddAndDropForeignKey(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -896,26 +896,26 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
         $driver->exec(
             "CREATE TABLE ss_fk_parent"
             . " (id INT IDENTITY(1,1) PRIMARY KEY,"
-            . " name NVARCHAR(100))"
+            . " name NVARCHAR(100))",
         );
         $driver->exec(
             "CREATE TABLE ss_fk_child"
             . " (id INT IDENTITY(1,1) PRIMARY KEY,"
-            . " parent_id INT)"
+            . " parent_id INT)",
         );
 
         $driver->exec(
             "ALTER TABLE ss_fk_child"
             . " ADD CONSTRAINT fk_ss_child_parent"
             . " FOREIGN KEY (parent_id)"
-            . " REFERENCES ss_fk_parent(id)"
+            . " REFERENCES ss_fk_parent(id)",
         );
 
         $fks = $driver->getForeignKeys('ss_fk_child');
         $this->assertNotEmpty($fks);
 
         $this->assertTrue(
-            $driver->dropConstraint('ss_fk_child', 'fk_ss_child_parent')
+            $driver->dropConstraint('ss_fk_child', 'fk_ss_child_parent'),
         );
     }
 
@@ -927,7 +927,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canTruncateTable(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -936,13 +936,13 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
         $driver->exec(
             "CREATE TABLE ss_trunc_test"
             . " (id INT IDENTITY(1,1) PRIMARY KEY,"
-            . " name NVARCHAR(50))"
+            . " name NVARCHAR(50))",
         );
         $driver->exec(
-            "INSERT INTO ss_trunc_test (name) VALUES ('one')"
+            "INSERT INTO ss_trunc_test (name) VALUES ('one')",
         );
         $driver->exec(
-            "INSERT INTO ss_trunc_test (name) VALUES ('two')"
+            "INSERT INTO ss_trunc_test (name) VALUES ('two')",
         );
 
         $driver->setQuery("SELECT COUNT(*) FROM ss_trunc_test");
@@ -958,7 +958,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canRenameTable(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -967,10 +967,10 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
         $driver->exec(
             "CREATE TABLE ss_rename_src"
             . " (id INT IDENTITY(1,1) PRIMARY KEY,"
-            . " name NVARCHAR(50))"
+            . " name NVARCHAR(50))",
         );
         $driver->exec(
-            "INSERT INTO ss_rename_src (name) VALUES ('test')"
+            "INSERT INTO ss_rename_src (name) VALUES ('test')",
         );
 
         $driver->renameTable('ss_rename_src', 'ss_rename_dest');
@@ -990,7 +990,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function identityAutoIncrementsCorrectly(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -999,16 +999,16 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
         $driver->exec(
             "CREATE TABLE ss_identity_test"
             . " (id INT IDENTITY(1,1) PRIMARY KEY,"
-            . " label NVARCHAR(50))"
+            . " label NVARCHAR(50))",
         );
 
         $driver->exec(
-            "INSERT INTO ss_identity_test (label) VALUES ('first')"
+            "INSERT INTO ss_identity_test (label) VALUES ('first')",
         );
         $id1 = $driver->insertid();
 
         $driver->exec(
-            "INSERT INTO ss_identity_test (label) VALUES ('second')"
+            "INSERT INTO ss_identity_test (label) VALUES ('second')",
         );
         $id2 = $driver->insertid();
 
@@ -1024,7 +1024,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function queryBuilderSelectWithLimit(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -1044,7 +1044,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function queryBuilderSelectWithOffset(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -1066,7 +1066,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function queryBuilderWhereInSubquery(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -1089,7 +1089,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function queryBuilderHandlesEmptyWhereIn(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -1112,7 +1112,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function featureDetectionReturnsExpectedValues(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;
@@ -1135,7 +1135,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseCreateTableBuilder(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresSqlsrv($driver)) {
             return;

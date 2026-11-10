@@ -26,7 +26,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn');
 $online = [];
 $sessions = Hubzero\Session\Helper::getAllSessions([
     'guest'    => 0,
-    'distinct' => 1
+    'distinct' => 1,
 ]);
 if ($sessions) {
     // see if any session matches our userid
@@ -100,7 +100,7 @@ if (!$no_html) {
                         5,
                         3,
                         'activity-description',
-                        ['class' => 'form-control minimal no-footer']
+                        ['class' => 'form-control minimal no-footer'],
                     );
                     ?>
                     <label for="activity-description">
@@ -166,7 +166,7 @@ if (!$no_html) {
             $feedUrl = Route::url(
                 'index.php?option=com_groups&cn='
                 . $this->group->get('cn')
-                . '&active=activity'
+                . '&active=activity',
             );
             ?>
             <ul class="activity-feed" data-url="<?php echo $feedUrl; ?>">
@@ -189,7 +189,7 @@ if (!$no_html) {
                 $pageNav = $this->pagination(
                     $this->total,
                     $this->filters['start'],
-                    $this->filters['limit']
+                    $this->filters['limit'],
                 );
                 $pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
                 $pageNav->setAdditionalUrlParam('active', 'activity');

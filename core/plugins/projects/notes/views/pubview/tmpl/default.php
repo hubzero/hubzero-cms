@@ -25,7 +25,7 @@ $html = str_replace('projects/projects/', 'projects/', $html);
 $html = str_replace(
     $this->page->get('scope') . DS . $this->page->get('pagename'),
     'wiki/' . $this->page->get('id'),
-    $html
+    $html,
 );
 
 ?>

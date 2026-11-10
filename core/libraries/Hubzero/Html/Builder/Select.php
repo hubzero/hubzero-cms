@@ -33,8 +33,8 @@ class Select
             'option.label' => null,
             'option.label.toHtml' => true,
             'option.text' => 'text',
-            'option.text.toHtml' => true
-        ]
+            'option.text.toHtml' => true,
+        ],
     ];
 
     /**
@@ -52,7 +52,7 @@ class Select
     {
         $arr = [
             self::option('0', Lang::txt($no)),
-            self::option('1', Lang::txt($yes))
+            self::option('1', Lang::txt($yes)),
         ];
         return self::radiolist($arr, $name, $attribs, 'value', 'text', (int) $selected, $id);
     }
@@ -155,9 +155,9 @@ class Select
                 'group.items' => 'items',
                 'group.label' => 'text',
                 'group.label.toHtml' => true,
-                'id' => false
+                'id' => false,
             ],
-            $options
+            $options,
         );
 
         // Apply option rules
@@ -253,7 +253,7 @@ class Select
         // Set default options
         $options = [
             'option.format' => '',
-            'id' => null
+            'id' => null,
         ];
 
         if (is_array($attribs) && func_num_args() == 5) {
@@ -353,7 +353,7 @@ class Select
             'option.disable' => 'disable',
             'option.key'     => 'value',
             'option.label'   => null,
-            'option.text'    => 'text'
+            'option.text'    => 'text',
         ];
 
         if (is_array($optKey)) {
@@ -438,8 +438,8 @@ class Select
             [
                 'groups' => true,
                 'list.select' => null,
-                'list.translate' => false
-            ]
+                'list.translate' => false,
+            ],
         );
 
         if (is_array($optKey)) {

@@ -109,7 +109,7 @@ class Html
         $view = new \Hubzero\Component\View([
             'base_path' => dirname(__DIR__) . DS . 'site',
             'name'      => 'view',
-            'layout'    => '_contributors'
+            'layout'    => '_contributors',
         ]);
         $view->contributors  = $contributors;
         $view->showorgs      = $showorgs;
@@ -427,7 +427,7 @@ class Html
         if ($lastPubRelease && $lastPubRelease->id != $publication->version->get('id')) {
             $text .= "\t\t" . '<span class="block">' . Lang::txt('COM_PUBLICATIONS_LAST_PUB_RELEASE')
             . ' <a href="' . Route::url(
-                $publication->link() . '&v=' . $lastPubRelease->version_number
+                $publication->link() . '&v=' . $lastPubRelease->version_number,
             ) . '">' . htmlspecialchars((string) $lastPubRelease->version_label, ENT_COMPAT, 'UTF-8') . '</a></span>';
         }
 
@@ -797,7 +797,7 @@ class Html
         $view = new \Hubzero\Component\View([
             'base_path' => dirname(__DIR__) . DS . 'site',
             'name'      => 'view',
-            'layout'    => '_primary'
+            'layout'    => '_primary',
         ]);
         $view->set('option', 'com_publications');
         $view->set('disabled', $disabled);
@@ -831,8 +831,8 @@ class Html
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => 'edit',
-                'layout'  => 'statusbar'
-            ]
+                'layout'  => 'statusbar',
+            ],
         );
         $view->set('row', $item->row);
         $view->set('version', $item->version);
@@ -1111,7 +1111,7 @@ class Html
         $eview = new \Hubzero\Mail\View([
             'base_path' => dirname(__DIR__) . DS . 'site',
             'name'      => 'emails',
-            'layout'    => '_plain'
+            'layout'    => '_plain',
         ]);
 
         $eview->publication = $publication;
@@ -1140,8 +1140,8 @@ class Html
                     $body,
                     $from,
                     $addressees,
-                    'com_publications'
-                ]
+                    'com_publications',
+                ],
             );
         } else {
             // Send email

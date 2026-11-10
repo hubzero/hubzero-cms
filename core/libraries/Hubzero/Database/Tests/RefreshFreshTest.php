@@ -99,7 +99,7 @@ class RefreshFreshTest extends AbstractDriverTestCase
     {
         $query = new Query($driver);
         $query->insertMany('refresh_test_comments', [
-            ['item_id' => $itemId, 'body' => $body]
+            ['item_id' => $itemId, 'body' => $body],
         ]);
         return $driver->insertid();
     }

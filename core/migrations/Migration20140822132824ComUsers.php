@@ -37,7 +37,7 @@ class Migration20140822132824ComUsers extends Base
             if (!isset($group_id) || !is_numeric($group_id)) {
                 $this->setError(
                     'Failed to retrieve a proper new user type. Please ensure one has been set.',
-                    'warning'
+                    'warning',
                 );
                 return;
             }

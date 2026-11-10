@@ -55,7 +55,7 @@ class Results extends SiteController
             '09' => 'Sep',
             '10' => 'Oct',
             '11' => 'Nov',
-            '12' => 'Dec'
+            '12' => 'Dec',
         ];
         $monthsReverse = array_reverse($months, true);
 
@@ -86,13 +86,13 @@ class Results extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         if ($this->_task) {
             Pathway::append(
                 Lang::txt('PLG_' . strtoupper($this->_name) . '_' . strtoupper($this->_task)),
-                'index.php?option=' . $this->_option . '&task=' . $this->_task
+                'index.php?option=' . $this->_option . '&task=' . $this->_task,
             );
         }
 
@@ -103,7 +103,7 @@ class Results extends SiteController
                 $udb,
                 $months,
                 $monthsReverse,
-                $enddate
+                $enddate,
             ]);
 
         // Build the page title

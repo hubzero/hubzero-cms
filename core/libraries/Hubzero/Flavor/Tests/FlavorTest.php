@@ -67,7 +67,7 @@ class FlavorTest extends TestCase
         $this->assertSame(
             ['show_tools' => '1', 'limit' => '5'],
             $tooled->get('modules', [], 'params')['mod_mycontributions'],
-            'params merge key by key'
+            'params merge key by key',
         );
 
         $this->assertSame(['tools' => 0], $tooled->get('kb', [], 'categories'), 'an untouched state is kept');
@@ -118,7 +118,7 @@ class FlavorTest extends TestCase
         $this->assertSame('meridian', $quiet->get('template'));
         $this->assertSame(
             ['com_tools', 'com_usage', 'com_poll'],
-            $quiet->get('components', [], 'disable')
+            $quiet->get('components', [], 'disable'),
         );
         $this->assertSame(['community/poll' => 0], $quiet->get('menu', [], 'items'));
         $this->assertStringEndsWith('extra.yml', $quiet->file());
@@ -126,7 +126,7 @@ class FlavorTest extends TestCase
         // quieter (json, same directory) extends quiet (yml): menu items merge by path
         $this->assertSame(
             ['community/poll' => 0, 'community/poll/archive' => 0],
-            $all['quieter']->get('menu', [], 'items')
+            $all['quieter']->get('menu', [], 'items'),
         );
 
         // module instances merge by id or title, alongside the module switches
@@ -244,7 +244,7 @@ class FlavorTest extends TestCase
                 ['module' => 37, 'col' => 3, 'row' => 1, 'size_x' => 1, 'size_y' => 2],
                 ['module' => 41, 'col' => 3, 'row' => 3, 'size_x' => 1, 'size_y' => 2],
             ],
-            $laid
+            $laid,
         );
     }
 
@@ -271,7 +271,7 @@ class FlavorTest extends TestCase
         $this->assertSame(
             $default->get('plugins'),
             $full->get('plugins'),
-            'what full does not mention it inherits'
+            'what full does not mention it inherits',
         );
     }
 }

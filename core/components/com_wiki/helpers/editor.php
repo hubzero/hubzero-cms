@@ -206,7 +206,7 @@ class Editor extends Obj
         $args = [
             'name'  => $editor,
             'html'  => $html,
-            'event' => 'onSetEditorContent'
+            'event' => 'onSetEditorContent',
         ];
 
         $return = '';

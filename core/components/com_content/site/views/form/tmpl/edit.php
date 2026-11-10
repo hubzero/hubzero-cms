@@ -46,10 +46,10 @@ endif;
     <div class="edit item-page<?php echo $this->pageclass_sfx; ?>">
         <?php
         $formAction = Route::url(
-            'index.php?option=com_content&a_id=' . (int) $this->item->id
+            'index.php?option=com_content&a_id=' . (int) $this->item->id,
         );
         $invalidMsg = $this->escape(
-            Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')
+            Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'),
         );
         ?>
         <form

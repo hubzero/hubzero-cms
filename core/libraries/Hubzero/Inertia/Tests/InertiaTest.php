@@ -322,7 +322,7 @@ namespace Hubzero\Inertia\Tests {
             $this->assertArrayHasKey('_warnings', $context);
             $this->assertContains(
                 'flush() ignored: call flush() before profileStart/share/debugContext.',
-                $context['_warnings']
+                $context['_warnings'],
             );
         }
 
@@ -330,7 +330,7 @@ namespace Hubzero\Inertia\Tests {
         public function serviceDetectsInertiaHeaderCaseInsensitively(): void
         {
             \App::set('request', new RequestStub([
-                'x-inertia' => 'TrUe'
+                'x-inertia' => 'TrUe',
             ], 'GET', ['REQUEST_URI' => '/inertia']));
 
             $service = new InertiaService();
@@ -380,7 +380,7 @@ namespace Hubzero\Inertia\Tests {
         public function serviceRenderProducesInertiaJsonEnvelopeForInertiaRequests(): void
         {
             \App::set('request', new RequestStub([
-                'X-Inertia' => 'true'
+                'X-Inertia' => 'true',
             ], 'GET', ['REQUEST_URI' => '/inertia/page']));
 
             $service = new TestableInertiaService();
@@ -403,7 +403,7 @@ namespace Hubzero\Inertia\Tests {
         public function terminalJsonFlowSetsStatusHeadersAndBody(): void
         {
             \App::set('request', new RequestStub([
-                'X-Inertia' => 'true'
+                'X-Inertia' => 'true',
             ], 'GET', ['REQUEST_URI' => '/inertia/page']));
 
             $service = new TestableInertiaService();
@@ -425,7 +425,7 @@ namespace Hubzero\Inertia\Tests {
             $service->share('auth', ['role' => 'guest']);
 
             $page = $service->render('Users/Index', [
-                'auth' => ['role' => 'member']
+                'auth' => ['role' => 'member'],
             ]);
 
             $this->assertIsArray($page);
@@ -479,7 +479,7 @@ namespace Hubzero\Inertia\Tests {
             \App::set('request', new RequestStub([
                 'X-Inertia' => 'true',
                 'X-Inertia-Partial-Component' => 'Polls/Show',
-                'X-Inertia-Partial-Data' => 'alpha,gamma'
+                'X-Inertia-Partial-Data' => 'alpha,gamma',
             ], 'GET', ['REQUEST_URI' => '/polls2/1']));
 
             $service = new InertiaService();
@@ -489,14 +489,14 @@ namespace Hubzero\Inertia\Tests {
             $filtered = $method->invoke($service, 'Polls/Show', [
                 'alpha' => 1,
                 'beta' => 2,
-                'gamma' => 3
+                'gamma' => 3,
             ]);
 
             $this->assertSame(['alpha' => 1, 'gamma' => 3], $filtered);
 
             $unfiltered = $method->invoke($service, 'Polls/Index', [
                 'alpha' => 1,
-                'beta' => 2
+                'beta' => 2,
             ]);
 
             $this->assertSame(['alpha' => 1, 'beta' => 2], $unfiltered);
@@ -507,7 +507,7 @@ namespace Hubzero\Inertia\Tests {
         {
             \App::set('request', new RequestStub([
                 'X-Inertia-Partial-Component' => 'Polls/Show',
-                'X-Inertia-Partial-Data' => 'alpha'
+                'X-Inertia-Partial-Data' => 'alpha',
             ], 'GET', ['REQUEST_URI' => '/polls2/1']));
 
             $service = new InertiaService();
@@ -516,7 +516,7 @@ namespace Hubzero\Inertia\Tests {
 
             $props = [
                 'alpha' => 1,
-                'beta' => 2
+                'beta' => 2,
             ];
 
             $actual = $method->invoke($service, 'Polls/Show', $props);
@@ -528,7 +528,7 @@ namespace Hubzero\Inertia\Tests {
         public function serviceRedirectNormalizesMutationRedirectTo303ForInertiaRequests(): void
         {
             \App::set('request', new RequestStub([
-                'X-Inertia' => 'true'
+                'X-Inertia' => 'true',
             ], 'POST', ['REQUEST_URI' => '/polls2/vote']));
 
             $service = new TestableInertiaService();
@@ -543,7 +543,7 @@ namespace Hubzero\Inertia\Tests {
         public function terminalRedirectFlowNormalizes302To303ForMutations(): void
         {
             \App::set('request', new RequestStub([
-                'X-Inertia' => 'true'
+                'X-Inertia' => 'true',
             ], 'PATCH', ['REQUEST_URI' => '/polls2/vote']));
 
             $service = new TestableInertiaService();
@@ -559,7 +559,7 @@ namespace Hubzero\Inertia\Tests {
         {
             \App::set('request', new RequestStub([
                 'X-Inertia' => 'true',
-                'X-Inertia-Version' => 'old'
+                'X-Inertia-Version' => 'old',
             ], 'GET', ['REQUEST_URI' => '/polls2/1']));
 
             $service = new TestableInertiaService();
@@ -580,7 +580,7 @@ namespace Hubzero\Inertia\Tests {
         {
             \App::set('request', new RequestStub([
                 'X-Inertia' => 'true',
-                'X-Inertia-Version' => 'old'
+                'X-Inertia-Version' => 'old',
             ], 'GET', ['REQUEST_URI' => '/polls2/2']));
 
             $service = new TestableInertiaService();
@@ -603,7 +603,7 @@ namespace Hubzero\Inertia\Tests {
                 'X-Inertia-Partial-Data' => 'user,flash',
                 'X-Inertia-Partial-Except' => 'debug',
                 'X-Inertia-Error-Bag' => 'default',
-                'X-Inertia-Reset' => 'wizard'
+                'X-Inertia-Reset' => 'wizard',
             ], 'GET', ['REQUEST_URI' => '/games?task=app']));
 
             $service = new InertiaService();
@@ -691,7 +691,7 @@ namespace Hubzero\Inertia\Tests {
                 [],
                 'GET',
                 ['REQUEST_URI' => '/inertia?page=1'],
-                ['inertia_debug' => '1', 'option' => 'com_games', 'task' => 'app']
+                ['inertia_debug' => '1', 'option' => 'com_games', 'task' => 'app'],
             ));
 
             $service = new InertiaService();
@@ -703,7 +703,7 @@ namespace Hubzero\Inertia\Tests {
             $this->assertDebugHeaderContains($headers, 'X-Hubzero-Inertia-Debug', [
                 '"outgoing"',
                 '"branch":"inertia"',
-                '"task":"app"'
+                '"task":"app"',
             ]);
             $this->assertInertiaVaryHeader($response);
             $this->assertInertiaStatus($response, 200);

@@ -52,7 +52,7 @@ class Domains extends Field
         $script[] = implode(',', [
             "id:\"" . $this->id . "\"",
             "domains:" . $value,
-            "strings:" . json_encode($strings)
+            "strings:" . json_encode($strings),
         ]);
         $script[] = "})";
         $script[] = '});';

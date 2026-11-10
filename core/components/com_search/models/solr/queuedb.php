@@ -55,6 +55,6 @@ class QueueDB extends Relational
      **/
     public $initiate = [
         'created_by',
-        'created'
+        'created',
     ];
 }

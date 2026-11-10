@@ -26,17 +26,17 @@ class RecordProcessingHelper
         $this->errorMessageHelper = Arr::getValue(
             $args,
             'error',
-            new ErrorMessageHelper()
+            new ErrorMessageHelper(),
         );
         $this->app = Arr::getValue(
             $args,
             'app',
-            new MockProxy(['class' => 'App'])
+            new MockProxy(['class' => 'App']),
         );
         $this->notify = Arr::getValue(
             $args,
             'notify',
-            new MockProxy(['class' => 'Notify'])
+            new MockProxy(['class' => 'Notify']),
         );
     }
 

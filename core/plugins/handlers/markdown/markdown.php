@@ -33,7 +33,7 @@ class Markdown extends Plugin
     public function canHandle(\Hubzero\Filesystem\Collection $collection)
     {
         $need = [
-            'md' => 1
+            'md' => 1,
         ];
 
         // Check extension to make sure we can proceed

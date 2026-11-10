@@ -23,7 +23,7 @@ if (!$this->page->access('manage')) {
 
 Pathway::append(
     Lang::txt('COM_WIKI_SPECIAL_FIX_VERSION'),
-    $this->page->link()
+    $this->page->link(),
 );
 
 $filters = ['state' => [0, 1]];

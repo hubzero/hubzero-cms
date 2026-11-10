@@ -76,8 +76,8 @@ class Citations extends Base
             $view = new \Hubzero\Component\View(
                 [
                     'name'   => 'curation',
-                    'layout' => 'block'
-                ]
+                    'layout' => 'block',
+                ],
             );
         } else {
             $name = $viewname == 'freeze' ? 'freeze' : 'draft';
@@ -88,8 +88,8 @@ class Citations extends Base
                     'folder'  => 'projects',
                     'element' => 'publications',
                     'name'    => $name,
-                    'layout'  => 'wrapper'
-                ]
+                    'layout'  => 'wrapper',
+                ],
             );
         }
 
@@ -123,8 +123,8 @@ class Citations extends Base
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => $name,
-                'layout'  => 'citations'
-            ]
+                'layout'  => 'citations',
+            ],
         );
 
         // Get selector styles
@@ -193,7 +193,7 @@ class Citations extends Base
             $doi,
             $citationFormat,
             $actor,
-            true
+            true,
         ];
 
         // Attach citation
@@ -328,7 +328,7 @@ class Citations extends Base
         $plugin_params = [
             $pub->version->id,
             $cid,
-            true
+            true,
         ];
 
         // Attach citation
@@ -398,7 +398,7 @@ class Citations extends Base
                 'about'        => '',
                 'adminTips'    => '',
                 'elements'     => [],
-                'params'       => ['required' => 0, 'published_editing' => 1]
+                'params'       => ['required' => 0, 'published_editing' => 1],
             ];
 
             return json_decode(json_encode($manifest), false);

@@ -179,7 +179,7 @@ class Query
         'having',
         'union',
         'order',
-        'limit'
+        'limit',
     ];
 
     /**
@@ -189,7 +189,7 @@ class Query
      **/
     private $insert = [
         'insert',
-        'values'
+        'values',
     ];
 
     /**
@@ -200,7 +200,7 @@ class Query
     private $update = [
         'update',
         'set',
-        'where'
+        'where',
     ];
 
     /**
@@ -210,7 +210,7 @@ class Query
      **/
     private $delete = [
         'delete',
-        'where'
+        'where',
     ];
 
     /**
@@ -219,7 +219,7 @@ class Query
      * @var  array
      **/
     private $upsert = [
-        'upsert'
+        'upsert',
     ];
 
     /**
@@ -228,7 +228,7 @@ class Query
      * @var  array
      **/
     private $insertMany = [
-        'insertMany'
+        'insertMany',
     ];
 
     /**
@@ -794,7 +794,7 @@ class Query
         } else {
             throw new \InvalidArgumentException(
                 'fromSelect() expects a Query object or closure. ' .
-                'For raw SQL, use fromSelectRaw() instead.'
+                'For raw SQL, use fromSelectRaw() instead.',
             );
         }
 
@@ -1610,7 +1610,7 @@ class Query
         if (count($columns) !== 2) {
             throw new \InvalidArgumentException(
                 'whereBetweenColumns requires exactly 2 column names'
-                . ' [min_column, max_column]'
+                . ' [min_column, max_column]',
             );
         }
 
@@ -2809,7 +2809,7 @@ class Query
     public function setRaw(string $column, string $expression)
     {
         $this->syntax->setSet([
-            $column => new Value\Raw($expression)
+            $column => new Value\Raw($expression),
         ]);
         return $this;
     }
@@ -2827,7 +2827,7 @@ class Query
     public function setColumn(string $column, string $targetColumn)
     {
         $this->syntax->setSet([
-            $column => Expression::column($targetColumn)
+            $column => Expression::column($targetColumn),
         ]);
         return $this;
     }
@@ -2925,7 +2925,7 @@ class Query
         // Build the data array with increment expression
         $quotedColumn = $this->connection->quoteName($column);
         $data = [
-            $column => new Value\Raw("{$quotedColumn} + {$amount}")
+            $column => new Value\Raw("{$quotedColumn} + {$amount}"),
         ];
 
         // Merge any extra columns
@@ -2974,7 +2974,7 @@ class Query
         // Build the data array with decrement expression
         $quotedColumn = $this->connection->quoteName($column);
         $data = [
-            $column => new Value\Raw("{$quotedColumn} - {$amount}")
+            $column => new Value\Raw("{$quotedColumn} - {$amount}"),
         ];
 
         // Merge any extra columns
@@ -4171,7 +4171,7 @@ class Query
             : '';
         $persistentCacheKeyHash = hash(
             'md5',
-            $persistentConnectionFingerprint . $structure . $query . $bindingsHash
+            $persistentConnectionFingerprint . $structure . $query . $bindingsHash,
         );
 
         // Handle persistent caching if enabled via remember() or rememberForever()
@@ -4328,7 +4328,7 @@ class Query
         string $table,
         array $data,
         ?array $updateColumns = null,
-        ?array $conflictColumns = null
+        ?array $conflictColumns = null,
     ) {
         $this->upsert($table, $data, $updateColumns, $conflictColumns);
 
@@ -4421,7 +4421,7 @@ class Query
         foreach ($rows as $index => $row) {
             if (array_keys($row) !== $columns) {
                 throw new \InvalidArgumentException(
-                    "Row {$index} has different columns than the first row. All rows must have the same structure."
+                    "Row {$index} has different columns than the first row. All rows must have the same structure.",
                 );
             }
         }
@@ -4503,7 +4503,7 @@ class Query
         array $rows,
         ?array $updateColumns = null,
         ?array $conflictColumns = null,
-        int $chunkSize = 1000
+        int $chunkSize = 1000,
     ): int {
         if (empty($rows)) {
             return 0;
@@ -4516,7 +4516,7 @@ class Query
                 throw new \InvalidArgumentException(
                     "Row {$index} has different columns than the"
                     . " first row. All rows must have identical"
-                    . " column structure for bulk upsert."
+                    . " column structure for bulk upsert.",
                 );
             }
         }
@@ -4535,7 +4535,7 @@ class Query
                 $table,
                 $chunk,
                 $updateColumns,
-                $conflictColumns
+                $conflictColumns,
             );
             $this->type = 'upsert';
 
@@ -4549,7 +4549,7 @@ class Query
                         $table,
                         $row,
                         $updateColumns,
-                        $conflictColumns
+                        $conflictColumns,
                     );
                     $totalAffected++;
                 }
@@ -5194,7 +5194,7 @@ class Query
 
         if ($key === '') {
             throw new \InvalidArgumentException(
-                'Database syntax is empty. Ensure the driver returns a valid syntax name.'
+                'Database syntax is empty. Ensure the driver returns a valid syntax name.',
             );
         }
 
@@ -5206,7 +5206,7 @@ class Query
         // Fallback for custom syntax classes using canonical convention:
         // Drivers/<Name>/<Name>Syntax.
         $fallback = BackendRegistry::firstExistingClassCandidate(
-            BackendRegistry::conventionSyntaxClassCandidates($key)
+            BackendRegistry::conventionSyntaxClassCandidates($key),
         );
         if ($fallback !== null) {
             return $this->validateSyntaxClass($fallback, $syntaxName);
@@ -5214,7 +5214,7 @@ class Query
 
         throw new \InvalidArgumentException(
             'Unsupported database syntax "' . $syntaxName . '". Supported syntax names: '
-            . implode(', ', array_keys(BackendRegistry::syntaxClassMap()))
+            . implode(', ', array_keys(BackendRegistry::syntaxClassMap())),
         );
     }
 
@@ -5230,7 +5230,7 @@ class Query
         if (!is_subclass_of($syntaxClass, '\\Hubzero\\Database\\Drivers\\Base\\BaseSqlSyntax')) {
             throw new \InvalidArgumentException(
                 'Invalid syntax class "' . $syntaxClass . '" resolved from syntax "'
-                . $originalName . '". Class must extend Hubzero\\Database\\Drivers\\Base\\BaseSqlSyntax.'
+                . $originalName . '". Class must extend Hubzero\\Database\\Drivers\\Base\\BaseSqlSyntax.',
             );
         }
 
@@ -5475,14 +5475,14 @@ class Query
                 if (!array_key_exists($name, $mergedParams)) {
                     throw new \InvalidArgumentException(
                         "Missing named parameter ':$name' in query bindings. " .
-                        "Set it via setParameter('$name', \$value) or pass in the bindings array."
+                        "Set it via setParameter('$name', \$value) or pass in the bindings array.",
                     );
                 }
 
                 $bindings[] = $mergedParams[$name];
                 return '?';
             },
-            $sql
+            $sql,
         );
 
         return [$converted, $bindings];
@@ -5528,7 +5528,7 @@ class Query
                     $sql,
                     $bindings,
                     $offset,
-                    $limit
+                    $limit,
                 );
                 $bindings = [];
             }

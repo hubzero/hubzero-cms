@@ -45,7 +45,7 @@ class Screenshot extends Relational
      */
     protected $rules = [
         'filename'   => 'notempty',
-        'resourceid' => 'positive|nonzero'
+        'resourceid' => 'positive|nonzero',
     ];
 
     /**
@@ -54,7 +54,7 @@ class Screenshot extends Relational
      * @var  array
      */
     public $always = [
-        'filename'
+        'filename',
     ];
 
     /**
@@ -63,7 +63,7 @@ class Screenshot extends Relational
      * @var  array
      */
     public $initiate = [
-        'ordering'
+        'ordering',
     ];
 
     /**

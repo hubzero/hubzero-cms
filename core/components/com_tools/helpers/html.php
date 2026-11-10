@@ -71,7 +71,7 @@ class Html
             Lang::txt('COM_TOOLS_WEEK'),
             Lang::txt('COM_TOOLS_MONTH'),
             Lang::txt('COM_TOOLS_YEAR'),
-            Lang::txt('COM_TOOLS_DECADE')
+            Lang::txt('COM_TOOLS_DECADE'),
         ];
 
         // Set the number of seconds per period
@@ -83,7 +83,7 @@ class Html
             604800, //week
             2630880, // month
             31570560, // year
-            315705600  // decade
+            315705600,  // decade
         ];
 
         // Determine which period we should use, based on the number of seconds lapsed.
@@ -118,7 +118,7 @@ class Html
                 Lang::txt('COM_TOOLS_WEEKS'),
                 Lang::txt('COM_TOOLS_MONTHS'),
                 Lang::txt('COM_TOOLS_YEARS'),
-                Lang::txt('COM_TOOLS_DECADES')
+                Lang::txt('COM_TOOLS_DECADES'),
             ];
         }
 
@@ -581,7 +581,7 @@ class Html
             Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_VERSION'),
             Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_LICENSE'),
             //Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_APPEND_NOTES'),
-            Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_APPROVE')
+            Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_APPROVE'),
         ];
         $key = array_keys($stages, $active_stage);
 

@@ -34,7 +34,7 @@ class Latex extends Plugin
     public function canHandle(\Hubzero\Filesystem\Collection $collection)
     {
         $need = [
-            'tex' => 1
+            'tex' => 1,
         ];
 
         // Check extension to make sure we can proceed
@@ -64,7 +64,7 @@ class Latex extends Plugin
             'folder'  => 'handlers',
             'element' => 'latex',
             'name'    => 'latex',
-            'layout'  => 'view'
+            'layout'  => 'view',
         ]);
 
         // Build path for storing temp previews

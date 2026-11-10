@@ -22,7 +22,7 @@ if (substr($base, -13) == 'administrator') {
     $sef = Route::url(
         'index.php?option=' . $this->option
         . '&controller=' . $this->controller
-        . '&task=new&case=' . $this->report->id
+        . '&task=new&case=' . $this->report->id,
     );
 }
 $link = rtrim($base, '/') . '/' . trim($sef, '/');

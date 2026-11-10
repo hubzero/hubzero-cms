@@ -59,7 +59,7 @@ if ($mode != 'preview') {
                             $hrefUrl = Route::url(
                                 'index.php?option=com_resources'
                                 . '&task=draft&step=1&id='
-                                . $this->model->id
+                                . $this->model->id,
                             );
                             ?>
                             <a class="icon-edit edit btn"
@@ -89,7 +89,7 @@ if ($mode != 'preview') {
                     foreach ($this->model->groups as $allowedgroup) {
                         $groupUrl = Route::url(
                             'index.php?option=com_groups&cn='
-                            . $allowedgroup
+                            . $allowedgroup,
                         );
                         $ghtml[] = '<a href="' . $groupUrl
                             . '">' . $allowedgroup . '</a>';
@@ -100,7 +100,7 @@ if ($mode != 'preview') {
                                 <?php
                                 echo Lang::txt(
                                     'COM_RESOURCES_ERROR_MUST_BE_LOGGED_IN',
-                                    base64_encode(Request::path())
+                                    base64_encode(Request::path()),
                                 );
                                 ?>
                             <?php elseif ($this->get('group_owner')) : ?>
@@ -308,7 +308,7 @@ if ($mode != 'preview') {
             'users_desc' => Lang::txt('COM_RESOURCES_NUMBER_OF_USERS'),
             'title'      => Lang::txt('COM_RESOURCES_TITLE'),
             'author'     => Lang::txt('COM_RESOURCES_AUTHOR'),
-            'ordering'   => Lang::txt('COM_RESOURCES_ORDERING')
+            'ordering'   => Lang::txt('COM_RESOURCES_ORDERING'),
         ];
         if ($this->model->params->get('show_ranking')) {
             $sortbys['ranking'] = Lang::txt('Ranking');
@@ -321,7 +321,7 @@ if ($mode != 'preview') {
             'sortby' => Request::getWord('sortby', $defaultsort),
             'limit'  => Request::getInt('limit', 0),
             'start'  => Request::getInt('limitstart', 0),
-            'id'     => $this->model->id
+            'id'     => $this->model->id,
         ];
 
         if (!isset($sortbys[$filters['sortby']])) {
@@ -360,7 +360,7 @@ if ($mode != 'preview') {
 
             $childrenQuery->select(
                 '(SELECT rs.users FROM ' . $statsTable . ' AS rs WHERE rs.resid=' . $resourceTable . '.id AND rs.period=14 ORDER BY rs.datetime DESC LIMIT 1)',
-                'users'
+                'users',
             );
         }
 
@@ -392,7 +392,7 @@ if ($mode != 'preview') {
                         $pageNav = $this->pagination(
                             $ccount,
                             $filters['start'],
-                            $filters['limit']
+                            $filters['limit'],
                         );
                         $pageNav->setAdditionalUrlParam('id', $this->model->id);
                         $pageNav->setAdditionalUrlParam('sortby', $filters['sortby']);
@@ -409,7 +409,7 @@ if ($mode != 'preview') {
                                 'sortby',
                                 $sortbys,
                                 $filters['sortby'],
-                                ''
+                                '',
                             );
                             ?>
                         </label>

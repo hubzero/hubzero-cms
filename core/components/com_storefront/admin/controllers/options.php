@@ -37,26 +37,26 @@ class Options extends AdminController
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'title'
+                'title',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
+                'ASC',
             ),
             // Get paging variables
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limitstart',
                 'limitstart',
                 0,
-                'int'
-            )
+                'int',
+            ),
         ];
 
         // Get option group ID
@@ -195,7 +195,7 @@ class Options extends AdminController
                 . '&task=display&ogId=' . $fields['ogId'];
             App::redirect(
                 Route::url($url, false),
-                Lang::txt('COM_STOREFRONT_OPTION_SAVED')
+                Lang::txt('COM_STOREFRONT_OPTION_SAVED'),
             );
             return;
         }
@@ -253,7 +253,7 @@ class Options extends AdminController
                     App::redirect(
                         Route::url($url, false),
                         Lang::txt('COM_STOREFRONT_NO_ID'),
-                        'error'
+                        'error',
                     );
                     return;
                 }
@@ -287,7 +287,7 @@ class Options extends AdminController
                             App::redirect(
                                 Route::url($url, false),
                                 $e->getMessage(),
-                                $type
+                                $type,
                             );
                             return;
                         }
@@ -303,7 +303,7 @@ class Options extends AdminController
                 App::redirect(
                     Route::url($url, false),
                     $msg,
-                    $type
+                    $type,
                 );
 
                 if (!empty($warnings)) {
@@ -356,7 +356,7 @@ class Options extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                 $msg,
-                'error'
+                'error',
             );
             return;
         }
@@ -392,7 +392,7 @@ class Options extends AdminController
             . '&task=display&ogId=' . $ogId;
         App::redirect(
             Route::url($url, false),
-            $message
+            $message,
         );
     }
 
@@ -410,7 +410,7 @@ class Options extends AdminController
         $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
             . '&task=display&ogId=' . $ogId;
         App::redirect(
-            Route::url($url, false)
+            Route::url($url, false),
         );
     }
 }

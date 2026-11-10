@@ -52,7 +52,7 @@ $todoHeading = $this->row->get('id')
 $formAction = Route::url(
     'index.php?option=' . $this->option
     . '&alias=' . $this->model->get('alias')
-    . '&active=todo'
+    . '&active=todo',
 );
 ?>
     <form action="<?php echo $formAction; ?>"
@@ -73,7 +73,7 @@ $formAction = Route::url(
                 <div class="todo-content">
 <?php
 $todoPlaceholder = Lang::txt(
-    'PLG_PROJECTS_TODO_TYPE_TODO'
+    'PLG_PROJECTS_TODO_TYPE_TODO',
 );
 $todoContent = $this->row->get('details')
     ? stripslashes($this->row->get('details', ''))
@@ -92,7 +92,7 @@ $todoContent = $this->row->get('details')
                             $noneSelected = ($color == '')
                             ? 'selected="selected"' : '';
                             $noListLabel = Lang::txt(
-                                'PLG_PROJECTS_TODO_ADD_TO_NO_LIST'
+                                'PLG_PROJECTS_TODO_ADD_TO_NO_LIST',
                             );
                             ?>
                                 <option value="none"

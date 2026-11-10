@@ -188,7 +188,7 @@ class RulesTest extends TestCase
         $this->assertCount(
             1,
             $fail,
-            'Rules (notempty|alpha) should have returned one error for a name of "Mr. Awesome"'
+            'Rules (notempty|alpha) should have returned one error for a name of "Mr. Awesome"',
         );
     }
 
@@ -214,7 +214,7 @@ class RulesTest extends TestCase
         $this->assertCount(
             1,
             $fail,
-            'Rules (custom) should have returned one error for an end date before the beginning date'
+            'Rules (custom) should have returned one error for an end date before the beginning date',
         );
         $this->assertTrue($pass, 'Rule (custom) should have validated with an equal height and width');
     }
@@ -329,14 +329,14 @@ class RulesTest extends TestCase
         // Valid
         $result = Rules::validate(
             ['name' => 'John'],
-            ['name' => 'length:2,10']
+            ['name' => 'length:2,10'],
         );
         $this->assertTrue($result);
 
         // Too short
         $result = Rules::validate(
             ['name' => 'J'],
-            ['name' => 'length:2,10']
+            ['name' => 'length:2,10'],
         );
         $this->assertIsArray($result);
         $this->assertEquals('length', $result[0]->getRule());
@@ -345,7 +345,7 @@ class RulesTest extends TestCase
         // Too long
         $result = Rules::validate(
             ['name' => 'JohnJacobSmith'],
-            ['name' => 'length:2,10']
+            ['name' => 'length:2,10'],
         );
         $this->assertIsArray($result);
         $this->assertStringContainsString('cannot exceed 10', $result[0]->getMessage());
@@ -362,7 +362,7 @@ class RulesTest extends TestCase
     {
         $result = Rules::validate(
             ['name' => 'Jo'],
-            ['name' => 'length:3']
+            ['name' => 'length:3'],
         );
 
         $this->assertIsArray($result);
@@ -380,7 +380,7 @@ class RulesTest extends TestCase
     {
         $result = Rules::validate(
             ['code' => 'ABCDE'],
-            ['code' => 'length:,3']
+            ['code' => 'length:,3'],
         );
 
         $this->assertIsArray($result);
@@ -461,14 +461,14 @@ class RulesTest extends TestCase
         // Valid
         $result = Rules::validate(
             ['status' => 'published'],
-            ['status' => 'in:draft,published,archived']
+            ['status' => 'in:draft,published,archived'],
         );
         $this->assertTrue($result);
 
         // Fails
         $result = Rules::validate(
             ['status' => 'deleted'],
-            ['status' => 'in:draft,published,archived']
+            ['status' => 'in:draft,published,archived'],
         );
         $this->assertIsArray($result);
         $this->assertEquals('in', $result[0]->getRule());
@@ -487,14 +487,14 @@ class RulesTest extends TestCase
         // Valid
         $result = Rules::validate(
             ['status' => 'active'],
-            ['status' => 'notin:banned,suspended']
+            ['status' => 'notin:banned,suspended'],
         );
         $this->assertTrue($result);
 
         // Fails
         $result = Rules::validate(
             ['status' => 'banned'],
-            ['status' => 'notin:banned,suspended']
+            ['status' => 'notin:banned,suspended'],
         );
         $this->assertIsArray($result);
         $this->assertEquals('notin', $result[0]->getRule());
@@ -512,14 +512,14 @@ class RulesTest extends TestCase
         // Valid
         $result = Rules::validate(
             ['code' => 'ABC'],
-            ['code' => 'regex:/^[A-Z]{3}$/']
+            ['code' => 'regex:/^[A-Z]{3}$/'],
         );
         $this->assertTrue($result);
 
         // Fails
         $result = Rules::validate(
             ['code' => 'abc'],
-            ['code' => 'regex:/^[A-Z]{3}$/']
+            ['code' => 'regex:/^[A-Z]{3}$/'],
         );
         $this->assertIsArray($result);
         $this->assertEquals('regex', $result[0]->getRule());
@@ -640,14 +640,14 @@ class RulesTest extends TestCase
         // Valid
         $result = Rules::validate(
             ['password' => 'secret123', 'password_confirm' => 'secret123'],
-            ['password_confirm' => 'same:password']
+            ['password_confirm' => 'same:password'],
         );
         $this->assertTrue($result);
 
         // Fails
         $result = Rules::validate(
             ['password' => 'secret123', 'password_confirm' => 'different'],
-            ['password_confirm' => 'same:password']
+            ['password_confirm' => 'same:password'],
         );
         $this->assertIsArray($result);
         $this->assertEquals('same', $result[0]->getRule());
@@ -665,14 +665,14 @@ class RulesTest extends TestCase
         // Valid
         $result = Rules::validate(
             ['new_password' => 'newsecret', 'old_password' => 'oldsecret'],
-            ['new_password' => 'different:old_password']
+            ['new_password' => 'different:old_password'],
         );
         $this->assertTrue($result);
 
         // Fails
         $result = Rules::validate(
             ['new_password' => 'same', 'old_password' => 'same'],
-            ['new_password' => 'different:old_password']
+            ['new_password' => 'different:old_password'],
         );
         $this->assertIsArray($result);
         $this->assertEquals('different', $result[0]->getRule());
@@ -733,19 +733,19 @@ class RulesTest extends TestCase
         // Valid UUID v4
         $this->assertTrue(Rules::validate(
             ['id' => '550e8400-e29b-41d4-a716-446655440000'],
-            ['id' => 'uuid']
+            ['id' => 'uuid'],
         ));
 
         // Valid UUID v4 (lowercase)
         $this->assertTrue(Rules::validate(
             ['id' => '6ba7b810-9dad-41d4-8b78-9c2e8e2e8b48'],
-            ['id' => 'uuid']
+            ['id' => 'uuid'],
         ));
 
         // Valid UUID v4 (uppercase)
         $this->assertTrue(Rules::validate(
             ['id' => '550E8400-E29B-41D4-A716-446655440000'],
-            ['id' => 'uuid']
+            ['id' => 'uuid'],
         ));
 
         // Empty is allowed (use required|uuid if needed)
@@ -782,7 +782,7 @@ class RulesTest extends TestCase
     {
         $result = Rules::validate(
             ['name' => 'Jo'],
-            ['name' => 'notempty|length:3,50']
+            ['name' => 'notempty|length:3,50'],
         );
 
         // notempty passes, length fails
@@ -802,7 +802,7 @@ class RulesTest extends TestCase
     {
         $result = Rules::validate(
             ['score' => 150],
-            ['score' => 'numeric|min:0|max:100']
+            ['score' => 'numeric|min:0|max:100'],
         );
 
         $this->assertIsArray($result);
@@ -829,7 +829,7 @@ class RulesTest extends TestCase
                 'name' => 'required|length:2,100',
                 'age' => 'numeric|between:18,120',
                 'status' => 'in:active,inactive,pending',
-            ]
+            ],
         );
 
         $this->assertTrue($result);
@@ -863,7 +863,7 @@ class RulesTest extends TestCase
     {
         $result = Rules::validate(
             ['name' => 'John', 'ignored' => 'value'],
-            ['name' => 'notempty']
+            ['name' => 'notempty'],
         );
         $this->assertTrue($result);
     }
@@ -879,7 +879,7 @@ class RulesTest extends TestCase
     {
         $result = Rules::validate(
             ['name' => 'John'],
-            ['name' => 'notempty', 'email' => 'email']
+            ['name' => 'notempty', 'email' => 'email'],
         );
         $this->assertTrue($result);
     }
@@ -895,7 +895,7 @@ class RulesTest extends TestCase
     {
         $result = Rules::validate(
             ['field' => 'value'],
-            ['field' => 'unknownrule']
+            ['field' => 'unknownrule'],
         );
         $this->assertTrue($result);
     }
@@ -918,7 +918,7 @@ class RulesTest extends TestCase
                     'message' => 'Custom error message',
                     'params' => ['custom' => true],
                 ];
-            }]
+            }],
         );
 
         $this->assertIsArray($result);

@@ -54,28 +54,28 @@ class Quotas extends AdminController
             'search' => urldecode(Request::getState(
                 $this->_option . '.quotas.search',
                 'search',
-                ''
+                '',
             )),
             'search_field' => urldecode(Request::getState(
                 $this->_option . '.quotas.search_field',
                 'search_field',
-                'name'
+                'name',
             )),
             'sort' => Request::getState(
                 $this->_option . '.quotas.sort',
                 'filter_order',
-                'user_id'
+                'user_id',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.quotas.sortdir',
                 'filter_order_Dir',
-                'ASC'
+                'ASC',
             ),
             'class_alias' => Request::getState(
                 $this->_option . '.quotas.class_alias',
                 'class_alias',
-                ''
-            )
+                '',
+            ),
         ];
 
         $cats  = Category::blank()->getTableName();
@@ -147,7 +147,7 @@ class Quotas extends AdminController
 
         $selected = '';
         $options  = [
-            Html::select('option', '0', Lang::txt('COM_MEMBERS_QUOTA_CUSTOM'), 'value', 'text')
+            Html::select('option', '0', Lang::txt('COM_MEMBERS_QUOTA_CUSTOM'), 'value', 'text'),
         ];
 
         foreach ($categories as $class) {
@@ -159,7 +159,7 @@ class Quotas extends AdminController
 
         $dataHref = Route::url(
             'index.php?option=' . $this->_option . '&controller=quotas&task=getClassValues&class_id=',
-            false
+            false,
         );
         $classes = Html::select(
             'genericlist',
@@ -171,7 +171,7 @@ class Quotas extends AdminController
             $selected,
             'class_id',
             false,
-            false
+            false,
         );
 
         $du = $this->getQuotaUsageTask('array', $row->get('id'));
@@ -311,13 +311,13 @@ class Quotas extends AdminController
             'sort' => Request::getState(
                 $this->_option . '.classes.sort',
                 'filter_order',
-                'id'
+                'id',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.classes.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         // Get records
@@ -518,7 +518,7 @@ class Quotas extends AdminController
             'soft_files'  => $class->get('soft_files'),
             'hard_files'  => $class->get('hard_files'),
             'soft_blocks' => $class->get('soft_blocks'),
-            'hard_blocks' => $class->get('hard_blocks')
+            'hard_blocks' => $class->get('hard_blocks'),
         ];
 
         echo json_encode($return);
@@ -547,7 +547,7 @@ class Quotas extends AdminController
             'success' => $success,
             'info'    => $info,
             'used'    => $used,
-            'percent' => $percent
+            'percent' => $percent,
         ];
 
         $quota = Quota::oneOrNew($id);
@@ -598,7 +598,7 @@ class Quotas extends AdminController
             'success' => $success,
             'info'    => $info,
             'used'    => $used,
-            'percent' => $percent
+            'percent' => $percent,
         ];
 
         if ($returnType == 'json') {
@@ -641,7 +641,7 @@ class Quotas extends AdminController
             App::redirect(
                 Route::url($url, false),
                 Lang::txt('COM_MEMBERS_QUOTA_NO_CONF_TEXT'),
-                'warning'
+                'warning',
             );
         }
 
@@ -745,7 +745,7 @@ class Quotas extends AdminController
                 App::redirect(
                     Route::url($url, false),
                     Lang::txt('COM_MEMBERS_QUOTA_MISSING_DEFAULT_CLASS'),
-                    'error'
+                    'error',
                 );
             }
 

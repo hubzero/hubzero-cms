@@ -78,7 +78,7 @@ $this->css('jquery.ui.css', 'system')
 										top: ' . ($ans['top'] - $group['top'] - 5) . 'px;
 										left: ' . ($ans['left'] - $group['left'] - 26) . 'px;
 									}
-								'
+								',
                                 );
                                 echo '<div
                                     class="radio-container' . ($ans['correct'] ? ' selected' : '') . '"
@@ -105,7 +105,7 @@ $this->css('jquery.ui.css', 'system')
                 <div class="new-upload-button">
                     <?php
                         $routeUrl = Route::url(
-                            $this->base . '&task=form.saveLayout&formId=' . $this->pdf->getId()
+                            $this->base . '&task=form.saveLayout&formId=' . $this->pdf->getId(),
                         );
                     ?>
                     <input data-url="<?php echo $routeUrl; ?>" type="file" name="pdf" id="new-upload" />

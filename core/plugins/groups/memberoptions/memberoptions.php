@@ -42,7 +42,7 @@ class Memberoptions extends Plugin
             'title' => Lang::txt('GROUP_MEMBEROPTIONS'),
             'default_access' => 'registered',
             'display_menu_tab' => $this->params->get('display_tab', 0),
-            'icon' => '2699'
+            'icon' => '2699',
         ];
 
         return $area;
@@ -65,7 +65,7 @@ class Memberoptions extends Plugin
     {
         // The output array we're returning
         $arr = [
-            'html' => ''
+            'html' => '',
         ];
 
         $user = User::getInstance();
@@ -108,7 +108,7 @@ class Memberoptions extends Plugin
         $recvEmailOption = \Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
             $group->get('gidNumber'),
             $user->get('id'),
-            'receive-forum-email'
+            'receive-forum-email',
         );
 
         $view = $this->view('default', 'browse')
@@ -141,13 +141,13 @@ class Memberoptions extends Plugin
         $row = \Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
             $group->get('gidNumber'),
             $user->get('id'),
-            'receive-forum-email'
+            'receive-forum-email',
         );
         $row->set([
             'userid'      => $user->get('id'),
             'gidNumber'   => $group->get('gidNumber'),
             'optionname'  => 'receive-forum-email',
-            'optionvalue' => $recvEmailOptionValue
+            'optionvalue' => $recvEmailOptionValue,
         ]);
 
         // Store content
@@ -167,7 +167,7 @@ class Memberoptions extends Plugin
 
         App::redirect(
             $postSaveRedirect,
-            Lang::txt('GROUP_MEMBEROPTIONS_UPDATED')
+            Lang::txt('GROUP_MEMBEROPTIONS_UPDATED'),
         );
     }
 
@@ -198,7 +198,7 @@ class Memberoptions extends Plugin
         $row = \Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
             $gidNumber,
             $userid,
-            'receive-forum-email'
+            'receive-forum-email',
         );
         if ($row->get('id')) {
             // They already have a record, so ignore.

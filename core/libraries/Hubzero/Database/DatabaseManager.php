@@ -88,12 +88,12 @@ class DatabaseManager
 
         // Custom class fallback by canonical naming convention.
         $candidate = BackendRegistry::firstExistingClassCandidate(
-            BackendRegistry::conventionDriverClassCandidates((string) $driverName)
+            BackendRegistry::conventionDriverClassCandidates((string) $driverName),
         );
         if ($candidate !== null) {
             if (!is_subclass_of($candidate, Driver::class)) {
                 throw new \RuntimeException(
-                    "Invalid driver class {$candidate}; expected subclass of " . Driver::class
+                    "Invalid driver class {$candidate}; expected subclass of " . Driver::class,
                 );
             }
 

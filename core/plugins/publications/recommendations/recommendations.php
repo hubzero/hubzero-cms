@@ -36,7 +36,7 @@ class Recommendations extends Plugin
         $arr = [
             'html'    => '',
             'metadata' => '',
-            'name'    => 'recommendations'
+            'name'    => 'recommendations',
         ];
 
         // Check if our area is in the array of areas we want to return results for
@@ -49,7 +49,7 @@ class Recommendations extends Plugin
         // Get recommendations
         $r = \Plugins\Publications\Recommendations\Models\Recommendation::find(
             $publication->id,
-            $this->params->get('threshold', '0.21')
+            $this->params->get('threshold', '0.21'),
         );
 
         $results = $r->limit($this->params->get('display_limit', 10))->rows();

@@ -45,7 +45,7 @@ class Format extends Relational
      * @var array
      **/
     protected $rules = [
-        'style' => 'notempty'
+        'style' => 'notempty',
     ];
 
     /**
@@ -118,7 +118,7 @@ class Format extends Relational
             "year" => "{YEAR}",
             "month" => "{MONTH}",
             "search_string" => "{SECONDARY LINK}",
-            "sec_cnt" => "{SECONDARY COUNT}"
+            "sec_cnt" => "{SECONDARY COUNT}",
         ];
 
         return $template_keys;

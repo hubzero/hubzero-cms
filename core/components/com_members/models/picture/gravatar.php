@@ -40,7 +40,7 @@ class Gravatar
         'forceExtension' => false,
         'forceDefault'   => false,
         'maximumRating'  => null,
-        'size'           => null
+        'size'           => null,
     ];
 
     /**
@@ -57,7 +57,7 @@ class Gravatar
                     $validUrl = filter_var(
                         $config['fallback'],
                         FILTER_VALIDATE_URL,
-                        FILTER_FLAG_PATH_REQUIRED
+                        FILTER_FLAG_PATH_REQUIRED,
                     );
                     $validTypes = ['mm', 'identicon', 'monsterid', 'wavatar', 'retro', 'blank'];
                     if ($validUrl || in_array($config['fallback'], $validTypes)) {

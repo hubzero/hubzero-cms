@@ -102,13 +102,13 @@ class GradeBook extends Base
                     $grades[$grade->member_id]['assets'][$grade->scope_id] = [
                         'score'    => $grade->override,
                         'date'     => $grade->override_recorded,
-                        'override' => true
+                        'override' => true,
                     ];
                 } else {
                     $grades[$grade->member_id]['assets'][$grade->scope_id] = [
                         'score'    => $grade->score,
                         'date'     => $grade->score_recorded,
-                        'override' => false
+                        'override' => false,
                     ];
                 }
             }
@@ -191,7 +191,7 @@ class GradeBook extends Base
 
         $filters = [
             'section_id' => $this->course->offering()->section()->get('id'),
-            'member_id'  => $member_id
+            'member_id'  => $member_id,
         ];
 
         $dbo = App::get('db');
@@ -211,7 +211,7 @@ class GradeBook extends Base
                             'member_id'    => $g->member_id,
                             'grade_weight' => $g->grade_weight,
                             'unit_id'      => $g->unit_id,
-                            'asset_id'     => $g->scope_id
+                            'asset_id'     => $g->scope_id,
                         ];
                     }
                 }
@@ -263,8 +263,8 @@ class GradeBook extends Base
                             'course_id'   => $this->course->get('id'),
                             'unit_id'     => $unit_id,
                             'state'       => 1,
-                            'asset_scope' => 'asset_group'
-                        ]
+                            'asset_scope' => 'asset_group',
+                        ],
                     ];
 
                     switch ($progress_calculation) {
@@ -308,7 +308,7 @@ class GradeBook extends Base
     {
         $filters = [
             'section_id' => $this->course->offering()->section()->get('id'),
-            'member_id'  => $member_id
+            'member_id'  => $member_id,
         ];
 
         // Get the asset views
@@ -399,7 +399,7 @@ class GradeBook extends Base
             // Check for overrides
             $gradeData = [
                 'score' => $grade->override ? $grade->override : $grade->score,
-                'weighting' => $grade->grade_weight
+                'weighting' => $grade->grade_weight,
             ];
             $grades[$grade->member_id][$grade->unit_id][$grade->scope_id] = $gradeData;
         }
@@ -493,7 +493,7 @@ class GradeBook extends Base
                     $denominator = array_sum([
                         $unitScores['exam_weight'],
                         $unitScores['quiz_weight'],
-                        $unitScores['homework_weight']
+                        $unitScores['homework_weight'],
                     ]);
 
                     if ($denominator) {
@@ -548,7 +548,7 @@ class GradeBook extends Base
                 $denominator = array_sum([
                     $memberScores['course_exam_weight'],
                     $memberScores['course_quiz_weight'],
-                    $memberScores['course_homework_weight']
+                    $memberScores['course_homework_weight'],
                 ]);
 
                 if ($denominator) {
@@ -604,7 +604,7 @@ class GradeBook extends Base
         $sectionObj = $this->course->offering()->section();
         $gradePolicy = new GradePolicies(
             $sectionObj->get('grade_policy_id'),
-            $sectionObj->get('id')
+            $sectionObj->get('id'),
         );
 
         // If section only, add appropriate joins to limit by section
@@ -712,11 +712,11 @@ class GradeBook extends Base
                         'offering_id' => $this->course->offering()->get('id'),
                         'graded'      => true,
                         'state'       => 1,
-                        'asset_scope' => 'asset_group'
+                        'asset_scope' => 'asset_group',
                     ],
                     'order_by'  => 'title',
-                    'order_dir' => 'ASC'
-                ]
+                    'order_dir' => 'ASC',
+                ],
             );
 
             // Get gradebook auxiliary assets
@@ -727,8 +727,8 @@ class GradeBook extends Base
                     'asset_type'    => 'gradebook',
                     'asset_subtype' => 'auxiliary',
                     'graded'        => true,
-                    'state'         => 1
-                ]
+                    'state'         => 1,
+                ],
             );
 
             $assets[$assetKey] = array_merge($found, $auxiliary);

@@ -35,29 +35,29 @@ class Types extends AdminController
                 $this->_option . '.types.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.types.limitstart',
                 'limitstart',
                 0,
-                'int'
+                'int',
             ),
             'search' => Request::getState(
                 $this->_option . '.types.search',
                 'search',
-                ''
+                '',
             ),
             'sort' => Request::getState(
                 $this->_option . '.types.sort',
                 'filter_order',
-                'id'
+                'id',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.types.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         $this->view->filters['state'] = 'all';
@@ -113,14 +113,14 @@ class Types extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
-                'notice'
+                'notice',
             );
             return;
         }
 
         // Load curation
         $this->view->curation = new \Components\Publications\Models\Curation(
-            $this->view->row->curation
+            $this->view->row->curation,
         );
 
         // Get blocks model
@@ -130,7 +130,7 @@ class Types extends AdminController
         $this->view->blocks = $blocksModel->getBlocks(
             '*',
             " WHERE status=1",
-            " ORDER BY ordering, id"
+            " ORDER BY ordering, id",
         );
 
         // Set any errors
@@ -167,14 +167,14 @@ class Types extends AdminController
                 App::redirect(
                     Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                     Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
-                    'notice'
+                    'notice',
                 );
                 return;
             }
 
             // Load curation
             $this->view->curation = new \Components\Publications\Models\Curation(
-                $this->view->row->curation
+                $this->view->row->curation,
             );
 
             // Set any errors
@@ -206,14 +206,14 @@ class Types extends AdminController
                 App::redirect(
                     Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                     Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
-                    'notice'
+                    'notice',
                 );
                 return;
             }
 
             // Load curation
             $this->view->curation = new \Components\Publications\Models\Curation(
-                $this->view->row->curation
+                $this->view->row->curation,
             );
             $curation = $this->view->curation;
 
@@ -234,7 +234,7 @@ class Types extends AdminController
                 $url = Route::url(
                     'index.php?option=' . $this->_option . '&controller=' . $this->_controller
                     . '&task=edit&id=' . $id,
-                    false
+                    false,
                 );
 
                 $manifest   = new stdClass();
@@ -261,7 +261,7 @@ class Types extends AdminController
 
                 App::redirect(
                     $url,
-                    Lang::txt('COM_PUBLICATIONS_SUCCESS_TYPE_BLOCK_REMOVED')
+                    Lang::txt('COM_PUBLICATIONS_SUCCESS_TYPE_BLOCK_REMOVED'),
                 );
             }
         }
@@ -292,20 +292,20 @@ class Types extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
-                'notice'
+                'notice',
             );
             return;
         }
 
         // Load curation
         $curation = new \Components\Publications\Models\Curation(
-            $row->curation
+            $row->curation,
         );
 
         $url = Route::url(
             'index.php?option=' . $this->_option . '&controller=' . $this->_controller
             . '&task=edit&id=' . $id,
-            false
+            false,
         );
 
         $manifest   = new stdClass();
@@ -369,7 +369,7 @@ class Types extends AdminController
 
         App::redirect(
             $url,
-            Lang::txt('COM_PUBLICATIONS_SUCCESS_TYPE_BLOCK_ADDED')
+            Lang::txt('COM_PUBLICATIONS_SUCCESS_TYPE_BLOCK_ADDED'),
         );
     }
 
@@ -394,14 +394,14 @@ class Types extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
-                'notice'
+                'notice',
             );
             return;
         }
 
         // Load curation
         $this->view->curation = new \Components\Publications\Models\Curation(
-            $this->view->row->curation
+            $this->view->row->curation,
         );
 
         // Set any errors
@@ -435,7 +435,7 @@ class Types extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
-                'error'
+                'error',
             );
             return;
         }
@@ -443,7 +443,7 @@ class Types extends AdminController
         $url = Route::url(
             'index.php?option=' . $this->_option . '&controller=' . $this->_controller
             . '&task=edit&id=' . $id,
-            false
+            false,
         );
 
         if (!trim($curation) || $this->isJson(trim($curation))) {
@@ -453,14 +453,14 @@ class Types extends AdminController
             App::redirect(
                 $url,
                 Lang::txt('COM_PUBLICATIONS_ERROR_SAVING_ADVANCED_CURATION'),
-                'error'
+                'error',
             );
             return;
         }
 
         App::redirect(
             $url,
-            Lang::txt('COM_PUBLICATIONS_SUCCESS_TYPE_CURATION_SAVED')
+            Lang::txt('COM_PUBLICATIONS_SUCCESS_TYPE_CURATION_SAVED'),
         );
     }
 
@@ -497,14 +497,14 @@ class Types extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
-                'notice'
+                'notice',
             );
             return;
         }
 
         // Load curation
         $this->view->curation = new \Components\Publications\Models\Curation(
-            $this->view->row->curation
+            $this->view->row->curation,
         );
 
         // Set any errors
@@ -537,20 +537,20 @@ class Types extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
-                'notice'
+                'notice',
             );
             return;
         }
 
         // Load curation
         $curation = new \Components\Publications\Models\Curation(
-            $row->curation
+            $row->curation,
         );
 
         $url = Route::url(
             'index.php?option=' . $this->_option . '&controller=' . $this->_controller
             . '&task=edit&id[]=' . $id,
-            false
+            false,
         );
 
         $objC = new \Components\Publications\Models\Curation($row->curation);
@@ -606,7 +606,7 @@ class Types extends AdminController
 
         App::redirect(
             $url,
-            Lang::txt('COM_PUBLICATIONS_SUCCESS_TYPE_ELEMENTS_SAVED')
+            Lang::txt('COM_PUBLICATIONS_SUCCESS_TYPE_ELEMENTS_SAVED'),
         );
     }
 
@@ -630,14 +630,14 @@ class Types extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
-                'notice'
+                'notice',
             );
             return;
         }
 
         // Load curation
         $this->view->curation = new \Components\Publications\Models\Curation(
-            $this->view->row->curation
+            $this->view->row->curation,
         );
 
         // Get blocks model
@@ -647,7 +647,7 @@ class Types extends AdminController
         $this->view->blocks = $blocksModel->getBlocks(
             '*',
             " WHERE status=1",
-            " ORDER BY ordering, id"
+            " ORDER BY ordering, id",
         );
 
         // Set any errors
@@ -686,14 +686,14 @@ class Types extends AdminController
             App::redirect(
                 Route::url($listUrl, false),
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
-                'notice'
+                'notice',
             );
             return;
         }
 
         // Load curation
         $curation = new \Components\Publications\Models\Curation(
-            $row->curation
+            $row->curation,
         );
 
         $url = Route::url($listUrl . '&task=edit&id=' . $id, false);
@@ -720,7 +720,7 @@ class Types extends AdminController
 
         App::redirect(
             $url,
-            Lang::txt('COM_PUBLICATIONS_SUCCESS_TYPE_ORDER_SAVED')
+            Lang::txt('COM_PUBLICATIONS_SUCCESS_TYPE_ORDER_SAVED'),
         );
     }
 
@@ -749,7 +749,7 @@ class Types extends AdminController
         $this->view->row = $row;
 
         $this->view->curation = new \Components\Publications\Models\Curation(
-            $this->view->row->curation
+            $this->view->row->curation,
         );
 
         // Get blocks model
@@ -759,7 +759,7 @@ class Types extends AdminController
         $this->view->blocks = $blocksModel->getBlocks(
             '*',
             " WHERE status=1",
-            " ORDER BY ordering, id"
+            " ORDER BY ordering, id",
         );
 
         // Set any errors
@@ -810,7 +810,7 @@ class Types extends AdminController
         $url = Route::url(
             'index.php?option=' . $this->_option . '&controller=' . $this->_controller
             . '&task=edit&id=' . $fields['id'],
-            false
+            false,
         );
 
         // Load record
@@ -902,12 +902,12 @@ class Types extends AdminController
         if ($redirect) {
             App::redirect(
                 $url,
-                Lang::txt('COM_PUBLICATIONS_SUCCESS_TYPE_SAVED')
+                Lang::txt('COM_PUBLICATIONS_SUCCESS_TYPE_SAVED'),
             );
         } else {
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-                Lang::txt('COM_PUBLICATIONS_SUCCESS_TYPE_SAVED')
+                Lang::txt('COM_PUBLICATIONS_SUCCESS_TYPE_SAVED'),
             );
         }
     }
@@ -955,7 +955,7 @@ class Types extends AdminController
         $row->changeOrder($dir);
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
         );
     }
 
@@ -979,7 +979,7 @@ class Types extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                 Lang::txt('COM_PUBLICATIONS_NO_ITEM_SELECTED'),
-                'error'
+                'error',
             );
             return;
         }
@@ -996,7 +996,7 @@ class Types extends AdminController
                 App::redirect(
                     Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                     Lang::txt('COM_PUBLICATIONS_TYPE_BEING_USED', $id),
-                    'error'
+                    'error',
                 );
                 return;
             }
@@ -1008,7 +1008,7 @@ class Types extends AdminController
         // Redirect
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-            Lang::txt('COM_PUBLICATIONS_ITEMS_REMOVED', count($ids))
+            Lang::txt('COM_PUBLICATIONS_ITEMS_REMOVED', count($ids)),
         );
     }
 }

@@ -23,16 +23,16 @@ class TypeOptionsHelperTest extends Basic
         $rowsMock = $this->mock([
             'class' => 'Rows',
             'methods' => [
-                'fieldsByKey' => $resourceTypes
-            ]
+                'fieldsByKey' => $resourceTypes,
+            ],
         ]);
         $relationalMock = $this->mock([
             'class' => 'Relational',
-            'methods' => ['rows' => $rowsMock]
+            'methods' => ['rows' => $rowsMock],
         ]);
         $typeMock = $this->mock([
             'class' => 'Type',
-            'methods' => ['all' => $relationalMock]
+            'methods' => ['all' => $relationalMock],
         ]);
         $helper = new Helper(['type' => $typeMock]);
         $supplementaryTypes = ['COM_SEARCH_BOOST_DOCUMENT_TYPE_CITATION'];
@@ -49,16 +49,16 @@ class TypeOptionsHelperTest extends Basic
         $rowsMock = $this->mock([
             'class' => 'Rows',
             'methods' => [
-                'fieldsByKey' => $resourceTypes
-            ]
+                'fieldsByKey' => $resourceTypes,
+            ],
         ]);
         $relationalMock = $this->mock([
             'class' => 'Relational',
-            'methods' => ['rows' => $rowsMock]
+            'methods' => ['rows' => $rowsMock],
         ]);
         $typeMock = $this->mock([
             'class' => 'Type',
-            'methods' => ['all' => $relationalMock]
+            'methods' => ['all' => $relationalMock],
         ]);
         $helper = new Helper(['type' => $typeMock]);
         $supplementaryTypes = ['COM_SEARCH_BOOST_DOCUMENT_TYPE_CITATION'];

@@ -41,42 +41,42 @@ class Support extends AbstractComponent
         Submenu::addEntry(
             Lang::txt('COM_SUPPORT_TICKETS'),
             Route::url('index.php?option=com_support&controller=tickets'),
-            $controllerName == 'tickets'
+            $controllerName == 'tickets',
         );
         Submenu::addEntry(
             Lang::txt('COM_SUPPORT_CATEGORIES'),
             Route::url('index.php?option=com_support&controller=categories'),
-            $controllerName == 'categories'
+            $controllerName == 'categories',
         );
         Submenu::addEntry(
             Lang::txt('COM_SUPPORT_QUERIES'),
             Route::url('index.php?option=com_support&controller=queries'),
-            $controllerName == 'queries'
+            $controllerName == 'queries',
         );
         Submenu::addEntry(
             Lang::txt('COM_SUPPORT_MESSAGES'),
             Route::url('index.php?option=com_support&controller=messages'),
-            $controllerName == 'messages'
+            $controllerName == 'messages',
         );
         Submenu::addEntry(
             Lang::txt('COM_SUPPORT_STATUSES'),
             Route::url('index.php?option=com_support&controller=statuses'),
-            $controllerName == 'statuses'
+            $controllerName == 'statuses',
         );
         Submenu::addEntry(
             Lang::txt('COM_SUPPORT_ABUSE'),
             Route::url('index.php?option=com_support&controller=abusereports'),
-            $controllerName == 'abusereports'
+            $controllerName == 'abusereports',
         );
         Submenu::addEntry(
             Lang::txt('COM_SUPPORT_STATS'),
             Route::url('index.php?option=com_support&controller=stats'),
-            $controllerName == 'stats'
+            $controllerName == 'stats',
         );
         Submenu::addEntry(
             Lang::txt('COM_SUPPORT_ACL'),
             Route::url('index.php?option=com_support&controller=acl'),
-            $controllerName == 'acl'
+            $controllerName == 'acl',
         );
 
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);

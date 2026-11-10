@@ -51,10 +51,10 @@ $this->js();
 
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&task=edit&id=' . (int) $this->row->id
+    . '&task=edit&id=' . (int) $this->row->id,
 );
 $invalidMsg = $this->escape(
-    Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')
+    Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'),
 );
 $legendTxt = $this->row->isNew()
     ? Lang::txt('COM_REDIRECT_NEW_LINK')

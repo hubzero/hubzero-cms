@@ -54,7 +54,7 @@ class Domain extends Relational
      * @var  array
      */
     protected $rules = [
-        'authenticator' => 'notempty'
+        'authenticator' => 'notempty',
     ];
 
     /**
@@ -63,7 +63,7 @@ class Domain extends Relational
      * @var  array
      **/
     public $always = [
-        'type'
+        'type',
     ];
 
     /**

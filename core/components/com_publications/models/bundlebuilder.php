@@ -211,7 +211,7 @@ class BundleBuilder
             // Nothing to do unless forced; report the existing artifact.
             return [
                 'ok' => true, 'file' => $outerPath, 'size' => filesize($outerPath),
-                'source_hash' => $sourceHash, 'inner' => null, 'error' => null
+                'source_hash' => $sourceHash, 'inner' => null, 'error' => null,
             ];
         }
 
@@ -236,7 +236,7 @@ class BundleBuilder
 
             return [
                 'ok' => true, 'file' => $outerPath, 'size' => filesize($outerPath),
-                'source_hash' => $sourceHash, 'inner' => null, 'error' => null
+                'source_hash' => $sourceHash, 'inner' => null, 'error' => null,
             ];
         }
 
@@ -895,7 +895,7 @@ class BundleBuilder
 			 FROM `#__publication_versions` v
 			 JOIN `#__publications` p ON p.`id` = v.`publication_id`
 			 JOIN `#__publication_master_types` mt ON mt.`id` = p.`master_type`
-			 WHERE v.`id` = " . $versionId . " LIMIT 1"
+			 WHERE v.`id` = " . $versionId . " LIMIT 1",
         );
         $curation = (string) $db->loadResult();
 
@@ -950,7 +950,7 @@ class BundleBuilder
         $db = App::get('db');
         $db->setQuery(
             "SELECT COUNT(*) FROM `#__publication_attachments`
-			 WHERE `publication_version_id` = " . (int) $versionId . " AND `type` != 'file'"
+			 WHERE `publication_version_id` = " . (int) $versionId . " AND `type` != 'file'",
         );
 
         return (int) $db->loadResult() > 0;
@@ -968,7 +968,7 @@ class BundleBuilder
         $db->setQuery(
             "SELECT `publication_id`, `secret`, `version_number`, `doi`,
 			        `title`, `version_label`, `license_type`, `license_text`
-			 FROM `#__publication_versions` WHERE `id` = " . (int) $versionId . " LIMIT 1"
+			 FROM `#__publication_versions` WHERE `id` = " . (int) $versionId . " LIMIT 1",
         );
 
         $row = $db->loadAssoc();
@@ -998,7 +998,7 @@ class BundleBuilder
         $db->setQuery(
             "SELECT `path`, `element_id` FROM `#__publication_attachments`
 			 WHERE `publication_version_id` = " . (int) $versionId . "
-			   AND `type` = 'file' AND `role` = 1"
+			   AND `type` = 'file' AND `role` = 1",
         );
         $rows = $db->loadObjectList();
 
@@ -1063,7 +1063,7 @@ class BundleBuilder
             "SELECT `path`, `id`, `params`, `element_id` FROM `#__publication_attachments`
 			 WHERE `publication_version_id` = " . (int) $versionId . "
 			   AND `type` = 'file'" . ($role !== null ? " AND `role` = " . (int) $role : "") . "
-			 ORDER BY `ordering`, `id`"
+			 ORDER BY `ordering`, `id`",
         );
         $rows = $db->loadObjectList();
 
@@ -1837,7 +1837,7 @@ class BundleBuilder
         $db->setQuery(
             "SELECT `path`, `id`, `params` FROM `#__publication_attachments`
 			 WHERE `publication_version_id` = " . (int) $versionId . "
-			   AND `type` = 'file' AND `role` = 3 ORDER BY `ordering`, `id`"
+			   AND `type` = 'file' AND `role` = 3 ORDER BY `ordering`, `id`",
         );
         $rows = $db->loadObjectList();
 
@@ -1963,7 +1963,7 @@ class BundleBuilder
         $db->setQuery(
             "SELECT `path`, `role`, `attribs` FROM `#__publication_attachments`
 			 WHERE `publication_version_id` = " . (int) $versionId . " AND `type` = 'file'
-			 ORDER BY `role`, `ordering`, `id`"
+			 ORDER BY `role`, `ordering`, `id`",
         );
 
         $byRole = [];
@@ -2014,7 +2014,7 @@ class BundleBuilder
 			 FROM `#__publication_versions` v
 			 JOIN `#__publications` p ON p.`id` = v.`publication_id`
 			 JOIN `#__publication_master_types` mt ON mt.`id` = p.`master_type`
-			 WHERE v.`id` = " . (int) $versionId . " LIMIT 1"
+			 WHERE v.`id` = " . (int) $versionId . " LIMIT 1",
         );
         $man = json_decode((string) $db->loadResult(), true);
 
@@ -2086,7 +2086,7 @@ class BundleBuilder
 			 WHERE A.`publication_version_id` = " . (int) $versionId . "
 			   AND A.`status` = 1
 			   AND (A.`role` != 'submitter' OR A.`role` IS NULL)
-			 ORDER BY A.`ordering` ASC"
+			 ORDER BY A.`ordering` ASC",
         );
 
         $out = [];
@@ -2121,7 +2121,7 @@ class BundleBuilder
         $db->setQuery(
             "SELECT `object_name`, `object_revision`, `title` FROM `#__publication_attachments`
 			 WHERE `publication_version_id` = " . (int) $versionId . "
-			   AND `type` = 'data' AND `object_name` <> '' ORDER BY `ordering`, `id`"
+			   AND `type` = 'data' AND `object_name` <> '' ORDER BY `ordering`, `id`",
         );
 
         return (array) $db->loadObjectList();
@@ -2142,7 +2142,7 @@ class BundleBuilder
         $db->setQuery(
             "SELECT COUNT(*) FROM `#__publication_attachments`
 			 WHERE `publication_version_id` = " . (int) $versionId . "
-			   AND `type` = 'file' AND `role` IN (1, 2)"
+			   AND `type` = 'file' AND `role` IN (1, 2)",
         );
 
         return (int) $db->loadResult() > 0;
@@ -2166,7 +2166,7 @@ class BundleBuilder
 
         $it = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator($dataDir, \FilesystemIterator::SKIP_DOTS),
-            \RecursiveIteratorIterator::LEAVES_ONLY
+            \RecursiveIteratorIterator::LEAVES_ONLY,
         );
         foreach ($it as $f) {
             if (!$f->isFile()) {
@@ -2234,7 +2234,7 @@ class BundleBuilder
         if (is_file($outerPath) && !$force) {
             return [
                 'ok' => true, 'file' => $outerPath, 'size' => filesize($outerPath),
-                'source_hash' => $sourceHash, 'inner' => null, 'error' => null
+                'source_hash' => $sourceHash, 'inner' => null, 'error' => null,
             ];
         }
 
@@ -2278,7 +2278,7 @@ class BundleBuilder
             'Building Databases outer %s: %d datastore(s), %d entr(ies)...',
             basename($outerPath),
             count($dataAtts),
-            count($entries)
+            count($entries),
         ));
 
         $res = $this->buildOuterViaZip($entries, $metadata, $outerPath, $name, $level);
@@ -2288,7 +2288,7 @@ class BundleBuilder
 
         return [
             'ok' => true, 'file' => $outerPath, 'size' => filesize($outerPath),
-            'source_hash' => $sourceHash, 'inner' => null, 'error' => null
+            'source_hash' => $sourceHash, 'inner' => null, 'error' => null,
         ];
     }
 
@@ -2565,7 +2565,7 @@ class BundleBuilder
         if (is_file($outerPath) && !$force) {
             return [
                 'ok' => true, 'file' => $outerPath, 'size' => filesize($outerPath),
-                'source_hash' => $sourceHash, 'inner' => null, 'error' => null
+                'source_hash' => $sourceHash, 'inner' => null, 'error' => null,
             ];
         }
 
@@ -2580,7 +2580,7 @@ class BundleBuilder
             'Building metadata-only outer %s (README + %d supporting + %d gallery image(s))...',
             basename($outerPath),
             count($supporting),
-            count($gallery)
+            count($gallery),
         ));
 
         $res = $this->buildOuterViaZip($entries, $metadata, $outerPath, $name, $level);
@@ -2590,7 +2590,7 @@ class BundleBuilder
 
         return [
             'ok' => true, 'file' => $outerPath, 'size' => filesize($outerPath),
-            'source_hash' => $sourceHash, 'inner' => null, 'error' => null
+            'source_hash' => $sourceHash, 'inner' => null, 'error' => null,
         ];
     }
 

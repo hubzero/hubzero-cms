@@ -43,12 +43,12 @@ Toolbar::help('categories');
 <?php
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 $ogEditUrl = Route::url(
     'index.php?option=' . $this->option
     . '&controller=optiongroups&task=edit&ogId='
-    . $this->optionGroup->getId()
+    . $this->optionGroup->getId(),
 );
 $editOgTitle = Lang::txt('Edit option group');
 ?>
@@ -93,7 +93,7 @@ $sort = @$this->filters['sort'];
                 echo $this->pagination(
                     $this->total,
                     $this->filters['start'],
-                    $this->filters['limit']
+                    $this->filters['limit'],
                 );
                 ?></td>
         </tr>
@@ -145,7 +145,7 @@ foreach ($this->rows as $row) {
                     $editUrl = Route::url(
                         'index.php?option=' . $this->option
                         . '&controller=' . $this->controller
-                        . '&task=edit&id=' . $row->oId
+                        . '&task=edit&id=' . $row->oId,
                     );
                     $editTitle = Lang::txt('COM_STOREFRONT_EDIT_OPTION');
                     ?>
@@ -164,7 +164,7 @@ foreach ($this->rows as $row) {
                     $stateUrl = Route::url(
                         'index.php?option=' . $this->option
                         . '&controller=' . $this->controller
-                        . '&task=' . $task . '&id=' . $row->oId
+                        . '&task=' . $task . '&id=' . $row->oId,
                     ) . '&ogId=' . $row->ogId;
                     $stateTitle = Lang::txt('COM_STOREFRONT_SET_TASK', $task);
                     ?>

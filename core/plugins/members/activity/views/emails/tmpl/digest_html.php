@@ -66,7 +66,7 @@ $link = $base . '/' . trim($sef, '/');
                     echo Lang::txt(
                         'PLG_MEMBERS_ACTIVITY_EMAIL_MEMBERS_EXPLANATION',
                         $link,
-                        $memberLabel
+                        $memberLabel,
                     );
                     ?>
                 </td>
@@ -146,7 +146,7 @@ $link = $base . '/' . trim($sef, '/');
                             $creator = User::getInstance($row->log->get('created_by'));
                             $name = $this->escape(stripslashes($creator->get(
                                 'name',
-                                Lang::txt('PLG_MEMBERS_ACTIVITY_UNKNOWN')
+                                Lang::txt('PLG_MEMBERS_ACTIVITY_UNKNOWN'),
                             )));
 
                             if (in_array($creator->get('access'), User::getAuthorisedViewLevels())) {

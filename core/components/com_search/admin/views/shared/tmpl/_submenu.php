@@ -26,33 +26,33 @@ $entries = [
         "queryParams" => [
             "option" => $option,
             "task" => "configure",
-            "controller" => null
-        ]
+            "controller" => null,
+        ],
     ],
     [
         "text" => Lang::txt('COM_SEARCH_SUBMENU_COMPONENTS'),
         "queryParams" => [
             "option" => $option,
             "task" => "display",
-            "controller" => "searchable"
-        ]
+            "controller" => "searchable",
+        ],
     ],
     [
         "text" => Lang::txt('COM_SEARCH_SUBMENU_BLACKLIST'),
         "queryParams" => [
             "option" => $option,
             "task" => "manageBlacklist",
-            "controller" => "solr"
-        ]
+            "controller" => "solr",
+        ],
     ],
     [
         "text" => Lang::txt('COM_SEARCH_SUBMENU_BOOSTS'),
         "queryParams" => [
             "option" => $option,
             "task" => "list",
-            "controller" => "boosts"
-        ]
-    ]
+            "controller" => "boosts",
+        ],
+    ],
 ];
 
 foreach ($entries as $entry) {

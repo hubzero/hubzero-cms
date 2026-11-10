@@ -53,7 +53,7 @@ class LoaderTest extends TestCase
 
         $this->loader = new Loader($app, [
             'path_app'  => __DIR__ . '/Mock/app',
-            'path_core' => __DIR__ . '/Mock/core'
+            'path_core' => __DIR__ . '/Mock/core',
         ]);
     }
 
@@ -164,7 +164,7 @@ class LoaderTest extends TestCase
             'path_app'  => __DIR__ . '/Mock/app',
             'path_core' => __DIR__ . '/Mock/core',
             'style'     => 5,
-            'lang'      => 'en-US'
+            'lang'      => 'en-US',
         ]);
 
         $this->assertEquals($loader->getPath('core'), __DIR__ . '/Mock/core');
@@ -320,7 +320,7 @@ class LoaderTest extends TestCase
 
         $this->loader = new Loader($app, [
             'path_app'  => __DIR__ . '/Mock/app',
-            'path_core' => __DIR__ . '/Mock/core'
+            'path_core' => __DIR__ . '/Mock/core',
         ]);
 
         // Load admin template by client name
@@ -344,12 +344,12 @@ class LoaderTest extends TestCase
         $app['db']     = $driver;
         $app['config'] = new Registry([
             'site_template'          => 'sitefoo',
-            'administrator_template' => 'adminbar'
+            'administrator_template' => 'adminbar',
         ]);
 
         $this->loader = new Loader($app, [
             'path_app'  => __DIR__ . '/Mock/app',
-            'path_core' => __DIR__ . '/Mock/core'
+            'path_core' => __DIR__ . '/Mock/core',
         ]);
 
         // Site: named in config, found under core
@@ -394,7 +394,7 @@ class LoaderTest extends TestCase
 
         $loader = new Loader($app, [
             'path_app'  => __DIR__ . '/Mock/app',
-            'path_core' => __DIR__ . '/Mock/core'
+            'path_core' => __DIR__ . '/Mock/core',
         ]);
 
         $template = $loader->load();
@@ -411,7 +411,7 @@ class LoaderTest extends TestCase
 
         $loader = new Loader($bare, [
             'path_app'  => __DIR__ . '/Mock/app',
-            'path_core' => __DIR__ . '/Mock/core'
+            'path_core' => __DIR__ . '/Mock/core',
         ]);
 
         $this->assertEquals('system', $loader->load()->template);
@@ -482,7 +482,7 @@ class LoaderTest extends TestCase
 
             $insert = $pdo->prepare(
                 'INSERT INTO "' . $name . '" VALUES ('
-                . implode(', ', array_fill(0, count($columns), '?')) . ')'
+                . implode(', ', array_fill(0, count($columns), '?')) . ')',
             );
 
             foreach ($table->row as $row) {

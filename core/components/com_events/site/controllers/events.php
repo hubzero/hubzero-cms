@@ -79,7 +79,7 @@ class Events extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_name)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         switch ($this->_task) {
@@ -87,7 +87,7 @@ class Events extends SiteController
                 if ($this->year) {
                     Pathway::append(
                         $this->year,
-                        'index.php?option=' . $this->_option . '&year=' . $this->year
+                        'index.php?option=' . $this->_option . '&year=' . $this->year,
                     );
                 }
                 break;
@@ -95,13 +95,13 @@ class Events extends SiteController
                 if ($this->year) {
                     Pathway::append(
                         $this->year,
-                        'index.php?option=' . $this->_option . '&year=' . $this->year
+                        'index.php?option=' . $this->_option . '&year=' . $this->year,
                     );
                 }
                 if ($this->month) {
                     Pathway::append(
                         $this->month,
-                        'index.php?option=' . $this->_option . '&year=' . $this->year . '&month=' . $this->month
+                        'index.php?option=' . $this->_option . '&year=' . $this->year . '&month=' . $this->month,
                     );
                 }
                 break;
@@ -109,19 +109,19 @@ class Events extends SiteController
                 if ($this->year) {
                     Pathway::append(
                         $this->year,
-                        'index.php?option=' . $this->_option . '&year=' . $this->year
+                        'index.php?option=' . $this->_option . '&year=' . $this->year,
                     );
                 }
                 if ($this->month) {
                     Pathway::append(
                         $this->month,
-                        'index.php?option=' . $this->_option . '&year=' . $this->year . '&month=' . $this->month
+                        'index.php?option=' . $this->_option . '&year=' . $this->year . '&month=' . $this->month,
                     );
                 }
                 if ($this->day) {
                     Pathway::append(
                         $this->day,
-                        'index.php?option=' . $this->_option . '&year=' . $this->year . '&month=' . $this->month . '&day=' . $this->day
+                        'index.php?option=' . $this->_option . '&year=' . $this->year . '&month=' . $this->month . '&day=' . $this->day,
                     );
                 }
                 break;
@@ -129,24 +129,24 @@ class Events extends SiteController
                 if ($this->year) {
                     Pathway::append(
                         $this->year,
-                        'index.php?option=' . $this->_option . '&year=' . $this->year
+                        'index.php?option=' . $this->_option . '&year=' . $this->year,
                     );
                 }
                 if ($this->month) {
                     Pathway::append(
                         $this->month,
-                        'index.php?option=' . $this->_option . '&year=' . $this->year . '&month=' . $this->month
+                        'index.php?option=' . $this->_option . '&year=' . $this->year . '&month=' . $this->month,
                     );
                 }
                 if ($this->day) {
                     Pathway::append(
                         $this->day,
-                        'index.php?option=' . $this->_option . '&year=' . $this->year . '&month=' . $this->month . '&day=' . $this->day
+                        'index.php?option=' . $this->_option . '&year=' . $this->year . '&month=' . $this->month . '&day=' . $this->day,
                     );
                 }
                 Pathway::append(
                     Lang::txt('EVENTS_WEEK_OF', $this->day),
-                    'index.php?option=' . $this->_option . '&year=' . $this->year . '&month=' . $this->month . '&day=' . $this->day . '&task=week'
+                    'index.php?option=' . $this->_option . '&year=' . $this->year . '&month=' . $this->month . '&day=' . $this->day . '&task=week',
                 );
                 break;
         }
@@ -293,7 +293,7 @@ class Events extends SiteController
             $db->setQuery(
                 "SELECT YEAR(MIN(publish_up)) AS mn, YEAR(GREATEST(MAX(publish_up), COALESCE(MAX(publish_down), MAX(publish_up)))) AS mx
 				   FROM `#__events`
-				  WHERE `scope` = 'event' AND `state` = 1 AND `approved` = 1"
+				  WHERE `scope` = 'event' AND `state` = 1 AND `approved` = 1",
             );
             $bounds = $db->loadObject();
             if (
@@ -759,26 +759,26 @@ class Events extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(
-                    strtoupper($this->_name)
+                    strtoupper($this->_name),
                 ),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         Pathway::append(
             $eyear,
-            'index.php?option=' . $this->_option . '&year=' . $eyear
+            'index.php?option=' . $this->_option . '&year=' . $eyear,
         );
         Pathway::append(
             $emonth,
-            'index.php?option=' . $this->_option . '&year=' . $eyear . '&month=' . $emonth
+            'index.php?option=' . $this->_option . '&year=' . $eyear . '&month=' . $emonth,
         );
         Pathway::append(
             $eday,
-            'index.php?option=' . $this->_option . '&year=' . $eyear . '&month=' . $emonth . '&day=' . $eday
+            'index.php?option=' . $this->_option . '&year=' . $eyear . '&month=' . $emonth . '&day=' . $eday,
         );
         Pathway::append(
             stripslashes($row->title),
-            'index.php?option=' . $this->_option . '&task=details&id=' . $row->id
+            'index.php?option=' . $this->_option . '&task=details&id=' . $row->id,
         );
 
         // Incoming
@@ -796,7 +796,7 @@ class Events extends SiteController
         if ($alias) {
             Pathway::append(
                 stripslashes($page->title == null ? '' : $page->title),
-                'index.php?option=' . $this->_option . '&task=details&id=' . $row->id . '&page=' . $page->alias
+                'index.php?option=' . $this->_option . '&task=details&id=' . $row->id . '&page=' . $page->alias,
             );
         }
 
@@ -910,30 +910,30 @@ class Events extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(
-                    strtoupper($this->_name)
+                    strtoupper($this->_name),
                 ),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         Pathway::append(
             $eyear,
-            'index.php?option=' . $this->_option . '&year=' . $eyear
+            'index.php?option=' . $this->_option . '&year=' . $eyear,
         );
         Pathway::append(
             $emonth,
-            'index.php?option=' . $this->_option . '&year=' . $eyear . '&month=' . $emonth
+            'index.php?option=' . $this->_option . '&year=' . $eyear . '&month=' . $emonth,
         );
         Pathway::append(
             $eday,
-            'index.php?option=' . $this->_option . '&year=' . $eyear . '&month=' . $emonth . '&day=' . $eday
+            'index.php?option=' . $this->_option . '&year=' . $eyear . '&month=' . $emonth . '&day=' . $eday,
         );
         Pathway::append(
             stripslashes($event->title),
-            'index.php?option=' . $this->_option . '&task=details&id=' . $event->id
+            'index.php?option=' . $this->_option . '&task=details&id=' . $event->id,
         );
         Pathway::append(
             Lang::txt('EVENTS_REGISTER'),
-            'index.php?option=' . $this->_option . '&task=details&id=' . $event->id . '&page=register'
+            'index.php?option=' . $this->_option . '&task=details&id=' . $event->id . '&page=register',
         );
 
         $page = new Page($this->database);
@@ -1057,7 +1057,7 @@ class Events extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&task=details&id=' . $event->id),
                 Lang::txt('EVENTS_CLOSED_REGISTRATION'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -1065,7 +1065,7 @@ class Events extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&task=details&id=' . $event->id . '&page=register'),
                 Lang::txt('EVENTS_PROVIDE_PASSWORD'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -1091,30 +1091,30 @@ class Events extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(
-                    strtoupper($this->_name)
+                    strtoupper($this->_name),
                 ),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         Pathway::append(
             $eyear,
-            'index.php?option=' . $this->_option . '&year=' . $eyear
+            'index.php?option=' . $this->_option . '&year=' . $eyear,
         );
         Pathway::append(
             $emonth,
-            'index.php?option=' . $this->_option . '&year=' . $eyear . '&month=' . $emonth
+            'index.php?option=' . $this->_option . '&year=' . $eyear . '&month=' . $emonth,
         );
         Pathway::append(
             $eday,
-            'index.php?option=' . $this->_option . '&year=' . $eyear . '&month=' . $emonth . '&day=' . $eday
+            'index.php?option=' . $this->_option . '&year=' . $eyear . '&month=' . $emonth . '&day=' . $eday,
         );
         Pathway::append(
             stripslashes($event->title),
-            'index.php?option=' . $this->_option . '&task=details&id=' . $event->id
+            'index.php?option=' . $this->_option . '&task=details&id=' . $event->id,
         );
         Pathway::append(
             Lang::txt('EVENTS_REGISTER'),
-            'index.php?option=' . $this->_option . '&task=details&id=' . $event->id . '&page=register'
+            'index.php?option=' . $this->_option . '&task=details&id=' . $event->id . '&page=register',
         );
 
         // Incoming
@@ -1165,7 +1165,7 @@ class Events extends SiteController
             $subject = Lang::txt('EVENTS_EVENT_REGISTRATION') . ': ' . $event->title;
             $hub = [
                 'email' => $register['email'],
-                'name'  => Config::get('sitename') . ' ' . Lang::txt('EVENTS_EVENT_REGISTRATION')
+                'name'  => Config::get('sitename') . ' ' . Lang::txt('EVENTS_EVENT_REGISTRATION'),
             ];
 
             $eview = new \Hubzero\Component\View(['name' => 'register','layout' => 'email']);
@@ -1263,9 +1263,9 @@ class Events extends SiteController
                 $this->_getValueString($this->database, $reg, [
                     'firstname', 'lastname', 'affiliation', 'title', 'city', 'state', 'postalcode', 'country', 'telephone', 'fax', 'email',
                     'website', 'position', 'degree', 'gender', 'arrival', 'departure', 'disability',
-                    'dietary', 'dinner', 'additional', 'comments'
+                    'dietary', 'dinner', 'additional', 'comments',
                 ]) .
-            ')'
+            ')',
         );
         $this->database->query();
         $races = Request::getArray('race', null, 'post');
@@ -1275,7 +1275,7 @@ class Events extends SiteController
                 if (array_key_exists($race, $races) && $races[$race]) {
                     $this->database->execute(
                         'INSERT INTO `#__events_respondent_race_rel`(respondent_id, race, tribal_affiliation)
-						VALUES (' . $resp_id . ', \'' . $race . '\', ' . ($race == 'nativeamerican' ? $this->database->quote($races['nativetribe']) : 'null') . ')'
+						VALUES (' . $resp_id . ', \'' . $race . '\', ' . ($race == 'nativeamerican' ? $this->database->quote($races['nativetribe']) : 'null') . ')',
                     );
                 }
             }
@@ -1300,7 +1300,7 @@ class Events extends SiteController
                 case 'position':
                     $rv[] = ((isset($reg['position']) || isset($reg['position_other'])) && ($reg['position'] || $reg['position_other']))
                         ? $this->database->quote(
-                            $reg['position'] ? $reg['position'] : $reg['position_other']
+                            $reg['position'] ? $reg['position'] : $reg['position_other'],
                         )
                         : 'null';
                     break;
@@ -1347,7 +1347,7 @@ class Events extends SiteController
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
             Lang::txt('EVENTS_LOGIN_NOTICE'),
-            'warning'
+            'warning',
         );
     }
 
@@ -1366,12 +1366,12 @@ class Events extends SiteController
             if (Pathway::count() <= 0) {
                 Pathway::append(
                     Lang::txt(strtoupper($this->_name)),
-                    'index.php?option=' . $this->_option
+                    'index.php?option=' . $this->_option,
                 );
             }
             Pathway::append(
                 Lang::txt('EVENTS_CAL_LANG_ADD_TITLE'),
-                'index.php?option=' . $this->_option . '&task=add'
+                'index.php?option=' . $this->_option . '&task=add',
             );
 
             $this->loginTask();
@@ -1592,7 +1592,7 @@ class Events extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_name)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         $p = 'index.php?option=' . $this->_option . '&task=' . $this->_task;
@@ -1601,12 +1601,12 @@ class Events extends SiteController
         }
         Pathway::append(
             Lang::txt(strtoupper($this->_name) . '_' . strtoupper($this->_task)),
-            $p
+            $p,
         );
         if ($row->id) {
             Pathway::append(
                 stripslashes($row->title),
-                'index.php?option=' . $this->_option . '&task=details&id=' . $row->id
+                'index.php?option=' . $this->_option . '&task=details&id=' . $row->id,
             );
         }
 
@@ -1645,7 +1645,7 @@ class Events extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
                 Lang::txt('EVENTS_LOGIN_NOTICE'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -1699,7 +1699,7 @@ class Events extends SiteController
         // Build the message to be e-mailed
         $eview = new View([
             'name'   => 'emails',
-            'layout' => 'deleted'
+            'layout' => 'deleted',
         ]);
         $eview->set('option', $this->_option);
         $eview->sitename = Config::get('sitename');

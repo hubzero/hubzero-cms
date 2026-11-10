@@ -32,7 +32,7 @@ class Migration20160513140417ComMembers extends Base
         'reason',
         'nativeTribe',
         'phone',
-        'orcid'
+        'orcid',
     ];
 
     /**
@@ -45,7 +45,7 @@ class Migration20160513140417ComMembers extends Base
         'edulevel',
         'hispanic',
         'race',
-        'bio'
+        'bio',
     ];
 
     /**
@@ -61,7 +61,7 @@ class Migration20160513140417ComMembers extends Base
         'regHost' => 'registerHost',
         'homeDirectory' => 'homeDirectory',
         'loginShell' => 'loginShell',
-        'ftpShell' => 'ftpShell'
+        'ftpShell' => 'ftpShell',
     ];
 
     /**
@@ -91,7 +91,7 @@ class Migration20160513140417ComMembers extends Base
                                 'activation'     => $result->emailConfirmed,
                                 'registerIP'     => $result->regIP,
                                 'access'         => $result->public,
-                                'sendEmail'      => $result->mailPreferenceOption
+                                'sendEmail'      => $result->mailPreferenceOption,
                             ])
                             ->where('id', '=', (int) $result->uidNumber)
                             ->execute();
@@ -171,7 +171,7 @@ class Migration20160513140417ComMembers extends Base
                             Expression::literal($field),
                             Expression::column($field),
                             Expression::literal((int)$ordering),
-                            Expression::literal((int)$access)
+                            Expression::literal((int)$access),
                         ])
                         ->from('#__xprofiles_' . $field)
                         ->whereNotNull($field)
@@ -219,7 +219,7 @@ class Migration20160513140417ComMembers extends Base
                             'profile_key'   => 'address',
                             'profile_value' => json_encode($a),
                             'ordering'      => $ordering,
-                            'access'        => $access
+                            'access'        => $access,
                         ])
                         ->execute();
                 }

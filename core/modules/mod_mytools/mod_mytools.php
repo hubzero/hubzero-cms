@@ -91,7 +91,7 @@ class Mytools extends Module
                     0,
                     1,
                     $tool->revision,
-                    $tool->toolname
+                    $tool->toolname,
                 );
             }
             $toolnames[] = strtolower($tool->toolname);
@@ -171,7 +171,7 @@ class Mytools extends Module
 
                     // Tool info link
                     $pipelineUrl = Route::url(
-                        'index.php?option=com_tools&controller=pipeline&app=' . $tool->toolname
+                        'index.php?option=com_tools&controller=pipeline&app=' . $tool->toolname,
                     );
                     $tooltipTitle = $tool->caption . ' :: ' . $tool->desc;
                     $html .= "\t\t\t" . ' <a href="' . $pipelineUrl . '" class="tooltips" title="'

@@ -30,6 +30,6 @@ class Token extends Relational
      * @var array
      */
     public $initiate = [
-        'created'
+        'created',
     ];
 }

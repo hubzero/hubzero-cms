@@ -101,7 +101,7 @@ class Loader
                 PATH_APP . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . substr($result->option, 4),
                 PATH_APP . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . $result->option,
                 PATH_CORE . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . substr($result->option, 4),
-                PATH_CORE . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . $result->option
+                PATH_CORE . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . $result->option,
             ];
 
             foreach ($paths as $path) {

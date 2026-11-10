@@ -95,8 +95,8 @@ class Resourcetype extends Select
             $this->value = [
                 [
                     'resource' => 0,
-                    'genre' => 'article'
-                ]
+                    'genre' => 'article',
+                ],
             ];
         }
 

@@ -30,7 +30,7 @@ class Profile extends Base
         'memory'        => true,
         'querycount'    => true,
         'timeinqueries' => true,
-        'totaltime'     => true
+        'totaltime'     => true,
     ];
 
     /**

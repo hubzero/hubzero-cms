@@ -92,7 +92,7 @@ class RouteTest extends Basic
             $this->assertMatchesRegularExpression(
                 '#^[a-z0-9._-]+(/[a-z0-9._-]+)*$#',
                 $route,
-                $case . ': path segments only'
+                $case . ': path segments only',
             );
 
             foreach (explode('/', $route) as $segment) {

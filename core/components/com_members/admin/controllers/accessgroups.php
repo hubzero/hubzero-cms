@@ -53,10 +53,10 @@ class Accessgroups extends AdminController
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             )),
             'sort' => 'lft',
-            'sort_Dir' => 'ASC'
+            'sort_Dir' => 'ASC',
         ];
 
         $entries = Accessgroup::all();
@@ -332,35 +332,35 @@ class Accessgroups extends AdminController
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             )),
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'lft'
+                'lft',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
+                'ASC',
             ),
             'level_start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.filter_level_start',
                 'filter_level_start',
                 0,
-                'int'
+                'int',
             ),
             'level_end' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.filter_level_end',
                 'filter_level_end',
                 0,
-                'int'
+                'int',
             ),
             'component' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.filter_component',
                 'filter_component',
-                ''
-            )
+                '',
+            ),
         ];
 
         if ($filters['level_end'] > 0 && $filters['level_end'] < $filters['level_start']) {

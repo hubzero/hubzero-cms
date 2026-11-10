@@ -20,20 +20,20 @@ defined('_HZEXEC_') or die();
 if (Pathway::count() <= 0) {
     Pathway::append(
         Lang::txt(strtoupper($this->option)),
-        'index.php?option=' . $this->option
+        'index.php?option=' . $this->option,
     );
 }
 Pathway::append(
     \Hubzero\Utility\Str::truncate(
         strip_tags($this->question->get('subject')),
-        50
+        50,
     ),
-    $this->question->link()
+    $this->question->link(),
 );
 
 Document::setTitle(
     Lang::txt('COM_ANSWERS') . ': '
-        . strip_tags($this->question->get('subject'))
+        . strip_tags($this->question->get('subject')),
 );
 
 $this->css()
@@ -110,9 +110,9 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
                                 stripslashes(
                                     $this->question->creator->get(
                                         'name',
-                                        Lang::txt('JUNKNOWN')
-                                    )
-                                )
+                                        Lang::txt('JUNKNOWN'),
+                                    ),
+                                ),
                             );
                             $viewLevels = User::getAuthorisedViewLevels();
                             if (
@@ -171,7 +171,7 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
                                     $val = preg_replace(
                                         '#<a\s[^>]*href="([^"]*)"[^>]*?>(.*?)</a>#is',
                                         "<a href='$1' rel='nofollow'>$2</a>",
-                                        $val
+                                        $val,
                                     );
                                 }
                                     echo $val;
@@ -318,7 +318,7 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
                 $deleteAction = Route::url(
                     'index.php?option=' . $this->option
                         . '&task=deleteq&id='
-                        . $this->question->get('id')
+                        . $this->question->get('id'),
                 );
                 ?>
                 <section class="below section">
@@ -410,7 +410,7 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
 
                         if ($resource) {
                             $resourceUrl = Route::url(
-                                'index.php?option=com_resources&' . $resource
+                                'index.php?option=com_resources&' . $resource,
                             );
                             $resourceLink = '<a href="' . $resourceUrl . '">'
                                 . Lang::txt('COM_ANSWERS_FOLLOWING_RESOURCE')
@@ -427,7 +427,7 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
                         }
                         if ($publication) {
                             $pubUrl = Route::url(
-                                'index.php?option=com_publications&' . $publication
+                                'index.php?option=com_publications&' . $publication,
                             );
                             $pubLink = '<a href="' . $pubUrl . '">'
                                 . Lang::txt('COM_ANSWERS_FOLLOWING_RESOURCE')
@@ -472,7 +472,7 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
                         <?php
                         echo Lang::txt(
                             'COM_ANSWERS_EARN_UP_TO_FOR_BEST_ANSWER',
-                            $this->question->get('maxaward')
+                            $this->question->get('maxaward'),
                         );
                         ?>
                     </p>
@@ -531,7 +531,7 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
                                                 50,
                                                 10,
                                                 'responseanswer',
-                                                ['class' => 'form-control minimal']
+                                                ['class' => 'form-control minimal'],
                                             );
                                             ?>
                                         </label>
@@ -577,18 +577,18 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
                                     Route::url(
                                         $this->question->link('answer'),
                                         false,
-                                        true
-                                    )
+                                        true,
+                                    ),
                                 );
                                 $loginUrl = Route::url(
                                     'index.php?option=com_users&view=login&return='
-                                        . $returnUrl
+                                        . $returnUrl,
                                 );
                                 $loginLink = '<a href="' . $loginUrl . '">'
                                     . Lang::txt('COM_ANSWERS_LOGIN') . '</a>';
                                 echo Lang::txt(
                                     'COM_ANSWERS_PLEASE_LOGIN_TO_ANSWER',
-                                    $loginLink
+                                    $loginLink,
                                 );
                                 ?>
                             </p>
@@ -705,12 +705,12 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
                         $route = Route::url(
                             $this->question->link('answer'),
                             false,
-                            true
+                            true,
                         );
                         $answerUrl = (User::isGuest())
                             ? Route::url(
                                 'index.php?option=com_users&view=login&return='
-                                    . base64_encode($route)
+                                    . base64_encode($route),
                             )
                             : $route;
                         ?>

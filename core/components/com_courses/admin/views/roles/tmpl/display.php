@@ -61,7 +61,7 @@ Toolbar::help('roles');
                     echo $this->pagination(
                         $this->total,
                         $this->filters['start'],
-                        $this->filters['limit']
+                        $this->filters['limit'],
                     );
                     ?>
                 </td>

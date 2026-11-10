@@ -44,14 +44,14 @@ Html::behavior('framework', true);
                     $link = Route::url(
                         'index.php?option=com_modules&client_id=0'
                         . '&task=edit&id=' . $module->id
-                        . '&tmpl=component&view=module&layout=modal'
+                        . '&tmpl=component&view=module&layout=modal',
                     );
                     $editTitle = Lang::txt('COM_MENUS_EDIT_MODULE_SETTINGS');
                     $modAccess = Lang::txt(
                         'COM_MENUS_MODULE_ACCESS_POSITION',
                         $this->escape($module->title),
                         $this->escape($module->access_title),
-                        $this->escape($module->position)
+                        $this->escape($module->position),
                     );
                     ?>
                     <a class="modal"

@@ -35,7 +35,7 @@ class ErrorServiceProvider extends ServiceProvider
                 "%channel%.%level_name%: %message% %context% %extra%", // Format of message in log, default [%datetime%] %channel%.%level_name%: %message% %context% %extra%\n
                 null, // Datetime format
                 true, // allowInlineLineBreaks option, default false
-                true  // discard empty Square brackets in the end, default false
+                true,  // discard empty Square brackets in the end, default false
             );
 
             $loghandler->setFormatter($formatter);
@@ -47,7 +47,7 @@ class ErrorServiceProvider extends ServiceProvider
 
             $handler = new Handler(
                 new Plain($app['config']->get('debug')),
-                $logger
+                $logger,
             );
 
             return $handler;
@@ -104,7 +104,7 @@ class ErrorServiceProvider extends ServiceProvider
             $this->app['error']->setRenderer(new Page(
                 $this->app['document'],
                 $this->app['template.loader'],
-                $this->app['config']->get('debug')
+                $this->app['config']->get('debug'),
             ));
         }
     }

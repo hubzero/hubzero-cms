@@ -105,7 +105,7 @@ class DetectorTest extends Basic
             'Mozilla/5.0 (AmigaOS; U; AmigaOS 1.3; en-US; rv:1.8.1.21) Gecko/20090303 SeaMonkey/1.1.15' => false,
             'Mozilla/5 (X11; Linux x86_64) AppleWebKit/537.4 (KHTML like Gecko) Arch Linux Firefox/23.0 Xfce' => false,
             'Mozilla/5.0 (X11; CrOS x86_64 4731.101.0) AppleWebKit/537.36 (KHTML, 
-                like Gecko) Chrome/31.0.1650.67 Safari/537.36' => false
+                like Gecko) Chrome/31.0.1650.67 Safari/537.36' => false,
         ];
 
         foreach ($uas as $userAgentString => $isRobot) {

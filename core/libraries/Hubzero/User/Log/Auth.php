@@ -33,7 +33,7 @@ class Auth extends Relational
      **/
     public $initiate = [
         'logged',
-        'ip'
+        'ip',
     ];
 
     /**

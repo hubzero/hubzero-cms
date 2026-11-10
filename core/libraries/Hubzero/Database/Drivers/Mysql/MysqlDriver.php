@@ -167,7 +167,7 @@ class MysqlDriver extends BaseSqlDriver
             throw new UnsupportedEngineException(sprintf(
                 'Unsupported engine type of "%s" specified. Engine type must be one of: %s',
                 $engine,
-                implode(', ', $supported)
+                implode(', ', $supported),
             ));
         }
 
@@ -231,7 +231,7 @@ class MysqlDriver extends BaseSqlDriver
     protected function applyColumnModifiers(
         string $abstractType,
         string $nativeType,
-        array $modifiers
+        array $modifiers,
     ): string {
         // MySQL supports display width on integer types
         $integerTypes = [
@@ -248,7 +248,7 @@ class MysqlDriver extends BaseSqlDriver
         return parent::applyColumnModifiers(
             $abstractType,
             $nativeType,
-            $modifiers
+            $modifiers,
         );
     }
 
@@ -633,7 +633,7 @@ class MysqlDriver extends BaseSqlDriver
                 "SUM_ROWS_SENT as rows_sent " .
                 "FROM performance_schema.events_statements_summary_by_digest " .
                 "ORDER BY SUM_TIMER_WAIT DESC " .
-                "LIMIT " . (int) $limit
+                "LIMIT " . (int) $limit,
             );
             return $this->loadObjectList() ?: [];
         } catch (\Exception $e) {
@@ -717,7 +717,7 @@ class MysqlDriver extends BaseSqlDriver
 
         $this->setQuery(
             "ALTER TABLE `$table` ADD COLUMN `$column` $type " .
-            "GENERATED ALWAYS AS ($expression) VIRTUAL"
+            "GENERATED ALWAYS AS ($expression) VIRTUAL",
         );
         $this->execute();
 
@@ -753,7 +753,7 @@ class MysqlDriver extends BaseSqlDriver
 
         $this->setQuery(
             "ALTER TABLE `$table` ADD COLUMN `$column` $type " .
-            "GENERATED ALWAYS AS ($expression) STORED"
+            "GENERATED ALWAYS AS ($expression) STORED",
         );
         $this->execute();
 
@@ -853,7 +853,7 @@ class MysqlDriver extends BaseSqlDriver
             "SELECT CONSTRAINT_NAME as name, CHECK_CLAUSE as expression " .
             "FROM information_schema.CHECK_CONSTRAINTS " .
             "WHERE CONSTRAINT_SCHEMA = DATABASE() " .
-            "AND TABLE_NAME = " . $this->quote($table)
+            "AND TABLE_NAME = " . $this->quote($table),
         );
 
         return $this->loadObjectList() ?: [];
@@ -1247,7 +1247,7 @@ class MysqlDriver extends BaseSqlDriver
     {
         return $this->getTableColumnsFromShowQuery(
             $this->buildShowColumnsQueryForDriver((string) $table, true, true, 'COLUMNS'),
-            (bool) $typeOnly
+            (bool) $typeOnly,
         );
     }
 
@@ -1274,7 +1274,7 @@ class MysqlDriver extends BaseSqlDriver
     public function getIndexes($table)
     {
         return $this->normalizeIndexesFromTableKeys(
-            $this->getTableKeys($table)
+            $this->getTableKeys($table),
         );
     }
 
@@ -1434,7 +1434,7 @@ class MysqlDriver extends BaseSqlDriver
     {
         return $this->tableHasFieldFromShowQuery(
             $this->buildShowColumnsQueryForDriver((string) $table, false, true, 'FIELDS'),
-            (string) $field
+            (string) $field,
         );
     }
 
@@ -1447,7 +1447,7 @@ class MysqlDriver extends BaseSqlDriver
     {
         return $this->getPrimaryKeyFromTableKeys(
             $this->getTableKeys($table),
-            'PRIMARY'
+            'PRIMARY',
         );
     }
 
@@ -1461,7 +1461,7 @@ class MysqlDriver extends BaseSqlDriver
     {
         $this->setQuery(
             'SHOW KEYS FROM ' . $this->quoteName($table) .
-            " WHERE Key_name = 'PRIMARY'"
+            " WHERE Key_name = 'PRIMARY'",
         );
         return $this->extractPrimaryKeyColumnsFromTableKeyRows($this->loadObjectList());
     }
@@ -1489,7 +1489,7 @@ class MysqlDriver extends BaseSqlDriver
         return $this->parseCharacterSetFromCreate(
             $this->getTableCreate($table),
             (string) $table,
-            $field !== null ? (string) $field : null
+            $field !== null ? (string) $field : null,
         );
     }
 
@@ -1508,7 +1508,7 @@ class MysqlDriver extends BaseSqlDriver
         return $this->convertToCharsetUsingAlter(
             (string) $table,
             (string) $charset,
-            $collate !== null ? (string) $collate : null
+            $collate !== null ? (string) $collate : null,
         );
     }
 
@@ -1712,7 +1712,7 @@ class MysqlDriver extends BaseSqlDriver
         $tableName = str_replace('#__', $this->tablePrefix, $name);
         $this->setQuery(
             'SELECT COUNT(*) FROM information_schema.VIEWS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = '
-            . $this->quote($tableName)
+            . $this->quote($tableName),
         );
 
         return (bool) $this->loadResult();
@@ -1726,7 +1726,7 @@ class MysqlDriver extends BaseSqlDriver
     public function getViews(): array
     {
         $this->setQuery(
-            'SELECT TABLE_NAME FROM information_schema.VIEWS WHERE TABLE_SCHEMA = DATABASE() ORDER BY TABLE_NAME'
+            'SELECT TABLE_NAME FROM information_schema.VIEWS WHERE TABLE_SCHEMA = DATABASE() ORDER BY TABLE_NAME',
         );
 
         return $this->loadColumn() ?: [];
@@ -1774,12 +1774,12 @@ class MysqlDriver extends BaseSqlDriver
                 . '`current_value` BIGINT NOT NULL DEFAULT 0, '
                 . '`increment_value` INT NOT NULL DEFAULT 1, '
                 . '`table_name` VARCHAR(255) NULL'
-                . ') ENGINE=InnoDB'
+                . ') ENGINE=InnoDB',
             );
             $this->execute();
         } elseif (!$this->tableHasField('_sequences', 'table_name')) {
             $this->setQuery(
-                'ALTER TABLE `_sequences` ADD `table_name` VARCHAR(255) NULL'
+                'ALTER TABLE `_sequences` ADD `table_name` VARCHAR(255) NULL',
             );
             $this->execute();
         }
@@ -1823,7 +1823,7 @@ class MysqlDriver extends BaseSqlDriver
         $name,
         $start = 1,
         $increment = 1,
-        array $options = []
+        array $options = [],
     ): bool {
         $this->ensureSequenceTable();
         $name = $this->replacePrefix($name);
@@ -1840,7 +1840,7 @@ class MysqlDriver extends BaseSqlDriver
             . ($tableName ? $this->quote($tableName) : 'NULL');
 
         $this->setQuery(
-            "INSERT INTO `_sequences` ({$columns}) VALUES ({$values})"
+            "INSERT INTO `_sequences` ({$columns}) VALUES ({$values})",
         );
         $this->execute();
 
@@ -1861,7 +1861,7 @@ class MysqlDriver extends BaseSqlDriver
 
         $this->setQuery(
             'DELETE FROM `_sequences` WHERE `name` = '
-            . $this->quote($name)
+            . $this->quote($name),
         );
         $this->execute();
 
@@ -1874,7 +1874,7 @@ class MysqlDriver extends BaseSqlDriver
             try {
                 $this->setQuery(
                     'DELETE FROM `_sequences` WHERE `table_name` = '
-                    . $this->quote($tableName)
+                    . $this->quote($tableName),
                 );
                 $this->execute();
             } catch (\Exception $e) {
@@ -1900,7 +1900,7 @@ class MysqlDriver extends BaseSqlDriver
 
         $this->setQuery(
             'SELECT COUNT(*) FROM `_sequences` WHERE `name` = '
-            . $this->quote($name)
+            . $this->quote($name),
         );
 
         return (int) $this->loadResult() > 0;
@@ -1923,7 +1923,7 @@ class MysqlDriver extends BaseSqlDriver
         $this->setQuery(
             'UPDATE `_sequences` SET `current_value` = '
             . 'LAST_INSERT_ID(`current_value` + `increment_value`) '
-            . 'WHERE `name` = ' . $this->quote($name)
+            . 'WHERE `name` = ' . $this->quote($name),
         );
         $this->execute();
 
@@ -1945,7 +1945,7 @@ class MysqlDriver extends BaseSqlDriver
 
         $this->setQuery(
             'SELECT `current_value` FROM `_sequences` WHERE `name` = '
-            . $this->quote($name)
+            . $this->quote($name),
         );
         $result = $this->loadResult();
 
@@ -2155,7 +2155,7 @@ class MysqlDriver extends BaseSqlDriver
     public function buildTableOptions(
         ?string $engine = null,
         ?string $charset = null,
-        ?string $collation = null
+        ?string $collation = null,
     ): string {
         $parts = [];
 
@@ -2194,7 +2194,7 @@ class MysqlDriver extends BaseSqlDriver
         string $table,
         string $column,
         string $definition,
-        string $comment
+        string $comment,
     ): string {
         $query = "ALTER TABLE `$table` MODIFY COLUMN `$column` $definition";
 
@@ -2220,7 +2220,7 @@ class MysqlDriver extends BaseSqlDriver
         string $column,
         string $definition,
         string $afterColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         $table = $this->replacePrefix($table);
 
@@ -2262,7 +2262,7 @@ class MysqlDriver extends BaseSqlDriver
         string $column,
         string $definition,
         string $beforeColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         $table = $this->replacePrefix($table);
 
@@ -2347,7 +2347,7 @@ class MysqlDriver extends BaseSqlDriver
         string $oldColumn,
         string $newColumn,
         string $definition,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         $table = $this->replacePrefix($table);
 
@@ -2382,7 +2382,7 @@ class MysqlDriver extends BaseSqlDriver
         string $table,
         string $column,
         string $definition,
-        string $comment
+        string $comment,
     ): string {
         $query = "ALTER TABLE `$table` ADD COLUMN `$column` $definition";
 
@@ -2408,7 +2408,7 @@ class MysqlDriver extends BaseSqlDriver
         string $column,
         string $definition,
         string $afterColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         $table = $this->replacePrefix($table);
 
@@ -2450,7 +2450,7 @@ class MysqlDriver extends BaseSqlDriver
         string $column,
         string $definition,
         string $beforeColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         $table = $this->replacePrefix($table);
 
@@ -2565,7 +2565,7 @@ class MysqlDriver extends BaseSqlDriver
     public function setTableCharset(
         string $table,
         string $charset = 'utf8',
-        string $collation = 'utf8_general_ci'
+        string $collation = 'utf8_general_ci',
     ): bool {
         $table = $this->replacePrefix($table);
 
@@ -2687,7 +2687,7 @@ class MysqlDriver extends BaseSqlDriver
         string $table,
         string $column = 'id',
         bool $first = false,
-        bool $useBigInt = true
+        bool $useBigInt = true,
     ): bool {
         $table = $this->replacePrefix($table);
 

@@ -47,9 +47,9 @@ $assets = $asset->find(
             'offering_id' => $this->course->offering()->get('id'),
             'graded'      => true,
             'state'       => 1,
-            'asset_scope' => 'asset_group'
-        ]
-    ]
+            'asset_scope' => 'asset_group',
+        ],
+    ],
 );
 
 // Get gradebook auxiliary assets
@@ -60,8 +60,8 @@ $auxiliary = $asset->findByScope(
         'asset_type'    => 'gradebook',
         'asset_subtype' => 'auxiliary',
         'graded'        => true,
-        'state'         => 1
-    ]
+        'state'         => 1,
+    ],
 );
 
 $assets = array_merge($assets, $auxiliary);

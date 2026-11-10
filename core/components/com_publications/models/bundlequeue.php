@@ -123,7 +123,7 @@ class BundleQueue extends Relational
 			 FROM `#__publication_versions` v
 			 JOIN `#__publications` p ON p.`id` = v.`publication_id`
 			 JOIN `#__publication_master_types` mt ON mt.`id` = p.`master_type`
-			 WHERE v.`id` = " . $versionId . " LIMIT 1"
+			 WHERE v.`id` = " . $versionId . " LIMIT 1",
         );
 
         return trim((string) $db->loadResult()) !== '';
@@ -336,7 +336,7 @@ class BundleQueue extends Relational
                 $row->get('worker_started'),
                 $row->get('worker_host'),
                 $row->get('last_attempt_at'),
-                self::MAX_BUILD_SECONDS
+                self::MAX_BUILD_SECONDS,
             );
 
             if ($stale) {

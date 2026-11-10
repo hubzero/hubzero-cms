@@ -41,7 +41,7 @@ class Offering extends SiteController
         $this->gid = Request::getString('gid', '');
         if (!$this->gid) {
             App::redirect(
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
             return;
         }
@@ -63,7 +63,7 @@ class Offering extends SiteController
             $url = 'index.php?option=' . $this->_option
                 . '&controller=course&gid=' . $this->course->get('alias');
             App::redirect(
-                Route::url($url)
+                Route::url($url),
             );
             return;
         }
@@ -102,7 +102,7 @@ class Offering extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
 
@@ -111,7 +111,7 @@ class Offering extends SiteController
                 . '&gid=' . $this->course->get('alias');
             Pathway::append(
                 stripslashes($this->course->get('title')),
-                $courseUrl
+                $courseUrl,
             );
 
             if ($this->course->offering()->exists()) {
@@ -120,7 +120,7 @@ class Offering extends SiteController
                     . '&offering=' . $this->course->offering()->get('alias');
                 Pathway::append(
                     stripslashes($this->course->offering()->get('title')),
-                    $offeringUrl
+                    $offeringUrl,
                 );
             }
         }
@@ -164,7 +164,7 @@ class Offering extends SiteController
         App::redirect(
             $link,
             Lang::txt($message),
-            'warning'
+            'warning',
         );
         return;
     }
@@ -197,11 +197,11 @@ class Offering extends SiteController
             $stateKey = $this->_option . '.offering' . $offeringId . '.nonadmin';
             $this->view->nonadmin = Request::getInt('nonadmin', User::getState(
                 $stateKey,
-                0
+                0,
             ));
             User::setState(
                 $stateKey,
-                $this->view->nonadmin
+                $this->view->nonadmin,
             );
         }
 
@@ -217,7 +217,7 @@ class Offering extends SiteController
             $plugins = Event::trigger('courses.onCourse', [
                 $this->course,
                 $this->course->offering(),
-                true
+                true,
             ]);
 
             // A hub with no course plugins answering never enters the loop,
@@ -235,7 +235,7 @@ class Offering extends SiteController
         // Trigger the functions that return the areas we'll be using
         $plugins = Event::trigger('courses.onCourse', [
             $this->course,
-            $this->course->offering()
+            $this->course->offering(),
         ]);
 
         $this->view->course        = $this->course;
@@ -266,7 +266,7 @@ class Offering extends SiteController
             // Redirect back to the course page
             App::redirect(
                 Route::url($offering->link()),
-                Lang::txt('COM_COURSES_ALREADY_ENROLLED')
+                Lang::txt('COM_COURSES_ALREADY_ENROLLED'),
             );
             return;
         }
@@ -328,21 +328,21 @@ class Offering extends SiteController
                         $offeringIdsDiffer = $sectionOfferingId != $offeringId;
                         if ($section->exists() && $offeringIdsDiffer) {
                             $offering = Models\Offering::getInstance(
-                                $sectionOfferingId
+                                $sectionOfferingId,
                             );
                             $offeringCourseId = $offering->get('course_id');
                             $thisCourseId = $this->course->get('id');
                             $courseIdsDiffer = $offeringCourseId != $thisCourseId;
                             if ($offering->exists() && $courseIdsDiffer) {
                                 $this->course = Models\Course::getInstance(
-                                    $offeringCourseId
+                                    $offeringCourseId,
                                 );
                             }
                         }
                         $enrollUrl = $offering->link()
                             . '&task=enroll&code=' . $code;
                         App::redirect(
-                            Route::url($enrollUrl)
+                            Route::url($enrollUrl),
                         );
                         return;
                     }
@@ -384,13 +384,13 @@ class Offering extends SiteController
             $link = $offering->link();
 
             $data = Event::trigger('courses.onCourseEnrolled', [
-                $this->course, $offering, $offering->section()
+                $this->course, $offering, $offering->section(),
             ]);
             if ($data && count($data) > 0) {
                 $link = implode('', $data);
             }
             App::redirect(
-                Route::url($link)
+                Route::url($link),
             );
             return;
         }
@@ -462,7 +462,7 @@ class Offering extends SiteController
                     App::redirect(
                         Route::url($this->course->offering()->link()),
                         $enrollmentRequiredMsg,
-                        'warning'
+                        'warning',
                     );
                     return;
                 }
@@ -480,7 +480,7 @@ class Offering extends SiteController
                                 App::redirect(
                                     Route::url($this->course->offering()->link()),
                                     $enrollmentRequiredMsg,
-                                    'warning'
+                                    'warning',
                                 );
                                 return;
                             }
@@ -509,7 +509,7 @@ class Offering extends SiteController
                 App::redirect(
                     Route::url($this->course->offering()->link()),
                     Lang::txt('COM_COURSES_ERROR_ASSET_UNAVAILABLE'),
-                    'warning'
+                    'warning',
                 );
                 return;
             }
@@ -542,7 +542,7 @@ class Offering extends SiteController
             App::redirect(
                 Route::url($this->course->offering()->link()),
                 $prereqMsg,
-                'warning'
+                'warning',
             );
             return;
         }
@@ -575,7 +575,7 @@ class Offering extends SiteController
             . '&gid=' . $this->course->get('alias')
             . '&task=offerings';
         App::redirect(
-            Route::url($url)
+            Route::url($url),
         );
     }
 
@@ -593,7 +593,7 @@ class Offering extends SiteController
             . '&gid=' . $this->course->get('alias')
             . '&task=offerings';
         App::redirect(
-            Route::url($url)
+            Route::url($url),
         );
     }
 

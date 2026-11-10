@@ -58,7 +58,7 @@ class Usergroup extends Field
                 trim((string) $option),
                 'value',
                 'text',
-                ((string) $option['disabled'] == 'true')
+                ((string) $option['disabled'] == 'true'),
             );
 
             // Set some option attributes.

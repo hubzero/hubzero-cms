@@ -336,7 +336,7 @@ class TouchMethodTest extends AbstractDriverTestCase
                   'title' => $title,
                   'content' => 'Test content',
                   'modified' => $modified,
-                  'created' => $modified
+                  'created' => $modified,
               ])
               ->execute();
 

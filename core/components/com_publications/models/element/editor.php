@@ -62,7 +62,7 @@ class Editor extends Base
             $fieldId,
             null,
             null,
-            ['class' => $classes]
+            ['class' => $classes],
         );
         return '<span class="field-wrap">' . $editorHtml . '</span>';
     }

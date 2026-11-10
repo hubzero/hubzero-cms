@@ -47,24 +47,24 @@ class Migration20260914120000TplWelcome extends Base
         // to overrule that.
         $this->db->setQuery(
             'SELECT `template` FROM `#__template_styles`'
-            . ' WHERE `client_id` = 0 AND `home` = 1 LIMIT 1'
+            . ' WHERE `client_id` = 0 AND `home` = 1 LIMIT 1',
         );
 
         if ($this->db->loadResult() == 'welcome') {
             $this->db->setQuery(
                 'SELECT `id` FROM `#__template_styles`'
                 . " WHERE `client_id` = 0 AND `template` = 'meridian'"
-                . ' ORDER BY `id` ASC LIMIT 1'
+                . ' ORDER BY `id` ASC LIMIT 1',
             );
 
             if ($id = $this->db->loadResult()) {
                 $this->db->setQuery(
-                    'UPDATE `#__template_styles` SET `home` = 0 WHERE `client_id` = 0'
+                    'UPDATE `#__template_styles` SET `home` = 0 WHERE `client_id` = 0',
                 );
                 $this->db->query();
 
                 $this->db->setQuery(
-                    'UPDATE `#__template_styles` SET `home` = 1 WHERE `id` = ' . (int) $id
+                    'UPDATE `#__template_styles` SET `home` = 1 WHERE `id` = ' . (int) $id,
                 );
                 $this->db->query();
 
@@ -73,7 +73,7 @@ class Migration20260914120000TplWelcome extends Base
                 $this->log(
                     'This hub is on the welcome template and has no meridian to move to;'
                     . ' the next enabled style will be used instead',
-                    'warning'
+                    'warning',
                 );
             }
         }

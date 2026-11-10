@@ -121,7 +121,7 @@ class SchemaSnapshot
         string $name,
         ?string $description = null,
         ?callable $filter = null,
-        array $metadata = []
+        array $metadata = [],
     ): string {
         $this->validateName($name);
         $this->ensureDirectoryExists();
@@ -284,7 +284,7 @@ class SchemaSnapshot
         string $snapshotName,
         bool $enableRenameDetection = false,
         float $renameThreshold = 0.7,
-        ?callable $filter = null
+        ?callable $filter = null,
     ): Diff\SchemaDiff {
         $snapshotSchema = $this->load($snapshotName);
 
@@ -313,7 +313,7 @@ class SchemaSnapshot
         string $fromSnapshot,
         string $toSnapshot,
         bool $enableRenameDetection = false,
-        float $renameThreshold = 0.7
+        float $renameThreshold = 0.7,
     ): Diff\SchemaDiff {
         $fromSchema = $this->load($fromSnapshot);
         $toSchema = $this->load($toSnapshot);
@@ -499,7 +499,7 @@ class SchemaSnapshot
 
         if (!preg_match('/^[a-zA-Z0-9_-]+$/', $name)) {
             throw new \InvalidArgumentException(
-                'Snapshot name can only contain letters, numbers, dashes, and underscores'
+                'Snapshot name can only contain letters, numbers, dashes, and underscores',
             );
         }
 

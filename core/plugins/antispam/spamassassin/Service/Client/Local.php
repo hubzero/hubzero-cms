@@ -26,7 +26,7 @@ class Local
     protected $learnTypes = [
         self::LEARN_SPAM,
         self::LEARN_HAM,
-        self::LEARN_FORGET
+        self::LEARN_FORGET,
     ];
 
     protected $hostname = 'localhost';
@@ -70,7 +70,7 @@ class Local
         if (!$socket) {
             throw new Exception(
                 "Could not connect to SpamAssassin: {$errstr}",
-                $errno
+                $errno,
             );
         }
 
@@ -93,7 +93,7 @@ class Local
         if (!empty($this->maxSize)) {
             if ($contentLength > $this->maxSize) {
                 throw new Exception(
-                    "Message exceeds the maximum allowed size of {$this->maxSize} kbytes"
+                    "Message exceeds the maximum allowed size of {$this->maxSize} kbytes",
                 );
             }
         }
@@ -192,7 +192,7 @@ class Local
             if ($result->responseCode != 0) {
                 throw new Exception(
                     $result->responseMessage,
-                    $result->responseCode
+                    $result->responseCode,
                 );
             }
         } else {
@@ -207,7 +207,7 @@ class Local
             preg_match(
                 '/Spam: (True|False|Yes|No); (\S+)\/ (\S+)/',
                 $header,
-                $matches
+                $matches,
             )
         ) {
             ($matches[1] == 'True' || $matches[1] == 'Yes') ?
@@ -227,7 +227,7 @@ class Local
                 preg_match(
                     '/X-Spam-Status: (Yes|No)\, score=(\d+\.\d)required=(\d+\.\d)/',
                     $header . $message,
-                    $matches
+                    $matches,
                 )
             ) {
                 ($matches[1] == 'Yes') ?
@@ -382,16 +382,16 @@ class Local
         if ($learnType == self::LEARN_SPAM) {
             $additionalHeaders = [
                 'Message-class' => 'spam',
-                'Set' => 'local'
+                'Set' => 'local',
             ];
         } elseif ($learnType == self::LEARN_HAM) {
             $additionalHeaders = [
                 'Message-class' => 'ham',
-                'Set' => 'local'
+                'Set' => 'local',
             ];
         } elseif ($learnType == self::LEARN_FORGET) {
             $additionalHeaders = [
-                'Remove' => 'local'
+                'Remove' => 'local',
             ];
         }
 
@@ -414,7 +414,7 @@ class Local
     {
         $additionalHeaders = [
             'Message-class' => 'spam',
-            'Set' => 'local,remote'
+            'Set' => 'local,remote',
         ];
 
         return $this->exec('TELL', $message, $additionalHeaders)->didSet;
@@ -430,7 +430,7 @@ class Local
     {
         $additionalHeaders = [
             'Message-class' => 'ham',
-            'Set' => 'local,remote'
+            'Set' => 'local,remote',
         ];
 
         return $this->exec('TELL', $message, $additionalHeaders)->didSet;

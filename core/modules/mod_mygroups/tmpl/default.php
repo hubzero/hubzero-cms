@@ -76,7 +76,7 @@ $this->css()
             <?php
             $groupsUrl = Route::url(
                 'index.php?option=com_members&id='
-                . User::get('id') . '&active=groups'
+                . User::get('id') . '&active=groups',
             );
             $note = Lang::txt('MOD_MYGROUPS_YOU_HAVE_MORE', $this->limit, $total, $groupsUrl);
             ?>

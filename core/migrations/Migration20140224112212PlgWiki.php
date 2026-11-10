@@ -37,7 +37,7 @@ class Migration20140224112212PlgWiki extends Base
             ->set([
                 'folder'  => 'wiki',
                 'element' => 'parserdefault',
-                'name'    => 'plg_wiki_parserdefault'
+                'name'    => 'plg_wiki_parserdefault',
             ])
             ->where('folder', '=', 'hubzero')
             ->where('type', '=', 'plugin')
@@ -49,7 +49,7 @@ class Migration20140224112212PlgWiki extends Base
             ->set([
                 'folder'  => 'wiki',
                 'element' => 'editortoolbar',
-                'name'    => 'plg_wiki_editortoolbar'
+                'name'    => 'plg_wiki_editortoolbar',
             ])
             ->where('folder', '=', 'hubzero')
             ->where('type', '=', 'plugin')
@@ -61,7 +61,7 @@ class Migration20140224112212PlgWiki extends Base
             ->set([
                 'folder'  => 'wiki',
                 'element' => 'editorwykiwyg',
-                'name'    => 'plg_wiki_editorwykiwyg'
+                'name'    => 'plg_wiki_editorwykiwyg',
             ])
             ->where('folder', '=', 'hubzero')
             ->where('type', '=', 'plugin')
@@ -90,7 +90,7 @@ class Migration20140224112212PlgWiki extends Base
             ->set([
                 'folder'  => 'hubzero',
                 'element' => 'wikiparser',
-                'name'    => 'plg_hubzero_wikiparser'
+                'name'    => 'plg_hubzero_wikiparser',
             ])
             ->where('folder', '=', 'wiki')
             ->where('type', '=', 'plugin')
@@ -102,7 +102,7 @@ class Migration20140224112212PlgWiki extends Base
             ->set([
                 'folder'  => 'hubzero',
                 'element' => 'wikieditortoolbar',
-                'name'    => 'plg_hubzero_wikieditortoolbar'
+                'name'    => 'plg_hubzero_wikieditortoolbar',
             ])
             ->where('folder', '=', 'wiki')
             ->where('type', '=', 'plugin')
@@ -114,7 +114,7 @@ class Migration20140224112212PlgWiki extends Base
             ->set([
                 'folder'  => 'hubzero',
                 'element' => 'wikieditorwykiwyg',
-                'name'    => 'plg_hubzero_wikieditorwykiwyg'
+                'name'    => 'plg_hubzero_wikieditorwykiwyg',
             ])
             ->where('folder', '=', 'wiki')
             ->where('type', '=', 'plugin')

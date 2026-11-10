@@ -51,7 +51,7 @@ class Tlds extends Field
         $script[] = implode(',', [
             "id:\"" . $this->id . "\"",
             "tlds:" . $value,
-            "strings:" . json_encode($strings)
+            "strings:" . json_encode($strings),
         ]);
         $script[] = "})";
         $script[] = '});';

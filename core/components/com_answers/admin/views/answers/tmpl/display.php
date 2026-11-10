@@ -20,7 +20,7 @@ $canDo = Components\Answers\Helpers\Permissions::getActions('answer');
 Toolbar::title(
     Lang::txt('COM_ANSWERS_TITLE') . ': '
         . Lang::txt('COM_ANSWERS_RESPONSES'),
-    'answers'
+    'answers',
 );
 if ($canDo->get('core.create') && $this->filters['question_id']) {
     Toolbar::addNew();
@@ -37,7 +37,7 @@ Toolbar::help('responses');
 
 $formAction = Route::url(
     'index.php?option=' . $this->option
-        . '&controller=' . $this->controller
+        . '&controller=' . $this->controller,
 );
 ?>
 <form
@@ -72,7 +72,7 @@ $formAction = Route::url(
                         $editUrl = Route::url(
                             'index.php?option=' . $this->option
                                 . '&controller=questions&task=edit&id='
-                                . $this->question->get('id')
+                                . $this->question->get('id'),
                         );
                         ?>
                         #<?php echo $this->escape(stripslashes($this->question->get('id'))); ?> -
@@ -156,7 +156,7 @@ $formAction = Route::url(
                 'index.php?option=' . $this->option
                     . '&controller=' . $this->controller
                     . '&task=edit&id=' . $row->get('id')
-                    . '&qid=' . $this->question->get('id')
+                    . '&qid=' . $this->question->get('id'),
             );
             $stateUrl = Route::url(
                 'index.php?option=' . $this->option
@@ -164,12 +164,12 @@ $formAction = Route::url(
                     . '&task=' . $task
                     . '&id=' . $row->get('id')
                     . '&qid=' . $this->question->get('id')
-                    . '&' . Session::getFormToken() . '=1'
+                    . '&' . Session::getFormToken() . '=1',
             );
             $memberUrl = Route::url(
                 'index.php?option=com_members'
                     . '&controller=members&task=edit&id='
-                    . $row->get('created_by')
+                    . $row->get('created_by'),
             );
             $creatorName = $this->escape($row->creator->get('name'))
                 . ' (' . $row->get('created_by') . ')';

@@ -41,7 +41,7 @@ $this->js('edit.js');
 <?php
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
 ?>

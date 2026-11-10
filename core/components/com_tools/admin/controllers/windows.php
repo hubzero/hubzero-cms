@@ -57,13 +57,13 @@ class Windows extends AdminController
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'start'
+                'start',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'DESC'
-            )
+                'DESC',
+            ),
         ];
 
         // Get a list of tools
@@ -167,7 +167,7 @@ class Windows extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
         );
     }
 
@@ -205,7 +205,7 @@ class Windows extends AdminController
         // Output messsage and redirect
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-            ($i ? Lang::txt('COM_TOOLS_DELETE_SUCCESSFUL') : null)
+            ($i ? Lang::txt('COM_TOOLS_DELETE_SUCCESSFUL') : null),
         );
     }
 
@@ -221,32 +221,32 @@ class Windows extends AdminController
             'appname' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.appname',
                 'appname',
-                ''
+                '',
             )),
             // Sorting
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'start'
+                'start',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'DESC'
+                'DESC',
             ),
             // Get paging variables
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limitstart',
                 'limitstart',
                 0,
-                'int'
-            )
+                'int',
+            ),
         ];
 
         // Get the list of sessions
@@ -279,7 +279,7 @@ class Windows extends AdminController
                     $sessions[] = [
                         "sessionid" => $sessionsArray[0],
                         "status" => $sessionsArray[2],
-                        "opaquedata" => $sessionsArray[3]
+                        "opaquedata" => $sessionsArray[3],
                     ];
                 }
                 //else
@@ -293,7 +293,7 @@ class Windows extends AdminController
                 $sessions,
                 function ($a, $b) {
                     return strcmp($a['status'], $b['status']);
-                }
+                },
             );
         }
 
@@ -404,9 +404,9 @@ class Windows extends AdminController
             Route::url(
                 'index.php?option=' . $this->_option
                     . '&controller=' . $this->_controller . '&task=sessions',
-                false
+                false,
             ),
-            Lang::txt('COM_TOOLS_SESSIONS_TERMINATED')
+            Lang::txt('COM_TOOLS_SESSIONS_TERMINATED'),
         );
     }
 }

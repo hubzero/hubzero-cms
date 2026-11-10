@@ -38,7 +38,7 @@ if ($stamp) { ?>
             $shareUrl = Route::url(
                 'index.php?option=' . $this->option
                 . '&alias=' . $this->project->get('alias')
-                . '&active=notes&p=' . $this->page->get('id')
+                . '&active=notes&p=' . $this->page->get('id'),
             ) . '&amp;action=share';
             $shareLabel = Lang::txt('COM_PROJECTS_NOTES_SHARE_SETTINGS');
             ?>
@@ -56,7 +56,7 @@ if ($stamp) { ?>
         $generateUrl = Route::url(
             'index.php?option=' . $this->option
             . '&alias=' . $this->project->get('alias')
-            . '&active=notes&p=' . $this->page->get('id')
+            . '&active=notes&p=' . $this->page->get('id'),
         ) . '&amp;action=share';
     ?>
     <p class="publink">

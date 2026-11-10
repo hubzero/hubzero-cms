@@ -38,18 +38,18 @@ class Oaipmh extends AbstractComponent
         Submenu::addEntry(
             Lang::txt('COM_OAIPMH_ABOUT'),
             Route::url('index.php?option=com_oaipmh'),
-            (!$task || $task == 'display')
+            (!$task || $task == 'display'),
         );
         Submenu::addEntry(
             Lang::txt('COM_OAIPMH_SCHEMAS'),
             Route::url('index.php?option=com_oaipmh&task=schemas'),
-            ($task == 'schemas')
+            ($task == 'schemas'),
         );
 
         if (\Components\Plugins\Helpers\Plugins::getActions()->get('core.manage')) {
             Submenu::addEntry(
                 Lang::txt('COM_OAIPMH_PLUGINS'),
-                Route::url('index.php?option=com_plugins&view=plugins&filter_folder=oaipmh&filter_type=oaipmh')
+                Route::url('index.php?option=com_plugins&view=plugins&filter_folder=oaipmh&filter_type=oaipmh'),
             );
         }
 

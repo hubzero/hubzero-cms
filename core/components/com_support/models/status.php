@@ -42,7 +42,7 @@ class Status extends Relational
      * @var  array
      */
     protected $rules = [
-        'title' => 'notempty'
+        'title' => 'notempty',
     ];
 
     /**
@@ -51,7 +51,7 @@ class Status extends Relational
      * @var  array
      */
     public $always = [
-        'alias'
+        'alias',
     ];
 
     /**

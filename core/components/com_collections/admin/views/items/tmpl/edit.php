@@ -29,7 +29,7 @@ if (!$dir) {
 Toolbar::title(
     Lang::txt('COM_COLLECTIONS') . ': '
     . Lang::txt('COM_COLLECTIONS_ITEMS') . ': ' . $text,
-    'collection'
+    'collection',
 );
 if ($canDo->get('core.edit')) {
     Toolbar::apply();
@@ -50,10 +50,10 @@ $this->css()
 
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 $validationMsg = $this->escape(
-    Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')
+    Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'),
 );
 ?>
 
@@ -96,7 +96,7 @@ $validationMsg = $this->escape(
                             <?php
                             $titleLabel = Lang::txt('COM_COLLECTIONS_FIELD_TITLE');
                             $titleVal = $this->escape(
-                                stripslashes($this->row->get('title'))
+                                stripslashes($this->row->get('title')),
                             );
                             ?>
                             <label for="field-title">
@@ -113,7 +113,7 @@ $validationMsg = $this->escape(
                             <?php
                             $urlLabel = Lang::txt('COM_COLLECTIONS_FIELD_URL');
                             $urlVal = $this->escape(
-                                stripslashes($this->row->get('url'))
+                                stripslashes($this->row->get('url')),
                             );
                             ?>
                             <label for="field-url">
@@ -129,7 +129,7 @@ $validationMsg = $this->escape(
                         <div class="input-wrap">
                             <?php
                             $descLabel = Lang::txt(
-                                'COM_COLLECTIONS_FIELD_DESCRIPTION'
+                                'COM_COLLECTIONS_FIELD_DESCRIPTION',
                             );
                             ?>
                             <label for="field-description">
@@ -145,20 +145,20 @@ $validationMsg = $this->escape(
                                 [
                                     'class' => 'minimal no-footer',
                                     'buttons' => false,
-                                ]
+                                ],
                             );
                             ?>
                         </div>
 
                         <?php
                         $tagsHint = Lang::txt(
-                            'COM_COLLECTIONS_FIELD_TAGS_HINT'
+                            'COM_COLLECTIONS_FIELD_TAGS_HINT',
                         );
                         $tagsLabel = Lang::txt(
-                            'COM_COLLECTIONS_FIELD_TAGS'
+                            'COM_COLLECTIONS_FIELD_TAGS',
                         );
                         $tagsVal = $this->escape(
-                            stripslashes($this->row->tags('string'))
+                            stripslashes($this->row->tags('string')),
                         );
                         ?>
                         <div class="input-wrap"
@@ -183,15 +183,15 @@ $validationMsg = $this->escape(
                                     <div class="col span6">
                                         <?php
                                         $clickTxt = Lang::txt(
-                                            'COM_COLLECTIONS_CLICK_OR_DROP_FILE'
+                                            'COM_COLLECTIONS_CLICK_OR_DROP_FILE',
                                         );
                                         $uploadUrl = Route::url(
                                             'index.php?option=' . $this->option
-                                            . '&no_html=1&controller=media&task=upload'
+                                            . '&no_html=1&controller=media&task=upload',
                                         );
                                         $listUrl = Route::url(
                                             'index.php?option=' . $this->option
-                                            . '&no_html=1&controller=media&task=list&dir='
+                                            . '&no_html=1&controller=media&task=list&dir=',
                                         );
                                         ?>
                                         <div id="ajax-uploader"
@@ -212,15 +212,15 @@ $validationMsg = $this->escape(
                                         <?php
                                         $deleteTxt = Lang::txt('JACTION_DELETE');
                                         $addLinkTxt = Lang::txt(
-                                            'COM_COLLECTIONS_CLICK_TO_ADD_LINK'
+                                            'COM_COLLECTIONS_CLICK_TO_ADD_LINK',
                                         );
                                         $deleteUrl = Route::url(
                                             'index.php?option=' . $this->option
-                                            . '&no_html=1&controller=media&task=delete&dir='
+                                            . '&no_html=1&controller=media&task=delete&dir=',
                                         );
                                         $createUrl = Route::url(
                                             'index.php?option=' . $this->option
-                                            . '&no_html=1&controller=media&task=create&dir='
+                                            . '&no_html=1&controller=media&task=create&dir=',
                                         );
                                         ?>
                                         <div id="link-adder"
@@ -293,7 +293,7 @@ $validationMsg = $this->escape(
                                     <?php echo $this->row->get('type', 'file'); ?>
                                     <?php
                                     $typeVal = $this->escape(
-                                        $this->row->get('type', 'file')
+                                        $this->row->get('type', 'file'),
                                     );
                                     ?>
                                     <input type="hidden"
@@ -320,13 +320,13 @@ $validationMsg = $this->escape(
                                 <td>
                                     <?php
                                     $editor = User::getInstance(
-                                        $this->row->get('created_by')
+                                        $this->row->get('created_by'),
                                     );
                                     echo $this->escape(
-                                        stripslashes($editor->get('name'))
+                                        stripslashes($editor->get('name')),
                                     );
                                     $createdByVal = $this->escape(
-                                        $this->row->get('created_by')
+                                        $this->row->get('created_by'),
                                     );
                                     ?>
                                     <input type="hidden"
@@ -343,7 +343,7 @@ $validationMsg = $this->escape(
                                     <?php echo $this->row->get('created'); ?>
                                     <?php
                                     $createdVal = $this->escape(
-                                        $this->row->get('created')
+                                        $this->row->get('created'),
                                     );
                                     ?>
                                     <input type="hidden"
@@ -360,13 +360,13 @@ $validationMsg = $this->escape(
                                     <td>
                                         <?php
                                         $modifier = User::getInstance(
-                                            $this->row->get('modified_by')
+                                            $this->row->get('modified_by'),
                                         );
                                         echo $this->escape(
-                                            stripslashes($modifier->get('name'))
+                                            stripslashes($modifier->get('name')),
                                         );
                                         $modByVal = $this->escape(
-                                            $this->row->get('modified_by')
+                                            $this->row->get('modified_by'),
                                         );
                                         ?>
                                         <input type="hidden"
@@ -383,7 +383,7 @@ $validationMsg = $this->escape(
                                         <?php echo $this->row->get('modified'); ?>
                                         <?php
                                         $modVal = $this->escape(
-                                            $this->row->get('modified')
+                                            $this->row->get('modified'),
                                         );
                                         ?>
                                         <input type="hidden"
@@ -404,7 +404,7 @@ $validationMsg = $this->escape(
                         <div class="input-wrap">
                             <?php
                             $stateLabel = Lang::txt(
-                                'COM_COLLECTIONS_FIELD_STATE'
+                                'COM_COLLECTIONS_FIELD_STATE',
                             );
                             ?>
                             <label for="field-state">
@@ -426,7 +426,7 @@ $validationMsg = $this->escape(
                         <div class="input-wrap">
                             <?php
                             $accessLabel = Lang::txt(
-                                'COM_COLLECTIONS_FIELD_ACCESS'
+                                'COM_COLLECTIONS_FIELD_ACCESS',
                             );
                             $publicTxt = Lang::txt('COM_COLLECTIONS_ACCESS_PUBLIC');
                             $regTxt = Lang::txt('COM_COLLECTIONS_ACCESS_REGISTERED');
@@ -463,7 +463,7 @@ $validationMsg = $this->escape(
                 $iframeSrc = Route::url(
                     'index.php?option=' . $this->option
                     . '&controller=posts&tmpl=component&item_id='
-                    . $this->row->get('id') . '&t=' . time()
+                    . $this->row->get('id') . '&t=' . time(),
                 );
                 ?>
                 <iframe height="500"

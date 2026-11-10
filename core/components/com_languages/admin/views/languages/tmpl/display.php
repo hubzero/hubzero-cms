@@ -49,7 +49,7 @@ if ($canDo->get('core.admin')) {
         'Link',
         'extension',
         'COM_LANGUAGES_INSTALL',
-        'index.php?option=com_installer&view=languages'
+        'index.php?option=com_installer&view=languages',
     );
     Toolbar::divider();
 
@@ -106,7 +106,7 @@ $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . 
                     'value',
                     'text',
                     $this->filters['published'],
-                    true
+                    true,
                 );
                 ?>
             </select>
@@ -118,7 +118,7 @@ $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . 
                     Html::access('assetgroups'),
                     'value',
                     'text',
-                    $this->filters['access']
+                    $this->filters['access'],
                 );
                 ?>
             </select>
@@ -151,7 +151,7 @@ $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . 
                         'COM_LANGUAGES_HEADING_TITLE_NATIVE',
                         'title_native',
                         $listDirn,
-                        $listOrder
+                        $listOrder,
                     );
                     ?>
                 </th>
@@ -162,7 +162,7 @@ $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . 
                         'COM_LANGUAGES_FIELD_LANG_TAG_LABEL',
                         'lang_code',
                         $listDirn,
-                        $listOrder
+                        $listOrder,
                     );
                     ?>
                 </th>
@@ -173,7 +173,7 @@ $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . 
                         'COM_LANGUAGES_FIELD_LANG_CODE_LABEL',
                         'sef',
                         $listDirn,
-                        $listOrder
+                        $listOrder,
                     );
                     ?>
                 </th>
@@ -184,7 +184,7 @@ $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . 
                         'COM_LANGUAGES_HEADING_LANG_IMAGE',
                         'image',
                         $listDirn,
-                        $listOrder
+                        $listOrder,
                     );
                     ?>
                 </th>
@@ -239,7 +239,7 @@ $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . 
                             $editUrl = Route::url(
                                 'index.php?option=' . $this->option
                                 . '&controller=' . $this->controller
-                                . '&task=edit&lang_id=' . (int) $item->lang_id
+                                . '&task=edit&lang_id=' . (int) $item->lang_id,
                             );
                             ?>
                             <a href="<?php echo $editUrl; ?>">
@@ -275,7 +275,7 @@ $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . 
                                     true,
                                     'orderup',
                                     'JLIB_HTML_MOVE_UP',
-                                    $ordering
+                                    $ordering,
                                 );
                                 $downIcon = $pagination->orderDownIcon(
                                     $i,
@@ -283,7 +283,7 @@ $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . 
                                     true,
                                     'orderdown',
                                     'JLIB_HTML_MOVE_DOWN',
-                                    $ordering
+                                    $ordering,
                                 );
                                 ?>
                                 <span><?php echo $upIcon; ?></span>
@@ -295,7 +295,7 @@ $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . 
                                     true,
                                     'orderdown',
                                     'JLIB_HTML_MOVE_UP',
-                                    $ordering
+                                    $ordering,
                                 );
                                 $downIcon = $pagination->orderDownIcon(
                                     $i,
@@ -303,7 +303,7 @@ $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . 
                                     true,
                                     'orderup',
                                     'JLIB_HTML_MOVE_DOWN',
-                                    $ordering
+                                    $ordering,
                                 );
                                 ?>
                                 <span><?php echo $upIcon; ?></span>

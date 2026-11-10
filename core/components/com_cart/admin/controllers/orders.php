@@ -36,54 +36,54 @@ class Orders extends AdminController
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             ),
             'uidNumber' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.uidNumber',
                 'uidNumber',
                 0,
-                'int'
+                'int',
             ),
             // Get sorting variables
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'tLastUpdated'
+                'tLastUpdated',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'DESC'
+                'DESC',
             ),
             // Get paging variables
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limitstart',
                 'limitstart',
                 0,
-                'int'
+                'int',
             ),
             'report-notes' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.report-notes',
                 'report-notes',
                 0,
-                'int'
+                'int',
             ),
             'report-from' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.report-from',
                 'report-from',
-                gmdate('m/d/Y', strtotime('-1 month'))
+                gmdate('m/d/Y', strtotime('-1 month')),
             ),
             'report-to' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.report-to',
                 'report-to',
-                gmdate('m/d/Y')
-            )
+                gmdate('m/d/Y'),
+            ),
         ];
 
         // Get record count
@@ -344,9 +344,9 @@ class Orders extends AdminController
                 Route::url(
                     'index.php?option=' . $this->_option
                     . '&controller=' . $this->_controller . '&task=view&id=' . $id,
-                    false
+                    false,
                 ),
-                Lang::txt('Order info saved')
+                Lang::txt('Order info saved'),
             );
         }
 
@@ -375,60 +375,60 @@ class Orders extends AdminController
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . $this->_task . '.search',
                 'search',
-                ''
+                '',
             ),
             // Get sorting variables
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . $this->_task . '.sort',
                 'filter_order',
-                'tLastUpdated'
+                'tLastUpdated',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . $this->_task . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
+                'ASC',
             ),
             // Get paging variables
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . $this->_task . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . $this->_task . '.limitstart',
                 'limitstart',
                 0,
-                'int'
+                'int',
             ),
             'report-from' => Request::getState(
                 $this->_option . '.' . $this->_controller . $this->_task . '.report-from',
                 'report-from',
-                gmdate('m/d/Y', strtotime('-1 month'))
+                gmdate('m/d/Y', strtotime('-1 month')),
             ),
             'report-to' => Request::getState(
                 $this->_option . '.' . $this->_controller . $this->_task . '.report-to',
                 'report-to',
-                gmdate('m/d/Y')
+                gmdate('m/d/Y'),
             ),
             'order' => Request::getState(
                 $this->_option . '.' . $this->_controller . $this->_task . '.order',
                 'order',
                 0,
-                'int'
+                'int',
             ),
             'pId' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.pId',
                 'pId',
                 0,
-                'int'
+                'int',
             ),
             'sId' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sId',
                 'sId',
                 0,
-                'int'
-            )
+                'int',
+            ),
         ];
 
         if ($this->view->filters['order']) {
@@ -465,41 +465,41 @@ class Orders extends AdminController
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             ),
             // Get sorting variables
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'dDownloaded'
+                'dDownloaded',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
+                'ASC',
             ),
             'report-notes' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.report-notes',
                 'report-notes',
                 0,
-                'int'
+                'int',
             ),
             'report-from' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.report-from',
                 'report-from',
-                gmdate('m/d/Y', strtotime('-1 month'))
+                gmdate('m/d/Y', strtotime('-1 month')),
             ),
             'report-to' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.report-to',
                 'report-to',
-                gmdate('m/d/Y')
+                gmdate('m/d/Y'),
             ),
             'uidNumber' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.uidNumber',
                 'uidNumber',
                 0,
-                'int'
-            )
+                'int',
+            ),
         ];
 
         // request array to be returned
@@ -594,35 +594,35 @@ class Orders extends AdminController
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . 'items.search',
                 'search',
-                ''
+                '',
             ),
             // Get sorting variables
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . 'items.sort',
                 'filter_order',
-                'dDownloaded'
+                'dDownloaded',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . 'items.sortdir',
                 'filter_order_Dir',
-                'ASC'
+                'ASC',
             ),
             'report-from' => Request::getState(
                 $this->_option . '.' . $this->_controller . 'items.report-from',
                 'report-from',
-                gmdate('m/d/Y', strtotime('-1 month'))
+                gmdate('m/d/Y', strtotime('-1 month')),
             ),
             'report-to' => Request::getState(
                 $this->_option . '.' . $this->_controller . 'items.report-to',
                 'report-to',
-                gmdate('m/d/Y')
+                gmdate('m/d/Y'),
             ),
             'order' => Request::getState(
                 $this->_option . '.' . $this->_controller . 'items.order',
                 'order',
                 0,
-                'int'
-            )
+                'int',
+            ),
         ];
 
         // Get orders, request array to be returned
@@ -640,7 +640,7 @@ class Orders extends AdminController
             $itemInfo = $row->itemInfo['info'];
             $rows[] = [
                 $row->sId, $itemInfo->pName . ', ' . $itemInfo->sSku, $row->tiQty,
-                $row->tiPrice, $row->tId, $row->tLastUpdated, $row->name, $row->uidNumber
+                $row->tiPrice, $row->tId, $row->tLastUpdated, $row->name, $row->uidNumber,
             ];
         }
 
@@ -659,7 +659,7 @@ class Orders extends AdminController
         $output = fopen("php://output", "w");
         $row = [
             'SKU ID', 'Product', 'QTY', 'Price', 'Order ID',
-            'Order Placed', 'Purchased By', 'Purchased By (userId)'
+            'Order Placed', 'Purchased By', 'Purchased By (userId)',
         ];
         fputcsv($output, $row);
         foreach ($rows as $row) {
@@ -687,7 +687,7 @@ class Orders extends AdminController
 
         // Set the redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . $attr, false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . $attr, false),
         );
     }
 }

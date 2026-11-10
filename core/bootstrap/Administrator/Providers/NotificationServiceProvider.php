@@ -26,7 +26,7 @@ class NotificationServiceProvider extends ServiceProvider
     {
         $this->app['notification'] = function ($app) {
             return new Handler(
-                new Session($app['session'])
+                new Session($app['session']),
             );
         };
     }

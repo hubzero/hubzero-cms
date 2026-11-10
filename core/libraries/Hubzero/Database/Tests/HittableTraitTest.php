@@ -339,7 +339,7 @@ class HittableTraitTest extends AbstractDriverTestCase
         $query->insertMany('hittable_articles', [
             ['title' => 'Low Hits', 'hits' => 10, 'state' => 1],
             ['title' => 'High Hits', 'hits' => 100, 'state' => 1],
-            ['title' => 'Medium Hits', 'hits' => 50, 'state' => 1]
+            ['title' => 'Medium Hits', 'hits' => 50, 'state' => 1],
         ]);
 
         $rows = HittableArticle::mostViewed(10);
@@ -370,7 +370,7 @@ class HittableTraitTest extends AbstractDriverTestCase
             ['title' => 'Article 2', 'hits' => 20, 'state' => 1],
             ['title' => 'Article 3', 'hits' => 30, 'state' => 1],
             ['title' => 'Article 4', 'hits' => 40, 'state' => 1],
-            ['title' => 'Article 5', 'hits' => 50, 'state' => 1]
+            ['title' => 'Article 5', 'hits' => 50, 'state' => 1],
         ]);
 
         $rows = HittableArticle::mostViewed(3);
@@ -391,7 +391,7 @@ class HittableTraitTest extends AbstractDriverTestCase
         $query->insertMany('hittable_articles', [
             ['title' => 'Published 1', 'hits' => 100, 'state' => 1],
             ['title' => 'Published 2', 'hits' => 50, 'state' => 1],
-            ['title' => 'Unpublished', 'hits' => 200, 'state' => 0]
+            ['title' => 'Unpublished', 'hits' => 200, 'state' => 0],
         ]);
 
         $rows = HittableArticle::mostViewed(10, ['state' => 1]);
@@ -416,7 +416,7 @@ class HittableTraitTest extends AbstractDriverTestCase
         $query->insertMany('hittable_articles', [
             ['title' => 'Article 1', 'hits' => 10, 'state' => 1],
             ['title' => 'Article 2', 'hits' => 20, 'state' => 1],
-            ['title' => 'Article 3', 'hits' => 30, 'state' => 1]
+            ['title' => 'Article 3', 'hits' => 30, 'state' => 1],
         ]);
 
         $total = HittableArticle::totalHits();
@@ -437,7 +437,7 @@ class HittableTraitTest extends AbstractDriverTestCase
         $query->insertMany('hittable_articles', [
             ['title' => 'Published 1', 'hits' => 10, 'state' => 1],
             ['title' => 'Published 2', 'hits' => 20, 'state' => 1],
-            ['title' => 'Unpublished', 'hits' => 100, 'state' => 0]
+            ['title' => 'Unpublished', 'hits' => 100, 'state' => 0],
         ]);
 
         $total = HittableArticle::totalHits(['state' => 1]);

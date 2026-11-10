@@ -43,7 +43,7 @@ class DatabaseComparisonTest extends AbstractDriverTestCase
     {
         $tables = [
             'dbdiff_users', 'dbdiff_posts', 'dbdiff_comments', 'dbdiff_new', 'dbdiff_old',
-            'dbdiff_rebuild_test', 'dbdiff_modify_test', 'dbdiff_combined_test', 'dbdiff_rename_test'
+            'dbdiff_rebuild_test', 'dbdiff_modify_test', 'dbdiff_combined_test', 'dbdiff_rename_test',
         ];
 
         foreach ($tables as $table) {
@@ -678,7 +678,7 @@ class DatabaseComparisonTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $query->insertMany('dbdiff_rename_test', [
-            ['id' => 1, 'old_name' => 'test value']
+            ['id' => 1, 'old_name' => 'test value'],
         ]);
 
         $fromSchema = new DatabaseInfo([

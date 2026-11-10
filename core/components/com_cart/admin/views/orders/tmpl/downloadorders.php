@@ -35,7 +35,7 @@ $this->view('_submenu')
 <?php
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 ?>
 <form action="<?php echo $formAction; ?>"
@@ -67,7 +67,7 @@ $formAction = Route::url(
                     echo $this->pagination(
                         $this->total,
                         $this->filters['start'],
-                        $this->filters['limit']
+                        $this->filters['limit'],
                     );
                     ?></td>
             </tr>
@@ -85,7 +85,7 @@ $formAction = Route::url(
                     <?php
                     $skuUrl = Route::url(
                         'index.php?option=com_storefront&controller=skus&task=edit&id='
-                        . $itemInfo->sId
+                        . $itemInfo->sId,
                     );
                     $sId = '<a href="' . $skuUrl . '">'
                         . $this->escape(stripslashes($row->sId)) . '</a>';
@@ -96,7 +96,7 @@ $formAction = Route::url(
                     <?php
                     $pUrl = Route::url(
                         'index.php?option=com_storefront&controller=products&task=edit&id='
-                        . $itemInfo->pId
+                        . $itemInfo->pId,
                     );
                     $pName = $this->escape(stripslashes($itemInfo->pName));
                     $product = '<a href="' . $pUrl . '">' . $pName . '</a>';
@@ -108,7 +108,7 @@ $formAction = Route::url(
                     } else {
                         $sUrl = Route::url(
                             'index.php?option=com_storefront&controller=skus&task=edit&id='
-                            . $row->sId
+                            . $row->sId,
                         );
                         $sName = $this->escape(stripslashes($itemInfo->sSku));
                         $product .= ', <a href="' . $sUrl . '">' . $sName . '</a>';
@@ -126,7 +126,7 @@ $formAction = Route::url(
                     <?php
                     $orderUrl = Route::url(
                         'index.php?option=com_cart&controller=orders&task=view&id='
-                        . $row->tId
+                        . $row->tId,
                     );
                     $tId = '<a href="' . $orderUrl . '">'
                         . $this->escape(stripslashes($row->tId)) . '</a>';

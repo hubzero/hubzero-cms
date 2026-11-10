@@ -74,7 +74,7 @@ class MysqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             $operator,
             $value,
             $logical,
-            $depth
+            $depth,
         );
     }
 
@@ -97,7 +97,7 @@ class MysqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             $value,
             $path,
             $logical,
-            $depth
+            $depth,
         );
     }
 
@@ -122,7 +122,7 @@ class MysqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             $value,
             $path,
             $logical,
-            $depth
+            $depth,
         );
     }
 
@@ -152,7 +152,7 @@ class MysqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             $value,
             $logical,
             $depth,
-            $function
+            $function,
         );
     }
 
@@ -275,7 +275,7 @@ class MysqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 $joinSql,
                 $whereSql,
                 $groupSql,
-                $havingSql
+                $havingSql,
             );
 
             $allBindings = array_merge($allBindings, $this->getBindings());
@@ -439,7 +439,7 @@ class MysqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             $this->bind(
                 is_string($this->upsertValues[$column])
                     ? trim($this->upsertValues[$column])
-                    : $this->upsertValues[$column]
+                    : $this->upsertValues[$column],
             );
         }
 
@@ -454,7 +454,7 @@ class MysqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             $this->connection->quoteName($this->upsertTable),
             implode(', ', $quotedColumns),
             implode(', ', $placeholders),
-            implode(', ', $updates)
+            implode(', ', $updates),
         );
     }
 
@@ -476,7 +476,7 @@ class MysqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
         $columns = array_keys($this->upsertManyRows[0]);
         $quotedColumns = array_map(
             fn($col) => $this->connection->quoteName($col),
-            $columns
+            $columns,
         );
 
         $valueSets = [];
@@ -486,7 +486,7 @@ class MysqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 $placeholders[] = '?';
                 $value = $row[$column] ?? null;
                 $this->bind(
-                    is_string($value) ? trim($value) : $value
+                    is_string($value) ? trim($value) : $value,
                 );
             }
             $valueSets[] = '(' . implode(', ', $placeholders) . ')';
@@ -504,7 +504,7 @@ class MysqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             $this->connection->quoteName($this->upsertManyTable),
             implode(', ', $quotedColumns),
             implode(', ', $valueSets),
-            implode(', ', $updates)
+            implode(', ', $updates),
         );
     }
 
@@ -549,7 +549,7 @@ class MysqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             $ignore,
             $this->connection->quoteName($this->insertManyTable),
             implode(', ', $quotedColumns),
-            implode(', ', $valueSets)
+            implode(', ', $valueSets),
         );
     }
 
@@ -583,7 +583,7 @@ class MysqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
     {
         return $this->normalizeShowColumnsMetadata(
             (array) $data,
-            (bool) $typeOnly
+            (bool) $typeOnly,
         );
     }
 

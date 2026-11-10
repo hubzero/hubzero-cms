@@ -120,7 +120,7 @@ class FormReport extends Model
             foreach ($results as $response) {
                 $respondents[$response->respondent_id][$questions[$response->question_id]['qidx']] = [
                     'question_id' => $response->question_id,
-                    'answer'      => (isset($answers[$response->answer_id])) ? $answers[$response->answer_id] : '--'
+                    'answer'      => (isset($answers[$response->answer_id])) ? $answers[$response->answer_id] : '--',
                 ];
             }
 

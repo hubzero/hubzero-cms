@@ -87,7 +87,7 @@ class Tags extends Cloud
                     $view = new \Hubzero\Component\View([
                         'base_path' => dirname(__DIR__) . '/site',
                         'name'      => 'courses',
-                        'layout'    => '_tags'
+                        'layout'    => '_tags',
                     ]);
                     if (isset($filters['filters'])) {
                         $view->base    = $filters['base'];

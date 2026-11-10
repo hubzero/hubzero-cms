@@ -59,7 +59,7 @@ class ModeSupport
         return sprintf(
             '<input type="hidden" name="%s" value="%s" />',
             htmlspecialchars($key, ENT_QUOTES, 'UTF-8'),
-            htmlspecialchars($val, ENT_QUOTES, 'UTF-8')
+            htmlspecialchars($val, ENT_QUOTES, 'UTF-8'),
         );
     }
 

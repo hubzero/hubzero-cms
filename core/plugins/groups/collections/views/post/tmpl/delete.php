@@ -36,7 +36,7 @@ if (!$identifier) {
             <?php
             $deleteWarning = Lang::txt(
                 'PLG_GROUPS_COLLECTIONS_DELETE_WARNING',
-                $this->escape(stripslashes($identifier))
+                $this->escape(stripslashes($identifier)),
             );
             ?>
             <p class="warning"><?php echo $deleteWarning; ?></p>

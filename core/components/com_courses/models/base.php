@@ -52,7 +52,7 @@ abstract class Base extends Model
     public static $_section_keys = [
         //'section_id',
         'publish_up',
-        'publish_down'
+        'publish_down',
     ];
 
     /**

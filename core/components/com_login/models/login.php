@@ -101,7 +101,7 @@ class Login extends Obj
     {
         $credentials = [
             'username' => Request::getString('username', '', 'post'),
-            'password' => Request::getString('passwd', '', 'post')
+            'password' => Request::getString('passwd', '', 'post'),
         ];
         $this->setState('credentials', $credentials);
 

@@ -33,7 +33,7 @@ class Pdf extends Plugin
     {
         // We can handle 1 pdf file
         $need = [
-            'pdf' => 1
+            'pdf' => 1,
         ];
 
         // Check extension to make sure we can proceed
@@ -61,7 +61,7 @@ class Pdf extends Plugin
             'folder'  => 'handlers',
             'element' => 'pdf',
             'name'    => 'pdf',
-            'layout'  => 'view'
+            'layout'  => 'view',
         ]);
 
         $view->file = $collection->findFirstWithExtension('pdf');

@@ -16,7 +16,7 @@ defined('_HZEXEC_') or die();
 $options = [
     Html::select('option', 'add', Lang::txt('COM_MEMBERS_BATCH_ADD')),
     Html::select('option', 'del', Lang::txt('COM_MEMBERS_BATCH_DELETE')),
-    Html::select('option', 'set', Lang::txt('COM_MEMBERS_BATCH_SET'))
+    Html::select('option', 'set', Lang::txt('COM_MEMBERS_BATCH_SET')),
 ];
 
 ?>

@@ -64,7 +64,7 @@ class Editor extends AbstractHelper
             $id,
             $asset,
             $author,
-            $params
+            $params,
         );
     }
 

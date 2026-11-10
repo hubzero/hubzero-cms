@@ -20,7 +20,7 @@ Toolbar::deleteList();
 $formAction = Route::url(
     'index.php?option=' . $this->option
     . '&controller=' . $this->controller
-    . '&task=manage&plugin=sponsors'
+    . '&task=manage&plugin=sponsors',
 );
 ?>
 <form action="<?php echo $formAction; ?>"
@@ -43,7 +43,7 @@ $formAction = Route::url(
                         'PLG_RESOURCES_SPONSORS_COL_ID',
                         'id',
                         $sortDir,
-                        $sortCol
+                        $sortCol,
                     );
                     ?></th>
                 <th scope="col"><?php
@@ -52,7 +52,7 @@ $formAction = Route::url(
                         'PLG_RESOURCES_SPONSORS_COL_TITLE',
                         'title',
                         $sortDir,
-                        $sortCol
+                        $sortCol,
                     );
                     ?></th>
                 <th scope="col"><?php
@@ -61,7 +61,7 @@ $formAction = Route::url(
                         'PLG_RESOURCES_SPONSORS_COL_ALIAS',
                         'alias',
                         $sortDir,
-                        $sortCol
+                        $sortCol,
                     );
                     ?></th>
                 <th scope="col"><?php
@@ -70,7 +70,7 @@ $formAction = Route::url(
                         'PLG_RESOURCES_SPONSORS_COL_STATE',
                         'state',
                         $sortDir,
-                        $sortCol
+                        $sortCol,
                     );
                     ?></th>
             </tr>
@@ -123,7 +123,7 @@ $formAction = Route::url(
                     'index.php?option=' . $this->option
                     . '&controller=' . $this->controller
                     . '&task=manage&plugin=sponsors'
-                    . '&action=edit&id=' . $row->id
+                    . '&action=edit&id=' . $row->id,
                 );
                 ?>
                 <td>
@@ -141,11 +141,11 @@ $formAction = Route::url(
                     . '&task=manage&plugin=sponsors'
                     . '&action=' . $task
                     . '&id=' . $row->id
-                    . '&' . Session::getFormToken() . '=1'
+                    . '&' . Session::getFormToken() . '=1',
                 );
                 $stateTitle = Lang::txt(
                     'PLG_RESOURCES_SPONSORS_SET_TO',
-                    $task
+                    $task,
                 );
                 ?>
                 <td>

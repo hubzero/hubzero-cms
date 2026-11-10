@@ -24,7 +24,7 @@ if (!$this->model->exists()) {
                 src="<?php echo Route::url(
                     'index.php?option=' . $this->option
                     . '&controller=media&alias=' . $this->model->get('alias')
-                    . '&media=master'
+                    . '&media=master',
                 ); ?>"
                 alt=""
             />
@@ -36,7 +36,7 @@ if (!$this->model->exists()) {
     . php?option='
                 . $this->option
                 . '&task=deleteimg&alias='
-                . $this->model->get('alias')
+                . $this->model->get('alias'),
             );
             $langTxt2 = Lang::txt('JACTION_DELETE');
             ?>
@@ -49,7 +49,7 @@ if (!$this->model->exists()) {
         data-action="<?php echo Route::url(
             'index.php?option=' . $this->option
             . '&alias=' . $this->model->get('alias')
-            . '&task=doajaxupload&no_html=1'
+            . '&task=doajaxupload&no_html=1',
         ); ?>">
         <div class="form-group">
             <label for="uploader">

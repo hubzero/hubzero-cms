@@ -18,7 +18,7 @@ $cls = [
     'no-js',
     $browser->name(),
     $browser->name() . $browser->major(),
-    $this->direction
+    $this->direction,
 ];
 
 $this->setTitle(Config::get('sitename') . ' - ' . Lang::txt('TPL_KIMERA_OFFLINE'));
@@ -66,7 +66,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . Lang::txt('TPL_KIMERA_OFFLINE'
                         'TPL_KIMERA_COPYRIGHT',
                         Request::root(),
                         Config::get('sitename'),
-                        date("Y")
+                        date("Y"),
                     ); ?>
                 </p>
             </footer>

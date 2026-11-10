@@ -302,8 +302,8 @@ $authors = implode(', ', $authors);
                                                 'authors',
                                                 'params_authors',
                                                 '',
-                                                $authors
-                                            ]]
+                                                $authors,
+                                            ]],
                                         );
                                         if (count($mc) > 0) {
                                             echo $mc[0];

@@ -36,17 +36,17 @@ class Installer
         Submenu::addEntry(
             Lang::txt('COM_INSTALLER_SUBMENU_CORE'),
             Route::url('index.php?option=com_installer&controller=manage'),
-            ($vName == 'manage' || $vName == 'migrations')
+            ($vName == 'manage' || $vName == 'migrations'),
         );
         Submenu::addEntry(
             Lang::txt('COM_INSTALLER_CUSTOMEXTS_SUBMENU'),
             Route::url('index.php?option=com_installer&controller=customexts'),
-            $vName == 'customexts'
+            $vName == 'customexts',
         );
         Submenu::addEntry(
             Lang::txt('COM_INSTALLER_SUBMENU_WARNINGS'),
             Route::url('index.php?option=com_installer&controller=warnings'),
-            $vName == 'warnings'
+            $vName == 'warnings',
         );
     }
 

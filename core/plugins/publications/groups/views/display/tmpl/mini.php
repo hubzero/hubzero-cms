@@ -16,13 +16,13 @@ $this->css();
 $logo = $this->group->getLogo();
 $groupDesc = $this->escape(stripslashes($this->group->get('description')));
 $groupUrl = Route::url(
-    'index.php?option=com_groups&cn=' . $this->group->get('cn')
+    'index.php?option=com_groups&cn=' . $this->group->get('cn'),
 );
 $imgAlt = Lang::txt('PLG_PUBLICATIONS_GROUPS_IMAGE', $groupDesc);
 $groupLink = '<a href="' . $groupUrl . '">' . $groupDesc . '</a>';
 $belongsText = Lang::txt(
     'PLG_PUBLICATIONS_GROUPS_BELONGS_TO_GROUP',
-    $groupLink
+    $groupLink,
 );
 ?>
 <div id="group-owner">

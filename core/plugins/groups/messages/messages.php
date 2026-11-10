@@ -76,7 +76,7 @@ class Messages extends Plugin
             'title' => Lang::txt('PLG_GROUPS_MESSAGES'),
             'default_access' => $this->params->get('plugin_access', 'members'),
             'display_menu_tab' => $this->params->get('display_tab', 1),
-            'icon' => '2709'
+            'icon' => '2709',
         ];
         return $area;
     }
@@ -101,7 +101,7 @@ class Messages extends Plugin
 
         // The output array we're returning
         $arr = [
-            'html' => ''
+            'html' => '',
         ];
 
         //get this area details
@@ -146,7 +146,7 @@ class Messages extends Plugin
                 App::redirect(
                     Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
                     Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
-                    'warning'
+                    'warning',
                 );
                 return;
             }
@@ -206,7 +206,7 @@ class Messages extends Plugin
         $filters = [
             'limit'    => Request::getInt('limit', 10),
             'start'    => Request::getInt('limitstart', 0),
-            'group_id' => $this->group->get('gidNumber')
+            'group_id' => $this->group->get('gidNumber'),
         ];
 
         // Instantiate our message object
@@ -472,7 +472,7 @@ class Messages extends Plugin
         // define from details
         $from = [
             'name'  => $this->group->get('description') . " Group on " . Config::get("fromname"),
-            'email' => Config::get("mailfrom")
+            'email' => Config::get("mailfrom"),
         ];
 
         // create url
@@ -547,7 +547,7 @@ class Messages extends Plugin
             \Components\Groups\Models\Log::log([
                 'gidNumber' => $this->group->get('gidNumber'),
                 'action'    => $action,
-                'comments'  => [User::get('id')]
+                'comments'  => [User::get('id')],
             ]);
         }
 

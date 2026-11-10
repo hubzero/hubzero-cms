@@ -45,7 +45,7 @@ class Kb extends Plugin
             'title'   => Lang::txt('PLG_TAGS_KB'),
             'total'   => 0,
             'results' => null,
-            'sql'     => ''
+            'sql'     => '',
         ];
 
         if (empty($tags)) {

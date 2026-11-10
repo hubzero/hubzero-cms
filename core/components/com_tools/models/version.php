@@ -284,7 +284,7 @@ class Version
         'wikiaccess' => 'projectPublic',
         'author' => 'author',
         'middleware' => 'middleware',
-        'params' => 'params'
+        'params' => 'params',
     ];
 
     /**
@@ -606,7 +606,7 @@ class Version
             if (!empty($instance) && !is_string($instance) && !is_numeric($instance)) {
                 $this->_error(
                     __FUNCTION__ . ": invalid tool version instance defined",
-                    E_USER_ERROR
+                    E_USER_ERROR,
                 );
                 die();
             }
@@ -615,7 +615,7 @@ class Version
         if (!empty($instance) && !is_string($instance) && !is_numeric($instance)) {
             $this->_error(
                 __FUNCTION__ . ": Argument #1 is not a valid string and not numeric",
-                E_USER_ERROR
+                E_USER_ERROR,
             );
             die();
         }
@@ -1016,7 +1016,7 @@ class Version
         if ($property == 'owner' || $property == 'member') {
             $this->$property = array_map(
                 "strtolower",
-                array_values(array_unique(array_diff((array) $value, [''])))
+                array_values(array_unique(array_diff((array) $value, ['']))),
             );
         } else if (in_array($property, $this->_list_keys)) {
             $this->$property = array_values(array_unique(array_diff((array) $value, [''])));

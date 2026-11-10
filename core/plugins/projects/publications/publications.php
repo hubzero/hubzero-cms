@@ -103,7 +103,7 @@ class Publications extends Plugin
             'title'   => Lang::txt('COM_PROJECTS_TAB_PUBLICATIONS'),
             'submenu' => null,
             'show'    => true,
-            'icon'    => 'f058'
+            'icon'    => 'f058',
         ];
 
         return $area;
@@ -155,7 +155,7 @@ class Publications extends Plugin
             'html'     => '',
             'metadata' => '',
             'message'  => '',
-            'error'    => ''
+            'error'    => '',
         ];
 
         // Get this area details
@@ -342,8 +342,8 @@ class Publications extends Plugin
             [
                 'folder'  => 'projects',
                 'element' => 'publications',
-                'name'    => 'mini'
-            ]
+                'name'    => 'mini',
+            ],
         );
 
         // Filters for returning results
@@ -353,7 +353,7 @@ class Publications extends Plugin
             'start'   => 0,
             'dev'     => 1,
             'sortby'  => 'date_created',
-            'sortdir' => 'DESC'
+            'sortdir' => 'DESC',
         ];
 
         $view->items = $pub->entries('list', $view->filters);
@@ -383,15 +383,15 @@ class Publications extends Plugin
             [
                 'folder'  => 'projects',
                 'element' => 'publications',
-                'name'    => 'publist'
-            ]
+                'name'    => 'publist',
+            ],
         );
 
         // Filters for returning results
         $view->filters = [
             'project' => $model->get('id'),
             'sortby'  => 'date_published',
-            'sortdir' => 'DESC'
+            'sortdir' => 'DESC',
         ];
 
         $view->items = $pub->entries('list', $view->filters);
@@ -421,8 +421,8 @@ class Publications extends Plugin
             [
                 'folder'  => 'projects',
                 'element' => 'publications',
-                'name'    => 'browse'
-            ]
+                'name'    => 'browse',
+            ],
         );
 
         // Instantiate a publication object
@@ -499,8 +499,8 @@ class Publications extends Plugin
                 [
                     'folder'  => 'projects',
                     'element' => 'files',
-                    'name'    => 'error'
-                ]
+                    'name'    => 'error',
+                ],
             );
 
             $view->title  = '';
@@ -575,8 +575,8 @@ class Publications extends Plugin
             [
                 'folder'  => 'projects',
                 'element' => 'publications',
-                'name'    => 'selector'
-            ]
+                'name'    => 'selector',
+            ],
         );
 
         $view->publication = new \Components\Publications\Models\Publication($pid, null, $vid);
@@ -588,8 +588,8 @@ class Publications extends Plugin
                 [
                     'folder'  => 'projects',
                     'element' => 'files',
-                    'name'    => 'error'
-                ]
+                    'name'    => 'error',
+                ],
             );
 
             $view->title  = '';
@@ -610,8 +610,8 @@ class Publications extends Plugin
                 [
                     'folder'  => 'projects',
                     'element' => 'files',
-                    'name'    => 'error'
-                ]
+                    'name'    => 'error',
+                ],
             );
 
             $view->title  = '';
@@ -869,8 +869,8 @@ class Publications extends Plugin
                 [
                     'success' => 1,
                     'error'   => $this->getError(),
-                    'message' => $this->_msg
-                ]
+                    'message' => $this->_msg,
+                ],
             );
         }
 
@@ -1017,7 +1017,7 @@ class Publications extends Plugin
                 $pubTitle,
                 Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=publications&pid=' . $pub->id . '&version=' . $pub->get('version_number')),
                 'publication',
-                1
+                1,
             );
         }
     }
@@ -1038,7 +1038,7 @@ class Publications extends Plugin
                 'publication',
                 Route::url($pub->link('edit')),
                 'publication',
-                1
+                1,
             );
         }
     }
@@ -1071,8 +1071,8 @@ class Publications extends Plugin
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => 'draft',
-                'layout'  => 'start'
-            ]
+                'layout'  => 'start',
+            ],
         );
 
         // Build pub url
@@ -1089,7 +1089,7 @@ class Publications extends Plugin
         // Append breadcrumbs
         Pathway::append(
             stripslashes(Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION')),
-            Route::url($view->route . '&action=start')
+            Route::url($view->route . '&action=start'),
         );
 
         // Output HTML
@@ -1220,7 +1220,7 @@ class Publications extends Plugin
                         0,
                         1,
                         1,
-                        1
+                        1,
                     )
                 ) {
                     throw new \Exception(Lang::txt('COM_PROJECTS_ERROR_SAVING_AUTHORS') . ': ' . $objO->getError());
@@ -1359,7 +1359,7 @@ class Publications extends Plugin
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => $name,
-            ]
+            ],
         );
 
         // Output HTML
@@ -1437,8 +1437,8 @@ class Publications extends Plugin
                 [
                     'folder'  => 'projects',
                     'element' => 'publications',
-                    'name'    => 'error'
-                ]
+                    'name'    => 'error',
+                ],
             );
 
             $view->title  = '';
@@ -1456,8 +1456,8 @@ class Publications extends Plugin
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => 'edititem',
-                'layout'  => $layout
-            ]
+                'layout'  => $layout,
+            ],
         );
 
         // Get project path
@@ -1494,7 +1494,7 @@ class Publications extends Plugin
         $url = $version != 'default' ? $url . '&version=' . $version : $url;
         Pathway::append(
             stripslashes($title),
-            $url
+            $url,
         );
     }
 
@@ -1513,8 +1513,8 @@ class Publications extends Plugin
             [
                 'folder'  => 'projects',
                 'element' => 'publications',
-                'name'    => 'stats'
-            ]
+                'name'    => 'stats',
+            ],
         );
 
         // Get pub stats for each publication
@@ -1632,7 +1632,7 @@ class Publications extends Plugin
                                 Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_SUGGESTION_NEW'),
                                 'projects_new_project_admin',
                                 'admin',
-                                $message
+                                $message,
                             );
                         }
                     }
@@ -1645,8 +1645,8 @@ class Publications extends Plugin
                  [
                     'folder'  => 'projects',
                     'element' => 'publications',
-                    'name'    => 'suggestlicense'
-                 ]
+                    'name'    => 'suggestlicense',
+                 ],
              );
 
             // Output HTML
@@ -1796,8 +1796,8 @@ class Publications extends Plugin
                 [
                     'folder'  => 'projects',
                     'element' => 'publications',
-                    'name'    => 'newversion'
-                ]
+                    'name'    => 'newversion',
+                ],
             );
 
             // Output HTML
@@ -1965,7 +1965,7 @@ class Publications extends Plugin
 
                 $this->setError(
                     Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_FILES_MOVED', $total)
-                    . ' ' . implode(', ', $shown)
+                    . ' ' . implode(', ', $shown),
                 );
             }
         }
@@ -2272,7 +2272,7 @@ class Publications extends Plugin
                 $pubtitle,
                 Route::url($pub->link('editversion')),
                 'publication',
-                1
+                1,
             );
         }
 
@@ -2304,7 +2304,7 @@ class Publications extends Plugin
                     Lang::txt('COM_PROJECTS_EMAIL_ADMIN_NEW_PUB_STATUS'),
                     'projects_new_project_admin',
                     'publication',
-                    $message
+                    $message,
                 );
             }
 
@@ -2329,7 +2329,7 @@ class Publications extends Plugin
                 $pub,
                 $admins,
                 Lang::txt('PLG_PROJECTS_PUBLICATIONS_EMAIL_CURATORS'),
-                $curatorMessage
+                $curatorMessage,
             );
         }
 
@@ -2344,7 +2344,7 @@ class Publications extends Plugin
                 Lang::txt('COM_PROJECTS_EMAIL_MANAGERS_NEW_PUB_STATUS'),
                 'projects_admin_notice',
                 'publication',
-                $message
+                $message,
             );
         }
 
@@ -2435,7 +2435,7 @@ class Publications extends Plugin
         if (!$ajax) {
             Pathway::append(
                 stripslashes($pub->version->get('title')),
-                $pub->link('edit')
+                $pub->link('edit'),
             );
         }
 
@@ -2478,7 +2478,7 @@ class Publications extends Plugin
                             $pubtitle,
                             Route::url($pub->link('editversion')),
                             'publication',
-                            0
+                            0,
                         );
                     }
                 } elseif ($pub->version->get('state') == 3 || $pub->version->get('state') == 4) {
@@ -2568,8 +2568,8 @@ class Publications extends Plugin
                 [
                     'folder'  => 'projects',
                     'element' => 'publications',
-                    'name'    => 'cancel'
-                ]
+                    'name'    => 'cancel',
+                ],
             );
 
             // Output HTML
@@ -2619,8 +2619,8 @@ class Publications extends Plugin
             [
                 'folder' => 'projects',
                 'element' => 'publications',
-                'name'   => 'versions'
-            ]
+                'name'   => 'versions',
+            ],
         );
 
         // Load publication model
@@ -2634,7 +2634,7 @@ class Publications extends Plugin
         // Append breadcrumbs
         Pathway::append(
             stripslashes($view->pub->title),
-            $view->pub->link('edit')
+            $view->pub->link('edit'),
         );
 
         // Get versions
@@ -2687,8 +2687,8 @@ class Publications extends Plugin
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => 'browse',
-                'layout'  => 'provisioned'
-            ]
+                'layout'  => 'provisioned',
+            ],
         );
         $view->option   = $this->_option;
         $view->juser    = User::getInstance();
@@ -2767,7 +2767,7 @@ class Publications extends Plugin
                 if (is_file($this->model->repo()->get('path') . DS . $file)) {
                     // Checkin into repo
                     $this->model->repo()->call('checkin', [
-                        'file' => $this->model->repo()->getMetadata($file, 'file', [])
+                        'file' => $this->model->repo()->getMetadata($file, 'file', []),
                         ]);
                     $checkedin++;
                 }
@@ -2795,8 +2795,8 @@ class Publications extends Plugin
             [
                 'folder'  => 'projects',
                 'element' => 'publications',
-                'name'    => 'diskspace'
-            ]
+                'name'    => 'diskspace',
+            ],
         );
 
         // Include styling and js

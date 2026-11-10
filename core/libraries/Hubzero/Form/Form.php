@@ -1086,7 +1086,7 @@ class Form
                 if (
                     preg_match(
                         '/^(?:\+?1[-. ]?)?\(?([2-9][0-8][0-9])\)?[-. ]?([2-9][0-9]{2})[-. ]?([0-9]{4})$/',
-                        $value
+                        $value,
                     ) == 1
                 ) {
                     $number = (string) preg_replace('/[^\d]/', '', $value);

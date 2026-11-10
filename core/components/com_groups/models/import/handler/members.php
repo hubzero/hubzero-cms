@@ -26,7 +26,7 @@ class Members extends Obj
     {
         return [
             'header'  => 'members',
-            'content' => 'username or id;username or id;username or id'
+            'content' => 'username or id;username or id;username or id',
         ];
     }
 

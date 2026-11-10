@@ -23,7 +23,7 @@ $coming = $this->pub->_curationModel->isComing(
     $this->master->block,
     $this->master->blockId,
     $this->active,
-    $this->elementId
+    $this->elementId,
 );
 $coming = $this->collapse ? $coming : 0;
 $last   = ($this->order == $this->total) ? 1 : 0;
@@ -48,7 +48,7 @@ $curatorStatus = $this->pub->_curationModel->getCurationStatus(
     $this->pub,
     $this->master->blockId,
     $this->elementId,
-    'author'
+    'author',
 );
 
 // Get attachment model
@@ -148,7 +148,7 @@ if ($coming) {
                         $_setDefaultUrl = Route::url(
                             $this->pub->link('editversion')
                             . '&action=saveitem&aid=' . $_firstAtt->id
-                            . '&p=' . $props . '&makedefault=1'
+                            . '&p=' . $props . '&makedefault=1',
                         );
                         ?>
                         <p class="warning no-cover-set">
@@ -174,7 +174,7 @@ if ($coming) {
                                 $this->type,
                                 $att,
                                 $this,
-                                $i
+                                $i,
                             );
 
                             if ($data) {
@@ -185,7 +185,7 @@ if ($coming) {
                                     $att->type,
                                     $data,
                                     $this->manifest->params->typeParams,
-                                    $handler
+                                    $handler,
                                 );
                             }
                         }

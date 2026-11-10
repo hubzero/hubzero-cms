@@ -83,7 +83,7 @@ class Status extends AdminController
             "SELECT COUNT(*) FROM `#__massmail_recipients` r
 			 JOIN `#__massmail_mailings` m ON m.id = r.mailing_id
 			 WHERE r.status = " . Recipient::PENDING . "
-			 AND m.status IN (" . $db->quote(Mailing::STATUS_SENDING) . ", " . $db->quote(Mailing::STATUS_PREPARING) . ", " . $db->quote(Mailing::STATUS_PAUSED) . ")"
+			 AND m.status IN (" . $db->quote(Mailing::STATUS_SENDING) . ", " . $db->quote(Mailing::STATUS_PREPARING) . ", " . $db->quote(Mailing::STATUS_PAUSED) . ")",
         );
         $messagesPending = (int) $db->loadResult();
 
@@ -208,7 +208,7 @@ class Status extends AdminController
 			 FROM `#__massmail_recipients`
 			 WHERE status = " . Recipient::SENT . " AND sent_on IS NOT NULL
 			 AND sent_on >= (UTC_TIMESTAMP() - INTERVAL " . $interval . ")
-			 GROUP BY k"
+			 GROUP BY k",
         );
         $map = [];
         foreach ($db->loadObjectList() as $r) {
@@ -235,7 +235,7 @@ class Status extends AdminController
             $k = gmdate($keyFmt, $t);
             $out[] = [
                 'label' => date($labelFmt, $t),
-                'value' => isset($map[$k]) ? $map[$k] : 0
+                'value' => isset($map[$k]) ? $map[$k] : 0,
             ];
         }
         return $out;
@@ -259,7 +259,7 @@ class Status extends AdminController
             "SELECT DATE_FORMAT(recorded, '" . $sqlFmt . "') k, AVG(depth) d
 			 FROM `#__massmail_queue_samples`
 			 WHERE recorded >= (UTC_TIMESTAMP() - INTERVAL " . (int) $secs . " SECOND)
-			 GROUP BY k"
+			 GROUP BY k",
         );
         $map = [];
         foreach ($db->loadObjectList() as $r) {

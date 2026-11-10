@@ -29,7 +29,7 @@ class Rating extends Relational
      */
     protected $rules = [
         'rating' => 'positive|nonzero',
-        'publication_id' => 'positive|nonzero'
+        'publication_id' => 'positive|nonzero',
     ];
 
     /**

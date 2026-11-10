@@ -52,7 +52,7 @@ $cls = trim($cls);
                         $curatorStatus,
                         $props,
                         'curator',
-                        'element' . $this->active
+                        'element' . $this->active,
                     );
                     ?>
 

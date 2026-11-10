@@ -33,7 +33,7 @@ class Domainclass extends Plugin
     public function onUsageAreas()
     {
         return [
-            'domainclass' => Lang::txt('PLG_USAGE_DOMAINCLASS')
+            'domainclass' => Lang::txt('PLG_USAGE_DOMAINCLASS'),
         ];
     }
 
@@ -99,7 +99,7 @@ class Domainclass extends Plugin
             $period = [
                 ['key' => 1,  'name' => $monthtext],
                 ['key' => 0,  'name' => $yeartext],
-                ['key' => 12, 'name' => $twelvetext]
+                ['key' => 12, 'name' => $twelvetext],
             ];
 
             // Process each different date/time periods/range...

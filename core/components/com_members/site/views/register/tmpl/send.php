@@ -37,7 +37,7 @@ $this->css('register')
             . '&controller='
             . $this->controller
             . '&task=change&return='
-            . $this->return
+            . $this->return,
         );
         ?>
         <p>You can correct your email address by <a href="<?php echo $href; ?>">clicking here</a>.</p>

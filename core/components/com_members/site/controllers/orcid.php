@@ -58,7 +58,7 @@ class Orcid extends SiteController
         'public'  => 'pub.orcid.org',
         'publicsandbox'  => 'pub.sandbox.orcid.org',
         'members' => 'api.orcid.org',
-        'sandbox' => 'api.sandbox.orcid.org'
+        'sandbox' => 'api.sandbox.orcid.org',
     ];
 
     /**
@@ -69,7 +69,7 @@ class Orcid extends SiteController
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_oauthToken = [
         'members' => 'https://orcid.org/oauth/token',
-        'sandbox' => 'https://sandbox.orcid.org/oauth/token'
+        'sandbox' => 'https://sandbox.orcid.org/oauth/token',
     ];
 
     /**
@@ -143,7 +143,7 @@ class Orcid extends SiteController
                 if ($child->getName() == 'name') {
                     $name = [
                         'given-names' => (string)$child->{'given-names'},
-                        'family-name' => (string)$child->{'family-name'}
+                        'family-name' => (string)$child->{'family-name'},
                     ];
                     break;
                 }
@@ -291,7 +291,7 @@ class Orcid extends SiteController
     {
         $view = new \Hubzero\Component\View([
             'name'   => $this->_controller,
-            'layout' => 'results'
+            'layout' => 'results',
         ]);
         $view->records = $records;
         $view->callbackPrefix = $callbackPrefix;
@@ -316,7 +316,7 @@ class Orcid extends SiteController
                     function ($m) {
                         return strtoupper($m[0]);
                     },
-                    strtolower(trim($match[1]))
+                    strtolower(trim($match[1])),
                 );
 
                 if (isset($retVal[$match[1]])) {
@@ -569,7 +569,7 @@ class Orcid extends SiteController
         $headers = [
             'Accept: application/xml',
             'Content-Type: application/vdn.orcid+xml',
-            'Authorization: Bearer ' . $tkn
+            'Authorization: Bearer ' . $tkn,
         ];
         curl_setopt($initedCurl, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($initedCurl, CURLOPT_POSTFIELDS, "$xml_data");
@@ -793,7 +793,7 @@ class Orcid extends SiteController
                     self::saveORCIDToCollaboratorTable(
                         $response['name'],
                         $response['orcid'],
-                        $response['access_token']
+                        $response['access_token'],
                     );
                 }
                 $view->set('permissionGranted', true)

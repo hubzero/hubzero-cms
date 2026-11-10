@@ -30,7 +30,7 @@ Html::behavior('modal');
 Html::behavior('multiselect');
 
 $formAction = Route::url(
-    'index.php?option=com_templates&controller=templates'
+    'index.php?option=com_templates&controller=templates',
 );
 $searchVal = $this->escape($this->filters['search']);
 $searchTitle = Lang::txt('COM_TEMPLATES_TEMPLATES_FILTER_SEARCH_DESC');
@@ -39,7 +39,7 @@ $clientOptions = Html::select(
     \Components\Templates\Helpers\Utilities::getClientOptions(),
     'value',
     'text',
-    $this->filters['client_id']
+    $this->filters['client_id'],
 );
 $filterClient = Lang::txt('JGLOBAL_FILTER_CLIENT');
 ?>
@@ -131,7 +131,7 @@ $filterClient = Lang::txt('JGLOBAL_FILTER_CLIENT');
                         <?php
                         echo \Components\Templates\Helpers\Utilities::thumb(
                             $item->element,
-                            $item->protected
+                            $item->protected,
                         );
                         ?>
                     </td>
@@ -140,7 +140,7 @@ $filterClient = Lang::txt('JGLOBAL_FILTER_CLIENT');
                         $filesUrl = Route::url(
                             'index.php?option=' . $this->option
                             . '&controller=' . $this->controller
-                            . '&task=files&id=' . (int) $item->extension_id
+                            . '&task=files&id=' . (int) $item->extension_id,
                         );
                         ?>
                         <a href="<?php echo $filesUrl; ?>">

@@ -111,7 +111,7 @@ class Order extends ComponentController
             Notify::error('Error processing your order...');
 
             App::redirect(
-                Route::url('index.php?option=' . $this->_option)
+                Route::url('index.php?option=' . $this->_option),
             );
         }
 
@@ -120,11 +120,11 @@ class Order extends ComponentController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
             Pathway::append(
                 Lang::txt('Order complete'),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
 
@@ -147,7 +147,7 @@ class Order extends ComponentController
 
         if (!$transaction) {
             App::redirect(
-                Route::url('index.php?option=' . 'com_cart')
+                Route::url('index.php?option=' . 'com_cart'),
             );
         }
 
@@ -174,7 +174,7 @@ class Order extends ComponentController
                 . '/order/complete/?custom=' . $token . '-' . $transaction->info->tId;
 
             App::redirect(
-                $redirect_url
+                $redirect_url,
             );
         }
     }

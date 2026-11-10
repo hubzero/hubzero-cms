@@ -526,7 +526,7 @@ class AseDriver extends BaseSqlDriver
      */
     public function normalizeColumnType(
         string $type,
-        array $modifiers = []
+        array $modifiers = [],
     ): string {
         $grammar = $this->getSchemaGrammar();
         if ($grammar->getTypeMapping($type) !== null) {
@@ -701,7 +701,7 @@ class AseDriver extends BaseSqlDriver
             . "FROM syscolumns c "
             . "JOIN systypes t ON c.usertype = t.usertype "
             . "WHERE c.id = object_id(" . $this->quote($table) . ") "
-            . "ORDER BY c.colid"
+            . "ORDER BY c.colid",
         );
 
         $columns = [];
@@ -748,7 +748,7 @@ class AseDriver extends BaseSqlDriver
             . "WHERE i.id = object_id(" . $this->quote($table) . ") "
             . "AND i.indid > 0 AND i.indid < 255 "
             . "AND i.name IS NOT NULL "
-            . "ORDER BY i.name"
+            . "ORDER BY i.name",
         );
         $indexes = $this->loadObjectList();
 
@@ -824,7 +824,7 @@ class AseDriver extends BaseSqlDriver
             . "WHERE i.id = object_id($qt) "
             . "AND i.indid > 0 AND i.indid < 255 "
             . "AND i.name IS NOT NULL "
-            . "ORDER BY i.name"
+            . "ORDER BY i.name",
         );
         $results = $this->loadObjectList();
 
@@ -843,7 +843,7 @@ class AseDriver extends BaseSqlDriver
             // Get columns for this index using index_col()
             for ($pos = 1; $pos <= 16; $pos++) {
                 $this->setQuery(
-                    "SELECT index_col($qt, " . (int) $row->indid . ", $pos) AS col_name"
+                    "SELECT index_col($qt, " . (int) $row->indid . ", $pos) AS col_name",
                 );
                 $colResult = $this->loadObject();
                 if ($colResult && $colResult->col_name !== null) {
@@ -958,7 +958,7 @@ class AseDriver extends BaseSqlDriver
             . "FROM syscolumns c "
             . "JOIN sysobjects d ON c.cdefault = d.id AND d.type = 'D' "
             . "JOIN syscomments cm ON d.id = cm.id "
-            . "WHERE c.id = object_id(" . $this->quote($table) . ")"
+            . "WHERE c.id = object_id(" . $this->quote($table) . ")",
         );
 
         $rows = $this->loadObjectList();
@@ -1004,7 +1004,7 @@ class AseDriver extends BaseSqlDriver
             "SELECT index_col(" . $this->quote($table) . ", i.indid, 1) AS pk_col "
             . "FROM sysindexes i "
             . "WHERE i.id = object_id(" . $this->quote($table) . ") "
-            . "AND i.status & 2048 = 2048"
+            . "AND i.status & 2048 = 2048",
         );
         return $this->loadResult();
     }
@@ -1023,7 +1023,7 @@ class AseDriver extends BaseSqlDriver
         // Find PK index
         $this->setQuery(
             "SELECT i.indid FROM sysindexes i "
-            . "WHERE i.id = object_id($qt) AND i.status & 2048 = 2048"
+            . "WHERE i.id = object_id($qt) AND i.status & 2048 = 2048",
         );
         $indid = $this->loadResult();
 
@@ -1090,7 +1090,7 @@ class AseDriver extends BaseSqlDriver
 
         $this->setQuery(
             "SELECT MAX(" . $this->quoteName($identityCol) . ") AS max_id FROM "
-            . $this->quoteName($table)
+            . $this->quoteName($table),
         );
         $result = $this->loadObject();
 
@@ -1477,7 +1477,7 @@ class AseDriver extends BaseSqlDriver
         string $sql,
         array $bindings,
         int $offset,
-        int $limit
+        int $limit,
     ): string {
         // Generate unique temp table name (# prefix = ASE session temp table).
         // Temp table names must NOT be bracket-quoted — ASE rejects # as the
@@ -1707,7 +1707,7 @@ class AseDriver extends BaseSqlDriver
             $transformed = preg_replace(
                 '/\bREPLACE\s*\(/i',
                 'STR_REPLACE(',
-                $sql
+                $sql,
             );
             if ($transformed !== $sql) {
                 $sql = $transformed;
@@ -1730,14 +1730,14 @@ class AseDriver extends BaseSqlDriver
                 throw new \RuntimeException(
                     'ASE does not support FK referential actions '
                     . "(ON {$m[1]} {$m[2]}). "
-                    . 'Use NO ACTION or implement cascade logic in application code.'
+                    . 'Use NO ACTION or implement cascade logic in application code.',
                 );
             }
             // Strip harmless ON DELETE NO ACTION / ON UPDATE NO ACTION
             $transformed = preg_replace(
                 '/\s+ON\s+(DELETE|UPDATE)\s+NO\s+ACTION\b/i',
                 '',
-                $sql
+                $sql,
             );
             if ($transformed !== $sql) {
                 $sql = $transformed;
@@ -1771,7 +1771,7 @@ class AseDriver extends BaseSqlDriver
                 $inner = preg_replace('/\s+ORDER\s+BY\s+[^)]+$/is', '', $match[1]);
                 return '(' . $inner . ') ' . $match[2];
             },
-            $sql
+            $sql,
         );
 
         return $result ?? $sql;
@@ -1925,7 +1925,7 @@ class AseDriver extends BaseSqlDriver
                 $selectPart = preg_replace(
                     '/INSERT\s+INTO\s+' . $ident . '\s+SELECT\s+/i',
                     '',
-                    $sql
+                    $sql,
                 );
                 if (preg_match('/^(.+?)\s+FROM\s+/is', $selectPart, $selMatch)) {
                     $selectExprs = array_map('trim', explode(',', $selMatch[1]));
@@ -1992,7 +1992,7 @@ class AseDriver extends BaseSqlDriver
             $stmt = $this->getConnection()->prepare(
                 "SELECT c.name FROM syscolumns c "
                 . "WHERE c.id = object_id(?) "
-                . "AND c.status & 128 = 128"
+                . "AND c.status & 128 = 128",
             );
             $stmt->execute([$table]);
             $result = $stmt->fetchColumn();
@@ -2203,7 +2203,7 @@ class AseDriver extends BaseSqlDriver
         if ($this->sequenceTableReady || $this->tableExists('_sequences')) {
             $this->setQuery(
                 'DELETE FROM [_sequences] WHERE [table_name] = '
-                . $this->quote($tableName)
+                . $this->quote($tableName),
             );
             $this->execute();
         }
@@ -2224,7 +2224,7 @@ class AseDriver extends BaseSqlDriver
         string $table,
         string $column,
         string $definition,
-        string $comment
+        string $comment,
     ): string {
         return "ALTER TABLE " . $this->quoteName($table)
             . " MODIFY " . $this->quoteName($column)
@@ -2248,7 +2248,7 @@ class AseDriver extends BaseSqlDriver
         string $column,
         string $definition,
         string $afterColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         return $this->modifyColumn($table, $column, $definition, $comment);
     }
@@ -2268,7 +2268,7 @@ class AseDriver extends BaseSqlDriver
         string $column,
         string $definition,
         string $beforeColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         return $this->modifyColumn($table, $column, $definition, $comment);
     }
@@ -2302,7 +2302,7 @@ class AseDriver extends BaseSqlDriver
         string $oldColumn,
         string $newColumn,
         string $definition,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         $table = $this->replacePrefix($table);
 
@@ -2310,7 +2310,7 @@ class AseDriver extends BaseSqlDriver
             $this->setQuery(
                 "EXEC sp_rename "
                 . $this->quote($table . '.' . $oldColumn) . ", "
-                . $this->quote($newColumn) . ", 'column'"
+                . $this->quote($newColumn) . ", 'column'",
             );
             $this->execute();
             $this->consumeResultSets();
@@ -2319,7 +2319,7 @@ class AseDriver extends BaseSqlDriver
         $this->setQuery(
             "ALTER TABLE " . $this->quoteName($table)
             . " MODIFY " . $this->quoteName($newColumn)
-            . " " . $definition
+            . " " . $definition,
         );
         $this->execute();
 
@@ -2339,7 +2339,7 @@ class AseDriver extends BaseSqlDriver
         string $table,
         string $column,
         string $definition,
-        string $comment
+        string $comment,
     ): string {
         // ASE requires NULL or a DEFAULT clause when adding a column.
         // If the definition doesn't explicitly specify NULL/NOT NULL/DEFAULT,
@@ -2380,7 +2380,7 @@ class AseDriver extends BaseSqlDriver
         string $column,
         string $definition,
         string $afterColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         return $this->addColumn($table, $column, $definition, $comment);
     }
@@ -2400,7 +2400,7 @@ class AseDriver extends BaseSqlDriver
         string $column,
         string $definition,
         string $beforeColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         return $this->addColumn($table, $column, $definition, $comment);
     }
@@ -2534,7 +2534,7 @@ class AseDriver extends BaseSqlDriver
         $viewName = $this->replacePrefix($name);
         $this->setQuery(
             "SELECT 1 FROM sysobjects WHERE name = " . $this->quote($viewName)
-            . " AND type = 'V'"
+            . " AND type = 'V'",
         );
 
         return (bool) $this->loadResult();
@@ -2548,7 +2548,7 @@ class AseDriver extends BaseSqlDriver
     public function getViews(): array
     {
         $this->setQuery(
-            "SELECT name FROM sysobjects WHERE type = 'V' ORDER BY name"
+            "SELECT name FROM sysobjects WHERE type = 'V' ORDER BY name",
         );
 
         return $this->loadColumn() ?: [];
@@ -2562,7 +2562,7 @@ class AseDriver extends BaseSqlDriver
     public function getDatabaseNames(): array
     {
         $this->setQuery(
-            "SELECT name FROM master..sysdatabases ORDER BY name"
+            "SELECT name FROM master..sysdatabases ORDER BY name",
         );
 
         return $this->loadColumn() ?: [];
@@ -2591,13 +2591,13 @@ class AseDriver extends BaseSqlDriver
                 . '[increment_value] INT DEFAULT 1 NOT NULL, '
                 . '[table_name] VARCHAR(255) NULL, '
                 . 'PRIMARY KEY ([name])'
-                . ')'
+                . ')',
             );
             $this->execute();
         } elseif (!$this->tableHasField('_sequences', 'table_name')) {
             // Migrate existing _sequences table to include table_name
             $this->setQuery(
-                'ALTER TABLE [_sequences] ADD [table_name] VARCHAR(255) NULL'
+                'ALTER TABLE [_sequences] ADD [table_name] VARCHAR(255) NULL',
             );
             $this->execute();
         }
@@ -2654,7 +2654,7 @@ class AseDriver extends BaseSqlDriver
             . ($tableName ? $this->quote($tableName) : 'NULL');
 
         $this->setQuery(
-            "INSERT INTO [_sequences] ({$columns}) VALUES ({$values})"
+            "INSERT INTO [_sequences] ({$columns}) VALUES ({$values})",
         );
         $this->execute();
 
@@ -2675,7 +2675,7 @@ class AseDriver extends BaseSqlDriver
 
         $this->setQuery(
             'DELETE FROM [_sequences] WHERE [name] = '
-            . $this->quote($name)
+            . $this->quote($name),
         );
         $this->execute();
 
@@ -2695,7 +2695,7 @@ class AseDriver extends BaseSqlDriver
 
         $this->setQuery(
             'SELECT COUNT(*) FROM [_sequences] WHERE [name] = '
-            . $this->quote($name)
+            . $this->quote($name),
         );
 
         return (int) $this->loadResult() > 0;
@@ -2717,13 +2717,13 @@ class AseDriver extends BaseSqlDriver
         $this->setQuery(
             'UPDATE [_sequences] SET [current_value] = '
             . '[current_value] + [increment_value] '
-            . 'WHERE [name] = ' . $this->quote($name)
+            . 'WHERE [name] = ' . $this->quote($name),
         );
         $this->execute();
 
         $this->setQuery(
             'SELECT [current_value] FROM [_sequences] WHERE [name] = '
-            . $this->quote($name)
+            . $this->quote($name),
         );
 
         return (int) $this->loadResult();
@@ -2742,7 +2742,7 @@ class AseDriver extends BaseSqlDriver
 
         $this->setQuery(
             'SELECT [current_value] FROM [_sequences] WHERE [name] = '
-            . $this->quote($name)
+            . $this->quote($name),
         );
         $result = $this->loadResult();
 
@@ -2798,7 +2798,7 @@ class AseDriver extends BaseSqlDriver
     public function setTableCharset(
         string $table,
         string $charset = 'utf8',
-        string $collation = 'utf8_general_ci'
+        string $collation = 'utf8_general_ci',
     ): bool {
         return true;
     }
@@ -2833,14 +2833,14 @@ class AseDriver extends BaseSqlDriver
             "SELECT i.name FROM sysindexes i "
             . "WHERE i.id = object_id(" . $this->quote($table) . ") "
             . "AND i.indid > 0 AND i.indid < 255 "
-            . "AND i.status & 2048 = 2048"
+            . "AND i.status & 2048 = 2048",
         );
         $pkName = $this->loadResult();
 
         if ($pkName) {
             $this->setQuery(
                 "ALTER TABLE " . $this->quoteName($table)
-                . " DROP CONSTRAINT " . $this->quoteName($pkName)
+                . " DROP CONSTRAINT " . $this->quoteName($pkName),
             );
             $this->execute();
         }
@@ -2893,7 +2893,7 @@ class AseDriver extends BaseSqlDriver
         string $table,
         string $column = 'id',
         bool $first = false,
-        bool $useBigInt = true
+        bool $useBigInt = true,
     ): bool {
         $table = $this->replacePrefix($table);
 
@@ -2916,7 +2916,7 @@ class AseDriver extends BaseSqlDriver
         if ($rowCount === 0) {
             // Empty table: simple IDENTITY column
             $this->setQuery(
-                "ALTER TABLE $qt ADD $qc $type IDENTITY PRIMARY KEY"
+                "ALTER TABLE $qt ADD $qc $type IDENTITY PRIMARY KEY",
             );
             $this->execute();
         } else {
@@ -2991,7 +2991,7 @@ class AseDriver extends BaseSqlDriver
         $this->execute();
 
         $this->setQuery(
-            "INSERT INTO #seq_temp ($colList) SELECT $colList FROM $quotedTable ORDER BY $orderClause"
+            "INSERT INTO #seq_temp ($colList) SELECT $colList FROM $quotedTable ORDER BY $orderClause",
         );
         $this->execute();
 
@@ -3004,7 +3004,7 @@ class AseDriver extends BaseSqlDriver
         $this->setQuery(
             "UPDATE $quotedTable SET $quotedColumn = t.row_num "
             . "FROM $quotedTable INNER JOIN #seq_temp t "
-            . "ON " . implode(' AND ', $joinConditions)
+            . "ON " . implode(' AND ', $joinConditions),
         );
         $this->execute();
 
@@ -3045,7 +3045,7 @@ class AseDriver extends BaseSqlDriver
         $table = $this->replacePrefix($table);
         // ASE DROP INDEX syntax: DROP INDEX table.index_name
         $this->setQuery(
-            "DROP INDEX " . $this->quoteName($table) . "." . $this->quoteName($name)
+            "DROP INDEX " . $this->quoteName($table) . "." . $this->quoteName($name),
         );
         $this->execute();
         return true;
@@ -3202,7 +3202,7 @@ class AseDriver extends BaseSqlDriver
             . "AND o.id IN ("
             . "  SELECT constrid FROM sysconstraints "
             . "  WHERE tableid = object_id(" . $this->quote($table) . ")"
-            . ")"
+            . ")",
         );
 
         $results = $this->loadObjectList();

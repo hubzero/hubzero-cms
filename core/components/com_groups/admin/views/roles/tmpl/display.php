@@ -80,7 +80,7 @@ Html::behavior('tooltip');
                     'COM_GROUPS_FIELD_ID',
                     'id',
                     @$this->filters['sort_Dir'],
-                    @$this->filters['sort']
+                    @$this->filters['sort'],
                 ); ?>
                 <th scope="col" class="priority-4"><?php echo $val; ?></th>
                 <?php $val = Html::grid(
@@ -88,7 +88,7 @@ Html::behavior('tooltip');
                     'COM_GROUPS_NAME',
                     'name',
                     @$this->filters['sort_Dir'],
-                    @$this->filters['sort']
+                    @$this->filters['sort'],
                 ); ?>
                 <th scope="col"><?php echo $val; ?></th>
             </tr>
@@ -130,7 +130,7 @@ Html::behavior('tooltip');
                                 $row->get('id') .
                                 '&gid=' .
                                 $this->filters['gid'] .
-                                ($tmpl ? '&tmpl=' . $tmpl : '')
+                                ($tmpl ? '&tmpl=' . $tmpl : ''),
                         ); ?>
                         <a href="<?php echo $val; ?>">
                             <?php echo $this->escape(stripslashes($row->get('name'))); ?>

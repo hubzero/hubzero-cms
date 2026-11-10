@@ -55,7 +55,7 @@ class Migration20130411000000ComCourses extends Base
                     'type'           => 'passfail',
                     'grade_criteria' => $gradeCriteria,
                     'score_criteria' => $scoreCriteria,
-                    'badge_criteria' => 'pass'
+                    'badge_criteria' => 'pass',
                 ])
                 ->execute();
         }

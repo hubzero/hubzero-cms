@@ -47,7 +47,7 @@ class Mywishes extends Module
 				FROM #__wishlist_item as w WHERE w.assigned='" . User::get('id') . "' AND (w.status=0 or w.status=3)
 				ORDER BY proposed DESC
 				LIMIT $limit
-			)"
+			)",
         );
         $this->rows = $database->loadObjectList();
         if ($database->getErrorNum()) {

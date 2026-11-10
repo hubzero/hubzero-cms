@@ -56,7 +56,7 @@ class Sections extends SiteController
             'scope_id' => $forum->get('scope_id'),
             'state'    => Section::STATE_PUBLISHED,
             'search'   => '',
-            'access'   => User::getAuthorisedViewLevels()
+            'access'   => User::getAuthorisedViewLevels(),
         ];
 
         // Flag to indicate if a section is being put into edit mode
@@ -86,7 +86,7 @@ class Sections extends SiteController
         // Set the pathway
         Pathway::append(
             Lang::txt(strtoupper($this->_option)),
-            'index.php?option=' . $this->_option
+            'index.php?option=' . $this->_option,
         );
 
         $this->view
@@ -110,7 +110,7 @@ class Sections extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option, false, true))),
                 Lang::txt('COM_FORUM_LOGIN_NOTICE'),
-                'warning'
+                'warning',
             );
         }
 
@@ -121,7 +121,7 @@ class Sections extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option),
                 Lang::txt('COM_FORUM_NOT_AUTHORIZED'),
-                'error'
+                'error',
             );
         }
 
@@ -140,7 +140,7 @@ class Sections extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option),
                 Lang::txt('COM_FORUM_ERROR_SECTION_ALREADY_EXISTS'),
-                'error'
+                'error',
             );
         }
 
@@ -158,19 +158,19 @@ class Sections extends SiteController
                 'description' => Lang::txt('COM_FORUM_ACTIVITY_SECTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url('index.php?option=' . $this->_option) . '">' . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
                 'details'     => [
                     'title' => $section->get('title'),
-                    'url'   => Route::url('index.php?option=' . $this->_option)
-                ]
+                    'url'   => Route::url('index.php?option=' . $this->_option),
+                ],
             ],
             'recipients' => [
                 ['forum.site', 1],
                 ['forum.section', $section->get('id')],
-                ['user', $section->get('created_by')]
-            ]
+                ['user', $section->get('created_by')],
+            ],
         ]);
 
         // Set the redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option)
+            Route::url('index.php?option=' . $this->_option),
         );
     }
 
@@ -186,7 +186,7 @@ class Sections extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option, false, true))),
                 Lang::txt('COM_FORUM_LOGIN_NOTICE'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -209,7 +209,7 @@ class Sections extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option),
                 Lang::txt('COM_FORUM_MISSING_ID'),
-                'error'
+                'error',
             );
             return;
         }
@@ -221,7 +221,7 @@ class Sections extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option),
                 Lang::txt('COM_FORUM_NOT_AUTHORIZED'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -244,19 +244,19 @@ class Sections extends SiteController
                 'description' => Lang::txt('PLG_GROUPS_FORUM_ACTIVITY_SECTION_DELETED', '<a href="' . Route::url('index.php?option=' . $this->_option) . '">' . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
                 'details'     => [
                     'title' => $section->get('title'),
-                    'url'   => Route::url('index.php?option=' . $this->_option)
-                ]
+                    'url'   => Route::url('index.php?option=' . $this->_option),
+                ],
             ],
             'recipients' => [
                 ['forum.site', 1],
                 ['forum.section', $section->get('id')],
-                ['user', $section->get('created_by')]
-            ]
+                ['user', $section->get('created_by')],
+            ],
         ]);
 
         // Redirect to main listing
         App::redirect(
-            Route::url('index.php?option=' . $this->_option)
+            Route::url('index.php?option=' . $this->_option),
         );
     }
 

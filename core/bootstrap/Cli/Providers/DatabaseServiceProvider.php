@@ -35,14 +35,14 @@ class DatabaseServiceProvider extends ServiceProvider
                 'password' => $app['config']->get('password'),
                 'database' => $app['config']->get('db'),
                 'prefix'   => $app['config']->get('dbprefix'),
-                'charset'  => $app['config']->get('dbcharset')
+                'charset'  => $app['config']->get('dbcharset'),
             ];
 
             $driver = Driver::getInstance($options);
 
             if ($app['config']->get('raw_query_mode')) {
                 $driver->setRawQueryMode(
-                    $app['config']->get('raw_query_mode')
+                    $app['config']->get('raw_query_mode'),
                 );
             }
 

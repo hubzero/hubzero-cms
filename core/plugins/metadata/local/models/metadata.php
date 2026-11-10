@@ -31,7 +31,7 @@ class Metadata extends Relational
      **/
     protected $rules = [
         'key'        => 'notempty',
-        'value'      => 'notempty'
+        'value'      => 'notempty',
     ];
 
     /**
@@ -60,7 +60,7 @@ class Metadata extends Relational
         if ($row->isNew()) {
             $row->set([
                 'path' => $path,
-                'key'  => $key
+                'key'  => $key,
             ]);
         }
 

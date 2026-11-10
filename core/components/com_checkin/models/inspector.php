@@ -102,7 +102,7 @@ class Inspector extends Obj
                 'global.list.limit',
                 'limit',
                 App::get('config')->get('list_limit'),
-                'int'
+                'int',
             );
             $limit = $value;
             $this->state->set('list.limit', $limit);
@@ -111,7 +111,7 @@ class Inspector extends Obj
                 'com_checkin.limitstart',
                 'limitstart',
                 0,
-                'int'
+                'int',
             );
             $limitstart = ($limit != 0 ? (floor($value / $limit) * $limit) : 0);
             $this->state->set('list.start', $limitstart);
@@ -120,7 +120,7 @@ class Inspector extends Obj
             $value = Request::getState(
                 'com_checkin.list.ordering',
                 'filter_order',
-                'table'
+                'table',
             );
             if (!in_array($value, ['table', 'count'])) {
                 $value = 'table';
@@ -131,7 +131,7 @@ class Inspector extends Obj
             $value = Request::getState(
                 'com_checkin.list.direction',
                 'filter_order_Dir',
-                'asc'
+                'asc',
             );
             if (!in_array(strtoupper($value), ['ASC', 'DESC', ''])) {
                 $value = 'asc';
@@ -176,7 +176,7 @@ class Inspector extends Obj
 
             $values = [
                 'checked_out' => 0,
-                'checked_out_time' => $fields['checked_out_time']->Default
+                'checked_out_time' => $fields['checked_out_time']->Default,
             ];
 
             // There was a branch here that blanked an `editor` column alongside
@@ -278,7 +278,7 @@ class Inspector extends Obj
             $results = array_slice(
                 $results,
                 $this->state('list.start'),
-                $this->state('list.limit') ? $this->state('list.limit') : null
+                $this->state('list.limit') ? $this->state('list.limit') : null,
             );
 
             $this->items = $results;

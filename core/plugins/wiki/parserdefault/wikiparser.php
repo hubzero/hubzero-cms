@@ -72,7 +72,7 @@ class WikiParser
 
         'fullparse' => true,
         'camelcase' => true,
-        'loglinks'  => false
+        'loglinks'  => false,
     ];
 
     /**
@@ -83,7 +83,7 @@ class WikiParser
     private $_data = [
         'input'  => null,
         'output' => null,
-        'links'  => []
+        'links'  => [],
     ];
 
     /**
@@ -96,7 +96,7 @@ class WikiParser
         'code'   => [],
         'anchor' => [],
         'macro'  => [],
-        'math'   => []
+        'math'   => [],
     ];
 
     /**
@@ -117,7 +117,7 @@ class WikiParser
 
         'algn' => "(?:(?:\<(?!>)|(?<!<)\>|\<\>|\=|[()]+(?!))|[\-^~])*",
         'spns' => "(?:(?:\\\\\d+)|(?:\/\d+))*",
-        'clss' => "(?:(?:\([^)]+\))|(?:\{[^}]+\}))*"
+        'clss' => "(?:(?:\([^)]+\))|(?:\{[^}]+\}))*",
     ];
 
     /**
@@ -314,7 +314,7 @@ class WikiParser
         $text = preg_replace(
             ['/<\./', '/([0-9]+)<([0-9]+)/', '/<([0-9]+)/', '/>([0-9]+)/', '/([0-9]+)</'], //'/([0-9]+)>/'),
             ['&lt;.', '$1 &lt; $2',          '&lt; $1',     '&gt; $1',     '$1 &lt;'], //    '$1 &gt;'),
-            $text
+            $text,
         );
         $text = str_replace('<>.', '&lt;&gt;.', $text);
         $text = str_replace('||>.', '||&gt;.', $text);
@@ -467,7 +467,7 @@ class WikiParser
                 "(" .
                     "(\#[A-Za-z]([-A-Za-z0-9_:.]*[-A-Za-z0-9_])?)?" .
                 ")" .
-                "(\"\")?"
+                "(\"\")?",
         ];
 
         foreach ($char_regexes as $func => $regex) {
@@ -572,14 +572,14 @@ class WikiParser
             'url'      => $href,
             'page_id'  => $this->get('pageid'),
             'scope'    => 'external',
-            'scope_id' => 0
+            'scope_id' => 0,
         ];
 
         return $prfx . $this->_dataPush([
             $matches[0],
             'anchor',
             $this->_randomString(),
-            '<a class="ext-link" href="' . htmlspecialchars((string) $href, ENT_QUOTES, 'UTF-8') . '" rel="external">' . $this->glyphs($txt) . '</a>'
+            '<a class="ext-link" href="' . htmlspecialchars((string) $href, ENT_QUOTES, 'UTF-8') . '" rel="external">' . $this->glyphs($txt) . '</a>',
         ]);
     }
 
@@ -625,7 +625,7 @@ class WikiParser
                 $whole,
                 'anchor',
                 $this->_randomString(),
-                '[' . trim($whole) . ']'
+                '[' . trim($whole) . ']',
             ]);
         }
 
@@ -640,7 +640,7 @@ class WikiParser
                 $whole,
                 'anchor',
                 $this->_randomString(),
-                '<span id="' . htmlspecialchars((string) ltrim($href, '=#'), ENT_QUOTES, 'UTF-8') . '"></span>'
+                '<span id="' . htmlspecialchars((string) ltrim($href, '=#'), ENT_QUOTES, 'UTF-8') . '"></span>',
             ]);
         } elseif (substr($href, 0, 1) == '#') {
             // Are we jumping to an anchor?
@@ -652,7 +652,7 @@ class WikiParser
                 $whole,
                 'anchor',
                 $this->_randomString(),
-                '<a class="' . $cls . '" href="' . htmlspecialchars((string) $href, ENT_QUOTES, 'UTF-8') . '">' . $this->glyphs($title) . '</a>'
+                '<a class="' . $cls . '" href="' . htmlspecialchars((string) $href, ENT_QUOTES, 'UTF-8') . '">' . $this->glyphs($title) . '</a>',
             ]);
         }
 
@@ -777,7 +777,7 @@ class WikiParser
             'url'      => $href,
             'page_id'  => $this->get('pageid'),
             'scope'    => 'internal',
-            'scope_id' => $p->get('id')
+            'scope_id' => $p->get('id'),
         ];
 
         // Fall back to pagename/href if title was stripped to empty, so links always have text
@@ -790,7 +790,7 @@ class WikiParser
             $whole,
             'anchor',
             $this->_randomString(),
-            '<a class="' . $cls . '" href="' . str_replace(['\\', '"', "'"], '', $href) . '">' . $this->glyphs($displayTitle) . '</a>'
+            '<a class="' . $cls . '" href="' . str_replace(['\\', '"', "'"], '', $href) . '">' . $this->glyphs($displayTitle) . '</a>',
         ]);
     }
 
@@ -821,14 +821,14 @@ class WikiParser
             'url'      => $href,
             'page_id'  => $this->get('pageid'),
             'scope'    => 'external',
-            'scope_id' => 0
+            'scope_id' => 0,
         ];
 
         return $this->_dataPush([
             $matches[0],
             'anchor',
             $this->_randomString(),
-            '<a class="ext-link" href="' . htmlspecialchars((string) $href, ENT_QUOTES, 'UTF-8') . '" rel="external">' . $this->glyphs(trim($title)) . '</a>'
+            '<a class="ext-link" href="' . htmlspecialchars((string) $href, ENT_QUOTES, 'UTF-8') . '" rel="external">' . $this->glyphs(trim($title)) . '</a>',
         ]);
     }
 
@@ -863,14 +863,14 @@ class WikiParser
             'url'      => $link,
             'page_id'  => $this->get('pageid'),
             'scope'    => 'internal',
-            'scope_id' => $p->get('id')
+            'scope_id' => $p->get('id'),
         ];
 
         return $this->_dataPush([
             $name,
             'anchor',
             $this->_randomString(),
-            '<a href="' . $link . '" class="' . $cls . '">' . $this->glyphs($name) . '</a>'
+            '<a href="' . $link . '" class="' . $cls . '">' . $this->glyphs($name) . '</a>',
         ]);
     }
 
@@ -1184,7 +1184,7 @@ class WikiParser
             $whole,
             'code',
             $this->_randomString(),
-            $text
+            $text,
         ]) . $after;
     }
 
@@ -1252,7 +1252,7 @@ class WikiParser
         $string = str_replace(
             ['&amp;', '&lt;', '&gt;'],
             ['&amp;amp;', '&amp;lt;', '&amp;gt;'],
-            $string
+            $string,
         );
 
         // Fix &entitiy\n;
@@ -1337,7 +1337,7 @@ class WikiParser
             $matches[0],
             'math',
             $this->_randomString(),
-            '$$' . $matches[1] . '$$'
+            '$$' . $matches[1] . '$$',
         ]);
     }
 
@@ -1351,14 +1351,14 @@ class WikiParser
     private function _getMath($matches)
     {
         $m = Math\MathRenderer::renderMath(trim($matches[1]), [
-            'option' => $this->get('option')
+            'option' => $this->get('option'),
         ]);
 
         return $this->_dataPush([
             $matches[0],
             'math',
             $this->_randomString(),
-            $m
+            $m,
         ]);
     }
 
@@ -1428,7 +1428,7 @@ class WikiParser
 
                 // Parse any nested includes
                 $result = $this->includes(
-                    $p->version->get('pagetext')
+                    $p->version->get('pagetext'),
                 );
 
                 $this->includeDepth--;
@@ -1482,7 +1482,7 @@ class WikiParser
                     $matches[1],
                     'macro',
                     $this->_randomString(),
-                    $matches[0]
+                    $matches[0],
                 ]);
             }
 
@@ -1503,7 +1503,7 @@ class WikiParser
                     // to avoid PHP reserved name conflicts)
                     $lngth = count($macroPieces);
                     $macroPieces[$lngth - 1] = \Hubzero\Utility\Inflector::pluralize(
-                        $macroPieces[$lngth - 1]
+                        $macroPieces[$lngth - 1],
                     );
                     $macroname = '\\Plugins\\Wiki\\Parserdefault\\Macros\\'
                         . implode('\\', array_map('ucfirst', $macroPieces));
@@ -1561,7 +1561,7 @@ class WikiParser
                 $matches[1],
                 'macro',
                 $this->_randomString(),
-                $macro->render()
+                $macro->render(),
             ]);
         }
 
@@ -1646,7 +1646,7 @@ class WikiParser
             '$1' . $glyph['copyright'],               //  copyright
             '$1$2',
             '$1$2',
-            '$1$2'
+            '$1$2',
         ];
 
         $text = preg_split("@(<[\w/!?].*>)@Us", $text, -1, PREG_SPLIT_DELIM_CAPTURE);
@@ -1737,7 +1737,7 @@ class WikiParser
                 ($lang)    ? ' lang="'    . $lang            . '"' : '',
                 ($id and $include_id) ? ' id="' . $id        . '"' : '',
                 ($colspan) ? ' colspan="' . $colspan         . '"' : '',
-                ($rowspan) ? ' rowspan="' . $rowspan         . '"' : ''
+                ($rowspan) ? ' rowspan="' . $rowspan         . '"' : '',
             ]);
         }
         return '';
@@ -1756,7 +1756,7 @@ class WikiParser
             '<'  => 'left',
             '='  => 'center',
             '>'  => 'right',
-            '<>' => 'justify'
+            '<>' => 'justify',
         ];
         return (isset($vals[$in])) ? $vals[$in] : '';
     }
@@ -1773,7 +1773,7 @@ class WikiParser
         $vals = [
             '^' => 'top',
             '-' => 'middle',
-            '~' => 'bottom'
+            '~' => 'bottom',
         ];
         return (isset($vals[$in])) ? $vals[$in] : '';
     }
@@ -1794,7 +1794,7 @@ class WikiParser
             '\+',
             '~~',
             ',,',
-            '\^'
+            '\^',
         ];
         $pnct = ".,\"'?!;:";
 
@@ -1871,11 +1871,11 @@ class WikiParser
 
             $patterns = [
                 "/^(.*){$h}(.+){$h}\s\#(.*)\\s*$/m",    // === Header #myheader ===
-                "/^(.*){$h}(.+){$h}\\s*$/m"             // === Header ===
+                "/^(.*){$h}(.+){$h}\\s*$/m",             // === Header ===
             ];
             $replace  = [
                 "\\1<h{$i} id=\"\\3\">\\2</h{$i}>\\4",  // <h3 id="myheader">Header</h3>
-                "\\1<h{$i}>\\2</h{$i}>\\3"              // <h3>Header</h3>
+                "\\1<h{$i}>\\2</h{$i}>\\3",              // <h3>Header</h3>
             ];
             $text = preg_replace($patterns, $replace, $text);
         }
@@ -2629,7 +2629,7 @@ class WikiParser
                 $closematch = preg_match(
                     '/(?:<\\/table|<\\/blockquote|<\\/h1|<\\/h2|<\\/h3|<\\/h4|<\\/h5|<\\/h6|' .
                     '<td|<th|<\\/?div|<hr|<\\/pre|<\\/p|' . $this->token() . '-pre|<\\/li|<\\/dl|<\\/ul|<\\/ol|<\\/?center)/iS',
-                    $t
+                    $t,
                 );
                 if ($openmatch or $closematch) {
                     $paragraphStack = false;
@@ -2860,7 +2860,7 @@ class WikiParser
             $_tocLine = preg_replace(
                 ['#<(?!/?(sup|sub)).*?' . '>#', '#<(/?(sup|sub)).*?' . '>#'],
                 ['',                          '<$1>'],
-                $canonized_headline
+                $canonized_headline,
             );
             $_tocLine = trim($_tocLine);
 

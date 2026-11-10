@@ -65,8 +65,8 @@ $this->props);
                     'folder'    => 'projects',
                     'element'   => 'team',
                     'name'      => 'selector',
-                    'layout'    => 'selector'
-                ]
+                    'layout'    => 'selector',
+                ],
             );
             $view->option       = $this->option;
             $view->model        = $this->model;

@@ -43,7 +43,7 @@ class Email extends Relational
      */
     protected $rules = [
         'email' => 'notempty',
-        'mid'   => 'positive|nonzero'
+        'mid'   => 'positive|nonzero',
     ];
 
     /**

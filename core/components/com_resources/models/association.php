@@ -52,7 +52,7 @@ class Association extends Relational
      */
     protected $rules = [
         'parent_id' => 'positive|nonzero',
-        'child_id'  => 'positive|nonzero'
+        'child_id'  => 'positive|nonzero',
     ];
 
     /**
@@ -61,7 +61,7 @@ class Association extends Relational
      * @var  array
      */
     public $initiate = [
-        'ordering'
+        'ordering',
     ];
 
     /**

@@ -58,7 +58,7 @@ if (count($matches) > 0) {
                         // add field data to local library link
                         $fields   = ['doi','isbn','issn'];
                         $linkData = [
-                            'title' => $this->model->title
+                            'title' => $this->model->title,
                         ];
                         foreach ($fields as $field) {
                             if (isset($resourceFields[$field]) && $resourceFields[$field] != '') {

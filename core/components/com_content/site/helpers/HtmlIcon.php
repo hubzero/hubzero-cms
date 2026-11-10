@@ -61,7 +61,7 @@ class HtmlIcon
             $articleRoute = \Components\Content\Site\Helpers\Route::getArticleRoute(
                 $article->slug,
                 $article->catid,
-                $article->language
+                $article->language,
             );
             $link     = $base . Route::url($articleRoute, false);
             $url      = 'index.php?option=com_mailto&tmpl=component&template=' . $template
@@ -168,7 +168,7 @@ class HtmlIcon
         $url  = \Components\Content\Site\Helpers\Route::getArticleRoute(
             $article->slug,
             $article->catid,
-            $article->language
+            $article->language,
         );
         $url .= '&tmpl=component&print=1&layout=default';
 

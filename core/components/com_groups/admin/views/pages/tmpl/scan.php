@@ -18,7 +18,7 @@ $this->css();
 
 Toolbar::title(
     $this->group->get('description') . ': ' . $this->page->get('title') . ' - ' . Lang::txt('COM_GROUPS_PAGES_SCAN'),
-    'groups.png'
+    'groups.png',
 );
 Toolbar::custom('markscanned', 'check', 'check', 'COM_GROUPS_PAGES_MARK_SCANNED', false);
 Toolbar::spacer();
@@ -33,7 +33,7 @@ $this->js();
 // page version content
 $content = $this->page->version()->get('content');
 $action = Route::url(
-    "index.php?option=$this->option&controller=$this->controller&gid=$this->group->cn&task=markscanned"
+    "index.php?option=$this->option&controller=$this->controller&gid=$this->group->cn&task=markscanned",
 );
 ?>
 

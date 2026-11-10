@@ -40,7 +40,7 @@ class Autocompleter extends AbstractHelper
         $size = null,
         $wsel = false,
         $type = 'multi',
-        $dsabl = false
+        $dsabl = false,
     ) {
         if (!in_array($what, ['tags', 'members', 'groups'])) {
             throw new \InvalidArgumentException(__METHOD__ .
@@ -70,8 +70,8 @@ class Autocompleter extends AbstractHelper
         $results = Event::trigger(
             'hubzero.' . $event,
             [
-                [$what, $name, $id, $class, $value, $size, $wsel, $type, $dsabl]
-            ]
+                [$what, $name, $id, $class, $value, $size, $wsel, $type, $dsabl],
+            ],
         );
 
         if (count($results) > 0) {

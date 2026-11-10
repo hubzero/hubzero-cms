@@ -81,7 +81,7 @@ class ErrorBagTraitTest extends Basic
         $newerrors = [
             'Integer posuere erat',
             'Ante venenatis dapibus',
-            'Posuere velit aliquet.'
+            'Posuere velit aliquet.',
         ];
 
         $this->obj->setErrors($newerrors);

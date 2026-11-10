@@ -54,7 +54,7 @@ class Massmail extends Plugin
 			    SET `state` = " . $enabled . "
 			  WHERE `plugin` = 'massmail'
 			    AND `event`  = 'processMassmailQueue'
-			    AND `state` <> " . $enabled
+			    AND `state` <> " . $enabled,
         );
         $db->query();
     }

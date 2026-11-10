@@ -72,7 +72,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                     <label for="format-string"><?php echo Lang::txt('CITATION_FORMAT_STRING'); ?>:</label><br />
                     <?php
                     $formatStr = trim(
-                        preg_replace('/\r|\n/', '', $this->currentFormat->format)
+                        preg_replace('/\r|\n/', '', $this->currentFormat->format),
                     );
                     ?>
                     <textarea

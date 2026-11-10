@@ -29,7 +29,7 @@ class Block extends Relational
      * @var  array
      */
     protected $rules = [
-        'label' => 'notempty'
+        'label' => 'notempty',
     ];
 
     /**
@@ -38,7 +38,7 @@ class Block extends Relational
      * @var  array
      */
     public $always = [
-        'block'
+        'block',
     ];
 
     /**
@@ -47,7 +47,7 @@ class Block extends Relational
      * @var  array
      */
     public $initiate = [
-        'ordering'
+        'ordering',
     ];
 
     /**

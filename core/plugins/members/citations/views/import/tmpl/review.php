@@ -45,15 +45,15 @@ $base = $this->member->link() . '&active=citations';
         $reviewUrl = Route::url($base . '&task=review');
         $step1 = Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP1');
         $step1Name = Lang::txt(
-            'PLG_MEMBERS_CITATIONS_IMPORT_STEP1_NAME'
+            'PLG_MEMBERS_CITATIONS_IMPORT_STEP1_NAME',
         );
         $step2 = Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP2');
         $step2Name = Lang::txt(
-            'PLG_MEMBERS_CITATIONS_IMPORT_STEP2_NAME'
+            'PLG_MEMBERS_CITATIONS_IMPORT_STEP2_NAME',
         );
         $step3 = Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP3');
         $step3Name = Lang::txt(
-            'PLG_MEMBERS_CITATIONS_IMPORT_STEP3_NAME'
+            'PLG_MEMBERS_CITATIONS_IMPORT_STEP3_NAME',
         );
         ?>
         <ul id="steps">
@@ -87,7 +87,7 @@ $base = $this->member->link() . '&active=citations';
                 $attentionCount = count($citations_require_attention);
                 $requireAttentionTxt = Lang::txt(
                     'PLG_MEMBERS_CITATIONS_IMPORT_REQUIRE_ATTENTION',
-                    $attentionCount
+                    $attentionCount,
                 );
                 ?>
                 <table class="upload-list require-action">
@@ -107,31 +107,31 @@ $base = $this->member->link() . '&active=citations';
                             $type_title = $cc->relatedType->get('type_title');
                             $tags = implode(
                                 ', ',
-                                \Components\Citations\Helpers\Format::citationTags($c['duplicate'], false)
+                                \Components\Citations\Helpers\Format::citationTags($c['duplicate'], false),
                             );
                             $badges = implode(
                                 ', ',
-                                \Components\Citations\Helpers\Format::citationBadges($c['duplicate'], false)
+                                \Components\Citations\Helpers\Format::citationBadges($c['duplicate'], false),
                             );
 
                             $dupLabel = Lang::txt(
-                                'PLG_MEMBERS_CITATIONS_IMPORT_DUPLICATE'
+                                'PLG_MEMBERS_CITATIONS_IMPORT_DUPLICATE',
                             );
                             $dupTitle = html_entity_decode($c['title']);
                             $showDetails = Lang::txt(
-                                'PLG_MEMBERS_CITATIONS_IMPORT_SHOW_CITATION_DETAILS'
+                                'PLG_MEMBERS_CITATIONS_IMPORT_SHOW_CITATION_DETAILS',
                             );
                             $detailsLabel = Lang::txt(
-                                'PLG_MEMBERS_CITATIONS_IMPORT_CITATION_DETAILS'
+                                'PLG_MEMBERS_CITATIONS_IMPORT_CITATION_DETAILS',
                             );
                             $replaceLabel = Lang::txt(
-                                'PLG_MEMBERS_CITATIONS_IMPORT_CITATION_REPLACE'
+                                'PLG_MEMBERS_CITATIONS_IMPORT_CITATION_REPLACE',
                             );
                             $keepLabel = Lang::txt(
-                                'PLG_MEMBERS_CITATIONS_IMPORT_CITATION_KEEP'
+                                'PLG_MEMBERS_CITATIONS_IMPORT_CITATION_KEEP',
                             );
                             $nothingLabel = Lang::txt(
-                                'PLG_MEMBERS_CITATIONS_IMPORT_CITATION_NOTHING'
+                                'PLG_MEMBERS_CITATIONS_IMPORT_CITATION_NOTHING',
                             );
                             $replaceId = 'citation_action_attention-'
                                 . $counter . '-replace';
@@ -211,13 +211,13 @@ $base = $this->member->link() . '&active=citations';
                                                         <td>
                                                             <?php
                                                             $uploadedLabel = Lang::txt(
-                                                                'PLG_MEMBERS_CITATIONS_IMPORT_JUST_UPLOADED'
+                                                                'PLG_MEMBERS_CITATIONS_IMPORT_JUST_UPLOADED',
                                                             );
                                                             $onFileLabel = Lang::txt(
-                                                                'PLG_MEMBERS_CITATIONS_IMPORT_ON_FILE'
+                                                                'PLG_MEMBERS_CITATIONS_IMPORT_ON_FILE',
                                                             );
                                                             $newVal = html_entity_decode(
-                                                                nl2br($c[$k])
+                                                                nl2br($c[$k]),
                                                             );
                                                             ?>
                                                             <table class="citation-differences">
@@ -251,7 +251,7 @@ $base = $this->member->link() . '&active=citations';
                                                                                     break;
                                                                                 default:
                                                                                     echo html_entity_decode(
-                                                                                        nl2br($cc->get($k))
+                                                                                        nl2br($cc->get($k)),
                                                                                     );
                                                                                     break;
                                                                             }
@@ -284,7 +284,7 @@ $base = $this->member->link() . '&active=citations';
                 $noAttentionCount = count($citations_require_no_attention);
                 $noAttentionTxt = Lang::txt(
                     'PLG_MEMBERS_CITATIONS_IMPORT_REQUIRE_NO_ATTENTION',
-                    $noAttentionCount
+                    $noAttentionCount,
                 );
                 ?>
                 <table class="upload-list no-action">
@@ -327,10 +327,10 @@ $base = $this->member->link() . '&active=citations';
                                     </span>
                                     <?php
                                     $showDetailsTxt = Lang::txt(
-                                        'PLG_MEMBERS_CITATIONS_IMPORT_SHOW_CITATION_DETAILS'
+                                        'PLG_MEMBERS_CITATIONS_IMPORT_SHOW_CITATION_DETAILS',
                                     );
                                     $detailsTxt = Lang::txt(
-                                        'PLG_MEMBERS_CITATIONS_IMPORT_CITATION_DETAILS'
+                                        'PLG_MEMBERS_CITATIONS_IMPORT_CITATION_DETAILS',
                                     );
                                     ?>
                                     <span class="click-more">

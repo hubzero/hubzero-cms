@@ -42,7 +42,7 @@ class Courses extends Plugin
             'title'   => Lang::txt('PLG_TAGS_COURSES'),
             'total'   => 0,
             'results' => null,
-            'sql'     => ''
+            'sql'     => '',
         ];
 
         if (empty($tags)) {
@@ -117,7 +117,7 @@ class Courses extends Plugin
         $view = new \Hubzero\Plugin\View([
             'folder'  => 'tags',
             'element' => 'courses',
-            'name'    => 'result'
+            'name'    => 'result',
         ]);
         $view->set('course', $course);
 

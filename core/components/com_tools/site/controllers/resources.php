@@ -60,7 +60,7 @@ class Resources extends SiteController
 
         if (!$this->_toolid) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=pipeline')
+                Route::url('index.php?option=' . $this->_option . '&controller=pipeline'),
             );
             return;
         }
@@ -162,11 +162,11 @@ class Resources extends SiteController
             $hztv->fulltxt     = $objV->fulltxt     = $status['fulltxt'];
             $hztv->description = $objV->description = \Hubzero\Utility\Str::truncate(
                 Request::getString('description', $status['description'], 'post'),
-                500
+                500,
             );
             $hztv->title       = $objV->title       = \Hubzero\Utility\Str::truncate(
                 preg_replace('/\s+/', ' ', Request::getString('title', $status['title'], 'post')),
-                500
+                500,
             );
 
             if (!$hztv->update()) {
@@ -292,18 +292,18 @@ class Resources extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_name)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         if (Pathway::count() <= 1) {
             Pathway::append(
                 Lang::txt('COM_TOOLS_STATUS_FOR', $status['toolname']),
-                'index.php?option=' . $this->_option . '&controller=pipeline&task=status&app=' . $alias
+                'index.php?option=' . $this->_option . '&controller=pipeline&task=status&app=' . $alias,
             );
             Pathway::append(
                 Lang::txt('COM_TOOLS_EDIT_TOOL_PAGE'),
                 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
-                . '&app=' . $alias . '&task=start&step=1'
+                . '&app=' . $alias . '&task=start&step=1',
             );
         }
 
@@ -426,7 +426,7 @@ class Resources extends SiteController
         if (!$this->_toolid) {
             // not a tool resource page
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=pipeline')
+                Route::url('index.php?option=' . $this->_option . '&controller=pipeline'),
             );
             return;
         }
@@ -490,18 +490,18 @@ class Resources extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_name)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         if (Pathway::count() <= 1) {
             Pathway::append(
                 Lang::txt('COM_TOOLS_STATUS_FOR', $thistool->toolname),
-                'index.php?option=' . $this->_option . '&controller=pipeline&task=status&app=' . $alias
+                'index.php?option=' . $this->_option . '&controller=pipeline&task=status&app=' . $alias,
             );
             Pathway::append(
                 Lang::txt('COM_TOOLS_EDIT_TOOL_PAGE'),
                 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
-                . '&app=' . $alias . '&task=start&step=1'
+                . '&app=' . $alias . '&task=start&step=1',
             );
         }
 

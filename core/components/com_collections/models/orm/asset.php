@@ -48,7 +48,7 @@ class Asset extends Relational
     protected $rules = [
         'filename' => 'notempty',
         'item_id'  => 'positive|nonzero',
-        'type'     => 'notempty'
+        'type'     => 'notempty',
     ];
 
     /**
@@ -59,7 +59,7 @@ class Asset extends Relational
     public $initiate = [
         'created',
         'created_by',
-        'ordering'
+        'ordering',
     ];
 
     /**
@@ -68,7 +68,7 @@ class Asset extends Relational
      * @var  array
      */
     protected $parsed = [
-        'description'
+        'description',
     ];
 
     /**
@@ -387,7 +387,7 @@ class Asset extends Relational
                 // Medium sized (if an image)
                 'mediu' => $path . Filesystem::name($this->get('filename')) . '_m.' . $ext,
                 // Thumbnail (if an image)
-                'thumb' => $path . Filesystem::name($this->get('filename')) . '_t.' . $ext//,
+                'thumb' => $path . Filesystem::name($this->get('filename')) . '_t.' . $ext,//,
                 // Thumbnail (if an image)
                 // A previously "trashed" file
                 //'trash' => $path . Filesystem::name($this->get('filename')) . uniqid('_d') . '.' . $ext;

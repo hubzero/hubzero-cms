@@ -84,7 +84,7 @@ class Migration20130926143200Core extends Base
                 [3, 'atomic', '0', '0', 'Atomic - Default', '{}'],
                 [4, 'beez_20', 0, 0, 'Beez2 - Default', $beez20Params],
                 [5, 'hathor', '1', '0', 'Hathor - Default', '{"showSiteName":"0","colourChoice":"","boldText":"0"}'],
-                [6, 'beez5', 0, 0, 'Beez5 - Default', $beez5Params]
+                [6, 'beez5', 0, 0, 'Beez5 - Default', $beez5Params],
             ];
 
             foreach ($viewlevels as $level) {
@@ -96,7 +96,7 @@ class Migration20130926143200Core extends Base
                         'client_id' => $level[2],
                         'home'      => $level[3],
                         'title'     => $level[4],
-                        'params'    => $level[5]
+                        'params'    => $level[5],
                     ])
                     ->execute();
             }
@@ -125,7 +125,7 @@ class Migration20130926143200Core extends Base
                         'client_id' => $r->client_id,
                         'home'      => '0',
                         'title'     => ucfirst($r->element),
-                        'params'    => '{}'
+                        'params'    => '{}',
                     ])
                     ->execute();
             }

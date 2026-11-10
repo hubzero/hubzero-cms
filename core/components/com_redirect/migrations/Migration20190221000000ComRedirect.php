@@ -23,8 +23,8 @@ class Migration20190221000000ComRedirect extends Base
     public static $tables = [
         '#__redirect_links' => [
             'created_date',
-            'modified_date'
-        ]
+            'modified_date',
+        ],
     ];
 
     /**

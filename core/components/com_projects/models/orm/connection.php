@@ -33,7 +33,7 @@ class Connection extends Relational
      */
     protected $rules = [
         'project_id'  => 'positive|nonzero',
-        'provider_id' => 'positive|nonzero'
+        'provider_id' => 'positive|nonzero',
     ];
 
     /**

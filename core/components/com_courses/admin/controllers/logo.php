@@ -185,7 +185,7 @@ class Logo extends AdminController
             'id'        => $id,
             'size'      => \Hubzero\Utility\Number::formatBytes($this_size),
             'width'     => $width,
-            'height'    => $height
+            'height'    => $height,
         ]);
     }
 
@@ -397,7 +397,7 @@ class Logo extends AdminController
             'id'        => $id,
             'size'      => 0,
             'width'     => 0,
-            'height'    => 0
+            'height'    => 0,
         ]);
     }
 

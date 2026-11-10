@@ -205,7 +205,7 @@ $this->css()
                                     $pageNav = $this->pagination(
                                         $this->total,
                                         $this->filters['start'],
-                                        $this->filters['limit']
+                                        $this->filters['limit'],
                                     );
                                     $pageNav->setAdditionalUrlParam('show', $this->filters['show']);
                                     $pageNav->setAdditionalUrlParam('search', $this->filters['search']);

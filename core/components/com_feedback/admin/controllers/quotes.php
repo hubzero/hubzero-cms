@@ -49,19 +49,19 @@ class Quotes extends AdminController
             'search' => urldecode(Request::getState(
                 $this->_option . '.search',
                 'search',
-                ''
+                '',
             )),
             // Get sorting variables
             'sort' => Request::getState(
                 $this->_option . '.sortby',
                 'filter_order',
-                'date'
+                'date',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.sortdir',
                 'filter_order_Dir',
-                'DESC'
-            )
+                'DESC',
+            ),
         ];
 
         $record = Quote::all();

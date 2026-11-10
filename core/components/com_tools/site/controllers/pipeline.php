@@ -44,7 +44,7 @@ class Pipeline extends SiteController
                 . Request::getWord('task', ''), false, true), 'server'));
 
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . $return)
+                Route::url('index.php?option=com_users&view=login&return=' . $return),
             );
             return;
         }
@@ -89,7 +89,7 @@ class Pipeline extends SiteController
         $this->view->filters['start'] = Request::getInt('limitstart', 0);
         if ($this->view->filters['limit'] != 0) {
             $this->view->filters['start'] = floor(
-                $this->view->filters['start'] / $this->view->filters['limit']
+                $this->view->filters['start'] / $this->view->filters['limit'],
             ) * $this->view->filters['limit'];
         } else {
             $this->view->filters['start'] = 0;
@@ -107,12 +107,12 @@ class Pipeline extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         Pathway::append(
             Lang::txt('COM_TOOLS_PIPELINE'),
-            'index.php?option=' . $this->_option . '&controller=' . $this->_controller .  '&task=pipeline'
+            'index.php?option=' . $this->_option . '&controller=' . $this->_controller .  '&task=pipeline',
         );
 
         $this->view->config = $this->config;
@@ -151,7 +151,7 @@ class Pipeline extends SiteController
         // Couldn't get ID, exit
         if (!$this->_toolid) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
+                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
             );
             return;
         }
@@ -193,18 +193,18 @@ class Pipeline extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         Pathway::append(
             Lang::txt('COM_TOOLS_PIPELINE'),
             'index.php?option=' . $this->_option . '&controller=' . $this->_controller
-            . '&task=pipeline'
+            . '&task=pipeline',
         );
         Pathway::append(
             Lang::txt('COM_TOOLS_STATUS_FOR', $status['toolname']),
             'index.php?option=' . $this->_option . '&controller=' . $this->_controller
-            . '&task=status&app=' . $status['toolname']
+            . '&task=status&app=' . $status['toolname'],
         );
 
         foreach ($this->getErrors() as $error) {
@@ -240,7 +240,7 @@ class Pipeline extends SiteController
         // Couldn't get ID, exit
         if (!$this->_toolid) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
+                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
             );
             return;
         }
@@ -284,26 +284,26 @@ class Pipeline extends SiteController
             'membergroups'    => \Components\Tools\Models\Tool::getToolGroups($this->_toolid),
             'resourceid'      => \Components\Tools\Models\Tool::getResourceId($this->_toolid),
             'currentrevision' => (is_object($hztv_current) ? $hztv_current->revision : ''),
-            'currentversion'  => (is_object($hztv_current) ? $hztv_current->version : '')
+            'currentversion'  => (is_object($hztv_current) ? $hztv_current->version : ''),
         ];
 
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         Pathway::append(
             Lang::txt('COM_TOOLS_STATUS') . ' ' . Lang::txt('COM_TOOLS_FOR') . ' '
             . $this->view->status['toolname'],
             'index.php?option=' . $this->_option . '&controller=' . $this->_controller
-            . 'task=status&app=' . $this->view->status['toolname']
+            . 'task=status&app=' . $this->view->status['toolname'],
         );
         if ($this->_action != 'confirm') {
             Pathway::append(
                 Lang::txt('COM_TOOLS_TASK_VERSIONS'),
                 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
-                . '&task=versions&app=' . $this->view->status['toolname']
+                . '&task=versions&app=' . $this->view->status['toolname'],
             );
         }
 
@@ -345,7 +345,7 @@ class Pipeline extends SiteController
         // Couldn't get ID, exit
         if (!$this->_toolid) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
+                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
             );
             return;
         }
@@ -376,13 +376,13 @@ class Pipeline extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         Pathway::append(
             Lang::txt('COM_TOOLS_STATUS_FOR', $status['toolname']),
             'index.php?option=' . $this->_option . '&controller=' . $this->_controller
-            . '&task=status&app=' . $this->_toolid
+            . '&task=status&app=' . $this->_toolid,
         );
 
         $this->view->config = $this->config;
@@ -444,7 +444,7 @@ class Pipeline extends SiteController
         if (!isset($this->view->license_choice)) {
             $this->view->license_choice = [
                 'text'     => $status['license'],
-                'template' => 'c1'
+                'template' => 'c1',
             ];
         }
 
@@ -454,7 +454,7 @@ class Pipeline extends SiteController
 
         // get default license text
         $this->database->setQuery(
-            "SELECT text, name, title FROM `#__tool_licenses` ORDER BY ordering ASC"
+            "SELECT text, name, title FROM `#__tool_licenses` ORDER BY ordering ASC",
         );
         $this->view->licenses = $this->database->loadObjectList();
 
@@ -469,20 +469,20 @@ class Pipeline extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         if (Pathway::count() <= 1) {
             Pathway::append(
                 Lang::txt('COM_TOOLS_STATUS_FOR', $status['toolname']),
                 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
-                . '&task=status&app=' . $this->_toolid
+                . '&task=status&app=' . $this->_toolid,
             );
             if ($this->_action != 'confirm') {
                 Pathway::append(
                     Lang::txt('COM_TOOLS_TASK_LICENSE'),
                     'index.php?option=' . $this->_option . '&controller=' . $this->_controller
-                    . '&task=license&app=' . $this->_toolid
+                    . '&task=license&app=' . $this->_toolid,
                 );
             }
         }
@@ -511,7 +511,7 @@ class Pipeline extends SiteController
 
         if (!$id) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
+                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
             );
         }
 
@@ -538,7 +538,7 @@ class Pipeline extends SiteController
         $this->license_choice = [
             'text'      => $license,
             'template'  => Request::getString('templates', 'c1'),
-            'authorize' => Request::getInt('authorize', 0)
+            'authorize' => Request::getInt('authorize', 0),
         ];
 
         $hztv->codeaccess = Request::getString('t_code', '@OPEN');
@@ -662,7 +662,7 @@ class Pipeline extends SiteController
             'hostreq'      => $this->config->get('default_hostreq', 'sessions'),
             'repohost'     => $this->config->get('github', 1) ? "gitExternal" : "svnLocal",
             'github'       => '',
-            'publishType'  => 'standard'
+            'publishType'  => 'standard',
         ];
 
         // Set the page title
@@ -672,13 +672,13 @@ class Pipeline extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         if (Pathway::count() <= 1) {
             Pathway::append(
                 Lang::txt('COM_TOOLS_TASK_REGISTER_TOOL'),
-                'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=create'
+                'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=create',
             );
         }
 
@@ -744,7 +744,7 @@ class Pipeline extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         if (Pathway::count() <= 1) {
@@ -752,12 +752,12 @@ class Pipeline extends SiteController
                 Lang::txt('COM_TOOLS_STATUS') . ' ' . Lang::txt('COM_TOOLS_FOR') . ' '
                 . $status['toolname'],
                 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
-                . '&task=status&app=' . $status['toolname']
+                . '&task=status&app=' . $status['toolname'],
             );
             Pathway::append(
                 Lang::txt('COM_TOOLS_TASK_EDIT_TOOL'),
                 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
-                . '&task=edit&app=' . $status['toolname']
+                . '&task=edit&app=' . $status['toolname'],
             );
         }
 
@@ -793,13 +793,13 @@ class Pipeline extends SiteController
             $hztrac->add_user_permission(0, [
                 'BROWSER_VIEW',
                 'LOG_VIEW',
-                'FILE_VIEW'
+                'FILE_VIEW',
             ]);
         } elseif ($codeaccess == '@DEV') {
             $hztrac->remove_user_permission(0, [
                 'BROWSER_VIEW',
                 'LOG_VIEW',
-                'FILE_VIEW'
+                'FILE_VIEW',
             ]);
         }
 
@@ -808,14 +808,14 @@ class Pipeline extends SiteController
                 'WIKI_VIEW',
                 'MILESTONE_VIEW',
                 'ROADMAP_VIEW',
-                'SEARCH_VIEW'
+                'SEARCH_VIEW',
             ]);
         } elseif ($wikiaccess == '@DEV') {
             $hztrac->remove_user_permission(0, [
                 'WIKI_VIEW',
                 'MILESTONE_VIEW',
                 'ROADMAP_VIEW',
-                'SEARCH_VIEW'
+                'SEARCH_VIEW',
             ]);
         }
 
@@ -842,7 +842,7 @@ class Pipeline extends SiteController
             '@PU'     => 'pu',
             '@pu'     => 'pu',
             '@D1'     => 'd1',
-            '@d1'     => 'd1'
+            '@d1'     => 'd1',
         ];
 
         // set vars
@@ -981,7 +981,7 @@ class Pipeline extends SiteController
                 Log::debug(__FUNCTION__ . "() HZTV createInstance dev_suffix=$dev_suffix");
                 $hztv = \Components\Tools\Models\Version::createInstance(
                     $tool['toolname'],
-                    $tool['toolname'] . $dev_suffix
+                    $tool['toolname'] . $dev_suffix,
                 );
 
                 $oldstatus = $hztv->toArray();
@@ -1066,7 +1066,7 @@ class Pipeline extends SiteController
             'CHANGESET_VIEW',
             'ROADMAP_VIEW',
             'TIMELINE_VIEW',
-            'SEARCH_VIEW'
+            'SEARCH_VIEW',
         ]);
         $hztrac->add_group_permission($hzg->cn, [
             'WIKI_ADMIN',
@@ -1077,7 +1077,7 @@ class Pipeline extends SiteController
             'CHANGESET_VIEW',
             'ROADMAP_VIEW',
             'TIMELINE_VIEW',
-            'SEARCH_VIEW'
+            'SEARCH_VIEW',
         ]);
 
         $hztv->set('owner', $hzg->cn);
@@ -1107,7 +1107,7 @@ class Pipeline extends SiteController
                 'description' => $tool['description'],
                 'repohost'    => (isset($tool['repohost']) ? $tool['repohost'] : ''),
                 'github'      => $tool['github'],
-                'publishType' => $tool['publishType']
+                'publishType' => $tool['publishType'],
             ]);
             if ($output['class'] != 'error') {
                 $hzt->state = 2;
@@ -1171,11 +1171,11 @@ class Pipeline extends SiteController
         App::redirect(
             Route::url(
                 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
-                . '&task=status&app=' . $hzt->toolname
+                . '&task=status&app=' . $hzt->toolname,
             ),
             ($id
                 ? Lang::txt('COM_TOOLS_NOTICE_TOOL_INFO_CHANGED')
-                : Lang::txt('COM_TOOLS_NOTICE_TOOL_INFO_REGISTERED'))
+                : Lang::txt('COM_TOOLS_NOTICE_TOOL_INFO_REGISTERED')),
         );
     }
 
@@ -1299,8 +1299,8 @@ class Pipeline extends SiteController
                 App::redirect(
                     Route::url(
                         'index.php?option=' . $this->_option
-                        . '&controller=pipeline&task=license&action=confirm&app=' . $hztv->toolname
-                    )
+                        . '&controller=pipeline&task=license&action=confirm&app=' . $hztv->toolname,
+                    ),
                 );
                 return;
             } else {
@@ -1715,7 +1715,7 @@ class Pipeline extends SiteController
         $from    = Config::get('sitename') . ' ' . Lang::txt('COM_TOOLS_CONTRIBTOOL');
         $hub     = [
             'email' => Config::get('mailfrom'),
-            'name'  => $from
+            'name'  => $from,
         ];
 
         $live_site = rtrim(Request::base(), '/');
@@ -1736,14 +1736,14 @@ class Pipeline extends SiteController
         $message .= Lang::txt('COM_TOOLS_TIP_URL_TO_STATUS') . "\r\n";
         $message .= $live_site . Route::url(
             'index.php?option=' . $this->_option . '&controller=' . $this->_controller
-            . '&task=status&app=' . $status['toolname']
+            . '&task=status&app=' . $status['toolname'],
         ) . "\r\n";
 
         // fire off message
         if ($summary or $comment) {
             $triggered = Event::trigger(
                 'xmessage.onSendMessage',
-                [$action, $subject, $message, $hub, $users, $this->_option]
+                [$action, $subject, $message, $hub, $users, $this->_option],
             );
             if (!$triggered) {
                 Notify::error(Lang::txt('COM_TOOLS_FAILED_TO_MESSAGE'));
@@ -1773,7 +1773,7 @@ class Pipeline extends SiteController
         $comment,
         $access = 0,
         $email = 0,
-        $action = 1
+        $action = 1,
     ) {
         Log::debug(__FUNCTION__ . '() started');
 
@@ -1783,7 +1783,7 @@ class Pipeline extends SiteController
         $row = \Components\Support\Models\Ticket::oneOrNew($ticketid);
         if ($row->get('id') && isset($newstuff['toolname'])) {
             $group = \Hubzero\User\Group::getInstance(
-                $this->config->get('group_prefix', 'app-') . $newstuff['toolname']
+                $this->config->get('group_prefix', 'app-') . $newstuff['toolname'],
             );
             if ($group) {
                 $row->set('group_id', $group->get('gidNumber', 0));
@@ -1804,14 +1804,14 @@ class Pipeline extends SiteController
                 $rowc->changelog()->changed(
                     Lang::txt('COM_TOOLS_TOOLNAME'),
                     $oldstuff['toolname'],
-                    $newstuff['toolname']
+                    $newstuff['toolname'],
                 );
             }
             if ($oldstuff['title'] != $newstuff['title']) {
                 $rowc->changelog()->changed(
                     Lang::txt('COM_TOOLS_TOOL') . ' ' . strtolower(Lang::txt('COM_TOOLS_TITLE')),
                     $oldstuff['title'],
-                    $newstuff['title']
+                    $newstuff['title'],
                 );
                 $summary .= strtolower(Lang::txt('COM_TOOLS_TITLE'));
             }
@@ -1819,7 +1819,7 @@ class Pipeline extends SiteController
                 $rowc->changelog()->changed(
                     strtolower(Lang::txt('COM_TOOLS_DEV_VERSION_LABEL')),
                     $oldstuff['version'],
-                    $newstuff['version']
+                    $newstuff['version'],
                 );
                 $summary .= $summary == '' ? '' : ', ';
                 $summary .= strtolower(Lang::txt('COM_TOOLS_VERSION'));
@@ -1827,14 +1827,14 @@ class Pipeline extends SiteController
                 $rowc->changelog()->changed(
                     strtolower(Lang::txt('COM_TOOLS_DEV_VERSION_LABEL')),
                     '',
-                    $newstuff['version']
+                    $newstuff['version'],
                 );
             }
             if ($oldstuff['description'] != $newstuff['description']) {
                 $rowc->changelog()->changed(
                     Lang::txt('COM_TOOLS_TOOL') . ' ' . strtolower(Lang::txt('COM_TOOLS_DESCRIPTION')),
                     $oldstuff['description'],
-                    $newstuff['description']
+                    $newstuff['description'],
                 );
                 $summary .= $summary == '' ? '' : ', ';
                 $summary .= strtolower(Lang::txt('COM_TOOLS_DESCRIPTION'));
@@ -1843,13 +1843,13 @@ class Pipeline extends SiteController
                 $rowc->changelog()->changed(
                     Lang::txt('COM_TOOLS_TOOL_ACCESS'),
                     $oldstuff['toolaccess'],
-                    $newstuff['toolaccess']
+                    $newstuff['toolaccess'],
                 );
                 if ($newstuff['toolaccess'] == '@GROUP') {
                     $rowc->changelog()->changed(
                         Lang::txt('COM_TOOLS_ALLOWED_GROUPS'),
                         implode(',', $oldstuff['membergroups']),
-                        implode(',', $newstuff['membergroups'])
+                        implode(',', $newstuff['membergroups']),
                     );
                 }
                 $summary .= $summary == '' ? '' : ', ';
@@ -1859,7 +1859,7 @@ class Pipeline extends SiteController
                 $rowc->changelog()->changed(
                     Lang::txt('COM_TOOLS_CODE_ACCESS'),
                     $oldstuff['codeaccess'],
-                    $newstuff['codeaccess']
+                    $newstuff['codeaccess'],
                 );
                 $summary .= $summary == '' ? '' : ', ';
                 $summary .= strtolower(Lang::txt('COM_TOOLS_CODE_ACCESS'));
@@ -1868,7 +1868,7 @@ class Pipeline extends SiteController
                 $rowc->changelog()->changed(
                     Lang::txt('COM_TOOLS_WIKI_ACCESS'),
                     $oldstuff['wikiaccess'],
-                    $newstuff['wikiaccess']
+                    $newstuff['wikiaccess'],
                 );
                 $summary .= $summary == '' ? '' : ', ';
                 $summary .= strtolower(Lang::txt('COM_TOOLS_WIKI_ACCESS'));
@@ -1881,7 +1881,7 @@ class Pipeline extends SiteController
                 $rowc->changelog()->changed(
                     Lang::txt('COM_TOOLS_VNC_GEOMETRY'),
                     $oldstuff['vncGeometry'],
-                    $newstuff['vncGeometry']
+                    $newstuff['vncGeometry'],
                 );
                 $summary .= $summary == '' ? '' : ', ';
                 $summary .= strtolower(Lang::txt('COM_TOOLS_VNC_GEOMETRY'));
@@ -1894,7 +1894,7 @@ class Pipeline extends SiteController
                 $rowc->changelog()->changed(
                     Lang::txt('COM_TOOLS_DEVELOPMENT_TEAM'),
                     \Components\Tools\Helpers\Html::getDevTeam($oldstuff['developers']),
-                    \Components\Tools\Helpers\Html::getDevTeam($newstuff['developers'])
+                    \Components\Tools\Helpers\Html::getDevTeam($newstuff['developers']),
                 );
                 $summary .= $summary == '' ? '' : ', ';
                 $summary .= strtolower(Lang::txt('COM_TOOLS_DEVELOPMENT_TEAM'));
@@ -1911,7 +1911,7 @@ class Pipeline extends SiteController
                 $rowc->changelog()->changed(
                     Lang::txt('COM_TOOLS_PRIORITY'),
                     \Components\Tools\Helpers\Html::getPriority($oldstuff['priority']),
-                    \Components\Tools\Helpers\Html::getPriority($newstuff['priority'])
+                    \Components\Tools\Helpers\Html::getPriority($newstuff['priority']),
                 );
                 $email = 0; // do not send email about priority changes
             }
@@ -1919,7 +1919,7 @@ class Pipeline extends SiteController
                 $rowc->changelog()->changed(
                     Lang::txt('COM_TOOLS_STATUS'),
                     \Components\Tools\Helpers\Html::getStatusName($oldstuff['toolstate'], $oldstate),
-                    \Components\Tools\Helpers\Html::getStatusName($newstuff['toolstate'], $newstate)
+                    \Components\Tools\Helpers\Html::getStatusName($newstuff['toolstate'], $newstate),
                 );
                 $summary = Lang::txt('COM_TOOLS_STATUS') . ' '
                     . Lang::txt('COM_TOOLS_TICKET_CHANGED_FROM') . ' ' . $oldstate . ' '
@@ -1966,7 +1966,7 @@ class Pipeline extends SiteController
         $hzt->load($toolid);
         $url = Route::url(
             'index.php?option=' . $this->_option . '&controller=' . $this->_controller
-            . '&task=status&app=' . $hzt->toolname
+            . '&task=status&app=' . $hzt->toolname,
         );
 
         Event::trigger('system.logActivity', [
@@ -1977,9 +1977,9 @@ class Pipeline extends SiteController
                 'description' => ($summary
                     ? '<a href="' . $url . '">' . $hzt->title . ' (' . $hzt->toolname . ')</a>: ' . $summary
                     : $comment),
-                'details'     => $log
+                'details'     => $log,
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         return true;
@@ -2006,7 +2006,7 @@ class Pipeline extends SiteController
         $access = 0,
         $email = 0,
         $action = 1,
-        $toolinfo = []
+        $toolinfo = [],
     ) {
         $obj = new \Components\Tools\Tables\Tool($this->database);
 
@@ -2021,14 +2021,14 @@ class Pipeline extends SiteController
                 $rowc->changelog()->changed(
                     Lang::txt('COM_TOOLS_TOOLNAME'),
                     $oldstuff['toolname'],
-                    $newstuff['toolname']
+                    $newstuff['toolname'],
                 );
             }
             if ($oldstuff['title'] != $newstuff['title']) {
                 $rowc->changelog()->changed(
                     Lang::txt('COM_TOOLS_TOOL') . ' ' . strtolower(Lang::txt('COM_TOOLS_TITLE')),
                     $oldstuff['title'],
-                    $newstuff['title']
+                    $newstuff['title'],
                 );
                 $summary .= strtolower(Lang::txt('COM_TOOLS_TITLE'));
             }
@@ -2036,7 +2036,7 @@ class Pipeline extends SiteController
                 $rowc->changelog()->changed(
                     strtolower(Lang::txt('COM_TOOLS_DEV_VERSION_LABEL')),
                     $oldstuff['version'],
-                    $newstuff['version']
+                    $newstuff['version'],
                 );
                 $summary .= $summary == '' ? '' : ', ';
                 $summary .= strtolower(Lang::txt('COM_TOOLS_VERSION'));
@@ -2044,14 +2044,14 @@ class Pipeline extends SiteController
                 $rowc->changelog()->changed(
                     strtolower(Lang::txt('COM_TOOLS_DEV_VERSION_LABEL')),
                     '',
-                    $newstuff['version']
+                    $newstuff['version'],
                 );
             }
             if ($oldstuff['description'] != $newstuff['description']) {
                 $rowc->changelog()->changed(
                     Lang::txt('COM_TOOLS_TOOL') . ' ' . strtolower(Lang::txt('COM_TOOLS_DESCRIPTION')),
                     $oldstuff['description'],
-                    $newstuff['description']
+                    $newstuff['description'],
                 );
                 $summary .= $summary == '' ? '' : ', ';
                 $summary .= strtolower(Lang::txt('COM_TOOLS_DESCRIPTION'));
@@ -2060,13 +2060,13 @@ class Pipeline extends SiteController
                 $rowc->changelog()->changed(
                     Lang::txt('COM_TOOLS_TOOL_ACCESS'),
                     $oldstuff['exec'],
-                    $newstuff['exec']
+                    $newstuff['exec'],
                 );
                 if ($newstuff['exec'] == '@GROUP') {
                     $rowc->changelog()->changed(
                         Lang::txt('COM_TOOLS_ALLOWED_GROUPS'),
                         '',
-                        \Components\Tools\Helpers\Html::getGroups($newstuff['membergroups'])
+                        \Components\Tools\Helpers\Html::getGroups($newstuff['membergroups']),
                     );
                 }
                 $summary .= $summary == '' ? '' : ', ';
@@ -2076,7 +2076,7 @@ class Pipeline extends SiteController
                 $rowc->changelog()->changed(
                     Lang::txt('COM_TOOLS_CODE_ACCESS'),
                     $oldstuff['code'],
-                    $newstuff['code']
+                    $newstuff['code'],
                 );
                 $summary .= $summary == '' ? '' : ', ';
                 $summary .= strtolower(Lang::txt('COM_TOOLS_CODE_ACCESS'));
@@ -2085,7 +2085,7 @@ class Pipeline extends SiteController
                 $rowc->changelog()->changed(
                     Lang::txt('COM_TOOLS_WIKI_ACCESS'),
                     $oldstuff['wiki'],
-                    $newstuff['wiki']
+                    $newstuff['wiki'],
                 );
                 $summary .= $summary == '' ? '' : ', ';
                 $summary .= strtolower(Lang::txt('COM_TOOLS_WIKI_ACCESS'));
@@ -2094,7 +2094,7 @@ class Pipeline extends SiteController
                 $rowc->changelog()->changed(
                     Lang::txt('COM_TOOLS_VNC_GEOMETRY'),
                     $oldstuff['vncGeometry'],
-                    $newstuff['vncGeometry']
+                    $newstuff['vncGeometry'],
                 );
                 $summary .= $summary == '' ? '' : ', ';
                 $summary .= strtolower(Lang::txt('COM_TOOLS_VNC_GEOMETRY'));
@@ -2103,7 +2103,7 @@ class Pipeline extends SiteController
                 $rowc->changelog()->changed(
                     Lang::txt('COM_TOOLS_DEVELOPMENT_TEAM'),
                     \Components\Tools\Helpers\Html::getDevTeam($oldstuff['developers']),
-                    \Components\Tools\Helpers\Html::getDevTeam($newstuff['developers'])
+                    \Components\Tools\Helpers\Html::getDevTeam($newstuff['developers']),
                 );
                 $summary .= $summary == '' ? '' : ', ';
                 $summary .= strtolower(Lang::txt('COM_TOOLS_DEVELOPMENT_TEAM'));
@@ -2120,7 +2120,7 @@ class Pipeline extends SiteController
                 $rowc->changelog()->changed(
                     Lang::txt('COM_TOOLS_PRIORITY'),
                     \Components\Tools\Helpers\Html::getPriority($oldstuff['priority']),
-                    \Components\Tools\Helpers\Html::getPriority($newstuff['priority'])
+                    \Components\Tools\Helpers\Html::getPriority($newstuff['priority']),
                 );
                 $email = 0; // do not send email about priority changes
             }
@@ -2128,7 +2128,7 @@ class Pipeline extends SiteController
                 $rowc->changelog()->changed(
                     Lang::txt('COM_TOOLS_TICKET_CHANGED_FROM'),
                     \Components\Tools\Helpers\Html::getStatusName($oldstuff['state'], $oldstate),
-                    \Components\Tools\Helpers\Html::getStatusName($newstuff['state'], $newstate)
+                    \Components\Tools\Helpers\Html::getStatusName($newstuff['state'], $newstate),
                 );
                 $summary = Lang::txt('COM_TOOLS_STATUS') . ' '
                     . Lang::txt('COM_TOOLS_TICKET_CHANGED_FROM') . ' ' . $oldstate . ' '
@@ -2170,7 +2170,7 @@ class Pipeline extends SiteController
         $hzt->load($toolid);
         $url = Route::url(
             'index.php?option=' . $this->_option . '&controller=' . $this->_controller
-            . '&task=status&app=' . $hzt->toolname
+            . '&task=status&app=' . $hzt->toolname,
         );
 
         Event::trigger('system.logActivity', [
@@ -2181,9 +2181,9 @@ class Pipeline extends SiteController
                 'description' => ($summary
                     ? '<a href="' . $url . '">' . $hzt->title . ' (' . $hzt->toolname . ')</a>: ' . $summary
                     : $comment),
-                'details'     => $rowc->changelog()->lists()
+                'details'     => $rowc->changelog()->lists(),
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         return true;
@@ -2212,7 +2212,7 @@ class Pipeline extends SiteController
 
         // Attach tool group to a ticket for access
         $group = \Hubzero\User\Group::getInstance(
-            $this->config->get('group_prefix', 'app-') . $tool['toolname']
+            $this->config->get('group_prefix', 'app-') . $tool['toolname'],
         );
         if ($group) {
             $row->set('group_id', $group->get('gidNumber'));
@@ -2299,9 +2299,9 @@ class Pipeline extends SiteController
         App::redirect(
             Route::url(
                 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
-                . '&task=pipeline'
+                . '&task=pipeline',
             ),
-            Lang::txt('COM_TOOLS_NOTICE_TOOL_CANCELLED')
+            Lang::txt('COM_TOOLS_NOTICE_TOOL_CANCELLED'),
         );
     }
 

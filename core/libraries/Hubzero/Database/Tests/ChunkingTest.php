@@ -114,7 +114,7 @@ class ChunkingTest extends AbstractDriverTestCase
             $rows[] = [
                 'name' => "Item {$i}",
                 'category' => 'cat' . ($i % 3),
-                'active' => $i % 2
+                'active' => $i % 2,
             ];
         }
 

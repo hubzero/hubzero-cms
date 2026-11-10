@@ -98,7 +98,7 @@ class Note extends \Components\Wiki\Models\Book
         $reference = [
             'pageid'   => $page->get('id'),
             'pagename' => $page->get('pagename'),
-            'revision' => null
+            'revision' => null,
         ];
 
         // Check valid stamp

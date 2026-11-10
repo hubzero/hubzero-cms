@@ -49,7 +49,7 @@ class Radio extends Field
                 . htmlspecialchars(
                     trim($text, ':') . '::' . ($this->translateDescription ? App::get('language')->txt($this->description) : $this->description),
                     ENT_COMPAT,
-                    'UTF-8'
+                    'UTF-8',
                 ) . '"';
         }
 
@@ -162,7 +162,7 @@ class Radio extends Field
                 trim((string) $label),
                 'value',
                 'text',
-                ((string) $option['disabled'] == 'true')
+                ((string) $option['disabled'] == 'true'),
             );
             foreach ($option->attributes() as $index => $value) {
                 $dataCheck = strtolower(substr($index, 0, 4));

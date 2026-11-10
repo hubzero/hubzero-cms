@@ -134,7 +134,7 @@ class Citations extends SiteController
             'aff'             => Request::getSimpleArray('aff', ['university' => 1, 'industry' => 1, 'government' => 1]),
             'startuploaddate' => Request::getString('startuploaddate', '0000-00-00'),
             'enduploaddate'   => Request::getString('enduploaddate', '0000-00-00'),
-            'scope'           => 'hub'
+            'scope'           => 'hub',
         ];
 
         if (User::authorise('core.manage', $this->_option)) {
@@ -145,7 +145,7 @@ class Citations extends SiteController
         $this->view->filter = [
             'all'    => Lang::txt('COM_CITATIONS_ALL'),
             'aff'    => Lang::txt('COM_CITATIONS_AFFILIATED'),
-            'nonaff' => Lang::txt('COM_CITATIONS_NONAFFILIATED')
+            'nonaff' => Lang::txt('COM_CITATIONS_NONAFFILIATED'),
         ];
         if (!in_array($this->view->filters['filter'], array_keys($this->view->filter))) {
             $this->view->filters['filter'] = '';
@@ -158,7 +158,7 @@ class Citations extends SiteController
             'created DESC' => Lang::txt('COM_CITATIONS_NEWEST'),
             'title ASC'    => Lang::txt('COM_CITATIONS_TITLE'),
             'author ASC'   => Lang::txt('COM_CITATIONS_AUTHOR'),
-            'journal ASC'  => Lang::txt('COM_CITATIONS_JOURNAL')
+            'journal ASC'  => Lang::txt('COM_CITATIONS_JOURNAL'),
         ];
         if (!in_array($this->view->filters['sort'], array_keys($this->view->sorts))) {
             $this->view->filters['sort'] = 'created DESC';
@@ -225,7 +225,7 @@ class Citations extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_citations&task=browse'),
                 Lang::txt('COM_CITATIONS_END_DATE_MUST_BE_AFTER_START_DATE'),
-                'error'
+                'error',
             );
             return;
         }
@@ -291,7 +291,7 @@ class Citations extends SiteController
         $this->view->openurl = [
             'link' => '',
             'text' => '',
-            'icon' => ''
+            'icon' => '',
         ];
 /*
         // Parse the return from resolver lookup
@@ -415,7 +415,7 @@ class Citations extends SiteController
         return [
             'link' => '',
             'text' => '',
-            'icon' => ''
+            'icon' => '',
         ];
 
         /*
@@ -486,7 +486,7 @@ class Citations extends SiteController
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true))),
             Lang::txt('COM_CITATIONS_NOT_LOGGEDIN'),
-            'warning'
+            'warning',
         );
         return;
     }
@@ -518,7 +518,7 @@ class Citations extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option, false),
                 Lang::txt('COM_CITATIONS_CITATION_NOT_AUTH'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -546,7 +546,7 @@ class Citations extends SiteController
         array_unshift($types, [
             'id' => '',
             'type' => '',
-            'type_title' => ' - Select a Type &mdash;'
+            'type_title' => ' - Select a Type &mdash;',
         ]);
 
         $this->view->types = $types;
@@ -761,7 +761,7 @@ class Citations extends SiteController
 
         Notify::success(Lang::txt('COM_CITATIONS_CITATION_SAVED'), 'com.citations');
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&task=browse')
+            Route::url('index.php?option=' . $this->_option . '&task=browse'),
         );
     }
 
@@ -782,7 +782,7 @@ class Citations extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&task=browse'),
                 Lang::txt('COM_CITATIONS_CITATION_NOT_AUTH'),
-                "error"
+                "error",
             );
             return false;
         }
@@ -805,7 +805,7 @@ class Citations extends SiteController
                         Notify::error($citation->getError(), 'com.citations');
                     }
                     App::redirect(
-                        Route::url('index.php?option=com_citations&task=browse')
+                        Route::url('index.php?option=com_citations&task=browse'),
                     );
                 } else {
                     Notify::success(Lang::txt('COM_CITATIONS_CITATION_DELETE', $citationId), 'com.citations');
@@ -814,7 +814,7 @@ class Citations extends SiteController
         }
 
         App::redirect(
-            Route::url('index.php?option=com_citations&task=browse')
+            Route::url('index.php?option=com_citations&task=browse'),
         );
     }
 
@@ -983,7 +983,7 @@ class Citations extends SiteController
             'Content-Disposition:' . $cont_dis . ';'
             . ' filename="' . $f . '";'
             . ' modification-date="' . $mod_date . '";'
-            . ' size=' . $fsize . ';'
+            . ' size=' . $fsize . ';',
         ); //RFC2183
         header("Content-Type: " . $mime); // MIME type
         header("Content-Length: " . $fsize);
@@ -1101,13 +1101,13 @@ class Citations extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         if ($this->_task) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
-                'index.php?option=' . $this->_option . '&task=' . $this->_task
+                'index.php?option=' . $this->_option . '&task=' . $this->_task,
             );
         }
     }

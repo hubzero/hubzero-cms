@@ -83,7 +83,7 @@ class Item extends Table
     public function loadByDescription($oid = null)
     {
         $fields = [
-            'description' => trim((string) $oid)
+            'description' => trim((string) $oid),
         ];
 
         return parent::load($fields);
@@ -98,7 +98,7 @@ class Item extends Table
     public function loadByTitle($oid = null)
     {
         $fields = [
-            'title' => trim((string) $oid)
+            'title' => trim((string) $oid),
         ];
 
         return parent::load($fields);
@@ -114,7 +114,7 @@ class Item extends Table
     {
         $fields = [
             'object_id' => (int) $object_id,
-            'type'      => (string) $object_type
+            'type'      => (string) $object_type,
         ];
 
         return parent::load($fields);

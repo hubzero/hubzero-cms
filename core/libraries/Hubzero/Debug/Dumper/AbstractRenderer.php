@@ -68,7 +68,7 @@ class AbstractRenderer implements Renderable
         if (!is_array($messages)) {
             throw new InvalidArgumentException(sprintf(
                 'Messages must be an array. Type of "%s" passed.',
-                gettype($messages)
+                gettype($messages),
             ));
         }
 

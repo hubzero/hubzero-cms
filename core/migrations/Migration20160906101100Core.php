@@ -39,7 +39,7 @@ class Migration20160906101100Core extends Base
         $schema->addFulltextIndex(
             '#__xgroups',
             'ftidx_cn_description_public_desc',
-            ['cn', 'description', 'public_desc']
+            ['cn', 'description', 'public_desc'],
         );
         $schema->dropIndex('#__xgroups', 'jos_xgroups_cn_description_public_desc_ftidx');
         $schema->addFulltextIndex('#__wishlist_item', 'ftidx_subject_about', ['subject', 'about']);
@@ -219,7 +219,7 @@ class Migration20160906101100Core extends Base
         ]);
         $schema->dropIndex(
             '#__document_resource_rel',
-            'jos_document_resource_rel_document_id_resource_id_uidx'
+            'jos_document_resource_rel_document_id_resource_id_uidx',
         );
         $schema->addUniqueIndex('#__courses_member_badges', 'uidx_member_id', 'member_id');
         $schema->dropIndex('#__courses_member_badges', 'member_id');
@@ -243,7 +243,7 @@ class Migration20160906101100Core extends Base
         $schema->dropIndex('#__courses_form_respondent_progress', 'id');
         $schema->dropIndex(
             '#__courses_form_respondent_progress',
-            'jos_pdf_form_respondent_progress_respondent_id_question_id_uidx'
+            'jos_pdf_form_respondent_progress_respondent_id_question_id_uidx',
         );
         $schema->addPrimaryKey('#__courses_form_questions', 'id');
         $schema->dropIndex('#__courses_form_deployments', 'id');
@@ -254,7 +254,7 @@ class Migration20160906101100Core extends Base
         $schema->addFulltextIndex(
             '#__content',
             'ftidx_title_introtext_fulltext',
-            ['title', 'introtext', 'fulltext']
+            ['title', 'introtext', 'fulltext'],
         );
         $schema->addFulltextIndex('#__content', 'ftidx_introtext_fulltext', ['introtext', 'fulltext']);
         $schema->addFulltextIndex('#__content', 'ftidx_title', 'title');

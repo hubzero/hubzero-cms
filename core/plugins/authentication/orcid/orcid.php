@@ -92,7 +92,7 @@ class Orcid extends \Hubzero\Plugin\OauthClient
             App::redirect(
                 Route::url('index.php?option=com_users&view=login'),
                 Lang::txt('PLG_AUTHENTICATION_ORCID_MUST_AUTHORIZE_TO_LOGIN', Config::get('sitename')),
-                'error'
+                'error',
             );
         }
 
@@ -102,7 +102,7 @@ class Orcid extends \Hubzero\Plugin\OauthClient
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return),
                 Lang::txt('PLG_AUTHENTICATION_ORCID_MUST_AUTHORIZE_TO_LOGIN', Config::get('sitename')),
-                'error'
+                'error',
             );
         }
     }
@@ -270,7 +270,7 @@ class Orcid extends \Hubzero\Plugin\OauthClient
                 $prefs = [
                     'user_id'       => $hzal->user_id,
                     'user_img'      => null,
-                    'authenticator' => 'orcid'
+                    'authenticator' => 'orcid',
                 ];
 
                 $namespace = 'authenticator';
@@ -331,7 +331,7 @@ class Orcid extends \Hubzero\Plugin\OauthClient
             App::redirect(
                 Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
                 Lang::txt('PLG_AUTHENTICATION_ORCID_MUST_AUTHORIZE_TO_LINK', Config::get('sitename')),
-                'error'
+                'error',
             );
         }
 
@@ -341,7 +341,7 @@ class Orcid extends \Hubzero\Plugin\OauthClient
             App::redirect(
                 Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
                 Lang::txt('PLG_AUTHENTICATION_ORCID_MUST_AUTHORIZE_TO_LINK', Config::get('sitename')),
-                'error'
+                'error',
             );
         }
 
@@ -363,7 +363,7 @@ class Orcid extends \Hubzero\Plugin\OauthClient
                 App::redirect(
                     Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
                     Lang::txt('PLG_AUTHENTICATION_ORCID_ACCOUNT_ALREADY_LINKED'),
-                    'error'
+                    'error',
                 );
             } else {
                 // Create the hubzero auth link
@@ -382,7 +382,7 @@ class Orcid extends \Hubzero\Plugin\OauthClient
             App::redirect(
                 Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
                 Lang::txt('PLG_AUTHENTICATION_ORCID_MUST_AUTHORIZE_TO_LINK', Config::get('sitename')),
-                'error'
+                'error',
             );
         }
     }

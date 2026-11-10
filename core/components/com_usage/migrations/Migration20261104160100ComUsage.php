@@ -46,7 +46,7 @@ class Migration20261104160100ComUsage extends Base
         'toolstart'          => ['ip', null],
         'userlogin'          => ['ip', 'ascii'],
         'web'                => ['ip', null],
-        'websessions'        => ['ip', null]
+        'websessions'        => ['ip', null],
     ];
 
     /**

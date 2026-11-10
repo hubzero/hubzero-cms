@@ -158,7 +158,7 @@ $this->css()
                             <?php $val = \Components\Groups\Helpers\Pages::generatePreview(
                                 $this->page,
                                 $pageVersion->get('version'),
-                                true
+                                true,
                             ); ?>
                             <?php echo $val; ?>
                         </div>

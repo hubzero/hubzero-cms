@@ -80,7 +80,7 @@ class Hubpresenter extends Plugin
                         }
                     }
                 }
-            }
+            },
         ];
 
         if (!$collection->hasExtensions($need)) {
@@ -109,7 +109,7 @@ class Hubpresenter extends Plugin
             'folder' => 'handlers',
             'element' => 'hubpresenter',
             'name' => 'hubpresenter',
-            'layout' => 'view'
+            'layout' => 'view',
         ]);
 
         $view->items = $collection;

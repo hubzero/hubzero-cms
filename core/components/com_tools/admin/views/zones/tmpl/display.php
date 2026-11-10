@@ -27,49 +27,49 @@ Toolbar::help('zones');
 <?php
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 $sortZone = Html::grid(
     'sort',
     'COM_TOOLS_COL_ZONE',
     'zone',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 $sortType = Html::grid(
     'sort',
     'COM_TOOLS_COL_TYPE',
     'type',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 $sortState = Html::grid(
     'sort',
     'COM_TOOLS_COL_STATE',
     'state',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 $sortDefault = Html::grid(
     'sort',
     'COM_TOOLS_COL_DEFAULT',
     'is_default',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 $sortMaster = Html::grid(
     'sort',
     'COM_TOOLS_COL_MASTER',
     'master',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 $sortSshKey = Html::grid(
     'sort',
     'COM_TOOLS_COL_SSH_KEY',
     'ssh_key_path',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 ?>
 <form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
@@ -99,7 +99,7 @@ $sortSshKey = Html::grid(
                     echo $this->pagination(
                         $this->total,
                         $this->filters['start'],
-                        $this->filters['limit']
+                        $this->filters['limit'],
                     );
                     ?>
                 </td>
@@ -114,7 +114,7 @@ if ($this->rows) {
         $editUrl = Route::url(
             'index.php?option=' . $this->option
             . '&controller=' . $this->controller
-            . '&task=edit&id=' . $row->get('id')
+            . '&task=edit&id=' . $row->get('id'),
         );
         $stateClass = ($row->get('state') == 'up') ? 'publish' : 'unpublish';
         $stateToggle = ($row->get('state') == 'up') ? 'down' : 'up';
@@ -123,13 +123,13 @@ if ($this->rows) {
             . '&controller=' . $this->controller
             . '&task=state&id=' . $row->get('id')
             . '&state=' . $stateToggle
-            . '&' . Session::getFormToken() . '=1'
+            . '&' . Session::getFormToken() . '=1',
         );
         $defaultClass = ($row->get('is_default')) ? 'default' : 'notdefault';
         $locUrl = Route::url(
             'index.php?option=' . $this->option
             . '&controller=locations&zone=' . $row->get('id')
-            . '&tmpl=index'
+            . '&tmpl=index',
         );
         ?>
             <tr>

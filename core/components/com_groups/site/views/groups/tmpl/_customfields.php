@@ -26,7 +26,7 @@ foreach ($this->customFields as $field) {
             35,
             8,
             $fieldIdAttr,
-            ['class' => 'minimal no-footer images macros']
+            ['class' => 'minimal no-footer images macros'],
         );
     } else {
         echo $formfield->input;

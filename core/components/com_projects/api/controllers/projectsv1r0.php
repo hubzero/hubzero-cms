@@ -90,7 +90,7 @@ class Projectsv1r0 extends ApiController
             'sortdir'    => strtoupper(Request::getWord('sort_Dir', 'ASC')),
             'getowner'   => 1,
             'updates'    => 1,
-            'mine'       => 1
+            'mine'       => 1,
         ];
 
         $response = new stdClass();
@@ -114,7 +114,7 @@ class Projectsv1r0 extends ApiController
                 $obj->thumbUrl      = str_replace(
                     '/api',
                     '',
-                    $base . '/' . ltrim(Route::url($entry->link('thumb')), '/')
+                    $base . '/' . ltrim(Route::url($entry->link('thumb')), '/'),
                 );
                 $obj->privacy       = $entry->get('private');
                 $obj->access        = $entry->get('access');
@@ -221,7 +221,7 @@ class Projectsv1r0 extends ApiController
         $obj->thumbUrl      = str_replace(
             '/api',
             '',
-            $base . '/' . ltrim(Route::url($this->model->link('thumb')), '/')
+            $base . '/' . ltrim(Route::url($this->model->link('thumb')), '/'),
         );
 
         if ($this->model->access('member')) {

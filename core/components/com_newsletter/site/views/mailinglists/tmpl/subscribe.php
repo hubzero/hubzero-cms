@@ -66,19 +66,19 @@ $this->css()
                                 if ($isActive) {
                                     if (!$mylist->confirmed) {
                                         $tooltip = Lang::txt(
-                                            'COM_NEWSLETTER_MAILINGLISTS_NOTCONFIRMED_TOOLTIP'
+                                            'COM_NEWSLETTER_MAILINGLISTS_NOTCONFIRMED_TOOLTIP',
                                         );
                                         $notConfirmed = Lang::txt(
-                                            'COM_NEWSLETTER_MAILINGLISTS_NOTCONFIRMED'
+                                            'COM_NEWSLETTER_MAILINGLISTS_NOTCONFIRMED',
                                         );
                                         $resendUrl = Route::url(
                                             'index.php?option=com_newsletter'
                                             . '&task=resendconfirmation'
                                             . '&mid=' . $listId
-                                            . '&e=' . urlencode($this->email)
+                                            . '&e=' . urlencode($this->email),
                                         );
                                         $linkText = Lang::txt(
-                                            'COM_NEWSLETTER_MAILINGLISTS_CONFIRMLINK_TEXT'
+                                            'COM_NEWSLETTER_MAILINGLISTS_CONFIRMLINK_TEXT',
                                         );
                                         echo ' - <span title="' . $tooltip
                                             . '" class="unconfirmed tooltips">'
@@ -90,7 +90,7 @@ $this->css()
                                     }
                                 } elseif ($mylist->status == 'unsubscribed') {
                                     $unsubTxt = Lang::txt(
-                                        'COM_NEWSLETTER_MAILINGLISTS_UNSUBSCRIBED'
+                                        'COM_NEWSLETTER_MAILINGLISTS_UNSUBSCRIBED',
                                     );
                                     echo ' - <span class="unsubscribed">'
                                         . $unsubTxt . '</span>';
@@ -98,7 +98,7 @@ $this->css()
                                 ?>
                                 <?php
                                 $noDesc = Lang::txt(
-                                    'COM_NEWSLETTER_MAILINGLISTS_LIST_NODESCRIPTION'
+                                    'COM_NEWSLETTER_MAILINGLISTS_LIST_NODESCRIPTION',
                                 );
                                 $descTxt = $mylist->description
                                     ? nl2br($mylist->description)
@@ -132,7 +132,7 @@ $this->css()
                             <strong><?php echo $this->escape($list->name); ?></strong>
                             <?php
                             $noDescPub = Lang::txt(
-                                'COM_NEWSLETTER_MAILINGLISTS_LIST_NODESCRIPTION'
+                                'COM_NEWSLETTER_MAILINGLISTS_LIST_NODESCRIPTION',
                             );
                             $descPub = ($list->description)
                                 ? nl2br($list->description)

@@ -123,7 +123,7 @@ class Tool
     protected static $_propertyattrmap = [
         'toolname' => 'toolName',
         'title' => 'cn',
-        'version' => 'member'
+        'version' => 'member',
     ];
 
     /**
@@ -1601,7 +1601,7 @@ class Tool
             "SELECT r.id, r.alias, r.published, v.revision, v.toolaccess
 			FROM `#__resources` AS r $join
 			WHERE $where
-			ORDER BY r.alias, (r.published=1) DESC, r.id, v.revision DESC"
+			ORDER BY r.alias, (r.published=1) DESC, r.id, v.revision DESC",
         );
 
         $tools = [];
@@ -1612,7 +1612,7 @@ class Tool
                     'alias'     => $row->alias,
                     'published' => $row->published,
                     'access'    => $row->toolaccess,
-                    'revisions' => []
+                    'revisions' => [],
                 ];
             }
 

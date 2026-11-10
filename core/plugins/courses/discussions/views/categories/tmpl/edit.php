@@ -101,13 +101,13 @@ defined('_HZEXEC_') or die();
                         $sel2 = ($access == 2) ? ' selected="selected"' : '';
                         $sel5 = ($access == 5) ? ' selected="selected"' : '';
                         $optPublic = Lang::txt(
-                            'PLG_COURSES_DISCUSSIONS_FIELD_READ_ACCESS_OPTION_PUBLIC'
+                            'PLG_COURSES_DISCUSSIONS_FIELD_READ_ACCESS_OPTION_PUBLIC',
                         );
                         $optRegistered = Lang::txt(
-                            'PLG_COURSES_DISCUSSIONS_FIELD_READ_ACCESS_OPTION_REGISTERED'
+                            'PLG_COURSES_DISCUSSIONS_FIELD_READ_ACCESS_OPTION_REGISTERED',
                         );
                         $optPrivate = Lang::txt(
-                            'PLG_COURSES_DISCUSSIONS_FIELD_READ_ACCESS_OPTION_PRIVATE'
+                            'PLG_COURSES_DISCUSSIONS_FIELD_READ_ACCESS_OPTION_PRIVATE',
                         );
                         ?>
                         <label for="field-access">

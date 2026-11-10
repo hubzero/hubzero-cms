@@ -43,7 +43,7 @@ class Mycuration extends Module
             'ignore_access' => 1,
             'curator'       => 'owner',
             'dev'           => 1, // get dev versions
-            'status'        => [5, 7] // submitted/pending
+            'status'        => [5, 7], // submitted/pending
         ];
 
         // Instantiate

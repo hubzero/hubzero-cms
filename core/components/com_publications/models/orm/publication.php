@@ -37,7 +37,7 @@ class Publication extends Relational
      * @var  array
      */
     protected $rules = [
-        'title' => 'notempty'
+        'title' => 'notempty',
     ];
 
     /**
@@ -47,7 +47,7 @@ class Publication extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**
@@ -203,7 +203,7 @@ class Publication extends Relational
 
         $filters = [
             'scope'    => 'publications',
-            'scope_id' => $this->getActiveVersion()->id
+            'scope_id' => $this->getActiveVersion()->id,
         ];
 
         return $cloud->tags('list', $filters);

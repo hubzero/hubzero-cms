@@ -34,10 +34,10 @@ $this->reviews = new \Hubzero\Base\ItemList($this->reviews);
     <?php if (User::isGuest()) { ?>
             <?php
             $loginReturn = base64_encode(
-                Route::url($this->publication->link('reviews') . '&action=addreview#reviewform')
+                Route::url($this->publication->link('reviews') . '&action=addreview#reviewform'),
             );
             $loginUrl = Route::url(
-                'index.php?option=com_users&view=login&return=' . $loginReturn
+                'index.php?option=com_users&view=login&return=' . $loginReturn,
             );
             ?>
             <a href="<?php echo $loginUrl; ?>" class="icon-add add btn">

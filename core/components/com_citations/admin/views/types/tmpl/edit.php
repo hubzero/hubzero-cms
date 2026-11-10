@@ -66,7 +66,7 @@ $f = [
     "keywords"       => 'Keywords',
     "research_notes" => 'Research Notes',
     "language"       => 'Language',
-    "label"          => 'Label'
+    "label"          => 'Label',
 ];
 ?>
 
@@ -90,7 +90,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                 <div class="input-wrap">
                     <?php
                     $typeVal = $this->escape(
-                        stripslashes($this->type->type)
+                        stripslashes($this->type->type),
                     );
                     ?>
                     <label for="field-type">
@@ -107,7 +107,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                 <div class="input-wrap">
                     <?php
                     $typeTitleVal = $this->escape(
-                        stripslashes($this->type->type_title)
+                        stripslashes($this->type->type_title),
                     );
                     ?>
                     <label for="field-type_title">
@@ -124,7 +124,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                 <div class="input-wrap">
                     <?php
                     $typeDescVal = $this->escape(
-                        stripslashes($this->type->type_desc)
+                        stripslashes($this->type->type_desc),
                     );
                     ?>
                     <label for="field-type_desc">
@@ -141,7 +141,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                 <div class="input-wrap">
                     <?php
                     $fieldsVal = $this->escape(
-                        stripslashes($this->type->fields)
+                        stripslashes($this->type->fields),
                     );
                     ?>
                     <label for="field-fields">

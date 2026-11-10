@@ -381,7 +381,7 @@ class Html extends Base
         $url = rtrim(\Request::root(true), '/') . '/core/assets/css/actions.css?v=' . filemtime(PATH_CORE . '/assets/css/actions.css');
 
         $this->_styleSheets = [
-            $url => ['mime' => 'text/css', 'media' => null, 'attribs' => []]
+            $url => ['mime' => 'text/css', 'media' => null, 'attribs' => []],
         ] + $this->_styleSheets;
 
         return $this;
@@ -518,7 +518,7 @@ class Html extends Base
         // Try to find a favicon by checking the template and root folder
         $dirs = [
             $directory . DS,
-            PATH_ROOT . DS
+            PATH_ROOT . DS,
         ];
 
         foreach ($dirs as $dir) {
@@ -552,7 +552,7 @@ class Html extends Base
         $file     = isset($params['file'])     ? preg_replace(
             '/[^A-Z0-9_\.-]/i',
             '',
-            $params['file']
+            $params['file'],
         )     : 'index.php';
         // The page shell is the active template's, or the system template's
         // where the active one does not provide that name.

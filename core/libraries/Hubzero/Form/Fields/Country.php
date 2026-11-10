@@ -64,7 +64,7 @@ class Country extends Select
                     name), preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->
                     fieldname)),
                 'value',
-                'text'
+                'text',
             );
 
             // Add the option object to the result set.

@@ -158,7 +158,7 @@ class Manager
         // Create mount manager
         $manager = new \League\Flysystem\MountManager([
             $sourceName => $sourceMount->getFilesystem(),
-            $destName   => $destMount->getFilesystem()
+            $destName   => $destMount->getFilesystem(),
         ]);
 
         // Do copy

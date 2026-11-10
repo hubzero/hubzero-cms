@@ -43,7 +43,7 @@ abstract class Route
     public static function getArticleRoute($id, $catid = 0, $language = 0)
     {
         $needles = [
-            'article' => [(int) $id]
+            'article' => [(int) $id],
         ];
 
         // Create the link

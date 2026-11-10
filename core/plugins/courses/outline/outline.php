@@ -78,7 +78,7 @@ class Outline extends Plugin
         if (!$course->offering()->section()->access('view') && !$sparams->get('preview', 0)) {
             $response->set(
                 'html',
-                '<p class="info">' . Lang::txt('COURSES_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>'
+                '<p class="info">' . Lang::txt('COURSES_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>',
             );
             return $response;
         }

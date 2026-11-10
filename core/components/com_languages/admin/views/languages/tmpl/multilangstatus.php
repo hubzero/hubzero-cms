@@ -78,7 +78,7 @@ $notice_switchers = !$this->switchers && ($this->homes > 1 || $this->language_fi
                         <?php
                         echo Lang::txt(
                             'COM_LANGUAGES_MULTILANGSTATUS_ERROR_CONTENT_LANGUAGE',
-                            $contentlang->lang_code
+                            $contentlang->lang_code,
                         );
                         ?>
                     </td>

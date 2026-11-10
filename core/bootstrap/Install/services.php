@@ -8,5 +8,5 @@
 
 return [
     // Base Services
-    'Bootstrap\Install\Providers\WizardServiceProvider'
+    'Bootstrap\Install\Providers\WizardServiceProvider',
 ];

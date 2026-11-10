@@ -24,7 +24,7 @@ if ($this->data['type'] != 'folder') :
         '',
         null,
         true,
-        true
+        true,
     );
     if (!$icon) :
         $icon = Html::asset(
@@ -33,7 +33,7 @@ if ($this->data['type'] != 'folder') :
             '',
             null,
             true,
-            true
+            true,
         );
     endif;
 else :
@@ -43,20 +43,20 @@ else :
         '',
         null,
         true,
-        true
+        true,
     );
 endif;
 
 $fileSize = \Components\Media\Admin\Helpers\MediaHelper::parseSize(
-    $this->data['size']
+    $this->data['size'],
 );
 $imgAlt = $this->escape(
-    Lang::txt('COM_MEDIA_IMAGE_TITLE', $this->data['name'], $fileSize)
+    Lang::txt('COM_MEDIA_IMAGE_TITLE', $this->data['name'], $fileSize),
 );
 
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=medialist&file=' . urlencode($this->data['path'])
+    . '&controller=medialist&file=' . urlencode($this->data['path']),
 );
 ?>
 

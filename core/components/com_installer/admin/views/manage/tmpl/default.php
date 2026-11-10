@@ -113,7 +113,7 @@ $saveOrder = $listOrder == 'ordering';
                         'value',
                         'text',
                         $this->filters['client_id'],
-                        true
+                        true,
                     ); ?>
                 </select>
 
@@ -160,7 +160,7 @@ $saveOrder = $listOrder == 'ordering';
                             'COM_INSTALLER_HEADING_LOCATION',
                             'client_id',
                             $listDirn,
-                            $listOrder
+                            $listOrder,
                         ); ?>
                     </th>
                     <th class="center">
@@ -184,7 +184,7 @@ $saveOrder = $listOrder == 'ordering';
                             'COM_INSTALLER_HEADING_FOLDER',
                             'folder',
                             $listDirn,
-                            $listOrder
+                            $listOrder,
                         ); ?>
                     </th>
                     <th class="priority-4">
@@ -193,7 +193,7 @@ $saveOrder = $listOrder == 'ordering';
                             'COM_INSTALLER_HEADING_ID',
                             'extension_id',
                             $listDirn,
-                            $listOrder
+                            $listOrder,
                         ); ?>
                     </th>
                 </tr>
@@ -264,7 +264,7 @@ $saveOrder = $listOrder == 'ordering';
                         <?php
                         $authorTitle = addslashes(htmlspecialchars(
                             Lang::txt('COM_INSTALLER_AUTHOR_INFORMATION')
-                            . '::' . $item->get('author_info')
+                            . '::' . $item->get('author_info'),
                         ));
                         ?>
                         <span class="editlinktip hasTip" title="<?php echo $authorTitle; ?>">

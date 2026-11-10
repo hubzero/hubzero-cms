@@ -109,7 +109,7 @@ if ($this->paymentStatus == 'ok') {
             if (isset($meta->checkoutNotes) && $meta->checkoutNotes) {
                 $notes[] = [
                     'label' => $item['info']->pName . ', ' . $item['info']->sSku,
-                    'notes' => $meta->checkoutNotes
+                    'notes' => $meta->checkoutNotes,
                 ];
             }
         }

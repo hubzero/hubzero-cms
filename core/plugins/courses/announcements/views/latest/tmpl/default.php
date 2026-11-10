@@ -19,7 +19,7 @@ if ($this->params->get('allowClose', 1)) {
 
 $rows = $this->offering->announcements([
     'limit' => $this->params->get('display_limit', 1),
-    'published' => true
+    'published' => true,
 ]);
 
 if ($rows->total() > 0) {

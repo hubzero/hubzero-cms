@@ -62,45 +62,45 @@ class Items extends AdminController
                 $this->_option . '.' . $this->_controller . '.parent_id',
                 'filter_parent_id',
                 0,
-                'int'
+                'int',
             ),
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'filter_search',
-                ''
+                '',
             ),
             'published' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.published',
                 'filter_published',
-                ''
+                '',
             ),
             'language' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.language',
                 'filter_language',
-                ''
+                '',
             ),
             'access' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.access',
                 'filter_access',
                 0,
-                'int'
+                'int',
             ),
             'level' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.level',
                 'filter_level',
                 0,
-                'int'
+                'int',
             ),
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'lft'
+                'lft',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'asc'
-            )
+                'asc',
+            ),
         ];
 
         $menuType = Request::getString('menutype', null);

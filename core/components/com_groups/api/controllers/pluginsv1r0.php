@@ -89,7 +89,7 @@ class Pluginsv1r0 extends ApiController
 
         $filters = [
             'limit' => Request::getInt('limit', 25),
-            'start' => Request::getInt('limitstart', 0)
+            'start' => Request::getInt('limitstart', 0),
         ];
 
         $data = Event::trigger(
@@ -98,8 +98,8 @@ class Pluginsv1r0 extends ApiController
                 $group,
                 $active,
                 $filters['start'],
-                $filters['limit']
-            ]
+                $filters['limit'],
+            ],
         );
 
         $response = [];
@@ -171,8 +171,8 @@ class Pluginsv1r0 extends ApiController
             'groups.onGroupsApiCreate',
             [
                 $group,
-                $active
-            ]
+                $active,
+            ],
         );
 
         $response = null;
@@ -260,8 +260,8 @@ class Pluginsv1r0 extends ApiController
             [
                 $group,
                 $active,
-                $id
-            ]
+                $id,
+            ],
         );
 
         $response = null;
@@ -349,8 +349,8 @@ class Pluginsv1r0 extends ApiController
             [
                 $group,
                 $active,
-                $id
-            ]
+                $id,
+            ],
         );
 
         $response = null;
@@ -438,8 +438,8 @@ class Pluginsv1r0 extends ApiController
             [
                 $group,
                 $active,
-                $id
-            ]
+                $id,
+            ],
         );
 
         $this->send(null, 204);

@@ -245,7 +245,7 @@ class ACL extends Obj
                 'aro_foreign_key'   => $this->_user->get('id'),
                 'aco_model'         => $aco,
                 'aco_foreign_key'   => $aco_foreign_key,
-                'action_' . $action => $permission
+                'action_' . $action => $permission,
             ];
             array_push($this->_raw_data, $l);
         }

@@ -23,17 +23,17 @@ class Migration20190221000000ComForum extends Base
     public static $tables = [
         '#__forum_categories' => [
             'created',
-            'modified'
+            'modified',
         ],
         '#__forum_posts' => [
             'created',
             'modified',
-            'last_activity'
+            'last_activity',
         ],
         '#__forum_sections' => [
             'created',
-            'modified'
-        ]
+            'modified',
+        ],
     ];
 
     /**

@@ -61,7 +61,7 @@ $this->css('offering');
                 <p><strong><?php echo Lang::txt('COM_COURSES_WHERE_CAN_I_FIND_OTHER_COURSES'); ?></strong></p>
                 <?php
                     $routeUrl = Route::url(
-                        'index.php?option=' . $this->option . '&controller=courses&task=browse'
+                        'index.php?option=' . $this->option . '&controller=courses&task=browse',
                     );
                     ?>
                 <p><?php echo $routeUrl; ?></p>

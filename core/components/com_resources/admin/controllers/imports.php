@@ -52,13 +52,13 @@ class Imports extends AdminController
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'created_at'
+                'created_at',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'desc'
-            )
+                'desc',
+            ),
         ];
 
         // Only the columns the list sorts by
@@ -135,7 +135,7 @@ class Imports extends AdminController
             'authorized' => 'admin',
             'fields'     => ['cn', 'description', 'published', 'gidNumber', 'type'],
             'type'       => [1, 3],
-            'sortby'     => 'description'
+            'sortby'     => 'description',
         ]);
 
         // Output the HTML
@@ -382,7 +382,7 @@ class Imports extends AdminController
         $resourceData = $importImporter->process($import, [
             'postparse'   => $this->hooks('postparse', $import),
             'postmap'     => $this->hooks('postmap', $import),
-            'postconvert' => $this->hooks('postconvert', $import)
+            'postconvert' => $this->hooks('postconvert', $import),
         ], $dryRun);
 
         // calculate execution time
@@ -394,7 +394,7 @@ class Imports extends AdminController
             echo htmlentities(json_encode([
                 'import'  => 'success',
                 'time'    => $time,
-                'records' => $resourceData
+                'records' => $resourceData,
             ]));
             exit();
         }
@@ -403,7 +403,7 @@ class Imports extends AdminController
         echo json_encode([
             'import'  => 'success',
             'time'    => $time,
-            'records' => $resourceData
+            'records' => $resourceData,
         ]);
         exit();
     }
@@ -437,7 +437,7 @@ class Imports extends AdminController
         // build array of data to return
         $data = [
             'processed' => (int) $run->get('processed'),
-            'total'     => (int) $run->get('count')
+            'total'     => (int) $run->get('count'),
         ];
 
         // return progress update

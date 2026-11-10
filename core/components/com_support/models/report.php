@@ -43,6 +43,6 @@ class Report extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 }

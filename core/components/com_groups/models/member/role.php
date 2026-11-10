@@ -43,7 +43,7 @@ class Role extends Relational
      */
     protected $rules = [
         'roleid'    => 'positive|nonzero',
-        'uidNumber' => 'positive|nonzero'
+        'uidNumber' => 'positive|nonzero',
     ];
 
     /**

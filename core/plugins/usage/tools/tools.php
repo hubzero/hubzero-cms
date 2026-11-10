@@ -40,7 +40,7 @@ class Tools extends Plugin
     public function onUsageAreas()
     {
         return [
-            'tools' => Lang::txt('PLG_USAGE_TOOLs')
+            'tools' => Lang::txt('PLG_USAGE_TOOLs'),
         ];
     }
 
@@ -295,7 +295,7 @@ class Tools extends Plugin
     {
         $months = [
             "01" => "Jan", "02" => "Feb", "03" => "Mar", "04" => "Apr", "05" => "May", "06" => "Jun",
-            "07" => "Jul", "08" => "Aug", "09" => "Sep", "10" => "Oct", "11" => "Nov", "12" => "Dec"
+            "07" => "Jul", "08" => "Aug", "09" => "Sep", "10" => "Oct", "11" => "Nov", "12" => "Dec",
             ];
         $monthsReverse = array_reverse($months, true);
         $cur_year = floor(date("Y"));
@@ -581,7 +581,7 @@ class Tools extends Plugin
             $year_data_start = 2000;
             $months = [
                 "01" => "Jan", "02" => "Feb", "03" => "Mar", "04" => "Apr", "05" => "May", "06" => "Jun",
-                "07" => "Jul", "08" => "Aug", "09" => "Sep", "10" => "Oct", "11" => "Nov", "12" => "Dec"
+                "07" => "Jul", "08" => "Aug", "09" => "Sep", "10" => "Oct", "11" => "Nov", "12" => "Dec",
             ];
             $monthsReverse = array_reverse($months, true);
 

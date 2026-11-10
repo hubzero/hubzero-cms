@@ -36,7 +36,7 @@ class Forum extends Plugin
             [
                 'name'   => 'emailGroupForumDigest',
                 'label'  => Lang::txt('PLG_CRON_FORUM_EMAIL_GROUP_DIGEST'),
-                'params' => 'emailgroupdigest'
+                'params' => 'emailgroupdigest',
             ],
         ];
 
@@ -180,7 +180,7 @@ class Forum extends Plugin
         $eview = new \Hubzero\Mail\View([
             'base_path' => Component::path('com_forum') . DS . 'site',
             'name'      => 'emails',
-            'layout'    => 'digest_plain'
+            'layout'    => 'digest_plain',
         ]);
         $eview->option    = 'com_forum';
         $eview->delimiter = '~!~!~!~!~!~!~!~!~!~!';

@@ -80,7 +80,7 @@ class Entriesv1r0 extends ApiController
             'sortby' => Request::getCmd('sortby', 'date'),
             'limit'  => Request::getInt('limit', Config::get('list_limit')),
             'start'  => Request::getInt('limitstart', 0),
-            'search' => Request::getString('search', '')
+            'search' => Request::getString('search', ''),
         ];
 
         if (!in_array($filters['sortby'], ['date', 'date_published', 'date_created', 'date_modified', 'title', 'rating', 'ranking', 'random'])) {

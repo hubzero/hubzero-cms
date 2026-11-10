@@ -19,7 +19,7 @@ $toolbarElements = [
     'cancel' => ['list'],
     'custom' => ['destroy', 'trash', 'destroy', 'COM_SEARCH_DELETE', false],
     'spacer' => [],
-    'help' => ['boost']
+    'help' => ['boost'],
 ];
 
 $this->view('_toolbar', 'shared')

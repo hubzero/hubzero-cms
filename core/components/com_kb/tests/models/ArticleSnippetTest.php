@@ -136,7 +136,7 @@ class ArticleSnippetTest extends Basic
 
         $this->assertSame(
             'Publish the <mark>files</mark>, then cite the <mark>dataset</mark>.',
-            $article->snippet('dataset files')
+            $article->snippet('dataset files'),
         );
     }
 

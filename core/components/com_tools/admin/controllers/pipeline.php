@@ -50,43 +50,43 @@ class Pipeline extends AdminController
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             )),
             'search_field' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search_field',
                 'search_field',
-                'all'
+                'all',
             )),
             'state' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.state',
                 'state',
                 -1,
-                'int'
+                'int',
             ),
             // Sorting
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'toolname'
+                'toolname',
             ),
             'sort_Dir' => strtoupper(Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
+                'ASC',
             )),
             // Get paging variables
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limitstart',
                 'limitstart',
                 0,
-                'int'
-            )
+                'int',
+            ),
         ];
 
         $filters['sortby'] = $filters['sort'] . ' ' . $filters['sort_Dir'];
@@ -268,7 +268,7 @@ class Pipeline extends AdminController
 					WHERE `toolname`=" . $database->quote($row->alias) . "
 					AND `revision`=" . $database->quote($row->local_revision) . "
 					AND state!=3
-					LIMIT 1"
+					LIMIT 1",
                 );
                 $results = $database->loadObjectList();
 
@@ -303,7 +303,7 @@ class Pipeline extends AdminController
 						SET `doi`=" . $database->quote($doiSuccess) . ",
 						`doi_shoulder`=" . $database->quote($this->config->get('doi_shoulder')) . "
 						WHERE `rid`=" . $database->quote($row->rid) . "
-						AND `local_revision`=" . $database->quote($row->local_revision)
+						AND `local_revision`=" . $database->quote($row->local_revision),
                     );
                     if (!$database->query()) {
                         $failed[] = $doiSuccess;

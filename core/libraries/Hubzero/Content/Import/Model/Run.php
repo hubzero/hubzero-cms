@@ -44,7 +44,7 @@ class Run extends Relational
      * @var  array
      */
     protected $rules = [
-        'import_id' => 'positive|nonzero'
+        'import_id' => 'positive|nonzero',
     ];
 
     /**
@@ -54,7 +54,7 @@ class Run extends Relational
      **/
     public $initiate = [
         'ran_at',
-        'ran_by'
+        'ran_by',
     ];
 
     /**

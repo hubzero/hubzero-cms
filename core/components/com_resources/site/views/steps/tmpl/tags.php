@@ -29,7 +29,7 @@ if (!function_exists('stem')) {
         return preg_replace(
             $prefixPattern,
             '',
-            preg_replace($suffixPattern, '', $str)
+            preg_replace($suffixPattern, '', $str),
         );
     }
 }
@@ -93,7 +93,7 @@ $this->css('create.css')
         . '&task=draft&step='
         . $this->next_step
         . '&id='
-        . $this->id
+        . $this->id,
     );
     ?>
     <form action="<?php echo $actionUrl; ?>" method="post" id="hubForm">
@@ -135,7 +135,7 @@ $this->css('create.css')
                 <?php
                 $tf = Event::trigger(
                     'hubzero.onGetMultiEntry',
-                    [['tags', 'tags', 'actags','',$recommended->getExistingTagsValueList()]]
+                    [['tags', 'tags', 'actags','',$recommended->getExistingTagsValueList()]],
                 );
 
                 if (count($tf) > 0) {

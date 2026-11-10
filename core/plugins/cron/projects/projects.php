@@ -36,18 +36,18 @@ class Projects extends Plugin
             [
                 'name'   => 'computeStats',
                 'label'  => Lang::txt('PLG_CRON_PROJECTS_LOG_STATS'),
-                'params' => ''
+                'params' => '',
             ],
             [
                 'name'   => 'googleSync',
                 'label'  => Lang::txt('PLG_CRON_PROJECTS_SYNC_GDRIVE'),
-                'params' => ''
+                'params' => '',
             ],
             [
                 'name'   => 'gitGc',
                 'label'  => Lang::txt('PLG_CRON_PROJECTS_GITGC'),
-                'params' => ''
-            ]
+                'params' => '',
+            ],
         ];
 
         return $obj;
@@ -95,7 +95,7 @@ class Projects extends Plugin
             'admin',
             0,
             0,
-            ($pconfig->get('confirm_step', 0) ? 3 : 2)
+            ($pconfig->get('confirm_step', 0) ? 3 : 2),
         );
 
         if (!$projects) {
@@ -131,7 +131,7 @@ class Projects extends Plugin
                 null,
                 null,
                 'sync',
-                ['files']
+                ['files'],
             ];
 
             $sections = Event::trigger('projects.onProject', $plugin_params);

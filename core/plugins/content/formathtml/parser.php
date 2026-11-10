@@ -45,7 +45,7 @@ class Parser
     private $_data = [
         'input'  => null,
         'output' => null,
-        'links'  => []
+        'links'  => [],
     ];
 
     /**
@@ -56,7 +56,7 @@ class Parser
     private $_tokens = [
         'pre'    => [],
         'code'   => [],
-        'macro'  => []
+        'macro'  => [],
     ];
 
     /**
@@ -483,7 +483,7 @@ class Parser
                 $matches[1],
                 'macro',
                 $this->_randomString(),
-                $macro->render()
+                $macro->render(),
             ]);
         }
 

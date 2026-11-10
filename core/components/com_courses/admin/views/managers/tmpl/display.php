@@ -131,7 +131,7 @@ if (count($managers) > 0) {
                     <td class="paramlist_key">
                         <?php
                             $routeUrl = Route::url(
-                                'index.php?option=com_members&controller=members&task=edit&id=' . $u->get('id')
+                                'index.php?option=com_members&controller=members&task=edit&id=' . $u->get('id'),
                             );
                         ?>
                         <a href="<?php echo $routeUrl; ?>" target="_parent">

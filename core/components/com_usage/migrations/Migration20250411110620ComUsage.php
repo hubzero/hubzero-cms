@@ -246,7 +246,7 @@ class Migration20250411110620ComUsage extends Base
                     "('cms-checker','useragent','bot')",
                     "('125.122.36.248','ip','attempt login 12k times')",
                     "('52.54.191.160','ip','tries to access /cron/tick')",
-                    "('%.rcac.purdue.edu','host','Purdue')"
+                    "('%.rcac.purdue.edu','host','Purdue')",
                 ];
                 $query = "INSERT INTO `exclude_list` (`filter`, `type`, `notes`) VALUES "
                     . implode(", ", $values);

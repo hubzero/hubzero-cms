@@ -57,7 +57,7 @@ class Assetv1r0 extends base
         // Also check the PHP max post and upload values
         $max = [
             'upload' => ini_get('upload_max_filesize'),
-            'post'   => ini_get('post_max_size')
+            'post'   => ini_get('post_max_size'),
         ];
 
         $max = array_map(
@@ -69,7 +69,7 @@ class Assetv1r0 extends base
                 }
                 return $v;
             },
-            $max
+            $max,
         );
 
         $max_upload = min((int)$max['upload'], (int)$max['post']);
@@ -574,7 +574,7 @@ class Assetv1r0 extends base
             'asset_state'    => $asset->get('state'),
             'scope_id'       => (isset($row) && isset($row->scope_id)) ? $row->scope_id : '',
             'course_id'      => $this->course_id,
-            'offering_alias' => Request::getCmd('offering', '')
+            'offering_alias' => Request::getCmd('offering', ''),
         ];
 
         // Set the status code
@@ -586,9 +586,9 @@ class Assetv1r0 extends base
                 'asset_id'    => $asset->get('id'),
                 'asset_title' => $asset->get('title'),
                 'course_id'   => $this->course_id,
-                'files'       => [$files]
+                'files'       => [$files],
             ],
-            ($id ? 200 : 201)
+            ($id ? 200 : 201),
         );
     }
 
@@ -699,8 +699,8 @@ class Assetv1r0 extends base
         $this->send(
             [
                 'asset_id' => $assetObj->id,
-                'deleted'  => $deleted
-            ]
+                'deleted'  => $deleted,
+            ],
         );
     }
 

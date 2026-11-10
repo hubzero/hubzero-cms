@@ -73,7 +73,7 @@ $this->js();
                         45,
                         10,
                         'field-description',
-                        ['class' => 'required minimal', 'buttons' => false]
+                        ['class' => 'required minimal', 'buttons' => false],
                     );
                     ?>
                 </div>

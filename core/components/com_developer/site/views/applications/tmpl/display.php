@@ -78,10 +78,10 @@ $newAppUrl = Route::url('index.php?option=com_developer&controller=applications&
                             </h4>
                             <?php
                             $revokeConfirm = Lang::txt(
-                                'COM_DEVELOPER_API_APPLICATIONS_AUTHORIZED_REVOKE_ACCESS_CONFIRM'
+                                'COM_DEVELOPER_API_APPLICATIONS_AUTHORIZED_REVOKE_ACCESS_CONFIRM',
                             );
                             $revokeUrl = Route::url(
-                                $application->link('revoke') . '&token=' . $token->get('id')
+                                $application->link('revoke') . '&token=' . $token->get('id'),
                             );
                             ?>
                             <a

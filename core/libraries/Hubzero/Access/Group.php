@@ -53,7 +53,7 @@ class Group extends Relational
      * @var  array
      */
     protected $rules = [
-        'title' => 'notempty'
+        'title' => 'notempty',
     ];
 
     /**
@@ -162,7 +162,7 @@ class Group extends Relational
             ->update($this->getTableName())
             ->set([
                 'lft' => (int) $left,
-                'rgt' => (int) $right
+                'rgt' => (int) $right,
             ])
             ->whereEquals('id', (int) $parent_id);
 

@@ -22,26 +22,26 @@ class Migration20190221000000ComSupport extends Base
      **/
     public static $tables = [
         '#__support_attachments' => [
-            'created'
+            'created',
         ],
         '#__support_categories' => [
             'created',
-            'modified'
+            'modified',
         ],
         '#__support_comments' => [
-            'created'
+            'created',
         ],
         '#__support_queries' => [
-            'created'
+            'created',
         ],
         '#__support_query_folders' => [
             'created',
-            'modified'
+            'modified',
         ],
         '#__support_tickets' => [
             'created',
-            'closed'
-        ]
+            'closed',
+        ],
     ];
 
     /**

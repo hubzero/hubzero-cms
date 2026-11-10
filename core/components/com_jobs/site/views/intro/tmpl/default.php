@@ -14,27 +14,27 @@ use Hubzero\Facades\User;
 defined('_HZEXEC_') or die();
 
 $loginUrl = Route::url(
-    'index.php?option=' . $this->option . '&task=view'
+    'index.php?option=' . $this->option . '&task=view',
 ) . '?action=login';
 $loginText = Lang::txt('COM_JOBS_ACTION_LOGIN');
 $loginSuffix = Lang::txt('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS');
 $dashboardUrl = Route::url(
-    'index.php?option=' . $this->option . '&task=dashboard'
+    'index.php?option=' . $this->option . '&task=dashboard',
 );
 $shortlistUrl = Route::url(
-    'index.php?option=' . $this->option . '&task=resumes'
+    'index.php?option=' . $this->option . '&task=resumes',
 ) . '?filterby=shortlisted';
 $resumeUrl = Route::url(
-    'index.php?option=' . $this->option . '&task=addresume'
+    'index.php?option=' . $this->option . '&task=addresume',
 );
 $resumesUrl = Route::url(
-    'index.php?option=' . $this->option . '&task=resumes'
+    'index.php?option=' . $this->option . '&task=resumes',
 );
 $addjobUrl = Route::url(
-    'index.php?option=' . $this->option . '&task=addjob'
+    'index.php?option=' . $this->option . '&task=addjob',
 );
 $browseUrl = Route::url(
-    'index.php?option=' . $this->option . '&task=browse'
+    'index.php?option=' . $this->option . '&task=browse',
 );
 ?>
 <header id="content-header">
@@ -89,7 +89,7 @@ $browseUrl = Route::url(
                 <p class="intronote">
                     <?php echo Lang::txt(
                         'COM_JOBS_TIP_ENJOY_COMMUNITY_EXPOSURE',
-                        Config::get('sitename')
+                        Config::get('sitename'),
                     ); ?>
                 </p>
             </div>

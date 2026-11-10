@@ -35,7 +35,7 @@ class Zone extends Base
     private $_cache = [
         'locations.count' => null,
         'locations.list'  => null,
-        'locations.one'   => null
+        'locations.one'   => null,
     ];
 
     /**
@@ -130,7 +130,7 @@ class Zone extends Base
             if (file_exists($path)) {
                 $path = Route::url(
                     'index.php?option=com_tools&app=zones&task=assets&version=' .
-                    $this->get('id') . '&file=' . $file
+                    $this->get('id') . '&file=' . $file,
                 );
             }
             return $path;

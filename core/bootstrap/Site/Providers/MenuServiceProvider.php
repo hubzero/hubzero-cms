@@ -33,7 +33,7 @@ class MenuServiceProvider extends ServiceProvider
             $options = [
                 'language_filter' => null,
                 'language'        => null,
-                'access'          => User::getAuthorisedViewLevels()
+                'access'          => User::getAuthorisedViewLevels(),
             ];
 
             $options['db'] = $app->get('db');

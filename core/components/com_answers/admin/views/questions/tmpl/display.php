@@ -20,7 +20,7 @@ $canDo = Components\Answers\Helpers\Permissions::getActions('question');
 Toolbar::title(
     Lang::txt('COM_ANSWERS_TITLE') . ': '
         . Lang::txt('COM_ANSWERS_QUESTIONS'),
-    'answers'
+    'answers',
 );
 if ($canDo->get('core.admin')) {
     Toolbar::preferences($this->option, '550');
@@ -37,7 +37,7 @@ Toolbar::help('questions');
 
 $formAction = Route::url(
     'index.php?option=' . $this->option
-        . '&controller=' . $this->controller
+        . '&controller=' . $this->controller,
 );
 ?>
 <form
@@ -163,23 +163,23 @@ $formAction = Route::url(
             $editUrl = Route::url(
                 'index.php?option=' . $this->option
                     . '&controller=' . $this->controller
-                    . '&task=edit&id=' . $row->get('id')
+                    . '&task=edit&id=' . $row->get('id'),
             );
             $stateUrl = Route::url(
                 'index.php?option=' . $this->option
                     . '&controller=' . $this->controller
                     . '&task=' . $task
                     . '&id=' . $row->get('id')
-                    . '&' . Session::getFormToken() . '=1'
+                    . '&' . Session::getFormToken() . '=1',
             );
             $memberUrl = Route::url(
                 'index.php?option=com_members'
                     . '&controller=members&task=edit&id='
-                    . $row->get('created_by')
+                    . $row->get('created_by'),
             );
             $answersUrl = Route::url(
                 'index.php?option=' . $this->option
-                    . '&controller=answers&qid=' . $row->get('id')
+                    . '&controller=answers&qid=' . $row->get('id'),
             );
             $creatorName = $this->escape($row->creator->get('name'))
                 . ' (' . $row->get('created_by') . ')';

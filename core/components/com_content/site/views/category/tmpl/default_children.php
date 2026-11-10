@@ -35,7 +35,7 @@ $class = ' class="first"';
                 <span class="item-title">
                     <?php
                     $catUrl = Route::url(
-                        \Components\Content\Site\Helpers\Route::getCategoryRoute($child->id)
+                        \Components\Content\Site\Helpers\Route::getCategoryRoute($child->id),
                     );
                     ?>
                     <a href="<?php echo $catUrl; ?>">

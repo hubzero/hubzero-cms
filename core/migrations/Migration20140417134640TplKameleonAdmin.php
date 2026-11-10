@@ -23,7 +23,7 @@ class Migration20140417134640TplKameleonAdmin extends Base
     {
         $styles = [
             'header' => 'dark',
-            'theme'  => 'salmon'
+            'theme'  => 'salmon',
         ];
 
         $this->addTemplateEntry('kameleon', 'kameleon (admin)', 1, 1, 0, $styles);

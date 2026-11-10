@@ -171,12 +171,12 @@ abstract class Base extends Obj
         if (!$title) {
             Pathway::append(
                 Lang::txt(strtoupper($this->get('option'))),
-                'index.php?option=' . $this->get('option')
+                'index.php?option=' . $this->get('option'),
             );
         } else {
             Pathway::append(
                 $title,
-                $url
+                $url,
             );
         }
 

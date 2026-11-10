@@ -44,7 +44,7 @@ class Host extends Relational
      **/
     protected $rules = [
         'hostname' => 'notempty',
-        'status'   => 'notempty'
+        'status'   => 'notempty',
     ];
 
     /**

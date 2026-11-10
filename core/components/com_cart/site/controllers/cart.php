@@ -170,14 +170,14 @@ class Cart extends ComponentController
 
                 // Redirect directly to checkout, skip the cart page
                 App::redirect(
-                    Route::url('index.php?option=' . $this->_option) . DS . 'checkout'
+                    Route::url('index.php?option=' . $this->_option) . DS . 'checkout',
                 );
             }
 
             // prevent resubmitting form by refresh
             // redirect to cart
             App::redirect(
-                Route::url('index.php?option=' . $this->_option)
+                Route::url('index.php?option=' . $this->_option),
             );
         }
 
@@ -204,7 +204,7 @@ class Cart extends ComponentController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
 

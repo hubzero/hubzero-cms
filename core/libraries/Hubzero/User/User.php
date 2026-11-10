@@ -60,7 +60,7 @@ class User extends \Hubzero\Database\Relational
     protected $rules = [
         'name'     => 'notempty',
         'email'    => 'notempty',
-        'username' => 'notempty'
+        'username' => 'notempty',
     ];
 
     /**
@@ -72,7 +72,7 @@ class User extends \Hubzero\Database\Relational
     public $initiate = [
         'registerDate',
         'registerIP',
-        'access'
+        'access',
     ];
 
     /**
@@ -438,7 +438,7 @@ class User extends \Hubzero\Database\Relational
                 'invitees'   => [],
                 'members'    => [],
                 'managers'   => [],
-                'all'        => []
+                'all'        => [],
             ];
             $all = Helper::getGroups($this->get('id'), 'all', 1);
 
@@ -760,15 +760,15 @@ class User extends \Hubzero\Database\Relational
                 '{ID}',
                 '{USERNAME}',
                 '{EMAIL}',
-                '{NAME}'
+                '{NAME}',
             ],
             [
                 $this->get('id'),
                 $this->get('username'),
                 $this->get('email'),
-                str_replace(' ', '+', $this->get('name'))
+                str_replace(' ', '+', $this->get('name')),
             ],
-            self::$linkBase
+            self::$linkBase,
         );
 
         return $link;

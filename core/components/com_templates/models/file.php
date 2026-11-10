@@ -95,7 +95,7 @@ class File extends Obj
                 $this->template = $result;
                 $basePath = $this->template->protected ? PATH_CORE : PATH_APP;
                 $this->template->path = \Hubzero\Filesystem\Util::normalizePath(
-                    $basePath . '/templates/' . $this->template->element
+                    $basePath . '/templates/' . $this->template->element,
                 );
             }
         }

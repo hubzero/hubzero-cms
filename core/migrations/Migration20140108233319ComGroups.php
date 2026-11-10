@@ -47,7 +47,7 @@ class Migration20140108233319ComGroups extends Base
                 if (!App::get('filesystem')->makeDirectory($groupUploadFolder)) {
                     $this->setError(
                         'Failed to create uploads folder. Try running again with elevated privileges',
-                        'warning'
+                        'warning',
                     );
                     return false;
                 }
@@ -63,7 +63,7 @@ class Migration20140108233319ComGroups extends Base
                 if (!App::get('filesystem')->move($from, $to)) {
                     $this->setError(
                         'Failed to move files to uploads folder. Try running again with elevated privileges',
-                        'warning'
+                        'warning',
                     );
                     return false;
                 }

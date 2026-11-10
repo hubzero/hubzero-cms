@@ -51,7 +51,7 @@ if ($this->name == 'curator') {
         $this->pub,
         $this->master->blockId,
         $this->elementId,
-        'curator'
+        'curator',
     );
 }
 
@@ -81,7 +81,7 @@ if ($this->name == 'curator') {
                     $props,
                     $curatorStatus,
                     $editUrl,
-                    $this->manifest->label
+                    $this->manifest->label,
                 );
             ?>
         <div class="block-subject">

@@ -70,7 +70,7 @@ class DublinCore implements Schema
             'oai_pmh:dc',
             'simple-dublin-core',
             'dublincore',
-            __CLASS__
+            __CLASS__,
         ]);
     }
 
@@ -327,7 +327,7 @@ class DublinCore implements Schema
                 'format',
                 'coverage',
                 'language',
-                'source'
+                'source',
             ];
 
             // Loop through DC elements

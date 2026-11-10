@@ -240,7 +240,7 @@ class Download extends ComponentController
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . $return),
             $message,
-            'warning'
+            'warning',
         );
         return;
     }

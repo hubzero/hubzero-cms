@@ -30,7 +30,7 @@ $this->css();
             '#e2cf56', // yellow
             '#aee256', // lime
             '#68e256', // light green
-            '#56e289'  // green-blue
+            '#56e289',  // green-blue
         ];
 
         $total = 0;
@@ -83,7 +83,7 @@ $this->css();
                         $domainClass = preg_replace(
                             '/[^a-zA-Z0-9]/',
                             '',
-                            $domain->domain
+                            $domain->domain,
                         );
                         $css .= '.' . $domainClass
                             . ' { background-color: '
@@ -136,7 +136,7 @@ $this->css();
                             <?php
                             $confirmedUrl = Route::url(
                                 'index.php?option=com_members'
-                                . '&activation=1&registerDate='
+                                . '&activation=1&registerDate=',
                             );
                             ?>
                             <a href="<?php echo $confirmedUrl; ?>"
@@ -150,7 +150,7 @@ $this->css();
                             <?php
                             $unconfirmedUrl = Route::url(
                                 'index.php?option=com_members'
-                                . '&activation=-1&registerDate='
+                                . '&activation=-1&registerDate=',
                             );
                             ?>
                             <a href="<?php echo $unconfirmedUrl; ?>"
@@ -164,7 +164,7 @@ $this->css();
                             <?php
                             $newUrl = Route::url(
                                 'index.php?option=com_members&activation=0&registerDate='
-                                . gmdate("Y-m-d H:i:s", strtotime('-1 day'))
+                                . gmdate("Y-m-d H:i:s", strtotime('-1 day')),
                             );
                             ?>
                             <a href="<?php echo $newUrl; ?>"
@@ -241,7 +241,7 @@ $this->css();
                                 $pieClass = preg_replace(
                                     '/[^a-zA-Z0-9]/',
                                     '',
-                                    $domain->domain
+                                    $domain->domain,
                                 );
                                 ?>
                                 <span class="pie-key <?php echo $pieClass; ?>"></span><?php echo $this->escape($domain->domain); ?>

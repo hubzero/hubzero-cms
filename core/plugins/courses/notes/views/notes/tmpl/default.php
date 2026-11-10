@@ -156,7 +156,7 @@ $base = $this->offering->link();
         'folder'  => 'courses',
         'element' => 'outline',
         'name'    => 'shared',
-        'layout'  => '_not_enrolled'
+        'layout'  => '_not_enrolled',
     ]);
 
     $view->set('course', $this->course)

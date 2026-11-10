@@ -44,7 +44,7 @@ class Race extends Relational
      * @var array
      **/
     protected $rules = [
-        'respondent_id' => 'positive|nonzero'
+        'respondent_id' => 'positive|nonzero',
     ];
 
     /**

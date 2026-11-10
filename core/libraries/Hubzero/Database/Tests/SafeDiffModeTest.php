@@ -45,7 +45,7 @@ class SafeDiffModeTest extends AbstractDriverTestCase
         string $name,
         array $columns,
         array $indexes = [],
-        array $foreignKeys = []
+        array $foreignKeys = [],
     ): TableInfo {
         $colDefs = [];
         foreach ($columns as $colName => $colDef) {

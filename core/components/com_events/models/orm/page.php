@@ -40,7 +40,7 @@ class Page extends Relational
      **/
     protected $rules = [
         'title' => 'notempty',
-        'event_id' => 'positive|nonzero'
+        'event_id' => 'positive|nonzero',
     ];
 
     /**
@@ -51,7 +51,7 @@ class Page extends Relational
     public $always = [
         'alias',
         'modified',
-        'modified_by'
+        'modified_by',
     ];
 
     /**
@@ -62,7 +62,7 @@ class Page extends Relational
     public $initiate = [
         'created',
         'created_by',
-        'ordering'
+        'ordering',
     ];
 
     /**

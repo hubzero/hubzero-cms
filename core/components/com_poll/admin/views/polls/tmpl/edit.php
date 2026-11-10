@@ -21,7 +21,7 @@ Toolbar::title(Lang::txt('COM_POLL') . ': ' . $text, 'poll.png');
 if ($this->poll->id) {
     Toolbar::preview(
         'index.php?option=' . $this->option
-        . '&task=preview&id=' . $this->poll->id
+        . '&task=preview&id=' . $this->poll->id,
     );
     Toolbar::spacer();
 }
@@ -46,7 +46,7 @@ $this->js();
 
 $formAction = Route::url('index.php?option=' . $this->option);
 $invalidMsg = $this->escape(
-    Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')
+    Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'),
 );
 $titleLabel = Lang::txt('COM_POLL_FIELD_TITLE');
 $requiredTxt = Lang::txt('JOPTION_REQUIRED');
@@ -60,7 +60,7 @@ $accessOptions = Html::select(
     Html::access('assetgroups'),
     'value',
     'text',
-    $this->poll->get('access')
+    $this->poll->get('access'),
 );
 $optionLabel = Lang::txt('COM_POLL_FIELD_OPTION');
 ?>
@@ -155,7 +155,7 @@ $optionLabel = Lang::txt('COM_POLL_FIELD_OPTION');
                         'booleanlist',
                         'fields[open]',
                         'class="inputbox"',
-                        $this->poll->get('open')
+                        $this->poll->get('open'),
                     ); ?>
                 </div>
             </fieldset>
@@ -169,7 +169,7 @@ $optionLabel = Lang::txt('COM_POLL_FIELD_OPTION');
                 $n = $this->options->count();
                 foreach ($this->options as $option) {
                     $optVal = $this->escape(
-                        str_replace('&#039;', "'", $option->text)
+                        str_replace('&#039;', "'", $option->text),
                     );
                     ?>
                     <div class="input-wrap">

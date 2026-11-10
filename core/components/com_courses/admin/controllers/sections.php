@@ -53,48 +53,48 @@ class Sections extends AdminController
             'offering' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.offering',
                 'offering',
-                0
+                0,
             ),
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             )),
             'state' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.state',
                 'state',
-                '-1'
+                '-1',
             ),
             // Filters for returning results
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limitstart',
                 'limitstart',
                 0,
-                'int'
+                'int',
             ),
             // Get sorting variables
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'title'
+                'title',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         $this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->filters['offering']);
         if (!$this->view->offering->exists()) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=courses', false)
+                Route::url('index.php?option=' . $this->_option . '&controller=courses', false),
             );
             return;
         }
@@ -527,7 +527,7 @@ class Sections extends AdminController
             . '&offering=' . $model->get('offering_id');
         App::redirect(
             Route::url($url, false),
-            Lang::txt('COM_COURSES_ITEM_SAVED')
+            Lang::txt('COM_COURSES_ITEM_SAVED'),
         );
     }
 
@@ -575,7 +575,7 @@ class Sections extends AdminController
                 $filters = [
                     'count'       => true,
                     'offering_id' => $offering_id,
-                    'is_default'  => 1
+                    'is_default'  => 1,
                 ];
                 $offering = \Components\Courses\Models\Offering::getInstance($filters['offering_id']);
 
@@ -585,7 +585,7 @@ class Sections extends AdminController
                         'sort'     => 'id',
                         'sort_Dir' => 'ASC',
                         'limit'    => 1,
-                        'start'    => 0
+                        'start'    => 0,
                     ]);
                     foreach ($sections as $section) {
                         $section->makeDefault();
@@ -600,7 +600,7 @@ class Sections extends AdminController
             . '&offering=' . $offering_id;
         App::redirect(
             Route::url($url, false),
-            Lang::txt('COM_COURSES_ITEMS_REMOVED', $num)
+            Lang::txt('COM_COURSES_ITEMS_REMOVED', $num),
         );
     }
 
@@ -627,7 +627,7 @@ class Sections extends AdminController
             . '&controller=' . $this->_controller
             . '&offering=' . Request::getInt('offering', 0);
         App::redirect(
-            Route::url($url, false)
+            Route::url($url, false),
         );
     }
 
@@ -676,7 +676,7 @@ class Sections extends AdminController
             App::redirect(
                 Route::url($baseUrl, false),
                 implode('<br />', $this->getErrors()),
-                'error'
+                'error',
             );
         } else {
             // Output messsage and redirect
@@ -686,7 +686,7 @@ class Sections extends AdminController
                 : Lang::txt('COM_COURSES_ITEMS_UNPUBLISHED', $num);
             App::redirect(
                 Route::url($url, false),
-                $message
+                $message,
             );
         }
     }
@@ -702,7 +702,7 @@ class Sections extends AdminController
             . '&controller=' . $this->_controller
             . '&offering=' . Request::getInt('offering', 0);
         App::redirect(
-            Route::url($url, false)
+            Route::url($url, false),
         );
     }
 }

@@ -22,7 +22,7 @@ class Migration20150107022822PlgHubzeroRecaptcha extends Base
     {
         $params = [
             'private' => '',
-            'public'  => ''
+            'public'  => '',
         ];
 
         $this->savePluginParams('hubzero', 'recaptcha', $params);

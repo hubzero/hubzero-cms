@@ -23,8 +23,8 @@ class TypeOptionsHelper
             $args,
             'type',
             new MockProxy([
-                'class' => 'Components\Resources\Models\Type'
-            ])
+                'class' => 'Components\Resources\Models\Type',
+            ]),
         );
     }
 
@@ -44,7 +44,7 @@ class TypeOptionsHelper
             ->fieldsByKey('type');
 
         $supplementaryTypes = [
-            Lang::txt('COM_SEARCH_BOOST_DOCUMENT_TYPE_CITATION')
+            Lang::txt('COM_SEARCH_BOOST_DOCUMENT_TYPE_CITATION'),
         ];
 
         $allTypes = array_merge($resourceTypes, $supplementaryTypes);

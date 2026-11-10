@@ -53,7 +53,7 @@ Toolbar::help('sessionclasses');
                     echo $this->pagination(
                         $this->total,
                         $this->filters['start'],
-                        $this->filters['limit']
+                        $this->filters['limit'],
                     );
                     ?>
                 </td>
@@ -67,7 +67,7 @@ Toolbar::help('sessionclasses');
             $editUrl = Route::url(
                 'index.php?option=' . $this->option
                 . '&controller=' . $this->controller
-                . '&task=edit&id=' . $row->id
+                . '&task=edit&id=' . $row->id,
             );
             ?>
             <tr class="<?php echo "row$k"; ?>">

@@ -45,8 +45,8 @@ class Helpsites extends Element
             [
                 'id' => $control_name . $name,
                 'list.attr' => 'class="inputbox"',
-                'list.select' => $value
-            ]
+                'list.select' => $value,
+            ],
         );
     }
 

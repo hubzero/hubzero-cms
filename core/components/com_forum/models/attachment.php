@@ -55,7 +55,7 @@ class Attachment extends Relational
     protected $rules = [
         'parent'   => 'positive|nonzero',
         'post_id'  => 'positive|nonzero',
-        'filename' => 'notempty'
+        'filename' => 'notempty',
     ];
 
     /**
@@ -64,7 +64,7 @@ class Attachment extends Relational
      * @var  array
      **/
     public $initiate = [
-        'filename'
+        'filename',
     ];
 
     /**
@@ -184,7 +184,7 @@ class Attachment extends Relational
             if (!Filesystem::makeDirectory($destination)) {
                 $this->addError(
                     Lang::txt('COM_FORUM_UNABLE_TO_CREATE_UPLOAD_PATH') . ': '
-                    . substr($destination, strlen(PATH_ROOT))
+                    . substr($destination, strlen(PATH_ROOT)),
                 );
                 return false;
             }
@@ -194,7 +194,7 @@ class Attachment extends Relational
         $filename = $this->uniqueFilename([
             'filename' => $name,
             'parent'   => $this->get('parent'),
-            'post_id'  => $this->get('post_id')
+            'post_id'  => $this->get('post_id'),
         ]);
 
         // Upload the file

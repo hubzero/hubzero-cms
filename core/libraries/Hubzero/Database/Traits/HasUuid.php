@@ -235,7 +235,7 @@ trait HasUuid
         if ($model === null) {
             $className = static::class;
             throw new \RuntimeException(
-                "No model [{$className}] found for UUID [{$uuid}]"
+                "No model [{$className}] found for UUID [{$uuid}]",
             );
         }
 

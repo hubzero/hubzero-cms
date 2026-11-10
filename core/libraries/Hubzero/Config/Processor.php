@@ -52,7 +52,7 @@ abstract class Processor
                 if (!class_exists($class)) {
                     throw new \InvalidArgumentException(
                         sprintf('Unable to load format class for format "%s"', $type),
-                        500
+                        500,
                     );
                 }
             }
@@ -141,7 +141,7 @@ abstract class Processor
 
         if ($handle === false) {
             throw new ParseException([
-                'message' => 'Config file is not readable by the current user: ' . $path
+                'message' => 'Config file is not readable by the current user: ' . $path,
             ]);
         }
 

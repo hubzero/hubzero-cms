@@ -40,7 +40,7 @@ class Migration20150216135336LibJoomla extends Base
                             'id'       => null,
                             'title'    => $title,
                             'ordering' => $i,
-                            'rules'    => $usergroups
+                            'rules'    => $usergroups,
                         ])
                         ->execute();
                 }

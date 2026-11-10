@@ -186,7 +186,7 @@ class Api extends ApiController
             $this->view = new \Hubzero\Component\View([
                 'base_path' => dirname(dirname(__DIR__)) . '/site',
                 'name'      => 'authorize',
-                'layout'    => 'authorize'
+                'layout'    => 'authorize',
             ]);
 
 

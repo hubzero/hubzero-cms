@@ -36,13 +36,13 @@ $dbh->setQuery(
     . ' FROM `#__focus_area_resource_type_rel` WHERE focus_area_id = fa.id) AS types'
     . ' FROM `#__tags` t'
     . ' INNER JOIN `#__focus_areas` fa ON fa.tag_id = t.id'
-    . ' ORDER BY raw_tag'
+    . ' ORDER BY raw_tag',
 );
 $fas = $dbh->loadAssocList();
 $dbh->setQuery(
     'SELECT DISTINCT id, type FROM `#__resource_types`'
     . ' WHERE category = (SELECT id FROM `#__resource_types` WHERE type = \'Main Types\')'
-    . ' AND contributable ORDER BY type'
+    . ' AND contributable ORDER BY type',
 );
 $types = $dbh->loadAssocList('id');
 ?>

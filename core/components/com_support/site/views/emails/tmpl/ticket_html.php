@@ -65,7 +65,7 @@ $this->css(
 		table#ticket-comments>tbody>tr>td {
 			padding: 0 !important;
 		}
-	}'
+	}',
 );
 
 $tblStyle = 'border-collapse: collapse;'
@@ -205,7 +205,7 @@ $tdStyleL = 'text-align: left; padding: 0 0.5em;';
                                         <?php echo Lang::txt(
                                             'COM_SUPPORT_TICKET_CREATED',
                                             $this->ticket->created('time'),
-                                            $this->ticket->created('date')
+                                            $this->ticket->created('date'),
                                         ); ?>
                                     </td>
                                 </tr>
@@ -294,7 +294,7 @@ $tdStyleL = 'text-align: left; padding: 0 0.5em;';
                                         <?php echo Lang::txt(
                                             'COM_SUPPORT_NOTIFY_TICKET_CREATED',
                                             $this->ticket->get('id'),
-                                            $link
+                                            $link,
                                         ); ?>
                                     </td>
                                 </tr>

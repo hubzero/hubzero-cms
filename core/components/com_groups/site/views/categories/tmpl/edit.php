@@ -45,7 +45,7 @@ endif;
     <?php endforeach; ?>
 
     <?php $val = Route::url(
-        'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=categories&task=savecategory'
+        'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=categories&task=savecategory',
     ); ?>
     <form action="<?php echo $val; ?>" method="POST" id="hubForm" class="full editcategory">
         <fieldset>
@@ -85,7 +85,7 @@ endif;
             <?php $txt = Lang::txt('COM_GROUPS_PAGES_SAVE_CATEGORY'); ?>
             <button type="submit" class="btn btn-info save icon-save"><?php echo $txt; ?></button>
             <?php $val1 = Route::url(
-                'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages#categories'
+                'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages#categories',
             ); ?>
             <?php $val = Lang::txt('COM_GROUPS_PAGES_CANCEL'); ?>
             <a href="<?php echo $val1; ?>" class="btn cancel"><?php echo $val; ?></a>

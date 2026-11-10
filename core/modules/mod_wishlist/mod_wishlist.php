@@ -52,7 +52,7 @@ class Wishlist extends Module
             'accepted'  => "0 AND accepted=1",
             'rejected'  => 3,
             'withdrawn' => 4,
-            'removed'   => 2
+            'removed'   => 2,
         ];
 
         $database = \Hubzero\Facades\App::get('db');
@@ -60,7 +60,7 @@ class Wishlist extends Module
         foreach ($queries as $key => $state) {
             $database->setQuery(
                 "SELECT COUNT(*) FROM `#__wishlist_item` WHERE wishlist=" .
-                $database->quote($wishlist) . " AND status=" . $state
+                $database->quote($wishlist) . " AND status=" . $state,
             );
             $this->$key = $database->loadResult();
         }

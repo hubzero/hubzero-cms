@@ -49,13 +49,13 @@ class ImportHooks extends AdminController
             'sort' => Request::getState(
                 $this->_option . '.hooks.sort',
                 'filter_order',
-                'type'
+                'type',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.hooks.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         // get all imports from archive

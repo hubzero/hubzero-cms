@@ -22,7 +22,7 @@ class Ldap
     private static $errors = [
         'errors'   => true,
         'fatal'    => [],
-        'warnings' => []
+        'warnings' => [],
     ];
 
     /**
@@ -35,7 +35,7 @@ class Ldap
         'added'     => 0,
         'deleted'   => 0,
         'modified'  => 0,
-        'unchanged' => 0
+        'unchanged' => 0,
     ];
 
     /**
@@ -271,7 +271,7 @@ class Ldap
 
         $reqattr = [
             'uidNumber','uid','cn','gidNumber','homeDirectory','loginShell','userPassword','shadowLastChange',
-            'shadowMin','shadowMax','shadowWarning','shadowInactive','shadowExpire','shadowFlag', 'host'
+            'shadowMin','shadowMax','shadowWarning','shadowInactive','shadowExpire','shadowFlag', 'host',
         ];
 
         $entry = ldap_search($conn, $dn, $filter, $reqattr, 0, 0, 0);

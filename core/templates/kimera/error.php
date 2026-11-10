@@ -15,7 +15,7 @@ $cls = [
     'no-js',
     $browser->name(),
     $browser->name() . $browser->major(),
-    $this->direction
+    $this->direction,
 ];
 
 $code = (is_numeric($this->error->getCode()) && $this->error->getCode() > 100 ? $this->error->getCode() : 500);
@@ -94,7 +94,7 @@ Lang::load('tpl_' . $this->template, __DIR__);
                         'TPL_KIMERA_COPYRIGHT',
                         Request::root(),
                         Config::get('sitename'),
-                        date("Y")
+                        date("Y"),
                     ); ?>
                 </p>
             </footer><!-- / #footer -->

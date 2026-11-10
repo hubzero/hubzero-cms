@@ -65,7 +65,7 @@ class Registration extends AdminController
 			FROM `#__extensions`
 			WHERE `type`='component'
 			AND `element`=" . $database->quote($this->_option) . "
-			LIMIT 1"
+			LIMIT 1",
         );
         $component = $database->loadObject();
 
@@ -82,7 +82,7 @@ class Registration extends AdminController
         $database->setQuery(
             "UPDATE `#__extensions`
 			SET `params`=" . $database->quote($component->params) . "
-			WHERE `extension_id`=" . $database->quote($component->extension_id)
+			WHERE `extension_id`=" . $database->quote($component->extension_id),
         );
         $database->query();
 

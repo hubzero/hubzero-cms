@@ -53,7 +53,7 @@ $counts = $this->model->get('counts');
                 $tabUrl = Route::url(
                     'index.php?option=' . $this->option
                     . '&alias=' . $this->model->get('alias')
-                    . '&active=' . $gopanel
+                    . '&active=' . $gopanel,
                 );
                 $tabTitleAttr = ucfirst(Lang::txt('COM_PROJECTS_PROJECT'))
                     . ' ' . ucfirst($tab['title']);
@@ -96,7 +96,7 @@ $counts = $this->model->get('counts');
                                     $aTabUrl = Route::url(
                                         'index.php?option=' . $this->option
                                         . '&alias=' . $this->model->get('alias')
-                                        . '&active=' . $aTab['name']
+                                        . '&active=' . $aTab['name'],
                                     );
                                     $aTabTitle = ucfirst(Lang::txt('COM_PROJECTS_PROJECT'))
                                         . ' ' . ucfirst($aTab['title']);
@@ -129,7 +129,7 @@ $counts = $this->model->get('counts');
             $loginUrl = Route::url(
                 'index.php?option=' . $this->option
                 . '&alias=' . $this->model->get('alias')
-                . '&task=view'
+                . '&task=view',
             ) . '?action=login';
             $loginTxt = ucfirst(Lang::txt('COM_PROJECTS_LOGIN'));
             $privateTxt = Lang::txt('COM_PROJECTS_LOGIN_TO_PRIVATE_AREA');

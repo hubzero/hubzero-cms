@@ -27,7 +27,7 @@ class Objct extends Content
      **/
     protected static $info = [
         'action_message' => 'As a HTML embed object',
-        'responds_to'    => ['object']
+        'responds_to'    => ['object'],
     ];
 
     /**
@@ -54,7 +54,7 @@ class Objct extends Content
         } elseif (
             preg_match(
                 '/\<script[\s]+(type="text\/javascript")?[\s]*src="http[s]*\:\/\/cdnapi(sec)?\.kaltura\.com/is',
-                $object
+                $object,
             )
         ) {
             $this->asset['title'] = 'New Kaltura video';

@@ -67,7 +67,7 @@ if ($cost = $oparams->get('store_price', false)) {
                 'To learn more, either visit the <a href="%s">course overview page</a> or browse the <a href="%s">course
                 listing</a>.',
                 Route::url($this->course->link()),
-                Route::url('index.php?option=' . $this->option . '&controller=courses&task=browse')
+                Route::url('index.php?option=' . $this->option . '&controller=courses&task=browse'),
             );
                     ?>
         </p>

@@ -27,12 +27,12 @@ class Migration20190221000000ComEvents extends Base
             'checked_out_time',
             'publish_up',
             'publish_down',
-            'registerby'
+            'registerby',
         ],
         '#__events_pages' => [
             'created',
-            'modified'
-        ]
+            'modified',
+        ],
     ];
 
     /**

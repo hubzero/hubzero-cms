@@ -53,7 +53,7 @@ $this->js();
                         <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
                     </label><br />
                     <?php $nameVal = $this->escape(stripslashes(
-                        $this->row->name == null ? '' : $this->row->name
+                        $this->row->name == null ? '' : $this->row->name,
                     )); ?>
                     <input type="text"
                         name="billboard[name]"
@@ -98,7 +98,7 @@ $this->js();
                 <div class="input-wrap">
                     <label for="billboardheader"><?php echo Lang::txt('COM_BILLBOARDS_FIELD_HEADER'); ?>:</label><br />
                     <?php $headerVal = $this->escape(stripslashes(
-                        $this->row->header == null ? '' : $this->row->header
+                        $this->row->header == null ? '' : $this->row->header,
                     )); ?>
                     <input type="text"
                         name="billboard[header]"
@@ -115,7 +115,7 @@ $this->js();
                 <div class="input-wrap">
                     <label for="billboard[text]"><?php echo Lang::txt('COM_BILLBOARDS_FIELD_TEXT'); ?>:</label><br />
                     <?php $textVal = $this->escape(stripslashes(
-                        $this->row->text == null ? '' : $this->row->text
+                        $this->row->text == null ? '' : $this->row->text,
                     )); ?>
                     <?php echo $this->editor(
                         'billboard[text]',
@@ -123,7 +123,7 @@ $this->js();
                         45,
                         13,
                         'billboard-text',
-                        ['buttons' => false]
+                        ['buttons' => false],
                     ); ?>
                 </div>
             </fieldset>
@@ -137,7 +137,7 @@ $this->js();
                     </label><br />
                     <?php $learnMoreTextVal = $this->escape(stripslashes(
                         $this->row->learn_more_text == null
-                        ? '' : $this->row->learn_more_text
+                        ? '' : $this->row->learn_more_text,
                     )); ?>
                     <input type="text"
                         name="billboard[learn_more_text]"
@@ -151,7 +151,7 @@ $this->js();
                     </label><br />
                     <?php $learnMoreTargetVal = $this->escape(stripslashes(
                         $this->row->learn_more_target == null
-                        ? '' : $this->row->learn_more_target
+                        ? '' : $this->row->learn_more_target,
                     )); ?>
                     <input type="text"
                         name="billboard[learn_more_target]"
@@ -165,7 +165,7 @@ $this->js();
                     </label><br />
                     <?php $learnMoreClassVal = $this->escape(stripslashes(
                         $this->row->learn_more_class == null
-                        ? '' : $this->row->learn_more_class
+                        ? '' : $this->row->learn_more_class,
                     )); ?>
                     <input type="text"
                         name="billboard[learn_more_class]"
@@ -239,7 +239,7 @@ $this->js();
                             <?php echo Lang::txt('COM_BILLBOARDS_FIELD_ALIAS'); ?>:
                         </label><br />
                         <?php $aliasVal = $this->escape(stripslashes(
-                            $this->row->alias == null ? '' : $this->row->alias
+                            $this->row->alias == null ? '' : $this->row->alias,
                         )); ?>
                         <input type="text"
                             name="billboard[alias]"
@@ -253,7 +253,7 @@ $this->js();
                         </label><br />
                         <?php $paddingVal = $this->escape(stripslashes(
                             $this->row->padding == null
-                            ? '' : $this->row->padding
+                            ? '' : $this->row->padding,
                         )); ?>
                         <input type="text"
                             name="billboard[padding]"
@@ -266,7 +266,7 @@ $this->js();
                             <?php echo Lang::txt('COM_BILLBOARDS_FIELD_CSS'); ?>:
                         </label><br />
                         <?php $cssVal = $this->escape(stripslashes(
-                            $this->row->css == null ? '' : $this->row->css
+                            $this->row->css == null ? '' : $this->row->css,
                         )); ?>
                         <textarea name="billboard[css]"
                             id="billboardcss"

@@ -103,13 +103,13 @@ class Syncgroup extends Base implements CommandInterface
             $changed++;
             $this->output->addLine(
                 sprintf('  %-42s %d -> %d members', $cn, count($before), count($after)),
-                empty($after) ? 'success' : 'warning'
+                empty($after) ? 'success' : 'warning',
             );
         }
 
         $this->output->addLine(
             ($dry ? 'Dry run. ' : '') . 'Deleted projects processed: ' . count($rows)
-            . ($dry ? '' : ', changed: ' . $changed)
+            . ($dry ? '' : ', changed: ' . $changed),
         );
     }
 
@@ -126,7 +126,7 @@ class Syncgroup extends Base implements CommandInterface
             "SELECT u.username FROM `#__xgroups_members` gm
 			 JOIN `#__xgroups` g ON g.gidNumber = gm.gidNumber
 			 JOIN `#__users`   u ON u.id = gm.uidNumber
-			 WHERE g.cn = " . $db->quote($cn)
+			 WHERE g.cn = " . $db->quote($cn),
         );
         return (array) $db->loadColumn();
     }

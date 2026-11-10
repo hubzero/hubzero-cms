@@ -22,7 +22,7 @@ if ($this->tags->count() > 0) {
         if (!in_array($tag->get('raw_tag'), $exclude)) {
             $tagUrl = Route::url(
                 'index.php?option=com_tags&tag='
-                . $this->escape($tag->get('tag'))
+                . $this->escape($tag->get('tag')),
             );
             $tl[$tag->get('tag')] = "\t" . '<li><a class="tag" href="'
                 . $tagUrl . '">'

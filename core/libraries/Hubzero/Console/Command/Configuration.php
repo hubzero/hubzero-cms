@@ -79,13 +79,13 @@ class Configuration extends Base implements CommandInterface
             ->addOverview(
                 'Store shared configuration variables used by the command line tool.
 				These will, for example, be used to fill in docblock stubs when
-				using the scaffolding command.'
+				using the scaffolding command.',
             )
             ->addTasks($this)
             ->addArgument(
                 '--{keyName}',
                 'Sets the variable keyName to the given value.',
-                'Example: --name="John Doe"'
+                'Example: --name="John Doe"',
             );
     }
 }

@@ -68,17 +68,17 @@ trait InteractsWithHtmxResponses
         $this->assertStringNotContainsString(
             '<!DOCTYPE html>',
             $trimmed,
-            'Fragment should not include full document doctype.'
+            'Fragment should not include full document doctype.',
         );
         $this->assertStringNotContainsString(
             '<html',
             strtolower($trimmed),
-            'Fragment should not include <html> root element.'
+            'Fragment should not include <html> root element.',
         );
         $this->assertStringNotContainsString(
             '<body',
             strtolower($trimmed),
-            'Fragment should not include <body> element.'
+            'Fragment should not include <body> element.',
         );
     }
 

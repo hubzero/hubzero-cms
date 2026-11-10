@@ -77,7 +77,7 @@ if (count($this->activities) > 0) {
             . '&' . $idParam
             . '&active=projects&action=updates'
             . '&limit=' . $this->filters['limit']
-            . '&start=' . $start . '#' . $li
+            . '&start=' . $start . '#' . $li,
         );
         ?>
         <p><a href="<?php echo $updatesUrl; ?>"><?php echo Lang::txt('PLG_PROJECTS_BLOG_VIEW_OLDER_ENTRIES'); ?></a></p>

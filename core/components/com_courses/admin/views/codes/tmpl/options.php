@@ -62,7 +62,7 @@ $nextDay   = date("d", mktime(0, 0, 0, $month + 1, $day, $year));
                     $routeUrl = Route::url(
                         'index.php?option=' . $this->option  . '&controller=' . $this->controller . '&section='
                         . $this->section->get('id'),
-                        false
+                        false,
                     );
                 ?>
                 <button

@@ -41,7 +41,7 @@ class Calendar extends Relational
      * @var array
      **/
     protected $rules = [
-        'title' => 'notempty'
+        'title' => 'notempty',
     ];
 
     /**

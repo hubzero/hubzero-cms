@@ -46,7 +46,7 @@ class Profile extends Plugin
             'profile' => Lang::txt('PLG_MEMBERS_PROFILE'),
             'icon' => 'f007',
             'icon-class' => 'icon-user',
-            'menu' => $this->params->get('display_tab', 1)
+            'menu' => $this->params->get('display_tab', 1),
         ];
         return $areas;
     }
@@ -77,7 +77,7 @@ class Profile extends Plugin
 
         $arr = [
             'html' => '',
-            'metadata' => ''
+            'metadata' => '',
         ];
 
         // Build the final HTML
@@ -135,14 +135,14 @@ class Profile extends Plugin
                     $option
                         ->select('*')
                         ->ordered();
-                }
-                ]
+                },
+                ],
             )
 
             ->where(
                 'action_edit',
                 '!=',
-                \Components\Members\Models\Profile\Field::STATE_HIDDEN
+                \Components\Members\Models\Profile\Field::STATE_HIDDEN,
             )
             ->ordered()
             ->rows();
@@ -165,7 +165,7 @@ class Profile extends Plugin
             // Validate profile fields
             $form = new \Hubzero\Form\Form('profile', ['control' => 'profile']);
             $form->load(
-                \Components\Members\Models\Profile\Field::toXml($fields, 'edit', $profile)
+                \Components\Members\Models\Profile\Field::toXml($fields, 'edit', $profile),
             );
             $form->bind(new \Hubzero\Config\Registry($profile));
 
@@ -357,10 +357,10 @@ class Profile extends Plugin
         //inform and redirect
         App::redirect(
             Route::url(
-                'index.php?option=com_members&id=' . User::get('id') . '&active=profile'
+                'index.php?option=com_members&id=' . User::get('id') . '&active=profile',
             ),
             Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_SAVED'),
-            'passed'
+            'passed',
         );
     }
 
@@ -399,10 +399,10 @@ class Profile extends Plugin
         // inform and redirect
         App::redirect(
             Route::url(
-                'index.php?option=com_members&id=' . User::get('id') . '&active=profile'
+                'index.php?option=com_members&id=' . User::get('id') . '&active=profile',
             ),
             Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_REMOVED'),
-            'passed'
+            'passed',
         );
     }
 }

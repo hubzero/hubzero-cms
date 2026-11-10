@@ -22,8 +22,8 @@ class Migration20190221000000ComSearch extends Base
      **/
     public static $tables = [
         '#__search_blacklist' => [
-            'created'
-        ]
+            'created',
+        ],
     ];
 
     /**

@@ -30,7 +30,7 @@ $stateClass = ($this->a->get('state') == 0)
     ? ' notpublished'
     : ' published';
 $assetTitle = $this->escape(
-    stripslashes($this->a->get('title'))
+    stripslashes($this->a->get('title')),
 );
 ?>
 <li id="asset_<?php echo $assetId ?>"

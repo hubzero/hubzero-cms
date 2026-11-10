@@ -283,20 +283,20 @@ class Group extends Base
         if (!$title) {
             Pathway::append(
                 Lang::txt('Groups'),
-                'index.php?option=' . $this->get('option')
+                'index.php?option=' . $this->get('option'),
             );
             Pathway::append(
                 stripslashes($this->_item->get('description')),
-                'index.php?option=com_groups&cn=' . $this->_segments['cn']
+                'index.php?option=com_groups&cn=' . $this->_segments['cn'],
             );
             Pathway::append(
                 Lang::txt('Wishlist'),
-                'index.php?option=com_groups&cn=' . $this->_segments['cn'] . '&active=wishlist'
+                'index.php?option=com_groups&cn=' . $this->_segments['cn'] . '&active=wishlist',
             );
         } else {
             Pathway::append(
                 $title,
-                $url
+                $url,
             );
         }
 

@@ -25,7 +25,7 @@ class ObjTest extends Basic
         'one'   => 'for the money',
         'two'   => 'for the show',
         'three' => 'to get ready',
-        'four'  => 'to go'
+        'four'  => 'to go',
     ];
 
     /**

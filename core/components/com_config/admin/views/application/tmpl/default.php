@@ -32,7 +32,7 @@ $ignore = [
     'app', 'site', 'offline', 'meta', 'seo', 'cookie', 'system',
     'debug', 'cache', 'session', 'server', 'locale', 'ftp', 'database',
     'mail', 'api', 'permissions', 'filters', 'rate_limit', 'asset_id',
-    'hub_secret'
+    'hub_secret',
 ];
 
 $this->others = [];

@@ -54,6 +54,6 @@ class Log extends Relational
      */
     protected $rules = [
         'object_id'   => 'nonzero|positive',
-        'object_type' => 'notempty'
+        'object_type' => 'notempty',
     ];
 }

@@ -215,7 +215,7 @@ class Macro
             $arguments = str_replace(
                 ['&nbsp;', '&quot;'],
                 [' ', '"'],
-                (string)$this->args
+                (string)$this->args,
             );
             $arguments = html_entity_decode($arguments);
 

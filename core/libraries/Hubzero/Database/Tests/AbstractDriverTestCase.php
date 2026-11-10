@@ -278,7 +278,7 @@ abstract class AbstractDriverTestCase extends TestCase
                             fwrite(STDERR, sprintf(
                                 "\n  [DB] Skipping '%s' backend: %s\n",
                                 $dbName,
-                                $e->getMessage()
+                                $e->getMessage(),
                             ));
                         }
                         continue;
@@ -389,7 +389,7 @@ abstract class AbstractDriverTestCase extends TestCase
             $this->fail(
                 "Configured backend(s) failed to connect:\n"
                 . implode("\n", $failures)
-                . "\nRemove from DB_TEST_BACKENDS or fix the connection."
+                . "\nRemove from DB_TEST_BACKENDS or fix the connection.",
             );
         }
 
@@ -449,7 +449,7 @@ abstract class AbstractDriverTestCase extends TestCase
                         "\n  [teardown] %s DROP TABLE %s: %s\n",
                         $dbName,
                         $table,
-                        $e->getMessage()
+                        $e->getMessage(),
                     ));
                 }
             }

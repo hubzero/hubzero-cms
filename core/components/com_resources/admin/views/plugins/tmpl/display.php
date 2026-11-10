@@ -59,7 +59,7 @@ $saveOrder = $listOrder == 'ordering';
                     'value',
                     'text',
                     $this->filters['state'],
-                    true
+                    true,
                 );
                 ?>
             </select>
@@ -72,7 +72,7 @@ $saveOrder = $listOrder == 'ordering';
                     Html::access('assetgroups'),
                     'value',
                     'text',
-                    $this->filters['access']
+                    $this->filters['access'],
                 );
                 ?>
             </select>
@@ -149,7 +149,7 @@ $saveOrder = $listOrder == 'ordering';
                                 $item->editor,
                                 $item->checked_out_time,
                                 '',
-                                $canCheckin
+                                $canCheckin,
                             );
                             ?>
                         <?php endif; ?>
@@ -158,7 +158,7 @@ $saveOrder = $listOrder == 'ordering';
                             $editUrl = Route::url(
                                 'index.php?option=com_plugins&task=edit&id='
                                 . (int) $item->extension_id
-                                . '&' . Session::getFormToken() . '=1'
+                                . '&' . Session::getFormToken() . '=1',
                             );
                             ?>
                             <a href="<?php echo $editUrl; ?>">
@@ -186,7 +186,7 @@ $saveOrder = $listOrder == 'ordering';
                                         $prevFolder,
                                         'orderup',
                                         'JLIB_HTML_MOVE_UP',
-                                        $ordering
+                                        $ordering,
                                     );
                                     $downIcon = $this->items->pagination->orderDownIcon(
                                         $i,
@@ -194,7 +194,7 @@ $saveOrder = $listOrder == 'ordering';
                                         $nextFolder,
                                         'orderdown',
                                         'JLIB_HTML_MOVE_DOWN',
-                                        $ordering
+                                        $ordering,
                                     );
                                     ?>
                                     <span><?php echo $upIcon; ?></span>
@@ -206,7 +206,7 @@ $saveOrder = $listOrder == 'ordering';
                                         $prevFolder,
                                         'orderdown',
                                         'JLIB_HTML_MOVE_UP',
-                                        $ordering
+                                        $ordering,
                                     );
                                     $downIcon = $this->items->pagination->orderDownIcon(
                                         $i,
@@ -214,7 +214,7 @@ $saveOrder = $listOrder == 'ordering';
                                         $nextFolder,
                                         'orderup',
                                         'JLIB_HTML_MOVE_DOWN',
-                                        $ordering
+                                        $ordering,
                                     );
                                     ?>
                                     <span><?php echo $upIcon; ?></span>
@@ -242,7 +242,7 @@ $saveOrder = $listOrder == 'ordering';
                                 . '&controller='
                                 . $this->controller
                                 . '&task=manage&plugin='
-                                . $item->element
+                                . $item->element,
                             );
                             ?>
                             <a href="<?php echo $hrefUrl; ?>">

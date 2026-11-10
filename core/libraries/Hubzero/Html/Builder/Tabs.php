@@ -102,7 +102,7 @@ class Tabs
             \App::get('document')->addScriptDeclaration(
                 'jQuery(document).ready(function($){
 					$("dl#' . $group . '.tabs").tabs();
-				});'
+				});',
             );
 
             Asset::script('system/jquery.tabs.js', false, true);

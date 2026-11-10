@@ -92,7 +92,7 @@ class Scaffolding extends Base implements CommandInterface
                 ->output
                 ->addOverview(
                     'Create a new item scaffold. There are currently no arguments available.
-					Type "muse scaffolding help [scaffolding type]" for more details.'
+					Type "muse scaffolding help [scaffolding type]" for more details.',
                 );
             $this->output->render();
         }
@@ -130,15 +130,15 @@ class Scaffolding extends Base implements CommandInterface
                      'muse configuration set --user_name="John Doe"',
                      [
                         'indentation' => '2',
-                        'color'       => 'blue'
-                     ]
+                        'color'       => 'blue',
+                     ],
                  )
                 ->addLine(
                     'muse configuration set --user_email=john.doe@gmail.com',
                     [
                         'indentation' => '2',
-                        'color'       => 'blue'
-                    ]
+                        'color'       => 'blue',
+                    ],
                 )
                 ->addSpacer()
                 ->error("Error: failed to retrieve author name and/or email.");
@@ -214,7 +214,7 @@ class Scaffolding extends Base implements CommandInterface
                     if (!Filesystem::copyDirectory($template['path'], $template['destination'])) {
                         $this->output->error(
                             "Error: an problem occured copying {$template['path']} " .
-                            "to {$template['destination']}."
+                            "to {$template['destination']}.",
                         );
                     }
 
@@ -224,7 +224,7 @@ class Scaffolding extends Base implements CommandInterface
                     if (!copy($template['path'], $template['destination'])) {
                         $this->output->error(
                             "Error: an problem occured copying {$template['path']} " .
-                            "to {$template['destination']}."
+                            "to {$template['destination']}.",
                         );
                     }
 
@@ -271,7 +271,7 @@ class Scaffolding extends Base implements CommandInterface
                 'Templates' .
                 DS .
                 $filename : $filename),
-            'destination' => $destination
+            'destination' => $destination,
         ];
 
         return $this;

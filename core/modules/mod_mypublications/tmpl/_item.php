@@ -34,7 +34,7 @@ endif;
                 <?php
                 $projectTitle = Hubzero\Utility\Str::truncate(
                     $item->publication->project->get('title'),
-                    100
+                    100,
                 );
                 echo Lang::txt('MOD_MYPUBLICATIONS_PROJECT', $projectTitle);
                 ?>

@@ -429,7 +429,7 @@ class Access
                 $actions[] = (object) [
                     'name'        => (string) $action['name'],
                     'title'       => (string) $action['title'],
-                    'description' => (string) $action['description']
+                    'description' => (string) $action['description'],
                 ];
             }
         }

@@ -94,7 +94,7 @@ $filter = Request::getString('searchterm', '');
                             <?php
                             $tf = Event::trigger(
                                 'hubzero.onGetMultiEntry',
-                                [['tags', 'searchterm', 'searchterm', '', $filter]]
+                                [['tags', 'searchterm', 'searchterm', '', $filter]],
                             );
                             $tf = implode('', $tf);
 

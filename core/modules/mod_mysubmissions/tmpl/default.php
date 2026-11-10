@@ -19,7 +19,7 @@ if (User::isGuest()) { ?>
         // The address comes from the router, so the string cannot carry it
         echo Lang::txt(
             'MOD_MYSUBMISSIONS_WARNING',
-            Route::url('index.php?option=com_members&view=register&layout=create')
+            Route::url('index.php?option=com_members&view=register&layout=create'),
         );
         ?>
     </p>

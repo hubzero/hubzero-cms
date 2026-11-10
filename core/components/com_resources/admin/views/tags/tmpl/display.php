@@ -16,7 +16,7 @@ defined('_HZEXEC_') or die();
 
 Toolbar::title(
     Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_TAGS') . ' #' . $this->row->id,
-    'resources'
+    'resources',
 );
 Toolbar::save();
 Toolbar::cancel();

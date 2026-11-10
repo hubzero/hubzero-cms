@@ -188,9 +188,9 @@ class Assetgroupv1r0 extends base
                 'assetgroup_style' => 'display:none',
                 'course_id'        => $this->course_id,
                 'offering_alias'   => $this->offering_alias,
-                'allow_tools'      => Tool::getToolDirectory()
+                'allow_tools'      => Tool::getToolDirectory(),
             ],
-            ($id ? 200 : 201)
+            ($id ? 200 : 201),
         );
     }
 
@@ -399,7 +399,7 @@ class Assetgroupv1r0 extends base
         $idField = 'id',
         $parentIdField = 'parent',
         $childNodesField = 'child',
-        $curIdx = 0
+        $curIdx = 0,
     ) {
         $indexed = [];
 
@@ -411,7 +411,7 @@ class Assetgroupv1r0 extends base
                     $idField,
                     $parentIdField,
                     $childNodesField,
-                    $row[$idField]
+                    $row[$idField],
                 );
             }
         }

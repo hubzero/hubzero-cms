@@ -29,7 +29,7 @@ class ThroughUser extends Relational
             ThroughCountry::class,
             ThroughProfile::class,
             'country_id',
-            'user_id'
+            'user_id',
         );
     }
 }

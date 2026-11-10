@@ -124,7 +124,7 @@ $this->css();
                         $view = new \Hubzero\Component\View([
                             'name'      => 'wishlists',
                             'base_path' => Component::path($this->option) . DS . 'site',
-                            'layout'    => '_vote'
+                            'layout'    => '_vote',
                         ]);
                         $view->set('option', 'com_wishlist')
                              ->set('item', $item)

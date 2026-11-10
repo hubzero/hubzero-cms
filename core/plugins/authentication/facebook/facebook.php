@@ -156,7 +156,7 @@ class Facebook extends \Hubzero\Plugin\OauthClient
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return),
                 Lang::txt('PLG_AUTHENTICATION_FACEBOOK_MUST_AUTHORIZE_TO_LOGIN', Config::get('sitename')),
-                'error'
+                'error',
             );
         }
     }
@@ -173,7 +173,7 @@ class Facebook extends \Hubzero\Plugin\OauthClient
         // Set up params for the login call
         $params = [
             'scope' => ['email'],
-            'redirect_uri' => $this->getReturnUrl()
+            'redirect_uri' => $this->getReturnUrl(),
         ];
 
         $loginUrl = $this->provider->getAuthorizationUrl($params);
@@ -322,7 +322,7 @@ class Facebook extends \Hubzero\Plugin\OauthClient
             App::redirect(
                 Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
                 Lang::txt('PLG_AUTHENTICATION_FACEBOOK_ERROR_RETRIEVING_PROFILE', 'Mismatched state'),
-                'error'
+                'error',
             );
             return;
         }
@@ -340,7 +340,7 @@ class Facebook extends \Hubzero\Plugin\OauthClient
                 App::redirect(
                     Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
                     Lang::txt('PLG_AUTHENTICATION_FACEBOOK_ERROR_RETRIEVING_PROFILE', $e->getMessage()),
-                    'error'
+                    'error',
                 );
                 return;
             }
@@ -353,7 +353,7 @@ class Facebook extends \Hubzero\Plugin\OauthClient
                 App::redirect(
                     Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
                     Lang::txt('PLG_AUTHENTICATION_FACEBOOK_ACCOUNT_ALREADY_LINKED'),
-                    'error'
+                    'error',
                 );
             } else {
                 $hzal = \Hubzero\Auth\Link::find_or_create('authentication', $this->name, null, $id);
@@ -374,7 +374,7 @@ class Facebook extends \Hubzero\Plugin\OauthClient
             App::redirect(
                 Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
                 Lang::txt('PLG_AUTHENTICATION_FACEBOOK_MUST_AUTHORIZE_TO_LINK', Config::get('sitename')),
-                'error'
+                'error',
             );
         }
     }

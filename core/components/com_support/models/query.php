@@ -45,7 +45,7 @@ class Query extends Relational
      */
     protected $rules = [
         'title'      => 'notempty',
-        'conditions' => 'notempty'
+        'conditions' => 'notempty',
     ];
 
     /**
@@ -55,7 +55,7 @@ class Query extends Relational
      */
     public $always = [
         'sort',
-        'sort_dir'
+        'sort_dir',
     ];
 
     /**
@@ -66,7 +66,7 @@ class Query extends Relational
     public $initiate = [
         'created',
         'created_by',
-        'ordering'
+        'ordering',
     ];
 
     /**
@@ -488,7 +488,7 @@ class Query extends Relational
                         'sort'       => 'created',
                         'sort_dir'   => 'desc',
                         'iscore'     => 2,
-                        'folder_id'  => $folder_id
+                        'folder_id'  => $folder_id,
                     ],
                     [
                         'title'      => 'New tickets',
@@ -498,7 +498,7 @@ class Query extends Relational
                         'sort'       => 'created',
                         'sort_dir'   => 'desc',
                         'iscore'     => 2,
-                        'folder_id'  => $folder_id
+                        'folder_id'  => $folder_id,
                     ],
                     [
                         'title'      => 'Unassigned',
@@ -508,7 +508,7 @@ class Query extends Relational
                         'sort'       => 'created',
                         'sort_dir'   => 'desc',
                         'iscore'     => 2,
-                        'folder_id'  => $folder_id
+                        'folder_id'  => $folder_id,
                     ],
                     [
                         'title'      => 'Closed tickets',
@@ -518,7 +518,7 @@ class Query extends Relational
                         'sort'       => 'created',
                         'sort_dir'   => 'desc',
                         'iscore'     => 2,
-                        'folder_id'  => $folder_id
+                        'folder_id'  => $folder_id,
                     ],
                     [
                         'title'      => 'All tickets',
@@ -528,8 +528,8 @@ class Query extends Relational
                         'sort'       => 'created',
                         'sort_dir'   => 'desc',
                         'iscore'     => 2,
-                        'folder_id'  => $folder_id
-                    ]
+                        'folder_id'  => $folder_id,
+                    ],
                 ];
                 break;
 
@@ -544,7 +544,7 @@ class Query extends Relational
                         'sort'       => 'created',
                         'sort_dir'   => 'desc',
                         'iscore'     => 4,
-                        'folder_id'  => $folder_id
+                        'folder_id'  => $folder_id,
                     ],
                     [
                         'title'      => 'New tickets',
@@ -554,7 +554,7 @@ class Query extends Relational
                         'sort'       => 'created',
                         'sort_dir'   => 'desc',
                         'iscore'     => 4,
-                        'folder_id'  => $folder_id
+                        'folder_id'  => $folder_id,
                     ],
                     [
                         'title'      => 'Unassigned',
@@ -564,7 +564,7 @@ class Query extends Relational
                         'sort'       => 'created',
                         'sort_dir'   => 'desc',
                         'iscore'     => 4,
-                        'folder_id'  => $folder_id
+                        'folder_id'  => $folder_id,
                     ],
                     [
                         'title'      => 'Closed tickets',
@@ -574,8 +574,8 @@ class Query extends Relational
                         'sort'       => 'created',
                         'sort_dir'   => 'desc',
                         'iscore'     => 4,
-                        'folder_id'  => $folder_id
-                    ]
+                        'folder_id'  => $folder_id,
+                    ],
                 ];
                 break;
 
@@ -590,7 +590,7 @@ class Query extends Relational
                         'sort'       => 'created',
                         'sort_dir'   => 'desc',
                         'iscore'     => 1,
-                        'folder_id'  => $folder_id
+                        'folder_id'  => $folder_id,
                     ],
                     [
                         'title'      => 'Assigned to me',
@@ -600,7 +600,7 @@ class Query extends Relational
                         'sort'       => 'created',
                         'sort_dir'   => 'desc',
                         'iscore'     => 1,
-                        'folder_id'  => $folder_id
+                        'folder_id'  => $folder_id,
                     ],
                     [
                         'title'      => 'Assigned to me (closed)',
@@ -610,8 +610,8 @@ class Query extends Relational
                         'sort'       => 'created',
                         'sort_dir'   => 'desc',
                         'iscore'     => 1,
-                        'folder_id'  => $folder_id
-                    ]
+                        'folder_id'  => $folder_id,
+                    ],
                 ];
                 break;
 

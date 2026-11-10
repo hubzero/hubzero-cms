@@ -109,7 +109,7 @@ class Wish extends Relational
      */
     protected $rules = [
         'subject'    => 'notempty',
-        'wishlist'  => 'positive|nonzero'
+        'wishlist'  => 'positive|nonzero',
     ];
 
     /**
@@ -119,7 +119,7 @@ class Wish extends Relational
      */
     public $initiate = [
         'proposed',
-        'proposed_by'
+        'proposed_by',
     ];
 
     /**
@@ -128,7 +128,7 @@ class Wish extends Relational
      * @var  array
      */
     protected $parsed = [
-        'about'
+        'about',
     ];
 
     /**
@@ -551,7 +551,7 @@ class Wish extends Relational
         $string = str_replace(
             ['&amp;', '&lt;',  '&gt;'],
             ['&#38;', '&#60;', '&#62;'],
-            $this->get('about')
+            $this->get('about'),
         );
         $this->set('about', \Hubzero\Utility\Sanitize::clean($string));
 
@@ -669,7 +669,7 @@ class Wish extends Relational
                 'pagename' => 'wishlist',
                 'pageid'   => $this->get('id'),
                 'filepath' => '',
-                'domain'   => $this->get('wishlist')
+                'domain'   => $this->get('wishlist'),
             ];
 
             $this->$property = Html::content('prepare', $this->get($field, ''), $params);
@@ -694,7 +694,7 @@ class Wish extends Relational
             'userid'     => User::get('id'),
             'voted'      => Date::toSql(),
             'importance' => $importance,
-            'effort'     => $effort
+            'effort'     => $effort,
         ]);
 
         if (!$rank->save()) {
@@ -741,7 +741,7 @@ class Wish extends Relational
             'voter'       => User::get('id'),
             'ip'          => Request::ip(),
             'voted'       => Date::toSql(),
-            'helpful'     => $vote
+            'helpful'     => $vote,
         ]);
 
         if (!$voted->save()) {

@@ -42,7 +42,7 @@ class Address extends Relational
      * @var  array
      */
     protected $rules = [
-        'uidNumber' => 'positive|nonzero'
+        'uidNumber' => 'positive|nonzero',
     ];
 
     /**

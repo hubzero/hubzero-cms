@@ -24,7 +24,7 @@ $base = $this->offering->link() . '&active=pages';
                 $iframeUrl = Route::url(
                     $base . '&action=list&tmpl=component&page='
                     . $this->page->get('id')
-                    . '&section_id=' . $this->page->get('section_id')
+                    . '&section_id=' . $this->page->get('section_id'),
                 );
                 ?>
                 <iframe src="<?php echo $iframeUrl; ?>"

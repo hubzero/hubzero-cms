@@ -53,7 +53,7 @@ class Service extends Relational
      */
     protected $rules = [
         'alias'    => 'notempty',
-        'category' => 'notempty'
+        'category' => 'notempty',
     ];
 
     /**
@@ -62,7 +62,7 @@ class Service extends Relational
      * @var  array
      */
     public $always = [
-        'changed'
+        'changed',
     ];
 
     /**

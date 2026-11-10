@@ -35,7 +35,7 @@ class DocumentServiceProvider extends Middleware
                 'lineend'   => 'unix',
                 'tab'       => "\t",
                 'language'  => $app['language']->getTag(),
-                'direction' => $app['language']->isRTL() ? 'rtl' : 'ltr'
+                'direction' => $app['language']->isRTL() ? 'rtl' : 'ltr',
             ];
 
             $manager = new Manager();
@@ -80,7 +80,7 @@ class DocumentServiceProvider extends Middleware
                 'template'  => $this->app['template']->template,
                 'file'      => $file . '.php',
                 'directory' => dirname($this->app['template']->path),
-                'params'    => $this->app['template']->params
+                'params'    => $this->app['template']->params,
             ];
 
             // Path is <PATH>/[core|app]/templates
@@ -97,7 +97,7 @@ class DocumentServiceProvider extends Middleware
         }
         if ($this->app->isAdmin()) {
             $document->setTitle(
-                $this->app['config']->get('sitename') . ' - ' . $this->app['language']->txt('JADMINISTRATION')
+                $this->app['config']->get('sitename') . ' - ' . $this->app['language']->txt('JADMINISTRATION'),
             );
         }
 

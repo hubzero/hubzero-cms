@@ -37,7 +37,7 @@ $this->view('_submenu')
 <?php
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 ?>
 <form action="<?php echo $formAction; ?>"
@@ -103,7 +103,7 @@ $formAction = Route::url(
                     echo $this->pagination(
                         $this->total,
                         $this->filters['start'],
-                        $this->filters['limit']
+                        $this->filters['limit'],
                     );
                     ?>
                 </td>
@@ -120,7 +120,7 @@ $formAction = Route::url(
                     <?php
                     $pUrl = Route::url(
                         'index.php?option=com_storefront&controller=products&task=edit&id='
-                        . $row->pId
+                        . $row->pId,
                     );
                     $pName = $this->escape(stripslashes($row->pName));
                     $product = '<a href="' . $pUrl . '">' . $pName . '</a>';
@@ -137,7 +137,7 @@ $formAction = Route::url(
                     } else {
                         $sUrl = Route::url(
                             'index.php?option=com_storefront&controller=skus&task=edit&id='
-                            . $row->sId
+                            . $row->sId,
                         );
                         $sName = $this->escape(stripslashes($row->sSku));
                         $sku = '<a href="' . $sUrl . '">' . $sName . '</a>';
@@ -149,7 +149,7 @@ $formAction = Route::url(
                     <?php
                     $dlUrl = Route::url(
                         'index.php?option=com_cart&controller=downloads&task=display&skuRequested='
-                        . $row->sId
+                        . $row->sId,
                     );
                     $dlCount = $this->escape(stripslashes($row->downloaded));
                     $downloaded = '<a href="' . $dlUrl . '">' . $dlCount . '</a>';

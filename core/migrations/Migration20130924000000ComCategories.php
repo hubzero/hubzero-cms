@@ -191,7 +191,7 @@ class Migration20130924000000ComCategories extends Base
             ['com_banners', '2010-06-28 13:27:35', '{"target":"","image":"","foobar":""}'],
             ['com_contact', '2010-06-28 13:27:57', '{"target":"","image":""}'],
             ['com_newsfeeds', '2010-06-28 13:28:15', '{"target":"","image":""}'],
-            ['com_weblinks', '2010-06-28 13:28:33', '{"target":"","image":""}']
+            ['com_weblinks', '2010-06-28 13:28:33', '{"target":"","image":""}'],
         ];
 
         foreach ($defaults as $default) {
@@ -221,7 +221,7 @@ class Migration20130924000000ComCategories extends Base
                     'modified_user_id',
                     'modified_time',
                     'hits',
-                    'language'
+                    'language',
                 ])
                 ->values([
                     0,
@@ -247,7 +247,7 @@ class Migration20130924000000ComCategories extends Base
                     0,
                     '0000-00-00 00:00:00',
                     0,
-                    '*'
+                    '*',
                 ])
                 ->execute();
         }
@@ -303,7 +303,7 @@ class Migration20130924000000ComCategories extends Base
                         'modified_user_id',
                         'modified_time',
                         'hits',
-                        'language'
+                        'language',
                     ])
                     ->values([
                         0,
@@ -329,7 +329,7 @@ class Migration20130924000000ComCategories extends Base
                         '',
                         '',
                         '',
-                        ''
+                        '',
                     ]);
                 $query->execute();
 
@@ -373,7 +373,7 @@ class Migration20130924000000ComCategories extends Base
                 'modified_user_id',
                 'modified_time',
                 'hits',
-                'language'
+                'language',
             ])
             ->values([
                 0,
@@ -400,7 +400,7 @@ class Migration20130924000000ComCategories extends Base
                 0,
                 '0000-00-00 00:00:00',
                 0,
-                '*'
+                '*',
             ])
             ->execute();
 

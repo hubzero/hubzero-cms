@@ -43,7 +43,7 @@ class BoostTest extends Basic
     {
         $mapMock = $this->mock([
             'class' => 'Map',
-            'methods' => ['getFormattedFieldValue']
+            'methods' => ['getFormattedFieldValue'],
         ]);
         $boost = new Boost(['map' => $mapMock]);
 
@@ -104,7 +104,7 @@ class BoostTest extends Basic
         $userId = 987;
         $userMock = $this->mock([
             'class' => 'User',
-            'methods' => ['one']
+            'methods' => ['one'],
         ]);
         $boost = new Boost(['user' => $userMock]);
         $boost->set('created_by', $userId);

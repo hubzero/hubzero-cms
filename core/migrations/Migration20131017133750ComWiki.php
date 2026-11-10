@@ -50,7 +50,7 @@ class Migration20131017133750ComWiki extends Base
                     ->update('#__wiki_version')
                     ->set([
                         'pagetext' => $pagetext,
-                        'pagehtml' => $pagehtml
+                        'pagehtml' => $pagehtml,
                     ])
                     ->where('pageid', '=', $result->pageid)
                     ->where('version', '=', $result->version)

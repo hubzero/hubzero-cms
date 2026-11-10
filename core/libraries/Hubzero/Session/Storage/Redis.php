@@ -122,7 +122,7 @@ class Redis extends Store
             'userid'     => User::get('id'),
             'username'   => User::get('username'),
             'usertype'   => null,
-            'ip'         => (string) Request::ip()
+            'ip'         => (string) Request::ip(),
         ];
 
         $saved = $this->database->hmset($this->key($id), $data);

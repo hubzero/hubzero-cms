@@ -71,7 +71,7 @@ class Utilities
                         $contents['multipart'] = preg_replace(
                             $pattern,
                             $replacement,
-                            $contents['multipart']
+                            $contents['multipart'],
                         );
                     } else {
                         $message->addAttachment($path);
@@ -163,7 +163,7 @@ class Utilities
             'com_support.tickets.limit',
             'limit',
             Config::get('list_limit'),
-            'int'
+            'int',
         );
         $filters['start']      = Request::getState('com_support.tickets.limitstart', 'limitstart', 0, 'int');
 
@@ -215,7 +215,7 @@ class Utilities
                         'submitted' => 0,
                         'automatic' => 1,
                         'none'      => 2,
-                        'tool'      => 3
+                        'tool'      => 3,
                     ];
                     if (in_array($pieces[1], $allowed)) {
                         $pieces[1] = $allowed[$pieces[1]];

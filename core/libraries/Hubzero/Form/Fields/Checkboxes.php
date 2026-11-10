@@ -58,7 +58,7 @@ class Checkboxes extends Field
                 . htmlspecialchars(
                     trim($text, ':') . '::' . ($this->translateDescription ? App::get('language')->txt($this->description) : $this->description),
                     ENT_COMPAT,
-                    'UTF-8'
+                    'UTF-8',
                 ) . '"';
         }
 
@@ -177,7 +177,7 @@ class Checkboxes extends Field
                 trim((string) $label),
                 'value',
                 'text',
-                ((string) $option['disabled'] == 'true')
+                ((string) $option['disabled'] == 'true'),
             );
 
             // Add data attributes

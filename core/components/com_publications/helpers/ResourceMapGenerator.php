@@ -30,7 +30,7 @@ class ResourceMapGenerator
         'xmlns:ore'     => 'http://www.openarchives.org/ore/terms/',
         'xmlns:rdf'     => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
         'xmlns:exif'    => 'http://www.w3.org/2003/12/exif/ns#',
-        'xmlns:foaf'    => 'http://xmlns.com/foaf/0.1/'
+        'xmlns:foaf'    => 'http://xmlns.com/foaf/0.1/',
     ];
 
     // URL of the component
@@ -84,7 +84,7 @@ class ResourceMapGenerator
             $publication->version_id,
             '',
             $publication->secret,
-            1
+            1,
         );
     }
 
@@ -174,7 +174,7 @@ class ResourceMapGenerator
         $type_id = $pub->category;
         $typesData = new \Components\Publications\Tables\Category($database);
         $allTypes = $typesData->getCategories([
-            'state' => 'all'
+            'state' => 'all',
         ]);
 
         $this->types = [];

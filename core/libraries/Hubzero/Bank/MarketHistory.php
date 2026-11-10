@@ -54,7 +54,7 @@ class MarketHistory extends Relational
      * @var  array
      */
     protected $rules = [
-        'category' => 'notempty'
+        'category' => 'notempty',
     ];
 
     /**
@@ -63,7 +63,7 @@ class MarketHistory extends Relational
      * @var  array
      */
     public $initiate = [
-        'date'
+        'date',
     ];
 
     /**

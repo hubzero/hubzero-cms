@@ -139,7 +139,7 @@ class PdfForm
             . '(SELECT MAX(created) FROM `#__courses_form_questions` WHERE form_id = pf.id) AS updated '
             . 'FROM `#__courses_forms` pf '
             . 'WHERE title IS NOT null AND title != \'\' AND active = 1 '
-            . 'ORDER BY title'
+            . 'ORDER BY title',
         );
 
         return $dbh->loadAssocList();
@@ -372,7 +372,7 @@ class PdfForm
                     max($widths),
                     $crop[$this->pages]['height'],
                     $crop[$this->pages]['x'],
-                    $crop[$this->pages]['y']
+                    $crop[$this->pages]['y'],
                 );
                 $im->borderImage('white', 15, 15);
                 // paintTransparentImage() was deprecated at some point in favor of transparentPaintImage()
@@ -442,13 +442,13 @@ class PdfForm
         $dbh = self::getDbh();
         $quotedTitle = $dbh->quote(stripslashes($title));
         $dbh->setQuery(
-            'UPDATE `#__courses_forms` SET title = ' . $quotedTitle . ' WHERE id = ' . $this->getId()
+            'UPDATE `#__courses_forms` SET title = ' . $quotedTitle . ' WHERE id = ' . $this->getId(),
         );
         $dbh->query();
 
         if ($id = $this->getAssetId()) {
             $dbh->setQuery(
-                'UPDATE `#__courses_assets` SET title = ' . $quotedTitle . ' WHERE id = ' . $id
+                'UPDATE `#__courses_assets` SET title = ' . $quotedTitle . ' WHERE id = ' . $id,
             );
             $dbh->query();
         }
@@ -467,7 +467,7 @@ class PdfForm
         $dbh = self::getDbh();
         $dbh->setQuery(
             'UPDATE `#__courses_forms` SET `asset_id` = '
-            . $dbh->quote($asset_id) . ' WHERE id = ' . $this->getId()
+            . $dbh->quote($asset_id) . ' WHERE id = ' . $this->getId(),
         );
         $dbh->query();
 
@@ -533,12 +533,12 @@ class PdfForm
                     (int)$group['left'],
                     (int)$group['height'],
                     (int)$group['width'],
-                    $version
+                    $version,
                 );
                 $dbh->setQuery(
                     'INSERT INTO `#__courses_form_questions` '
                     . '(form_id, page, top_dist, left_dist, height, width, version) '
-                    . 'VALUES ' . $questionValues
+                    . 'VALUES ' . $questionValues,
                 );
                 $dbh->query();
                 $groupId = $dbh->insertid();
@@ -549,11 +549,11 @@ class PdfForm
                         $groupId,
                         (int)$answer['top'],
                         (int)$answer['left'],
-                        $correct
+                        $correct,
                     );
                     $dbh->setQuery(
                         'INSERT INTO `#__courses_form_answers` '
-                        . '(question_id, top_dist, left_dist, correct) VALUES ' . $answerValues
+                        . '(question_id, top_dist, left_dist, correct) VALUES ' . $answerValues,
                     );
                     $dbh->query();
                 }
@@ -584,7 +584,7 @@ class PdfForm
             . 'FROM `#__courses_form_questions` pfq '
             . 'LEFT JOIN `#__courses_form_answers` pfa ON pfa.question_id = pfq.id '
             . 'WHERE form_id = ' . $fid . ' AND version = ' . $versionClause . ' '
-            . 'ORDER BY page, question_id'
+            . 'ORDER BY page, question_id',
         );
 
         $rv = [];
@@ -600,7 +600,7 @@ class PdfForm
                     'top'     => $answer['q_top'],
                     'height'  => $answer['height'],
                     'width'   => $answer['width'],
-                    'answers' => []
+                    'answers' => [],
                 ];
             }
 
@@ -608,7 +608,7 @@ class PdfForm
                 'left'    => $answer['a_left'],
                 'top'     => $answer['a_top'],
                 'correct' => (bool)$answer['correct'],
-                'id'      => $answer['answer_id']
+                'id'      => $answer['answer_id'],
             ];
         }
 
@@ -632,7 +632,7 @@ class PdfForm
             'SELECT pfq.id, pfa.id AS answer_id '
             . 'FROM `#__courses_form_questions` pfq '
             . 'INNER JOIN `#__courses_form_answers` pfa ON pfa.question_id = pfq.id AND pfa.correct '
-            . 'WHERE form_id = ' . $fid . ' AND version = ' . $maxVersionSubquery
+            . 'WHERE form_id = ' . $fid . ' AND version = ' . $maxVersionSubquery,
         );
 
         $rv = [];
@@ -670,7 +670,7 @@ class PdfForm
             'SELECT COUNT(*) FROM `#__courses_form_questions` pfq '
             . 'WHERE form_id = ' . $fid . ' '
             . 'AND version = ' . $maxVersionSubquery . ' '
-            . 'AND ' . $answersSubquery
+            . 'AND ' . $answersSubquery,
         );
 
         return $dbh->loadResult();

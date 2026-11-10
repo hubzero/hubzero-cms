@@ -96,7 +96,7 @@ class Resources extends Macro
                 'url'      => $link,
                 'page_id'  => $this->pageid,
                 'scope'    => 'resource',
-                'scope_id' => $r[0]
+                'scope_id' => $r[0],
             ];
 
             if ($nolink) {

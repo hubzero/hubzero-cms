@@ -64,7 +64,7 @@ class Gitlab
         $this->options = [
             'verify' => false,
             'headers' => ['PRIVATE-TOKEN' => $this->token],
-            'http_errors' => false
+            'http_errors' => false,
         ];
         $this->client = new \GuzzleHttp\Client();
     }

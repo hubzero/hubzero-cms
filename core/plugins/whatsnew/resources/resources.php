@@ -85,7 +85,7 @@ class Resources extends Plugin
         }
 
         $this->areas = [
-            'resources' => $cats
+            'resources' => $cats,
         ];
 
         return $this->areas;
@@ -123,7 +123,7 @@ class Resources extends Plugin
         $filters = [
             'startdate' => $period->cStartDate,
             'enddate' => $period->cEndDate,
-            'sortby' => 'date'
+            'sortby' => 'date',
         ];
         if (count($tagids) > 0) {
             $filters['tags'] = $tagids;
@@ -291,7 +291,7 @@ class Resources extends Plugin
         $view = new \Hubzero\Component\View([
             'base_path' => Component::path('com_resources') . '/site',
             'name' => 'browse',
-            'layout' => 'item'
+            'layout' => 'item',
         ]);
         $view->set('line', $row)
             ->set('option', 'com_resources')

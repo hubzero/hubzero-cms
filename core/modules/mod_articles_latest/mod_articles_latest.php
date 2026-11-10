@@ -127,7 +127,7 @@ class ArticlesLatest extends Module
                 $articleRoute = \Components\Content\Site\Helpers\Route::getArticleRoute(
                     $item->slug,
                     $item->catslug,
-                    $item->language
+                    $item->language,
                 );
                 $item->link = Route::url($articleRoute);
             } else {

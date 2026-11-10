@@ -69,8 +69,8 @@ class ImageViewer extends Base
                 'masterWidth'  => '600',
                 'masterHeight' => '400',
                 'defaultThumb' => '/core/components/com_publications/site/assets/img/resource_thumb.gif',
-                'enforced'     => 0
-            ]
+                'enforced'     => 0,
+            ],
         ];
 
         $this->_config = json_decode(json_encode($this->_parent->parseConfig($this->_name, $configs, $savedConfig)), false);
@@ -95,7 +95,7 @@ class ImageViewer extends Base
         $thumbName = \Components\Publications\Helpers\Html::createThumbName(
             basename($path),
             $this->_config->params->thumbSuffix,
-            $this->_config->params->thumbFormat
+            $this->_config->params->thumbFormat,
         );
         $thumbPath = dirname($path) . DS . $thumbName;
 
@@ -161,7 +161,7 @@ class ImageViewer extends Base
         $thumbName = \Components\Publications\Helpers\Html::createThumbName(
             basename($path),
             $this->_config->params->thumbSuffix,
-            $this->_config->params->thumbFormat
+            $this->_config->params->thumbFormat,
         );
         $thumbPath = dirname($path) . DS . $thumbName;
 
@@ -251,7 +251,7 @@ class ImageViewer extends Base
             $thumbName = \Components\Publications\Helpers\Html::createThumbName(
                 basename($fpath),
                 $this->_config->params->thumbSuffix,
-                $this->_config->params->thumbFormat
+                $this->_config->params->thumbFormat,
             );
             $thumbPath = dirname($fpath) . DS . $thumbName;
 
@@ -318,7 +318,7 @@ class ImageViewer extends Base
             $thumbName = \Components\Publications\Helpers\Html::createThumbName(
                 basename($fpath),
                 $this->_config->params->thumbSuffix,
-                $this->_config->params->thumbFormat
+                $this->_config->params->thumbFormat,
             );
             $title = $attach->title ? $attach->title : $attConfigs->title;
             $title = $title ? $title : basename($attach->path);
@@ -371,7 +371,7 @@ class ImageViewer extends Base
         $thumbName = \Components\Publications\Helpers\Html::createThumbName(
             basename($fpath),
             $this->_config->params->thumbSuffix,
-            $this->_config->params->thumbFormat
+            $this->_config->params->thumbFormat,
         );
         $thumbPath = $configs->pubPath . DS . $thumbName;
 
@@ -425,8 +425,8 @@ class ImageViewer extends Base
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => 'attachments',
-                'layout'  => $layout
-            ]
+                'layout'  => $layout,
+            ],
         );
         $view->data   = $data;
         $view->config = $this->_config;

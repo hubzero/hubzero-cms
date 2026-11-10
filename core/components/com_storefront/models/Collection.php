@@ -159,7 +159,7 @@ class Collection
     {
         // Check if the alias is valid
         $badAliasException = new Exception(
-            'Bad collection alias. Alias should be a non-empty non-numeric alphanumeric string.'
+            'Bad collection alias. Alias should be a non-empty non-numeric alphanumeric string.',
         );
         if (preg_match("/^[0-9a-zA-Z]+[\-_0-9a-zA-Z]*$/i", $cAlias)) {
             if (is_numeric($cAlias)) {

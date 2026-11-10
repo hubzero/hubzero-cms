@@ -25,7 +25,7 @@ class PolyTagModel extends Relational
             'poly_taggables',
             null,
             null,
-            'tag_id'
+            'tag_id',
         );
     }
 
@@ -37,7 +37,7 @@ class PolyTagModel extends Relational
             'poly_taggables',
             null,
             null,
-            'tag_id'
+            'tag_id',
         );
     }
 }

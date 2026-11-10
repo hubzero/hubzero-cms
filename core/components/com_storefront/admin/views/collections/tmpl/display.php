@@ -41,7 +41,7 @@ if ($canDo->get('core.delete')) {
 <?php
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 $sortDir = @$this->filters['sort_Dir'];
 $sort = @$this->filters['sort'];
@@ -79,7 +79,7 @@ $sort = @$this->filters['sort'];
                 echo $this->pagination(
                     $this->total,
                     $this->filters['start'],
-                    $this->filters['limit']
+                    $this->filters['limit'],
                 );
                 ?></td>
         </tr>
@@ -132,7 +132,7 @@ foreach ($this->rows as $row) {
                     $editUrl = Route::url(
                         'index.php?option=' . $this->option
                         . '&controller=' . $this->controller
-                        . '&task=edit&id=' . $row->cId
+                        . '&task=edit&id=' . $row->cId,
                     );
                     $editTitle = Lang::txt('COM_STOREFRONT_EDIT_CATEGORY');
                     ?>
@@ -157,7 +157,7 @@ foreach ($this->rows as $row) {
                     $stateUrl = Route::url(
                         'index.php?option=' . $this->option
                         . '&controller=' . $this->controller
-                        . '&task=' . $task . '&id=' . $row->cId
+                        . '&task=' . $task . '&id=' . $row->cId,
                     );
                     $stateTitle = Lang::txt('COM_STOREFRONT_SET_TASK', $task);
                     ?>

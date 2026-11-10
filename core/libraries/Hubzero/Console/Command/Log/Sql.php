@@ -26,7 +26,7 @@ class Sql extends Base
         'line'          => true,
         'type'          => true,
         'time'          => true,
-        'query'         => true
+        'query'         => true,
     ];
 
     /**

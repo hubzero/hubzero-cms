@@ -21,7 +21,7 @@ endif;
 if (!$this->course->offering()->access('view')) : ?>
     <?php $restrictedMsg = Lang::txt(
         'Access to the "Syllabus" section of this course is restricted'
-        . ' to members only. You must be a member to view the content.'
+        . ' to members only. You must be a member to view the content.',
     ); ?>
     <p class="info"><?php echo $restrictedMsg; ?></p>
 <?php else : ?>

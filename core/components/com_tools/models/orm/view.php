@@ -43,6 +43,6 @@ class View extends Relational
      * @var  array
      **/
     protected $rules = [
-        'sessnum' => 'positive|nonzero'
+        'sessnum' => 'positive|nonzero',
     ];
 }

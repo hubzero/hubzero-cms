@@ -49,7 +49,7 @@ class Php extends \HTMLPurifier_Filter
             function ($matches) {
                 return "<?php\n" . trim(html_entity_decode($matches[1])) . "\n?>";
             },
-            $html
+            $html,
         );
         return $html;
     }

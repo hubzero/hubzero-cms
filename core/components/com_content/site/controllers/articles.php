@@ -219,7 +219,7 @@ class Articles extends SiteController
             }
             $path = [[
                 'title' => $item->title,
-                'link' => ''
+                'link' => '',
             ]];
             $category = \Components\Categories\Helpers\Categories::getInstance('Content')->get($item->catid);
 
@@ -233,7 +233,7 @@ class Articles extends SiteController
                 if (!in_array(strtolower($category->alias), $menuSegments)) {
                     $path[] = [
                         'title' => $category->title,
-                        'link' => HelperRoute::getCategoryRoute($category->id)
+                        'link' => HelperRoute::getCategoryRoute($category->id),
                     ];
                 }
                 $category = $category->getParent();
@@ -552,7 +552,7 @@ class Articles extends SiteController
             '09' => Lang::txt('SEPTEMBER_SHORT'),
             '10' => Lang::txt('OCTOBER_SHORT'),
             '11' => Lang::txt('NOVEMBER_SHORT'),
-            '12' => Lang::txt('DECEMBER_SHORT')
+            '12' => Lang::txt('DECEMBER_SHORT'),
         ];
         $form->monthField = Html::select(
             'genericlist',
@@ -561,8 +561,8 @@ class Articles extends SiteController
             [
                 'list.attr'   => 'size="1" class="inputbox"',
                 'list.select' => $month,
-                'option.key'  => null
-            ]
+                'option.key'  => null,
+            ],
         );
 
         // Year Field
@@ -577,8 +577,8 @@ class Articles extends SiteController
             'year',
             [
                 'list.attr' => 'size="1" class="inputbox"',
-                'list.select' => $year
-            ]
+                'list.select' => $year,
+            ],
         );
 
         $form->limitField = ''; //$pagination->getLimitBox();
@@ -1004,7 +1004,7 @@ class Articles extends SiteController
             'hits', 'a.hits',
             'publish_up', 'a.publish_up',
             'publish_down', 'a.publish_down',
-            'author', 'a.author'
+            'author', 'a.author',
         ];
         if (!in_array($orderCol, $filter_fields)) {
             $orderCol = 'a.ordering';
@@ -1193,14 +1193,14 @@ class Articles extends SiteController
         if ($menu && ($menu->query['option'] != 'com_content' || $menu->query['view'] == 'article' || $id != $category->id)) {
             $path = [[
                 'title' => $category->title,
-                'link'  => ''
+                'link'  => '',
             ]];
             $parent = $category->getParent();
 
             while (($menu->query['option'] != 'com_content' || $menu->query['view'] == 'article' || $id != $parent->id) && $parent->id !== 'root' && $parent->id > 1) {
                 $path[] = [
                     'title' => $parent->title,
-                    'link'  => HelperRoute::getCategoryRoute($parent->id)
+                    'link'  => HelperRoute::getCategoryRoute($parent->id),
                 ];
                 $parent = $category->getParent();
             }

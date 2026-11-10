@@ -89,7 +89,7 @@ class Callback extends SiteController
             'client_id'     => $pparams->get('app_key'),
             'client_secret' => $pparams->get('app_secret'),
             'code'          => $code,
-            'state'         => $state
+            'state'         => $state,
         ];
         $ch = curl_init();
 
@@ -144,12 +144,12 @@ class Callback extends SiteController
         $provider = new \Plugins\Authentication\Globus\Provider\Globus([
             'clientId'     => $params->get('app_id'),
             'clientSecret' => $params->get('app_secret'),
-            'redirectUri'  => trim(Request::base(), '/') . '/developer/callback/globusAuthorize'
+            'redirectUri'  => trim(Request::base(), '/') . '/developer/callback/globusAuthorize',
         ]);
 
         // Try to get an access token using the authorization code grant
         $accessToken = $provider->getAccessToken('authorization_code', [
-            'code' => $code
+            'code' => $code,
         ]);
 
         \Session::set('globus.token', $accessToken);

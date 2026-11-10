@@ -535,7 +535,7 @@ class Db2Grammar extends BaseSchemaGrammar
                 ? $fk['name']
                 : "FK_" . strtoupper($table) . "_" . strtoupper($fk['column']);
              $refTable = $this->wrap(
-                 $this->driver->replacePrefix($fk['referencedTable'])
+                 $this->driver->replacePrefix($fk['referencedTable']),
              );
              $sql = "ALTER TABLE " . $quotedTable
                  . " ADD CONSTRAINT " . $this->wrap($fkName)

@@ -77,7 +77,7 @@ class Supportactivity extends Module
     {
         $commentCategoryExpr = sprintf(
             "(CASE WHEN %s != '' THEN 'comment' ELSE 'change' END)",
-            $database->quoteName('c.comment')
+            $database->quoteName('c.comment'),
         );
 
         $query->select('c.id')

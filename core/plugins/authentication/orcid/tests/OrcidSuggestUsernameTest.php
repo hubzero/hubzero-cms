@@ -19,7 +19,7 @@ final class OrcidSuggestUsernameTest extends TestCase
     {
         $this->assertSame(
             'u0000_0002_6885_6310',
-            Orcid::suggestUsername('0000-0002-6885-6310')
+            Orcid::suggestUsername('0000-0002-6885-6310'),
         );
     }
 
@@ -28,7 +28,7 @@ final class OrcidSuggestUsernameTest extends TestCase
         // ORCID check digit "10" is written as 'X'; the hint must be lowercase.
         $this->assertSame(
             'u0009_0002_3538_094x',
-            Orcid::suggestUsername('0009-0002-3538-094X')
+            Orcid::suggestUsername('0009-0002-3538-094X'),
         );
     }
 

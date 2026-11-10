@@ -43,7 +43,7 @@ class Forum extends AbstractComponent
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
                 Lang::txt('COM_FORUM_ALERTLOGIN_REQUIRED'),
-                'warning'
+                'warning',
             );
         }
 

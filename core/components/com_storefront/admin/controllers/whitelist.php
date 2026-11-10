@@ -46,26 +46,26 @@ class Whitelist extends AdminController
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'uId'
+                'uId',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
+                'ASC',
             ),
             // Get paging variables
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limitstart',
                 'limitstart',
                 0,
-                'int'
-            )
+                'int',
+            ),
         ];
 
         // Get record count
@@ -91,7 +91,7 @@ class Whitelist extends AdminController
         $url = 'index.php?option=' . $this->_option
             . '&controller=skus&task=edit&id=' . Request::getInt('sId', 0);
         App::redirect(
-            Route::url($url, false)
+            Route::url($url, false),
         );
     }
 
@@ -119,7 +119,7 @@ class Whitelist extends AdminController
         App::redirect(
             Route::url($url, false),
             $msg,
-            $type
+            $type,
         );
     }
 

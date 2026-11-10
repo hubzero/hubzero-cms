@@ -17,7 +17,7 @@ return [
     */
     'short' => [
         'period' => '5',
-        'limit' => '500'
+        'limit' => '500',
     ],
 
     /*
@@ -36,6 +36,6 @@ return [
     */
     'long' => [
         'period' => '1440',
-        'limit' => '10000'
+        'limit' => '10000',
     ],
 ];

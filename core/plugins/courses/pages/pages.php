@@ -76,14 +76,14 @@ class Pages extends Plugin
         $total = $offering->pages([
             'count'       => true,
             'section_id'  => $offering->section()->get('id'),
-            'active'      => 1
+            'active'      => 1,
         ], true);
 
         // Offering specific pages
         $total += $offering->pages([
             'count'       => true,
             'section_id'  => 0,
-            'active'      => 1
+            'active'      => 1,
         ], true);
 
         // All course pages
@@ -91,7 +91,7 @@ class Pages extends Plugin
             'count'       => true,
             'course_id'   => 0,
             'offering_id' => 0,
-            'active'      => 1
+            'active'      => 1,
         ], true);
 
         // Determine if we need to return any HTML (meaning this is the active plugin)
@@ -177,20 +177,20 @@ class Pages extends Plugin
         // Section specific pages
         $spages = $this->view->offering->pages([
             'section_id'  => $this->view->offering->section()->get('id'),
-            'active'      => 1
+            'active'      => 1,
         ], true);
 
         // Offering specific pages
         $opages = $this->view->offering->pages([
             'section_id'  => 0,
-            'active'      => 1
+            'active'      => 1,
         ], true);
 
         // All course pages
         $gpages = $this->view->offering->pages([
             'course_id'   => 0,
             'offering_id' => 0,
-            'active'      => 1
+            'active'      => 1,
         ], true);
 
         $pages = array_merge($spages, $opages);
@@ -228,7 +228,7 @@ class Pages extends Plugin
         if (User::isGuest()) {
             $return = Route::url($this->view->offering->link() . '&active=' . $this->_name, false, true);
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . $return, false)
+                Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );
             return;
         }
@@ -259,18 +259,18 @@ class Pages extends Plugin
 
         // Section specific pages
         $spages = $this->view->offering->pages([
-            'section_id' => $this->view->offering->section()->get('id')
+            'section_id' => $this->view->offering->section()->get('id'),
         ], true);
 
         // Offering specific pages
         $opages = $this->view->offering->pages([
-            'section_id' => 0
+            'section_id' => 0,
         ], true);
 
         // All course pages
         $gpages = $this->view->offering->pages([
             'course_id'   => 0,
-            'offering_id' => 0
+            'offering_id' => 0,
         ], true);
 
         $pages = array_merge($spages, $opages);
@@ -289,7 +289,7 @@ class Pages extends Plugin
         if (User::isGuest()) {
             $return = Route::url($this->view->offering->link() . '&active=' . $this->_name, false, true);
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . $return, false)
+                Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );
             return;
         }
@@ -344,7 +344,7 @@ class Pages extends Plugin
         }
 
         App::redirect(
-            Route::url($this->view->offering->link() . '&active=' . $this->_name . '&unit=' . $model->get('url'))
+            Route::url($this->view->offering->link() . '&active=' . $this->_name . '&unit=' . $model->get('url')),
         );
     }
 
@@ -358,7 +358,7 @@ class Pages extends Plugin
         if (User::isGuest()) {
             $return = Route::url($this->view->offering->link() . '&active=' . $this->_name, false, true);
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . $return, false)
+                Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );
             return;
         }
@@ -380,7 +380,7 @@ class Pages extends Plugin
         }
 
         App::redirect(
-            Route::url($this->view->offering->link() . '&active=pages')
+            Route::url($this->view->offering->link() . '&active=pages'),
         );
     }
 
@@ -526,7 +526,7 @@ class Pages extends Plugin
         echo json_encode([
             'success'   => true,
             'file'      => $filename . '.' . $ext,
-            'directory' => str_replace(PATH_CORE, '', $path)
+            'directory' => str_replace(PATH_CORE, '', $path),
         ]);
         exit();
     }
@@ -692,7 +692,7 @@ class Pages extends Plugin
                 header('Content-type: text/plain');
                 echo json_encode([
                     'success'   => false,
-                    'error'     => $this->getError()
+                    'error'     => $this->getError(),
                 ]);
                 exit();
             }
@@ -719,7 +719,7 @@ class Pages extends Plugin
                 header('Content-type: text/plain');
                 echo json_encode([
                     'success' => false,
-                    'error'   => $this->getError()
+                    'error'   => $this->getError(),
                 ]);
                 exit();
             }
@@ -733,7 +733,7 @@ class Pages extends Plugin
                     header('Content-type: text/plain');
                     echo json_encode([
                         'success' => false,
-                        'error'   => $this->getError()
+                        'error'   => $this->getError(),
                     ]);
                     exit();
                 }
@@ -861,7 +861,7 @@ class Pages extends Plugin
                 'offering_id' => [0, $this->view->offering->get('id')],
                 'section_id'  => [0, $this->view->offering->section()->get('id')],
                 'limit'       => 1,
-                'start'       => 0
+                'start'       => 0,
             ], true);
             $page = isset($pages[0]) ? $pages[0] : null;
         }

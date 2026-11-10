@@ -26,7 +26,7 @@ class Form extends Content
      **/
     protected static $info = [
             'action_message' => 'Create a quiz/exam',
-            'responds_to'    => ['pdf']
+            'responds_to'    => ['pdf'],
         ];
 
     /**
@@ -145,9 +145,9 @@ class Form extends Content
                                 json_encode(
                                     [
                                         'assets' => [
-                                            $return['assets']
-                                        ]
-                                    ]
+                                            $return['assets'],
+                                        ],
+                                    ],
                                 ) . ";
 
 							data.assets[0].asset_title = title;

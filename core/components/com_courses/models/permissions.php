@@ -97,7 +97,7 @@ class Permissions extends Obj
     public function __construct(
         $course_id = null,
         $offering_id = null,
-        $section_id = null
+        $section_id = null,
     ) {
         $this->set('course_id', $course_id);
         $this->set('offering_id', $offering_id);
@@ -115,7 +115,7 @@ class Permissions extends Obj
     public static function &getInstance(
         $course_id = null,
         $offering_id = null,
-        $section_id = null
+        $section_id = null,
     ) {
         static $instance;
 
@@ -204,7 +204,7 @@ class Permissions extends Obj
                     $user_id,
                     $this->get('course_id'),
                     $this->get('offering_id'),
-                    $this->get('section_id')
+                    $this->get('section_id'),
                 );
             }
         }
@@ -248,7 +248,7 @@ class Permissions extends Obj
                     if (!isset($results[$result->user_id])) {
                         $results[$result->user_id] = new Manager(
                             $result,
-                            $this->get('id')
+                            $this->get('id'),
                         );
                     } else {
                         // Course manager takes precedence over offering manager
@@ -261,13 +261,13 @@ class Permissions extends Obj
                         if ($isCourse) {
                             $results[$result->user_id] = new Manager(
                                 $result,
-                                $this->get('id')
+                                $this->get('id'),
                             );
                         } elseif ($isOffering) {
                             // Course offering takes precedence over section manager
                             $results[$result->user_id] = new Manager(
                                 $result,
-                                $this->get('id')
+                                $this->get('id'),
                             );
                         }
                     }
@@ -324,7 +324,7 @@ class Permissions extends Obj
                 $user_id,
                 $this->get('course_id'),
                 null,
-                $this->get('section_id')
+                $this->get('section_id'),
             );
         }
 
@@ -366,7 +366,7 @@ class Permissions extends Obj
                 foreach ($data as $key => $result) {
                     $results[$result->user_id] = new Student(
                         $result,
-                        $this->get('id')
+                        $this->get('id'),
                     );
                 }
             }
@@ -388,7 +388,7 @@ class Permissions extends Obj
         // List of actions
         $actions = [
             'admin', 'manage', 'create', 'delete',
-            'edit', 'edit-state', 'edit-own', 'view'
+            'edit', 'edit-state', 'edit-own', 'view',
         ];
 
         // Are they an admin?

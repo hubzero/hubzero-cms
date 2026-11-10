@@ -42,17 +42,17 @@ class Wishlist extends AbstractComponent
         Submenu::addEntry(
             Lang::txt('COM_WISHLIST_LISTS'),
             Route::url('index.php?option=com_wishlist&controller=lists'),
-            ($controllerName == 'lists')
+            ($controllerName == 'lists'),
         );
         Submenu::addEntry(
             Lang::txt('COM_WISHLIST_WISHES'),
             Route::url('index.php?option=com_wishlist&controller=wishes&wishlist=0'),
-            ($controllerName == 'wishes')
+            ($controllerName == 'wishes'),
         );
         Submenu::addEntry(
             Lang::txt('COM_WISHLIST_COMMENTS'),
             Route::url('index.php?option=com_wishlist&controller=comments&wish=0'),
-            ($controllerName == 'comments')
+            ($controllerName == 'comments'),
         );
 
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);

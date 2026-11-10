@@ -102,7 +102,7 @@ $this->js();
                         echo Lang::txt('COM_MEMBERS_IMPORTHOOK_EDIT_FIELD_SCRIPT_CURRENT', $this->hook->get('file'));
                         $rawUrl = Route::url(
                             'index.php?option=' . $this->option . '&controller='
-                            . $this->controller . '&task=raw&id=' . $this->hook->get('id')
+                            . $this->controller . '&task=raw&id=' . $this->hook->get('id'),
                         );
                         $rawLabel = Lang::txt('COM_MEMBERS_IMPORTHOOK_EDIT_FIELD_SCRIPT_VIEWRAW');
                         echo ' &mdash; <a rel="noopener" target="_blank" href="'

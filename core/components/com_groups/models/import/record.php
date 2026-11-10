@@ -436,7 +436,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
                 'title'     => 'Overview',
                 'state'     => 1,
                 'privacy'   => 'default',
-                'home'      => 1
+                'home'      => 1,
             ]);
             $page->store(false);
 
@@ -447,7 +447,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
                 'content'    => "<!-- {FORMAT:HTML} -->\n<p>[[Group.DefaultHomePage()]]</p>",
                 'created'    => Date::of('now')->toSql(),
                 'created_by' => User::get('id'),
-                'approved'   => 1
+                'approved'   => 1,
             ]);
             $version->store(false);
         }

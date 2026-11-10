@@ -59,7 +59,7 @@ class Page extends Table
         }
         $this->_db->setQuery(
             "SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->quote($alias)
-                . " AND event_id=" . $this->_db->quote(intval($event_id))
+                . " AND event_id=" . $this->_db->quote(intval($event_id)),
         );
         if ($result = $this->_db->loadAssoc()) {
             return $this->bind($result);
@@ -82,7 +82,7 @@ class Page extends Table
         }
         $this->_db->setQuery(
             "SELECT * FROM $this->_tbl WHERE event_id=" . $this->_db->quote(intval($event_id))
-                . " ORDER BY ordering ASC LIMIT 1"
+                . " ORDER BY ordering ASC LIMIT 1",
         );
         if ($result = $this->_db->loadAssoc()) {
             return $this->bind($result);
@@ -105,7 +105,7 @@ class Page extends Table
         }
         $this->_db->setQuery(
             "SELECT title, alias, id FROM $this->_tbl WHERE event_id="
-                . $this->_db->quote(intval($event_id)) . " ORDER BY ordering ASC"
+                . $this->_db->quote(intval($event_id)) . " ORDER BY ordering ASC",
         );
         return $this->_db->loadObjectList();
     }

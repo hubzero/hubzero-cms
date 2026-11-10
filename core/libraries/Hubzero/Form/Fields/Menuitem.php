@@ -71,7 +71,7 @@ class Menuitem extends Groupedlist
                         $link->text,
                         'value',
                         'text',
-                        in_array($link->type, $disable)
+                        in_array($link->type, $disable),
                     );
                 }
             }

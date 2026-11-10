@@ -90,7 +90,7 @@ Examples:
             $footnote->content = $note;
             $footnote->id      = 'fnref-' . $i;
             $footnote->refs    = [
-                'fndef-' . $i
+                'fndef-' . $i,
             ];
 
             $wm->footnotes_stubs[] = $stub;

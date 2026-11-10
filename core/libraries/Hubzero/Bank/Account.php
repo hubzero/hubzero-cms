@@ -53,7 +53,7 @@ class Account extends Relational
      * @var  array
      */
     protected $rules = [
-        'uid' => 'positive|nonzero'
+        'uid' => 'positive|nonzero',
     ];
 
     /**

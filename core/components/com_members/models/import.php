@@ -131,10 +131,10 @@ class Import extends Base
             'homedir',
         ],
         'loginShell' => [
-            'loginshell'
+            'loginshell',
         ],
         'ftpShell' => [
-            'ftpshell'
+            'ftpshell',
         ],
         'usageAgreement' => [
             'usageagreement',
@@ -467,7 +467,7 @@ class Import extends Base
             $map = [
                 'label' => $header,
                 'name'  => $norm,
-                'field' => ''
+                'field' => '',
             ];
 
             foreach ($this->fieldMap() as $column => $aliases) {
@@ -503,7 +503,7 @@ class Import extends Base
                 $this->fieldMap[$field->get('name')] = [
                     $field->get('name'),
                     strtolower($field->get('name')),
-                    preg_replace('/[^a-zA-Z0-9]/', '', $field->get('name'))
+                    preg_replace('/[^a-zA-Z0-9]/', '', $field->get('name')),
                 ];
             }
         }

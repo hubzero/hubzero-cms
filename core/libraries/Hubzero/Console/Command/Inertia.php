@@ -89,12 +89,12 @@ class Inertia extends Base implements CommandInterface
             ->addArgument(
                 'scaffold [component]',
                 'Generate Inertia controller/view boilerplate inside an existing component.',
-                'Example: muse inertia scaffold com_projects --view=dashboard --controller=projects --with-test'
+                'Example: muse inertia scaffold com_projects --view=dashboard --controller=projects --with-test',
             )
             ->addArgument(
                 'lint [path]',
                 'Warn about common Inertia template issues (missing root mount node, hardcoded routes).',
-                'Example: muse inertia lint core/components/com_polls2/site/views --strict'
+                'Example: muse inertia lint core/components/com_polls2/site/views --strict',
             );
     }
 
@@ -106,7 +106,7 @@ class Inertia extends Base implements CommandInterface
     {
         $files = [];
         $iter = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($root, \FilesystemIterator::SKIP_DOTS)
+            new \RecursiveDirectoryIterator($root, \FilesystemIterator::SKIP_DOTS),
         );
 
         foreach ($iter as $info) {
@@ -147,7 +147,7 @@ class Inertia extends Base implements CommandInterface
                 'file' => $file,
                 'line' => 1,
                 'message' => 'Template appears to use Inertia without a root mount'
-                    . ' node (`inertiaRootNode` / `Inertia::renderRootNode`).'
+                    . ' node (`inertiaRootNode` / `Inertia::renderRootNode`).',
             ];
         }
 
@@ -156,7 +156,7 @@ class Inertia extends Base implements CommandInterface
                 '/(href|action|hx-get|hx-post|hx-put|hx-patch|hx-delete)=["\']([^"\']+)["\']/i',
                 $contents,
                 $routeMatches,
-                PREG_OFFSET_CAPTURE
+                PREG_OFFSET_CAPTURE,
             )
         ) {
             foreach ($routeMatches[2] as $match) {
@@ -171,7 +171,7 @@ class Inertia extends Base implements CommandInterface
                         'file' => $file,
                         'line' => $this->lineNumberFromOffset($contents, $offset),
                         'message' => 'Hardcoded component/task route found;'
-                            . ' prefer Inertia/route helper generation.'
+                            . ' prefer Inertia/route helper generation.',
                     ];
                 }
             }

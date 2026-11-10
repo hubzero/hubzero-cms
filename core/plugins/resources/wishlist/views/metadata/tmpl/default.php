@@ -14,10 +14,10 @@ defined('_HZEXEC_') or die();
 
 <?php
 $wishlistUrl = Route::url(
-    'index.php?option=com_resources&id=' . $this->resource->id . '&active=wishlist'
+    'index.php?option=com_resources&id=' . $this->resource->id . '&active=wishlist',
 );
 $addWishUrl = Route::url(
-    'index.php?option=com_wishlist&id=' . $this->wishlistid . '&task=add'
+    'index.php?option=com_wishlist&id=' . $this->wishlistid . '&task=add',
 );
 ?>
 <p class="wishlist">

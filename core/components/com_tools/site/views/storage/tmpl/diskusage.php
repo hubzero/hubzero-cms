@@ -48,7 +48,7 @@ if ($this->msgs) {
     }
     if ($this->percent == 100) {
         $resolveUrl = Route::url(
-            'index.php?option=' . $this->option . '&task=storageexceeded'
+            'index.php?option=' . $this->option . '&task=storageexceeded',
         );
         $html .= "\t" . '<dd id="du-msg"><p class="warning">'
             . Lang::txt('COM_TOOLS_STORAGE_WARNING_REACHED_LIMIT')
@@ -57,7 +57,7 @@ if ($this->msgs) {
     }
     if ($this->percent > 100) {
         $resolveUrl = Route::url(
-            'index.php?option=' . $this->option . '&task=storageexceeded'
+            'index.php?option=' . $this->option . '&task=storageexceeded',
         );
         $html .= "\t" . '<dd id="du-msg"><p class="warning">'
             . Lang::txt('COM_TOOLS_STORAGE_WARNING_EXCEEDING_LIMIT')

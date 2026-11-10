@@ -44,7 +44,7 @@ class Recent extends Relational
      */
     protected $rules = [
         'user_id'  => 'nonzero|positive',
-        'group_id' => 'nonzero|positive'
+        'group_id' => 'nonzero|positive',
     ];
 
     /**
@@ -53,7 +53,7 @@ class Recent extends Relational
      * @var  array
      */
     public $initiate = [
-        'created'
+        'created',
     ];
 
     /**

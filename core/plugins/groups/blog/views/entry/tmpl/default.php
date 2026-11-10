@@ -22,7 +22,7 @@ $this->css()
 
 $first = $this->archive->entries([
         'state'      => $this->filters['state'],
-        'authorized' => $this->filters['authorized']
+        'authorized' => $this->filters['authorized'],
     ])
     ->order('publish_up', 'asc')
     ->limit(1)
@@ -87,7 +87,7 @@ $first = $this->archive->entries([
                     $comments = $this->row->comments()
                         ->whereIn('state', [
                             Components\Blog\Models\Comment::STATE_PUBLISHED,
-                            Components\Blog\Models\Comment::STATE_FLAGGED
+                            Components\Blog\Models\Comment::STATE_FLAGGED,
                         ])
                         ->count();
                 ?>
@@ -164,7 +164,7 @@ $first = $this->archive->entries([
             <?php
                 $popular = $this->archive->entries([
                         'state'  => $this->filters['state'],
-                        'access' => $this->filters['access']
+                        'access' => $this->filters['access'],
                     ])
                     ->order('hits', 'desc')
                     ->limit(5)
@@ -204,7 +204,7 @@ $first = $this->archive->entries([
                 }])
                 ->whereIn('state', [
                     Components\Blog\Models\Comment::STATE_PUBLISHED,
-                    Components\Blog\Models\Comment::STATE_FLAGGED
+                    Components\Blog\Models\Comment::STATE_FLAGGED,
                 ])
                 ->whereEquals('parent', 0)
                 ->ordered()
@@ -243,7 +243,7 @@ $first = $this->archive->entries([
                                 ->whereEquals('id', Request::getInt('reply', 0))
                                 ->whereIn('state', [
                                     Components\Blog\Models\Comment::STATE_PUBLISHED,
-                                    Components\Blog\Models\Comment::STATE_FLAGGED
+                                    Components\Blog\Models\Comment::STATE_FLAGGED,
                                 ])
                                 ->row();
 

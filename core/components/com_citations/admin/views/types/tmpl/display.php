@@ -33,7 +33,7 @@ Toolbar::help('types');
 
 <?php
 $formAction = Route::url(
-    'index.php?option=' . $this->option
+    'index.php?option=' . $this->option,
 );
 ?>
 <form
@@ -90,7 +90,7 @@ $formAction = Route::url(
                     $editUrl = Route::url(
                         'index.php?option=' . $this->option
                         . '&controller=' . $this->controller
-                        . '&task=edit&id=' . $t['id']
+                        . '&task=edit&id=' . $t['id'],
                     );
                     ?>
                     <td class="priority-2">

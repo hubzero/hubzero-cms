@@ -68,7 +68,7 @@ $curatorStatus = $this->pub->_curationModel->getCurationStatus(
     $this->pub,
     $this->master->blockId,
     $this->elementId,
-    'author'
+    'author',
 );
 
 $aboutText = $this->manifest->about ? $this->manifest->about : null;

@@ -37,7 +37,7 @@ Toolbar::custom('manage', 'config', 'config', 'COM_GROUPS_MANAGE', false);
 $formAction = Route::url(
     'index.php?option=' . $this->option
     . '&controller=' . $this->controller
-    . '&gid=' . $this->group->cn
+    . '&gid=' . $this->group->cn,
 );
 ?>
 <form action="<?php echo $formAction; ?>" name="adminForm" id="adminForm" method="post">
@@ -84,7 +84,7 @@ $formAction = Route::url(
                                     'index.php?option=' . $this->option
                                     . '&controller=' . $this->controller
                                     . '&gid=' . $this->group->cn
-                                    . '&task=edit&id=' . $category->get('id')
+                                    . '&task=edit&id=' . $category->get('id'),
                                 );
                                 ?>
                                 <a href="<?php echo $editUrl; ?>">

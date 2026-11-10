@@ -121,7 +121,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
     {
         $this->assertTrue(
             method_exists(Query::class, 'insertIgnore'),
-            'Query class should have insertIgnore method'
+            'Query class should have insertIgnore method',
         );
     }
 
@@ -133,7 +133,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
     {
         $this->assertTrue(
             method_exists(Query::class, 'fromSelect'),
-            'Query class should have fromSelect method'
+            'Query class should have fromSelect method',
         );
     }
 
@@ -145,7 +145,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
     {
         $this->assertTrue(
             method_exists(Query::class, 'columns'),
-            'Query class should have columns method'
+            'Query class should have columns method',
         );
     }
 
@@ -157,7 +157,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
     {
         $this->assertTrue(
             method_exists(Query::class, 'fromSelectRaw'),
-            'Query class should have fromSelectRaw method'
+            'Query class should have fromSelectRaw method',
         );
     }
 
@@ -169,7 +169,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
     {
         $this->assertTrue(
             method_exists(BaseSqlSyntax::class, 'setColumns'),
-            'Syntax class should have setColumns method'
+            'Syntax class should have setColumns method',
         );
     }
 
@@ -181,7 +181,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
     {
         $this->assertTrue(
             method_exists(BaseSqlSyntax::class, 'setInsertSelect'),
-            'Syntax class should have setInsertSelect method'
+            'Syntax class should have setInsertSelect method',
         );
     }
 
@@ -193,7 +193,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
     {
         $this->assertTrue(
             method_exists(BaseSqlSyntax::class, 'resetInsertSelect'),
-            'Syntax class should have resetInsertSelect method'
+            'Syntax class should have resetInsertSelect method',
         );
     }
 

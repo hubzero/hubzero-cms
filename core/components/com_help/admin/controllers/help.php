@@ -200,7 +200,7 @@ class Help extends AdminController
         return [
             'name'   => $name,
             'option' => $component,
-            'pages'  => $pages
+            'pages'  => $pages,
         ];
     }
 

@@ -55,37 +55,37 @@ class Zones extends AdminController
             'zone' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.zone',
                 'zone',
-                ''
+                '',
             )),
             'master' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.master',
                 'master',
-                ''
+                '',
             )),
             // Sorting
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'zone'
+                'zone',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
+                'ASC',
             ),
             // Get paging variables
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limitstart',
                 'limitstart',
                 0,
-                'int'
-            )
+                'int',
+            ),
         ];
 
         // In case limit has been changed, adjust limitstart accordingly
@@ -206,7 +206,7 @@ class Zones extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
         );
     }
 
@@ -226,7 +226,7 @@ class Zones extends AdminController
 
         if ($state != 'up' && $state != 'down') {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
             );
             return;
         }
@@ -243,7 +243,7 @@ class Zones extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
         );
     }
 
@@ -276,7 +276,7 @@ class Zones extends AdminController
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
             Lang::txt('COM_TOOLS_ITEM_DELETED'),
-            'message'
+            'message',
         );
     }
 
@@ -386,7 +386,7 @@ class Zones extends AdminController
             $max = preg_replace(
                 '/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/',
                 '$1',
-                \Hubzero\Utility\Number::formatBytes($sizeLimit)
+                \Hubzero\Utility\Number::formatBytes($sizeLimit),
             );
             echo json_encode(['error' => Lang::txt('COM_TOOLS_ERROR_FILE_TOO_LARGE', $max)]);
             return;
@@ -453,7 +453,7 @@ class Zones extends AdminController
             'id'        => $id,
             'size'      => \Hubzero\Utility\Number::formatBytes($this_size),
             'width'     => $width,
-            'height'    => $height
+            'height'    => $height,
         ]);
     }
 
@@ -598,7 +598,7 @@ class Zones extends AdminController
             'id'        => $id,
             'size'      => 0,
             'width'     => 0,
-            'height'    => 0
+            'height'    => 0,
         ]);
     }
 

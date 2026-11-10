@@ -76,8 +76,8 @@ class Review extends Base
                     'folder'    => 'projects',
                     'element'   => 'publications',
                     'name'      => $name,
-                    'layout'    => 'wrapper'
-                ]
+                    'layout'    => 'wrapper',
+                ],
             );
         }
 
@@ -109,8 +109,8 @@ class Review extends Base
                 'folder'    => 'projects',
                 'element'   => 'publications',
                 'name'      => $name,
-                'layout'    => 'review'
-            ]
+                'layout'    => 'review',
+            ],
         );
 
         \Hubzero\Document\Assets::addComponentStylesheet('com_projects', 'css/calendar');
@@ -175,7 +175,7 @@ class Review extends Base
                 'about'         => '',
                 'adminTips'     => '',
                 'elements'      => [],
-                'params'        => [  'required' => 1, 'published_editing' => 0 ]
+                'params'        => [  'required' => 1, 'published_editing' => 0 ],
             ];
 
             return json_decode(json_encode($manifest), false);

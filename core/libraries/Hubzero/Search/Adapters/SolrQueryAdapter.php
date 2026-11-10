@@ -71,9 +71,9 @@ class SolrQueryAdapter implements QueryInterface
                     'port' => $port,
                     'path' => $path,
                     'context' => $context,
-                    'core' => $core
-                ]
-            ]
+                    'core' => $core,
+                ],
+            ],
         ];
 
         // Create the client

@@ -54,7 +54,7 @@ class Seen extends Relational
      */
     protected $rules = [
         'mid' => 'positive|nonzero',
-        'uid' => 'positive|nonzero'
+        'uid' => 'positive|nonzero',
     ];
 
     /**

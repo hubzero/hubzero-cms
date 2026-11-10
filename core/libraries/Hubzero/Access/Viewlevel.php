@@ -42,7 +42,7 @@ class Viewlevel extends Relational
      * @var  array
      */
     protected $rules = [
-        'title' => 'notempty'
+        'title' => 'notempty',
     ];
 
     /**
@@ -51,7 +51,7 @@ class Viewlevel extends Relational
      * @var  array
      */
     public $initiate = [
-        'ordering'
+        'ordering',
     ];
 
     /**

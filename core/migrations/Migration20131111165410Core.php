@@ -26,7 +26,7 @@ class Migration20131111165410Core extends Base
         $init_params = [
             "period"     => "14",
             "chart_path" => "/site/stats/chart_resources/",
-            "map_path"   => "/site/stats/resource_maps/"
+            "map_path"   => "/site/stats/resource_maps/",
         ];
 
         if ($schema->tableExists('#__extensions')) {

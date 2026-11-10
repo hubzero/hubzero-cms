@@ -81,7 +81,7 @@ class GroupEvent extends WikiMacro
         //array of filters
         $filters = [
             'id' => (isset($arg['id'])) ? $arg['id'] : null,
-            'limit' => (isset($arg['number'])) ? $arg['number'] : 3
+            'limit' => (isset($arg['number'])) ? $arg['number'] : 3,
         ];
 
         //get group events

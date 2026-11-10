@@ -21,20 +21,20 @@ defined('_HZEXEC_') or die();
 if (Pathway::count() <= 0) {
     Pathway::append(
         Lang::txt('COM_BLOG'),
-        'index.php?option=' . $this->option
+        'index.php?option=' . $this->option,
     );
 }
 Pathway::append(
     $this->row->published('Y'),
-    'index.php?option=' . $this->option . '&year=' . $this->row->published('Y')
+    'index.php?option=' . $this->option . '&year=' . $this->row->published('Y'),
 );
 Pathway::append(
     $this->row->published('m'),
-    'index.php?option=' . $this->option . '&year=' . $this->row->published('Y') . '&month=' . sprintf("%02d", $this->row->published('m'))
+    'index.php?option=' . $this->option . '&year=' . $this->row->published('Y') . '&month=' . sprintf("%02d", $this->row->published('m')),
 );
 Pathway::append(
     stripslashes($this->row->get('title')),
-    $this->row->link()
+    $this->row->link(),
 );
 
 Document::setTitle(Lang::txt('COM_BLOG') . ': ' . stripslashes($this->row->get('title')));
@@ -44,7 +44,7 @@ $this->css()
 
 $first = $this->archive->entries([
         'state'      => $this->filters['state'],
-        'authorized' => $this->filters['authorized']
+        'authorized' => $this->filters['authorized'],
     ])
     ->order('publish_up', 'asc')
     ->limit(1)
@@ -109,7 +109,7 @@ $first = $this->archive->entries([
                     $comments = $this->row->comments()
                         ->whereIn('state', [
                             Components\Blog\Models\Comment::STATE_PUBLISHED,
-                            Components\Blog\Models\Comment::STATE_FLAGGED
+                            Components\Blog\Models\Comment::STATE_FLAGGED,
                         ])
                         ->total();
                     ?>
@@ -226,7 +226,7 @@ $first = $this->archive->entries([
                                         '09' => Lang::txt('COM_BLOG_SEPTEMBER'),
                                         '10' => Lang::txt('COM_BLOG_OCTOBER'),
                                         '11' => Lang::txt('COM_BLOG_NOVEMBER'),
-                                        '12' => Lang::txt('COM_BLOG_DECEMBER')
+                                        '12' => Lang::txt('COM_BLOG_DECEMBER'),
                                     ];
                                     foreach ($months as $key => $month) {
                                         if (intval($key) <= $entry_month) {
@@ -291,7 +291,7 @@ $first = $this->archive->entries([
         $comments = $this->row->comments()
             ->whereIn('state', [
                 Components\Blog\Models\Comment::STATE_PUBLISHED,
-                Components\Blog\Models\Comment::STATE_FLAGGED
+                Components\Blog\Models\Comment::STATE_FLAGGED,
             ])
             ->whereEquals('parent', 0)
             ->ordered()
@@ -329,7 +329,7 @@ $first = $this->archive->entries([
                         ->whereEquals('id', Request::getInt('reply', 0))
                         ->whereIn('state', [
                             Components\Blog\Models\Comment::STATE_PUBLISHED,
-                            Components\Blog\Models\Comment::STATE_FLAGGED
+                            Components\Blog\Models\Comment::STATE_FLAGGED,
                         ])
                         ->row();
 

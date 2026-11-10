@@ -48,18 +48,18 @@ class Tagged extends AdminController
             'tbl'     => Request::getState(
                 $this->_option . '.' . $this->_controller . '.tbl',
                 'tbl',
-                ''
+                '',
             ),
             'sort'     => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'id'
+                'id',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         $modelt = Objct::all()

@@ -27,7 +27,7 @@ class Groups extends Obj
     {
         return [
             'header'  => 'groups',
-            'content' => 'groupalias;groupalias;groupalias'
+            'content' => 'groupalias;groupalias;groupalias',
         ];
     }
 

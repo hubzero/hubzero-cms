@@ -118,7 +118,7 @@ class Postsv1r0 extends ApiController
             'sort_Dir'      => strtoupper(Request::getWord('sortDir', 'DESC')),
             'is_default'    => 0,
             'access'        => 0,
-            'count'         => true
+            'count'         => true,
         ];
         if ($collection_id = Request::getInt('collection_id')) {
             $filters['collection_id'] = $collection_id;
@@ -276,7 +276,7 @@ class Postsv1r0 extends ApiController
             'access'         => Request::getInt('access', 0, 'post'),
             'type'           => Request::getString('type', 'file', 'post'),
             'object_id'      => Request::getInt('object_id', 0, 'post'),
-            'collection_id'  => Request::getInt('collection_id', 0, 'post')
+            'collection_id'  => Request::getInt('collection_id', 0, 'post'),
         ];
 
         if (!$fields['collection_id']) {
@@ -546,7 +546,7 @@ class Postsv1r0 extends ApiController
             'access'         => Request::getInt('access', (int) $row->get('access', 0), 'put'),
             'type'           => Request::getString('type', $row->get('type', 'file'), 'put'),
             'object_id'      => Request::getInt('object_id', (int) $row->get('object_id', 0), 'put'),
-            'collection_id'  => Request::getInt('collection_id', (int) $row->get('collection_id', 0), 'put')
+            'collection_id'  => Request::getInt('collection_id', (int) $row->get('collection_id', 0), 'put'),
         ];
 
         if (!$row->exists()) {

@@ -60,7 +60,7 @@ class Integrity
         // Check if there are other collections that have the same alias
         try {
             $conflictingCollectionId = \Components\Storefront\Models\Collection::findActiveCollectionByAlias(
-                $collection->getAlias()
+                $collection->getAlias(),
             );
             if ($conflictingCollectionId && $conflictingCollectionId != $collection->getId()) {
                 $return->status = 'error';

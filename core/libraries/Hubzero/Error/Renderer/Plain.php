@@ -63,7 +63,7 @@ class Plain implements RendererInterface
                                 "%s %s %s()",
                                 $backtrace[$i]['class'],
                                 $backtrace[$i]['type'],
-                                $backtrace[$i]['function']
+                                $backtrace[$i]['function'],
                             );
                     } else {
                         $response .= "\n[$i] " . sprintf("%s()", $backtrace[$i]['function']);
@@ -73,7 +73,7 @@ class Plain implements RendererInterface
                         $response .= sprintf(
                             ' @ %s:%d',
                             str_replace(PATH_ROOT, '', $backtrace[$i]['file']),
-                            $backtrace[$i]['line']
+                            $backtrace[$i]['line'],
                         );
                     }
                 }

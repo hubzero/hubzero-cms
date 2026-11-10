@@ -33,7 +33,7 @@ class Ipynb extends Plugin
     {
         // We can handle 1 file
         $need = [
-            'ipynb' => 1
+            'ipynb' => 1,
         ];
 
         // Check extension to make sure we can proceed

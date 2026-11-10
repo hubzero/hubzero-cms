@@ -67,7 +67,7 @@ class Migration20160824181200ComWiki extends Base
                     ->set([
                         'scope'    => 'project',
                         'scope_id' => $row->pidNumber,
-                        'path'     => $row->path
+                        'path'     => $row->path,
                     ])
                     ->where('id', '=', $row->id)
                     ->execute();

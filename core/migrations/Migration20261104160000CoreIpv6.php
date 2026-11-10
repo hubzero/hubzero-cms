@@ -49,7 +49,7 @@ class Migration20261104160000CoreIpv6 extends Base
         '#__courses_page_hits'     => 'ip',
         '#__project_logs'          => 'ip',
         '#__xgroups_pages_hits'    => 'ip',
-        '#__citations_authors'     => 'ip'
+        '#__citations_authors'     => 'ip',
     ];
 
     /**

@@ -58,7 +58,7 @@ defined('_HZEXEC_') or die();
                 35,
                 25,
                 'about',
-                ['class' => 'form-control minimal no-footer']
+                ['class' => 'form-control minimal no-footer'],
             ); ?>
         </label>
     </div>
@@ -129,7 +129,7 @@ defined('_HZEXEC_') or die();
                         Html::access('assetgroups'),
                         'value',
                         'text',
-                        $access
+                        $access,
                     ); ?>
                 <?php else : ?>
                     <option value="1"<?php if ($this->model->get('access') == 1) {
@@ -258,7 +258,7 @@ endif;
         $routeUrl = Route::url(
             'index.php?option=' . $this->option
             . '&alias=' . $this->model->get('alias')
-            . '&active=info'
+            . '&active=info',
         );
         ?>
         <a href="<?php echo $routeUrl; ?>" class="btn btn-secondary btn-cancel">

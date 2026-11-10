@@ -46,7 +46,7 @@ class Sponsors extends Plugin
     public function &onResourcesSubAreas($resource)
     {
         $areas = [
-            'sponsors' => Lang::txt('PLG_RESOURCES_SPONSORS')
+            'sponsors' => Lang::txt('PLG_RESOURCES_SPONSORS'),
         ];
         return $areas;
     }
@@ -64,7 +64,7 @@ class Sponsors extends Plugin
         $arr = [
             'area'     => $this->_name,
             'html'     => '',
-            'metadata' => ''
+            'metadata' => '',
         ];
 
         $records = \Plugins\Resources\Sponsors\Models\Sponsor::all()
@@ -158,24 +158,24 @@ class Sponsors extends Plugin
                 $this->_option . '.plugins.sponsors.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start'    => Request::getState(
                 $this->_option . '.plugins.sponsors.limitstart',
                 'limitstart',
                 0,
-                'int'
+                'int',
             ),
             'sort'     => Request::getState(
                 $this->_option . '.plugins.sponsors.sort',
                 'filter_order',
-                'title'
+                'title',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.plugins.sponsors.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         $model = \Plugins\Resources\Sponsors\Models\Sponsor::all();
@@ -274,7 +274,7 @@ class Sponsors extends Plugin
             . $this->_controller . '&task=manage&plugin=sponsors';
         App::redirect(
             Route::url($url, false),
-            Lang::txt('PLG_RESOURCES_SPONSORS_ITEM_SAVED')
+            Lang::txt('PLG_RESOURCES_SPONSORS_ITEM_SAVED'),
         );
     }
 
@@ -299,7 +299,7 @@ class Sponsors extends Plugin
             App::redirect(
                 Route::url($url, false),
                 Lang::txt('PLG_RESOURCES_SPONSORS_NO_ITEM_SELECTED'),
-                'error'
+                'error',
             );
             return;
         }
@@ -320,9 +320,9 @@ class Sponsors extends Plugin
             Route::url(
                 'index.php?option=' . $this->_option . '&controller='
                     . $this->_controller . '&task=manage&plugin=sponsors',
-                false
+                false,
             ),
-            Lang::txt('PLG_RESOURCES_SPONSORS_ITEM_REMOVED')
+            Lang::txt('PLG_RESOURCES_SPONSORS_ITEM_REMOVED'),
         );
     }
 
@@ -371,7 +371,7 @@ class Sponsors extends Plugin
             App::redirect(
                 Route::url($url, false),
                 Lang::txt('PLG_RESOURCES_SPONSORS_SELECT_ITEM_TO', $action),
-                'error'
+                'error',
             );
             return;
         }
@@ -398,7 +398,7 @@ class Sponsors extends Plugin
             . $this->_controller . '&task=manage&plugin=sponsors';
         App::redirect(
             Route::url($url, false),
-            $message
+            $message,
         );
     }
 
@@ -412,7 +412,7 @@ class Sponsors extends Plugin
         $url = 'index.php?option=' . $this->_option . '&controller='
             . $this->_controller . '&task=manage&plugin=sponsors';
         App::redirect(
-            Route::url($url, false)
+            Route::url($url, false),
         );
     }
 }

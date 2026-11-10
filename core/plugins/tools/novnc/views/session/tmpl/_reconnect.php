@@ -28,7 +28,7 @@ $reconnectConfig = [
     'apiBase' => $base . '/api/tools',
     'links'   => [
         'account' => Route::url('index.php?option=com_members&task=myaccount'),
-        'home'    => $base . '/'
+        'home'    => $base . '/',
     ],
     'strings' => [
         'lostTitle'    => Lang::txt('PLG_TOOLS_NOVNC_RECONNECT_LOST_TITLE'),
@@ -47,8 +47,8 @@ $reconnectConfig = [
         'failMsg'      => Lang::txt('PLG_TOOLS_NOVNC_RECONNECT_FAIL_MSG'),
         'reload'       => Lang::txt('PLG_TOOLS_NOVNC_RECONNECT_RELOAD'),
         'account'      => Lang::txt('PLG_TOOLS_NOVNC_RECONNECT_ACCOUNT'),
-        'home'         => Lang::txt('PLG_TOOLS_NOVNC_RECONNECT_HOME')
-    ]
+        'home'         => Lang::txt('PLG_TOOLS_NOVNC_RECONNECT_HOME'),
+    ],
 ];
 ?>
 <script type="application/json" id="novnc-reconnect-config"><?php echo json_encode($reconnectConfig); ?></script>

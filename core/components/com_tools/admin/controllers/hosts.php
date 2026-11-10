@@ -50,37 +50,37 @@ class Hosts extends AdminController
             'hostname' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.hostname',
                 'hostname',
-                ''
+                '',
             )),
             'hosttype' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.hosttype',
                 'hosttype',
-                ''
+                '',
             )),
             // Sorting
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'hostname'
+                'hostname',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
+                'ASC',
             ),
             // Get paging variables
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limitstart',
                 'limitstart',
                 0,
-                'int'
-            )
+                'int',
+            ),
         ];
         // In case limit has been changed, adjust limitstart accordingly
         $filters['limit'] = ($filters['limit'] == 'all') ? 0 : $filters['limit'];

@@ -85,25 +85,25 @@ class Commentsv1r0 extends ApiController
             switch ($val) {
                 case 'year':
                     $val = with(new Date(
-                        mktime(0, 0, 0, date("m"), date("d"), date("Y") - 1)
+                        mktime(0, 0, 0, date("m"), date("d"), date("Y") - 1),
                     ))->format("Y-m-d H:i:s");
                     break;
 
                 case 'month':
                     $val = with(new Date(
-                        mktime(0, 0, 0, date("m") - 1, date("d"), date("Y"))
+                        mktime(0, 0, 0, date("m") - 1, date("d"), date("Y")),
                     ))->format("Y-m-d H:i:s");
                     break;
 
                 case 'week':
                     $val = with(new Date(
-                        mktime(0, 0, 0, date("m"), date("d") - 7, date("Y"))
+                        mktime(0, 0, 0, date("m"), date("d") - 7, date("Y")),
                     ))->format("Y-m-d H:i:s");
                     break;
 
                 case 'day':
                     $val = with(new Date(
-                        mktime(0, 0, 0, date("m"), date("d") - 1, date("Y"))
+                        mktime(0, 0, 0, date("m"), date("d") - 1, date("Y")),
                     ))->format("Y-m-d H:i:s");
                     break;
 
@@ -116,7 +116,7 @@ class Commentsv1r0 extends ApiController
                         preg_match(
                             "/([0-9]{4})-([0-9]{2})-([0-9]{2})/",
                             $val,
-                            $regs
+                            $regs,
                         )
                     ) {
                         $val .= ' 00:00:00';
@@ -124,7 +124,7 @@ class Commentsv1r0 extends ApiController
                         preg_match(
                             "/([0-9]{4})-([0-9]{2})/",
                             $val,
-                            $regs
+                            $regs,
                         )
                     ) {
                         $val .= '-01 00:00:00';
@@ -364,7 +364,7 @@ class Commentsv1r0 extends ApiController
                 'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_OWNER'),
                 'name'  => $ticket->assignee->get('name'),
                 'email' => $ticket->assignee->get('email'),
-                'id'    => $ticket->assignee->get('id')
+                'id'    => $ticket->assignee->get('id'),
             ]);
         }
 
@@ -389,7 +389,7 @@ class Commentsv1r0 extends ApiController
             $from = [
                 'name'      => Lang::txt('COM_SUPPORT_EMAIL_FROM', Config::get('sitename')),
                 'email'     => Config::get('mailfrom'),
-                'multipart' => md5(date('U'))
+                'multipart' => md5(date('U')),
             ];
 
             $message = [];
@@ -398,7 +398,7 @@ class Commentsv1r0 extends ApiController
             $eview = new \Hubzero\Mail\View([
                 'base_path' => dirname(dirname(__DIR__)) . '/site',
                 'name'      => 'emails',
-                'layout'    => 'comment_plain'
+                'layout'    => 'comment_plain',
             ]);
             $eview->option     = 'com_support';
             $eview->controller = 'tickets';
@@ -427,14 +427,14 @@ class Commentsv1r0 extends ApiController
                     // in the log rather than losing it
                     Log::warning(Lang::txt(
                         'COM_SUPPORT_ERROR_FAILED_TO_MESSAGE',
-                        $to['name'] . '(' . $to['role'] . ')'
+                        $to['name'] . '(' . $to['role'] . ')',
                     ));
                     continue;
                 }
                 $comment->changelog()->notified(
                     $to['role'],
                     $to['name'],
-                    $to['email']
+                    $to['email'],
                 );
             }
 
@@ -444,7 +444,7 @@ class Commentsv1r0 extends ApiController
 
                     $email = [
                         $to['email'],
-                        'htc-' . $token . strstr(Config::get('mailfrom'), '@')
+                        'htc-' . $token . strstr(Config::get('mailfrom'), '@'),
                     ];
 
                     // In this case each item in email in an array, 1- To, 2:reply to address
@@ -457,7 +457,7 @@ class Commentsv1r0 extends ApiController
                 $comment->changelog()->notified(
                     $to['role'],
                     $to['name'],
-                    $to['email']
+                    $to['email'],
                 );
             }
         }

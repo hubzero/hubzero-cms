@@ -32,7 +32,7 @@ if ($this->getError()) { ?>
         <?php if ($this->row->introtext) { ?>
             <?php echo \Hubzero\Utility\Str::truncate(
                 $this->escape(strip_tags($this->row->introtext)),
-                $this->txt_length
+                $this->txt_length,
             ); ?>
         <?php } ?>
         </p>

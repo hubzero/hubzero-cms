@@ -17,7 +17,7 @@ $this->stages = [
     Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_CONTRIBUTORS'),
     Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_ATTACHMENTS'),
     Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_TAGS'),
-    Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_FINALIZE')
+    Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_FINALIZE'),
 ];
 $key = $this->stage - 1;
 $stageEditTip = ($this->version == 'dev')
@@ -40,7 +40,7 @@ $stageEditTip = ($this->version == 'dev')
                 'index.php?option=' . $this->option
                 . '&task=' . $this->controller
                 . '&step=' . ($i + 1)
-                . '&app=' . $this->row->alias
+                . '&app=' . $this->row->alias,
             );
             $html .= '<a href="' . $devStepUrl . '">' . $this->stages[$i] . '</a>';
         } elseif (
@@ -52,7 +52,7 @@ $stageEditTip = ($this->version == 'dev')
                 . '&task=' . $this->controller
                 . '&step=' . ($i + 1)
                 . '&app=' . $this->row->alias
-                . '&editversion=current'
+                . '&editversion=current',
             );
             $html .= '<a href="' . $curStepUrl . '">' . $this->stages[$i] . '</a>';
         } else {
@@ -88,7 +88,7 @@ if ($this->version == 'dev' && $this->status['published']) {
         . '&task=' . $this->controller
         . '&step=' . $this->stage
         . '&app=' . $this->row->alias
-        . '&editversion=current'
+        . '&editversion=current',
     );
     $html .= ' <span><a href="' . $changeCurUrl . '">'
         . Lang::txt('COM_TOOLS_CONTRIBTOOL_CHANGE_CURRENT_VERSION')
@@ -100,7 +100,7 @@ if ($this->version == 'current' && $this->status['published']) {
         'index.php?option=' . $this->option
         . '&task=' . $this->controller
         . '&step=' . $this->stage
-        . '&app=' . $this->row->alias
+        . '&app=' . $this->row->alias,
     );
     $html .= ' <span><a href="' . $changeUpUrl . '">'
         . Lang::txt('COM_TOOLS_CONTRIBTOOL_CHANGE_UPCOMING_VERSION')

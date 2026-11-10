@@ -23,7 +23,7 @@ if ($canDo->get('core.create')) {
         'index.php?option=' . $this->option
         . '&controller=' . $this->controller
         . '&section=' . $this->section->get('id')
-        . '&task=options&tmpl=component'
+        . '&task=options&tmpl=component',
     );
     Toolbar::appendButton(
         'Popup',
@@ -31,7 +31,7 @@ if ($canDo->get('core.create')) {
         'COM_COURSES_GENERATE',
         $popupUrl,
         500,
-        200
+        200,
     );
 
     Toolbar::spacer();
@@ -87,7 +87,7 @@ Html::behavior('tooltip');
         <caption>
             <?php
                 $routeUrl = Route::url(
-                    'index.php?option=' . $this->option  . '&controller=offerings&course=' . $this->course->get('id')
+                    'index.php?option=' . $this->option  . '&controller=offerings&course=' . $this->course->get('id'),
                 );
                 ?>
             (<a href="<?php echo $routeUrl; ?>">
@@ -95,7 +95,7 @@ Html::behavior('tooltip');
             </a>)
             <?php
                 $routeUrl = Route::url(
-                    'index.php?option=' . $this->option  . '&controller=offerings&course=' . $this->course->get('id')
+                    'index.php?option=' . $this->option  . '&controller=offerings&course=' . $this->course->get('id'),
                 );
                 ?>
             <a href="<?php echo $routeUrl; ?>">
@@ -103,7 +103,7 @@ Html::behavior('tooltip');
             </a>:
             <?php
                 $routeUrl = Route::url(
-                    'index.php?option=' . $this->option  . '&controller=sections&offering=' . $this->offering->get('id')
+                    'index.php?option=' . $this->option  . '&controller=sections&offering=' . $this->offering->get('id'),
                 );
                 ?>
             <a href="<?php echo $routeUrl; ?>">
@@ -139,7 +139,7 @@ Html::behavior('tooltip');
                     echo $this->pagination(
                         $this->total,
                         $this->filters['start'],
-                        $this->filters['limit']
+                        $this->filters['limit'],
                     );
                     ?>
                 </td>
@@ -170,7 +170,7 @@ Html::behavior('tooltip');
                         <?php
                             $routeUrl = Route::url(
                                 'index.php?option=' . $this->option . '&controller=' . $this->controller
-                                . '&task=edit&id=' . $row->get('id')
+                                . '&task=edit&id=' . $row->get('id'),
                             );
                         ?>
                         <a href="<?php echo $routeUrl; ?>">
@@ -221,7 +221,7 @@ Html::behavior('tooltip');
                         <?php
                             $routeUrl = Route::url(
                                 'index.php?option=' . $this->option . '&controller=students&task=edit&section='
-                                . $row->get('section_id') . '&id=' . $row->get('redeemed_by')
+                                . $row->get('section_id') . '&id=' . $row->get('redeemed_by'),
                             );
                         ?>
                         <a href="<?php echo $routeUrl; ?>">

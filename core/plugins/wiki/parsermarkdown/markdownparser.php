@@ -50,7 +50,7 @@ class MarkdownParser
         'fullparse' => true,
         'camelcase' => true,
         'loglinks'  => false,
-        'style'     => 'Markdown'
+        'style'     => 'Markdown',
     ];
 
     /**
@@ -61,7 +61,7 @@ class MarkdownParser
     private $_data = [
         'input'  => null,
         'output' => null,
-        'links'  => []
+        'links'  => [],
     ];
 
     /**
@@ -255,7 +255,7 @@ class MarkdownParser
             $matches[0],
             'math',
             $this->_randomString(),
-            '$$' . $matches[1] . '$$'
+            '$$' . $matches[1] . '$$',
         ]);
     }
 

@@ -58,7 +58,7 @@ if ($attributes) {
 $docs = [
     'pdf', 'doc', 'docx', 'xls', 'xlsx',
     'ppt', 'pptx', 'pages', 'ai',
-    'psd', 'tiff', 'dxf', 'eps', 'ps', 'ttf', 'xps', 'svg'
+    'psd', 'tiff', 'dxf', 'eps', 'ps', 'ttf', 'xps', 'svg',
 ];
 
 $html5video = ["mp4","m4v","webm","ogv"];
@@ -71,7 +71,7 @@ if (!User::isGuest()) {
     $key = App::hash(@$_SERVER['HTTP_USER_AGENT']);
     $crypter = new \Hubzero\Encryption\Encrypter(
         new \Hubzero\Encryption\Cipher\Simple(),
-        new \Hubzero\Encryption\Key('simple', $key, $key)
+        new \Hubzero\Encryption\Key('simple', $key, $key),
     );
 
     $token = base64_encode($crypter->encrypt($session_id));

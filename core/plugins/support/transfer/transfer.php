@@ -305,7 +305,7 @@ class Transfer extends Plugin
         $database->setQuery(
             'SELECT t.objectid FROM `#__tags_object` as t LEFT JOIN `#__tags` as tt ON tt.id = t.tagid '
             . 'WHERE t.tbl="resources" AND (tt.raw_tag=' . $database->quote($tag)
-            . ' OR tt.tag=' . $database->quote($tag) . ')'
+            . ' OR tt.tag=' . $database->quote($tag) . ')',
         );
         return $database->loadResult();
     }
@@ -326,7 +326,7 @@ class Transfer extends Plugin
         $database = App::get('db');
         $database->setQuery(
             'SELECT r.id FROM `#__resources` as r LEFT JOIN `#__xgroups` as g ON g.cn = r.alias '
-            . 'WHERE g.cn=' . $database->quote($groupname)
+            . 'WHERE g.cn=' . $database->quote($groupname),
         );
         return $database->loadResult();
     }

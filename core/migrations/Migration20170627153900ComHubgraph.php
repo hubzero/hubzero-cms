@@ -171,11 +171,11 @@ class Migration20170627153900ComHubgraph extends Base
             'hg_jos_xprofiles_delete_trigger',
             'hg_jos_xprofiles_bio_insert_trigger',
             'hg_jos_xprofiles_bio_update_trigger',
-            'hg_jos_xprofiles_bio_delete_trigger'
+            'hg_jos_xprofiles_bio_delete_trigger',
         ];
 
         $this->db->setQuery(
-            "SELECT TRIGGER_NAME FROM information_schema.TRIGGERS WHERE TRIGGER_SCHEMA = DATABASE()"
+            "SELECT TRIGGER_NAME FROM information_schema.TRIGGERS WHERE TRIGGER_SCHEMA = DATABASE()",
         );
         $existing = (array) $this->db->loadColumn();
 

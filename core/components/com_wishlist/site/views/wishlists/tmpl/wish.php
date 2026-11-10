@@ -282,7 +282,7 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                                         '2'   => '2 - ' . Lang::txt('COM_WISHLIST_INTERESTING'),
                                         '3'   => '3 - ' . Lang::txt('COM_WISHLIST_GOODIDEA'),
                                         '4'   => '4 - ' . Lang::txt('COM_WISHLIST_IMPORTANT'),
-                                        '5'   => '5 - ' . Lang::txt('COM_WISHLIST_CRITICAL')
+                                        '5'   => '5 - ' . Lang::txt('COM_WISHLIST_CRITICAL'),
                                     ];
                                     ?>
                                     <td>
@@ -327,7 +327,7 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                                         '2'   => Lang::txt('COM_WISHLIST_ONEWEEK'),
                                         '1'   => Lang::txt('COM_WISHLIST_TWOWEEKS'),
                                         '0.0' => Lang::txt('COM_WISHLIST_TWOMONTHS'),
-                                        '6'   => Lang::txt('COM_WISHLIST_DONT_KNOW')
+                                        '6'   => Lang::txt('COM_WISHLIST_DONT_KNOW'),
                                     ];
                                     ?>
                                     <td>
@@ -644,7 +644,7 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                 $comments = $this->wish->comments()
                     ->whereIn('state', [
                         Components\Wishlist\Models\Comment::STATE_PUBLISHED,
-                        Components\Wishlist\Models\Comment::STATE_FLAGGED
+                        Components\Wishlist\Models\Comment::STATE_FLAGGED,
                     ])
                 ->rows();
                 ?>

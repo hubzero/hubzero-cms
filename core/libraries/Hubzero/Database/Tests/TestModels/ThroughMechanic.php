@@ -30,7 +30,7 @@ class ThroughMechanic extends Relational
             ThroughOwner::class,
             ThroughCar::class,
             'owner_id',
-            'mechanic_id'
+            'mechanic_id',
         );
     }
 }

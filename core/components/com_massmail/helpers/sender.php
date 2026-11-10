@@ -55,7 +55,7 @@ class Sender
             'sent'        => 0,
             'failed'      => 0,
             'queue'       => -1,
-            'system_sent_last_hour' => -1
+            'system_sent_last_hour' => -1,
         ];
 
         // One sender at a time.
@@ -147,7 +147,7 @@ class Sender
 			 WHERE `status` = " . $db->quote(Mailing::STATUS_SCHEDULED) . "
 			 AND `scheduled_at` IS NOT NULL
 			 AND `scheduled_at` <> '0000-00-00 00:00:00'
-			 AND `scheduled_at` <= UTC_TIMESTAMP()"
+			 AND `scheduled_at` <= UTC_TIMESTAMP()",
         );
         $db->execute();
 
@@ -181,7 +181,7 @@ class Sender
             "SELECT COUNT(*) FROM `#__massmail_recipients`
 			 WHERE status = " . Recipient::SENT . "
 			 AND sent_on IS NOT NULL
-			 AND sent_on >= (UTC_TIMESTAMP() - INTERVAL 1 HOUR)"
+			 AND sent_on >= (UTC_TIMESTAMP() - INTERVAL 1 HOUR)",
         );
         return (int) $db->loadResult();
     }
@@ -198,7 +198,7 @@ class Sender
         $db = \App::get('db');
         $db->setQuery(
             "SELECT recurrence FROM `#__cron_jobs`
-			 WHERE plugin = 'massmail' AND event = 'processMassmailQueue' LIMIT 1"
+			 WHERE plugin = 'massmail' AND event = 'processMassmailQueue' LIMIT 1",
         );
         $n = Rate::firingsPerHour((string) $db->loadResult());
         return $n > 0 ? $n : 12;
@@ -224,7 +224,7 @@ class Sender
             "SELECT COUNT(*) FROM `#__massmail_recipients` r
 			 JOIN `#__massmail_mailings` m ON m.id = r.mailing_id
 			 WHERE r.status = " . Recipient::PENDING . "
-			 AND m.status IN (" . $db->quote(Mailing::STATUS_SENDING) . ", " . $db->quote(Mailing::STATUS_PREPARING) . ", " . $db->quote(Mailing::STATUS_PAUSED) . ")"
+			 AND m.status IN (" . $db->quote(Mailing::STATUS_SENDING) . ", " . $db->quote(Mailing::STATUS_PREPARING) . ", " . $db->quote(Mailing::STATUS_PAUSED) . ")",
         );
         $pending = (int) $db->loadResult();
 
@@ -238,7 +238,7 @@ class Sender
                 . (int) $systemSent . ", "
                 . (int) $sentThisRun . ", "
                 . (int) $pending . ", "
-                . $cumulative . ")"
+                . $cumulative . ")",
         );
         $db->execute();
 
@@ -264,7 +264,7 @@ class Sender
 				WHERE r.mailing_id = m.id AND r.status = " . Recipient::PENDING . "
 			 )
 			 ORDER BY m.started_on ASC, m.id ASC
-			 LIMIT 1"
+			 LIMIT 1",
         );
         $id = (int) $db->loadResult();
         return $id ? Mailing::oneOrFail($id) : null;
@@ -377,7 +377,7 @@ class Sender
 			 AND NOT EXISTS (
 				SELECT 1 FROM `#__massmail_recipients` r
 				WHERE r.mailing_id = $mid AND r.status = " . Recipient::PENDING . "
-			 )"
+			 )",
         );
         $db->execute();
 
@@ -403,7 +403,7 @@ class Sender
 			 SET m.sent_count    = (SELECT COUNT(*) FROM `#__massmail_recipients` WHERE mailing_id = $mid AND status = " . Recipient::SENT . "),
 			     m.failed_count  = (SELECT COUNT(*) FROM `#__massmail_recipients` WHERE mailing_id = $mid AND status = " . Recipient::FAILED . "),
 			     m.skipped_count = (SELECT COUNT(*) FROM `#__massmail_recipients` WHERE mailing_id = $mid AND status = " . Recipient::SKIPPED . ")
-			 WHERE m.id = $mid"
+			 WHERE m.id = $mid",
         );
         $db->execute();
     }

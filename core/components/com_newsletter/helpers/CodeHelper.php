@@ -34,7 +34,7 @@ class CodeHelper
         $database = App::get('db');
         $vars = [
                     $campaignId,
-                    $username
+                    $username,
                 ];
 
         $sql = "SELECT hash_access_code(?, ?)";

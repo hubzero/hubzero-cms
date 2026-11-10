@@ -22,61 +22,61 @@ class Migration20190307000000ComCourses extends Base
      **/
     public static $tables = [
         '#__courses' => [
-            'created'
+            'created',
         ],
         '#__courses_announcements' => [
             'created',
             'publish_up',
-            'publish_down'
+            'publish_down',
         ],
         '#__courses_asset_groups' => [
-            'created'
+            'created',
         ],
         '#__courses_assets' => [
-            'created'
+            'created',
         ],
         '#__courses_log' => [
-            'timestamp'
+            'timestamp',
         ],
         '#__courses_member_notes' => [
-            'created'
+            'created',
         ],
         '#__courses_members' => [
             'enrolled',
-            'first_visit'
+            'first_visit',
         ],
         '#__courses_offering_section_codes' => [
             'created',
             'expires',
-            'redeemed'
+            'redeemed',
         ],
         '#__courses_offering_section_dates' => [
             'created',
             'publish_up',
-            'publish_down'
+            'publish_down',
         ],
         '#__courses_offering_sections' => [
             'created',
             'publish_up',
             'publish_down',
             'start_date',
-            'end_date'
+            'end_date',
         ],
         '#__courses_offerings' => [
             'created',
             'publish_up',
-            'publish_down'
+            'publish_down',
         ],
         '#__courses_page_hits' => [
-            'datetime'
+            'datetime',
         ],
         '#__courses_reviews' => [
             'created',
-            'modified'
+            'modified',
         ],
         '#__courses_units' => [
-            'created'
-        ]
+            'created',
+        ],
     ];
 
     /**

@@ -116,7 +116,7 @@ class QueryCachingTest extends AbstractDriverTestCase
         $this->assertStringStartsWith(
             'tenant_a:hubzero_query_',
             $this->mockCache->lastKey,
-            'Persistent cache key should be namespaced'
+            'Persistent cache key should be namespaced',
         );
     }
 
@@ -285,7 +285,7 @@ class QueryCachingTest extends AbstractDriverTestCase
         $this->assertStringStartsWith(
             'custom_prefix_',
             $this->mockCache->lastKey,
-            'Cache key should have custom prefix'
+            'Cache key should have custom prefix',
         );
     }
 
@@ -373,7 +373,7 @@ class QueryCachingTest extends AbstractDriverTestCase
         $this->assertGreaterThan(
             $putCountAfterFirst,
             $this->mockCache->putCount,
-            'Cache should have been updated with noCache=true'
+            'Cache should have been updated with noCache=true',
         );
     }
 

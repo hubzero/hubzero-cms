@@ -40,7 +40,7 @@ $this->js();
 <?php
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
 ?>
@@ -69,7 +69,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                 echo Components\Blog\Admin\Helpers\Html::scopes(
                                     $this->row->get('scope'),
                                     'fields[scope]',
-                                    'field-scope'
+                                    'field-scope',
                                 );
                                 ?>
                             <?php } else { ?>
@@ -157,7 +157,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                         50,
                         30,
                         'field-content',
-                        ['class' => 'required', 'buttons' => false]
+                        ['class' => 'required', 'buttons' => false],
                     );
                     ?>
                 </div>
@@ -171,7 +171,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                     <?php
                     $tf = Event::trigger(
                         'hubzero.onGetMultiEntry',
-                        [['tags', 'tags', 'field-tags', '', $this->row->tags('string')]]
+                        [['tags', 'tags', 'field-tags', '', $this->row->tags('string')]],
                     );
 
                     if (count($tf) > 0) {
@@ -263,7 +263,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                             Html::access('assetgroups'),
                             'value',
                             'text',
-                            $this->row->get('access')
+                            $this->row->get('access'),
                         );
                         ?>
                     </select>
@@ -296,14 +296,14 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                     ) {
                         $publishUpVal = $this->escape(
                             Date::of($this->row->get('publish_up'))
-                                ->toLocal('Y-m-d H:i:s')
+                                ->toLocal('Y-m-d H:i:s'),
                         );
                     }
                     echo Html::input(
                         'calendar',
                         'fields[publish_up]',
                         $publishUpVal,
-                        ['id' => 'field-publish_up']
+                        ['id' => 'field-publish_up'],
                     );
                     ?>
                 </div>
@@ -320,14 +320,14 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                     ) {
                         $publishDownVal = $this->escape(
                             Date::of($this->row->get('publish_down'))
-                                ->toLocal('Y-m-d H:i:s')
+                                ->toLocal('Y-m-d H:i:s'),
                         );
                     }
                     echo Html::input(
                         'calendar',
                         'fields[publish_down]',
                         $publishDownVal,
-                        ['id' => 'field-publish_down']
+                        ['id' => 'field-publish_down'],
                     );
                     ?>
                 </div>

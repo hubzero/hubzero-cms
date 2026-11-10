@@ -44,7 +44,7 @@ class Blogs extends Plugin
             'title'   => Lang::txt('PLG_TAGS_BLOGS'),
             'total'   => 0,
             'results' => null,
-            'sql'     => ''
+            'sql'     => '',
         ];
 
         if (empty($tags)) {
@@ -144,7 +144,7 @@ class Blogs extends Plugin
         $view = new \Hubzero\Plugin\View([
             'folder'  => 'tags',
             'element' => 'blogs',
-            'name'    => 'result'
+            'name'    => 'result',
         ]);
         $view->entry = \Components\Blog\Models\Entry::blank();
         $view->entry->set(get_object_vars($row));

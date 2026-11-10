@@ -19,7 +19,7 @@ $cls = [
     'no-js',
     $browser->name(),
     $browser->name() . $browser->major(),
-    $this->direction
+    $this->direction,
 ];
 ?>
 <!DOCTYPE html>

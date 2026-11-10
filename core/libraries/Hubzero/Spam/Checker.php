@@ -134,7 +134,7 @@ class Checker
 
         if (isset($this->detectors[$detectorId])) {
             throw new RuntimeException(
-                sprintf('Spam Detector [%s] already registered', $detectorId)
+                sprintf('Spam Detector [%s] already registered', $detectorId),
             );
         }
 
@@ -194,7 +194,7 @@ class Checker
             'id'         => null,
             'text'       => null,
             'ip'         => null,
-            'user_agent' => null
+            'user_agent' => null,
         ], $data);
 
         $data['original_text'] = $data['text'];
@@ -234,7 +234,7 @@ class Checker
         $this->report[] = [
             'service' => $name,
             'is_spam' => $value,
-            'message' => $message
+            'message' => $message,
         ];
     }
 }

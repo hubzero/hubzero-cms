@@ -122,7 +122,7 @@ class Router extends Base
             'edit', 'browse', 'intro',
             'features', 'auth', 'delete',
             'fixownership', 'suspend', 'reinstate',
-            'process', 'activate', 'requestaccess'
+            'process', 'activate', 'requestaccess',
         ];
 
         // Media tasks
@@ -279,7 +279,7 @@ class Router extends Base
                     // App actions
                     $appActions = ['status', 'history', 'wiki', 'browse',
                         'edit', 'start', 'save', 'register', 'attach', 'source',
-                        'cancel', 'update', 'message', 'verify', 'addimage'
+                        'cancel', 'update', 'message', 'verify', 'addimage',
                     ];
                     if (in_array($segments[2], $appActions)) {
                         $vars['action'] = $segments[2];
@@ -302,7 +302,7 @@ class Router extends Base
                         'rename', 'saverename', 'history',
                         'compare', 'comments', 'editcomment',
                         'addcomment', 'savecomment', 'removecomment',
-                        'reportcomment', 'deleterevision', 'pdf'
+                        'reportcomment', 'deleterevision', 'pdf',
                     ];
 
                     $remaining = array_slice($segments, 2);

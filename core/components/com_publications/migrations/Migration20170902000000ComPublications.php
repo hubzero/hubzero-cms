@@ -33,7 +33,7 @@ class Migration20170902000000ComPublications extends Base
                     ['level2','Intermediate','Juniors/Seniors'],
                     ['level3','Advanced','Graduate Students'],
                     ['level4','Expert','PhD Experts'],
-                    ['level5','Professional','Beyond PhD']
+                    ['level5','Professional','Beyond PhD'],
                 ];
                 foreach ($audiences as $audience) {
                     $query = "INSERT INTO `#__publication_audience_levels` "
@@ -64,7 +64,7 @@ class Migration20170902000000ComPublications extends Base
                     ['Application','apps','simulation tool','0','0','4',''],
                     ['Series','series','publication collection','0','0','6',''],
                     ['Gallery','gallery','image/photo gallery','0','0','7',''],
-                    ['Databases','databases','project database','0','0','2','']
+                    ['Databases','databases','project database','0','0','2',''],
                 ];
                 foreach ($types as $type) {
                     $query = "INSERT INTO `#__publication_master_types` "
@@ -184,70 +184,70 @@ class Migration20170902000000ComPublications extends Base
                     [
                         '1', 'Datasets', 'Dataset', 'dataset', 'datasets',
                         'A collection of research data',
-                        '1', '1', $customFields, $datasetsParams
+                        '1', '1', $customFields, $datasetsParams,
                     ],
                     [
                         '2', 'Workshops', 'Event', 'workshop', 'workshops',
                         'A collection of lectures, seminars, and materials '
                             . 'that were presented at a workshop.',
-                        '0', '0', $customFields, $params
+                        '0', '0', $customFields, $params,
                     ],
                     [
                         '3', 'Publications', 'Dataset', 'publication', 'publications',
                         'A publication is a paper relevant to the community '
                             . 'that has been published in some manner.',
-                        '0', '0', $customFields, $params
+                        '0', '0', $customFields, $params,
                     ],
                     [
                         '4', 'Learning Modules', 'InteractiveResource',
                         'learning module', 'learningmodules',
                         'A combination of presentations, tools, assignments, '
                             . 'etc. geared toward teaching a specific concept.',
-                        '0', '0', $customFields, $params
+                        '0', '0', $customFields, $params,
                     ],
                     [
                         '5', 'Animations', 'MovingImage', 'animation', 'animations',
                         'An animation is a Flash-based demo or short movie '
                             . 'that illustrates some concept.',
-                        '0', '0', $customFields, $params
+                        '0', '0', $customFields, $params,
                     ],
                     [
                         '6', 'Courses', 'Collection', 'course', 'courses',
                         'University courses that make videos of lectures and '
                             . 'associated teaching materials available.',
-                        '0', '0', $customFields, $params
+                        '0', '0', $customFields, $params,
                     ],
                     [
                         '7', 'Tools', 'Software', 'tool', 'tools',
                         'A simulation tool is software that allows users to '
                             . 'run a specific type of calculation.',
-                        '0', '1', $toolsCustomFields, $params
+                        '0', '1', $toolsCustomFields, $params,
                     ],
                     [
                         '8', 'Downloads', 'PhysicalObject', 'download', 'downloads',
                         'A download is a type of resource that users can '
                             . 'download and use on their own computer.',
-                        '0', '0', $customFields, $params
+                        '0', '0', $customFields, $params,
                     ],
                     [
                         '9', 'Notes', 'Text', 'note', 'notes',
                         'Notes are typically a category for any resource that '
                             . 'might not fit any of the other categories.',
-                        '0', '0', $customFields, $params
+                        '0', '0', $customFields, $params,
                     ],
                     [
                         '10', 'Series', 'Collection', 'series', 'series',
                         'Series are collections of other resources, typically '
                             . 'online presentations, that cover a specific topic.',
-                        '0', '0', $customFields, $params
+                        '0', '0', $customFields, $params,
                     ],
                     [
                         '11', 'Teaching Materials', 'Text',
                         'teaching material', 'teachingmaterials',
                         'Supplementary materials (study notes, guides, etc.) that '
                             . 'don\'t quite fit into any of the other categories.',
-                        '0', '0', $customFields, $params
-                    ]
+                        '0', '0', $customFields, $params,
+                    ],
                 ];
                 foreach ($cats as $cat) {
                     $query = "INSERT INTO `#__publication_categories` "
@@ -288,7 +288,7 @@ class Migration20170902000000ComPublications extends Base
             if ($this->db->query()) {
                 $this->log(
                     'Deleted publication audiences '
-                    . '"level0, level1, level2, level3, level4, level5"'
+                    . '"level0, level1, level2, level3, level4, level5"',
                 );
             }
         }
@@ -302,7 +302,7 @@ class Migration20170902000000ComPublications extends Base
             if ($this->db->query()) {
                 $this->log(
                     'Deleted publication types '
-                    . '"files, links, notes, apps, series, gallery, databases"'
+                    . '"files, links, notes, apps, series, gallery, databases"',
                 );
             }
         }
@@ -329,7 +329,7 @@ class Migration20170902000000ComPublications extends Base
                 $this->log(
                     'Deleted publication categories "Datasets, Workshops, '
                     . 'Publications, Learning Modules, Animations, Courses, '
-                    . 'Tools, Downloads, Notes, Series, Teaching Materials"'
+                    . 'Tools, Downloads, Notes, Series, Teaching Materials"',
                 );
             }
         }

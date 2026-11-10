@@ -36,10 +36,10 @@ $this->js('activity.js');
 <?php
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 $invalidMsg = $this->escape(
-    Lang::txt('COM_PROJECTS_ERROR_MISSING_CONTENT')
+    Lang::txt('COM_PROJECTS_ERROR_MISSING_CONTENT'),
 );
 ?>
 <form
@@ -78,7 +78,7 @@ $invalidMsg = $this->escape(
 ?></span></label><br />
                     <?php
                     $descValue = $this->escape(
-                        $this->row->log->get('description')
+                        $this->row->log->get('description'),
                     );
                     echo $this->editor(
                         'fields[description]',
@@ -89,7 +89,7 @@ $invalidMsg = $this->escape(
                         [
                             'class' => 'required minimal no-footer',
                             'buttons' => false,
-                        ]
+                        ],
                     );
                     ?>
                 </div>

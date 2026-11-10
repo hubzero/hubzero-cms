@@ -36,31 +36,31 @@ class Students extends AdminController
             'offering' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.offering',
                 'offering',
-                0
+                0,
             ),
             'section_id' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.section',
                 'section',
-                0
+                0,
             ),
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             )),
             // Filters for returning results
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limitstart',
                 'limitstart',
                 0,
-                'int'
-            )
+                'int',
+            ),
         ];
 
         $this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->filters['offering']);
@@ -247,7 +247,7 @@ class Students extends AdminController
                 $fields['user_id'],
                 $fields['course_id'],
                 null,
-                null
+                null,
             );
 
             // Is there an existing record and are they a student?
@@ -295,7 +295,7 @@ class Students extends AdminController
                 . '&section=' . $fields['section_id'];
             App::redirect(
                 Route::url($url, false),
-                ($c > 0 ? Lang::txt('COM_COURSES_STUDENTS_SAVED', $c) : null)
+                ($c > 0 ? Lang::txt('COM_COURSES_STUDENTS_SAVED', $c) : null),
             );
             return;
         }
@@ -340,7 +340,7 @@ class Students extends AdminController
                     Notify::error(Lang::txt(
                         'COM_COURSES_ERROR_UNABLE_TO_REMOVE_STUDENT',
                         $model->get('user_id'),
-                        $model->get('section_id')
+                        $model->get('section_id'),
                     ));
                     continue;
                 }
@@ -355,7 +355,7 @@ class Students extends AdminController
             . ($section_id ? '&section=' . $section_id : '');
         App::redirect(
             Route::url($url, false),
-            ($num > 0 ? Lang::txt('COM_COURSES_STUDENTS_REMOVED', $num) : null)
+            ($num > 0 ? Lang::txt('COM_COURSES_STUDENTS_REMOVED', $num) : null),
         );
     }
 
@@ -373,7 +373,7 @@ class Students extends AdminController
             . ($offering_id ? '&offering=' . $offering_id : '')
             . ($section_id ? '&section=' . $section_id : '');
         App::redirect(
-            Route::url($url, false)
+            Route::url($url, false),
         );
     }
 
@@ -388,13 +388,13 @@ class Students extends AdminController
             'offering' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.offering',
                 'offering',
-                0
+                0,
             ),
             'section_id' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.section',
                 'section',
-                0
-            )
+                0,
+            ),
         ];
 
         $this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->filters['offering']);

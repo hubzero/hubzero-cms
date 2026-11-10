@@ -62,7 +62,7 @@ class Migration20261029000001PlgCronMembersServiceAccounts extends Base
             $this->db->query();
             $this->db->setQuery(
                 "INSERT INTO `#__usergroups` (`parent_id`, `lft`, `rgt`, `title`) VALUES ("
-                . (int) $root->id . ", " . $rgt . ", " . ($rgt + 1) . ", " . $this->db->quote(self::TITLE) . ")"
+                . (int) $root->id . ", " . $rgt . ", " . ($rgt + 1) . ", " . $this->db->quote(self::TITLE) . ")",
             );
             $this->db->query();
 
@@ -76,7 +76,7 @@ class Migration20261029000001PlgCronMembersServiceAccounts extends Base
         $this->db->setQuery(
             "INSERT IGNORE INTO `#__user_usergroup_map` (`user_id`, `group_id`)"
             . " SELECT `id`, " . (int) $id . " FROM `#__users`"
-            . " WHERE `username` IN (" . implode(', ', array_map([$this->db, 'quote'], self::USERNAMES)) . ")"
+            . " WHERE `username` IN (" . implode(', ', array_map([$this->db, 'quote'], self::USERNAMES)) . ")",
         );
         $this->db->query();
     }

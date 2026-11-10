@@ -117,7 +117,7 @@ class Grid
         $published = 'Published',
         $unpublished = 'Unpublished',
         $archived = null,
-        $trashed = null
+        $trashed = null,
     ) {
         return Builder\Grid::state($filter_state, $published, $unpublished, $archived, $trashed);
     }
@@ -168,7 +168,7 @@ class Grid
         $prefix = '',
         $text = 'JLIB_HTML_MOVE_UP',
         $enabled = true,
-        $checkbox = 'cb'
+        $checkbox = 'cb',
     ) {
         return Builder\Grid::orderUp($i, $task, $prefix, $text, $enabled, $checkbox);
     }
@@ -190,7 +190,7 @@ class Grid
         $prefix = '',
         $text = 'JLIB_HTML_MOVE_DOWN',
         $enabled = true,
-        $checkbox = 'cb'
+        $checkbox = 'cb',
     ) {
         return Builder\Grid::orderDown($i, $task, $prefix, $text, $enabled, $checkbox);
     }
@@ -239,7 +239,7 @@ class Grid
         $inactive_class = '',
         $enabled = true,
         $translate = true,
-        $checkbox = 'cb'
+        $checkbox = 'cb',
     ) {
         return Builder\Grid::action(
             $i,
@@ -253,7 +253,7 @@ class Grid
             $inactive_class,
             $enabled,
             $translate,
-            $checkbox
+            $checkbox,
         );
     }
 }

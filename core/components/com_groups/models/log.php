@@ -69,7 +69,7 @@ class Log extends Model
             'userid'    => User::get('id'),
             'action'    => '',
             'comments'  => '',
-            'actorid'   => User::get('id')
+            'actorid'   => User::get('id'),
         ];
     }
 

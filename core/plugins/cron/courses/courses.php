@@ -36,12 +36,12 @@ class Courses extends Plugin
             [
                 'name'   => 'syncPassportBadgeStatus',
                 'label'  => Lang::txt('PLG_CRON_COURSES_SYNC_PASSPORT_BADGE_STATUS'),
-                'params' => ''
+                'params' => '',
             ],
             [
                 'name'   => 'emailInstructorDigest',
                 'label'  => Lang::txt('PLG_CRON_COURSES_EMAIL_INSTRUCTOR_DIGEST'),
-                'params' => 'emaildigest'
+                'params' => 'emaildigest',
             ],
         ];
 
@@ -138,7 +138,7 @@ class Courses extends Plugin
 
         $from = [
             'name'  => Config::get('sitename') . ' ' . Lang::txt('COM_COURSES'),
-            'email' => Config::get('mailfrom')
+            'email' => Config::get('mailfrom'),
         ];
 
         $subject = Lang::txt('COM_COURSES') . ': ' . Lang::txt('COM_COURSES_SUBJECT_EMAIL_DIGEST');
@@ -224,7 +224,7 @@ class Courses extends Plugin
                                 $eview = new \Hubzero\Mail\View([
                                     'base_path' => Component::path('com_courses') . '/site',
                                     'name'      => 'emails',
-                                    'layout'    => 'digest_plain'
+                                    'layout'    => 'digest_plain',
                                 ]);
                                 $eview->option      = 'com_courses';
                                 $eview->controller  = 'courses';

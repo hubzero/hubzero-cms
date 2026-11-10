@@ -213,7 +213,7 @@ class BibTex
             'chapter',
             'notes',
             'letter',
-            'manuscript'
+            'manuscript',
         ];
         $this->authorstring = 'VON LAST JR, FIRST';
     }
@@ -798,7 +798,7 @@ class BibTex
                 'first' => trim($first),
                 'von' => trim($von),
                 'last' => trim($last),
-                'jr' => trim($jr)
+                'jr' => trim($jr),
             ];
         }
         return $authorarray;

@@ -22,8 +22,8 @@ class Migration20190307114147ComTools extends Base
      **/
     public static $tables = [
         '#__recent_tools' => [
-            'created'
-        ]
+            'created',
+        ],
     ];
 
     /**

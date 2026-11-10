@@ -40,7 +40,7 @@ class Collection extends Relational
     protected $rules = [
         'title'       => 'notempty',
         'object_type' => 'notempty',
-        'object_id'   => 'positive|nonzero'
+        'object_id'   => 'positive|nonzero',
     ];
 
     /**
@@ -49,7 +49,7 @@ class Collection extends Relational
      * @var  array
      **/
     public $always = [
-        'alias'
+        'alias',
     ];
 
     /**
@@ -59,7 +59,7 @@ class Collection extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**

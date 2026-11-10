@@ -64,7 +64,7 @@ class Job extends Relational
     protected $rules = [
         'title'      => 'notempty',
         'recurrence' => 'notempty',
-        'event'      => 'notempty'
+        'event'      => 'notempty',
     ];
 
     /**
@@ -75,7 +75,7 @@ class Job extends Relational
     public $always = [
         'event',
         'publish_up',
-        'publish_down'
+        'publish_down',
     ];
 
     /**
@@ -85,7 +85,7 @@ class Job extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**
@@ -393,7 +393,7 @@ class Job extends Relational
             'end_time'   => round($end->ended(), 3),
             'end_mem'    => round($end->memory(), 3),
             'delta_time' => round($end->ended() - $start->started(), 3),
-            'delta_mem'  => round($end->memory() - $start->memory(), 3)
+            'delta_mem'  => round($end->memory() - $start->memory(), 3),
         ];
     }
 
@@ -455,7 +455,7 @@ class Job extends Relational
             $this->get('pid_started'),
             $this->get('pid_host'),
             $this->get('active_since'),
-            self::STALE_ACTIVE_SECONDS
+            self::STALE_ACTIVE_SECONDS,
         );
     }
 

@@ -24,8 +24,8 @@ class Migration20190221000000ComModules extends Base
         '#__modules' => [
             'checked_out_time',
             'publish_up',
-            'publish_down'
-        ]
+            'publish_down',
+        ],
     ];
 
     /**

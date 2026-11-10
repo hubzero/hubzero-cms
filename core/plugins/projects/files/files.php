@@ -92,7 +92,7 @@ class Files extends Plugin
             'title'   => Lang::txt('COM_PROJECTS_TAB_FILES'),
             'submenu' => 'Assets',
             'show'    => true,
-            'icon'    => 'f016'
+            'icon'    => 'f016',
         ];
 
         if ($this->params->get('default_action', 'browse') == 'connections') {
@@ -107,7 +107,7 @@ class Files extends Plugin
                 'url'   => UrlHelper::updatePerMembership($model->link('files') . '&action=browse', $userIsMember),
                 'class' => 'filesystem default' . (Request::getString('action') == 'browse' && !$active ? ' active' : ''),
                 //'image' => '/core/plugins/filesystem/local/assets/img/icon.png',
-                'icon'  => 'f0a0'
+                'icon'  => 'f0a0',
             ];
 
             if ($model->exists()) {
@@ -121,7 +121,7 @@ class Files extends Plugin
                             'url'   => UrlHelper::updatePerMembership($model->link('files') . '&action=browse&connection=' . $connection->id, $userIsMember),
                             'class' => 'filesystem ' . $connection->provider->alias . (!$connection->isShared() ? ' private' : '') . ($active == $connection->id ? ' active' : ''),
                             //'image' => $img,
-                            'icon'  => 'f0a0'
+                            'icon'  => 'f0a0',
                         ];
                     }
                 }
@@ -159,7 +159,7 @@ class Files extends Plugin
 
         $arr = [
             'html'     => '',
-            'metadata' => ''
+            'metadata' => '',
         ];
 
         // Get this area details
@@ -222,7 +222,7 @@ class Files extends Plugin
                 $this->_connect = new \Components\Projects\Helpers\Connect(
                     $this->model,
                     $this->_uid,
-                    date_default_timezone_get()
+                    date_default_timezone_get(),
                 );
 
                 // Sync service is Google
@@ -338,14 +338,14 @@ class Files extends Plugin
                     $arr['html'] = $this->diskspace(
                         $this->model,
                         $this->repo->get('name'),
-                        $this->_uid
+                        $this->_uid,
                     );
                     break;
                 case 'optimize':
                 case 'advoptimize':
                     $arr['html'] = $this->optimize(
                         $this->model,
-                        $this->repo->get('name')
+                        $this->repo->get('name'),
                     );
                     break;
 
@@ -406,8 +406,8 @@ class Files extends Plugin
             [
                 'folder'  => 'projects',
                 'element' => 'files',
-                'name'    => 'mini'
-            ]
+                'name'    => 'mini',
+            ],
         );
 
         // Set params
@@ -417,7 +417,7 @@ class Files extends Plugin
             'sortby'      => 'modified',
             'sortdir'     => 'DESC',
             'getParents'  => false,
-            'getChildren' => false
+            'getChildren' => false,
         ];
 
         // Retrieve items
@@ -440,8 +440,8 @@ class Files extends Plugin
                 'folder'  => 'projects',
                 'element' => 'files',
                 'name'    => 'browse',
-                'layout'  => 'display'
-            ]
+                'layout'  => 'display',
+            ],
         );
 
         // Does subdirectory exist?
@@ -468,7 +468,7 @@ class Files extends Plugin
             $remotes  = $objRFile->getRemoteFiles(
                 $this->model->get('id'),
                 $this->_remoteService,
-                $this->subdir
+                $this->subdir,
             );
             $forceSync = $this->forceSync ?? $this->model->params->get('google_sync_queue', 0);
 
@@ -542,8 +542,8 @@ class Files extends Plugin
             [
                 'folder'  => 'projects',
                 'element' => 'files',
-                'name'    => 'selector'
-            ]
+                'name'    => 'selector',
+            ],
         );
         $attachments = [];
         $allowed = [];
@@ -565,8 +565,8 @@ class Files extends Plugin
                     [
                         'folder'  => 'projects',
                         'element' => 'files',
-                        'name'    => 'error'
-                    ]
+                        'name'    => 'error',
+                    ],
                 );
 
                 $view->title  = '';
@@ -624,18 +624,18 @@ class Files extends Plugin
                 ['name' => 'step', 'value' => $step],
                 ['name' => 'active', 'value' => 'publications'],
                 ['name' => 'action', 'value' => 'apply'],
-                ['name' => 'move', 'value' => 'continue']
+                ['name' => 'move', 'value' => 'continue'],
             ];
             if ($this->model->isProvisioned()) {
                 $extraFields = [
                     ['name' => 'id', 'value' => $view->publication->get('id')],
                     ['name' => 'option', 'value' => 'com_publications'],
-                    ['name' => 'ajax', 'value' => '0']
+                    ['name' => 'ajax', 'value' => '0'],
                 ];
             } else {
                 $extraFields = [
                     ['name' => 'option', 'value' => $this->option],
-                    ['name' => 'id', 'value' => $this->model->get('id')]
+                    ['name' => 'id', 'value' => $this->model->get('id')],
                 ];
             }
             foreach ($extraFields as $extra) {
@@ -658,7 +658,7 @@ class Files extends Plugin
             $fileParams = [
                 'sortby'           => 'localpath',
                 'showFullMetadata' => false,
-                'subdir'           => $directory
+                'subdir'           => $directory,
             ];
             $fileList = $this->_fileList($fileParams, $allowed, $selected, $used);
             if (!empty($fileList)) {
@@ -770,8 +770,8 @@ class Files extends Plugin
                     'folder'  => 'projects',
                     'element' => 'files',
                     'name'    => 'selector',
-                    'layout'  => $layout
-                ]
+                    'layout'  => $layout,
+                ],
             );
             $view->option       = $this->option;
             $view->model        = $this->model;
@@ -801,8 +801,8 @@ class Files extends Plugin
                 'folder'  => 'projects',
                 'element' => 'files',
                 'name'    => 'selector',
-                'layout'  => 'connections'
-            ]
+                'layout'  => 'connections',
+            ],
         );
         $view->model       = $this->model;
         $view->connections = Project::oneOrFail($this->model->get('id'))->connections()->thatICanView();
@@ -827,8 +827,8 @@ class Files extends Plugin
             [
                 'folder'  => 'projects',
                 'element' => 'files',
-                'name'    => 'upload'
-            ]
+                'name'    => 'upload',
+            ],
         );
 
         $view->url       = Route::url($this->model->link('files'));
@@ -881,7 +881,7 @@ class Files extends Plugin
             'subdir'     => $this->subdir,
             'expand'     => Request::getInt('expand_zip', 0),
             'ajaxUpload' => $ajaxUpload,
-            'path'       => $this->_path
+            'path'       => $this->_path,
         ];
 
         // Upload file
@@ -899,13 +899,13 @@ class Files extends Plugin
                     if ($ajaxUpload) {
                         if ($updateType == 'failed') {
                             return json_encode([
-                                'error' => $this->repo->getError()
+                                'error' => $this->repo->getError(),
                             ]);
                         } else {
                             return json_encode([
                                 'success' => 1,
                                 'file'    => $file,
-                                'isNew'   => $updateType == 'uploaded' ? true : false
+                                'isNew'   => $updateType == 'uploaded' ? true : false,
                                 ]);
                         }
                     }
@@ -917,7 +917,7 @@ class Files extends Plugin
         if ($this->repo->getError()) {
             if ($ajaxUpload || $json) {
                 return json_encode([
-                    'error' => $this->repo->getError()
+                    'error' => $this->repo->getError(),
                 ]);
             } else {
                 Notify::message($this->repo->getError(), 'error', 'projects');
@@ -933,7 +933,7 @@ class Files extends Plugin
 
             return json_encode([
                 'error'   => $this->getError(),
-                'success' => $this->_msg
+                'success' => $this->_msg,
             ]);
         }
 
@@ -958,8 +958,8 @@ class Files extends Plugin
             [
                 'folder'  => 'projects',
                 'element' => 'files',
-                'name'    => 'newfolder'
-            ]
+                'name'    => 'newfolder',
+            ],
         );
 
         $view->option = $this->_option;
@@ -999,7 +999,7 @@ class Files extends Plugin
         $params = [
             'subdir' => $this->subdir,
             'newDir' => $newDir,
-            'path'   => $this->_path
+            'path'   => $this->_path,
         ];
 
         // Create
@@ -1049,7 +1049,7 @@ class Files extends Plugin
         $params = [
             'subdir'  => $this->subdir,
             'item'    => trim($item, DS),
-            'path'    => $this->_path
+            'path'    => $this->_path,
         ];
 
         // Create
@@ -1093,7 +1093,7 @@ class Files extends Plugin
         // Params for repo call
         $params = [
             'subdir'            => $this->subdir,
-            'remoteConnections' => $remotes
+            'remoteConnections' => $remotes,
         ];
 
         // Confirm or process request
@@ -1103,8 +1103,8 @@ class Files extends Plugin
                 [
                     'folder'  => 'projects',
                     'element' => 'files',
-                    'name'    => 'delete'
-                ]
+                    'name'    => 'delete',
+                ],
             );
 
             $view->items       = [];
@@ -1173,7 +1173,7 @@ class Files extends Plugin
                             $this->_remoteService,
                             $this->model->get('owned_by_user'),
                             $params['file']->get('remoteId'),
-                            false
+                            false,
                         )
                     ) {
                         $this->registerUpdate('deleted', $item);
@@ -1223,8 +1223,8 @@ class Files extends Plugin
                 [
                     'folder'  => 'projects',
                     'element' => 'files',
-                    'name'    => 'rename'
-                ]
+                    'name'    => 'rename',
+                ],
             );
 
             if (empty($items)) {
@@ -1263,7 +1263,7 @@ class Files extends Plugin
             'path'    => $this->_path,
             'from'    => $from,
             'to'      => $to,
-            'type'    => Request::getString('type', 'file')
+            'type'    => Request::getString('type', 'file'),
         ];
 
         // Rename
@@ -1310,8 +1310,8 @@ class Files extends Plugin
                 [
                     'folder'  => 'projects',
                     'element' => 'files',
-                    'name'    => 'move'
-                ]
+                    'name'    => 'move',
+                ],
             );
 
             $listParams = [
@@ -1319,7 +1319,7 @@ class Files extends Plugin
                 'sortby'           => 'localpath', // important for selector!
                 'showFullMetadata' => false,
                 'dirsOnly'         => true,
-                'recursive'        => true
+                'recursive'        => true,
             ];
 
             $view->list        = $this->repo->filelist($listParams);
@@ -1342,7 +1342,7 @@ class Files extends Plugin
                 // Params for repo call
                 $params = [
                     'subdir'            => $this->subdir,
-                    'remoteConnections' => $remotes
+                    'remoteConnections' => $remotes,
                 ];
 
                 foreach ($items as $element) {
@@ -1374,7 +1374,7 @@ class Files extends Plugin
             'subdir'          => $this->subdir,
             'path'            => $this->_path,
             'targetDir'       => $target,
-            'createTargetDir' => $newdir ? true : false
+            'createTargetDir' => $newdir ? true : false,
         ];
 
         // Move checked items
@@ -1434,7 +1434,7 @@ class Files extends Plugin
         // Params for repo call
         $params = [
             'subdir'            => $this->subdir,
-            'remoteConnections' => $remotes
+            'remoteConnections' => $remotes,
         ];
 
         if (!$items) {
@@ -1453,8 +1453,8 @@ class Files extends Plugin
                 'folder'  => 'projects',
                 'element' => 'files',
                 'name'    => 'history',
-                'layout'  => 'advanced'
-            ]
+                'layout'  => 'advanced',
+            ],
         );
 
         // Redirect to file list
@@ -1475,8 +1475,8 @@ class Files extends Plugin
                 [
                     'folder'  => 'projects',
                     'element' => 'files',
-                    'name'    => 'error'
-                ]
+                    'name'    => 'error',
+                ],
             );
 
             $view->title  = '';
@@ -1499,7 +1499,7 @@ class Files extends Plugin
                     $this->_remoteService,
                     $view->file->get('localPath'),
                     $versions,
-                    $timestamps
+                    $timestamps,
                 );
             } elseif ($view->file->get('originalId')) {
                 $this->_connect->sortRemoteRevisions(
@@ -1511,7 +1511,7 @@ class Files extends Plugin
                     $view->file->get('localPath'),
                     $versions,
                     $timestamps,
-                    1
+                    1,
                 );
             }
             $view->connected = $this->_connect->getStoredParam($this->_remoteService . '_token', $this->_uid);
@@ -1600,8 +1600,8 @@ class Files extends Plugin
                 'folder'  => 'projects',
                 'element' => 'files',
                 'name'    => 'history',
-                'layout'  => 'diff'
-            ]
+                'layout'  => 'diff',
+            ],
         );
 
         // Run diff
@@ -1672,7 +1672,7 @@ class Files extends Plugin
             $repo->call('content', $params = [
                     'fileName' => $file,
                     'hash'     => $hash,
-                    'target'   => $serve
+                    'target'   => $serve,
                 ]);
 
             $deleteTemp = true;
@@ -1778,7 +1778,7 @@ class Files extends Plugin
         // Params for repo call
         $params = [
             'subdir'            => $this->subdir,
-            'remoteConnections' => $remotes
+            'remoteConnections' => $remotes,
         ];
 
         // Collect items
@@ -1814,8 +1814,8 @@ class Files extends Plugin
                 [
                     'folder'  => 'projects',
                     'element' => 'files',
-                    'name'    => 'preview'
-                ]
+                    'name'    => 'preview',
+                ],
             );
 
             $view->file = isset($collector[0]) ? $collector[0] : null;
@@ -1893,7 +1893,7 @@ class Files extends Plugin
                 $resource = $this->_connect->loadRemoteResource(
                     $this->_remoteService,
                     $this->model->get('owned_by_user'),
-                    $file->get('remoteId')
+                    $file->get('remoteId'),
                 );
 
                 $openLink = $resource && isset($resource['alternateLink']) ? $resource['alternateLink'] : '';
@@ -1916,7 +1916,7 @@ class Files extends Plugin
                 $resource = $this->_connect->loadRemoteResource(
                     $this->_remoteService,
                     $this->model->get('owned_by_user'),
-                    $file->get('remoteId')
+                    $file->get('remoteId'),
                 );
 
                 // Tex file?
@@ -1928,7 +1928,7 @@ class Files extends Plugin
                 $data = $this->_connect->sendHttpRequest(
                     $this->_remoteService,
                     $this->model->get('owned_by_user'),
-                    $url
+                    $url,
                 );
 
                 // Clean up data from Windows characters - important!
@@ -2026,7 +2026,7 @@ class Files extends Plugin
         // Params for repo call
         $params = [
             'subdir'            => $this->subdir,
-            'remoteConnections' => $remotes
+            'remoteConnections' => $remotes,
         ];
 
         // Incoming
@@ -2044,8 +2044,8 @@ class Files extends Plugin
             [
                 'folder'  => 'projects',
                 'element' => 'files',
-                'name'    => 'compiled'
-            ]
+                'name'    => 'compiled',
+            ],
         );
 
         // Get selected item
@@ -2114,7 +2114,7 @@ class Files extends Plugin
             $resource = $this->_connect->loadRemoteResource(
                 $this->_remoteService,
                 $this->model->get('owned_by_user'),
-                $file->get('remoteId')
+                $file->get('remoteId'),
             );
 
             $cExt   = $tex ? 'tex' : \Components\Projects\Helpers\Google::getGoogleImportExt($resource['mimeType']);
@@ -2125,7 +2125,7 @@ class Files extends Plugin
             $view->data = $this->_connect->sendHttpRequest(
                 $this->_remoteService,
                 $this->model->get('owned_by_user'),
-                $url
+                $url,
             );
         } elseif ($file->exists()) {
             $view->data = $file->isImage() ? null : $file->contents();
@@ -2145,7 +2145,7 @@ class Files extends Plugin
                 $texPath,
                 PATH_APP . $outputDir,
                 1,
-                $tempBase
+                $tempBase,
             );
 
             // Read log (to show in case of error)
@@ -2312,7 +2312,7 @@ class Files extends Plugin
         // Params for repo call
         $params = [
             'subdir'            => $this->subdir,
-            'remoteConnections' => $remotes
+            'remoteConnections' => $remotes,
         ];
 
         // Combine file and folder data
@@ -2354,8 +2354,8 @@ class Files extends Plugin
                 [
                     'folder'  => 'projects',
                     'element' => 'files',
-                    'name'    => 'share'
-                ]
+                    'name'    => 'share',
+                ],
             );
 
             $view->option = $this->_option;
@@ -2383,8 +2383,8 @@ class Files extends Plugin
                 [
                     'folder'  => 'projects',
                     'element' => 'files',
-                    'name'    => 'error'
-                ]
+                    'name'    => 'error',
+                ],
             );
 
             $view->title  = '';
@@ -2437,7 +2437,7 @@ class Files extends Plugin
                             $resource,
                             $file->get('localPath'),
                             $this->repo->get('path'),
-                            $importExt
+                            $importExt,
                         )
                     ) {
                         // Checkin into repo
@@ -2450,7 +2450,7 @@ class Files extends Plugin
                             $service,
                             $this->_uid,
                             $file->get('remoteId'),
-                            false
+                            false,
                         );
 
                         // Create remote file for imported file
@@ -2460,7 +2460,7 @@ class Files extends Plugin
                                 $this->model->get('id'),
                                 $this->_remoteService,
                                 $this->_uid,
-                                $file
+                                $file,
                             );
                         }
 
@@ -2473,7 +2473,7 @@ class Files extends Plugin
                             $file->get('recordId'),
                             $file->get('originalPath'),
                             $file->get('originalFormat'),
-                            $file->get('remoteId')
+                            $file->get('remoteId'),
                         );
                     }
 
@@ -2517,7 +2517,7 @@ class Files extends Plugin
                             $this->_uid,
                             $file,
                             $file->get('remoteParent'),
-                            true
+                            true,
                         );
 
                         if ($added) {
@@ -2531,7 +2531,7 @@ class Files extends Plugin
                                 $this->_remoteService,
                                 $this->_uid,
                                 $file->get('remoteId'),
-                                false
+                                false,
                             );
 
                             $file->clear('mimeType');
@@ -2546,7 +2546,7 @@ class Files extends Plugin
                                 $file->get('recordId'),
                                 $file->get('originalPath'),
                                 $file->get('mimeType'),
-                                $file->get('remoteId')
+                                $file->get('remoteId'),
                             );
 
                             // Output message
@@ -2596,7 +2596,7 @@ class Files extends Plugin
         $adv = $this->_task == 'advoptimize' ? true : false;
         $params = [
             'path' => $this->_path,
-            'adv'  => $adv
+            'adv'  => $adv,
         ];
         $this->repo->call('optimize', $params);
         return true;
@@ -2617,8 +2617,8 @@ class Files extends Plugin
             [
                 'folder'  => 'projects',
                 'element' => 'files',
-                'name'    => 'diskspace'
-            ]
+                'name'    => 'diskspace',
+            ],
         );
 
         if (!isset($this->repo)) {
@@ -2631,11 +2631,11 @@ class Files extends Plugin
         if ($this->params->get('disk_usage') == true || $by == 'admin') {
             $view->dirsize = $this->repo->call(
                 'getDiskUsage',
-                $params = ['working' => true, 'history' => true]
+                $params = ['working' => true, 'history' => true],
             );
             $view->totalspace = $this->repo->call(
                 'getDiskUsage',
-                $params = ['working' => false, 'history' => false]
+                $params = ['working' => false, 'history' => false],
             );
         } else {
             if ($this->params->get('project_quota')) {
@@ -2693,8 +2693,8 @@ class Files extends Plugin
             [
                 'folder'  => 'projects',
                 'element' => 'files',
-                'name'    => 'trash'
-            ]
+                'name'    => 'trash',
+            ],
         );
 
         // Get deleted files
@@ -2778,8 +2778,8 @@ class Files extends Plugin
             [
                 'folder' => 'projects',
                 'element' => 'files',
-                'name'   => 'connect'
-            ]
+                'name'   => 'connect',
+            ],
         );
 
         $view->option   = $this->_option;
@@ -3040,7 +3040,7 @@ class Files extends Plugin
                 $this->model->get('id'),
                 $this->_remoteService,
                 $this->subdir,
-                $remoteEdit
+                $remoteEdit,
             );
         }
 
@@ -3300,7 +3300,7 @@ class Files extends Plugin
                 'files',
                 Route::url($model->link('files')),
                 'files',
-                1
+                1,
             );
         }
     }

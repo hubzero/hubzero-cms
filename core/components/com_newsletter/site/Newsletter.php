@@ -31,7 +31,7 @@ class Newsletter extends AbstractComponent
         $controllerNameMap = [
             'email-subscriptions' => 'emailsubscriptions',
             'pages' => 'pages',
-            'replies' => 'replies'
+            'replies' => 'replies',
         ];
 
         // if we had a controller request, set it, otherwise set 'newsletters':

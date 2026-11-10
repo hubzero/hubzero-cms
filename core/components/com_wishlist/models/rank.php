@@ -56,7 +56,7 @@ class Rank extends Relational
      * @var  array
      */
     protected $rules = [
-        'wishid' => 'positive|nonzero'
+        'wishid' => 'positive|nonzero',
     ];
 
     /**
@@ -66,7 +66,7 @@ class Rank extends Relational
      */
     public $initiate = [
         'voted',
-        'userid'
+        'userid',
     ];
 
     /**

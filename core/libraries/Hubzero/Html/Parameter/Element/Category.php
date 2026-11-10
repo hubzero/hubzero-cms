@@ -59,12 +59,12 @@ class Category extends Element
             Builder\Category::options($extension),
             $control_name . '[' . $name . ']',
             [
-                'class' => $class
+                'class' => $class,
             ],
             'value',
             'text',
             (int) $value,
-            $control_name . $name
+            $control_name . $name,
         );
     }
 }

@@ -37,7 +37,7 @@ class Batchcreate extends AdminController
         $filters = [
             'sortby'     => 'title',
             'sortdir'    => 'DESC',
-            'authorized' => true
+            'authorized' => true,
         ];
         $this->view->projects  = $project->getRecords($filters, true, 0, 1);
 
@@ -48,7 +48,7 @@ class Batchcreate extends AdminController
             'sortby'     => 'type',
             'sortdir'    => 'DESC',
             'contributable' => 1,
-            'authorized' => true
+            'authorized' => true,
         ];
         $this->view->mastertypes = $mt->getRecords($filters);
 
@@ -90,7 +90,7 @@ class Batchcreate extends AdminController
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
             Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_XSD'),
-            'error'
+            'error',
         );
     }
 
@@ -151,7 +151,7 @@ class Batchcreate extends AdminController
             echo json_encode([
                 'result'  => 'error',
                 'error'   => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_PROJECT_ID'),
-                'records' => null
+                'records' => null,
             ]);
             if (!$api) {
                 exit();
@@ -165,7 +165,7 @@ class Batchcreate extends AdminController
             echo json_encode([
                 'result'  => 'error',
                 'error'   => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_MASTER_TYPE_ID'),
-                'records' => null
+                'records' => null,
             ]);
             if (!$api) {
                 exit();
@@ -181,7 +181,7 @@ class Batchcreate extends AdminController
             echo json_encode([
                 'result'  => 'error',
                 'error'   => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_FILE'),
-                'records' => null
+                'records' => null,
             ]);
             if (!$api) {
                 exit();
@@ -195,7 +195,7 @@ class Batchcreate extends AdminController
             echo json_encode([
                 'result'  => 'error',
                 'error'   => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_WRONG_FORMAT'),
-                'records' => null
+                'records' => null,
             ]);
             if (!$api) {
                 exit();
@@ -212,7 +212,7 @@ class Batchcreate extends AdminController
             echo json_encode([
                 'result'  => 'error',
                 'error'   => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_DATA'),
-                'records' => null
+                'records' => null,
             ]);
             if (!$api) {
                 exit();
@@ -229,7 +229,7 @@ class Batchcreate extends AdminController
             echo json_encode([
                 'result'  => 'error',
                 'error'   => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_XML_VALIDATION_FAILED'),
-                'records' => null
+                'records' => null,
             ]);
             if (!$api) {
                 exit();
@@ -257,7 +257,7 @@ class Batchcreate extends AdminController
                 'result'  => 'error',
                 'error'   => $this->getError(),
                 'records' => $outputData,
-                'dryrun'  => $dryRun
+                'dryrun'  => $dryRun,
             ]);
             if (!$api) {
                 exit();
@@ -271,7 +271,7 @@ class Batchcreate extends AdminController
             'result'  => 'success',
             'error'   => null,
             'records' => $outputData,
-            'dryrun'  => $dryRun
+            'dryrun'  => $dryRun,
         ]);
         if (!$api) {
             exit();
@@ -446,7 +446,7 @@ class Batchcreate extends AdminController
             if (!$api) {
                 $eview = new \Hubzero\Component\View([
                     'name'   => 'batchcreate',
-                    'layout' => 'dryrun'
+                    'layout' => 'dryrun',
                 ]);
                 $eview->set('option', $this->_option);
                 $eview->items  = $items;
@@ -628,7 +628,7 @@ class Batchcreate extends AdminController
             'subtype'     => $subtype,
             'attachment'  => $attach,
             'projectPath' => $filePath,
-            'error'       => $error
+            'error'       => $error,
         ];
 
         $item['files'][] = $fileRecord;
@@ -682,14 +682,14 @@ class Batchcreate extends AdminController
                 $element->manifest->params,
                 $element->id,
                 $pubmodel,
-                $element->block
+                $element->block,
             );
 
             // Check if names is already used
             $suffix = $fileAttach->checkForDuplicate(
                 $configs->path . DS . $attachment->path,
                 $attachment,
-                $configs
+                $configs,
             );
 
             // Save params if applicable

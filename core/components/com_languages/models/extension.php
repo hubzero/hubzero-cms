@@ -88,7 +88,7 @@ class Extension extends Relational
     protected $rules = [
         'folder'  => 'notempty',
         'element' => 'notempty',
-        'name'    => 'notempty'
+        'name'    => 'notempty',
     ];
 
     /**
@@ -98,7 +98,7 @@ class Extension extends Relational
      **/
     public $always = [
         'modified',
-        'modified_by'
+        'modified_by',
     ];
 
     /**
@@ -198,7 +198,7 @@ class Extension extends Relational
                 '.',
                 false,
                 false,
-                ['.svn', 'CVS', '.DS_Store', '__MACOSX', 'pdf_fonts', 'overrides']
+                ['.svn', 'CVS', '.DS_Store', '__MACOSX', 'pdf_fonts', 'overrides'],
             );
             if (!$this->folders || !is_array($this->folders)) {
                 $this->folders = [];
@@ -254,7 +254,7 @@ class Extension extends Relational
                     'author'       => '',
                     'authorEmail'  => '',
                     'authorUrl'    => '',
-                    'missing'      => true
+                    'missing'      => true,
                 ];
             }
 

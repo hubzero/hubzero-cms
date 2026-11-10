@@ -22,8 +22,8 @@ class Migration20190221000000ComMessages extends Base
      **/
     public static $tables = [
         '#__messages' => [
-            'date_time'
-        ]
+            'date_time',
+        ],
     ];
 
     /**

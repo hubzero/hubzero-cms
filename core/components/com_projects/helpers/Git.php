@@ -795,7 +795,7 @@ class Git extends Obj
                 'author'  => $gitData['author'],
                 'date'    => date('c', $gitData['date']),
                 'size'    => null,
-                'message' => null
+                'message' => null,
             ];
         }
 
@@ -848,7 +848,7 @@ class Git extends Obj
                         'fullPath'   => $localPath . DS . $filename,
                         'mimeType'   => Filesystem::mimetype($localPath . DS . $filename),
                         'md5'        => null,
-                        'rename'     => null
+                        'rename'     => null,
                     ];
                 }
             }
@@ -981,7 +981,7 @@ class Git extends Obj
                                 'fullPath'   => $localPath . DS . $filename,
                                 'mimeType'   => $mimeType,
                                 'md5'        => $md5Checksum,
-                                'rename'     => $rename
+                                'rename'     => $rename,
                             ];
 
                             $timestamps[] = $time;
@@ -1148,7 +1148,7 @@ class Git extends Obj
                     'size'         => '',
                     'order'        => $order,
                     'count'        => count($hashes),
-                    'commitStatus' => $this->gitLog($name, $hash, 'namestatus')
+                    'commitStatus' => $this->gitLog($name, $hash, 'namestatus'),
                 ];
 
                 if (in_array($revision['commitStatus'], ['A', 'M'])) {

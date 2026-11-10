@@ -65,7 +65,7 @@ class Page extends Base
                         'pagename' => $this->get('url'),
                         'pageid'   => '',
                         'filepath' => $this->buildFilePath(),
-                        'domain'   => $this->get('course_id')
+                        'domain'   => $this->get('course_id'),
                     ];
                     if ($this->get('offering_id')) {
                         $courseAlias = Course::getInstance($this->get('course_id'))->get('alias');
@@ -82,7 +82,7 @@ class Page extends Base
                     $this->importPlugin('content')->trigger('onContentPrepare', [
                         $this->_context,
                         &$this,
-                        &$config
+                        &$config,
                     ]);
 
                     $this->set('content_parsed', (string) $this->get('content'));

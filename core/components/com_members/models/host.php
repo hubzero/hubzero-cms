@@ -54,7 +54,7 @@ class Host extends Relational
      */
     protected $rules = [
         'host'      => 'notempty',
-        'uidNumber' => 'positive|nonzero'
+        'uidNumber' => 'positive|nonzero',
     ];
 
     /**
@@ -184,7 +184,7 @@ class Host extends Relational
                 ->insert($blank->getTableName())
                 ->values([
                     'uidNumber' => $user_id,
-                    'host'      => $host
+                    'host'      => $host,
                 ]);
 
             if (!$query->execute()) {

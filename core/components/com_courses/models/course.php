@@ -435,7 +435,7 @@ class Course extends Base
         $tbl = new Tables\Member($this->_db);
 
         $filters = [
-            'course_id' => (int) $this->get('id')
+            'course_id' => (int) $this->get('id'),
         ];
 
         foreach ($user_ids as $user_id) {
@@ -570,7 +570,7 @@ class Course extends Base
         $this->importPlugin('content')->trigger('onContentBeforeSave', [
             'com_courses.course.description',
             &$this,
-            $this->exists()
+            $this->exists(),
         ]);
 
         if (!$this->_tbl->store()) {
@@ -765,7 +765,7 @@ class Course extends Base
         $path = '';
         $size = [
             'width'  => 0,
-            'height' => 0
+            'height' => 0,
         ];
 
         if ($file = $this->get('logo')) {
@@ -815,14 +815,14 @@ class Course extends Base
                         'pagename' => $this->get('alias'),
                         'pageid'   => 0, //$this->get('id'),
                         'filepath' => DS . ltrim($this->config()->get('uploadpath', '/site/courses'), DS),
-                        'domain'   => $this->get('alias')
+                        'domain'   => $this->get('alias'),
                     ];
 
                     $content = (string) $this->get('description', '');
                     $this->importPlugin('content')->trigger('onContentPrepare', [
                         'com_courses.course.description',
                         &$this,
-                        &$config
+                        &$config,
                     ]);
 
                     $this->set('description.parsed', (string) $this->get('description', ''));

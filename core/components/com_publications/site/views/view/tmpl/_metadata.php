@@ -104,7 +104,7 @@ if ($this->params->get('show_ranking') || $this->params->get('show_audience') ||
             $this->publication->id,
             $this->publication->version_id,
             $getlabels = 1,
-            $numlevels = 4
+            $numlevels = 4,
         );
 
         $this->view('_audience', 'view')

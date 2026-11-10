@@ -37,23 +37,23 @@ class Groups extends Plugin
             [
                 'name'   => 'cleanGroupFolders',
                 'label'  => Lang::txt('PLG_CRON_GROUPS_REMOVE_ABANDONED_ASSETS'),
-                'params' => ''
+                'params' => '',
             ],
             [
                 'name'   => 'sendGroupAnnouncements',
                 'label'  => Lang::txt('PLG_CRON_GROUPS_SEND_ANNOUNCEMENTS'),
-                'params' => ''
+                'params' => '',
             ],
             [
                 'name'   => 'expireGroupMemberships',
                 'label'  => Lang::txt('PLG_CRON_GROUPS_EXPIRE_MEMBERSHIPS'),
-                'params' => ''
+                'params' => '',
             ],
             [
                 'name'   => 'notifyExpiringMemberships',
                 'label'  => Lang::txt('PLG_CRON_GROUPS_NOTIFY_EXPIRING_MEMBERSHIPS'),
-                'params' => ''
-            ]
+                'params' => '',
+            ],
         ];
 
         return $obj;
@@ -150,14 +150,14 @@ class Groups extends Plugin
                         $group->get('description'),
                         $when,
                         $base . '/groups/' . $group->get('cn'),
-                        $site
+                        $site,
                     )
                     : Lang::txt(
                         'PLG_CRON_GROUPS_EXPIRING_BODY_NOLINK',
                         $user->get('name'),
                         $group->get('description'),
                         $when,
-                        $site
+                        $site,
                     );
 
                 try {

@@ -23,8 +23,8 @@ class Migration20190305000000VoteLog extends Base
      **/
     public static $tables = [
         '#__vote_log' => [
-            'voted'
-        ]
+            'voted',
+        ],
     ];
 
     /**

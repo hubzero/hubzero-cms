@@ -147,7 +147,7 @@ class OnConditionTest extends AbstractDriverTestCase
             new OnCondPost(),
             new OnCondComment(),
             'id',
-            'post_id'
+            'post_id',
         );
 
         // Use > operator
@@ -215,7 +215,7 @@ class OnConditionTest extends AbstractDriverTestCase
             new OnCondPost(),
             new OnCondComment(),
             'id',
-            'post_id'
+            'post_id',
         );
 
         $relationship->onConditionIn('status', [1, 2]);
@@ -237,7 +237,7 @@ class OnConditionTest extends AbstractDriverTestCase
             new OnCondPost(),
             new OnCondComment(),
             'id',
-            'post_id'
+            'post_id',
         );
 
         $relationship->onConditionNotIn('status', [0, -1]);
@@ -259,7 +259,7 @@ class OnConditionTest extends AbstractDriverTestCase
             new OnCondPost(),
             new OnCondComment(),
             'id',
-            'post_id'
+            'post_id',
         );
 
         $relationship->onConditionNull('deleted_at');
@@ -281,7 +281,7 @@ class OnConditionTest extends AbstractDriverTestCase
             new OnCondPost(),
             new OnCondComment(),
             'id',
-            'post_id'
+            'post_id',
         );
 
         $relationship->onConditionNotNull('created_at');
@@ -307,7 +307,7 @@ class OnConditionTest extends AbstractDriverTestCase
             new OnCondPost(),
             new OnCondComment(),
             'id',
-            'post_id'
+            'post_id',
         );
 
         $result = $relationship
@@ -335,7 +335,7 @@ class OnConditionTest extends AbstractDriverTestCase
             new OnCondPost(),
             new OnCondComment(),
             'id',
-            'post_id'
+            'post_id',
         );
 
         $relationship->onCondition('status', 1);
@@ -450,7 +450,7 @@ class OnConditionTest extends AbstractDriverTestCase
             new OnCondPost(),
             new OnCondComment(),
             'id',
-            'post_id'
+            'post_id',
         );
 
         $relationship

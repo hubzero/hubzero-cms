@@ -112,7 +112,7 @@ class FactoryTest extends AbstractDriverTestCase
         // UUID v4 format: xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
         $this->assertMatchesRegularExpression(
             '/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i',
-            $uuid
+            $uuid,
         );
     }
 
@@ -277,7 +277,7 @@ class FactoryTest extends AbstractDriverTestCase
 
         $this->assertMatchesRegularExpression(
             '/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/',
-            $timestamp
+            $timestamp,
         );
     }
 
@@ -303,7 +303,7 @@ class FactoryTest extends AbstractDriverTestCase
 
         $this->assertMatchesRegularExpression(
             '/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/',
-            $date
+            $date,
         );
     }
 
@@ -344,7 +344,7 @@ class FactoryTest extends AbstractDriverTestCase
 
         $this->assertMatchesRegularExpression(
             '/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/',
-            $date
+            $date,
         );
     }
 
@@ -413,7 +413,7 @@ class FactoryTest extends AbstractDriverTestCase
             'in', 'reprehenderit', 'voluptate', 'velit', 'esse', 'cillum', 'fugiat',
             'nulla', 'pariatur', 'excepteur', 'sint', 'occaecat', 'cupidatat',
             'non', 'proident', 'sunt', 'culpa', 'qui', 'officia', 'deserunt',
-            'mollit', 'anim', 'id', 'est', 'laborum'
+            'mollit', 'anim', 'id', 'est', 'laborum',
         ];
 
         $words = Factory::words(10, true);

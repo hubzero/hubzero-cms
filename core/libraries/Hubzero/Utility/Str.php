@@ -42,7 +42,7 @@ class Str
             'after'  => '',
             'escape' => '\\',
             'format' => null,
-            'clean'  => false
+            'clean'  => false,
         ];
         $options += $defaults;
         $format = $options['format'];
@@ -56,7 +56,7 @@ class Str
                 '/(?<!%s)%s%%s%s/',
                 preg_quote($options['escape'], '/'),
                 str_replace('%', '%%', preg_quote($options['before'], '/')),
-                str_replace('%', '%%', preg_quote($options['after'], '/'))
+                str_replace('%', '%%', preg_quote($options['after'], '/')),
             );
         }
 
@@ -127,7 +127,7 @@ class Str
                     '/[\s]*[a-z]+=(")(%s%s%s[\s]*)+\\1/i',
                     preg_quote($options['before'], '/'),
                     $clean['word'],
-                    preg_quote($options['after'], '/')
+                    preg_quote($options['after'], '/'),
                 );
                 $str = preg_replace($kleenex, $clean['replacement'], $str);
                 if ($clean['andText']) {
@@ -152,7 +152,7 @@ class Str
                     $clean['gap'],
                     preg_quote($options['before'], '/'),
                     $clean['word'],
-                    preg_quote($options['after'], '/')
+                    preg_quote($options['after'], '/'),
                 );
                 $str = preg_replace($kleenex, $clean['replacement'], $str);
                 break;
@@ -184,7 +184,7 @@ class Str
         $default = [
             'format' => '<span class="highlight">\1</span>',
             'html'   => false,
-            'regex'  => "|%s|iu"
+            'regex'  => "|%s|iu",
         ];
         $options = array_merge($default, $options);
 
@@ -233,7 +233,7 @@ class Str
     {
         $default = [
             'ellipsis' => '...',
-            'exact'    => true
+            'exact'    => true,
         ];
         $options = array_merge($default, $options);
         extract($options);
@@ -273,7 +273,7 @@ class Str
         $default = [
             'ellipsis' => '...',
             'exact'    => false,
-            'html'     => false
+            'html'     => false,
         ];
 
         if (!empty($options['html']) && strtolower(mb_internal_encoding()) === 'utf-8') {

@@ -40,7 +40,7 @@ class Migration20151004090000ComPublications extends Base
                         'maximum'  => 0,
                         'ordering' => 7,
                         'params'   => '',
-                        'manifest' => ''
+                        'manifest' => '',
                     ])
                     ->execute();
             }

@@ -29,7 +29,7 @@ $icon = Html::asset(
     '',
     null,
     true,
-    true
+    true,
 );
 if (!$icon) :
     $icon = Html::asset(
@@ -38,7 +38,7 @@ if (!$icon) :
         '',
         null,
         true,
-        true
+        true,
     );
 endif;
 
@@ -61,26 +61,26 @@ $token = Session::getFormToken();
 $href = Route::url(
     'index.php?option=' . $this->option
     . '&task=download&' . $token . '=1'
-    . '&file=' . urlencode($this->currentDoc['path'])
+    . '&file=' . urlencode($this->currentDoc['path']),
 );
 
 // Image alt text
 $fileSize = \Components\Media\Admin\Helpers\MediaHelper::parseSize(
-    $this->currentDoc['size']
+    $this->currentDoc['size'],
 );
 $imgAlt = $this->escape(
     Lang::txt(
         'COM_MEDIA_IMAGE_TITLE',
         $this->currentDoc['name'],
-        $fileSize
-    )
+        $fileSize,
+    ),
 );
 
 // Before display event
 $params = new Hubzero\Config\Registry();
 Event::trigger(
     'onContentBeforeDisplay',
-    ['com_media.file', &$this->_tmp_doc, &$params]
+    ['com_media.file', &$this->_tmp_doc, &$params],
 );
 
 $docUrl = COM_MEDIA_BASEURL . $this->currentDoc['path'];
@@ -116,7 +116,7 @@ $escapedName = $this->escape($this->currentDoc['name']);
                                         . '&controller=medialist&task=info'
                                         . '&tmpl=' . $tmpl
                                         . '&' . $token . '=1'
-                                        . '&file=' . urlencode($this->currentDoc['path'])
+                                        . '&file=' . urlencode($this->currentDoc['path']),
                                     );
                                     $infoLabel = Lang::txt('COM_MEDIA_FILE_INFO');
                                     ?>
@@ -143,7 +143,7 @@ $escapedName = $this->escape($this->currentDoc['name']);
                                         . '&controller=medialist&task=path'
                                         . '&tmpl=' . $tmpl
                                         . '&' . $token . '=1'
-                                        . '&file=' . urlencode($this->currentDoc['path'])
+                                        . '&file=' . urlencode($this->currentDoc['path']),
                                     );
                                     $linkLabel = Lang::txt('COM_MEDIA_FILE_LINK');
                                     ?>
@@ -163,7 +163,7 @@ $escapedName = $this->escape($this->currentDoc['name']);
                                         'index.php?option=' . $this->option
                                         . '&task=delete&tmpl=' . $tmpl
                                         . '&' . $token . '=1'
-                                        . '&rm=' . urlencode($this->currentDoc['path'])
+                                        . '&rm=' . urlencode($this->currentDoc['path']),
                                     );
                                     $deleteLabel = Lang::txt('JACTION_DELETE');
                                     ?>
@@ -181,5 +181,5 @@ $escapedName = $this->escape($this->currentDoc['name']);
 <?php
 Event::trigger(
     'onContentAfterDisplay',
-    ['com_media.file', &$this->_tmp_doc, &$params]
+    ['com_media.file', &$this->_tmp_doc, &$params],
 );

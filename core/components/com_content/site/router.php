@@ -109,7 +109,7 @@ class Router extends Base
                                 ->select('alias')
                                 ->from('#__content')
                                 ->where('id', '=', (int)$query['id'])
-                                ->toString()
+                                ->toString(),
                         );
                         $alias = $db->loadResult();
                         $query['id'] = $query['id'] . ':' . $alias;

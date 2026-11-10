@@ -35,7 +35,7 @@ foreach ($this->pages as $component) {
             $comp = str_replace('com_', '', $component['option']);
             $url = Route::url(
                 'index.php?option=com_help&component=' . $comp
-                . '&page=' . $name
+                . '&page=' . $name,
             );
             $label = ucwords(str_replace('_', ' ', $name));
             $content .= '<li><a href="' . $url . '">'

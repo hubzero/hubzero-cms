@@ -61,7 +61,7 @@ class Textarea extends Base
             $editorId,
             null,
             null,
-            $editorOpts
+            $editorOpts,
         );
         return '<span class="field-wrap">' . $editor . '</span>';
     }

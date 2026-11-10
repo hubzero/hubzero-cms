@@ -36,7 +36,7 @@ class Status extends SiteController
                 . Request::getWord('task', ''), false, true), 'server'));
 
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . $return)
+                Route::url('index.php?option=com_users&view=login&return=' . $return),
             );
             return;
         }

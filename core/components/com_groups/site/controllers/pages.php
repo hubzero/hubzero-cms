@@ -80,14 +80,14 @@ class Pages extends Base
         $this->view->pages = $pageArchive->pages('tree', [
             'gidNumber' => $this->group->get('gidNumber'),
             'state'     => [0,1],
-            'orderby'   => 'lft ASC'
+            'orderby'   => 'lft ASC',
         ]);
 
         // get page categories
         $categoryArchive = new Page\Category\Archive();
         $this->view->categories = $categoryArchive->categories('list', [
             'gidNumber' => $this->group->get('gidNumber'),
-            'orderby'   => 'title'
+            'orderby'   => 'title',
         ]);
 
         // get modules archive
@@ -95,7 +95,7 @@ class Pages extends Base
         $this->view->modules = $moduleArchive->modules('list', [
             'gidNumber' => $this->group->get('gidNumber'),
             'state'     => [0,1],
-            'orderby'   => 'position ASC, ordering ASC'
+            'orderby'   => 'position ASC, ordering ASC',
         ]);
 
         // get request vars
@@ -187,14 +187,14 @@ class Pages extends Base
         $this->view->pages = $pageArchive->pages('list', [
             'gidNumber' => $this->group->get('gidNumber'),
             'state'     => [0, 1],
-            'orderby'   => 'lft'
+            'orderby'   => 'lft',
         ]);
 
         // get page categories
         $categoryArchive = new Page\Category\Archive();
         $this->view->categories = $categoryArchive->categories('list', [
             'gidNumber' => $this->group->get('gidNumber'),
-            'orderby'   => 'title'
+            'orderby'   => 'title',
         ]);
 
         // get stylesheets for editor
@@ -418,7 +418,7 @@ class Pages extends Base
         // Log activity
         $recipients = [
             ['group', $this->group->get('gidNumber')],
-            ['user', User::get('id')]
+            ['user', User::get('id')],
         ];
         foreach ($this->group->get('managers') as $recipient) {
             $recipients[] = ['user', $recipient];
@@ -432,15 +432,15 @@ class Pages extends Base
                 'description' => Lang::txt(
                     'COM_GROUPS_ACTIVITY_PAGE_' . ($page['id'] ? 'UPDATED' : 'CREATED'),
                     $this->page->get('title'),
-                    '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages') . '">' . $this->group->get('description') . '</a>'
+                    '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages') . '">' . $this->group->get('description') . '</a>',
                 ),
                 'details'     => [
                     'title'     => $this->page->get('title'),
                     'url'       => Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages'),
-                    'gidNumber' => $this->group->get('gidNumber')
-                ]
+                    'gidNumber' => $this->group->get('gidNumber'),
+                ],
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         // Push success message and redirect
@@ -597,7 +597,7 @@ class Pages extends Base
         // Log activity
         $recipients = [
             ['group', $this->group->get('gidNumber')],
-            ['user', User::get('id')]
+            ['user', User::get('id')],
         ];
         foreach ($this->group->get('managers') as $recipient) {
             $recipients[] = ['user', $recipient];
@@ -611,20 +611,20 @@ class Pages extends Base
                 'description' => Lang::txt(
                     'COM_GROUPS_ACTIVITY_PAGE_' . ($state == 2 ? 'DELETED' : ($state == 1 ? 'PUBLISHED' : 'UNPUBLISHED')),
                     $page->get('title'),
-                    '<a href="' . $url . '">' . $this->group->get('description') . '</a>'
+                    '<a href="' . $url . '">' . $this->group->get('description') . '</a>',
                 ),
                 'details'     => [
                     'title'     => $page->get('title'),
                     'url'       => $url,
-                    'gidNumber' => $this->group->get('gidNumber')
-                ]
+                    'gidNumber' => $this->group->get('gidNumber'),
+                ],
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         App::redirect(
             $url,
-            Lang::txt('COM_GROUPS_PAGES_PAGE_STATUS_CHANGE', $status)
+            Lang::txt('COM_GROUPS_PAGES_PAGE_STATUS_CHANGE', $status),
         );
     }
 
@@ -696,14 +696,14 @@ class Pages extends Base
         if ($version === null) {
             $this->setNotification(Lang::txt('COM_GROUPS_PAGES_PAGE_HOME_ERROR', $page->get('title')), 'error');
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages')
+                Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages'),
             );
         }
 
         // remove any current home page
         $pageArchive = Page\Archive::getInstance();
         $pageArchive->reset('home', 0, [
-            'gidNumber' => $this->group->get('gidNumber')
+            'gidNumber' => $this->group->get('gidNumber'),
         ]);
 
         // toggle home state
@@ -851,7 +851,7 @@ class Pages extends Base
         // Log activity
         $recipients = [
             ['group', $this->group->get('gidNumber')],
-            ['user', User::get('id')]
+            ['user', User::get('id')],
         ];
         foreach ($this->group->get('managers') as $recipient) {
             $recipients[] = ['user', $recipient];
@@ -859,7 +859,7 @@ class Pages extends Base
 
         $restoreUrl = Route::url(
             'index.php?option=' . $this->_option
-            . '&cn=' . $this->group->get('cn') . '&controller=pages'
+            . '&cn=' . $this->group->get('cn') . '&controller=pages',
         );
 
         Event::trigger('system.logActivity', [
@@ -871,22 +871,22 @@ class Pages extends Base
                     'COM_GROUPS_ACTIVITY_PAGE_RESTORED',
                     $page->get('title'),
                     $version,
-                    '<a href="' . $restoreUrl . '">' . $this->group->get('description') . '</a>'
+                    '<a href="' . $restoreUrl . '">' . $this->group->get('description') . '</a>',
                 ),
                 'details'     => [
                     'title'     => $page->get('title'),
                     'url'       => $restoreUrl,
-                    'gidNumber' => $this->group->get('gidNumber')
-                ]
+                    'gidNumber' => $this->group->get('gidNumber'),
+                ],
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         // redirect
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages&task=versions&pageid=' . $page->get('id')),
             Lang::txt('COM_GROUPS_PAGES_PAGE_VERSION_RESTORED', $page->get('title'), $version, Date::of($pageVersion->get('created'))->format('M d, Y @ g:ia')),
-            'passed'
+            'passed',
         );
     }
 }

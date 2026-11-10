@@ -118,7 +118,7 @@ class Modules extends Base
         $this->view->pages = $pageArchive->pages('list', [
             'gidNumber' => $this->group->get('gidNumber'),
             'state'     => [0,1],
-            'orderby'   => 'lft asc'
+            'orderby'   => 'lft asc',
         ]);
 
         // get a list of all pages for creating module menu
@@ -127,7 +127,7 @@ class Modules extends Base
             'gidNumber' => $this->group->get('gidNumber'),
             'position'  => $this->view->module->get('position'),
             'state'     => [0,1],
-            'orderby'   => 'ordering'
+            'orderby'   => 'ordering',
         ]);
 
         // get stylesheets for editor
@@ -282,13 +282,13 @@ class Modules extends Base
 
         $url = Route::url(
             'index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn')
-            . '&controller=pages#modules'
+            . '&controller=pages#modules',
         );
 
         // Log activity
         $recipients = [
             ['group', $this->group->get('gidNumber')],
-            ['user', User::get('id')]
+            ['user', User::get('id')],
         ];
         foreach ($this->group->get('managers') as $recipient) {
             $recipients[] = ['user', $recipient];
@@ -302,15 +302,15 @@ class Modules extends Base
                 'description' => Lang::txt(
                     'COM_GROUPS_ACTIVITY_MODULE_' . ($module['id'] ? 'UPDATED' : 'CREATED'),
                     $this->module->get('title'),
-                    '<a href="' . $url . '">' . htmlspecialchars((string) $this->group->get('description'), ENT_QUOTES, 'UTF-8') . '</a>'
+                    '<a href="' . $url . '">' . htmlspecialchars((string) $this->group->get('description'), ENT_QUOTES, 'UTF-8') . '</a>',
                 ),
                 'details'     => [
                     'title'     => $this->module->get('title'),
                     'url'       => $url,
-                    'gidNumber' => $this->group->get('gidNumber')
-                ]
+                    'gidNumber' => $this->group->get('gidNumber'),
+                ],
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         // Push success message and redirect
@@ -390,7 +390,7 @@ class Modules extends Base
         //inform user & redirect
         $url = Route::url(
             'index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn')
-            . '&controller=modules'
+            . '&controller=modules',
         );
 
         if ($return = Request::getString('return', '', 'get')) {
@@ -403,7 +403,7 @@ class Modules extends Base
         // Log activity
         $recipients = [
             ['group', $this->group->get('gidNumber')],
-            ['user', User::get('id')]
+            ['user', User::get('id')],
         ];
         foreach ($this->group->get('managers') as $recipient) {
             $recipients[] = ['user', $recipient];
@@ -418,15 +418,15 @@ class Modules extends Base
                 'description' => Lang::txt(
                     'COM_GROUPS_ACTIVITY_MODULE_' . $activityAction,
                     $module->get('title'),
-                    '<a href="' . $url . '">' . htmlspecialchars((string) $this->group->get('description'), ENT_QUOTES, 'UTF-8') . '</a>'
+                    '<a href="' . $url . '">' . htmlspecialchars((string) $this->group->get('description'), ENT_QUOTES, 'UTF-8') . '</a>',
                 ),
                 'details'     => [
                     'title'     => $module->get('title'),
                     'url'       => $url,
-                    'gidNumber' => $this->group->get('gidNumber')
-                ]
+                    'gidNumber' => $this->group->get('gidNumber'),
+                ],
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         App::redirect($url, Lang::txt('COM_GROUPS_PAGES_MODULE_STATE_CHANGE', $status), 'passed');

@@ -43,7 +43,7 @@ class Location extends Relational
      * @var  array
      **/
     protected $rules = [
-        'zone_id' => 'positive|nonzero'
+        'zone_id' => 'positive|nonzero',
     ];
 
     /**
@@ -52,7 +52,7 @@ class Location extends Relational
      * @var  array
      **/
     public $always = [
-        'ipFROM'
+        'ipFROM',
     ];
 
     /**

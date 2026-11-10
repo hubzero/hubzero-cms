@@ -59,7 +59,7 @@ class Share extends Plugin
         $arr = [
             'html'     => '',
             'metadata' => '',
-            'name'     => 'share'
+            'name'     => 'share',
         ];
 
         // Hide if version not published
@@ -91,14 +91,14 @@ class Share extends Plugin
                             'with'    => $sharewith,
                             'title'   => $publication->title,
                             'url'     => $sef,
-                            'version' => $publication->version_number
-                        ]
+                            'version' => $publication->version_number,
+                        ],
                     ],
                     'recipients' => [
                         ['publication', $publication->id],
                         ['user', $publication->created_by],
-                        ['user', User::get('id')]
-                    ]
+                        ['user', User::get('id')],
+                    ],
                 ]);
             }
 

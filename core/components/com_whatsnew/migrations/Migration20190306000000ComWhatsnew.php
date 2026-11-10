@@ -21,7 +21,7 @@ class Migration20190306000000ComWhatsnew extends Base
      * @var  array
      **/
     public static $components = [
-        'com_whatsnew'
+        'com_whatsnew',
     ];
 
     /**

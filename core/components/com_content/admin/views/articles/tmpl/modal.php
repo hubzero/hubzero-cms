@@ -34,7 +34,7 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
 $formAction = Route::url(
     'index.php?option=com_content&view=articles&layout=modal'
     . '&tmpl=component&function=' . $function
-    . '&' . Session::getFormToken() . '=1'
+    . '&' . Session::getFormToken() . '=1',
 );
 ?>
 <form
@@ -74,7 +74,7 @@ $formAction = Route::url(
                         Html::access('assetgroups'),
                         'value',
                         'text',
-                        $this->filters['access']
+                        $this->filters['access'],
                     );
                     ?>
                 </select>
@@ -93,7 +93,7 @@ $formAction = Route::url(
                         'value',
                         'text',
                         $this->filters['published'],
-                        true
+                        true,
                     );
                     ?>
                 </select>
@@ -111,7 +111,7 @@ $formAction = Route::url(
                         Html::category('options', 'com_content'),
                         'value',
                         'text',
-                        $this->filters['category_id']
+                        $this->filters['category_id'],
                     );
                     ?>
                 </select>
@@ -129,7 +129,7 @@ $formAction = Route::url(
                         Html::contentlanguage('existing', true, true),
                         'value',
                         'text',
-                        $this->filters['language']
+                        $this->filters['language'],
                     );
                     ?>
                 </select>
@@ -194,8 +194,8 @@ $formAction = Route::url(
                             \Components\Content\Site\Helpers\Route::getArticleRoute(
                                 $item->id,
                                 $item->catid,
-                                $item->language
-                            )
+                                $item->language,
+                            ),
                         );
                         $aLang = $this->escape($lang);
                         $onclick = "if (window.parent) window.parent.{$fn}"

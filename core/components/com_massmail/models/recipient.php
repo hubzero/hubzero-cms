@@ -48,7 +48,7 @@ class Recipient extends Relational
      */
     protected $rules = [
         'email'      => 'notempty',
-        'mailing_id' => 'positive|nonzero'
+        'mailing_id' => 'positive|nonzero',
     ];
 
     /**

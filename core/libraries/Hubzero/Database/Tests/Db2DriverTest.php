@@ -87,32 +87,32 @@ class Db2DriverTest extends AbstractDriverTestCase
 
         $driver->exec(
             "INSERT INTO d2_categories (name, slug, sort_order)"
-            . " VALUES ('Electronics', 'electronics', 1)"
+            . " VALUES ('Electronics', 'electronics', 1)",
         );
         $driver->exec(
             "INSERT INTO d2_categories (name, slug, sort_order)"
-            . " VALUES ('Books', 'books', 2)"
+            . " VALUES ('Books', 'books', 2)",
         );
         $driver->exec(
             "INSERT INTO d2_categories (name, slug, sort_order, active)"
-            . " VALUES ('Archived', 'archived', 99, 0)"
+            . " VALUES ('Archived', 'archived', 99, 0)",
         );
 
         $driver->exec(
             "INSERT INTO d2_items (category_id, title, price, stock, status)"
-            . " VALUES (1, 'Laptop', 999.99, 10, 'active')"
+            . " VALUES (1, 'Laptop', 999.99, 10, 'active')",
         );
         $driver->exec(
             "INSERT INTO d2_items (category_id, title, price, stock, status)"
-            . " VALUES (1, 'Phone', 599.99, 25, 'active')"
+            . " VALUES (1, 'Phone', 599.99, 25, 'active')",
         );
         $driver->exec(
             "INSERT INTO d2_items (category_id, title, price, stock, status)"
-            . " VALUES (2, 'Novel', 19.99, 100, 'active')"
+            . " VALUES (2, 'Novel', 19.99, 100, 'active')",
         );
         $driver->exec(
             "INSERT INTO d2_items (category_id, title, price, stock, status)"
-            . " VALUES (2, 'Textbook', 79.99, 5, 'draft')"
+            . " VALUES (2, 'Textbook', 79.99, 5, 'draft')",
         );
     }
 
@@ -275,7 +275,7 @@ class Db2DriverTest extends AbstractDriverTestCase
         // DB2 stores column names in uppercase; normalize with CASE_LOWER
         $columns = array_change_key_case(
             $driver->getTableColumns('d2_categories', true),
-            CASE_LOWER
+            CASE_LOWER,
         );
 
         $this->assertArrayHasKey('id', $columns);
@@ -912,7 +912,7 @@ class Db2DriverTest extends AbstractDriverTestCase
             'fk_d2_child_parent',
             'parent_id',
             'd2_fk_parent',
-            'id'
+            'id',
         ));
 
         $fks = $driver->getForeignKeys('d2_fk_child');

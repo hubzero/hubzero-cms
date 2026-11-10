@@ -252,12 +252,12 @@ class Grid
         $published = 'Published',
         $unpublished = 'Unpublished',
         $archived = null,
-        $trashed = null
+        $trashed = null,
     ) {
         $state = [
             ''  => '- ' . Lang::txt('JLIB_HTML_SELECT_STATE') . ' -',
             'P' => Lang::txt($published),
-            'U' => Lang::txt($unpublished)
+            'U' => Lang::txt($unpublished),
         ];
 
         if ($archived) {
@@ -274,8 +274,8 @@ class Grid
             [
                 'list.attr'   => 'class="inputbox filter filter-submit" size="1"',
                 'list.select' => $filter_state,
-                'option.key'  => null
-            ]
+                'option.key'  => null,
+            ],
         );
     }
 
@@ -405,8 +405,8 @@ class Grid
             htmlspecialchars(
                 with(new Date($time))->toLocal(Lang::txt('DATE_FORMAT_LC')),
                 ENT_COMPAT,
-                'UTF-8'
-            )
+                'UTF-8',
+            ),
         );
         $time = addslashes(htmlspecialchars(with(new Date($time))->toLocal('H:i'), ENT_COMPAT, 'UTF-8'));
 
@@ -426,7 +426,7 @@ class Grid
                 'checkedout',
                 $enabled,
                 false,
-                $checkbox
+                $checkbox,
             );
     }
 
@@ -453,7 +453,7 @@ class Grid
         $prefix = '',
         $enabled = true,
         $translate = true,
-        $checkbox = 'cb'
+        $checkbox = 'cb',
     ) {
         if (is_array($prefix)) {
             $options   = $prefix;
@@ -469,27 +469,27 @@ class Grid
         $task           = array_key_exists('task', $state) ? $state['task'] : $state[0];
         $text           = array_key_exists('text', $state) ? $state['text'] : (array_key_exists(
             1,
-            $state
+            $state,
         ) ? $state[1] : '');
         $active_title   = array_key_exists('active_title', $state) ? $state['active_title'] : (array_key_exists(
             2,
-            $state
+            $state,
         ) ? $state[2] : '');
         $inactive_title = array_key_exists('inactive_title', $state) ? $state['inactive_title'] : (array_key_exists(
             3,
-            $state
+            $state,
         ) ? $state[3] : '');
         $tip            = array_key_exists('tip', $state) ? $state['tip'] : (array_key_exists(
             4,
-            $state
+            $state,
         ) ? $state[4] : false);
         $active_class   = array_key_exists('active_class', $state) ? $state['active_class'] : (array_key_exists(
             5,
-            $state
+            $state,
         ) ? $state[5] : '');
         $inactive_class = array_key_exists('inactive_class', $state) ? $state['inactive_class'] : (array_key_exists(
             6,
-            $state
+            $state,
         ) ? $state[6] : '');
         return self::action(
             $i,
@@ -503,7 +503,7 @@ class Grid
             $inactive_class,
             $enabled,
             $translate,
-            $checkbox
+            $checkbox,
         );
     }
 
@@ -526,7 +526,7 @@ class Grid
         $enabled = true,
         $checkbox = 'cb',
         $publish_up = null,
-        $publish_down = null
+        $publish_down = null,
     ) {
         if (is_array($prefix)) {
             $options  = $prefix;
@@ -543,7 +543,7 @@ class Grid
             2  => ['unpublish',
                 'JARCHIVED',    'JLIB_HTML_UNPUBLISH_ITEM', 'JARCHIVED',    false, 'archive',   'archive'],
             -2 => ['publish',
-                'JTRASHED',     'JLIB_HTML_PUBLISH_ITEM',   'JTRASHED',     false, 'trash',     'trash']
+                'JTRASHED',     'JLIB_HTML_PUBLISH_ITEM',   'JTRASHED',     false, 'trash',     'trash'],
         ];
 
         // Special state for dates
@@ -554,11 +554,11 @@ class Grid
             $tz = new \DateTimeZone(User::getParam('timezone', \Config::get('offset')));
             $publish_up   = ($publish_up != $nullDate)   ? with(new Date(
                 $publish_up,
-                'UTC'
+                'UTC',
             ))->setTimeZone($tz)   : false;
             $publish_down = ($publish_down != $nullDate) ? with(new Date(
                 $publish_down,
-                'UTC'
+                'UTC',
             ))->setTimeZone($tz) : false;
             // Create tip text, only we have publish up or down settings
             $tips = [];
@@ -618,7 +618,7 @@ class Grid
         $prefix = '',
         $text = 'JLIB_HTML_MOVE_UP',
         $enabled = true,
-        $checkbox = 'cb'
+        $checkbox = 'cb',
     ) {
         if (is_array($prefix)) {
             $options  = $prefix;
@@ -639,7 +639,7 @@ class Grid
             'uparrow_disabled',
             $enabled,
             true,
-            $checkbox
+            $checkbox,
         );
     }
 
@@ -660,7 +660,7 @@ class Grid
         $prefix = '',
         $text = 'JLIB_HTML_MOVE_DOWN',
         $enabled = true,
-        $checkbox = 'cb'
+        $checkbox = 'cb',
     ) {
         if (is_array($prefix)) {
             $options  = $prefix;
@@ -681,7 +681,7 @@ class Grid
             'downarrow_disabled',
             $enabled,
             true,
-            $checkbox
+            $checkbox,
         );
     }
 
@@ -742,7 +742,7 @@ class Grid
         $inactive_class = '',
         $enabled = true,
         $translate = true,
-        $checkbox = 'cb'
+        $checkbox = 'cb',
     ) {
         // Load the behavior.
         self::behavior();
@@ -752,18 +752,18 @@ class Grid
             $text           = array_key_exists('text', $options) ? $options['text'] : $text;
             $active_title   = array_key_exists(
                 'active_title',
-                $options
+                $options,
             ) ? $options['active_title'] : $active_title;            $inactive_title = array_key_exists(
                 'inactive_title',
-                $options
+                $options,
             ) ? $options['inactive_title'] : $inactive_title;
             $tip            = array_key_exists('tip', $options) ? $options['tip'] : $tip;
             $active_class   = array_key_exists(
                 'active_class',
-                $options
+                $options,
             ) ? $options['active_class'] : $active_class;            $inactive_class = array_key_exists(
                 'inactive_class',
-                $options
+                $options,
             ) ? $options['inactive_class'] : $inactive_class;
             $enabled        = array_key_exists('enabled', $options) ? $options['enabled'] : $enabled;
             $translate      = array_key_exists('translate', $options) ? $options['translate'] : $translate;
@@ -782,7 +782,7 @@ class Grid
                 addslashes(htmlspecialchars(
                     $translate ? Lang::txt($active_title) : $active_title,
                     ENT_COMPAT,
-                    'UTF-8'
+                    'UTF-8',
                 )) .
                 '">';
             $html[] = '<span class="state ' . $active_class . '">';
@@ -795,7 +795,7 @@ class Grid
                 addslashes(htmlspecialchars(
                     $translate ? Lang::txt($inactive_title) : $inactive_title,
                     ENT_COMPAT,
-                    'UTF-8'
+                    'UTF-8',
                 )) .
                 '">';
             $html[] = '<span class="state ' . $inactive_class . '">';

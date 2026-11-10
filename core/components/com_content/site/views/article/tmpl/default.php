@@ -111,8 +111,8 @@ if (
                     $title = $this->escape($this->item->parent_title);
                     $catUrl = Route::url(
                         \Components\Content\Site\Helpers\Route::getCategoryRoute(
-                            $this->item->parent_slug
-                        )
+                            $this->item->parent_slug,
+                        ),
                     );
                     $url = '<a href="' . $catUrl . '">' . $title . '</a>';
                     ?>
@@ -129,8 +129,8 @@ if (
                     $title = $this->escape($this->item->category_title);
                     $catUrl = Route::url(
                         \Components\Content\Site\Helpers\Route::getCategoryRoute(
-                            $this->item->catslug
-                        )
+                            $this->item->catslug,
+                        ),
                     );
                     $url = '<a href="' . $catUrl . '">' . $title . '</a>';
                     ?>

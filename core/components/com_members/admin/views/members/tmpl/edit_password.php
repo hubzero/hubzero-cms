@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
         <?php
         $val = Route::url(
             'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=checkpass&no_html=1',
-            false
+            false,
         );
         ?>
         <?php

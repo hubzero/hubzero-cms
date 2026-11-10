@@ -401,7 +401,7 @@ class ExpressionTest extends TestCase
     {
         $expr = Expression::caseWhen('status', [
             'active' => 'Active',
-            'inactive' => 'Inactive'
+            'inactive' => 'Inactive',
         ], 'Unknown');
 
         $this->assertEquals('CASE', $expr->getFunction());
@@ -691,7 +691,7 @@ class ExpressionTest extends TestCase
         $expr = Expression::concat(
             'first_name',
             Expression::literal(' '),
-            Expression::coalesce('nickname', Expression::literal('Unknown'))
+            Expression::coalesce('nickname', Expression::literal('Unknown')),
         );
 
         $bindings = $expr->getBindings();

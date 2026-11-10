@@ -38,7 +38,7 @@ class Bingmaps extends Plugin
 
         return new \Geocoder\Provider\BingMaps\BingMaps(
             $adapter,
-            $this->params->get('apiKey')
+            $this->params->get('apiKey'),
         );
     }
 }

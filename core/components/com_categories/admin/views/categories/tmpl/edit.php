@@ -45,10 +45,10 @@ $formAction = Route::url(
     'index.php?option=com_categories'
     . '&extension=' . $ext
     . '&layout=edit'
-    . '&id=' . (int) $this->item->id
+    . '&id=' . (int) $this->item->id,
 );
 $invalidMsg = $this->escape(
-    Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')
+    Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'),
 );
 ?>
 

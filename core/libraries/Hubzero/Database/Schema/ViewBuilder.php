@@ -130,7 +130,7 @@ class ViewBuilder
         return $this->driver->createOrReplaceView($this->name, $selectSql, [
             'algorithm' => $this->algorithm,
             'definer'   => $this->definer,
-            'security'  => $this->security
+            'security'  => $this->security,
         ]);
     }
 }

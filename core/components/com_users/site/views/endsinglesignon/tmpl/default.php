@@ -17,12 +17,12 @@ $this->css('login.css');
 
 $urlLogoutAll = Route::url(
     'index.php?option=' . $this->option
-    . '&task=user.logout&sso=all&authenticator=' . $this->authenticator
+    . '&task=user.logout&sso=all&authenticator=' . $this->authenticator,
 );
 $urlLogoutNone = Route::url(
     'index.php?option=' . $this->option
     . '&task=user.logout&sso=none&authenticator=' . $this->authenticator
-    . '&return=' . Request::base()
+    . '&return=' . Request::base(),
 );
 ?>
 
@@ -30,7 +30,7 @@ $urlLogoutNone = Route::url(
     <h3><?php
         echo Lang::txt(
             'Would you like to completely log out of your %s account?',
-            $this->display_name
+            $this->display_name,
         );
         ?></h2>
     <p>
@@ -40,7 +40,7 @@ $urlLogoutNone = Route::url(
         <?php
         echo Lang::txt(
             'If you would like to end all %s account shared sessions as well, you may do so now.',
-            $this->display_name
+            $this->display_name,
         );
         ?>
     </p>

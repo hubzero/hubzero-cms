@@ -20,7 +20,7 @@ Html::behavior('tooltip');
 $title = Lang::txt(
     'COM_MEMBERS_VIEW_DEBUG_GROUP_TITLE',
     $this->group->get('id'),
-    $this->group->get('title')
+    $this->group->get('title'),
 );
 Toolbar::title($title, 'groups');
 Toolbar::help('JHELP_USERS_DEBUG_GROUPS');
@@ -52,7 +52,7 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
 <?php
 $formAction = Route::url(
     'index.php?option=' . $this->option . '&controller=' . $this->controller
-    . '&task=debug&id=' . (int) $this->group->get('id')
+    . '&task=debug&id=' . (int) $this->group->get('id'),
 );
 ?>
 <form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
@@ -93,7 +93,7 @@ $formAction = Route::url(
                         $this->levels,
                         'value',
                         'text',
-                        $this->filters['level_start']
+                        $this->filters['level_start'],
                     ); ?>
                 </select>
 
@@ -127,7 +127,7 @@ $formAction = Route::url(
                         $tipTitle = htmlspecialchars(
                             Lang::txt($key) . '::' . Lang::txt($action[1]),
                             ENT_COMPAT,
-                            'UTF-8'
+                            'UTF-8',
                         );
                         ?>
                         <span class="hasTip" title="<?php echo $tipTitle; ?>">

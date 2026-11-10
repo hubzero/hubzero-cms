@@ -659,7 +659,7 @@ class FirebirdGrammar extends BaseSchemaGrammar
                 $typeMap = [
                     7 => 'SMALLINT', 8 => 'INTEGER', 10 => 'FLOAT', 12 => 'DATE',
                     13 => 'TIME', 14 => 'CHAR', 16 => 'BIGINT', 27 => 'DOUBLE PRECISION',
-                    35 => 'TIMESTAMP', 37 => 'VARCHAR', 261 => 'BLOB'
+                    35 => 'TIMESTAMP', 37 => 'VARCHAR', 261 => 'BLOB',
                 ];
 
                 $fieldType = $typeMap[$colInfo->field_type] ?? 'VARCHAR';

@@ -151,7 +151,7 @@ Toolbar::help('revisions');
                             . '&controller=' . $this->controller
                             . '&task=edit&id=' . $row->get('id')
                             . '&pageid=' . $this->filters['pageid']
-                            . '&' . Session::getFormToken() . '=1'
+                            . '&' . Session::getFormToken() . '=1',
                         );
                         $revNum = Lang::txt('COM_WIKI_REVISION_NUM', $this->escape(stripslashes($row->get('version'))));
                         ?>
@@ -181,7 +181,7 @@ Toolbar::help('revisions');
                             . '&task=approve&id=' . $row->get('id')
                             . '&pageid=' . $this->filters['pageid']
                             . '&approve=' . $task
-                            . '&' . Session::getFormToken() . '=1'
+                            . '&' . Session::getFormToken() . '=1',
                         );
                         ?>
                         <a class="access <?php echo $class . ' ' . $color_access; ?>" href="<?php echo $approveUrl; ?>">
@@ -208,7 +208,7 @@ Toolbar::help('revisions');
                     <span class="glyph user">
                         <?php
                         $creatorName = $this->escape(
-                            stripslashes($row->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN')))
+                            stripslashes($row->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN'))),
                         );
                         echo $creatorName;
                         ?>

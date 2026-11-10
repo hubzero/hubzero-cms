@@ -64,7 +64,7 @@ class Groups extends Module
             'restricted' => "join_policy=1",
             'open'       => "join_policy=0",
             'approved'   => "approved=1",
-            'pending'    => "approved=0"
+            'pending'    => "approved=0",
         ];
 
         $database = App::get('db');

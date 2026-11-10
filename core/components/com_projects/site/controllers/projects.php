@@ -65,7 +65,7 @@ class Projects extends Base
             'start'    => 0,
             'admin'    => 0,
             'search'   => trim(Request::getString('value', '')),
-            'getowner' => 1
+            'getowner' => 1,
         ];
 
         // Get records
@@ -80,7 +80,7 @@ class Projects extends Base
 
                 $item = [
                     'id'   => $row->get('alias'),
-                    'name' => $title
+                    'name' => $title,
                 ];
 
                 // Push exact matches to the front
@@ -143,7 +143,7 @@ class Projects extends Base
                         $subject,
                         'projects_project_membershiprequest',
                         'memberrequest',
-                        $message
+                        $message,
                     );
                     Notify::success(Lang::txt('COM_PROJECTS_MEMBERSHIPREQUEST_SUCCESS'));
                 }
@@ -272,7 +272,7 @@ class Projects extends Base
         $filters['limit'] = Request::getInt(
             'limit',
             intval(Config::get('list_limit', 25)),
-            'request'
+            'request',
         );
         $filters['start']    = Request::getInt('limitstart', 0, 'get');
         $filters['sortby']   = strtolower(Request::getWord('sortby', 'title'));
@@ -366,7 +366,7 @@ class Projects extends Base
             // Options for project creator
             if ($this->model->access('owner')) {
                 $view = new \Hubzero\Component\View(
-                    ['name' => 'changeowner', 'layout' => 'default']
+                    ['name' => 'changeowner', 'layout' => 'default'],
                 );
                 $view->project = $this->model;
                 $view->set('task', $this->_task);
@@ -391,7 +391,7 @@ class Projects extends Base
                 $this->model->_tblOwner->reconcileGroups(
                     $this->model->get('id'),
                     $this->model->get('owned_by_group'),
-                    $this->model->get('sync_group')
+                    $this->model->get('sync_group'),
                 )
             ) {
                 $sync = true;
@@ -415,7 +415,7 @@ class Projects extends Base
         if ($sync == true) {
             $this->model->_tblOwner->sysGroup(
                 $this->model->get('alias'),
-                $this->config->get('group_prefix', 'pr-')
+                $this->config->get('group_prefix', 'pr-'),
             );
 
             // Reload member
@@ -473,7 +473,7 @@ class Projects extends Base
             $match = $this->model->_tblOwner->matchInvite(
                 $this->model->get('id'),
                 $confirmcode,
-                $email
+                $email,
             );
 
             if (User::isGuest() && $match) {
@@ -491,7 +491,7 @@ class Projects extends Base
                         // Sync with system group
                         $this->model->_tblOwner->sysGroup(
                             $this->model->get('alias'),
-                            $this->config->get('group_prefix', 'pr-')
+                            $this->config->get('group_prefix', 'pr-'),
                         );
 
                         // Go to project page
@@ -583,7 +583,7 @@ class Projects extends Base
             $plugin_params = [
                 $this->model,
                 $action,
-                [$plugin]
+                [$plugin],
             ];
 
             // Get plugin content
@@ -875,7 +875,7 @@ class Projects extends Base
         if (in_array($this->_task, ['delete', 'reinstate'], true)) {
             $this->model->_tblOwner->sysGroup(
                 $this->model->get('alias'),
-                $this->config->get('group_prefix', 'pr-')
+                $this->config->get('group_prefix', 'pr-'),
             );
         }
 
@@ -1124,7 +1124,7 @@ class Projects extends Base
                             'projects_new_project_admin',
                             'admin',
                             $admincomment,
-                            $reviewer
+                            $reviewer,
                         );
                     }
                 }
@@ -1185,7 +1185,7 @@ class Projects extends Base
                                     'quote',
                                     0,
                                     1,
-                                    1
+                                    1,
                                 );
 
                                 if ($caid) {

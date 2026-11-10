@@ -181,7 +181,7 @@ class Respondent extends Table
     {
         $this->_db->setQuery(
             'SELECT ' . ($bounded ? '*' : 'COUNT(*)') . " FROM $this->_tbl WHERE " . $this->filters . $this->order .
-                ($bounded && $this->limit != 0 ? ' LIMIT ' . $this->offset . ', ' . $this->limit : '')
+                ($bounded && $this->limit != 0 ? ' LIMIT ' . $this->offset . ', ' . $this->limit : ''),
         );
         return $bounded ? $this->_db->loadObjectList() : $this->_db->loadResult();
     }

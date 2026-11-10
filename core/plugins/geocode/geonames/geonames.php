@@ -38,7 +38,7 @@ class Geonames extends Plugin
 
         return new \Geocoder\Provider\Geonames\Geonames(
             $adapter,
-            $this->params->get('username')
+            $this->params->get('username'),
         );
     }
 }

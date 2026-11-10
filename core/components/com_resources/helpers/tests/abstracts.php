@@ -61,7 +61,7 @@ class Abstracts implements Test
         $result->set([
             'scope_id' => $data['id'],
             'status'   => $status,
-            'notes'    => json_encode($meta)
+            'notes'    => json_encode($meta),
         ]);
 
         return $result;

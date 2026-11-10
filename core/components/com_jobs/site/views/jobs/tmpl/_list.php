@@ -107,7 +107,7 @@ $maxscore  = $this->filters['search'] && $this->jobs[0]->keywords > 0 ? $this->j
                 // joining an empty one on looked like
                 $where = array_filter([
                     trim((string) $this->jobs[$i]->companyLocation),
-                    trim((string) $this->jobs[$i]->companyLocationCountry)
+                    trim((string) $this->jobs[$i]->companyLocationCountry),
                 ]);
                 echo $this->escape(implode(', ', $where));
                 ?>

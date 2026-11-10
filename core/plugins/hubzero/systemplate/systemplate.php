@@ -49,7 +49,7 @@ class Systemplate extends Plugin
             ->joinRaw(
                 '#__extensions as e',
                 'e.element=s.template AND e.type=' . $db->quote('template') . ' AND e.client_id=s.client_id',
-                'left'
+                'left',
             );
 
         $path = PATH_APP;
@@ -73,7 +73,7 @@ class Systemplate extends Plugin
         if (is_dir($path)) {
             $objects = new \RecursiveIteratorIterator(
                 new \RecursiveDirectoryIterator($path),
-                \RecursiveIteratorIterator::SELF_FIRST
+                \RecursiveIteratorIterator::SELF_FIRST,
             );
             foreach ($objects as $name => $file) {
                 if ($file->isDir()) {

@@ -82,7 +82,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
      * @var  array
      */
     protected $rules = [
-        'description' => 'notempty'
+        'description' => 'notempty',
     ];
 
     /**
@@ -91,7 +91,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
      * @var  array
      **/
     public $always = [
-        'cn'
+        'cn',
     ];
 
     /**
@@ -101,7 +101,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**
@@ -111,7 +111,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
      */
     protected $parsed = [
         'public_desc',
-        'private_desc'
+        'private_desc',
     ];
 
     /**
@@ -398,7 +398,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
             if ($row->isNew()) {
                 $row->set([
                     'uidNumber' => $id,
-                    'gidNumber' => $this->get('gidNumber')
+                    'gidNumber' => $this->get('gidNumber'),
                 ]);
 
                 if (!$row->save()) {
@@ -416,7 +416,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
                 if ($row->isNew()) {
                     $row->set([
                         'uidNumber' => $id,
-                        'gidNumber' => $this->get('gidNumber')
+                        'gidNumber' => $this->get('gidNumber'),
                     ]);
                     if (!$row->save()) {
                         $this->addError($row->getError());

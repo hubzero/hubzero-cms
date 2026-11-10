@@ -75,7 +75,7 @@ class Supergroup extends Plugin
                 $currentRoute = rtrim(Request::path(), '/');
                 $currentRoute = trim(
                     str_replace('groups/' . $group->get('cn') . '/' . $active, '', $currentRoute),
-                    '/'
+                    '/',
                 );
 
                 // split route into segements

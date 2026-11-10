@@ -61,7 +61,7 @@ $canOrder  = User::authorise('core.edit.state', 'com_content.article');
 $saveOrder = $listOrder == 'fp.ordering';
 
 $formAction = Route::url(
-    'index.php?option=' . $this->option . '&task=featured'
+    'index.php?option=' . $this->option . '&task=featured',
 );
 $searchVal = $this->escape($this->filters['search']);
 $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
@@ -103,7 +103,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                     'value',
                     'text',
                     $this->filters['published'],
-                    true
+                    true,
                 );
                 ?>
             </select>
@@ -121,7 +121,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                     Html::access('assetgroups'),
                     'value',
                     'text',
-                    $this->filters['access']
+                    $this->filters['access'],
                 );
                 ?>
             </select>
@@ -139,7 +139,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                     Html::contentlanguage('existing', true, true),
                     'value',
                     'text',
-                    $this->filters['language']
+                    $this->filters['language'],
                 );
                 ?>
             </select>
@@ -230,7 +230,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                             (is_object($item->editor) ? $item->editor->get('name') : $item->editor),
                             $item->checked_out_time,
                             'featured.',
-                            $canCheckin
+                            $canCheckin,
                         );
                         ?>
                     <?php endif; ?>
@@ -238,7 +238,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                         <?php
                         $editUrl = Route::url(
                             'index.php?option=' . $this->option
-                            . '&task=edit&return=featured&id=' . $item->id
+                            . '&task=edit&return=featured&id=' . $item->id,
                         );
                         ?>
                     <a href="<?php echo $editUrl; ?>">
@@ -259,7 +259,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                         $canChange,
                         'cb',
                         $item->publish_up,
-                        $item->publish_down
+                        $item->publish_down,
                     );
                     ?>
                 </td>
@@ -276,7 +276,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                                     true,
                                     'featured.orderup',
                                     'JLIB_HTML_MOVE_UP',
-                                    $ordering
+                                    $ordering,
                                 );
                                 $downIcon = $this->pagination->orderDownIcon(
                                     $i,
@@ -284,7 +284,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                                     true,
                                     'featured.orderdown',
                                     'JLIB_HTML_MOVE_DOWN',
-                                    $ordering
+                                    $ordering,
                                 );
                                 ?>
                                 <span><?php echo $upIcon; ?></span>
@@ -296,7 +296,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                                     true,
                                     'featured.orderdown',
                                     'JLIB_HTML_MOVE_UP',
-                                    $ordering
+                                    $ordering,
                                 );
                                 $downIcon = $this->pagination->orderDownIcon(
                                     $i,
@@ -304,7 +304,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                                     true,
                                     'featured.orderup',
                                     'JLIB_HTML_MOVE_DOWN',
-                                    $ordering
+                                    $ordering,
                                 );
                                 ?>
                                 <span><?php echo $upIcon; ?></span>
@@ -334,7 +334,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                             <?php
                             echo Lang::txt(
                                 'JGLOBAL_LIST_ALIAS',
-                                $this->escape($item->created_by_alias)
+                                $this->escape($item->created_by_alias),
                             );
                             ?>
                         </p>

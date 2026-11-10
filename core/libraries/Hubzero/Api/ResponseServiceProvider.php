@@ -55,7 +55,7 @@ class ResponseServiceProvider extends ServiceProvider
             'txt'   => 'text/plain',
             'plain' => 'text/plain',
             'php'   => 'application/php',
-            'php_serialized' => 'application/vnd.php.serialized'
+            'php_serialized' => 'application/vnd.php.serialized',
         ];
 
         $format = $this->app['request']->getWord('format', 'json');

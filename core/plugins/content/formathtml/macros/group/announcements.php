@@ -60,7 +60,7 @@ class Announcements extends GroupMacro
         $args = $this->getArgs();
 
         $filters = [
-            'limit' => (isset($args[0]) && is_numeric($args[0])) ? $args[0] : 3
+            'limit' => (isset($args[0]) && is_numeric($args[0])) ? $args[0] : 3,
         ];
 
         $query = \Hubzero\Item\Announcement::all()
@@ -91,7 +91,7 @@ class Announcements extends GroupMacro
                         'folder'  => 'groups',
                         'element' => 'announcements',
                         'name'    => 'browse',
-                        'layout'  => 'item'
+                        'layout'  => 'item',
                     ]);
                     $view->set('group', $this->group);
                     $view->set('authorized', false);

@@ -246,7 +246,7 @@ class Book extends Obj
             $this->page = Page::oneByPath(
                 ($path ? $path . '/' : '') . $pagename,
                 $this->get('scope'),
-                $this->get('scope_id')
+                $this->get('scope_id'),
             );
 
             if (!$this->page->get('id') && $this->page->getNamespace($pagename) == 'help') {

@@ -70,7 +70,7 @@ class Attachments extends SiteController
                 'title' => $resourceTitle,
                 'standalone' => 1,
                 'published' => 2,
-                'type' => $type
+                'type' => $type,
             ]);
             if (!$parentResource->save()) {
                 $this->setError($parentResource->getError());
@@ -119,7 +119,7 @@ class Attachments extends SiteController
                 'access'       => (int) $parentRow->get('access', 0),
                 'group_owner'  => $parentRow->get('group_owner', ''),
                 'path'         => 'http://', // make sure no path is specified just yet
-                'type'         =>  11
+                'type'         =>  11,
             ]);
 
             // Save record
@@ -158,7 +158,7 @@ class Attachments extends SiteController
                 'title' => $resourceTitle,
                 'standalone' => 1,
                 'published' => 2,
-                'type' => $type
+                'type' => $type,
             ]);
             if (!$parentResource->save()) {
                 echo json_encode([
@@ -167,7 +167,7 @@ class Attachments extends SiteController
                     'file'      => 'http://',
                     'directory' => '',
                     'parent'    => $pid,
-                    'id'        => 0
+                    'id'        => 0,
                 ]);
                 exit();
             }
@@ -219,7 +219,7 @@ class Attachments extends SiteController
                 'access'       => (int) $parentRow->get('access', 0),
                 'group_owner'  => $parentRow->get('group_owner', ''),
                 'path'         => Request::getString('url', 'http://'),
-                'type'         => 11
+                'type'         => 11,
             ]);
 
             // Clean and validate path
@@ -232,7 +232,7 @@ class Attachments extends SiteController
                     'file'      => $resource->path,
                     'directory' => '',
                     'parent'    => $pid,
-                    'id'        => 0
+                    'id'        => 0,
                 ]);
                 exit();
             }
@@ -245,7 +245,7 @@ class Attachments extends SiteController
                     'file'      => 'http://',
                     'directory' => '',
                     'parent'    => $pid,
-                    'id'        => 0
+                    'id'        => 0,
                 ]);
                 exit();
             }
@@ -259,7 +259,7 @@ class Attachments extends SiteController
                 'file'      => $resource->path,
                 'directory' => '',
                 'parent'    => $pid,
-                'id'        => $resource->id
+                'id'        => $resource->id,
             ]);
             exit();
         }
@@ -271,7 +271,7 @@ class Attachments extends SiteController
             'directory' => '',
             'parent'    => $pid,
             'id'        => $resource->id,
-            'message'   => Lang::txt('COM_RESOURCES_ADD_CHILD_SUCCESS', $parentResource->title)
+            'message'   => Lang::txt('COM_RESOURCES_ADD_CHILD_SUCCESS', $parentResource->title),
         ]);
         exit();
     }
@@ -320,14 +320,14 @@ class Attachments extends SiteController
         //check to make sure we have a file and its not too big
         if ($size == 0) {
             echo json_encode([
-                'error' => Lang::txt('File is empty')
+                'error' => Lang::txt('File is empty'),
             ]);
             return;
         }
         if ($size > $sizeLimit) {
             $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', Number::formatBytes($sizeLimit));
             echo json_encode([
-                'error' => Lang::txt('File is too large. Max file upload size is %s', $max)
+                'error' => Lang::txt('File is too large. Max file upload size is %s', $max),
             ]);
             return;
         }
@@ -371,7 +371,7 @@ class Attachments extends SiteController
             'access'       => (int) $parentRow->get('access', 0),
             'group_owner'  => $parentRow->get('group_owner', ''),
             'path'         => '', // make sure no path is specified just yet
-            'type'         => $this->_getChildType($filename . '.' . $ext)
+            'type'         => $this->_getChildType($filename . '.' . $ext),
         ]);
 
         // Setup videos to auto-play in hub
@@ -386,7 +386,7 @@ class Attachments extends SiteController
 
         if ($parent->hasChild($filename)) {
             echo json_encode([
-                'error' => Lang::txt('A file with this name and type appears to already exist.')
+                'error' => Lang::txt('A file with this name and type appears to already exist.'),
             ]);
             return;
         }
@@ -394,7 +394,7 @@ class Attachments extends SiteController
         // Store new content
         if (!$resource->save()) {
             echo json_encode([
-                'error' => $resource->getError()
+                'error' => $resource->getError(),
             ]);
             return;
         }
@@ -405,7 +405,7 @@ class Attachments extends SiteController
         if (!is_dir($path)) {
             if (!Filesystem::makeDirectory($path)) {
                 echo json_encode([
-                    'error' => Lang::txt('Error uploading. Unable to create path.')
+                    'error' => Lang::txt('Error uploading. Unable to create path.'),
                 ]);
                 return;
             }
@@ -413,7 +413,7 @@ class Attachments extends SiteController
 
         if (!is_writable($path)) {
             echo json_encode([
-                'error' => Lang::txt('Server error. Upload directory isn\'t writable.')
+                'error' => Lang::txt('Server error. Upload directory isn\'t writable.'),
             ]);
             return;
         }
@@ -443,7 +443,7 @@ class Attachments extends SiteController
                 'errors'    => $resource->getErrors(),
                 'file'      => $filename . '.' . $ext,
                 'directory' => '',
-                'parent'    => $pid
+                'parent'    => $pid,
             ]);
             return;
         }
@@ -462,7 +462,7 @@ class Attachments extends SiteController
                 'errors'    => $this->getErrors(),
                 'file'      => $filename . '.' . $ext,
                 'directory' => str_replace(PATH_APP, '', $path),
-                'parent'    => $pid
+                'parent'    => $pid,
             ]);
             return;
         }
@@ -483,7 +483,7 @@ class Attachments extends SiteController
             'errors'    => $this->getErrors(),
             'file'      => $filename . '.' . $ext,
             'directory' => str_replace(PATH_APP, '', $path),
-            'parent'    => $pid
+            'parent'    => $pid,
         ]);
     }
 
@@ -644,7 +644,7 @@ class Attachments extends SiteController
             'access'       => (int) $parentRow->get('access', 0),
             'group_owner'  => $parentRow->get('group_owner', ''),
             'path'         => '', // make sure no path is specified just yet
-            'type'         => $this->_getChildType($file['name'])
+            'type'         => $this->_getChildType($file['name']),
         ]);
 
         // File already exists

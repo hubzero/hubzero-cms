@@ -54,7 +54,7 @@ class Migration20170220041701ComSearch extends Base
                     [12, 'Wishes', 'hubtype:wishlist', 1, 1, '0', 0],
                     [13, 'Publications', 'hubtype:publication', 1, 1, '0', 0],
                     [14, 'Questions', 'hubtype:question', 1, 1, '0', 0],
-                    [15, 'Citations', 'hubtype:citation', 1, 1, '0', 0]
+                    [15, 'Citations', 'hubtype:citation', 1, 1, '0', 0],
                 ])
                 ->execute();
         }

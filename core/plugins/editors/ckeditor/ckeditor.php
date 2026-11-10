@@ -345,7 +345,7 @@ class Ckeditor extends Plugin
             ['Link', 'Unlink', 'Anchor'],
             '/',
             ['Format', 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'],
-            ['NumberedList', 'BulletedList', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']
+            ['NumberedList', 'BulletedList', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
         ];
 
         $tlbr = [];
@@ -369,7 +369,7 @@ class Ckeditor extends Plugin
             $config->toolbar                   = [
                 ['Link', 'Unlink', 'Anchor'],
                 ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'],
-                ['NumberedList', 'BulletedList']
+                ['NumberedList', 'BulletedList'],
             ];
             $config->toolbarCanCollapse = false;
 

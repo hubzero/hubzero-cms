@@ -46,25 +46,25 @@ Html::behavior('multiselect');
 
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 $searchVal = $this->escape($this->filters['search']);
 $searchPlaceholder = Lang::txt('COM_TEMPLATES_STYLES_FILTER_SEARCH_DESC');
 $templateOptions = Html::select(
     'options',
     \Components\Templates\Helpers\Utilities::getTemplateOptions(
-        $this->filters['client_id']
+        $this->filters['client_id'],
     ),
     'value',
     'text',
-    $this->filters['template']
+    $this->filters['template'],
 );
 $clientOptions = Html::select(
     'options',
     \Components\Templates\Helpers\Utilities::getClientOptions(),
     'value',
     'text',
-    $this->filters['client_id']
+    $this->filters['client_id'],
 );
 $filterTemplate = Lang::txt('COM_TEMPLATES_FILTER_TEMPLATE');
 $filterClient = Lang::txt('JGLOBAL_FILTER_CLIENT');
@@ -202,7 +202,7 @@ $filterClient = Lang::txt('JGLOBAL_FILTER_CLIENT');
                         </a>
                     <?php elseif ($path && $item->client_id == '1') :
                         $noPreviewAdmin = Lang::txt(
-                            'COM_TEMPLATES_TEMPLATE_NO_PREVIEW_ADMIN'
+                            'COM_TEMPLATES_TEMPLATE_NO_PREVIEW_ADMIN',
                         );
                         ?>
                         <span
@@ -217,7 +217,7 @@ $filterClient = Lang::txt('JGLOBAL_FILTER_CLIENT');
                         </span>
                     <?php else :
                         $noPreview = Lang::txt(
-                            'COM_TEMPLATES_TEMPLATE_NO_PREVIEW'
+                            'COM_TEMPLATES_TEMPLATE_NO_PREVIEW',
                         );
                         ?>
                         <span
@@ -235,7 +235,7 @@ $filterClient = Lang::txt('JGLOBAL_FILTER_CLIENT');
                         $editUrl = Route::url(
                             'index.php?option=' . $this->option
                             . '&controller=' . $this->controller
-                            . '&task=edit&id=' . (int) $item->id
+                            . '&task=edit&id=' . (int) $item->id,
                         );
                         ?>
                         <a href="<?php echo $editUrl; ?>">
@@ -261,7 +261,7 @@ $filterClient = Lang::txt('JGLOBAL_FILTER_CLIENT');
                     <?php
                     $templateUrl = Route::url(
                         'index.php?option=' . $this->option
-                        . '&controller=templates&id=' . (int) $item->e_id
+                        . '&controller=templates&id=' . (int) $item->e_id,
                     );
                     ?>
                     <label for="cb<?php echo $i;?>">
@@ -278,7 +278,7 @@ $filterClient = Lang::txt('JGLOBAL_FILTER_CLIENT');
                             $item->home != '0',
                             $i,
                             'styles.',
-                            $canChange && $item->home != '1'
+                            $canChange && $item->home != '1',
                         );
                         ?>
                     <?php elseif ($canChange) :
@@ -286,12 +286,12 @@ $filterClient = Lang::txt('JGLOBAL_FILTER_CLIENT');
                             'index.php?option=' . $this->option
                             . '&controller=' . $this->controller
                             . '&task=unsetDefault&id=' . $item->id
-                            . '&' . Session::getFormToken() . '=1'
+                            . '&' . Session::getFormToken() . '=1',
                         );
                         $langImg = 'mod_languages/' . $item->image . '.gif';
                         $unsetTitle = Lang::txt(
                             'COM_TEMPLATES_GRID_UNSET_LANGUAGE',
-                            $item->language_title
+                            $item->language_title,
                         );
                         ?>
                         <a href="<?php echo $unsetUrl; ?>">
@@ -300,7 +300,7 @@ $filterClient = Lang::txt('JGLOBAL_FILTER_CLIENT');
                                 $langImg,
                                 $item->language_title,
                                 ['title' => $unsetTitle],
-                                true
+                                true,
                             ); ?>
                         </a>
                     <?php else :
@@ -311,7 +311,7 @@ $filterClient = Lang::txt('JGLOBAL_FILTER_CLIENT');
                             $langImg,
                             $item->language_title,
                             ['title' => $item->language_title],
-                            true
+                            true,
                         ); ?>
                     <?php endif;?>
                 </td>
@@ -319,7 +319,7 @@ $filterClient = Lang::txt('JGLOBAL_FILTER_CLIENT');
                     <?php if ($item->assigned > 0) :
                         $assignedTxt = Lang::txts(
                             'COM_TEMPLATES_ASSIGNED',
-                            $item->assigned
+                            $item->assigned,
                         );
                         ?>
                         <span

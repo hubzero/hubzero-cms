@@ -44,7 +44,7 @@ class Migration20260708130725ComEvents extends Base
         '8.75' => 'Australia/West', '9' => 'Asia/Tokyo', '9.5' => 'Australia/Adelaide',
         '10' => 'Australia/Brisbane', '10.5' => 'Australia/Lord_Howe', '11' => 'Pacific/Kosrae',
         '11.5' => 'Pacific/Norfolk', '12' => 'Pacific/Auckland', '12.75' => 'Pacific/Chatham',
-        '13' => 'Pacific/Tongatapu', '14' => 'Pacific/Kiritimati'
+        '13' => 'Pacific/Tongatapu', '14' => 'Pacific/Kiritimati',
     ];
 
     /**
@@ -69,7 +69,7 @@ class Migration20260708130725ComEvents extends Base
                 $this->db->setQuery(
                     "UPDATE `#__events` SET `time_zone` = " . $this->db->quote($etc) .
                     " WHERE `time_zone` = " . $this->db->quote($offset) .
-                    " AND `params` LIKE '%\"ignore_dst\":\"1\"%'"
+                    " AND `params` LIKE '%\"ignore_dst\":\"1\"%'",
                 );
                 $this->db->query();
             }
@@ -79,7 +79,7 @@ class Migration20260708130725ComEvents extends Base
         foreach ($this->map as $offset => $zone) {
             $this->db->setQuery(
                 "UPDATE `#__events` SET `time_zone` = " . $this->db->quote($zone) .
-                " WHERE `time_zone` = " . $this->db->quote($offset)
+                " WHERE `time_zone` = " . $this->db->quote($offset),
             );
             $this->db->query();
         }
@@ -98,7 +98,7 @@ class Migration20260708130725ComEvents extends Base
         foreach ($this->map as $offset => $zone) {
             $this->db->setQuery(
                 "UPDATE `#__events` SET `time_zone` = " . $this->db->quote($offset) .
-                " WHERE `time_zone` = " . $this->db->quote($zone)
+                " WHERE `time_zone` = " . $this->db->quote($zone),
             );
             $this->db->query();
 
@@ -107,7 +107,7 @@ class Migration20260708130725ComEvents extends Base
                 $etc = 'Etc/GMT' . ($num <= 0 ? '+' . abs((int) $num) : '-' . abs((int) $num));
                 $this->db->setQuery(
                     "UPDATE `#__events` SET `time_zone` = " . $this->db->quote($offset) .
-                    " WHERE `time_zone` = " . $this->db->quote($etc)
+                    " WHERE `time_zone` = " . $this->db->quote($etc),
                 );
                 $this->db->query();
             }

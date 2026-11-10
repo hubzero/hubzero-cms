@@ -99,8 +99,8 @@ class Repository extends Base implements CommandInterface
             $this->output->addLine(
                 $message,
                 [
-                    'color' => 'blue'
-                ]
+                    'color' => 'blue',
+                ],
             );
         }
 
@@ -112,7 +112,7 @@ class Repository extends Base implements CommandInterface
             'copied'    => 'yellow',
             'untracked' => 'black',
             'unmerged'  => 'red',
-            'merged'    => 'blue'
+            'merged'    => 'blue',
         ];
 
         if (is_array($status) && count($status) > 0) {
@@ -121,8 +121,8 @@ class Repository extends Base implements CommandInterface
                     if ($mode == 'minimal') {
                         $this->output->addLine(
                             [
-                                $k => $v
-                            ]
+                                $k => $v,
+                            ],
                         );
                     } else {
                         $this->output->addSpacer();
@@ -132,8 +132,8 @@ class Repository extends Base implements CommandInterface
                                 $file,
                                 [
                                     'color'       => $colorMap[$k],
-                                    'indentation' => 2
-                                ]
+                                    'indentation' => 2,
+                                ],
                             );
                         }
                     }
@@ -187,7 +187,7 @@ class Repository extends Base implements CommandInterface
                         'name'    => $parts[1],
                         'email'   => $parts[2],
                         'date'    => $parts[3],
-                        'subject' => $parts[4]
+                        'subject' => $parts[4],
                     ];
 
                     $this->output->addLine($entry);
@@ -210,7 +210,7 @@ class Repository extends Base implements CommandInterface
         if (!$this->mechanism->hasUpstream()) {
             $this->output->error(
                 'This checkout is not on a branch that follows another, so there is nothing to update it from. '
-                . 'Check out the release branch first (for example: git checkout 2.4-main), or name one with --source.'
+                . 'Check out the release branch first (for example: git checkout 2.4-main), or name one with --source.',
             );
         }
 
@@ -219,9 +219,9 @@ class Repository extends Base implements CommandInterface
                 $this->output->addLine(
                     'Updating the repository...',
                     [
-                        'color' => 'blue'
+                        'color' => 'blue',
                     ],
-                    false
+                    false,
                 );
             }
 
@@ -248,16 +248,16 @@ class Repository extends Base implements CommandInterface
                             $this->output->addLine(
                                 'complete',
                                 [
-                                    'color' => 'green'
-                                ]
+                                    'color' => 'green',
+                                ],
                             );
                         }
                     } else {
                         $this->output->addLine(
                             strtolower($response['message']),
                             [
-                                'color' => 'red'
-                            ]
+                                'color' => 'red',
+                            ],
                         );
                     }
                 } else {
@@ -265,8 +265,8 @@ class Repository extends Base implements CommandInterface
                         $this->output->addLine(
                             'complete',
                             [
-                                'color' => 'green'
-                            ]
+                                'color' => 'green',
+                            ],
                         );
                     }
                 }
@@ -274,8 +274,8 @@ class Repository extends Base implements CommandInterface
                 $this->output->addLine(
                     strtolower($response['message']),
                     [
-                        'color' => 'red'
-                    ]
+                        'color' => 'red',
+                    ],
                 );
             } else {
                 $this->output->addSpacer();
@@ -297,8 +297,8 @@ class Repository extends Base implements CommandInterface
                             'message' => $log,
                             'type' => [
                                 'indentation' => 2,
-                                'color'       => 'blue'
-                            ]
+                                'color'       => 'blue',
+                            ],
                         ];
                     }
                 }
@@ -429,8 +429,8 @@ class Repository extends Base implements CommandInterface
                          'muse configuration set --repository_standards_dir=/path/to/standards',
                          [
                             'indentation' => '2',
-                            'color'       => 'blue'
-                         ]
+                            'color'       => 'blue',
+                         ],
                      )
                     ->addSpacer()
                     ->error("Error: failed to retrieve standards directory.");
@@ -500,7 +500,7 @@ class Repository extends Base implements CommandInterface
         $this
             ->output
             ->addOverview(
-                'Repository management functions.'
+                'Repository management functions.',
             )
             ->addTasks($this);
     }

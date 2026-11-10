@@ -90,7 +90,7 @@ class Html extends AbstractRenderer
                     $val = preg_replace(
                         '/\[(.+?)\] =&gt;/i',
                         '<code class="ky">[$1]</code> <code class="op">=></code>',
-                        $val
+                        $val,
                     );
                     $a[] = "\t" .
                         '<code class="ky">' .

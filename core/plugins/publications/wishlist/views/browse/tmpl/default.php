@@ -24,7 +24,7 @@ $this->css();
         $addUrl = Route::url(
             'index.php?option=' . $this->option
             . '&task=add&category=' . $this->wishlist->category
-            . '&rid=' . $this->wishlist->referenceid
+            . '&rid=' . $this->wishlist->referenceid,
         );
         ?>
         <p class="section-options">
@@ -104,13 +104,13 @@ if ($this->rows->count() > 0) {
                             . '&tags=' . $this->filters['tag'];
                         $wishUrl = Route::url($wishBaseUrl . $wishFilterParams);
                         $proposedTime = Date::of($item->proposed)->toLocal(
-                            Lang::txt('TIME_FORMAT_HZ1')
+                            Lang::txt('TIME_FORMAT_HZ1'),
                         );
                         $proposedDate = Date::of($item->proposed)->toLocal(
-                            Lang::txt('DATE_FORMAT_HZ1')
+                            Lang::txt('DATE_FORMAT_HZ1'),
                         );
                         $commentsUrl = Route::url(
-                            $wishBaseUrl . '&com=1' . $wishFilterParams . '#comments'
+                            $wishBaseUrl . '&com=1' . $wishFilterParams . '#comments',
                         );
                         $commentsTitle = $item->numreplies . ' '
                             . Lang::txt('COM_WISHLIST_COMMENTS');
@@ -153,7 +153,7 @@ if ($this->rows->count() > 0) {
                         $isActiveStatus = $item->status == 0 || $item->status == 6;
                         $bonusUrl = Route::url(
                             $wishBaseUrl . '&action=addbonus'
-                            . $wishFilterParams . '#action'
+                            . $wishFilterParams . '#action',
                         );
                         ?>
                         <?php if ($hasBonus && $isActiveStatus) { ?>
@@ -197,7 +197,7 @@ if ($this->rows->count() > 0) {
                         $view = new \Hubzero\Component\View([
                             'name'      => 'wishlists',
                             'base_path' => Component::path($this->option) . DS . 'site',
-                            'layout'    => '_vote'
+                            'layout'    => '_vote',
                         ]);
                         $view->set('option', 'com_wishlist')
                              ->set('item', $item)

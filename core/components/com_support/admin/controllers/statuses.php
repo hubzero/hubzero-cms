@@ -48,19 +48,19 @@ class Statuses extends AdminController
                 $this->_option . '.' . $this->_controller . '.open',
                 'open',
                 -1,
-                'int'
+                'int',
             ),
             // Get sorting variables
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'open'
+                'open',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'DESC'
-            )
+                'DESC',
+            ),
         ];
 
         // Fetch results

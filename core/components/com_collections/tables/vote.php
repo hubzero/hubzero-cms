@@ -40,7 +40,7 @@ class Vote extends Table
     {
         $fields = [
             'item_id' => (int) $item_id,
-            'user_id' => (int) $user_id
+            'user_id' => (int) $user_id,
         ];
 
         return parent::load($fields);

@@ -102,11 +102,11 @@ $this->view('_title')
                         <?php
                         $verifyUrl = Route::url(
                             'index.php?option=com_projects'
-                            . '&task=verify&no_html=1&ajax=1&text='
+                            . '&task=verify&no_html=1&ajax=1&text=',
                         );
                         $suggestUrl = Route::url(
                             'index.php?option=com_projects'
-                            . '&task=suggestalias&no_html=1&ajax=1&text='
+                            . '&task=suggestalias&no_html=1&ajax=1&text=',
                         );
                         $disabledAttr = $this->model->get('id')
                             ? ' disabled="disabled"' : '';
@@ -145,7 +145,7 @@ $this->view('_title')
                         <?php
                         $saveUrl = Route::url(
                             'index.php?option=' . $this->option
-                            . '&task=save&id=' . $this->model->get('id')
+                            . '&task=save&id=' . $this->model->get('id'),
                         );
                         $descYes = Lang::txt('COM_PROJECTS_QUESTION_DESCRIBE_YES');
                         $descNo = Lang::txt('COM_PROJECTS_QUESTION_DESCRIBE_NO');
@@ -185,7 +185,7 @@ $this->view('_title')
                                 35,
                                 25,
                                 'field-about',
-                                ['class' => 'form-control minimal no-footer']
+                                ['class' => 'form-control minimal no-footer'],
                             ); ?>
                         </label>
                     </div>

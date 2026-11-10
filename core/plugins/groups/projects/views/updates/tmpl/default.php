@@ -34,7 +34,7 @@ $this->view('submenu', 'partials')
             $blogFormUrl = Route::url(
                 'index.php?option=com_groups&cn='
                 . $this->group->get('cn')
-                . '&active=projects'
+                . '&active=projects',
             );
             ?>
             <form id="blogForm"
@@ -57,7 +57,7 @@ $this->view('submenu', 'partials')
                         5,
                         3,
                         'blogentry',
-                        ['class' => 'minimal no-footer']
+                        ['class' => 'minimal no-footer'],
                     );
                     ?>
 

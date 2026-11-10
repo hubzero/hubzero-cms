@@ -41,7 +41,7 @@ if (!$this->page) {
 } else {
     Pathway::append(
         stripslashes($this->page->get('title')),
-        $base . '&unit=' . $this->page->get('url')
+        $base . '&unit=' . $this->page->get('url'),
     );
 
     $authorized = false;

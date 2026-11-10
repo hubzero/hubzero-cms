@@ -31,7 +31,7 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) 
 // Component submenu
 $menuItems = [
     'status'   => \Lang::txt('COM_MASSMAIL_DASHBOARD'),
-    'mailings' => \Lang::txt('COM_MASSMAIL_MAILINGS')
+    'mailings' => \Lang::txt('COM_MASSMAIL_MAILINGS'),
 ];
 foreach ($menuItems as $k => $v) {
     $active = (\Request::getCmd('controller', 'status') == $k);

@@ -149,7 +149,7 @@ class Package extends Base implements CommandInterface
         $this
             ->output
             ->addOverview(
-                'Repository management functions for composer packages.'
+                'Repository management functions for composer packages.',
             )
             ->addTasks($this);
     }

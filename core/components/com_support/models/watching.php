@@ -54,7 +54,7 @@ class Watching extends Relational
      */
     protected $rules = [
         'ticket_id' => 'positive|nonzero',
-        'user_id'   => 'positive|nonzero'
+        'user_id'   => 'positive|nonzero',
     ];
 
     /**

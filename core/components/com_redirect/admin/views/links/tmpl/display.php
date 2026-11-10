@@ -67,7 +67,7 @@ $this->css('.adminlist tr td {
 }');
 
 $formAction = Route::url(
-    'index.php?option=' . $this->option . '&view=links'
+    'index.php?option=' . $this->option . '&view=links',
 );
 $searchVal = $this->escape($this->filters['search']);
 $searchPlaceholder = Lang::txt('COM_REDIRECT_SEARCH_LINKS');
@@ -77,7 +77,7 @@ $publishedOptions = Html::select(
     'value',
     'text',
     $this->filters['state'],
-    true
+    true,
 );
 $sortDir = @$this->filters['sort_Dir'];
 $sort = @$this->filters['sort'];
@@ -156,7 +156,7 @@ $checkAllTitle = Lang::txt('JGLOBAL_CHECK_ALL');
                         'COM_REDIRECT_HEADING_CREATED_DATE',
                         'created_date',
                         $sortDir,
-                        $sort
+                        $sort,
                     ); ?>
                 </th>
                 <th scope="col" class="priority-2">
@@ -201,7 +201,7 @@ $checkAllTitle = Lang::txt('JGLOBAL_CHECK_ALL');
         foreach ($this->rows as $item) :
             $editUrl = Route::url(
                 'index.php?option=' . $this->option
-                . '&task=edit&id=' . $item->id
+                . '&task=edit&id=' . $item->id,
             );
             $rootTxt = Lang::txt('COM_REDIRECT_ROOT');
             $old = str_replace(Request::root(), '', $item->old_url);

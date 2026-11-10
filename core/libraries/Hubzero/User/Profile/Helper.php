@@ -187,7 +187,7 @@ class Helper
                                     urlencode(str_replace(
                                         '/administrator',
                                         '',
-                                        rtrim(App::get('request')->base(), '/')
+                                        rtrim(App::get('request')->base(), '/'),
                                     ) .
                                     '/' .
                                     $dfthumb);

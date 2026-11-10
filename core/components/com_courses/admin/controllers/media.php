@@ -165,7 +165,7 @@ class Media extends AdminController
             'success'   => true,
             'file'      => $filename . '.' . $ext,
             'directory' => str_replace(PATH_APP, '', $path),
-            'id'        => $listdir
+            'id'        => $listdir,
         ]);
     }
 
@@ -437,7 +437,7 @@ class Media extends AdminController
             'onchange="goUpDir()" ',
             'value',
             'text',
-            $this->view->subdir
+            $this->view->subdir,
         );
 
         $this->view->config  = $this->config;

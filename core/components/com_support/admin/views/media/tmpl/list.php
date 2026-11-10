@@ -15,7 +15,7 @@ $no_html = Request::getInt('no_html', 0);
 
 $assets = $this->model->attachments('list', [
     'ticket'  => $this->ticket,
-    'comment_id' => $this->comment
+    'comment_id' => $this->comment,
 ]);
 if ($assets->total() > 0) {
     $i = 0;

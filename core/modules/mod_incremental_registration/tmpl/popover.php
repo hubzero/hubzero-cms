@@ -49,7 +49,7 @@ defined('_HZEXEC_') or die();
                         $val = Request::getString(
                             'orgtype',
                             '',
-                            'post'
+                            'post',
                         );
                         ?>
                         <option selected="selected" value="">
@@ -62,7 +62,7 @@ defined('_HZEXEC_') or die();
                             . " INNER JOIN `#__user_profile_fields`"
                             . " AS f ON f.id=o.field_id"
                             . " WHERE f.name='orgtype'"
-                            . " ORDER BY o.label ASC"
+                            . " ORDER BY o.label ASC",
                         );
                         foreach ($dbh->loadObjectList() as $opt) {
                             $selected = ($val === $opt->value)
@@ -98,7 +98,7 @@ defined('_HZEXEC_') or die();
                         $val = Request::getString(
                             'organization',
                             '',
-                            'post'
+                            'post',
                         );
                         ?>
                         <option value="">
@@ -111,7 +111,7 @@ defined('_HZEXEC_') or die();
                             . " INNER JOIN `#__user_profile_fields`"
                             . " AS f ON f.id=o.field_id"
                             . " WHERE f.name='organization'"
-                            . " ORDER BY o.label ASC"
+                            . " ORDER BY o.label ASC",
                         );
                         foreach ($dbh->loadObjectList() as $opt) {
                             $selected = ($val === $opt->value)
@@ -162,7 +162,7 @@ defined('_HZEXEC_') or die();
                         $val = Request::getString(
                             'reason',
                             '',
-                            'post'
+                            'post',
                         );
                         ?>
                         <option value="">
@@ -175,7 +175,7 @@ defined('_HZEXEC_') or die();
                             . " INNER JOIN `#__user_profile_fields`"
                             . " AS f ON f.id=o.field_id"
                             . " WHERE f.name='reason'"
-                            . " ORDER BY o.label ASC"
+                            . " ORDER BY o.label ASC",
                         );
                         foreach ($dbh->loadObjectList() as $opt) {
                             $selected = ($val === $opt->value)
@@ -224,7 +224,7 @@ defined('_HZEXEC_') or die();
                                     $nameFirst = str_replace(
                                         '"',
                                         '&quot;',
-                                        $_POST['name']['first']
+                                        $_POST['name']['first'],
                                     );
                                 }
                                 ?>
@@ -244,7 +244,7 @@ defined('_HZEXEC_') or die();
                                     $nameMiddle = str_replace(
                                         '"',
                                         '&quot;',
-                                        $_POST['name']['middle']
+                                        $_POST['name']['middle'],
                                     );
                                 }
                                 ?>
@@ -264,7 +264,7 @@ defined('_HZEXEC_') or die();
                                     $nameLast = str_replace(
                                         '"',
                                         '&quot;',
-                                        $_POST['name']['last']
+                                        $_POST['name']['last'],
                                     );
                                 }
                                 ?>
@@ -294,7 +294,7 @@ defined('_HZEXEC_') or die();
                             $gender = Request::getString(
                                 'gender',
                                 '',
-                                'post'
+                                'post',
                             );
                             $maleChk = ($gender == 'male')
                                 ? 'checked="checked" ' : '';
@@ -332,7 +332,7 @@ defined('_HZEXEC_') or die();
                             <?php endif; ?>
                             <?php
                             $urlVal = $this->escape(
-                                Request::getString('url', '', 'post')
+                                Request::getString('url', '', 'post'),
                             );
                             ?>
                             <input type="text"
@@ -359,8 +359,8 @@ defined('_HZEXEC_') or die();
                                 Request::getString(
                                     'phone',
                                     '',
-                                    'post'
-                                )
+                                    'post',
+                                ),
                             );
                             ?>
                             <input type="text"
@@ -377,7 +377,7 @@ defined('_HZEXEC_') or die();
                         $country = isset($_POST['countryorigin'])
                             ? $_POST['countryorigin']
                             : \Hubzero\Geocode\Geocode::ipcountry(
-                                Request::ip()
+                                Request::ip(),
                             );
                         ?>
                             <label>
@@ -456,7 +456,7 @@ defined('_HZEXEC_') or die();
                                             . htmlentities(
                                                 $c->name,
                                                 ENT_COMPAT,
-                                                'UTF-8'
+                                                'UTF-8',
                                             )
                                             . '</option>' . "\n";
                                     }
@@ -471,7 +471,7 @@ defined('_HZEXEC_') or die();
                         $country = isset($_POST['countryresident'])
                             ? $_POST['countryresident']
                             : \Hubzero\Geocode\Geocode::ipcountry(
-                                Request::ip()
+                                Request::ip(),
                             );
                         ?>
                             <label>
@@ -551,7 +551,7 @@ defined('_HZEXEC_') or die();
                                             . htmlentities(
                                                 $c->name,
                                                 ENT_COMPAT,
-                                                'UTF-8'
+                                                'UTF-8',
                                             )
                                             . '</option>' . "\n";
                                     }
@@ -570,7 +570,7 @@ defined('_HZEXEC_') or die();
                             $raceUrl = Route::url(
                                 'index.php?option=com_members'
                                 . '&controller=register'
-                                . '&task=raceethnic'
+                                . '&task=raceethnic',
                             );
                             ?>
                             <label>If you are a U.S. Citizens
@@ -589,7 +589,7 @@ defined('_HZEXEC_') or die();
                                 <?php
                                 $nativeChk = in_array(
                                     'nativeamerican',
-                                    $race
+                                    $race,
                                 ) ? 'checked="checked" ' : '';
                                 ?>
                                 <label><input type="checkbox"
@@ -609,7 +609,7 @@ defined('_HZEXEC_') or die();
                                             $tribeVal = str_replace(
                                                 '"',
                                                 '&quot;',
-                                                $_POST['racenativetribe']
+                                                $_POST['racenativetribe'],
                                             );
                                         }
                                         ?>
@@ -649,7 +649,7 @@ defined('_HZEXEC_') or die();
                                 <?php
                                 $hawaiianChk = in_array(
                                     'hawaiian',
-                                    $race
+                                    $race,
                                 ) ? 'checked="checked" ' : '';
                                 ?>
                                 <label><input type="checkbox"
@@ -674,7 +674,7 @@ defined('_HZEXEC_') or die();
                                 <?php
                                 $refusedChk = in_array(
                                     'refused',
-                                    $race
+                                    $race,
                                 ) ? 'checked="checked" ' : '';
                                 ?>
                                 <label><input type="checkbox"
@@ -829,7 +829,7 @@ defined('_HZEXEC_') or die();
                             ? str_replace(
                                 '"',
                                 '&quot;',
-                                $_POST['location']
+                                $_POST['location'],
                             )
                             : '';
                         ?>

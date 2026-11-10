@@ -36,7 +36,7 @@ defined('_HZEXEC_') or die();
                     alt="<?php echo $this->escape($owner->fullname); ?>"/>
                 <?php
                 $memberUrl = Route::url(
-                    'index.php?option=com_members&id=' . $owner->userid
+                    'index.php?option=com_members&id=' . $owner->userid,
                 );
                 ?>
                 <span class="block">

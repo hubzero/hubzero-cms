@@ -190,7 +190,7 @@ class Json
                     'sTitle' => $label . '&nbsp;&nbsp;&nbsp;&nbsp;',
                     'sClass' => $align,
                     'sType' => $data_type,
-                    'sWidth' => $width
+                    'sWidth' => $width,
                 ];
                 $table['sColumns'][] = $label;
                 $field_types[$key] = $data_type;

@@ -324,7 +324,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
             $name = [
                 $this->record->entry->get('givenName'),
                 $this->record->entry->get('middleName'),
-                $this->record->entry->get('surname')
+                $this->record->entry->get('surname'),
             ];
             $this->record->entry->set('name', implode(' ', $name));
         }
@@ -524,7 +524,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
             $eview = new \Hubzero\Component\View([
                 'base_path' => dirname(dirname(__DIR__)) . DS . 'site',
                 'name'      => 'emails',
-                'layout'    => 'confirm'
+                'layout'    => 'confirm',
             ]);
             $eview->set('option', 'com_members');
             $eview->set('controller', 'register');

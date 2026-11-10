@@ -47,7 +47,7 @@ class PathwayServiceProvider extends ServiceProvider
                                     if (
                                         (strpos(
                                             $link->link,
-                                            'index.php?'
+                                            'index.php?',
                                         ) === 0) && (strpos($link->link, 'Itemid=') === false)
                                     ) {
                                         // If this is an internal link, ensure the Itemid is set.

@@ -120,7 +120,7 @@ class NestedTest extends AbstractDriverTestCase
         $this->assertCount(
             count($expectedRows),
             $result,
-            "[$dbName] Expected " . count($expectedRows) . " rows, got " . count($result)
+            "[$dbName] Expected " . count($expectedRows) . " rows, got " . count($result),
         );
 
         foreach ($expectedRows as $i => $expected) {
@@ -129,7 +129,7 @@ class NestedTest extends AbstractDriverTestCase
                 $this->assertEquals(
                     $val,
                     $actual->$col,
-                    "[$dbName] Row id={$expected['id']}, column '$col': expected '$val', got '{$actual->$col}'"
+                    "[$dbName] Row id={$expected['id']}, column '$col': expected '$val', got '{$actual->$col}'",
                 );
             }
         }
@@ -157,12 +157,12 @@ class NestedTest extends AbstractDriverTestCase
         $this->assertInstanceOf(
             '\Hubzero\Database\Nested',
             $model,
-            "[$dbName] Model is not an instance of \\Hubzero\\Database\\Nested"
+            "[$dbName] Model is not an instance of \\Hubzero\\Database\\Nested",
         );
         $this->assertEquals(
             'NestedDiscussion',
             $model->getModelName(),
-            "[$dbName] Model should have correct model name"
+            "[$dbName] Model should have correct model name",
         );
     }
 
@@ -185,7 +185,7 @@ class NestedTest extends AbstractDriverTestCase
         $new = NestedDiscussion::blank()->set([
             'user_id' => 3,
             'title'   => 'Testing Stuff',
-            'content' => 'This is a test additional child node'
+            'content' => 'This is a test additional child node',
         ]);
 
         $new->saveAsChildOf($parent);
@@ -213,7 +213,7 @@ class NestedTest extends AbstractDriverTestCase
         $new = NestedDiscussion::blank()->set([
             'user_id' => 3,
             'title'   => 'More Testing',
-            'content' => 'This is a node added by parent id'
+            'content' => 'This is a node added by parent id',
         ]);
 
         $new->saveAsChildOf(3);
@@ -241,7 +241,7 @@ class NestedTest extends AbstractDriverTestCase
         $new = NestedDiscussion::blank()->set([
             'user_id' => 3,
             'title'   => 'Left node',
-            'content' => 'This should be located as the first child of the parent'
+            'content' => 'This should be located as the first child of the parent',
         ]);
 
         $new->saveAsFirstChildOf(1);
@@ -275,7 +275,7 @@ class NestedTest extends AbstractDriverTestCase
             'title'    => 'This is a new discussion',
             'content'  => 'Tell me about life',
             'scope'    => 'group',
-            'scope_id' => 2
+            'scope_id' => 2,
         ])->saveAsRoot();
 
         $this->assertNestedState($driver, [

@@ -25,7 +25,7 @@ $tmpl = Request::getCmd('tmpl', '');
 <div class="media-files media-list<?php echo $cls ?>" id="media-list">
     <?php
     $formAction = Route::url(
-        'index.php?option=' . $this->option . '&folder=' . $this->folder
+        'index.php?option=' . $this->option . '&folder=' . $this->folder,
     );
     ?>
     <form action="<?php echo $formAction; ?>"

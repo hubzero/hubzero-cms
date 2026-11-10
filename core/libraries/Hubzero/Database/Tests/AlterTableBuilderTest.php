@@ -123,7 +123,7 @@ class AlterTableBuilderTest extends AbstractDriverTestCase
 
         $this->assertTrue(
             $driver->tableHasField($table, 'email'),
-            "Column 'email' should exist on {$dbName}"
+            "Column 'email' should exist on {$dbName}",
         );
 
         $this->dropTestTable($driver, $table);

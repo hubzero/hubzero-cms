@@ -55,7 +55,7 @@ defined('_HZEXEC_') or die();
                     <?php
                     $restoreUrl = Route::url(
                         $this->url . '&action=restore&asset='
-                        . urlencode($filename) . '&hash=' . $file['hash']
+                        . urlencode($filename) . '&hash=' . $file['hash'],
                     );
                     ?>
                     <td>

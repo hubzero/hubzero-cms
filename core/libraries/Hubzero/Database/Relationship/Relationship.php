@@ -278,7 +278,7 @@ class Relationship
                         $this->related->getTableName(),
                         $this->model->getQualifiedFieldName($this->localKey),
                         $this->related->getQualifiedFieldName($this->relatedKey),
-                        'LEFT OUTER'
+                        'LEFT OUTER',
                     );
 
         return $this;

@@ -34,7 +34,7 @@ $token = Session::getFormToken();
 $href = Route::url(
     'index.php?option=' . $this->option
     . '&task=download&' . $token . '=1'
-    . '&folder=' . urlencode('/' . $this->currentFolder['path'])
+    . '&folder=' . urlencode('/' . $this->currentFolder['path']),
 );
 
 $folderPath = ltrim($this->currentFolder['path'], '/');
@@ -45,14 +45,14 @@ $folderIcon = Html::asset(
     '',
     null,
     true,
-    true
+    true,
 );
 $escapedName = $this->escape($this->currentFolder['name']);
 
 $folderUrl = Route::url(
     'index.php?option=com_media&controller=medialist'
     . '&tmpl=' . $tmpl
-    . '&' . $token . '=1&folder=/' . $folderPath
+    . '&' . $token . '=1&folder=/' . $folderPath,
 );
 ?>
         <div class="media-item media-item-thumb">
@@ -84,7 +84,7 @@ $folderUrl = Route::url(
                                         . '&controller=medialist&task=info'
                                         . '&tmpl=' . $tmpl
                                         . '&' . $token . '=1'
-                                        . '&folder=' . urlencode($this->currentFolder['path'])
+                                        . '&folder=' . urlencode($this->currentFolder['path']),
                                     );
                                     ?>
                                     <a class="icon-info media-opt-info"
@@ -103,7 +103,7 @@ $folderUrl = Route::url(
                                         'index.php?option=' . $this->option
                                         . '&task=delete&tmpl=' . $tmpl
                                         . '&' . $token . '=1'
-                                        . '&rm=' . urlencode($this->currentFolder['path'])
+                                        . '&rm=' . urlencode($this->currentFolder['path']),
                                     );
                                     $deleteLabel = Lang::txt('JACTION_DELETE');
                                     ?>

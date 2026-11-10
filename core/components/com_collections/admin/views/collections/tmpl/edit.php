@@ -36,7 +36,7 @@ Html::behavior('keepalive');
 $this->js();
 
 $formAction = Route::url(
-    'index.php?option=' . $this->option . '&controller=' . $this->controller
+    'index.php?option=' . $this->option . '&controller=' . $this->controller,
 );
 $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
 ?>
@@ -93,7 +93,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                             <?php
                             $ownerIdLabel = Lang::txt('COM_COLLECTIONS_FIELD_OWNER_ID');
                             $objectIdVal = $this->escape(
-                                stripslashes($this->row->get('object_id'))
+                                stripslashes($this->row->get('object_id')),
                             );
                             ?>
                             <label for="field-object_id">
@@ -153,7 +153,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                         35,
                         10,
                         'field-description',
-                        ['class' => 'required minimal no-footer', 'buttons' => false]
+                        ['class' => 'required minimal no-footer', 'buttons' => false],
                     );
                     ?>
                 </div>

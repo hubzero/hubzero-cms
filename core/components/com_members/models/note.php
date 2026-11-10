@@ -45,7 +45,7 @@ class Note extends Relational
      */
     protected $rules = [
         'user_id' => 'positive|nonzero',
-        'body'    => 'notempty'
+        'body'    => 'notempty',
     ];
 
     /**
@@ -55,7 +55,7 @@ class Note extends Relational
      */
     public $initiate = [
         'created_user_id',
-        'created_time'
+        'created_time',
     ];
 
     /**
@@ -65,7 +65,7 @@ class Note extends Relational
      */
     public $always = [
         'modified_time',
-        'modified_user_id'
+        'modified_user_id',
     ];
 
     /**

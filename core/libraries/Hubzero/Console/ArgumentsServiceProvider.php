@@ -36,7 +36,7 @@ class ArgumentsServiceProvider extends Middleware
                 ]);
                 Arguments::registerNamespace('\Components\{$1}\Commands', [
                     PATH_APP . '/components/com_{$1}/commands',
-                    PATH_CORE . '/components/com_{$1}/commands'
+                    PATH_CORE . '/components/com_{$1}/commands',
                 ]);
             }
 

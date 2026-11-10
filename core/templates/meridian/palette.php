@@ -59,7 +59,7 @@ class Palette
         $this->rgb = [
             hexdec(substr($hex, 0, 2)),
             hexdec(substr($hex, 2, 2)),
-            hexdec(substr($hex, 4, 2))
+            hexdec(substr($hex, 4, 2)),
         ];
     }
 
@@ -234,7 +234,7 @@ class Palette
             '--hub-accent-edge'  => self::hex($edge),
             '--hub-footer-ink'   => self::hex($over),
             '--hub-footer-text'  => self::hex($muted),
-            '--hub-footer-link'  => self::hex(self::mix($muted, $over, 0.5))
+            '--hub-footer-link'  => self::hex(self::mix($muted, $over, 0.5)),
         ];
     }
 }

@@ -74,24 +74,24 @@ class Tickets extends AdminController
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limitstart',
                 'limitstart',
                 0,
-                'int'
+                'int',
             ),
             // Query to filter by
             'show' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.show',
                 'show',
                 0,
-                'int'
+                'int',
             ),
             'search'  => '',
             'sort'    => 'id',
-            'sortdir' => 'DESC'
+            'sortdir' => 'DESC',
         ];
 
         // Get query list
@@ -119,18 +119,18 @@ class Tickets extends AdminController
                     $filters['search'] = urldecode(Request::getState(
                         $this->_option . '.' . $this->_controller . '.search',
                         'search',
-                        ''
+                        '',
                     ));
                     // Incoming sort
                     $filters['sort'] = trim(Request::getState(
                         $this->_option . '.' . $this->_controller . '.sort',
                         'filter_order',
-                        $query->get('sort')
+                        $query->get('sort'),
                     ));
                     $filters['sortdir'] = trim(Request::getState(
                         $this->_option . '.' . $this->_controller . '.sortdir',
                         'filter_order_Dir',
-                        $query->get('sort_dir')
+                        $query->get('sort_dir'),
                     ));
 
                     // Get the records
@@ -160,7 +160,7 @@ class Tickets extends AdminController
             $filters['search'] = urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             ));
             // Set the total for the pagination
             $total = ($filters['search']) ? Ticket::countWithQuery($query, $filters) : $query->get('count');
@@ -169,12 +169,12 @@ class Tickets extends AdminController
             $filters['sort']   = trim(Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                $query->get('sort')
+                $query->get('sort'),
             ));
             $filters['sortdir'] = trim(Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                $query->get('sort_dir')
+                $query->get('sort_dir'),
             ));
             // Get the records
             $tickets = Ticket::allWithQuery($query, $filters);
@@ -187,7 +187,7 @@ class Tickets extends AdminController
 
         $watch = [
             'open'   => Ticket::all()->whereEquals('open', 1)->whereIn('id', $watching)->total(),
-            'closed' => Ticket::all()->whereEquals('open', 0)->whereIn('id', $watching)->total()
+            'closed' => Ticket::all()->whereEquals('open', 0)->whereIn('id', $watching)->total(),
         ];
 
         if ($filters['show'] < 0) {
@@ -195,14 +195,14 @@ class Tickets extends AdminController
                 $filters['sort'] = trim(Request::getState(
                     $this->_option . '.' . $this->_controller . '.sort',
                     'filter_order',
-                    'created'
+                    'created',
                 ));
             }
             if (!isset($filters['sortdir']) || !$filters['sortdir']) {
                 $filters['sortdir'] = trim(Request::getState(
                     $this->_option . '.' . $this->_controller . '.sortdir',
                     'filter_order_Dir',
-                    'DESC'
+                    'DESC',
                 ));
             }
 
@@ -432,14 +432,14 @@ class Tickets extends AdminController
                 $msg->setSubject(Config::get('sitename') . ' ' . Lang::txt('COM_SUPPORT') . ', ' . Lang::txt('COM_SUPPORT_TICKET_NUMBER', $ticket->get('id')));
                 $msg->addFrom(
                     Config::get('mailfrom'),
-                    Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option))
+                    Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option)),
                 );
 
                 // Plain text email
                 $eview = new \Hubzero\Mail\View([
                     'base_path' => dirname(dirname(__DIR__)) . DS . 'site',
                     'name'      => 'emails',
-                    'layout'    => 'ticket_plain'
+                    'layout'    => 'ticket_plain',
                 ]);
                 $eview->option     = $this->_option;
                 $eview->controller = $this->_controller;
@@ -560,7 +560,7 @@ class Tickets extends AdminController
             // Redirect
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($filters ? '&' . $filters : ''), false),
-                Lang::txt('COM_SUPPORT_TICKET_SUCCESSFULLY_SAVED', $ticket->get('id'))
+                Lang::txt('COM_SUPPORT_TICKET_SUCCESSFULLY_SAVED', $ticket->get('id')),
             );
             return;
         }
@@ -848,7 +848,7 @@ class Tickets extends AdminController
         // Output messsage and redirect
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . (Request::getInt('no_html', 0) ? '&no_html=1' : ''), false),
-            Lang::txt('COM_SUPPORT_TICKETS_SUCCESSFULLY_SAVED', count($ids))
+            Lang::txt('COM_SUPPORT_TICKETS_SUCCESSFULLY_SAVED', count($ids)),
         );
     }
 
@@ -1160,7 +1160,7 @@ class Tickets extends AdminController
                 'ticket'      => $ticket_id,
                 'comment_id'  => $comment_id,
                 'filename'    => $filename . '.' . $ext,
-                'description' => $description
+                'description' => $description,
             ]);
             if (!$attachment->save()) {
                 $this->setError($attachment->getError());

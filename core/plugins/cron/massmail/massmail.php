@@ -34,13 +34,13 @@ class Massmail extends Plugin
             [
                 'name'   => 'processMassmailQueue',
                 'label'  => Lang::txt('PLG_CRON_MASSMAIL_PROCESS_QUEUE'),
-                'params' => ''
+                'params' => '',
             ],
             [
                 'name'   => 'collectPostfixVolume',
                 'label'  => Lang::txt('PLG_CRON_MASSMAIL_COLLECT'),
-                'params' => ''
-            ]
+                'params' => '',
+            ],
         ];
 
         return $obj;

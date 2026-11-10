@@ -73,7 +73,7 @@ class MenuOrdering extends Select
         $options = array_merge(
             [['value' => '-1', 'text' => Lang::txt('COM_MENUS_ITEM_FIELD_ORDERING_VALUE_FIRST')]],
             $options,
-            [['value' => '-2', 'text' => Lang::txt('COM_MENUS_ITEM_FIELD_ORDERING_VALUE_LAST')]]
+            [['value' => '-2', 'text' => Lang::txt('COM_MENUS_ITEM_FIELD_ORDERING_VALUE_LAST')]],
         );
 
         // Merge any additional options in the XML definition.

@@ -47,7 +47,7 @@ class Attachment extends Relational
      */
     protected $rules = [
         'page_id'  => 'nonzero',
-        'filename' => 'notempty'
+        'filename' => 'notempty',
     ];
 
     /**
@@ -57,7 +57,7 @@ class Attachment extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**

@@ -49,7 +49,7 @@ class HubType extends Relational
      **/
     public $initiate = [
         'created_by',
-        'created'
+        'created',
     ];
 
     /**

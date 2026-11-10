@@ -41,7 +41,7 @@ if (!$no_html && !$tmpl) {
 <?php
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 $formId = ($tmpl == 'component') ? 'component' : 'item';
 $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));

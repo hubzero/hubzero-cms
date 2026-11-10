@@ -37,7 +37,7 @@ class Sponsor extends Relational
      * @var  array
      **/
     protected $rules = [
-        'name' => 'sponsor'
+        'name' => 'sponsor',
     ];
 
     /**

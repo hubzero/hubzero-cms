@@ -28,7 +28,7 @@ $xml = Components\Members\Models\Profile\Field::toXml($this->fields, 'edit');
 
 // Gather data to pass to the form processor
 $data = new Hubzero\Config\Registry(
-    Components\Members\Models\Profile::collect($profiles)
+    Components\Members\Models\Profile::collect($profiles),
 );
 
 // Create a new form
@@ -61,11 +61,11 @@ foreach ($profiles as $profile) {
                 $cn = $this->group->get('cn');
                 $inviteUrl = Route::url(
                     'index.php?option=com_groups&cn='
-                    . $cn . '&task=invite'
+                    . $cn . '&task=invite',
                 );
                 $addRoleUrl = Route::url(
                     'index.php?option=com_groups&cn='
-                    . $cn . '&active=members&action=addrole'
+                    . $cn . '&active=members&action=addrole',
                 );
                 ?>
                 <a
@@ -122,7 +122,7 @@ foreach ($profiles as $profile) {
                             <div class="value">
                                 <?php
                                 $obfEmail = \Hubzero\Utility\Str::obfuscate(
-                                    $this->profile->get('email')
+                                    $this->profile->get('email'),
                                 );
                                 ?>
                                 <a

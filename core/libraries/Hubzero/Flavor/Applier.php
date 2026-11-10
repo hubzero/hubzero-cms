@@ -84,7 +84,7 @@ class Applier
             'published',
             $flavor->get('kb', [], 'categories'),
             "`extension` = 'com_kb'",
-            'knowledge base category'
+            'knowledge base category',
         );
         $this->applyStates('#__kb_articles', 'state', $flavor->get('kb', [], 'articles'), '', 'knowledge base article');
         $this->applyStates('#__content', 'state', $flavor->get('content', [], 'articles'), '', 'article');
@@ -115,7 +115,7 @@ class Applier
             'published',
             $flavor->get('kb', [], 'categories'),
             "`extension` = 'com_kb'",
-            'knowledge base category'
+            'knowledge base category',
         );
         $this->checkStates($found, '#__kb_articles', 'state', $flavor->get('kb', [], 'articles'), '', 'knowledge base article');
         $this->checkStates($found, '#__content', 'state', $flavor->get('content', [], 'articles'), '', 'article');
@@ -126,7 +126,7 @@ class Applier
             $flavor->get('menu', [], 'items'),
             '`client_id` = 0',
             'menu item',
-            'path'
+            'path',
         );
         $this->checkResourceTypes($found, $flavor->get('resource_types', []));
 
@@ -255,7 +255,7 @@ class Applier
             }
 
             $this->db->setQuery(
-                "SELECT `id`, `title`, `params` FROM `#__modules` WHERE `module` = " . $this->db->quote($name)
+                "SELECT `id`, `title`, `params` FROM `#__modules` WHERE `module` = " . $this->db->quote($name),
             );
 
             foreach ((array) $this->db->loadObjectList() as $row) {
@@ -295,7 +295,7 @@ class Applier
             }
 
             $this->db->setQuery(
-                "SELECT `id`, `params` FROM `#__modules` WHERE `module` = " . $this->db->quote($name)
+                "SELECT `id`, `params` FROM `#__modules` WHERE `module` = " . $this->db->quote($name),
             );
 
             foreach ((array) $this->db->loadObjectList() as $row) {
@@ -303,7 +303,7 @@ class Applier
 
                 $this->db->setQuery(
                     "UPDATE `#__modules` SET `params` = " . $this->db->quote(json_encode($merged))
-                    . " WHERE `id` = " . (int) $row->id
+                    . " WHERE `id` = " . (int) $row->id,
                 );
                 $this->db->query();
             }
@@ -328,7 +328,7 @@ class Applier
         $merged = array_merge($this->decode($current), $params);
 
         $this->db->setQuery(
-            "UPDATE `#__extensions` SET `params` = " . $this->db->quote(json_encode($merged)) . " WHERE " . $where
+            "UPDATE `#__extensions` SET `params` = " . $this->db->quote(json_encode($merged)) . " WHERE " . $where,
         );
         $this->db->query();
     }
@@ -652,7 +652,7 @@ class Applier
         foreach ($states as $alias => $state) {
             $this->db->setQuery(
                 "SELECT `{$column}` FROM `{$table}` WHERE `{$key}` = " . $this->db->quote($alias)
-                . ($also ? " AND {$also}" : '')
+                . ($also ? " AND {$also}" : ''),
             );
             $now = $this->db->loadResult();
 
@@ -699,7 +699,7 @@ class Applier
             }
 
             $this->db->setQuery(
-                "UPDATE `#__resource_types` SET " . implode(', ', $set) . " WHERE `alias` = " . $this->db->quote($alias)
+                "UPDATE `#__resource_types` SET " . implode(', ', $set) . " WHERE `alias` = " . $this->db->quote($alias),
             );
             $this->db->query();
 

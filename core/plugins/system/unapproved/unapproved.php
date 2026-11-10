@@ -37,7 +37,7 @@ class Unapproved extends Plugin
                 'com_support.tickets.save',
                 'com_support.tickets.new.index',
                 'com_support.tickets.new',
-                'com_members.media.download.profiles'
+                'com_members.media.download.profiles',
             ];
 
             $current  = Request::getWord('option', '');

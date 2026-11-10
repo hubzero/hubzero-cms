@@ -51,31 +51,31 @@ class Languages extends AdminController
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'filter_search',
-                ''
+                '',
             ),
             'published' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.published',
                 'filter_published',
                 -1,
-                'int'
+                'int',
             ),
             'access' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.access',
                 'filter_access',
                 -1,
-                'int'
+                'int',
             ),
             // Get sorting variables
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'folder'
+                'folder',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         $query = Language::all();

@@ -34,7 +34,7 @@ $profiles = $this->profile->profiles()->ordered()->rows();
 
 // Gather data to pass to the form processor
 $data = new Hubzero\Config\Registry(
-    Components\Members\Models\Profile::collect($profiles)
+    Components\Members\Models\Profile::collect($profiles),
 );
 $data->set('tags', $this->profile->tags('string'));
 
@@ -109,7 +109,7 @@ $fields = $form->getFieldset('basic');
                                     Html::access('assetgroups'),
                                     'value',
                                     'text',
-                                    $access[$field->fieldname]
+                                    $access[$field->fieldname],
                                 );
                                 ?>
                                 <?php echo $val; ?>
@@ -129,7 +129,7 @@ $fields = $form->getFieldset('basic');
                 $iframeSrc = Route::url(
                     'index.php?option=' . $this->option
                     . '&controller=media&tmpl=component&id='
-                    . $this->profile->get('id') . '&t=' . time()
+                    . $this->profile->get('id') . '&t=' . time(),
                 );
                 ?>
                 <iframe

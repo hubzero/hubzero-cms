@@ -66,7 +66,7 @@ class Review extends Relational
      */
     protected $rules = [
         'comment'     => 'notempty',
-        'resource_id' => 'positive|nonzero'
+        'resource_id' => 'positive|nonzero',
     ];
 
     /**
@@ -76,7 +76,7 @@ class Review extends Relational
      */
     public $initiate = [
         'created',
-        'user_id'
+        'user_id',
     ];
 
     /**
@@ -85,7 +85,7 @@ class Review extends Relational
      * @var array
      */
     protected $parsed = [
-        'comment'
+        'comment',
     ];
 
     /**
@@ -382,7 +382,7 @@ class Review extends Relational
 
         return [
             'rating' => $newrating,
-            'times_rated' => $totalcount
+            'times_rated' => $totalcount,
         ];
     }
 }

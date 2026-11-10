@@ -51,7 +51,7 @@ class Migration20160321145900ComResources extends Base
                         'description'   => $description,
                         'customFields'  => $customFields,
                         'contributable' => 0,
-                        'params'        => $params
+                        'params'        => $params,
                     ])
                     ->execute();
             }

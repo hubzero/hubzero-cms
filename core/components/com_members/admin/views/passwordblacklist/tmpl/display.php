@@ -71,7 +71,7 @@ if ($canDo->get('core.delete')) {
                     'COM_MEMBERS_PASSWORD_ID',
                     'id',
                     @$this->filters['sort_Dir'],
-                    @$this->filters['sort']
+                    @$this->filters['sort'],
                 );
                 ?>
                 <th scope="col"><?php echo $val; ?></th>
@@ -81,7 +81,7 @@ if ($canDo->get('core.delete')) {
                     'COM_MEMBERS_PASSWORD_WORD',
                     'word',
                     @$this->filters['sort_Dir'],
-                    @$this->filters['sort']
+                    @$this->filters['sort'],
                 );
                 ?>
                 <th scope="col"><?php echo $val; ?></th>

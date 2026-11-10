@@ -65,7 +65,7 @@ class CheckerTest extends Basic
 
         $this->assertInstanceOf(
             'Hubzero\Spam\Tests\Mock\Detector',
-            $service->getDetector('Hubzero\Spam\Tests\Mock\Detector')
+            $service->getDetector('Hubzero\Spam\Tests\Mock\Detector'),
         );
         $this->assertFalse($service->getDetector('Hubzero\Spam\Tests\Mock\Example'));
     }

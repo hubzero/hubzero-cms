@@ -177,7 +177,7 @@ class InformixDriver extends BaseSqlDriver
             "[%s] [pid:%d] %s\n",
             date('Y-m-d H:i:s'),
             getmypid(),
-            $message
+            $message,
         );
         @file_put_contents($file, $line, FILE_APPEND);
     }
@@ -196,7 +196,7 @@ class InformixDriver extends BaseSqlDriver
         if (!class_exists('PDO') || !in_array('informix', \PDO::getAvailableDrivers())) {
             throw new ConnectionFailedException(
                 'PDO Informix extension is not available. Please install the PDO_INFORMIX extension.',
-                500
+                500,
             );
         }
 
@@ -634,7 +634,7 @@ class InformixDriver extends BaseSqlDriver
                     'allownull' => $isNullable,
                     'Null'      => $isNullable ? 'YES' : 'NO',
                     'default'   => null,
-                    'pk'        => false
+                    'pk'        => false,
                 ];
             }
         }
@@ -935,7 +935,7 @@ class InformixDriver extends BaseSqlDriver
 
         // Get table ID
         $this->setQuery(
-            "SELECT tabid FROM systables WHERE tabname = " . $this->quote($table) . " AND tabtype = 'T'"
+            "SELECT tabid FROM systables WHERE tabname = " . $this->quote($table) . " AND tabtype = 'T'",
         );
         $tabid = $this->loadResult();
 
@@ -945,7 +945,7 @@ class InformixDriver extends BaseSqlDriver
 
         // Get column names by number for this table
         $this->setQuery(
-            "SELECT colno, colname FROM syscolumns WHERE tabid = " . (int) $tabid
+            "SELECT colno, colname FROM syscolumns WHERE tabid = " . (int) $tabid,
         );
         $colRows = $this->loadObjectList();
         $colMap = [];
@@ -957,7 +957,7 @@ class InformixDriver extends BaseSqlDriver
         $this->setQuery(
             "SELECT c.idxname FROM sysconstraints c " .
             "JOIN systables t ON c.tabid = t.tabid " .
-            "WHERE t.tabname = " . $this->quote($table) . " AND c.constrtype = 'P'"
+            "WHERE t.tabname = " . $this->quote($table) . " AND c.constrtype = 'P'",
         );
         $pkIndexName = trim($this->loadResult() ?? '');
 
@@ -966,7 +966,7 @@ class InformixDriver extends BaseSqlDriver
             "SELECT idxname, idxtype, " .
             "part1, part2, part3, part4, part5, part6, part7, part8, " .
             "part9, part10, part11, part12, part13, part14, part15, part16 " .
-            "FROM sysindexes WHERE tabid = " . (int) $tabid
+            "FROM sysindexes WHERE tabid = " . (int) $tabid,
         );
         $indexes = $this->loadObjectList();
 
@@ -1109,7 +1109,7 @@ class InformixDriver extends BaseSqlDriver
             $ddlStatements = $this->getTableDdl($table);
             if ($ddlStatements) {
                 $this->setQuery(
-                    'DROP TABLE ' . $this->quoteName($table)
+                    'DROP TABLE ' . $this->quoteName($table),
                 )->execute();
                 foreach ($ddlStatements as $stmt) {
                     $this->setQuery($stmt)->execute();
@@ -1120,13 +1120,13 @@ class InformixDriver extends BaseSqlDriver
             } else {
                 // Can't reconstruct DDL — just truncate without reset
                 $this->setQuery(
-                    'TRUNCATE TABLE ' . $this->quoteName($table)
+                    'TRUNCATE TABLE ' . $this->quoteName($table),
                 )->execute();
             }
         } else {
             // nextId >= current counter — TRUNCATE + ALTER is sufficient
             $this->setQuery(
-                'TRUNCATE TABLE ' . $this->quoteName($table)
+                'TRUNCATE TABLE ' . $this->quoteName($table),
             )->execute();
             $this->setAutoIncrement($table, $nextId);
         }
@@ -1149,7 +1149,7 @@ class InformixDriver extends BaseSqlDriver
 
         // Get tabid
         $this->setQuery(
-            "SELECT tabid FROM systables WHERE tabname = " . $this->quote($rawTable)
+            "SELECT tabid FROM systables WHERE tabname = " . $this->quote($rawTable),
         );
         $tabid = $this->loadResult();
         if (!$tabid) {
@@ -1159,7 +1159,7 @@ class InformixDriver extends BaseSqlDriver
         // Get columns
         $this->setQuery(
             "SELECT colname, coltype, collength, extended_id FROM syscolumns"
-            . " WHERE tabid = " . (int)$tabid . " ORDER BY colno"
+            . " WHERE tabid = " . (int)$tabid . " ORDER BY colno",
         );
         $columns = $this->loadObjectList();
         if (empty($columns)) {
@@ -1174,7 +1174,7 @@ class InformixDriver extends BaseSqlDriver
             . " FROM sysconstraints c"
             . " JOIN sysindexes i ON c.idxname = i.idxname"
             . " WHERE c.tabid = " . (int)$tabid
-            . " AND c.constrtype = 'P'"
+            . " AND c.constrtype = 'P'",
         );
         $pkInfo = $this->loadObject();
 
@@ -1203,7 +1203,7 @@ class InformixDriver extends BaseSqlDriver
             . " FROM sysconstraints c"
             . " JOIN sysindexes i ON c.idxname = i.idxname"
             . " WHERE c.tabid = " . (int)$tabid
-            . " AND c.constrtype = 'U'"
+            . " AND c.constrtype = 'U'",
         );
         $uniqueConstraints = $this->loadObjectList();
 
@@ -1219,7 +1219,7 @@ class InformixDriver extends BaseSqlDriver
             . " AND NOT EXISTS ("
             . "   SELECT 1 FROM sysconstraints c WHERE c.idxname = i.idxname AND c.tabid = i.tabid"
             . " )"
-            . " AND TRIM(i.idxname) NOT LIKE ' %'"
+            . " AND TRIM(i.idxname) NOT LIKE ' %'",
         );
         $regularIndexes = $this->loadObjectList();
 
@@ -1385,7 +1385,7 @@ class InformixDriver extends BaseSqlDriver
         string $table,
         string $column,
         string $definition,
-        string $comment
+        string $comment,
     ): string {
         return 'ALTER TABLE ' . $this->quoteName($table)
             . ' ADD ' . $this->quoteName($column) . ' ' . $definition;
@@ -1400,7 +1400,7 @@ class InformixDriver extends BaseSqlDriver
         string $table,
         string $column,
         string $definition,
-        string $comment
+        string $comment,
     ): string {
         return 'ALTER TABLE ' . $this->quoteName($table)
             . ' MODIFY ' . $this->quoteName($column)
@@ -1424,7 +1424,7 @@ class InformixDriver extends BaseSqlDriver
         string $oldColumn,
         string $newColumn,
         string $definition,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         $table = $this->replacePrefix($table);
 
@@ -1481,7 +1481,7 @@ class InformixDriver extends BaseSqlDriver
 
         // Informix index names are database-wide. Drop any stale index with the same name first.
         $this->setQuery(
-            "SELECT COUNT(*) FROM sysindexes WHERE idxname = " . $this->quote($name)
+            "SELECT COUNT(*) FROM sysindexes WHERE idxname = " . $this->quote($name),
         );
         if ((int) $this->loadResult() > 0) {
             $this->setQuery('DROP INDEX ' . $this->quoteName($name))->execute();
@@ -1490,7 +1490,7 @@ class InformixDriver extends BaseSqlDriver
         $this->setQuery(
             'CREATE ' . $uniqueStr . 'INDEX ' . $this->quoteName($name)
             . ' ON ' . $this->quoteName($table)
-            . ' (' . $columnList . ')'
+            . ' (' . $columnList . ')',
         )->execute();
         return true;
     }
@@ -1779,13 +1779,13 @@ class InformixDriver extends BaseSqlDriver
             return [
                 'version' => $version,
                 'driver_version' => $driverVersion,
-                'comment' => 'Informix'
+                'comment' => 'Informix',
             ];
         } catch (\Exception $e) {
             return [
                 'version' => 'Unknown',
                 'driver_version' => 'Unknown',
-                'comment' => 'Informix'
+                'comment' => 'Informix',
             ];
         }
     }
@@ -2170,7 +2170,7 @@ class InformixDriver extends BaseSqlDriver
         $foreignTable,
         $foreignColumns,
         $onUpdate = 'RESTRICT',
-        $onDelete = 'RESTRICT'
+        $onDelete = 'RESTRICT',
     ) {
         $table = $this->replacePrefix($table);
         $foreignTable = $this->replacePrefix($foreignTable);
@@ -2206,7 +2206,7 @@ class InformixDriver extends BaseSqlDriver
         try {
             $this->setQuery(
                 'ALTER TABLE ' . $this->quoteName($table)
-                . ' DROP CONSTRAINT ' . $this->quoteName($constraint)
+                . ' DROP CONSTRAINT ' . $this->quoteName($constraint),
             );
             $this->execute();
             return true;
@@ -2346,7 +2346,7 @@ class InformixDriver extends BaseSqlDriver
             $this->setQuery(
                 'ALTER TABLE ' . $this->quoteName($table)
                 . ' ADD CONSTRAINT PRIMARY KEY (' . $columnList . ')'
-                . ' CONSTRAINT ' . $this->quoteName($constraintName)
+                . ' CONSTRAINT ' . $this->quoteName($constraintName),
             );
             $this->execute();
             return true;
@@ -2371,7 +2371,7 @@ class InformixDriver extends BaseSqlDriver
             "SELECT c.constrname FROM sysconstraints c"
             . " JOIN systables t ON c.tabid = t.tabid"
             . " WHERE t.tabname = " . $this->quote(strtolower($table))
-            . " AND c.constrtype = 'P'"
+            . " AND c.constrtype = 'P'",
         );
         $constraintName = $this->loadResult();
 
@@ -2383,7 +2383,7 @@ class InformixDriver extends BaseSqlDriver
             $this->setQuery(
                 'ALTER TABLE ' . $this->quoteName($table)
                 . ' DROP CONSTRAINT '
-                . $this->quoteName(trim($constraintName))
+                . $this->quoteName(trim($constraintName)),
             );
             $this->execute();
             return true;
@@ -2781,7 +2781,7 @@ class InformixDriver extends BaseSqlDriver
         $informixFormat = str_replace(
             ['%Y', '%m', '%d', '%H', '%i', '%s'],
             ['%Y', '%m', '%d', '%H', '%M', '%S'],
-            $format
+            $format,
         );
 
         return 'TO_CHAR(' . $date . ', ' . $this->quote($informixFormat) . ')';
@@ -3067,7 +3067,7 @@ class InformixDriver extends BaseSqlDriver
     protected function applyColumnModifiers(
         string $abstractType,
         string $nativeType,
-        array $modifiers
+        array $modifiers,
     ): string {
         switch ($abstractType) {
             case 'string':
@@ -3083,7 +3083,7 @@ class InformixDriver extends BaseSqlDriver
                 return parent::applyColumnModifiers(
                     $abstractType,
                     $nativeType,
-                    $modifiers
+                    $modifiers,
                 );
         }
     }
@@ -3268,7 +3268,7 @@ class InformixDriver extends BaseSqlDriver
     public function buildTableOptions(
         ?string $engine = null,
         ?string $charset = null,
-        ?string $collation = null
+        ?string $collation = null,
     ): string {
         return '';
     }
@@ -3320,7 +3320,7 @@ class InformixDriver extends BaseSqlDriver
         string $column,
         string $definition,
         string $afterColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         throw new \RuntimeException('Column positioning (AFTER) is not supported in Informix.');
     }
@@ -3330,7 +3330,7 @@ class InformixDriver extends BaseSqlDriver
         string $column,
         string $definition,
         string $beforeColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         throw new \RuntimeException('Column positioning (BEFORE) is not supported in Informix.');
     }
@@ -3345,7 +3345,7 @@ class InformixDriver extends BaseSqlDriver
         string $column,
         string $definition,
         string $afterColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         throw new \RuntimeException('Column positioning (AFTER) is not supported in Informix.');
     }
@@ -3355,7 +3355,7 @@ class InformixDriver extends BaseSqlDriver
         string $column,
         string $definition,
         string $beforeColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         throw new \RuntimeException('Column positioning (BEFORE) is not supported in Informix.');
     }
@@ -3375,7 +3375,7 @@ class InformixDriver extends BaseSqlDriver
         string $table,
         string $column = 'id',
         bool $first = false,
-        bool $useBigInt = true
+        bool $useBigInt = true,
     ): bool {
         $table = $this->replacePrefix($table);
 
@@ -3620,7 +3620,7 @@ class InformixDriver extends BaseSqlDriver
     public function setTableCharset(
         string $table,
         string $charset = 'utf8',
-        string $collation = 'utf8_general_ci'
+        string $collation = 'utf8_general_ci',
     ): bool {
         // Informix uses database-level locale
         return false;
@@ -3813,8 +3813,8 @@ class InformixDriver extends BaseSqlDriver
                 $plusCount,
                 $headHex,
                 $tailHex,
-                preg_replace('/\s+/', ' ', $preview)
-            )
+                preg_replace('/\s+/', ' ', $preview),
+            ),
         );
 
         return $data;

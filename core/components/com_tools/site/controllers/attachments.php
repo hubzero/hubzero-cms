@@ -192,7 +192,7 @@ class Attachments extends SiteController
             'standalone'   => 0,
             'access'       => 0,
             'path'         => '', // make sure no path is specified just yet
-            'type'         => $this->_getChildType($file['name'])
+            'type'         => $this->_getChildType($file['name']),
         ]);
 
         // Store new content

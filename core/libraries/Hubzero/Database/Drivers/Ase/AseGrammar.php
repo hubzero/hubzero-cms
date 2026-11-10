@@ -331,7 +331,7 @@ class AseGrammar extends BaseSchemaGrammar
         foreach ($builder->getAddIndexes() as $name => $info) {
             $columnList = implode(', ', array_map(
                 fn($col) => $this->wrap($col),
-                $info['columns']
+                $info['columns'],
             ));
             $unique = $info['unique'] ? 'UNIQUE ' : '';
             $statements[] = "CREATE {$unique}INDEX "
@@ -342,7 +342,7 @@ class AseGrammar extends BaseSchemaGrammar
         foreach ($builder->getAddFulltextIndexes() as $name => $columns) {
             $columnList = implode(', ', array_map(
                 fn($c) => $this->wrap($c),
-                $columns
+                $columns,
             ));
             $statements[] = "CREATE INDEX "
                 . $this->wrap($name) . " ON $qt ($columnList)";
@@ -376,7 +376,7 @@ class AseGrammar extends BaseSchemaGrammar
 
             $columnList = implode(', ', array_map(
                 fn($col) => $this->wrap($col),
-                $pkCols
+                $pkCols,
             ));
             $statements[] = "ALTER TABLE $qt ADD PRIMARY KEY ($columnList)";
         }
@@ -443,7 +443,7 @@ class AseGrammar extends BaseSchemaGrammar
         $resolved = strtoupper(
             method_exists($this->driver, 'normalizeColumnType')
                 ? $this->driver->normalizeColumnType($type, $modifiers)
-                : $type
+                : $type,
         );
         $isBit = (trim(preg_replace('/\([^)]*\)/', '', $resolved)) === 'BIT');
 
@@ -613,7 +613,7 @@ class AseGrammar extends BaseSchemaGrammar
         if (
             in_array(
                 $type,
-                ['tinyInteger', 'smallInteger', 'mediumInteger', 'integer', 'bigInteger', 'boolean', 'year']
+                ['tinyInteger', 'smallInteger', 'mediumInteger', 'integer', 'bigInteger', 'boolean', 'year'],
             )
             || in_array($sqlType, ['INT', 'BIGINT', 'SMALLINT', 'TINYINT', 'BIT'])
         ) {

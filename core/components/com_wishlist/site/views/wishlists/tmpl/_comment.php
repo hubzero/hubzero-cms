@@ -219,7 +219,7 @@ $permalinkTxt = Lang::txt('COM_WISHLIST_PERMALINK');
                     $loginLink = '<a href="'
                         . Route::url(
                             'index.php?option=com_users&view=login&return='
-                            . base64_encode(Route::url($this->wish->link(), false, true))
+                            . base64_encode(Route::url($this->wish->link(), false, true)),
                         ) . '">' . Lang::txt('COM_WISHLIST_LOGIN') . '</a>';
                     echo Lang::txt('COM_WISHLIST_PLEASE_LOGIN_TO_COMMENT', $loginLink);
                     ?>
@@ -268,7 +268,7 @@ $permalinkTxt = Lang::txt('COM_WISHLIST_PERMALINK');
                                     35,
                                     4,
                                     $editorId,
-                                    ['class' => 'form-control minimal no-footer']
+                                    ['class' => 'form-control minimal no-footer'],
                                 );
                                 ?>
                             </label>
@@ -303,7 +303,7 @@ $permalinkTxt = Lang::txt('COM_WISHLIST_PERMALINK');
             $comments = $this->comment->replies()
                 ->whereIn('state', [
                     Components\Wishlist\Models\Comment::STATE_PUBLISHED,
-                    Components\Wishlist\Models\Comment::STATE_FLAGGED
+                    Components\Wishlist\Models\Comment::STATE_FLAGGED,
                 ])
                 ->rows();
 

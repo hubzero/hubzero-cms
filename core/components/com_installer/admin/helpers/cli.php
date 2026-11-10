@@ -196,7 +196,7 @@ class Cli
 
         return [
             'output' => implode("\n", $lines),
-            'status' => (int) $status
+            'status' => (int) $status,
         ];
     }
 

@@ -48,7 +48,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
      * @var  array
      */
     protected $rules = [
-        'publication_id' => 'positive|nonzero'
+        'publication_id' => 'positive|nonzero',
     ];
 
     /**
@@ -58,7 +58,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
      */
     public $always = [
         'modified',
-        'modified_by'
+        'modified_by',
     ];
 
     /**
@@ -68,7 +68,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**
@@ -78,7 +78,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
      **/
     protected $parsed = [
         'notes',
-        'description'
+        'description',
     ];
 
     public function transformStatusName()
@@ -530,7 +530,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
 
         $webpath = trim(
             Component::params('com_publications')->get('webpath', '/site/publications'),
-            '/'
+            '/',
         );
 
         return PATH_APP . '/' . $webpath . '/' . $pid . '/' . $vid . '/' . $sec;
@@ -727,7 +727,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
 
         $filters = [
             'scope'    => 'publications',
-            'scope_id' => $this->id
+            'scope_id' => $this->id,
         ];
 
         return $cloud->tags('list', $filters);
@@ -791,13 +791,13 @@ class Version extends Relational implements \Hubzero\Search\Searchable
                     'description' => $description,
                     'access_level' => $tag->admin == 0 ? 'public' : 'private',
                     'type' => 'publication-tag',
-                    'badge_b' => $label == 'badge' ? true : false
+                    'badge_b' => $label == 'badge' ? true : false,
                 ];
             }
         } else {
             $obj->tags[] = [
                 'id' => '',
-                'title' => ''
+                'title' => '',
             ];
         }
 

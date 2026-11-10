@@ -27,7 +27,7 @@ if (!isset($this->controller)) {
                 <?php
                     $newPageUrl = Route::url(
                         $this->page->link('base') . '&'
-                        . ($this->sub ? 'action' : 'task') . '=new'
+                        . ($this->sub ? 'action' : 'task') . '=new',
                     );
                 ?>
                 <a class="icon-add add btn"

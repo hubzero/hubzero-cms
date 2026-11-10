@@ -60,7 +60,7 @@ class Blog extends Plugin
             'blog' => Lang::txt('PLG_MEMBERS_BLOG'),
             'icon' => 'f075',
             'icon-class' => 'icon-comment',
-            'menu' => $this->params->get('display_tab', 1)
+            'menu' => $this->params->get('display_tab', 1),
         ];
         return $areas;
     }
@@ -90,7 +90,7 @@ class Blog extends Plugin
 
         $arr = [
             'html'     => '',
-            'metadata' => []
+            'metadata' => [],
         ];
 
         // Get our model
@@ -200,7 +200,7 @@ class Blog extends Plugin
             'scope_id'   => $member->get('id'),
             //'created_by' => $member->get('id'),
             'state'      => 1,
-            'access'     => User::getAuthorisedViewLevels()
+            'access'     => User::getAuthorisedViewLevels(),
         ];
 
         if (User::get('id') == $member->get('id')) {
@@ -283,7 +283,7 @@ class Blog extends Plugin
             'search'     => Request::getString('search', ''),
             'authorized' => false,
             'state'      => 1,
-            'access'     => User::getAuthorisedViewLevels()
+            'access'     => User::getAuthorisedViewLevels(),
         ];
 
         // See what information we can get from the path
@@ -340,7 +340,7 @@ class Blog extends Plugin
             'search'     => Request::getString('search', ''),
             //'created_by' => $this->member->get('id')
             'state'      => 1,
-            'access'     => User::getAuthorisedViewLevels()
+            'access'     => User::getAuthorisedViewLevels(),
         ];
 
         if (User::get('id') == $this->member->get('id')) {
@@ -456,7 +456,7 @@ class Blog extends Plugin
             'start'      => 0,
             'scope'      => 'member',
             'scope_id'   => $this->member->get('id'),
-            'authorized' => false
+            'authorized' => false,
         ];
 
         if (User::get('id') != $this->member->get('id')) {
@@ -490,7 +490,7 @@ class Blog extends Plugin
 
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . $return, false),
-            Lang::txt('MEMBERS_LOGIN_NOTICE')
+            Lang::txt('MEMBERS_LOGIN_NOTICE'),
         );
     }
 
@@ -627,12 +627,12 @@ class Blog extends Plugin
                 'description' => Lang::txt('PLG_MEMBERS_BLOG_ACTIVITY_ENTRY_' . ($isNew ? 'CREATED' : 'UPDATED'), '<a href="' . Route::url($row->link()) . '">' . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
                 'details'     => [
                     'title' => $row->get('title'),
-                    'url'   => Route::url($row->link())
-                ]
+                    'url'   => Route::url($row->link()),
+                ],
             ],
             'recipients' => [
-                $this->member->get('id')
-            ]
+                $this->member->get('id'),
+            ],
         ]);
 
         App::redirect(Route::url($row->link()));
@@ -712,12 +712,12 @@ class Blog extends Plugin
                 'description' => Lang::txt('PLG_MEMBERS_BLOG_ACTIVITY_ENTRY_DELETED', $entry->get('title')),
                 'details'     => [
                     'title' => $entry->get('title'),
-                    'url'   => Route::url($entry->link())
-                ]
+                    'url'   => Route::url($entry->link()),
+                ],
             ],
             'recipients' => [
-                $this->member->get('id')
-            ]
+                $this->member->get('id'),
+            ],
         ]);
 
         // Return the topics list
@@ -805,10 +805,10 @@ class Blog extends Plugin
                 'details'     => [
                     'title'    => $entry->get('title'),
                     'entry_id' => $entry->get('id'),
-                    'url'      => $entry->link() . '#c' . $comment->get('id')
-                ]
+                    'url'      => $entry->link() . '#c' . $comment->get('id'),
+                ],
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         return $this->_entry();
@@ -889,10 +889,10 @@ class Blog extends Plugin
                 'details'     => [
                     'title'    => $entry->get('title'),
                     'entry_id' => $entry->get('id'),
-                    'url'      => $entry->link()
-                ]
+                    'url'      => $entry->link(),
+                ],
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         // Return the topics list
@@ -964,16 +964,16 @@ class Blog extends Plugin
                 'action'      => 'updated',
                 'scope'       => 'blog.settings',
                 'scope_id'    => $row->get('id'),
-                'description' => Lang::txt('PLG_MEMBERS_BLOG_ACTIVITY_SETTINGS_UPDATED')
+                'description' => Lang::txt('PLG_MEMBERS_BLOG_ACTIVITY_SETTINGS_UPDATED'),
             ],
             'recipients' => [
-                $this->member->get('id')
-            ]
+                $this->member->get('id'),
+            ],
         ]);
 
         App::redirect(
             Route::url($this->member->link() . '&active=' . $this->_name . '&task=settings'),
-            Lang::txt('PLG_MEMBERS_BLOG_SETTINGS_SAVED')
+            Lang::txt('PLG_MEMBERS_BLOG_SETTINGS_SAVED'),
         );
     }
 

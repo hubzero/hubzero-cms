@@ -179,7 +179,7 @@ class UpdateWithJoinTest extends AbstractDriverTestCase
               ->innerJoin('update_test_profiles', 'update_test_users.id', 'update_test_profiles.user_id')
               ->set([
                   'update_test_users.access' => 2,
-                  'update_test_users.verified' => 1
+                  'update_test_users.verified' => 1,
               ])
               ->whereEquals('update_test_profiles.public', 1);
 

@@ -295,7 +295,7 @@ class AseSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 $joinSql,
                 $whereSql,
                 $groupSql,
-                $havingSql
+                $havingSql,
             );
 
             $allBindings = array_merge($allBindings, $this->getBindings());
@@ -468,7 +468,7 @@ class AseSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             $this->bind(
                 is_string($this->upsertValues[$col])
                     ? trim($this->upsertValues[$col])
-                    : $this->upsertValues[$col]
+                    : $this->upsertValues[$col],
             );
         }
         $whereClause = implode(' AND ', $whereConditions);
@@ -483,7 +483,7 @@ class AseSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             $this->bind(
                 is_string($this->upsertValues[$col])
                     ? trim($this->upsertValues[$col])
-                    : $this->upsertValues[$col]
+                    : $this->upsertValues[$col],
             );
         }
 
@@ -492,7 +492,7 @@ class AseSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             $this->bind(
                 is_string($this->upsertValues[$col])
                     ? trim($this->upsertValues[$col])
-                    : $this->upsertValues[$col]
+                    : $this->upsertValues[$col],
             );
         }
 
@@ -505,7 +505,7 @@ class AseSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             $this->bind(
                 is_string($this->upsertValues[$column])
                     ? trim($this->upsertValues[$column])
-                    : $this->upsertValues[$column]
+                    : $this->upsertValues[$column],
             );
         }
 
@@ -570,7 +570,7 @@ class AseSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             case 'CONCAT':
                 $parts = array_map(
                     fn($a) => 'ISNULL(' . $this->buildExpressionArgument($a) . ", '')",
-                    $args
+                    $args,
                 );
                 return '(' . implode(' + ', $parts) . ')';
 
@@ -675,7 +675,7 @@ class AseSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             'raw'      => $raw,
             'bindings' => [$value],
             'logical'  => $logical,
-            'depth'    => $depth
+            'depth'    => $depth,
         ];
     }
 
@@ -715,7 +715,7 @@ class AseSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
 
         $quotedColumns = array_map(
             fn($col) => $this->connection->quoteName($col),
-            $columns
+            $columns,
         );
 
         $selects = [];

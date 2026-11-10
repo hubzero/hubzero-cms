@@ -48,13 +48,13 @@ class Services extends AdminController
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'category'
+                'category',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         // get all available services
@@ -97,7 +97,7 @@ class Services extends AdminController
                 'unitsize' => 1,
                 'unitmeasure' => strtolower(Lang::txt('month')),
                 'changed' => $now,
-                'params' => "promo=" . Lang::txt('COM_SERVICES_BASIC_SERVICE_PROMO') . "\npromomaxunits=3\nmaxads=1"
+                'params' => "promo=" . Lang::txt('COM_SERVICES_BASIC_SERVICE_PROMO') . "\npromomaxunits=3\nmaxads=1",
             ],
             [
                 'title' => Lang::txt('COM_SERVICES_PREMIUM_SERVICE_TITLE'),
@@ -113,8 +113,8 @@ class Services extends AdminController
                 'unitsize' => 1,
                 'unitmeasure' => strtolower(Lang::txt('month')),
                 'changed' => $now,
-                'params' => "promo=\npromomaxunits=\nmaxads=3"
-            ]
+                'params' => "promo=\npromomaxunits=\nmaxads=3",
+            ],
         ];
 
         foreach ($defaults as $data) {

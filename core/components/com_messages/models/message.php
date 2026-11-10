@@ -48,7 +48,7 @@ class Message extends Relational
      */
     protected $rules = [
         'subject' => 'notempty',
-        'message' => 'notempty'
+        'message' => 'notempty',
     ];
 
     /**
@@ -58,7 +58,7 @@ class Message extends Relational
      */
     public $initiate = [
         'user_id_from',
-        'date_time'
+        'date_time',
     ];
 
     /**

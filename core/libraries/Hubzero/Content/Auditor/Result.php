@@ -44,7 +44,7 @@ class Result extends Relational
     protected $rules = [
         'scope'    => 'notempty',
         'scope_id' => 'positive|nonzero',
-        'test_id'  => 'notempty'
+        'test_id'  => 'notempty',
     ];
 
     /**
@@ -53,7 +53,7 @@ class Result extends Relational
      * @var  array
      **/
     public $always = [
-        'processed'
+        'processed',
     ];
 
     /**

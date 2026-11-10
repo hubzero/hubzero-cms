@@ -121,7 +121,7 @@ class MorphToMany extends OneToManyThrough
         $morphType = null,
         $morphId = null,
         $relatedKey = null,
-        $inverse = false
+        $inverse = false,
     ) {
         $this->morphName = $morphName;
         $this->morphType = $morphType ?: $morphName . '_type';
@@ -423,17 +423,17 @@ class MorphToMany extends OneToManyThrough
                 $this->associativeTable,
                 $this->model->getQualifiedFieldName($this->localKey),
                 $this->associativeLocal,
-                'LEFT OUTER'
+                'LEFT OUTER',
             )
             ->join(
                 $this->related->getTableName(),
                 $this->associativeRelated,
                 $this->related->getQualifiedFieldName($this->relatedKey),
-                'LEFT OUTER'
+                'LEFT OUTER',
             )
             ->whereEquals(
                 $this->associativeTable . '.' . $this->morphType,
-                $this->getTypeIdentifier()
+                $this->getTypeIdentifier(),
             );
 
         return $this;

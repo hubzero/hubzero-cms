@@ -52,7 +52,7 @@ class Groupedlist extends Field
                             fieldname)),
                         'value',
                         'text',
-                        ((string) $element['disabled'] == 'true')
+                        ((string) $element['disabled'] == 'true'),
                     );
 
                     // Set some option attributes.
@@ -91,7 +91,7 @@ class Groupedlist extends Field
                             App::get('language')->txt(trim((string) $option)),
                             'value',
                             'text',
-                            ((string) $option['disabled'] == 'true')
+                            ((string) $option['disabled'] == 'true'),
                         );
 
                         // Set some option attributes.
@@ -115,8 +115,8 @@ class Groupedlist extends Field
                         500,
                         App::get('language')->txt(
                             'JLIB_FORM_ERROR_FIELDS_GROUPEDLIST_ELEMENT_NAME',
-                            $element->getName()
-                        )
+                            $element->getName(),
+                        ),
                     );
                     break;
             }
@@ -160,8 +160,8 @@ class Groupedlist extends Field
                     'list.attr' => $attr, 'id' => $this->
                         id, 'list.select' => $this->
                         value, 'group.items' => null, 'option.key.toHtml' => false,
-                    'option.text.toHtml' => false
-                ]
+                    'option.text.toHtml' => false,
+                ],
             );
             $html[] = '<input type="hidden" name="' .
                 $this->name .
@@ -177,8 +177,8 @@ class Groupedlist extends Field
                     'list.attr' => $attr, 'id' => $this->
                         id, 'list.select' => $this->
                         value, 'group.items' => null, 'option.key.toHtml' => false,
-                    'option.text.toHtml' => false
-                ]
+                    'option.text.toHtml' => false,
+                ],
             );
         }
 

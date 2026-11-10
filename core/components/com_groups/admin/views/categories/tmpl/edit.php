@@ -35,7 +35,7 @@ $this->js();
 $formAction = Route::url(
     'index.php?option=' . $this->option
     . '&controller=' . $this->controller
-    . '&gid=' . $this->group->cn
+    . '&gid=' . $this->group->cn,
 );
 $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
 ?>

@@ -165,7 +165,7 @@ class Categories extends Base
         // Log activity
         $recipients = [
             ['group', $this->group->get('gidNumber')],
-            ['user', User::get('id')]
+            ['user', User::get('id')],
         ];
         foreach ($this->group->get('managers') as $recipient) {
             $recipients[] = ['user', $recipient];
@@ -179,15 +179,15 @@ class Categories extends Base
                 'description' => Lang::txt(
                     'COM_GROUPS_ACTIVITY_CATEGORY_' . ($this->_task == 'new' ? 'CREATED' : 'UPDATED'),
                     $this->category->get('title'),
-                    '<a href="' . $url . '">' . htmlspecialchars((string) $this->group->get('description'), ENT_QUOTES, 'UTF-8') . '</a>'
+                    '<a href="' . $url . '">' . htmlspecialchars((string) $this->group->get('description'), ENT_QUOTES, 'UTF-8') . '</a>',
                 ),
                 'details'     => [
                     'title'     => $this->category->get('title'),
                     'url'       => $url,
-                    'gidNumber' => $this->group->get('gidNumber')
-                ]
+                    'gidNumber' => $this->group->get('gidNumber'),
+                ],
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         //inform user & redirect
@@ -228,7 +228,7 @@ class Categories extends Base
         // Log activity
         $recipients = [
             ['group', $this->group->get('gidNumber')],
-            ['user', User::get('id')]
+            ['user', User::get('id')],
         ];
         foreach ($this->group->get('managers') as $recipient) {
             $recipients[] = ['user', $recipient];
@@ -242,15 +242,15 @@ class Categories extends Base
                 'description' => Lang::txt(
                     'COM_GROUPS_ACTIVITY_CATEGORY_DELETED',
                     $category->get('title'),
-                    '<a href="' . $url . '">' . htmlspecialchars((string) $this->group->get('description'), ENT_QUOTES, 'UTF-8') . '</a>'
+                    '<a href="' . $url . '">' . htmlspecialchars((string) $this->group->get('description'), ENT_QUOTES, 'UTF-8') . '</a>',
                 ),
                 'details'     => [
                     'title'     => $category->get('title'),
                     'url'       => $url,
-                    'gidNumber' => $this->group->get('gidNumber')
-                ]
+                    'gidNumber' => $this->group->get('gidNumber'),
+                ],
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         //inform user & redirect

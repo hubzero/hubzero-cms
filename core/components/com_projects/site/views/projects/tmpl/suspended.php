@@ -41,7 +41,7 @@ if ($result) {
             method="post"
             action="<?php echo Route::url(
                 'index.php?option=' . $this->option
-                . '&alias=' . $this->model->get('alias')
+                . '&alias=' . $this->model->get('alias'),
             ); ?>">
             <fieldset >
                 <input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
@@ -82,7 +82,7 @@ if ($result) {
                         <?php
                         $supportUrl = Route::url(
                             'index.php?option=com_support'
-                            . '&controller=tickets&task=new'
+                            . '&controller=tickets&task=new',
                         );
                         echo ucfirst(Lang::txt('COM_PROJECTS_CANCEL_PERMANENTLY'));
                         ?>, <?php

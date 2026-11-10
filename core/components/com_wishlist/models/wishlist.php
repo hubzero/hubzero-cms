@@ -66,7 +66,7 @@ class Wishlist extends Relational
     protected $rules = [
         'title'       => 'notempty',
         'category'    => 'notempty',
-        'referenceid' => 'positive|nonzero'
+        'referenceid' => 'positive|nonzero',
     ];
 
     /**
@@ -76,7 +76,7 @@ class Wishlist extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**
@@ -85,7 +85,7 @@ class Wishlist extends Relational
      * @var  array
      */
     protected $parsed = [
-        'description'
+        'description',
     ];
 
     /**
@@ -125,7 +125,7 @@ class Wishlist extends Relational
             $msg = Lang::txt(
                 'Item of category "%s" and ID of "%s" could not be found.',
                 $this->get('category'),
-                $this->get('referenceid')
+                $this->get('referenceid'),
             );
             $this->addError($msg);
             return false;

@@ -61,7 +61,7 @@ class Attachment extends Relational
      */
     protected $rules = [
         'wish'     => 'nonzero',
-        'filename' => 'notempty'
+        'filename' => 'notempty',
     ];
 
     /**
@@ -71,7 +71,7 @@ class Attachment extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**

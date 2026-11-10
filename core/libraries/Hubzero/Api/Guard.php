@@ -143,7 +143,7 @@ class Guard
                 $oauthResponse->setParameter('error', 'invalid_token');
                 $oauthResponse->setParameter(
                     'error_description',
-                    'The access token is missing user identification data'
+                    'The access token is missing user identification data',
                 );
                 $oauthResponse->setParameter('code', $oauthResponse->getStatusCode());
                 $oauthResponse->send();

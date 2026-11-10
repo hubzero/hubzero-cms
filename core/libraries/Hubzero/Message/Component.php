@@ -56,7 +56,7 @@ class Component extends Relational
      */
     protected $rules = [
         'component' => 'notempty',
-        'action'    => 'notempty'
+        'action'    => 'notempty',
     ];
 
     /**

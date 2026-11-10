@@ -43,7 +43,7 @@ class Vote extends Relational
      */
     protected $rules = [
         'user_id' => 'positive|nonzero',
-        'item_id' => 'positive|nonzero'
+        'item_id' => 'positive|nonzero',
     ];
 
     /**
@@ -52,7 +52,7 @@ class Vote extends Relational
      * @var  array
      */
     public $initiate = [
-        'voted'
+        'voted',
     ];
 
     /**

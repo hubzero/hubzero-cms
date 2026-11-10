@@ -22,7 +22,7 @@ $distribution = [
     2 => 0,
     3 => 0,
     4 => 0,
-    5 => 0
+    5 => 0,
 ];
 
 $ratings = \Components\Courses\Models\Comment::all()
@@ -30,7 +30,7 @@ $ratings = \Components\Courses\Models\Comment::all()
     ->whereEquals('item_type', 'courses')
     ->whereEquals('parent', 0)
     ->whereEquals('state', [
-        Components\Courses\Models\Comment::STATE_PUBLISHED
+        Components\Courses\Models\Comment::STATE_PUBLISHED,
     ])
     ->rows();
 

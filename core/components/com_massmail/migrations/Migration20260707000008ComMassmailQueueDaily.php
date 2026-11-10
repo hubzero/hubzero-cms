@@ -30,7 +30,7 @@ class Migration20260707000008ComMassmailQueueDaily extends Base
 					`total` bigint(20) NOT NULL DEFAULT '0',
 					`max` int(11) NOT NULL DEFAULT '0',
 					PRIMARY KEY (`day`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;"
+				) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
             );
             $this->db->query();
         }

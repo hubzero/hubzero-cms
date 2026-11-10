@@ -28,7 +28,7 @@ class Migration20260707000004ComMassmailPostfix extends Base
 					`hour` datetime NOT NULL,
 					`sent` int(11) NOT NULL DEFAULT '0',
 					PRIMARY KEY (`hour`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;"
+				) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
             );
             $this->db->query();
         }
@@ -39,7 +39,7 @@ class Migration20260707000004ComMassmailPostfix extends Base
 					`day` date NOT NULL,
 					`sent` int(11) NOT NULL DEFAULT '0',
 					PRIMARY KEY (`day`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;"
+				) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
             );
             $this->db->query();
         }
@@ -52,7 +52,7 @@ class Migration20260707000004ComMassmailPostfix extends Base
 					`last_offset` bigint(20) NOT NULL DEFAULT '0',
 					`last_run` datetime DEFAULT NULL,
 					PRIMARY KEY (`id`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;"
+				) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
             );
             $this->db->query();
 

@@ -29,7 +29,7 @@ $canDo = (User::authorise('core.admin', $this->option) || User::authorise('core.
         . $this->option
         . '&controller='
         . $this->controller
-        . '&task=savesettings'
+        . '&task=savesettings',
     );
     ?>
     <form action="<?php echo $href; ?>" method="post" name="adminForm" id="item-form">
@@ -95,7 +95,7 @@ $canDo = (User::authorise('core.admin', $this->option) || User::authorise('core.
                         $this->notimethods,
                         $component->action,
                         $this->settings[$component->action]['methods'],
-                        $this->settings[$component->action]['ids']
+                        $this->settings[$component->action]['ids'],
                     );
                     ?>
                     <?php echo $val; ?>

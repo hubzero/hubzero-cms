@@ -270,7 +270,7 @@ if ($mode != 'preview') {
             'sortby' => Request::getString('sortby', $this->model->params->get('sort_children', 'ordering')),
             'limit'  => Request::getInt('limit', 0),
             'start'  => Request::getInt('limitstart', 0),
-            'id'     => $this->model->id
+            'id'     => $this->model->id,
         ];
         // Prevent SQL injection vulnerability by doing input validation on sortby
         if (!in_array($filters['sortby'], ['ordering', 'date', 'date_published', 'date_created', 'date_modified', 'title', 'rating', 'ranking', 'random'])) {
@@ -290,7 +290,7 @@ if ($mode != 'preview') {
             'date'     => Lang::txt('DATE'),
             'title'    => Lang::txt('TITLE'),
             'author'   => Lang::txt('AUTHOR'),
-            'ordering' => Lang::txt('ORDERING')
+            'ordering' => Lang::txt('ORDERING'),
         ];
         if ($this->model->params->get('show_ranking')) {
             $sortbys['ranking'] = Lang::txt('RANKING');
@@ -318,7 +318,7 @@ if ($mode != 'preview') {
                         $pageNav = $this->pagination(
                             $ccount,
                             $filters['start'],
-                            $filters['limit']
+                            $filters['limit'],
                         );
                         $pageNav->setAdditionalUrlParam('id', $this->model->id);
                         $pageNav->setAdditionalUrlParam('sortby', $filters['sortby']);

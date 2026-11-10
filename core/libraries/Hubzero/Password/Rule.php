@@ -57,7 +57,7 @@ class Rule extends Relational
      */
     protected $rules = [
         'description' => 'notempty',
-        'rule'        => 'notempty'
+        'rule'        => 'notempty',
     ];
 
     /**
@@ -66,7 +66,7 @@ class Rule extends Relational
      * @public array
      */
     public $initiate = [
-        'ordering'
+        'ordering',
     ];
 
     /**
@@ -175,7 +175,7 @@ class Rule extends Relational
                 'grp'         => 'hub',
                 'ordering'    => '1',
                 'rule'        => 'minClassCharacters',
-                'value'       => '1'
+                'value'       => '1',
             ],
             [
                 'class'       => 'nonalpha',
@@ -185,7 +185,7 @@ class Rule extends Relational
                 'grp'         => 'hub',
                 'ordering'    => '2',
                 'rule'        => 'minClassCharacters',
-                'value'       => '1'
+                'value'       => '1',
             ],
             [
                 'class'       => '',
@@ -195,7 +195,7 @@ class Rule extends Relational
                 'grp'         => 'hub',
                 'ordering'    => '3',
                 'rule'        => 'minPasswordLength',
-                'value'       => '8'
+                'value'       => '8',
             ],
             [
                 'class'       => '',
@@ -205,7 +205,7 @@ class Rule extends Relational
                 'grp'         => 'hub',
                 'ordering'    => '4',
                 'rule'        => 'maxPasswordLength',
-                'value'       => '16'
+                'value'       => '16',
             ],
             [
                 'class'       => '',
@@ -215,7 +215,7 @@ class Rule extends Relational
                 'grp'         => 'hub',
                 'ordering'    => '5',
                 'rule'        => 'minUniqueCharacters',
-                'value'       => '5'
+                'value'       => '5',
             ],
             [
                 'class'       => '',
@@ -225,7 +225,7 @@ class Rule extends Relational
                 'grp'         => 'hub',
                 'ordering'    => '6',
                 'rule'        => 'notBlacklisted',
-                'value'       => ''
+                'value'       => '',
             ],
             [
                 'class'       => '',
@@ -235,7 +235,7 @@ class Rule extends Relational
                 'grp'         => 'hub',
                 'ordering'    => '7',
                 'rule'        => 'notNameBased',
-                'value'       => ''
+                'value'       => '',
             ],
             [
                 'class'       => '',
@@ -245,7 +245,7 @@ class Rule extends Relational
                 'grp'         => 'hub',
                 'ordering'    => '8',
                 'rule'        => 'notUsernameBased',
-                'value'       => ''
+                'value'       => '',
             ],
             [
                 'class'       => '',
@@ -257,7 +257,7 @@ class Rule extends Relational
                 'grp'         => 'hub',
                 'ordering'    => '9',
                 'rule'        => 'notReused',
-                'value'       => '365'
+                'value'       => '365',
             ],
             [
                 'class'       => '',
@@ -267,8 +267,8 @@ class Rule extends Relational
                 'grp'         => 'hub',
                 'ordering'    => '10',
                 'rule'        => 'notStale',
-                'value'       => '120'
-            ]
+                'value'       => '120',
+            ],
         ];
 
         if ($restore) {

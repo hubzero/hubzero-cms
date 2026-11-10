@@ -78,32 +78,32 @@ class CubridDriverTest extends AbstractDriverTestCase
 
         $driver->exec(
             "INSERT INTO cubrid_categories (name, slug, sort_order)"
-            . " VALUES ('Electronics', 'electronics', 1)"
+            . " VALUES ('Electronics', 'electronics', 1)",
         );
         $driver->exec(
             "INSERT INTO cubrid_categories (name, slug, sort_order)"
-            . " VALUES ('Books', 'books', 2)"
+            . " VALUES ('Books', 'books', 2)",
         );
         $driver->exec(
             "INSERT INTO cubrid_categories (name, slug, sort_order, active)"
-            . " VALUES ('Archived', 'archived', 99, 0)"
+            . " VALUES ('Archived', 'archived', 99, 0)",
         );
 
         $driver->exec(
             "INSERT INTO cubrid_items (category_id, title, price, stock, status)"
-            . " VALUES (1, 'Laptop', 999.99, 10, 'active')"
+            . " VALUES (1, 'Laptop', 999.99, 10, 'active')",
         );
         $driver->exec(
             "INSERT INTO cubrid_items (category_id, title, price, stock, status)"
-            . " VALUES (1, 'Phone', 599.99, 25, 'active')"
+            . " VALUES (1, 'Phone', 599.99, 25, 'active')",
         );
         $driver->exec(
             "INSERT INTO cubrid_items (category_id, title, price, stock, status)"
-            . " VALUES (2, 'Novel', 19.99, 100, 'active')"
+            . " VALUES (2, 'Novel', 19.99, 100, 'active')",
         );
         $driver->exec(
             "INSERT INTO cubrid_items (category_id, title, price, stock, status)"
-            . " VALUES (2, 'Textbook', 79.99, 5, 'draft')"
+            . " VALUES (2, 'Textbook', 79.99, 5, 'draft')",
         );
     }
 
@@ -170,7 +170,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function driverIsCubridInstance(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -183,7 +183,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canExecuteBasicQuery(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -209,7 +209,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canGetServerInfo(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -227,7 +227,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function serverInfoDriverVersionIsNormalized(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -245,7 +245,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getVersionMatchesServerInfoVersion(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -261,7 +261,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function sqlHelpersEmitExpectedCubridExpressions(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -279,7 +279,7 @@ class CubridDriverTest extends AbstractDriverTestCase
         $this->assertSame("CONCAT(first_name, ' ', last_name)", $driver->sqlConcat(['first_name', "' '", 'last_name']));
         $this->assertSame(
             "CONCAT_WS(', ', first_name, last_name)",
-            $driver->sqlConcatWs(', ', ['first_name', 'last_name'])
+            $driver->sqlConcatWs(', ', ['first_name', 'last_name']),
         );
     }
 
@@ -291,7 +291,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function tableExistsReturnsTrueForExistingTable(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -304,7 +304,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getTableListIncludesTestTables(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -319,7 +319,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getTableColumnsTypeOnly(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -336,7 +336,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getPrimaryKeyReturnsColumnName(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -359,7 +359,7 @@ class CubridDriverTest extends AbstractDriverTestCase
         }
 
         $driver->setQuery(
-            'SELECT * FROM cubrid_categories ORDER BY id'
+            'SELECT * FROM cubrid_categories ORDER BY id',
         );
         $rows = $driver->loadObjectList();
 
@@ -371,7 +371,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canInsertAndGetAutoIncrementId(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -379,14 +379,14 @@ class CubridDriverTest extends AbstractDriverTestCase
 
         $driver->exec(
             "INSERT INTO cubrid_categories (name, slug)"
-            . " VALUES ('Test', 'test-auto')"
+            . " VALUES ('Test', 'test-auto')",
         );
         $id = $driver->insertid();
 
         $this->assertGreaterThan(0, $id);
 
         $driver->exec(
-            "DELETE FROM cubrid_categories WHERE id = $id"
+            "DELETE FROM cubrid_categories WHERE id = $id",
         );
     }
 
@@ -394,7 +394,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUpdateRecord(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -402,22 +402,22 @@ class CubridDriverTest extends AbstractDriverTestCase
 
         $driver->exec(
             "INSERT INTO cubrid_categories (name, slug)"
-            . " VALUES ('Before', 'update-test')"
+            . " VALUES ('Before', 'update-test')",
         );
         $driver->exec(
             "UPDATE cubrid_categories SET name = 'After'"
-            . " WHERE slug = 'update-test'"
+            . " WHERE slug = 'update-test'",
         );
 
         $driver->setQuery(
             "SELECT name FROM cubrid_categories"
-            . " WHERE slug = 'update-test'"
+            . " WHERE slug = 'update-test'",
         );
         $this->assertEquals('After', $driver->loadResult());
 
         $driver->exec(
             "DELETE FROM cubrid_categories"
-            . " WHERE slug = 'update-test'"
+            . " WHERE slug = 'update-test'",
         );
     }
 
@@ -425,7 +425,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canDeleteRecord(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -433,15 +433,15 @@ class CubridDriverTest extends AbstractDriverTestCase
 
         $driver->exec(
             "INSERT INTO cubrid_categories (name, slug)"
-            . " VALUES ('Delete Me', 'delete-test')"
+            . " VALUES ('Delete Me', 'delete-test')",
         );
         $driver->exec(
-            "DELETE FROM cubrid_categories WHERE slug = 'delete-test'"
+            "DELETE FROM cubrid_categories WHERE slug = 'delete-test'",
         );
 
         $driver->setQuery(
             "SELECT COUNT(*) FROM cubrid_categories"
-            . " WHERE slug = 'delete-test'"
+            . " WHERE slug = 'delete-test'",
         );
         $this->assertEquals(0, $driver->loadResult());
     }
@@ -454,7 +454,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canCommitTransaction(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -463,19 +463,19 @@ class CubridDriverTest extends AbstractDriverTestCase
         $driver->transactionStart();
         $driver->exec(
             "INSERT INTO cubrid_categories (name, slug)"
-            . " VALUES ('Committed', 'trans-commit')"
+            . " VALUES ('Committed', 'trans-commit')",
         );
         $driver->transactionCommit();
 
         $driver->setQuery(
             "SELECT COUNT(*) FROM cubrid_categories"
-            . " WHERE slug = 'trans-commit'"
+            . " WHERE slug = 'trans-commit'",
         );
         $this->assertEquals(1, $driver->loadResult());
 
         $driver->exec(
             "DELETE FROM cubrid_categories"
-            . " WHERE slug = 'trans-commit'"
+            . " WHERE slug = 'trans-commit'",
         );
     }
 
@@ -483,7 +483,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canRollbackTransaction(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -496,13 +496,13 @@ class CubridDriverTest extends AbstractDriverTestCase
         $driver2->transactionStart();
         $driver2->exec(
             "INSERT INTO cubrid_categories (name, slug)"
-            . " VALUES ('Rolled Back', 'trans-rollback')"
+            . " VALUES ('Rolled Back', 'trans-rollback')",
         );
         $driver2->transactionRollback();
 
         $driver->setQuery(
             "SELECT COUNT(*) FROM cubrid_categories"
-            . " WHERE slug = 'trans-rollback'"
+            . " WHERE slug = 'trans-rollback'",
         );
         $count = (int) $driver->loadResult();
 
@@ -511,7 +511,7 @@ class CubridDriverTest extends AbstractDriverTestCase
         $this->assertEquals(
             0,
             $count,
-            'Rolled back row should not be visible'
+            'Rolled back row should not be visible',
         );
     }
 
@@ -523,7 +523,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseRegexp(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -544,7 +544,7 @@ class CubridDriverTest extends AbstractDriverTestCase
             if (!$isUtf8) {
                 $this->markTestSkipped(
                     'CUBRID database must be created with UTF-8 charset for REGEXP tests. '
-                    . 'Recreate with: cubrid createdb demodb en_US.utf8'
+                    . 'Recreate with: cubrid createdb demodb en_US.utf8',
                 );
             }
         } catch (\Exception $e) {
@@ -552,7 +552,7 @@ class CubridDriverTest extends AbstractDriverTestCase
         }
 
         $driver->setQuery(
-            "SELECT * FROM cubrid_items WHERE title REGEXP '^L'"
+            "SELECT * FROM cubrid_items WHERE title REGEXP '^L'",
         );
         $items = $driver->loadObjectList();
 
@@ -564,7 +564,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseAggregateFunctions(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -595,7 +595,7 @@ class CubridDriverTest extends AbstractDriverTestCase
 
         $this->assertTrue($driver->createOrReplaceView(
             'cubrid_active_items',
-            "SELECT id, title FROM cubrid_items WHERE status = 'active'"
+            "SELECT id, title FROM cubrid_items WHERE status = 'active'",
         ));
         $this->assertTrue($driver->viewExists('cubrid_active_items'));
 
@@ -614,7 +614,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canAddAndDropColumn(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -623,17 +623,17 @@ class CubridDriverTest extends AbstractDriverTestCase
         $driver->exec(
             "CREATE TABLE cubrid_ddl_test"
             . " (id INT AUTO_INCREMENT PRIMARY KEY,"
-            . " name VARCHAR(100))"
+            . " name VARCHAR(100))",
         );
 
         $this->assertTrue(
-            $driver->addColumn('cubrid_ddl_test', 'email', 'VARCHAR(200)')
+            $driver->addColumn('cubrid_ddl_test', 'email', 'VARCHAR(200)'),
         );
         $columns = $driver->getTableColumns('cubrid_ddl_test', true);
         $this->assertArrayHasKey('email', $columns);
 
         $this->assertTrue(
-            $driver->dropColumn('cubrid_ddl_test', 'email')
+            $driver->dropColumn('cubrid_ddl_test', 'email'),
         );
         $columns = $driver->getTableColumns('cubrid_ddl_test', true);
         $this->assertArrayNotHasKey('email', $columns);
@@ -643,7 +643,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canTruncateTable(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -652,13 +652,13 @@ class CubridDriverTest extends AbstractDriverTestCase
         $driver->exec(
             "CREATE TABLE cubrid_trunc_test"
             . " (id INT AUTO_INCREMENT PRIMARY KEY,"
-            . " name VARCHAR(50))"
+            . " name VARCHAR(50))",
         );
         $driver->exec(
-            "INSERT INTO cubrid_trunc_test (name) VALUES ('one')"
+            "INSERT INTO cubrid_trunc_test (name) VALUES ('one')",
         );
         $driver->exec(
-            "INSERT INTO cubrid_trunc_test (name) VALUES ('two')"
+            "INSERT INTO cubrid_trunc_test (name) VALUES ('two')",
         );
 
         $driver->truncateTable('cubrid_trunc_test');
@@ -675,7 +675,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function queryBuilderSelectWithLimit(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -695,7 +695,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function queryBuilderWhereInSubquery(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -718,7 +718,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function updateWithJoinDoesNotEmitFromAfterSet(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;
@@ -747,7 +747,7 @@ class CubridDriverTest extends AbstractDriverTestCase
         $this->assertNotNull($setPos, 'Expected UPDATE SQL to include SET clause. SQL: ' . $sql);
         $this->assertTrue(
             $fromPos === null || $fromPos < $setPos,
-            'CUBRID UPDATE+JOIN SQL must not place FROM after SET. SQL: ' . $sql
+            'CUBRID UPDATE+JOIN SQL must not place FROM after SET. SQL: ' . $sql,
         );
     }
 
@@ -759,7 +759,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseCreateTableBuilder(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresCubrid($driver)) {
             return;

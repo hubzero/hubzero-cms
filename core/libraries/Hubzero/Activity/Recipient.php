@@ -45,7 +45,7 @@ class Recipient extends Relational
     protected $rules = [
         'log_id'   => 'positive|nonzero',
         'scope'    => 'notempty',
-        'scope_id' => 'positive|nonzero'
+        'scope_id' => 'positive|nonzero',
     ];
 
     /**
@@ -54,7 +54,7 @@ class Recipient extends Relational
      * @var  array
      */
     public $initiate = [
-        'created'
+        'created',
     ];
 
     /**

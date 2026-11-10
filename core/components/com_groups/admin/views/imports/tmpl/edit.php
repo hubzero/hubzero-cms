@@ -279,7 +279,7 @@ $this->js();
 
                 <?php $txt = Lang::txt(
                     'COM_GROUPS_IMPORT_EDIT_FIELD_DATA_FILE_HINT',
-                    $this->import->fileSpacePath()
+                    $this->import->fileSpacePath(),
                 ); ?>
                 <div class="input-wrap" data-hint="<?php echo $txt; ?>">
                     <label for="field-importfile">
@@ -300,7 +300,7 @@ $this->js();
                     <span class="hint">
                         <?php $txt = Lang::txt(
                             'COM_GROUPS_IMPORT_EDIT_FIELD_DATA_FILE_HINT',
-                            $this->import->fileSpacePath()
+                            $this->import->fileSpacePath(),
                         ); ?>
                         <?php echo $txt; ?>
                     </span>

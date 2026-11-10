@@ -100,30 +100,30 @@ class Newsletters extends AdminController
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             ),
             'published' => Request::getstate(
                 $this->_option . '.' . $this->_controller . '.published',
                 'published',
                 -1,
-                'int'
+                'int',
             ),
             'type' => Request::getstate(
                 $this->_option . '.' . $this->_controller . '.type',
                 'type',
-                ''
+                '',
             ),
             // Sorting
             'sort' => Request::getstate(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'name'
+                'name',
             ),
             'sort_Dir' => Request::getstate(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         $records = Newsletter::all()
@@ -527,7 +527,7 @@ class Newsletters extends AdminController
             $plainContent,
             $goodEmails,
             $mailinglist = null,
-            $sendingTest = true
+            $sendingTest = true,
         );
 
         // Do we have good emails to tell user about
@@ -641,7 +641,7 @@ class Newsletters extends AdminController
             $plainContent,
             [],
             $mailinglistId,
-            $sendingTest = false
+            $sendingTest = false,
         );
 
         // get count of emails
@@ -685,7 +685,7 @@ class Newsletters extends AdminController
             'status' => 'active',
             'limit'  => 10000,
             'start'  => 0,
-            'select' => 'email'
+            'select' => 'email',
         ];
         $left = $count;
         while ($left >= 0) {
@@ -728,7 +728,7 @@ class Newsletters extends AdminController
                 'status' => 'active',
                 'limit'  => 10000,
                 'start'  => 0,
-                'select' => 'email'
+                'select' => 'email',
             ];
             $left = $count2;
             while ($left >= 0) {
@@ -933,7 +933,7 @@ class Newsletters extends AdminController
                 'headers'    => $mailHeaders,
                 'args'       => $mailArgs,
                 'tracking'   => $newsletter->tracking,
-                'date'       => $scheduledDate
+                'date'       => $scheduledDate,
             ]);
 
         // Save mailing object
@@ -967,7 +967,7 @@ class Newsletters extends AdminController
                     'mid'        => $mailing->id,
                     'email'      => (is_array($email) ? $email['email'] : $email),
                     'status'     => 'queued',
-                    'date_added' => $date
+                    'date_added' => $date,
                 ]);
 
             if (!$insert->save()) {

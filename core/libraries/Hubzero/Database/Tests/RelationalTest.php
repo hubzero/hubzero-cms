@@ -148,17 +148,17 @@ class RelationalTest extends AbstractDriverTestCase
         // Insert posts
         $driver->setQuery(
             "INSERT INTO {$postsTable} (id, user_id, title, content)"
-            . " VALUES (1, 1, 'First Post', 'Content of first post')"
+            . " VALUES (1, 1, 'First Post', 'Content of first post')",
         );
         $driver->execute();
         $driver->setQuery(
             "INSERT INTO {$postsTable} (id, user_id, title, content)"
-            . " VALUES (2, 1, 'Second Post', 'Content of second post')"
+            . " VALUES (2, 1, 'Second Post', 'Content of second post')",
         );
         $driver->execute();
         $driver->setQuery(
             "INSERT INTO {$postsTable} (id, user_id, title, content)"
-            . " VALUES (3, 2, 'Third Post', 'Content of third post')"
+            . " VALUES (3, 2, 'Third Post', 'Content of third post')",
         );
         $driver->execute();
 
@@ -210,7 +210,7 @@ class RelationalTest extends AbstractDriverTestCase
                     "\n  [cleanup] %s DELETE FROM %s: %s\n",
                     $dbName,
                     $table,
-                    $e->getMessage()
+                    $e->getMessage(),
                 ));
             }
         }
@@ -588,7 +588,7 @@ class RelationalTest extends AbstractDriverTestCase
         $this->assertEquals(
             'test@example.com',
             $post->email,
-            "[$dbName] Forwarded property should return related model value"
+            "[$dbName] Forwarded property should return related model value",
         );
 
         $this->cleanupTestData($driver, $dbName);

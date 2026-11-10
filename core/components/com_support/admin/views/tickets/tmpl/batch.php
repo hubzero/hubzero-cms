@@ -35,7 +35,7 @@ $cc = [];
 <?php
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 $formId = ($this->tmpl == 'component') ? 'component-form' : 'item-form';
 ?>
@@ -75,7 +75,7 @@ $formId = ($this->tmpl == 'component') ? 'component-form' : 'item-form';
                 <?php
                 $tf = Event::trigger(
                     'hubzero.onGetMultiEntry',
-                    [['tags', 'tags', 'actags', '', '']]
+                    [['tags', 'tags', 'actags', '', '']],
                 );
                 if (count($tf) > 0) {
                     echo $tf[0];
@@ -93,7 +93,7 @@ $formId = ($this->tmpl == 'component') ? 'component-form' : 'item-form';
                         <?php
                         $gc = Event::trigger(
                             'hubzero.onGetSingleEntryWithSelect',
-                            [['groups', 'fields[group]', 'acgroup', '', '', '', 'owner']]
+                            [['groups', 'fields[group]', 'acgroup', '', '', '', 'owner']],
                         );
                         if (count($gc) > 0) {
                             echo $gc[0];

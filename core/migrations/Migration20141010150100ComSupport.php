@@ -122,8 +122,8 @@ class Migration20141010150100ComSupport extends Base
                     'modified' => '0000-00-00 00:00:00',
                     'modified_by' => 0,
                     'ordering' => 2,
-                    'iscore' => 2
-                ]
+                    'iscore' => 2,
+                ],
             ];
 
             foreach ($folders as $folder) {

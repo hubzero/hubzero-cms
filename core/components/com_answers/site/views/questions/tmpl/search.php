@@ -19,7 +19,7 @@ defined('_HZEXEC_') or die();
 if (Pathway::count() <= 0) {
     Pathway::append(
         Lang::txt(strtoupper($this->option)),
-        'index.php?option=' . $this->option
+        'index.php?option=' . $this->option,
     );
 }
 
@@ -116,7 +116,7 @@ $area = urlencode($this->filters['area']);
                                     $allUrl = Route::url(
                                         'index.php?option=' . $this->option
                                             . '&task=search&filterby=' . $filterby
-                                            . '&sortby=' . $sortby
+                                            . '&sortby=' . $sortby,
                                     );
                                     ?>
                                     <a<?php echo $allClass; ?> href="<?php echo $allUrl; ?>">
@@ -129,7 +129,7 @@ $area = urlencode($this->filters['area']);
                                     $mineUrl = Route::url(
                                         'index.php?option=' . $this->option
                                             . '&task=search&area=mine&filterby=' . $filterby
-                                            . '&sortby=' . $sortby
+                                            . '&sortby=' . $sortby,
                                     );
                                     ?>
                                     <a<?php echo $mineClass; ?> href="<?php echo $mineUrl; ?>">
@@ -142,7 +142,7 @@ $area = urlencode($this->filters['area']);
                                     $assignedUrl = Route::url(
                                         'index.php?option=' . $this->option
                                             . '&task=search&area=assigned&filterby=' . $filterby
-                                            . '&sortby=' . $sortby
+                                            . '&sortby=' . $sortby,
                                     );
                                     ?>
                                     <a<?php echo $assignedClass; ?> href="<?php echo $assignedUrl; ?>">
@@ -159,7 +159,7 @@ $area = urlencode($this->filters['area']);
                                         'index.php?option=' . $this->option
                                             . '&task=search&area=' . $opt['value']
                                             . '&filterby=' . $filterby
-                                            . '&sortby=' . $sortby
+                                            . '&sortby=' . $sortby,
                                     );
                                     ?>
                                     <li>
@@ -186,7 +186,7 @@ $area = urlencode($this->filters['area']);
                                     'index.php?option=' . $this->option
                                         . '&task=search&area=' . $area
                                         . '&filterby=' . $filterby
-                                        . '&sortby=rewards&sortdir=' . $sortdir
+                                        . '&sortby=rewards&sortdir=' . $sortdir,
                                 );
                                 ?>
                                 <a<?php echo $rewardsClass; ?>
@@ -204,7 +204,7 @@ $area = urlencode($this->filters['area']);
                                     'index.php?option=' . $this->option
                                         . '&task=search&area=' . $area
                                         . '&filterby=' . $filterby
-                                        . '&sortby=votes&sortdir=' . $sortdir
+                                        . '&sortby=votes&sortdir=' . $sortdir,
                                 );
                                 ?>
                                 <a<?php echo $votesClass; ?>
@@ -221,7 +221,7 @@ $area = urlencode($this->filters['area']);
                                     'index.php?option=' . $this->option
                                         . '&task=search&area=' . $area
                                         . '&filterby=' . $filterby
-                                        . '&sortby=date&sortdir=' . $sortdir
+                                        . '&sortby=date&sortdir=' . $sortdir,
                                 );
                                 ?>
                                 <a<?php echo $dateClass; ?>
@@ -247,7 +247,7 @@ $area = urlencode($this->filters['area']);
                                 $filterAllUrl = Route::url(
                                     'index.php?option=' . $this->option
                                         . '&task=search&area=' . $area
-                                        . '&filterby=all&sortby=' . $sortby
+                                        . '&filterby=all&sortby=' . $sortby,
                                 );
                                 ?>
                                 <a<?php echo $filterAllClass; ?>
@@ -263,7 +263,7 @@ $area = urlencode($this->filters['area']);
                                 $openUrl = Route::url(
                                     'index.php?option=' . $this->option
                                         . '&task=search&area=' . $area
-                                        . '&filterby=open&sortby=' . $sortby
+                                        . '&filterby=open&sortby=' . $sortby,
                                 );
                                 ?>
                                 <a<?php echo $openClass; ?>
@@ -279,7 +279,7 @@ $area = urlencode($this->filters['area']);
                                 $closedUrl = Route::url(
                                     'index.php?option=' . $this->option
                                         . '&task=search&area=' . $area
-                                        . '&filterby=closed&sortby=' . $sortby
+                                        . '&filterby=closed&sortby=' . $sortby,
                                 );
                                 ?>
                                 <a<?php echo $closedClass; ?>
@@ -303,17 +303,17 @@ $area = urlencode($this->filters['area']);
                             if ($this->filters['search'] != '') {
                                 $filterLabel = Lang::txt(
                                     'COM_ANSWERS_FILTER_'
-                                        . strtoupper($this->filters['filterby'])
+                                        . strtoupper($this->filters['filterby']),
                                 );
                                 echo Lang::txt(
                                     'COM_ANSWERS_SEARCH_FOR',
                                     $this->escape($this->filters['search']),
-                                    $filterLabel
+                                    $filterLabel,
                                 );
                             } else {
                                 echo Lang::txt(
                                     'COM_ANSWERS_FILTER_'
-                                        . strtoupper($this->filters['filterby'])
+                                        . strtoupper($this->filters['filterby']),
                                 );
                             }
                             ?>
@@ -327,7 +327,7 @@ $area = urlencode($this->filters['area']);
                         $name = Lang::txt('JANONYMOUS');
                         if (!$row->get('anonymous')) {
                             $name = $this->escape(
-                                stripslashes($row->creator->get('name', $name))
+                                stripslashes($row->creator->get('name', $name)),
                             );
                             $viewLevels = User::getAuthorisedViewLevels();
                             if (
@@ -398,11 +398,11 @@ $area = urlencode($this->filters['area']);
                                         <span class="entry-comments icon-comments-alt">
                                             <?php
                                             $answersUrl = Route::url(
-                                                $row->link() . '#answers'
+                                                $row->link() . '#answers',
                                             );
                                             $answersTitle = Lang::txt(
                                                 'COM_ANSWERS_RESPONSES_TO_THIS_QUESTION',
-                                                $row->get('rcount')
+                                                $row->get('rcount'),
                                             );
                                             ?>
                                             <a
@@ -422,7 +422,7 @@ $area = urlencode($this->filters['area']);
                                                 <?php
                                                 $rewardTitle = Lang::txt(
                                                     'COM_ANSWERS_THERE_IS_A_REWARD_FOR_ANSWERING',
-                                                    $row->get('points')
+                                                    $row->get('points'),
                                                 );
                                                 ?>
                                                 <a
@@ -480,7 +480,7 @@ $area = urlencode($this->filters['area']);
                     echo Lang::txt(
                         'COM_ANSWERS_CANT_FIND_ANSWER',
                         $kbLink,
-                        Config::get('sitename')
+                        Config::get('sitename'),
                     );
                     ?>
                 </p>
@@ -490,11 +490,11 @@ $area = urlencode($this->filters['area']);
                 <p>
                     <?php
                     $helpUrl = Route::url(
-                        'index.php?option=com_help&component=answers&page=index'
+                        'index.php?option=com_help&component=answers&page=index',
                     );
                     echo Lang::txt(
                         'COM_ANSWERS_GET_STARTED_HELP',
-                        $helpUrl
+                        $helpUrl,
                     );
                     ?>
                 </p>

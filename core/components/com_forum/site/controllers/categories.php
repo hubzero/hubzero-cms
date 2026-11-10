@@ -52,19 +52,19 @@ class Categories extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         if ($section) {
             Pathway::append(
                 Str::truncate(stripslashes($section->get('title')), 100, ['exact' => true]),
-                'index.php?option=' . $this->_option . '&section=' . $section->get('alias')
+                'index.php?option=' . $this->_option . '&section=' . $section->get('alias'),
             );
         }
         if ($category) {
             Pathway::append(
                 Str::truncate(stripslashes($category->get('title')), 100, ['exact' => true]),
-                'index.php?option=' . $this->_option . '&section=' . $section->get('alias') . '&category=' . $category->get('alias')
+                'index.php?option=' . $this->_option . '&section=' . $section->get('alias') . '&category=' . $category->get('alias'),
             );
         }
     }
@@ -105,7 +105,7 @@ class Categories extends SiteController
             'scope_id'   => $this->forum->get('scope_id'),
             'state'      => Category::STATE_PUBLISHED,
             'parent'     => 0,
-            'access'     => User::getAuthorisedViewLevels()
+            'access'     => User::getAuthorisedViewLevels(),
         ];
 
         $filters['sortby'] = Request::getWord('sortby', 'activity');
@@ -167,7 +167,7 @@ class Categories extends SiteController
         if (!in_array($category->get('access'), User::getAuthorisedViewLevels())) {
             $return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $filters['section'] . '&category=' . $filters['category'], false, true));
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . $return)
+                Route::url('index.php?option=com_users&view=login&return=' . $return),
             );
         }
 
@@ -212,7 +212,7 @@ class Categories extends SiteController
             'orderBy'    => Request::getWord('orderBy', 'created'),
             'orderDir'   => Request::getWord('orderDir', 'DESC'),
             'state'      => Category::STATE_PUBLISHED,
-            'access'     => User::getAuthorisedViewLevels()
+            'access'     => User::getAuthorisedViewLevels(),
         ];
 
         $section = Section::blank();
@@ -284,7 +284,7 @@ class Categories extends SiteController
         if (User::isGuest()) {
             $return = Route::url('index.php?option=' . $this->_option, false, true);
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
         }
 
@@ -317,7 +317,7 @@ class Categories extends SiteController
             $category->set('section_id', $section->get('id'));
         } elseif ($category->get('created_by') != User::get('id') && !$this->config->get('access-create-category')) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option)
+                Route::url('index.php?option=' . $this->_option),
             );
         }
 
@@ -341,7 +341,7 @@ class Categories extends SiteController
         if (User::isGuest()) {
             $return = Route::url('index.php?option=' . $this->_option, false, true);
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
         }
 
@@ -362,7 +362,7 @@ class Categories extends SiteController
 
         if (!$this->config->get('access-edit-category')) {
             App::redirect(
-                Route::url($url)
+                Route::url($url),
             );
         }
 
@@ -389,19 +389,19 @@ class Categories extends SiteController
                 'description' => Lang::txt('COM_FORUM_ACTIVITY_CATEGORY_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($url) . '">' . htmlspecialchars((string) ($category->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
                 'details'     => [
                     'title' => $category->get('title'),
-                    'url'   => Route::url($url)
-                ]
+                    'url'   => Route::url($url),
+                ],
             ],
             'recipients' => [
                 ['forum.site', 1],
                 ['forum.section', $category->get('section_id')],
-                ['user', $category->get('created_by')]
-            ]
+                ['user', $category->get('created_by')],
+            ],
         ]);
 
         // Set the redirect
         App::redirect(
-            Route::url($url)
+            Route::url($url),
         );
     }
 
@@ -419,7 +419,7 @@ class Categories extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($url, false, true))),
                 Lang::txt('COM_FORUM_LOGIN_NOTICE'),
-                'warning'
+                'warning',
             );
         }
 
@@ -439,7 +439,7 @@ class Categories extends SiteController
             App::redirect(
                 Route::url($url),
                 Lang::txt('COM_FORUM_MISSING_ID'),
-                'error'
+                'error',
             );
         }
 
@@ -450,7 +450,7 @@ class Categories extends SiteController
             App::redirect(
                 Route::url($url),
                 Lang::txt('COM_FORUM_NOT_AUTHORIZED'),
-                'warning'
+                'warning',
             );
         }
 
@@ -461,7 +461,7 @@ class Categories extends SiteController
             App::redirect(
                 Route::url($url),
                 $category->getError(),
-                'error'
+                'error',
             );
         }
 
@@ -474,21 +474,21 @@ class Categories extends SiteController
                 'description' => Lang::txt('COM_FORUM_ACTIVITY_CATEGORY_DELETED', '<a href="' . Route::url($url) . '">' . htmlspecialchars((string) ($category->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
                 'details'     => [
                     'title' => $category->get('title'),
-                    'url'   => Route::url($url)
-                ]
+                    'url'   => Route::url($url),
+                ],
             ],
             'recipients' => [
                 ['forum.site', 1],
                 ['forum.section', $category->get('section_id')],
-                ['user', $category->get('created_by')]
-            ]
+                ['user', $category->get('created_by')],
+            ],
         ]);
 
         // Redirect to main listing
         App::redirect(
             Route::url($url),
             Lang::txt('COM_FORUM_CATEGORY_DELETED'),
-            'message'
+            'message',
         );
     }
 

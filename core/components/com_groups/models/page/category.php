@@ -87,7 +87,7 @@ class Category extends Model
         $filters = [
             'gidNumber' => $this->get('gidNumber'),
             'category'  => $this->get('id'),
-            'state'     => [0, 1]
+            'state'     => [0, 1],
         ];
 
         switch (strtolower($rtrn)) {

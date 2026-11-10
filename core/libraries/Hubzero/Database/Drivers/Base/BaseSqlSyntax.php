@@ -257,7 +257,7 @@ abstract class BaseSqlSyntax
         if (count($fullIndexes) !== 1) {
             throw new UnsupportedSyntaxException(
                 'FULL OUTER JOIN support is limited to a single FULL JOIN between two base tables.',
-                500
+                500,
             );
         }
 
@@ -265,14 +265,14 @@ abstract class BaseSqlSyntax
         if ($fullIndex !== 0) {
             throw new UnsupportedSyntaxException(
                 'FULL OUTER JOIN must be the first JOIN when used with additional joins.',
-                500
+                500,
             );
         }
 
         if (count($this->from) !== 1 || isset($this->from[0]['raw'])) {
             throw new UnsupportedSyntaxException(
                 'FULL OUTER JOIN support requires a single table in FROM (no subqueries).',
-                500
+                500,
             );
         }
 
@@ -283,26 +283,26 @@ abstract class BaseSqlSyntax
                 if (!in_array($type, ['full', 'full outer'], true)) {
                     throw new UnsupportedSyntaxException(
                         'FULL OUTER JOIN must use FULL JOIN type.',
-                        500
+                        500,
                     );
                 }
                 if (isset($join['conditions'])) {
                     throw new UnsupportedSyntaxException(
                         'FULL OUTER JOIN support requires a single join predicate.',
-                        500
+                        500,
                     );
                 }
             } elseif (!in_array($type, $allowedTypes, true)) {
                 throw new UnsupportedSyntaxException(
                     'FULL OUTER JOIN support allows only INNER or LEFT joins after the FULL join.',
-                    500
+                    500,
                 );
             }
 
             if (isset($join['raw']) || isset($join['subquery'])) {
                 throw new UnsupportedSyntaxException(
                     'FULL OUTER JOIN support requires simple column-to-column joins.',
-                    500
+                    500,
                 );
             }
 
@@ -314,7 +314,7 @@ abstract class BaseSqlSyntax
                 ) {
                     throw new UnsupportedSyntaxException(
                         'FULL OUTER JOIN support requires simple column-to-column joins.',
-                        500
+                        500,
                     );
                 }
             } elseif (!isset($join['conditions'])) {
@@ -325,7 +325,7 @@ abstract class BaseSqlSyntax
                 ) {
                     throw new UnsupportedSyntaxException(
                         'FULL OUTER JOIN support requires simple column-to-column joins.',
-                        500
+                        500,
                     );
                 }
             } else {
@@ -335,7 +335,7 @@ abstract class BaseSqlSyntax
                         if (empty($condition['right'])) {
                             throw new UnsupportedSyntaxException(
                                 'JOIN EXISTS predicates require a subquery expression.',
-                                500
+                                500,
                             );
                         }
                         continue;
@@ -353,7 +353,7 @@ abstract class BaseSqlSyntax
                     ) {
                         throw new UnsupportedSyntaxException(
                             'FULL OUTER JOIN support requires simple column-to-column joins.',
-                            500
+                            500,
                         );
                     }
                 }
@@ -362,7 +362,7 @@ abstract class BaseSqlSyntax
 
         $availableMap = $this->buildRefToTableMap(
             $this->from[0]['table'] ?? '',
-            $this->from[0]['as'] ?? null
+            $this->from[0]['as'] ?? null,
         );
         $availableCandidates = $this->buildTableCandidates($availableMap);
 
@@ -380,7 +380,7 @@ abstract class BaseSqlSyntax
         if (empty($fullJoinMap)) {
             throw new UnsupportedSyntaxException(
                 'FULL OUTER JOIN support requires a simple JOIN table.',
-                500
+                500,
             );
         }
 
@@ -390,7 +390,7 @@ abstract class BaseSqlSyntax
             $fullJoinMap,
             $availableCandidates,
             $fullJoinCandidates,
-            'available'  // Prefer left side (available tables) for left key
+            'available',  // Prefer left side (available tables) for left key
         );
         $rightInfo = $this->resolveJoinColumn(
             $fullJoin['right'],
@@ -398,7 +398,7 @@ abstract class BaseSqlSyntax
             $fullJoinMap,
             $availableCandidates,
             $fullJoinCandidates,
-            'join'  // Prefer right side (join table) for right key
+            'join',  // Prefer right side (join table) for right key
         );
 
         if ($leftInfo['group'] === 'join' && $rightInfo['group'] === 'available') {
@@ -410,7 +410,7 @@ abstract class BaseSqlSyntax
         if (!($leftInfo['group'] === 'available' && $rightInfo['group'] === 'join')) {
             throw new UnsupportedSyntaxException(
                 'FULL OUTER JOIN support requires base_table.column = joined_table.column.',
-                500
+                500,
             );
         }
 
@@ -438,7 +438,7 @@ abstract class BaseSqlSyntax
             if (empty($joinMap)) {
                 throw new UnsupportedSyntaxException(
                     'FULL OUTER JOIN support requires a simple JOIN table.',
-                    500
+                    500,
                 );
             }
 
@@ -457,14 +457,14 @@ abstract class BaseSqlSyntax
                     $availableMap,
                     $joinMap,
                     $availableCandidates,
-                    $joinCandidates
+                    $joinCandidates,
                 );
                 $rightInfo = $this->resolveJoinOperandInfo(
                     $condition['right'],
                     $availableMap,
                     $joinMap,
                     $availableCandidates,
-                    $joinCandidates
+                    $joinCandidates,
                 );
 
                 $valid = ($leftInfo['group'] === 'available' && $rightInfo['group'] === 'join')
@@ -479,7 +479,7 @@ abstract class BaseSqlSyntax
                 if (!$valid) {
                     throw new UnsupportedSyntaxException(
                         'JOIN keys must reference tables introduced earlier in the join order and the joined table.',
-                        500
+                        500,
                     );
                 }
 
@@ -501,7 +501,7 @@ abstract class BaseSqlSyntax
             if (!$linkFound) {
                 throw new UnsupportedSyntaxException(
                     'JOIN keys must include at least one predicate linking the joined table to an earlier table.',
-                    500
+                    500,
                 );
             }
 
@@ -542,7 +542,7 @@ abstract class BaseSqlSyntax
             if (isset($join['raw']) || isset($join['subquery']) || empty($join['left']) || empty($join['right'])) {
                 throw new UnsupportedSyntaxException(
                     'FULL OUTER JOIN emulation requires simple column-to-column joins. ' .
-                    'Use explicit UNIONs for raw or subquery joins.'
+                    'Use explicit UNIONs for raw or subquery joins.',
                 );
             }
 
@@ -714,7 +714,7 @@ abstract class BaseSqlSyntax
         array $joinMap,
         array $availableCandidates,
         array $joinCandidates,
-        ?string $preferredGroup = null
+        ?string $preferredGroup = null,
     ): array {
         [$ref, $column] = $this->parseColumnReference($expr);
 
@@ -739,7 +739,7 @@ abstract class BaseSqlSyntax
 
             throw new UnsupportedSyntaxException(
                 'FULL OUTER JOIN references an unknown table alias.',
-                500
+                500,
             );
         }
 
@@ -774,7 +774,7 @@ abstract class BaseSqlSyntax
         if (empty($matches)) {
             throw new UnsupportedSyntaxException(
                 'FULL OUTER JOIN could not resolve an unqualified column via schema.',
-                500
+                500,
             );
         }
 
@@ -794,7 +794,7 @@ abstract class BaseSqlSyntax
 
         throw new UnsupportedSyntaxException(
             'FULL OUTER JOIN has an ambiguous unqualified column.',
-            500
+            500,
         );
     }
 
@@ -813,7 +813,7 @@ abstract class BaseSqlSyntax
         array $availableMap,
         array $joinMap,
         array $availableCandidates,
-        array $joinCandidates
+        array $joinCandidates,
     ): array {
         if (is_object($operand) && method_exists($operand, 'build')) {
             return [
@@ -834,7 +834,7 @@ abstract class BaseSqlSyntax
             $availableMap,
             $joinMap,
             $availableCandidates,
-            $joinCandidates
+            $joinCandidates,
         );
     }
 
@@ -850,14 +850,14 @@ abstract class BaseSqlSyntax
         if ($expr === '' || preg_match('/[\\s\\(\\)\\=\\+\\-\\*\\/]/', $expr)) {
             throw new UnsupportedSyntaxException(
                 'FULL OUTER JOIN support requires simple column references.',
-                500
+                500,
             );
         }
 
         if (substr_count($expr, '.') > 1) {
             throw new UnsupportedSyntaxException(
                 'FULL OUTER JOIN support does not allow schema-qualified columns.',
-                500
+                500,
             );
         }
 
@@ -873,21 +873,21 @@ abstract class BaseSqlSyntax
         if ($column === '' || ($ref !== null && $ref === '')) {
             throw new UnsupportedSyntaxException(
                 'FULL OUTER JOIN support requires simple column references.',
-                500
+                500,
             );
         }
 
         if (!preg_match('/^[A-Za-z0-9_#]+$/', $column)) {
             throw new UnsupportedSyntaxException(
                 'FULL OUTER JOIN support requires simple column references.',
-                500
+                500,
             );
         }
 
         if ($ref !== null && !preg_match('/^[A-Za-z0-9_#]+$/', $ref)) {
             throw new UnsupportedSyntaxException(
                 'FULL OUTER JOIN support requires simple column references.',
-                500
+                500,
             );
         }
 
@@ -1014,7 +1014,7 @@ abstract class BaseSqlSyntax
         string $joinSql,
         string $whereSql,
         string $groupSql,
-        string $havingSql
+        string $havingSql,
     ): string {
         $parts = [
             $selectSql,
@@ -1104,7 +1104,7 @@ abstract class BaseSqlSyntax
         $this->select[] = [
             'column' => $column,
             'as'     => $as,
-            'count'  => $count
+            'count'  => $count,
         ];
     }
 
@@ -1138,7 +1138,7 @@ abstract class BaseSqlSyntax
         $this->select[] = [
             'raw'      => $raw,
             'bindings' => $bindings,
-            'as'       => $as
+            'as'       => $as,
         ];
     }
 
@@ -1346,7 +1346,7 @@ abstract class BaseSqlSyntax
     {
         $this->from[] = [
             'table' => $table,
-            'as'    => $as
+            'as'    => $as,
         ];
     }
 
@@ -1363,7 +1363,7 @@ abstract class BaseSqlSyntax
         $this->from[] = [
             'raw'      => $raw,
             'bindings' => $bindings,
-            'as'       => $as
+            'as'       => $as,
         ];
     }
 
@@ -1396,7 +1396,7 @@ abstract class BaseSqlSyntax
             'table' => $table,
             'left'  => $leftKey,
             'right' => $rightKey,
-            'type'  => $type
+            'type'  => $type,
         ];
     }
 
@@ -1422,7 +1422,7 @@ abstract class BaseSqlSyntax
             if (count($normalized) !== 1) {
                 throw new UnsupportedSyntaxException(
                     'FULL OUTER JOIN support requires a single join predicate.',
-                    500
+                    500,
                 );
             }
 
@@ -1430,7 +1430,7 @@ abstract class BaseSqlSyntax
             if (strtolower($condition['operator']) !== '=' || strtolower($condition['boolean']) !== 'and') {
                 throw new UnsupportedSyntaxException(
                     'FULL OUTER JOIN support requires a simple equality predicate.',
-                    500
+                    500,
                 );
             }
 
@@ -1616,7 +1616,7 @@ abstract class BaseSqlSyntax
         $this->join[] = [
             'table'  => $table,
             'raw'    => $raw,
-            'type'   => $type
+            'type'   => $type,
         ];
 
         return $this;
@@ -1641,7 +1641,7 @@ abstract class BaseSqlSyntax
             'as'        => $as,
             'left'      => $leftKey,
             'right'     => $rightKey,
-            'type'      => $type
+            'type'      => $type,
         ];
     }
 
@@ -1744,7 +1744,7 @@ abstract class BaseSqlSyntax
         $this->having[] = [
             'column'   => $column,
             'operator' => $operator,
-            'value'    => $value
+            'value'    => $value,
         ];
     }
 
@@ -1761,7 +1761,7 @@ abstract class BaseSqlSyntax
         $this->having[] = [
             'raw'      => $raw,
             'bindings' => $bindings,
-            'logical'  => $logical
+            'logical'  => $logical,
         ];
     }
 
@@ -1796,7 +1796,7 @@ abstract class BaseSqlSyntax
             'operator' => $operator,
             'value'    => $value,
             'logical'  => $logical,
-            'depth'    => $depth
+            'depth'    => $depth,
         ];
     }
 
@@ -1815,7 +1815,7 @@ abstract class BaseSqlSyntax
             'raw'      => $raw,
             'bindings' => $bindings,
             'logical'  => $logical,
-            'depth'    => $depth
+            'depth'    => $depth,
         ];
     }
 
@@ -1829,7 +1829,7 @@ abstract class BaseSqlSyntax
     {
         $this->where[] = [
             'resetdepth' => true,
-            'depth'      => $depth
+            'depth'      => $depth,
         ];
     }
 
@@ -1896,7 +1896,7 @@ abstract class BaseSqlSyntax
 
         $this->order[] = [
             'column' => $column,
-            'dir'    => $dir
+            'dir'    => $dir,
         ];
     }
 
@@ -1949,7 +1949,7 @@ abstract class BaseSqlSyntax
         $this->union[] = [
             'query'    => $query,
             'bindings' => $bindings,
-            'all'      => $all
+            'all'      => $all,
         ];
     }
 
@@ -1970,7 +1970,7 @@ abstract class BaseSqlSyntax
         string $table,
         array $values,
         ?array $updateColumns = null,
-        ?array $conflictColumns = null
+        ?array $conflictColumns = null,
     ) {
         $this->upsert = true;
         $this->upsertTable = $table;
@@ -2010,7 +2010,7 @@ abstract class BaseSqlSyntax
         string $table,
         array $rows,
         ?array $updateColumns = null,
-        ?array $conflictColumns = null
+        ?array $conflictColumns = null,
     ) {
         $this->upsertMany = true;
         $this->upsertManyTable = $table;
@@ -2104,7 +2104,7 @@ abstract class BaseSqlSyntax
     {
         throw new UnsupportedSyntaxException(
             'JSON path queries are not supported by the base SQL syntax. ' .
-            'Use a database-specific syntax class that supports JSON operations.'
+            'Use a database-specific syntax class that supports JSON operations.',
         );
     }
 
@@ -2126,7 +2126,7 @@ abstract class BaseSqlSyntax
     {
         throw new UnsupportedSyntaxException(
             'JSON contains queries are not supported by the base SQL syntax. ' .
-            'Use a database-specific syntax class that supports JSON operations.'
+            'Use a database-specific syntax class that supports JSON operations.',
         );
     }
 
@@ -2149,7 +2149,7 @@ abstract class BaseSqlSyntax
     {
         throw new UnsupportedSyntaxException(
             'JSON length queries are not supported by the base SQL syntax. ' .
-            'Use a database-specific syntax class that supports JSON operations.'
+            'Use a database-specific syntax class that supports JSON operations.',
         );
     }
 
@@ -2172,7 +2172,7 @@ abstract class BaseSqlSyntax
         $operator,
         $value,
         $logical = 'and',
-        $depth = 0
+        $depth = 0,
     ) {
         $jsonPath = $this->convertToJsonPath($path);
         $quotedColumn = $this->connection->quoteName($column);
@@ -2182,7 +2182,7 @@ abstract class BaseSqlSyntax
             'raw'      => $raw,
             'bindings' => [$value],
             'logical'  => $logical,
-            'depth'    => $depth
+            'depth'    => $depth,
         ];
     }
 
@@ -2203,7 +2203,7 @@ abstract class BaseSqlSyntax
         $value,
         $path = null,
         $logical = 'and',
-        $depth = 0
+        $depth = 0,
     ) {
         $quotedColumn = $this->connection->quoteName($column);
         $jsonValue = json_encode($value);
@@ -2219,7 +2219,7 @@ abstract class BaseSqlSyntax
             'raw'      => $raw,
             'bindings' => [$jsonValue],
             'logical'  => $logical,
-            'depth'    => $depth
+            'depth'    => $depth,
         ];
     }
 
@@ -2242,7 +2242,7 @@ abstract class BaseSqlSyntax
         $value,
         $path = null,
         $logical = 'and',
-        $depth = 0
+        $depth = 0,
     ) {
         $quotedColumn = $this->connection->quoteName($column);
 
@@ -2257,7 +2257,7 @@ abstract class BaseSqlSyntax
             'raw'      => $raw,
             'bindings' => [(int) $value],
             'logical'  => $logical,
-            'depth'    => $depth
+            'depth'    => $depth,
         ];
     }
 
@@ -2349,7 +2349,7 @@ abstract class BaseSqlSyntax
             'raw'      => $raw,
             'bindings' => [$value],
             'logical'  => $logical,
-            'depth'    => $depth
+            'depth'    => $depth,
         ];
     }
 
@@ -2412,7 +2412,7 @@ abstract class BaseSqlSyntax
         $value,
         $logical,
         $depth,
-        $function
+        $function,
     ) {
         $quotedColumn = $this->connection->quoteName($column);
         $raw = "{$function}({$quotedColumn}) {$operator} ?";
@@ -2421,7 +2421,7 @@ abstract class BaseSqlSyntax
             'raw'      => $raw,
             'bindings' => [$value],
             'logical'  => $logical,
-            'depth'    => $depth
+            'depth'    => $depth,
         ];
     }
 
@@ -2722,7 +2722,7 @@ abstract class BaseSqlSyntax
                     . $this->buildJoinDistinctFromClause(
                         $leftValue,
                         $rightOperand,
-                        $isNot
+                        $isNot,
                     );
                 continue;
             }
@@ -2975,7 +2975,7 @@ abstract class BaseSqlSyntax
                                 is_null($constraint['value'])
                                 && in_array(
                                     strtoupper($constraint['operator']),
-                                    ['IS', 'IS NOT']
+                                    ['IS', 'IS NOT'],
                                 )
                             ) {
                                 $string .= ' NULL';
@@ -3024,7 +3024,7 @@ abstract class BaseSqlSyntax
 
             if (isset($join['conditions'])) {
                 $joinConditions[] = $this->buildJoinConditions(
-                    $join['conditions']
+                    $join['conditions'],
                 );
             } elseif (isset($join['left']) && isset($join['right'])) {
                 $joinConditions[] = $this->connection->quoteName($join['left'])
@@ -3043,7 +3043,7 @@ abstract class BaseSqlSyntax
             $originalConditions = preg_replace(
                 '/^WHERE\s+/i',
                 '',
-                $originalWhere
+                $originalWhere,
             );
             $sql .= "\nWHERE "
                 . implode(' AND ', $joinConditions)
@@ -3472,7 +3472,7 @@ abstract class BaseSqlSyntax
             'INSERT INTO %s (%s) VALUES %s',
             $this->connection->quoteName($this->insertManyTable),
             implode(', ', $quotedColumns),
-            implode(', ', $valueSets)
+            implode(', ', $valueSets),
         );
     }
 
@@ -3697,7 +3697,7 @@ abstract class BaseSqlSyntax
             case 'DATE_FORMAT':
                 // No standard SQL equivalent - subclasses should override
                 throw new UnsupportedSyntaxException(
-                    'DATE_FORMAT is not standard SQL. Use a database-specific syntax class.'
+                    'DATE_FORMAT is not standard SQL. Use a database-specific syntax class.',
                 );
 
             // Sequence functions

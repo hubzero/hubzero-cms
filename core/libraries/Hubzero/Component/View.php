@@ -133,7 +133,7 @@ class View extends AbstractView
         $view = new self([
             'base_path' => $this->_basePath,
             'name'      => ($name ? $name : $this->_name),
-            'layout'    => $layout
+            'layout'    => $layout,
         ]);
         $view->set('option', $this->option)
              ->set('controller', $this->controller)

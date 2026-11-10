@@ -29,7 +29,7 @@ class Token extends \Hubzero\Database\Relational
      * @since  2.1.0
      */
     protected $rules = [
-        'user_id' => 'positive|nonzero'
+        'user_id' => 'positive|nonzero',
     ];
 
     /**
@@ -38,6 +38,6 @@ class Token extends \Hubzero\Database\Relational
      * @var  array
      */
     public $initiate = [
-        'created'
+        'created',
     ];
 }

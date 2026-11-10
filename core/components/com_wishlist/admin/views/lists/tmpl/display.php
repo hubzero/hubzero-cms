@@ -45,28 +45,28 @@ $sortTitle = Html::grid(
     'COM_WISHLIST_TITLE',
     'title',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 $sortState = Html::grid(
     'sort',
     'COM_WISHLIST_STATE',
     'state',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 $sortAccess = Html::grid(
     'sort',
     'COM_WISHLIST_ACCESS',
     'public',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 $sortCategory = Html::grid(
     'sort',
     'COM_WISHLIST_CATEGORY',
     'category',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 ?>
 
@@ -131,7 +131,7 @@ $sortCategory = Html::grid(
                     'COM_WISHLIST_WISHES',
                     'wishes',
                     @$this->filters['sort_Dir'],
-                    @$this->filters['sort']
+                    @$this->filters['sort'],
                 );
                 ?></th> -->
                 <th scope="col" class="priority-2"><?php echo Lang::txt('COM_WISHLIST_WISHES'); ?></th>
@@ -182,25 +182,25 @@ $sortCategory = Html::grid(
             $editUrl = Route::url(
                 'index.php?option=' . $this->option
                 . '&controller=' . $this->controller
-                . '&task=edit&id=' . $row->id
+                . '&task=edit&id=' . $row->id,
             );
             $taskUrl = Route::url(
                 'index.php?option=' . $this->option
                 . '&controller=' . $this->controller
                 . '&task=' . $task
                 . '&id=' . $row->id
-                . '&' . $token . '=1'
+                . '&' . $token . '=1',
             );
             $accessUrl = Route::url(
                 'index.php?option=' . $this->option
                 . '&controller=' . $this->controller
                 . '&task=' . $task_access
                 . '&id=' . $row->id
-                . '&' . $token . '=1'
+                . '&' . $token . '=1',
             );
             $wishesUrl = Route::url(
                 'index.php?option=' . $this->option
-                . '&controller=wishes&wishlist=' . $row->id
+                . '&controller=wishes&wishlist=' . $row->id,
             );
             $setTaskTxt = Lang::txt('COM_WISHLIST_SET_TASK', $task);
             $changeAccessTxt = Lang::txt('COM_WISHLIST_CHANGE_ACCESS');

@@ -88,7 +88,7 @@ class MariadbDriver extends \Hubzero\Database\Drivers\Mysql\MysqlDriver
             throw new UnsupportedEngineException(sprintf(
                 'Unsupported engine type of "%s" specified. Engine type must be one of: %s',
                 $engine,
-                implode(', ', $supported)
+                implode(', ', $supported),
             ));
         }
 
@@ -259,7 +259,7 @@ class MariadbDriver extends \Hubzero\Database\Drivers\Mysql\MysqlDriver
             . " FROM INFORMATION_SCHEMA.TABLES"
             . " WHERE TABLE_TYPE = 'SEQUENCE'"
             . " AND TABLE_SCHEMA = DATABASE()"
-            . " ORDER BY TABLE_NAME"
+            . " ORDER BY TABLE_NAME",
         );
 
         return $this->loadColumn() ?: [];
@@ -418,7 +418,7 @@ class MariadbDriver extends \Hubzero\Database\Drivers\Mysql\MysqlDriver
             "SELECT COUNT(*) FROM information_schema.TABLES " .
             "WHERE TABLE_SCHEMA = DATABASE() " .
             "AND TABLE_NAME = " . $this->quote($name) . " " .
-            "AND TABLE_TYPE = 'SEQUENCE'"
+            "AND TABLE_TYPE = 'SEQUENCE'",
         );
 
         return (int) $this->loadResult() > 0;
@@ -563,7 +563,7 @@ class MariadbDriver extends \Hubzero\Database\Drivers\Mysql\MysqlDriver
             "SELECT CONSTRAINT_NAME as name, CHECK_CLAUSE as expression " .
             "FROM information_schema.CHECK_CONSTRAINTS " .
             "WHERE CONSTRAINT_SCHEMA = DATABASE() " .
-            "AND TABLE_NAME = " . $this->quote($table)
+            "AND TABLE_NAME = " . $this->quote($table),
         );
 
         return $this->loadObjectList() ?: [];

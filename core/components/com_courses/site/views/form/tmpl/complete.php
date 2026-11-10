@@ -71,7 +71,7 @@ if ($this->resp->getStartTime()) {
                                 '#question-' . $qid . '-' . $aidx . ' {
                                     top: ' . $ans['top'] . 'px;
                                     left: ' . $ans['left'] . 'px;
-                                }'
+                                }',
                             );
                             echo '<input
                                 name="question-' . $qid . '"
@@ -91,7 +91,7 @@ if ($this->resp->getStartTime()) {
                                     '#question-' . $qid . '-incomplete-marker {
                                         top: ' . $ans['top'] . 'px;
                                         left: ' . ($ans['left'] - 20) . 'px;
-                                    }'
+                                    }',
                                 );
                                 echo '<div
                                     class="incomplete-marker"

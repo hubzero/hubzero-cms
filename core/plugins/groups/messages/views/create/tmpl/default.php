@@ -18,7 +18,7 @@ $group_statuses = [
     'all' => Lang::txt('All Group Members'),
     'managers' => Lang::txt('All Group Managers'),
     'invitees' => Lang::txt('All Group Invitees'),
-    'applicants' => Lang::txt('All Group Applicants')
+    'applicants' => Lang::txt('All Group Applicants'),
 ];
 
 $role_name = '';

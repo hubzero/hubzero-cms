@@ -38,18 +38,18 @@ class Resources extends Plugin
             [
                 'name'   => 'issueResourceMasterDoi',
                 'label'  => Lang::txt('PLG_CRON_RESOURCES_MASTER_DOI'),
-                'params' => ''
+                'params' => '',
             ],
             [
                 'name'   => 'auditResourceData',
                 'label'  => Lang::txt('PLG_CRON_RESOURCES_AUDIT'),
-                'params' => 'audit'
+                'params' => 'audit',
             ],
             [
                 'name'   => 'emailMemberResources',
                 'label'  => Lang::txt('PLG_CRON_RESOURCES_EMAIL_MEMBER_DIGEST'),
-                'params' => 'digest'
-            ]
+                'params' => 'digest',
+            ],
         ];
 
         return $obj;
@@ -157,7 +157,7 @@ class Resources extends Plugin
 				FROM `#__audit_results` AS a
 				WHERE a.scope=" . $db->quote('resource') . "
 			)
-			LIMIT 0," . $limit
+			LIMIT 0," . $limit,
         );
         $data = $db->loadAssocList();
 
@@ -178,7 +178,7 @@ class Resources extends Plugin
 					WHERE a.scope=" . $db->quote('resource') . "
 					AND DATE_ADD(a.processed, INTERVAL " . $interval . ") < " . $db->quote($now) . "
 				)
-				LIMIT 0," . $nlimit
+				LIMIT 0," . $nlimit,
             );
             if ($data2 = $db->loadAssocList()) {
                 $data = $data + $data2;
@@ -322,11 +322,11 @@ class Resources extends Plugin
                                 'scope_id'    => $user,
                                 'description' => Lang::txt('PLG_CRON_RESOURCES_EMAILED_DIGEST'),
                                 'details'     => [
-                                ]
+                                ],
                             ],
                             'recipients' => [
                                 //$user
-                            ]
+                            ],
                         ]);
                     }
                 }
@@ -356,7 +356,7 @@ class Resources extends Plugin
         $eview = new \Hubzero\Mail\View([
             'base_path' => __DIR__,
             'name'      => 'emails',
-            'layout'    => 'digest_plain'
+            'layout'    => 'digest_plain',
         ]);
         $eview->member = $user;
         $eview->rows   = $posts;

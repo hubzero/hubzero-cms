@@ -32,7 +32,7 @@ class Video extends Plugin
         'mp4',
         'm4v',
         'webm',
-        'ogg'
+        'ogg',
     ];
 
     /**

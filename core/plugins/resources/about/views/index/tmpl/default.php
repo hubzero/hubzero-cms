@@ -35,7 +35,7 @@ $this->model->fulltxt = ($this->model->fulltxt) ? trim($this->model->fulltxt) : 
 $this->model->fulltxt = str_replace(
     '="/site',
     '="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site',
-    $this->model->fulltxt
+    $this->model->fulltxt,
 );
 
 // Parse for <nb:field> tags
@@ -99,7 +99,7 @@ $maintext = $this->model->description;
                     <?php
                     $categoryUrl = Route::url(
                         'index.php?option=' . $this->option
-                        . '&type=' . $this->model->type->get('alias')
+                        . '&type=' . $this->model->type->get('alias'),
                     );
                     ?>
                     <p class="resource-content">
@@ -113,7 +113,7 @@ $maintext = $this->model->description;
                     <h4><?php echo Lang::txt('PLG_RESOURCES_ABOUT_PUBLISHED_ON'); ?></h4>
                     <?php
                     $formattedDate = Date::of($thedate)->toLocal(
-                        Lang::txt('DATE_FORMAT_HZ1')
+                        Lang::txt('DATE_FORMAT_HZ1'),
                     );
                     ?>
                     <p class="resource-content">
@@ -226,7 +226,7 @@ $maintext = $this->model->description;
                     $this->model->id,
                     $citations,
                     $this->model->type,
-                    $revision
+                    $revision,
                 );
                 ?>
 
@@ -319,7 +319,7 @@ $maintext = $this->model->description;
                     $view = new Hubzero\Component\View([
                         'base_path' => Component::path('com_tags') . '/site',
                         'name'      => 'tags',
-                        'layout'    => '_cloud'
+                        'layout'    => '_cloud',
                     ]);
                     $view->set('config', Component::params('com_tags'));
                     $view->set('tags', $this->tags);

@@ -18,11 +18,11 @@ defined('_HZEXEC_') or die();
 <?php
 $pushUrl = Route::url(
     'index.php?option=com_members&controller=plugins'
-    . '&task=manage&plugin=dashboard&action=push'
+    . '&task=manage&plugin=dashboard&action=push',
 );
 $addUrl = Route::url(
     'index.php?option=com_members&controller=plugins'
-    . '&task=manage&plugin=dashboard&action=add'
+    . '&task=manage&plugin=dashboard&action=add',
 );
 ?>
 <div class="admin-header">

@@ -219,7 +219,7 @@ class Author extends Table
             // Get the last child in the ordering
             $this->_db->setQuery(
                 "SELECT COALESCE(MAX(ordering), 0) FROM `#__author_assoc`"
-                . " WHERE subid=" . $this->_db->quote($rid) . " AND subtable='resources'"
+                . " WHERE subid=" . $this->_db->quote($rid) . " AND subtable='resources'",
             );
             $order = (int) $this->_db->loadResult() + 1;
 
@@ -229,7 +229,7 @@ class Author extends Table
                     "SELECT authorid FROM `#__author_assoc`"
                     . " WHERE authorid=" . $this->_db->quote($authid)
                     . " AND subid=" . $this->_db->quote($rid)
-                    . " AND subtable='resources'"
+                    . " AND subtable='resources'",
                 );
                 if (!$this->_db->loadResult()) {
                     $xprofile = User::getInstance($authid);
@@ -240,7 +240,7 @@ class Author extends Table
                         . " VALUES ('resources', " . $this->_db->quote($rid) . ","
                         . $this->_db->quote($authid) . "," . $this->_db->quote($order) . ","
                         . $this->_db->quote($xprofile->get('name')) . ","
-                        . $this->_db->quote($xprofile->get('organization')) . ")"
+                        . $this->_db->quote($xprofile->get('organization')) . ")",
                     );
                     $this->_db->query();
 

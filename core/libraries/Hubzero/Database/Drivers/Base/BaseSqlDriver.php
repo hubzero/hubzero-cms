@@ -171,20 +171,20 @@ abstract class BaseSqlDriver extends PdoDriver
 
         if (!is_string($class) || $class === '') {
             throw new \RuntimeException(
-                'Unsupported schema grammar for driver "' . $driverName . '".'
+                'Unsupported schema grammar for driver "' . $driverName . '".',
             );
         }
 
         if (!class_exists($class)) {
             throw new \RuntimeException(
-                'Schema grammar class does not exist: ' . $class
+                'Schema grammar class does not exist: ' . $class,
             );
         }
 
         if (!is_subclass_of($class, '\\Hubzero\\Database\\Drivers\\Base\\BaseSchemaGrammar')) {
             throw new \RuntimeException(
                 'Invalid schema grammar class "' . $class
-                . '" for driver "' . $driverName . '".'
+                . '" for driver "' . $driverName . '".',
             );
         }
 
@@ -226,7 +226,7 @@ abstract class BaseSqlDriver extends PdoDriver
     protected function getTableExistsQuery(string $table): string
     {
         throw new \BadMethodCallException(
-            static::class . ' must override getTableExistsQuery() or tableExists()'
+            static::class . ' must override getTableExistsQuery() or tableExists()',
         );
     }
 
@@ -472,7 +472,7 @@ abstract class BaseSqlDriver extends PdoDriver
     protected function getTableCreateFromShowCreate(
         $tables,
         bool $escapeTable = true,
-        string $createKeyword = 'table'
+        string $createKeyword = 'table',
     ): array {
         $result = [];
 
@@ -520,7 +520,7 @@ abstract class BaseSqlDriver extends PdoDriver
         string $table,
         bool $full = false,
         bool $escapeTable = true,
-        string $keyword = 'COLUMNS'
+        string $keyword = 'COLUMNS',
     ): string {
         $tableName = $escapeTable ? $this->escape($table) : $table;
         $fullPart = $full ? 'FULL ' : '';
@@ -688,7 +688,7 @@ abstract class BaseSqlDriver extends PdoDriver
             preg_match(
                 '/' . $this->quoteName($field) . ' [[:alnum:]\(\)]* CHARACTER SET ([[:alnum:]]*)/',
                 $create[$table] ?? '',
-                $matches
+                $matches,
             );
         } else {
             preg_match('/CHARSET=([[:alnum:]]*)/', $create[$table] ?? '', $matches);
@@ -802,7 +802,7 @@ abstract class BaseSqlDriver extends PdoDriver
     {
         $this->setQuery(
             'SHOW TABLE STATUS WHERE Name = '
-            . str_replace('#__', $this->tablePrefix, $this->quote($table, false))
+            . str_replace('#__', $this->tablePrefix, $this->quote($table, false)),
         );
 
         $info = $this->loadObjectList();
@@ -818,7 +818,7 @@ abstract class BaseSqlDriver extends PdoDriver
      */
     protected function transactionStartWithSavepoints(
         string $startSql = 'START TRANSACTION',
-        string $savepointPrefix = 'SP_'
+        string $savepointPrefix = 'SP_',
     ): void {
         if ($this->transactionDepth == 0) {
             $this->setQuery($startSql)->execute();
@@ -839,7 +839,7 @@ abstract class BaseSqlDriver extends PdoDriver
      */
     protected function transactionRollbackWithSavepoints(
         string $rollbackSql = 'ROLLBACK',
-        string $savepointPrefix = 'SP_'
+        string $savepointPrefix = 'SP_',
     ): void {
         if ($this->transactionDepth <= 0) {
             return;
@@ -873,7 +873,7 @@ abstract class BaseSqlDriver extends PdoDriver
     protected function transactionCommitWithSavepoints(
         bool $releaseNestedSavepoints = true,
         string $commitSql = 'COMMIT',
-        string $savepointPrefix = 'SP_'
+        string $savepointPrefix = 'SP_',
     ): void {
         if ($this->transactionDepth <= 0) {
             return;
@@ -1720,14 +1720,14 @@ abstract class BaseSqlDriver extends PdoDriver
         string $indexName,
         string $tableName,
         array $columns,
-        bool $unique = false
+        bool $unique = false,
     ): string {
         // Compatibility delegate: grammar owns index DDL compilation.
         return $this->getSchemaGrammar()->compileCreateIndexStatement(
             $indexName,
             $tableName,
             $columns,
-            $unique
+            $unique,
         );
     }
 
@@ -1878,7 +1878,7 @@ abstract class BaseSqlDriver extends PdoDriver
      */
     public function normalizeColumnType(
         string $type,
-        array $modifiers = []
+        array $modifiers = [],
     ): string {
         $grammar = $this->getSchemaGrammar();
         $mappedType = $grammar->getTypeMapping($type);
@@ -1887,7 +1887,7 @@ abstract class BaseSqlDriver extends PdoDriver
             return $this->applyColumnModifiers(
                 $type,
                 $mappedType,
-                $modifiers
+                $modifiers,
             );
         }
 
@@ -1913,7 +1913,7 @@ abstract class BaseSqlDriver extends PdoDriver
     protected function applyColumnModifiers(
         string $abstractType,
         string $nativeType,
-        array $modifiers
+        array $modifiers,
     ): string {
         switch ($abstractType) {
             case 'string':
@@ -2055,7 +2055,7 @@ abstract class BaseSqlDriver extends PdoDriver
     public function buildTableOptions(
         ?string $engine = null,
         ?string $charset = null,
-        ?string $collation = null
+        ?string $collation = null,
     ): string {
         // Default: no table options (most databases don't support them)
         return '';
@@ -2215,7 +2215,7 @@ abstract class BaseSqlDriver extends PdoDriver
         string $table,
         string $column,
         string $definition,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         $table = $this->replacePrefix($table);
 
@@ -2242,7 +2242,7 @@ abstract class BaseSqlDriver extends PdoDriver
                     $modifiers
                 ): void {
                     $builder->modifyColumn($column, $definition, $modifiers);
-                }
+                },
             );
         }
 
@@ -2270,10 +2270,10 @@ abstract class BaseSqlDriver extends PdoDriver
         string $table,
         string $column,
         string $definition,
-        string $comment
+        string $comment,
     ): string {
         throw new \BadMethodCallException(
-            static::class . ' must override buildModifyColumnSql() or modifyColumn()'
+            static::class . ' must override buildModifyColumnSql() or modifyColumn()',
         );
     }
 
@@ -2292,7 +2292,7 @@ abstract class BaseSqlDriver extends PdoDriver
         string $column,
         string $definition,
         string $afterColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool;
 
     /**
@@ -2310,7 +2310,7 @@ abstract class BaseSqlDriver extends PdoDriver
         string $column,
         string $definition,
         string $beforeColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool;
 
     /**
@@ -2326,7 +2326,7 @@ abstract class BaseSqlDriver extends PdoDriver
         string $table,
         string $column,
         string $definition,
-        string $comment = ''
+        string $comment = '',
     ): bool;
 
     /**
@@ -2344,7 +2344,7 @@ abstract class BaseSqlDriver extends PdoDriver
         string $oldColumn,
         string $newColumn,
         string $definition,
-        string $comment = ''
+        string $comment = '',
     ): bool;
 
     /**
@@ -2383,7 +2383,7 @@ abstract class BaseSqlDriver extends PdoDriver
                     $modifiers
                 ): void {
                     $builder->addColumn($column, $definition, $modifiers);
-                }
+                },
             );
         }
 
@@ -2411,10 +2411,10 @@ abstract class BaseSqlDriver extends PdoDriver
         string $table,
         string $column,
         string $definition,
-        string $comment
+        string $comment,
     ): string {
         throw new \BadMethodCallException(
-            static::class . ' must override buildAddColumnSql() or addColumn()'
+            static::class . ' must override buildAddColumnSql() or addColumn()',
         );
     }
 
@@ -2446,7 +2446,7 @@ abstract class BaseSqlDriver extends PdoDriver
         string $column,
         string $definition,
         string $afterColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool;
 
     /**
@@ -2464,7 +2464,7 @@ abstract class BaseSqlDriver extends PdoDriver
         string $column,
         string $definition,
         string $beforeColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool;
 
     /**
@@ -2480,7 +2480,7 @@ abstract class BaseSqlDriver extends PdoDriver
         string $table,
         string $column,
         string $definition,
-        string $comment = ''
+        string $comment = '',
     ): bool;
 
     /**
@@ -2496,7 +2496,7 @@ abstract class BaseSqlDriver extends PdoDriver
         string $table,
         string $column,
         string $definition,
-        string $comment = ''
+        string $comment = '',
     ): bool;
 
     /**
@@ -2519,7 +2519,7 @@ abstract class BaseSqlDriver extends PdoDriver
     abstract public function setTableCharset(
         string $table,
         string $charset = 'utf8',
-        string $collation = 'utf8_general_ci'
+        string $collation = 'utf8_general_ci',
     ): bool;
 
     /**
@@ -2548,7 +2548,7 @@ abstract class BaseSqlDriver extends PdoDriver
                 $table,
                 function (\Hubzero\Database\Schema\AlterTableBuilder $builder) use ($column): void {
                     $builder->dropColumn($column);
-                }
+                },
             );
         }
 
@@ -2602,7 +2602,7 @@ abstract class BaseSqlDriver extends PdoDriver
     protected function buildDropColumnSql(string $table, string $column): string
     {
         throw new \BadMethodCallException(
-            static::class . ' must override buildDropColumnSql() or dropColumn()'
+            static::class . ' must override buildDropColumnSql() or dropColumn()',
         );
     }
 
@@ -2646,7 +2646,7 @@ abstract class BaseSqlDriver extends PdoDriver
         string $table,
         string $column = 'id',
         bool $first = false,
-        bool $useBigInt = true
+        bool $useBigInt = true,
     ): bool;
 
     /**
@@ -2699,7 +2699,7 @@ abstract class BaseSqlDriver extends PdoDriver
                     } else {
                         $builder->addIndex($name, $columns);
                     }
-                }
+                },
             );
         }
 
@@ -2720,7 +2720,7 @@ abstract class BaseSqlDriver extends PdoDriver
     protected function buildCreateIndexSql(string $table, string $name, array $columns, bool $unique): string
     {
         throw new \BadMethodCallException(
-            static::class . ' must override buildCreateIndexSql() or addIndex()'
+            static::class . ' must override buildCreateIndexSql() or addIndex()',
         );
     }
 
@@ -2778,7 +2778,7 @@ abstract class BaseSqlDriver extends PdoDriver
      * @return  array  Array of SQL statements to execute
      */
     public function compileAlterTable(
-        \Hubzero\Database\Schema\AlterTableBuilder $builder
+        \Hubzero\Database\Schema\AlterTableBuilder $builder,
     ): array {
         return $this->getSchemaGrammar()->compileAlterTable($builder);
     }

@@ -22,7 +22,7 @@ class SpyLogger extends \Psr\Log\AbstractLogger
     public function log(
         $level,
         $message,
-        array $context = []
+        array $context = [],
     ): void {
         $this->allLogs[] = [
             'level'   => $level,

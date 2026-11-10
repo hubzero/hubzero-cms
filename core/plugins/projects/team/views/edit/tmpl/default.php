@@ -38,7 +38,7 @@ if ($group) {
 $roles = [
     'COLLABORATORS' => 0,
     'MANAGERS' => 1,
-    'REVIEWERS' => 5
+    'REVIEWERS' => 5,
 ];
 ?>
 

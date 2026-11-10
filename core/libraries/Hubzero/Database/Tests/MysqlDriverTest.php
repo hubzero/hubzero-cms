@@ -75,32 +75,32 @@ class MysqlDriverTest extends AbstractDriverTestCase
 
         $driver->exec(
             "INSERT INTO my_categories (name, slug, sort_order)"
-            . " VALUES ('Electronics', 'electronics', 1)"
+            . " VALUES ('Electronics', 'electronics', 1)",
         );
         $driver->exec(
             "INSERT INTO my_categories (name, slug, sort_order)"
-            . " VALUES ('Books', 'books', 2)"
+            . " VALUES ('Books', 'books', 2)",
         );
         $driver->exec(
             "INSERT INTO my_categories (name, slug, sort_order, active)"
-            . " VALUES ('Archived', 'archived', 99, 0)"
+            . " VALUES ('Archived', 'archived', 99, 0)",
         );
 
         $driver->exec(
             "INSERT INTO my_items (category_id, title, price, stock, status)"
-            . " VALUES (1, 'Laptop', 999.99, 10, 'active')"
+            . " VALUES (1, 'Laptop', 999.99, 10, 'active')",
         );
         $driver->exec(
             "INSERT INTO my_items (category_id, title, price, stock, status)"
-            . " VALUES (1, 'Phone', 599.99, 25, 'active')"
+            . " VALUES (1, 'Phone', 599.99, 25, 'active')",
         );
         $driver->exec(
             "INSERT INTO my_items (category_id, title, price, stock, status)"
-            . " VALUES (2, 'Novel', 19.99, 100, 'active')"
+            . " VALUES (2, 'Novel', 19.99, 100, 'active')",
         );
         $driver->exec(
             "INSERT INTO my_items (category_id, title, price, stock, status)"
-            . " VALUES (2, 'Textbook', 79.99, 5, 'draft')"
+            . " VALUES (2, 'Textbook', 79.99, 5, 'draft')",
         );
     }
 
@@ -175,7 +175,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function driverIsMysqlInstance(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -188,7 +188,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canExecuteBasicQuery(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -215,7 +215,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canGetServerInfo(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -231,7 +231,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function serverInfoDriverVersionIsNormalized(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -249,7 +249,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getVersionMatchesServerInfoVersion(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -265,7 +265,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function sqlHelpersEmitExpectedMysqlFamilyExpressions(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -283,7 +283,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
         $this->assertSame("CONCAT(first_name, ' ', last_name)", $driver->sqlConcat(['first_name', "' '", 'last_name']));
         $this->assertSame(
             "CONCAT_WS(', ', first_name, last_name)",
-            $driver->sqlConcatWs(', ', ['first_name', 'last_name'])
+            $driver->sqlConcatWs(', ', ['first_name', 'last_name']),
         );
     }
 
@@ -295,7 +295,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function tableExistsReturnsTrueForExistingTable(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -308,14 +308,14 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function tableExistsReturnsFalseForMissingTable(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
         }
 
         $this->assertFalse(
-            $driver->tableExists('my_nonexistent_table')
+            $driver->tableExists('my_nonexistent_table'),
         );
     }
 
@@ -323,7 +323,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getTableListIncludesTestTables(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -338,7 +338,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getTableColumnsTypeOnly(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -355,7 +355,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getTableColumnsFullInfo(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -373,7 +373,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getPrimaryKeyReturnsColumnName(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -387,7 +387,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getForeignKeysForChildTable(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -396,7 +396,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
         $fks = $driver->getForeignKeys('my_items');
         $this->assertNotEmpty(
             $fks,
-            'my_items should have a foreign key on category_id'
+            'my_items should have a foreign key on category_id',
         );
     }
 
@@ -423,14 +423,14 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canSelectWithWhere(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
         }
 
         $driver->setQuery(
-            "SELECT * FROM my_items WHERE status = 'active'"
+            "SELECT * FROM my_items WHERE status = 'active'",
         );
         $this->assertCount(3, $driver->loadObjectList());
     }
@@ -439,7 +439,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canInsertAndGetAutoIncrementId(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -447,14 +447,14 @@ class MysqlDriverTest extends AbstractDriverTestCase
 
         $driver->exec(
             "INSERT INTO my_categories (name, slug)"
-            . " VALUES ('Test', 'test-auto')"
+            . " VALUES ('Test', 'test-auto')",
         );
         $id = $driver->insertid();
 
         $this->assertGreaterThan(0, $id);
 
         $driver->setQuery(
-            "SELECT name FROM my_categories WHERE id = $id"
+            "SELECT name FROM my_categories WHERE id = $id",
         );
         $this->assertEquals('Test', $driver->loadResult());
 
@@ -465,7 +465,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUpdateRecord(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -473,20 +473,20 @@ class MysqlDriverTest extends AbstractDriverTestCase
 
         $driver->exec(
             "INSERT INTO my_categories (name, slug)"
-            . " VALUES ('Before', 'update-test')"
+            . " VALUES ('Before', 'update-test')",
         );
         $driver->exec(
             "UPDATE my_categories SET name = 'After'"
-            . " WHERE slug = 'update-test'"
+            . " WHERE slug = 'update-test'",
         );
 
         $driver->setQuery(
-            "SELECT name FROM my_categories WHERE slug = 'update-test'"
+            "SELECT name FROM my_categories WHERE slug = 'update-test'",
         );
         $this->assertEquals('After', $driver->loadResult());
 
         $driver->exec(
-            "DELETE FROM my_categories WHERE slug = 'update-test'"
+            "DELETE FROM my_categories WHERE slug = 'update-test'",
         );
     }
 
@@ -494,7 +494,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canDeleteRecord(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -502,15 +502,15 @@ class MysqlDriverTest extends AbstractDriverTestCase
 
         $driver->exec(
             "INSERT INTO my_categories (name, slug)"
-            . " VALUES ('Delete Me', 'delete-test')"
+            . " VALUES ('Delete Me', 'delete-test')",
         );
         $driver->exec(
-            "DELETE FROM my_categories WHERE slug = 'delete-test'"
+            "DELETE FROM my_categories WHERE slug = 'delete-test'",
         );
 
         $driver->setQuery(
             "SELECT COUNT(*) FROM my_categories"
-            . " WHERE slug = 'delete-test'"
+            . " WHERE slug = 'delete-test'",
         );
         $this->assertEquals(0, $driver->loadResult());
     }
@@ -523,7 +523,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canCommitTransaction(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -532,18 +532,18 @@ class MysqlDriverTest extends AbstractDriverTestCase
         $driver->transactionStart();
         $driver->exec(
             "INSERT INTO my_categories (name, slug)"
-            . " VALUES ('Committed', 'trans-commit')"
+            . " VALUES ('Committed', 'trans-commit')",
         );
         $driver->transactionCommit();
 
         $driver->setQuery(
             "SELECT COUNT(*) FROM my_categories"
-            . " WHERE slug = 'trans-commit'"
+            . " WHERE slug = 'trans-commit'",
         );
         $this->assertEquals(1, $driver->loadResult());
 
         $driver->exec(
-            "DELETE FROM my_categories WHERE slug = 'trans-commit'"
+            "DELETE FROM my_categories WHERE slug = 'trans-commit'",
         );
     }
 
@@ -551,7 +551,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canRollbackTransaction(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -564,13 +564,13 @@ class MysqlDriverTest extends AbstractDriverTestCase
         $driver2->transactionStart();
         $driver2->exec(
             "INSERT INTO my_categories (name, slug)"
-            . " VALUES ('Rolled Back', 'trans-rollback')"
+            . " VALUES ('Rolled Back', 'trans-rollback')",
         );
         $driver2->transactionRollback();
 
         $driver->setQuery(
             "SELECT COUNT(*) FROM my_categories"
-            . " WHERE slug = 'trans-rollback'"
+            . " WHERE slug = 'trans-rollback'",
         );
         $count = (int) $driver->loadResult();
 
@@ -579,7 +579,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
         $this->assertEquals(
             0,
             $count,
-            'Rolled back row should not be visible'
+            'Rolled back row should not be visible',
         );
     }
 
@@ -591,14 +591,14 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseLimitOffset(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
         }
 
         $driver->setQuery(
-            'SELECT * FROM my_items ORDER BY id LIMIT 2 OFFSET 1'
+            'SELECT * FROM my_items ORDER BY id LIMIT 2 OFFSET 1',
         );
         $items = $driver->loadObjectList();
 
@@ -610,14 +610,14 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseIfNull(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
         }
 
         $driver->setQuery(
-            "SELECT IFNULL(NULL, 'fallback') AS result"
+            "SELECT IFNULL(NULL, 'fallback') AS result",
         );
         $this->assertEquals('fallback', $driver->loadResult());
     }
@@ -626,14 +626,14 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseConcat(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
         }
 
         $driver->setQuery(
-            "SELECT CONCAT('Hello', ' ', 'World') AS greeting"
+            "SELECT CONCAT('Hello', ' ', 'World') AS greeting",
         );
         $this->assertEquals('Hello World', $driver->loadResult());
     }
@@ -642,14 +642,14 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseRegexp(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
         }
 
         $driver->setQuery(
-            "SELECT * FROM my_items WHERE title REGEXP '^L'"
+            "SELECT * FROM my_items WHERE title REGEXP '^L'",
         );
         $items = $driver->loadObjectList();
 
@@ -661,7 +661,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function hasInnoDBEngine(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -674,7 +674,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseAggregateFunctions(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -707,7 +707,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
 
         $this->assertTrue($driver->createOrReplaceView(
             'my_active_items',
-            "SELECT id, title FROM my_items WHERE status = 'active'"
+            "SELECT id, title FROM my_items WHERE status = 'active'",
         ));
         $this->assertTrue($driver->viewExists('my_active_items'));
 
@@ -726,7 +726,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canAddAndDropColumn(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -735,17 +735,17 @@ class MysqlDriverTest extends AbstractDriverTestCase
         $driver->exec(
             "CREATE TABLE my_ddl_test"
             . " (id INT AUTO_INCREMENT PRIMARY KEY,"
-            . " name VARCHAR(100)) ENGINE=InnoDB"
+            . " name VARCHAR(100)) ENGINE=InnoDB",
         );
 
         $this->assertTrue(
-            $driver->addColumn('my_ddl_test', 'email', 'VARCHAR(200)')
+            $driver->addColumn('my_ddl_test', 'email', 'VARCHAR(200)'),
         );
         $columns = $driver->getTableColumns('my_ddl_test', true);
         $this->assertArrayHasKey('email', $columns);
 
         $this->assertTrue(
-            $driver->dropColumn('my_ddl_test', 'email')
+            $driver->dropColumn('my_ddl_test', 'email'),
         );
         $columns = $driver->getTableColumns('my_ddl_test', true);
         $this->assertArrayNotHasKey('email', $columns);
@@ -755,7 +755,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canTruncateTable(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -764,13 +764,13 @@ class MysqlDriverTest extends AbstractDriverTestCase
         $driver->exec(
             "CREATE TABLE my_trunc_test"
             . " (id INT AUTO_INCREMENT PRIMARY KEY,"
-            . " name VARCHAR(50)) ENGINE=InnoDB"
+            . " name VARCHAR(50)) ENGINE=InnoDB",
         );
         $driver->exec(
-            "INSERT INTO my_trunc_test (name) VALUES ('one')"
+            "INSERT INTO my_trunc_test (name) VALUES ('one')",
         );
         $driver->exec(
-            "INSERT INTO my_trunc_test (name) VALUES ('two')"
+            "INSERT INTO my_trunc_test (name) VALUES ('two')",
         );
 
         $driver->truncateTable('my_trunc_test');
@@ -787,7 +787,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function autoIncrementWorksCorrectly(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -796,16 +796,16 @@ class MysqlDriverTest extends AbstractDriverTestCase
         $driver->exec(
             "CREATE TABLE my_auto_test"
             . " (id INT AUTO_INCREMENT PRIMARY KEY,"
-            . " label VARCHAR(50)) ENGINE=InnoDB"
+            . " label VARCHAR(50)) ENGINE=InnoDB",
         );
 
         $driver->exec(
-            "INSERT INTO my_auto_test (label) VALUES ('first')"
+            "INSERT INTO my_auto_test (label) VALUES ('first')",
         );
         $id1 = $driver->insertid();
 
         $driver->exec(
-            "INSERT INTO my_auto_test (label) VALUES ('second')"
+            "INSERT INTO my_auto_test (label) VALUES ('second')",
         );
         $id2 = $driver->insertid();
 
@@ -821,7 +821,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function queryBuilderSelectWithLimit(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -841,7 +841,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function queryBuilderWhereInSubquery(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -868,7 +868,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function featureDetectionReturnsExpectedValues(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;
@@ -891,7 +891,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseCreateTableBuilder(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMysql($driver)) {
             return;

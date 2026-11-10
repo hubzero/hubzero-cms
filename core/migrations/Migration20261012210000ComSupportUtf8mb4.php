@@ -24,7 +24,7 @@ class Migration20261012210000ComSupportUtf8mb4 extends Base
      **/
     protected $tables = [
         '#__support_tickets',
-        '#__support_comments'
+        '#__support_comments',
     ];
 
     /**

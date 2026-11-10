@@ -167,7 +167,7 @@ $speaksFor = function ($option) {
 
     $rank = function ($item) {
         return \Hubzero\Menu\ComponentRoute::rank(
-            isset($item->menuKind) && $item->menuKind ? $item->menuKind : 'display'
+            isset($item->menuKind) && $item->menuKind ? $item->menuKind : 'display',
         );
     };
 
@@ -478,7 +478,7 @@ $router->rules('parse')->append('menu', function ($uri) use ($speaksFor) {
     // hub's item away again and the generated one answers once more.
     $rank = function ($item) {
         return \Hubzero\Menu\ComponentRoute::rank(
-            isset($item->menuKind) && $item->menuKind ? $item->menuKind : 'display'
+            isset($item->menuKind) && $item->menuKind ? $item->menuKind : 'display',
         );
     };
 
@@ -825,7 +825,7 @@ if (Config::get('debug')) {
         Log::debug(sprintf(
             'Lazily gave %s the address /%s. Write a migration: see AddComponentEntry.',
             $option,
-            $segments[0]
+            $segments[0],
         ));
     });
 }
@@ -851,7 +851,7 @@ $router->rules('parse')->append('redirect', function ($uri) {
 		WHERE `published`=1
 		AND (`old_url`=" . $db->quote($alturi->toString(['scheme', 'host', 'port', 'path', 'query', 'fragment'])) . "
 		OR `old_url`=" . $db->quote($alturi->toString(['path', 'query', 'fragment'])) . ")
-		LIMIT 1"
+		LIMIT 1",
     );
 
     if ($row = $db->loadObject()) {

@@ -113,7 +113,7 @@ class Entriesv1r0 extends ApiController
             'scope_id'   => Request::getInt('scope_id', 0),
             'tagger_id'  => Request::getInt('tagger', 0),
             'sort'       => Request::getWord('sort', 'raw_tag'),
-            'sort_Dir'   => strtoupper(Request::getWord('sortDir', 'ASC'))
+            'sort_Dir'   => strtoupper(Request::getWord('sortDir', 'ASC')),
         ];
 
         // A scope named with no scope_id asks for the whole scope's tags; an

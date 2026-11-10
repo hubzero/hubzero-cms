@@ -37,7 +37,7 @@ $db->setQuery(
 	FROM `#__publication_logs`
 	WHERE `publication_id`=" . $db->quote($this->publication->id) . " AND `publication_version_id`=" .
     $db->quote($this->publication->version->id) . "
-	ORDER BY `year` ASC, `month` ASC"
+	ORDER BY `year` ASC, `month` ASC",
 );
 $results = $db->loadObjectList();
 if ($results) {

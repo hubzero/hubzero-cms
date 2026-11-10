@@ -23,7 +23,7 @@ class AdminController extends SiteController
             \Route::url('index.php?option=' .
                 $this->_option .
                 ($this->_controller ? '&controller=' .
-                $this->_controller : ''), false)
+                $this->_controller : ''), false),
         );
     }
 }

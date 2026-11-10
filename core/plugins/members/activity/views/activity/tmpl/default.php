@@ -26,8 +26,8 @@ $online = [];
 $sessions = Hubzero\Session\Helper::getAllSessions(
     [
     'guest'    => 0,
-    'distinct' => 1
-    ]
+    'distinct' => 1,
+    ],
 );
 if ($sessions) {
     // see if any session matches our userid
@@ -55,10 +55,10 @@ if (!$no_html) { ?>
                         $starredUrl = Route::url(
                             $this->member->link()
                             . '&active=activity&filter=starred'
-                            . $qsfilters
+                            . $qsfilters,
                         );
                         $starredTitle = Lang::txt(
-                            'PLG_MEMBERS_ACTIVITY_FILTER_STARRED'
+                            'PLG_MEMBERS_ACTIVITY_FILTER_STARRED',
                         );
                         ?>
                         <a class="icon-star-empty tooltips"
@@ -90,22 +90,22 @@ if (!$no_html) { ?>
                 </div>
                 <?php
                 $scopeLabel = Lang::txt(
-                    'PLG_MEMBERS_ACTIVITY_FILTER_SCOPE'
+                    'PLG_MEMBERS_ACTIVITY_FILTER_SCOPE',
                 );
                 $scopeAll = Lang::txt(
-                    'PLG_MEMBERS_ACTIVITY_FILTER_SCOPE_ALL'
+                    'PLG_MEMBERS_ACTIVITY_FILTER_SCOPE_ALL',
                 );
                 $createdByLabel = Lang::txt(
-                    'PLG_MEMBERS_ACTIVITY_FILTER_CREATED_BY'
+                    'PLG_MEMBERS_ACTIVITY_FILTER_CREATED_BY',
                 );
                 $createdByAll = Lang::txt(
-                    'PLG_MEMBERS_ACTIVITY_FILTER_CREATED_BY_ALL'
+                    'PLG_MEMBERS_ACTIVITY_FILTER_CREATED_BY_ALL',
                 );
                 $createdByMe = Lang::txt(
-                    'PLG_MEMBERS_ACTIVITY_FILTER_CREATED_BY_ME'
+                    'PLG_MEMBERS_ACTIVITY_FILTER_CREATED_BY_ME',
                 );
                 $createdByNotMe = Lang::txt(
-                    'PLG_MEMBERS_ACTIVITY_FILTER_CREATED_BY_NOTME'
+                    'PLG_MEMBERS_ACTIVITY_FILTER_CREATED_BY_NOTME',
                 );
                 $meSelected = ($this->filters['created_by'] == 'me')
                     ? ' selected="selected"' : '';
@@ -187,7 +187,7 @@ if (!$no_html) { ?>
             $pageNav = $this->pagination(
                 $this->total,
                 $this->filters['start'],
-                $this->filters['limit']
+                $this->filters['limit'],
             );
             $pageNav->setAdditionalUrlParam('id', $this->member->get('id'));
             $pageNav->setAdditionalUrlParam('active', 'activity');

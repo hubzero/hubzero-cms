@@ -33,7 +33,7 @@ class FeedYoutube extends Module
         // Get RSS parsed object
         $options = [
             'rssUrl'     => $this->params->get('rssurl', ''),
-            'cache_time' => null
+            'cache_time' => null,
         ];
 
         if (!$options['rssUrl']) {

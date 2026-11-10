@@ -29,7 +29,7 @@ if (count($this->tags) == 1) {
     echo "\t\t" . '<normalized>' . htmlspecialchars($tagobj->tag) . '</normalized>' . "\n";
     if ($tagobj->description != '') {
         $desc = htmlspecialchars(
-            trim(\Hubzero\Utility\Sanitize::stripAll($tagobj->description))
+            trim(\Hubzero\Utility\Sanitize::stripAll($tagobj->description)),
         );
         echo "\t\t" . '<description><![CDATA[' . $desc . ']]></description>' . "\n";
     }
@@ -98,27 +98,27 @@ foreach ($this->results as $category) {
 
             $html .= "\t\t\t\t" . '<item>' . "\n";
             $cleanTitle = htmlspecialchars(
-                \Hubzero\Utility\Sanitize::stripAll($row->title)
+                \Hubzero\Utility\Sanitize::stripAll($row->title),
             );
             $html .= "\t\t\t\t\t" . '<title>' . $cleanTitle . '</title>' . "\n";
             if (isset($row->text) && $row->text != '') {
                 $row->text = strip_tags($row->text);
                 $cleanText = htmlspecialchars(
-                    \Hubzero\Utility\Sanitize::stripAll($row->text)
+                    \Hubzero\Utility\Sanitize::stripAll($row->text),
                 );
                 $html .= "\t\t\t\t\t" . '<description><![CDATA['
                     . $cleanText . ']]></description>' . "\n";
             } elseif (isset($row->itext) && $row->itext != '') {
                 $row->itext = strip_tags($row->itext);
                 $cleanText = htmlspecialchars(
-                    \Hubzero\Utility\Sanitize::stripAll($row->itext)
+                    \Hubzero\Utility\Sanitize::stripAll($row->itext),
                 );
                 $html .= "\t\t\t\t\t" . '<description><![CDATA['
                     . $cleanText . ']]></description>' . "\n";
             } elseif (isset($row->ftext) && $row->ftext != '') {
                 $row->ftext = strip_tags($row->ftext);
                 $cleanText = htmlspecialchars(
-                    \Hubzero\Utility\Sanitize::stripAll($row->ftext)
+                    \Hubzero\Utility\Sanitize::stripAll($row->ftext),
                 );
                 $html .= "\t\t\t\t\t" . '<description><![CDATA['
                     . $cleanText . ']]></description>' . "\n";

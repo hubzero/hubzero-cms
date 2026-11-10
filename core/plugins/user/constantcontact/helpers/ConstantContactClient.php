@@ -107,7 +107,7 @@ class ConstantContactClient
         string $refreshToken,
         int $tokenExpires = 0,
         ?callable $tokenPersistCallback = null,
-        ?Client $httpClient = null
+        ?Client $httpClient = null,
     ) {
         $this->clientId             = $clientId;
         $this->clientSecret         = $clientSecret;
@@ -179,7 +179,7 @@ class ConstantContactClient
                 $this->tokenPersistCallback,
                 $this->accessToken,
                 $this->refreshToken,
-                $this->tokenExpires
+                $this->tokenExpires,
             );
         }
     }

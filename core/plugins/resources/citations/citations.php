@@ -59,7 +59,7 @@ class Citations extends Plugin
         $arr = [
             'area'     => $this->_name,
             'html'     => '',
-            'metadata' => ''
+            'metadata' => '',
         ];
 
         // Check if our area is in the array of areas we want to return results for
@@ -98,8 +98,8 @@ class Citations extends Plugin
                 [
                     'folder'  => $this->_type,
                     'element' => $this->_name,
-                    'name'    => 'browse'
-                ]
+                    'name'    => 'browse',
+                ],
             );
 
             // Pass the view some info
@@ -121,8 +121,8 @@ class Citations extends Plugin
                 [
                     'folder'  => $this->_type,
                     'element' => $this->_name,
-                    'name'    => 'metadata'
-                ]
+                    'name'    => 'metadata',
+                ],
             );
             $view->url = Route::url($model->link() . '&active=citations');
             $view->citations = $citations;

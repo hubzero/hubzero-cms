@@ -162,7 +162,7 @@ $activeCls = $this->active ? 'inactive' : 'active';
                                             $done[] = $key;
                                             $epUrl = Route::url(
                                                 $base . '&task=endpoint&active='
-                                                . $component . '#' . $key
+                                                . $component . '#' . $key,
                                             );
                                         ?>
                                         <li>

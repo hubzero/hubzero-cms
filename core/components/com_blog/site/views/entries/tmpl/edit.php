@@ -19,12 +19,12 @@ defined('_HZEXEC_') or die();
 if (Pathway::count() <= 0) {
     Pathway::append(
         Lang::txt('COM_BLOG'),
-        'index.php?option=' . $this->option
+        'index.php?option=' . $this->option,
     );
 }
 Pathway::append(
     ($this->entry->isNew() ? Lang::txt('JACTION_NEW') : Lang::txt('JACTION_EDIT')),
-    $this->entry->link('edit')
+    $this->entry->link('edit'),
 );
 
 Document::setTitle(Lang::txt('COM_BLOG') . ': ' . ($this->entry->isNew() ? Lang::txt('JACTION_NEW') : Lang::txt('JACTION_EDIT')));

@@ -270,11 +270,11 @@ class MorphOne extends Relationship
                 $this->related->getTableName(),
                 $this->model->getQualifiedFieldName($this->localKey),
                 $this->related->getQualifiedFieldName($this->morphId),
-                'LEFT OUTER'
+                'LEFT OUTER',
             )
             ->whereEquals(
                 $this->related->getQualifiedFieldName($this->morphType),
-                $this->getTypeIdentifier()
+                $this->getTypeIdentifier(),
             );
 
         return $this;

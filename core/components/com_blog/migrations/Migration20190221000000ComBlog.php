@@ -24,12 +24,12 @@ class Migration20190221000000ComBlog extends Base
         '#__blog_entries' => [
             'created',
             'publish_up',
-            'publish_down'
+            'publish_down',
         ],
         '#__blog_comments' => [
             'created',
-            'modified'
-        ]
+            'modified',
+        ],
     ];
 
     /**

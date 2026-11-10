@@ -39,7 +39,7 @@ class Migration20261029120000ComResources extends Base
 
         $this->db->setQuery(
             "SELECT `id`, `params` FROM `#__resource_types`
-             WHERE `params` LIKE '%plg_abouttool=1%' OR `params` LIKE '%\"plg_abouttool\":\"1\"%'"
+             WHERE `params` LIKE '%plg_abouttool=1%' OR `params` LIKE '%\"plg_abouttool\":\"1\"%'",
         );
 
         foreach ((array) $this->db->loadObjectList() as $row) {
@@ -49,7 +49,7 @@ class Migration20261029120000ComResources extends Base
 
             $this->db->setQuery(
                 "UPDATE `#__resource_types` SET `params` = " . $this->db->quote($params->toString())
-                . " WHERE `id` = " . (int) $row->id
+                . " WHERE `id` = " . (int) $row->id,
             );
             $this->db->query();
         }

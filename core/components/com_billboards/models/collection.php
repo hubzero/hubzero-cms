@@ -30,7 +30,7 @@ class Collection extends Relational
      * @var array
      **/
     protected $rules = [
-        'name' => 'notempty'
+        'name' => 'notempty',
     ];
 
     /**

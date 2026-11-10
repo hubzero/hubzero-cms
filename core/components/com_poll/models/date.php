@@ -43,7 +43,7 @@ class Date extends Relational
      */
     protected $rules = [
         'vote_id' => 'positive|nonzero',
-        'poll_id' => 'positive|nonzero'
+        'poll_id' => 'positive|nonzero',
     ];
 
     /**

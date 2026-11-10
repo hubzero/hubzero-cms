@@ -97,7 +97,7 @@ class BlockElements extends Obj
         $pub = null,
         $status = null,
         $viewname = 'edit',
-        $order = 0
+        $order = 0,
     ) {
         // Load attachment type
         $element = $this->loadElement($name);

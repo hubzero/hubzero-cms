@@ -86,7 +86,7 @@ class Tools extends Obj
 			WHERE v.toolname IN (" . implode(',', $names) . ")
 			AND v.state IN (1, 3)
 			AND t.state IN (" . implode(',', $listable) . ")
-			ORDER BY v.toolname ASC, (v.state=1) DESC, v.revision DESC, v.id DESC"
+			ORDER BY v.toolname ASC, (v.state=1) DESC, v.revision DESC, v.id DESC",
         );
 
         $tools = [];

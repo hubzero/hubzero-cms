@@ -37,24 +37,24 @@ class Sessions extends AdminController
                 $this->_option . '.' . $this->_controller . '.sp',
                 'sp',
                 0,
-                'int'
+                'int',
             ),
             'state' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.state',
                 'state',
                 -1,
-                'int'
+                'int',
             ),
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'created'
+                'created',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'DESC'
-            )
+                'DESC',
+            ),
         ];
 
         $records = SamlSession::all();

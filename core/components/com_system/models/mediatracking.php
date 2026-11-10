@@ -38,7 +38,7 @@ class Mediatracking extends Relational
         'session_id'  => 'notempty',
         'ip_address'  => 'notempty',
         'object_id'   => 'positive|nonzero',
-        'object_type' => 'notempty'
+        'object_type' => 'notempty',
     ];
 
     /**

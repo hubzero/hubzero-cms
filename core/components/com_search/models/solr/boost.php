@@ -31,7 +31,7 @@ class Boost extends Relational
 
     protected $rules = [
         'field' => 'notempty',
-        'field_value' => 'notempty'
+        'field_value' => 'notempty',
     ];
 
     protected $table = '#__solr_search_boosts';
@@ -45,7 +45,7 @@ class Boost extends Relational
         $this->userHelper = Arr::getValue(
             $args,
             'user',
-            new MockProxy(['class' => 'User'])
+            new MockProxy(['class' => 'User']),
         );
 
         parent::__construct();

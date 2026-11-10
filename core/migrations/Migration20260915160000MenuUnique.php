@@ -72,7 +72,7 @@ class Migration20260915160000MenuUnique extends Base
                         'Left /' . $row['path'] . ' (#' . $row['id'] . ') alone: it shares an alias with #'
                         . $keep['id'] . ' and both answer at a path, so renaming either would move a'
                         . ' working address. Give one of them a different alias, then run this again.',
-                        'warning'
+                        'warning',
                     );
 
                     $blocked++;
@@ -87,7 +87,7 @@ class Migration20260915160000MenuUnique extends Base
             $this->log(
                 'Leaving the menu key as it is: ' . $blocked . ' duplicate'
                 . ($blocked == 1 ? '' : 's') . ' still to resolve by hand',
-                'warning'
+                'warning',
             );
 
             return;
@@ -96,7 +96,7 @@ class Migration20260915160000MenuUnique extends Base
         $this->db->setQuery(
             "ALTER TABLE `#__menu` DROP KEY `idx_client_id_parent_id_alias_language`,"
             . " ADD UNIQUE KEY `idx_client_id_parent_id_alias_language`"
-            . " (`client_id`,`parent_id`,`alias`,`language`)"
+            . " (`client_id`,`parent_id`,`alias`,`language`)",
         );
         $this->db->query();
 
@@ -119,7 +119,7 @@ class Migration20260915160000MenuUnique extends Base
         $this->db->setQuery(
             "ALTER TABLE `#__menu` DROP KEY `idx_client_id_parent_id_alias_language`,"
             . " ADD KEY `idx_client_id_parent_id_alias_language`"
-            . " (`client_id`,`parent_id`,`alias`,`language`)"
+            . " (`client_id`,`parent_id`,`alias`,`language`)",
         );
         $this->db->query();
     }
@@ -136,7 +136,7 @@ class Migration20260915160000MenuUnique extends Base
         // not, the literal reaches MySQL as written, and this always said no.
         $this->db->setQuery(
             "SHOW INDEX FROM `#__menu`"
-            . " WHERE `Key_name` = 'idx_client_id_parent_id_alias_language'"
+            . " WHERE `Key_name` = 'idx_client_id_parent_id_alias_language'",
         );
 
         $rows = $this->db->loadObjectList();
@@ -164,7 +164,7 @@ class Migration20260915160000MenuUnique extends Base
             . " HAVING COUNT(*) > 1) AS `d`"
             . " ON `d`.`client_id` = `a`.`client_id` AND `d`.`parent_id` = `a`.`parent_id`"
             . " AND `d`.`alias` = `a`.`alias` AND `d`.`language` = `a`.`language`"
-            . " ORDER BY `a`.`id` ASC"
+            . " ORDER BY `a`.`id` ASC",
         );
 
         $groups = [];
@@ -195,7 +195,7 @@ class Migration20260915160000MenuUnique extends Base
 
             $this->db->setQuery(
                 "SELECT COUNT(*) FROM `#__menu` WHERE `parent_id` = " . $row['parent_id']
-                . " AND `alias` = " . $this->db->quote($alias)
+                . " AND `alias` = " . $this->db->quote($alias),
             );
 
             if (!$this->db->loadResult()) {
@@ -212,13 +212,13 @@ class Migration20260915160000MenuUnique extends Base
         $this->db->setQuery(
             "UPDATE `#__menu` SET `alias` = " . $this->db->quote($alias)
             . ", `path` = " . $this->db->quote($path)
-            . " WHERE `id` = " . $row['id']
+            . " WHERE `id` = " . $row['id'],
         );
         $this->db->query();
 
         $this->log(
             'Renamed ' . $row['type'] . ' #' . $row['id'] . ' from ' . $row['alias']
-            . ' to ' . $alias . '; nothing routes to it'
+            . ' to ' . $alias . '; nothing routes to it',
         );
     }
 }

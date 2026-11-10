@@ -27,7 +27,7 @@ class BoostFactory
         $this->userHelper = Arr::getValue(
             $args,
             'user',
-            new MockProxy(['class' => 'User'])
+            new MockProxy(['class' => 'User']),
         );
     }
 
@@ -59,7 +59,7 @@ class BoostFactory
 
         return [
             'created_by' => $userId,
-            'created' => $now
+            'created' => $now,
         ];
     }
 }

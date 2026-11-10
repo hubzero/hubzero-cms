@@ -71,7 +71,7 @@ Html::behavior('tooltip');
                     $pageNav = $this->pagination(
                         $this->total,
                         $this->filters['start'],
-                        $this->filters['limit']
+                        $this->filters['limit'],
                     );
                     echo $pageNav->render();
                     ?>

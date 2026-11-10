@@ -127,7 +127,7 @@ class Questions extends Plugin
 			INNER JOIN `#__answers_questions` q ON q.id = r2.question_id AND q.state != 2
 			LEFT JOIN `#__answers_responses` r ON r.question_id = q.id AND r.state != 2
 			WHERE $r2weight > 0 AND r2.state != 2
-			ORDER BY q_created, r_created"
+			ORDER BY q_created, r_created",
         );
 
         $questions = [];
@@ -142,7 +142,7 @@ class Questions extends Plugin
                     'link'            => 'index.php?option=com_answers&task=question&id=' . $row['qid'],
                     'weight'          => $row['qweight'],
                     'contributors'    => $row['qcontributors'],
-                    'contributor_ids' => $row['qcontributor_ids']
+                    'contributor_ids' => $row['qcontributor_ids'],
                 ]);
             }
             if (!array_key_exists($row['qid'] . '-' . $row['rid'], $seen_answers) && $row['answer']) {
@@ -155,7 +155,7 @@ class Questions extends Plugin
                     'link'            => 'index.php?option=com_answers&task=question&id=' . $row['qid'],
                     'weight'          => $row['rweight'],
                     'contributors'    => $row['rcontributors'],
-                    'contributor_ids' => $row['rcontributor_ids']
+                    'contributor_ids' => $row['rcontributor_ids'],
                 ]));
                 //$questions[$row['qid']]->add_weight($row['rweight']/5);
                 $seen_answers[$row['qid'] . '-' . $row['rid']] = 1;

@@ -50,24 +50,24 @@ class Pages extends AdminController
                 $this->_option . '.' . $this->_controller . '.event_id',
                 'event_id',
                 0,
-                'int'
+                'int',
             ),
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             )),
             // Get sorting variables
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'ordering'
+                'ordering',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         $event = \Components\Events\Models\Orm\Event::oneOrFail($filters['event_id']);
@@ -276,7 +276,7 @@ class Pages extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                 Lang::txt('COM_EVENTS_PAGE_NO_EVENT_ID'),
-                'error'
+                'error',
             );
             return;
         }
@@ -298,7 +298,7 @@ class Pages extends AdminController
     public function cancelTask()
     {
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&event_id=' . Request::getInt('event_id', 0), false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&event_id=' . Request::getInt('event_id', 0), false),
         );
     }
 }

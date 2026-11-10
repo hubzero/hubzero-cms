@@ -50,10 +50,10 @@ $this->css()
                     $unlinkUrl = Route::url(
                         $this->member->link()
                         . '&active=account&action=unlink&hzal_id='
-                        . $hzala['id']
+                        . $hzala['id'],
                     );
                     $accountTypeLabel = Lang::txt(
-                        'PLG_MEMBERS_ACCOUNT_ACCOUNT_TYPE'
+                        'PLG_MEMBERS_ACCOUNT_ACCOUNT_TYPE',
                     );
                     ?>
                     <div class="account active <?php echo $hzala['auth_domain_name']; ?>">
@@ -81,7 +81,7 @@ $this->css()
                     $pparams      = new \Hubzero\Config\Registry($plugin->params);
                     $display_name = $pparams->get('display_name', ucfirst($domain->name));
                     $refl         = new \ReflectionClass(
-                        'plgauthentication' . $domain->name
+                        'plgauthentication' . $domain->name,
                     );
                     $hasRender = $refl->hasMethod('onRenderOption');
                     $html = $hasRender
@@ -89,10 +89,10 @@ $this->css()
                         : null;
                     $loginUrl = Route::url(
                         'index.php?option=com_users&view=login'
-                        . '&authenticator=' . $domain->name
+                        . '&authenticator=' . $domain->name,
                     );
                     $typeLabel = Lang::txt(
-                        'PLG_MEMBERS_ACCOUNT_ACCOUNT_TYPE'
+                        'PLG_MEMBERS_ACCOUNT_ACCOUNT_TYPE',
                     );
                     ?>
 
@@ -137,7 +137,7 @@ $this->css()
                             echo Lang::txt(
                                 'PLG_MEMBERS_ACCOUNT_PASSWORD_EXPIRED_EXPLANATION',
                                 -$this->passinfo['diff'],
-                                $this->passinfo['max']
+                                $this->passinfo['max'],
                             );
                             ?>
                         <?php else : ?>
@@ -145,7 +145,7 @@ $this->css()
                             echo Lang::txt(
                                 'PLG_MEMBERS_ACCOUNT_PASSWORD_EXPIRATION_EXPLANATION',
                                 $this->passinfo['diff'],
-                                $this->passinfo['max']
+                                $this->passinfo['max'],
                             );
                             ?>
                         <?php endif ?>
@@ -157,13 +157,13 @@ $this->css()
                     ? ' class="split-left"'
                     : '';
                 $currentPassLabel = Lang::txt(
-                    'PLG_MEMBERS_ACCOUNT_CURRENT_PASSWORD'
+                    'PLG_MEMBERS_ACCOUNT_CURRENT_PASSWORD',
                 );
                 $newPassLabel = Lang::txt(
-                    'PLG_MEMBERS_ACCOUNT_NEW_PASSWORD'
+                    'PLG_MEMBERS_ACCOUNT_NEW_PASSWORD',
                 );
                 $confirmPassLabel = Lang::txt(
-                    'PLG_MEMBERS_ACCOUNT_CONFIRM_NEW_PASSWORD'
+                    'PLG_MEMBERS_ACCOUNT_CONFIRM_NEW_PASSWORD',
                 );
                 ?>
                 <div id="password-group"<?php echo $groupClass; ?>>
@@ -260,7 +260,7 @@ $this->css()
                 $uploadKeyUrl = Route::url(
                     $this->member->link() . '&active=account&task=uploadkey',
                     true,
-                    true
+                    true,
                 );
                 ?>
                 <form action="<?php echo $uploadKeyUrl; ?>" method="post">

@@ -34,7 +34,7 @@ class Activity extends AdminController
     {
         if (!User::authorize('core.manage', $this->_option)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option, false)
+                Route::url('index.php?option=' . $this->_option, false),
             );
         }
 
@@ -60,39 +60,39 @@ class Activity extends AdminController
                 $this->_option . '.projects.' . $this->_controller . '.state',
                 'state',
                 '-1',
-                'int'
+                'int',
             ),
             'search' => urldecode(Request::getState(
                 $this->_option . '.projects.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             )),
             'action' => Request::getState(
                 $this->_option . '.projects.' . $this->_controller . '.action',
                 'action',
-                ''
+                '',
             ),
             'filter' => Request::getState(
                 $this->_option . '.projects.' . $this->_controller . '.filter',
                 'filter',
-                ''
+                '',
             ),
             'project' => Request::getState(
                 $this->_option . '.projects.' . $this->_controller . '.project',
                 'project',
                 0,
-                'int'
+                'int',
             ),
             'sort' => Request::getState(
                 $this->_option . '.projects.' . $this->_controller . '.sort',
                 'filter_order',
-                'id'
+                'id',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.projects.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'DESC'
-            )
+                'DESC',
+            ),
         ];
 
         if (!in_array($filters['sort_Dir'], ['ASC', 'DESC'])) {
@@ -144,7 +144,7 @@ class Activity extends AdminController
             Notify::error(Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'));
 
             App::redirect(
-                Route::url('index.php?option=' . $this->_option, false)
+                Route::url('index.php?option=' . $this->_option, false),
             );
         }
 

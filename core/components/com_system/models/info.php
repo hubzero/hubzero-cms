@@ -203,7 +203,7 @@ class Info extends Obj
                 $imagePath = $cparams->get('image_path');
                 $this->addDirectory(
                     $app . $imagePath . $folder,
-                    PATH_APP . '/' . $imagePath . '/' . $folder
+                    PATH_APP . '/' . $imagePath . '/' . $folder,
                 );
             }
 
@@ -249,7 +249,7 @@ class Info extends Obj
     {
         $this->directories[$name] = [
             'writable' => is_writable($path),
-            'message'  => $message
+            'message'  => $message,
         ];
     }
 

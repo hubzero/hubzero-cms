@@ -43,7 +43,7 @@ class Modules extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=manage', false),
                 Lang::txt('COM_GROUPS_MISSING_ID'),
-                'error'
+                'error',
             );
             return;
         }
@@ -66,7 +66,7 @@ class Modules extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=pages&gid=' . $this->gid, false),
                 Lang::txt('COM_GROUPS_MODULES_NOT_ALLOWED'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -80,7 +80,7 @@ class Modules extends AdminController
         $this->view->modules = $moduleArchive->modules('list', [
             'gidNumber' => $this->group->get('gidNumber'),
             'state'     => [0,1,2],
-            'orderby'   => 'position ASC, ordering ASC'
+            'orderby'   => 'position ASC, ordering ASC',
         ]);
 
         // are we in the approvers
@@ -91,7 +91,7 @@ class Modules extends AdminController
             $this->view->needsAttention = $moduleArchive->modules('unapproved', [
                 'gidNumber' => $this->group->get('gidNumber'),
                 'state'     => [0,1],
-                'orderby'   => 'ordering'
+                'orderby'   => 'ordering',
             ]);
         }
 
@@ -138,7 +138,7 @@ class Modules extends AdminController
         $this->view->pages = $pageArchive->pages('list', [
             'gidNumber' => $this->group->get('gidNumber'),
             'state'     => [0,1,2],
-            'orderby'   => 'lft'
+            'orderby'   => 'lft',
         ]);
 
         // get a list of all pages for creating module menu
@@ -147,7 +147,7 @@ class Modules extends AdminController
             'gidNumber' => $this->group->get('gidNumber'),
             'position'  => $this->view->module->get('position'),
             'state'     => [0,1,2],
-            'orderby'   => 'ordering'
+            'orderby'   => 'ordering',
         ]);
 
         // are we passing a category object
@@ -275,14 +275,14 @@ class Modules extends AdminController
         Log::log([
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'group_module_saved',
-            'comments'  => ['module' => $module, 'module_menu' => $menu]
+            'comments'  => ['module' => $module, 'module_menu' => $menu],
         ]);
 
         //inform user & redirect
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
             Lang::txt('COM_GROUPS_MODULES_SAVED'),
-            'passed'
+            'passed',
         );
     }
 
@@ -320,7 +320,7 @@ class Modules extends AdminController
                 App::redirect(
                     Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
                     $module->getError(),
-                    'error'
+                    'error',
                 );
                 return;
             }
@@ -330,14 +330,14 @@ class Modules extends AdminController
         Log::log([
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'group_modules_deleted',
-            'comments'  => $ids
+            'comments'  => $ids,
         ]);
 
         //inform user & redirect
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
             Lang::txt('COM_GROUPS_MODULES_DELETED'),
-            'passed'
+            'passed',
         );
     }
 
@@ -354,7 +354,7 @@ class Modules extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
                 Lang::txt('COM_GROUPS_MODULES_AUTHORIZED_APPROVERS_ONLY'),
-                'error'
+                'error',
             );
             return;
         }
@@ -391,7 +391,7 @@ class Modules extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
                 Lang::txt('COM_GROUPS_MODULES_AUTHORIZED_APPROVERS_ONLY'),
-                'error'
+                'error',
             );
             return;
         }
@@ -417,7 +417,7 @@ class Modules extends AdminController
             $pages = $pageArchive->pages('list', [
                 'gidNumber' => $this->group->get('gidNumber'),
                 'state'     => [1],
-                'orderby'   => 'ordering'
+                'orderby'   => 'ordering',
             ]);
 
             // get first page
@@ -505,7 +505,7 @@ class Modules extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
                 Lang::txt('COM_GROUPS_MODULES_AUTHORIZED_APPROVERS_ONLY'),
-                'error'
+                'error',
             );
             return;
         }
@@ -522,7 +522,7 @@ class Modules extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
                 Lang::txt('COM_GROUPS_MODULES_ALREADY_APPROVED'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -564,7 +564,7 @@ class Modules extends AdminController
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
             Lang::txt('COM_GROUPS_MODULES_NO_ERRORS'),
-            'passed'
+            'passed',
         );
     }
 
@@ -583,7 +583,7 @@ class Modules extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
                 Lang::txt('COM_GROUPS_MODULES_AUTHORIZED_APPROVERS_ONLY'),
-                'error'
+                'error',
             );
             return;
         }
@@ -604,7 +604,7 @@ class Modules extends AdminController
 
         //go back to error checker
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid . '&task=errors&id=' . $groupModule->get('id'), false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid . '&task=errors&id=' . $groupModule->get('id'), false),
         );
     }
 
@@ -620,7 +620,7 @@ class Modules extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
                 Lang::txt('COM_GROUPS_MODULES_AUTHORIZED_APPROVERS_ONLY'),
-                'error'
+                'error',
             );
             return;
         }
@@ -637,7 +637,7 @@ class Modules extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
                 Lang::txt('COM_GROUPS_MODULES_ALREADY_APPROVED'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -689,7 +689,7 @@ class Modules extends AdminController
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
             Lang::txt('COM_GROUPS_MODULES_NO_XSS'),
-            'passed'
+            'passed',
         );
     }
 
@@ -708,7 +708,7 @@ class Modules extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
                 Lang::txt('COM_GROUPS_MODULES_AUTHORIZED_APPROVERS_ONLY'),
-                'error'
+                'error',
             );
             return;
         }
@@ -734,7 +734,7 @@ class Modules extends AdminController
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
             Lang::txt('COM_GROUPS_MODULES_SCANNED'),
-            'passed'
+            'passed',
         );
     }
 
@@ -753,7 +753,7 @@ class Modules extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
                 Lang::txt('COM_GROUPS_MODULES_AUTHORIZED_APPROVERS_ONLY'),
-                'error'
+                'error',
             );
             return;
         }
@@ -776,7 +776,7 @@ class Modules extends AdminController
 
         //go back to scanner
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid . '&task=scan&id=' . $groupModule->get('id'), false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid . '&task=scan&id=' . $groupModule->get('id'), false),
         );
     }
 
@@ -795,7 +795,7 @@ class Modules extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
                 Lang::txt('COM_GROUPS_MODULES_AUTHORIZED_APPROVERS_ONLY'),
-                'error'
+                'error',
             );
             return;
         }
@@ -812,7 +812,7 @@ class Modules extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
                 Lang::txt('COM_GROUPS_MODULES_ALREADY_APPROVED'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -837,14 +837,14 @@ class Modules extends AdminController
         Log::log([
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'group_modules_approved',
-            'comments'  => [$module->get('id')]
+            'comments'  => [$module->get('id')],
         ]);
 
         // inform user and redirect
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
             Lang::txt('COM_GROUPS_MODULES_APPROVED'),
-            'passed'
+            'passed',
         );
     }
 
@@ -856,7 +856,7 @@ class Modules extends AdminController
     public function cancelTask()
     {
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . Request::getString('gid', ''), false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . Request::getString('gid', ''), false),
         );
     }
 
@@ -868,7 +868,7 @@ class Modules extends AdminController
     public function manageTask()
     {
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=manage&task=edit&id[]=' . Request::getString('gid', ''), false)
+            Route::url('index.php?option=' . $this->_option . '&controller=manage&task=edit&id[]=' . Request::getString('gid', ''), false),
         );
     }
 }

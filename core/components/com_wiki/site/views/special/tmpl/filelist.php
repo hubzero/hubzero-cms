@@ -18,7 +18,7 @@ defined('_HZEXEC_') or die();
 
 Pathway::append(
     Lang::txt('COM_WIKI_SPECIAL_FILE_LIST'),
-    $this->page->link()
+    $this->page->link(),
 );
 
 $database = App::get('db');

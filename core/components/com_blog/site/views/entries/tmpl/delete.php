@@ -18,12 +18,12 @@ defined('_HZEXEC_') or die();
 if (Pathway::count() <= 0) {
     Pathway::append(
         Lang::txt('COM_BLOG'),
-        'index.php?option=' . $this->option
+        'index.php?option=' . $this->option,
     );
 }
 Pathway::append(
     Lang::txt('COM_BLOG_DELETE'),
-    $this->entry->link('delete')
+    $this->entry->link('delete'),
 );
 
 Document::setTitle(Lang::txt('COM_BLOG') . ': ' . Lang::txt('JACTION_DELETE'));
@@ -56,7 +56,7 @@ $this->css()
                 <p>
                     <?php
                     $newUrl = Route::url(
-                        'index.php?option=' . $this->option . '&task=new'
+                        'index.php?option=' . $this->option . '&task=new',
                     );
                     ?>
                     <a class="icon-add add btn"

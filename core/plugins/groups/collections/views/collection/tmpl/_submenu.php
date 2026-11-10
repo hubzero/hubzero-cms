@@ -47,7 +47,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
                         <?php
                         $followingTxt = Lang::txt(
                             'PLG_GROUPS_COLLECTIONS_STATS_FOLLOWING',
-                            '<strong>' . $this->following . '</strong>'
+                            '<strong>' . $this->following . '</strong>',
                         );
                         ?>
                         <span><?php echo $followingTxt; ?></span>

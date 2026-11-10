@@ -40,38 +40,38 @@ class Products extends AdminController
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             ),
             'type' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.type',
                 'type',
                 -1,
-                'int'
+                'int',
             ),
             // Get sorting variables
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'title'
+                'title',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
+                'ASC',
             ),
             // Get paging variables
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limitstart',
                 'limitstart',
                 0,
-                'int'
-            )
+                'int',
+            ),
         ];
 
         $obj = new Archive();
@@ -320,7 +320,7 @@ class Products extends AdminController
         if ($redirect) {
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
-                Lang::txt('COM_STOREFRONT_PRODUCT_SAVED')
+                Lang::txt('COM_STOREFRONT_PRODUCT_SAVED'),
             );
 
             if ($warnings) {
@@ -379,7 +379,7 @@ class Products extends AdminController
                     App::redirect(
                         Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
                         Lang::txt('COM_STOREFRONT_NO_ID'),
-                        'error'
+                        'error',
                     );
                     return;
                 }
@@ -403,7 +403,7 @@ class Products extends AdminController
                             App::redirect(
                                 Route::url($url),
                                 $e->getMessage(),
-                                $type
+                                $type,
                             );
                             return;
                         }
@@ -419,7 +419,7 @@ class Products extends AdminController
                 App::redirect(
                     Route::url($url),
                     $msg,
-                    $type
+                    $type,
                 );
                 break;
         }
@@ -470,7 +470,7 @@ class Products extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
                 Lang::txt('COM_STOREFRONT_NO_ID'),
-                'error'
+                'error',
             );
             return;
         }
@@ -484,13 +484,13 @@ class Products extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
                 $row->getError(),
-                'error'
+                'error',
             );
             return;
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
         );
     }
 
@@ -533,7 +533,7 @@ class Products extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
                 $msg,
-                'error'
+                'error',
             );
             return;
         }
@@ -585,7 +585,7 @@ class Products extends AdminController
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
             $message,
-            $type
+            $type,
         );
     }
 
@@ -598,7 +598,7 @@ class Products extends AdminController
     {
         // Set the redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
         );
     }
 }

@@ -229,7 +229,7 @@ class Migration20130924000009ComMenus extends Base
                     'rgt'              => 0,
                     'home'             => 0,
                     'language'         => '*',
-                    'client_id'        => 0
+                    'client_id'        => 0,
                 ])
                 ->execute();
 
@@ -326,7 +326,7 @@ class Migration20130924000009ComMenus extends Base
                             'level'        => 1,
                             'component_id' => $r->id,
                             'language'     => '*',
-                            'client_id'    => 1
+                            'client_id'    => 1,
                         ])
                         ->execute();
                 }
@@ -464,7 +464,7 @@ class Migration20130924000009ComMenus extends Base
                         ->set([
                             'link'         => $link,
                             'component_id' => $id,
-                            'params'       => json_encode($params)
+                            'params'       => json_encode($params),
                         ])
                         ->where('id', '=', $r->id)
                         ->execute();
@@ -477,7 +477,7 @@ class Migration20130924000009ComMenus extends Base
                 ->set([
                     'type'   => 'alias',
                     'link'   => 'index.php?Itemid=',
-                    'params' => Expression::replace(Expression::column('params'), 'menu_item', 'aliasoptions')
+                    'params' => Expression::replace(Expression::column('params'), 'menu_item', 'aliasoptions'),
                 ])
                 ->where('type', '=', 'menulink')
                 ->execute();

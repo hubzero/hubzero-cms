@@ -31,7 +31,7 @@ class Billboard extends Relational
      * @var array
      **/
     protected $rules = [
-        'name' => 'notempty'
+        'name' => 'notempty',
     ];
 
     /**
@@ -40,7 +40,7 @@ class Billboard extends Relational
      * @var array
      **/
     public $initiate = [
-        'ordering'
+        'ordering',
     ];
 
     /**
@@ -49,7 +49,7 @@ class Billboard extends Relational
      * @var array
      **/
     public $always = [
-        'alias'
+        'alias',
     ];
 
     /**

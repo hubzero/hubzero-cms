@@ -29,11 +29,11 @@ if (User::isGuest()) {
     $forksUrl = Route::url(
         $this->publication->link()
         . '&v=' . $this->publication->versionAlias
-        . '&active=forks'
+        . '&active=forks',
     );
     $forksTitle = Lang::txt(
         'PLG_PUBLICATIONS_FORKS_FORKED_N_TIMES',
-        $this->forks
+        $this->forks,
     );
     ?>
     <a class="btn"

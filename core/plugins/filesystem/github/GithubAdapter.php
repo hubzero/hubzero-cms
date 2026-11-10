@@ -96,7 +96,7 @@ class GithubAdapter implements FilesystemAdapter
         ) {
             throw new \InvalidArgumentException(sprintf(
                 'Given Repository name "%s" should be in the format of "owner/repo"',
-                var_export($repository, true)
+                var_export($repository, true),
             ));
         }
 
@@ -478,7 +478,7 @@ class GithubAdapter implements FilesystemAdapter
                 $this->vendor,
                 $this->package,
                 $this->reference,
-                true
+                true,
             );
         });
 
@@ -541,7 +541,7 @@ class GithubAdapter implements FilesystemAdapter
         return new FileAttributes(
             $entry[self::KEY_PATH],
             isset($entry[self::KEY_SIZE]) ? (int) $entry[self::KEY_SIZE] : null,
-            $this->visibilityFromMode($entry)
+            $this->visibilityFromMode($entry),
         );
     }
 
@@ -575,7 +575,7 @@ class GithubAdapter implements FilesystemAdapter
             return $this->client->api('repo')->commits()->all(
                 $this->vendor,
                 $this->package,
-                ['path' => $path]
+                ['path' => $path],
             );
         });
     }

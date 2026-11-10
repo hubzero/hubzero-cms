@@ -41,7 +41,7 @@ foreach ($this->badges as $badge) {
 $tags_list = Event::trigger('hubzero.onGetMultiEntry', [['tags', 'tags', 'actags', '', implode(",", $t)]]);
 $badges_list = Event::trigger(
     'hubzero.onGetMultiEntry',
-    [['tags', 'badges', 'actags1', '', implode(",", $b)]]
+    [['tags', 'badges', 'actags1', '', implode(",", $b)]],
 );
 
 //get the referrer
@@ -221,7 +221,7 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
                                         $authorId = $this->escape($this->author->id);
                                         $removeUrl = Route::url(
                                             $authorBase . '&task=remove&author='
-                                            . $this->author->id . '&' . $token . '=1'
+                                            . $this->author->id . '&' . $token . '=1',
                                         );
                                         ?>
                                         <input type="hidden"

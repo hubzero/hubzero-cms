@@ -65,8 +65,8 @@ class Sql extends Element
                 'list.attr'   => 'class="inputbox"',
                 'list.select' => $value,
                 'option.key'  => $key,
-                'option.text' => $val
-            ]
+                'option.text' => $val,
+            ],
         );
     }
 }

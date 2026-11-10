@@ -62,9 +62,9 @@ class Migration20140815153140ComCourses extends Base
                     ->select(
                         Expression::percent(
                             Expression::count('pfa.id'),
-                            Expression::count('pfr2.id')
+                            Expression::count('pfr2.id'),
                         ),
-                        'score'
+                        'score',
                     )
                     ->from('#__courses_form_respondents', 'pfr')
                     ->leftJoin('#__courses_form_latest_responses_view AS pfr2', 'pfr2.respondent_id', 'pfr.id')

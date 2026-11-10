@@ -51,7 +51,7 @@ class Json implements Adapter
             'json',
             'text/x-json',
             'text/json',
-            'application/json'
+            'application/json',
         ]);
     }
 

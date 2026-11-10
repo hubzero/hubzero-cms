@@ -173,7 +173,7 @@ class Mycontributions extends Module
                             FROM `#__support_tickets` as st WHERE st.open=1 AND type=0
                             AND st.group_id='$group'
                             ORDER BY created DESC
-                            LIMIT $limit"
+                            LIMIT $limit",
                         );
                         $tickets = $database->loadObjectList();
                         if ($database->getErrorNum()) {
@@ -302,7 +302,7 @@ class Mycontributions extends Module
                 $this->show_questions,
                 $this->show_wishes,
                 $this->show_tickets,
-                $this->limit_tools
+                $this->limit_tools,
             );
         }
 

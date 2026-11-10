@@ -71,56 +71,56 @@ class Members extends AdminController
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             )),
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'registerDate'
+                'registerDate',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'DESC'
+                'DESC',
             ),
             'registerDate' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.registerDate',
                 'registerDate',
-                ''
+                '',
             ),
             'activation' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.activation',
                 'activation',
                 0,
-                'int'
+                'int',
             ),
             'state' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.state',
                 'state',
-                '*'
+                '*',
             ),
             'access' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.access',
                 'access',
                 0,
-                'int'
+                'int',
             ),
             'approved' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.approved',
                 'approved',
-                '*'
+                '*',
             ),
             'group_id' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.group_id',
                 'group_id',
                 0,
-                'int'
+                'int',
             ),
             'range' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.range',
                 'range',
-                ''
-            )
+                '',
+            ),
         ];
 
         // Build query
@@ -432,7 +432,7 @@ class Members extends AdminController
         $name = [
             $givenTrimmed,
             $middleTrimmed,
-            $surTrimmed
+            $surTrimmed,
         ];
         $name = implode(' ', $name);
         $name = \Hubzero\Utility\Sanitize::cleanProperName($name);
@@ -681,7 +681,7 @@ class Members extends AdminController
         if ($return) {
             // return $this->editTask($user);
             App::redirect(
-                Route::url($return, false)
+                Route::url($return, false),
             );
         } else {
             $this->cancelTask();
@@ -1021,14 +1021,14 @@ class Members extends AdminController
         $emailSubject = Lang::txt(
             'COM_MEMBERS_APPROVED_USER_EMAIL_SUBJECT',
             $user->get('name'),
-            Config::get('sitename')
+            Config::get('sitename'),
         );
 
         // Compute the mail body.
         $eview = new \Hubzero\Mail\View([
             'base_path' => dirname(dirname(__DIR__)) . DS . 'site',
             'name'      => 'emails',
-            'layout'    => 'approved_plain'
+            'layout'    => 'approved_plain',
         ]);
         $eview->option     = $this->_option;
         $eview->controller = $this->_controller;
@@ -1049,7 +1049,7 @@ class Members extends AdminController
         $mail
             ->addFrom(
                 Config::get('mailfrom'),
-                Config::get('fromname')
+                Config::get('fromname'),
             )
             ->addTo($user->get('email'))
             ->setSubject($emailSubject);
@@ -1295,7 +1295,7 @@ class Members extends AdminController
         $filters = [
             'limit'  => 20,
             'start'  => 0,
-            'search' => strtolower(trim(Request::getString('value', '')))
+            'search' => strtolower(trim(Request::getString('value', ''))),
         ];
 
         // Fetch results
@@ -1384,35 +1384,35 @@ class Members extends AdminController
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.debug.search',
                 'search',
-                ''
+                '',
             )),
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.debug.sort',
                 'filter_order',
-                'lft'
+                'lft',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.debug.sortdir',
                 'filter_order_Dir',
-                'ASC'
+                'ASC',
             ),
             'level_start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.debug.filter_level_start',
                 'filter_level_start',
                 0,
-                'int'
+                'int',
             ),
             'level_end' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.debug.filter_level_end',
                 'filter_level_end',
                 0,
-                'int'
+                'int',
             ),
             'component' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.debug.filter_component',
                 'filter_component',
-                ''
-            )
+                '',
+            ),
         ];
 
         if ($filters['level_end'] > 0 && $filters['level_end'] < $filters['level_start']) {
@@ -1593,7 +1593,7 @@ class Members extends AdminController
                 'min'           => (isset($element->field_options->min) ? (int) $element->field_options->min : 0),
                 'max'           => (isset($element->field_options->max) ? (int) $element->field_options->max : 0),
                 'default_value' => (isset($element->field_options->value) ? (string) $element->field_options->value : ''),
-                'placeholder'   => (isset($element->field_options->placeholder) ? (string) $element->field_options->placeholder : '')
+                'placeholder'   => (isset($element->field_options->placeholder) ? (string) $element->field_options->placeholder : ''),
             ]);
 
             if ($field->get('type') == 'dropdown') {
@@ -1647,7 +1647,7 @@ class Members extends AdminController
                         'value'      => (isset($opt->value)   ? (string) $opt->value : ''),
                         'checked'    => (isset($opt->checked) ? (int) $opt->checked : 0),
                         'ordering'   => ($k + 1),
-                        'dependents' => json_encode($dependents)
+                        'dependents' => json_encode($dependents),
                     ]);
 
                     if (!$option->save()) {
@@ -1681,7 +1681,7 @@ class Members extends AdminController
         if ($this->getTask() == 'applyprofile') {
             // Redirect, instead of falling through, to avoid caching issues
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=profile', false)
+                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=profile', false),
             );
         }
 

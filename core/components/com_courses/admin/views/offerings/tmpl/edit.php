@@ -123,7 +123,7 @@ $this->css();
                                     'calendar',
                                     'fields[publish_up]',
                                     $pubUp,
-                                    ['id' => 'publish_up']
+                                    ['id' => 'publish_up'],
                                 );
                                 ?>
                             <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_STARTS_HINT'); ?></span>
@@ -140,7 +140,7 @@ $this->css();
                                     'calendar',
                                     'fields[publish_down]',
                                     $pubDown,
-                                    ['id' => 'publish_down']
+                                    ['id' => 'publish_down'],
                                 );
                                 ?>
                             <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_ENDS_HINT'); ?></span>
@@ -190,7 +190,7 @@ $this->css();
                         <?php
                             $routeUrl = Route::url(
                                 'index.php?option=' . $this->option  . '&controller=logo&task=upload&type=offering&id='
-                                . $this->row->get('id') . '&no_html=1&' . Session::getFormToken() . '=1'
+                                . $this->row->get('id') . '&no_html=1&' . Session::getFormToken() . '=1',
                             );
                         ?>
                         <div
@@ -201,7 +201,7 @@ $this->css();
                                 <?php
                                     $routeUrl = Route::url(
                                         'index.php?option=' . $this->option  . '&controller=logo&tmpl=component&file='
-                                        . $logo . '&type=offering&id=' . $this->row->get('id')
+                                        . $logo . '&type=offering&id=' . $this->row->get('id'),
                                     );
                                 ?>
                                 <iframe
@@ -266,7 +266,7 @@ $this->css();
                                                 'index.php?option=' . $this->option
                                                 . '&controller=logo&tmpl=component&task=remove&currentfile=' . $logo
                                                 . '&type=offering&id=' . $this->row->get('id') . '&'
-                                                . Session::getFormToken() . '=1'
+                                                . Session::getFormToken() . '=1',
                                             );
                                         ?>
                                         <?php
@@ -353,7 +353,7 @@ $this->css();
                     $param = new \Hubzero\Html\Parameter(
                         (is_object($data) ? $data->toString() : $data),
                         PATH_CORE . DS . 'plugins' . DS . 'courses' . DS . $plugin['name'] . DS . $plugin['name']
-                            . '.xml'
+                            . '.xml',
                     );
                     $out = $param->render('params', 'onOfferingEdit');
                     if (!$out) {

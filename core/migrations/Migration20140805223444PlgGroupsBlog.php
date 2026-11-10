@@ -56,7 +56,7 @@ class Migration20140805223444PlgGroupsBlog extends Base
                 if (!App::get('filesystem')->makeDirectory($newBlogUploadFolder)) {
                     $this->setError(
                         'Failed to create blog uploads folder. Try running again with elevated privileges.',
-                        'warning'
+                        'warning',
                     );
                     return false;
                 }
@@ -72,7 +72,7 @@ class Migration20140805223444PlgGroupsBlog extends Base
                 if (!App::get('filesystem')->move($from, $to)) {
                     $this->setError(
                         'Failed to move files to blog uploads folder. Try running again with elevated privileges.',
-                        'warning'
+                        'warning',
                     );
                     return false;
                 }
@@ -89,7 +89,7 @@ class Migration20140805223444PlgGroupsBlog extends Base
             if (!$res) {
                 $this->setError(
                     'Failed to delete original blog uploads folder. Try running again with elevated privileges.',
-                    'warning'
+                    'warning',
                 );
                 return false;
             }

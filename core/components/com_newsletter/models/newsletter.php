@@ -41,7 +41,7 @@ class Newsletter extends Relational
      */
     protected $rules = [
         'name'     => 'notempty',
-        'template' => 'notempty'
+        'template' => 'notempty',
     ];
 
     /**
@@ -53,7 +53,7 @@ class Newsletter extends Relational
         'modified',
         'modified_by',
         'alias',
-        'plain_content'
+        'plain_content',
     ];
 
     /**
@@ -63,7 +63,7 @@ class Newsletter extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**
@@ -459,7 +459,7 @@ class Newsletter extends Relational
                     $view->object = $content;
                     $view->addTemplatePath(
                         Component::path('com_newsletter') . DS . 'admin' . DS . 'views'
-                        . DS . 'storytemplates' . DS . 'tmpl'
+                        . DS . 'storytemplates' . DS . 'tmpl',
                     );
 
                     // Oh, what's this a buffer hijack?

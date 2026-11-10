@@ -128,7 +128,7 @@ class Admin
             ' FROM #__usergroups AS a' .
             ' LEFT JOIN ' . $db->quoteName('#__usergroups') . ' AS b ON a.lft > b.lft AND a.rgt < b.rgt' .
             ' GROUP BY a.id, a.title, a.lft, a.rgt' .
-            ' ORDER BY a.lft ASC'
+            ' ORDER BY a.lft ASC',
         );
         $options = $db->loadObjectList();
 
@@ -177,7 +177,7 @@ class Admin
         $class = null,
         $size = null,
         $onchange = null,
-        $readonly = false
+        $readonly = false,
     ) {
         // Initialize variables.
         $html = [];

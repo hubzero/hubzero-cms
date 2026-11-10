@@ -180,14 +180,14 @@ class Installer
                 echo json_encode([
                     'error' => 'Security verification failed',
                     'redirect' => '?step=verify',
-                    'security_error' => true
+                    'security_error' => true,
                 ]);
                 exit;
             }
             if ($this->isInstalled()) {
                 $this->security->logSecurityEvent(
                     'AJAX_AFTER_INSTALL',
-                    'Refused an installer action on an installed site'
+                    'Refused an installer action on an installed site',
                 );
                 header('Content-Type: application/json');
                 http_response_code(409);
@@ -237,11 +237,11 @@ class Installer
             if ($this->isInstalled()) {
                 $this->security->logSecurityEvent(
                     'POST_AFTER_INSTALL',
-                    'Refused a form submission for step "' . $this->currentStep . '" on an installed site'
+                    'Refused a form submission for step "' . $this->currentStep . '" on an installed site',
                 );
                 $this->addMessage(
                     'This site is already installed. The installer is read-only.',
-                    'error'
+                    'error',
                 );
                 $this->render();
                 return;
@@ -320,7 +320,7 @@ class Installer
                 echo json_encode([
                     'success' => false,
                     'error' => $validation['error'],
-                    'security_error' => true
+                    'security_error' => true,
                 ]);
                 exit;
             }
@@ -812,7 +812,7 @@ class Installer
                 $this->buildMysqlDsn($config),
                 $config['user'] ?? '',
                 $config['password'] ?? '',
-                [\PDO::ATTR_TIMEOUT => $timeout]
+                [\PDO::ATTR_TIMEOUT => $timeout],
             );
 
             // The connection is lazy: the constructor stores the credentials
@@ -969,7 +969,7 @@ class Installer
             if (!$hasPrivileges) {
                 return [
                     'success' => false,
-                    'message' => 'User does not have CREATE DATABASE privileges'
+                    'message' => 'User does not have CREATE DATABASE privileges',
                 ];
             }
 
@@ -1031,7 +1031,7 @@ class Installer
             // Create database
             $dbName = preg_replace('/[^a-zA-Z0-9_]/', '', $newDb);
             $connection->exec(
-                "CREATE DATABASE IF NOT EXISTS `{$dbName}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
+                "CREATE DATABASE IF NOT EXISTS `{$dbName}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci",
             );
 
             // Create user and grant privileges
@@ -1077,7 +1077,7 @@ class Installer
 
             return [
                 'success' => true,
-                'message' => "Database '{$dbName}' and user '{$userName}' created successfully!"
+                'message' => "Database '{$dbName}' and user '{$userName}' created successfully!",
             ];
         } catch (PDOException $e) {
             $msg = $e->getMessage();
@@ -1229,7 +1229,7 @@ class Installer
             'cd %s && %s %s migration run -f --no-ansi 2>&1',
             escapeshellarg(PATH_ROOT),
             PhpCli::find(),
-            escapeshellarg($musePath)
+            escapeshellarg($musePath),
         );
 
         // Open process with pipes
@@ -1271,7 +1271,7 @@ class Installer
 
         $this->sendSSE('done', json_encode([
             'success' => $success,
-            'returnCode' => $returnCode
+            'returnCode' => $returnCode,
         ]));
     }
 

@@ -97,16 +97,16 @@ foreach ($roles as $role) {
                                         $data[$j++] = [
                                             $offering->get('id'),
                                             $section->get('id'),
-                                            $section->get('title')
+                                            $section->get('title'),
                                         ];
                                     }
                                     $val = $this->escape(
-                                        stripslashes($offering->get('id'))
+                                        stripslashes($offering->get('id')),
                                     );
                                     $selected = ($offering->get('id') == $this->row->get('offering_id'))
                                         ? ' selected="selected"' : '';
                                     $optLabel = $this->escape(
-                                        stripslashes($offering->get('alias'))
+                                        stripslashes($offering->get('alias')),
                                     );
                                     ?>
                                 <option value="<?php echo $val; ?>"<?php echo $selected; ?>>
@@ -145,7 +145,7 @@ foreach ($roles as $role) {
                         'calendar',
                         'fields[enrolled]',
                         $this->row->get('enrolled'),
-                        ['id' => 'field-enrolled']
+                        ['id' => 'field-enrolled'],
                     ); ?>
                 </div>
                 <div class="input-wrap">

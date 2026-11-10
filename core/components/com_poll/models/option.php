@@ -42,7 +42,7 @@ class Option extends Relational
      * @var  array
      */
     protected $rules = [
-        'poll_id' => 'positive|nonzero'
+        'poll_id' => 'positive|nonzero',
     ];
 
     /**

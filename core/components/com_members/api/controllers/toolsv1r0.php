@@ -95,7 +95,7 @@ class Toolsv1r0 extends ApiController
                 'started'    => $session->start,
                 'accessed'   => $session->accesstime,
                 'owner'      => ($result->get('username') == $session->username) ? 1 : 0,
-                'ready-only' => ($session->readonly == 'No') ? 0 : 1
+                'ready-only' => ($session->readonly == 'No') ? 0 : 1,
             ];
             $results[] = $r;
         }

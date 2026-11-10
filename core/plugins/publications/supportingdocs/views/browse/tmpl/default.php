@@ -34,7 +34,7 @@ $this->css();
         $list = $attModel->listItems(
             $elements,
             $this->publication,
-            $this->authorized
+            $this->authorized,
         );
         echo $list ? $list : '<p class="noresults">' . Lang::txt('PLG_PUBLICATION_SUPPORTINGDOCS_NONE_FOUND') . '</p>';
     } else {

@@ -53,7 +53,7 @@ class MessageHash extends Relational
      * @var  array
      */
     protected $rules = [
-        'hash' => 'notempty'
+        'hash' => 'notempty',
     ];
 
     /**

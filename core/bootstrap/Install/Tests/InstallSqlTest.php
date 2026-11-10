@@ -143,7 +143,7 @@ class InstallSqlTest extends Basic
                             '%s: two rows with %s = %s',
                             $table,
                             implode(', ', $key),
-                            $signature
+                            $signature,
                         );
                     }
 
@@ -201,8 +201,8 @@ class InstallSqlTest extends Basic
                         $table,
                         $i + 1,
                         $row['#values'],
-                        $row['#columns']
-                    )
+                        $row['#columns'],
+                    ),
                 );
             }
         }
@@ -234,7 +234,7 @@ class InstallSqlTest extends Basic
 
                     $this->assertNotNull(
                         $row[$column],
-                        sprintf('%s row %d gives NULL for %s, which is NOT NULL', $table, $i + 1, $column)
+                        sprintf('%s row %d gives NULL for %s, which is NOT NULL', $table, $i + 1, $column),
                     );
                 }
             }
@@ -258,12 +258,12 @@ class InstallSqlTest extends Basic
 
         $this->assertDirectoryExists(
             $this->templates() . '/' . $template,
-            'the default template style names "' . $template . '", which is not in core/templates'
+            'the default template style names "' . $template . '", which is not in core/templates',
         );
 
         $this->assertFileExists(
             $this->templates() . '/' . $template . '/index.php',
-            $template . ' has no index.php to draw a page with'
+            $template . ' has no index.php to draw a page with',
         );
     }
 
@@ -281,7 +281,7 @@ class InstallSqlTest extends Basic
         $this->assertCount(
             1,
             $home,
-            'a hub needs one front page, and this one has ' . count($home)
+            'a hub needs one front page, and this one has ' . count($home),
         );
     }
 
@@ -328,7 +328,7 @@ class InstallSqlTest extends Basic
                 $this->assertStringNotContainsStringIgnoringCase(
                     $phrase,
                     $body,
-                    sprintf('"%s" still says "%s"', isset($row['title']) ? $row['title'] : '?', $phrase)
+                    sprintf('"%s" still says "%s"', isset($row['title']) ? $row['title'] : '?', $phrase),
                 );
             }
         }
@@ -365,8 +365,8 @@ class InstallSqlTest extends Basic
                 sprintf(
                     '"%s" uses hubShortURL, which renders as the whole address;'
                     . ' hubShortName is the hub\'s name',
-                    isset($row['title']) ? $row['title'] : '?'
-                )
+                    isset($row['title']) ? $row['title'] : '?',
+                ),
             );
         }
     }

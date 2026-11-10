@@ -21,7 +21,7 @@ Toolbar::custom(
     'save',
     'optimize',
     'COM_SEARCH_SOLR_OPTIMIZE',
-    false
+    false,
 );
 Toolbar::spacer();
 Toolbar::preferences($this->option, '550');

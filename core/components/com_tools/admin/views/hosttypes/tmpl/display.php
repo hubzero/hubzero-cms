@@ -29,21 +29,21 @@ $sortName = Html::grid(
     'COM_TOOLS_COL_NAME',
     'name',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 $sortBit = Html::grid(
     'sort',
     'COM_TOOLS_COL_BIT',
     'value',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 $sortDesc = Html::grid(
     'sort',
     'COM_TOOLS_COL_DESCRIPTION',
     'description',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 ?>
 <form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
@@ -70,7 +70,7 @@ $sortDesc = Html::grid(
                     echo $this->pagination(
                         $this->total,
                         $this->filters['start'],
-                        $this->filters['limit']
+                        $this->filters['limit'],
                     );
                     ?>
                 </td>
@@ -90,7 +90,7 @@ if ($this->rows) {
         $editUrl = Route::url(
             'index.php?option=' . $this->option
             . '&controller=' . $this->controller
-            . '&task=edit&item=' . $row->name
+            . '&task=edit&item=' . $row->name,
         );
         ?>
             <tr>

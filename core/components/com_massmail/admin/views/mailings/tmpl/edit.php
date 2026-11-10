@@ -210,8 +210,8 @@ $this->js('edit.js', 'com_massmail');
                             null,
                             null,
                             [
-                                'toolbar' => ['bold', 'italic', 'link', 'bulletedList', 'numberedList', '|', 'undo', 'redo']
-                            ]
+                                'toolbar' => ['bold', 'italic', 'link', 'bulletedList', 'numberedList', '|', 'undo', 'redo'],
+                            ],
                         );
                         ?>
                         <input type="file" name="attachment[]" id="field-attachment" multiple="multiple" hidden />

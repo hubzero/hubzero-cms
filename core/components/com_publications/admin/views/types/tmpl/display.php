@@ -21,7 +21,7 @@ $label = Lang::txt('COM_PUBLICATIONS_PUBLICATIONS');
 $label2 = Lang::txt('COM_PUBLICATIONS_MASTER_TYPES');
 Toolbar::title(
     $label . ': ' . $label2,
-    'publications'
+    'publications',
 );
 if ($canDo->get('core.create')) {
     Toolbar::addNew();
@@ -67,7 +67,7 @@ Toolbar::help('types');
                     Lang::txt('COM_PUBLICATIONS_FIELD_CONTRIBUTABLE'),
                     'contributable',
                     $sDir,
-                    $sCol
+                    $sCol,
                 );
                 $ordSort = Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_ORDER'), 'ordering', $sDir, $sCol);
                 ?>
@@ -84,7 +84,7 @@ Toolbar::help('types');
                 $pageNav = $this->pagination(
                     $this->total,
                     $this->filters['start'],
-                    $this->filters['limit']
+                    $this->filters['limit'],
                 );
                 echo $pageNav->render();
                 ?></td>
@@ -127,7 +127,7 @@ Toolbar::help('types');
                     $editUrl = Route::url(
                         'index.php?option=' . $this->option
                         . '&controller=' . $this->controller
-                        . '&task=edit&id=' . $row->id
+                        . '&task=edit&id=' . $row->id,
                     );
                     ?>
                     <a href="<?php echo $editUrl; ?>">

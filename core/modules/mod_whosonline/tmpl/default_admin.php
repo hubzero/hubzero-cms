@@ -78,7 +78,7 @@ $editAuthorized = User::authorise('core.manage', 'com_members');
                                 if ($editAuthorized) :
                                     $editUrl = Route::url(
                                         'index.php?option=com_members&task=edit&id='
-                                        . $row->userid
+                                        . $row->userid,
                                     );
                                     $editTitle = Lang::txt('MOD_WHOSONLINE_EDIT_USER');
                                     $userName = $this->escape($user->get('name'))
@@ -109,7 +109,7 @@ $editAuthorized = User::authorise('core.manage', 'com_members');
                                     $logoutUrl = Route::url(
                                         'index.php?option=com_login&task=logout&uid='
                                         . $row->userid . '&'
-                                        . Session::getFormToken() . '=1'
+                                        . Session::getFormToken() . '=1',
                                     );
                                     ?>
                                     <a class="force-logout"

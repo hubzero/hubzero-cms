@@ -127,7 +127,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
             new CascadePost(),
             new CascadeComment(),
             'id',
-            'post_id'
+            'post_id',
         );
 
         $this->assertFalse($relationship->shouldCascadeOnDelete());
@@ -151,7 +151,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
             new CascadePost(),
             new CascadeComment(),
             'id',
-            'post_id'
+            'post_id',
         );
 
         $relationship->cascadeOnDelete();
@@ -174,7 +174,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
             new CascadePost(),
             new CascadeComment(),
             'id',
-            'post_id'
+            'post_id',
         );
 
         $this->assertFalse($relationship->shouldCascadeOnSave());
@@ -198,7 +198,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
             new CascadePost(),
             new CascadeComment(),
             'id',
-            'post_id'
+            'post_id',
         );
 
         $this->assertFalse($relationship->shouldRemoveOrphans());
@@ -222,7 +222,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
             new CascadePost(),
             new CascadeComment(),
             'id',
-            'post_id'
+            'post_id',
         );
 
         $result = $relationship
@@ -281,7 +281,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
         $this->assertEquals(
             2,
             $result->cnt,
-            'Comments should still exist when cascade is not enabled'
+            'Comments should still exist when cascade is not enabled',
         );
     }
 
@@ -330,7 +330,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
         $this->assertEquals(
             0,
             $result->cnt,
-            'Comments should be deleted when cascade is enabled'
+            'Comments should be deleted when cascade is enabled',
         );
     }
 
@@ -411,7 +411,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
             new CascadePost(),
             new CascadeComment(),
             'id',
-            'post_id'
+            'post_id',
         );
 
         // Enable only delete
@@ -426,7 +426,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
             new CascadePost(),
             new CascadeComment(),
             'id',
-            'post_id'
+            'post_id',
         );
         $relationship2->cascadeOnSave();
 
@@ -497,7 +497,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
             new CascadePost(),
             new CascadeComment(),
             'id',
-            'post_id'
+            'post_id',
         );
 
         // Default: no bulk
@@ -510,7 +510,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
             new CascadePost(),
             new CascadeComment(),
             'id',
-            'post_id'
+            'post_id',
         );
         $relationship2->cascadeOnDelete(true, true);
         $this->assertTrue($relationship2->shouldCascadeOnDelete());
@@ -562,7 +562,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
         $this->assertEquals(
             0,
             $result->cnt,
-            'Bulk cascade delete should remove all comments'
+            'Bulk cascade delete should remove all comments',
         );
     }
 
@@ -636,7 +636,7 @@ class CascadeOperationsTest extends AbstractDriverTestCase
         $this->assertEquals(
             0,
             (int) $row->cnt,
-            'Parent row should be rolled back when cascade save fails'
+            'Parent row should be rolled back when cascade save fails',
         );
     }
 }

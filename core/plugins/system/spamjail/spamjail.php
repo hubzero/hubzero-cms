@@ -30,7 +30,7 @@ class Spamjail extends Plugin
                 'com_login.logout',
                 'com_users.logout',
                 'com_support.tickets.save.index',
-                'com_members.media.download.profiles'
+                'com_members.media.download.profiles',
             ];
 
             $current  = Request::getWord('option', '');

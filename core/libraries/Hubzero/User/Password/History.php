@@ -171,7 +171,7 @@ class History
             "DELETE FROM `#__users_password_history` WHERE user_id= " .
             $db->quote($this->user_id) . " AND passhash = " .
             $db->quote($passhash) . " AND invalidated = " .
-            $db->quote($timestamp) . ";"
+            $db->quote($timestamp) . ";",
         );
 
         if (!$db->query()) {

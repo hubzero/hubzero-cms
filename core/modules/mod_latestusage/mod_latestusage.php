@@ -38,14 +38,14 @@ class Latestusage extends Module
             $udb->setQuery(
                 'SELECT value FROM summary_user_vals WHERE datetime = ' .
                 '(SELECT CAST(MAX(datetime) AS CHAR) FROM summary_user_vals) ' .
-                'AND period = "12" AND colid = "1" AND rowid = "1"'
+                'AND period = "12" AND colid = "1" AND rowid = "1"',
             );
             $this->users = $udb->loadResult();
 
             $udb->setQuery(
                 'SELECT value FROM summary_simusage_vals WHERE datetime = ' .
                 '(SELECT CAST(MAX(datetime) AS CHAR) FROM summary_simusage_vals) ' .
-                'AND period = "12" AND colid = "1" AND rowid = "2"'
+                'AND period = "12" AND colid = "1" AND rowid = "2"',
             );
             $this->sims = $udb->loadResult();
         } else {
@@ -57,13 +57,13 @@ class Latestusage extends Module
 
         $database->setQuery(
             "SELECT COUNT(*) FROM `#__resources` " .
-            "WHERE standalone=1 AND published=1 AND access!=1 AND access!=4"
+            "WHERE standalone=1 AND published=1 AND access!=1 AND access!=4",
         );
         $this->resources = $database->loadResult();
 
         $database->setQuery(
             "SELECT COUNT(*) FROM `#__resources` " .
-            "WHERE standalone=1 AND published=1 AND access!=1 AND access!=4 AND type=7"
+            "WHERE standalone=1 AND published=1 AND access!=1 AND access!=4 AND type=7",
         );
         $this->tools = $database->loadResult();
 

@@ -44,7 +44,7 @@ class Level extends Relational
      * @var  array
      */
     protected $rules = [
-        'title' => 'notempty'
+        'title' => 'notempty',
     ];
 
     /**
@@ -53,7 +53,7 @@ class Level extends Relational
      * @var  array
      */
     public $always = [
-        'label'
+        'label',
     ];
 
     /**

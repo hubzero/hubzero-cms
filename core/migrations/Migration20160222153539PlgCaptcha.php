@@ -30,7 +30,7 @@ class Migration20160222153539PlgCaptcha extends Base
                 ->set([
                     'folder'  => 'captcha',
                     'element' => 'math',
-                    'name'    => 'plg_captcha_math'
+                    'name'    => 'plg_captcha_math',
                 ])
                 ->where('folder', '=', 'hubzero')
                 ->where('element', '=', 'mathcaptcha')
@@ -41,7 +41,7 @@ class Migration20160222153539PlgCaptcha extends Base
                 ->set([
                     'folder'  => 'captcha',
                     'element' => 'image',
-                    'name'    => 'plg_captcha_image'
+                    'name'    => 'plg_captcha_image',
                 ])
                 ->where('folder', '=', 'hubzero')
                 ->where('element', '=', 'imagecaptcha')
@@ -55,7 +55,7 @@ class Migration20160222153539PlgCaptcha extends Base
                 ->set([
                     'folder'  => 'captcha',
                     'element' => 'recaptcha',
-                    'name'    => 'plg_captcha_recaptcha'
+                    'name'    => 'plg_captcha_recaptcha',
                 ])
                 ->where('folder', '=', 'hubzero')
                 ->where('element', '=', 'recaptcha')
@@ -76,7 +76,7 @@ class Migration20160222153539PlgCaptcha extends Base
                 ->set([
                     'folder'  => 'hubzero',
                     'element' => 'mathcaptcha',
-                    'name'    => 'plg_hubzero_mathcaptcha'
+                    'name'    => 'plg_hubzero_mathcaptcha',
                 ])
                 ->where('folder', '=', 'captcha')
                 ->where('element', '=', 'math')
@@ -87,7 +87,7 @@ class Migration20160222153539PlgCaptcha extends Base
                 ->set([
                     'folder'  => 'hubzero',
                     'element' => 'imagecaptcha',
-                    'name'    => 'plg_hubzero_imagecaptcha'
+                    'name'    => 'plg_hubzero_imagecaptcha',
                 ])
                 ->where('folder', '=', 'captcha')
                 ->where('element', '=', 'image')
@@ -98,7 +98,7 @@ class Migration20160222153539PlgCaptcha extends Base
                 ->set([
                     'folder'  => 'hubzero',
                     'element' => 'recaptcha',
-                    'name'    => 'plg_hubzero_recaptcha'
+                    'name'    => 'plg_hubzero_recaptcha',
                 ])
                 ->where('folder', '=', 'captcha')
                 ->where('element', '=', 'recaptcha')

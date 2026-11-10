@@ -29,7 +29,7 @@ Html::behavior('modal');
 $this->css();
 
 $templatesFormAction = Route::url(
-    'index.php?option=com_templates&controller=templates'
+    'index.php?option=com_templates&controller=templates',
 );
 $editBaseUrl = 'index.php?option=com_templates'
     . '&controller=source&task=edit&id=';
@@ -50,7 +50,7 @@ $editBaseUrl = 'index.php?option=com_templates'
                         <?php
                         echo \Components\Templates\Helpers\Utilities::thumb(
                             $this->template->element,
-                            $this->template->client_id
+                            $this->template->client_id,
                         );
                         ?>
 
@@ -86,7 +86,7 @@ $editBaseUrl = 'index.php?option=com_templates'
             <?php
             $copyFormAction = Route::url(
                 'index.php?option=com_templates&controller=templates'
-                . '&task=copy&id=' . $this->template->get('id')
+                . '&task=copy&id=' . $this->template->get('id'),
             );
             $newNameDesc = Lang::txt('COM_TEMPLATES_TEMPLATE_NEW_NAME_DESC');
             $newNameLabel = Lang::txt('COM_TEMPLATES_TEMPLATE_NEW_NAME_LABEL');

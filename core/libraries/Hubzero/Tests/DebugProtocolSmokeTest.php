@@ -155,7 +155,7 @@ namespace Hubzero\Tests {
                 ['HX-Request' => 'true'],
                 'POST',
                 ['htmx_debug' => '1', 'option' => 'com_todo', 'task' => 'add'],
-                ['REQUEST_METHOD' => 'POST', 'REQUEST_URI' => '/todo/?task=add']
+                ['REQUEST_METHOD' => 'POST', 'REQUEST_URI' => '/todo/?task=add'],
             ));
 
             $service = new HtmxService();
@@ -185,7 +185,7 @@ namespace Hubzero\Tests {
                 ['X-Inertia' => 'true'],
                 'GET',
                 ['inertia_debug' => '1', 'option' => 'com_games', 'task' => 'app'],
-                ['REQUEST_URI' => '/games/?task=app']
+                ['REQUEST_URI' => '/games/?task=app'],
             ));
 
             $service = new InertiaService();

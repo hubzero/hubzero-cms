@@ -84,7 +84,7 @@ class Calendar extends Plugin
             'title' => Lang::txt('PLG_GROUPS_CALENDAR'),
             'default_access' => $this->params->get('plugin_access', 'members'),
             'display_menu_tab' => $this->params->get('display_tab', 1),
-            'icon' => 'f073'
+            'icon' => 'f073',
         ];
         return $area;
     }
@@ -110,7 +110,7 @@ class Calendar extends Plugin
         // The output array we're returning
         $arr = [
             'html' => '',
-            'metadata' => []
+            'metadata' => [],
         ];
 
         //get this area details
@@ -162,7 +162,7 @@ class Calendar extends Plugin
                     App::redirect(
                         Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
                         Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
-                        'warning'
+                        'warning',
                     );
                     return;
                 }
@@ -313,7 +313,7 @@ class Calendar extends Plugin
         $eventsCalendarArchive = \Components\Events\Models\Calendar\Archive::getInstance();
         $view->calendars = $eventsCalendarArchive->calendars('list', [
             'scope'     => 'group',
-            'scope_id'  => $this->group->get('gidNumber')
+            'scope_id'  => $this->group->get('gidNumber'),
         ]);
 
         // event calendar model
@@ -327,7 +327,7 @@ class Calendar extends Plugin
             // Deleting a group event sets its state to 0 rather than removing
             // the row, so a list that does not ask for published events lists
             // the deleted ones too
-            'state'    => [1]
+            'state'    => [1],
         ];
 
         // get events count
@@ -369,7 +369,7 @@ class Calendar extends Plugin
         $eventsCalendarArchive = \Components\Events\Models\Calendar\Archive::getInstance();
         $calendars = $eventsCalendarArchive->calendars('list', [
             'scope'     => 'group',
-            'scope_id'  => $this->group->get('gidNumber')
+            'scope_id'  => $this->group->get('gidNumber'),
         ]);
 
         // add each calendar to the sources
@@ -431,7 +431,7 @@ class Calendar extends Plugin
             'state'        => [1],
             'publish_up'   => $start->format('Y-m-d H:i:s'),
             'publish_down' => $end->format('Y-m-d H:i:s'),
-            'non_repeating'    => true
+            'non_repeating'    => true,
         ]);
 
         // get repeating events
@@ -441,7 +441,7 @@ class Calendar extends Plugin
             'calendar_id'  => $calendarId,
             'state'        => [1],
             'publish_up'   => $start->format('Y-m-d H:i:s'),
-            'publish_down' => $end->format('Y-m-d H:i:s')
+            'publish_down' => $end->format('Y-m-d H:i:s'),
         ]);
 
         // merge events with repeating events
@@ -527,7 +527,7 @@ class Calendar extends Plugin
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $this->year . '&month=' . $this->month),
                 Lang::txt('Only group members are allowed to create & edit events.'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -546,7 +546,7 @@ class Calendar extends Plugin
         $view->calendars = $eventsCalendarArchive->calendars('list', [
             'scope'     => 'group',
             'scope_id'  => $this->group->get('gidNumber'),
-            'readonly'  => 0
+            'readonly'  => 0,
         ]);
 
         // do we have access to edit
@@ -557,7 +557,7 @@ class Calendar extends Plugin
                 App::redirect(
                     Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $this->year . '&month=' . $this->month),
                     Lang::txt('You do not have the correct permissions to edit this event.'),
-                    'error'
+                    'error',
                 );
                 return;
             }
@@ -568,7 +568,7 @@ class Calendar extends Plugin
                 App::redirect(
                     Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id=' . $view->event->get('id')),
                     Lang::txt('You cannot edit imported events from remote calendar subscriptions.'),
-                    'error'
+                    'error',
                 );
                 return;
             } else {
@@ -605,7 +605,7 @@ class Calendar extends Plugin
         //load com_events params file for registration fields
         $view->registrationFields = new \Hubzero\Html\Parameter(
             $view->event->get('params'),
-            Component::path('com_events') . DS . 'events.xml'
+            Component::path('com_events') . DS . 'events.xml',
         );
 
         //added need scripts and stylesheets
@@ -639,7 +639,7 @@ class Calendar extends Plugin
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $this->year . '&month=' . $this->month),
                 Lang::txt('Only group members are allowed to create & edit events.'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -696,7 +696,7 @@ class Calendar extends Plugin
                 App::redirect(
                     Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id=' . $existing->get('id')),
                     Lang::txt('You cannot edit imported events from remote calendar subscriptions.'),
-                    'error'
+                    'error',
                 );
                 return;
             }
@@ -828,7 +828,7 @@ class Calendar extends Plugin
         App::redirect(
             Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id=' . $eventsModelEvent->get('id')),
             $message,
-            'passed'
+            'passed',
         );
     }
 
@@ -865,7 +865,7 @@ class Calendar extends Plugin
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $year . '&month=' . $month),
                 Lang::txt('You do not have the correct permissions to delete this event.'),
-                'error'
+                'error',
             );
             return;
         }
@@ -876,7 +876,7 @@ class Calendar extends Plugin
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id=' . $eventsModelEvent->get('id')),
                 Lang::txt('You cannot delete imported events from remote calendar subscriptions.'),
-                'error'
+                'error',
             );
             return;
         }
@@ -892,7 +892,7 @@ class Calendar extends Plugin
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $year . '&month=' . $month),
                 Lang::txt('An error occurred while trying to delete the event. Please try again.'),
-                'error'
+                'error',
             );
             return;
         }
@@ -901,7 +901,7 @@ class Calendar extends Plugin
         App::redirect(
             Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $year . '&month=' . $month),
             Lang::txt('You have successfully deleted the event.'),
-            'passed'
+            'passed',
         );
     }
 
@@ -930,7 +930,7 @@ class Calendar extends Plugin
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $this->year . '&month=' . $this->month),
                 Lang::txt('Event not found.'),
-                'error'
+                'error',
             );
             return;
         }
@@ -1163,7 +1163,7 @@ class Calendar extends Plugin
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $this->year . '&month=' . $this->month),
                 Lang::txt('Event not found.'),
-                'error'
+                'error',
             );
             return;
         }
@@ -1177,7 +1177,7 @@ class Calendar extends Plugin
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id=' . $view->event->get('id')),
                 Lang::txt('This event does not have registration.'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -1361,8 +1361,8 @@ class Calendar extends Plugin
                     'folder'  => 'groups',
                     'element' => 'calendar',
                     'name'    => 'calendar',
-                    'layout'  => 'register_email_admin'
-                ]
+                    'layout'  => 'register_email_admin',
+                ],
             );
             $email->option     = $this->option;
             $email->group      = $this->group;
@@ -1384,7 +1384,7 @@ class Calendar extends Plugin
             //make from array
             $from = [
                 'email' => 'group-event-registration@' . $_SERVER['HTTP_HOST'],
-                'name'  => $register['first_name'] . ' ' . $register['last_name']
+                'name'  => $register['first_name'] . ' ' . $register['last_name'],
             ];
 
             // email from person
@@ -1428,7 +1428,7 @@ class Calendar extends Plugin
         App::redirect(
             Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id=' . $event_id),
             Lang::txt('You have successfully registered for the event.'),
-            'passed'
+            'passed',
         );
     }
 
@@ -1543,7 +1543,7 @@ class Calendar extends Plugin
             'attending_dinner',
             'abstract',
             'comment',
-            'registered'
+            'registered',
         ];
 
         foreach ($registrants as $registrant) {
@@ -1615,7 +1615,7 @@ class Calendar extends Plugin
         $eventsCalendarArchive = \Components\Events\Models\Calendar\Archive::getInstance();
         $calendars = $eventsCalendarArchive->calendars('list', [
             'scope'     => 'group',
-            'scope_id'  => $this->group->get('gidNumber')
+            'scope_id'  => $this->group->get('gidNumber'),
         ]);
 
         //create the view
@@ -1774,7 +1774,7 @@ class Calendar extends Plugin
         App::redirect(
             Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=calendars'),
             Lang::txt('You have successfully added a new calendar.'),
-            'passed'
+            'passed',
         );
     }
 
@@ -1814,7 +1814,7 @@ class Calendar extends Plugin
         App::redirect(
             Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=calendars'),
             Lang::txt('You have successfully deleted the calendar.'),
-            'passed'
+            'passed',
         );
     }
 
@@ -1853,7 +1853,7 @@ class Calendar extends Plugin
         App::redirect(
             Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=calendars'),
             Lang::txt('You have successfully refreshed the calendar.'),
-            'passed'
+            'passed',
         );
     }
 
@@ -1870,7 +1870,7 @@ class Calendar extends Plugin
         $eventsCalendarArchive = \Components\Events\Models\Calendar\Archive::getInstance();
         $calendars = $eventsCalendarArchive->calendars('list', [
             'scope'    => 'group',
-            'scope_id' => $this->group->get('gidNumber')
+            'scope_id' => $this->group->get('gidNumber'),
         ]);
 
         // array to hold refreshed cals

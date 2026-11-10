@@ -24,18 +24,18 @@ $attribs = $this->resource->attribs;
 
 $statusUrl = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=pipeline&task=status&app=' . $this->resource->alias
+    . '&controller=pipeline&task=status&app=' . $this->resource->alias,
 );
 $newUrl = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=pipeline&task=create'
+    . '&controller=pipeline&task=create',
 );
 $formAction = Route::url('index.php?option=' . $this->option);
 $prevLabel = '&lt; ' . ucfirst(Lang::txt('COM_TOOLS_PREVIOUS'));
 $finalizeLabel = ucfirst(Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_FINALIZE')) . ' &gt;';
 $previewSrc = Route::url(
     'index.php?option=com_resources&id=' . $this->resource->id
-    . '&tmpl=component&mode=preview&rev=' . $this->version
+    . '&tmpl=component&mode=preview&rev=' . $this->version,
 );
 
 $this->css('resource.css')

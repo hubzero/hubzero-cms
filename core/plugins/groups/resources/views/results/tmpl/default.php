@@ -39,7 +39,7 @@ if ($this->cats) {
                 'index.php?option=' . $this->option
                 . '&cn=' . $this->group->get('cn')
                 . '&active=resources&area='
-                . urlencode(stripslashes($blob))
+                . urlencode(stripslashes($blob)),
             );
             $catTitle = $this->escape(stripslashes($cat['title']));
             $l = "\t" . '<li' . $a . '>'
@@ -68,10 +68,10 @@ if ($this->cats) {
                             'index.php?option=' . $this->option
                             . '&cn=' . $this->group->get('cn')
                             . '&active=resources&area='
-                            . urlencode(stripslashes($blob))
+                            . urlencode(stripslashes($blob)),
                         );
                         $subTitle = $this->escape(
-                            stripslashes($subcat['title'])
+                            stripslashes($subcat['title']),
                         );
                         $k[] = "\t\t\t" . '<li' . $a . '>'
                             . '<a href="' . $subUrl
@@ -103,10 +103,10 @@ if ($this->cats) {
     <?php
     $draftUrl = Route::url(
         'index.php?option=com_resources&task=draft&group='
-        . $this->group->get('cn')
+        . $this->group->get('cn'),
     );
     $startText = Lang::txt(
-        'PLG_GROUPS_RESOURCES_START_A_CONTRIBUTION'
+        'PLG_GROUPS_RESOURCES_START_A_CONTRIBUTION',
     );
     ?>
     <ul id="page_options">
@@ -123,7 +123,7 @@ if ($this->cats) {
     $formUrl = Route::url(
         'index.php?option=' . $this->option
         . '&cn=' . $this->group->get('cn')
-        . '&active=resources'
+        . '&active=resources',
     );
     ?>
     <form method="get" action="<?php echo $formUrl; ?>">
@@ -133,7 +133,7 @@ if ($this->cats) {
         <div class="container">
             <?php
             $filterLabel = Lang::txt(
-                'JGLOBAL_FILTER_AND_SORT_RESULTS'
+                'JGLOBAL_FILTER_AND_SORT_RESULTS',
             );
             ?>
             <nav class="entries-filters"
@@ -149,10 +149,10 @@ if ($this->cats) {
                             . urlencode(stripslashes($this->active))
                             . '&sort=' . $this->sort
                             . '&access=' . $this->active
-                            . '&limit=' . $this->limit
+                            . '&limit=' . $this->limit,
                         );
                         $catFilterText = Lang::txt(
-                            'PLG_GROUPS_RESOURCES_CATEGORIES'
+                            'PLG_GROUPS_RESOURCES_CATEGORIES',
                         );
                         ?>
                         <li class="filter-categories">
@@ -165,7 +165,7 @@ if ($this->cats) {
                     <?php } ?>
                     <?php
                     $activeArea = urlencode(
-                        stripslashes($this->active)
+                        stripslashes($this->active),
                     );
                     $cn = $this->group->get('cn');
                     $baseParams = 'index.php?option=' . $this->option
@@ -176,10 +176,10 @@ if ($this->cats) {
                         ? ' class="active"' : '';
                     $allUrl = Route::url(
                         $baseParams . '&access=all'
-                        . '&limit=' . $this->limit
+                        . '&limit=' . $this->limit,
                     );
                     $allText = Lang::txt(
-                        'PLG_GROUPS_RESOURCES_ACCESS_ALL'
+                        'PLG_GROUPS_RESOURCES_ACCESS_ALL',
                     );
                     ?>
                     <li>
@@ -194,10 +194,10 @@ if ($this->cats) {
                         ? ' class="active"' : '';
                     $publicUrl = Route::url(
                         $baseParams . '&access=public'
-                        . '&limit=' . $this->limit
+                        . '&limit=' . $this->limit,
                     );
                     $publicText = Lang::txt(
-                        'PLG_GROUPS_RESOURCES_ACCESS_PUBLIC'
+                        'PLG_GROUPS_RESOURCES_ACCESS_PUBLIC',
                     );
                     ?>
                     <li>
@@ -212,10 +212,10 @@ if ($this->cats) {
                         ? ' class="active"' : '';
                     $protectedUrl = Route::url(
                         $baseParams . '&access=protected'
-                        . '&limit=' . $this->limit
+                        . '&limit=' . $this->limit,
                     );
                     $protectedText = Lang::txt(
-                        'PLG_GROUPS_RESOURCES_ACCESS_PROTECTED'
+                        'PLG_GROUPS_RESOURCES_ACCESS_PROTECTED',
                     );
                     ?>
                     <li>
@@ -230,10 +230,10 @@ if ($this->cats) {
                         ? ' class="active"' : '';
                     $privateUrl = Route::url(
                         $baseParams . '&access=private'
-                        . '&limit=' . $this->limit
+                        . '&limit=' . $this->limit,
                     );
                     $privateText = Lang::txt(
-                        'PLG_GROUPS_RESOURCES_ACCESS_PRIVATE'
+                        'PLG_GROUPS_RESOURCES_ACCESS_PRIVATE',
                     );
                     ?>
                     <li>
@@ -248,10 +248,10 @@ if ($this->cats) {
                         ? ' class="active"' : '';
                     $sharedUrl = Route::url(
                         $baseParams . '&access=shared'
-                        . '&limit=' . $this->limit
+                        . '&limit=' . $this->limit,
                     );
                     $sharedText = Lang::txt(
-                        'PLG_GROUPS_RESOURCES_ACCESS_SHARED'
+                        'PLG_GROUPS_RESOURCES_ACCESS_SHARED',
                     );
                     ?>
                     <li>
@@ -279,10 +279,10 @@ if ($this->cats) {
                         $sortBase . '&sort=date'
                         . '&sortdir=' . $dateSortdir
                         . '&access=' . $this->access
-                        . '&limit=' . $this->limit
+                        . '&limit=' . $this->limit,
                     );
                     $dateText = Lang::txt(
-                        'PLG_GROUPS_RESOURCES_SORT_BY_DATE'
+                        'PLG_GROUPS_RESOURCES_SORT_BY_DATE',
                     );
                     ?>
                     <li>
@@ -305,10 +305,10 @@ if ($this->cats) {
                         $sortBase . '&sort=title'
                         . '&sortdir=' . $titleSortdir
                         . '&access=' . $this->access
-                        . '&limit=' . $this->limit
+                        . '&limit=' . $this->limit,
                     );
                     $titleText = Lang::txt(
-                        'PLG_GROUPS_RESOURCES_SORT_BY_TITLE'
+                        'PLG_GROUPS_RESOURCES_SORT_BY_TITLE',
                     );
                     ?>
                     <li>
@@ -334,10 +334,10 @@ if ($this->cats) {
                             $sortBase . '&sort=ranking'
                             . '&sortdir=' . $rankSortdir
                             . '&access=' . $this->access
-                            . '&limit=' . $this->limit
+                            . '&limit=' . $this->limit,
                         );
                         $rankText = Lang::txt(
-                            'PLG_GROUPS_RESOURCES_SORT_BY_RANKING'
+                            'PLG_GROUPS_RESOURCES_SORT_BY_RANKING',
                         );
                         ?>
                         <li>
@@ -363,10 +363,10 @@ if ($this->cats) {
                             $sortBase . '&sort=rating'
                             . '&sortdir=' . $rateSortdir
                             . '&access=' . $this->access
-                            . '&limit=' . $this->limit
+                            . '&limit=' . $this->limit,
                         );
                         $rateText = Lang::txt(
-                            'PLG_GROUPS_RESOURCES_SORT_BY_RATING'
+                            'PLG_GROUPS_RESOURCES_SORT_BY_RATING',
                         );
                         ?>
                         <li>
@@ -413,7 +413,7 @@ if ($this->cats) {
             $pageNav = $this->pagination(
                 $this->total,
                 $this->limitstart,
-                $this->limit
+                $this->limit,
             );
             $pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
             $pageNav->setAdditionalUrlParam('active', 'resources');

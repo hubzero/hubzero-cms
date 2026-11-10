@@ -44,7 +44,7 @@ class Blacklist extends Relational
      * @var  array
      **/
     protected $rules = [
-        'doc_id' => 'notempty'
+        'doc_id' => 'notempty',
     ];
 
     /**
@@ -54,7 +54,7 @@ class Blacklist extends Relational
      **/
     public $initiate = [
         'created_by',
-        'created'
+        'created',
     ];
 
     /**

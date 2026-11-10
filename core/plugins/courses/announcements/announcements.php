@@ -91,7 +91,7 @@ class Announcements extends Plugin
 
             Pathway::append(
                 Lang::txt('PLG_COURSES_' . strtoupper($this->_name)),
-                $this->offering->link() . '&active=' . $this->_name
+                $this->offering->link() . '&active=' . $this->_name,
             );
 
             $action = Request::getWord('action', '');
@@ -178,7 +178,7 @@ class Announcements extends Plugin
         $filters = [
             'search' => Request::getString('q', ''),
             'limit' => Request::getInt('limit', Config::get('list_limit', 25)),
-            'start' => Request::getInt('limitstart', 0)
+            'start' => Request::getInt('limitstart', 0),
         ];
         $filters['start'] = ($filters['limit'] == 0 ? 0 : $filters['start']);
 

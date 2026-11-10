@@ -99,7 +99,7 @@ class Archive extends Obj
                     ->select('entry_id')
                     ->whereIn('state', [
                         Comment::STATE_PUBLISHED,
-                        Comment::STATE_FLAGGED
+                        Comment::STATE_FLAGGED,
                     ]);
             }]);
 
@@ -242,7 +242,7 @@ class Archive extends Obj
                 foreach (['admin', 'manage', 'delete', 'edit', 'edit-state', 'edit-own'] as $option) {
                     $this->config()->set(
                         'access-' . $option . '-entry',
-                        User::authorise('core.' . ($option == 'admin' ? 'admin' : 'manage'), $this->get('id'))
+                        User::authorise('core.' . ($option == 'admin' ? 'admin' : 'manage'), $this->get('id')),
                     );
                 }
 

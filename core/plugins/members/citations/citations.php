@@ -61,7 +61,7 @@ class Citations extends Plugin
             'citations' => Lang::txt('PLG_MEMBERS_CITATIONS'),
             'icon'      => '275D',
             'icon-class' => 'icon-quote-open',
-            'menu'      => $this->params->get('display_tab', 1)
+            'menu'      => $this->params->get('display_tab', 1),
         ];
         return $areas;
     }
@@ -91,7 +91,7 @@ class Citations extends Plugin
 
         $arr = [
             'html'     => '',
-            'metadata' => []
+            'metadata' => [],
         ];
 
         $this->database = App::get('db');
@@ -124,7 +124,7 @@ class Citations extends Plugin
                     App::get('db'),
                     App::get('filesystem'),
                     App::get('config')->get('tmp_path') . DS . 'citations',
-                    App::get('session')->getId()
+                    App::get('session')->getId(),
                 );
                 $this->importer->set('scope', 'member');
                 $this->importer->set('scope_id', User::get('id'));
@@ -246,7 +246,7 @@ class Citations extends Plugin
             'all'    => Lang::txt('PLG_MEMBERS_CITATIONS_ALL'),
             'aff'    => Lang::txt('PLG_MEMBERS_CITATIONS_AFFILIATED'),
             'nonaff' => Lang::txt('PLG_MEMBERS_CITATIONS_NONAFFILIATED'),
-            'member' => Lang::txt('PLG_MEMBERS_CITATIONS_MEMBERCONTRIB')
+            'member' => Lang::txt('PLG_MEMBERS_CITATIONS_MEMBERCONTRIB'),
         ];
 
         // Set default values for required filters for this view.
@@ -269,7 +269,7 @@ class Citations extends Plugin
             'created DESC' => Lang::txt('PLG_MEMBERS_CITATIONS_NEWEST'),
             'title ASC'    => Lang::txt('PLG_MEMBERS_CITATIONS_TITLE'),
             'author ASC'   => Lang::txt('PLG_MEMBERS_CITATIONS_AUTHOR'),
-            'journal ASC'  => Lang::txt('PLG_MEMBERS_CITATIONS_JOURNAL')
+            'journal ASC'  => Lang::txt('PLG_MEMBERS_CITATIONS_JOURNAL'),
         ];
 
         // Handling ids of the the boxes checked for download
@@ -384,7 +384,7 @@ class Citations extends Plugin
                 App::redirect(
                     Route::url($this->member->link() . '&active=' . $this->_name),
                     Lang::txt('PLG_MEMBERS_CITATIONS_OWNER_ONLY'),
-                    'warning'
+                    'warning',
                 );
             }
         }
@@ -553,7 +553,7 @@ class Citations extends Plugin
                 'affiliated' => Request::getInt('affiliated', 0),
                 'fundedby' => Request::getInt('fundedby', 0),
                 'scope' => $scope,
-                'scope_id' => $scopeID
+                'scope_id' => $scopeID,
             ]);
 
         // Datetime fields need to be set to null instead of empty strings
@@ -597,7 +597,7 @@ class Citations extends Plugin
                 $authorObj = \Components\Citations\Models\Author::blank()->set([
                     'cid' => $citation->id,
                     'ordering' => $key,
-                    'author' => $a
+                    'author' => $a,
                 ]);
 
                 $authorObj->save();
@@ -617,7 +617,7 @@ class Citations extends Plugin
         App::redirect(
             Route::url($this->member->link() . '&active=' . $this->_name),
             ($this->getError() ? $this->getError() : Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_SAVED')),
-            ($this->getError() ? 'error' : 'success')
+            ($this->getError() ? 'error' : 'success'),
         );
         return;
     }
@@ -660,14 +660,14 @@ class Citations extends Plugin
                 App::redirect(
                     Route::url($this->member->link() . '&active=' . $this->_name),
                     Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_DELETED'),
-                    'success'
+                    'success',
                 );
                 return;
             } else {
                 App::redirect(
                     Route::url($this->member->link() . '&active=' . $this->_name),
                     Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_NOT_FOUND'),
-                    'error'
+                    'error',
                 );
                 return;
             }
@@ -683,7 +683,7 @@ class Citations extends Plugin
                 App::redirect(
                     Route::url($this->member->link() . '&active=' . $this->_name),
                     Lang::txt('PLG_MEMBERS_CITATIONS_SELECTION_NOT_FOUND'),
-                    'warning'
+                    'warning',
                 );
             }
 
@@ -709,14 +709,14 @@ class Citations extends Plugin
             App::redirect(
                 Route::url($this->member->link() . '&active=' . $this->_name),
                 Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_DELETED'),
-                'success'
+                'success',
             );
             return;
         } else {
             App::redirect(
                 Route::url($this->member->link() . '&active=' . $this->_name),
                 Lang::txt('PLG_MEMBERS_CITATIONS_NO_SUCH_CITATION'),
-                'error'
+                'error',
             );
             return;
         }
@@ -750,7 +750,7 @@ class Citations extends Plugin
             if (($citationFormat->isNew()) || ($citationFormat->style == $name && !$citationFormat->isNew())) {
                 $citationFormat->set([
                     'format' => Request::getString('template'),
-                    'style'  => $name
+                    'style'  => $name,
                 ]);
 
                 // save format
@@ -781,7 +781,7 @@ class Citations extends Plugin
                 App::redirect(
                     Route::url($this->member->link() . '&active=' . $this->_name),
                     Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_NOT_SAVED'),
-                    'error'
+                    'error',
                 );
             }
 
@@ -789,7 +789,7 @@ class Citations extends Plugin
             App::redirect(
                 Route::url($this->member->link() . '&active=' . $this->_name),
                 Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_SAVED'),
-                'success'
+                'success',
             );
             return;
         } else {
@@ -875,7 +875,7 @@ class Citations extends Plugin
                 App::redirect(
                     Route::url($this->member->link() . '&active=' . $this->_name),
                     Lang::txt('PLG_MEMBERS_CITATIONS_OWNER_ONLY'),
-                    'warning'
+                    'warning',
                 );
             }
 
@@ -896,14 +896,14 @@ class Citations extends Plugin
                 App::redirect(
                     Route::url($this->member->link() . '&active=' . $this->_name),
                     Lang::txt($string),
-                    'success'
+                    'success',
                 );
                 return;
             } else {
                 App::redirect(
                     Route::url($this->member->link() . '&active=' . $this->_name),
                     Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_NOT_FOUND'),
-                    'error'
+                    'error',
                 );
                 return;
             }
@@ -918,7 +918,7 @@ class Citations extends Plugin
                 App::redirect(
                     Route::url($this->member->link() . '&active=' . $this->_name),
                     Lang::txt('PLG_MEMBERS_CITATIONS_SELECTION_NOT_FOUND'),
-                    'warning'
+                    'warning',
                 );
             }
 
@@ -953,14 +953,14 @@ class Citations extends Plugin
             App::redirect(
                 Route::url($this->member->link() . '&active=' . $this->_name),
                 Lang::txt($string),
-                'success'
+                'success',
             );
             return;
         } else {
             App::redirect(
                 Route::url($this->member->link() . '&active=' . $this->_name),
                 Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_NOT_FOUND'),
-                'error'
+                'error',
             );
             return;
         }
@@ -979,7 +979,7 @@ class Citations extends Plugin
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->member->link() . '&active=' . $this->_name . $action, false, true))),
             Lang::txt('PLG_MEMBERS_CITATIONS_NOT_LOGGEDIN'),
-            'warning'
+            'warning',
         );
         return;
     }
@@ -1047,7 +1047,7 @@ class Citations extends Plugin
             App::redirect(
                 Route::url($this->member->link() . '&active=' . $this->_name . '&action=import'),
                 Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_MISSING_FILE'),
-                'error'
+                'error',
             );
             return;
         }
@@ -1057,7 +1057,7 @@ class Citations extends Plugin
             App::redirect(
                 Route::url($this->member->link() . '&active=' . $this->_name . '&action=import'),
                 Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_FILE_TOO_BIG'),
-                'error'
+                'error',
             );
             return;
         }
@@ -1076,7 +1076,7 @@ class Citations extends Plugin
             App::redirect(
                 Route::url($this->member->link() . '&active=' . $this->_name . '&action=import'),
                 Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_PROCESS_FAILURE'),
-                'error'
+                'error',
             );
             return;
         }
@@ -1097,7 +1097,7 @@ class Citations extends Plugin
         }
 
         App::redirect(
-            Route::url($this->member->link() . '&active=' . $this->_name . '&action=review')
+            Route::url($this->member->link() . '&active=' . $this->_name . '&action=review'),
         );
     }
 
@@ -1125,7 +1125,7 @@ class Citations extends Plugin
             App::redirect(
                 Route::url($this->member->link() . '&active=' . $this->_name . '&action=import'),
                 Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
-                'error'
+                'error',
             );
             return;
         }
@@ -1186,7 +1186,7 @@ class Citations extends Plugin
             App::redirect(
                 Route::url($this->member->link() . '&active=' . $this->_name . '&action=import'),
                 Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
-                'error'
+                'error',
             );
             return;
         }
@@ -1204,27 +1204,27 @@ class Citations extends Plugin
         // Process
         $results = $this->importer->process(
             $citations_action_attention,
-            $citations_action_no_attention
+            $citations_action_no_attention,
         );
 
         // success message a redirect
         Notify::success(
             Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_RESULTS_SAVED', count($results['saved'])),
-            'plg_citations'
+            'plg_citations',
         );
 
         // if we have citations not getting saved
         if (count($results['not_saved']) > 0) {
             Notify::warning(
                 Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_RESULTS_NOT_SAVED', count($results['not_saved'])),
-                'plg_citations'
+                'plg_citations',
             );
         }
 
         if (count($results['error']) > 0) {
             Notify::error(
                 Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_RESULTS_SAVE_ERROR', count($results['error'])),
-                'plg_citations'
+                'plg_citations',
             );
         }
 
@@ -1241,7 +1241,7 @@ class Citations extends Plugin
 
         //redirect
         App::redirect(
-            Route::url($this->member->link() . '&active=' . $this->_name . '&action=saved')
+            Route::url($this->member->link() . '&active=' . $this->_name . '&action=saved'),
         );
     }
 
@@ -1274,7 +1274,7 @@ class Citations extends Plugin
             App::redirect(
                 Route::url($this->member->link() . '&active=' . $this->_name . '&action=import'),
                 Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
-                'error'
+                'error',
             );
             return;
         }
@@ -1287,7 +1287,7 @@ class Citations extends Plugin
         $view->database = $this->database;
         $view->filters  = [
             'start'  => 0,
-            'search' => ''
+            'search' => '',
         ];
         $view->citations = [];
         $citations = Citation::all()->whereIn('id', $citations_saved);
@@ -1454,7 +1454,7 @@ class Citations extends Plugin
         return [
             'link' => '',
             'text' => '',
-            'icon' => ''
+            'icon' => '',
         ];
     }
 }

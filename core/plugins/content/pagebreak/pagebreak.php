@@ -234,7 +234,7 @@ class Pagebreak extends Plugin
         $articleRoute = \Components\Content\Site\Helpers\Route::getArticleRoute(
             $row->slug,
             $row->catid,
-            $row->language
+            $row->language,
         );
         $row->toc .= '<ul>
             <li>
@@ -301,7 +301,7 @@ class Pagebreak extends Plugin
         $articleRoute = \Components\Content\Site\Helpers\Route::getArticleRoute(
             $row->slug,
             $row->catid,
-            $row->language
+            $row->language,
         );
 
         if ($page < $n - 1) {

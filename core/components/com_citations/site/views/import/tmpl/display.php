@@ -36,7 +36,7 @@ $this->css()
         $step3 = Lang::txt('COM_CITATIONS_IMPORT_STEP3');
         $step3Name = Lang::txt('COM_CITATIONS_IMPORT_STEP3_NAME');
         $uploadUrl = Route::url(
-            'index.php?option=' . $this->option . '&task=import_upload'
+            'index.php?option=' . $this->option . '&task=import_upload',
         );
         ?>
         <ul id="steps">

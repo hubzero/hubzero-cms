@@ -120,10 +120,10 @@ class Slider extends Macro
         $cssPath = 'core/plugins/content/formathtml/macros/macro-assets/slider/slider.css';
         $jsPath = 'core/plugins/content/formathtml/macros/macro-assets/slider/slider.js';
         Document::addStyleSheet(
-            Request::root() . $cssPath . '?t=' . filemtime(__DIR__ . '/macro-assets/slider/slider.css')
+            Request::root() . $cssPath . '?t=' . filemtime(__DIR__ . '/macro-assets/slider/slider.css'),
         );
         Document::addScript(
-            Request::root() . $jsPath . '?t=' . filemtime(__DIR__ . '/macro-assets/slider/slider.js')
+            Request::root() . $jsPath . '?t=' . filemtime(__DIR__ . '/macro-assets/slider/slider.js'),
         );
 
         return $html;

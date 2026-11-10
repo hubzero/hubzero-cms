@@ -75,7 +75,7 @@ $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . 
                     $this->languages,
                     null,
                     'text',
-                    $this->filters['language_client']
+                    $this->filters['language_client'],
                 );
                 ?>
             </select>
@@ -98,7 +98,7 @@ $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . 
                         'COM_LANGUAGES_VIEW_OVERRIDES_TEXT',
                         'text',
                         $listDirn,
-                        $listOrder
+                        $listOrder,
                     );
                     ?>
                 </th>
@@ -135,7 +135,7 @@ $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . 
                         $editUrl = Route::url(
                             'index.php?option=' . $this->option
                             . '&controller=' . $this->controller
-                            . '&task=edit&id=' . $key
+                            . '&task=edit&id=' . $key,
                         );
                         ?>
                         <a id="key[<?php echo $this->escape($key); ?>]" href="<?php echo $editUrl; ?>">

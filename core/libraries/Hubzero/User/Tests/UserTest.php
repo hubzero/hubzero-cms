@@ -27,15 +27,15 @@ class UserTest extends Basic
 	{
 		$this->assertCount(1, User::identityErrors(
 			['username' => 'milanfar@ucsc.edu', 'homeDirectory' => '/home/nanohub/milanfar'],
-			[]
+			[],
 		));
 		$this->assertCount(1, User::identityErrors(
 			['username' => 'milanfar', 'homeDirectory' => '/home/nanohub/mil anfar'],
-			[]
+			[],
 		));
 		$this->assertCount(2, User::identityErrors(
 			['username' => 'a b', 'homeDirectory' => '/home/nanohub/a b'],
-			[]
+			[],
 		));
 	}
 
@@ -48,7 +48,7 @@ class UserTest extends Basic
 	{
 		$this->assertSame([], User::identityErrors(
 			['username' => 'milanfar', 'homeDirectory' => '/home/nanohub/milanfar'],
-			[]
+			[],
 		));
 	}
 
@@ -62,11 +62,11 @@ class UserTest extends Basic
 	{
 		$this->assertSame([], User::identityErrors(
 			['username' => '-123', 'homeDirectory' => ''],
-			[]
+			[],
 		));
 		$this->assertSame([], User::identityErrors(
 			['username' => '-123', 'homeDirectory' => ''],
-			['username' => '-123', 'homeDirectory' => '']
+			['username' => '-123', 'homeDirectory' => ''],
 		));
 	}
 
@@ -79,7 +79,7 @@ class UserTest extends Basic
 	{
 		$this->assertSame([], User::identityErrors(
 			['username' => 'anonUsername_123', 'homeDirectory' => ''],
-			['username' => 'anonUsername_123', 'homeDirectory' => '']
+			['username' => 'anonUsername_123', 'homeDirectory' => ''],
 		));
 	}
 
@@ -107,11 +107,11 @@ class UserTest extends Basic
 
 		$this->assertCount(1, User::identityErrors(
 			['username' => 'milanfar@ucsc.edu', 'homeDirectory' => '/home/nanohub/milanfar'],
-			$old
+			$old,
 		));
 		$this->assertCount(1, User::identityErrors(
 			['username' => 'milanfar', 'homeDirectory' => '/home/nanohub/../etc'],
-			$old
+			$old,
 		));
 	}
 
@@ -125,7 +125,7 @@ class UserTest extends Basic
 	{
 		$this->assertCount(1, User::identityErrors(
 			['username' => 'milanfar', 'homeDirectory' => ''],
-			['username' => 'milanfar', 'homeDirectory' => '/home/nanohub/milanfar']
+			['username' => 'milanfar', 'homeDirectory' => '/home/nanohub/milanfar'],
 		));
 	}
 }

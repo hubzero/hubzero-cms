@@ -34,7 +34,7 @@ class Loader
      */
     protected $paths = [
         'app'  => null,
-        'core' => null
+        'core' => null,
     ];
 
     /**
@@ -140,7 +140,7 @@ class Loader
         }
 
         return file_exists(
-            $this->getPath('core') . DIRECTORY_SEPARATOR . 'system' . DIRECTORY_SEPARATOR . $name . '.php'
+            $this->getPath('core') . DIRECTORY_SEPARATOR . 'system' . DIRECTORY_SEPARATOR . $name . '.php',
         );
     }
 

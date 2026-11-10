@@ -46,7 +46,7 @@ class Script extends Plugin
         'sh',
         'sql',
         'vb',
-        'xml'
+        'xml',
     ];
 
     /**

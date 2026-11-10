@@ -104,7 +104,7 @@ class Collectionsv1r0 extends ApiController
         $collection = [
             'id'         => $collection->id,
             'name'       => $collection->name,
-            'billboards' => $billboards->toArray()
+            'billboards' => $billboards->toArray(),
         ];
 
         $this->send(['collection' => $collection]);

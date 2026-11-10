@@ -45,7 +45,7 @@ class Citations extends Plugin
             'title'   => Lang::txt('PLG_TAGS_CITATIONS'),
             'total'   => 0,
             'results' => null,
-            'sql'     => ''
+            'sql'     => '',
         ];
 
         if (empty($tags)) {
@@ -177,7 +177,7 @@ class Citations extends Plugin
             $html .= '<a href="' . Route::url('index.php?option=com_citations&task=browse&type=' . $row->type
                 . '&year=' . $row->year . '&search=' . \Hubzero\Utility\Str::truncate(
                     \Hubzero\Utility\Sanitize::stripAll(stripslashes($row->title)),
-                    50
+                    50,
                 )) . '">';
         }
         $html .= \Hubzero\Utility\Str::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->title)), 200);
@@ -204,7 +204,7 @@ class Citations extends Plugin
             $cc->toObject(),
             null,
             $config->get("citation_coins", 1),
-            $config
+            $config,
         ) . '</p>';
         $html .= "\t" . '</li>' . "\n";
 

@@ -20,7 +20,7 @@ $task = Request::getCmd('task', '');
             <?php $cls = (!$task) ? ' class="active"' : ''; ?>
             <?php $url = Route::url(
                 'index.php?option=' . $this->option
-                . '&controller=' . $this->controller
+                . '&controller=' . $this->controller,
             ); ?>
             <a<?php echo $cls; ?> href="<?php echo $url; ?>">Summary</a>
         </li>
@@ -29,7 +29,7 @@ $task = Request::getCmd('task', '');
             <?php $href = Route::url(
                 'index.php?option=' . $this->option
                 . '&controller=' . $this->controller
-                . '&task=edit'
+                . '&task=edit',
             ); ?>
             <a<?php echo $cls; ?> href="<?php echo $href; ?>">Look up User Balance</a>
         </li>
@@ -38,7 +38,7 @@ $task = Request::getCmd('task', '');
             <?php $href = Route::url(
                 'index.php?option=' . $this->option
                 . '&controller=' . $this->controller
-                . '&task=config'
+                . '&task=config',
             ); ?>
             <a<?php echo $cls; ?> href="<?php echo $href; ?>">Configuration</a>
         </li>
@@ -47,7 +47,7 @@ $task = Request::getCmd('task', '');
             <?php $href = Route::url(
                 'index.php?option=' . $this->option
                 . '&controller=' . $this->controller
-                . '&task=batch'
+                . '&task=batch',
             ); ?>
             <a<?php echo $cls; ?> href="<?php echo $href; ?>">Batch Transaction</a>
         </li>

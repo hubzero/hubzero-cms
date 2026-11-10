@@ -27,7 +27,7 @@ Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . Lang::txt('COM_MEMBERS_MENU_EXP
                 . $this->option
                 . '&controller='
                 . $this->controller
-                . '&task=run&delimiter=,'
+                . '&task=run&delimiter=,',
             );
             ?>
             <a class='permissions button' href="<?php echo $href; ?>">Download CSV of all users</a>

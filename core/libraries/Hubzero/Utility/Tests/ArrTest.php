@@ -29,7 +29,7 @@ class ArrTest extends Basic
             '322',
             55,
             false,
-            'foo'
+            'foo',
         ];
 
         Arr::toInteger($data);
@@ -55,7 +55,7 @@ class ArrTest extends Basic
             '322',
             55,
             false,
-            'foo'
+            'foo',
         ];
 
         $data = new stdClass();
@@ -103,8 +103,8 @@ class ArrTest extends Basic
             'three' => 55,
             'four' => [
                 'a' => 'foo',
-                'b' => 'bar'
-            ]
+                'b' => 'bar',
+            ],
         ];
 
         $data2 = new stdClass();
@@ -112,7 +112,7 @@ class ArrTest extends Basic
         $data2->bar = 'two';
         $data2->lor = [
             'ipsum',
-            'lorem'
+            'lorem',
         ];
 
         $datas = [];
@@ -153,8 +153,8 @@ class ArrTest extends Basic
             'three' => 55,
             'four' => [
                 'a' => 'foo',
-                'b' => 'bar'
-            ]
+                'b' => 'bar',
+            ],
         ];
 
         $data2 = new stdClass();
@@ -162,7 +162,7 @@ class ArrTest extends Basic
         $data2->bar = 'two';
         $data2->lor = [
             'ipsum',
-            'lorem'
+            'lorem',
         ];
         $data2->ipsum = new stdClass();
         $data2->ipsum->dolor = 'mit';
@@ -211,7 +211,7 @@ class ArrTest extends Basic
         $data = [
             'one' => '1',
             'two' => '322',
-            'three' => 55
+            'three' => 55,
         ];
 
         $this->assertTrue(Arr::isAssociative($data), 'Value is an associative array');
@@ -219,7 +219,7 @@ class ArrTest extends Basic
         $data = [
             133,
             675,
-            744
+            744,
         ];
 
         $this->assertFalse(Arr::isAssociative($data), 'Value is not an associative array');
@@ -244,8 +244,8 @@ class ArrTest extends Basic
             'three' => 55,
             'four' => [
                 'a' => 'foo',
-                'b' => 'bar'
-            ]
+                'b' => 'bar',
+            ],
         ];
 
         $result = Arr::toString($data, '=', '&');
@@ -270,10 +270,10 @@ class ArrTest extends Basic
             'three' => 55,
             'four' => [
                 'a' => 'foo',
-                'b' => 'bar'
+                'b' => 'bar',
             ],
             'six' => '!! good123',
-            'seven' => '5.5'
+            'seven' => '5.5',
         ];
 
         $result = Arr::getValue($data, 'one');
@@ -300,7 +300,7 @@ class ArrTest extends Basic
         $this->assertTrue(is_array($result), 'Value is not an array');
         $this->assertEquals($result, [
             'a' => 'foo',
-            'b' => 'bar'
+            'b' => 'bar',
         ]);
 
         $result = Arr::getValue($data, 'five');
@@ -336,12 +336,12 @@ class ArrTest extends Basic
             [
                 'id' => 1,
                 'name' => 'Joe',
-                'age' => 27
+                'age' => 27,
             ],
             [
                 'id' => 2,
                 'name' => 'Susan',
-                'age' => 24
+                'age' => 24,
             ],
         ];
 
@@ -472,17 +472,17 @@ class ArrTest extends Basic
             [
                 'id' => 1,
                 'name' => 'Joe',
-                'age' => 27
+                'age' => 27,
             ],
             [
                 'id' => 2,
                 'name' => 'Susan',
-                'age' => 24
+                'age' => 24,
             ],
             [
                 'id' => 1,
                 'name' => 'Joe',
-                'age' => 27
+                'age' => 27,
             ],
         ];
 
@@ -509,9 +509,9 @@ class ArrTest extends Basic
             [
                 'id' => 1,
                 'name' => 'Joe',
-                'age' => 27
+                'age' => 27,
             ],
-            'name' => 'Mark'
+            'name' => 'Mark',
         ];
 
         $item = new stdClass();
@@ -527,10 +527,10 @@ class ArrTest extends Basic
             'Joe' => [
                 'id' => 1,
                 'name' => 'Joe',
-                'age' => 27
+                'age' => 27,
             ],
             'Mark' => 'name',
-            'Jane' => $item
+            'Jane' => $item,
         ];
 
         $this->assertEquals($result, $expected);
@@ -583,7 +583,7 @@ class ArrTest extends Basic
             $item5,
             $item2,
             $item1,
-            $item4
+            $item4,
         ];
 
         $this->assertEquals($result, $expected);
@@ -601,7 +601,7 @@ class ArrTest extends Basic
             $item4,
             $item5,
             $item2,
-            $item1
+            $item1,
         ];
 
         $this->assertEquals($result, $expected);
@@ -619,7 +619,7 @@ class ArrTest extends Basic
             $item1,
             $item3,
             $item2,
-            $item4
+            $item4,
         ];
 
         $this->assertEquals($result, $expected);

@@ -73,21 +73,21 @@ class Component extends Scaffolding
     {
         $this->output
             ->addOverview(
-                'Create a new component.'
+                'Create a new component.',
             )
             ->addArgument(
                 '-n, --name: component name',
                 'Give the component name. The component name can also be provided
 				as the next word following the command as shown here:
 				"muse scaffolding create component awesome"',
-                'Example: -n=awesome, --name=awesomer'
+                'Example: -n=awesome, --name=awesomer',
             )
             ->addArgument(
                 '--install-dir: installation directory',
                 'Directory in which the component should be installed. Can be helpful
 				when installing a component in some sort of subsite or alternate
 				configuration. Scaffolding with use PATH_CORE as the default.',
-                'Example: --install-dir=site/groups/1987'
+                'Example: --install-dir=site/groups/1987',
             );
     }
 }

@@ -48,7 +48,7 @@ class Latestdiscussions extends Module
                         'scope'    => 'site',
                         'scope_id' => 0,
                         'state'    => Post::STATE_PUBLISHED,
-                        'access'   => User::getAuthorisedViewLevels()
+                        'access'   => User::getAuthorisedViewLevels(),
                     ])
                     ->order('created', 'desc')
                     ->limit(100)
@@ -60,7 +60,7 @@ class Latestdiscussions extends Module
                         'scope'    => 'group',
                         'scope_id' => -1,
                         'state'    => Post::STATE_PUBLISHED,
-                        'access'   => User::getAuthorisedViewLevels()
+                        'access'   => User::getAuthorisedViewLevels(),
                     ])
                     ->order('created', 'desc')
                     ->limit(100)
@@ -73,7 +73,7 @@ class Latestdiscussions extends Module
                         'scope'    => ['site', 'group'],
                         'scope_id' => -1,
                         'state'    => Post::STATE_PUBLISHED,
-                        'access'   => User::getAuthorisedViewLevels()
+                        'access'   => User::getAuthorisedViewLevels(),
                     ])
                     ->order('created', 'desc')
                     ->limit(100)
@@ -134,7 +134,7 @@ class Latestdiscussions extends Module
                     'scope'    => ['site', 'group'],
                     'scope_id' => -1,
                     'state'    => Post::STATE_PUBLISHED,
-                    'access'   => User::getAuthorisedViewLevels()
+                    'access'   => User::getAuthorisedViewLevels(),
                 ])
                 ->whereIn('id', $t)
                 ->order('created', 'desc')

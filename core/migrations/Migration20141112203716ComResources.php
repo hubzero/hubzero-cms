@@ -33,7 +33,7 @@ class Migration20141112203716ComResources extends Base
                 $schema->addUniqueIndex(
                     '#__author_assoc',
                     'uidx_subtable_subid_authorid',
-                    ['subtable', 'subid', 'authorid']
+                    ['subtable', 'subid', 'authorid'],
                 );
             }
 

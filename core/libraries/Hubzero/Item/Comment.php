@@ -46,7 +46,7 @@ class Comment extends Relational
      * @var  array
      */
     protected $parsed = [
-        'content'
+        'content',
     ];
 
     /**
@@ -57,7 +57,7 @@ class Comment extends Relational
     protected $rules = [
         'content'   => 'notempty',
         'item_id'   => 'positive|nonzero',
-        'item_type' => 'notempty'
+        'item_type' => 'notempty',
     ];
 
     /**
@@ -67,7 +67,7 @@ class Comment extends Relational
      **/
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**
@@ -78,7 +78,7 @@ class Comment extends Relational
     public $always = [
         'modified',
         'modified_by',
-        'item_type'
+        'item_type',
     ];
 
     /**

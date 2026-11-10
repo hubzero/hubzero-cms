@@ -18,5 +18,5 @@ $pubsLabel = Lang::txt('COM_PUBLICATIONS_PUBLICATIONS');
 $adminLabel = Lang::txt('COM_PUBLICATIONS_PUBLICATIONS_ADMIN_CONTROLS');
 Toolbar::title(
     '<a href="' . $link . '">' . $pubsLabel . '</a>: ' . $adminLabel,
-    'publications'
+    'publications',
 );

@@ -75,7 +75,7 @@ class Main extends WikiMacro
                 $g = \Components\Wiki\Models\Page::oneByPath(
                     ($scope ? $scope . '/' : '') . $page,
                     $this->domain,
-                    $this->domain_id
+                    $this->domain_id,
                 );
             }
             if (!$g->get('id')) {

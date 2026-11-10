@@ -43,7 +43,7 @@ class Profile extends Relational
      */
     protected $rules = [
         'profile_key' => 'notempty',
-        'user_id'     => 'positive|nonzero'
+        'user_id'     => 'positive|nonzero',
     ];
 
     /**
@@ -53,7 +53,7 @@ class Profile extends Relational
      */
     public $initiate = [
         'ordering',
-        'access'
+        'access',
     ];
 
     /**

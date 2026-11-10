@@ -119,13 +119,13 @@ class OneToManyThrough extends OneToMany
                         $this->associativeTable,
                         $this->model->getQualifiedFieldName($this->localKey),
                         $this->associativeLocal,
-                        'LEFT OUTER'
+                        'LEFT OUTER',
                     )
                     ->join(
                         $this->related->getTableName(),
                         $this->associativeRelated,
                         $this->related->getQualifiedFieldName($this->relatedKey),
-                        'LEFT OUTER'
+                        'LEFT OUTER',
                     );
 
         return $this;
@@ -146,7 +146,7 @@ class OneToManyThrough extends OneToMany
                       ->join(
                           $this->associativeTable,
                           $this->related->getQualifiedFieldName($this->relatedKey),
-                          $this->associativeRelated
+                          $this->associativeRelated,
                       );
 
         return $this;

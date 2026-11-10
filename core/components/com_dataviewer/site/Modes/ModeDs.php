@@ -75,8 +75,8 @@ class ModeDs
                         'link_title' => 'Click here to update or remove this record',
                         'popup' => [
                             'window' => 'Edit_Record',
-                            'features' => 'width=1175px,resizable,scrollbars,status'
-                        ]
+                            'features' => 'width=1175px,resizable,scrollbars,status',
+                        ],
                     ];
                 }
 

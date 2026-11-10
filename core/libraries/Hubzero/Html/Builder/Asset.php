@@ -51,7 +51,7 @@ class Asset
                     $strip,
                     $strip . '_' . $browser,
                     $strip . '_' . $browser . '_' . $major,
-                    $strip . '_' . $browser . '_' . $major . '_' . $minor
+                    $strip . '_' . $browser . '_' . $major . '_' . $minor,
                 ];
             } else {
                 $potential = [$strip];
@@ -270,7 +270,7 @@ class Asset
         $relative = false,
         $path_only = false,
         $detect_browser = true,
-        $detect_debug = true
+        $detect_debug = true,
     ) {
         $includes = self::includeRelativeFiles('css', $file, $relative, $detect_browser, $detect_debug);
 
@@ -312,7 +312,7 @@ class Asset
         $detect_browser = true,
         $detect_debug = true,
         $defer = false,
-        $async = false
+        $async = false,
     ) {
         if ($framework) {
             Behavior::framework();
@@ -360,7 +360,7 @@ class Asset
         foreach ($paths as $path) {
             if (file_exists($path)) {
                 $atts = [
-                    'class="icn icn-' . $symbol . '"'
+                    'class="icn icn-' . $symbol . '"',
                 ];
 
                 if ($ariahidden) {

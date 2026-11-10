@@ -178,7 +178,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 $joinSql,
                 $whereSql,
                 $groupSql,
-                $havingSql
+                $havingSql,
             );
 
             $allBindings = array_merge($allBindings, $this->getBindings());
@@ -460,7 +460,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
 
         $this->from[] = [
             'table' => $table,
-            'as'    => $as
+            'as'    => $as,
         ];
     }
 
@@ -490,7 +490,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             'alias' => $alias,
             'left'  => $leftKey,
             'right' => $rightKey,
-            'type'  => $type
+            'type'  => $type,
         ];
     }
 
@@ -756,7 +756,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                     $field->field_type,
                     $field->field_sub_type ?? null,
                     $field->field_length ?? null,
-                    $field->field_scale ?? null
+                    $field->field_scale ?? null,
                 );
             }
         } else {
@@ -767,7 +767,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                     $field->field_type,
                     $field->field_sub_type ?? null,
                     $field->field_length ?? null,
-                    $field->field_scale ?? null
+                    $field->field_scale ?? null,
                 );
                 $results[$name] = [
                     'name'      => $name,
@@ -775,7 +775,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                     'raw_type'  => $field->field_type,
                     'allownull' => empty($field->not_null),
                     'default'   => $this->normalizeDefault($field->default_value ?? null),
-                    'pk'        => false  // Need separate query for PK info
+                    'pk'        => false,  // Need separate query for PK info
                 ];
             }
         }
@@ -1066,7 +1066,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 // For now, throw an exception - applications should use EXTRACT directly
                 throw new UnsupportedSyntaxException(
                     'DATE_FORMAT is not supported in Firebird. Use EXTRACT() for date parts.',
-                    500
+                    500,
                 );
 
             case 'DATE_ADD':
@@ -1075,7 +1075,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 // DATE_ADD(date, INTERVAL n unit) -> DATEADD(unit, n, date)
                 throw new UnsupportedSyntaxException(
                     'DATE_ADD/DATE_SUB not yet implemented for Firebird. Use DATEADD function directly.',
-                    500
+                    500,
                 );
 
             // Math functions
@@ -1195,7 +1195,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             'raw'      => $raw,
             'bindings' => [$value],
             'logical'  => $logical,
-            'depth'    => $depth
+            'depth'    => $depth,
         ];
     }
 
@@ -1223,7 +1223,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
         throw new UnsupportedSyntaxException(
             'Native JSON operations are not fully supported in Firebird. ' .
             'Consider storing JSON as text and parsing in application code.',
-            500
+            500,
         );
     }
 
@@ -1243,7 +1243,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
         throw new UnsupportedSyntaxException(
             'JSON_CONTAINS is not supported in Firebird. ' .
             'Consider using LIKE or POSITION for text-based searches.',
-            500
+            500,
         );
     }
 
@@ -1263,7 +1263,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
     {
         throw new UnsupportedSyntaxException(
             'JSON_LENGTH is not supported in Firebird.',
-            500
+            500,
         );
     }
 
@@ -1285,7 +1285,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
         $quotedTable = $this->connection->quoteName($table);
 
         return [
-            'DELETE FROM ' . $quotedTable
+            'DELETE FROM ' . $quotedTable,
         ];
     }
 
@@ -1309,7 +1309,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             $this->bind(
                 is_string($this->upsertValues[$column])
                     ? trim($this->upsertValues[$column])
-                    : $this->upsertValues[$column]
+                    : $this->upsertValues[$column],
             );
         }
 
@@ -1320,7 +1320,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
 
         $quotedConflict = array_map(
             fn($col) => $this->connection->quoteName($col),
-            $conflictColumns
+            $conflictColumns,
         );
 
         return sprintf(
@@ -1328,7 +1328,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             $this->connection->quoteName($this->upsertTable),
             implode(', ', $quotedColumns),
             implode(', ', $placeholders),
-            implode(', ', $quotedConflict)
+            implode(', ', $quotedConflict),
         );
     }
 
@@ -1417,7 +1417,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             'INSERT INTO %s (%s) %s',
             $this->connection->quoteName($this->insertManyTable),
             implode(', ', $quotedColumns),
-            implode(' UNION ALL ', $selects)
+            implode(' UNION ALL ', $selects),
         );
     }
 
@@ -1461,7 +1461,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                     $field->field_length ?? null,
                     $field->field_precision ?? null,
                     $field->field_scale ?? null,
-                    $field->char_length ?? null
+                    $field->char_length ?? null,
                 );
             }
 
@@ -1492,7 +1492,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
         $length = null,
         $precision = null,
         $scale = null,
-        $charLength = null
+        $charLength = null,
     ) {
         // Firebird type codes
         switch ($type) {

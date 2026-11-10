@@ -23,8 +23,8 @@ $first = $this->archive->entries(
     [
         'state'    => 1,
         'scope'    => $this->filters['scope'],
-        'scope_id' => $this->filters['scope_id']
-    ]
+        'scope_id' => $this->filters['scope_id'],
+    ],
 )
     ->order('publish_up', 'asc')
     ->limit(1)
@@ -97,7 +97,7 @@ $noEntries = !$rows->count();
                             ? $this->escape(stripslashes($this->filters['search']))
                             : '';
                         $searchPlaceholder = Lang::txt(
-                            'PLG_MEMBERS_BLOG_SEARCH_PLACEHOLDER'
+                            'PLG_MEMBERS_BLOG_SEARCH_PLACEHOLDER',
                         );
                         ?>
                         <input type="text"
@@ -114,7 +114,7 @@ $noEntries = !$rows->count();
                             <?php
                             echo Lang::txt(
                                 'PLG_MEMBERS_BLOG_SEARCH_FOR',
-                                $this->escape($this->filters['search'])
+                                $this->escape($this->filters['search']),
                             );
                             ?>
                         <?php } elseif (!isset($this->filters['year']) || !$this->filters['year']) { ?>
@@ -188,7 +188,7 @@ $noEntries = !$rows->count();
                                         $viewLevels = User::getAuthorisedViewLevels();
                                         $canView = in_array(
                                             $row->creator->get('access'),
-                                            $viewLevels
+                                            $viewLevels,
                                         );
                                         ?>
                                         <?php if ($canView) { ?>
@@ -209,8 +209,8 @@ $noEntries = !$rows->count();
                                                         'state',
                                                         [
                                                         Components\Blog\Models\Comment::STATE_PUBLISHED,
-                                                        Components\Blog\Models\Comment::STATE_FLAGGED
-                                                        ]
+                                                        Components\Blog\Models\Comment::STATE_FLAGGED,
+                                                        ],
                                                     )
                                                     ->count();
                                                 echo Lang::txts('PLG_MEMBERS_BLOG_NUM_COMMENTS', $comments); ?>
@@ -253,7 +253,7 @@ $noEntries = !$rows->count();
                                     <?php
                                     $introLength = $this->config->get(
                                         'introlength',
-                                        300
+                                        300,
                                     );
                                     ?>
                                     <?php if ($this->config->get('cleanintro', 1)) { ?>
@@ -261,7 +261,7 @@ $noEntries = !$rows->count();
                                             <?php
                                             echo \Hubzero\Utility\Str::truncate(
                                                 strip_tags($row->content),
-                                                $introLength
+                                                $introLength,
                                             );
                                             ?>
                                         </p>
@@ -269,7 +269,7 @@ $noEntries = !$rows->count();
                                         <?php
                                         echo \Hubzero\Utility\Str::truncate(
                                             $row->content,
-                                            $introLength
+                                            $introLength,
                                         );
                                         ?>
                                     <?php } ?>
@@ -321,7 +321,7 @@ $noEntries = !$rows->count();
                                     'SEPTEMBER',
                                     'OCTOBER',
                                     'NOVEMBER',
-                                    'DECEMBER'
+                                    'DECEMBER',
                                 ];
                                 ?>
                             <?php for ($i = $now, $n = $start; $i >= $n; $i--) : ?>
@@ -347,7 +347,7 @@ $noEntries = !$rows->count();
                                                     : '';
                                                 $monthUrl = Route::url(
                                                     $base . '&task=' . $i
-                                                    . '/' . sprintf("%02d", ($k + 1))
+                                                    . '/' . sprintf("%02d", ($k + 1)),
                                                 );
                                                 ?>
                                                 <li>
@@ -372,8 +372,8 @@ $noEntries = !$rows->count();
                     $popular = $this->archive->entries(
                         [
                             'state'  => $this->filters['state'],
-                            'access' => $this->filters['access']
-                        ]
+                            'access' => $this->filters['access'],
+                        ],
                     )
                         ->order('hits', 'desc')
                         ->limit(5)

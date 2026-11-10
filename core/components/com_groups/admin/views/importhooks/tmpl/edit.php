@@ -37,7 +37,7 @@ $this->js();
 
 <?php
 $formAction = Route::url(
-    'index.php?option=' . $this->option . '&controller=' . $this->controller
+    'index.php?option=' . $this->option . '&controller=' . $this->controller,
 );
 $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
 ?>
@@ -107,12 +107,12 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                     if ($this->hook->get('file')) {
                         $scriptCurrent = Lang::txt(
                             'COM_GROUPS_IMPORTHOOK_EDIT_FIELD_SCRIPT_CURRENT',
-                            $this->hook->get('file')
+                            $this->hook->get('file'),
                         );
                         $rawUrl = Route::url(
                             'index.php?option=' . $this->option
                             . '&controller=' . $this->controller
-                            . '&task=raw&id=' . $this->hook->get('id')
+                            . '&task=raw&id=' . $this->hook->get('id'),
                         );
                         $viewRaw = Lang::txt('COM_GROUPS_IMPORTHOOK_EDIT_FIELD_SCRIPT_VIEWRAW');
                         echo $scriptCurrent;

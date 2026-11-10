@@ -37,7 +37,7 @@ class Maps extends Plugin
     public function onUsageAreas()
     {
         return [
-            'maps' => Lang::txt('PLG_USAGE_MAPS')
+            'maps' => Lang::txt('PLG_USAGE_MAPS'),
         ];
     }
 

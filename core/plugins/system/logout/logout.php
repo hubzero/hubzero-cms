@@ -84,7 +84,7 @@ class Logout extends Plugin
             $renderer = new \Hubzero\Error\Renderer\Page(
                 App::get('document'),
                 App::get('template')->template,
-                App::get('config')->get('debug')
+                App::get('config')->get('debug'),
             );
             $renderer->render($error);
         }

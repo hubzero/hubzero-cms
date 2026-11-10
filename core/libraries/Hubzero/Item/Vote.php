@@ -46,7 +46,7 @@ class Vote extends Relational
     protected $rules = [
         'item_id'   => 'positive|nonzero',
         'item_type' => 'notempty',
-        'vote'      => 'notempty'
+        'vote'      => 'notempty',
     ];
 
     /**
@@ -56,7 +56,7 @@ class Vote extends Relational
      */
     public $always = [
         'vote',
-        'item_type'
+        'item_type',
     ];
 
     /**
@@ -66,7 +66,7 @@ class Vote extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**

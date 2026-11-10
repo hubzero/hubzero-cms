@@ -52,29 +52,29 @@ class Versions extends AdminController
             $this->_option . '.' . $this->_controller . '.versions.id',
             'id',
             0,
-            'int'
+            'int',
         );
         $filters['sort']     = Request::getState(
             $this->_option . '.' . $this->_controller . '.versions.' . $filters['id'] . 'sort',
             'filter_order',
-            'toolname'
+            'toolname',
         );
         $filters['sort_Dir'] = Request::getState(
             $this->_option . '.' . $this->_controller . '.versions.' . $filters['id'] . 'sortdir',
             'filter_order_Dir',
-            'ASC'
+            'ASC',
         );
         $filters['limit']    = Request::getState(
             $this->_option . '.' . $this->_controller . '.versions.' . $filters['id'] . 'limit',
             'limit',
             Config::get('list_limit'),
-            'int'
+            'int',
         );
         $filters['start']    = Request::getState(
             $this->_option . '.' . $this->_controller . '.versions.' . $filters['id'] . 'limitstart',
             'limitstart',
             0,
-            'int'
+            'int',
         );
 
         $filters['sortby'] = $filters['sort'] . ' ' . $filters['sort_Dir'];
@@ -228,7 +228,7 @@ class Versions extends AdminController
         try {
             $row->hardTimeout = Duration::toSeconds(
                 isset($fields['hardTimeout']) ? $fields['hardTimeout'] : '',
-                isset($fields['hardTimeoutUnit']) ? $fields['hardTimeoutUnit'] : 'seconds'
+                isset($fields['hardTimeoutUnit']) ? $fields['hardTimeoutUnit'] : 'seconds',
             );
         } catch (\InvalidArgumentException $e) {
             Request::setVar('id', $fields['id']);
@@ -280,8 +280,8 @@ class Versions extends AdminController
                 Route::url(
                     'index.php?option=' . $this->_option . '&controller=' . $this->_controller
                         . '&task=edit&id=' . $fields['id'] . '&version=' . $fields['version'],
-                    false
-                )
+                    false,
+                ),
             );
             return;
         }
@@ -408,8 +408,8 @@ class Versions extends AdminController
             Route::url(
                 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
                     . '&tmpl=component&task=displayZones&version=' . Request::getInt('version', 0),
-                false
-            )
+                false,
+            ),
         );
     }
 }

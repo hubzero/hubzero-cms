@@ -55,7 +55,7 @@ class Migration20130717140704PlgCronNewsletter extends Base
                     'modified_by' => 0,
                     'active'     => 0,
                     'ordering'   => 0,
-                    'params'     => $params1
+                    'params'     => $params1,
                 ])
                 ->execute();
         }
@@ -82,7 +82,7 @@ class Migration20130717140704PlgCronNewsletter extends Base
                     'modified_by' => 0,
                     'active'     => 0,
                     'ordering'   => 0,
-                    'params'     => ''
+                    'params'     => '',
                 ])
                 ->execute();
         }

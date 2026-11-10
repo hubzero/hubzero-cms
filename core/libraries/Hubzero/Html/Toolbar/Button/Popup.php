@@ -49,7 +49,7 @@ class Popup extends Button
         $height = 480,
         $top = 0,
         $left = 0,
-        $onClose = ''
+        $onClose = '',
     ) {
         Behavior::modal();
 

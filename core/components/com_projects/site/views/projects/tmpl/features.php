@@ -67,10 +67,10 @@ $seeTxt = Lang::txt('COM_PROJECTS_FEATURES_SEE_SUGGESTIONS');
                     <p>
                         <?php
                         $suggestUrl = Route::url(
-                            'index.php?option=com_wishlist&task=add&category=general&id=1'
+                            'index.php?option=com_wishlist&task=add&category=general&id=1',
                         ) . '/?tag=projects,projects:microblog,com_projects';
                         $seeUrl = Route::url(
-                            'index.php?option=com_wishlist&category=general&id=1'
+                            'index.php?option=com_wishlist&category=general&id=1',
                         ) . '/?tags=projects,projects:microblog,com_projects';
                         ?>
                         <a href="<?php echo $suggestUrl; ?>" class="btn btn-success"><?php echo $suggestTxt; ?></a>
@@ -97,10 +97,10 @@ $seeTxt = Lang::txt('COM_PROJECTS_FEATURES_SEE_SUGGESTIONS');
                     <p>
                         <?php
                         $suggestUrl = Route::url(
-                            'index.php?option=com_wishlist&task=add&category=general&id=1'
+                            'index.php?option=com_wishlist&task=add&category=general&id=1',
                         ) . '/?tag=projects,projects:todo,com_projects';
                         $seeUrl = Route::url(
-                            'index.php?option=com_wishlist&category=general&id=1'
+                            'index.php?option=com_wishlist&category=general&id=1',
                         ) . '/?tags=projects,projects:todo,com_projects';
                         ?>
                         <a href="<?php echo $suggestUrl; ?>" class="btn btn-success"><?php echo $suggestTxt; ?></a>
@@ -126,10 +126,10 @@ $seeTxt = Lang::txt('COM_PROJECTS_FEATURES_SEE_SUGGESTIONS');
                     <p>
                         <?php
                         $suggestUrl = Route::url(
-                            'index.php?option=com_wishlist&task=add&category=general&id=1'
+                            'index.php?option=com_wishlist&task=add&category=general&id=1',
                         ) . '/?tag=projects,projects:notes,com_projects';
                         $seeUrl = Route::url(
-                            'index.php?option=com_wishlist&category=general&id=1'
+                            'index.php?option=com_wishlist&category=general&id=1',
                         ) . '/?tags=projects,projects:notes,com_projects';
                         ?>
                         <a href="<?php echo $suggestUrl; ?>" class="btn btn-success"><?php echo $suggestTxt; ?></a>
@@ -155,10 +155,10 @@ $seeTxt = Lang::txt('COM_PROJECTS_FEATURES_SEE_SUGGESTIONS');
                     <p>
                         <?php
                         $suggestUrl = Route::url(
-                            'index.php?option=com_wishlist&task=add&category=general&id=1'
+                            'index.php?option=com_wishlist&task=add&category=general&id=1',
                         ) . '/?tag=projects,projects:team,com_projects';
                         $seeUrl = Route::url(
-                            'index.php?option=com_wishlist&category=general&id=1'
+                            'index.php?option=com_wishlist&category=general&id=1',
                         ) . '/?tags=projects,projects:team,com_projects';
                         ?>
                         <a href="<?php echo $suggestUrl; ?>" class="btn btn-success"><?php echo $suggestTxt; ?></a>
@@ -191,10 +191,10 @@ $seeTxt = Lang::txt('COM_PROJECTS_FEATURES_SEE_SUGGESTIONS');
                     <p>
                         <?php
                         $suggestUrl = Route::url(
-                            'index.php?option=com_wishlist&task=add&category=general&id=1'
+                            'index.php?option=com_wishlist&task=add&category=general&id=1',
                         ) . '/?tag=projects,projects:files,com_projects';
                         $seeUrl = Route::url(
-                            'index.php?option=com_wishlist&category=general&id=1'
+                            'index.php?option=com_wishlist&category=general&id=1',
                         ) . '/?tags=projects,projects:files,com_projects';
                         ?>
                         <a href="<?php echo $suggestUrl; ?>" class="btn btn-success"><?php echo $suggestTxt; ?></a>
@@ -231,10 +231,10 @@ $seeTxt = Lang::txt('COM_PROJECTS_FEATURES_SEE_SUGGESTIONS');
                     <p>
                         <?php
                         $suggestUrl = Route::url(
-                            'index.php?option=com_wishlist&task=add&category=general&id=1'
+                            'index.php?option=com_wishlist&task=add&category=general&id=1',
                         ) . '/?tag=projects,projects:publications,com_projects';
                         $seeUrl = Route::url(
-                            'index.php?option=com_wishlist&category=general&id=1'
+                            'index.php?option=com_wishlist&category=general&id=1',
                         ) . '/?tags=projects,projects:publications,com_projects';
                         ?>
                         <a href="<?php echo $suggestUrl; ?>" class="btn btn-success"><?php echo $suggestTxt; ?></a>

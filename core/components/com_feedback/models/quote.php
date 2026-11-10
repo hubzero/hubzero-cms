@@ -58,7 +58,7 @@ class Quote extends Relational
      * @var  array
      */
     protected $rules = [
-        'quote' => 'notempty'
+        'quote' => 'notempty',
     ];
 
     /**

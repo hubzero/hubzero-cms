@@ -54,13 +54,13 @@ class Cache extends Plugin
             [
                 'name'   => 'cleanSystemCss',
                 'label'  => Lang::txt('PLG_CRON_CACHE_REMOVE_SYSTEM_CSS'),
-                'params' => ''
+                'params' => '',
             ],
             [
                 'name'   => 'trashExpiredData',
                 'label'  => Lang::txt('PLG_CRON_CACHE_TRASH_EXPIRED_DATA'),
-                'params' => ''
-            ]
+                'params' => '',
+            ],
         ];
 
         return $obj;

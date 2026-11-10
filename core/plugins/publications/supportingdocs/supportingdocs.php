@@ -65,11 +65,11 @@ class Supportingdocs extends Plugin
         $rtrn = 'all',
         $version = 'default',
         $extended = true,
-        $authorized = true
+        $authorized = true,
     ) {
         $arr = [
             'html'     => '',
-            'metadata' => ''
+            'metadata' => '',
         ];
 
         // Check if our area is in the array of areas we want to return results for
@@ -99,8 +99,8 @@ class Supportingdocs extends Plugin
                 $publication->version_id,
                 [
                     'role'  => [1, 0, 2],
-                    'order' => 'a.role DESC, a.ordering ASC'
-                ]
+                    'order' => 'a.role DESC, a.ordering ASC',
+                ],
             );
 
             // Build publication path
@@ -109,7 +109,7 @@ class Supportingdocs extends Plugin
                 $publication->version_id,
                 $config->get('webpath'),
                 $publication->secret,
-                $root = 1
+                $root = 1,
             );
 
             // Pass the view some info

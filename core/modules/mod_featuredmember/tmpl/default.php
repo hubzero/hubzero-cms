@@ -28,7 +28,7 @@ if ($this->getError()) { ?>
                         <?php
                         $memberName = $this->row->get(
                             'name',
-                            $this->row->get('givenName') . ' ' . $this->row->get('surname')
+                            $this->row->get('givenName') . ' ' . $this->row->get('surname'),
                         );
                         ?>
                         <img width="50" height="50"
@@ -42,7 +42,7 @@ if ($this->getError()) { ?>
                     <?php
                     $displayName = $this->row->get(
                         'name',
-                        $this->row->get('givenName') . ' ' . $this->row->get('surname')
+                        $this->row->get('givenName') . ' ' . $this->row->get('surname'),
                     );
                     echo $this->escape(stripslashes($displayName));
                     ?>

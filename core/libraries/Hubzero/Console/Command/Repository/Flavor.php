@@ -213,7 +213,7 @@ class Flavor extends Base implements CommandInterface
                  . 'The CMS ships default (the CMS without simulation tools) and full '
                  . '(with them) in core/flavors. A hub adds its own in app/flavors, or in '
                  . 'a directory named with --path or HUBZERO_FLAVORS; a flavor there with '
-                 . 'a shipped name replaces it, and any flavor may extend another.'
+                 . 'a shipped name replaces it, and any flavor may extend another.',
              )
              ->noArgsSection()
              ->addSection('Usage')
@@ -229,7 +229,7 @@ class Flavor extends Base implements CommandInterface
                  . 'template, components {enable, disable}, modules {enable, disable, params, items}, '
                  . 'plugins {enable, disable, params} (named folder/element), dashboard {tiles}, '
                  . 'kb {categories, articles}, content {articles}, menu {items, by path}, '
-                 . 'resource_types. JSON and YAML read alike; YAML can carry a comment.'
+                 . 'resource_types. JSON and YAML read alike; YAML can carry a comment.',
              )
              ->render();
     }
@@ -283,7 +283,7 @@ class Flavor extends Base implements CommandInterface
 
         if (!isset($flavor[$name])) {
             $this->output->error(
-                "There is no '{$name}' flavor. There is: " . implode(', ', array_keys($flavor))
+                "There is no '{$name}' flavor. There is: " . implode(', ', array_keys($flavor)),
             );
         }
 

@@ -81,7 +81,7 @@ class View extends Obj
      */
     protected $_path = [
         'template' => [],
-        'helper'   => []
+        'helper'   => [],
     ];
 
     /**
@@ -483,13 +483,13 @@ class View extends Obj
         // Load the template script
         $this->_template = $this->find(
             $this->_path['template'],
-            $this->createFileName('template', ['name' => $file])
+            $this->createFileName('template', ['name' => $file]),
         );
         // If alternate layout can't be found, fall back to default layout
         if ($this->_template == false) {
             $this->_template = $this->find(
                 $this->_path['template'],
-                $this->createFileName('', ['name' => 'default' . ($tpl ? '_' . $tpl : $tpl)])
+                $this->createFileName('', ['name' => 'default' . ($tpl ? '_' . $tpl : $tpl)]),
             );
         }
         if ($this->_template != false) {

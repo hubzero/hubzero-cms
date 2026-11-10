@@ -25,7 +25,7 @@ $text = ($this->task == 'edit'
 Toolbar::title(
     Lang::txt('COM_COLLECTIONS') . ': '
     . Lang::txt('COM_COLLECTIONS_POSTS') . ': ' . $text,
-    'collection'
+    'collection',
 );
 if ($canDo->get('core.edit')) {
     Toolbar::apply();
@@ -48,10 +48,10 @@ if (!$this->row->get('id')) {
 
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 $validationMsg = $this->escape(
-    Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')
+    Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'),
 );
 ?>
 
@@ -76,7 +76,7 @@ $validationMsg = $this->escape(
                             $itemIdLabel = Lang::txt('COM_COLLECTIONS_FIELD_ITEM_ID');
                             $reqTxt = Lang::txt('JOPTION_REQUIRED');
                             $itemIdVal = $this->escape(
-                                stripslashes($this->row->get('item_id'))
+                                stripslashes($this->row->get('item_id')),
                             );
                             ?>
                             <label for="field-item_id">
@@ -96,7 +96,7 @@ $validationMsg = $this->escape(
                             <?php
                             $collIdLabel = Lang::txt('COM_COLLECTIONS_FIELD_COLLECTION_ID');
                             $collIdVal = $this->escape(
-                                stripslashes($this->row->get('collection_id'))
+                                stripslashes($this->row->get('collection_id')),
                             );
                             ?>
                             <label for="field-collection_id">
@@ -130,7 +130,7 @@ $validationMsg = $this->escape(
                         [
                             'class' => 'minimal no-footer',
                             'buttons' => false,
-                        ]
+                        ],
                     );
                     ?>
                 </div>
@@ -146,7 +146,7 @@ $validationMsg = $this->escape(
                             $editor = User::getInstance($this->row->get('created_by'));
                             echo $this->escape(stripslashes($editor->get('name')));
                             $createdByVal = $this->escape(
-                                $this->row->get('created_by')
+                                $this->row->get('created_by'),
                             );
                             ?>
                             <input type="hidden"
@@ -161,7 +161,7 @@ $validationMsg = $this->escape(
                             <?php echo Date::of($this->row->get('created'))->toLocal(); ?>
                             <?php
                             $createdVal = $this->escape(
-                                $this->row->get('created')
+                                $this->row->get('created'),
                             );
                             ?>
                             <input type="hidden"

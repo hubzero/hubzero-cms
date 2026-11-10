@@ -61,48 +61,48 @@ class Wishes extends AdminController
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             ),
             'wishlist' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.wishlist',
                 'wishlist',
                 0,
-                'int'
+                'int',
             ),
             'status' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.status',
                 'status',
-                'all'
+                'all',
             ),
             'tag' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.tag',
                 'tag',
-                ''
+                '',
             ),
             // Get sorting variables
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'subject'
+                'subject',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
+                'ASC',
             ),
             // Get paging variables
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limitstart',
                 'limitstart',
                 0,
-                'int'
-            )
+                'int',
+            ),
         ];
 
         $wishlist = Wishlist::oneOrNew($filters['wishlist']);
@@ -133,7 +133,7 @@ class Wishes extends AdminController
                     $model
                         ->whereIn('status', [
                             Wish::WISH_STATE_OPEN,
-                            Wish::WISH_STATE_ACCEPTED
+                            Wish::WISH_STATE_ACCEPTED,
                         ])
                         ->whereEquals('accepted', 1);
                     break;
@@ -534,7 +534,7 @@ class Wishes extends AdminController
 
         // Set the redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&wishlist=' . $wishlist, false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&wishlist=' . $wishlist, false),
         );
     }
 }

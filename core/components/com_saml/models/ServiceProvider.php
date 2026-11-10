@@ -59,7 +59,7 @@ class ServiceProvider extends Relational
     protected $rules = [
         'entity_id' => 'notempty',
         'name'      => 'notempty',
-        'acs_url'   => 'notempty'
+        'acs_url'   => 'notempty',
     ];
 
     /**
@@ -69,7 +69,7 @@ class ServiceProvider extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**
@@ -79,7 +79,7 @@ class ServiceProvider extends Relational
      */
     public $renew = [
         'modified',
-        'modified_by'
+        'modified_by',
     ];
 
     /**
@@ -214,7 +214,7 @@ class ServiceProvider extends Relational
             'subject'     => isset($parsed['subject']['CN']) ? $parsed['subject']['CN'] : $this->get('entity_id'),
             'issuer'      => isset($parsed['issuer']['CN']) ? $parsed['issuer']['CN'] : '',
             'valid_to'    => isset($parsed['validTo_time_t']) ? (int) $parsed['validTo_time_t'] : 0,
-            'fingerprint' => function_exists('openssl_x509_fingerprint') ? @openssl_x509_fingerprint($pem, 'sha256') : ''
+            'fingerprint' => function_exists('openssl_x509_fingerprint') ? @openssl_x509_fingerprint($pem, 'sha256') : '',
         ];
     }
 
@@ -444,7 +444,7 @@ class ServiceProvider extends Relational
 			AND g.approved=1
 			AND g.discoverability=0
 			AND g.cn!=''
-			ORDER BY g.cn"
+			ORDER BY g.cn",
         );
 
         return array_values(array_filter((array) $db->loadColumn()));

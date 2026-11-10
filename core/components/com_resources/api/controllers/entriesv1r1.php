@@ -81,7 +81,7 @@ class Entriesv1r1 extends ApiController
             'sortby' => Request::getCmd('sortby', 'date'),
             'limit'  => Request::getInt('limit', Config::get('list_limit')),
             'start'  => Request::getInt('limitstart', 0),
-            'search' => Request::getString('search', '')
+            'search' => Request::getString('search', ''),
         ];
 
         $admin = false;

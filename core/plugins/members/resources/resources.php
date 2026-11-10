@@ -85,7 +85,7 @@ class Resources extends Plugin
         }
 
         $areas = [
-            'resources' => $cats
+            'resources' => $cats,
         ];
         $this->_areas = $areas;
         return $areas;
@@ -151,7 +151,7 @@ class Resources extends Plugin
             'sortby'        => $sort,
             'usergroups'    => [],
             'standalone'    => 1,
-            'published'     => 1
+            'published'     => 1,
         ];
 
         if ($filters['sortby'] == 'date') {
@@ -424,7 +424,7 @@ class Resources extends Plugin
         $view = new \Hubzero\Component\View([
             'base_path' => Component::path('com_resources') . '/site',
             'name'      => 'browse',
-            'layout'    => 'item'
+            'layout'    => 'item',
         ]);
         $view->set('line', $row)
             ->set('option', 'com_resources')

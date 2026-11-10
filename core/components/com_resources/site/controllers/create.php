@@ -85,31 +85,31 @@ class Create extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         if ($row->id && $row->published == 1) {
             Pathway::append(
                 Lang::txt('COM_CONTRIBUTE_EDIT'),
-                'index.php?option=' . $this->_option . '&task=new'
+                'index.php?option=' . $this->_option . '&task=new',
             );
         } else {
             Pathway::append(
                 Lang::txt('COM_CONTRIBUTE_NEW'),
-                'index.php?option=' . $this->_option . '&task=new'
+                'index.php?option=' . $this->_option . '&task=new',
             );
         }
         if ($this->_task) {
             Pathway::append(
                 Lang::txt('COM_CONTRIBUTE' . '_' . strtoupper($this->_task)),
-                'index.php?option=' . $this->_option . '&task=' . $this->_task
+                'index.php?option=' . $this->_option . '&task=' . $this->_task,
             );
         }
         if ($this->step) {
             $stepLabel = $this->steps[$this->step] ?? 'UNKNOWN';
             Pathway::append(
                 Lang::txt('COM_CONTRIBUTE_STEP_NUMBER', $this->step) . ': ' . Lang::txt('COM_CONTRIBUTE_STEP_' . strtoupper($stepLabel)),
-                'index.php?option=' . $this->_option . '&task=' . $this->_task . '&step=' . $this->step
+                'index.php?option=' . $this->_option . '&task=' . $this->_task . '&step=' . $this->step,
             );
         }
     }
@@ -146,7 +146,7 @@ class Create extends SiteController
     {
         $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_controller), 'server');
         App::redirect(
-            Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
+            Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
         );
         return;
     }
@@ -436,7 +436,7 @@ class Create extends SiteController
 				FROM `#__focus_area_resource_type_rel` fr
 				INNER JOIN `#__focus_areas` f ON f.id = fr.focus_area_id
 				INNER JOIN `#__tags` t ON t.id = f.tag_id
-				WHERE fr.resource_type_id = ' . $type
+				WHERE fr.resource_type_id = ' . $type,
             );
             if (!($labels = $this->database->loadColumn())) {
                 return [];
@@ -468,7 +468,7 @@ class Create extends SiteController
 						WHERE to2.tbl = \'tags\' AND to2.label = \'parent\' AND to2.objectid = t2.id
 						LIMIT 1
 					) = 0
-					ORDER BY t.tag, CASE WHEN t2.raw_tag LIKE \'other%\' THEN 1 ELSE 0 END, t2.raw_tag'
+					ORDER BY t.tag, CASE WHEN t2.raw_tag LIKE \'other%\' THEN 1 ELSE 0 END, t2.raw_tag',
         );
         $fas = $this->database->loadAssocList('raw_tag');
         foreach ($fas as &$fa) {
@@ -845,7 +845,7 @@ class Create extends SiteController
         // Log activity
         $recipients = [
             ['resource', $row->get('id')],
-            ['user', $row->get('created_by')]
+            ['user', $row->get('created_by')],
         ];
         foreach ($row->authors()->where('authorid', '>', 0)->rows() as $author) {
             $recipients[] = ['user', $author->get('authorid')];
@@ -859,10 +859,10 @@ class Create extends SiteController
                 'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_' . (!$isNew ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url('index.php?option=com_resources&id=' . $row->get('id')) . '">' . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
                 'details'     => [
                     'title' => $row->get('title'),
-                    'url'   => Route::url('index.php?option=com_resources&id=' . $row->get('id'))
-                ]
+                    'url'   => Route::url('index.php?option=com_resources&id=' . $row->get('id')),
+                ],
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
     }
 
@@ -945,7 +945,7 @@ class Create extends SiteController
 
             $recipients = [
                 ['resource', $row->get('id')],
-                ['user', $row->get('created_by')]
+                ['user', $row->get('created_by')],
             ];
             foreach ($row->authors()->where('authorid', '>', 0)->rows() as $author) {
                 $recipients[] = ['user', $author->get('authorid')];
@@ -973,14 +973,14 @@ class Create extends SiteController
                     'description' => Lang::txt(
                         'COM_RESOURCES_ACTIVITY_ENTRY_GROUP_' . $action,
                         '<a href="' . Route::url('index.php?option=com_resources&id=' . $row->get('id')) . '">' . htmlspecialchars((string) $row->get('title'), ENT_QUOTES, 'UTF-8') . '</a>',
-                        '<a href="' . Route::url('index.php?option=com_groups&cn=' . $group->get('cn')) . '">' . htmlspecialchars((string) $group->get('description'), ENT_QUOTES, 'UTF-8') . '</a>'
+                        '<a href="' . Route::url('index.php?option=com_groups&cn=' . $group->get('cn')) . '">' . htmlspecialchars((string) $group->get('description'), ENT_QUOTES, 'UTF-8') . '</a>',
                     ),
                     'details'     => [
                         'title' => $row->get('title'),
-                        'url'   => Route::url('index.php?option=com_resources&id=' . $row->get('id'))
-                    ]
+                        'url'   => Route::url('index.php?option=com_resources&id=' . $row->get('id')),
+                    ],
                 ],
-                'recipients' => $recipients
+                'recipients' => $recipients,
             ]);
         }
     }
@@ -1002,7 +1002,7 @@ class Create extends SiteController
 			SELECT 1 FROM `#__users` u
 			INNER JOIN `#__user_usergroup_map` cagam ON cagam.user_id = u.id
 			INNER JOIN `#__usergroups` caag ON caag.id = cagam.group_id AND (caag.title = \'Super Administrator\' OR caag.title = \'Super Users\' OR caag.title = \'Administrator\')
-			WHERE u.id = ' . User::get('id')
+			WHERE u.id = ' . User::get('id'),
         );
 
         if (!$this->database->loadResult()) {
@@ -1021,7 +1021,7 @@ class Create extends SiteController
 			INNER JOIN `#__focus_area_resource_type_rel` rtr ON rtr.focus_area_id = fa.id
 			INNER JOIN `#__resource_types` rt ON rt.id = rtr.resource_type_id
 			INNER JOIN `#__resources` r ON r.type = rt.id AND r.id = ' . $id . '
-			WHERE fa.mandatory_depth IS NOT NULL AND fa.mandatory_depth > 0'
+			WHERE fa.mandatory_depth IS NOT NULL AND fa.mandatory_depth > 0',
         );
         $fas = $this->database->loadAssocList('raw_tag');
         foreach ($_POST as $k => $vs) {
@@ -1042,7 +1042,7 @@ class Create extends SiteController
 					INNER JOIN `#__tags_object` to1 ON to1.tbl = \'tags\' AND to1.label = \'label\' AND to1.objectid = t.id
 					INNER JOIN `#__tags` t2 ON t2.id = to1.tagid
 					INNER JOIN `#__focus_areas` fa ON fa.tag_id = to1.tagid
-					WHERE t.tag = ' . $this->database->quote($norm_tag)
+					WHERE t.tag = ' . $this->database->quote($norm_tag),
                 );
                 if (($row = $this->database->loadAssoc())) {
                     $push[] = [$v, $norm_tag, $row['fa'], $row['id'], $row['label_id']];
@@ -1059,7 +1059,7 @@ class Create extends SiteController
 				FROM `#__tags_object` to1
 				INNER JOIN `#__tags` t ON t.id = to1.tagid
 				INNER JOIN `#__tags_object` to2 ON to2.tagid = ' . $tag[4] . ' AND to2.tbl = \'tags\' AND to2.objectid = to1.tagid
-				WHERE to1.objectid = ' . $tag[3] . ' AND to1.tbl = \'tags\' AND to1.label = \'parent\''
+				WHERE to1.objectid = ' . $tag[3] . ' AND to1.tbl = \'tags\' AND to1.label = \'parent\'',
             );
             $any_match = false;
             $parent = [];
@@ -1084,7 +1084,7 @@ class Create extends SiteController
 							FROM `#__tags_object` to1
 							INNER JOIN `#__tags` t ON t.id = to1.tagid
 							INNER JOIN `#__tags_object` to2 ON to2.tagid = ' . $tag[4] . ' AND to2.tbl = \'tags\' AND to2.objectid = to1.tagid
-							WHERE to1.objectid IN (' . implode(',', $parent_id) . ') AND to1.tbl = \'tags\' AND to1.label = \'parent\''
+							WHERE to1.objectid IN (' . implode(',', $parent_id) . ') AND to1.tbl = \'tags\' AND to1.label = \'parent\'',
                         );
                         $parent_id = $this->database->loadColumn();
                     }
@@ -1117,7 +1117,7 @@ class Create extends SiteController
                 $this->setError(
                     $fa['minimum_depth'] == 1
                         ? 'Please ensure you have made a ' . $lbl . ' selection'
-                        : 'Please make selections for "' . $lbl . '" to a depth of at least ' . $fa['minimum_depth']
+                        : 'Please make selections for "' . $lbl . '" to a depth of at least ' . $fa['minimum_depth'],
                 );
                 --$this->step;
                 $this->view->step = $this->step;
@@ -1334,13 +1334,13 @@ class Create extends SiteController
                 $message->setSubject(Config::get('sitename') . ' ' . Lang::txt('COM_RESOURCES_EMAIL_SUBJECT_NEW_SUBMISSION', $resource->id));
                 $message->addFrom(
                     Config::get('mailfrom'),
-                    Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option))
+                    Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option)),
                 );
 
                 // Plain text email
                 $eview = new \Hubzero\Mail\View([
                     'name'   => 'emails',
-                    'layout' => 'submitted_plain'
+                    'layout' => 'submitted_plain',
                 ]);
                 $eview->option     = $this->_option;
                 $eview->controller = $this->_controller;
@@ -1381,7 +1381,7 @@ class Create extends SiteController
             // Log activity
             $recipients = [
                 ['resource', $resource->get('id')],
-                ['user', $resource->get('created_by')]
+                ['user', $resource->get('created_by')],
             ];
             foreach ($authors as $author) {
                 if ($author->get('authorid') > 0) {
@@ -1397,10 +1397,10 @@ class Create extends SiteController
                     'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_' . strtoupper($activity), '<a href="' . Route::url($resource->link()) . '">' . htmlspecialchars((string) ($resource->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
                     'details'     => [
                         'title' => $resource->get('title'),
-                        'url'   => Route::url($resource->link())
-                    ]
+                        'url'   => Route::url($resource->link()),
+                    ],
                 ],
-                'recipients' => $recipients
+                'recipients' => $recipients,
             ]);
         }
 
@@ -1440,7 +1440,7 @@ class Create extends SiteController
         // If a previously published resource, redirect to the resource page
         if ($published == 1) {
             App::redirect(
-                Route::url($resource->link())
+                Route::url($resource->link()),
             );
             return;
         }
@@ -1474,7 +1474,7 @@ class Create extends SiteController
         // Ensure we have an ID to work with
         if (!$id) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&task=new')
+                Route::url('index.php?option=' . $this->_option . '&task=new'),
             );
             return;
         }
@@ -1554,7 +1554,7 @@ class Create extends SiteController
                 // Log activity
                 $recipients = [
                     ['resource', $resource->get('id')],
-                    ['user', $resource->get('created_by')]
+                    ['user', $resource->get('created_by')],
                 ];
                 foreach ($resource->authors()->where('authorid', '>', 0)->rows() as $author) {
                     $recipients[] = ['user', $author->get('authorid')];
@@ -1568,15 +1568,15 @@ class Create extends SiteController
                         'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_DELETED', '<a href="' . Route::url($resource->link()) . '">' . htmlspecialchars((string) ($resource->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
                         'details'     => [
                             'title' => $resource->get('title'),
-                            'url'   => Route::url($resource->link())
-                        ]
+                            'url'   => Route::url($resource->link()),
+                        ],
                     ],
-                    'recipients' => $recipients
+                    'recipients' => $recipients,
                 ]);
 
                 // Redirect to the start page
                 App::redirect(
-                    Route::url('index.php?option=' . $this->_option . '&task=new')
+                    Route::url('index.php?option=' . $this->_option . '&task=new'),
                 );
                 break;
         }
@@ -1615,7 +1615,7 @@ class Create extends SiteController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&task=new')
+            Route::url('index.php?option=' . $this->_option . '&task=new'),
         );
     }
 

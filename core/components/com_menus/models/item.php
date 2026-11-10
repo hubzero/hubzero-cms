@@ -102,7 +102,7 @@ class Item extends Nested
      **/
     public $always = [
         'alias',
-        'img'
+        'img',
     ];
 
     /**
@@ -130,7 +130,7 @@ class Item extends Nested
                         'http', 'https', 'ftp', 'ftps', 'gopher', 'mailto', 'news',
                         'prospero', 'telnet', 'rlogin', 'tn3270', 'wais', 'url',
                         'mid', 'cid', 'nntp', 'tel', 'urn', 'ldap', 'file', 'fax',
-                        'modem', 'git'
+                        'modem', 'git',
                     ];
 
                     if (!in_array($protocol, $scheme)) {
@@ -267,7 +267,7 @@ class Item extends Nested
         return (object) [
             'key'   => $this->helpKey,
             'url'   => $this->helpURL,
-            'local' => $this->helpLocal
+            'local' => $this->helpLocal,
         ];
     }
 
@@ -409,7 +409,7 @@ class Item extends Nested
                 $derived = [
                     'menutype', 'alias', 'path', 'route', 'link', 'type',
                     'component_id', 'parent_id', 'level', 'lft', 'rgt', 'home',
-                    'language'
+                    'language',
                 ];
 
                 foreach ($derived as $field) {
@@ -577,7 +577,7 @@ class Item extends Nested
                 'lft'   => (int) $leftId,
                 'rgt'   => (int) $rightId,
                 'level' => (int) $level,
-                'path'  => $path
+                'path'  => $path,
             ])
             ->whereEquals('id', (int) $parentId);
 
@@ -607,7 +607,7 @@ class Item extends Nested
         $query = $db->getQuery()
             ->update($this->getTableName())
             ->set([
-                'path' => $path
+                'path' => $path,
             ])
             ->whereEquals('id', (int) $this->get('id'));
         $db->setQuery($query->toString());
@@ -910,7 +910,7 @@ class Item extends Nested
         if ($this->isGenerated()) {
             $locked = [
                 'alias', 'path', 'route', 'link', 'type', 'component_id',
-                'menutype', 'parent_id', 'home', 'menuordering', 'language'
+                'menutype', 'parent_id', 'home', 'menuordering', 'language',
             ];
 
             foreach ($locked as $field) {
@@ -1328,7 +1328,7 @@ class Item extends Nested
             ->update($this->getTableName())
             ->set([
                 'lft' => new Raw('lft * (-1)'),
-                'rgt' => new Raw('rgt * (-1)')
+                'rgt' => new Raw('rgt * (-1)'),
             ])
             ->whereRaw('lft BETWEEN ' . (int) $node->lft . ' AND ' . (int) $node->rgt);
 
@@ -1343,7 +1343,7 @@ class Item extends Nested
         $query = $this->getQuery()
             ->update($this->getTableName())
             ->set([
-                'lft' => new Raw('lft - ' . (int) ($node->rgt - $node->lft + 1))
+                'lft' => new Raw('lft - ' . (int) ($node->rgt - $node->lft + 1)),
             ])
             ->where('lft', '>', (int) $node->rgt);
 
@@ -1356,7 +1356,7 @@ class Item extends Nested
         $query = $this->getQuery()
             ->update($this->getTableName())
             ->set([
-                'rgt' => new Raw('rgt - ' . (int) ($node->rgt - $node->lft + 1))
+                'rgt' => new Raw('rgt - ' . (int) ($node->rgt - $node->lft + 1)),
             ])
             ->where('rgt', '>', (int) $node->rgt);
 
@@ -1410,7 +1410,7 @@ class Item extends Nested
         $query = $this->getQuery()
             ->update($this->getTableName())
             ->set([
-                'lft' => new Raw('lft + ' . (int) ($node->rgt - $node->lft + 1))
+                'lft' => new Raw('lft + ' . (int) ($node->rgt - $node->lft + 1)),
             ])
             ->where($repositionData->left_where['col'], $repositionData->left_where['op'], $repositionData->left_where['val']);
 
@@ -1423,7 +1423,7 @@ class Item extends Nested
         $query = $this->getQuery()
             ->update($this->getTableName())
             ->set([
-                'rgt' => new Raw('rgt + ' . (int) ($node->rgt - $node->lft + 1))
+                'rgt' => new Raw('rgt + ' . (int) ($node->rgt - $node->lft + 1)),
             ])
             ->where($repositionData->right_where['col'], $repositionData->right_where['op'], $repositionData->right_where['val']);
 
@@ -1443,7 +1443,7 @@ class Item extends Nested
             ->set([
                 'rgt'   => new Raw((int) $offset . ' - rgt'),
                 'lft'   => new Raw((int) $offset . ' - lft'),
-                'level' => new Raw('level + ' . (int) $levelOffset)
+                'level' => new Raw('level + ' . (int) $levelOffset),
             ])
             ->where('lft', '<', 0);
 
@@ -1458,7 +1458,7 @@ class Item extends Nested
                 ->update($this->getTableName());
 
             $query->set([
-                    'parent_id' => (int) $repositionData->new_parent_id
+                    'parent_id' => (int) $repositionData->new_parent_id,
                 ])
                 ->whereEquals('id', (int) $node->id);
 
@@ -1509,7 +1509,7 @@ class Item extends Nested
             $groups[(int) $model->get('parent_id')][] = [
                 'id'    => (int) $model->get('id'),
                 'lft'   => (int) $model->get('lft'),
-                'order' => (int) $order[$i]
+                'order' => (int) $order[$i],
             ];
         }
 
@@ -1532,7 +1532,7 @@ class Item extends Nested
                 $db->setQuery(
                     'UPDATE ' . $db->quoteName($blank->getTableName())
                     . ' SET lft = ' . (int) $slots[$k] . ', ordering = ' . (int) $item['order']
-                    . ' WHERE id = ' . (int) $item['id']
+                    . ' WHERE id = ' . (int) $item['id'],
                 );
                 if (!$db->query()) {
                     return false;
@@ -1572,7 +1572,7 @@ class Item extends Nested
 
             $this->addError(Lang::txt(
                 'COM_MENUS_ERROR_GENERATED_ITEM_BATCH',
-                count($generated)
+                count($generated),
             ));
 
             if (!$pks) {
@@ -1955,7 +1955,7 @@ class Item extends Nested
     protected static $incrementStyles = [
         'dash' => [
             '#-(\d+)$#',
-            '-%d'
+            '-%d',
         ],
         'default' => [
             ['#\((\d+)\)$#', '#\(\d+\)$#'],

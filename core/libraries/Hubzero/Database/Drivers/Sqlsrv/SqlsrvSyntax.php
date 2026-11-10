@@ -195,7 +195,7 @@ class SqlsrvSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                     'type'      => $field->Type,
                     'allownull' => ($field->Null == 'NO') ? false : true,
                     'default'   => $field->Default,
-                    'pk'        => ($field->Key == 'PRI') ? true : false
+                    'pk'        => ($field->Key == 'PRI') ? true : false,
                 ];
             }
         }
@@ -257,7 +257,7 @@ class SqlsrvSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             'raw'      => $raw,
             'bindings' => [$value],
             'logical'  => $logical,
-            'depth'    => $depth
+            'depth'    => $depth,
         ];
     }
 
@@ -300,7 +300,7 @@ class SqlsrvSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             'raw'      => $raw,
             'bindings' => [$bindValue],
             'logical'  => $logical,
-            'depth'    => $depth
+            'depth'    => $depth,
         ];
     }
 
@@ -336,7 +336,7 @@ class SqlsrvSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             'raw'      => $raw,
             'bindings' => [(int) $value],
             'logical'  => $logical,
-            'depth'    => $depth
+            'depth'    => $depth,
         ];
     }
 
@@ -385,7 +385,7 @@ class SqlsrvSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             'raw'      => $raw,
             'bindings' => [$value],
             'logical'  => $logical,
-            'depth'    => $depth
+            'depth'    => $depth,
         ];
     }
 
@@ -452,7 +452,7 @@ class SqlsrvSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             $this->bind(
                 is_string($this->upsertValues[$column])
                     ? trim($this->upsertValues[$column])
-                    : $this->upsertValues[$column]
+                    : $this->upsertValues[$column],
             );
         }
 
@@ -476,7 +476,7 @@ class SqlsrvSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
         $insertColumns = implode(', ', $quotedColumns);
         $insertValues = implode(', ', array_map(
             fn($col) => 'source.' . $this->connection->quoteName($col),
-            $columns
+            $columns,
         ));
 
         return sprintf(
@@ -488,7 +488,7 @@ class SqlsrvSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             implode(' AND ', $matchConditions),
             implode(', ', $updateSet),
             $insertColumns,
-            $insertValues
+            $insertValues,
         );
     }
 
@@ -511,7 +511,7 @@ class SqlsrvSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
         $columns = array_keys($this->upsertManyRows[0]);
         $quotedColumns = array_map(
             fn($col) => $this->connection->quoteName($col),
-            $columns
+            $columns,
         );
 
         $conflictColumns = !empty($this->upsertManyConflictColumns)
@@ -527,7 +527,7 @@ class SqlsrvSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                     . $this->connection->quoteName($column);
                 $value = $row[$column] ?? null;
                 $this->bind(
-                    is_string($value) ? trim($value) : $value
+                    is_string($value) ? trim($value) : $value,
                 );
             }
             $sourceRows[] = 'SELECT ' . implode(', ', $sourceCols);
@@ -547,7 +547,7 @@ class SqlsrvSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
 
         $insertValues = array_map(
             fn($c) => 'source.' . $this->connection->quoteName($c),
-            $columns
+            $columns,
         );
 
         return sprintf(
@@ -560,7 +560,7 @@ class SqlsrvSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             implode(' AND ', $matchConditions),
             implode(', ', $updateSet),
             implode(', ', $quotedColumns),
-            implode(', ', $insertValues)
+            implode(', ', $insertValues),
         );
     }
 
@@ -609,7 +609,7 @@ class SqlsrvSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             case 'CONCAT':
                 $parts = array_map(
                     fn($a) => $this->buildExpressionArgument($a),
-                    $args
+                    $args,
                 );
                 return 'CONCAT(' . implode(', ', $parts) . ')';
 

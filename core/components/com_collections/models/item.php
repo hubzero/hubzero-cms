@@ -77,7 +77,7 @@ class Item extends Base
         'comments.count'    => null,
         'comments.list'     => null,
         'collections.count' => null,
-        'collections.list'  => null
+        'collections.list'  => null,
     ];
 
     /**
@@ -593,14 +593,14 @@ class Item extends Base
                         'pagename' => 'collections',
                         'pageid'   => 0,
                         'filepath' => '',
-                        'domain'   => ''//'collection'
+                        'domain'   => '',//'collection'
                     ];
 
                     $content = stripslashes((string) $this->get('description', ''));
                     $this->importPlugin('content')->trigger('onContentPrepare', [
                         $this->_context,
                         &$this,
-                        &$config
+                        &$config,
                     ]);
 
                     $this->set('description.parsed', (string) $this->get('description', ''));
@@ -844,7 +844,7 @@ class Item extends Base
         $this->_db->setQuery(
             "SELECT DISTINCT p.`collection_id`
 			   FROM `#__collections_posts` AS p
-			  WHERE p.`item_id` = " . (int) $this->get('id')
+			  WHERE p.`item_id` = " . (int) $this->get('id'),
         );
 
         foreach ((array) $this->_db->loadColumn() as $cid) {

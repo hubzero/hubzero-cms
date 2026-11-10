@@ -71,7 +71,7 @@ class Memory extends None
         $this->data[$this->id($key)] = [
             'time'  => time(),
             'value' => $value,
-            'ttl'   => $this->expiration($minutes)
+            'ttl'   => $this->expiration($minutes),
         ];
 
         return true;

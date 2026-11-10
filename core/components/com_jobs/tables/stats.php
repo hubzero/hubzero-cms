@@ -99,7 +99,7 @@ class Stats extends Table
             'viewed_today'     => 0,
             'viewed_thisweek'  => 0,
             'viewed_thismonth' => 0,
-            'lastviewed'       => ''
+            'lastviewed'       => '',
         ];
 
         // get total resumes in the pool
@@ -109,7 +109,7 @@ class Stats extends Table
             'sortby' => '',
             'search' => '',
             'category' => '',
-            'type' => ''
+            'type' => '',
         ];
         $stats['total_resumes'] = $row->countSeekers($filters);
 

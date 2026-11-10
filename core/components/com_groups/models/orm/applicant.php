@@ -53,7 +53,7 @@ class Applicant extends Relational
      */
     protected $rules = [
         'gidNumber' => 'positive|nonzero',
-        'uidNumber' => 'positive|nonzero'
+        'uidNumber' => 'positive|nonzero',
     ];
 
     /**

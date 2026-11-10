@@ -66,7 +66,7 @@ class Courses extends Plugin
             'title'            => Lang::txt('PLG_GROUPS_COURSES'),
             'default_access'   => $this->params->get('plugin_access', 'anyone'),
             'display_menu_tab' => $this->params->get('display_tab', 1),
-            'icon'             => 'f09c'
+            'icon'             => 'f09c',
         ];
         return $area;
     }
@@ -94,7 +94,7 @@ class Courses extends Plugin
         $arr = [
             'html' => '',
             'metadata' => [],
-            'name' => $active
+            'name' => $active,
         ];
 
         //get this area details
@@ -112,7 +112,7 @@ class Courses extends Plugin
         $filters = [
             'group'    => $group->get('cn'),
             'group_id' => $group->get('gidNumber'),
-            'count'    => true
+            'count'    => true,
         ];
 
         $arr['metadata']['count'] = $model->courses($filters);
@@ -124,23 +124,23 @@ class Courses extends Plugin
                 $option . '.plugin.courses.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             );
             $filters['start'] = Request::getState(
                 $option . '.plugin.courses.limitstart',
                 'limitstart',
                 0,
-                'int'
+                'int',
             );
             $filters['sortby'] = Request::getState(
                 $option . '.plugin.courses.sortby',
                 'sortby',
-                ''
+                '',
             );
             $filters['search'] = Request::getState(
                 $option . '.plugin.courses.search',
                 'search',
-                ''
+                '',
             );
             $filters['index'] = '';
             $filters['tag'] = '';

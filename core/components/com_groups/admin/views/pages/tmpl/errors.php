@@ -18,7 +18,7 @@ $this->css();
 
 Toolbar::title(
     $this->group->get('description') . ': ' . $this->page->get('title') . ' - ' . Lang::txt('COM_GROUPS_PAGES_ERRORS'),
-    'groups.png'
+    'groups.png',
 );
 Toolbar::custom('errorscheckagain', 'check', 'check', 'COM_GROUPS_PAGES_CHECK_AGAIN', false);
 Toolbar::cancel();
@@ -34,7 +34,7 @@ $url = Route::url(
     '&controller=' .
     $this->controller .
     '&gid=' .
-    $this->group->cn
+    $this->group->cn,
 );
 ?>
 <form action="<?php echo $url; ?>" method="post" name="adminForm" id="item-form">

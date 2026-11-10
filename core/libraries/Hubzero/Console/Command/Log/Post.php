@@ -25,7 +25,7 @@ class Post extends Base
         'timestamp' => true,
         'uri'       => true,
         'referrer'  => true,
-        'data'      => true
+        'data'      => true,
     ];
 
     /**

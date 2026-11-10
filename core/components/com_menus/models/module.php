@@ -64,7 +64,7 @@ class Module extends Relational
      */
     protected $rules = [
         'title'    => 'notempty',
-        'position' => 'notempty'
+        'position' => 'notempty',
     ];
 
     /**

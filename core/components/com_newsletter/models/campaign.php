@@ -44,7 +44,7 @@ class Campaign extends Relational
      * @var  array
      */
     protected $rules = [
-        'title' => 'notempty'
+        'title' => 'notempty',
     ];
     /**
      * Automatic fields to populate every time a row is created
@@ -53,7 +53,7 @@ class Campaign extends Relational
      */
     public $initiate = [
         'campaign_date',
-        'secret'
+        'secret',
     ];
 
     /**

@@ -123,7 +123,7 @@ class Menus
         $parentId = 0,
         $mode = 0,
         $published = [],
-        $languages = []
+        $languages = [],
     ) {
         $db = App::get('db');
         $query = $db->getQuery();

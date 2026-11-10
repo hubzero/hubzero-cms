@@ -54,7 +54,7 @@ $attModel = new \Components\Publications\Models\Attachments($this->database);
                         $html .= \Components\Publications\Helpers\Html::showContributors(
                             $this->publication->_authors,
                             true,
-                            false
+                            false,
                         ) . "\n";
                         $html .= '</div>' . "\n";
                         echo $html;
@@ -83,18 +83,18 @@ $attModel = new \Components\Publications\Models\Attachments($this->database);
                     $this->publication,
                     $element,
                     $elements,
-                    $this->publication->access('view-all')
+                    $this->publication->access('view-all'),
                 );
                 echo $launcher;
             }
             ?>
             <div class="version-info">
                 <?php echo \Components\Publications\Helpers\Html::showVersionInfo(
-                    $this->publication
+                    $this->publication,
                 );
                 echo \Components\Publications\Helpers\Html::showLicense(
                     $this->publication,
-                    'play'
+                    'play',
                 ) ?>
             </div>
         </div>

@@ -1341,7 +1341,7 @@ class Translator extends Obj
                             strtolower($browserLang) == strtolower(substr(
                                 $systemLang->lang_code,
                                 0,
-                                strlen($browserLang)
+                                strlen($browserLang),
                             ))
                         ) {
                             return $systemLang->lang_code;
@@ -1425,7 +1425,7 @@ class Translator extends Obj
         $basePath = PATH_APP,
         $caching = false,
         $installed = false,
-        $client = null
+        $client = null,
     ) {
         $list = [];
 
@@ -1486,8 +1486,8 @@ class Translator extends Obj
                     array_key_exists('jsSafe', $args[$count - 1]) ? $args[$count - 1]['jsSafe'] : false,
                     array_key_exists(
                         'interpretBackSlashes',
-                        $args[$count - 1]
-                    ) ? $args[$count - 1]['interpretBackSlashes'] : true
+                        $args[$count - 1],
+                    ) ? $args[$count - 1]['interpretBackSlashes'] : true,
                 );
             } else {
                 $args[0] = $this->translate($string);
@@ -1534,8 +1534,8 @@ class Translator extends Obj
                     array_key_exists('jsSafe', $args[$count - 1]) ? $args[$count - 1]['jsSafe'] : false,
                     array_key_exists(
                         'interpretBackSlashes',
-                        $args[$count - 1]
-                    ) ? $args[$count - 1]['interpretBackSlashes'] : true
+                        $args[$count - 1],
+                    ) ? $args[$count - 1]['interpretBackSlashes'] : true,
                 );
             } else {
                 $args[0] = $this->translate($key);

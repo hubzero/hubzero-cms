@@ -96,7 +96,7 @@ $base = $this->offering->link() . '&active=announcements';
             $pageNav = $this->pagination(
                 $total,
                 $this->filters['start'],
-                $this->filters['limit']
+                $this->filters['limit'],
             );
             $pageNav->setAdditionalUrlParam('gid', $this->course->get('alias'));
             $pageNav->setAdditionalUrlParam('offering', $this->offering->get('alias'));

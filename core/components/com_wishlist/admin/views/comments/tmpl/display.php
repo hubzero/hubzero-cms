@@ -41,42 +41,42 @@ $sortId = Html::grid(
     'COM_WISHLIST_COMMENT_ID',
     'id',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 $sortComment = Html::grid(
     'sort',
     'COM_WISHLIST_COMMENT',
     'comment',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 $sortAddedBy = Html::grid(
     'sort',
     'COM_WISHLIST_ADDED_BY',
     'added_by',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 $sortAdded = Html::grid(
     'sort',
     'COM_WISHLIST_ADDED',
     'added',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 $sortState = Html::grid(
     'sort',
     'COM_WISHLIST_STATE',
     'status',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 $sortAnon = Html::grid(
     'sort',
     'JANONYMOUS',
     'anonymous',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 ?>
 
@@ -103,7 +103,7 @@ $sortAnon = Html::grid(
                     <?php
                     $wishlistUrl = Route::url(
                         'index.php?option=' . $this->option
-                        . '&controller=wishes&wishlist=' . $this->wishlist->id
+                        . '&controller=wishes&wishlist=' . $this->wishlist->id,
                     );
                     ?>
                     <a href="<?php echo $wishlistUrl; ?>">
@@ -140,7 +140,7 @@ $sortAnon = Html::grid(
                 echo $this->pagination(
                     $this->total,
                     $this->filters['start'],
-                    $this->filters['limit']
+                    $this->filters['limit'],
                 );
                 ?></td>
             </tr>
@@ -195,7 +195,7 @@ $sortAnon = Html::grid(
                 'index.php?option=' . $this->option
                 . '&controller=' . $this->controller
                 . '&task=edit&id=' . $row->id
-                . '&wish=' . $row->wish
+                . '&wish=' . $row->wish,
             );
             $taskUrl = Route::url(
                 'index.php?option=' . $this->option
@@ -203,7 +203,7 @@ $sortAnon = Html::grid(
                 . '&task=' . $task
                 . '&id=' . $row->id
                 . '&wish=' . $this->filters['wish']
-                . '&' . $token . '=1'
+                . '&' . $token . '=1',
             );
             $ataskUrl = Route::url(
                 'index.php?option=' . $this->option
@@ -211,11 +211,11 @@ $sortAnon = Html::grid(
                 . '&task=' . $atask
                 . '&id=' . $row->id
                 . '&wish=' . $row->wish
-                . '&' . $token . '=1'
+                . '&' . $token . '=1',
             );
             $setTaskTxt = Lang::txt('COM_WISHLIST_SET_TASK', $task);
             $creatorName = $this->escape(
-                stripslashes($row->creator->get('name', Lang::txt('COM_WISHLIST_UNKNOWN')))
+                stripslashes($row->creator->get('name', Lang::txt('COM_WISHLIST_UNKNOWN'))),
             );
             ?>
             <tr class="<?php echo "row$k"; ?>">

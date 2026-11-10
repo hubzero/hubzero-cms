@@ -28,7 +28,7 @@ class BoostFactoryTest extends Basic
             'class' => 'User', 'methods' => ['get' => $userId]]);
         $factory = new BoostFactory(['user' => $userHelper]);
         $boostData = [
-            'document_type' => 'test', 'strength' => $strength
+            'document_type' => 'test', 'strength' => $strength,
         ];
 
         $boost = $factory->one($boostData);

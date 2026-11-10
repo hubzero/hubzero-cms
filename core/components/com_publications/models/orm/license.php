@@ -43,7 +43,7 @@ class License extends Relational
      * @var  array
      */
     protected $rules = [
-        'title' => 'notempty'
+        'title' => 'notempty',
     ];
 
     /**
@@ -53,7 +53,7 @@ class License extends Relational
      */
     public $always = [
         'name',
-        'title'
+        'title',
     ];
 
     /**
@@ -63,7 +63,7 @@ class License extends Relational
      */
     public $initiate = [
         'ordering',
-        'icon'
+        'icon',
     ];
 
     /**

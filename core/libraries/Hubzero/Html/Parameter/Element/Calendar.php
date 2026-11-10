@@ -44,7 +44,7 @@ class Calendar extends Element
 
         return Input::calendar($name, $value, [
             'format' => $format,
-            'class'  => $class
+            'class'  => $class,
         ]);
     }
 }

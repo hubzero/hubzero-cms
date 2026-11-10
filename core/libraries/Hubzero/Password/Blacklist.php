@@ -53,7 +53,7 @@ class Blacklist extends Relational
      * @var  array
      */
     protected $rules = [
-        'word' => 'notempty'
+        'word' => 'notempty',
     ];
 
     /**
@@ -416,7 +416,7 @@ class Blacklist extends Relational
             ' teh ' => ' the ',
             ' wat ' => ' what ',
             ' sas ' => ' says ',
-            ' u '   => ' you '
+            ' u '   => ' you ',
         ];
 
         $word2 = str_replace(array_keys($subs), array_values($subs), $word);

@@ -29,7 +29,7 @@ class TemplateServiceProvider extends ServiceProvider
                 'path_app'  => PATH_APP . DS . 'templates',
                 'path_core' => PATH_CORE . DS . 'templates',
                 'style'     => 0,
-                'lang'      => ''
+                'lang'      => '',
             ];
 
             $options['style'] = User::getParam('admin_style', $options['style']);

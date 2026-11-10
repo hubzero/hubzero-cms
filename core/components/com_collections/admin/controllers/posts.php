@@ -49,39 +49,39 @@ class Posts extends AdminController
                 $this->_option . '.' . $this->_controller . '.collection_id',
                 'collection_id',
                 0,
-                'int'
+                'int',
             ),
             'item_id' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.item_id',
                 'item_id',
                 0,
-                'int'
+                'int',
             ),
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'created'
+                'created',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'DESC'
+                'DESC',
             ),
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             )),
             'state' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.state',
                 'state',
-                '-1'
+                '-1',
             ),
             'access' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.access',
                 'access',
-                '-1'
-            )
+                '-1',
+            ),
         ];
 
         $model = Post::all()

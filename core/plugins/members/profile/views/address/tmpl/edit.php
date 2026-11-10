@@ -35,7 +35,7 @@ $this->css()
         <?php
         $manageUrl = Route::url(
             'index.php?option=com_members&id=' . $this->member->get('id')
-            . '&active=profile&action=manageaddresses'
+            . '&active=profile&action=manageaddresses',
         );
         ?>
         <?php $manageTxt = Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_MANAGE'); ?>

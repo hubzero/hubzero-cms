@@ -58,24 +58,24 @@ class Citations extends AdminController
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'id'
+                'id',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
+                'ASC',
             ),
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             )),
             'published' => [0, 1],
             'scope' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.scope',
                 'scope',
-                'all'
-            ))
+                'all',
+            )),
         ];
 
         // Get records
@@ -318,7 +318,7 @@ class Citations extends AdminController
     {
         $filters = [
             'scope'     => 'all',
-            'published' => [0, 1]
+            'published' => [0, 1],
         ];
 
         $stats = Citation::getYearlyStats($filters);

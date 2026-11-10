@@ -63,7 +63,7 @@ class Media extends AdminController
             'parent' => -1,
             'name' => '', //basename(COM_MEDIA_BASE),
             'fullname' => COM_MEDIA_BASE,
-            'relname' => substr(COM_MEDIA_BASE, strlen(PATH_ROOT))
+            'relname' => substr(COM_MEDIA_BASE, strlen(PATH_ROOT)),
         ];
 
         array_unshift($folders, $fold);
@@ -177,7 +177,7 @@ class Media extends AdminController
                 // User is not authorised to delete
                 echo json_encode([
                     'success' => false,
-                    'error' => Lang::txt('JLIB_APPLICATION_ERROR_CREATE_NOT_PERMITTED')
+                    'error' => Lang::txt('JLIB_APPLICATION_ERROR_CREATE_NOT_PERMITTED'),
                 ]);
                 return;
             }
@@ -187,7 +187,7 @@ class Media extends AdminController
             if (($folderCheck !== null) && ($folder !== $folderCheck)) {
                 echo json_encode([
                     'success' => false,
-                    'error' => Lang::txt('COM_MEDIA_ERROR_UNABLE_TO_CREATE_FOLDER_WARNDIRNAME')
+                    'error' => Lang::txt('COM_MEDIA_ERROR_UNABLE_TO_CREATE_FOLDER_WARNDIRNAME'),
                 ]);
                 return;
             }
@@ -206,7 +206,7 @@ class Media extends AdminController
                     $msg = Lang::txts('COM_MEDIA_ERROR_BEFORE_SAVE', count($errors), implode('<br />', $errors));
                     echo json_encode([
                         'success' => false,
-                        'error' => $msg
+                        'error' => $msg,
                     ]);
                     return;
                 }
@@ -224,7 +224,7 @@ class Media extends AdminController
 
         echo json_encode([
             'success' => true,
-            'directory' => COM_MEDIA_BASE . ($parent ? $parent . DS : '') . $folder
+            'directory' => COM_MEDIA_BASE . ($parent ? $parent . DS : '') . $folder,
         ]);
     }
 
@@ -271,7 +271,7 @@ class Media extends AdminController
             (array) $files['type'],
             (array) $files['tmp_name'],
             (array) $files['error'],
-            (array) $files['size']
+            (array) $files['size'],
         );
 
         // Perform basic checks on file info before attempting anything
@@ -318,7 +318,7 @@ class Media extends AdminController
             $object_file = new \Hubzero\Base\Obj($file);
             $result = Event::trigger(
                 'content.onContentBeforeSave',
-                ['com_media.file', &$object_file, true]
+                ['com_media.file', &$object_file, true],
             );
             if (in_array(false, $result, true)) {
                 // There are some errors in the plugins
@@ -336,7 +336,7 @@ class Media extends AdminController
                 // Trigger the onContentAfterSave event.
                 Event::trigger(
                     'content.onContentAfterSave',
-                    ['com_media.file', &$object_file, true]
+                    ['com_media.file', &$object_file, true],
                 );
 
                 $relativePath = substr($file['filepath'], strlen(COM_MEDIA_BASE));
@@ -423,7 +423,7 @@ class Media extends AdminController
         if (!is_writable($path)) {
             echo json_encode([
                 'success' => false,
-                'error' => Lang::txt('Server error. Upload directory isn\'t writable.')
+                'error' => Lang::txt('Server error. Upload directory isn\'t writable.'),
             ]);
             return;
         }
@@ -435,7 +435,7 @@ class Media extends AdminController
         if (!in_array(strtolower($ext), $allowed)) {
             echo json_encode([
                 'success' => false,
-                'error' => Lang::txt('COM_MEDIA_ERROR_INCORRECT_FILE_TYPE') . $ext
+                'error' => Lang::txt('COM_MEDIA_ERROR_INCORRECT_FILE_TYPE') . $ext,
             ]);
             return;
         }
@@ -445,14 +445,14 @@ class Media extends AdminController
         $object_file = new \Hubzero\Base\Obj($file);
         $result = Event::trigger(
             'content.onContentBeforeSave',
-            ['com_media.file', &$object_file, true]
+            ['com_media.file', &$object_file, true],
         );
         if (in_array(false, $result, true)) {
             $errors = $object_file->getErrors();
             $msg = Lang::txts('COM_MEDIA_ERROR_BEFORE_SAVE', count($errors), implode('<br />', $errors));
             echo json_encode([
                 'success' => false,
-                'error'   => $msg
+                'error'   => $msg,
             ]);
             return;
         }
@@ -477,7 +477,7 @@ class Media extends AdminController
             if (Filesystem::delete($file)) {
                 echo json_encode([
                     'success' => false,
-                    'error'   => Lang::txt('ATTACHMENT: File rejected because the anti-virus scan failed.')
+                    'error'   => Lang::txt('ATTACHMENT: File rejected because the anti-virus scan failed.'),
                 ]);
                 return;
             }
@@ -558,7 +558,7 @@ class Media extends AdminController
                 // Trigger the onContentBeforeDelete event.
                 $result = Event::trigger(
                     'content.onContentBeforeDelete',
-                    ['com_media.file', &$object_file]
+                    ['com_media.file', &$object_file],
                 );
                 if (in_array(false, $result, true)) {
                     // There are some errors in the plugins
@@ -566,7 +566,7 @@ class Media extends AdminController
                     $msg = Lang::txts(
                         'COM_MEDIA_ERROR_BEFORE_DELETE',
                         count($errors),
-                        implode('<br />', $errors)
+                        implode('<br />', $errors),
                     );
                     Notify::warning($msg);
                     continue;
@@ -577,7 +577,7 @@ class Media extends AdminController
                 // Trigger the onContentAfterDelete event.
                 Event::trigger(
                     'content.onContentAfterDelete',
-                    ['com_media.file', &$object_file]
+                    ['com_media.file', &$object_file],
                 );
                 $this->setMessage(Lang::txt('COM_MEDIA_DELETE_COMPLETE', $relativePath));
             } elseif (is_dir($fullPath)) {
@@ -587,7 +587,7 @@ class Media extends AdminController
                     // Trigger the onContentBeforeDelete event.
                     $result = Event::trigger(
                         'content.onContentBeforeDelete',
-                        ['com_media.folder', &$object_file]
+                        ['com_media.folder', &$object_file],
                     );
                     if (in_array(false, $result, true)) {
                         // There are some errors in the plugins
@@ -595,7 +595,7 @@ class Media extends AdminController
                         $msg = Lang::txts(
                             'COM_MEDIA_ERROR_BEFORE_DELETE',
                             count($errors),
-                            implode('<br />', $errors)
+                            implode('<br />', $errors),
                         );
                         Notify::warning($msg);
                         continue;
@@ -606,14 +606,14 @@ class Media extends AdminController
                     // Trigger the onContentAfterDelete event.
                     Event::trigger(
                         'content.onContentAfterDelete',
-                        ['com_media.folder', &$object_file]
+                        ['com_media.folder', &$object_file],
                     );
                     $this->setMessage(Lang::txt('COM_MEDIA_DELETE_COMPLETE', $relativePath));
                 } else {
                     // This makes no sense...
                     $msg = Lang::txt(
                         'COM_MEDIA_ERROR_UNABLE_TO_DELETE_FOLDER_NOT_EMPTY',
-                        $relativePath
+                        $relativePath,
                     );
                     Notify::warning($msg);
                 }
@@ -640,7 +640,7 @@ class Media extends AdminController
         if (empty($rm)) {
             echo json_encode([
                 'success' => false,
-                'error' => Lang::txt('No data provided')
+                'error' => Lang::txt('No data provided'),
             ]);
             return;
         }
@@ -649,7 +649,7 @@ class Media extends AdminController
         if (!User::authorise('core.delete', $this->_option)) {
             echo json_encode([
                 'success' => false,
-                'error' => Lang::txt('Not authorized')
+                'error' => Lang::txt('Not authorized'),
             ]);
             return;
         }
@@ -684,7 +684,7 @@ class Media extends AdminController
                 // Trigger the onContentBeforeDelete event.
                 $result = Event::trigger(
                     'content.onContentBeforeDelete',
-                    ['com_media.file', &$object_file]
+                    ['com_media.file', &$object_file],
                 );
                 if (in_array(false, $result, true)) {
                     // There are some errors in the plugins
@@ -692,7 +692,7 @@ class Media extends AdminController
                     $errorMsg = Lang::txts(
                         'COM_MEDIA_ERROR_BEFORE_DELETE',
                         count($errors),
-                        implode('<br />', $errors)
+                        implode('<br />', $errors),
                     );
                     $this->setError($errorMsg);
                     continue;
@@ -703,7 +703,7 @@ class Media extends AdminController
                 // Trigger the onContentAfterDelete event.
                 Event::trigger(
                     'content.onContentAfterDelete',
-                    ['com_media.file', &$object_file]
+                    ['com_media.file', &$object_file],
                 );
                 $msg[] = Lang::txt('COM_MEDIA_DELETE_COMPLETE', $relativePath);
             } elseif (is_dir($fullPath)) {
@@ -713,7 +713,7 @@ class Media extends AdminController
                     // Trigger the onContentBeforeDelete event.
                     $result = Event::trigger(
                         'content.onContentBeforeDelete',
-                        ['com_media.folder', &$object_file]
+                        ['com_media.folder', &$object_file],
                     );
                     if (in_array(false, $result, true)) {
                         // There are some errors in the plugins
@@ -721,7 +721,7 @@ class Media extends AdminController
                         $errorMsg = Lang::txts(
                             'COM_MEDIA_ERROR_BEFORE_DELETE',
                             count($errors),
-                            implode('<br />', $errors)
+                            implode('<br />', $errors),
                         );
                         $this->setError($errorMsg);
                         continue;
@@ -732,14 +732,14 @@ class Media extends AdminController
                     // Trigger the onContentAfterDelete event.
                     Event::trigger(
                         'content.onContentAfterDelete',
-                        ['com_media.folder', &$object_file]
+                        ['com_media.folder', &$object_file],
                     );
                     $msg[] = Lang::txt('COM_MEDIA_DELETE_COMPLETE', $relativePath);
                 } else {
                     // This makes no sense...
                     $errorMsg = Lang::txt(
                         'COM_MEDIA_ERROR_UNABLE_TO_DELETE_FOLDER_NOT_EMPTY',
-                        $relativePath
+                        $relativePath,
                     );
                     $this->setError($errorMsg);
                 }
@@ -748,7 +748,7 @@ class Media extends AdminController
 
         $data = [
             'success' => true,
-            'message' => $msg
+            'message' => $msg,
         ];
 
         if ($this->getError()) {
@@ -813,7 +813,7 @@ class Media extends AdminController
             'tmp_name' => $tmp_name,
             'error'    => $error,
             'size'     => $size,
-            'filepath' => $filepath
+            'filepath' => $filepath,
         ];
     }
 }

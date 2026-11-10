@@ -80,7 +80,7 @@ class Checkin extends AdminController
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
             ($msg ?: null),
-            ($cls ?: null)
+            ($cls ?: null),
         );
     }
 
@@ -95,17 +95,17 @@ class Checkin extends AdminController
         Submenu::addEntry(
             Lang::txt('JGLOBAL_SUBMENU_CHECKIN'),
             Route::url('index.php?option=com_checkin'),
-            $vName == 'com_checkin'
+            $vName == 'com_checkin',
         );
         Submenu::addEntry(
             Lang::txt('JGLOBAL_SUBMENU_CLEAR_CACHE'),
             Route::url('index.php?option=com_cache'),
-            $vName == 'cache'
+            $vName == 'cache',
         );
         Submenu::addEntry(
             Lang::txt('JGLOBAL_SUBMENU_PURGE_EXPIRED_CACHE'),
             Route::url('index.php?option=com_cache&view=purge'),
-            $vName == 'purge'
+            $vName == 'purge',
         );
     }
 }

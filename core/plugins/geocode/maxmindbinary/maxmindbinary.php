@@ -35,7 +35,7 @@ class Maxmindbinary extends Plugin
 
         return new \Geocoder\Provider\MaxMindBinary\MaxMindBinary(
             $adapter,
-            $this->params->get('apiKey')
+            $this->params->get('apiKey'),
         );
     }
 }

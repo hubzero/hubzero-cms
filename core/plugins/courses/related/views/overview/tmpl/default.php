@@ -72,7 +72,7 @@ $this->css()
                         <?php
                         $blurb = \Hubzero\Utility\Str::truncate(
                             $this->escape(stripslashes($course->get('blurb'))),
-                            130
+                            130,
                         );
                         ?>
                         <p class="course-description">

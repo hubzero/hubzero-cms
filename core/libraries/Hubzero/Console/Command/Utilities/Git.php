@@ -137,7 +137,7 @@ class Git
                 'copied'    => [],
                 'untracked' => [],
                 'unmerged'  => [],
-                'merged'    => []
+                'merged'    => [],
             ];
             foreach ($lines as $line) {
                 $line  = trim($line);
@@ -198,7 +198,7 @@ class Git
         $installed = true,
         $search = null,
         $format = '%an: %s',
-        $count = false
+        $count = false,
     ) {
         $args = [];
 
@@ -324,7 +324,7 @@ class Git
                 return [
                     'status'  => 'fatal',
                     'message' => 'fetch failed: ' . preg_replace('/\s+/', ' ', $fetch),
-                    'raw'     => $fetch
+                    'raw'     => $fetch,
                 ];
             }
 
@@ -396,7 +396,7 @@ class Git
             // Build arguments
             $arguments = [
                 '--pretty=format:"%an: \"%s\" (%ar)"',
-                "HEAD..{$this->upstream}"
+                "HEAD..{$this->upstream}",
             ];
 
             // Make call to get log differences between us and origin

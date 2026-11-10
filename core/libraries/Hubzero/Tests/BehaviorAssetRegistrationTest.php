@@ -63,7 +63,7 @@ namespace Hubzero\Tests {
             string $url,
             string $type = 'text/javascript',
             bool $defer = false,
-            bool $async = false
+            bool $async = false,
         ): void {
             $this->scripts[] = $url;
         }
@@ -72,11 +72,11 @@ namespace Hubzero\Tests {
             string $url,
             string $type = 'text/css',
             ?string $media = null,
-            array $attribs = []
+            array $attribs = [],
         ): void {
             $this->stylesheets[] = [
                 'url' => $url,
-                'attribs' => $attribs
+                'attribs' => $attribs,
             ];
         }
 

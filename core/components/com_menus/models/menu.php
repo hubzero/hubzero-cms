@@ -59,7 +59,7 @@ class Menu extends Relational
      */
     protected $rules = [
         'title'    => 'notempty',
-        'menutype' => 'notempty'
+        'menutype' => 'notempty',
     ];
 
     /**
@@ -68,7 +68,7 @@ class Menu extends Relational
      * @var  array
      **/
     public $always = [
-        'menutype'
+        'menutype',
     ];
 
     /**
@@ -171,7 +171,7 @@ class Menu extends Relational
                 if ($checked_out) {
                     $errorMsg = Lang::txt('JLIB_DATABASE_ERROR_MENUTYPE_CHECKOUT');
                     $this->addError(
-                        Lang::txt('JLIB_DATABASE_ERROR_STORE_FAILED', get_class($this), $errorMsg)
+                        Lang::txt('JLIB_DATABASE_ERROR_STORE_FAILED', get_class($this), $errorMsg),
                     );
                     return false;
                 }
@@ -185,7 +185,7 @@ class Menu extends Relational
                 if ($checked_out) {
                     $errorMsg = Lang::txt('JLIB_DATABASE_ERROR_MENUTYPE_CHECKOUT');
                     $this->addError(
-                        Lang::txt('JLIB_DATABASE_ERROR_STORE_FAILED', get_class($this), $errorMsg)
+                        Lang::txt('JLIB_DATABASE_ERROR_STORE_FAILED', get_class($this), $errorMsg),
                     );
                     return false;
                 }
@@ -197,7 +197,7 @@ class Menu extends Relational
                     if (!$item->save()) {
                         $error = $item->getError();
                         $this->addError(
-                            Lang::txt('JLIB_DATABASE_ERROR_STORE_FAILED', get_class($this), $error)
+                            Lang::txt('JLIB_DATABASE_ERROR_STORE_FAILED', get_class($this), $error),
                         );
                         return false;
                     }
@@ -211,7 +211,7 @@ class Menu extends Relational
                     if (!$module->save()) {
                         $error = $module->getError();
                         $this->addError(
-                            Lang::txt('JLIB_DATABASE_ERROR_STORE_FAILED', get_class($this), $error)
+                            Lang::txt('JLIB_DATABASE_ERROR_STORE_FAILED', get_class($this), $error),
                         );
                         return false;
                     }
@@ -253,7 +253,7 @@ class Menu extends Relational
         if ($checked_out) {
             $errorMsg = Lang::txt('JLIB_DATABASE_ERROR_MENUTYPE_CHECKOUT');
             $this->addError(
-                Lang::txt('JLIB_DATABASE_ERROR_DELETE_FAILED', get_class($this), $errorMsg)
+                Lang::txt('JLIB_DATABASE_ERROR_DELETE_FAILED', get_class($this), $errorMsg),
             );
             return false;
         }
@@ -267,7 +267,7 @@ class Menu extends Relational
         if ($checked_out) {
             $errorMsg = Lang::txt('JLIB_DATABASE_ERROR_MENUTYPE_CHECKOUT');
             $this->addError(
-                Lang::txt('JLIB_DATABASE_ERROR_DELETE_FAILED', get_class($this), $errorMsg)
+                Lang::txt('JLIB_DATABASE_ERROR_DELETE_FAILED', get_class($this), $errorMsg),
             );
             return false;
         }

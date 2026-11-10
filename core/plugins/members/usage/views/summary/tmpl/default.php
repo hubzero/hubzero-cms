@@ -176,7 +176,7 @@ $this->css('usage', 'com_usage');
             $total = [
                 'usercount12' => 0,
                 'usercount14' => 0,
-                'citations'   => 0
+                'citations'   => 0,
             ];
 
             $serials = (array)PlgMembersUsage::getSerialResourceTypes();
@@ -194,7 +194,7 @@ $this->css('usage', 'com_usage');
 
             // Second pass
             $andmore = [
-                0 => []
+                0 => [],
             ];
             foreach ($this->andmore_stats as $row) {
                 $hasParent = false;

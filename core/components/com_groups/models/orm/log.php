@@ -51,7 +51,7 @@ class Log extends Relational
      */
     protected $rules = [
         'gidNumber' => 'positive|nonzero',
-        'action'    => 'notempty'
+        'action'    => 'notempty',
     ];
 
     /**
@@ -60,7 +60,7 @@ class Log extends Relational
      * @var  array
      */
     public $initiate = [
-        'timestamp'
+        'timestamp',
     ];
 
     /**

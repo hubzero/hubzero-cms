@@ -36,7 +36,7 @@ class PanelRenderer
         string $defaultStoragePrefix,
         string $panelClass,
         string $barClass,
-        string $actionsClass
+        string $actionsClass,
     ): string {
         $id = trim((string) ($options['id'] ?? $defaultId));
         if ($id === '') {

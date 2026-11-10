@@ -16,17 +16,17 @@ defined('_HZEXEC_') or die();
 $task = strtolower(Request::getCmd('task', ''));
 $baseUrl = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 $sessionsUrl = Route::url(
     'index.php?option=' . $this->option
     . '&controller=' . $this->controller
-    . '&task=sessions'
+    . '&task=sessions',
 );
 $usageUrl = Route::url(
     'index.php?option=' . $this->option
     . '&controller=' . $this->controller
-    . '&task=usage'
+    . '&task=usage',
 );
 $appsLabel = Lang::txt('COM_TOOLS_WINDOWS_APPS');
 $sessionsLabel = Lang::txt('COM_TOOLS_WINDOWS_SESSIONS');

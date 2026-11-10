@@ -37,12 +37,12 @@ class MembersHelper
         Submenu::addEntry(
             Lang::txt('COM_MEMBERS'),
             Route::url('index.php?option=com_members'),
-            $controllerName == 'members'
+            $controllerName == 'members',
         );
         Submenu::addEntry(
             Lang::txt('COM_MEMBERS_MENU_NOTES'),
             Route::url('index.php?option=com_members&controller=notes'),
-            ($controllerName == 'notes' || $vName == 'categories')
+            ($controllerName == 'notes' || $vName == 'categories'),
         );
         if ($controllerName == 'notes' || $vName == 'categories') {
             App::set('subsubmenu', function ($app) {
@@ -52,18 +52,18 @@ class MembersHelper
             App::get('subsubmenu')->appendButton(
                 Lang::txt('COM_MEMBERS_SUBMENU_NOTES'),
                 Route::url('index.php?option=com_members&controller=notes'),
-                $controllerName == 'notes'
+                $controllerName == 'notes',
             );
             App::get('subsubmenu')->appendButton(
                 Lang::txt('COM_MEMBERS_SUBMENU_NOTE_CATEGORIES'),
                 Route::url('index.php?option=com_categories&extension=com_members'),
-                $vName == 'categories'
+                $vName == 'categories',
             );
         }
         Submenu::addEntry(
             Lang::txt('COM_MEMBERS_MENU_ACCESS'),
             Route::url('index.php?option=com_members&controller=accessgroups'),
-            ($controllerName == 'accessgroups' || $controllerName == 'accesslevels')
+            ($controllerName == 'accessgroups' || $controllerName == 'accesslevels'),
         );
         /*Submenu::addEntry(
             Lang::txt('COM_MEMBERS_MENU_MESSAGING'),
@@ -74,38 +74,38 @@ class MembersHelper
             Submenu::addEntry(
                 Lang::txt('COM_MEMBERS_MENU_POINTS'),
                 Route::url('index.php?option=com_members&controller=points'),
-                $controllerName == 'points'
+                $controllerName == 'points',
             );
         }
         if ($canDo->get('core.admin')) {
             Submenu::addEntry(
                 Lang::txt('COM_MEMBERS_MENU_PASSWORDS'),
                 Route::url('index.php?option=com_members&controller=passwordrules'),
-                ($controllerName == 'passwordrules' || $controllerName == 'passwordblacklist')
+                ($controllerName == 'passwordrules' || $controllerName == 'passwordblacklist'),
             );
         }
         Submenu::addEntry(
             Lang::txt('COM_MEMBERS_MENU_QUOTAS'),
             Route::url('index.php?option=com_members&controller=quotas'),
-            $controllerName == 'quotas'
+            $controllerName == 'quotas',
         );
         Submenu::addEntry(
             Lang::txt('COM_MEMBERS_MENU_REGISTRATION'),
             Route::url('index.php?option=com_members&controller=registration'),
-            (in_array($controllerName, ['registration', 'organizations', 'employers', 'incremental', 'premis']))
+            (in_array($controllerName, ['registration', 'organizations', 'employers', 'incremental', 'premis'])),
         );
 
         if ($canDo->get('core.admin')) {
             Submenu::addEntry(
                 Lang::txt('COM_MEMBERS_MENU_IMPORT'),
                 Route::url('index.php?option=com_members&controller=imports'),
-                ($controllerName == 'imports' || $controllerName == 'importhooks')
+                ($controllerName == 'imports' || $controllerName == 'importhooks'),
             );
         }
         Submenu::addEntry(
             Lang::txt('COM_MEMBERS_MENU_PLUGINS'),
             Route::url('index.php?option=com_members&controller=plugins'),
-            $controllerName == 'plugins'
+            $controllerName == 'plugins',
         );
     }
 }

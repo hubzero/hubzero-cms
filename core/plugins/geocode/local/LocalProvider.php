@@ -257,7 +257,7 @@ class LocalProvider extends \Geocoder\Http\Provider\AbstractHttpProvider impleme
         ['code' => 'EH', 'name' => 'Western Sahara', 'continent' => 'Africa'],
         ['code' => 'YE', 'name' => 'Yemen', 'continent' => 'Asia'],
         ['code' => 'ZM', 'name' => 'Zambia', 'continent' => 'Africa'],
-        ['code' => 'ZW', 'name' => 'Zimbabwe', 'continent' => 'Africa']
+        ['code' => 'ZW', 'name' => 'Zimbabwe', 'continent' => 'Africa'],
     ];
 
     /**

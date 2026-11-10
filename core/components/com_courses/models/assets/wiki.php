@@ -27,7 +27,7 @@ class Wiki extends Content
      **/
     protected static $info = [
         'action_message' => 'A textual wiki page',
-        'responds_to'    => ['wiki']
+        'responds_to'    => ['wiki'],
     ];
 
     /**

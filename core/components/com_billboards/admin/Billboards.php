@@ -41,12 +41,12 @@ class Billboards extends AbstractComponent
         Submenu::addEntry(
             Lang::txt('COM_BILLBOARDS'),
             Route::url('index.php?option=com_billboards&controller=billboards'),
-            $controllerName == 'billboards'
+            $controllerName == 'billboards',
         );
         Submenu::addEntry(
             Lang::txt('COM_BILLBOARDS_COLLECTIONS'),
             Route::url('index.php?option=com_billboards&controller=collections'),
-            $controllerName == 'collections'
+            $controllerName == 'collections',
         );
 
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);

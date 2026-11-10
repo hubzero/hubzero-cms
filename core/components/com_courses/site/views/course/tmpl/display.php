@@ -30,14 +30,14 @@ if ($this->course->isManager()) {
         // Same publish-date ordering the public sees (managers just also see
         // unpublished offerings, which fall back to created within that sort).
         'sort'      => 'available',
-        'sort_Dir'  => 'DESC'
+        'sort_Dir'  => 'DESC',
     ];
 } else {
     $filters = [
         'available' => true,
         'state'     => 1,
         'sort'      => 'available',
-        'sort_Dir'  => 'DESC'/*,
+        'sort_Dir'  => 'DESC',/*,
         'limit'     => ($this->course->isStudent() ? 0 : 1)*/
     ];
 }
@@ -469,7 +469,7 @@ $this->css('course.css')
                             foreach ($offerings as $offering) {
                                 $sections = $offering->sections([
                                     'state'      => 1,
-                                    'available'  => true
+                                    'available'  => true,
                                 ]);
                                 foreach ($sections as $section) {
                                     if ($section->params('certificate') && $section->get('enrollment') != 2) {
@@ -505,7 +505,7 @@ $this->css('course.css')
                         // includng the default
                         $filters = [
                             'state'      => 1,
-                            'available'  => true
+                            'available'  => true,
                         ];
 
                         foreach ($offerings as $offering) {
@@ -561,7 +561,7 @@ $this->css('course.css')
                         // show all sections regardless of published state
                         if ($this->course->isManager()) {
                             $filters = [
-                                'available'  => false
+                                'available'  => false,
                             ];
                         } else {
                             $filters = [
@@ -570,7 +570,7 @@ $this->css('course.css')
                                 'enrollment' => [0, 1],
                                 'started'    => true,
                                 'ended'      => false,
-                                'is_default' => 0
+                                'is_default' => 0,
                             ];
                         }
 

@@ -789,7 +789,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
                 (substr(
                     $name,
                     0,
-                    5
+                    5,
                 ) == 'where' || substr($name, 0, 7) == 'orWhere') && $name != 'whereRaw' && $name != 'orWhereRaw'
             ) {
                 $arguments[0] = (strpos($arguments[0], '.') === false)
@@ -850,7 +850,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             if (!isset($arguments[0]) || !is_callable($arguments[0])) {
                 throw new BadMethodCallException(
                     "Lifecycle event registration '{$name}' requires a callable argument.",
-                    500
+                    500,
                 );
             }
 
@@ -1186,7 +1186,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             static::$globalScopes[$class][$name] = $scope;
         } else {
             throw new \InvalidArgumentException(
-                'Global scope must be a string name with callback, or an object with apply() method.'
+                'Global scope must be a string name with callback, or an object with apply() method.',
             );
         }
     }
@@ -4182,7 +4182,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         array $rows,
         ?array $updateColumns = null,
         ?array $conflictColumns = null,
-        int $chunkSize = 1000
+        int $chunkSize = 1000,
     ): int {
         if (empty($rows)) {
             return 0;
@@ -4196,7 +4196,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             $rows,
             $updateColumns,
             $conflictColumns,
-            $chunkSize
+            $chunkSize,
         );
     }
 
@@ -4216,7 +4216,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      **/
     public static function firstOrCreate(
         array $attributes,
-        array $values = []
+        array $values = [],
     ) {
         $instance = static::blank();
 
@@ -4256,7 +4256,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      **/
     public static function updateOrCreate(
         array $attributes,
-        array $values = []
+        array $values = [],
     ) {
         $instance = static::blank();
 
@@ -4624,13 +4624,13 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         // Merge with user-specified exclusions
         $except = array_unique(array_merge(
             $defaults,
-            $except ?? []
+            $except ?? [],
         ));
 
         // Get all attributes except the excluded ones
         $attributes = array_diff_key(
             $this->getAttributes(),
-            array_flip($except)
+            array_flip($except),
         );
 
         // Create new instance and set the attributes
@@ -4765,7 +4765,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             $this->getTableName(),
             $pk,
             $this->getPkValue(),
-            $data
+            $data,
         );
     }
 
@@ -4860,7 +4860,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             return $this->query->remove(
                 $this->getTableName(),
                 $this->getPrimaryKey(),
-                $this->getPkValue()
+                $this->getPkValue(),
             );
         });
 
@@ -5391,7 +5391,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         $associativeTable = null,
         $thisKey = 'scope_id',
         $shifter = 'scope',
-        $relatedKey = null
+        $relatedKey = null,
     ) {
         $related = $this->resolve($model);
 
@@ -5763,7 +5763,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         $table = null,
         $morphType = null,
         $morphId = null,
-        $relatedKey = null
+        $relatedKey = null,
     ) {
         $related = $this->resolve($model);
 
@@ -5775,7 +5775,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             $morphType,
             $morphId,
             $relatedKey,
-            false // not inverse
+            false, // not inverse
         );
     }
 
@@ -5822,7 +5822,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         $table = null,
         $morphType = null,
         $morphId = null,
-        $relatedKey = null
+        $relatedKey = null,
     ) {
         $related = $this->resolve($model);
 
@@ -5837,7 +5837,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             $morphType,
             $morphId,
             $relatedKey,
-            true // is inverse
+            true, // is inverse
         );
     }
 
@@ -6458,18 +6458,18 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             case $relationship instanceof ManyToMany:
                 throw new RuntimeException(
                     "ManyToMany relationships require manual join handling. " .
-                    "Use \$query->join() directly with the intermediate table."
+                    "Use \$query->join() directly with the intermediate table.",
                 );
 
             case $relationship instanceof OneToManyThrough:
                 throw new RuntimeException(
                     "OneToManyThrough relationships require manual join handling. " .
-                    "Use \$query->join() directly with the intermediate model's table."
+                    "Use \$query->join() directly with the intermediate model's table.",
                 );
 
             default:
                 throw new RuntimeException(
-                    "Unsupported relationship type for joinWith(): " . $relationClass
+                    "Unsupported relationship type for joinWith(): " . $relationClass,
                 );
         }
 

@@ -47,7 +47,7 @@ Html::behavior('tooltip');
 <?php
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 ?>
 <form action="<?php echo $formAction; ?>"
@@ -77,7 +77,7 @@ $formAction = Route::url(
                     $this->filters['scope'],
                     'scope',
                     'filter-scope',
-                    'class="filter filter-submit"'
+                    'class="filter filter-submit"',
                 );
                 ?>
 
@@ -106,7 +106,7 @@ $formAction = Route::url(
                         Html::access('assetgroups'),
                         'value',
                         'text',
-                        $this->filters['access']
+                        $this->filters['access'],
                     );
                     ?>
                 </select>
@@ -261,7 +261,7 @@ $formAction = Route::url(
                         $editUrl = Route::url(
                             'index.php?option=' . $this->option
                             . '&controller=' . $this->controller
-                            . '&task=edit&id=' . $row->get('id')
+                            . '&task=edit&id=' . $row->get('id'),
                         );
                         ?>
                         <a href="<?php echo $editUrl; ?>">
@@ -296,7 +296,7 @@ $formAction = Route::url(
                                 . '&controller=' . $this->controller
                                 . '&task=' . $task
                                 . '&id=' . $row->get('id')
-                                . '&' . Session::getFormToken() . '=1'
+                                . '&' . Session::getFormToken() . '=1',
                             );
                             ?>
                             <a class="state <?php echo $cls; ?>"
@@ -323,7 +323,7 @@ $formAction = Route::url(
                         . '&controller=' . $this->controller
                         . '&task=setcomments&state=' . $state
                         . '&id=' . $row->get('id')
-                        . '&' . Session::getFormToken() . '=1'
+                        . '&' . Session::getFormToken() . '=1',
                     );
                     ?>
                     <a class="state <?php echo $cls2; ?>"
@@ -337,7 +337,7 @@ $formAction = Route::url(
                         <?php
                         $commentsListUrl = Route::url(
                             'index.php?option=' . $this->option
-                            . '&controller=comments&entry_id=' . $row->get('id')
+                            . '&controller=comments&entry_id=' . $row->get('id'),
                         );
                         ?>
                         <a class="comment"

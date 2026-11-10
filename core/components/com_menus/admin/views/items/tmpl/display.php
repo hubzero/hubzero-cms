@@ -54,7 +54,7 @@ if (User::authorise('core.admin')) {
         'refresh.png',
         'refresh_f2.png',
         'JToolbar_Rebuild',
-        false
+        false,
     );
     Toolbar::divider();
 }
@@ -76,7 +76,7 @@ $saveOrder = ($listOrder == 'lft' && $listDirn == 'asc');
 
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 $filterLabel = Lang::txt('JSEARCH_FILTER_LABEL');
 $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
@@ -108,7 +108,7 @@ $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
                     Html::menu('menus'),
                     'value',
                     'text',
-                    $this->filters['menutype']
+                    $this->filters['menutype'],
                 );
                 ?>
             </select>
@@ -123,7 +123,7 @@ $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
                     $this->f_levels,
                     'value',
                     'text',
-                    $this->filters['level']
+                    $this->filters['level'],
                 );
                 ?>
             </select>
@@ -139,7 +139,7 @@ $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
                     'value',
                     'text',
                     $this->filters['published'],
-                    true
+                    true,
                 );
                 ?>
             </select>
@@ -154,7 +154,7 @@ $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
                     Html::access('assetgroups'),
                     'value',
                     'text',
-                    $this->filters['access']
+                    $this->filters['access'],
                 );
                 ?>
             </select>
@@ -169,7 +169,7 @@ $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
                     Html::contentlanguage('existing', true, true),
                     'value',
                     'text',
-                    $this->filters['language']
+                    $this->filters['language'],
                 );
                 ?>
             </select>
@@ -219,7 +219,7 @@ $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
                             'COM_MENUS_HEADING_ASSOCIATION',
                             'association',
                             $listDirn,
-                            $listOrder
+                            $listOrder,
                         );
                         ?>
                     </th>
@@ -247,7 +247,7 @@ $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
         foreach ($this->rows as $item) :
             $orderkey = array_search(
                 $item->get('id'),
-                $this->ordering[$item->get('parent_id')]
+                $this->ordering[$item->get('parent_id')],
             );
             $canCreate  = User::authorise('core.create', $this->option);
             $canEdit    = User::authorise('core.edit', $this->option);
@@ -271,7 +271,7 @@ $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
                             $item->get('editor'),
                             $item->get('checked_out_time'),
                             'items.',
-                            $canCheckin
+                            $canCheckin,
                         );
                         ?>
                     <?php endif; ?>
@@ -280,7 +280,7 @@ $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
                         $editUrl = Route::url(
                             'index.php?option=' . $this->option
                             . '&controller=' . $this->controller
-                            . '&task=edit&cid[]=' . (int) $item->get('id')
+                            . '&task=edit&cid[]=' . (int) $item->get('id'),
                         );
                         ?>
                         <a href="<?php echo $editUrl; ?>">
@@ -305,7 +305,7 @@ $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
                                 echo Lang::txt(
                                     'JGLOBAL_LIST_ALIAS_NOTE',
                                     $aliasText,
-                                    $noteText
+                                    $noteText,
                                 );
                                 ?>
                             <?php endif; ?>
@@ -334,7 +334,7 @@ $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
                                     $hasUp,
                                     'items.orderup',
                                     'JLIB_HTML_MOVE_UP',
-                                    $ordering
+                                    $ordering,
                                 ); ?>
                             </span>
                             <span>
@@ -344,7 +344,7 @@ $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
                                     $hasDown,
                                     'items.orderdown',
                                     'JLIB_HTML_MOVE_DOWN',
-                                    $ordering
+                                    $ordering,
                                 ); ?>
                             </span>
                         <?php endif; ?>
@@ -368,7 +368,7 @@ $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
                         ? htmlspecialchars(
                             $this->escape($typeDesc),
                             ENT_COMPAT,
-                            'UTF-8'
+                            'UTF-8',
                         )
                         : '';
                     ?>
@@ -387,7 +387,7 @@ $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
                                 $item->get('home'),
                                 $i,
                                 'items.',
-                                $isDefault
+                                $isDefault,
                             );
                             ?>
                         <?php elseif ($canChange) : ?>
@@ -396,13 +396,13 @@ $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
                                 'index.php?option=' . $this->option
                                 . '&controller=' . $this->controller
                                 . '&task=unsetDefault&cid[]=' . $item->get('id')
-                                . '&' . Session::getFormToken() . '=1'
+                                . '&' . Session::getFormToken() . '=1',
                             );
                             $langTitle = $item->get('language_title');
                             $imgPath = 'mod_languages/' . $item->get('image') . '.gif';
                             $unsetTitle = Lang::txt(
                                 'COM_MENUS_GRID_UNSET_LANGUAGE',
-                                $langTitle
+                                $langTitle,
                             );
                             ?>
                             <a href="<?php echo $unsetUrl; ?>">
@@ -412,7 +412,7 @@ $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
                                     $imgPath,
                                     $langTitle,
                                     ['title' => $unsetTitle],
-                                    true
+                                    true,
                                 );
                                 ?>
                             </a>
@@ -456,7 +456,7 @@ $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
                     $lftRgt = sprintf(
                         '%d-%d',
                         $item->get('lft'),
-                        $item->get('rgt')
+                        $item->get('rgt'),
                     );
                     ?>
                     <span title="<?php echo $lftRgt; ?>">

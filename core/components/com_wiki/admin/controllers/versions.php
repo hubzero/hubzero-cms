@@ -51,25 +51,25 @@ class Versions extends AdminController
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'version'
+                'version',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'DESC'
+                'DESC',
             ),
             // Filters
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             ),
             'pageid' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.pageid',
                 'pageid',
                 0,
-                'int'
-            )
+                'int',
+            ),
         ];
 
         $page = Page::oneOrNew(intval($filters['pageid']));
@@ -118,7 +118,7 @@ class Versions extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                 Lang::txt('COM_WIKI_ERROR_MISSING_ID'),
-                'error'
+                'error',
             );
         }
 
@@ -199,8 +199,8 @@ class Versions extends AdminController
                 'path'     => $page->get('path'),
                 'pagename' => $page->get('pagename'),
                 'pageid'   => $page->get('id'),
-                'filepath' => ''
-            ]
+                'filepath' => '',
+            ],
         ));
 
         // Trigger before save event

@@ -98,7 +98,7 @@ class Articles extends AdminController
         $params = [
             'catid'    => $batchOptions['category_id'],
             'access'   => isset($batchOptions['assetgroup_id']) ? $batchOptions['assetgroup_id'] : null,
-            'language' => isset($batchOptions['language_id']) ? $batchOptions['language_id'] : null
+            'language' => isset($batchOptions['language_id']) ? $batchOptions['language_id'] : null,
         ];
         $params = array_filter($params);
 
@@ -149,44 +149,44 @@ class Articles extends AdminController
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'filter_search',
-                ''
+                '',
             ),
             'access' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.access',
                 'filter_access',
-                ''
+                '',
             ),
             'author_id' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.author_id',
-                'author_id'
+                'author_id',
             ),
             'published' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.published',
                 'filter_published',
-                ''
+                '',
             ),
             'category_id' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.category_id',
-                'filter_category_id'
+                'filter_category_id',
             ),
             'level' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.level',
-                0
+                0,
             ),
             'language' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.language',
-                ''
+                '',
             ),
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'title'
+                'title',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         // Only the columns the list headings offer
@@ -202,7 +202,7 @@ class Articles extends AdminController
 
         $filterableFields = [
             'category_id' => 'catid',
-            'access' => 'access'
+            'access' => 'access',
         ];
         foreach ($filterableFields as $index => $column) {
             if (isset($filters[$index]) && $filters[$index] != '') {
@@ -271,44 +271,44 @@ class Articles extends AdminController
             'search' => Request::getState(
                 $this->_option . '.featured.search',
                 'filter_search',
-                ''
+                '',
             ),
             'access' => Request::getState(
                 $this->_option . '.featured.access',
                 'filter_access',
-                0
+                0,
             ),
             'author_id' => Request::getState(
                 $this->_option . '.featured.author_id',
-                'author_id'
+                'author_id',
             ),
             'published' => Request::getState(
                 $this->_option . '.featured.published',
                 'filter_published',
-                ''
+                '',
             ),
             'category_id' => Request::getState(
                 $this->_option . '.featured.category_id',
-                'filter_category_id'
+                'filter_category_id',
             ),
             'level' => Request::getState(
                 $this->_option . '.featured.level',
-                0
+                0,
             ),
             'language' => Request::getState(
                 $this->_option . '.featured.language',
-                ''
+                '',
             ),
             'sort' => Request::getState(
                 $this->_option . '.featured.sort',
                 'filter_order',
-                'ordering'
+                'ordering',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.featured.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         // Only the columns the list headings offer
@@ -538,7 +538,7 @@ class Articles extends AdminController
                 function ($item) {
                     return array_filter($item, 'strlen');
                 },
-                $items['rules']
+                $items['rules'],
             );
             $article->assetRules = new Rules($rules);
         }
@@ -649,20 +649,20 @@ class Articles extends AdminController
         $states = [
             'publish' => [
                 'value' => '1',
-                'lang' => 'COM_CONTENT_N_ITEMS_PUBLISHED'
+                'lang' => 'COM_CONTENT_N_ITEMS_PUBLISHED',
             ],
             'unpublish' => [
                 'value' => '0',
-                'lang' => 'COM_CONTENT_N_ITEMS_UNPUBLISHED'
+                'lang' => 'COM_CONTENT_N_ITEMS_UNPUBLISHED',
             ],
             'archive' => [
                 'value' => '2',
-                'lang' => 'COM_CONTENT_N_ITEMS_ARCHIVED'
+                'lang' => 'COM_CONTENT_N_ITEMS_ARCHIVED',
             ],
             'trash' => [
                 'value' => '-2',
-                'lang' => 'COM_CONTENT_N_ITEMS_TRASHED'
-            ]
+                'lang' => 'COM_CONTENT_N_ITEMS_TRASHED',
+            ],
         ];
 
         $state = $states[$this->getTask()];

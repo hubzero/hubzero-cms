@@ -1450,7 +1450,7 @@ class AlterTableBuilder
         string $referencedTable,
         string $referencedColumn = 'id',
         string $onDelete = 'CASCADE',
-        string $onUpdate = 'CASCADE'
+        string $onUpdate = 'CASCADE',
     ): self {
         $this->addForeignKeys[$column] = [
             'column' => $column,

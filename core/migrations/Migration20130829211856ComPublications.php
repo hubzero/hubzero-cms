@@ -108,7 +108,7 @@ class Migration20130829211856ComPublications extends Base
                 ['level2', 'Intermediate', 'Juniors/Seniors'],
                 ['level3', 'Advanced', 'Graduate Students'],
                 ['level4', 'Expert', 'PhD Experts'],
-                ['level5', 'Professional', 'Beyond PhD']
+                ['level5', 'Professional', 'Beyond PhD'],
             ];
 
             foreach ($levels as $level) {
@@ -117,7 +117,7 @@ class Migration20130829211856ComPublications extends Base
                     ->set([
                         'label'       => $level[0],
                         'title'       => $level[1],
-                        'description' => $level[2]
+                        'description' => $level[2],
                     ])
                     ->execute();
             }
@@ -295,8 +295,8 @@ class Migration20130829211856ComPublications extends Base
                     '0',
                     '0',
                     $customFields,
-                    $params
-                ]
+                    $params,
+                ],
             ];
 
             foreach ($categories as $category) {
@@ -311,7 +311,7 @@ class Migration20130829211856ComPublications extends Base
                         'contributable' => $category[5],
                         'state'         => $category[6],
                         'customFields'  => $category[7],
-                        'params'        => $category[8]
+                        'params'        => $category[8],
                     ])
                     ->execute();
             }
@@ -337,7 +337,7 @@ class Migration20130829211856ComPublications extends Base
                 ['Application', 'apps', 'simulation tool', '0', '0', '4', ''],
                 ['Series', 'series', 'publication collection', '0', '0', '6', ''],
                 ['Gallery', 'gallery', 'image/photo gallery', '0', '0', '7', ''],
-                ['Databases', 'databases', 'project database', '0', '0', '2', '']
+                ['Databases', 'databases', 'project database', '0', '0', '2', ''],
             ];
 
             foreach ($types as $type) {
@@ -350,7 +350,7 @@ class Migration20130829211856ComPublications extends Base
                         'contributable' => $type[3],
                         'supporting'    => $type[4],
                         'ordering'      => $type[5],
-                        'params'        => $type[6]
+                        'params'        => $type[6],
                     ])
                     ->execute();
             }
@@ -475,7 +475,7 @@ class Migration20130829211856ComPublications extends Base
                     '0',
                     '0',
                     '1',
-                    $licIcon1
+                    $licIcon1,
                 ],
                 [
                     'cc',
@@ -489,7 +489,7 @@ class Migration20130829211856ComPublications extends Base
                     '1',
                     '1',
                     '0',
-                    $licIcon2
+                    $licIcon2,
                 ],
                 [
                     'standard',
@@ -503,8 +503,8 @@ class Migration20130829211856ComPublications extends Base
                     '0',
                     '0',
                     '0',
-                    $licIcon3
-                ]
+                    $licIcon3,
+                ],
             ];
 
             foreach ($licenses as $lic) {
@@ -522,7 +522,7 @@ class Migration20130829211856ComPublications extends Base
                         'main'         => $lic[8],
                         'agreement'    => $lic[9],
                         'customizable' => $lic[10],
-                        'icon'         => $lic[11]
+                        'icon'         => $lic[11],
                     ])
                     ->execute();
             }
@@ -570,7 +570,7 @@ class Migration20130829211856ComPublications extends Base
             "deposit_terms" => "/legal/termsofdeposit",
             "dbcheck" => "0",
             "repository" => "0",
-            "aip_path" => "/srv/AIP"
+            "aip_path" => "/srv/AIP",
         ];
 
         $this->addComponentEntry('Publications', 'com_publications', 1, $params);

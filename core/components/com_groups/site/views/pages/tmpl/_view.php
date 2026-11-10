@@ -214,7 +214,7 @@ if (
                 $this->page,
                 'com_groups',
                 $this->page->url() . '#page-comments',
-                $params
+                $params,
             ];
 
             $comments = Event::trigger('hubzero.onAfterDisplayContent', $params);

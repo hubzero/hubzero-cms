@@ -41,10 +41,10 @@ class Import extends SiteController
             App::redirect(
                 Route::url(
                     'index.php?option=com_users&view=login&return='
-                    . base64_encode(Route::url('index.php?option=' . $this->_option . '&task=import', false, true))
+                    . base64_encode(Route::url('index.php?option=' . $this->_option . '&task=import', false, true)),
                 ),
                 Lang::txt('COM_CITATIONS_NOT_LOGGEDIN'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -53,7 +53,7 @@ class Import extends SiteController
             App::get('db'),
             App::get('filesystem'),
             App::get('config')->get('tmp_path') . DS . 'citations',
-            App::get('session')->getId()
+            App::get('session')->getId(),
         );
 
         $this->registerTask('import_upload', 'upload');
@@ -82,7 +82,7 @@ class Import extends SiteController
         //if importing is turned off go to intro page
         if (!$importParam) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option)
+                Route::url('index.php?option=' . $this->_option),
             );
             return;
         }
@@ -93,7 +93,7 @@ class Import extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option),
                 Lang::txt('COM_CITATIONS_CITATION_NOT_AUTH'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -140,7 +140,7 @@ class Import extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&task=import'),
                 Lang::txt('COM_CITATIONS_IMPORT_MISSING_FILE'),
-                'error'
+                'error',
             );
             return;
         }
@@ -150,7 +150,7 @@ class Import extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&task=import'),
                 Lang::txt('COM_CITATIONS_IMPORT_FILE_TOO_BIG'),
-                'error'
+                'error',
             );
             return;
         }
@@ -169,7 +169,7 @@ class Import extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&task=import'),
                 Lang::txt('COM_CITATIONS_IMPORT_PROCESS_FAILURE'),
-                'error'
+                'error',
             );
             return;
         }
@@ -195,8 +195,8 @@ class Import extends SiteController
 
         App::redirect(
             Route::url(
-                'index.php?option=' . $this->_option . '&task=import_review' . ($group ? '&group=' . $group : '')
-            )
+                'index.php?option=' . $this->_option . '&task=import_review' . ($group ? '&group=' . $group : ''),
+            ),
         );
     }
 
@@ -217,7 +217,7 @@ class Import extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&task=import' . ($group ? '&group=' . $group : '')),
                 Lang::txt('COM_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
-                'error'
+                'error',
             );
             return;
         }
@@ -274,7 +274,7 @@ class Import extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&task=import'),
                 Lang::txt('COM_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
-                'error'
+                'error',
             );
             return;
         }
@@ -294,7 +294,7 @@ class Import extends SiteController
         // Process
         $results = $this->importer->process(
             $citations_action_attention,
-            $citations_action_no_attention
+            $citations_action_no_attention,
         );
 
         if (isset($group) && $group != '') {
@@ -302,27 +302,27 @@ class Import extends SiteController
             $cn = $gob->getName($group);
 
             App::redirect(
-                Route::url('index.php?option=com_groups&cn=' . $cn . '&active=citations&action=dashboard')
+                Route::url('index.php?option=com_groups&cn=' . $cn . '&active=citations&action=dashboard'),
             );
         } else {
             // success message a redirect
             Notify::success(
                 Lang::txt('COM_CITATIONS_IMPORT_RESULTS_SAVED', count($results['saved'])),
-                'citations'
+                'citations',
             );
 
             // if we have citations not getting saved
             if (count($results['not_saved']) > 0) {
                 Notify::warning(
                     Lang::txt('COM_CITATIONS_IMPORT_RESULTS_NOT_SAVED', count($results['not_saved'])),
-                    'citations'
+                    'citations',
                 );
             }
 
             if (count($results['error']) > 0) {
                 Notify::error(
                     Lang::txt('COM_CITATIONS_IMPORT_RESULTS_SAVE_ERROR', count($results['error'])),
-                    'citations'
+                    'citations',
                 );
             }
 
@@ -339,7 +339,7 @@ class Import extends SiteController
 
             //redirect
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&task=import_saved')
+                Route::url('index.php?option=' . $this->_option . '&task=import_saved'),
             );
         }
 
@@ -366,7 +366,7 @@ class Import extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_citations&task=import'),
                 Lang::txt('COM_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
-                'error'
+                'error',
             );
             return;
         }
@@ -380,7 +380,7 @@ class Import extends SiteController
         // Filters for gettiung just previously uploaded
         $filters = [
             'start'  => 0,
-            'search' => ''
+            'search' => '',
         ];
 
         // Instantiate a new view
@@ -429,13 +429,13 @@ class Import extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         if ($this->_task) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
-                'index.php?option=' . $this->_option . '&task=' . $this->_task
+                'index.php?option=' . $this->_option . '&task=' . $this->_task,
             );
         }
     }

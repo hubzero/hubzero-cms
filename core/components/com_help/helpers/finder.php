@@ -58,7 +58,7 @@ class Finder
         $paths = [
             // Template overrides
             $tmpl . DS . 'html' . DS . 'plg_' . $name . '_' . $plugin . DS . 'help' . DS . $lang . DS . $file,
-            $tmpl . DS . 'html' . DS . $component . DS . 'help' . DS . $lang . DS . $page . '.' . self::$ext
+            $tmpl . DS . 'html' . DS . $component . DS . 'help' . DS . $lang . DS . $page . '.' . self::$ext,
         ];
         $paths = array_merge($paths, $extension
             ? [$pluginPage, $componentPage]
@@ -102,7 +102,7 @@ class Finder
 			FROM `#__extensions`
 			WHERE `type`=" . $database->quote('component') . "
 			AND `element`=" . $database->quote($component) . "
-			AND `enabled`=1"
+			AND `enabled`=1",
         );
         $name = $database->loadResult();
 
@@ -113,7 +113,7 @@ class Finder
             return [
                 'name'   => ucfirst($name),
                 'option' => $component,
-                'pages'  => []
+                'pages'  => [],
             ];
         }
 
@@ -135,7 +135,7 @@ class Finder
         return [
             'name'   => $name,
             'option' => $component,
-            'pages'  => $pages
+            'pages'  => $pages,
         ];
     }
 }

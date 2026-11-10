@@ -152,7 +152,7 @@ class Curation extends Obj
             $blocks = $blocksModel->getBlocks(
                 'block',
                 " WHERE minimum=1 OR params LIKE '%default=1%'",
-                " ORDER BY ordering, id"
+                " ORDER BY ordering, id",
             );
 
             $manifest = new stdClass();
@@ -307,7 +307,7 @@ class Curation extends Obj
                         'name'     => $element->params->aliasmap,
                         'label'    => $element->label,
                         'type'     => $element->params->input,
-                        'required' => $element->params->required
+                        'required' => $element->params->required,
                     ];
                 }
             }
@@ -1702,7 +1702,7 @@ class Curation extends Obj
             $this->_pub->version_id,
             $name,
             $blockId,
-            $elementId
+            $elementId,
         );
     }
 
@@ -1816,7 +1816,7 @@ class Curation extends Obj
 
         $contents .= $attModel->showPackagedItems(
             $elements,
-            $this->_pub
+            $this->_pub,
         );
 
         // Custom license to be included in LICENSE.txt
@@ -2157,7 +2157,7 @@ class Curation extends Obj
                 $elements,
                 $this->_pub,
                 $readme,
-                $bundleDir
+                $bundleDir,
             );
 
             // If a required element (e.g. the primary files) could not be
@@ -2291,7 +2291,7 @@ class Curation extends Obj
                 $element->manifest->params,
                 $element->id,
                 $pub,
-                $element->block
+                $element->block,
             );
 
             // Get gallery path
@@ -2300,7 +2300,7 @@ class Curation extends Obj
                 $pub->version_id,
                 '',
                 'gallery',
-                1
+                1,
             );
 
             if (is_dir($galleryPath)) {
@@ -2334,7 +2334,7 @@ class Curation extends Obj
                         $suffix = $fileAttach->checkForDuplicate(
                             $configs->path . DS . $objPA->path,
                             $objPA,
-                            $configs
+                            $configs,
                         );
 
                         // Save params if applicable
@@ -2465,8 +2465,8 @@ class Curation extends Obj
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => 'draft',
-                'layout'  => 'statusbar'
-            ]
+                'layout'  => 'statusbar',
+            ],
         );
         $view->pub       = $this->_pub;
         $view->progress  = $this->_progress;

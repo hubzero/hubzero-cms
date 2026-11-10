@@ -47,7 +47,7 @@ class Ckeditor5 extends Plugin
 
         Document::addScript(
             str_replace('/administrator', '', Request::base(true))
-            . '/' . $this->_basePath . 'js/ckeditor.js' . $version
+            . '/' . $this->_basePath . 'js/ckeditor.js' . $version,
         );
     }
 
@@ -78,7 +78,7 @@ class Ckeditor5 extends Plugin
     {
         return json_encode(
             $value,
-            JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT
+            JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT,
         );
     }
 
@@ -171,7 +171,7 @@ class Ckeditor5 extends Plugin
             $params['fileBrowserUploadUrl'],
             $params['fileBrowserImageUploadUrl'],
             $params['fileBrowserWindowWidth'],
-            $params['fileBrowserWindowHeight']
+            $params['fileBrowserWindowHeight'],
         );
 
         // The remaining behavioural parameters the CKEditor 4 plugin honours.
@@ -191,7 +191,7 @@ class Ckeditor5 extends Plugin
             $params['allowScriptTags'],
             $params['allowPhpTags'],
             $params['mentions'],
-            $params['limits']
+            $params['limits'],
         );
 
         if (!isset($params['class'])) {
@@ -225,7 +225,7 @@ class Ckeditor5 extends Plugin
             $opts['fileBrowser'] = [
                 'url'    => $browseUrl,
                 'width'  => $browseWidth,
-                'height' => $browseHeight
+                'height' => $browseHeight,
             ];
         }
         if ($startInSource) {

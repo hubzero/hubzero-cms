@@ -29,7 +29,7 @@ class QueryAddColumnStatementTest extends Basic
         $columnData = [
             'name' => 'test',
             'type' => 'varchar(255)',
-            'restriction' => 'NOT NULL'
+            'restriction' => 'NOT NULL',
         ];
         $addColumnStatement = new QueryAddColumnStatement($columnData);
         $expectedStatement = 'ADD COLUMN test varchar(255) NOT NULL';
@@ -44,7 +44,7 @@ class QueryAddColumnStatementTest extends Basic
         $columnData = [
             'name' => 'test',
             'type' => 'varchar(255)',
-            'default' => "'foo'"
+            'default' => "'foo'",
         ];
         $addColumnStatement = new QueryAddColumnStatement($columnData);
         $expectedStatement = "ADD COLUMN test varchar(255) DEFAULT 'foo'";

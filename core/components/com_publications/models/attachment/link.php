@@ -63,7 +63,7 @@ class Link extends Base
             $pub->version_id,
             '',
             'logs',
-            0
+            0,
         );
 
         // replace current attachments?
@@ -152,7 +152,7 @@ class Link extends Base
         $attachments = $this->_parent->getElementAttachments(
             $elementId,
             $attachments,
-            $this->_name
+            $this->_name,
         );
 
         $disabled = 0;
@@ -202,7 +202,7 @@ class Link extends Base
                 $title,
                 'rel="external"',
                 $disabled,
-                $pop
+                $pop,
             );
         } elseif ($role == 2 && $attachments) {
             $html .= '<ul>';
@@ -351,7 +351,7 @@ class Link extends Base
                 User::get('id'),
                 $elementId,
                 $element,
-                $ordering
+                $ordering,
             );
             if ($attached) {
                 // Do we also set draft title and metadata from the link?
@@ -416,7 +416,7 @@ class Link extends Base
                 ['path' => $path],
                 $elementId,
                 $this->_name,
-                $element->role
+                $element->role,
             )
         ) {
             // Link already attached
@@ -613,8 +613,8 @@ class Link extends Base
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => 'attachments',
-                'layout'  => $this->_name
-            ]
+                'layout'  => $this->_name,
+            ],
         );
         $view->data   = $data;
         $view->params = $params;

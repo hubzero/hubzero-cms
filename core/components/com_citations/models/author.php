@@ -39,7 +39,7 @@ class Author extends Relational
      **/
     protected $rules = [
         'author' => 'notempty',
-        'cid'    => 'nonzero'
+        'cid'    => 'nonzero',
     ];
 
     /**
@@ -48,7 +48,7 @@ class Author extends Relational
      * @var  array
      */
     public $initiate = [
-        'ordering'
+        'ordering',
     ];
 
     /**

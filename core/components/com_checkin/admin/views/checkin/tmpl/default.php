@@ -67,7 +67,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
                     $pagination = $this->pagination(
                         $this->total,
                         $this->state->get('list.start'),
-                        $this->state->get('list.limit')
+                        $this->state->get('list.limit'),
                     );
                     echo $pagination->render();
                     ?>

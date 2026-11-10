@@ -16,7 +16,7 @@ defined('_HZEXEC_') or die();
 
 Pathway::append(
     Lang::txt('COM_WIKI_SPECIAL_ALL_PAGES'),
-    $this->page->link()
+    $this->page->link(),
 );
 
 $dir = strtoupper(Request::getString('dir', 'ASC'));

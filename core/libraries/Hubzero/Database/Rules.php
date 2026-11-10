@@ -107,7 +107,7 @@ class Rules
                         $error['field'] ?? $key,
                         $error['rule'] ?? 'callback',
                         $error['message'],
-                        $error['params'] ?? []
+                        $error['params'] ?? [],
                     );
                 } else {
                     $errors[] = new ValidationError($key, 'callback', (string) $error);
@@ -141,7 +141,7 @@ class Rules
                                 $error->getRule(),
                                 self::interpolateMessage($ruleConfig['message'], $error->getParams()),
                                 $error->getParams(),
-                                $error->getValue()
+                                $error->getValue(),
                             );
                         }
                         $errors[] = $error;
@@ -411,7 +411,7 @@ class Rules
                 'length',
                 "{$key} must be at least {$min} characters",
                 ['min' => $min, 'max' => $max, 'actual' => $len],
-                $value
+                $value,
             );
         }
 
@@ -421,7 +421,7 @@ class Rules
                 'length',
                 "{$key} cannot exceed {$max} characters",
                 ['min' => $min, 'max' => $max, 'actual' => $len],
-                $value
+                $value,
             );
         }
 
@@ -449,7 +449,7 @@ class Rules
                 'min',
                 "{$key} must be at least {$min}",
                 ['min' => $min, 'actual' => $value],
-                $value
+                $value,
             );
         }
 
@@ -477,7 +477,7 @@ class Rules
                 'max',
                 "{$key} cannot exceed {$max}",
                 ['max' => $max, 'actual' => $value],
-                $value
+                $value,
             );
         }
 
@@ -506,7 +506,7 @@ class Rules
                 'between',
                 "{$key} must be between {$min} and {$max}",
                 ['min' => $min, 'max' => $max, 'actual' => $value],
-                $value
+                $value,
             );
         }
 
@@ -535,7 +535,7 @@ class Rules
                 'in',
                 "{$key} must be one of: {$list}",
                 ['allowed' => $allowed, 'actual' => $value],
-                $value
+                $value,
             );
         }
 
@@ -564,7 +564,7 @@ class Rules
                 'notin',
                 "{$key} cannot be one of: {$list}",
                 ['disallowed' => $disallowed, 'actual' => $value],
-                $value
+                $value,
             );
         }
 
@@ -596,7 +596,7 @@ class Rules
                 'regex',
                 "{$key} format is invalid",
                 ['pattern' => $pattern],
-                $value
+                $value,
             );
         }
 
@@ -622,7 +622,7 @@ class Rules
                 'numeric',
                 "{$key} must be a number",
                 [],
-                $value
+                $value,
             );
         }
 
@@ -648,7 +648,7 @@ class Rules
                 'integer',
                 "{$key} must be an integer",
                 [],
-                $value
+                $value,
             );
         }
 
@@ -676,7 +676,7 @@ class Rules
                 'boolean',
                 "{$key} must be a boolean",
                 [],
-                $value
+                $value,
             );
         }
 
@@ -702,7 +702,7 @@ class Rules
                 'alphanumeric',
                 "{$key} can only contain letters and numbers",
                 [],
-                $value
+                $value,
             );
         }
 
@@ -728,7 +728,7 @@ class Rules
                 'url',
                 "{$key} must be a valid URL",
                 [],
-                $value
+                $value,
             );
         }
 
@@ -762,7 +762,7 @@ class Rules
                 'same',
                 "{$key} must match {$otherField}",
                 ['field' => $otherField],
-                $value
+                $value,
             );
         }
 
@@ -796,7 +796,7 @@ class Rules
                 'different',
                 "{$key} must be different from {$otherField}",
                 ['field' => $otherField],
-                $value
+                $value,
             );
         }
 
@@ -822,7 +822,7 @@ class Rules
                 'required',
                 "{$key} is required",
                 [],
-                $value
+                $value,
             );
         }
 
@@ -852,7 +852,7 @@ class Rules
                     'date',
                     "{$key} must be a valid date in format {$format}",
                     ['format' => $format],
-                    $value
+                    $value,
                 );
             }
         } else {
@@ -862,7 +862,7 @@ class Rules
                     'date',
                     "{$key} must be a valid date",
                     [],
-                    $value
+                    $value,
                 );
             }
         }
@@ -898,7 +898,7 @@ class Rules
                 'uuid',
                 "{$key} must be a valid UUID",
                 [],
-                $value
+                $value,
             );
         }
 

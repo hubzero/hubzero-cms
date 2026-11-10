@@ -146,7 +146,7 @@ class Reports extends Base
             $url = 'index.php?option=' . $this->_option
                 . '&controller=reports&task=custom&searchterm=' . $filter;
             App::redirect(
-                Route::url($url, false)
+                Route::url($url, false),
             );
         }
 

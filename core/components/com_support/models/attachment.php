@@ -58,7 +58,7 @@ class Attachment extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**
@@ -67,7 +67,7 @@ class Attachment extends Relational
      * @var  array
      */
     public $always = [
-        'filename'
+        'filename',
     ];
 
     /**

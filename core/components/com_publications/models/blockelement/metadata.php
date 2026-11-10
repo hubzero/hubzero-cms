@@ -92,7 +92,7 @@ class Metadata extends Base
         $viewname = 'edit',
         $status = null,
         $master = null,
-        $order = 0
+        $order = 0,
     ) {
         $html   = '';
 
@@ -117,7 +117,7 @@ class Metadata extends Base
                     $collapse,
                     $total,
                     $master,
-                    $order
+                    $order,
                 );
 
                 break;
@@ -142,15 +142,15 @@ class Metadata extends Base
         $pub = null,
         $status = null,
         $master = null,
-        $viewname = 'freeze'
+        $viewname = 'freeze',
     ) {
         $view = new \Hubzero\Plugin\View(
             [
                 'folder'    => 'projects',
                 'element'   => 'publications',
                 'name'      => 'freeze',
-                'layout'    => 'metadata'
-            ]
+                'layout'    => 'metadata',
+            ],
         );
 
         $view->pub           = $pub;
@@ -177,15 +177,15 @@ class Metadata extends Base
         $collapse = 0,
         $total = 0,
         $master = null,
-        $order = 0
+        $order = 0,
     ) {
         $view = new \Hubzero\Plugin\View(
             [
                 'folder'    => 'projects',
                 'element'   => 'publications',
                 'name'      => 'blockelement',
-                'layout'    => 'metadata'
-            ]
+                'layout'    => 'metadata',
+            ],
         );
 
         $view->pub           = $pub;

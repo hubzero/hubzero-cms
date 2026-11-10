@@ -156,7 +156,7 @@ class Query
 
         $results = [
             'select' => $select,
-            'join'   => $join
+            'join'   => $join,
         ];
 
         return $results;

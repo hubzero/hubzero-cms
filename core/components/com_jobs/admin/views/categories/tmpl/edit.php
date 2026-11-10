@@ -33,13 +33,13 @@ $this->js();
 
 $formAction = Route::url('index.php?option=' . $this->option);
 $invalidMsg = $this->escape(
-    Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')
+    Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'),
 );
 $categoryValue = $this->escape(
-    stripslashes($this->row->category)
+    stripslashes($this->row->category),
 );
 $descriptionValue = $this->escape(
-    stripslashes($this->row->description)
+    stripslashes($this->row->description),
 );
 ?>
 

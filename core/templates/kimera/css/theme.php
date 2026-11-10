@@ -253,7 +253,7 @@ switch ($bground) {
             'rgba(209, 209, 209, 0.1) 30px, rgba(209, 209, 209, 0.1) 34px, transparent 50px',
             'rgba(209, 209, 209, 0.2) 16px, rgba(209, 209, 209, 0.3) 17px, transparent 20px',
             'rgba(209, 209, 209, 0.2) 26px, rgba(209, 209, 209, 0.3) 27px, transparent 30px',
-            'rgba(209, 209, 209, 0.2) 36px, rgba(209, 209, 209, 0.3) 37px, transparent 40px'
+            'rgba(209, 209, 209, 0.2) 36px, rgba(209, 209, 209, 0.3) 37px, transparent 40px',
         ];
         // Build webkit-gradient version (legacy)
         $wkGradLegacy = [
@@ -284,7 +284,7 @@ switch ($bground) {
             '-webkit-gradient(radial, 50% 50%, 26, 50% 50%, 30, ' .
                 'from(rgba(209, 209, 209, 0.1)), color-stop(0.2, rgba(209, 209, 209, 0.2)), to(transparent))',
             '-webkit-gradient(radial, 50% 50%, 36, 50% 50%, 40, ' .
-                'from(rgba(209, 209, 209, 0.2)), color-stop(0.2, rgba(209, 209, 209, 0.3)), to(transparent))'
+                'from(rgba(209, 209, 209, 0.2)), color-stop(0.2, rgba(209, 209, 209, 0.3)), to(transparent))',
         ];
         $wkRadial = [];
         $mozRadial = [];
@@ -363,14 +363,14 @@ $styles .= '
 $patterns = [
     '!/\*[^*]*\*+([^/][^*]*\*+)*/!',  /* remove comments */
     '/[\n\r \t]/',                    /* remove tabs, spaces, newlines, etc. */
-    '/ +/'                           /* collapse multiple spaces to a single space */
+    '/ +/',                           /* collapse multiple spaces to a single space */
     // '/ ?([,:;{}]) ?/' - remove space around , : ; { }
     // [!] IE 7 doesn't like this and won't process the stylesheet
 ];
 $replacements = [
     '',
     ' ',
-    ' '/*,
+    ' ',/*,
     '$1'*/
 ];
 $styles = preg_replace($patterns, $replacements, $styles);

@@ -43,7 +43,7 @@ class Asset extends Nested
      */
     protected $rules = [
         'title' => 'notempty',
-        'name'  => 'notempty'
+        'name'  => 'notempty',
     ];
 
     /**
@@ -52,7 +52,7 @@ class Asset extends Nested
      * @var  array
      */
     public $initiate = [
-        'parent_id'
+        'parent_id',
     ];
 
     /**
@@ -61,7 +61,7 @@ class Asset extends Nested
      * @var  array
      **/
     public $always = [
-        'rules'
+        'rules',
     ];
 
     /**

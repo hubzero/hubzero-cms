@@ -286,7 +286,7 @@ class SqlsrvGrammar extends BaseSchemaGrammar
                     throw new \RuntimeException(
                         'Fulltext indexes require a fulltext catalog and unique index. '
                         . 'Use raw SQL: CREATE FULLTEXT INDEX ON '
-                        . "{$table} ({$columns}) KEY INDEX <unique_index>"
+                        . "{$table} ({$columns}) KEY INDEX <unique_index>",
                     );
 
                 case 'spatial':
@@ -459,7 +459,7 @@ class SqlsrvGrammar extends BaseSchemaGrammar
         foreach ($builder->getAddIndexes() as $name => $info) {
             $columnList = implode(', ', array_map(
                 fn($col) => $this->wrap($col),
-                $info['columns']
+                $info['columns'],
             ));
             $unique = $info['unique'] ? 'UNIQUE ' : '';
             $statements[] = "CREATE {$unique}INDEX "
@@ -473,7 +473,7 @@ class SqlsrvGrammar extends BaseSchemaGrammar
         foreach ($builder->getAddFulltextIndexes() as $name => $columns) {
             $columnList = implode(', ', array_map(
                 fn($c) => $this->wrap($c),
-                $columns
+                $columns,
             ));
 
             if (!$hasFts) {
@@ -486,7 +486,7 @@ class SqlsrvGrammar extends BaseSchemaGrammar
             $catalog = 'ft_catalog_' . preg_replace(
                 '/[^a-zA-Z0-9_]/',
                 '_',
-                $table
+                $table,
             );
             $statements[] = "IF NOT EXISTS (SELECT 1 FROM sys.fulltext_catalogs"
                 . " WHERE name = " . $this->driver->quote($catalog) . ")"
@@ -538,7 +538,7 @@ SQL;
             }
             $columnList = implode(', ', array_map(
                 fn($col) => $this->wrap($col),
-                $pkCols
+                $pkCols,
             ));
             $statements[] = "ALTER TABLE $qt ADD PRIMARY KEY ($columnList)";
         }

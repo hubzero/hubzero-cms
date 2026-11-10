@@ -41,7 +41,7 @@ class File extends Entity
             // The minimum required data is a path and a type
             $metadata = [
                 'type' => 'file',
-                'path' => $path
+                'path' => $path,
             ];
         }
 

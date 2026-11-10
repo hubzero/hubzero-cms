@@ -16,16 +16,16 @@ defined('_HZEXEC_') or die();
 $this->css('login.css');
 $msgShared = Lang::txt(
     'If you would like to end all %s account shared sessions as well, you may do so now.',
-    $this->display_name
+    $this->display_name,
 );
 $urlLogoutAll = Route::url(
     'index.php?option=' . $this->option
-    . '&task=logout&sso=all&authenticator=' . $this->authenticator
+    . '&task=logout&sso=all&authenticator=' . $this->authenticator,
 );
 $urlLogoutNone = Route::url(
     'index.php?option=' . $this->option
     . '&task=logout&sso=none&authenticator=' . $this->authenticator
-    . '&return=' . Request::base()
+    . '&return=' . Request::base(),
 );
 ?>
 

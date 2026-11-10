@@ -56,7 +56,7 @@ class Tool extends Relational
      */
     public $initiate = [
         'registered',
-        'registered_by'
+        'registered_by',
     ];
 
     /**

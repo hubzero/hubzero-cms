@@ -38,7 +38,7 @@ class ImportHooks extends AdminController
             Notify::warning(Lang::txt('Not authorized'));
 
             App::redirect(
-                Route::url('index.php?option=com_members', false)
+                Route::url('index.php?option=com_members', false),
             );
         }
 
@@ -63,18 +63,18 @@ class ImportHooks extends AdminController
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limitstart',
                 'limitstart',
                 0,
-                'int'
+                'int',
             ),
             'state'    => [1],
             'sort'     => 'name',
             'sort_Dir' => 'ASC',
-            'type'     => 'groups'
+            'type'     => 'groups',
         ];
 
         $model = Hook::all();

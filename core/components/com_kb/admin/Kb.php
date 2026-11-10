@@ -40,11 +40,11 @@ class Kb extends AbstractComponent
         Submenu::addEntry(
             Lang::txt('COM_KB_ARTICLES'),
             Route::url('index.php?option=com_kb&controller=articles', false),
-            $controllerName == 'articles'
+            $controllerName == 'articles',
         );
         Submenu::addEntry(
             Lang::txt('COM_KB_CATEGORIES'),
-            Route::url('index.php?option=com_categories&extension=com_kb', false)
+            Route::url('index.php?option=com_categories&extension=com_kb', false),
         );
 
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);

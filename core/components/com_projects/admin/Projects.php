@@ -41,12 +41,12 @@ class Projects extends AbstractComponent
         Submenu::addEntry(
             Lang::txt('COM_PROJECTS'),
             Route::url('index.php?option=com_projects'),
-            ($controllerName == 'projects' || $controllerName == 'team')
+            ($controllerName == 'projects' || $controllerName == 'team'),
         );
         Submenu::addEntry(
             Lang::txt('COM_PROJECTS_ACTIVITY'),
             Route::url('index.php?option=com_projects&controller=activity&project=0'),
-            $controllerName == 'activity'
+            $controllerName == 'activity',
         );
 
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);

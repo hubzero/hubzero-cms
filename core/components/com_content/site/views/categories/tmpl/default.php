@@ -32,7 +32,7 @@ Html::addIncludePath(PATH_COMPONENT . '/helpers');
                         'prepare',
                         $this->params->get('categories_description'),
                         '',
-                        'com_content.categories'
+                        'com_content.categories',
                     );
                     ?>
                 <?php  else : ?>
@@ -44,7 +44,7 @@ Html::addIncludePath(PATH_COMPONENT . '/helpers');
                                 'prepare',
                                 $this->parent->description,
                                 '',
-                                'com_content.categories'
+                                'com_content.categories',
                             );
                             ?>
                         </div>

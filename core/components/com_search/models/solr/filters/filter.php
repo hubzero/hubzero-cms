@@ -36,7 +36,7 @@ class Filter extends Relational
     public $always = [
         'params',
         'modified',
-        'modified_by'
+        'modified_by',
     ];
 
     /**
@@ -46,7 +46,7 @@ class Filter extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**

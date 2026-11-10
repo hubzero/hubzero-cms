@@ -35,7 +35,7 @@ class Session extends Base
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_cache = [
         'shared.count' => null,
-        'shared.list'  => null
+        'shared.list'  => null,
     ];
 
     /**
@@ -56,10 +56,10 @@ class Session extends Base
             if (!($this->_tbl instanceof \Hubzero\Database\Table)) {
                 $this->_logError(
                     __CLASS__ . '::' . __FUNCTION__ . '(); ' .
-                    Lang::txt('Table class must be an instance of \\Hubzero\\Database\\Table.')
+                    Lang::txt('Table class must be an instance of \\Hubzero\\Database\\Table.'),
                 );
                 throw new \LogicException(
-                    Lang::txt('Table class must be an instance of \\Hubzero\\Database\\Table.')
+                    Lang::txt('Table class must be an instance of \\Hubzero\\Database\\Table.'),
                 );
             }
 

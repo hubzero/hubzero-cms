@@ -56,7 +56,7 @@ class Params extends Relational
     protected $rules = [
         'object_id' => 'positive|nonzero',
         'folder'    => 'notempty',
-        'element'   => 'notempty'
+        'element'   => 'notempty',
     ];
 
     /**

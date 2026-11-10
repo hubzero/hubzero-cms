@@ -64,7 +64,7 @@ class Projects extends Plugin
 			WHERE
 				p.state!=2 AND (p.private=0 OR p.access IN ($access)) AND $weight > 0" .
                 ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
-            " ORDER BY $weight DESC"
+            " ORDER BY $weight DESC",
         ));
     }
 

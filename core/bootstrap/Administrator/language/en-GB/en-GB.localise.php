@@ -41,7 +41,7 @@ abstract class EnGBLocalise
         $search_ignore = [
             'and',
             'in',
-            'on'
+            'on',
         ];
 
         return $search_ignore;

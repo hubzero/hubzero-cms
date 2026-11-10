@@ -25,7 +25,7 @@ class CurrentUserv1r0 extends ApiController
         $isAuthenticated = !User::isGuest();
 
         $result = [
-            'isAuthenticated' => $isAuthenticated
+            'isAuthenticated' => $isAuthenticated,
         ];
 
         $this->send($result);

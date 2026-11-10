@@ -47,7 +47,7 @@ class Hook extends Relational
      * @var  array
      */
     protected $rules = [
-        'name' => 'notempty'
+        'name' => 'notempty',
     ];
 
     /**
@@ -57,7 +57,7 @@ class Hook extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**

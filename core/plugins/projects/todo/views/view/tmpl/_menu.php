@@ -29,7 +29,7 @@ $lists = $this->todo->getLists($this->model->get('id'));
 $colors = [
     'orange', 'lightblue', 'green',
     'purple', 'blue', 'black',
-    'red', 'yellow', 'pink'
+    'red', 'yellow', 'pink',
 ];
 $used = [];
 if (!empty($lists)) {
@@ -48,21 +48,21 @@ $sortby = $this->filters['sortby'];
 // Sort order links
 $priorityActive = ($sortby == 'priority') ? ' active' : '';
 $priorityUrl = Route::url(
-    $url . $sortAppend . '&sortby=priority&l=' . $layout
+    $url . $sortAppend . '&sortby=priority&l=' . $layout,
 );
 $priorityTitle = Lang::txt('PLG_PROJECTS_TODO_SORTBY_PRIORITY');
 $priorityLabel = Lang::txt('PLG_PROJECTS_TODO_SORT_PRIORITY');
 
 $completeActive = ($sortby == 'complete') ? ' active' : '';
 $completeUrl = Route::url(
-    $url . $sortAppend . '&sortby=complete&l=' . $layout
+    $url . $sortAppend . '&sortby=complete&l=' . $layout,
 );
 $completeTitle = Lang::txt('PLG_PROJECTS_TODO_SORTBY_COMPLETE');
 $completeLabel = Lang::txt('PLG_PROJECTS_TODO_SORT_COMPLETE');
 
 $dueActive = ($sortby == 'due') ? ' active' : '';
 $dueUrl = Route::url(
-    $url . $sortAppend . '&sortby=due&l=' . $layout
+    $url . $sortAppend . '&sortby=due&l=' . $layout,
 );
 $dueTitle = Lang::txt('PLG_PROJECTS_TODO_SORTBY_DUE');
 $dueLabel = Lang::txt('PLG_PROJECTS_TODO_SORT_DUE');
@@ -72,16 +72,16 @@ $viewBase = $url . '&list=' . $todolist;
 $pinboardActive = ($layout == 'pinboard') ? ' active' : '';
 $pinboardUrl = Route::url(
     $viewBase . '&l=pinboard&sortdir=' . $sortdir
-    . '&sortby=' . $sortby
+    . '&sortby=' . $sortby,
 );
 $pinboardTitle = Lang::txt(
-    'PLG_PROJECTS_TODO_LIST_VIEW_PINBOARD'
+    'PLG_PROJECTS_TODO_LIST_VIEW_PINBOARD',
 );
 
 $listActive = ($layout == 'list') ? ' active' : '';
 $listUrl = Route::url(
     $viewBase . '&l=list&sortdir=' . $sortdir
-    . '&sortby=' . $sortby
+    . '&sortby=' . $sortby,
 );
 $listTitle = Lang::txt('PLG_PROJECTS_TODO_LIST_VIEW_LIST');
 
@@ -90,26 +90,26 @@ $filterBase = $viewBase . '&l=' . $layout
     . '&sortdir=' . $sortdir . '&sortby=' . $sortby;
 
 $activeFilterUrl = Route::url(
-    $filterBase . '&mine=0&state=0'
+    $filterBase . '&mine=0&state=0',
 );
 $activeFilterLabel = Lang::txt(
-    'PLG_PROJECTS_TODO_FILTER_ACTIVE'
+    'PLG_PROJECTS_TODO_FILTER_ACTIVE',
 );
 $activeFilterClass = (!$this->filters['mine']
     && !$this->filters['state']) ? ' active' : '';
 
 $mineFilterUrl = Route::url($filterBase . '&mine=1');
 $mineFilterLabel = Lang::txt(
-    'PLG_PROJECTS_TODO_FILTER_MINE'
+    'PLG_PROJECTS_TODO_FILTER_MINE',
 );
 $mineFilterClass = ($this->filters['mine'] == 1)
     ? ' active' : '';
 
 $completeFilterUrl = Route::url(
-    $filterBase . '&state=1'
+    $filterBase . '&state=1',
 );
 $completeFilterLabel = Lang::txt(
-    'PLG_PROJECTS_TODO_FILTER_COMPLETE'
+    'PLG_PROJECTS_TODO_FILTER_COMPLETE',
 );
 $completeFilterClass = ($this->filters['state'] == 1)
     ? ' active' : '';
@@ -193,10 +193,10 @@ $onListLabel = Lang::txt('PLG_PROJECTS_TODO_ON_LIST');
                             $url . '&list=' . $list->color
                             . '&l=' . $layout
                             . '&sortby=' . $sortby
-                            . '&sortdir=' . $sortdir
+                            . '&sortdir=' . $sortdir,
                         );
                         $listName = stripslashes(
-                            $list->todolist
+                            $list->todolist,
                         );
                         ?>
                         <li>

@@ -234,7 +234,7 @@ namespace Hubzero\Htmx\Tests {
             \App::set('request', new RequestStub([
                 'HX-Request' => 'true',
                 'HX-Boosted' => 'TRUE',
-                'HX-History-Restore-Request' => 'true'
+                'HX-History-Restore-Request' => 'true',
             ]));
 
             $service = new HtmxService();
@@ -342,7 +342,7 @@ namespace Hubzero\Htmx\Tests {
             \App::set('request', new RequestStub(
                 ['HX-Request' => 'true'],
                 ['REQUEST_METHOD' => 'POST', 'REQUEST_URI' => '/todo/?task=add'],
-                ['htmx_debug' => '1', 'option' => 'com_todo', 'task' => 'add']
+                ['htmx_debug' => '1', 'option' => 'com_todo', 'task' => 'add'],
             ));
 
             $service = new HtmxService();
@@ -354,7 +354,7 @@ namespace Hubzero\Htmx\Tests {
                 '"outgoing"',
                 'HX-Trigger',
                 '"branch":"fragment"',
-                '"task":"add"'
+                '"task":"add"',
             ]);
         }
 
@@ -374,7 +374,7 @@ namespace Hubzero\Htmx\Tests {
             $this->assertDebugHeaderContains(
                 $response->headers->headers,
                 'X-Hubzero-Htmx-Profile',
-                ['fragment.render']
+                ['fragment.render'],
             );
         }
 
@@ -472,11 +472,11 @@ namespace Hubzero\Htmx\Tests {
                 'HX-Trigger-Name' => 'save',
                 'HX-Triggering-Event' => '{"type":"submit","detail":{"value":"abc"}}',
                 'HX-Current-URL' => 'https://example.test/todo?tab=open#list',
-                'HX-Prompt' => 'hello'
+                'HX-Prompt' => 'hello',
             ], [
                 'REQUEST_SCHEME' => 'https',
                 'HTTP_HOST' => 'example.test',
-                'SERVER_PORT' => '443'
+                'SERVER_PORT' => '443',
             ]));
 
             $service = new HtmxService();
@@ -505,11 +505,11 @@ namespace Hubzero\Htmx\Tests {
         public function currentUrlAbsPathReturnsNullForCrossOriginUrl(): void
         {
             \App::set('request', new RequestStub([
-                'HX-Current-URL' => 'https://evil.example/phish'
+                'HX-Current-URL' => 'https://evil.example/phish',
             ], [
                 'REQUEST_SCHEME' => 'https',
                 'HTTP_HOST' => 'example.test',
-                'SERVER_PORT' => '443'
+                'SERVER_PORT' => '443',
             ]));
 
             $service = new HtmxService();
@@ -582,10 +582,10 @@ namespace Hubzero\Htmx\Tests {
         {
             \App::set('request', new RequestStub([
                 'HX-Request' => 'true',
-                'HX-Target' => 'todo-list'
+                'HX-Target' => 'todo-list',
             ], [
                 'REQUEST_METHOD' => 'POST',
-                'REQUEST_URI' => '/index.php?option=com_todo&task=add'
+                'REQUEST_URI' => '/index.php?option=com_todo&task=add',
             ]));
 
             $service = new HtmxService();

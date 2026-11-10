@@ -820,7 +820,7 @@ class Ftp implements AdapterInterface
             '-' => '0',
             'r' => '4',
             'w' => '2',
-            'x' => '1'
+            'x' => '1',
         ];
         $permissions = strtr($permissions, $map);
 

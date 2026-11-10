@@ -490,7 +490,7 @@ class Assetgroup extends Base
         $offeringId = null,
         $unitId = null,
         $assetGroupParent = null,
-        $deep = true
+        $deep = true,
     ) {
 
 
@@ -527,7 +527,7 @@ class Assetgroup extends Base
                         $findParams = [
                             'scope_id' => $startingAssetGroupId,
                             'scope' => 'asset_group',
-                            'asset_id' => $startingAssetId
+                            'asset_id' => $startingAssetId,
                         ];
                         foreach (
                             $tbl->find($findParams) as $aa

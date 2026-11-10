@@ -61,7 +61,7 @@ class Usage extends Plugin
     {
         $arr = [
             'html'    => '',
-            'metadata' => ''
+            'metadata' => '',
         ];
         $rtrn = 'all';
 

@@ -45,7 +45,7 @@ class Answer extends Relational
      */
     protected $rules = [
         'field_id' => 'positive|nonzero',
-        'group_id' => 'positive|nonzero'
+        'group_id' => 'positive|nonzero',
     ];
 
     /**
@@ -56,7 +56,7 @@ class Answer extends Relational
     public $initiate = [
         'ordering',
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**
@@ -66,7 +66,7 @@ class Answer extends Relational
      */
     public $always = [
         'modified',
-        'modified_by'
+        'modified_by',
     ];
 
     /**

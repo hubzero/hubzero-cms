@@ -21,10 +21,10 @@ $step = (int) Request::getInt('step', 1);
 
 $msgLinkPrompt = Lang::txt(
     'Great! Did you want to link your %s account to that existing account or create a new account?',
-    $this->display_name
+    $this->display_name,
 );
 $msgLinkUp = Lang::txt(
-    "We can do that. Just login with that existing account now and we'll link them up!"
+    "We can do that. Just login with that existing account now and we'll link them up!",
 );
 ?>
 
@@ -75,11 +75,11 @@ $msgLinkUp = Lang::txt(
                                 Route::url(
                                     'index.php?option=' . $this->option
                                     . '&authenticator=' . $this->hzad->authenticator,
-                                    false
-                                )
+                                    false,
+                                ),
                             ),
-                            false
-                        )
+                            false,
+                        ),
                     )); ?>">
                     <div data-step="3" class="button ok"><?php echo Lang::txt('OK'); ?></div>
                 </a>

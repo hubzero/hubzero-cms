@@ -29,7 +29,7 @@ $url = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active=
 $cfilters = [
     'mine'  => 1,
     'active' => 1,
-    'editor' => 1
+    'editor' => 1,
 ];
 
 ?>
@@ -75,8 +75,8 @@ if ($isOwnerNoProjects || $noTodoEntries) { ?>
             $this->model,
             $this->projects,
             $this->member->get('id'),
-            $this->filters
-            ]
+            $this->filters,
+            ],
         );
         echo implode("\n", $results);
         ?>

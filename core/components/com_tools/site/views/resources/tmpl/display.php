@@ -26,11 +26,11 @@ if ($this->version == 'dev') {
 
 $statusUrl = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=pipeline&task=status&app=' . $this->row->alias
+    . '&controller=pipeline&task=status&app=' . $this->row->alias,
 );
 $newUrl = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=pipeline&task=create'
+    . '&controller=pipeline&task=create',
 );
 $formAction = Route::url('index.php?option=' . $this->option);
 $prevLabel = '&lt; ' . ucfirst(Lang::txt('COM_TOOLS_PREVIOUS'));

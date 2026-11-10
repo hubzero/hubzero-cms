@@ -181,7 +181,7 @@ $elementVal = $this->escape($this->item->element);
                     if ($hasModified) :
                         $modifiedEsc = $this->escape($this->item->modified);
                         $modifiedLocal = $this->escape(
-                            Date::of($this->item->modified)->toLocal()
+                            Date::of($this->item->modified)->toLocal(),
                         );
                         ?>
                         <tr>
@@ -203,14 +203,14 @@ $elementVal = $this->escape($this->item->element);
                             <td>
                                 <?php
                                 $modifier = User::getInstance(
-                                    $this->item->modified_by
+                                    $this->item->modified_by,
                                 );
                                 $modName = $modifier->get(
                                     'name',
-                                    Lang::txt('COM_PLUGINS_UNKNOWN')
+                                    Lang::txt('COM_PLUGINS_UNKNOWN'),
                                 );
                                 echo $this->escape(
-                                    $modName . ' (' . $this->item->modified_by . ')'
+                                    $modName . ' (' . $this->item->modified_by . ')',
                                 );
                                 ?>
                             </td>

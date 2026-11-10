@@ -107,7 +107,7 @@ class HasSequenceIdTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testGetSequenceNameReturnsDefault(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $this->setupTestData($driver);
 
@@ -115,7 +115,7 @@ class HasSequenceIdTest extends AbstractDriverTestCase
 
         $this->assertSame(
             'seq_items_id_seq',
-            $item->getSequenceName()
+            $item->getSequenceName(),
         );
     }
 
@@ -126,7 +126,7 @@ class HasSequenceIdTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testGetSequenceNameReturnsCustom(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $this->setupTestData($driver);
 
@@ -134,7 +134,7 @@ class HasSequenceIdTest extends AbstractDriverTestCase
 
         $this->assertSame(
             'custom_item_seq',
-            $item->getSequenceName()
+            $item->getSequenceName(),
         );
     }
 
@@ -149,7 +149,7 @@ class HasSequenceIdTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testSequenceIdAssignedOnCreate(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $this->setupTestData($driver);
 
@@ -164,7 +164,7 @@ class HasSequenceIdTest extends AbstractDriverTestCase
         $this->assertSame(
             1,
             (int) $item->get('id'),
-            "$dbName: First item should get ID 1 from sequence"
+            "$dbName: First item should get ID 1 from sequence",
         );
     }
 
@@ -175,7 +175,7 @@ class HasSequenceIdTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testMultipleModelsGetUniqueIds(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $this->setupTestData($driver);
 
@@ -205,7 +205,7 @@ class HasSequenceIdTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testExplicitIdNotOverwritten(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $this->setupTestData($driver);
 
@@ -219,7 +219,7 @@ class HasSequenceIdTest extends AbstractDriverTestCase
         $this->assertSame(
             999,
             (int) $item->get('id'),
-            "$dbName: Explicit ID should be preserved"
+            "$dbName: Explicit ID should be preserved",
         );
     }
 
@@ -230,7 +230,7 @@ class HasSequenceIdTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testCustomSequenceNameWorks(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $this->setupTestData($driver);
 
@@ -243,7 +243,7 @@ class HasSequenceIdTest extends AbstractDriverTestCase
         $this->assertSame(
             100,
             (int) $item->get('id'),
-            "$dbName: Should get ID 100 from custom sequence starting at 100"
+            "$dbName: Should get ID 100 from custom sequence starting at 100",
         );
     }
 }

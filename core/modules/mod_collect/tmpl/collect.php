@@ -118,7 +118,7 @@ $url = implode('/', array_map('rawurlencode', explode('/', $url)));
                 'field_description',
                 null,
                 null,
-                ['class' => 'minimal no-footer']
+                ['class' => 'minimal no-footer'],
             );
             ?>
         </label>

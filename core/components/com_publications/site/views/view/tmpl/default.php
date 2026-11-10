@@ -56,7 +56,7 @@ if ($this->config->get('launcher_layout', 0)) {
                             false,
                             false,
                             false,
-                            $formatAuthors
+                            $formatAuthors,
                         );
                         ?>
                     </div><!-- / #authorslist -->
@@ -66,7 +66,7 @@ if ($this->config->get('launcher_layout', 0)) {
                     <?php
                         $abstractSnippet = \Hubzero\Utility\Str::truncate(
                             stripslashes(strip_tags($this->publication->abstract)),
-                            250
+                            250,
                         );
                         echo $this->publication->abstract ?  $abstractSnippet : '';
                     ?>
@@ -106,7 +106,7 @@ if ($this->config->get('launcher_layout', 0)) {
                                 $this->publication,
                                 $element,
                                 $elements,
-                                $this->publication->access('view-all')
+                                $this->publication->access('view-all'),
                             );
 
                             echo $launcher;
@@ -163,7 +163,7 @@ if ($this->config->get('launcher_layout', 0)) {
                     $ancestorUrl = Route::url(
                         'index.php?option=com_publications&id='
                         . $ancestor->get('id') . '&v='
-                        . $ancestor->version->get('version_number')
+                        . $ancestor->version->get('version_number'),
                     );
                     $ancestorTitle = $this->escape($ancestor->version->get('title'));
                     $from = '<a href="' . $ancestorUrl . '">' . $ancestorTitle . '</a>';
@@ -216,7 +216,7 @@ if ($this->publication->access('view-all')) {
                     $this->cats,
                     $this->tab,
                     $this->publication->alias,
-                    $this->version
+                    $this->version,
                 );
 
                 echo \Components\Publications\Helpers\Html::sections(
@@ -224,7 +224,7 @@ if ($this->publication->access('view-all')) {
                     $this->cats,
                     $this->tab,
                     'hide',
-                    'main'
+                    'main',
                 );
 
                 // Add footer notice

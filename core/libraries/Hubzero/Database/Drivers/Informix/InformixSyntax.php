@@ -294,7 +294,7 @@ class InformixSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                     'raw_type'  => $fieldType,
                     'allownull' => (strtoupper($nullable) === 'YES'),
                     'default'   => null,  // Requires separate query
-                    'pk'        => false  // Requires separate query
+                    'pk'        => false,  // Requires separate query
                 ];
             }
         }
@@ -424,7 +424,7 @@ class InformixSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             'raw'      => $raw,
             'bindings' => [$value],
             'logical'  => $logical,
-            'depth'    => $depth
+            'depth'    => $depth,
         ];
     }
 
@@ -468,7 +468,7 @@ class InformixSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
 
         $quotedConflict = array_map(
             fn($col) => $this->connection->quoteName($col),
-            $conflictColumns
+            $conflictColumns,
         );
 
         // Build the ON condition for MERGE

@@ -38,7 +38,7 @@ class Migration20140113135231ComSearch extends Base
                 ->update('#__extensions')
                 ->set([
                     'element' => 'com_search',
-                    'name'    => 'Search'
+                    'name'    => 'Search',
                 ])
                 ->where('type', '=', 'component')
                 ->where('element', '=', 'com_ysearch')
@@ -50,7 +50,7 @@ class Migration20140113135231ComSearch extends Base
                     'title' => 'com_search',
                     'alias' => 'search',
                     'path'  => 'search',
-                    'link'  => 'index.php?option=com_search&task=configure'
+                    'link'  => 'index.php?option=com_search&task=configure',
                 ])
                 ->where('title', '=', 'com_ysearch')
                 ->execute();
@@ -99,7 +99,7 @@ class Migration20140113135231ComSearch extends Base
                 ->update('#__extensions')
                 ->set([
                     'element' => 'com_ysearch',
-                    'name'    => 'YSearch'
+                    'name'    => 'YSearch',
                 ])
                 ->where('type', '=', 'component')
                 ->where('element', '=', 'com_search')
@@ -119,7 +119,7 @@ class Migration20140113135231ComSearch extends Base
                     'title' => 'com_ysearch',
                     'alias' => 'ysearch',
                     'path'  => 'ysearch',
-                    'link'  => 'index.php?option=com_ysearch&task=configure'
+                    'link'  => 'index.php?option=com_ysearch&task=configure',
                 ])
                 ->where('title', '=', 'com_search')
                 ->execute();

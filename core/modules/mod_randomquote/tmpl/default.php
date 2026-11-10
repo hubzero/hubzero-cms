@@ -34,7 +34,7 @@ if ($this->quote) {
                         . $this->quote->get('id');
                     $quoteTitle = Lang::txt(
                         'MOD_RANDOMQUOTE_VIEW_FULL',
-                        $this->escape(stripslashes($this->quote->get('fullname')))
+                        $this->escape(stripslashes($this->quote->get('fullname'))),
                     );
                     ?>
                     <a href="<?php echo $quoteUrl; ?>"

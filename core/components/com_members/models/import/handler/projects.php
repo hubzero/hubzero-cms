@@ -30,7 +30,7 @@ class Projects extends Obj
     {
         return [
             'header'  => 'projects',
-            'content' => 'projectalias;projectalias;projectalias'
+            'content' => 'projectalias;projectalias;projectalias',
         ];
     }
 

@@ -16,7 +16,7 @@ defined('_HZEXEC_') or die();
 
 Pathway::append(
     Lang::txt('COM_WIKI_SPECIAL_FIX_LINKS'),
-    $this->page->link()
+    $this->page->link(),
 );
 
 $limit = Request::getInt('limit', Config::get('list_limit'));

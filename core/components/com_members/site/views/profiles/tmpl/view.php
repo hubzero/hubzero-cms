@@ -81,7 +81,7 @@ if (!$no_html) {
                     <?php
                     $picAlt = Lang::txt(
                         'COM_MEMBERS_PROFILE_PICTURE_FOR',
-                        $this->escape(stripslashes($this->profile->get('name')))
+                        $this->escape(stripslashes($this->profile->get('name'))),
                     );
                     ?>
                     <img
@@ -99,7 +99,7 @@ if (!$no_html) {
                         $msgTooltip = $val . ' :: ' . Lang::txt('COM_MEMBERS_SEND_A_MESSAGE_TO', $escapedName);
                         $msgHref = Route::url(
                             'index.php?option=com_members&id=' . User::get('id')
-                            . '&active=messages&task=new&to[]=' . $this->profile->get('id')
+                            . '&active=messages&task=new&to[]=' . $this->profile->get('id'),
                         );
                         ?>
                         <a

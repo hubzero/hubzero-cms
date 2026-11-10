@@ -46,7 +46,7 @@ class Log extends Relational
      */
     protected $rules = [
         'action' => 'notempty',
-        'scope'  => 'notempty'
+        'scope'  => 'notempty',
     ];
 
     /**
@@ -56,7 +56,7 @@ class Log extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'//,
+        'created_by',//,
         //'uuid'
     ];
 
@@ -66,7 +66,7 @@ class Log extends Relational
      * @var  array
      */
     public $always = [
-        'scope'
+        'scope',
     ];
 
     /**
@@ -93,7 +93,7 @@ class Log extends Relational
             mt_rand(0, 0x3fff) | 0x8000,
             mt_rand(0, 0xffff),
             mt_rand(0, 0xffff),
-            mt_rand(0, 0xffff)
+            mt_rand(0, 0xffff),
         );
     }
 
@@ -242,7 +242,7 @@ class Log extends Relational
         foreach ($subscriptions as $subscription) {
             $recipients[] = [
                 'scope'    => 'user',
-                'scope_id' => $subscription->get('user_id')
+                'scope_id' => $subscription->get('user_id'),
             ];
         }
 
@@ -268,7 +268,7 @@ class Log extends Relational
             if (!is_array($receiver)) {
                 $receiver = [
                     'scope'    => 'user',
-                    'scope_id' => $receiver
+                    'scope_id' => $receiver,
                 ];
             }
 
@@ -295,7 +295,7 @@ class Log extends Relational
                 'scope'    => $receiver['scope'],
                 'scope_id' => $receiver['scope_id'],
                 'log_id'   => $this->get('id'),
-                'state'    => Recipient::STATE_PUBLISHED
+                'state'    => Recipient::STATE_PUBLISHED,
             ]);
 
             if (!$recipient->save()) {

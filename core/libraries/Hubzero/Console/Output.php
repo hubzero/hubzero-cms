@@ -97,7 +97,7 @@ class Output
         $this->formatLine($message, $styles);
 
         $this->response[] = [
-            'message' => $message
+            'message' => $message,
         ];
 
         if ($this->isInteractive()) {
@@ -209,7 +209,7 @@ class Output
     public function addRaw($text)
     {
         $this->response[] = [
-            'message' => $text
+            'message' => $text,
         ];
 
         if ($this->isInteractive()) {
@@ -465,7 +465,7 @@ class Output
         callable $callback,
         string $message = '',
         string $type = 'bar',
-        string $finishMessage = 'Done!'
+        string $finishMessage = 'Done!',
     ): array {
         // Convert to array to get count if needed
         if ($items instanceof \Traversable) {
@@ -558,7 +558,7 @@ class Output
         $style = [
             'format'      => '0',
             'color'       => '',
-            'indentation' => $this->defaultIndentation
+            'indentation' => $this->defaultIndentation,
         ];
 
         // If array, parse for individual style declarations
@@ -708,7 +708,7 @@ class Output
             'blue'   => '34',
             'purple' => '35',
             'cyan'   => '36',
-            'white'  => '37'
+            'white'  => '37',
         ];
 
         return $colors[$color];
@@ -725,7 +725,7 @@ class Output
         $formats = [
             'normal'    => '0',
             'bold'      => '1',
-            'underline' => '4'
+            'underline' => '4',
         ];
 
         return $formats[$format];

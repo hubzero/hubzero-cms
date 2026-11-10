@@ -70,7 +70,7 @@ if ($canDo->get('core.delete')) {
                         'COM_RESOURCES_COL_ID',
                         'id',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     );
                     ?></th>
                 <th scope="col"
@@ -81,7 +81,7 @@ if ($canDo->get('core.delete')) {
                         'COM_RESOURCES_COL_ALIAS',
                         'name',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     );
                     ?></th>
                 <th scope="col"><?php
@@ -91,7 +91,7 @@ if ($canDo->get('core.delete')) {
                         'COM_RESOURCES_COL_TITLE',
                         'title',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     );
                     ?></th>
                 <th scope="col"
@@ -102,7 +102,7 @@ if ($canDo->get('core.delete')) {
                         'COM_RESOURCES_COL_ORDER',
                         'ordering',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     );
                     ?></th>
             </tr>
@@ -146,7 +146,7 @@ if ($canDo->get('core.delete')) {
                             . '&controller='
                             . $this->controller
                             . '&task=edit&id='
-                            . $row->id
+                            . $row->id,
                         );
                         ?>
                         <a href="<?php echo $hrefUrl; ?>">
@@ -167,7 +167,7 @@ if ($canDo->get('core.delete')) {
                             . '&controller='
                             . $this->controller
                             . '&task=edit&id='
-                            . $row->id
+                            . $row->id,
                         );
                         ?>
                         <a href="<?php echo $hrefUrl; ?>">

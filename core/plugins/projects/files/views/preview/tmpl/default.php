@@ -27,7 +27,7 @@ if ($this->file->get('remote') && $this->file->get('name') != $this->file->get('
         $name = \Components\Projects\Helpers\Html::fixFileName(
             $this->file->get('remoteTitle'),
             ' (' . $append . ')',
-            $this->file->get('ext')
+            $this->file->get('ext'),
         );
     endif;
 endif;

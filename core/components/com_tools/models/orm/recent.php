@@ -43,7 +43,7 @@ class Recent extends Relational
      **/
     protected $rules = [
         'uid'  => 'positive|nonzero',
-        'tool' => 'notempty'
+        'tool' => 'notempty',
     ];
 
     /**
@@ -52,7 +52,7 @@ class Recent extends Relational
      * @var  array
      */
     public $initiate = [
-        'created'
+        'created',
     ];
 
     /**
@@ -107,7 +107,7 @@ class Recent extends Relational
             // Still under 5, so insert a new record
             $recent = self::blank()->set([
                 'uid'  => $uid,
-                'tool' => $tool
+                'tool' => $tool,
             ]);
 
             if (!$recent->save()) {

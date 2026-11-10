@@ -135,7 +135,7 @@ class Helper
             $period = [
                 ['key' => 1,  'name' => $monthtext],
                 ['key' => 0,  'name' => $yeartext],
-                ['key' => 12, 'name' => $twelvetext]
+                ['key' => 12, 'name' => $twelvetext],
             ];
 
             // Process each different date/time periods/range...
@@ -200,7 +200,7 @@ class Helper
                                 $percent = sprintf("%0.1f%%", (100 * $row->value / $toplistset[0][1]));
                                 array_push(
                                     $toplistset,
-                                    [$row->name, $row->value, $formattedval, $percent]
+                                    [$row->name, $row->value, $formattedval, $percent],
                                 );
                             } else {
                                 array_push($toplistset, [$row->name, $row->value, $formattedval, 'n/a']);
@@ -629,7 +629,7 @@ class Helper
             ',' => '',  '.' => '',  'A' => 'Z', 'B' => 'Y', 'C' => 'X', 'D' => 'W', 'E' => 'V',
             'F' => 'U', 'G' => 'T', 'H' => 'S', 'I' => 'R', 'J' => 'Q', 'K' => 'P', 'L' => 'O',
             'M' => 'N', 'N' => 'M', 'O' => 'L', 'P' => 'K', 'Q' => 'J', 'R' => 'I', 'S' => 'H',
-            'T' => 'G', 'U' => 'F', 'V' => 'E', 'W' => 'D', 'X' => 'C', 'Y' => 'B', 'Z' => 'A'
+            'T' => 'G', 'U' => 'F', 'V' => 'E', 'W' => 'D', 'X' => 'C', 'Y' => 'B', 'Z' => 'A',
         ];
         $dmax = 0;
         $tmax = 0;

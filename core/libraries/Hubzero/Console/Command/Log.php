@@ -96,7 +96,7 @@ class Log extends Base implements CommandInterface
         $descs = [
             0 => ['pipe', 'r'],
             1 => ['pipe', 'w'],
-            2 => ['pipe', 'w']
+            2 => ['pipe', 'w'],
         ];
 
         // Tail the given log
@@ -127,7 +127,7 @@ class Log extends Base implements CommandInterface
                 $class::parse(
                     $buffer,
                     $this->output,
-                    ['threshold' => $threshold, 'noBeep' => $noBeep, 'dateFormat' => $dateFormat]
+                    ['threshold' => $threshold, 'noBeep' => $noBeep, 'dateFormat' => $dateFormat],
                 );
                 // Add new prompt character
                 $this->printPrompt();
@@ -232,7 +232,7 @@ class Log extends Base implements CommandInterface
                                 $class::parse(
                                     $line,
                                     $this->output,
-                                    ['threshold' => $threshold, 'noBeep' => $noBeep, 'dateFormat' => $dateFormat]
+                                    ['threshold' => $threshold, 'noBeep' => $noBeep, 'dateFormat' => $dateFormat],
                                 );
                             }
                             break;
@@ -282,7 +282,7 @@ class Log extends Base implements CommandInterface
                             }
                             $this->output->addLine(
                                 'You can set the date format using: "date [format]". ' .
-                                'Options include: full, long, normal/default, and short.'
+                                'Options include: full, long, normal/default, and short.',
                             );
                             $this->output->addString('input mode >>> ');
                             break;
@@ -323,7 +323,7 @@ class Log extends Base implements CommandInterface
                                 }
                                 $this->output->addLine(
                                     'You can set thresholds using the format: ' .
-                                    '"threshold field>value[, field=value]"'
+                                    '"threshold field>value[, field=value]"',
                                 );
                             }
 
@@ -398,7 +398,7 @@ class Log extends Base implements CommandInterface
                 $threshold[trim($params[1])] = [
                     'key'      => $params[1],
                     'operator' => $params[2],
-                    'value'    => $params[3]
+                    'value'    => $params[3],
                 ];
             }
         }

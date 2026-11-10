@@ -240,7 +240,7 @@ class Connect extends Obj
         $scope =  [
             'https://www.googleapis.com/auth/drive',
             'https://www.googleapis.com/auth/userinfo.profile',
-            'https://www.googleapis.com/auth/userinfo.email'
+            'https://www.googleapis.com/auth/userinfo.email',
         ];
 
         // We will use files plugin params
@@ -263,7 +263,7 @@ class Connect extends Obj
                 'local_dir'      => $pparams->get('google_local_dir', '#home'),
                 'remote_dir'     => $pparams->get('google_dir', 'Project :: ' . $this->model->get('alias')),
                 'remote_dir_id'  => $pparams->get('google_dir_id', 1),
-                'active'         => $pparams->get('google_token', 0)
+                'active'         => $pparams->get('google_token', 0),
             ],
             'dropbox' => [
                 'servicename'   => 'Dropbox',
@@ -273,8 +273,8 @@ class Connect extends Obj
                 'local_dir'     => $pparams->get('dropbox_local_dir', '#home'),
                 'remote_dir'    => $pparams->get('dropbox_dir', 'project_' . $this->model->get('alias')),
                 'remote_dir_id' => $pparams->get('dropbox_dir_id', 1),
-                'active'        => $pparams->get('dropbox_service', 0)
-            ]
+                'active'        => $pparams->get('dropbox_service', 0),
+            ],
         ];
 
         $this->_connect = $connect;
@@ -344,7 +344,7 @@ class Connect extends Obj
                     'client_id'     => $config['clientId'],
                     'client_secret' => $config['clientSecret'],
                     'code'          => $code,
-                    'redirect_uri'  => $config['redirectUri']
+                    'redirect_uri'  => $config['redirectUri'],
                 ];
 
                 // get JSON access token object (with refresh_token parameter)
@@ -606,7 +606,7 @@ class Connect extends Obj
                 $file->setName($config['remote_dir']);
 
                 $createdFolder = $apiService->files->create($file, [
-                    'mimeType' => 'application/vnd.google-apps.folder'
+                    'mimeType' => 'application/vnd.google-apps.folder',
                 ]);
 
                 $folderID = $createdFolder['id'];
@@ -829,7 +829,7 @@ class Connect extends Obj
             $converted,
             $remote_format,
             $mimeType,
-            $remote_modified
+            $remote_modified,
         );
 
         return $newItemId;
@@ -920,7 +920,7 @@ class Connect extends Obj
             $converted,
             $remote_format,
             $local['mimeType'],
-            $remote_modified
+            $remote_modified,
         );
 
         return $success;
@@ -963,7 +963,7 @@ class Connect extends Obj
                 $remoteid,
                 $newTitle,
                 '',
-                $metadata
+                $metadata,
             );
         }
 
@@ -998,7 +998,7 @@ class Connect extends Obj
             $local['converted'],
             $remote_format,
             $local['mimeType'],
-            $remote_modified
+            $remote_modified,
         );
 
         return $success;
@@ -1064,7 +1064,7 @@ class Connect extends Obj
             $local['converted'],
             $remote_format,
             $local['mimeType'],
-            $remote_modified
+            $remote_modified,
         );
 
         return $success;
@@ -1174,7 +1174,7 @@ class Connect extends Obj
             $remoteFolders[$path] = [
                 'remoteid' => $newParentId,
                 'status'   => 'A',
-                'parentid' => $parentId
+                'parentid' => $parentId,
             ];
 
             // Update connection record
@@ -1188,7 +1188,7 @@ class Connect extends Obj
                 'folder',
                 $this->_uid,
                 $parentId,
-                $title
+                $title,
             );
 
             return $newParentId;
@@ -1245,7 +1245,7 @@ class Connect extends Obj
                 $title,
                 $path,
                 $parentId,
-                $remoteFolders
+                $remoteFolders,
             );
         }
 
@@ -1413,7 +1413,7 @@ class Connect extends Obj
                     'name'         => Lang::txt('PLG_PROJECTS_FILES_REMOTE_FILE_' . strtoupper($service)),
                     'order'        => $order,
                     'count'        => count($revisions),
-                    'commitStatus' => $r == count($revisions) ? 'A' : 'M'
+                    'commitStatus' => $r == count($revisions) ? 'A' : 'M',
                 ];
 
                 $versions[] = $revision;
@@ -1481,7 +1481,7 @@ class Connect extends Obj
                     $objRFile->deleteRecord(
                         $this->model->get('id'),
                         $service,
-                        $c['remote_id']
+                        $c['remote_id'],
                     );
                 } elseif ($newdir) {
                     // Update dir path
@@ -1494,7 +1494,7 @@ class Connect extends Obj
                         $fpath,
                         $c['type'],
                         $uid,
-                        $parentId
+                        $parentId,
                     );
                 }
             }
@@ -1592,7 +1592,7 @@ class Connect extends Obj
                 '',
                 $since,
                 $connections,
-                $duplicates
+                $duplicates,
             );
         }
 
@@ -1914,7 +1914,7 @@ class Connect extends Obj
             $this->model->get('id'),
             $uid,
             $param,
-            $value
+            $value,
         );
     }
 
@@ -1934,7 +1934,7 @@ class Connect extends Obj
         if ($method == 'GET') {
             $options = [
                 CURLOPT_URL => $url,
-                CURLOPT_RETURNTRANSFER => 1
+                CURLOPT_RETURNTRANSFER => 1,
             ];
             curl_setopt_array($ch, $options);
         } else {
@@ -1942,7 +1942,7 @@ class Connect extends Obj
                 CURLOPT_URL => $url,
                 CURLOPT_POST => 1,
                 CURLOPT_POSTFIELDS => $postvals,
-                CURLOPT_RETURNTRANSFER => 1
+                CURLOPT_RETURNTRANSFER => 1,
             ];
             curl_setopt_array($ch, $options);
         }
@@ -1984,7 +1984,7 @@ class Connect extends Obj
                 'client_id=' . urlencode($config['clientId']),
                 'scope=' . urlencode($scope),
                 'access_type=' . urlencode($config['accessType']),
-                'approval_prompt=' . urlencode($config['approvalPrompt'])
+                'approval_prompt=' . urlencode($config['approvalPrompt']),
             ];
 
             $return = $return ? $return : Route::url($this->model->link('files'));
@@ -1992,7 +1992,7 @@ class Connect extends Obj
             $array = [
                 'alias'  => $this->model->get('alias'),
                 'return' => $return,
-                'service' => $service
+                'service' => $service,
             ];
             $json = json_encode($array);
             $json = base64_encode($json);
@@ -2039,7 +2039,7 @@ class Connect extends Obj
                 'grant_type'    => 'refresh_token',
                 'client_id'     => $config['clientId'],
                 'client_secret' => $config['clientSecret'],
-                'refresh_token' => $refreshToken
+                'refresh_token' => $refreshToken,
             ];
 
             // return JSON refreshed access token object
@@ -2082,7 +2082,7 @@ class Connect extends Obj
             $this->model->get('id'),
             $uid,
             $param = $service . '_token',
-            ''
+            '',
         );
 
         // Remove time
@@ -2090,7 +2090,7 @@ class Connect extends Obj
             $this->model->get('id'),
             $uid,
             $param = $service . '_token_created',
-            ''
+            '',
         );
 
         // Remove email
@@ -2098,7 +2098,7 @@ class Connect extends Obj
             $this->model->get('id'),
             $uid,
             $param = $service . '_email',
-            ''
+            '',
         );
 
         // Remove name
@@ -2106,7 +2106,7 @@ class Connect extends Obj
             $this->model->get('id'),
             $uid,
             $param = $service . '_name',
-            ''
+            '',
         );
 
         // Remove user id
@@ -2114,7 +2114,7 @@ class Connect extends Obj
             $this->model->get('id'),
             $uid,
             $param = $service . '_userid',
-            ''
+            '',
         );
 
         if (!$email || !$name || !$remoteid) {

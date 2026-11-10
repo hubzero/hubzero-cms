@@ -17,6 +17,6 @@ return [
     'sef_suffix' => '0',
     'sef_groups' => '0',
     'feed_limit' => '10',
-    'feed_email' => 'author'
+    'feed_email' => 'author',
 ];
 // @codeCoverageIgnoreEnd

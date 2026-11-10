@@ -147,25 +147,25 @@ class Htmx extends Scaffolding
                 '-c, --component: component name',
                 'Target component name (with or without com_ prefix).'
                 . ' Can also be provided as first positional argument.',
-                'Example: --component=com_projects'
+                'Example: --component=com_projects',
             )
             ->addArgument(
                 '-v, --view: view name',
                 'Target view folder name under site/views.',
-                'Example: --view=items'
+                'Example: --view=items',
             )
             ->addArgument(
                 '--controller: controller file/class stem',
                 'Controller name under site/controllers. Defaults to --view value.',
-                'Example: --controller=items'
+                'Example: --controller=items',
             )
             ->addArgument(
                 '--with-test: generate baseline test',
-                'Also creates a starter test file in component tests folder.'
+                'Also creates a starter test file in component tests folder.',
             )
             ->addArgument(
                 '--force: overwrite existing scaffold files',
-                'Allow overwriting files if they already exist.'
+                'Allow overwriting files if they already exist.',
             );
     }
 }

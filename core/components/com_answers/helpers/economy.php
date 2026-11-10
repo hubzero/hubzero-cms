@@ -56,7 +56,7 @@ class Economy extends Obj
             "SELECT q.id, q.created_by AS q_owner, a.created_by AS a_owner
 			FROM `#__answers_questions` AS q
 			LEFT JOIN `#__answers_responses` AS a ON q.id=a.question_id AND a.state=1
-			WHERE q.state=1"
+			WHERE q.state=1",
         );
         return $this->_db->loadObjectList();
     }

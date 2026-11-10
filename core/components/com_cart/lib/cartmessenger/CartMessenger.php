@@ -118,7 +118,7 @@ class CartMessenger
 
             $hzl = new \Hubzero\Log\Writer(
                 new \Monolog\Logger(Config::get('application_env')),
-                App::get('dispatcher')
+                App::get('dispatcher'),
             );
             $hzl->useFiles($this->logFile);
 
@@ -199,7 +199,7 @@ class CartMessenger
             if (isset($meta->checkoutNotes) && $meta->checkoutNotes) {
                 $notes[] = [
                     'label' => $item['info']->pName . ', ' . $item['info']->sSku,
-                    'notes' => $meta->checkoutNotes
+                    'notes' => $meta->checkoutNotes,
                 ];
             }
         }
@@ -347,7 +347,7 @@ class CartMessenger
         }
         $message->addFrom(
             $sendFromEmail,
-            Config::get('sitename')
+            Config::get('sitename'),
         );
         $message->setFrom(Config::get('mailfrom'));
         $message->addPart($plain, 'text/plain');
@@ -372,11 +372,11 @@ class CartMessenger
             $message->setSubject('ORDER NOTIFICATION: New order at ' . $from['name']);
             $message->addFrom(
                 Config::get('mailfrom'),
-                Config::get('sitename')
+                Config::get('sitename'),
             );
             $message->setTo(
                 Config::get('mailfrom'),
-                Config::get('sitename')
+                Config::get('sitename'),
             );
             $message->addPart($plain, 'text/plain');
             foreach ($notifyTo as $email) {
@@ -395,7 +395,7 @@ class CartMessenger
                 // Plain text email
                 $eview = new \Hubzero\Component\View([
                     'name' => 'emails',
-                    'layout' => 'order_notify'
+                    'layout' => 'order_notify',
                 ]);
                 $eview->message = $lowInventoryNotifySummary;
 
@@ -405,11 +405,11 @@ class CartMessenger
                 $message->setSubject('LOW INVENTORY NOTIFICATION: low inventory levels at ' . $from['name']);
                 $message->addFrom(
                     Config::get('mailfrom'),
-                    Config::get('sitename')
+                    Config::get('sitename'),
                 );
                 $message->setTo(
                     Config::get('mailfrom'),
-                    Config::get('sitename')
+                    Config::get('sitename'),
                 );
                 $message->addPart($plain, 'text/plain');
                 foreach ($notifyTo as $email) {
@@ -467,7 +467,7 @@ class CartMessenger
         // Send emails
         Event::trigger(
             'xmessage.onSendMessage',
-            ['store_notifications', $mailSubject, $mailMessage, $from, $adminId, '', null, '', 0, true]
+            ['store_notifications', $mailSubject, $mailMessage, $from, $adminId, '', null, '', 0, true],
         );
     }
 }

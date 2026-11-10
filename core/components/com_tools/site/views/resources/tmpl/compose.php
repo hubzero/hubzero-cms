@@ -27,7 +27,7 @@ if (count($matches) > 0) {
 $this->status['fulltxt'] = preg_replace(
     "#<nb:(.*?)>(.*?)</nb:(.*?)>#s",
     '',
-    $this->status['fulltxt']
+    $this->status['fulltxt'],
 );
 $this->status['fulltxt'] = trim($this->status['fulltxt']);
 

@@ -46,7 +46,7 @@ class SearchComponent extends Relational
      * @var  array
      */
     public $initiate = [
-        'created'
+        'created',
     ];
 
     /**
@@ -56,7 +56,7 @@ class SearchComponent extends Relational
      **/
     protected $rules = [
         'title' => 'notempty',
-        'name' => 'notempty'
+        'name' => 'notempty',
     ];
 
 

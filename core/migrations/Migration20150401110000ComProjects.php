@@ -190,7 +190,7 @@ class Migration20150401110000ComProjects extends Base
                         '',
                         '{"option-message":"1"}',
                     ],
-                    [8, 'retired', '', '', '', 'You tool is retired. ', 2, '', '{"option-message":"1"}']
+                    [8, 'retired', '', '', '', 'You tool is retired. ', 2, '', '{"option-message":"1"}'],
                 ])
                 ->execute();
         }

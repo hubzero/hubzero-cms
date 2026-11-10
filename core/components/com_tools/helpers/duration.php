@@ -22,7 +22,7 @@ class Duration
         'days'    => 86400,
         'hours'   => 3600,
         'minutes' => 60,
-        'seconds' => 1
+        'seconds' => 1,
     ];
 
     /**

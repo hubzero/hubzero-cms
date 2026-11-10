@@ -22,7 +22,7 @@ Toolbar::cancel();
 $formAction = Route::url(
     'index.php?option=' . $this->option
     . '&controller=' . $this->controller
-    . '&task=' . $this->task . '&step=2'
+    . '&task=' . $this->task . '&step=2',
 );
 ?>
 <form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">

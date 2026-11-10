@@ -98,7 +98,7 @@ class Migration20141110232014ComMembers extends Base
                     'name'       => $name,
                     'givenName'  => $firstname,
                     'middleName' => $middlename,
-                    'surname'    => $lastname
+                    'surname'    => $lastname,
                 ])
                 ->where('uidNumber', '=', $profile->uidNumber)
                 ->execute();

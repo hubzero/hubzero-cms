@@ -30,7 +30,7 @@ class Migration20260707000002ComMembersMassmail extends Base
             $this->db->setQuery(
                 "UPDATE `#__menu`
 				 SET `link` = REPLACE(`link`, 'option=com_members&controller=mail', 'option=com_massmail')
-				 WHERE `link` LIKE '%option=com_members&controller=mail%';"
+				 WHERE `link` LIKE '%option=com_members&controller=mail%';",
             );
             $this->db->query();
         }

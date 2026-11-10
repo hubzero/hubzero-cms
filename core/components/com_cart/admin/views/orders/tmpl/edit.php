@@ -183,7 +183,7 @@ $this->css()
                     'object' => 'transactionItem',
                     'objectId' => $item['info']->sId,
                     'label' => '<strong>' . $this->tInfo->tiItems[$sId]['info']->pName . ', ' . $this->tInfo->tiItems[$sId]['info']->sSku . '</strong>',
-                    'notes' => $meta->checkoutNotes
+                    'notes' => $meta->checkoutNotes,
                 ];
             }
         }
@@ -198,7 +198,7 @@ $this->css()
                 'object' => 'transaction',
                 'objectId' => $this->tInfo->tId,
                 'label' => $genericNotesLabel,
-                'notes' => $this->tInfo->tiNotes
+                'notes' => $this->tInfo->tiNotes,
             ];
         }
 

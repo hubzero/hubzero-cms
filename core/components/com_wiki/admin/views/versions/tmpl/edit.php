@@ -80,7 +80,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                         <th scope="row"><?php echo $thScope; ?>:</th>
                         <?php
                         $scopeVal = $this->escape(
-                            stripslashes($this->page->get('scope') . ':' . $this->page->get('scope_id'))
+                            stripslashes($this->page->get('scope') . ':' . $this->page->get('scope_id')),
                         );
                         ?>
                         <td><?php echo $scopeVal; ?></td>
@@ -114,7 +114,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                         <th scope="row"><?php echo Lang::txt('COM_WIKI_FIELD_CREATOR'); ?>:</th>
                         <td>
                             <?php echo $this->escape(
-                                $this->row->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN'))
+                                $this->row->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN')),
                             ); ?>
                             <input type="hidden" name="revision[created_by]" id="revision-created_by"
                                 value="<?php echo $this->escape($this->row->get('created_by')); ?>" />

@@ -44,7 +44,7 @@ class Members extends Plugin
             'title'   => Lang::txt('PLG_TAGS_MEMBERS'),
             'total'   => 0,
             'results' => null,
-            'sql'     => ''
+            'sql'     => '',
         ];
 
         if (empty($tags)) {

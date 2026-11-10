@@ -208,7 +208,7 @@ if ($mark = $this->params->get('onCommentMark')) {
                 $replies = $this->comment->replies()
                     ->whereIn('state', [
                         Plugins\Hubzero\Comments\Models\Comment::STATE_PUBLISHED,
-                        Plugins\Hubzero\Comments\Models\Comment::STATE_FLAGGED
+                        Plugins\Hubzero\Comments\Models\Comment::STATE_FLAGGED,
                     ])
                     ->whereIn('access', User::getAuthorisedViewLevels())
                     ->ordered()

@@ -49,36 +49,36 @@ class Notes extends AdminController
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             )),
             'state' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.state',
                 'state',
                 -1,
-                'int'
+                'int',
             ),
             'access' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.access',
                 'access',
                 0,
-                'int'
+                'int',
             ),
             'category_id' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.category_id',
                 'category_id',
                 0,
-                'int'
+                'int',
             ),
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'review_time'
+                'review_time',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort_Dir',
                 'filter_order_Dir',
-                'DESC'
-            )
+                'DESC',
+            ),
         ];
 
         $entries = Note::all()

@@ -87,7 +87,7 @@ class SessionToken implements GrantTypeInterface, ClientAssertionTypeInterface
         // store our session & user id
         $this->userInfo = [
             'user_id'    => $userId,
-            'session_id' => $sessionId
+            'session_id' => $sessionId,
         ];
         return true;
     }

@@ -50,7 +50,7 @@ class Post extends Relational
      * @var  array
      */
     protected $rules = [
-        'comment' => 'notempty'
+        'comment' => 'notempty',
     ];
 
     /**
@@ -77,7 +77,7 @@ class Post extends Relational
         'parent',
         'thread',
         'scope_sub_id',
-        'object_id'
+        'object_id',
     ];
 
     /**
@@ -89,7 +89,7 @@ class Post extends Relational
         'created',
         'created_by',
         'lft',
-        'rgt'
+        'rgt',
     ];
 
     /**
@@ -98,7 +98,7 @@ class Post extends Relational
      * @var array
      */
     protected $parsed = [
-        'comment'
+        'comment',
     ];
 
     /**
@@ -134,7 +134,7 @@ class Post extends Relational
                 return Lang::txt(
                     'Post is too long: %s bytes of markup, and the limit is %s.',
                     number_format(strlen($data['comment'])),
-                    number_format(self::MAX_COMMENT_BYTES)
+                    number_format(self::MAX_COMMENT_BYTES),
                 );
             }
 
@@ -645,7 +645,7 @@ class Post extends Relational
             $results = Event::trigger('content.onContentBeforeSave', [
                 'com_forum.post.comment',
                 &$this,
-                $this->isNew()
+                $this->isNew(),
             ]);
 
             foreach ($results as $result) {
@@ -767,7 +767,7 @@ class Post extends Relational
                     ->update($this->getTableName())
                     ->set([
                         'state'       => $this->get('state'),
-                        'category_id' => $this->get('category_id')
+                        'category_id' => $this->get('category_id'),
                     ])
                     ->whereEquals('parent', $this->get('id'))
                     ->where('state', '!=', self::STATE_DELETED);
@@ -899,7 +899,7 @@ class Post extends Relational
 
         if ($rows->count() > 0) {
             $children = [
-                0 => []
+                0 => [],
             ];
 
             foreach ($rows as $row) {

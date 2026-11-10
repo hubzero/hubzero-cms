@@ -25,13 +25,13 @@ $pubconfig = Component::params('com_publications');
         <div class="contrib-start">
             <?php
             $contribLabel = Lang::txt(
-                'PLG_PROJECTS_PUBLICATIONS_CONTRIB_FROM_PROJECTS'
+                'PLG_PROJECTS_PUBLICATIONS_CONTRIB_FROM_PROJECTS',
             );
             $startLabel = Lang::txt(
-                'PLG_PROJECTS_PUBLICATIONS_START_PROJECT'
+                'PLG_PROJECTS_PUBLICATIONS_START_PROJECT',
             );
             $myProjLabel = Lang::txt(
-                'PLG_PROJECTS_PUBLICATIONS_MY_PROJECTS'
+                'PLG_PROJECTS_PUBLICATIONS_MY_PROJECTS',
             );
             ?>
             <p>
@@ -66,7 +66,7 @@ $pubconfig = Component::params('com_publications');
                             $submitUrl = Route::url(
                                 'index.php?option=com_publications'
                                 . '&task=submit&action=publication&base='
-                                . $current->alias
+                                . $current->alias,
                             );
                             ?>
                             <a class="btn btn-primary<?php echo $tooltipAttr; ?>"
@@ -84,7 +84,7 @@ $pubconfig = Component::params('com_publications');
                         <?php
                         $filesUrl = Route::url(
                             'index.php?option=com_publications'
-                            . '&task=submit&action=publication&base=files'
+                            . '&task=submit&action=publication&base=files',
                         );
                         ?>
                         <a class="btn btn-primary"
@@ -142,7 +142,7 @@ $pubconfig = Component::params('com_publications');
                 $pageNav = new \Hubzero\Pagination\Paginator(
                     $total,
                     $filters['start'],
-                    $filters['limit']
+                    $filters['limit'],
                 );
                 echo $pageNav->render();
                 ?>

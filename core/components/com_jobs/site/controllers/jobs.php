@@ -137,7 +137,7 @@ class Jobs extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 $title,
-                Route::url('index.php?option=' . $this->_option)
+                Route::url('index.php?option=' . $this->_option),
             );
         }
         if ($this->_task) {
@@ -145,14 +145,14 @@ class Jobs extends SiteController
                 case 'browse':
                     Pathway::append(
                         Lang::txt(strtoupper($this->_option) . '_BROWSE'),
-                        Route::url('index.php?option=' . $this->_option . '&task=browse')
+                        Route::url('index.php?option=' . $this->_option . '&task=browse'),
                     );
                     break;
                 case 'all':
                     if (!$this->_allowSubscriptions) {
                         Pathway::append(
                             Lang::txt(strtoupper($this->_option) . '_BROWSE'),
-                            Route::url('index.php?option=' . $this->_option . '&task=browse')
+                            Route::url('index.php?option=' . $this->_option . '&task=browse'),
                         );
                     }
                     break;
@@ -170,43 +170,43 @@ class Jobs extends SiteController
                 case 'apply':
                     Pathway::append(
                         $this->_jobtitle,
-                        Route::url('index.php?option=' . $this->_option . '&task=job&code=' . $this->_jobCode)
+                        Route::url('index.php?option=' . $this->_option . '&task=job&code=' . $this->_jobCode),
                     );
                     Pathway::append(
                         Lang::txt(strtoupper($this->_option) . '_APPLY'),
-                        Route::url('index.php?option=' . $this->_option . '&task=apply&code=' . $this->_jobCode)
+                        Route::url('index.php?option=' . $this->_option . '&task=apply&code=' . $this->_jobCode),
                     );
                     break;
                 case 'editapp':
                     Pathway::append(
                         $this->_jobtitle,
-                        Route::url('index.php?option=' . $this->_option . '&task=job&code=' . $this->_jobCode)
+                        Route::url('index.php?option=' . $this->_option . '&task=job&code=' . $this->_jobCode),
                     );
                     Pathway::append(
                         Lang::txt(strtoupper($this->_option) . '_EDITAPP'),
-                        Route::url('index.php?option=' . $this->_option . '&task=apply&code=' . $this->_jobCode)
+                        Route::url('index.php?option=' . $this->_option . '&task=apply&code=' . $this->_jobCode),
                     );
                     break;
                 case 'job':
                     Pathway::append(
                         $this->_jobtitle,
-                        Route::url('index.php?option=' . $this->_option . '&task=job&code=' . $this->_jobCode)
+                        Route::url('index.php?option=' . $this->_option . '&task=job&code=' . $this->_jobCode),
                     );
                     break;
                 case 'editjob':
                     Pathway::append(
                         $this->_jobtitle,
-                        Route::url('index.php?option=' . $this->_option . '&task=job&code=' . $this->_jobCode)
+                        Route::url('index.php?option=' . $this->_option . '&task=job&code=' . $this->_jobCode),
                     );
                     Pathway::append(
                         Lang::txt(strtoupper($this->_option) . '_EDITJOB'),
-                        Route::url('index.php?option=' . $this->_option . '&task=editjob&code=' . $this->_jobCode)
+                        Route::url('index.php?option=' . $this->_option . '&task=editjob&code=' . $this->_jobCode),
                     );
                     break;
                 default:
                     Pathway::append(
                         Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
-                        Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task)
+                        Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task),
                     );
                     break;
             }
@@ -230,7 +230,7 @@ class Jobs extends SiteController
         }
 
         App::redirect(
-            Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
+            Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
         );
     }
 
@@ -285,7 +285,7 @@ class Jobs extends SiteController
 
         // Go back to the page
         App::redirect(
-            Request::getString('HTTP_REFERER', null, 'server')  // What page they came from
+            Request::getString('HTTP_REFERER', null, 'server'),  // What page they came from
         );
     }
 
@@ -349,7 +349,7 @@ class Jobs extends SiteController
         $pageNav = new \Hubzero\Pagination\Paginator(
             $jtotal,
             $filters['start'],
-            $filters['limit']
+            $filters['limit'],
         );
 
         // Output HTML
@@ -380,7 +380,7 @@ class Jobs extends SiteController
             $view = new View([
                 'base_path' => dirname(__DIR__),
                 'name'      => 'jobs',
-                'layout'    => 'default'
+                'layout'    => 'default',
             ]);
             $view->title            = $this->_title;
             $view->config           = $this->config;
@@ -457,7 +457,7 @@ class Jobs extends SiteController
             $pageNav = new \Hubzero\Pagination\Paginator(
                 $total,
                 $filters['start'],
-                $filters['limit']
+                $filters['limit'],
             );
 
             // Output HTML
@@ -488,7 +488,7 @@ class Jobs extends SiteController
                     App::redirect(
                         Route::url('index.php?option=com_jobs&task=dashboard'),
                         Lang::txt('COM_JOBS_WARNING_SUBSCRIPTION_PENDING'),
-                        'warning'
+                        'warning',
                     );
                     return;
                 }
@@ -496,11 +496,11 @@ class Jobs extends SiteController
 
             // send to subscription page
             App::redirect(
-                Route::url('index.php?option=com_jobs&task=subscribe')
+                Route::url('index.php?option=com_jobs&task=subscribe'),
             );
         } else {
             App::redirect(
-                Route::url('index.php?option=com_jobs')
+                Route::url('index.php?option=com_jobs'),
             );
         }
     }
@@ -664,7 +664,7 @@ class Jobs extends SiteController
 
             // send to subscription page
             App::redirect(
-                Route::url('index.php?option=com_jobs&task=subscribe')
+                Route::url('index.php?option=com_jobs&task=subscribe'),
             );
             return;
         }
@@ -790,7 +790,7 @@ class Jobs extends SiteController
 
         App::redirect(
             Route::url('index.php?option=com_jobs&task=dashboard'),
-            $this->_msg
+            $this->_msg,
         );
         return;
     }
@@ -854,7 +854,7 @@ class Jobs extends SiteController
         }
 
         App::redirect(
-            Route::url('index.php?option=com_jobs')
+            Route::url('index.php?option=com_jobs'),
         );
     }
 
@@ -897,7 +897,7 @@ class Jobs extends SiteController
         if (!$employer->loadEmployer($uid) && !$this->_admin) {
             // send to subscription page
             App::redirect(
-                Route::url('index.php?option=com_jobs&task=subscribe')
+                Route::url('index.php?option=com_jobs&task=subscribe'),
             );
             return;
         } else if ($admin) {
@@ -911,7 +911,7 @@ class Jobs extends SiteController
         if (!$subscription->get('id') && !$this->_admin) {
             // send to subscription page
             App::redirect(
-                Route::url('index.php?option=com_jobs&task=subscribe')
+                Route::url('index.php?option=com_jobs&task=subscribe'),
             );
             return;
         }
@@ -987,7 +987,7 @@ class Jobs extends SiteController
             $this->login();
         } else {
             App::redirect(
-                Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=resume')
+                Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=resume'),
             );
         }
     }
@@ -1011,7 +1011,7 @@ class Jobs extends SiteController
             if (Pathway::count() <= 0) {
                 Pathway::append(
                     Lang::txt(strtoupper($this->_name)),
-                    'index.php?option=' . $this->_option
+                    'index.php?option=' . $this->_option,
                 );
             }
 
@@ -1175,7 +1175,7 @@ class Jobs extends SiteController
 
         // return to the job posting
         App::redirect(
-            Route::url('index.php?option=com_jobs&task=job&code=' . $job->code)
+            Route::url('index.php?option=com_jobs&task=job&code=' . $job->code),
         );
         return;
     }
@@ -1207,7 +1207,7 @@ class Jobs extends SiteController
             if (Pathway::count() <= 0) {
                 Pathway::append(
                     Lang::txt(strtoupper($this->_name)),
-                    'index.php?option=' . $this->_option
+                    'index.php?option=' . $this->_option,
                 );
             }
 
@@ -1226,7 +1226,7 @@ class Jobs extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_jobs&task=dashboard'),
                 Lang::txt('COM_JOBS_WARNING_SUBSCRIPTION_INVALID'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -1389,7 +1389,7 @@ class Jobs extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_jobs&task=dashboard'),
                 Lang::txt('COM_JOBS_WARNING_SUBSCRIPTION_INVALID'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -1493,7 +1493,7 @@ class Jobs extends SiteController
         if ($this->_task == 'remove') {
             App::redirect(
                 Route::url('index.php?option=com_jobs&task=dashboard'),
-                Lang::txt('COM_JOBS_MSG_JOB_REMOVED')
+                Lang::txt('COM_JOBS_MSG_JOB_REMOVED'),
             );
             return;
         }
@@ -1504,7 +1504,7 @@ class Jobs extends SiteController
         }
 
         App::redirect(
-            Route::url('index.php?option=com_jobs&task=job&code=' . $job->code)
+            Route::url('index.php?option=com_jobs&task=job&code=' . $job->code),
         );
     }
 
@@ -1546,7 +1546,7 @@ class Jobs extends SiteController
                     App::redirect(
                         Route::url('index.php?option=com_jobs&task=dashboard'),
                         Lang::txt('COM_JOBS_WARNING_SUBSCRIPTION_PENDING'),
-                        'warning'
+                        'warning',
                     );
                     return;
                 }
@@ -1554,7 +1554,7 @@ class Jobs extends SiteController
 
             // send to subscription page
             App::redirect(
-                Route::url('index.php?option=com_jobs&task=subscribe')
+                Route::url('index.php?option=com_jobs&task=subscribe'),
             );
             return;
         }
@@ -1890,7 +1890,7 @@ class Jobs extends SiteController
         // Check authorization
         if (!$this->_admin && !$this->_emp) {
             App::redirect(
-                Route::url('index.php?option=com_jobs&task=subscribe')
+                Route::url('index.php?option=com_jobs&task=subscribe'),
             );
         }
 
@@ -1927,7 +1927,7 @@ class Jobs extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_jobs&task=dashboard'),
                 Lang::txt('COM_JOBS_ERROR_ARCHIVE_FAILED'),
-                'error'
+                'error',
             );
         }
     }
@@ -1984,7 +1984,7 @@ class Jobs extends SiteController
                 App::redirect(
                     Route::url('index.php?option=com_jobs&task=dashboard'),
                     Lang::txt('COM_JOBS_ERROR_ARCHIVE_FAILED'),
-                    'error'
+                    'error',
                 );
             }
 
@@ -1992,7 +1992,7 @@ class Jobs extends SiteController
                 App::redirect(
                     Route::url('index.php?option=com_jobs&task=dashboard'),
                     Lang::txt('COM_JOBS_ERROR_ARCHIVE_FAILED'),
-                    'error'
+                    'error',
                 );
             } else {
                 $archive = [];
@@ -2054,7 +2054,7 @@ class Jobs extends SiteController
             'unitsize'    => 1,
             'unitmeasure' => strtolower(Lang::txt('month')),
             'changed'     => $now,
-            'params'      => "promo=First 3 months FREE\npromomaxunits=3\nmaxads=1"
+            'params'      => "promo=First 3 months FREE\npromomaxunits=3\nmaxads=1",
         ];
         $default2 = [
             'id'          => 0,
@@ -2071,7 +2071,7 @@ class Jobs extends SiteController
             'unitsize'    => 1,
             'unitmeasure' => strtolower(Lang::txt('month')),
             'changed'     => $now,
-            'params'      => "promo=\npromomaxunits=\nmaxads=3"
+            'params'      => "promo=\npromomaxunits=\nmaxads=3",
         ];
 
         $objS->set($default1);
@@ -2080,7 +2080,7 @@ class Jobs extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_jobs'),
                 $objS->getError(),
-                'error'
+                'error',
             );
         }
 
@@ -2090,7 +2090,7 @@ class Jobs extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_jobs'),
                 $objS->getError(),
-                'error'
+                'error',
             );
         }
 

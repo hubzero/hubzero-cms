@@ -130,10 +130,10 @@ $this->css();
 
                 $created = $version->get('created');
                 $dateFormatted = Date::of($created)->toLocal(
-                    Lang::txt('DATE_FORMAT_HZ1')
+                    Lang::txt('DATE_FORMAT_HZ1'),
                 );
                 $timeFormatted = Date::of($created)->toLocal(
-                    Lang::txt('TIME_FORMAT_HZ1')
+                    Lang::txt('TIME_FORMAT_HZ1'),
                 );
                 $forkClass = $isPublished
                     ? 'published'
@@ -159,7 +159,7 @@ $this->css();
                                 $pubUrl = Route::url(
                                     'index.php?option=com_publications'
                                     . '&id=' . $publication->get('id')
-                                    . '&v=' . $version->get('version_number')
+                                    . '&v=' . $version->get('version_number'),
                                 );
                                 ?>
                                 <a href="<?php echo $pubUrl; ?>">
@@ -173,10 +173,10 @@ $this->css();
                             <?php } ?>
                             <?php
                             $versionLabel = $this->escape(
-                                $version->get('version_label')
+                                $version->get('version_label'),
                             );
                             $versionTitle = Lang::txt(
-                                'COM_PUBLICATIONS_VERSION'
+                                'COM_PUBLICATIONS_VERSION',
                             );
                             ?>
                             <span class="publication-version">
@@ -187,16 +187,16 @@ $this->css();
                         <div class="publication-meta">
                             <?php
                             $creator = User::getInstance(
-                                $version->get('created_by')
+                                $version->get('created_by'),
                             );
                             $name = $this->escape(
-                                $creator->get('name', Lang::txt('unknown'))
+                                $creator->get('name', Lang::txt('unknown')),
                             );
                             $viewLevels = User::getAuthorisedViewLevels();
                             if (in_array($creator->get('access'), $viewLevels)) {
                                 $memberUrl = Route::url(
                                     'index.php?option=com_members&id='
-                                    . $creator->get('id')
+                                    . $creator->get('id'),
                                 );
                                 $name = '<a href="' . $memberUrl . '">'
                                     . $name . '</a>';
@@ -204,19 +204,19 @@ $this->css();
 
                             $forkedBy = Lang::txt(
                                 'PLG_PUBLICATIONS_FORKS_FORKED_BY',
-                                $name
+                                $name,
                             );
 
                             $sourceUrl = Route::url(
                                 'index.php?option=com_publications'
                                 . '&id=' . $this->publication->get('id')
-                                . '&v=' . $publication->get('forked_version')
+                                . '&v=' . $publication->get('forked_version'),
                             );
                             $sourceLink = '<a href="' . $sourceUrl . '">'
                                 . $publication->get('forked_from') . '</a>';
                             $forkedFrom = Lang::txt(
                                 'PLG_PUBLICATIONS_FORKS_FROM',
-                                $sourceLink
+                                $sourceLink,
                             );
                             ?>
                             <span class="publication-creator">
@@ -233,7 +233,7 @@ $this->css();
                             'index.php?option=com_publications'
                             . '&task=compare'
                             . '&left=' . $this->publication->version->get('id')
-                            . '&right=' . $version->get('id')
+                            . '&right=' . $version->get('id'),
                         );
                         $diffLabel = Lang::txt('PLG_PUBLICATIONS_FORKS_DIFF');
                         ?>

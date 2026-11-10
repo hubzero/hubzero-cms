@@ -51,7 +51,7 @@ class Coins extends Plugin
         $arr = [
             'area'     => '',
             'html'     => '',
-            'metadata' => $this->coins($model)
+            'metadata' => $this->coins($model),
         ];
 
         return $arr;
@@ -96,13 +96,13 @@ class Coins extends Plugin
         $title = [
             'ctx_ver=Z39.88-2004',
             'rft.genre=' . $genre,
-            'rft.date=' . Date::of($model->date)->toLocal('Y')
+            'rft.date=' . Date::of($model->date)->toLocal('Y'),
         ];
 
         $items = [
             'issn'  => 'issn',
             'eissn' => 'issn',
-            'isbn'  => 'isbn'
+            'isbn'  => 'isbn',
         ];
 
         switch ($genre) {

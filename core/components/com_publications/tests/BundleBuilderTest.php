@@ -370,18 +370,18 @@ class BundleBuilderTest extends Basic
     {
         $this->assertSame(
             '10_4231_KPMA-CN98.zip',
-            $this->downloadLinkName(['doi' => '10.4231/KPMA-CN98', 'publication_id' => 5081, 'version_number' => 1])
+            $this->downloadLinkName(['doi' => '10.4231/KPMA-CN98', 'publication_id' => 5081, 'version_number' => 1]),
         );
 
         $this->assertSame(
             'Publication_5081_3.zip',
-            $this->downloadLinkName(['doi' => '', 'publication_id' => 5081, 'version_number' => 3])
+            $this->downloadLinkName(['doi' => '', 'publication_id' => 5081, 'version_number' => 3]),
         );
 
         // A missing doi key behaves like an empty one.
         $this->assertSame(
             'Publication_42_1.zip',
-            $this->downloadLinkName(['publication_id' => 42, 'version_number' => 1])
+            $this->downloadLinkName(['publication_id' => 42, 'version_number' => 1]),
         );
     }
 

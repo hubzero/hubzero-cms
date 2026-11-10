@@ -33,7 +33,7 @@ if ($this->contributors) {
         'administrator' => 'administrator',
         'super users'   => 'super administrator',
         'publisher'     => 'publisher',
-        'editor'        => 'editor'
+        'editor'        => 'editor',
     ];
     //$types = array(23 => 'manager', 24 => 'administrator', 25 => 'super administrator',
     //    21 => 'publisher', 20 => 'editor');

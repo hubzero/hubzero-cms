@@ -97,7 +97,7 @@ class Languages extends Module
                         $itemid = $associations[$langCode];
                         if (Config::get('sef')) {
                             $language->link = Route::url(
-                                'index.php?lang=' . $langSef . '&Itemid=' . $itemid
+                                'index.php?lang=' . $langSef . '&Itemid=' . $itemid,
                             );
                         } else {
                             $language->link = 'index.php?lang=' . $langSef . '&amp;Itemid=' . $itemid;
@@ -106,7 +106,7 @@ class Languages extends Module
                         if (Config::get('sef')) {
                             $itemid = isset($homes[$langCode]) ? $homes[$langCode]->id : $homes['*']->id;
                             $language->link = Route::url(
-                                'index.php?lang=' . $langSef . '&Itemid=' . $itemid
+                                'index.php?lang=' . $langSef . '&Itemid=' . $itemid,
                             );
                         } else {
                             $language->link = 'index.php?lang=' . $langSef;

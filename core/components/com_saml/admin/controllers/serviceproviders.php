@@ -49,24 +49,24 @@ class Serviceproviders extends AdminController
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             ),
             'state' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.state',
                 'state',
                 -1,
-                'int'
+                'int',
             ),
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'name'
+                'name',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         $records = ServiceProvider::all();
@@ -159,7 +159,7 @@ class Serviceproviders extends AdminController
             'nameid_format',
             'nameid_source',
             'attribute_map',
-            'metadata_url'
+            'metadata_url',
         ]));
 
         $row = ServiceProvider::oneOrNew(isset($fields['id']) ? $fields['id'] : 0);
@@ -399,7 +399,7 @@ class Serviceproviders extends AdminController
         Notify::success(
             $state == ServiceProvider::STATE_ENABLED
                 ? Lang::txt('COM_SAML_ITEMS_ENABLED', $i)
-                : Lang::txt('COM_SAML_ITEMS_DISABLED', $i)
+                : Lang::txt('COM_SAML_ITEMS_DISABLED', $i),
         );
 
         $this->cancelTask();

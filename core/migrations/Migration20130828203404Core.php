@@ -127,7 +127,7 @@ class Migration20130828203404Core extends Base
             $likePattern = Expression::concat(
                 Expression::literal('%'),
                 Expression::column('m.username'),
-                Expression::literal('%')
+                Expression::literal('%'),
             );
 
             $selectQuery = $this->db->getQuery(true)

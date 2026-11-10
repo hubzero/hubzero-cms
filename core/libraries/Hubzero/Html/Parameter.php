@@ -326,7 +326,7 @@ class Parameter extends Registry
             preg_match('/^[A-Za-z0-9_-]+[A-Za-z0-9_\.-]*([\\\\\/][A-Za-z0-9_-]+[A-Za-z0-9_\.-]*)*$/', str_replace(
                 '_',
                 DS,
-                $type
+                $type,
             ) .
                 '.php', $matches);
             $file = @ (string) $matches[0];

@@ -95,7 +95,7 @@ $this->draft = $this->draftInternal + $this->draftUser;
                 <tr>
                     <?php
                     $pubUrl = Route::url(
-                        'index.php?option=com_resources&c=resources&status=1'
+                        'index.php?option=com_resources&c=resources&status=1',
                     );
                     $pubTitle = Lang::txt('MOD_RESOURCES_PUBLISHED_TITLE');
                     ?>
@@ -119,7 +119,7 @@ $this->draft = $this->draftInternal + $this->draftUser;
                 <tr>
                     <?php
                     $pendUrl = Route::url(
-                        'index.php?option=com_resources&c=resources&status=3'
+                        'index.php?option=com_resources&c=resources&status=3',
                     );
                     $pendTitle = Lang::txt('MOD_RESOURCES_PENDING_TITLE');
                     ?>
@@ -143,7 +143,7 @@ $this->draft = $this->draftInternal + $this->draftUser;
                 <tr>
                     <?php
                     $draftUrl = Route::url(
-                        'index.php?option=com_resources&c=resources&status=2'
+                        'index.php?option=com_resources&c=resources&status=2',
                     );
                     $draftTitle = Lang::txt('MOD_RESOURCES_DRAFT_TITLE');
                     ?>
@@ -167,7 +167,7 @@ $this->draft = $this->draftInternal + $this->draftUser;
                 <tr>
                     <?php
                     $unpubUrl = Route::url(
-                        'index.php?option=com_resources&c=resources&status=0'
+                        'index.php?option=com_resources&c=resources&status=0',
                     );
                     $unpubTitle = Lang::txt('MOD_RESOURCES_UNPUBLISHED_TITLE');
                     ?>
@@ -191,7 +191,7 @@ $this->draft = $this->draftInternal + $this->draftUser;
                 <tr>
                     <?php
                     $remUrl = Route::url(
-                        'index.php?option=com_resources&c=resources&status=4'
+                        'index.php?option=com_resources&c=resources&status=4',
                     );
                     $remTitle = Lang::txt('MOD_RESOURCES_REMOVED_TITLE');
                     ?>

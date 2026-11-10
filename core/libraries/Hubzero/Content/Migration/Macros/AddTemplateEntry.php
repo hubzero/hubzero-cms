@@ -34,7 +34,7 @@ class AddTemplateEntry extends Macro
         $enabled = 1,
         $home = 0,
         $styles = null,
-        $protected = 0
+        $protected = 0,
     ) {
         if ($this->db->tableExists('#__extensions')) {
             if (!isset($name)) {
@@ -78,7 +78,7 @@ class AddTemplateEntry extends Macro
                         'system_data'    => '',
                         'checked_out'    => 0,
                         'ordering'       => 0,
-                        'state'          => 0
+                        'state'          => 0,
                     ])
                     ->toString();
                 $this->db->setQuery($query);
@@ -92,7 +92,7 @@ class AddTemplateEntry extends Macro
                         $query = $this->db->getQuery()
                             ->update('#__template_styles')
                             ->set([
-                                'home' => 0
+                                'home' => 0,
                             ])
                             ->whereEquals('client_id', $client)
                             ->toString();
@@ -109,7 +109,7 @@ class AddTemplateEntry extends Macro
                             'client_id' => $client,
                             'home'      => $home,
                             'title'     => $name,
-                            'params'    => ((isset($styles)) ? $this->db->quote(json_encode($styles)) : '{}')
+                            'params'    => ((isset($styles)) ? $this->db->quote(json_encode($styles)) : '{}'),
                         ])
                         ->toString();
                     $this->db->setQuery($query);

@@ -360,7 +360,7 @@ class Local implements AdapterInterface
                 . 'Output: %s',
                 $this->command,
                 $status,
-                implode(' | ', $output)
+                implode(' | ', $output),
             ));
         }
 
@@ -410,7 +410,7 @@ class Local implements AdapterInterface
         $normalized = [
             'type'      => $file->getType(),
             'path'      => ($base ? substr($file->getPathname(), strlen($base)) : $file->getPathname()),
-            'timestamp' => $file->getMTime()
+            'timestamp' => $file->getMTime(),
         ];
 
         if ($normalized['type'] === 'file') {

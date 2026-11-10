@@ -56,21 +56,21 @@ $stateOptions = Html::select(
     'value',
     'text',
     $this->filters['state'],
-    true
+    true,
 );
 $folderOptions = Html::select(
     'options',
     \Components\Plugins\Helpers\Plugins::folderOptions(),
     'value',
     'text',
-    $this->filters['folder']
+    $this->filters['folder'],
 );
 $accessOptions = Html::select(
     'options',
     Html::access('assetgroups'),
     'value',
     'text',
-    $this->filters['access']
+    $this->filters['access'],
 );
 $checkAllTitle = Lang::txt('JGLOBAL_CHECK_ALL');
 $checkAllLabel = Lang::txt('JGLOBAL_CHECK_ALL');
@@ -224,7 +224,7 @@ $checkAllLabel = Lang::txt('JGLOBAL_CHECK_ALL');
                 $editUrl = Route::url(
                     'index.php?option=com_plugins&task=edit&id='
                     . (int) $item->extension_id
-                    . '&' . Session::getFormToken() . '=1'
+                    . '&' . Session::getFormToken() . '=1',
                 );
 
                 $checkedoutHtml = Html::grid(
@@ -233,7 +233,7 @@ $checkAllLabel = Lang::txt('JGLOBAL_CHECK_ALL');
                     $item->editor,
                     $item->checked_out_time,
                     '',
-                    $canCheckin
+                    $canCheckin,
                 );
 
                 $prevFolder = $folders[$i - 1] ?? null;
@@ -247,7 +247,7 @@ $checkAllLabel = Lang::txt('JGLOBAL_CHECK_ALL');
                     $matchPrev,
                     'orderup',
                     'JLIB_HTML_MOVE_UP',
-                    $ordering
+                    $ordering,
                 );
                 $orderDownAsc = $this->items->pagination->orderDownIcon(
                     $i,
@@ -255,14 +255,14 @@ $checkAllLabel = Lang::txt('JGLOBAL_CHECK_ALL');
                     $matchNext,
                     'orderdown',
                     'JLIB_HTML_MOVE_DOWN',
-                    $ordering
+                    $ordering,
                 );
                 $orderUpDesc = $this->items->pagination->orderUpIcon(
                     $i,
                     $matchPrev,
                     'orderdown',
                     'JLIB_HTML_MOVE_UP',
-                    $ordering
+                    $ordering,
                 );
                 $orderDownDesc = $this->items->pagination->orderDownIcon(
                     $i,
@@ -270,7 +270,7 @@ $checkAllLabel = Lang::txt('JGLOBAL_CHECK_ALL');
                     $matchNext,
                     'orderup',
                     'JLIB_HTML_MOVE_DOWN',
-                    $ordering
+                    $ordering,
                 );
 
                 $disabled = $saveOrder ? '' : 'disabled="disabled"';

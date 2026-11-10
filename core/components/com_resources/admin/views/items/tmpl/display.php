@@ -249,7 +249,7 @@ $this->css();
                         'COM_RESOURCES_COL_ID',
                         'id',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     );
                     ?></th>
                 <th scope="col"><?php
@@ -259,7 +259,7 @@ $this->css();
                         'COM_RESOURCES_COL_TITLE',
                         'title',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     );
                     ?></th>
                 <th scope="col"
@@ -270,7 +270,7 @@ $this->css();
                         'COM_RESOURCES_COL_STATUS',
                         'published',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     );
                     ?></th>
                 <th scope="col"
@@ -281,7 +281,7 @@ $this->css();
                         'COM_RESOURCES_COL_ACCESS',
                         'access',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     );
                     ?></th>
                 <th scope="col"
@@ -292,7 +292,7 @@ $this->css();
                         'COM_RESOURCES_COL_MODIFIED',
                         'modified',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     );
                     ?></th>
                 <th scope="col"
@@ -303,7 +303,7 @@ $this->css();
                         'COM_RESOURCES_COL_LICENSE',
                         'license',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     );
                     ?></th>
                 <th scope="col"
@@ -314,7 +314,7 @@ $this->css();
                         'COM_RESOURCES_COL_TYPE',
                         'type',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     );
                     ?></th>
                 <th scope="col"><?php
@@ -324,7 +324,7 @@ $this->css();
                         'COM_RESOURCES_COL_CHILDREN',
                         'children',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     );
                     ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_RESOURCES_COL_TAGS'); ?></th>
@@ -481,7 +481,7 @@ $this->css();
                         'index.php?option=' . $this->option
                         . '&controller=' . $this->controller
                         . '&task=edit&id=' . $row->id
-                        . $filterstring
+                        . $filterstring,
                     );
                     ?>
                     <a class="editlinktip hasTip"
@@ -497,7 +497,7 @@ $this->css();
                         . '&controller=' . $this->controller
                         . '&task=' . $task . '&id=' . $row->id
                         . $filterstring . '&'
-                        . Session::getFormToken() . '=1'
+                        . Session::getFormToken() . '=1',
                     );
                     $stateTitle = $alt . ' :: '
                         . Lang::txt('COM_RESOURCES_SET_TASK_TO', $task);
@@ -515,7 +515,7 @@ $this->css();
                         . '&controller=' . $this->controller
                         . '&task=' . $task_access
                         . '&id=' . $row->id . $filterstring
-                        . '&' . Session::getFormToken() . '=1'
+                        . '&' . Session::getFormToken() . '=1',
                     );
                     $accessTitle = Lang::txt('COM_RESOURCES_CHANGE_ACCESS');
                     ?>
@@ -556,7 +556,7 @@ $this->css();
                             . '&controller='
                             . $this->controller
                             . '&task=children&pid='
-                            . $row->id
+                            . $row->id,
                         );
                         ?>
                         <a class="glyph menulist" href="<?php echo $hrefUrl; ?>">
@@ -570,7 +570,7 @@ $this->css();
                             . '&controller='
                             . $this->controller
                             . '&task=addchild&pid='
-                            . $row->id
+                            . $row->id,
                         );
                         ?>
                         <a class="state add" href="<?php echo $hrefUrl; ?>">
@@ -585,7 +585,7 @@ $this->css();
                             'index.php?option='
                             . $this->option
                             . '&controller=tags&id='
-                            . $row->id
+                            . $row->id,
                         );
                         ?>
                         <a class="glyph tag" href="<?php echo $hrefUrl; ?>">
@@ -597,7 +597,7 @@ $this->css();
                             'index.php?option='
                             . $this->option
                             . '&controller=tags&id='
-                            . $row->id
+                            . $row->id,
                         );
                         ?>
                         <a class="state add" href="<?php echo $hrefUrl; ?>">

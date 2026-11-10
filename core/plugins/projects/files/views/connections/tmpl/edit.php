@@ -35,7 +35,7 @@ $this->css()
             <?php
             Lang::load(
                 'plg_filesystem_' . $this->connection->provider->get('alias'),
-                PATH_APP . DS . 'plugins' . DS . 'filesystem' . DS . $this->connection->provider->get('alias')
+                PATH_APP . DS . 'plugins' . DS . 'filesystem' . DS . $this->connection->provider->get('alias'),
             );
             $xml = PATH_APP
                 . DS
@@ -50,7 +50,7 @@ $this->css()
             if (!file_exists($xml)) {
                 Lang::load(
                     'plg_filesystem_' . $this->connection->provider->get('alias'),
-                    PATH_CORE . DS . 'plugins' . DS . 'filesystem' . DS . $this->connection->provider->get('alias')
+                    PATH_CORE . DS . 'plugins' . DS . 'filesystem' . DS . $this->connection->provider->get('alias'),
                 );
                 $xml = PATH_CORE
                     . DS

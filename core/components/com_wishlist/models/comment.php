@@ -150,7 +150,7 @@ class Comment extends ItemComment
             $results = Event::trigger('content.onContentBeforeSave', [
                 'com_wishlist.comment.content',
                 &$this,
-                $this->isNew()
+                $this->isNew(),
             ]);
 
             foreach ($results as $result) {

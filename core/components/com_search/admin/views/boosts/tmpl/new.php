@@ -16,7 +16,7 @@ $toolbarElements = [
     'apply' => ['create'],
     'cancel' => ['list'],
     'spacer' => [],
-    'help' => ['boost']
+    'help' => ['boost'],
 ];
 
 $this->view('_toolbar', 'shared')

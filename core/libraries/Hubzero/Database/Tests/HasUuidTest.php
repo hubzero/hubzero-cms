@@ -108,7 +108,7 @@ class HasUuidTest extends AbstractDriverTestCase
         // UUID v4 format: xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
         $this->assertMatchesRegularExpression(
             '/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i',
-            $uuid
+            $uuid,
         );
     }
 
@@ -402,7 +402,7 @@ class HasUuidTest extends AbstractDriverTestCase
         $query->insertMany('uuid_articles', [
             ['title' => 'Article 1', 'uuid' => $uuid1],
             ['title' => 'Article 2', 'uuid' => $uuid2],
-            ['title' => 'Article 3', 'uuid' => $uuid3]
+            ['title' => 'Article 3', 'uuid' => $uuid3],
         ]);
 
         $articles = UuidArticle::findManyByUuid([$uuid1, $uuid3]);
@@ -470,7 +470,7 @@ class HasUuidTest extends AbstractDriverTestCase
         $query->insertMany('uuid_articles', [
             ['title' => 'Article 1', 'uuid' => $uuid1],
             ['title' => 'Article 2', 'uuid' => $uuid2],
-            ['title' => 'Article 3', 'uuid' => $uuid3]
+            ['title' => 'Article 3', 'uuid' => $uuid3],
         ]);
 
         $articles = UuidArticle::blank()->whereUuidIn([$uuid1, $uuid2])->rows();
@@ -495,7 +495,7 @@ class HasUuidTest extends AbstractDriverTestCase
         $query->insertMany('uuid_articles', [
             ['title' => 'Article 1', 'uuid' => $uuid1],
             ['title' => 'Article 2', 'uuid' => $uuid2],
-            ['title' => 'Article 3', 'uuid' => $uuid3]
+            ['title' => 'Article 3', 'uuid' => $uuid3],
         ]);
 
         $articles = UuidArticle::blank()->whereUuidNotIn([$uuid1, $uuid2])->rows();

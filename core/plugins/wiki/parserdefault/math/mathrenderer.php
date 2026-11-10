@@ -435,19 +435,19 @@ class MathRenderer
     {
         $path = PATH_APP . DS . trim(
             $this->config->get('mathpath', '/site/wiki/math'),
-            DS
+            DS,
         ) . DS . substr(
             $this->hash,
             0,
-            1
+            1,
         ) . DS . substr(
             $this->hash,
             1,
-            1
+            1,
         ) . DS . substr(
             $this->hash,
             2,
-            1
+            1,
         );
         return $path;
     }

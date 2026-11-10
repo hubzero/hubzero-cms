@@ -177,7 +177,7 @@ class Parents extends WikiMacro
         $page = \Components\Wiki\Models\Page::oneByPath(
             ($scope ? $scope . '/' . $alias : ''),
             $this->doman,
-            $this->domain_id
+            $this->domain_id,
         );
 
         // Check for a result

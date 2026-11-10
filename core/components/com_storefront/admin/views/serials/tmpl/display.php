@@ -20,7 +20,7 @@ Toolbar::title(Lang::txt('COM_STOREFRONT') . ': SKU\'s serial numbers', 'storefr
 $newPopupUrl = Route::url(
     'index.php?option=' . $this->option
     . '&controller=' . $this->controller
-    . '&tmpl=component&task=new&sId=' . $this->sku->getId()
+    . '&tmpl=component&task=new&sId=' . $this->sku->getId(),
 );
 Toolbar::appendButton('Popup', 'new', 'New', $newPopupUrl, 570, 170);
 if ($canDo->get('core.delete')) {
@@ -32,7 +32,7 @@ Toolbar::spacer();
 $uploadPopupUrl = Route::url(
     'index.php?option=' . $this->option
     . '&controller=' . $this->controller
-    . '&tmpl=component&task=upload&sId=' . $this->sku->getId()
+    . '&tmpl=component&task=upload&sId=' . $this->sku->getId(),
 );
 Toolbar::appendButton(
     'Popup',
@@ -40,7 +40,7 @@ Toolbar::appendButton(
     'Upload CSV',
     $uploadPopupUrl,
     570,
-    170
+    170,
 );
 Toolbar::spacer();
 Toolbar::cancel();
@@ -51,7 +51,7 @@ Toolbar::cancel();
 $formAction = Route::url('index.php?option=' . $this->option);
 $skuEditUrl = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=skus&task=edit&id=' . $this->sku->getId()
+    . '&controller=skus&task=edit&id=' . $this->sku->getId(),
 );
 $editSkuTitle = Lang::txt('Edit SKU');
 ?>
@@ -96,7 +96,7 @@ $sort = @$this->filters['sort'];
                     echo $this->pagination(
                         $this->total,
                         $this->filters['start'],
-                        $this->filters['limit']
+                        $this->filters['limit'],
                     );
                     ?></td>
             </tr>

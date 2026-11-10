@@ -58,7 +58,7 @@ class Unsubscribe extends SiteController
             if ($user && $user->get('id')) {
                 $db = App::get('db');
                 $db->setQuery(
-                    "UPDATE `#__users` SET `sendEmail` = 0 WHERE `id` = " . (int) $user->get('id')
+                    "UPDATE `#__users` SET `sendEmail` = 0 WHERE `id` = " . (int) $user->get('id'),
                 );
                 $db->execute();
             }

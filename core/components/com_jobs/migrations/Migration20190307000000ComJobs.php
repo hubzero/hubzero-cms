@@ -23,10 +23,10 @@ class Migration20190307000000ComJobs extends Base
     public static $tables = [
         '#__jobs_applications' => [
             'applied',
-            'withdrawn'
+            'withdrawn',
         ],
         '#__jobs_employers' => [
-            'added'
+            'added',
         ],
         '#__jobs_openings' => [
             'added',
@@ -34,14 +34,14 @@ class Migration20190307000000ComJobs extends Base
             'closedate',
             'expiredate',
             'opendate',
-            'startdate'
+            'startdate',
         ],
         '#__jobs_resumes' => [
-            'created'
+            'created',
         ],
         '#__jobs_seekers' => [
-            'updated'
-        ]
+            'updated',
+        ],
     ];
 
     /**

@@ -24,7 +24,7 @@ $this->js();
             $newUrl = Route::url(
                 'index.php?option=' . $this->option
                 . '&cn=' . $this->group->cn
-                . '&active=announcements&action=new'
+                . '&active=announcements&action=new',
             );
             ?>
             <a class="icon-add btn add" href="<?php echo $newUrl; ?>">
@@ -43,7 +43,7 @@ $this->js();
     $formAction = Route::url(
         'index.php?option=' . $this->option
         . '&cn=' . $this->group->get('cn')
-        . '&active=announcements'
+        . '&active=announcements',
     );
     ?>
     <form action="<?php echo $formAction; ?>" method="get">

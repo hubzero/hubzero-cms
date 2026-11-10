@@ -36,12 +36,12 @@ $connected = (($google && $this->oparams->get('google_token')) || ($dropbox && $
 $connectUrl = Route::url(
     'index.php?option=' . $this->option
     . '&alias=' . $this->model->get('alias')
-    . '&active=files&action=connect'
+    . '&active=files&action=connect',
 );
 $filesUrl = Route::url(
     'index.php?option=' . $this->option
     . '&alias=' . $this->model->get('alias')
-    . '&active=files'
+    . '&active=files',
 ) . '?action=connect';
 ?>
 <?php if ($on && (($google || $dropbox) && $active || (!$active && $creator && $authorized))) { ?>

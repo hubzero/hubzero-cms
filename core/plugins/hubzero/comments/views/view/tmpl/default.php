@@ -42,7 +42,7 @@ $this->css()
                                 || (int) $reply->get('item_id') !== (int) $this->obj_id
                                 || !in_array($reply->get('state'), [
                                     \Plugins\Hubzero\Comments\Models\Comment::STATE_PUBLISHED,
-                                    \Plugins\Hubzero\Comments\Models\Comment::STATE_FLAGGED
+                                    \Plugins\Hubzero\Comments\Models\Comment::STATE_FLAGGED,
                                 ])
                             ) {
                                 $replyto = 0;

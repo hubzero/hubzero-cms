@@ -39,7 +39,7 @@ class Categories extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=manage', false),
                 Lang::txt('COM_GROUPS_MISSING_ID'),
-                'error'
+                'error',
             );
         }
 
@@ -62,19 +62,19 @@ class Categories extends AdminController
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             )),
             // Get sorting variables
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'title'
+                'title',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         // Get records
@@ -176,8 +176,8 @@ class Categories extends AdminController
             'comments'  => [
                 'id'    => $row->get('id'),
                 'title' => $row->get('title'),
-                'color' => $row->get('color')
-            ]
+                'color' => $row->get('color'),
+            ],
         ]);
 
         // Notify user
@@ -237,7 +237,7 @@ class Categories extends AdminController
             Log::log([
                 'gidNumber' => $this->group->get('gidNumber'),
                 'action'    => 'group_pagecategory_deleted',
-                'comments'  => $deleted
+                'comments'  => $deleted,
             ]);
         }
 
@@ -255,7 +255,7 @@ class Categories extends AdminController
             . '&controller=' . $this->_controller
             . '&gid=' . Request::getString('gid', '');
         App::redirect(
-            Route::url($url, false)
+            Route::url($url, false),
         );
     }
 
@@ -269,7 +269,7 @@ class Categories extends AdminController
         $url = 'index.php?option=' . $this->_option
             . '&controller=manage&task=edit&id=' . Request::getString('gid', '');
         App::redirect(
-            Route::url($url, false)
+            Route::url($url, false),
         );
     }
 }

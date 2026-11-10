@@ -191,9 +191,9 @@ class Unitv1r0 extends base
                 'section_id'     => (isset($section_id)
                     ? $section_id
                     : $this->course->offering()->section()->get('id')),
-                'prerequisites'  => ''//$view->loadTemplate()
+                'prerequisites'  => '',//$view->loadTemplate()
             ],
-            ($id ? 200 : 201)
+            ($id ? 200 : 201),
         );
     }
 }

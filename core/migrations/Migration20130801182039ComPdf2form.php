@@ -67,7 +67,7 @@ class Migration20130801182039ComPdf2form extends Base
                 $schema->addIndex(
                     '#__pdf_form_respondents',
                     'jos_pdf_form_respondents_deployment_id_idx',
-                    'deployment_id'
+                    'deployment_id',
                 );
             }
         }
@@ -88,7 +88,7 @@ class Migration20130801182039ComPdf2form extends Base
                 'jos_pdf_form_responses_answer_id_idx' => '#__pdf_form_responses',
                 'jos_pdf_form_answers_question_id_idx' => '#__pdf_form_answers',
                 'jos_pdf_form_respondents_user_id_idx' => '#__pdf_form_respondents',
-                'jos_pdf_form_respondents_deployment_id_idx' => '#__pdf_form_respondents'
+                'jos_pdf_form_respondents_deployment_id_idx' => '#__pdf_form_respondents',
             ];
 
             foreach ($indices as $index => $table) {

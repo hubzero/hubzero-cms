@@ -29,7 +29,7 @@ $this->css();
             <?php
             $startUrl = Route::url(
                 'index.php?option=com_projects&task=start&gid='
-                . $this->group->get('gidNumber')
+                . $this->group->get('gidNumber'),
             );
             ?>
             <a class="icon-add add btn showinbox"
@@ -62,7 +62,7 @@ $view = $this->view('submenu', 'partials')
                     $allUrl = Route::url(
                         'index.php?option=com_groups&cn='
                         . $this->group->get('cn')
-                        . '&active=projects&action=all'
+                        . '&active=projects&action=all',
                     );
                     ?>
                     <a<?php echo $activeClass; ?>
@@ -78,7 +78,7 @@ $view = $this->view('submenu', 'partials')
                     $archivedUrl = Route::url(
                         'index.php?option=com_groups&cn='
                         . $this->group->get('cn')
-                        . '&active=projects&action=all&filterby=archived'
+                        . '&active=projects&action=all&filterby=archived',
                     );
                     ?>
                     <a<?php echo $archivedClass; ?>

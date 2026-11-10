@@ -29,7 +29,7 @@ class Blacklist extends Plugin
             'viagra, xanax, phentermine, ringtones, tramadol, hydrocodone, '
             . 'levitra, ambien, vicodin, fioricet, diazepam, accarat, casino, '
             . 'ambien, vicodin, fioricet, diazepam, accarat, casino, fuck, crap, shit, asshole, cunt, fucker, fuckers, '
-            . 'motherfucker, fucking, milf, cocksucker, porno, videosex, hentai, kasino, kasinos, poker'
+            . 'motherfucker, fucking, milf, cocksucker, porno, videosex, hentai, kasino, kasinos, poker',
         );
 
         $words = explode(',', $words);

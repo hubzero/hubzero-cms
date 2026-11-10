@@ -45,7 +45,7 @@ REGEX
             // Email pattern
             'email' => "([\s]*)" .  // whitespace
                 "([\._a-zA-Z0-9-\+]+@" .  // characters leading up to @
-                "(?:[0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6})"  // everything after @
+                "(?:[0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6})",  // everything after @
         ];
 
         foreach ($char_regexes as $func => $regex) {

@@ -45,7 +45,7 @@ class Tools extends SiteController
         ) {
             // Redirect to home page
             App::redirect(
-                $this->config->get('mw_redirect', '/home')
+                $this->config->get('mw_redirect', '/home'),
             );
             return;
         }
@@ -80,13 +80,13 @@ class Tools extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 (isset($this->_title) ? $this->_title : Lang::txt(strtoupper($this->_option))),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         if ($this->_task && $this->_task != 'display') {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
-                'index.php?option=' . $this->_option . '&task=' . $this->_task
+                'index.php?option=' . $this->_option . '&task=' . $this->_task,
             );
         }
     }
@@ -167,7 +167,7 @@ class Tools extends SiteController
         $paths = [
             App::get('template')->path . DS . 'images' . DS . $file,
             dirname(__DIR__) . DS . 'assets' . DS . 'img' . DS . $file,
-            dirname(__DIR__) . DS . 'images' . DS . $file
+            dirname(__DIR__) . DS . 'images' . DS . $file,
         ];
 
         // Run through each path until we find one that works
@@ -207,7 +207,7 @@ class Tools extends SiteController
         $paths = [
             App::get('template')->path . DS . 'css' . DS . $css,
             dirname(__DIR__) . DS . 'assets' . DS . 'css' . DS . $css,
-            dirname(__DIR__) . DS . 'css' . DS . $css
+            dirname(__DIR__) . DS . 'css' . DS . $css,
         ];
 
         // Run through each path until we find one that works

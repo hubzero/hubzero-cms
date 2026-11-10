@@ -55,39 +55,39 @@ class Items extends AdminController
             $this->_option . '.publications.limit',
             'limit',
             Config::get('list_limit'),
-            'int'
+            'int',
         );
         $this->view->filters['start']    = Request::getState(
             $this->_option . '.publications.limitstart',
             'limitstart',
             0,
-            'int'
+            'int',
         );
         $this->view->filters['search']   = urldecode(trim(Request::getState(
             $this->_option . '.publications.search',
             'search',
-            ''
+            '',
         )));
         $this->view->filters['sortby']     = trim(Request::getState(
             $this->_option . '.publications.sortby',
             'filter_order',
-            'created'
+            'created',
         ));
         $this->view->filters['sortdir'] = trim(Request::getState(
             $this->_option . '.publications.sortdir',
             'filter_order_Dir',
-            'DESC'
+            'DESC',
         ));
         $this->view->filters['status']   = trim(Request::getState(
             $this->_option . '.publications.status',
             'status',
-            'all'
+            'all',
         ));
         $this->view->filters['dev'] = 1;
         $this->view->filters['category']  = trim(Request::getState(
             $this->_option . '.publications.category',
             'category',
-            ''
+            '',
         ));
 
         // Instantiate a publication object
@@ -142,7 +142,7 @@ class Items extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                 Lang::txt('COM_PUBLICATIONS_ERROR_CREATE_FRONT_END'),
-                'notice'
+                'notice',
             );
             return;
         }
@@ -173,7 +173,7 @@ class Items extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                 Lang::txt('COM_PUBLICATIONS_ERROR_CHECKED_OUT'),
-                'notice'
+                'notice',
             );
             return;
         }
@@ -191,7 +191,7 @@ class Items extends AdminController
             'authorized' => 'admin',
             'fields'     => ['cn', 'description', 'published', 'gidNumber', 'type'],
             'type'       => [1, 3],
-            'sortby'     => 'description'
+            'sortby'     => 'description',
         ];
         $this->view->groups = \Hubzero\User\Group::find($filters);
 
@@ -303,7 +303,7 @@ class Items extends AdminController
         // Redirect back to publication
         App::redirect(
             $url,
-            Lang::txt('COM_PUBLICATIONS_SUCCESS_SAVED_CONTENT')
+            Lang::txt('COM_PUBLICATIONS_SUCCESS_SAVED_CONTENT'),
         );
     }
 
@@ -394,7 +394,7 @@ class Items extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_AUTHOR'),
-                'error'
+                'error',
             );
             return;
         }
@@ -411,7 +411,7 @@ class Items extends AdminController
             App::redirect(
                 Route::url($url, false),
                 Lang::txt('COM_PUBLICATIONS_ERROR_FAILED_TO_DELETE_AUTHOR'),
-                'error'
+                'error',
             );
             return;
         }
@@ -419,7 +419,7 @@ class Items extends AdminController
         // Redirect back to publication
         App::redirect(
             Route::url($url, false),
-            Lang::txt('COM_PUBLICATIONS_SUCCESS_DELETE_AUTHOR')
+            Lang::txt('COM_PUBLICATIONS_SUCCESS_DELETE_AUTHOR'),
         );
         return;
     }
@@ -445,7 +445,7 @@ class Items extends AdminController
         if (!$neworder) {
             // Nothing to save
             App::redirect(
-                $url
+                $url,
             );
             return;
         }
@@ -457,7 +457,7 @@ class Items extends AdminController
             App::redirect(
                 $url,
                 Lang::txt('COM_PUBLICATIONS_NOT_FOUND'),
-                'error'
+                'error',
             );
             return;
         }
@@ -477,7 +477,7 @@ class Items extends AdminController
             App::redirect(
                 $url,
                 $block->getError(),
-                'error'
+                'error',
             );
             return;
         } else {
@@ -504,7 +504,7 @@ class Items extends AdminController
             // Redirect back to publication
             App::redirect(
                 $url,
-                Lang::txt('COM_PUBLICATIONS_SUCCESS_SAVED_AUTHOR')
+                Lang::txt('COM_PUBLICATIONS_SUCCESS_SAVED_AUTHOR'),
             );
             return;
         }
@@ -540,7 +540,7 @@ class Items extends AdminController
             App::redirect(
                 $url,
                 Lang::txt('COM_PUBLICATIONS_NOT_FOUND'),
-                'error'
+                'error',
             );
             return;
         }
@@ -565,7 +565,7 @@ class Items extends AdminController
             App::redirect(
                 $url,
                 $block->getError(),
-                'error'
+                'error',
             );
             return;
         } else {
@@ -591,7 +591,7 @@ class Items extends AdminController
             // Redirect back to publication
             App::redirect(
                 $url,
-                Lang::txt('COM_PUBLICATIONS_SUCCESS_SAVED_AUTHOR')
+                Lang::txt('COM_PUBLICATIONS_SUCCESS_SAVED_AUTHOR'),
             );
             return;
         }
@@ -631,7 +631,7 @@ class Items extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_PUBLICATION'),
-                'error'
+                'error',
             );
             return;
         }
@@ -915,7 +915,7 @@ class Items extends AdminController
                                     $url,
                                     Lang::txt('COM_PUBLICATIONS_ERROR_DOI')
                                     . ' ' . $doiService->getError(),
-                                    'error'
+                                    'error',
                                 );
                                 return;
                             } else {
@@ -1030,7 +1030,7 @@ class Items extends AdminController
                                         $eview = new \Hubzero\Mail\View([
                                             'base_path' => dirname(__DIR__),
                                             'name'      => 'emails',
-                                            'layout'    => 'admin_html'
+                                            'layout'    => 'admin_html',
                                         ]);
 
                                         $eview->model = $this->model;
@@ -1207,7 +1207,7 @@ class Items extends AdminController
                 App::redirect(
                     $url,
                     $this->model->version->getError(),
-                    'error'
+                    'error',
                 );
                 return;
             } elseif ($action) {
@@ -1235,7 +1235,7 @@ class Items extends AdminController
                         $link,
                         'publication',
                         0,
-                        $admin = 1
+                        $admin = 1,
                     );
                     $sendmail = $this->config->get('email') ? 1 : 0;
 
@@ -1270,7 +1270,7 @@ class Items extends AdminController
                                 $curl,
                                 'quote',
                                 0,
-                                1
+                                1,
                             );
 
                             // Store activity ID
@@ -1321,11 +1321,11 @@ class Items extends AdminController
         // Redirect to edit view?
         if ($redirect) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit' . '&id[]=' . $id . '&version=' . $this->model->get('version_number'), false)
+                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit' . '&id[]=' . $id . '&version=' . $this->model->get('version_number'), false),
             );
         } else {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
             );
         }
     }
@@ -1370,7 +1370,7 @@ class Items extends AdminController
             // Get message body
             $eview = new \Hubzero\Mail\View([
                 'name'      => 'emails',
-                'layout'    => 'admin_plain'
+                'layout'    => 'admin_plain',
             ]);
             $eview->option  = $this->_option;
             $eview->subject = $subject;
@@ -1421,7 +1421,7 @@ class Items extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_PUBLICATION'),
-                'notice'
+                'notice',
             );
             return;
         }
@@ -1439,7 +1439,7 @@ class Items extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_PUBLICATION'),
-                'notice'
+                'notice',
             );
             return;
         }
@@ -1476,7 +1476,7 @@ class Items extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_PUBLICATION'),
-                'notice'
+                'notice',
             );
             return;
         }
@@ -1586,7 +1586,7 @@ class Items extends AdminController
             : Lang::txt('COM_PUBLICATIONS_SUCCESS_RECORDS_DELETED') . ' (' . count($ids) . ')';
         App::redirect(
             $this->buildRedirectURL(),
-            $output
+            $output,
         );
 
         return;
@@ -1650,7 +1650,7 @@ class Items extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
         );
 
         return;
@@ -1685,7 +1685,7 @@ class Items extends AdminController
         // Redirect
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id[]=' . $id, false),
-            $this->_message
+            $this->_message,
         );
     }
 
@@ -1717,7 +1717,7 @@ class Items extends AdminController
         // Redirect
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id[]=' . $id, false),
-            $this->_message
+            $this->_message,
         );
     }
 

@@ -41,7 +41,7 @@ class Migration20150202134839PlgAntispam extends Base
                         ->update('#__extensions')
                         ->set([
                             'folder' => 'antispam',
-                            'name'   => 'plg_antispam_' . $plg
+                            'name'   => 'plg_antispam_' . $plg,
                         ])
                         ->where('extension_id', '=', $id)
                         ->execute();
@@ -130,7 +130,7 @@ class Migration20150202134839PlgAntispam extends Base
                         ->update('#__extensions')
                         ->set([
                             'folder' => 'content',
-                            'name'   => 'plg_content_' . $plg
+                            'name'   => 'plg_content_' . $plg,
                         ])
                         ->where('extension_id', '=', $id)
                         ->execute();

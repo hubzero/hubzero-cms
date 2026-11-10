@@ -87,7 +87,7 @@ $this->css()
             <tbody>
                 <?php
                 $ticketsUrl = Route::url(
-                    'index.php?option=com_support&controller=tickets'
+                    'index.php?option=com_support&controller=tickets',
                 );
                 ?>
                 <tr>

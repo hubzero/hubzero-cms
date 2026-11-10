@@ -28,7 +28,7 @@ defined('_HZEXEC_') or die();
                 . $this->option
                 . '&alias='
                 . $this->model->get('alias')
-                . '&task=setup&section=describe'
+                . '&task=setup&section=describe',
             );
             ?>
             <a href="<?php echo $routeUrl; ?>">
@@ -55,7 +55,7 @@ defined('_HZEXEC_') or die();
                 . $this->option
                 . '&alias='
                 . $this->model->get('alias')
-                . '&task=setup&section=team'
+                . '&task=setup&section=team',
             );
             ?>
             <a href="<?php echo $routeUrl2; ?>">

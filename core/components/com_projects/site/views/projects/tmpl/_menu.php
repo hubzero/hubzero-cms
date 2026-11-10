@@ -101,7 +101,7 @@ $counts = $this->model->get('counts');
             $tabUrl = Route::url(
                 'index.php?option=' . $this->option
                 . '&alias=' . $this->model->get('alias')
-                . '&active=' . $tab['name']
+                . '&active=' . $tab['name'],
             );
             $tabTitle = Lang::txt('COM_PROJECTS_VIEW')
                 . ' ' . strtolower(Lang::txt('COM_PROJECTS_PROJECT'))

@@ -186,7 +186,7 @@ class Domainrestriction extends Plugin
             $items = explode("\n", trim(str_replace(
                 ["\r", "\t", " "],
                 ['', '', ''],
-                $this->params->get($name, $default)
+                $this->params->get($name, $default),
             )));
 
             foreach ($items as $item) {

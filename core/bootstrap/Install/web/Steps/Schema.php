@@ -140,7 +140,7 @@ class Schema implements StepInterface
             $stmt = $connection->prepare(
                 "SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES
                  WHERE TABLE_SCHEMA = DATABASE()
-                 AND TABLE_NAME LIKE ?"
+                 AND TABLE_NAME LIKE ?",
             );
             $connection->bind($stmt, [$prefix . '%']);
             $connection->execute($stmt);
@@ -156,7 +156,7 @@ class Schema implements StepInterface
             try {
                 $stmt = $connection->prepare(
                     "SELECT COUNT(*) FROM `{$prefix}extensions`
-                     WHERE element IN ('com_content', 'com_users', 'com_menus')"
+                     WHERE element IN ('com_content', 'com_users', 'com_menus')",
                 );
                 $connection->execute($stmt);
                 $row = $connection->fetchArray($stmt);
@@ -194,7 +194,7 @@ class Schema implements StepInterface
             $stmt = $connection->prepare(
                 "SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES
                  WHERE TABLE_SCHEMA = DATABASE()
-                 AND TABLE_NAME IN ('migrations', ?)"
+                 AND TABLE_NAME IN ('migrations', ?)",
             );
             $connection->bind($stmt, [$prefix . 'migrations']);
             $connection->execute($stmt);
@@ -424,7 +424,7 @@ class Schema implements StepInterface
             'cd %s && %s %s migration run -f --no-ansi 2>&1',
             escapeshellarg(PATH_ROOT),
             PhpCli::find(),
-            escapeshellarg($musePath)
+            escapeshellarg($musePath),
         );
 
         // Execute the command, however long it takes
@@ -443,7 +443,7 @@ class Schema implements StepInterface
         if ($returnCode !== 0) {
             $this->installer->addMessage(
                 'Migration failed. Check the logs for details.',
-                'error'
+                'error',
             );
             return false;
         }

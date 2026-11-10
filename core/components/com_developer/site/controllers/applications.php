@@ -52,7 +52,7 @@ class Applications extends SiteController
         if (User::isGuest()) {
             $return = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false, true);
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
             return;
         }
@@ -106,7 +106,7 @@ class Applications extends SiteController
         if (User::isGuest()) {
             $return = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=view&id=' . $id, false, true);
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
             return;
         }
@@ -119,7 +119,7 @@ class Applications extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_developer&controller=applications'),
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_DOES_NOT_EXIST'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -129,7 +129,7 @@ class Applications extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_developer&controller=applications'),
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_NOT_AUTHORIZED'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -164,7 +164,7 @@ class Applications extends SiteController
         if (User::isGuest()) {
             $return = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit', false, true);
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
             return;
         }
@@ -185,7 +185,7 @@ class Applications extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_developer&controller=applications'),
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_DOES_NOT_EXIST'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -203,7 +203,7 @@ class Applications extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_developer&controller=applications'),
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_NOT_AUTHORIZED'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -247,7 +247,7 @@ class Applications extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_developer&controller=applications'),
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_NOT_AUTHORIZED'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -256,7 +256,7 @@ class Applications extends SiteController
         if (User::isGuest()) {
             $return = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $id, false, true);
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
             return;
         }
@@ -273,7 +273,7 @@ class Applications extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_developer&controller=applications'),
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_DOES_NOT_EXIST'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -287,7 +287,7 @@ class Applications extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_developer&controller=applications'),
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_NOT_AUTHORIZED'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -347,7 +347,7 @@ class Applications extends SiteController
         App::redirect(
             Route::url($model->link()),
             Lang::txt('COM_DEVELOPER_API_APPLICATION_SAVED'),
-            'passed'
+            'passed',
         );
     }
 
@@ -368,7 +368,7 @@ class Applications extends SiteController
         if (User::isGuest()) {
             $return = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=delete&id=' . $id, false, true);
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
             return;
         }
@@ -381,7 +381,7 @@ class Applications extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_developer&controller=applications'),
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_DOES_NOT_EXIST'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -391,7 +391,7 @@ class Applications extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_developer&controller=applications'),
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_NOT_AUTHORIZED'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -403,7 +403,7 @@ class Applications extends SiteController
             App::redirect(
                 Route::url($application->link()),
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_UNABLE_TO_DELETE'),
-                'error'
+                'error',
             );
             return;
         }
@@ -412,7 +412,7 @@ class Applications extends SiteController
         App::redirect(
             Route::url('index.php?option=com_developer&controller=applications'),
             Lang::txt('COM_DEVELOPER_API_APPLICATION_DELETED'),
-            'passed'
+            'passed',
         );
     }
 
@@ -434,7 +434,7 @@ class Applications extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_developer&controller=applications'),
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_NOT_AUTHORIZED'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -443,7 +443,7 @@ class Applications extends SiteController
         if (User::isGuest()) {
             $return = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=view&id=' . $id, false, true);
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
             return;
         }
@@ -461,7 +461,7 @@ class Applications extends SiteController
             App::redirect(
                 Route::url($application->link()),
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_UNABLE_TO_RESET_CLIENT_SECRET'),
-                'error'
+                'error',
             );
             return;
         }
@@ -470,7 +470,7 @@ class Applications extends SiteController
         App::redirect(
             Route::url($application->link()),
             Lang::txt('COM_DEVELOPER_API_APPLICATION_CLIENT_SECRET_RESET'),
-            'passed'
+            'passed',
         );
     }
 
@@ -493,7 +493,7 @@ class Applications extends SiteController
         if (User::isGuest()) {
             $return = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=view&id=' . $id, false, true);
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
             return;
         }
@@ -507,7 +507,7 @@ class Applications extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_developer&controller=applications'),
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_NOT_AUTHORIZED'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -526,7 +526,7 @@ class Applications extends SiteController
         App::redirect(
             $return,
             Lang::txt('COM_DEVELOPER_API_APPLICATION_AUTHORIZED_REVOKED'),
-            'passed'
+            'passed',
         );
     }
 
@@ -548,7 +548,7 @@ class Applications extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_developer&controller=applications'),
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_NOT_AUTHORIZED'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -557,7 +557,7 @@ class Applications extends SiteController
         if (User::isGuest()) {
             $return = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=view&id=' . $id, false, true);
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
             return;
         }
@@ -575,7 +575,7 @@ class Applications extends SiteController
         App::redirect(
             Route::url('index.php?option=com_developer&controller=applications&id=' . $id . '&active=tokens'),
             Lang::txt('COM_DEVELOPER_API_APPLICATION_AUTHORIZED_REVOKED'),
-            'passed'
+            'passed',
         );
     }
     /*
@@ -596,7 +596,7 @@ class Applications extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_developer&controller=applications'),
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_NOT_AUTHORIZED'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -609,7 +609,7 @@ class Applications extends SiteController
         if (User::isGuest()) {
             $return = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=view&id=' . $id . '&active=tokens', false, true);
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
             return;
         }
@@ -675,7 +675,7 @@ class Applications extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_developer&controller=applications'),
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_NOT_AUTHORIZED'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -690,7 +690,7 @@ class Applications extends SiteController
                     App::redirect(
                         Route::url($application->link('edit')),
                         Lang::txt('COM_DEVELOPER_API_APPLICATION_UNABLE_TO_DELETE_MEMBER'),
-                        'error'
+                        'error',
                     );
                     return;
                 }
@@ -701,7 +701,7 @@ class Applications extends SiteController
         App::redirect(
             Route::url($application->link('edit')),
             Lang::txt('COM_DEVELOPER_API_APPLICATION_MEMBER_DELETED'),
-            'passed'
+            'passed',
         );
     }
 
@@ -781,20 +781,20 @@ class Applications extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
 
         // add "API"
         Pathway::append(
             Lang::txt('COM_DEVELOPER_API'),
-            'index.php?option=' . $this->_option . '&controller=api'
+            'index.php?option=' . $this->_option . '&controller=api',
         );
 
         // add "Applications"
         Pathway::append(
             Lang::txt('COM_DEVELOPER_API_APPLICATIONS'),
-            'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
         );
 
         // do we have an application
@@ -804,7 +804,7 @@ class Applications extends SiteController
             // add "Applications"
             Pathway::append(
                 $application->get('name'),
-                'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&id=' . $appid
+                'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&id=' . $appid,
             );
         }
 
@@ -816,7 +816,7 @@ class Applications extends SiteController
             // add "Applications"
             Pathway::append(
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_' . strtoupper($this->_task)),
-                'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&id=' . $appid . '&task=' . $this->_task
+                'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&id=' . $appid . '&task=' . $this->_task,
             );
         }
 
@@ -825,7 +825,7 @@ class Applications extends SiteController
             // add "Applications"
             Pathway::append(
                 Lang::txt(ucfirst($active)),
-                'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&id=' . $appid . '&task=' . $this->_task
+                'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&id=' . $appid . '&task=' . $this->_task,
             );
         }
     }

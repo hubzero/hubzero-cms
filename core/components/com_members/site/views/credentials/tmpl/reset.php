@@ -26,7 +26,7 @@ defined('_HZEXEC_') or die();
             <p class="info">
                 <?php echo Lang::txt(
                     'Forgot your username? Go <a href="%s">here</a> to recover it.',
-                    Route::url('index.php?option=com_members&task=remind')
+                    Route::url('index.php?option=com_members&task=remind'),
                 ); ?>
             </p>
         </div>

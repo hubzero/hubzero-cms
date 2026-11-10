@@ -41,7 +41,7 @@ class Arcgisonline extends Plugin
 
         return new \Geocoder\Provider\ArcGISOnline\ArcGISOnline(
             $adapter,
-            $this->params->get('sourceCountry', null)
+            $this->params->get('sourceCountry', null),
         );
     }
 }

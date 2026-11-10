@@ -57,7 +57,7 @@ endif;
                 'index.php?option=com_media&controller=medialist'
                 . '&tmpl=component&tmpl=' . Request::getCmd('tmpl')
                 . '&' . Session::getFormToken() . '=1'
-                . '&folder=/' . urlencode($folder['path'])
+                . '&folder=/' . urlencode($folder['path']),
             );
             $dataFolder = $this->escape('/' . $folder['path']);
             ?>

@@ -23,8 +23,8 @@ echo strip_tags(
         'PLG_USER_HUBZERO_EMAIL_ADMIN_ACCOUNT_REQUESTED',
         $nameEmail,
         $this->user['username'],
-        $this->sitename
-    )
+        $this->sitename,
+    ),
 );
 ?>
 

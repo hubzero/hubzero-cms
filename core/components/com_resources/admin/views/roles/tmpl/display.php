@@ -70,7 +70,7 @@ if ($canDo->get('core.delete')) {
                         'COM_RESOURCES_COL_ID',
                         'id',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     );
                     ?></th>
                 <th scope="col"
@@ -81,7 +81,7 @@ if ($canDo->get('core.delete')) {
                         'COM_RESOURCES_COL_ALIAS',
                         'alias',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     );
                     ?></th>
                 <th scope="col"><?php
@@ -91,7 +91,7 @@ if ($canDo->get('core.delete')) {
                         'COM_RESOURCES_COL_TITLE',
                         'type',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     );
                     ?></th>
                 <th scope="col" class="priority-2"><?php echo Lang::txt('COM_RESOURCES_COL_TYPES'); ?></th>
@@ -132,7 +132,7 @@ if ($canDo->get('core.delete')) {
                             . '&controller='
                             . $this->controller
                             . '&task=edit&id='
-                            . $row->id
+                            . $row->id,
                         );
                         ?>
                         <a href="<?php echo $hrefUrl; ?>">
@@ -153,7 +153,7 @@ if ($canDo->get('core.delete')) {
                             . '&controller='
                             . $this->controller
                             . '&task=edit&id='
-                            . $row->id
+                            . $row->id,
                         );
                         ?>
                         <a href="<?php echo $hrefUrl; ?>">

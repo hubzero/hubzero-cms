@@ -150,7 +150,7 @@ class DeleteComponentEntry extends Macro
                 'lft'   => (int) $leftId,
                 'rgt'   => (int) $rightId,
                 'level' => (int) $level,
-                'path'  => $path
+                'path'  => $path,
             ])
             ->whereEquals('id', (int) $parentId)
             ->toString();

@@ -136,7 +136,7 @@ class Impact extends Plugin
 
         $arr = [
             'html' => '',
-            'metadata' => ''
+            'metadata' => '',
         ];
 
         if ($returnhtml) {
@@ -205,7 +205,7 @@ class Impact extends Plugin
         //if ($this->params->get('contributions', 0) == 1)
         //{
         $areas = [
-            'impact' => Lang::txt('PLG_MEMBERS_IMPACT_PUBLICATIONS')
+            'impact' => Lang::txt('PLG_MEMBERS_IMPACT_PUBLICATIONS'),
         ];
         //}
 
@@ -281,7 +281,7 @@ class Impact extends Plugin
             'sortby' => $sort,
             'limit' => $limit,
             'start' => $limitstart,
-            'author' => $uidNumber
+            'author' => $uidNumber,
         ];
 
         if (!$limit) {
@@ -303,11 +303,11 @@ class Impact extends Plugin
                     if ($row->alias) {
                         $sef = Route::url(
                             'index.php?option=com_publications&alias=' . $row->alias . '&v='
-                            . $row->version_number
+                            . $row->version_number,
                         );
                     } else {
                         $sef = Route::url(
-                            'index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_number
+                            'index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_number,
                         );
                     }
                     $rows[$key]->href = $sef;

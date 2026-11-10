@@ -49,7 +49,7 @@ class Post extends Relational implements \Hubzero\Search\Searchable
     protected $rules = [
         'title'       => 'notempty',
         'object_type' => 'notempty',
-        'object_id'   => 'positive|nonzero'
+        'object_id'   => 'positive|nonzero',
     ];
 
     /**
@@ -60,7 +60,7 @@ class Post extends Relational implements \Hubzero\Search\Searchable
     public $initiate = [
         'created',
         'created_by',
-        'ordering'
+        'ordering',
     ];
 
     /**
@@ -69,7 +69,7 @@ class Post extends Relational implements \Hubzero\Search\Searchable
      * @var array
      */
     protected $parsed = [
-        'description'
+        'description',
     ];
 
     /**

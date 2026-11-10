@@ -142,7 +142,7 @@ class IdP
      * @var  array
      */
     protected static $attributeSources = [
-        'email', 'name', 'givenName', 'middleName', 'surname', 'username', 'id'
+        'email', 'name', 'givenName', 'middleName', 'surname', 'username', 'id',
     ];
 
     /**
@@ -221,7 +221,7 @@ class IdP
             $this->getKeyFile(),
             (string) $this->params->get('IdPKeyPassphrase', ''),
             true,
-            $this->getSignatureKeyType()
+            $this->getSignatureKeyType(),
         );
     }
 
@@ -271,7 +271,7 @@ class IdP
         return new \LightSaml\Model\XmlDSig\SignatureWriter(
             $this->getCertificate(),
             $this->getPrivateKey(),
-            $this->getDigestAlgorithm()
+            $this->getDigestAlgorithm(),
         );
     }
 
@@ -450,7 +450,7 @@ class IdP
                 ['name' => \LightSaml\ClaimTypes::EMAIL_ADDRESS, 'friendly' => 'E-Mail',     'source' => 'email'],
                 ['name' => \LightSaml\ClaimTypes::COMMON_NAME,   'friendly' => 'CommonName', 'source' => 'name'],
                 ['name' => \LightSaml\ClaimTypes::GIVEN_NAME,    'friendly' => 'GivenName',  'source' => 'givenName'],
-                ['name' => \LightSaml\ClaimTypes::SURNAME,       'friendly' => 'Surname',    'source' => 'surname']
+                ['name' => \LightSaml\ClaimTypes::SURNAME,       'friendly' => 'Surname',    'source' => 'surname'],
             ];
         }
 

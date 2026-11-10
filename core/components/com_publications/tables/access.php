@@ -44,7 +44,7 @@ class Access extends Table
 
         return parent::load([
             'publication_version_id' => (int) $vid,
-            'group_id'               => (int) $group_id
+            'group_id'               => (int) $group_id,
         ]);
     }
 

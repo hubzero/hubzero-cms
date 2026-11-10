@@ -170,7 +170,7 @@ class SecurityGuard
             'Unable to create secure storage directory outside document root. ' .
             'Tried: ' . implode('; ', $triedPaths) . '. ' .
             'Document root: ' . $this->docRoot . '. ' .
-            'Please ensure the PHP process owner has a writable home directory outside the web root.'
+            'Please ensure the PHP process owner has a writable home directory outside the web root.',
         );
     }
 
@@ -605,7 +605,7 @@ class SecurityGuard
 
         return max(
             (int) ($session['lockout_until'] ?? 0),
-            (int) ($client['lockout_until'] ?? 0)
+            (int) ($client['lockout_until'] ?? 0),
         );
     }
 
@@ -714,7 +714,7 @@ class SecurityGuard
 
         return file_put_contents(
             $this->getIpAttemptFilePath(),
-            json_encode($data, JSON_PRETTY_PRINT)
+            json_encode($data, JSON_PRETTY_PRINT),
         ) !== false;
     }
 
@@ -748,7 +748,7 @@ class SecurityGuard
             $remaining = ceil($this->getLockoutRemaining() / 60);
             return [
                 'valid' => false,
-                'error' => "Too many failed attempts. Please wait {$remaining} minute(s) before trying again."
+                'error' => "Too many failed attempts. Please wait {$remaining} minute(s) before trying again.",
             ];
         }
 
@@ -759,7 +759,7 @@ class SecurityGuard
             $this->recordFailedAttempt();
             return [
                 'valid' => false,
-                'error' => 'Verification file not found. Please create the file as instructed.'
+                'error' => 'Verification file not found. Please create the file as instructed.',
             ];
         }
 
@@ -771,7 +771,7 @@ class SecurityGuard
             $this->generateToken();
             return [
                 'valid' => false,
-                'error' => 'Verification file has expired. A new filename has been generated.'
+                'error' => 'Verification file has expired. A new filename has been generated.',
             ];
         }
 
@@ -812,7 +812,7 @@ class SecurityGuard
             $headers = [
                 'HTTP_CF_CONNECTING_IP',     // Cloudflare
                 'HTTP_X_FORWARDED_FOR',      // Standard proxy
-                'HTTP_X_REAL_IP'             // Nginx proxy
+                'HTTP_X_REAL_IP',             // Nginx proxy
             ];
 
             foreach ($headers as $header) {
@@ -924,7 +924,7 @@ class SecurityGuard
         if (!$data || empty($data['verified'])) {
             return [
                 'valid' => false,
-                'error' => 'Session not verified. Please complete the verification step.'
+                'error' => 'Session not verified. Please complete the verification step.',
             ];
         }
 
@@ -933,7 +933,7 @@ class SecurityGuard
             $this->clearVerification();
             return [
                 'valid' => false,
-                'error' => 'Session mismatch. Please restart verification.'
+                'error' => 'Session mismatch. Please restart verification.',
             ];
         }
 
@@ -946,7 +946,7 @@ class SecurityGuard
             $this->clearVerification();
             return [
                 'valid' => false,
-                'error' => 'Client verification failed. Your connection details have changed.'
+                'error' => 'Client verification failed. Your connection details have changed.',
             ];
         }
 
@@ -957,7 +957,7 @@ class SecurityGuard
             $this->clearVerification();
             return [
                 'valid' => false,
-                'error' => 'Verification file was removed. Please restart verification.'
+                'error' => 'Verification file was removed. Please restart verification.',
             ];
         }
 
@@ -967,7 +967,7 @@ class SecurityGuard
             $this->clearVerification();
             return [
                 'valid' => false,
-                'error' => 'Verification file was tampered with. Please restart verification.'
+                'error' => 'Verification file was tampered with. Please restart verification.',
             ];
         }
 

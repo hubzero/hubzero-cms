@@ -41,29 +41,29 @@ class Courses extends AbstractComponent
         Submenu::addEntry(
             Lang::txt('COM_COURSES_COURSES'),
             Route::url('index.php?option=com_courses&controller=courses'),
-            (!in_array($controllerName, ['students', 'roles', 'pages']))
+            (!in_array($controllerName, ['students', 'roles', 'pages'])),
         );
         Submenu::addEntry(
             Lang::txt('COM_COURSES_PAGES'),
             Route::url('index.php?option=com_courses&controller=pages&course=0'),
-            $controllerName == 'pages'
+            $controllerName == 'pages',
         );
         Submenu::addEntry(
             Lang::txt('COM_COURSES_STUDENTS'),
             Route::url('index.php?option=com_courses&controller=students&offering=0&section=0'),
-            $controllerName == 'students'
+            $controllerName == 'students',
         );
         Submenu::addEntry(
             Lang::txt('COM_COURSES_ROLES'),
             Route::url('index.php?option=com_courses&controller=roles'),
-            $controllerName == 'roles'
+            $controllerName == 'roles',
         );
 
         $canDo = \Components\Plugins\Helpers\Plugins::getActions();
         if ($canDo->get('core.manage')) {
             Submenu::addEntry(
                 Lang::txt('COM_COURSES_PLUGINS'),
-                Route::url('index.php?option=com_plugins&view=plugins&filter_folder=courses&filter_type=courses')
+                Route::url('index.php?option=com_plugins&view=plugins&filter_folder=courses&filter_type=courses'),
             );
         }
 

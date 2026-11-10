@@ -102,7 +102,7 @@ class Comments extends SiteController
 
         if (in_array($this->page->getNamespace(), ['image', 'file'])) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=media&scope=' . $this->page->get('scope') . '&pagename=' . $this->page->get('pagename') . '&task=download')
+                Route::url('index.php?option=' . $this->_option . '&controller=media&scope=' . $this->page->get('scope') . '&pagename=' . $this->page->get('pagename') . '&task=download'),
             );
         }
 
@@ -117,7 +117,7 @@ class Comments extends SiteController
 
         if (!$this->page->config('comments', 1)) {
             App::redirect(
-                Route::url($this->page->link())
+                Route::url($this->page->link()),
             );
         }
 
@@ -162,21 +162,21 @@ class Comments extends SiteController
         Document::setTitle(
             Lang::txt(strtoupper($this->_option)) . ': ' .
             $this->page->title . ': ' .
-            Lang::txt(strtoupper($this->_option . '_' . $this->_task))
+            Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
         );
 
         // Set the pathway
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
 
         $parents = $this->appendPagePathway();
         Pathway::append(
             Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
-            $this->page->link('comments')
+            $this->page->link('comments'),
         );
 
         // Output content
@@ -214,7 +214,7 @@ class Comments extends SiteController
         if (User::isGuest()) {
             $url = Request::getString('REQUEST_URI', '', 'server');
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url), false)
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url), false),
             );
         }
 
@@ -359,7 +359,7 @@ class Comments extends SiteController
         $recipients = [
             ['wiki.site', 1],
             ['user', $this->page->get('created_by')],
-            ['user', $comment->get('created_by')]
+            ['user', $comment->get('created_by')],
         ];
 
         if ($comment->get('parent')) {
@@ -382,15 +382,15 @@ class Comments extends SiteController
                     'title'    => $this->page->title,
                     'url'      => Route::url($this->page->link('comments')),
                     'name'     => $this->page->get('pagename'),
-                    'comment'  => $comment->get('id')
-                ]
+                    'comment'  => $comment->get('id'),
+                ],
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         // Redirect to Comments page
         App::redirect(
-            Route::url($this->page->link('comments'))
+            Route::url($this->page->link('comments')),
         );
     }
 
@@ -429,7 +429,7 @@ class Comments extends SiteController
                 $recipients = [
                     ['wiki.site', 1],
                     ['user', $this->page->get('created_by')],
-                    ['user', $comment->get('created_by')]
+                    ['user', $comment->get('created_by')],
                 ];
                 if ($this->page->get('scope') != 'site') {
                     $recipients[]  = [$this->page->get('scope'), $this->page->get('scope_id')];
@@ -446,10 +446,10 @@ class Comments extends SiteController
                             'title'    => $this->page->title,
                             'url'      => Route::url($this->page->link('comments')),
                             'name'     => $this->page->get('pagename'),
-                            'comment'  => $comment->get('id')
-                        ]
+                            'comment'  => $comment->get('id'),
+                        ],
                     ],
-                    'recipients' => $recipients
+                    'recipients' => $recipients,
                 ]);
             } else {
                 $msg = Lang::txt('COM_WIKI_ERROR_NOTAUTH');
@@ -461,7 +461,7 @@ class Comments extends SiteController
         App::redirect(
             Route::url($this->page->link('comments')),
             $msg,
-            $cls
+            $cls,
         );
     }
 }

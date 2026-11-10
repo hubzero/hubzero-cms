@@ -27,7 +27,7 @@ $sortToolname = Html::grid(
     'COM_TOOLS_HANDLERS_TOOLNAME',
     'tool.title',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 ?>
 <form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
@@ -68,7 +68,7 @@ $sortToolname = Html::grid(
                             $editUrl = Route::url(
                                 'index.php?option=' . $this->option
                                 . '&controller=' . $this->controller
-                                . '&task=edit&id=' . $row->get('id')
+                                . '&task=edit&id=' . $row->get('id'),
                             );
                             ?>
                             <a href="<?php echo $editUrl; ?>">

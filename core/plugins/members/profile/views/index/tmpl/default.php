@@ -80,7 +80,7 @@ $xml = Components\Members\Models\Profile\Field::toXml($this->fields, 'edit');
 
 // Gather data to pass to the form processor
 $data = new Hubzero\Config\Registry(
-    Components\Members\Models\Profile::collect($profiles)
+    Components\Members\Models\Profile::collect($profiles),
 );
 
 // Create a new form
@@ -143,7 +143,7 @@ endif;
 $legacy = [
     0 => Lang::txt('COM_MEMBERS_FIELD_ACCESS_PUBLIC'),
     1 => Lang::txt('COM_MEMBERS_FIELD_ACCESS_REGISTERED'),
-    2 => Lang::txt('COM_MEMBERS_FIELD_ACCESS_PRIVATE')
+    2 => Lang::txt('COM_MEMBERS_FIELD_ACCESS_PRIVATE'),
 ];
 ?>
 
@@ -830,7 +830,7 @@ $legacy = [
                             $options = [
                                 '-1' => Lang::txt('PLG_MEMBERS_PROFILE_EMAILUPDATES_OPT_SELECT'),
                                 '1'  => Lang::txt('PLG_MEMBERS_PROFILE_EMAILUPDATES_OPT_YES'),
-                                '0'  => Lang::txt('PLG_MEMBERS_PROFILE_EMAILUPDATES_OPT_NO')
+                                '0'  => Lang::txt('PLG_MEMBERS_PROFILE_EMAILUPDATES_OPT_NO'),
                             ];
 
                             //build option list

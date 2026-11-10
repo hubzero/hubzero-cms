@@ -61,18 +61,18 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
                     <?php foreach ($this->rows as $row) {
                         $followerImg = $row->follower()->image();
                         $followerTitle = $this->escape(
-                            stripslashes($row->follower()->title())
+                            stripslashes($row->follower()->title()),
                         );
                         $followerLink = Route::url(
-                            $row->follower()->link()
+                            $row->follower()->link(),
                         );
                         $followersCount = Lang::txt(
                             '<strong>%s</strong> followers',
-                            $row->count('followers')
+                            $row->count('followers'),
                         );
                         $followingCount = Lang::txt(
                             '<strong>%s</strong> following',
-                            $row->count('following')
+                            $row->count('following'),
                         );
                         $createdDate = $row->get('created');
                         $createdLocal = Date::of($createdDate)
@@ -114,7 +114,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
             $pageNav = $this->pagination(
                 $this->total,
                 $this->filters['start'],
-                $this->filters['limit']
+                $this->filters['limit'],
             );
             $pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
             $pageNav->setAdditionalUrlParam('active', 'collections');
@@ -128,18 +128,18 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
             <?php if ($this->params->get('access-manage-collection')) {
                 $noFollowersMsg = Lang::txt(
                     'This group currently does not have anyone'
-                    . ' following it or any of its collections.'
+                    . ' following it or any of its collections.',
                 );
                 $followersDesc = Lang::txt(
                     '"Followers" are members that have decided'
                     . ' to receive all public posts this group'
                     . ' makes or all posts in one of this'
-                    . ' group\'s collections.'
+                    . ' group\'s collections.',
                 );
                 $followersPrivacy = Lang::txt(
                     'Followers cannot see of your private'
                     . ' collections or posts made to private'
-                    . ' collections.'
+                    . ' collections.',
                 );
                 ?>
                 <div class="instructions">

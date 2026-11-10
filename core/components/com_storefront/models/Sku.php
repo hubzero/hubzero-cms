@@ -438,7 +438,7 @@ class Sku
             $it = new \RecursiveDirectoryIterator($dir, \RecursiveDirectoryIterator::SKIP_DOTS);
             $files = new \RecursiveIteratorIterator(
                 $it,
-                \RecursiveIteratorIterator::CHILD_FIRST
+                \RecursiveIteratorIterator::CHILD_FIRST,
             );
             foreach ($files as $file) {
                 if ($file->isDir()) {

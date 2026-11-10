@@ -32,11 +32,11 @@ $this->js();
 <?php
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 $confirmStop = Lang::txt('COM_NEWSLETTER_MAILING_STOP_CHECK');
 $searchPlaceholder = Lang::txt(
-    'COM_NEWSLETTER_FILTER_SEARCH_PLACEHOLDER'
+    'COM_NEWSLETTER_FILTER_SEARCH_PLACEHOLDER',
 );
 ?>
 <form
@@ -83,7 +83,7 @@ $searchPlaceholder = Lang::txt(
                         'COM_NEWSLETTER_NEWSLETTER',
                         'subject',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     );
                     ?></th>
                 <th scope="col" class="priority-3"><?php
@@ -92,7 +92,7 @@ $searchPlaceholder = Lang::txt(
                         'COM_NEWSLETTER_MAILING_DATE',
                         'date',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     );
                     ?></th>
                 <?php $pctComplete = Lang::txt('COM_NEWSLETTER_MAILING_PERCENT_COMPLETE'); ?>
@@ -147,7 +147,7 @@ $searchPlaceholder = Lang::txt(
                             $emailsSentTxt = Lang::txt(
                                 'COM_NEWSLETTER_NUM_OF_EMAILS_SENT',
                                 $sentCount,
-                                $totalCount
+                                $totalCount,
                             );
                             ?>
                             (<?php echo $emailsSentTxt; ?>)

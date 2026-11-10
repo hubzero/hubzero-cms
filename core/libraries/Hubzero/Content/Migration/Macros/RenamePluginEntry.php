@@ -49,7 +49,7 @@ class RenamePluginEntry extends Macro
             $query = $this->db->getQuery()
                 ->update($table)
                 ->set([
-                    'name' => $name
+                    'name' => $name,
                 ])
                 ->whereEquals($pk, $id)
                 ->toString();

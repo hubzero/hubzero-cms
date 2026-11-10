@@ -129,7 +129,7 @@ class InformixGrammar extends BaseSchemaGrammar
                 $driverStatements = $this->driver->buildDeferredFulltextIndexStatements(
                     $blueprint->getTable(),
                     $name,
-                    is_array($columns) ? $columns : [$columns]
+                    is_array($columns) ? $columns : [$columns],
                 );
                 foreach ($driverStatements as $driverStatement) {
                     $statements[] = $driverStatement;

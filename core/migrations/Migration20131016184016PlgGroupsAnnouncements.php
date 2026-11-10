@@ -48,7 +48,7 @@ class Migration20131016184016PlgGroupsAnnouncements extends Base
                     'state'      => 1,
                     'plugin'     => 'groups',
                     'event'      => 'sendGroupAnnouncements',
-                    'recurrence' => '*/5 * * * *'
+                    'recurrence' => '*/5 * * * *',
                 ])
                 ->execute();
         }

@@ -60,7 +60,7 @@ Html::behavior('tooltip');
 $this->js();
 
 $formAction = Route::url(
-    'index.php?option=com_categories&view=categories'
+    'index.php?option=com_categories&view=categories',
 );
 ?>
 <form action="<?php echo $formAction; ?>"
@@ -79,7 +79,7 @@ $formAction = Route::url(
                 <?php
                 $searchVal = $this->escape($this->filters['search']);
                 $searchPlaceholder = Lang::txt(
-                    'COM_CATEGORIES_ITEMS_SEARCH_FILTER'
+                    'COM_CATEGORIES_ITEMS_SEARCH_FILTER',
                 );
                 ?>
                 <input type="text"
@@ -118,7 +118,7 @@ $formAction = Route::url(
                         'value',
                         'text',
                         $pubFilter,
-                        true
+                        true,
                     ); ?>
                 </select>
 
@@ -136,7 +136,7 @@ $formAction = Route::url(
                         Html::access('assetgroups'),
                         'value',
                         'text',
-                        $accessFilter
+                        $accessFilter,
                     ); ?>
                 </select>
 
@@ -145,7 +145,7 @@ $formAction = Route::url(
                 $langOptions = Html::contentlanguage(
                     'existing',
                     true,
-                    true
+                    true,
                 );
                 $langFilter = $this->filters['language'];
                 ?>
@@ -161,7 +161,7 @@ $formAction = Route::url(
                         $langOptions,
                         'value',
                         'text',
-                        $langFilter
+                        $langFilter,
                     ); ?>
                 </select>
             </div>
@@ -220,7 +220,7 @@ $formAction = Route::url(
             foreach ($this->items as $i => $item) :
                 $orderkey  = array_search(
                     $item->id,
-                    $this->ordering[$item->parent_id]
+                    $this->ordering[$item->parent_id],
                 );
                 $catAsset   = $extension . '.category.' . $item->id;
                 $canEdit    = User::authorise('core.edit', $catAsset);
@@ -231,7 +231,7 @@ $formAction = Route::url(
                     && $item->created_user_id == $userId;
                 $canChange  = User::authorise(
                     'core.edit.state',
-                    $catAsset
+                    $catAsset,
                 ) && $canCheckin;
                 ?>
                 <tr class="row<?php echo $i % 2; ?>">
@@ -251,7 +251,7 @@ $formAction = Route::url(
                                 $item->editor->name,
                                 $item->checked_out_time,
                                 'categories.',
-                                $canCheckin
+                                $canCheckin,
                             ); ?>
                         <?php endif; ?>
                         <?php if ($canEdit || $canEditOwn) : ?>
@@ -260,7 +260,7 @@ $formAction = Route::url(
                                 'index.php?option=com_categories'
                                 . '&task=category.edit'
                                 . '&id=' . $item->id
-                                . '&extension=' . $extension
+                                . '&extension=' . $extension,
                             );
                             ?>
                             <a href="<?php echo $editUrl; ?>">
@@ -281,13 +281,13 @@ $formAction = Route::url(
                             <?php if (empty($item->note)) : ?>
                                 <?php echo Lang::txt(
                                     'JGLOBAL_LIST_ALIAS',
-                                    $escapedAlias
+                                    $escapedAlias,
                                 ); ?>
                             <?php else : ?>
                                 <?php echo Lang::txt(
                                     'JGLOBAL_LIST_ALIAS_NOTE',
                                     $escapedAlias,
-                                    $this->escape($item->note)
+                                    $this->escape($item->note),
                                 ); ?>
                             <?php endif; ?>
                         </p>
@@ -300,17 +300,17 @@ $formAction = Route::url(
                             <?php if ($saveOrder) : ?>
                                 <?php
                                 $hasPrev = isset(
-                                    $this->ordering[$item->parent_id][$orderkey - 1]
+                                    $this->ordering[$item->parent_id][$orderkey - 1],
                                 );
                                 $hasNext = isset(
-                                    $this->ordering[$item->parent_id][$orderkey + 1]
+                                    $this->ordering[$item->parent_id][$orderkey + 1],
                                 );
                                 $upIcon = $this->pagination->orderUpIcon(
                                     $i,
                                     $hasPrev,
                                     'categories.orderup',
                                     'JLIB_HTML_MOVE_UP',
-                                    $ordering
+                                    $ordering,
                                 );
                                 $downIcon = $this->pagination->orderDownIcon(
                                     $i,
@@ -318,7 +318,7 @@ $formAction = Route::url(
                                     $hasNext,
                                     'categories.orderdown',
                                     'JLIB_HTML_MOVE_DOWN',
-                                    $ordering
+                                    $ordering,
                                 );
                                 ?>
                                 <span><?php echo $upIcon; ?></span>

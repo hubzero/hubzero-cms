@@ -45,7 +45,7 @@ class Item extends Relational
      * @var  array
      */
     protected $rules = [
-        'type' => 'notempty'
+        'type' => 'notempty',
     ];
 
     /**
@@ -55,7 +55,7 @@ class Item extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**
@@ -64,7 +64,7 @@ class Item extends Relational
      * @var  array
      */
     protected $parsed = [
-        'description'
+        'description',
     ];
 
     /**

@@ -423,7 +423,7 @@ class SqlsrvDriver extends BaseSqlDriver
      */
     public function normalizeColumnType(
         string $type,
-        array $modifiers = []
+        array $modifiers = [],
     ): string {
         // Abstract type handled by base class (uses Grammar's typeMap)
         // Try exact match first, then case-insensitive (e.g. STRING → string)
@@ -656,7 +656,7 @@ class SqlsrvDriver extends BaseSqlDriver
         $table = $this->replacePrefix($table);
         $this->setQuery(
             "SELECT COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, IS_NULLABLE, COLUMN_DEFAULT " .
-            "FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = " . $this->quote($table)
+            "FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = " . $this->quote($table),
         );
 
         $columns = [];
@@ -698,7 +698,7 @@ class SqlsrvDriver extends BaseSqlDriver
             . "INNER JOIN sys.columns c "
             . "ON ic.object_id = c.object_id AND ic.column_id = c.column_id "
             . "WHERE i.object_id = OBJECT_ID($quoted) "
-            . "ORDER BY i.name, ic.key_ordinal"
+            . "ORDER BY i.name, ic.key_ordinal",
         );
         $indexes = $this->loadObjectList();
 
@@ -728,7 +728,7 @@ class SqlsrvDriver extends BaseSqlDriver
             . "INNER JOIN sys.columns c "
             . "ON fic.object_id = c.object_id "
             . "AND fic.column_id = c.column_id "
-            . "WHERE fi.object_id = OBJECT_ID($quoted)"
+            . "WHERE fi.object_id = OBJECT_ID($quoted)",
         );
         $ftCols = $this->loadObjectList();
         if (!empty($ftCols)) {
@@ -824,7 +824,7 @@ class SqlsrvDriver extends BaseSqlDriver
             "INNER JOIN sys.columns c ON ic.object_id = c.object_id AND ic.column_id = c.column_id " .
             "WHERE i.object_id = OBJECT_ID(" . $this->quote($table) . ") " .
             "AND i.name IS NOT NULL " .
-            "ORDER BY i.name, ic.key_ordinal"
+            "ORDER BY i.name, ic.key_ordinal",
         );
 
         $results = $this->loadObjectList();
@@ -993,7 +993,7 @@ class SqlsrvDriver extends BaseSqlDriver
             "SELECT c.name FROM sys.indexes i " .
             "INNER JOIN sys.index_columns ic ON i.object_id = ic.object_id AND i.index_id = ic.index_id " .
             "INNER JOIN sys.columns c ON ic.object_id = c.object_id AND ic.column_id = c.column_id " .
-            "WHERE i.is_primary_key = 1 AND i.object_id = OBJECT_ID(" . $this->quote($table) . ")"
+            "WHERE i.is_primary_key = 1 AND i.object_id = OBJECT_ID(" . $this->quote($table) . ")",
         );
         return $this->loadResult();
     }
@@ -1012,7 +1012,7 @@ class SqlsrvDriver extends BaseSqlDriver
             "INNER JOIN sys.index_columns ic ON i.object_id = ic.object_id AND i.index_id = ic.index_id " .
             "INNER JOIN sys.columns c ON ic.object_id = c.object_id AND ic.column_id = c.column_id " .
             "WHERE i.is_primary_key = 1 AND i.object_id = OBJECT_ID(" . $this->quote($table) . ") " .
-            "ORDER BY ic.key_ordinal"
+            "ORDER BY ic.key_ordinal",
         );
         $rows = $this->loadColumn();
         return $rows ?: [];
@@ -1059,7 +1059,7 @@ class SqlsrvDriver extends BaseSqlDriver
         // Add 1 to return the *next* value (matching MySQL semantics).
         $this->setQuery(
             "SELECT IDENT_CURRENT(" . $this->quote($table)
-            . ") + 1 AS auto_increment"
+            . ") + 1 AS auto_increment",
         );
         $result = $this->loadObject();
         return $result ? (int) $result->auto_increment : false;
@@ -1081,7 +1081,7 @@ class SqlsrvDriver extends BaseSqlDriver
         $reseedValue = max(0, (int) $value - 1);
         $this->setQuery(
             "DBCC CHECKIDENT (" . $this->quote($table)
-            . ", RESEED, " . $reseedValue . ")"
+            . ", RESEED, " . $reseedValue . ")",
         );
         $this->execute();
         return true;
@@ -1174,7 +1174,7 @@ class SqlsrvDriver extends BaseSqlDriver
             $this->getConnection()->rollBack();
         } else {
             $this->setQuery(
-                'ROLLBACK TRANSACTION SP_' . $this->transactionDepth
+                'ROLLBACK TRANSACTION SP_' . $this->transactionDepth,
             );
             $this->execute();
         }
@@ -1218,7 +1218,7 @@ class SqlsrvDriver extends BaseSqlDriver
         if ($identityTable) {
             $quoted = $this->quoteName($identityTable);
             $this->getConnection()->exec(
-                "SET IDENTITY_INSERT {$quoted} ON"
+                "SET IDENTITY_INSERT {$quoted} ON",
             );
             // INSERT...SELECT without column list needs columns added
             $this->injectColumnListForInsertSelect($identityTable);
@@ -1229,7 +1229,7 @@ class SqlsrvDriver extends BaseSqlDriver
         } finally {
             if ($identityTable) {
                 $this->getConnection()->exec(
-                    "SET IDENTITY_INSERT {$quoted} OFF"
+                    "SET IDENTITY_INSERT {$quoted} OFF",
                 );
             }
         }
@@ -1263,7 +1263,7 @@ class SqlsrvDriver extends BaseSqlDriver
         // the driver's prepared statement and bindings
         $colStmt = $this->getConnection()->prepare(
             "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS "
-            . "WHERE TABLE_NAME = ? ORDER BY ORDINAL_POSITION"
+            . "WHERE TABLE_NAME = ? ORDER BY ORDINAL_POSITION",
         );
         $colStmt->execute([$table]);
         $colNames = $colStmt->fetchAll(\PDO::FETCH_COLUMN, 0);
@@ -1274,7 +1274,7 @@ class SqlsrvDriver extends BaseSqlDriver
 
         $colList = implode(', ', array_map(
             fn($col) => $this->quoteName($col),
-            $colNames
+            $colNames,
         ));
 
         // Find where SELECT starts after INSERT INTO table
@@ -1349,7 +1349,7 @@ class SqlsrvDriver extends BaseSqlDriver
     {
         if (!array_key_exists($table, $this->identityColumns)) {
             $this->identityColumns[$table] = $this->queryIdentityColumn(
-                $table
+                $table,
             );
         }
 
@@ -1369,7 +1369,7 @@ class SqlsrvDriver extends BaseSqlDriver
             $stmt = $this->getConnection()->prepare(
                 "SELECT c.name FROM sys.columns c "
                 . "WHERE c.object_id = OBJECT_ID(?) "
-                . "AND c.is_identity = 1"
+                . "AND c.is_identity = 1",
             );
             $stmt->execute([$table]);
             $result = $stmt->fetchColumn();
@@ -1471,7 +1471,7 @@ class SqlsrvDriver extends BaseSqlDriver
             $this->setQuery(
                 'DBCC CHECKIDENT ('
                 . $this->quote($table) . ', RESEED, '
-                . $nextId . ')'
+                . $nextId . ')',
             );
             $this->execute();
         }
@@ -1511,7 +1511,7 @@ class SqlsrvDriver extends BaseSqlDriver
         string $table,
         string $column,
         string $definition,
-        string $comment
+        string $comment,
     ): string {
         return "ALTER TABLE " . $this->quoteName($table)
             . " ALTER COLUMN " . $this->quoteName($column)
@@ -1535,7 +1535,7 @@ class SqlsrvDriver extends BaseSqlDriver
         string $column,
         string $definition,
         string $afterColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         // SQL Server doesn't support column positioning
         return $this->modifyColumn($table, $column, $definition, $comment);
@@ -1558,7 +1558,7 @@ class SqlsrvDriver extends BaseSqlDriver
         string $column,
         string $definition,
         string $beforeColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         // SQL Server doesn't support column positioning
         return $this->modifyColumn($table, $column, $definition, $comment);
@@ -1596,7 +1596,7 @@ class SqlsrvDriver extends BaseSqlDriver
         string $oldColumn,
         string $newColumn,
         string $definition,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         $table = $this->replacePrefix($table);
 
@@ -1605,7 +1605,7 @@ class SqlsrvDriver extends BaseSqlDriver
             $this->setQuery(
                 "EXEC sp_rename "
                 . $this->quote($table . '.' . $oldColumn) . ", "
-                . $this->quote($newColumn) . ", 'COLUMN'"
+                . $this->quote($newColumn) . ", 'COLUMN'",
             );
             $this->execute();
         }
@@ -1614,7 +1614,7 @@ class SqlsrvDriver extends BaseSqlDriver
         $this->setQuery(
             "ALTER TABLE " . $this->quoteName($table)
             . " ALTER COLUMN " . $this->quoteName($newColumn)
-            . " " . $definition
+            . " " . $definition,
         );
         $this->execute();
 
@@ -1634,7 +1634,7 @@ class SqlsrvDriver extends BaseSqlDriver
         string $table,
         string $column,
         string $definition,
-        string $comment
+        string $comment,
     ): string {
         return "ALTER TABLE " . $this->quoteName($table)
             . " ADD " . $this->quoteName($column)
@@ -1658,7 +1658,7 @@ class SqlsrvDriver extends BaseSqlDriver
         string $column,
         string $definition,
         string $afterColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         // SQL Server doesn't support column positioning
         return $this->addColumn($table, $column, $definition, $comment);
@@ -1681,7 +1681,7 @@ class SqlsrvDriver extends BaseSqlDriver
         string $column,
         string $definition,
         string $beforeColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         // SQL Server doesn't support column positioning
         return $this->addColumn($table, $column, $definition, $comment);
@@ -1847,7 +1847,7 @@ class SqlsrvDriver extends BaseSqlDriver
     {
         $tableName = $this->replacePrefix($name);
         $this->setQuery(
-            "SELECT COUNT(*) FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_NAME = " . $this->quote($tableName)
+            "SELECT COUNT(*) FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_NAME = " . $this->quote($tableName),
         );
 
         return (bool) $this->loadResult();
@@ -1861,7 +1861,7 @@ class SqlsrvDriver extends BaseSqlDriver
     public function getViews(): array
     {
         $this->setQuery(
-            "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.VIEWS ORDER BY TABLE_NAME"
+            "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.VIEWS ORDER BY TABLE_NAME",
         );
 
         return $this->loadColumn() ?: [];
@@ -1877,7 +1877,7 @@ class SqlsrvDriver extends BaseSqlDriver
     public function getDatabaseNames(): array
     {
         $this->setQuery(
-            "SELECT name FROM sys.databases WHERE database_id > 4 ORDER BY name"
+            "SELECT name FROM sys.databases WHERE database_id > 4 ORDER BY name",
         );
 
         return $this->loadColumn() ?: [];
@@ -1905,7 +1905,7 @@ class SqlsrvDriver extends BaseSqlDriver
                 s.current_value,
                 TYPE_NAME(s.system_type_id) AS data_type
             FROM sys.sequences s
-            ORDER BY SCHEMA_NAME(s.schema_id), s.name"
+            ORDER BY SCHEMA_NAME(s.schema_id), s.name",
         );
 
         $results = $this->loadObjectList();
@@ -2003,7 +2003,7 @@ class SqlsrvDriver extends BaseSqlDriver
     public function sequenceExists($name): bool
     {
         $this->setQuery(
-            "SELECT COUNT(*) FROM sys.sequences WHERE name = " . $this->quote($name)
+            "SELECT COUNT(*) FROM sys.sequences WHERE name = " . $this->quote($name),
         );
         return (bool) $this->loadResult();
     }
@@ -2030,7 +2030,7 @@ class SqlsrvDriver extends BaseSqlDriver
     {
         $this->setQuery(
             "SELECT current_value FROM sys.sequences WHERE name = "
-            . $this->quote($name)
+            . $this->quote($name),
         );
         return (int) $this->loadResult();
     }
@@ -2070,7 +2070,7 @@ class SqlsrvDriver extends BaseSqlDriver
     public function setTableCharset(
         string $table,
         string $charset = 'utf8',
-        string $collation = 'utf8_general_ci'
+        string $collation = 'utf8_general_ci',
     ): bool {
         return true;
     }
@@ -2115,7 +2115,7 @@ class SqlsrvDriver extends BaseSqlDriver
         $this->setQuery(
             "IF NOT EXISTS (SELECT 1 FROM sys.fulltext_catalogs "
             . "WHERE name = " . $this->quote($catalog) . ") "
-            . "CREATE FULLTEXT CATALOG " . $this->quoteName($catalog)
+            . "CREATE FULLTEXT CATALOG " . $this->quoteName($catalog),
         );
         $this->execute();
 
@@ -2123,7 +2123,7 @@ class SqlsrvDriver extends BaseSqlDriver
         $this->setQuery(
             "SELECT TOP 1 i.name FROM sys.indexes i "
             . "WHERE i.object_id = OBJECT_ID(" . $this->quote($table) . ") "
-            . "AND i.is_unique = 1 ORDER BY i.is_primary_key DESC"
+            . "AND i.is_unique = 1 ORDER BY i.is_primary_key DESC",
         );
         $keyIndex = $this->loadResult();
 
@@ -2134,12 +2134,12 @@ class SqlsrvDriver extends BaseSqlDriver
         // 3. Create the fulltext index.
         $colList = implode(', ', array_map(
             fn($c) => $this->quoteName($c),
-            $columns
+            $columns,
         ));
         $this->setQuery(
             "CREATE FULLTEXT INDEX ON $qt ($colList) "
             . "KEY INDEX " . $this->quoteName($keyIndex)
-            . " ON " . $this->quoteName($catalog)
+            . " ON " . $this->quoteName($catalog),
         );
         $this->execute();
 
@@ -2170,14 +2170,14 @@ class SqlsrvDriver extends BaseSqlDriver
         // Get the primary key constraint name
         $this->setQuery(
             "SELECT name FROM sys.key_constraints " .
-            "WHERE type = 'PK' AND parent_object_id = OBJECT_ID(" . $this->quote($table) . ")"
+            "WHERE type = 'PK' AND parent_object_id = OBJECT_ID(" . $this->quote($table) . ")",
         );
         $pkName = $this->loadResult();
 
         if ($pkName) {
             $this->setQuery(
                 "ALTER TABLE " . $this->quoteName($table)
-                . " DROP CONSTRAINT " . $this->quoteName($pkName)
+                . " DROP CONSTRAINT " . $this->quoteName($pkName),
             );
             $this->execute();
         }
@@ -2205,7 +2205,7 @@ class SqlsrvDriver extends BaseSqlDriver
                 $colType = $this->buildFullColumnType($tableColumns[$col]);
                 $this->setQuery(
                     "ALTER TABLE $qt ALTER COLUMN "
-                    . $this->quoteName($col) . " $colType NOT NULL"
+                    . $this->quoteName($col) . " $colType NOT NULL",
                 );
                 $this->execute();
             }
@@ -2231,7 +2231,7 @@ class SqlsrvDriver extends BaseSqlDriver
         string $table,
         string $column = 'id',
         bool $first = false,
-        bool $useBigInt = true
+        bool $useBigInt = true,
     ): bool {
         $table = $this->replacePrefix($table);
 
@@ -2250,7 +2250,7 @@ class SqlsrvDriver extends BaseSqlDriver
         $this->setQuery(
             "ALTER TABLE " . $this->quoteName($table)
             . " ADD " . $this->quoteName($column)
-            . " $type IDENTITY(1,1) PRIMARY KEY"
+            . " $type IDENTITY(1,1) PRIMARY KEY",
         );
         $this->execute();
 
@@ -2584,7 +2584,7 @@ class SqlsrvDriver extends BaseSqlDriver
         foreach ($results as $row) {
             $constraints[] = (object) [
                 'name' => $row->name,
-                'expression' => $row->expression
+                'expression' => $row->expression,
             ];
         }
 

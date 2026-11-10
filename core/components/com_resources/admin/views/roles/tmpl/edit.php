@@ -96,7 +96,7 @@ $this->js();
                                     if (
                                         in_array(
                                             $type->id,
-                                            $types
+                                            $types,
                                         )
                                     ) {
                                         echo ' checked="checked"';

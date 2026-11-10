@@ -27,7 +27,7 @@ defined('_HZEXEC_') or die();
                     . '&task=edit&alias='
                     . $this->model->get('alias')
                     . '&active='
-                    . strtolower($section)
+                    . strtolower($section),
                 );
                 ?>
                 <a href="<?php echo $routeUrl; ?>">
@@ -46,7 +46,7 @@ defined('_HZEXEC_') or die();
                     . '&task=edit&alias='
                     . $this->model->get('alias')
                     . '&active='
-                    . strtolower($section)
+                    . strtolower($section),
                 );
                 ?>
                 <a href="<?php echo $routeUrl2; ?>">

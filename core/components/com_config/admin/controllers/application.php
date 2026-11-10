@@ -97,7 +97,7 @@ class Application extends AdminController
         if (!User::authorise('core.admin')) {
             App::redirect(
                 Route::url('index.php', false),
-                Lang::txt('JERROR_ALERTNOAUTHOR')
+                Lang::txt('JERROR_ALERTNOAUTHOR'),
             );
             return;
         }
@@ -129,7 +129,7 @@ class Application extends AdminController
 
             // Redirect back to the edit screen.
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&view=application', false)
+                Route::url('index.php?option=' . $this->_option . '&view=application', false),
             );
             return false;
         }
@@ -158,7 +158,7 @@ class Application extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&view=application', false),
                 Lang::txt('JERROR_SAVE_FAILED', $model->getError()),
-                'error'
+                'error',
             );
             return false;
         }
@@ -193,7 +193,7 @@ class Application extends AdminController
         if (!User::authorise('core.admin', $this->_option)) {
             App::redirect(
                 Route::url('index.php', false),
-                Lang::txt('JERROR_ALERTNOAUTHOR')
+                Lang::txt('JERROR_ALERTNOAUTHOR'),
             );
             return;
         }
@@ -264,7 +264,7 @@ class Application extends AdminController
         if (!User::authorise('core.admin')) {
             App::redirect(
                 Route::url('index.php', false),
-                Lang::txt('JERROR_ALERTNOAUTHOR')
+                Lang::txt('JERROR_ALERTNOAUTHOR'),
             );
             return;
         }
@@ -285,7 +285,7 @@ class Application extends AdminController
 
         // Set the redirect based on the task.
         App::redirect(
-            Route::url('index.php', false)
+            Route::url('index.php', false),
         );
     }
 }

@@ -179,7 +179,7 @@ class NamedParametersTest extends AbstractDriverTestCase
         $query->setParameters([
             'id' => 1,
             'name' => 'Test User',
-            'email' => 'test@test.com'
+            'email' => 'test@test.com',
         ]);
 
         $params = $query->getNamedParameters();
@@ -324,7 +324,7 @@ class NamedParametersTest extends AbstractDriverTestCase
             'string_val' => 'test',
             'null_val' => null,
             'bool_true' => true,
-            'bool_false' => false
+            'bool_false' => false,
         ]);
 
         $params = $query->getNamedParameters();
@@ -351,7 +351,7 @@ class NamedParametersTest extends AbstractDriverTestCase
               ->from('np_users')
               ->whereRaw('name = :name AND email = :email', [
                   'name' => 'Test User',
-                  'email' => 'test@test.com'
+                  'email' => 'test@test.com',
               ]);
 
         $bindings = $query->getBindings();
@@ -381,7 +381,7 @@ class NamedParametersTest extends AbstractDriverTestCase
               ->from('np_users')
               ->whereRaw('name = :name AND email = :email', [
                   'name' => 'Test User',
-                  'email' => 'test@test.com'
+                  'email' => 'test@test.com',
               ])
               ->fetch('rows');
 

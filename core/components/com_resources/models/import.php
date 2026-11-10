@@ -50,7 +50,7 @@ class Import extends Relational
      * @var  array
      */
     protected $rules = [
-        'name' => 'notempty'
+        'name' => 'notempty',
     ];
 
     /**
@@ -60,7 +60,7 @@ class Import extends Relational
      */
     public $initiate = [
         'created_at',
-        'created_by'
+        'created_by',
     ];
 
     /**
@@ -197,7 +197,7 @@ class Import extends Relational
                 'count'     => $this->get('count'),
                 'ran_by'    => User::get('id'),
                 'ran_at'    => Date::toSql(),
-                'dry_run'   => $dryRun
+                'dry_run'   => $dryRun,
             ]);
         $importRun->save();
     }

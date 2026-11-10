@@ -93,7 +93,7 @@ class Test extends Scaffolding
     {
         $this->output
             ->addOverview(
-                'Scaffolding for PHPUnit tests'
+                'Scaffolding for PHPUnit tests',
             );
     }
 }

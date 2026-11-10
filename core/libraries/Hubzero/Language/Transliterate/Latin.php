@@ -132,7 +132,7 @@ class Latin
                     'æ' => 'ae',
                     'µ' => 'u',
                     'ĕ' => 'e',
-                    'œ' => 'oe'
+                    'œ' => 'oe',
                 ];
             }
 
@@ -244,7 +244,7 @@ class Latin
                     'Ð' => 'Dh',
                     'Æ' => 'Ae',
                     'Ĕ' => 'E',
-                    'Œ' => 'Oe'
+                    'Œ' => 'Oe',
                 ];
             }
             $string = str_replace(array_keys($upper), array_values($upper), $string);

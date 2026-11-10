@@ -61,7 +61,7 @@ class Sanitize
         return trim(preg_replace(
             '/\s{2,}/u',
             ' ',
-            preg_replace('/[\n\r\t]+/', ' ', $str == null ? '' : $str)
+            preg_replace('/[\n\r\t]+/', ' ', $str == null ? '' : $str),
         ));
     }
 
@@ -76,7 +76,7 @@ class Sanitize
         $preg = [
             '/(<a[^>]*>)(<img[^>]+alt=")([^"]*)("[^>]*>)(<\/a>)/i' => '$1$3$5<br />',
             '/(<img[^>]+alt=")([^"]*)("[^>]*>)/i' => '$2<br />',
-            '/<img[^>]*>/i' => ''
+            '/<img[^>]*>/i' => '',
         ];
 
         return preg_replace(array_keys($preg), array_values($preg), $str);
@@ -122,9 +122,9 @@ class Sanitize
         return self::stripScripts(
             self::stripImages(
                 self::stripTags(
-                    self::stripWhitespace($str)
-                )
-            )
+                    self::stripWhitespace($str),
+                ),
+            ),
         );
     }
 
@@ -180,7 +180,7 @@ class Sanitize
         $string = str_replace(
             ['&amp;',     '&lt;',     '&gt;'],
             ['&amp;amp;', '&amp;lt;', '&amp;gt;'],
-            $string
+            $string,
         );
         // Fix &entitiy\n;
 
@@ -223,7 +223,7 @@ class Sanitize
             'layer',
             'bgsound',
             'title',
-            'base'
+            'base',
         );
 
         return $string;
@@ -273,7 +273,7 @@ class Sanitize
             "\x91" => '\'',
             "\x92" => '\'',
             "\x93" => '"',
-            "\x94" => '"'
+            "\x94" => '"',
         ];
         if (!$quotesOnly) {
             $x = $y + $x;
@@ -374,7 +374,7 @@ class Sanitize
             'allowedChildren' => 'Flow',
             'attributeCollection' => 'Common',
             'attributes' => [],
-            'excludes' => []
+            'excludes' => [],
         ];
 
         $mapElement = [
@@ -387,7 +387,7 @@ class Sanitize
                 'id'    => 'ID',
                 'title' => 'CDATA',
             ],
-            'excludes' => ['map' => true]
+            'excludes' => ['map' => true],
         ];
 
         $areaElement = [
@@ -405,9 +405,9 @@ class Sanitize
                 'href'      => 'URI',
                 'shape'     => new \HTMLPurifier_AttrDef_Enum(['rect','circle','poly','default']),
                 'tabindex'  => 'Number',
-                'target'    => new \HTMLPurifier_AttrDef_Enum(['_blank','_self','_target','_top'])
+                'target'    => new \HTMLPurifier_AttrDef_Enum(['_blank','_self','_target','_top']),
             ],
-            'excludes' => ['area' => true]
+            'excludes' => ['area' => true],
         ];
 
         // Video is phrasing content, so it is declared Inline: as a block it
@@ -435,7 +435,7 @@ class Sanitize
                 'disablepictureinpicture' => 'Bool#disablepictureinpicture',
                 'disableremoteplayback'   => 'Bool#disableremoteplayback',
             ],
-            'excludes' => []
+            'excludes' => [],
         ];
 
         $sourceElement = [
@@ -448,7 +448,7 @@ class Sanitize
                 'type'   => 'Text',
                 'media'  => 'Text',
             ],
-            'excludes' => []
+            'excludes' => [],
         ];
 
         // Captions and subtitles. Without it the purifier removed them, and
@@ -465,7 +465,7 @@ class Sanitize
                 'label'   => 'Text',
                 'default' => 'Bool#default',
             ],
-            'excludes' => []
+            'excludes' => [],
         ];
 
         $elementSettings = [$styleElement, $mapElement, $areaElement, $videoElement, $sourceElement, $trackElement];
@@ -476,7 +476,7 @@ class Sanitize
                 $settings['contentSet'],
                 $settings['allowedChildren'],
                 $settings['attributeCollection'],
-                $settings['attributes']
+                $settings['attributes'],
             );
 
             $element->excludes = $settings['excludes'];
@@ -638,7 +638,7 @@ class Sanitize
                 }
                 return $str;
             },
-            $source
+            $source,
         );
 
         // Convert hex
@@ -651,7 +651,7 @@ class Sanitize
                 }
                 return $str;
             },
-            $source
+            $source,
         );
 
         return $source;
@@ -701,7 +701,7 @@ class Sanitize
                 ' ',
                 '',
             ],
-            $source
+            $source,
         );
     }
 }

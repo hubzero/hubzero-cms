@@ -79,7 +79,7 @@ $panels = [
     'license'   => $typeParams->get('show_license', 2),
     'notes'     => $typeParams->get('show_notes', 1),
     'metadata'  => $typeParams->get('show_metadata', 1),
-    'submitter' => $typeParams->get('show_submitter', 0)
+    'submitter' => $typeParams->get('show_submitter', 0),
 ];
 
 ?>

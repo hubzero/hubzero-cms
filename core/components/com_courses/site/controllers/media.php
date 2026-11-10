@@ -77,7 +77,7 @@ class Media extends SiteController
                 'farthest_position_timestamp' => Date::toSql(),
                 'completed'                   => 0,
                 'total_views'                 => 1,
-                'total_viewing_time'          => 0
+                'total_viewing_time'          => 0,
             ]);
         } else {
             // Get the amount of video watched from last tracking event
@@ -128,7 +128,7 @@ class Media extends SiteController
                 'farthest_position'           => $time,
                 'current_position_timestamp'  => Date::toSql(),
                 'farthest_position_timestamp' => Date::toSql(),
-                'completed'                   => 0
+                'completed'                   => 0,
             ]);
         } else {
             // Set the new current position
@@ -431,7 +431,7 @@ class Media extends SiteController
             'id'        => $listdir,
             'size'      => \Hubzero\Utility\Number::formatBytes($this_size),
             'width'     => $width,
-            'height'    => $height
+            'height'    => $height,
         ]);
     }
 
@@ -589,7 +589,7 @@ class Media extends SiteController
         // There is no media layout for this controller; send the user back to
         // the course page (or the course list) carrying whatever was notified.
         App::redirect(
-            \Route::url('index.php?option=' . $this->_option . ($course->exists() ? '&gid=' . $course->get('alias') : ''), false)
+            \Route::url('index.php?option=' . $this->_option . ($course->exists() ? '&gid=' . $course->get('alias') : ''), false),
         );
     }
 

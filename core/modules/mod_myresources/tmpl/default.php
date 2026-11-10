@@ -76,7 +76,7 @@ if (!$this->no_html) {
                                 <?php
                                 echo \Hubzero\Utility\Str::truncate(
                                     stripslashes($this->contributions[$i]->title),
-                                    40
+                                    40,
                                 );
                                 ?>
                             </a>

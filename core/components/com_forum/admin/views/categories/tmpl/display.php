@@ -138,7 +138,7 @@ $access_levels = $db->loadAssocList();
                         Html::access('assetgroups'),
                         'value',
                         'text',
-                        $this->filters['access']
+                        $this->filters['access'],
                     ); ?>
                 </select>
             </div>
@@ -262,7 +262,7 @@ $access_levels = $db->loadAssocList();
                             <?php
                             $editUrl = Route::url(
                                 'index.php?option=' . $this->option . '&controller='
-                                . $this->controller . '&task=edit&id=' . $row->id
+                                . $this->controller . '&task=edit&id=' . $row->id,
                             );
                             ?>
                             <a href="<?php echo $editUrl; ?>">
@@ -280,7 +280,7 @@ $access_levels = $db->loadAssocList();
                             $stateUrl = Route::url(
                                 'index.php?option=' . $this->option . '&controller=' . $this->controller
                                 . '&section_id=' . $this->filters['section_id'] . '&task=' . $task
-                                . '&id=' . $row->id . '&' . Session::getFormToken() . '=1'
+                                . '&id=' . $row->id . '&' . Session::getFormToken() . '=1',
                             );
                             $stateTitle = Lang::txt('COM_FORUM_SET_TO', $task);
                             ?>
@@ -314,7 +314,7 @@ $access_levels = $db->loadAssocList();
                         <?php if ($row->threads > 0) { ?>
                             <?php
                             $threadsUrl = Route::url(
-                                'index.php?option=' . $this->option . '&controller=threads&category_id=' . $row->id
+                                'index.php?option=' . $this->option . '&controller=threads&category_id=' . $row->id,
                             );
                             ?>
                             <a class="glyph thread"
@@ -332,7 +332,7 @@ $access_levels = $db->loadAssocList();
                         <?php if ($row->posts > 0) { ?>
                             <?php
                             $postsUrl = Route::url(
-                                'index.php?option=' . $this->option . '&controller=threads&category_id=' . $row->id
+                                'index.php?option=' . $this->option . '&controller=threads&category_id=' . $row->id,
                             );
                             ?>
                             <a class="glyph comment"

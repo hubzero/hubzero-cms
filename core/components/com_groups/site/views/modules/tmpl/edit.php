@@ -92,7 +92,7 @@ foreach ($menus as $menu) {
                                 'fileBrowserBrowseUrl'        => Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=filebrowser&tmpl=component'),
                                 'fileBrowserImageBrowseUrl'   => Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=filebrowser&tmpl=component'),
                                 'allowPhpTags'                => $allowPhp,
-                                'allowScriptTags'             => $allowScripts
+                                'allowScriptTags'             => $allowScripts,
                             ];
 
                             // if super group add to templates

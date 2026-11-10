@@ -38,7 +38,7 @@ class Forum extends Plugin
     {
         $dbh = App::get('db');
         $dbh->setQuery(
-            'SELECT DISTINCT gidNumber FROM `#__xgroups_members` WHERE uidNumber=' . $uid
+            'SELECT DISTINCT gidNumber FROM `#__xgroups_members` WHERE uidNumber=' . $uid,
         );
         return $dbh->loadColumn();
     }
@@ -60,7 +60,7 @@ class Forum extends Plugin
             'title'   => Lang::txt('PLG_TAGS_FORUM'),
             'total'   => 0,
             'results' => null,
-            'sql'     => ''
+            'sql'     => '',
         ];
 
         $database = App::get('db');
@@ -163,7 +163,7 @@ class Forum extends Plugin
         $view = new \Hubzero\Plugin\View([
             'folder'  => 'tags',
             'element' => 'forum',
-            'name'    => 'result'
+            'name'    => 'result',
         ]);
         $view->post = \Components\Forum\Models\Post::blank()->set([
             'id'         => $row->id,
@@ -178,7 +178,7 @@ class Forum extends Plugin
             'thread'     => $row->thread,
             'parent'     => $row->parent,
             'section'    => $row->data2,
-            'category'   => $row->data1
+            'category'   => $row->data1,
         ]);
 
         return $view->loadTemplate();

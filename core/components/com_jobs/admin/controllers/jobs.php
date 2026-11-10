@@ -43,37 +43,37 @@ class Jobs extends AdminController
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limitstart',
                 'limitstart',
                 0,
-                'int'
+                'int',
             ),
             // Get sorting variables
             'sortby' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortby',
                 'filter_order',
-                'added'
+                'added',
             ),
             'sortdir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'DESC'
+                'DESC',
             ),
             // Filters
             'category' => Request::getState(
                 $this->_option . '.' . $this->_controller . 'category',
                 'category',
-                'all'
+                'all',
             ),
             'filterby' => '',
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . 'search',
                 'search',
-                ''
-            ))
+                '',
+            )),
         ];
 
         // Get data
@@ -138,7 +138,7 @@ class Jobs extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                 Lang::txt('COM_JOBS_ERROR_MISSING_JOB'),
-                'error'
+                'error',
             );
             return;
         }
@@ -151,7 +151,7 @@ class Jobs extends AdminController
                 App::redirect(
                     Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                     Lang::txt('COM_JOBS_ERROR_MISSING_EMPLOYER_INFO'),
-                    'error'
+                    'error',
                 );
                 return;
             }
@@ -222,7 +222,7 @@ class Jobs extends AdminController
                 App::redirect(
                     Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                     Lang::txt('COM_JOBS_ERROR_MISSING_JOB'),
-                    'error'
+                    'error',
                 );
                 return;
             }
@@ -292,7 +292,7 @@ class Jobs extends AdminController
             // E-mail "from" info
             $from = [
                 'email' => Config::get('mailfrom'),
-                'name'  => Config::get('sitename') . ' ' . Lang::txt('COM_JOBS_JOBS')
+                'name'  => Config::get('sitename') . ' ' . Lang::txt('COM_JOBS_JOBS'),
             ];
 
             $base = rtrim(Request::base(), '/');
@@ -319,7 +319,7 @@ class Jobs extends AdminController
                 $emailbody,
                 $from,
                 [$job->addedBy],
-                $this->_option
+                $this->_option,
             ];
             if (!Event::trigger('xmessage.onSendMessage', $messageParams)) {
                 Notify::error(Lang::txt('COM_JOBS_ERROR_FAILED_TO_MESSAGE_USERS'));
@@ -329,7 +329,7 @@ class Jobs extends AdminController
         // Redirect
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-            Lang::txt('COM_JOBS_ITEM_SAVED') . ($statusmsg ? ' ' . $statusmsg : '')
+            Lang::txt('COM_JOBS_ITEM_SAVED') . ($statusmsg ? ' ' . $statusmsg : ''),
         );
     }
 
@@ -377,7 +377,7 @@ class Jobs extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                 Lang::txt('COM_JOBS_ERROR_NO_ITEM_SELECTED'),
-                'error'
+                'error',
             );
             return;
         }
@@ -392,7 +392,7 @@ class Jobs extends AdminController
         // Redirect
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-            Lang::txt('COM_JOBS_ITEMS_REMOVED', count($ids))
+            Lang::txt('COM_JOBS_ITEMS_REMOVED', count($ids)),
         );
     }
 }

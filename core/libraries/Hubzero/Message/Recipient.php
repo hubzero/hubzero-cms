@@ -54,7 +54,7 @@ class Recipient extends Relational
      * @var  array
      */
     protected $rules = [
-        'mid' => 'positive|nonzero'
+        'mid' => 'positive|nonzero',
     ];
 
     /**

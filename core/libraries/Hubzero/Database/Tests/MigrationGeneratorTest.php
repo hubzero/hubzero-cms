@@ -42,7 +42,7 @@ class MigrationGeneratorTest extends AbstractDriverTestCase
         string $name,
         array $columns,
         array $indexes = [],
-        array $foreignKeys = []
+        array $foreignKeys = [],
     ): TableInfo {
         $colDefs = [];
         foreach ($columns as $colName => $colDef) {
@@ -162,7 +162,7 @@ class MigrationGeneratorTest extends AbstractDriverTestCase
             "\$this->db->setQuery('SELECT 1')->execute();",
             "\$this->db->setQuery('SELECT 0')->execute();",
             'Core',
-            'Strict explicit body'
+            'Strict explicit body',
         );
 
         $this->assertStringContainsString("\$this->db->setQuery('SELECT 1')->execute();", $content);
@@ -186,7 +186,7 @@ class MigrationGeneratorTest extends AbstractDriverTestCase
             '// TODO: Implement migration',
             '// TODO: Implement rollback',
             'Core',
-            'Strict placeholder rejection'
+            'Strict placeholder rejection',
         );
     }
 

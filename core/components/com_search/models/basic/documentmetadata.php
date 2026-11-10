@@ -80,7 +80,7 @@ abstract class DocumentMetadata
         'while' => 1, 'who' => 1, 'whole' => 1, 'whose' => 1, 'why' => 1, 'will' => 1, 'with' => 1,
         'within' => 1, 'without' => 1, 'work' => 1, 'worked' => 1, 'working' => 1, 'works' => 1,
         'would' => 1, 'x' => 1, 'y' => 1, 'year' => 1, 'years' => 1, 'yet' => 1, 'you' => 1,
-        'young' => 1, 'younger' => 1, 'youngest' => 1, 'your' => 1, 'yours' => 1, 'z' => 1
+        'young' => 1, 'younger' => 1, 'youngest' => 1, 'your' => 1, 'yours' => 1, 'z' => 1,
     ];
 
     /**

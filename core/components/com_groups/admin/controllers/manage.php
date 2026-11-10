@@ -67,41 +67,41 @@ class Manage extends AdminController
             'type'       => [Request::getState(
                 $this->_option . '.browse.type',
                 'type',
-                'all'
+                'all',
             )],
             'search'     => urldecode(Request::getState(
                 $this->_option . '.browse.search',
                 'search',
-                ''
+                '',
             )),
             'discoverability' => Request::getState(
                 $this->_option . '.browse.discoverability',
                 'discoverability',
-                ''
+                '',
             ),
             'policy'     => Request::getState(
                 $this->_option . '.browse.policy',
                 'policy',
-                ''
+                '',
             ),
             'state'     => Request::getState(
                 $this->_option . '.browse.state',
                 'state',
-                -1
+                -1,
             ),
             'sort'       => Request::getState(
                 $this->_option . '.browse.sort',
                 'filter_order',
-                'cn'
+                'cn',
             ),
             'sort_Dir'   => Request::getState(
                 $this->_option . '.browse.sortdir',
                 'filter_order_Dir',
-                'ASC'
+                'ASC',
             ),
             'approved'   => Request::getString('approved'),
             //'published'  => Request::getInt('published', 1),
-            'created'    => Request::getString('created', '')
+            'created'    => Request::getString('created', ''),
         ];
         $this->view->filters['sortby'] = $this->view->filters['sort'] . ' ' . $this->view->filters['sort_Dir'];
 
@@ -116,7 +116,7 @@ class Manage extends AdminController
                     //0,  No system groups
                     1,  // hub
                     2,  // project
-                    3   // super
+                    3,   // super
                 ];
             }
         }
@@ -133,13 +133,13 @@ class Manage extends AdminController
             $this->_option . '.browse.limit',
             'limit',
             Config::get('list_limit'),
-            'int'
+            'int',
         );
         $this->view->filters['start']  = Request::getState(
             $this->_option . '.browse.limitstart',
             'limitstart',
             0,
-            'int'
+            'int',
         );
         // In case limit has been changed, adjust limitstart accordingly
         $this->view->filters['start']  = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
@@ -398,7 +398,7 @@ class Manage extends AdminController
                 'title'     => 'Overview',
                 'state'     => 1,
                 'privacy'   => 'default',
-                'home'      => 1
+                'home'      => 1,
             ]);
             $page->store(false);
 
@@ -409,7 +409,7 @@ class Manage extends AdminController
                 'content'    => "<!-- {FORMAT:HTML} -->\n<p>[[Group.DefaultHomePage()]]</p>",
                 'created'    => Date::of('now')->toSql(),
                 'created_by' => User::get('id'),
-                'approved'   => 1
+                'approved'   => 1,
             ]);
             $version->store(false);
         }
@@ -421,7 +421,7 @@ class Manage extends AdminController
         Log::log([
             'gidNumber' => $group->get('gidNumber'),
             'action'    => 'group_edited',
-            'comments'  => 'edited by administrator'
+            'comments'  => 'edited by administrator',
         ]);
 
         // handle special groups
@@ -437,7 +437,7 @@ class Manage extends AdminController
 
         if ($this->getTask() == 'apply') {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $group->get('gidNumber'), false)
+                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $group->get('gidNumber'), false),
             );
             return;
         }
@@ -566,7 +566,7 @@ class Manage extends AdminController
         Log::log([
             'gidNumber' => $group->get('gidNumber'),
             'action'    => 'super_group_created',
-            'comments'  => ''
+            'comments'  => '',
         ]);
     }
 
@@ -604,7 +604,7 @@ class Manage extends AdminController
         } elseif (empty($gitLabGroup)) {
             $gitLabGroup = $client->createGroup([
                 'name' => $groupName,
-                'path' => $groupName
+                'path' => $groupName,
             ]);
             // Possible error check here
         } elseif (count($gitLabGroup) > 1) {  // If search returns more than one match, return with error.
@@ -692,7 +692,7 @@ class Manage extends AdminController
         // allows only admins to accept Merge Requests
         $protected = $client->protectBranch([
             'id'     => $gitLabProject['id'],
-            'branch' => 'master'
+            'branch' => 'master',
         ]);
         if (array_key_exists('message', $protected)) {
             Notify::error("Error on branch protection: " . $protected['message']);
@@ -906,7 +906,7 @@ class Manage extends AdminController
             if (!$group->isSuperGroup()) {
                 $failed[] = [
                     'group'   => $group->get('cn'),
-                    'message' => Lang::txt('COM_GROUPS_GITLAB_NOT_SUPER_GROUP')
+                    'message' => Lang::txt('COM_GROUPS_GITLAB_NOT_SUPER_GROUP'),
                 ];
                 continue;
             }
@@ -919,7 +919,7 @@ class Manage extends AdminController
                 if (!Filesystem::makeDirectory($uploadPath)) {
                     $failed[] = [
                         'group'   => $group->get('cn'),
-                        'message' => Lang::txt('COM_GROUPS_GITLAB_UPLOAD_PATH_DOESNT_EXIST')
+                        'message' => Lang::txt('COM_GROUPS_GITLAB_UPLOAD_PATH_DOESNT_EXIST'),
                     ];
                     continue;
                 }
@@ -960,13 +960,13 @@ class Manage extends AdminController
                 // add success message
                 $success[] = [
                     'group'   => $group->get('cn'),
-                    'message' => $output
+                    'message' => $output,
                 ];
             } else {
                 // add failed message
                 $failed[] = [
                     'group'   => $group->get('cn'),
-                    'message' => $output
+                    'message' => $output,
                 ];
             }
         }
@@ -1060,7 +1060,7 @@ class Manage extends AdminController
                 Log::log([
                     'gidNumber' => $group->get('gidNumber'),
                     'action'    => 'group_deleted',
-                    'comments'  => $log
+                    'comments'  => $log,
                 ]);
             }
 
@@ -1142,7 +1142,7 @@ class Manage extends AdminController
                 Log::log([
                     'gidNumber' => $group->get('gidNumber'),
                     'action'    => 'group_' . $action,
-                    'comments'  => $action . ' by administrator'
+                    'comments'  => $action . ' by administrator',
                 ]);
 
                 // Get plugins
@@ -1210,7 +1210,7 @@ class Manage extends AdminController
                 Log::log([
                     'gidNumber' => $group->get('gidNumber'),
                     'action'    => 'group_approved',
-                    'comments'  => 'approved by administrator'
+                    'comments'  => 'approved by administrator',
                 ]);
 
                 $i++;
@@ -1275,7 +1275,7 @@ class Manage extends AdminController
                 Log::log([
                     'gidNumber' => $group->get('gidNumber'),
                     'action'    => 'group_unapproved',
-                    'comments'  => 'unapproved by administrator'
+                    'comments'  => 'unapproved by administrator',
                 ]);
 
                 $i++;

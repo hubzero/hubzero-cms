@@ -22,7 +22,7 @@ defined('_HZEXEC_') or die();
             <?php
             $forkUrl = Route::url(
                 'index.php?option=com_publications&task=fork&version='
-                . $this->publication->version_id
+                . $this->publication->version_id,
             );
             ?>
             <p><a class="btn btn-success"
@@ -50,7 +50,7 @@ defined('_HZEXEC_') or die();
                             $projectForkUrl = Route::url(
                                 'index.php?option=com_publications&task=fork&version='
                                 . $this->publication->version_id
-                                . '&project=' . $project->get('id')
+                                . '&project=' . $project->get('id'),
                             );
                             ?>
                             <a class="btn btn-success icon-plus"

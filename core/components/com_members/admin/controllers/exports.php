@@ -37,7 +37,7 @@ class Exports extends AdminController
             App::redirect(
                 Route::url('index.php?option=com_members', false),
                 Lang::txt('Not authorized'),
-                'warning'
+                'warning',
             );
         }
 
@@ -134,7 +134,7 @@ class Exports extends AdminController
             'access'       => Request::getInt('access', 0),
             'approved'     => Request::getString('approved', '*'),
             'group_id'     => Request::getInt('group_id', 0),
-            'range'        => Request::getString('range', '')
+            'range'        => Request::getString('range', ''),
         ];
 
         $a = $members->getTableName();

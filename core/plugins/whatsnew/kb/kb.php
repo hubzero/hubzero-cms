@@ -36,7 +36,7 @@ class Kb extends Plugin
     public function onWhatsnewAreas()
     {
         return [
-            'kb' => Lang::txt('PLG_WHATSNEW_KB')
+            'kb' => Lang::txt('PLG_WHATSNEW_KB'),
         ];
     }
 

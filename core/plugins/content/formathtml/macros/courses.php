@@ -72,7 +72,7 @@ class Courses extends Macro
             'tag'      => $this->getArg('tag', ''),
             'limit'    => $this->getArg('limit', 5),
             'sort'     => 'title',
-            'sort_Dir' => 'ASC'
+            'sort_Dir' => 'ASC',
         ];
 
         // make sure to replace group cname with group id

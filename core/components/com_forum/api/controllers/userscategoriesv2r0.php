@@ -59,7 +59,7 @@ class UsersCategoriesv2r0 extends ApiController
 
         $result = [
             'records' => $arrayCategories,
-            'errors' => $errors
+            'errors' => $errors,
         ];
 
         $result['status'] = empty($errors) ? 'success' : 'error';
@@ -81,7 +81,7 @@ class UsersCategoriesv2r0 extends ApiController
             $usersCategory = UsersCategory::blank();
             $usersCategory->set([
                 'category_id' => $categoryId,
-                'user_id' => $currentUserId
+                'user_id' => $currentUserId,
             ]);
             return $usersCategory;
         }, $categoriesIds);
@@ -150,7 +150,7 @@ class UsersCategoriesv2r0 extends ApiController
 
         $result = [
             'records' => $arrayCategories,
-            'errors' => $errors
+            'errors' => $errors,
         ];
 
         $result['status'] = empty($errors) ? 'success' : 'error';

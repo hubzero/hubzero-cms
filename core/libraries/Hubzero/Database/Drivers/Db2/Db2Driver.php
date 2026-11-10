@@ -445,7 +445,7 @@ class Db2Driver extends BaseSqlDriver
         $this->setQuery(
             "SELECT COLLATION_SCHEMA || '.' || COLLATION_NAME"
             . " FROM SYSIBM.COLLATIONS"
-            . " WHERE COLLATION_NAME = (SELECT CURRENT COLLATION FROM SYSIBM.SYSDUMMY1)"
+            . " WHERE COLLATION_NAME = (SELECT CURRENT COLLATION FROM SYSIBM.SYSDUMMY1)",
         );
         try {
             $result = $this->loadResult();
@@ -572,7 +572,7 @@ class Db2Driver extends BaseSqlDriver
                     'Comment' => '',
                     'Field'   => $colname,
                     'Type'    => strtolower($field->data_type_full),
-                    'Null'    => $field->nulls === 'Y' ? 'YES' : 'NO'
+                    'Null'    => $field->nulls === 'Y' ? 'YES' : 'NO',
                 ];
             }
         }
@@ -703,7 +703,7 @@ class Db2Driver extends BaseSqlDriver
         $this->setQuery(
             "SELECT tabname FROM syscat.tables"
             . " WHERE tabschema = CURRENT SCHEMA AND type = 'T'"
-            . " ORDER BY tabname"
+            . " ORDER BY tabname",
         );
         $tables = $this->loadColumn();
         // Normalize to lowercase for consistency with other drivers
@@ -847,7 +847,7 @@ class Db2Driver extends BaseSqlDriver
             // This is the most reliable way to get the next auto-increment value
             $this->setQuery(
                 "SELECT MAX(" . $this->quoteName($identityCol) . ") " .
-                "FROM " . $this->quoteName($table)
+                "FROM " . $this->quoteName($table),
             );
 
             try {
@@ -872,7 +872,7 @@ class Db2Driver extends BaseSqlDriver
         foreach ($seqNames as $seqName) {
             $this->setQuery(
                 "SELECT NEXTCACHEFIRSTVALUE FROM syscat.sequences"
-                . " WHERE seqname = " . $this->quote($seqName)
+                . " WHERE seqname = " . $this->quote($seqName),
             );
             try {
                 $result = $this->loadResult();
@@ -912,7 +912,7 @@ class Db2Driver extends BaseSqlDriver
             $this->setQuery(
                 'ALTER TABLE ' . $this->quoteName($table)
                 . ' ALTER COLUMN ' . $this->quoteName($identityCol)
-                . ' RESTART WITH ' . $value
+                . ' RESTART WITH ' . $value,
             );
             try {
                 $this->execute();
@@ -1044,7 +1044,7 @@ class Db2Driver extends BaseSqlDriver
         $this->setQuery(
             "SELECT COUNT(*) FROM syscat.views"
             . " WHERE viewname = " . $this->quote($viewName)
-            . " AND viewschema = CURRENT SCHEMA"
+            . " AND viewschema = CURRENT SCHEMA",
         );
 
         return (bool) $this->loadResult();
@@ -1190,7 +1190,7 @@ class Db2Driver extends BaseSqlDriver
         $this->setQuery(
             "SELECT COUNT(*) FROM syscat.sequences"
             . " WHERE seqname = " . $this->quote($seqName)
-            . " AND seqschema = CURRENT SCHEMA"
+            . " AND seqschema = CURRENT SCHEMA",
         );
         return (bool) $this->loadResult();
     }
@@ -1295,7 +1295,7 @@ class Db2Driver extends BaseSqlDriver
             $this->setQuery(
                 'ALTER TABLE ' . $this->quoteName($table)
                 . ' ALTER COLUMN ' . $this->quoteName($identityCol)
-                . ' RESTART WITH ' . $nextId
+                . ' RESTART WITH ' . $nextId,
             );
             $this->execute();
         }
@@ -1772,7 +1772,7 @@ class Db2Driver extends BaseSqlDriver
         string $table,
         string $column,
         string $definition,
-        string $comment
+        string $comment,
     ): string {
         $table = strtoupper($table);
         $column = strtoupper($column);
@@ -1787,7 +1787,7 @@ class Db2Driver extends BaseSqlDriver
         $column = strtoupper($column);
         $this->setQuery(
             'COMMENT ON COLUMN ' . $this->quoteName($table) . '.' . $this->quoteName($column) .
-            ' IS ' . $this->quote($comment)
+            ' IS ' . $this->quote($comment),
         );
         try {
             $this->execute();
@@ -1823,7 +1823,7 @@ class Db2Driver extends BaseSqlDriver
         string $table,
         string $column,
         string $definition,
-        string $comment
+        string $comment,
     ): string {
         $table = strtoupper($table);
         $column = strtoupper($column);
@@ -1847,7 +1847,7 @@ class Db2Driver extends BaseSqlDriver
         string $oldColumn,
         string $newColumn,
         string $definition,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         $table = strtoupper($this->replacePrefix($table));
         $oldColumn = strtoupper($oldColumn);
@@ -1865,7 +1865,7 @@ class Db2Driver extends BaseSqlDriver
         if ($oldColumn !== $newColumn) {
             $this->setQuery(
                 'ALTER TABLE ' . $this->quoteName($table) .
-                ' RENAME COLUMN ' . $this->quoteName($oldColumn) . ' TO ' . $this->quoteName($newColumn)
+                ' RENAME COLUMN ' . $this->quoteName($oldColumn) . ' TO ' . $this->quoteName($newColumn),
             );
             $this->execute();
         }
@@ -1891,7 +1891,7 @@ class Db2Driver extends BaseSqlDriver
         string $column,
         string $definition,
         string $afterColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         return $this->modifyColumn($table, $column, $definition, $comment);
     }
@@ -1913,7 +1913,7 @@ class Db2Driver extends BaseSqlDriver
         string $column,
         string $definition,
         string $beforeColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         return $this->modifyColumn($table, $column, $definition, $comment);
     }
@@ -1951,7 +1951,7 @@ class Db2Driver extends BaseSqlDriver
         string $column,
         string $definition,
         string $afterColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         return $this->addColumn($table, $column, $definition, $comment);
     }
@@ -1973,7 +1973,7 @@ class Db2Driver extends BaseSqlDriver
         string $column,
         string $definition,
         string $beforeColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         return $this->addColumn($table, $column, $definition, $comment);
     }
@@ -2089,7 +2089,7 @@ class Db2Driver extends BaseSqlDriver
         $this->setQuery(
             "SELECT constname FROM syscat.tabconst"
             . " WHERE tabname = " . $this->quote($table)
-            . " AND type = 'P' AND tabschema = CURRENT SCHEMA"
+            . " AND type = 'P' AND tabschema = CURRENT SCHEMA",
         );
         $constraintName = $this->loadResult();
 
@@ -2171,7 +2171,7 @@ class Db2Driver extends BaseSqlDriver
         string $table,
         string $column = 'id',
         bool $first = false,
-        bool $useBigInt = true
+        bool $useBigInt = true,
     ): bool {
         $table = strtoupper($this->replacePrefix($table));
         $column = strtoupper($column);
@@ -2365,7 +2365,7 @@ class Db2Driver extends BaseSqlDriver
         $foreignTable,
         $foreignColumns,
         $onUpdate = 'NO ACTION',
-        $onDelete = 'NO ACTION'
+        $onDelete = 'NO ACTION',
     ) {
         $table        = strtoupper($this->replacePrefix($table));
         $foreignTable = strtoupper($this->replacePrefix($foreignTable));
@@ -2403,7 +2403,7 @@ class Db2Driver extends BaseSqlDriver
 
         $this->setQuery(
             'ALTER TABLE ' . $this->quoteName($table)
-            . ' DROP FOREIGN KEY ' . $this->quoteName(strtoupper($constraint))
+            . ' DROP FOREIGN KEY ' . $this->quoteName(strtoupper($constraint)),
         );
 
         try {
@@ -2489,7 +2489,7 @@ class Db2Driver extends BaseSqlDriver
     public function setTableCharset(
         string $table,
         string $charset = 'utf8',
-        string $collation = 'utf8_general_ci'
+        string $collation = 'utf8_general_ci',
     ): bool {
         return true;
     }
@@ -2600,7 +2600,7 @@ class Db2Driver extends BaseSqlDriver
         foreach ($results as $row) {
             $constraints[] = (object) [
                 'name' => trim($row->name),
-                'expression' => trim($row->expression)
+                'expression' => trim($row->expression),
             ];
         }
 

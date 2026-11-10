@@ -58,8 +58,8 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                         preg_replace(
                             '/^(<!-- \{FORMAT:.*\} -->)/i',
                             '',
-                            stripslashes($this->row->content)
-                        )
+                            stripslashes($this->row->content),
+                        ),
                     );
                     echo $this->editor(
                         'fields[content]',
@@ -67,7 +67,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                         50,
                         30,
                         'field-content',
-                        ['class' => 'required minimal no-footer', 'buttons' => false]
+                        ['class' => 'required minimal no-footer', 'buttons' => false],
                     );
                     ?>
                 </div>

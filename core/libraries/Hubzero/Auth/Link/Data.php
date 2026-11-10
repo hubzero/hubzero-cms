@@ -55,7 +55,7 @@ class Data extends Relational
      */
     protected $rules = [
         'link_id'    => 'positive|nonzero',
-        'domain_key' => 'notempty'
+        'domain_key' => 'notempty',
     ];
 
     /**
@@ -64,7 +64,7 @@ class Data extends Relational
      * @var  array
      **/
     public $always = [
-        'modified'
+        'modified',
     ];
 
     /**

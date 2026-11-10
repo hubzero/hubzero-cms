@@ -54,7 +54,7 @@ class Migration20260912091500ComResources extends Base
         if ($used) {
             $this->log(
                 'Leaving the Tools (Windows) resource type: ' . $used
-                . ' resources still use it.'
+                . ' resources still use it.',
             );
             return;
         }
@@ -100,7 +100,7 @@ class Migration20260912091500ComResources extends Base
                 'params'        => '{"plg_about":"1","plg_citations":"0","plg_findthistext":"0",'
                     . '"plg_groups":"1","plg_questions":"1","plg_related":"0","plg_reviews":"1",'
                     . '"plg_share":"1","plg_sponsors":"1","plg_supportingdocs":"0","plg_usage":"0",'
-                    . '"plg_versions":"0","plg_wishlist":"1"}'
+                    . '"plg_versions":"0","plg_wishlist":"1"}',
             ])
             ->execute();
     }

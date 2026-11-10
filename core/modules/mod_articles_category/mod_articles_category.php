@@ -97,7 +97,7 @@ class ArticlesCategory extends Module
                             $list,
                             $article_grouping,
                             $article_grouping_direction,
-                            $monthYearFormat
+                            $monthYearFormat,
                         );
                         break;
                     case 'author':
@@ -210,7 +210,7 @@ class ArticlesCategory extends Module
                     $childIds = self::getChildCategoryIds(
                         (int) $catid,
                         User::getAuthorisedViewLevels(),
-                        $levels ?: 0
+                        $levels ?: 0,
                     );
                     $additional_catids = array_merge($childIds, $additional_catids);
                 }
@@ -317,7 +317,7 @@ class ArticlesCategory extends Module
                 $item->link = \Components\Content\Site\Helpers\Route::getArticleRoute(
                     $item->slug,
                     $item->catslug,
-                    $item->language
+                    $item->language,
                 );
             } else {
                 // Angie Fixed Routing
@@ -578,7 +578,7 @@ class ArticlesCategory extends Module
                 (int) $childId,
                 $authorisedLevels,
                 $maxDepth,
-                $currentDepth + 1
+                $currentDepth + 1,
             );
             $allIds = array_merge($allIds, $grandchildIds);
         }

@@ -638,7 +638,7 @@ class DoiService extends Obj
             CURLOPT_USERPWD         => $this->_configs->userPW,
             CURLOPT_POSTFIELDS      => $postvals,
             CURLOPT_RETURNTRANSFER  => true,
-            CURLOPT_HTTPHEADER      => ['Content-Type: text/plain; charset=UTF-8', 'Content-Length: ' . strlen($postvals)]
+            CURLOPT_HTTPHEADER      => ['Content-Type: text/plain; charset=UTF-8', 'Content-Length: ' . strlen($postvals)],
         ];
         curl_setopt_array($ch, $options);
 

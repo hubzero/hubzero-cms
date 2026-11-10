@@ -14,6 +14,6 @@ defined('_HZEXEC_') or die();
 App::redirect(
     Route::url(
         'index.php?option=' . $this->option . '&task=user.logout&return=' . $this->return,
-        false
-    )
+        false,
+    ),
 );

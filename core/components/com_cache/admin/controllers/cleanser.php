@@ -83,7 +83,7 @@ class Cleanser extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&client=' . $this->model->client()->id, false)
+            Route::url('index.php?option=' . $this->_option . '&client=' . $this->model->client()->id, false),
         );
     }
 
@@ -110,7 +110,7 @@ class Cleanser extends AdminController
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&view=purge', false),
             $msg,
-            $msgType
+            $msgType,
         );
     }
 }

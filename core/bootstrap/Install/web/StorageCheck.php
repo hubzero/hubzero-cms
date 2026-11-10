@@ -80,21 +80,21 @@ class StorageCheck
                     'location' => 'Home directory',
                     'path' => $homeDir,
                     'status' => 'rejected',
-                    'reason' => 'Path is under the document root (security risk)'
+                    'reason' => 'Path is under the document root (security risk)',
                 ];
             } elseif ($this->tryCreateDir($homePath)) {
                 return [
                     'available' => true,
                     'path' => $homePath,
                     'tried' => $triedPaths,
-                    'docRoot' => $this->docRoot
+                    'docRoot' => $this->docRoot,
                 ];
             } else {
                 $triedPaths[] = [
                     'location' => 'Home directory',
                     'path' => $homeDir,
                     'status' => 'failed',
-                    'reason' => 'Directory is not writable by the web server'
+                    'reason' => 'Directory is not writable by the web server',
                 ];
             }
         } else {
@@ -102,7 +102,7 @@ class StorageCheck
                 'location' => 'Home directory',
                 'path' => null,
                 'status' => 'unavailable',
-                'reason' => 'Could not determine PHP process owner\'s home directory'
+                'reason' => 'Could not determine PHP process owner\'s home directory',
             ];
         }
 
@@ -115,7 +115,7 @@ class StorageCheck
                     'location' => 'Session path',
                     'path' => $sessionPath,
                     'status' => 'rejected',
-                    'reason' => 'Path is under the document root (security risk)'
+                    'reason' => 'Path is under the document root (security risk)',
                 ];
             } else {
                 $sessionDir = $sessionPath . '/' . self::STORAGE_DIR;
@@ -124,14 +124,14 @@ class StorageCheck
                         'available' => true,
                         'path' => $sessionDir,
                         'tried' => $triedPaths,
-                        'docRoot' => $this->docRoot
+                        'docRoot' => $this->docRoot,
                     ];
                 } else {
                     $triedPaths[] = [
                         'location' => 'Session path',
                         'path' => $sessionPath,
                         'status' => 'failed',
-                        'reason' => 'Directory is not writable by the web server'
+                        'reason' => 'Directory is not writable by the web server',
                     ];
                 }
             }
@@ -142,7 +142,7 @@ class StorageCheck
                 'status' => 'unavailable',
                 'reason' => empty($sessionPath)
                     ? 'PHP session.save_path is not configured'
-                    : 'Path does not exist or is not a directory'
+                    : 'Path does not exist or is not a directory',
             ];
         }
 
@@ -151,7 +151,7 @@ class StorageCheck
             'available' => false,
             'path' => null,
             'tried' => $triedPaths,
-            'docRoot' => $this->docRoot
+            'docRoot' => $this->docRoot,
         ];
     }
 

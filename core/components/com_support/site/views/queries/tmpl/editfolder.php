@@ -32,7 +32,7 @@ if (!$tmpl && !$no_html) {
         <?php
         $formAction = Route::url(
             'index.php?option=' . $this->option
-            . '&controller=' . $this->controller . '&task=savefolder'
+            . '&controller=' . $this->controller . '&task=savefolder',
         );
         ?>
         <form action="<?php echo $formAction; ?>" method="post" id="hubForm">

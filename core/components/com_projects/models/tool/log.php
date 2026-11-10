@@ -107,7 +107,7 @@ class Log extends Model
             $this->get('instance_id'),
             $this->get('parent_name'),
             $this->get('parent_id'),
-            $statusChange
+            $statusChange,
         );
     }
 
@@ -124,7 +124,7 @@ class Log extends Model
             $this->get('parent_name'),
             $this->get('parent_id'),
             $this->get('instance_id'),
-            $filters
+            $filters,
         );
     }
 

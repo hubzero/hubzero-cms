@@ -33,7 +33,7 @@ class Recommendations extends Plugin
     public function &onResourcesSubAreas($resource)
     {
         $areas = [
-            'recommendations' => Lang::txt('PLG_RESOURCES_RECOMMENDATIONS')
+            'recommendations' => Lang::txt('PLG_RESOURCES_RECOMMENDATIONS'),
         ];
         return $areas;
     }
@@ -51,7 +51,7 @@ class Recommendations extends Plugin
         $arr = [
             'area'     => $this->_name,
             'html'     => '',
-            'metadata' => ''
+            'metadata' => '',
         ];
 
         // Get some needed libraries
@@ -59,7 +59,7 @@ class Recommendations extends Plugin
         // Get recommendations
         $r = \Plugins\Resources\Recommendations\Models\Recommendation::find(
             $resource->id,
-            $this->params->get('threshold', '0.21')
+            $this->params->get('threshold', '0.21'),
         );
 
         $results = $r->limit($this->params->get('display_limit', 10))->rows();

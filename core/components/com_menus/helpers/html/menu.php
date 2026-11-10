@@ -44,7 +44,7 @@ class HtmlMenu
             foreach ($items as $item) {
                 $menus[] = [
                     'value' => $item->menutype,
-                    'text'  => $item->title
+                    'text'  => $item->title,
                 ];
             }
             self::$menus = $menus;
@@ -152,8 +152,8 @@ class HtmlMenu
                 'id' => isset($config['id']) ? $config['id'] : 'assetgroups_' . ++$count,
                 'list.attr' => (is_null($attribs) ? 'class="inputbox" size="1"' : $attribs),
                 'list.select' => (int) $selected,
-                'list.translate' => false
-            ]
+                'list.translate' => false,
+            ],
         );
     }
 
@@ -184,8 +184,8 @@ class HtmlMenu
                 'ordering',
                 [
                     'list.attr' => 'class="inputbox" size="1"',
-                    'list.select' => intval($row->ordering)
-                ]
+                    'list.select' => intval($row->ordering),
+                ],
             );
         } else {
             $ordering = '<input type="hidden" name="ordering" value="' . $row->ordering . '" />'

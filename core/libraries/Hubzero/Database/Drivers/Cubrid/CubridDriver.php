@@ -163,7 +163,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
         // Note: Don't use escape() on table names, only quoteName()
         return $this->getTableColumnsFromShowQuery(
             $this->buildShowColumnsQuery($table),
-            (bool) $typeOnly
+            (bool) $typeOnly,
         );
     }
 
@@ -181,7 +181,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
         // CUBRID uses SHOW COLUMNS instead of SHOW FIELDS
         return $this->tableHasFieldFromShowQuery(
             $this->buildShowColumnsQuery($table),
-            (string) $field
+            (string) $field,
         );
     }
 
@@ -197,7 +197,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
     {
         return $this->getPrimaryKeyFromShowColumns(
             $this->getShowColumnsRows($table),
-            'PRI'
+            'PRI',
         );
     }
 
@@ -261,7 +261,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
     public function getIndexes($table)
     {
         return $this->normalizeIndexesFromTableKeys(
-            $this->getTableKeys($table)
+            $this->getTableKeys($table),
         );
     }
 
@@ -308,7 +308,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
         return $this->parseCharacterSetFromCreate(
             $this->getTableCreate($table),
             (string) $table,
-            $field !== null ? (string) $field : null
+            $field !== null ? (string) $field : null,
         );
     }
 
@@ -325,7 +325,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
         return $this->convertToCharsetUsingAlter(
             (string) $table,
             (string) $charset,
-            $collate !== null ? (string) $collate : null
+            $collate !== null ? (string) $collate : null,
         );
     }
 
@@ -547,7 +547,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
         string $table,
         string $column,
         string $definition,
-        string $comment
+        string $comment,
     ): string {
         return 'ALTER TABLE ' . $this->quoteName($table)
             . ' MODIFY COLUMN ' . $this->quoteName($column) . ' ' . $definition;
@@ -568,7 +568,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
         string $column,
         string $definition,
         string $afterColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         $table = $this->replacePrefix($table);
         if (!$this->tableAndFieldExist($table, $column)) {
@@ -578,7 +578,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
         return $this->executeAlterTableStatement(
             $table,
             'MODIFY COLUMN ' . $this->quoteName($column) . ' ' . $definition
-            . ' AFTER ' . $this->quoteName($afterColumn)
+            . ' AFTER ' . $this->quoteName($afterColumn),
         );
     }
 
@@ -597,7 +597,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
         string $column,
         string $definition,
         string $beforeColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         $columns = array_keys($this->getTableColumns($table));
         $beforeIndex = array_search($beforeColumn, $columns);
@@ -629,7 +629,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
 
         return $this->executeAlterTableStatement(
             $table,
-            'MODIFY COLUMN ' . $this->quoteName($column) . ' ' . $definition . ' FIRST'
+            'MODIFY COLUMN ' . $this->quoteName($column) . ' ' . $definition . ' FIRST',
         );
     }
 
@@ -648,7 +648,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
         string $oldColumn,
         string $newColumn,
         string $definition,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         $table = $this->replacePrefix($table);
         if (!$this->tableAndFieldExist($table, $oldColumn)) {
@@ -659,7 +659,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
             $table,
             'CHANGE COLUMN ' . $this->quoteName($oldColumn)
             . ' ' . $this->quoteName($newColumn)
-            . ' ' . $definition
+            . ' ' . $definition,
         );
     }
 
@@ -676,7 +676,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
         string $table,
         string $column,
         string $definition,
-        string $comment
+        string $comment,
     ): string {
         return 'ALTER TABLE ' . $this->quoteName($table)
             . ' ADD COLUMN ' . $this->quoteName($column) . ' ' . $definition;
@@ -697,7 +697,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
         string $column,
         string $definition,
         string $afterColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         $table = $this->replacePrefix($table);
         $precondition = $this->resolveAddColumnPrecondition($table, $column);
@@ -708,7 +708,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
         return $this->executeAlterTableStatement(
             $table,
             'ADD COLUMN ' . $this->quoteName($column) . ' ' . $definition
-            . ' AFTER ' . $this->quoteName($afterColumn)
+            . ' AFTER ' . $this->quoteName($afterColumn),
         );
     }
 
@@ -727,7 +727,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
         string $column,
         string $definition,
         string $beforeColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         $columns = array_keys($this->getTableColumns($table));
         $beforeIndex = array_search($beforeColumn, $columns);
@@ -760,7 +760,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
 
         return $this->executeAlterTableStatement(
             $table,
-            'ADD COLUMN ' . $this->quoteName($column) . ' ' . $definition . ' FIRST'
+            'ADD COLUMN ' . $this->quoteName($column) . ' ' . $definition . ' FIRST',
         );
     }
 
@@ -802,7 +802,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
     public function setTableCharset(
         string $table,
         string $charset = 'utf8',
-        string $collation = 'utf8_general_ci'
+        string $collation = 'utf8_general_ci',
     ): bool {
         return $this->convertToCharset($table, $charset, $collation);
     }
@@ -871,7 +871,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
 
         return $this->executeAlterTableStatement(
             $table,
-            'ADD PRIMARY KEY (' . $columnList . ')'
+            'ADD PRIMARY KEY (' . $columnList . ')',
         );
     }
 
@@ -899,7 +899,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
         $this->setQuery(
             'SELECT ' . $this->quoteName($pk)
             . ' FROM ' . $this->quoteName($table)
-            . ' ORDER BY ' . $order
+            . ' ORDER BY ' . $order,
         );
         $rows = $this->loadColumn();
         if (!is_array($rows)) {
@@ -911,7 +911,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
             $this->setQuery(
                 'UPDATE ' . $this->quoteName($table)
                 . ' SET ' . $this->quoteName($column) . ' = ' . (int) $i
-                . ' WHERE ' . $this->quoteName($pk) . ' = ' . $this->quote($id)
+                . ' WHERE ' . $this->quoteName($pk) . ' = ' . $this->quote($id),
             );
             if (!$this->execute()) {
                 return false;
@@ -957,7 +957,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
 
         return $this->executeAlterTableStatement(
             $table,
-            'DROP INDEX ' . $this->quoteName($name)
+            'DROP INDEX ' . $this->quoteName($name),
         );
     }
 
@@ -1277,7 +1277,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
         string $table,
         string $column = 'id',
         bool $first = false,
-        bool $useBigInt = true
+        bool $useBigInt = true,
     ): bool {
         $table = $this->replacePrefix($table);
         $precondition = $this->resolveAddColumnPrecondition($table, $column);
@@ -1467,7 +1467,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
         $this->setQuery(
             "SELECT current_val, increment_val
              FROM db_serial
-             WHERE class_name = " . $this->quote($table)
+             WHERE class_name = " . $this->quote($table),
         );
 
         $result = $this->loadObject();
@@ -1712,7 +1712,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
     {
         $this->setQuery(
             $this->buildShowColumnsQuery($table)
-            . ' WHERE Field = ' . $this->quote($column)
+            . ' WHERE Field = ' . $this->quote($column),
         );
 
         return $this->loadAssoc();
@@ -1815,7 +1815,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
     protected function executeAlterTableStatement($table, $clause): bool
     {
         $this->setQuery(
-            'ALTER TABLE ' . $this->quoteName($table) . ' ' . trim((string) $clause)
+            'ALTER TABLE ' . $this->quoteName($table) . ' ' . trim((string) $clause),
         );
 
         return (bool) $this->execute();
@@ -2081,7 +2081,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
             . ($tableName ? $this->quote($tableName) : 'NULL');
 
         $this->setQuery(
-            "INSERT INTO `_sequences` ({$columns}) VALUES ({$values})"
+            "INSERT INTO `_sequences` ({$columns}) VALUES ({$values})",
         );
         $this->execute();
 
@@ -2126,7 +2126,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
             try {
                 $this->setQuery(
                     'DELETE FROM `_sequences` WHERE `table_name` = '
-                    . $this->quote($tableName)
+                    . $this->quote($tableName),
                 );
                 $this->execute();
             } catch (\Exception $e) {
@@ -2244,7 +2244,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
                 'Engine' => $engine,
                 'Support' => 'DEFAULT',
                 'Comment' => $engine . ' default storage engine',
-            ]
+            ],
         ];
     }
 
@@ -2300,7 +2300,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
     protected function fetchObject($class = 'stdClass')
     {
         return $this->postProcessFetchedRow(
-            parent::fetchObject($class)
+            parent::fetchObject($class),
         );
     }
 
@@ -2312,7 +2312,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
     protected function fetchArray()
     {
         return $this->postProcessFetchedRow(
-            parent::fetchArray()
+            parent::fetchArray(),
         );
     }
 
@@ -2324,7 +2324,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
     protected function fetchAssoc()
     {
         return $this->postProcessFetchedRow(
-            parent::fetchAssoc()
+            parent::fetchAssoc(),
         );
     }
 
@@ -2421,7 +2421,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
             // Lock the row and get current value + increment
             $this->setQuery(
                 'SELECT `current_value`, `increment_value` FROM `_sequences` '
-                . 'WHERE ' . $this->buildSequenceNameWhereClause($name) . ' FOR UPDATE'
+                . 'WHERE ' . $this->buildSequenceNameWhereClause($name) . ' FOR UPDATE',
             );
             $row = $this->loadObject();
 
@@ -2434,7 +2434,7 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
             // Update the sequence
             $this->setQuery(
                 'UPDATE `_sequences` SET `current_value` = ' . $newValue
-                . ' WHERE ' . $this->buildSequenceNameWhereClause($name)
+                . ' WHERE ' . $this->buildSequenceNameWhereClause($name),
             );
             $this->execute();
 
@@ -2471,12 +2471,12 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
                 . '`current_value` BIGINT NOT NULL DEFAULT 0, '
                 . '`increment_value` INT NOT NULL DEFAULT 1, '
                 . '`table_name` VARCHAR(255) NULL'
-                . ')'  // No ENGINE clause for CUBRID
+                . ')',  // No ENGINE clause for CUBRID
             );
             $this->execute();
         } elseif (!$this->tableHasField('_sequences', 'table_name')) {
             $this->setQuery(
-                'ALTER TABLE `_sequences` ADD `table_name` VARCHAR(255) NULL'
+                'ALTER TABLE `_sequences` ADD `table_name` VARCHAR(255) NULL',
             );
             $this->execute();
         }

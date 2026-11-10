@@ -26,7 +26,7 @@ class Zone extends Relational
     protected $rules = [
         'zone'   => 'notempty',
         'master' => 'notempty',
-        'state'  => 'notempty'
+        'state'  => 'notempty',
     ];
 
     /**

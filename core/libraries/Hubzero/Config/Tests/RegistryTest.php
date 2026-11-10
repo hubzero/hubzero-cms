@@ -399,7 +399,7 @@ class RegistryTest extends TestCase
 
         $data3 = [
             'lorem' => ['ipsum' => 'mit'],
-            'cullen' => 'didae'
+            'cullen' => 'didae',
         ];
 
         $result = $data->merge($data3, true);

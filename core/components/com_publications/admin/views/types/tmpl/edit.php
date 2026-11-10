@@ -25,7 +25,7 @@ $label = Lang::txt('COM_PUBLICATIONS_PUBLICATION');
 $label2 = Lang::txt('COM_PUBLICATIONS_MASTER_TYPE');
 Toolbar::title(
     $label . ' ' . $label2 . ': ' . $text,
-    'publications'
+    'publications',
 );
 if ($canDo->get('core.edit')) {
     Toolbar::apply();
@@ -56,7 +56,7 @@ $panels = [
     'access'      => 0,
     'license'     => 2,
     'citations'   => 1,
-    'notes'       => 1
+    'notes'       => 1,
 ];
 
 // Sections that cannot be hidden, ever
@@ -131,7 +131,7 @@ $required = ['content', 'description', 'authors'];
                             $hideLabel = Lang::txt('COM_PUBLICATIONS_HIDE');
                             $showLabel = Lang::txt('COM_PUBLICATIONS_SHOW');
                             $reqLabel = Lang::txt(
-                                'COM_PUBLICATIONS_SHOW_AND_REQUIRE'
+                                'COM_PUBLICATIONS_SHOW_AND_REQUIRE',
                             );
                             ?>
                             <tr>

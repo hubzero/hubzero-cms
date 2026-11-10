@@ -54,7 +54,7 @@ $this->css();
                 <?php
                 $tf = Event::trigger(
                     'hubzero.onGetMultiEntry',
-                    [['tags', 'tags', 'actags','', $this->row->get('tags', '')]]
+                    [['tags', 'tags', 'actags','', $this->row->get('tags', '')]],
                 );
                 $tf = implode("\n", $tf);
 
@@ -81,7 +81,7 @@ $this->css();
                     $this->escape($this->row->get('question')),
                     50,
                     10,
-                    'field-question'
+                    'field-question',
                 );
                 ?>
             </label>

@@ -113,7 +113,7 @@ tooltip: true,
             $stat->threemonth_primary,
             $stat->twomonth_primary,
             $stat->lastmonth_primary,
-            $stat->thismonth_primary
+            $stat->thismonth_primary,
         );
 
         $i++;
@@ -121,12 +121,12 @@ tooltip: true,
         $thumbUrl = Route::url(
             'index.php?option=com_publications&id='
             . $stat->publication_id
-            . '&v=' . $stat->publication_version_id
+            . '&v=' . $stat->publication_version_id,
         ) . '/Image:thumb';
 
         $pubUrl = Route::url(
             'index.php?option=com_publications&id='
-            . $stat->publication_id
+            . $stat->publication_id,
         ) . '?version=' . $stat->version_number;
 
         $publishedDate = Date::of($stat->published_up)
@@ -138,14 +138,14 @@ tooltip: true,
 
         $projectUrl = Route::url(
             'index.php?option=com_projects&task=view&alias='
-            . $stat->project_alias
+            . $stat->project_alias,
         );
         $projectTitle = \Hubzero\Utility\Str::truncate(
             $stat->project_title,
-            65
+            65,
         );
         $fromProject = Lang::txt(
-            'PLG_MEMBERS_IMPACT_FROM_PROJECT'
+            'PLG_MEMBERS_IMPACT_FROM_PROJECT',
         );
 
         ?>
@@ -186,7 +186,7 @@ tooltip: true,
                     <td><?php
                         echo '<span class="pubstats-label">'
                             . Lang::txt(
-                                'PLG_MEMBERS_IMPACT_STATS_LAST_MONTH'
+                                'PLG_MEMBERS_IMPACT_STATS_LAST_MONTH',
                             )
                             . '</span><span class="pubstats-note">'
                             . $lastMonth
@@ -199,7 +199,7 @@ tooltip: true,
                         echo '<span class="pubstats-label">'
                             . '<span class="prominent">'
                             . Lang::txt(
-                                'PLG_MEMBERS_IMPACT_STATS_TOTAL'
+                                'PLG_MEMBERS_IMPACT_STATS_TOTAL',
                             )
                             . '</span>*</span>'
                             . '<span class="pubstats-note">*'
@@ -212,12 +212,12 @@ tooltip: true,
                     <td class="pubstats-sh">
                         <?php
                         echo Lang::txt(
-                            'PLG_MEMBERS_IMPACT_STATS_VIEWS'
+                            'PLG_MEMBERS_IMPACT_STATS_VIEWS',
                         );
                         if ($i == 1) {
                             $viewsTip = Lang::txt(
                                 'PLG_MEMBERS_IMPACT_STATS_VIEWS'
-                                . '_TIPS_TITLE_ABOUT'
+                                . '_TIPS_TITLE_ABOUT',
                             );
                             ?>
                             <span
@@ -329,12 +329,12 @@ tooltip: true,
                     <td class="pubstats-sh">
                         <?php
                         echo Lang::txt(
-                            'PLG_MEMBERS_IMPACT_STATS_ACCESSES'
+                            'PLG_MEMBERS_IMPACT_STATS_ACCESSES',
                         );
                         if ($i == 1) {
                             $accessesTip = Lang::txt(
                                 'PLG_MEMBERS_IMPACT_STATS_ACCESSES'
-                                . '_TIPS_TITLE_ABOUT'
+                                . '_TIPS_TITLE_ABOUT',
                             );
                             ?>
                             <span

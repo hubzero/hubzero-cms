@@ -32,7 +32,7 @@ class Migration20260630000000ComCoursesOfferingOrdering extends Base
         if (!$this->db->tableHasField($table, 'ordering')) {
             $this->_queryIfTableExists(
                 $table,
-                "ALTER TABLE `$table` ADD `ordering` INT(11) NOT NULL DEFAULT 0"
+                "ALTER TABLE `$table` ADD `ordering` INT(11) NOT NULL DEFAULT 0",
             );
         }
 
@@ -47,7 +47,7 @@ class Migration20260630000000ComCoursesOfferingOrdering extends Base
 			 WHERE `state` = 1
 			 AND (`publish_up` IS NULL OR `publish_up` = '0000-00-00 00:00:00')
 			 AND `created` IS NOT NULL
-			 AND `created` <> '0000-00-00 00:00:00'"
+			 AND `created` <> '0000-00-00 00:00:00'",
         );
     }
 
@@ -58,7 +58,7 @@ class Migration20260630000000ComCoursesOfferingOrdering extends Base
         if ($this->db->tableHasField($table, 'ordering')) {
             $this->_queryIfTableExists(
                 $table,
-                "ALTER TABLE `$table` DROP `ordering`"
+                "ALTER TABLE `$table` DROP `ordering`",
             );
         }
     }

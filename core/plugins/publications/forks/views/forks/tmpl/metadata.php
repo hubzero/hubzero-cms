@@ -15,7 +15,7 @@ defined('_HZEXEC_') or die();
     <?php
     $forksUrl = Route::url(
         'index.php?option=com_publications&id='
-        . $this->publication->id . '&active=forks'
+        . $this->publication->id . '&active=forks',
     );
     ?>
     <a href="<?php echo $forksUrl; ?>">

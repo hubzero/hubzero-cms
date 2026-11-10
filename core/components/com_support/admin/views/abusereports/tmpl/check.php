@@ -36,7 +36,7 @@ $this->css('
 <?php
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller . '&task=check'
+    . '&controller=' . $this->controller . '&task=check',
 );
 ?>
 <form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="item-form">

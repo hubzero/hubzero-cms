@@ -103,7 +103,7 @@ class OneToOneThrough extends Relationship
 
         $this->related->whereEquals(
             $this->throughTable . '.' . $this->throughLocalKey,
-            $this->model->getPkValue()
+            $this->model->getPkValue(),
         );
 
         // Apply any default conditions
@@ -138,13 +138,13 @@ class OneToOneThrough extends Relationship
                         $this->throughTable,
                         $this->model->getQualifiedFieldName($this->localKey),
                         $this->throughLocalKey,
-                        'LEFT OUTER'
+                        'LEFT OUTER',
                     )
                     ->join(
                         $this->related->getTableName(),
                         $this->throughRelatedKey,
                         $this->related->getQualifiedFieldName($this->relatedKey),
-                        'LEFT OUTER'
+                        'LEFT OUTER',
                     );
 
         return $this;
@@ -165,7 +165,7 @@ class OneToOneThrough extends Relationship
                       ->join(
                           $this->throughTable,
                           $this->related->getQualifiedFieldName($this->relatedKey),
-                          $this->throughRelatedKey
+                          $this->throughRelatedKey,
                       );
 
         return $this;

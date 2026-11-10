@@ -58,18 +58,18 @@ class Course extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         if ($this->course->exists()) {
             Pathway::append(
                 stripslashes($this->course->get('title')),
-                'index.php?option=' . $this->_option . '&gid=' . $this->course->get('alias')
+                'index.php?option=' . $this->_option . '&gid=' . $this->course->get('alias'),
             );
         } else {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
-                'index.php?option=' . $this->_option . '&task=' . $this->_task
+                'index.php?option=' . $this->_option . '&task=' . $this->_task,
             );
         }
     }
@@ -111,7 +111,7 @@ class Course extends SiteController
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             $message,
-            'warning'
+            'warning',
         );
     }
 
@@ -142,8 +142,8 @@ class Course extends SiteController
             'courses.onCourseView',
             [
                 $this->course,
-                $this->view->active
-            ]
+                $this->view->active,
+            ],
         );
 
         if ($pages = $this->course->pages(['active' => 1])) {
@@ -320,7 +320,7 @@ class Course extends SiteController
         // Redirect back to the course page
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&gid=' . $course->get('alias')),
-            $msg
+            $msg,
         );
     }
 
@@ -364,7 +364,7 @@ class Course extends SiteController
 
         // Redirect back to the course page
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&gid=' . $course->get('alias'))
+            Route::url('index.php?option=' . $this->_option . '&gid=' . $course->get('alias')),
         );
     }
 
@@ -492,7 +492,7 @@ class Course extends SiteController
             // Redirect back to the course page
             App::redirect(
                 Route::url($course->link()),
-                $response->message
+                $response->message,
             );
         }
     }
@@ -590,7 +590,7 @@ class Course extends SiteController
         // Build the "from" info for e-mails
         $from = [
             'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name)),
-            'email' => Config::get('mailfrom')
+            'email' => Config::get('mailfrom'),
         ];
 
         // E-mail subject
@@ -600,7 +600,7 @@ class Course extends SiteController
         // Build the e-mail message
         $eview = new \Hubzero\Component\View([
             'name'   => 'emails',
-            'layout' => 'deleted'
+            'layout' => 'deleted',
         ]);
         $eview->set('option', $this->_option);
         $eview->sitename = Config::get('sitename');
@@ -629,7 +629,7 @@ class Course extends SiteController
         App::redirect(
             Route::url('index.php?option=' . $this->_option),
             Lang::txt('COM_COURSES_COURSE_DELETED', $this->course->get('title')),
-            'passed'
+            'passed',
         );
     }
 
@@ -657,7 +657,7 @@ class Course extends SiteController
         $course = Models\Course::getInstance($page['course_id']);
         if (!$course->exists()) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option)
+                Route::url('index.php?option=' . $this->_option),
             );
         }
 
@@ -704,7 +704,7 @@ class Course extends SiteController
             App::redirect(
                 Route::url($course->link() . '&active=' . $model->get('url') . '&action=' . ($model->get('id') ? 'addpage' : 'editpage')),
                 $model->getError(),
-                'error'
+                'error',
             );
             return;
         }
@@ -714,7 +714,7 @@ class Course extends SiteController
             App::redirect(
                 Route::url($course->link() . '&active=' . $model->get('url') . '&action=' . ($model->get('id') ? 'addpage' : 'editpage')),
                 $model->getError(),
-                'error'
+                'error',
             );
             return;
         }
@@ -722,7 +722,7 @@ class Course extends SiteController
         // Redirect back to the course page
         App::redirect(
             Route::url($course->link() . '&active=' . $model->get('url')),
-            Lang::txt('COM_COURSES_PAGE_SAVED')
+            Lang::txt('COM_COURSES_PAGE_SAVED'),
         );
     }
 
@@ -743,14 +743,14 @@ class Course extends SiteController
 
         if (!$this->course->exists()) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option)
+                Route::url('index.php?option=' . $this->_option),
             );
             return;
         }
 
         if (!$this->course->access('edit', 'course')) {
             App::redirect(
-                Route::url($this->course->link())
+                Route::url($this->course->link()),
             );
             return;
         }
@@ -771,7 +771,7 @@ class Course extends SiteController
         App::redirect(
             Route::url($this->course->link()),
             ($msg ? $msg : Lang::txt('COM_COURSES_PAGE_REMOVED')),
-            ($msg ? 'error' : null)
+            ($msg ? 'error' : null),
         );
     }
 
@@ -1018,7 +1018,7 @@ class Course extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
                 Lang::txt('COM_COURSES_NOT_LOGGEDIN'),
-                'warning'
+                'warning',
             );
             return;
         }

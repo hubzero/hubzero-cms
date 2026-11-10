@@ -116,8 +116,8 @@ class Results extends SiteController
                 $p,
                 0,
                 0,
-                $activeareas
-            ]
+                $activeareas,
+            ],
         );
 
         $limit = ($limit == 0) ? 'all' : $limit;
@@ -129,8 +129,8 @@ class Results extends SiteController
                 $p,
                 $limit,
                 $start,
-                $activeareas
-            ]
+                $activeareas,
+            ],
         );
 
         // Get the total results found (sum of all categories)
@@ -190,12 +190,12 @@ class Results extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         Pathway::append(
             $this->text($period),
-            'index.php?option=' . $this->_option . '&period=' . $period
+            'index.php?option=' . $this->_option . '&period=' . $period,
         );
 
         // Build some options for the time period <select>
@@ -310,8 +310,8 @@ class Results extends SiteController
                 $p,
                 $limit,
                 $start,
-                $activeareas
-            ]
+                $activeareas,
+            ],
         );
 
         // Run through the array of arrays returned from plugins and find the one that returned results

@@ -149,7 +149,7 @@ endif;
                                     . $this->option
                                     . '&alias='
                                     . $this->model->get('alias')
-                                    . '&task=delete'
+                                    . '&task=delete',
                                 );
                                 $langTxt9 = Lang::txt('JACTION_DELETE');
                                 ?>

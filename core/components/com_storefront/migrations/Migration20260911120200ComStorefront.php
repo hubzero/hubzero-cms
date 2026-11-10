@@ -44,7 +44,7 @@ class Migration20260911120200ComStorefront extends Base
 
         $this->log(
             'Store links that went nowhere are no longer in the menu: '
-            . count($aliases) . ' unpublished.'
+            . count($aliases) . ' unpublished.',
         );
     }
 
@@ -78,7 +78,7 @@ class Migration20260911120200ComStorefront extends Base
 
         $this->db->setQuery(
             "SELECT COUNT(*) FROM `#__extensions`"
-            . " WHERE `type` = 'component' AND `element` = 'com_storefront' AND `enabled` = 1"
+            . " WHERE `type` = 'component' AND `element` = 'com_storefront' AND `enabled` = 1",
         );
 
         // The store works, or could. Leave the menu alone.
@@ -88,7 +88,7 @@ class Migration20260911120200ComStorefront extends Base
 
         $this->db->setQuery(
             "SELECT `id`, `params` FROM `#__menu`"
-            . " WHERE `type` = 'alias' AND `published` = " . (int) $published
+            . " WHERE `type` = 'alias' AND `published` = " . (int) $published,
         );
 
         $ids = [];
@@ -102,7 +102,7 @@ class Migration20260911120200ComStorefront extends Base
 
             $this->db->setQuery(
                 "SELECT `link`, `published` FROM `#__menu`"
-                . " WHERE `id` = " . (int) $params['aliasoptions']
+                . " WHERE `id` = " . (int) $params['aliasoptions'],
             );
 
             $target = $this->db->loadObject();
@@ -130,7 +130,7 @@ class Migration20260911120200ComStorefront extends Base
     {
         $this->db->setQuery(
             "UPDATE `#__menu` SET `published` = " . (int) $state
-            . " WHERE `id` IN (" . implode(',', array_map('intval', $ids)) . ")"
+            . " WHERE `id` IN (" . implode(',', array_map('intval', $ids)) . ")",
         );
         $this->db->query();
     }

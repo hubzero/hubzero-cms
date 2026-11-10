@@ -119,9 +119,9 @@ class Handler
             $this->storage->store(
                 [
                     'message' => $message,
-                    'type'    => $type
+                    'type'    => $type,
                 ],
-                $domain
+                $domain,
             );
         }
 

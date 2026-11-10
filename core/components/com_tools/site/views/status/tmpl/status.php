@@ -23,7 +23,7 @@ $this->css('status.css')
     <?php
     $actionUrl = Route::url(
         'index.php?option=' . $this->option
-        . '&controller=' . $this->controller . '&task=status'
+        . '&controller=' . $this->controller . '&task=status',
     );
     ?>
     <form action="<?php echo $actionUrl; ?>">

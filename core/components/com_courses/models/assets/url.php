@@ -25,7 +25,7 @@ class Url extends Content
      **/
     protected static $info = [
             'action_message' => 'As a standard link',
-            'responds_to'    => ['url']
+            'responds_to'    => ['url'],
         ];
 
     /**

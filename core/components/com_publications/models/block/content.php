@@ -71,8 +71,8 @@ class Content extends Base
             $view = new \Hubzero\Component\View(
                 [
                     'name'      => 'curation',
-                    'layout'    => 'block'
-                ]
+                    'layout'    => 'block',
+                ],
             );
         } else {
             $name = $viewname == 'freeze' ? 'freeze' : 'draft';
@@ -83,8 +83,8 @@ class Content extends Base
                     'folder'    => 'projects',
                     'element'   => 'publications',
                     'name'      => $name,
-                    'layout'    => 'wrapper'
-                ]
+                    'layout'    => 'wrapper',
+                ],
             );
         }
 
@@ -199,7 +199,7 @@ class Content extends Base
                 $pub,
                 $manifest->params,
                 $oldVersion,
-                $newVersion
+                $newVersion,
             );
         }
     }
@@ -233,7 +233,7 @@ class Content extends Base
                 $pub,
                 $status,
                 $viewname,
-                $o
+                $o,
             );
             $o++;
         }
@@ -379,7 +379,7 @@ class Content extends Base
             $actor,
             $elementId,
             $manifest->elements->$elementId,
-            $manifest->params
+            $manifest->params,
         );
 
         // Set success message
@@ -427,7 +427,7 @@ class Content extends Base
             $actor,
             $elementId,
             $manifest->elements->$elementId,
-            $manifest->params
+            $manifest->params,
         );
 
         // Set success message
@@ -472,9 +472,9 @@ class Content extends Base
                     'directory'         => '',
                     'reuse'             => 0,
                     'dirHierarchy'      => 1,
-                    'multiZip'          => 1
-                ]
-            ]
+                    'multiZip'          => 1,
+                ],
+            ],
         ];
         return json_decode(json_encode($manifest), false);
     }
@@ -523,17 +523,17 @@ class Content extends Base
                                 'directory'         => '',
                                 'reuse'             => 0,
                                 'dirHierarchy'      => 1,
-                                'multiZip'          => 1
-                            ]
-                        ]
-                    ]
+                                'multiZip'          => 1,
+                            ],
+                        ],
+                    ],
                 ],
                 'params'    => [
                     'required'          => 1,
                     'published_editing' => 0,
                     'collapse_elements' => 1,
-                    'verify_types'      => 1
-                ]
+                    'verify_types'      => 1,
+                ],
             ];
 
             if ($new == true) {

@@ -104,7 +104,7 @@ class Html
 
                 return str_replace($match[1], $replacement, $match[0]);
             },
-            $content
+            $content,
         );
 
         return $content;
@@ -780,7 +780,7 @@ class Html
                         $resumeUrl = Route::url(
                             'index.php?option=com_tools&task=session'
                             . '&app=' . $existingSession->appname
-                            . '&sess=' . $existingSession->sessnum
+                            . '&sess=' . $existingSession->sessnum,
                         );
                         $routedLurl = Route::url($lurl);
                         $newUrl = $routedLurl . (strpos($routedLurl, '?') !== false ? '&newinstance=1' : '?newinstance=1');
@@ -1109,7 +1109,7 @@ class Html
         $view = new \Hubzero\Component\View([
             'base_path' => Component::path('com_resources') . DS . 'site',
             'name'   => 'view',
-            'layout' => '_primary'
+            'layout' => '_primary',
         ]);
         $view->set('option', 'com_resources')
             ->set('disabled', $disabled)

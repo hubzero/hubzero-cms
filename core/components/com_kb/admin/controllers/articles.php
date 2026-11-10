@@ -52,30 +52,30 @@ class Articles extends AdminController
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             ),
             'category' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.category',
                 'category',
                 0,
-                'int'
+                'int',
             ),
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'title'
+                'title',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
+                'ASC',
             ),
             'access' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.access',
                 'access',
                 0,
-                'int'
-            )
+                'int',
+            ),
         ];
 
         // ordered() treats a dotted sort as relationship.field and stores
@@ -164,7 +164,7 @@ class Articles extends AdminController
 
         $params = new Parameter(
             $row->get('params'),
-            dirname(dirname(__DIR__)) . DS . 'kb.xml'
+            dirname(dirname(__DIR__)) . DS . 'kb.xml',
         );
 
         // Get the sections
@@ -228,7 +228,7 @@ class Articles extends AdminController
         // Save the tags
         $row->tag(
             Request::getString('tags', '', 'post'),
-            User::get('id')
+            User::get('id'),
         );
 
         Notify::success(Lang::txt('COM_KB_ARTICLE_SAVED'));
@@ -336,7 +336,7 @@ class Articles extends AdminController
             . ($cid ? '&section=' . $cid : '');
         App::redirect(
             Route::url($url, false),
-            $message
+            $message,
         );
     }
 
@@ -354,7 +354,7 @@ class Articles extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
         );
     }
 

@@ -96,8 +96,8 @@ $pluginJs = $basePath . '/core/plugins/projects/publications/assets/js';
                             'folder'  => 'projects',
                             'element' => 'publications',
                             'name'    => 'selector',
-                            'layout'  => $this->block
-                        ]
+                            'layout'  => $this->block,
+                        ],
                     );
                     $view->option      = $this->option;
                     $view->project     = $this->project;
@@ -129,8 +129,8 @@ $pluginJs = $basePath . '/core/plugins/projects/publications/assets/js';
                     'folder'  => 'projects',
                     'element' => 'publications',
                     'name'    => 'selector',
-                    'layout'  => $this->block
-                ]
+                    'layout'  => $this->block,
+                ],
             );
             $view->option      = $this->option;
             $view->project     = $this->project;

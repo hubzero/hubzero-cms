@@ -63,12 +63,12 @@ $text = $this->pub->get('license_text', $defaultText);
                 <?php } ?>
                 <?php
                 echo ucfirst(Lang::txt(
-                    'PLG_PROJECTS_PUBLICATIONS_PUBLICATION_LICENSE'
+                    'PLG_PROJECTS_PUBLICATIONS_PUBLICATION_LICENSE',
                 ));
                 $hasMultiple = $this->license
                     && count($this->selections) > 1;
                 $editLabel = Lang::txt(
-                    'PLG_PROJECTS_PUBLICATIONS_EDIT_LICENSE_CHOICE'
+                    'PLG_PROJECTS_PUBLICATIONS_EDIT_LICENSE_CHOICE',
                 );
                 ?>
                 <?php if ($hasMultiple) { ?>
@@ -102,7 +102,7 @@ $text = $this->pub->get('license_text', $defaultText);
                 $icon = str_replace(
                     '/components/com_publications/assets/img/',
                     '/core/components/com_publications/site/assets/img/',
-                    $icon
+                    $icon,
                 );
                 ?>
                 <div class="chosenitem">
@@ -116,14 +116,14 @@ $text = $this->pub->get('license_text', $defaultText);
                     <input type="hidden" name="license" id="license" value="<?php echo $this->license->id; ?>" />
                     <?php if ($this->license->customizable) {
                         $reqLabel = Lang::txt(
-                            'PLG_PROJECTS_PUBLICATIONS_REQUIRED'
+                            'PLG_PROJECTS_PUBLICATIONS_REQUIRED',
                         );
                         $writeLabel = $this->license->text
                             ? Lang::txt(
-                                'PLG_PROJECTS_PUBLICATIONS_LICENSE_WRITE'
+                                'PLG_PROJECTS_PUBLICATIONS_LICENSE_WRITE',
                             )
                             : Lang::txt(
-                                'PLG_PROJECTS_PUBLICATIONS_LICENSE_WRITE_AND_CUSTOMIZE'
+                                'PLG_PROJECTS_PUBLICATIONS_LICENSE_WRITE_AND_CUSTOMIZE',
                             );
                         ?>
                         <div class="agreements">
@@ -143,10 +143,10 @@ $text = $this->pub->get('license_text', $defaultText);
                                 ><?php echo preg_replace("/\r\n/", "\r", $this->license->text); ?></p>
                             <?php
                             $hintLabel = Lang::txt(
-                                'PLG_PROJECTS_PUBLICATIONS_LICENSE_REMOVE_DEFAULTS'
+                                'PLG_PROJECTS_PUBLICATIONS_LICENSE_REMOVE_DEFAULTS',
                             );
                             $reloadLabel = Lang::txt(
-                                'PLG_PROJECTS_PUBLICATIONS_LICENSE_RELOAD_TEMPLATE_TEXT'
+                                'PLG_PROJECTS_PUBLICATIONS_LICENSE_RELOAD_TEMPLATE_TEXT',
                             );
                             ?>
                             <p class="hint">
@@ -161,12 +161,12 @@ $text = $this->pub->get('license_text', $defaultText);
                         preg_match_all(
                             '/\[([^\]]*)\]/',
                             $this->license->text ? $this->license->text : "",
-                            $substitutes
+                            $substitutes,
                         );
                         preg_match_all(
                             '/\[([^]]+)\]/',
                             $this->pub->license_text ? $this->pub->license_text : "",
-                            $matches
+                            $matches,
                         );
                         $i = 0;
 
@@ -181,7 +181,7 @@ $text = $this->pub->get('license_text', $defaultText);
                                     ?>
                                     <?php
                                     $subReqLabel = Lang::txt(
-                                        'PLG_PROJECTS_PUBLICATIONS_REQUIRED'
+                                        'PLG_PROJECTS_PUBLICATIONS_REQUIRED',
                                     );
                                     ?>
                                     <label>
@@ -211,18 +211,18 @@ $text = $this->pub->get('license_text', $defaultText);
                             $txt = preg_replace(
                                 "/license terms/",
                                 '<a href="' . $this->license->url . '" rel="external">license terms</a>',
-                                $txt
+                                $txt,
                             );
                         }
                         $txt = preg_replace(
                             "/" . $this->license->title . "/",
                             '<strong>' . $this->license->title . '</strong>',
-                            $txt
+                            $txt,
                         );
                         ?>
                         <?php
                         $agreeReqLabel = Lang::txt(
-                            'PLG_PROJECTS_PUBLICATIONS_REQUIRED'
+                            'PLG_PROJECTS_PUBLICATIONS_REQUIRED',
                         );
                         ?>
                         <div class="agreements">
@@ -245,7 +245,7 @@ $text = $this->pub->get('license_text', $defaultText);
                     <ul class="itemlist" id="license-list">
                         <?php
                         $chooseLabel = Lang::txt(
-                            'PLG_PROJECTS_PUBLICATIONS_CHOOSE_LICENSE'
+                            'PLG_PROJECTS_PUBLICATIONS_CHOOSE_LICENSE',
                         );
                         ?>
                         <li class="item-new">

@@ -281,7 +281,7 @@ class ImgHandler extends Obj
             $sharpenMatrix = [
                 [-1, -2, -1],
                 [-2, $sharpness + 12, -2],
-                [-1, -2, -1]
+                [-1, -2, -1],
             ];
             $divisor = $sharpness;
             $offset  = 0;

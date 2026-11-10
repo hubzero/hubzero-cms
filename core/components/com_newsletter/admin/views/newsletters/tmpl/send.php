@@ -112,7 +112,7 @@ if ($this->getError()) {
                                         $dateTxt = Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_DATE');
                                         $timeTxt = Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_TIME');
                                         $optNull = Lang::txt(
-                                            'COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_OPTION_NULL'
+                                            'COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_OPTION_NULL',
                                         );
                                         echo $dateTxt;
                                         ?>

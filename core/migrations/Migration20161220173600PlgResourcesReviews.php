@@ -40,7 +40,7 @@ class Migration20161220173600PlgResourcesReviews extends Base
                         'ip'         => $vote->ip,
                         'created'    => $vote->voted,
                         'created_by' => $vote->voter,
-                        'vote'       => ($vote->helpful == 'no' ? -1 : 1)
+                        'vote'       => ($vote->helpful == 'no' ? -1 : 1),
                     ])
                     ->execute();
             }
@@ -76,7 +76,7 @@ class Migration20161220173600PlgResourcesReviews extends Base
                         'ip'          => $vote->ip,
                         'voted'       => $vote->created,
                         'voter'       => $vote->created_by,
-                        'helpful'     => ($vote->vote == 1 ? 'yes' : 'no')
+                        'helpful'     => ($vote->vote == 1 ? 'yes' : 'no'),
                     ])
                     ->execute();
             }

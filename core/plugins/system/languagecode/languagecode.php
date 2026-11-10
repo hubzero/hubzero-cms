@@ -46,7 +46,7 @@ class Languagecode extends Plugin
                 ];
                 $replace = [
                     '${1}' . strtolower($new_code) . '${3}',
-                    '${1}' . strtolower($new_code) . '${3}'
+                    '${1}' . strtolower($new_code) . '${3}',
                 ];
             } else {
                 $patterns = [];
@@ -57,7 +57,7 @@ class Languagecode extends Plugin
             preg_match_all(
                 chr(1) . '(<link.*\s+hreflang=")([0-9a-z\-]*)(".*\s+rel="alternate".*/>)' . chr(1) . 'i',
                 $body,
-                $matches
+                $matches,
             );
             foreach ($matches[2] as $match) {
                 $new_code = $this->params->get(strtolower($match));
@@ -71,7 +71,7 @@ class Languagecode extends Plugin
             preg_match_all(
                 chr(1) . '(<link.*\s+rel="alternate".*\s+hreflang=")([0-9A-Za-z\-]*)(".*/>)' . chr(1) . 'i',
                 $body,
-                $matches
+                $matches,
             );
             foreach ($matches[2] as $match) {
                 $new_code = $this->params->get(strtolower($match));
@@ -132,7 +132,7 @@ class Languagecode extends Plugin
 				description="' . htmlspecialchars(
                     Lang::txt('PLG_SYSTEM_LANGUAGECODE_FIELD_DESC', $language['name']),
                     ENT_COMPAT,
-                    'UTF-8'
+                    'UTF-8',
                 ) . '"
 				translate_description="false"
 				label="' . $tag . '"

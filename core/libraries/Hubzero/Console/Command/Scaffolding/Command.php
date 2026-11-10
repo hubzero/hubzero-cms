@@ -70,14 +70,14 @@ class Command extends Scaffolding
     {
         $this->output
             ->addOverview(
-                'Create a new console command.'
+                'Create a new console command.',
             )
             ->addArgument(
                 '-n, --name: command name',
                 'Give the command name. The command name can also be provided
 				as the next word following the command as shown here:
 				"muse scaffolding create command awesome"',
-                'Example: -n=awesome, --name=awesomer'
+                'Example: -n=awesome, --name=awesomer',
             );
     }
 }

@@ -59,7 +59,7 @@ $repoTxt = Lang::txt('COM_INSTALLER_PACKAGES_REPOSITORIES');
 
 <?php
 $formAction = Route::url(
-    'index.php?option=' . $this->option . '&controller=' . $this->controller
+    'index.php?option=' . $this->option . '&controller=' . $this->controller,
 );
 ?>
 <form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="updateRepositoryForm">
@@ -84,7 +84,7 @@ $formAction = Route::url(
                     echo $this->pagination(
                         $this->total,
                         $this->filters['start'],
-                        $this->filters['limit']
+                        $this->filters['limit'],
                     );
                     ?>
                 </td>
@@ -105,7 +105,7 @@ $formAction = Route::url(
                         $editUrl = Route::url(
                             'index.php?option=' . $this->option
                             . '&controller=' . $this->controller
-                            . '&task=edit&packageName=' . $package->getName()
+                            . '&task=edit&packageName=' . $package->getName(),
                         );
                         ?>
                         <a href="<?php echo $editUrl; ?>">

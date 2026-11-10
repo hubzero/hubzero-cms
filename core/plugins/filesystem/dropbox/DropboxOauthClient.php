@@ -44,7 +44,7 @@ class DropboxOauthClient
         $this->client = new VendorDropboxOauthClient([
             'clientId' => $this->clientId,
             'clientSecret' => $this->clientSecret,
-            'redirectUri' => $this->redirectUri
+            'redirectUri' => $this->redirectUri,
         ]);
     }
 

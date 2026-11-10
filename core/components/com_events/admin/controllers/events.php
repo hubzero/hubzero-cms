@@ -82,18 +82,18 @@ class Events extends AdminController
             $this->_option . '.' . $this->_controller . '.limit',
             'limit',
             Config::get('list_limit'),
-            'int'
+            'int',
         );
         $this->view->filters['start']    = Request::getState(
             $this->_option . '.' . $this->_controller . '.limitstart',
             'limitstart',
             0,
-            'int'
+            'int',
         );
         $this->view->filters['search']   = urldecode(Request::getState(
             $this->_option . '.' . $this->_controller . '.search',
             'search',
-            ''
+            '',
         ));
         $this->view->filters['catid']    = Request::getInt('catid', 0, '', 'int');
         $this->view->filters['scope_id'] = Request::getInt('group_id', 0, '', 'int');
@@ -142,7 +142,7 @@ class Events extends AdminController
         $ids = Request::getArray('id', [0]);
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=pages&task=add&id[]=' . $ids[0], false)
+            Route::url('index.php?option=' . $this->_option . '&controller=pages&task=add&id[]=' . $ids[0], false),
         );
     }
 
@@ -156,7 +156,7 @@ class Events extends AdminController
         $ids = Request::getArray('id', [0]);
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=respondents&id[]=' . $ids[0], false)
+            Route::url('index.php?option=' . $this->_option . '&controller=respondents&id[]=' . $ids[0], false),
         );
     }
 
@@ -363,7 +363,7 @@ class Events extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
         );
     }
 
@@ -385,7 +385,7 @@ class Events extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                 $row->getError(),
-                'error'
+                'error',
             );
         }
 
@@ -414,7 +414,7 @@ class Events extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                 Lang::txt('EVENT_CAL_LANG_EVENT_REQUIRED'),
-                'error'
+                'error',
             );
         }
 
@@ -438,7 +438,7 @@ class Events extends AdminController
                         App::redirect(
                             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                             Lang::txt('COM_EVENTS_REQUIRED_FIELD_CHECK', $f[1]),
-                            'error'
+                            'error',
                         );
                         exit();
                     }
@@ -488,14 +488,14 @@ class Events extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                 $row->getError(),
-                'error'
+                'error',
             );
         }
         if (!$row->store()) {
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                 $row->getError(),
-                'error'
+                'error',
             );
         }
         $row->checkin();
@@ -510,7 +510,7 @@ class Events extends AdminController
         // Redirect
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-            Lang::txt('COM_EVENTS_CAL_LANG_SAVED')
+            Lang::txt('COM_EVENTS_CAL_LANG_SAVED'),
         );
     }
 
@@ -545,7 +545,7 @@ class Events extends AdminController
         // Make sure we have an ID
         if (empty($ids)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
             );
             return;
         }
@@ -561,7 +561,7 @@ class Events extends AdminController
         // Redirect
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-            Lang::txt('COM_EVENTS_CAL_LANG_PUBLISHED')
+            Lang::txt('COM_EVENTS_CAL_LANG_PUBLISHED'),
         );
     }
 
@@ -584,7 +584,7 @@ class Events extends AdminController
         // Make sure we have an ID
         if (empty($ids)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
             );
             return;
         }
@@ -600,7 +600,7 @@ class Events extends AdminController
         // Redirect
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-            Lang::txt('COM_EVENTS_CAL_LANG_UNPUBLISHED')
+            Lang::txt('COM_EVENTS_CAL_LANG_UNPUBLISHED'),
         );
     }
 
@@ -623,7 +623,7 @@ class Events extends AdminController
         // Make sure we have an ID
         if (empty($ids)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
             );
             return;
         }
@@ -652,7 +652,7 @@ class Events extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
         );
     }
 
@@ -675,7 +675,7 @@ class Events extends AdminController
         // Make sure we have an ID
         if (empty($ids)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
             );
             return;
         }
@@ -709,7 +709,7 @@ class Events extends AdminController
         // Redirect
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-            Lang::txt('COM_EVENTS_CAL_LANG_REMOVED')
+            Lang::txt('COM_EVENTS_CAL_LANG_REMOVED'),
         );
     }
 }

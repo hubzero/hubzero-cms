@@ -31,35 +31,35 @@ Toolbar::help('sessions');
 $formAction = Route::url(
     'index.php?option=' . $this->option
     . '&controller=' . $this->controller
-    . '&task=sessions'
+    . '&task=sessions',
 );
 $sortSession = Html::grid(
     'sort',
     'COM_TOOLS_COL_SESSION',
     'sessionid',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 $sortOpaqueData = Html::grid(
     'sort',
     'COM_TOOLS_COL_OPAQUE_DATA',
     'url',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 $sortStatus = Html::grid(
     'sort',
     'COM_TOOLS_COL_STATUS',
     'status',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 $sortAvailability = Html::grid(
     'sort',
     'COM_TOOLS_COL_AVAILABILITY',
     'availability',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 ?>
 <form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">

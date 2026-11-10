@@ -56,8 +56,8 @@ class Contentlanguage
                     new Obj(['value' => '*',
                     'text' => $translate ? Lang::alt(
                         'JALL',
-                        'language'
-                    ) : 'JALL_LANGUAGE'])
+                        'language',
+                    ) : 'JALL_LANGUAGE']),
                 );
             }
 

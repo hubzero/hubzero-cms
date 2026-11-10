@@ -31,7 +31,7 @@ Toolbar::help('types');
 
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 ?>
 <form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
@@ -56,7 +56,7 @@ $formAction = Route::url(
                         'COM_JOBS_COL_ID',
                         'id',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     ); ?>
                 </th>
                 <th scope="col">
@@ -65,7 +65,7 @@ $formAction = Route::url(
                         'COM_JOBS_COL_TITLE',
                         'category',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     ); ?>
                 </th>
             </tr>
@@ -77,7 +77,7 @@ $formAction = Route::url(
                 echo $this->pagination(
                     $this->total,
                     $this->filters['start'],
-                    $this->filters['limit']
+                    $this->filters['limit'],
                 );
                 ?></td>
             </tr>
@@ -91,7 +91,7 @@ if ($this->rows) {
         $editUrl = Route::url(
             'index.php?option=' . $this->option
             . '&controller=' . $this->controller
-            . '&task=edit&id=' . $avalue
+            . '&task=edit&id=' . $avalue,
         );
         ?>
             <tr class="<?php echo "row$k"; ?>">

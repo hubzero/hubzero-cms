@@ -22,7 +22,7 @@ class Migration20190226092252ComCoursesAddAnnouncementsPublishUp extends Base
     public static $announcementsColumns = [
         ['name' => 'publish_down', 'type' => 'timestamp', 'default' => "'0000-00-00 00:00:00'"],
         ['name' => 'publish_up', 'type' => 'timestamp', 'default' => "'0000-00-00 00:00:00'"],
-        ['name' => 'sticky', 'type' => 'tinyint(2)', 'default' => '0']
+        ['name' => 'sticky', 'type' => 'tinyint(2)', 'default' => '0'],
     ];
 
     public function up()
@@ -45,7 +45,7 @@ class Migration20190226092252ComCoursesAddAnnouncementsPublishUp extends Base
         $query = $this->_generateSafeAlterTableColumnOperation(
             $table,
             $columns,
-            '_safeAddColumn'
+            '_safeAddColumn',
         );
 
         return $query;
@@ -71,7 +71,7 @@ class Migration20190226092252ComCoursesAddAnnouncementsPublishUp extends Base
         $query = $this->_generateSafeAlterTableColumnOperation(
             $table,
             $columns,
-            '_safeDropColumn'
+            '_safeDropColumn',
         );
 
         return $query;

@@ -31,13 +31,13 @@ abstract class ContentAdministrator
                 'disabled.png',
                 'articles.featured',
                 'COM_CONTENT_UNFEATURED',
-                'COM_CONTENT_TOGGLE_TO_FEATURE'
+                'COM_CONTENT_TOGGLE_TO_FEATURE',
             ],
             1 => [
                 'featured.png',
                 'articles.unfeatured',
                 'COM_CONTENT_FEATURED',
-                'COM_CONTENT_TOGGLE_TO_UNFEATURE'
+                'COM_CONTENT_TOGGLE_TO_UNFEATURE',
             ],
         ];
         $state = Arr::getValue($states, (int) $value, $states[1]);

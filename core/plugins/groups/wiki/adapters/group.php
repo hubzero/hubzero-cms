@@ -25,7 +25,7 @@ class Group extends Base
     protected $_segments = [
         'option' => 'com_groups',
         'cn'     => '',
-        'active' => 'wiki'
+        'active' => 'wiki',
     ];
 
     /**
@@ -125,7 +125,7 @@ class Group extends Base
             'option' => $this->_segments['option'],
             'cn'     => $this->_segments['cn'],
             'active' => $this->_segments['active'],
-            'action' => $task
+            'action' => $task,
         ];
     }
 

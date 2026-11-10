@@ -89,7 +89,7 @@ class ArticlesArchive extends Module
 
             $lists[$i]->link = Route::url(
                 'index.php?option=com_content&view=archive&year=' . $created_year .
-                '&month=' . $created_month . $itemid
+                '&month=' . $created_month . $itemid,
             );
             $lists[$i]->text = Lang::txt('MOD_ARTICLES_ARCHIVE_DATE', $month_name_cal, $created_year_cal);
 

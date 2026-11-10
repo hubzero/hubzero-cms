@@ -108,7 +108,7 @@ class Site extends Base
     {
         return [
             'option' => $this->_segments['option'],
-            'task'   => $task
+            'task'   => $task,
         ];
     }
 }

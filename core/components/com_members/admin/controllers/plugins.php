@@ -67,36 +67,36 @@ class Plugins extends AdminController
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'filter_search',
-                ''
+                '',
             )),
             'state' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.state',
                 'filter_state',
-                ''
+                '',
             ),
             'access' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.access',
                 'filter_access',
                 0,
-                'int'
+                'int',
             ),
             'enabled' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.enabled',
                 'filter_state',
                 '',
-                'int'
+                'int',
             ),
             // Get sorting variables
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'folder'
+                'folder',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         $query = Plugin::all()
@@ -201,8 +201,8 @@ class Plugins extends AdminController
             [
                 $this->_option,
                 $this->_controller,
-                Request::getString('action', 'default')
-            ]
+                Request::getString('action', 'default'),
+            ],
         );
 
         $html = '';
@@ -237,7 +237,7 @@ class Plugins extends AdminController
             'unpublish' => 0,
             'archive'   => 2,
             'trash'     => -2,
-            'report'    => -3
+            'report'    => -3,
         ];
         $task  = $this->getTask();
         $value = Arr::getValue($data, $task, 0, 'int');

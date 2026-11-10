@@ -224,7 +224,7 @@ class Login extends AdminController
         $userid = Request::getInt('uid', null);
 
         $result = App::get('auth')->logout($userid, [
-            'clientid' => ($userid ? 0 : 1)
+            'clientid' => ($userid ? 0 : 1),
         ]);
 
         if (!($result instanceof Exception)) {

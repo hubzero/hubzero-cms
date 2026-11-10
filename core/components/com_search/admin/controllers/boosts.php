@@ -25,13 +25,13 @@ class Boosts extends AdminController
 
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_taskMap = [
-        '__default' => 'list'
+        '__default' => 'list',
     ];
 
     public function execute()
     {
         $this->crudHelper = new RecordProcessingHelper([
-            'controller' => $this
+            'controller' => $this,
         ]);
         $this->factory = new BoostFactory();
         $this->typeHelper = new TypeOptionsHelper();
@@ -44,12 +44,12 @@ class Boosts extends AdminController
         $sortField = Request::getState(
             "$this->_option.$this->_controller.sort",
             'filter_order',
-            'id'
+            'id',
         );
         $sortDirection = Request::getState(
             "$this->_option.$this->_controller.sortdir",
             'filter_order_Dir',
-            'ASC'
+            'ASC',
         );
 
         $boosts = Boost::all()

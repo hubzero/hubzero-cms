@@ -16,7 +16,7 @@ Html::behavior('modal');
 ?>
 <?php
 $langUrl = Route::url(
-    'index.php?option=com_languages&view=multilangstatus&tmpl=component'
+    'index.php?option=com_languages&view=multilangstatus&tmpl=component',
 );
 ?>
 <span class="multilanguage"><a class="modal"

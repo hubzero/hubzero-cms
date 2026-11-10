@@ -40,7 +40,7 @@ class File extends Field
             'accept'       => ($this->element['accept']    ? (string) $this->element['accept'] : ''),
             'class'        => ($this->element['class']     ? (string) $this->element['class']  : ''),
             'disabled'     => ((string) $this->element['disabled'] == 'true'    ? 'disabled' : ''),
-            'onchange'     => ($this->element['onchange']  ? (string) $this->element['onchange'] : '')
+            'onchange'     => ($this->element['onchange']  ? (string) $this->element['onchange'] : ''),
         ];
 
         $attr = [];

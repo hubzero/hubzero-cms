@@ -74,8 +74,8 @@ class Memcache extends Store
                 [
                     'host'   => $conf->get('memcache_server_host', 'localhost'),
                     'port'   => $conf->get('memcache_server_port', 11211),
-                    'weight' => $conf->get('memcache_persist', true)
-                ]
+                    'weight' => $conf->get('memcache_persist', true),
+                ],
             ];
         }
 
@@ -101,7 +101,7 @@ class Memcache extends Store
             $this->engine->addServer(
                 $server['host'],
                 $server['port'],
-                $server['weight']
+                $server['weight'],
             );
         }
 

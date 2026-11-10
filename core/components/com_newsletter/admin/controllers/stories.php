@@ -205,7 +205,7 @@ class Stories extends AdminController
                 . '&controller=' . $this->_controller
                 . '&task=add&type=autogen&id=' . $nid;
             App::redirect(
-                Route::url($url, false)
+                Route::url($url, false),
             );
         }
 
@@ -347,7 +347,7 @@ class Stories extends AdminController
         $url = 'index.php?option=com_newsletter&controller=newsletters&task=edit&id='
             . $id . '#' . $type . '-stories';
         App::redirect(
-            Route::url($url, false)
+            Route::url($url, false),
         );
     }
 
@@ -397,7 +397,7 @@ class Stories extends AdminController
         $id = !empty($story) ? $story['nid'] : $nid;
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=newsletters&task=edit&id=' . $id, false)
+            Route::url('index.php?option=' . $this->_option . '&controller=newsletters&task=edit&id=' . $id, false),
         );
     }
 }

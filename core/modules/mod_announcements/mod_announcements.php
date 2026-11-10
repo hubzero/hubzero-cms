@@ -54,11 +54,11 @@ class Announcements extends Module
             ->whereEquals('a.state', 1)
             ->whereRaw(
                 '(a.publish_up IS NULL OR a.publish_up = ' . $db->quote($nullDate) .
-                ' OR a.publish_up <= ' . $db->quote($now) . ')'
+                ' OR a.publish_up <= ' . $db->quote($now) . ')',
             )
             ->whereRaw(
                 '(a.publish_down IS NULL OR a.publish_down = ' . $db->quote($nullDate) .
-                ' OR a.publish_down >= ' . $db->quote($now) . ')'
+                ' OR a.publish_down >= ' . $db->quote($now) . ')',
             )
             ->whereEquals('cc.id', (int) $catid)
             ->whereEquals('cc.published', 1)

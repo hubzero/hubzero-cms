@@ -50,38 +50,38 @@ class Assets extends AdminController
             'tmpl' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.tmpl',
                 'tmpl',
-                ''
+                '',
             ),
             'asset_scope' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.scope',
                 'scope',
-                'asset_group'
+                'asset_group',
             ),
             'asset_scope_id' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.scope_id',
                 'scope_id',
                 0,
-                'int'
+                'int',
             ),
             'course_id' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.course_id',
                 'course_id',
                 0,
-                'int'
+                'int',
             ),
             // Filters for returning results
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limitstart',
                 'limitstart',
                 0,
-                'int'
-            )
+                'int',
+            ),
         ];
 
         $tbl = new Tables\Asset($this->database);
@@ -96,7 +96,7 @@ class Assets extends AdminController
         }
 
         $rows = $tbl->find([
-            'w' => $where
+            'w' => $where,
         ]);
 
         // print_r($rows);
@@ -110,7 +110,7 @@ class Assets extends AdminController
         $this->view->rows = $r;
 
         $assets = $tbl->find([
-            'w' => ['course_id' => $this->view->filters['course_id']]
+            'w' => ['course_id' => $this->view->filters['course_id']],
         ]);
         $a = [];
         if ($assets) {
@@ -165,7 +165,7 @@ class Assets extends AdminController
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id, false),
             ($this->getError() ? $this->getError() : null),
-            ($this->getError() ? 'error' : 'message')
+            ($this->getError() ? 'error' : 'message'),
         );
     }
 
@@ -207,7 +207,7 @@ class Assets extends AdminController
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id, false),
             ($this->getError() ? $this->getError() : null),
-            ($this->getError() ? 'error' : 'message')
+            ($this->getError() ? 'error' : 'message'),
         );
     }
 
@@ -391,7 +391,7 @@ class Assets extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $fields['scope'] . '&scope_id=' . $fields['scope_id'] . '&course_id=' . $fields['course_id'], false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $fields['scope'] . '&scope_id=' . $fields['scope_id'] . '&course_id=' . $fields['course_id'], false),
         );
     }
 
@@ -426,7 +426,7 @@ class Assets extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id, false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id, false),
         );
     }
 
@@ -443,7 +443,7 @@ class Assets extends AdminController
         $course_id = Request::getInt('course_id', 0);
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id, false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id, false),
         );
     }
 }

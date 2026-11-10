@@ -109,14 +109,14 @@ class Migration20180524092913ComGroups extends Base
             if ($group->get('public_desc')) {
                 $publicDescriptionAnswers[] = [
                     'group_id' => $group->get('gidNumber'),
-                    'value' => $group->get('public_desc')
+                    'value' => $group->get('public_desc'),
                 ];
             }
 
             if ($group->get('private_desc')) {
                 $privateDescriptionAnswers[] = [
                     'group_id' => $group->get('gidNumber'),
-                    'value' => $group->get('private_desc')
+                    'value' => $group->get('private_desc'),
                 ];
             }
         }
@@ -128,8 +128,8 @@ class Migration20180524092913ComGroups extends Base
                     'label' => 'Public Description',
                     'access' => 0,
                     'ordering' => 1,
-                    'rows' => 10
-                ]
+                    'rows' => 10,
+                ],
             );
         if ($publicDescField->save()) {
             if (!empty($publicDescriptionAnswers)) {
@@ -144,8 +144,8 @@ class Migration20180524092913ComGroups extends Base
                     'label' => 'Private Description',
                     'access' => 2,
                     'ordering' => 1,
-                    'rows' => 10
-                ]
+                    'rows' => 10,
+                ],
             );
         if ($privateDescField->save()) {
             if (!empty($privateDescriptionAnswers)) {

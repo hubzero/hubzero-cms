@@ -43,18 +43,18 @@ class Abusereports extends AdminController
                 $this->_option . '.' . $this->_controller . '.state',
                 'state',
                 0,
-                'int'
+                'int',
             ),
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'created'
+                'created',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         // Fetch results
@@ -97,7 +97,7 @@ class Abusereports extends AdminController
         // Get the parent ID
         $results = Event::trigger('support.getParentId', [
             $report->get('referenceid'),
-            $report->get('category')
+            $report->get('category'),
         ]);
 
         // Check the results returned for a parent ID
@@ -114,7 +114,7 @@ class Abusereports extends AdminController
         $results = Event::trigger('support.getReportedItem', [
             $report->get('referenceid'),
             $cat,
-            $parentid
+            $parentid,
         ]);
 
         // Check the results returned for a reported item
@@ -130,7 +130,7 @@ class Abusereports extends AdminController
         // Get the title
         $titles = Event::trigger('support.getTitle', [
             $report->get('category'),
-            $parentid
+            $parentid,
         ]);
 
         // Check the results returned for a title
@@ -190,7 +190,7 @@ class Abusereports extends AdminController
         $results = Event::trigger('support.releaseReportedItem', [
             $report->get('referenceid'),
             $parentid,
-            $report->get('category')
+            $report->get('category'),
         ]);
 
         Notify::success(Lang::txt('COM_SUPPORT_REPORT_ITEM_RELEASED_SUCCESSFULLY'));
@@ -247,7 +247,7 @@ class Abusereports extends AdminController
         $results = Event::trigger('support.getReportedItem', [
             $report->get('referenceid'),
             $report->get('category'),
-            $parentid
+            $parentid,
         ]);
 
         // Check the results returned for a reported item
@@ -265,7 +265,7 @@ class Abusereports extends AdminController
             $report->get('referenceid'),
             $parentid,
             $report->get('category'),
-            $message
+            $message,
         ]);
 
         if ($results) {
@@ -280,7 +280,7 @@ class Abusereports extends AdminController
         if ($isSpam && $reported) {
             $results = Event::trigger('antispam.onAntispamTrain', [
                 $reported->text,
-                $isSpam
+                $isSpam,
             ]);
         }
 
@@ -302,7 +302,7 @@ class Abusereports extends AdminController
             $from = [
                 'name'  => Config::get('sitename') . ' ' . Lang::txt('COM_SUPPORT'),
                 'email' => Config::get('mailfrom'),
-                'multipart' => md5(date('U'))
+                'multipart' => md5(date('U')),
             ];
 
             // Email subject
@@ -312,7 +312,7 @@ class Abusereports extends AdminController
             $eview = new View([
                 'base_path' => dirname(dirname(__DIR__)) . DS . 'site',
                 'name'      => 'emails',
-                'layout'    => 'abuse_plain'
+                'layout'    => 'abuse_plain',
             ]);
             $eview->option     = $this->_option;
             $eview->controller = $this->_controller;

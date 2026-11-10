@@ -80,7 +80,7 @@ class Migration20140305142845Core extends Base
         $configuration = preg_replace(
             '/(var \$offset[\s]*=[\s]*[\'"]*)UTC([\'"]*)/',
             '$1' . $tz . '$2',
-            $configuration
+            $configuration,
         );
         file_put_contents(PATH_ROOT . DS . 'configuration.php', $configuration);
     }

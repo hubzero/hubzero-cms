@@ -33,7 +33,7 @@ class Groups extends Plugin
     public function &onResourcesSubAreas($resource)
     {
         $areas = [
-            'groups' => Lang::txt('PLG_RESOURCES_GROUPS')
+            'groups' => Lang::txt('PLG_RESOURCES_GROUPS'),
         ];
         return $areas;
     }
@@ -51,7 +51,7 @@ class Groups extends Plugin
         $arr = [
             'area'     => $this->_name,
             'html'     => '',
-            'metadata' => ''
+            'metadata' => '',
         ];
 
         if (!$resource->get('group_owner') || substr($resource->get('group_owner'), 0, strlen('app-')) == 'app-') {

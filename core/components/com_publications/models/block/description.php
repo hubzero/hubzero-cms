@@ -71,8 +71,8 @@ class Description extends Base
             $view = new \Hubzero\Component\View(
                 [
                     'name'      => 'curation',
-                    'layout'    => 'block'
-                ]
+                    'layout'    => 'block',
+                ],
             );
         } else {
             $name = $viewname == 'freeze' ? 'freeze' : 'draft';
@@ -83,8 +83,8 @@ class Description extends Base
                     'folder'    => 'projects',
                     'element'   => 'publications',
                     'name'      => $name,
-                    'layout'    => 'wrapper'
-                ]
+                    'layout'    => 'wrapper',
+                ],
             );
         }
 
@@ -276,7 +276,7 @@ class Description extends Base
                 $pub,
                 $status,
                 $viewname,
-                $o
+                $o,
             );
             $o++;
         }
@@ -368,8 +368,8 @@ class Description extends Base
                 'default'       => '',
                 'maxlength'     => '3000',
                 'cols'          => '50',
-                'rows'          => '6'
-            ]
+                'rows'          => '6',
+            ],
         ];
         return json_decode(json_encode($manifest), false);
     }
@@ -410,8 +410,8 @@ class Description extends Base
                             'input'         => 'text',
                             'placeholder'   => 'Type publication title',
                             'default'       => 'Untitled Draft',
-                            'maxlength'     => '255'
-                        ]
+                            'maxlength'     => '255',
+                        ],
                     ],
                     2 =>  [
                         'name'      => 'metadata',
@@ -428,8 +428,8 @@ class Description extends Base
                             'default'       => '',
                             'maxlength'     => '255',
                             'cols'          => '50',
-                            'rows'          => '3'
-                        ]
+                            'rows'          => '3',
+                        ],
                     ],
                     3 =>  [
                         'name'      => 'metadata',
@@ -446,11 +446,11 @@ class Description extends Base
                             'default'       => '',
                             'maxlength'     => '3000',
                             'cols'          => '50',
-                            'rows'          => '6'
-                        ]
-                    ]
+                            'rows'          => '6',
+                        ],
+                    ],
                 ],
-                'params' => ['required' => 1, 'published_editing' => 0, 'collapse_elements' => 1]
+                'params' => ['required' => 1, 'published_editing' => 0, 'collapse_elements' => 1],
             ];
 
             if ($new == true) {

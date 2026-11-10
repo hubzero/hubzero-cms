@@ -24,11 +24,11 @@ class Migration20190221000000ComKb extends Base
         '#__kb_articles' => [
             'created',
             'modified',
-            'checked_out_time'
+            'checked_out_time',
         ],
         '#__kb_comments' => [
-            'created'
-        ]
+            'created',
+        ],
     ];
 
     /**

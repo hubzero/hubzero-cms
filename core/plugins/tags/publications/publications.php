@@ -62,7 +62,7 @@ class Publications extends Plugin
             'total'    => 0,
             'results'  => null,
             'sql'      => '',
-            'children' => []
+            'children' => [],
         ];
 
         $database = App::get('db');
@@ -74,7 +74,7 @@ class Publications extends Plugin
                 'total'    => 0,
                 'results'  => null,
                 'sql'      => '',
-                'id'       => $category->id
+                'id'       => $category->id,
             ];
         }
 
@@ -305,14 +305,14 @@ class Publications extends Plugin
                 . stripslashes(\Components\Publications\Helpers\Html::showContributors(
                     $authors,
                     true,
-                    false
+                    false,
                 ));
         }
         $html .= '</p>' . "\n";
         if ($row->itext) {
             $html .= "\t\t" . '<p>' . \Hubzero\Utility\Str::truncate(
                 \Hubzero\Utility\Sanitize::stripAll(stripslashes($row->itext)),
-                200
+                200,
             ) . '</p>' . "\n";
         }
 

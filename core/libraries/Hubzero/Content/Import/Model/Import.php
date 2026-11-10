@@ -66,7 +66,7 @@ class Import extends Relational
      */
     protected $rules = [
         'name' => 'notempty',
-        'type' => 'notempty'
+        'type' => 'notempty',
     ];
 
     /**
@@ -76,7 +76,7 @@ class Import extends Relational
      **/
     public $initiate = [
         'created_at',
-        'created_by'
+        'created_by',
     ];
 
     /**

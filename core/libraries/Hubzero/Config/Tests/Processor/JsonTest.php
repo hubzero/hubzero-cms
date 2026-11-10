@@ -81,7 +81,7 @@ class JsonTest extends TestCase
         $this->obj = $data;
         $this->arr = [
             'app' => (array) $data->app,
-            'seo' => (array) $data->seo
+            'seo' => (array) $data->seo,
         ];
 
         $this->processor = new Json();
@@ -118,7 +118,7 @@ class JsonTest extends TestCase
         $this->assertFalse(
             $this->processor->canParse('{Cras justo odio,
             dapibus ac facilisis in,
-            egestas eget quam.}')
+            egestas eget quam.}'),
         );
         $this->assertTrue($this->processor->canParse($this->str));
     }

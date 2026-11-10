@@ -105,7 +105,7 @@ $base = rtrim(Request::base(true), '/');
             $stat->threemonth_primary,
             $stat->twomonth_primary,
             $stat->lastmonth_primary,
-            $stat->thismonth_primary
+            $stat->thismonth_primary,
         );
 
         $i++;

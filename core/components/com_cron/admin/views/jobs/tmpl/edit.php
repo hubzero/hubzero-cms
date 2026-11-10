@@ -112,7 +112,7 @@ foreach ($this->getErrors() as $error) {
                             }
                             $param = new \Hubzero\Html\Parameter(
                                 (is_object($data) ? $data->toString() : $data),
-                                $path . DS . $plugin->plugin . '.xml'
+                                $path . DS . $plugin->plugin . '.xml',
                             );
                             $param->addElementPath($path);
 

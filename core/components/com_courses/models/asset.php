@@ -55,8 +55,8 @@ class Asset extends Base
     protected static $_aux_tablekeys = [
         'progress_factors' => [
             'id',
-            'section_id'
-        ]
+            'section_id',
+        ],
     ];
 
     /**
@@ -175,7 +175,7 @@ class Asset extends Base
             $dt->load(
                 $this->get('id'),
                 $this->_scope,
-                $this->get('section_id')
+                $this->get('section_id'),
             );
             $dt->set('publish_up', $this->get('publish_up'));
             $dt->set('publish_down', $this->get('publish_down'));
@@ -319,7 +319,7 @@ class Asset extends Base
         $view = new \Hubzero\Component\View([
             'base_path' => PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'site',
             'name'      => 'assets',
-            'layout'    => $layout
+            'layout'    => $layout,
         ]);
         $view->asset   = $this->_tbl;
         $view->model   = $this;

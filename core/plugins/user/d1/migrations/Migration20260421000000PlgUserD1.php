@@ -29,7 +29,7 @@ class Migration20260421000000PlgUserD1 extends Base
             foreach (['d1_nation', 'd1_override'] as $cn) {
                 $this->db->setQuery(
                     "INSERT IGNORE INTO `#__xgroups` (cn, description, published, approved, type, join_policy, discoverability, created)" .
-                    " VALUES (" . $this->db->quote($cn) . ", " . $this->db->quote($cn) . ", 1, 1, 1, 3, 1, NOW())"
+                    " VALUES (" . $this->db->quote($cn) . ", " . $this->db->quote($cn) . ", 1, 1, 1, 3, 1, NOW())",
                 );
                 $this->db->query();
             }
@@ -45,7 +45,7 @@ class Migration20260421000000PlgUserD1 extends Base
 
         if ($this->db->tableExists('#__xgroups')) {
             $this->db->setQuery(
-                "DELETE FROM `#__xgroups` WHERE cn IN ('d1_nation', 'd1_override')"
+                "DELETE FROM `#__xgroups` WHERE cn IN ('d1_nation', 'd1_override')",
             );
             $this->db->query();
         }

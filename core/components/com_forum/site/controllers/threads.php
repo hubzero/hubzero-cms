@@ -67,25 +67,25 @@ class Threads extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         if (isset($section)) {
             Pathway::append(
                 Str::truncate(stripslashes($section->get('title')), 100, ['exact' => true]),
-                'index.php?option=' . $this->_option . '&section=' . $section->get('alias')
+                'index.php?option=' . $this->_option . '&section=' . $section->get('alias'),
             );
         }
         if (isset($category)) {
             Pathway::append(
                 Str::truncate(stripslashes($category->get('title')), 100, ['exact' => true]),
-                'index.php?option=' . $this->_option . '&section=' . $section->get('alias') . '&category=' . $category->get('alias')
+                'index.php?option=' . $this->_option . '&section=' . $section->get('alias') . '&category=' . $category->get('alias'),
             );
         }
         if (isset($thread) && $thread->get('id')) {
             Pathway::append(
                 '#' . $thread->get('id') . ' - ' . Str::truncate(stripslashes($thread->get('title')), 100, ['exact' => true]),
-                'index.php?option=' . $this->_option . '&section=' . $section->get('alias') . '&category=' . $category->get('alias') . '&thread=' . $thread->get('id')
+                'index.php?option=' . $this->_option . '&section=' . $section->get('alias') . '&category=' . $category->get('alias') . '&thread=' . $thread->get('id'),
             );
         }
     }
@@ -130,7 +130,7 @@ class Threads extends SiteController
             'parent'   => Request::getInt('parent', ''),
             'thread'   => Request::getInt('thread', 0),
             'state'    => Post::STATE_PUBLISHED,
-            'access'   => User::getAuthorisedViewLevels()
+            'access'   => User::getAuthorisedViewLevels(),
         ];
 
         // Section
@@ -175,7 +175,7 @@ class Threads extends SiteController
         if (!in_array($thread->get('access'), User::getAuthorisedViewLevels())) {
             $return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $filters['section'] . '&category=' . $filters['category'] . '&thread=' . $filters['thread'], false, true));
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . $return)
+                Route::url('index.php?option=com_users&view=login&return=' . $return),
             );
         }
 
@@ -243,7 +243,7 @@ class Threads extends SiteController
             }
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)) . Lang::txt('COM_FORUM_LOGIN_NOTICE'),
-                'warning'
+                'warning',
             );
         }
 
@@ -312,7 +312,7 @@ class Threads extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&section=' . $section->get('alias') . '&category=' . $category->get('alias')),
                 Lang::txt('COM_FORUM_NOT_AUTHORIZED'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -344,7 +344,7 @@ class Threads extends SiteController
         if (User::isGuest()) {
             $return = Route::url('index.php?option=' . $this->_option, false, true);
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
         }
 
@@ -362,7 +362,7 @@ class Threads extends SiteController
         $fields = array_intersect_key($fields, array_flip([
             'id', 'title', 'comment', 'category_id', 'access', 'anonymous',
             'parent', 'thread', 'state', 'sticky', 'closed',
-            'scope', 'scope_id', 'scope_sub_id', 'object_id'
+            'scope', 'scope_id', 'scope_sub_id', 'object_id',
         ]));
 
         $fields['sticky']    = (isset($fields['sticky']))    ? $fields['sticky']    : 0;
@@ -417,7 +417,7 @@ class Threads extends SiteController
             && !$this->_moderates('core.edit', $assetType, intval($fields['id']))
         ) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option)
+                Route::url('index.php?option=' . $this->_option),
             );
             return;
         }
@@ -427,7 +427,7 @@ class Threads extends SiteController
             && !$this->config->get('access-create-' . $assetType)
         ) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option)
+                Route::url('index.php?option=' . $this->_option),
             );
         }
 
@@ -558,12 +558,12 @@ class Threads extends SiteController
         $recipients = [
             ['forum.site', 1],
             ['forum.section', $category->get('section_id')],
-            ['user', $post->get('created_by')]
+            ['user', $post->get('created_by')],
         ];
         $type = 'thread';
         $desc = Lang::txt(
             'COM_FORUM_ACTIVITY_' . strtoupper($type) . '_' . ($fields['id'] ? 'UPDATED' : 'CREATED'),
-            '<a href="' . Route::url($url) . '">' . htmlspecialchars((string) $post->get('title'), ENT_QUOTES, 'UTF-8') . '</a>'
+            '<a href="' . Route::url($url) . '">' . htmlspecialchars((string) $post->get('title'), ENT_QUOTES, 'UTF-8') . '</a>',
         );
         // If this is a post in a thread and not the thread starter...
         if ($post->get('parent')) {
@@ -583,7 +583,7 @@ class Threads extends SiteController
             $desc = Lang::txt(
                 'COM_FORUM_ACTIVITY_' . strtoupper($type) . '_' . ($fields['id'] ? 'UPDATED' : 'CREATED'),
                 $post->get('id'),
-                '<a href="' . Route::url($url) . '">' . htmlspecialchars((string) $thread->get('title'), ENT_QUOTES, 'UTF-8') . '</a>'
+                '<a href="' . Route::url($url) . '">' . htmlspecialchars((string) $thread->get('title'), ENT_QUOTES, 'UTF-8') . '</a>',
             );
 
             // If the parent post is not the same as the
@@ -617,17 +617,17 @@ class Threads extends SiteController
                 'description' => $desc,
                 'details'     => [
                     'thread' => $post->get('thread'),
-                    'url'    => Route::url($url)
-                ]
+                    'url'    => Route::url($url),
+                ],
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         // Set the redirect
         App::redirect(
             Route::url($url),
             $message,
-            'message'
+            'message',
         );
     }
 
@@ -649,7 +649,7 @@ class Threads extends SiteController
         $eView = new \Hubzero\Mail\View([
             'base_path' => $dirTemplate . DS . 'site',
             'name'   => 'emails',
-            'layout' => 'mentions_html'
+            'layout' => 'mentions_html',
         ]);
 
         $eView->comment = $comment;
@@ -691,7 +691,7 @@ class Threads extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category),
                 Lang::txt('COM_FORUM_LOGIN_NOTICE'),
-                'warning'
+                'warning',
             );
         }
 
@@ -714,7 +714,7 @@ class Threads extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category),
                 Lang::txt('COM_FORUM_MISSING_ID'),
-                'error'
+                'error',
             );
         }
 
@@ -729,7 +729,7 @@ class Threads extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category),
                 Lang::txt('COM_FORUM_NOT_AUTHORIZED'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -738,7 +738,7 @@ class Threads extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category),
                 Lang::txt('COM_FORUM_NOT_AUTHORIZED'),
-                'warning'
+                'warning',
             );
         }
 
@@ -751,7 +751,7 @@ class Threads extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category),
                 $post->getError(),
-                'error'
+                'error',
             );
         }
 
@@ -760,7 +760,7 @@ class Threads extends SiteController
         $type = 'thread';
         $desc = Lang::txt(
             'COM_FORUM_ACTIVITY_' . strtoupper($type) . '_DELETED',
-            '<a href="' . Route::url($url) . '">' . htmlspecialchars((string) $post->get('title'), ENT_QUOTES, 'UTF-8') . '</a>'
+            '<a href="' . Route::url($url) . '">' . htmlspecialchars((string) $post->get('title'), ENT_QUOTES, 'UTF-8') . '</a>',
         );
         if ($post->get('parent')) {
             $thread = Post::oneOrFail($post->get('thread'));
@@ -769,7 +769,7 @@ class Threads extends SiteController
             $desc = Lang::txt(
                 'COM_FORUM_ACTIVITY_' . strtoupper($type) . '_DELETED',
                 $post->get('id'),
-                '<a href="' . Route::url($url) . '">' . htmlspecialchars((string) $thread->get('title'), ENT_QUOTES, 'UTF-8') . '</a>'
+                '<a href="' . Route::url($url) . '">' . htmlspecialchars((string) $thread->get('title'), ENT_QUOTES, 'UTF-8') . '</a>',
             );
         }
 
@@ -781,20 +781,20 @@ class Threads extends SiteController
                 'description' => $desc,
                 'details'     => [
                     'thread' => $post->get('thread'),
-                    'url'    => Route::url($url)
-                ]
+                    'url'    => Route::url($url),
+                ],
             ],
             'recipients' => [
                 ['forum.site', 1],
-                ['user', $post->get('created_by')]
-            ]
+                ['user', $post->get('created_by')],
+            ],
         ]);
 
         // Redirect to main listing
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category),
             Lang::txt('COM_FORUM_THREAD_DELETED'),
-            'message'
+            'message',
         );
     }
 
@@ -834,7 +834,7 @@ class Threads extends SiteController
         if (User::isGuest() && !in_array($post->get('access'), User::getAuthorisedViewLevels())) {
             $return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $section . '&category=' . $category . '&thread=' . $thread_id . '&post=' . $post_id . '&file=' . $file));
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . $return)
+                Route::url('index.php?option=com_users&view=login&return=' . $return),
             );
         }
 

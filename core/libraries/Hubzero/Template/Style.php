@@ -50,7 +50,7 @@ class Style
 
         $db->setQuery(
             "SELECT `id` FROM `#__template_styles` WHERE `client_id` = " . (int) $client
-            . " AND `template` = " . $db->quote($template) . " ORDER BY `home` DESC, `id` ASC"
+            . " AND `template` = " . $db->quote($template) . " ORDER BY `home` DESC, `id` ASC",
         );
         $id = (int) $db->loadResult();
 
@@ -67,7 +67,7 @@ class Style
             $db->setQuery(
                 "INSERT INTO `#__template_styles` (`template`, `client_id`, `home`, `title`, `params`)"
                 . " VALUES (" . $db->quote($template) . ", " . (int) $client . ", 0, "
-                . $db->quote($template) . ", '{}')"
+                . $db->quote($template) . ", '{}')",
             );
             $db->query();
 
@@ -77,7 +77,7 @@ class Style
         }
 
         $db->setQuery(
-            "UPDATE `#__template_styles` SET `home` = 0 WHERE `client_id` = " . (int) $client
+            "UPDATE `#__template_styles` SET `home` = 0 WHERE `client_id` = " . (int) $client,
         );
         $db->query();
 
@@ -104,7 +104,7 @@ class Style
 
         $db->setQuery(
             "SELECT `template` FROM `#__template_styles`"
-            . " WHERE `client_id` = " . (int) $client . " AND `home` = 1"
+            . " WHERE `client_id` = " . (int) $client . " AND `home` = 1",
         );
 
         return (string) $db->loadResult();

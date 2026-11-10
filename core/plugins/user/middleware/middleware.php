@@ -72,7 +72,7 @@ class Middleware extends Plugin
                         'hard_files'  => $row->get('hard_files', 0),
                         'soft_files'  => $row->get('soft_files', 0),
                         'hard_blocks' => $row->get('hard_blocks', 0),
-                        'soft_blocks' => $row->get('soft_blocks', 0)
+                        'soft_blocks' => $row->get('soft_blocks', 0),
                     ];
 
                     $db->setQuery("SELECT c.* FROM `#__users_quotas_classes` AS c"
@@ -134,7 +134,7 @@ class Middleware extends Plugin
                 // If (no quota record OR a record and a quota class [e.g., not custom]) ...
                 if (!$row->id || ($row->id && $row->class_id)) {
                     $val = [
-                        'jobs'  => 0
+                        'jobs'  => 0,
                     ];
 
                     $db->setQuery("SELECT c.* FROM `#__tool_session_classes` AS c"

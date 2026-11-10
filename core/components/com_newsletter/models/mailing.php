@@ -42,7 +42,7 @@ class Mailing extends Relational
      * @var  array
      */
     protected $rules = [
-        'nid' => 'positive|nonzero'
+        'nid' => 'positive|nonzero',
     ];
 
     /**

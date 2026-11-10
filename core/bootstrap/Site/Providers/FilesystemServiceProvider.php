@@ -41,7 +41,7 @@ class FilesystemServiceProvider extends ServiceProvider
             } else {
                 $adapter = new Local($app['config']->get(
                     'virus_scanner',
-                    "clamscan -i --no-summary --block-encrypted"
+                    "clamscan -i --no-summary --block-encrypted",
                 ));
             }
 

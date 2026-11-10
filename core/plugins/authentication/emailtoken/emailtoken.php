@@ -97,7 +97,7 @@ class Emailtoken extends Plugin
             App::redirect(
                 Route::url('index.php?option=com_users&view=login', false),
                 Lang::txt('This account is already activated, please login'),
-                'warning'
+                'warning',
             );
         }
 
@@ -120,7 +120,7 @@ class Emailtoken extends Plugin
         $prefs = [
             'user_id'       => $user->get('id'),
             'user_img'      => $user->picture(0, false),
-            'authenticator' => 'emailtoken'
+            'authenticator' => 'emailtoken',
         ];
 
         $namespace = 'authenticator';
@@ -159,8 +159,8 @@ class Emailtoken extends Plugin
             \Hubzero\User\User::oneOrFail($user->id)->logger()->auth()->save(
                 [
                 'username' => $user->username,
-                'status'   => 'blocked'
-                ]
+                'status'   => 'blocked',
+                ],
             );
         }
 

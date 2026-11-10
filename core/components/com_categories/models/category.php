@@ -46,7 +46,7 @@ class Category extends Nested
     protected $rules = [
         'title'    => 'notempty',
         'content'  => 'notempty',
-        'scope'    => 'notempty'
+        'scope'    => 'notempty',
     ];
 
     /**
@@ -60,7 +60,7 @@ class Category extends Nested
         'modified_user_id',
         'asset_id',
         'modified_time',
-        'path'
+        'path',
     ];
 
     /**
@@ -73,7 +73,7 @@ class Category extends Nested
         'created_user_id',
         // without this a category saved with no alias is stored with an empty
         // alias and path (automaticAlias() existed but was never registered)
-        'alias'
+        'alias',
     ];
 
     /**
@@ -251,7 +251,7 @@ class Category extends Nested
             '0' => 'Unpublished',
             '1' => 'Published',
             '2' => 'Archived',
-            '-2' => 'Trashed'
+            '-2' => 'Trashed',
         ];
         $stateNum = $this->get('published', 0);
         return $states[$stateNum];
@@ -397,7 +397,7 @@ class Category extends Nested
         $query = $db->getQuery()
             ->update($this->getTableName())
             ->set([
-                'path' => $path
+                'path' => $path,
             ])
             ->whereEquals('id', (int) $this->get('id'));
         $db->setQuery($query->toString());
@@ -463,7 +463,7 @@ class Category extends Nested
                 'lft'   => (int) $leftId,
                 'rgt'   => (int) $rightId,
                 'level' => (int) $level,
-                'path'  => $path
+                'path'  => $path,
             ])
             ->whereEquals('id', (int) $parentId);
 

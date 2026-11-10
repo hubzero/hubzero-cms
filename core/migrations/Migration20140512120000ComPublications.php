@@ -160,8 +160,8 @@ class Migration20140512120000ComPublications extends Base
                     'maximum' => 1,
                     'ordering' => 8,
                     'params' => 'default=1',
-                    'manifest' => ''
-                ]
+                    'manifest' => '',
+                ],
             ];
 
             foreach ($blocks as $block) {
@@ -196,7 +196,7 @@ class Migration20140512120000ComPublications extends Base
                     'title'  => 'Image Gallery Presenter',
                     'status' => 1,
                     'about'  => '',
-                    'params' => ''
+                    'params' => '',
                 ])
                 ->execute();
         }

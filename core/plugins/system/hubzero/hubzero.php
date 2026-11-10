@@ -38,7 +38,7 @@ class Hubzero extends Plugin
             $key = App::hash('');
             $crypt = new \Hubzero\Encryption\Encrypter(
                 new \Hubzero\Encryption\Cipher\Simple(),
-                new \Hubzero\Encryption\Key('simple', $key, $key)
+                new \Hubzero\Encryption\Key('simple', $key, $key),
             );
 
             if ($str = Request::getString($hash, '', 'cookie', 1 | 2)) {
@@ -51,7 +51,7 @@ class Hubzero extends Plugin
                     $key = App::hash(@$_SERVER['HTTP_USER_AGENT']);
                     $crypt = new \Hubzero\Encryption\Encrypter(
                         new \Hubzero\Encryption\Cipher\Simple(),
-                        new \Hubzero\Encryption\Key('simple', $key, $key)
+                        new \Hubzero\Encryption\Key('simple', $key, $key),
                     );
                     $sstr = $crypt->decrypt($str);
                     $tracker = @unserialize($sstr);

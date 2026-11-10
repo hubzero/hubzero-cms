@@ -21,7 +21,7 @@ $filters = [
     'members'  => Lang::txt('PLG_GROUPS_MEMBERS'),
     'managers' => Lang::txt('PLG_GROUPS_MEMBERS_MANAGERS'),
     'pending'  => Lang::txt('PLG_GROUPS_MEMBERS_PENDING'),
-    'invitees' => Lang::txt('PLG_GROUPS_MEMBERS_INVITEES')
+    'invitees' => Lang::txt('PLG_GROUPS_MEMBERS_INVITEES'),
 ];
 
 if ($this->filter == '') {
@@ -193,7 +193,7 @@ $option = 'com_groups';
                             // get all sessions
                             $sessions = Hubzero\Session\Helper::getAllSessions([
                                 'guest'    => 0,
-                                'distinct' => 1
+                                'distinct' => 1,
                             ]);
 
                             // Loop through the results
@@ -348,7 +348,7 @@ $option = 'com_groups';
 										FROM `#__xgroups_roles` as r
 										LEFT JOIN `#__xgroups_member_roles` as m ON m.roleid=r.id
 										WHERE m.uidNumber=" . $db->quote($u->get('id')) . " AND r.gidNumber=" . $db->quote($this->group->gidNumber) . "
-										ORDER BY r.ordering ASC, r.name ASC"
+										ORDER BY r.ordering ASC, r.name ASC",
                                     );
                                     $roles = $db->loadAssocList();
 
@@ -405,7 +405,7 @@ $option = 'com_groups';
                                             'PLG_GROUPS_MEMBERS_EXPIRATION_ENDS',
                                             '<time datetime="' . $this->escape($expires) . '">'
                                                 . Date::of($expires)->toLocal(Lang::txt('DATE_FORMAT_HZ1'))
-                                                . '</time>'
+                                                . '</time>',
                                         );
                                         $html .= '</span>';
                                     }
@@ -542,7 +542,7 @@ $option = 'com_groups';
                 $pageNav = $this->pagination(
                     count($this->groupusers),
                     $this->start,
-                    $this->limit
+                    $this->limit,
                 );
                 $pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
                 $pageNav->setAdditionalUrlParam('active', 'members');

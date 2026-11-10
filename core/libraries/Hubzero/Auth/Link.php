@@ -55,7 +55,7 @@ class Link extends Relational
      */
     protected $rules = [
         'auth_domain_id' => 'positive|nonzero',
-        'username'       => 'notempty'
+        'username'       => 'notempty',
     ];
 
     /**

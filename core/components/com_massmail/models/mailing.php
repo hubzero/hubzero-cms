@@ -55,7 +55,7 @@ class Mailing extends Relational
      * @var  array
      */
     protected $rules = [
-        'subject' => 'notempty'
+        'subject' => 'notempty',
     ];
 
     /**
@@ -65,7 +65,7 @@ class Mailing extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**
@@ -78,7 +78,7 @@ class Mailing extends Relational
      */
     public $renew = [
         'modified',
-        'modified_by'
+        'modified_by',
     ];
 
     /**
@@ -157,7 +157,7 @@ class Mailing extends Relational
     {
         return in_array($this->get('status'), [
             self::STATUS_PREPARING,
-            self::STATUS_SENDING
+            self::STATUS_SENDING,
         ]);
     }
 
@@ -170,7 +170,7 @@ class Mailing extends Relational
     {
         return in_array($this->get('status'), [
             self::STATUS_SENT,
-            self::STATUS_CANCELLED
+            self::STATUS_CANCELLED,
         ]);
     }
 
@@ -202,7 +202,7 @@ class Mailing extends Relational
         return in_array($this->get('status'), [
             self::STATUS_PENDING_APPROVAL,
             self::STATUS_HELD,
-            self::STATUS_SCHEDULED
+            self::STATUS_SCHEDULED,
         ]);
     }
 
@@ -227,7 +227,7 @@ class Mailing extends Relational
             self::STATUS_HELD,
             self::STATUS_PENDING_APPROVAL,
             self::STATUS_SCHEDULED,
-            self::STATUS_CANCELLED
+            self::STATUS_CANCELLED,
         ]);
     }
 
@@ -247,7 +247,7 @@ class Mailing extends Relational
             self::STATUS_SENDING,
             self::STATUS_PAUSED,
             self::STATUS_SENT,
-            self::STATUS_CANCELLED
+            self::STATUS_CANCELLED,
         ];
     }
 }

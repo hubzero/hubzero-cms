@@ -45,7 +45,7 @@ class Type extends Relational
      */
     protected $rules = [
         'role_id' => 'positive|nonzero',
-        'type_id' => 'positive|nonzero'
+        'type_id' => 'positive|nonzero',
     ];
 
     /**

@@ -1104,7 +1104,7 @@ class TableBuilder
         ?string $referencedTable = null,
         string $referencedColumn = 'id',
         string $onDelete = 'CASCADE',
-        string $onUpdate = 'CASCADE'
+        string $onUpdate = 'CASCADE',
     ) {
         // If referencedTable is provided, use legacy non-fluent syntax
         if ($referencedTable !== null) {
@@ -1298,7 +1298,7 @@ class TableBuilder
 
         if (!$this->isCompiledCreateStatementList($compiled)) {
             throw new \UnexpectedValueException(
-                'Schema grammar must return a list of SQL statements from compileCreateTableFromDefinition().'
+                'Schema grammar must return a list of SQL statements from compileCreateTableFromDefinition().',
             );
         }
 

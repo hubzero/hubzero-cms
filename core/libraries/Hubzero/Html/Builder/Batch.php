@@ -37,9 +37,9 @@ class Batch
                 'class="inputbox"',
                 [
                     'title' => Lang::txt('JLIB_HTML_BATCH_NOCHANGE'),
-                    'id'    => 'batch-access'
-                ]
-            )
+                    'id'    => 'batch-access',
+                ],
+            ),
         ];
 
         return implode("\n", $lines);
@@ -56,7 +56,7 @@ class Batch
         // Create the copy/move options.
         $options = [
             Select::option('c', Lang::txt('JLIB_HTML_BATCH_COPY')),
-            Select::option('m', Lang::txt('JLIB_HTML_BATCH_MOVE'))
+            Select::option('m', Lang::txt('JLIB_HTML_BATCH_MOVE')),
         ];
 
         // Create the batch selector to change select the category by which to move or copy.
@@ -70,7 +70,7 @@ class Batch
             Select::options(Category::options($extension)),
             '</select>',
             Select::radiolist($options, 'batch[move_copy]', '', 'value', 'text', 'm'),
-            '</fieldset>'
+            '</fieldset>',
         ];
 
         return implode("\n", $lines);
@@ -95,7 +95,7 @@ class Batch
             '<select name="batch[language_id]" class="inputbox" id="batch-language-id">',
             '<option value="">' . Lang::txt('JLIB_HTML_BATCH_LANGUAGE_NOCHANGE') . '</option>',
             Select::options(Contentlanguage::existing(true, true), 'value', 'text'),
-            '</select>'
+            '</select>',
         ];
 
         return implode("\n", $lines);
@@ -142,7 +142,7 @@ class Batch
             '<option value="">' . Lang::txt('JLIB_HTML_BATCH_USER_NOCHANGE') . '</option>',
             $optionNo,
             Select::options($items, 'value', 'text'),
-            '</select>'
+            '</select>',
         ];
 
         return implode("\n", $lines);

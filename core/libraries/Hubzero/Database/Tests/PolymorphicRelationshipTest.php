@@ -131,7 +131,7 @@ class PolymorphicRelationshipTest extends AbstractDriverTestCase
         $reflection = new \ReflectionClass(MorphTo::class);
         $this->assertTrue(
             $reflection->isSubclassOf('Hubzero\Database\Relationship\Relationship'),
-            'MorphTo should extend Relationship'
+            'MorphTo should extend Relationship',
         );
     }
 
@@ -141,7 +141,7 @@ class PolymorphicRelationshipTest extends AbstractDriverTestCase
         $reflection = new \ReflectionClass(MorphOne::class);
         $this->assertTrue(
             $reflection->isSubclassOf('Hubzero\Database\Relationship\Relationship'),
-            'MorphOne should extend Relationship'
+            'MorphOne should extend Relationship',
         );
     }
 
@@ -151,7 +151,7 @@ class PolymorphicRelationshipTest extends AbstractDriverTestCase
         $reflection = new \ReflectionClass(MorphMany::class);
         $this->assertTrue(
             $reflection->isSubclassOf(MorphOne::class),
-            'MorphMany should extend MorphOne'
+            'MorphMany should extend MorphOne',
         );
     }
 
@@ -161,7 +161,7 @@ class PolymorphicRelationshipTest extends AbstractDriverTestCase
         $reflection = new \ReflectionClass(MorphToMany::class);
         $this->assertTrue(
             $reflection->isSubclassOf('Hubzero\Database\Relationship\OneToManyThrough'),
-            'MorphToMany should extend OneToManyThrough'
+            'MorphToMany should extend OneToManyThrough',
         );
     }
 
@@ -648,7 +648,7 @@ class PolymorphicRelationshipTest extends AbstractDriverTestCase
         $this->assertEquals(
             'video',
             $image->get('imageable_type'),
-            "[$dbName] Should set imageable_type to morph map alias"
+            "[$dbName] Should set imageable_type to morph map alias",
         );
     }
 }

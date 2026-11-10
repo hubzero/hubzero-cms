@@ -41,7 +41,7 @@ class Yandex extends Plugin
         }
 
         return new \Geocoder\Provider\Yandex\Yandex(
-            $adapter
+            $adapter,
         );
     }
 }

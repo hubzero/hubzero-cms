@@ -24,7 +24,7 @@ class Migration20260707000001PlgCronMassmail extends Base
 
         if ($this->db->tableExists('#__cron_jobs')) {
             $this->db->setQuery(
-                "SELECT `id` FROM `#__cron_jobs` WHERE `plugin` = 'massmail' AND `event` = 'processMassmailQueue';"
+                "SELECT `id` FROM `#__cron_jobs` WHERE `plugin` = 'massmail' AND `event` = 'processMassmailQueue';",
             );
 
             if (!$this->db->loadResult()) {
@@ -34,7 +34,7 @@ class Migration20260707000001PlgCronMassmail extends Base
                     "INSERT INTO `#__cron_jobs`
 						(`title`, `state`, `plugin`, `event`, `last_run`, `next_run`, `recurrence`, `created`, `created_by`, `modified`, `modified_by`, `active`, `ordering`, `params`)
 					 VALUES
-						('Process Mass Mail Queue', 0, 'massmail', 'processMassmailQueue', NULL, NULL, '*/5 * * * *', NULL, 1, NULL, 0, 0, 0, '');"
+						('Process Mass Mail Queue', 0, 'massmail', 'processMassmailQueue', NULL, NULL, '*/5 * * * *', NULL, 1, NULL, 0, 0, 0, '');",
                 );
                 $this->db->query();
             }
@@ -48,7 +48,7 @@ class Migration20260707000001PlgCronMassmail extends Base
     {
         if ($this->db->tableExists('#__cron_jobs')) {
             $this->db->setQuery(
-                "DELETE FROM `#__cron_jobs` WHERE `plugin` = 'massmail' AND `event` = 'processMassmailQueue';"
+                "DELETE FROM `#__cron_jobs` WHERE `plugin` = 'massmail' AND `event` = 'processMassmailQueue';",
             );
             $this->db->query();
         }

@@ -54,14 +54,14 @@ class Storefront extends AbstractComponent
                 // Redirect to the landing page
                 if ($controllerRequested == 'storefront') {
                     App::redirect(
-                        Route::url('index.php?option=com_storefront') . 'overview'
+                        Route::url('index.php?option=com_storefront') . 'overview',
                     );
                 }
                 // Require login
                 App::redirect(
                     Route::url('index.php?option=com_users&view=login&return=' . $return),
                     'Please login to continue',
-                    'warning'
+                    'warning',
                 );
             }
         }
@@ -71,7 +71,7 @@ class Storefront extends AbstractComponent
         if (!User::isGuest()) {
             \Components\Storefront\Admin\Helpers\RestrictionsHelper::updateUser(
                 User::get('id'),
-                User::get('username')
+                User::get('username'),
             );
         }
 

@@ -55,7 +55,7 @@ class Transaction extends Relational
     protected $rules = [
         'uid'      => 'positive|nonzero',
         'type'     => 'notempty',
-        'category' => 'notempty'
+        'category' => 'notempty',
     ];
 
     /**
@@ -64,7 +64,7 @@ class Transaction extends Relational
      * @public array
      */
     public $initiate = [
-        'created'
+        'created',
     ];
 
     /**
@@ -185,7 +185,7 @@ class Transaction extends Relational
         $uid = null,
         $allusers = 0,
         $when = null,
-        $calc = 0
+        $calc = 0,
     ) {
         $model = self::all();
 
@@ -220,7 +220,7 @@ class Transaction extends Relational
         } elseif ($action == 'answered') {
             $model->whereLike(
                 'description',
-                '%answering question%'
+                '%answering question%',
             );// OR description like 'Answer for question%' OR description like 'Answered question%') ";
         } elseif ($action == 'misc') {
             $model->where('description', 'NOT LIKE', '%posting question%');

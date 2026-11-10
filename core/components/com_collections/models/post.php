@@ -128,10 +128,10 @@ class Post extends Base
         } else {
             $errorMsg = Lang::txt(
                 'Data must be of type object or array. Type given was %s',
-                gettype($data)
+                gettype($data),
             );
             $this->_logError(
-                __CLASS__ . '::' . __FUNCTION__ . '(); ' . $errorMsg
+                __CLASS__ . '::' . __FUNCTION__ . '(); ' . $errorMsg,
             );
             throw new \InvalidArgumentException($errorMsg);
         }
@@ -297,14 +297,14 @@ class Post extends Base
                         'pagename' => 'collections',
                         'pageid'   => 0,
                         'filepath' => '',
-                        'domain'   => 'collection'
+                        'domain'   => 'collection',
                     ];
 
                     $content = stripslashes((string) $this->get('description', ''));
                     $this->importPlugin('content')->trigger('onContentPrepare', [
                         $this->_context,
                         &$this,
-                        &$config
+                        &$config,
                     ]);
 
                     $this->set('description.parsed', (string) $this->get('description', ''));

@@ -50,18 +50,18 @@ class Menus extends AdminController
                 $this->_option . '.' . $this->_controller . '.parent_id',
                 'filter_parent_id',
                 0,
-                'int'
+                'int',
             ),
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'id'
+                'id',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         $query = Menu::all()
@@ -287,7 +287,7 @@ class Menus extends AdminController
         $components = $db->setQuery(
             'SELECT element, extension_id' .
             ' FROM #__extensions' .
-            ' WHERE type = ' . $db->quote('component')
+            ' WHERE type = ' . $db->quote('component'),
         )->loadAssocList('element', 'extension_id');
 
         if ($error = $db->getErrorMsg()) {
@@ -298,7 +298,7 @@ class Menus extends AdminController
         $items = $db->setQuery(
             'SELECT id, link, component_id' .
             ' FROM #__menu' .
-            ' WHERE type = ' . $db->quote('component')
+            ' WHERE type = ' . $db->quote('component'),
         )->loadObjectList();
 
         if ($error = $db->getErrorMsg()) {
@@ -330,7 +330,7 @@ class Menus extends AdminController
                     $db->setQuery(
                         'UPDATE `#__menu`' .
                         ' SET component_id = ' . $componentId .
-                        ' WHERE id = ' . $item->id
+                        ' WHERE id = ' . $item->id,
                     )->query();
 
                     if ($error = $db->getErrorMsg()) {

@@ -134,7 +134,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
             $pageNav = $this->pagination(
                 $this->total,
                 $this->filters['start'],
-                $this->filters['limit']
+                $this->filters['limit'],
             );
             $pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
             $pageNav->setAdditionalUrlParam('active', 'courses');

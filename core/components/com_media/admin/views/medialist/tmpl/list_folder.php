@@ -32,7 +32,7 @@ endif;
 
 // Last modified time
 $this->currentFolder['modified'] = filemtime(
-    COM_MEDIA_BASE . $this->currentFolder['path']
+    COM_MEDIA_BASE . $this->currentFolder['path'],
 );
 $modified = Date::of($this->currentFolder['modified']);
 
@@ -45,14 +45,14 @@ $folderIcon = Html::asset(
     '',
     null,
     true,
-    true
+    true,
 );
 $escapedName = $this->escape($this->currentFolder['name']);
 
 $folderUrl = Route::url(
     'index.php?option=' . $this->option
     . '&controller=medialist' . $t
-    . '&' . $token . '=1&folder=/' . $folderPath
+    . '&' . $token . '=1&folder=/' . $folderPath,
 );
 
 $tdWidth = ($tmpl == 'component'
@@ -100,7 +100,7 @@ $tdWidth = ($tmpl == 'component'
                                     'index.php?option=' . $this->option
                                     . '&controller=medialist&task=info' . $t
                                     . '&' . $token . '=1'
-                                    . '&folder=' . urlencode($this->currentFolder['path'])
+                                    . '&folder=' . urlencode($this->currentFolder['path']),
                                 );
                                 ?>
                                 <a class="icon-info media-opt-info"
@@ -119,7 +119,7 @@ $tdWidth = ($tmpl == 'component'
                                     'index.php?option=' . $this->option
                                     . '&task=delete' . $t
                                     . '&' . $token . '=1'
-                                    . '&rm=' . urlencode($this->currentFolder['path'])
+                                    . '&rm=' . urlencode($this->currentFolder['path']),
                                 );
                                 $deleteLabel = Lang::txt('JACTION_DELETE');
                                 ?>

@@ -62,7 +62,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
      * @var  array
      */
     protected $rules = [
-        'title' => 'notempty'
+        'title' => 'notempty',
     ];
 
     /**
@@ -71,7 +71,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
      * @var  array
      */
     public $always = [
-        'alias'
+        'alias',
     ];
 
     /**
@@ -81,7 +81,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
      */
     public $initiate = [
         'created',
-        'created_by_user'
+        'created_by_user',
     ];
 
     /**
@@ -90,7 +90,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
      * @var array
      */
     protected $parsed = [
-        'about'
+        'about',
     ];
 
     /**
@@ -165,7 +165,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
                 'delete', 'intro', 'activate', 'process',
                 'upload', 'img', 'verify', 'autocomplete',
                 'showcount', 'preview', 'auth', 'public',
-                'get', 'media'
+                'get', 'media',
             ];
             $reserved = array_merge($reserved, $tasks);
             $reserved = array_unique($reserved);
@@ -611,7 +611,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
                 'components/com_projects/site/assets/img/project.png',
                 'components/com_projects/assets/img/project.png',
                 'components/com_projects/site/assets/img/projects-large.gif',
-                'components/com_projects/assets/img/projects-large.gif'
+                'components/com_projects/assets/img/projects-large.gif',
             ];
 
             $path = trim($this->config()->get('defaultpic', 'components/com_projects/site/assets/img/project.png'), DS);
@@ -710,7 +710,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
                     return $member['userid'];
                 }
             },
-            $this->team->toArray()
+            $this->team->toArray(),
         );
 
         $page->owner       = $team;

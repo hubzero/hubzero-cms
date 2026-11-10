@@ -16,7 +16,7 @@ if ($this->row instanceof \Components\Collections\Models\Collection) {
     $collection = $this->row;
 } else {
     $collection = \Components\Collections\Models\Collection::getInstance(
-        $this->row->item()->get('object_id')
+        $this->row->item()->get('object_id'),
     );
     if ($this->row->get('description')) {
         $collection->set('description', $this->row->get('description'));
@@ -24,7 +24,7 @@ if ($this->row instanceof \Components\Collections\Models\Collection) {
 }
 
 $collTitle = $this->escape(stripslashes(
-    $collection->get('title', Lang::txt('COM_COLLECTIONS_NONE'))
+    $collection->get('title', Lang::txt('COM_COLLECTIONS_NONE')),
 ));
 ?>
         <h4<?php if ($collection->get('access', 0) == 4) {

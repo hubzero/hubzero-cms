@@ -87,7 +87,7 @@ class Auditor
         foreach ($data as $datum) {
             $results[] = [
                 'data'  => $datum,
-                'tests' => $this->process($datum)
+                'tests' => $this->process($datum),
             ];
         }
 
@@ -132,7 +132,7 @@ class Auditor
 
         if (isset($this->tests[$key])) {
             throw new RuntimeException(
-                sprintf('Test [%s] already registered', $key)
+                sprintf('Test [%s] already registered', $key),
             );
         }
 
@@ -201,8 +201,8 @@ class Auditor
                         'totals' => [
                             'skipped' => 0,
                             'passed'  => 0,
-                            'failed'  => 0
-                        ]
+                            'failed'  => 0,
+                        ],
                     ];
                 }
 

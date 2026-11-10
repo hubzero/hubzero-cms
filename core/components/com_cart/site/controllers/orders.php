@@ -97,11 +97,11 @@ class Orders extends ComponentController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
             Pathway::append(
                 Lang::txt('COM_CART_ORDERS'),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
 
@@ -117,7 +117,7 @@ class Orders extends ComponentController
     {
         $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_controller), 'server');
         App::redirect(
-            Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
+            Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
         );
         return;
     }

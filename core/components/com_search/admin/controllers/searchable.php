@@ -246,7 +246,7 @@ class Searchable extends AdminController
         $return = Route::url('index.php?option=com_search&controller=searchable', false);
 
         App::redirect(
-            Route::url($return, false)
+            Route::url($return, false),
         );
     }
 
@@ -352,7 +352,7 @@ class Searchable extends AdminController
             $total = $query->getNumFound();
         } catch (\Solarium\Exception\HttpException $e) {
             App::redirect(
-                Route::url('index.php?option=com_search&task=display', false)
+                Route::url('index.php?option=com_search&task=display', false),
             );
         }
 
@@ -389,7 +389,7 @@ class Searchable extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=com_search&task=display&controller=searchable', false)
+            Route::url('index.php?option=com_search&task=display&controller=searchable', false),
         );
     }
 }

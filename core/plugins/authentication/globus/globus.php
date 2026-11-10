@@ -51,7 +51,7 @@ class Globus extends \Hubzero\Plugin\OauthClient
             $this->globus = new GlobusProvider([
                 'clientId' => $this->params->get('app_id'),
                 'clientSecret' => $this->params->get('app_secret'),
-                'redirectUri' => $redirect
+                'redirectUri' => $redirect,
             ]);
         }
 
@@ -98,7 +98,7 @@ class Globus extends \Hubzero\Plugin\OauthClient
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return),
                 Lang::txt('PLG_AUTHENTICATION_GLOBUS_MUST_AUTHORIZE_TO_LOGIN', Config::get('sitename')),
-                'error'
+                'error',
             );
         }
     }
@@ -206,7 +206,7 @@ class Globus extends \Hubzero\Plugin\OauthClient
                 // Set cookie with login preference info
                 $prefs = [
                     'user_id'       => $user->get('id'),
-                    'authenticator' => 'globus'
+                    'authenticator' => 'globus',
                 ];
 
                 $namespace = 'authenticator';
@@ -251,7 +251,7 @@ class Globus extends \Hubzero\Plugin\OauthClient
                 App::redirect(
                     Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
                     Lang::txt('PLG_AUTHENTICATION_GLOBUS_ERROR_RETRIEVING_PROFILE', $e->getMessage()),
-                    'error'
+                    'error',
                 );
                 return;
             }
@@ -264,7 +264,7 @@ class Globus extends \Hubzero\Plugin\OauthClient
                 App::redirect(
                     Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
                     Lang::txt('PLG_AUTHENTICATION_GLOBUS_ACCOUNT_ALREADY_LINKED'),
-                    'error'
+                    'error',
                 );
             } else {
                 $hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'globus', null, $id);
@@ -285,7 +285,7 @@ class Globus extends \Hubzero\Plugin\OauthClient
             App::redirect(
                 Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
                 Lang::txt('PLG_AUTHENTICATION_GLOBUS_MUST_AUTHORIZE_TO_LINK', Config::get('sitename')),
-                'error'
+                'error',
             );
         }
     }

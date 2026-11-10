@@ -100,7 +100,7 @@ class Recipients
 				 SELECT $mid, u.id, u.email, u.name, 0
 				 FROM `#__users` u
 				 LEFT JOIN `#__xprofiles` x ON x.uidNumber = u.id
-				 WHERE $hard $pref"
+				 WHERE $hard $pref",
             );
             $db->execute();
         }
@@ -115,7 +115,7 @@ class Recipients
 				 FROM `#__users` u
 				 JOIN `#__xgroups_members` gm ON gm.uidNumber = u.id
 				 LEFT JOIN `#__xprofiles` x ON x.uidNumber = u.id
-				 WHERE gm.gidNumber IN ($in) AND $hard $pref"
+				 WHERE gm.gidNumber IN ($in) AND $hard $pref",
             );
             $db->execute();
         }
@@ -129,7 +129,7 @@ class Recipients
 				 SELECT $mid, u.id, u.email, u.name, 0
 				 FROM `#__users` u
 				 LEFT JOIN `#__xprofiles` x ON x.uidNumber = u.id
-				 WHERE u.id IN ($in) AND $hard $pref"
+				 WHERE u.id IN ($in) AND $hard $pref",
             );
             $db->execute();
         }
@@ -148,7 +148,7 @@ class Recipients
 				 SELECT $mid, u.id, u.email, u.name, 0
 				 FROM `#__users` u
 				 LEFT JOIN `#__xprofiles` x ON x.uidNumber = u.id
-				 WHERE LOWER(u.email) IN ($in) AND $hard $pref"
+				 WHERE LOWER(u.email) IN ($in) AND $hard $pref",
             );
             $db->execute();
 
@@ -161,7 +161,7 @@ class Recipients
                 }
                 $db->setQuery(
                     "INSERT IGNORE INTO `#__massmail_recipients` (mailing_id, uid, email, name, status)
-					 VALUES ($mid, 0, " . $db->quote($em) . ", '', 0)"
+					 VALUES ($mid, 0, " . $db->quote($em) . ", '', 0)",
                 );
                 $db->execute();
             }
@@ -227,7 +227,7 @@ class Recipients
             $db->setQuery(
                 "SELECT COUNT(DISTINCT u.email) FROM `#__users` u
 				 LEFT JOIN `#__xprofiles` x ON x.uidNumber = u.id
-				 WHERE $cond AND $hard $pref"
+				 WHERE $cond AND $hard $pref",
             );
             $userCount = (int) $db->loadResult();
         }
@@ -244,7 +244,7 @@ class Recipients
             $db->setQuery(
                 "SELECT COUNT(DISTINCT LOWER(u.email)) FROM `#__users` u
 				 LEFT JOIN `#__xprofiles` x ON x.uidNumber = u.id
-				 WHERE LOWER(u.email) IN ($in) AND NOT ($hard $pref)"
+				 WHERE LOWER(u.email) IN ($in) AND NOT ($hard $pref)",
             );
             $rawCount -= (int) $db->loadResult();
 
@@ -253,7 +253,7 @@ class Recipients
                 $db->setQuery(
                     "SELECT COUNT(DISTINCT LOWER(u.email)) FROM `#__users` u
 					 LEFT JOIN `#__xprofiles` x ON x.uidNumber = u.id
-					 WHERE $cond AND $hard $pref AND LOWER(u.email) IN ($in)"
+					 WHERE $cond AND $hard $pref AND LOWER(u.email) IN ($in)",
                 );
                 $rawCount -= (int) $db->loadResult();
             }

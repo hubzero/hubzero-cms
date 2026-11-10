@@ -54,19 +54,19 @@ $base = $this->offering->link();
                     <tbody>
                         <?php
                         $enrolledCount = $this->offering->members(
-                            ['count' => true, 'student' => 1]
+                            ['count' => true, 'student' => 1],
                         );
                         $enrolledText = Lang::txt(
                             'PLG_COURSES_DASHBOARD_ENROLLED',
-                            '<strong>' . $enrolledCount . '</strong>'
+                            '<strong>' . $enrolledCount . '</strong>',
                         );
                         $passingText = Lang::txt(
                             'PLG_COURSES_DASHBOARD_PASSING',
-                            '<strong>' . $this->offering->gradebook()->countPassing() . '</strong>'
+                            '<strong>' . $this->offering->gradebook()->countPassing() . '</strong>',
                         );
                         $failingText = Lang::txt(
                             'PLG_COURSES_DASHBOARD_FAILING',
-                            '<strong>' . $this->offering->gradebook()->countFailing() . '</strong>'
+                            '<strong>' . $this->offering->gradebook()->countFailing() . '</strong>',
                         );
                         ?>
                         <tr>
@@ -134,7 +134,7 @@ $base = $this->offering->link();
                                 </a>
                                 <?php
                                 $formattedDate = Date::of($row->publish_up)->toLocal(
-                                    Lang::txt('DATE_FORMAT_HZ1')
+                                    Lang::txt('DATE_FORMAT_HZ1'),
                                 );
                                 ?>
                                 <span class="details">

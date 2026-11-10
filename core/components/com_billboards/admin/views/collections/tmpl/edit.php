@@ -19,7 +19,7 @@ $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_
 Toolbar::title(
     Lang::txt('COM_BILLBOARDS_MANAGER') . ': '
     . Lang::txt('COM_BILLBOARDS_COLLECTIONS') . ': ' . $text,
-    'billboards'
+    'billboards',
 );
 Toolbar::save();
 Toolbar::cancel();
@@ -50,7 +50,7 @@ $this->js();
                 <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
             </label><br />
             <?php $nameVal = $this->escape(stripslashes(
-                $this->row->name == null ? '' : $this->row->name
+                $this->row->name == null ? '' : $this->row->name,
             )); ?>
             <input type="text"
                 name="name"

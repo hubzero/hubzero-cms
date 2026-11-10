@@ -342,7 +342,7 @@ class Ticketsv1r0 extends ApiController
 
                 $ticketRoute = Route::url(
                     'index.php?option=com_support&controller=tickets&task=tickets&id='
-                    . $response->tickets[$i]->id
+                    . $response->tickets[$i]->id,
                 );
                 $response->tickets[$i]->url = str_replace('/api', '', rtrim(Request::base(), '/')
                     . '/' . ltrim($ticketRoute, '/'));
@@ -504,7 +504,7 @@ class Ticketsv1r0 extends ApiController
 
         $props = [
             'created', 'severity', 'os', 'browser', 'ip',
-            'hostname', 'uas', 'referrer', 'open', 'closed'
+            'hostname', 'uas', 'referrer', 'open', 'closed',
         ];
         foreach ($props as $prop) {
             $response->$prop = $ticket->get($prop);
@@ -513,7 +513,7 @@ class Ticketsv1r0 extends ApiController
         $response->report = $ticket->get('report');
 
         $ticketRoute = Route::url(
-            'index.php?option=com_support&controller=tickets&task=tickets&id=' . $response->id
+            'index.php?option=com_support&controller=tickets&task=tickets&id=' . $response->id,
         );
         $response->url = str_replace('/api', '', rtrim(Request::base(), '/')
             . '/' . ltrim($ticketRoute, '/'));

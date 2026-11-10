@@ -28,7 +28,7 @@ if ($canDo->get('core.manage')) {
         'refresh',
         'COM_MEMBERS_PASSWORD_RESTORE_DEFAULTS',
         false,
-        false
+        false,
     );
     Toolbar::spacer();
 }
@@ -85,7 +85,7 @@ if ($canDo->get('core.delete')) {
                     'COM_MEMBERS_PASSWORD_ID',
                     'id',
                     @$this->filters['sort_Dir'],
-                    @$this->filters['sort']
+                    @$this->filters['sort'],
                 );
                 ?>
                 <th scope="col" class="priority-4"><?php echo $val; ?></th>
@@ -95,7 +95,7 @@ if ($canDo->get('core.delete')) {
                     'COM_MEMBERS_PASSWORD_RULE',
                     'rule',
                     @$this->filters['sort_Dir'],
-                    @$this->filters['sort']
+                    @$this->filters['sort'],
                 );
                 ?>
                 <th scope="col" class="priority-3"><?php echo $val; ?></th>
@@ -105,7 +105,7 @@ if ($canDo->get('core.delete')) {
                     'COM_MEMBERS_PASSWORD_DESCRIPTION',
                     'description',
                     @$this->filters['sort_Dir'],
-                    @$this->filters['sort']
+                    @$this->filters['sort'],
                 );
                 ?>
                 <th scope="col"><?php echo $val; ?></th>
@@ -116,7 +116,7 @@ if ($canDo->get('core.delete')) {
                         'COM_MEMBERS_PASSWORD_ORDERING',
                         'ordering',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     );
                     ?>
                     <?php echo $val; ?>
@@ -128,7 +128,7 @@ if ($canDo->get('core.delete')) {
                     'COM_MEMBERS_PASSWORD_ENABLED',
                     'enabled',
                     @$this->filters['sort_Dir'],
-                    @$this->filters['sort']
+                    @$this->filters['sort'],
                 );
                 ?>
                 <th scope="col" class="priority-2"><?php echo $val; ?></th>
@@ -220,7 +220,7 @@ if ($canDo->get('core.delete')) {
                             'index.php?option=' . $this->option
                             . '&controller=' . $this->controller
                             . '&task=toggle_enabled&id=' . $row->get('id')
-                            . '&' . Session::getFormToken() . '=1'
+                            . '&' . Session::getFormToken() . '=1',
                         );
                         ?>
                         <a class="state <?php echo $val; ?>" href="<?php echo $toggleUrl; ?>">

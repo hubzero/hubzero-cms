@@ -137,7 +137,7 @@ class ColumnBuilder
         ?string $definition,
         string $operation,
         string $comment = '',
-        ?string $newColumn = null
+        ?string $newColumn = null,
     ) {
         $this->driver = $driver;
         $this->table = $table;
@@ -237,7 +237,7 @@ class ColumnBuilder
                     $this->column,
                     $definition,
                     $this->afterColumn,
-                    $comment
+                    $comment,
                 );
             }
             return $this->driver->modifyColumnAfter(
@@ -245,7 +245,7 @@ class ColumnBuilder
                 $this->column,
                 $definition,
                 $this->afterColumn,
-                $comment
+                $comment,
             );
         }
 
@@ -256,7 +256,7 @@ class ColumnBuilder
                     $this->column,
                     $definition,
                     $this->beforeColumn,
-                    $comment
+                    $comment,
                 );
             }
             return $this->driver->modifyColumnBefore(
@@ -264,7 +264,7 @@ class ColumnBuilder
                 $this->column,
                 $definition,
                 $this->beforeColumn,
-                $comment
+                $comment,
             );
         }
 
@@ -303,7 +303,7 @@ class ColumnBuilder
 
         throw new \RuntimeException(
             "Column definition required. Either provide a raw SQL definition or use type methods " .
-            "(e.g., ->integer(), ->string(255), ->boolean())."
+            "(e.g., ->integer(), ->string(255), ->boolean()).",
         );
     }
 

@@ -96,7 +96,7 @@ class Latest extends Module
                             $list,
                             $article_grouping,
                             $article_grouping_direction,
-                            $params->get('month_year_format', 'F Y')
+                            $params->get('month_year_format', 'F Y'),
                         );
                         break;
                     case 'author':
@@ -299,7 +299,7 @@ class Latest extends Module
                 $articleRoute = \Components\Content\Site\Helpers\Route::getArticleRoute(
                     $item->slug,
                     $item->catslug,
-                    $item->language
+                    $item->language,
                 );
                 $item->link = Route::url($articleRoute);
             } else {
@@ -326,7 +326,7 @@ class Latest extends Module
 
             if ($item->catid) {
                 $categoryRoute = \Components\Content\Site\Helpers\Route::getCategoryRoute(
-                    $item->catid
+                    $item->catid,
                 );
                 $item->displayCategoryLink = Route::url($categoryRoute);
                 if ($show_category) {

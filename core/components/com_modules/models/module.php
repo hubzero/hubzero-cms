@@ -62,7 +62,7 @@ class Module extends Relational
      */
     protected $rules = [
         'title'    => 'notempty',
-        'position' => 'notempty'
+        'position' => 'notempty',
     ];
 
     /**
@@ -72,7 +72,7 @@ class Module extends Relational
      */
     public $always = [
         'publish_up',
-        'publish_down'
+        'publish_down',
     ];
 
     /**
@@ -274,7 +274,7 @@ class Module extends Relational
         $incrementStyles = [
             'dash' => [
                 '#-(\d+)$#',
-                '-%d'
+                '-%d',
             ],
             'default' => [
                 ['#\((\d+)\)$#', '#\(\d+\)$#'],
@@ -608,7 +608,7 @@ class Module extends Relational
                 // assign new module to `all` menu item associations
                 $menu = Menu::blank()->set([
                     'moduleid' => $this->get('id'),
-                    'menuid'   => 0
+                    'menuid'   => 0,
                 ]);
 
                 if (!$menu->save()) {
@@ -624,7 +624,7 @@ class Module extends Relational
                 foreach ($assigned as &$pk) {
                     $menu = Menu::blank()->set([
                         'moduleid' => $this->get('id'),
-                        'menuid'   => ((int) $pk * $sign)
+                        'menuid'   => ((int) $pk * $sign),
                     ]);
 
                     if (!$menu->save()) {

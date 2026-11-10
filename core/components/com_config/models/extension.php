@@ -63,7 +63,7 @@ class Extension extends Relational
      */
     protected $rules = [
         'element' => 'notempty',
-        'name'    => 'notempty'
+        'name'    => 'notempty',
     ];
 
     /**

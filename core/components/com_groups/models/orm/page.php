@@ -45,7 +45,7 @@ class Page extends Relational
      */
     protected $rules = [
         'gidNumber' => 'positive|nonzero',
-        'title'     => 'notempty'
+        'title'     => 'notempty',
     ];
 
     /**
@@ -54,7 +54,7 @@ class Page extends Relational
      * @var  array
      **/
     public $always = [
-        'alias'
+        'alias',
     ];
 
     /**
@@ -64,7 +64,7 @@ class Page extends Relational
      */
     public $initiate = [
         'lft',
-        'rgt'
+        'rgt',
     ];
 
     /**
@@ -164,7 +164,7 @@ class Page extends Relational
                 'gidNumber' => $this->get('gidNumber'),
                 'pageid' => $this->get('id'),
                 'userid' => User::get('id'),
-                'ip' => Request::ip()
+                'ip' => Request::ip(),
             ]);
 
         return $hit->save();

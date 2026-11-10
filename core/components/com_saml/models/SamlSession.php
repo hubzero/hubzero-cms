@@ -62,7 +62,7 @@ class SamlSession extends Relational
      * @var  array
      */
     protected $rules = [
-        'session_index' => 'notempty'
+        'session_index' => 'notempty',
     ];
 
     /**

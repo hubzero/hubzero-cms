@@ -486,7 +486,7 @@ class Arr
             'Shiver me timbers!',
             'Walk the plank',
             'X Marks the spot',
-            'Yo-ho-ho'
+            'Yo-ho-ho',
         ];
 
         $nqs = count($pirate);

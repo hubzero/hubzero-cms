@@ -30,35 +30,35 @@ $sortId = Html::grid(
     'COM_TOOLS_COL_ID',
     'id',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 $sortInstance = Html::grid(
     'sort',
     'COM_TOOLS_COL_INSTANCE',
     'toolname',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 $sortVersion = Html::grid(
     'sort',
     'COM_TOOLS_COL_VERSION',
     'version',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 $sortRevision = Html::grid(
     'sort',
     'COM_TOOLS_COL_REVISION',
     'revision',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 $sortState = Html::grid(
     'sort',
     'COM_TOOLS_COL_STATE',
     'state',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 ?>
 <form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
@@ -89,7 +89,7 @@ $sortState = Html::grid(
                     echo $this->pagination(
                         $this->total,
                         $this->filters['start'],
-                        $this->filters['limit']
+                        $this->filters['limit'],
                     );
                     ?>
                 </td>
@@ -140,10 +140,10 @@ $sortState = Html::grid(
                 'index.php?option=' . $this->option
                 . '&controller=' . $this->controller
                 . '&task=edit&version=' . $row['id']
-                . '&id=' . $this->tool->id
+                . '&id=' . $this->tool->id,
             );
             $stateLabel = $this->escape(
-                Lang::txt(strtoupper($this->option) . '_' . strtoupper($state))
+                Lang::txt(strtoupper($this->option) . '_' . strtoupper($state)),
             );
             ?>
             <tr class="<?php echo "row$k"; ?>">

@@ -37,33 +37,33 @@ class Publications extends Plugin
             [
                 'name'   => 'sendAuthorStats',
                 'label'  => Lang::txt('PLG_CRON_PUBLICATIONS_SEND_STATS'),
-                'params' => 'authorstats'
+                'params' => 'authorstats',
             ],
             [
                 'name'   => 'rollUserStats',
                 'label'  => Lang::txt('PLG_CRON_PUBLICATIONS_ROLL_STATS'),
-                'params' => ''
+                'params' => '',
             ],
             [
                 'name'   => 'runMkAip',
                 'label'  => Lang::txt('PLG_CRON_PUBLICATIONS_ARCHIVE'),
-                'params' => ''
+                'params' => '',
             ],
             [
                 'name'   => 'issueMasterDoi',
                 'label'  => Lang::txt('PLG_CRON_PUBLICATIONS_MASTER_DOI'),
-                'params' => ''
+                'params' => '',
             ],
             [
                 'name'   => 'updateFtpLinks',
                 'label'  => Lang::txt('PLG_CRON_PUBLICATIONS_UPDATE_FTP_LINKS'),
-                'params' => 'ftplinkdates'
+                'params' => 'ftplinkdates',
             ],
             [
                 'name'   => 'buildPublicationBundles',
                 'label'  => Lang::txt('PLG_CRON_PUBLICATIONS_BUILD_BUNDLES'),
-                'params' => ''
-            ]
+                'params' => '',
+            ],
         ];
         return $obj;
     }
@@ -129,7 +129,7 @@ class Publications extends Plugin
         $from = [
             'name'      => Config::get('fromname') . ' ' . Lang::txt('Publications'),
             'email'     => Config::get('mailfrom'),
-            'multipart' => md5(date('U'))
+            'multipart' => md5(date('U')),
         ];
 
         $subject = Lang::txt('Monthly Publication Usage Report');
@@ -163,8 +163,8 @@ class Publications extends Plugin
                 [
                     'base_path' => __DIR__,
                     'name'      => 'emails',
-                    'layout'    => 'stats_plain'
-                ]
+                    'layout'    => 'stats_plain',
+                ],
             );
             $eview->option     = 'com_publications';
             $eview->controller = 'publications';
@@ -333,7 +333,7 @@ class Publications extends Plugin
             $from = [
                 'name'      => Config::get('fromname') . ' ' . Lang::txt('Publications'),
                 'email'     => Config::get('mailfrom'),
-                'multipart' => md5(date('U'))
+                'multipart' => md5(date('U')),
             ];
 
             $admins = \Components\Projects\Helpers\Html::getGroupMembers($aipGroup);

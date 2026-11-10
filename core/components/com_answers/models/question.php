@@ -82,7 +82,7 @@ class Question extends Relational
      * @var  array
      */
     protected $rules = [
-        'subject'  => 'notempty'
+        'subject'  => 'notempty',
     ];
 
     /**
@@ -92,7 +92,7 @@ class Question extends Relational
      **/
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**
@@ -101,7 +101,7 @@ class Question extends Relational
      * @var array
      **/
     protected $parsed = [
-        'question'
+        'question',
     ];
 
     /**
@@ -519,7 +519,7 @@ class Question extends Relational
             $results = Event::trigger('content.onContentBeforeSave', [
                 'com_answers.question.question',
                 &$this,
-                $this->isNew()
+                $this->isNew(),
             ]);
 
             foreach ($results as $result) {
@@ -608,7 +608,7 @@ class Question extends Relational
                     $this->get('id'),
                     $this->get('created_by'),
                     $answer->get('created_by'),
-                    'closure'
+                    'closure',
                 );
             }
 

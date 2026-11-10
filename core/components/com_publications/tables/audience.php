@@ -39,7 +39,7 @@ class Audience extends Table
         }
 
         return parent::load([
-            'publication_version_id' => (int) $versionid
+            'publication_version_id' => (int) $versionid,
         ]);
     }
 

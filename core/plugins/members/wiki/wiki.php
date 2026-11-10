@@ -32,7 +32,7 @@ class Wiki extends Plugin
     public function &onMembersContributionsAreas()
     {
         $areas = [
-            'wiki' => Lang::txt('PLG_MEMBERS_WIKI')
+            'wiki' => Lang::txt('PLG_MEMBERS_WIKI'),
         ];
         return $areas;
     }

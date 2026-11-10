@@ -78,7 +78,7 @@ class RateLimitService extends Middleware
                 'You have exceeded your rate limit allowance. Please see rate limit headers for details. (application %d, user %d, ip %s)',
                 (int) $token['application_id'],
                 (int) $token['uidNumber'],
-                $request->ip()
+                $request->ip(),
             ), 429);
         }
 

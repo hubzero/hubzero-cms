@@ -26,23 +26,23 @@ class HandlerTest extends Basic
         [
             'message' => 'This is an info message.',
             'type'    => 'info',
-            'domain'  => null
+            'domain'  => null,
         ],
         [
             'message' => 'This is a success message!',
             'type'    => 'success',
-            'domain'  => null
+            'domain'  => null,
         ],
         [
             'message' => 'This is a warning message!',
             'type'    => 'warning',
-            'domain'  => null
+            'domain'  => null,
         ],
         [
             'message' => 'This is an error message.',
             'type'    => 'error',
-            'domain'  => null
-        ]
+            'domain'  => null,
+        ],
     ];
 
     /**

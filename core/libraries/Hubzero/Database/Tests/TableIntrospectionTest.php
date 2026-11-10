@@ -379,7 +379,7 @@ class TableIntrospectionTest extends AbstractDriverTestCase
         $this->assertTrue(
             in_array('PRIMARY', $indexNames) || count(array_filter($indexes, function ($idx) {
                 return $idx->isPrimary();
-            })) > 0
+            })) > 0,
         );
 
         // Cleanup

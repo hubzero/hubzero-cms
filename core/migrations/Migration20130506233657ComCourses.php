@@ -54,7 +54,7 @@ class Migration20130506233657ComCourses extends Base
                     'threshold'       => 0.70,
                     'exam_weight'     => 1.00,
                     'quiz_weight'     => 0.00,
-                    'homework_weight' => 0.00
+                    'homework_weight' => 0.00,
                 ])
                 ->execute();
         }

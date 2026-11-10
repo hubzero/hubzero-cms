@@ -48,7 +48,7 @@ Toolbar::deleteList();
                             'COM_RESOURCES_IMPORTHOOK_DISPLAY_FIELD_NAME',
                             'name',
                             @$this->filters['sort_Dir'],
-                            @$this->filters['sort']
+                            @$this->filters['sort'],
                         );
                         ?></th>
                     <th scope="col"><?php
@@ -58,7 +58,7 @@ Toolbar::deleteList();
                             'COM_RESOURCES_IMPORTHOOK_DISPLAY_FIELD_TYPE',
                             'type',
                             @$this->filters['sort_Dir'],
-                            @$this->filters['sort']
+                            @$this->filters['sort'],
                         );
                         ?></th>
                     <th scope="col"
@@ -69,7 +69,7 @@ Toolbar::deleteList();
                             'COM_RESOURCES_IMPORTHOOK_DISPLAY_FIELD_FILE',
                             'file',
                             @$this->filters['sort_Dir'],
-                            @$this->filters['sort']
+                            @$this->filters['sort'],
                         );
                         ?></th>
                 </tr>
@@ -104,7 +104,7 @@ Toolbar::deleteList();
                                 $editUrl = Route::url(
                                     'index.php?option=' . $this->option
                                     . '&controller=' . $this->controller
-                                    . '&task=edit&id=' . $hook->get('id')
+                                    . '&task=edit&id=' . $hook->get('id'),
                                 );
                                 ?>
                                 <a href="<?php echo $editUrl; ?>">
@@ -136,7 +136,7 @@ Toolbar::deleteList();
                                 $rawUrl = Route::url(
                                     'index.php?option=' . $this->option
                                     . '&controller=' . $this->controller
-                                    . '&task=raw&id=' . $hook->get('id')
+                                    . '&task=raw&id=' . $hook->get('id'),
                                 );
                                 ?>
                                 <a rel="noopener"

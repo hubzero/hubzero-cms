@@ -64,11 +64,11 @@ class Versions extends Plugin
         $rtrn = 'all',
         $version = 'default',
         $extended = true,
-        $authorized = false
+        $authorized = false,
     ) {
         $arr = [
             'html'     => '',
-            'metadata' => ''
+            'metadata' => '',
         ];
 
         // Check if our area is in the array of areas we want to return results for

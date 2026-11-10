@@ -62,7 +62,7 @@ if (!$this->tagged) {
     $html .= "\t" . '<p class="category-header-details">' . "\n";
     $profileUrl = Route::url(
         'index.php?option=com_members&id=' . User::get('id')
-        . '&active=profile#profile-interests'
+        . '&active=profile#profile-interests',
     );
     if (count($this->tags) > 0) {
         $html .= "\t\t" . '<span class="configure">[<a href="'
@@ -108,7 +108,7 @@ if (!$this->tagged) {
 }
 $moreUrl = Route::url(
     'index.php?option=com_whatsnew&period='
-    . $this->area . ':' . $this->period
+    . $this->area . ':' . $this->period,
 );
 $moreText = $this->area
     ? Lang::txt('MOD_WHATSNEW_VIEW_MORE_OF', $this->escape($this->area))

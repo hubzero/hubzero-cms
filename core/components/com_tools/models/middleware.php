@@ -35,7 +35,7 @@ class Middleware extends Obj
         'zones.list'  => null,
         'zones.one'   => null,
         'session'     => null,
-        'tool'        => null
+        'tool'        => null,
     ];
 
     /**

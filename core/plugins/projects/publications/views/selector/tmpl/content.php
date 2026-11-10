@@ -27,7 +27,7 @@ $filters = [
     'search'      => Request::getString('search', ''),
     'tag'         => trim(Request::getString('tag', '')),
     'tag_ignored' => [],
-    'all_versions' => true
+    'all_versions' => true,
 ];
 // Instantiate a publication object
 $model = new \Components\Publications\Models\Publication();
@@ -42,7 +42,7 @@ $results = $model->entries('list', $filters);
 $pageNav = new \Hubzero\Pagination\Paginator(
     $total,
     $filters['start'],
-    $filters['limit']
+    $filters['limit'],
 );
 $pageNav->setAdditionalUrlParam('task', '');
 $pageNav->setAdditionalUrlParam('active', 'publications');

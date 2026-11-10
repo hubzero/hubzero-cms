@@ -22,7 +22,7 @@ $label2 = Lang::txt('COM_PUBLICATIONS_MASTER_TYPE');
 $label3 = Lang::txt('COM_PUBLICATIONS_FIELD_CURATION_REMOVE_BLOCK');
 Toolbar::title(
     $label . ' ' . $label2 . ' - ' . $this->row->type . ': ' . $label3,
-    'publications'
+    'publications',
 );
 
 $manifest  = $this->curation->_manifest;
@@ -40,7 +40,7 @@ $blocks    = $manifest->blocks;
     $backUrl = Route::url(
         'index.php?option=' . $this->option
         . '&controller=' . $this->controller
-        . '&task=edit&id=' . $this->row->id
+        . '&task=edit&id=' . $this->row->id,
     );
     $backLabel = Lang::txt('COM_PUBLICATIONS_MTYPE_BACK')
         . ' ' . $this->row->type
@@ -83,7 +83,7 @@ $blocks    = $manifest->blocks;
                 $cancelUrl = Route::url(
                     'index.php?option=' . $this->option
                     . '&controller=' . $this->controller
-                    . '&task=edit&id=' . $this->row->id
+                    . '&task=edit&id=' . $this->row->id,
                 );
                 ?>
                 <a

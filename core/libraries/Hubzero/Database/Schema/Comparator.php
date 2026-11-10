@@ -74,7 +74,7 @@ class Comparator
      * @var array
      */
     protected $integerTypes = [
-        'tinyint', 'smallint', 'mediumint', 'int', 'bigint'
+        'tinyint', 'smallint', 'mediumint', 'int', 'bigint',
     ];
 
     /**
@@ -459,7 +459,7 @@ class Comparator
                 if (
                     $this->typesAreEquivalent(
                         $columnsA[$colName]->getFullType(),
-                        $columnsB[$colName]->getFullType()
+                        $columnsB[$colName]->getFullType(),
                     )
                 ) {
                     $matchingColumns += 1.0;
@@ -490,7 +490,7 @@ class Comparator
         $oldTableName = $fromTable->getName();
         $columnHints = array_merge(
             $this->getColumnRenameHints($tableName),
-            $this->getColumnRenameHints($oldTableName)
+            $this->getColumnRenameHints($oldTableName),
         );
 
         // Track which columns have been matched
@@ -629,7 +629,7 @@ class Comparator
         ColumnInfo $colA,
         ColumnInfo $colB,
         string $nameA,
-        string $nameB
+        string $nameB,
     ): float {
         $score = 0.0;
         $factors = 0;
@@ -716,7 +716,7 @@ class Comparator
             !$bothAutoIncrement
             && !$this->defaultsAreEquivalent(
                 $fromColumn->getDefault(),
-                $toColumn->getDefault()
+                $toColumn->getDefault(),
             )
         ) {
             $diff->setDefaultChanged();

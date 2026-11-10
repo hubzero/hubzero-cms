@@ -49,7 +49,7 @@ class Collections extends Plugin
             'collections' => Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name)),
             'icon'        => 'f005',
             'icon-class' => 'icon-archive',
-            'menu'        => $this->params->get('display_tab', 1)
+            'menu'        => $this->params->get('display_tab', 1),
         ];
         return $areas;
     }
@@ -67,7 +67,7 @@ class Collections extends Plugin
     {
         $arr = [
             'html'     => '',
-            'metadata' => []
+            'metadata' => [],
         ];
         $returnhtml = true;
 
@@ -276,7 +276,7 @@ class Collections extends Plugin
 
         // Get a count of all the collections
         $filters = [
-            'count' => true
+            'count' => true,
         ];
 
         if (!$this->model->collections($filters)) {
@@ -304,7 +304,7 @@ class Collections extends Plugin
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . base64_encode($route)),
             Lang::txt('MEMBERS_LOGIN_NOTICE'),
-            'warning'
+            'warning',
         );
         return;
     }
@@ -329,7 +329,7 @@ class Collections extends Plugin
         $view->filters['start'] = Request::getInt('limitstart', 0);
 
         $count = [
-            'count'  => true
+            'count'  => true,
         ];
 
         if (!$this->params->get('access-manage-collection')) {
@@ -378,7 +378,7 @@ class Collections extends Plugin
         $filters['state']   = 1;
 
         $count = [
-            'count'  => true
+            'count'  => true,
         ];
 
         $filters = [];
@@ -424,12 +424,12 @@ class Collections extends Plugin
             'start'   => Request::getInt('limitstart', 0),
             'search'  => Request::getString('search', ''),
             'state'   => 1,
-            'user_id' => User::get('id')
+            'user_id' => User::get('id'),
         ];
 
         $count = [
             'count'  => true,
-            'state'  => 1
+            'state'  => 1,
         ];
 
         if (!$this->params->get('access-manage-collection')) {
@@ -478,7 +478,7 @@ class Collections extends Plugin
             'search'        => Request::getString('search', ''),
             'state'         => 1,
             'collection_id' => Request::getString('board', ''),
-            'access'        => -1
+            'access'        => -1,
         ];
 
         $view->collection = $this->model->collection($view->filters['collection_id']);
@@ -507,7 +507,7 @@ class Collections extends Plugin
         $count = [
             'count'  => true,
             'state'  => 1,
-            'access' => -1
+            'access' => -1,
         ];
         if (!$this->params->get('access-manage-collection')) {
             $view->filters['access'] = (User::isGuest() ? 0 : [0, 1]);
@@ -693,7 +693,7 @@ class Collections extends Plugin
 
         // Filters for returning results
         $count = [
-            'count' => true
+            'count' => true,
         ];
         if (!$this->params->get('access-manage-collection')) {
             $count['access'] = 0;
@@ -751,13 +751,13 @@ class Collections extends Plugin
             'object_type' => 'member',
             'access'      => -1,
             'sort'        => 'created',
-            'sort_Dir'    => 'desc'
+            'sort_Dir'    => 'desc',
         ];
 
         // Filters for returning results
         //$filters = array();
         $count = [
-            'count' => true
+            'count' => true,
         ];
 
         if (!$this->params->get('access-manage-collection')) {
@@ -880,7 +880,7 @@ class Collections extends Plugin
                 App::redirect(
                     Route::url('index.php?option=com_members'),
                     Lang::txt('PLG_MEMBERS_COLLECTIONS_ERROR_NEW_ACCOUNT'),
-                    'warning'
+                    'warning',
                 );
                 return;
             }
@@ -890,7 +890,7 @@ class Collections extends Plugin
             App::redirect(
                 Route::url($this->member->link() . '&active=' . $this->_name),
                 Lang::txt('You are not authorized to perform this action.'),
-                'error'
+                'error',
             );
             return;
         }
@@ -1139,17 +1139,17 @@ class Collections extends Plugin
                     'collection_id' => $collection->get('id'),
                     'post_id'       => $post->get('id'),
                     'item_id'       => $post->get('item_id'),
-                    'url'           => $url
-                ]
+                    'url'           => $url,
+                ],
             ],
             'recipients' => [
                 ['collection', $collection->get('id')],
-                ['user', $item->get('created_by')]
-            ]
+                ['user', $item->get('created_by')],
+            ],
         ]);
 
         App::redirect(
-            Route::url($url)
+            Route::url($url),
         );
     }
 
@@ -1320,13 +1320,13 @@ class Collections extends Plugin
                 'details'     => [
                     'collection_id' => $post->collection_id,
                     'item_id'       => $post->item_id,
-                    'post_id'       => $post->id
-                ]
+                    'post_id'       => $post->id,
+                ],
             ],
             'recipients' => [
                 ['collection', $collection_id],
-                ['user', $post->get('created_by')]
-            ]
+                ['user', $post->get('created_by')],
+            ],
         ]);
 
         // Display updated item stats if called via AJAX
@@ -1399,13 +1399,13 @@ class Collections extends Plugin
                 'details'     => [
                     'collection_id' => $post->get('collection_id'),
                     'item_id'       => $post->get('item_id'),
-                    'post_id'       => $post->get('id')
-                ]
+                    'post_id'       => $post->get('id'),
+                ],
             ],
             'recipients' => [
                 ['collection', $collection->get('id')],
-                ['user', $post->get('created_by')]
-            ]
+                ['user', $post->get('created_by')],
+            ],
         ]);
 
         if (Request::getInt('no_html', 0)) {
@@ -1591,13 +1591,13 @@ class Collections extends Plugin
                     'collection_id' => $post->get('collection_id'),
                     'post_id'       => $post->get('id'),
                     'item_id'       => $item->get('id'),
-                    'url'           => $route
-                ]
+                    'url'           => $route,
+                ],
             ],
             'recipients' => [
                 ['collection', $post->get('collection_id')],
-                ['user', $item->get('created_by')]
-            ]
+                ['user', $item->get('created_by')],
+            ],
         ]);
 
         if ($no_html) {
@@ -1680,7 +1680,7 @@ class Collections extends Plugin
 
         $recipients = [
             ['collection', $post->get('collection_id')],
-            ['user', $comment->get('created_by')]
+            ['user', $comment->get('created_by')],
         ];
         if ($comment->get('parent')) {
             $recipients[] = ['user', $comment->parent()->get('created_by')];
@@ -1701,10 +1701,10 @@ class Collections extends Plugin
                     'collection_id' => $post->get('collection_id'),
                     'post_id'       => $post->get('id'),
                     'item_id'       => $post->get('item_id'),
-                    'url'           => $url . '#c' . $comment->get('id')
-                ]
+                    'url'           => $url . '#c' . $comment->get('id'),
+                ],
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         return $this->_post();
@@ -1846,19 +1846,19 @@ class Collections extends Plugin
                 'details'     => [
                     'collection_id' => $collection->get('id'),
                     'post_id'       => $post->get('id'),
-                    'item_id'       => $post->item()->get('id')
-                ]
+                    'item_id'       => $post->item()->get('id'),
+                ],
             ],
             'recipients' => [
                 ['collection', $collection->get('id')],
                 ['user', $post->item()->get('created_by')],
-                ['user', User::get('id')]
-            ]
+                ['user', User::get('id')],
+            ],
         ]);
 
         // Display the main listing
         App::redirect(
-            $url
+            $url,
         );
     }
 
@@ -1887,7 +1887,7 @@ class Collections extends Plugin
             App::redirect(
                 Route::url('index.php?option=com_login?return=' . base64_encode($collection)),
                 Lang::txt('MEMBERS_LOGIN_NOTICE'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -1900,7 +1900,7 @@ class Collections extends Plugin
                 App::redirect(
                     Route::url('index.php?option=com_members'),
                     Lang::txt('PLG_MEMBERS_COLLECTIONS_ERROR_NEW_ACCOUNT'),
-                    'warning'
+                    'warning',
                 );
                 return;
             }
@@ -1911,7 +1911,7 @@ class Collections extends Plugin
             App::redirect(
                 $collection,
                 Lang::txt('You are not authorized to edit this collection.'),
-                'error'
+                'error',
             );
             return;
         }
@@ -2021,18 +2021,18 @@ class Collections extends Plugin
                 'details'     => [
                     'title' => $collection->get('title'),
                     'id'    => $collection->get('id'),
-                    'url'   => $url
-                ]
+                    'url'   => $url,
+                ],
             ],
             'recipients' => [
                 ['collection', $collection->get('id')],
-                ['user', $collection->get('created_by')]
-            ]
+                ['user', $collection->get('created_by')],
+            ],
         ]);
 
         // Redirect to collection
         App::redirect(
-            $url
+            $url,
         );
     }
 
@@ -2124,13 +2124,13 @@ class Collections extends Plugin
                 'details'     => [
                     'title' => $collection->get('title'),
                     'id'    => $collection->get('id'),
-                    'url'   => $collection->link()
-                ]
+                    'url'   => $collection->link(),
+                ],
             ],
             'recipients' => [
                 ['collection', $collection->get('id')],
-                ['user', $collection->get('created_by')]
-            ]
+                ['user', $collection->get('created_by')],
+            ],
         ]);
 
         // Redirect to main view
@@ -2209,7 +2209,7 @@ class Collections extends Plugin
                 $model = new \Components\Collections\Tables\Collection($db);
 
                 $entries = $model->find('list', [
-                    'created_by' => $user['id']
+                    'created_by' => $user['id'],
                 ]);
 
                 foreach ($entries as $entry) {
@@ -2251,7 +2251,7 @@ class Collections extends Plugin
                 $model = new \Components\Collections\Tables\Collection($db);
 
                 $entries = $model->find('list', [
-                    'created_by' => $userId
+                    'created_by' => $userId,
                 ]);
 
                 foreach ($entries as $entry) {

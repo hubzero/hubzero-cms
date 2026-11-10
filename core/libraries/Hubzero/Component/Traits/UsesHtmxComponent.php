@@ -57,7 +57,7 @@ trait UsesHtmxComponent
         return [
             'allowEval'       => false,
             'allowScriptTags' => false,
-            'historyCacheSize' => 20
+            'historyCacheSize' => 20,
         ];
     }
 

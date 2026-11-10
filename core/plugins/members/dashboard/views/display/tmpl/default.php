@@ -33,7 +33,7 @@ endif;
             <?php
             $addUrl = Route::url(
                 'index.php?option=com_members&id=' . User::get('id')
-                . '&active=dashboard&action=add'
+                . '&active=dashboard&action=add',
             );
             ?>
             <a class="icon-add btn add-module" href="<?php echo $addUrl; ?>">

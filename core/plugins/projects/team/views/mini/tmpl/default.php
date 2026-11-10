@@ -25,7 +25,7 @@ $online = [];
 // get all sessions
 $sessions = \Hubzero\Session\Helper::getAllSessions([
     'guest' => 0,
-    'distinct' => 1
+    'distinct' => 1,
 ]);
 
 // Determine if there is anything worth showing

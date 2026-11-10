@@ -78,7 +78,7 @@ class TranslationServiceProvider extends ServiceProvider
 
             $language = $params->get(
                 $this->app['client']->name,
-                $this->app['config']->get('language', 'en-GB')
+                $this->app['config']->get('language', 'en-GB'),
             );
         }
 

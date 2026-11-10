@@ -234,7 +234,7 @@ class Doi extends Obj
         return htmlspecialchars(
             html_entity_decode((string) $value, ENT_QUOTES | ENT_HTML5, 'UTF-8'),
             ENT_QUOTES,
-            'UTF-8'
+            'UTF-8',
         );
     }
 
@@ -1034,7 +1034,7 @@ class Doi extends Obj
             CURLOPT_USERPWD         => $this->_configs->ezidUserPW,
             CURLOPT_POSTFIELDS      => $postvals,
             CURLOPT_RETURNTRANSFER  => true,
-            CURLOPT_HTTPHEADER      => ['Content-Type: text/plain; charset=UTF-8', 'Content-Length: ' . strlen($postvals)]
+            CURLOPT_HTTPHEADER      => ['Content-Type: text/plain; charset=UTF-8', 'Content-Length: ' . strlen($postvals)],
         ];
         curl_setopt_array($ch, $options);
 
@@ -1190,7 +1190,7 @@ class Doi extends Obj
             CURLOPT_USERPWD         => $this->_configs->ezidUserPW,
             CURLOPT_POSTFIELDS      => $postVals,
             CURLOPT_RETURNTRANSFER  => true,
-            CURLOPT_HTTPHEADER      => ['Content-Type: text/plain; charset=UTF-8', 'Content-Length: ' . strlen($postVals)]
+            CURLOPT_HTTPHEADER      => ['Content-Type: text/plain; charset=UTF-8', 'Content-Length: ' . strlen($postVals)],
         ];
         curl_setopt_array($ch, $options);
 

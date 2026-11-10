@@ -18,7 +18,7 @@ defined('_HZEXEC_') or die();
 <?php
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=medialist&file=' . urlencode($this->file)
+    . '&controller=medialist&file=' . urlencode($this->file),
 );
 ?>
 <form action="<?php echo $formAction; ?>"

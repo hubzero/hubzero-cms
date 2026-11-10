@@ -82,7 +82,7 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
                 </a>
                 <?php
                     $helpUrl = Route::url(
-                        'index.php?option=com_help&component=courses&page=basics#why_enroll'
+                        'index.php?option=com_help&component=courses&page=basics#why_enroll',
                     );
                 ?>
                 <a class="advertise-popup" href="<?php echo $helpUrl; ?>">
@@ -95,7 +95,7 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
                 // Trigger event
                 $results = Event::trigger('courses.onCourseBeforeOutline', [
                     $course,
-                    $offering
+                    $offering,
                 ]);
 
                 // Output results
@@ -318,7 +318,7 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
                                                                     $base
                                                                     . '&active=outline&unit='
                                                                     . $unit->get('alias')
-                                                                    . '&b=' . $ag->get('alias')
+                                                                    . '&b=' . $ag->get('alias'),
                                                                 );
                                                             } elseif (
                                                                 $a->get('type') == 'file'
@@ -342,7 +342,7 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
                                                             // Finally, make sure prereqs have been met
                                                             $prereqsMet = $prerequisites->hasMet(
                                                                 'asset',
-                                                                $a->get('id')
+                                                                $a->get('id'),
                                                             );
                                                             if (!$prereqsMet && !$isManager) {
                                                                 $info  = "This item has prerequisites"
@@ -351,11 +351,11 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
                                                                 $items = [];
                                                                 $assetPrereqs = $prerequisites->get(
                                                                     'asset',
-                                                                    $a->get('id')
+                                                                    $a->get('id'),
                                                                 );
                                                                 foreach ($assetPrereqs as $prereq) {
                                                                     $reqAsset = new \Components\Courses\Models\Asset(
-                                                                        $prereq['scope_id']
+                                                                        $prereq['scope_id'],
                                                                     );
                                                                     $items[] = $reqAsset->get('title');
                                                                 }
@@ -373,7 +373,7 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
                                                                 if ($crumb && strlen($crumb) == $crumbLen) {
                                                                     $dep = $pdf::fromCrumb(
                                                                         $crumb,
-                                                                        $section->get('id')
+                                                                        $section->get('id'),
                                                                     );
 
                                                                     if ($dep && $dep->getState() == 'pending') {
@@ -515,7 +515,7 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
                                                                 $base
                                                                 . '&active=outline&unit='
                                                                 . $unit->get('alias')
-                                                                . '&b=' . $agt->get('alias')
+                                                                . '&b=' . $agt->get('alias'),
                                                             );
                                                         } elseif (
                                                             $a->get('type') == 'file'
@@ -569,7 +569,7 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
                                                 $base
                                                 . '&active=outline&unit='
                                                 . $unit->get('alias')
-                                                . '&b=' . $ag->get('alias')
+                                                . '&b=' . $ag->get('alias'),
                                             );
                                         } elseif (
                                             $a->get('type') == 'file'
@@ -632,7 +632,7 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
         // Trigger event
         $results = Event::trigger('onCourseAfterOutline', [
             $course,
-            $offering
+            $offering,
         ]);
         // Output results
         echo implode("\n", $results);

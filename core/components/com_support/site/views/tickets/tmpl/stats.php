@@ -88,7 +88,7 @@ foreach ($severities as $severity) {
                 <?php
                 $browseUrl = Route::url(
                     'index.php?option=' . $this->option
-                    . '&controller=' . $this->controller . '&task=display'
+                    . '&controller=' . $this->controller . '&task=display',
                 );
                 ?>
                 <a class="icon-browse browse btn" href="<?php echo $browseUrl; ?>">
@@ -99,7 +99,7 @@ foreach ($severities as $severity) {
                 <?php
                 $newUrl = Route::url(
                     'index.php?option=' . $this->option
-                    . '&controller=' . $this->controller . '&task=new'
+                    . '&controller=' . $this->controller . '&task=new',
                 );
                 ?>
                 <a class="icon-add add btn" href="<?php echo $newUrl; ?>">
@@ -132,7 +132,7 @@ foreach ($severities as $severity) {
 <?php
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller . '&task=stats'
+    . '&controller=' . $this->controller . '&task=stats',
 );
 ?>
 <form action="<?php echo $formAction; ?>" method="get" enctype="multipart/form-data">
@@ -272,7 +272,7 @@ $formAction = Route::url(
                         <td class="block">
                             <?php
                             $lifetime = \Components\Support\Helpers\Utilities::calculateAverageLife(
-                                $this->closedTickets
+                                $this->closedTickets,
                             );
                             ?>
                             <?php echo (isset($lifetime[0])) ? $lifetime[0] : 0; ?>
@@ -329,11 +329,11 @@ $formAction = Route::url(
                                     '#CFCFAB', //'#e5e5e5',
                                     '#598ba4', //'#828282',
                                     '#82b5c6', //'#404040',
-                                    '#99B1A5' //'#6a6a6a',
+                                    '#99B1A5', //'#6a6a6a',
                                 ];
 
                                 $severities = \Components\Support\Helpers\Utilities::getSeverities(
-                                    $this->config->get('severities')
+                                    $this->config->get('severities'),
                                 );
 
                                 $cls = 'odd';
@@ -567,7 +567,7 @@ $formAction = Route::url(
                                     <td class="block">
                                         <?php
                                         $lifetime = \Components\Support\Helpers\Utilities::calculateAverageLife(
-                                            $user->tickets
+                                            $user->tickets,
                                         );
                                         ?>
                                         <?php echo (isset($lifetime[0])) ? $lifetime[0] : 0; ?>

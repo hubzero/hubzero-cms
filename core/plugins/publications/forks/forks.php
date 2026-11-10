@@ -62,7 +62,7 @@ class Forks extends Plugin
         $arr = [
             'html'     => '',
             'metadata' => '',
-            'name'     => $this->_name
+            'name'     => $this->_name,
         ];
 
         // Check if our area is in the array of areas we want to return results for
@@ -115,7 +115,7 @@ class Forks extends Plugin
         $arr = [
             'html'    => '',
             'metadata' => '',
-            'name'    => 'forks'
+            'name'    => 'forks',
         ];
 
         // Make sure forks are allowed
@@ -205,7 +205,7 @@ class Forks extends Plugin
                 $forks[$i] = new \Components\Publications\Models\Publication(
                     $fork->publication_id,
                     'default',
-                    $fork->id
+                    $fork->id,
                 );
                 $forks[$i]->set('forked_from', $version->version_label);
                 $forks[$i]->set('forked_version', $version->version_number);
@@ -242,7 +242,7 @@ class Forks extends Plugin
             'sortby'   => 'title',
             'sortdir'  => 'ASC',
             'filterby' => 'active',
-            'uid'      => User::get('id')
+            'uid'      => User::get('id'),
         ];
 
         $projects = [];

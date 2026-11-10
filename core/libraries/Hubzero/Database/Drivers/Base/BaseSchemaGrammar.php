@@ -165,7 +165,7 @@ abstract class BaseSchemaGrammar
                     $driverStatements = $this->driver->buildDeferredFulltextIndexStatements(
                         $table,
                         $name,
-                        is_array($indexColumns) ? $indexColumns : [$indexColumns]
+                        is_array($indexColumns) ? $indexColumns : [$indexColumns],
                     );
                     foreach ($driverStatements as $driverStatement) {
                         $statements[] = $driverStatement;
@@ -295,7 +295,7 @@ abstract class BaseSchemaGrammar
      * @return array  Array of SQL statements
      */
     abstract public function compileAlterTable(
-        AlterTableBuilder $builder
+        AlterTableBuilder $builder,
     ): array;
 
     /**
@@ -344,7 +344,7 @@ abstract class BaseSchemaGrammar
     public function compileRenameColumn(
         string $table,
         string $from,
-        string $to
+        string $to,
     ): string {
         return "ALTER TABLE " . $this->wrap($table)
             . " RENAME COLUMN " . $this->wrap($from)
@@ -417,7 +417,7 @@ abstract class BaseSchemaGrammar
         string $indexName,
         string $tableName,
         array $columns,
-        bool $unique = false
+        bool $unique = false,
     ): string {
         $uniqueKeyword = $unique ? 'UNIQUE ' : '';
         $wrappedIndex = $this->wrap($indexName);

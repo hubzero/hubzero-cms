@@ -48,12 +48,12 @@ $boxClass = $hasFiles ? '' : ' suggestions';
             $fileTitle = $this->escape($file->get('name'));
             $icon = $file->drawIcon($ext);
             $shortName = \Components\Projects\Helpers\Html::shortenFileName(
-                $file->get('name')
+                $file->get('name'),
             );
             $fileSize = $file->getSize('formatted');
             $fileDate = Date::of($file->get('date'))->toLocal('M d, Y');
             $authorName = \Components\Projects\Helpers\Html::shortenName(
-                $file->get('author')
+                $file->get('author'),
             );
             ?>
             <li>

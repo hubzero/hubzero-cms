@@ -34,7 +34,7 @@ $day_name = [
     Lang::txt('EVENTS_CAL_LANG_WEDNESDAYSHORT'),
     Lang::txt('EVENTS_CAL_LANG_THURSDAYSHORT'),
     Lang::txt('EVENTS_CAL_LANG_FRIDAYSHORT'),
-    Lang::txt('EVENTS_CAL_LANG_SATURDAYSHORT')
+    Lang::txt('EVENTS_CAL_LANG_SATURDAYSHORT'),
 ];
 
 $time  = mktime(0, 0, 0, intval($this->month), 1, intval($this->year));
@@ -127,7 +127,7 @@ $database->setQuery(
 	 WHERE `scope`='event' AND `state`=1 AND `approved`=1
 	   AND `publish_up` <= " . $database->quote($rangeEnd) . "
 	   AND (`publish_down` >= " . $database->quote($rangeStart) . "
-	        OR `publish_down` IS NULL OR `publish_down` = '' OR `publish_down` = '0000-00-00 00:00:00')"
+	        OR `publish_down` IS NULL OR `publish_down` = '' OR `publish_down` = '0000-00-00 00:00:00')",
 );
 foreach ((array) $database->loadObjectList() as $ev) {
     $etz      = $ev->time_zone ? $ev->time_zone : \Config::get('offset');

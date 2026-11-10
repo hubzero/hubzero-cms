@@ -56,7 +56,7 @@ $this->view('_submenu', 'shared')
                                         'index.php?option=com_members'
                                         . '&controller=members'
                                         . '&search_field=uidNumber'
-                                        . '&search=' . $entry->$key
+                                        . '&search=' . $entry->$key,
                                     );
                                     $memberName = User::getInstance($entry->$key)->name;
                                 ?>
@@ -74,7 +74,7 @@ $this->view('_submenu', 'shared')
                                 'index.php?option=' . $this->option
                                 . '&controller=' . $this->controller
                                 . '&task=removeBlacklistEntry'
-                                . '&entryID=' . $entry->get('id')
+                                . '&entryID=' . $entry->get('id'),
                             );
                         ?>
                         <a href="<?php echo $removeUrl; ?>" class="button">

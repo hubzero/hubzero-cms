@@ -40,7 +40,7 @@ class Courses extends Module
             'unpublished'   => 0,
             'published'     => 1,
             'archived'      => 2,
-            'draft'         => 3
+            'draft'         => 3,
         ];
 
         foreach ($queries as $key => $state) {
@@ -71,7 +71,7 @@ class Courses extends Module
                 $startDate = $y . '-' . $this->pad($m) . '-00 00:00:00';
                 $database->setQuery(
                     "SELECT COUNT(*) FROM `#__courses_members` WHERE enrolled > " .
-                    $database->quote($startDate) . " AND enrolled < " . $database->quote($n)
+                    $database->quote($startDate) . " AND enrolled < " . $database->quote($n),
                 );
                 $totals[$y][$m] = $database->loadResult();
             }

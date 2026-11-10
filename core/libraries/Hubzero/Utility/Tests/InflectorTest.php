@@ -32,7 +32,7 @@ class InflectorTest extends Basic
         'rhinoceros',
         'salmon',
         'bison',
-        'headquarters'
+        'headquarters',
     ];
 
     protected static $strings = [
@@ -93,7 +93,7 @@ class InflectorTest extends Basic
         'cat' => 'cats',
         'dog' => 'dogs',
         'cup' => 'cups',
-        'car' => 'cars'
+        'car' => 'cars',
     ];
 
     /**

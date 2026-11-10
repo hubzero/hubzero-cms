@@ -23,7 +23,7 @@ $source = with(new \Hubzero\Content\Moderator($this->file->getAbsolutePath()))->
                 echo Lang::txt(
                     'Your browser doesn\'t support HTML5 video.'
                     . ' Here is a <a href="%s">link to the video</a> instead.',
-                    $source
+                    $source,
                 );
                 ?></p>
         </video>

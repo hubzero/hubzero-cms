@@ -45,7 +45,7 @@ class Activity extends Plugin
             'title' => Lang::txt('PLG_GROUPS_ACTIVITY'),
             'default_access' => $this->params->get('plugin_access', 'members'),
             'display_menu_tab' => $this->params->get('display_tab', 1),
-            'icon' => 'f056'
+            'icon' => 'f056',
         ];
         return $area;
     }
@@ -71,7 +71,7 @@ class Activity extends Plugin
         // The output array we're returning
         $arr = [
             'html'     => '',
-            'metadata' => []
+            'metadata' => [],
         ];
 
         //get this area details
@@ -358,7 +358,7 @@ class Activity extends Plugin
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
             Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($this->_name)),
-            'warning'
+            'warning',
         );
     }
 
@@ -413,7 +413,7 @@ class Activity extends Plugin
 
         // Redirect
         App::redirect(
-            Route::url($this->base . '&active=' . $this->_name, false)
+            Route::url($this->base . '&active=' . $this->_name, false),
         );
     }
 
@@ -478,7 +478,7 @@ class Activity extends Plugin
 
         // Redirect
         App::redirect(
-            Route::url($this->base . '&active=' . $this->_name, false)
+            Route::url($this->base . '&active=' . $this->_name, false),
         );
     }
 
@@ -517,7 +517,7 @@ class Activity extends Plugin
         // editor HTML that the feed echoes as-is, so purify it.
         $row->set([
             'description' => \Hubzero\Utility\Sanitize::html((string) (isset($comment['description']) ? $comment['description'] : '')),
-            'anonymous'   => (isset($comment['anonymous']) ? (int) $comment['anonymous'] : 0)
+            'anonymous'   => (isset($comment['anonymous']) ? (int) $comment['anonymous'] : 0),
         ]);
 
         if ($row->isNew()) {
@@ -569,11 +569,11 @@ class Activity extends Plugin
                 App::redirect(
                     Route::url($this->base . '&active=' . $this->_name),
                     $file->getError(),
-                    'error'
+                    'error',
                 );
             } else {
                 $row->details->set('attachments', [
-                    $file->toArray()
+                    $file->toArray(),
                 ]);
                 $row->set('details', $row->details->toString());
             }
@@ -583,13 +583,13 @@ class Activity extends Plugin
         if (!$row->save()) {
             User::setState(
                 'failed_comment',
-                $row->get('description')
+                $row->get('description'),
             );
 
             App::redirect(
                 Route::url($this->base . '&active=' . $this->_name),
                 $row->getError(),
-                'error'
+                'error',
             );
         }
 
@@ -622,16 +622,16 @@ class Activity extends Plugin
                 'details'     => [
                     'url'         => Route::url($this->base . '&active=' . $this->_name . '#activity' . $row->get('id')),
                     'title'       => $this->group->get('description'),
-                    'attachments' => $row->details->get('attachments')
-                ]
+                    'attachments' => $row->details->get('attachments'),
+                ],
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         // Redirect
         App::redirect(
             Route::url($this->base . '&active=' . $this->_name),
-            Lang::txt('PLG_GROUPS_ACTIVITY_COMMENTS_SAVED')
+            Lang::txt('PLG_GROUPS_ACTIVITY_COMMENTS_SAVED'),
         );
     }
 }

@@ -22,7 +22,7 @@ defined('_HZEXEC_') or die();
     $formAction = Route::url(
         'index.php?option=' . $this->option
         . '&cn=' . $this->group->get('cn')
-        . '&active=collections&action=savesettings'
+        . '&active=collections&action=savesettings',
     );
     $collAllSelected = !$this->params->get('create_collection', 1)
         ? ' selected="selected"'
@@ -31,10 +31,10 @@ defined('_HZEXEC_') or die();
         ? ' selected="selected"'
         : '';
     $collAllTxt = Lang::txt(
-        'PLG_GROUPS_COLLECTIONS_SETTINGS_CREATE_COLLECTIONS_ALL'
+        'PLG_GROUPS_COLLECTIONS_SETTINGS_CREATE_COLLECTIONS_ALL',
     );
     $collMgrTxt = Lang::txt(
-        'PLG_GROUPS_COLLECTIONS_SETTINGS_CREATE_COLLECTIONS_MANAGERS'
+        'PLG_GROUPS_COLLECTIONS_SETTINGS_CREATE_COLLECTIONS_MANAGERS',
     );
     ?>
     <form action="<?php echo $formAction; ?>"
@@ -68,10 +68,10 @@ defined('_HZEXEC_') or die();
                 ? ' selected="selected"'
                 : '';
             $postAllTxt = Lang::txt(
-                'PLG_GROUPS_COLLECTIONS_SETTINGS_CREATE_POSTS_ALL'
+                'PLG_GROUPS_COLLECTIONS_SETTINGS_CREATE_POSTS_ALL',
             );
             $postMgrTxt = Lang::txt(
-                'PLG_GROUPS_COLLECTIONS_SETTINGS_CREATE_POSTS_MANAGERS'
+                'PLG_GROUPS_COLLECTIONS_SETTINGS_CREATE_POSTS_MANAGERS',
             );
             ?>
             <label for="param-posting">
@@ -105,7 +105,7 @@ defined('_HZEXEC_') or die();
             $cancelUrl = Route::url(
                 'index.php?option=' . $this->option
                 . '&cn=' . $this->group->get('cn')
-                . '&active=collections'
+                . '&active=collections',
             );
             ?>
             <a class="btn btn-secondary"

@@ -44,7 +44,7 @@ class Migration20260911120100ComNewsletter extends Base
 
         $this->db->setQuery(
             "SELECT `id`, `template` FROM `#__newsletter_templates`"
-            . " WHERE `template` LIKE '%" . self::SHIPPED . "%'"
+            . " WHERE `template` LIKE '%" . self::SHIPPED . "%'",
         );
 
         $templates = $this->db->loadObjectList();
@@ -60,14 +60,14 @@ class Migration20260911120100ComNewsletter extends Base
 
             $this->db->setQuery(
                 "UPDATE `#__newsletter_templates` SET `template` = "
-                . $this->db->quote($replaced) . " WHERE `id` = " . (int) $template->id
+                . $this->db->quote($replaced) . " WHERE `id` = " . (int) $template->id,
             );
             $this->db->query();
         }
 
         $this->log(
             'Newsletter templates now head each issue with the hub\'s own name: '
-            . count($templates) . ' updated.'
+            . count($templates) . ' updated.',
         );
     }
 
@@ -82,7 +82,7 @@ class Migration20260911120100ComNewsletter extends Base
 
         $this->db->setQuery(
             "SELECT `id`, `template` FROM `#__newsletter_templates`"
-            . " WHERE `template` LIKE '%{{SITENAME}}%'"
+            . " WHERE `template` LIKE '%{{SITENAME}}%'",
         );
 
         foreach ((array) $this->db->loadObjectList() as $template) {
@@ -90,7 +90,7 @@ class Migration20260911120100ComNewsletter extends Base
 
             $this->db->setQuery(
                 "UPDATE `#__newsletter_templates` SET `template` = "
-                . $this->db->quote($replaced) . " WHERE `id` = " . (int) $template->id
+                . $this->db->quote($replaced) . " WHERE `id` = " . (int) $template->id,
             );
             $this->db->query();
         }

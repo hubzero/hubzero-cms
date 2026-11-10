@@ -23,7 +23,7 @@ class TransactionalMigrationTest extends TestCase
     {
         $this->assertTrue(
             property_exists(Base::class, 'useTransaction'),
-            'Base migration class should have useTransaction property'
+            'Base migration class should have useTransaction property',
         );
     }
 
@@ -42,7 +42,7 @@ class TransactionalMigrationTest extends TestCase
 
         $this->assertTrue(
             $migration->useTransaction,
-            'useTransaction should default to true'
+            'useTransaction should default to true',
         );
     }
 
@@ -63,7 +63,7 @@ class TransactionalMigrationTest extends TestCase
 
         $this->assertFalse(
             $migration->useTransaction,
-            'Migration should be able to opt-out of transactions'
+            'Migration should be able to opt-out of transactions',
         );
     }
 
@@ -84,7 +84,7 @@ class TransactionalMigrationTest extends TestCase
 
         $this->assertTrue(
             $migration->useTransaction,
-            'Migration should be able to explicitly enable transactions'
+            'Migration should be able to explicitly enable transactions',
         );
     }
 
@@ -138,7 +138,7 @@ class TransactionalMigrationTest extends TestCase
 
         $this->assertTrue(
             $reflection->isPublic(),
-            'useTransaction should be a public property'
+            'useTransaction should be a public property',
         );
     }
 
@@ -170,7 +170,7 @@ class TransactionalMigrationTest extends TestCase
         // The migration should have useTransaction = true from Base
         $this->assertTrue(
             $oldStyleMigration->useTransaction,
-            'Old migrations should inherit useTransaction = true from Base'
+            'Old migrations should inherit useTransaction = true from Base',
         );
     }
 }

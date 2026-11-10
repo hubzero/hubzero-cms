@@ -41,7 +41,7 @@ if ($this->getError()) { ?>
             <?php if ($this->row->get('question')) {
                 $truncated = \Hubzero\Utility\Str::truncate(
                     $this->escape(strip_tags($this->row->question)),
-                    $this->txt_length
+                    $this->txt_length,
                 );
                 echo ': ' . $truncated;
             } ?>

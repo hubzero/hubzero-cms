@@ -28,7 +28,7 @@ class Authfactors extends Plugin
         if (in_array(App::get('client')->id, $this->params->get('clients', [1]))) {
             $exceptions = [
                 'com_login.logout',
-                'com_users.logout'
+                'com_users.logout',
             ];
 
             $current  = Request::getWord('option', '');

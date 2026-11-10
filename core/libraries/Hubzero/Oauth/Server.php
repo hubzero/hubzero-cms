@@ -52,7 +52,7 @@ class Server
             'refresh_token_lifetime'            => 7200,
             'require_exact_redirect_uri'        => true,
             'allow_credentials_in_request_body' => true,
-            'always_issue_new_refresh_token'    => true
+            'always_issue_new_refresh_token'    => true,
         ], $options);
 
         // available grant types
@@ -62,7 +62,7 @@ class Server
             new AuthorizationCodeGrantType($storage, $this->config),
             new ClientCredentialsGrantType($storage, $this->config),
             new SessionTokenGrantType($storage, $this->config),
-            new ToolSessionTokenGrantType($storage, $this->config)
+            new ToolSessionTokenGrantType($storage, $this->config),
         ];
 
         // Pass a storage object or array of storage objects to the OAuth2 server class
@@ -94,8 +94,8 @@ class Server
                 'message' => $response->getStatusText(),
                 'code'    => $response->getStatusCode(),
                 'errors'  => [
-                    $response->getParameters()
-                ]
+                    $response->getParameters(),
+                ],
             ]);
         }
 

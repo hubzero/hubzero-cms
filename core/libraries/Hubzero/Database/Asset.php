@@ -104,7 +104,7 @@ class Asset
                     $asset->set('name', $me->getAssetName());
                     $asset->save();
                 },
-                $this->model->getTableName() . '_new'
+                $this->model->getTableName() . '_new',
             );
         }
 

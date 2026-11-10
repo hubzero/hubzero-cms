@@ -53,7 +53,7 @@ class Activity extends Relational
      */
     protected $rules = [
         'projectid' => 'positive|nonzero',
-        'activity'  => 'notempty'
+        'activity'  => 'notempty',
     ];
 
     /**
@@ -62,7 +62,7 @@ class Activity extends Relational
      * @var  array
      */
     public $initiate = [
-        'recorded'
+        'recorded',
     ];
 
     /**

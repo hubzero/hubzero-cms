@@ -23,7 +23,7 @@ class Migration20120101000000Core extends Base
             'Migration20120101000003Core.php',
             'Migration20120101000004Core.php',
             'Migration20120101000005Core.php',
-            'Migration20120101000006Core.php'
+            'Migration20120101000006Core.php',
         ];
 
         // This is a little strange, but it's what we've got to work with...

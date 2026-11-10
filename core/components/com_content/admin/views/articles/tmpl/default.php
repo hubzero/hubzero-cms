@@ -101,7 +101,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                     'value',
                     'text',
                     $this->filters['published'],
-                    true
+                    true,
                 );
                 ?>
             </select>
@@ -120,7 +120,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                     Html::category('options', 'com_content'),
                     'value',
                     'text',
-                    $this->filters['category_id']
+                    $this->filters['category_id'],
                 );
                 ?>
             </select>
@@ -139,7 +139,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                     $this->f_levels,
                     'value',
                     'text',
-                    $this->filters['level']
+                    $this->filters['level'],
                 );
                 ?>
             </select>
@@ -158,7 +158,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                     Html::access('assetgroups'),
                     'value',
                     'text',
-                    $this->filters['access']
+                    $this->filters['access'],
                 );
                 ?>
             </select>
@@ -177,7 +177,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                     $this->authors,
                     'value',
                     'text',
-                    $this->filters['author_id']
+                    $this->filters['author_id'],
                 );
                 ?>
             </select>
@@ -196,7 +196,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                     Html::contentlanguage('existing', true, true),
                     'value',
                     'text',
-                    $this->filters['language']
+                    $this->filters['language'],
                 );
                 ?>
             </select>
@@ -296,7 +296,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                             $item->editor->name,
                             $item->checked_out_time,
                             'articles.',
-                            $canCheckin
+                            $canCheckin,
                         );
                         ?>
                     <?php endif; ?>
@@ -305,7 +305,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                         $editUrl = Route::url(
                             'index.php?option=' . $this->option
                             . '&controller=' . $this->controller
-                            . '&task=edit&id=' . $item->id
+                            . '&task=edit&id=' . $item->id,
                         );
                         ?>
                         <a href="<?php echo $editUrl; ?>">
@@ -327,7 +327,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                         $canChange,
                         'cb',
                         $item->publish_up,
-                        $item->publish_down
+                        $item->publish_down,
                     );
                     ?>
                 </td>
@@ -349,7 +349,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                                     $prevMatch,
                                     'orderup',
                                     'JLIB_HTML_MOVE_UP',
-                                    $ordering
+                                    $ordering,
                                 );
                                 $downIcon = $this->pagination->orderDownIcon(
                                     $i,
@@ -357,7 +357,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                                     $nextMatch,
                                     'articles.orderdown',
                                     'JLIB_HTML_MOVE_DOWN',
-                                    $ordering
+                                    $ordering,
                                 );
                                 ?>
                                 <span><?php echo $upIcon; ?></span>
@@ -369,7 +369,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                                     $prevMatch,
                                     'orderdown',
                                     'JLIB_HTML_MOVE_UP',
-                                    $ordering
+                                    $ordering,
                                 );
                                 $downIcon = $this->pagination->orderDownIcon(
                                     $i,
@@ -377,7 +377,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                                     $nextMatch,
                                     'articles.orderup',
                                     'JLIB_HTML_MOVE_DOWN',
-                                    $ordering
+                                    $ordering,
                                 );
                                 ?>
                                 <span><?php echo $upIcon; ?></span>
@@ -408,7 +408,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                     <?php
                     $unknown = Lang::txt('JUNKNOWN');
                     $authorName = $this->escape(
-                        $item->author->get('name', $unknown)
+                        $item->author->get('name', $unknown),
                     );
                     ?>
                     <?php if ($item->created_by_alias) : ?>
@@ -416,11 +416,11 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                         <p class="smallsub">
                             <?php
                             $aliasEsc = $this->escape(
-                                $item->created_by_alias
+                                $item->created_by_alias,
                             );
                             echo Lang::txt(
                                 'JGLOBAL_LIST_ALIAS',
-                                $aliasEsc
+                                $aliasEsc,
                             );
                             ?>
                         </p>

@@ -87,8 +87,8 @@ class Page implements RendererInterface
                 [
                     'template'  => $template->template,
                     'directory' => dirname($template->path),
-                    'debug'     => $this->debug
-                ]
+                    'debug'     => $this->debug,
+                ],
             );
 
             // Failsafe to get the error displayed.

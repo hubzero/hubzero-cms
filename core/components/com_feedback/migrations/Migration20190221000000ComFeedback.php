@@ -22,8 +22,8 @@ class Migration20190221000000ComFeedback extends Base
      **/
     public static $tables = [
         '#__feedback' => [
-            'date'
-        ]
+            'date',
+        ],
     ];
 
     /**

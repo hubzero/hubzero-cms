@@ -404,7 +404,7 @@ abstract class Driver implements LoggerAwareInterface
         $options['driver']   = (isset($options['driver']))   ? preg_replace(
             '/[^A-Z0-9_\.-]/i',
             '',
-            $options['driver']
+            $options['driver'],
         ) : 'mysql';
         $options['database'] = (isset($options['database'])) ? $options['database']
             : null;
@@ -433,7 +433,7 @@ abstract class Driver implements LoggerAwareInterface
             // Resolve canonical convention candidate for custom drivers
             if ($class === null) {
                 $class = BackendRegistry::firstExistingClassCandidate(
-                    BackendRegistry::conventionDriverClassCandidates((string) $options['driver'])
+                    BackendRegistry::conventionDriverClassCandidates((string) $options['driver']),
                 );
             }
 
@@ -678,7 +678,7 @@ abstract class Driver implements LoggerAwareInterface
      */
     public static function flushAllTableColumnsCaches(
         ?string $tableName = null,
-        ?string $connectionId = null
+        ?string $connectionId = null,
     ): void {
         foreach (self::$instances as $instance) {
             if (!$instance instanceof self) {
@@ -1816,7 +1816,7 @@ abstract class Driver implements LoggerAwareInterface
                 $sql,
                 $this->tablePrefix,
                 $prefixPosition + ($differential * $count),
-                strlen($prefix)
+                strlen($prefix),
             );
             $count++;
         }
@@ -1874,7 +1874,7 @@ abstract class Driver implements LoggerAwareInterface
             try {
                 Event::trigger('database_query', [
                     'query' => $query,
-                    'time'  => $time
+                    'time'  => $time,
                 ]);
             } catch (\Throwable $e) {
                 // Silently continue if Event facade not configured
@@ -2079,7 +2079,7 @@ abstract class Driver implements LoggerAwareInterface
         if (!in_array($mode, $valid, true)) {
             throw new \InvalidArgumentException(
                 "Invalid raw query mode '{$mode}'. "
-                . "Must be one of: " . implode(', ', $valid)
+                . "Must be one of: " . implode(', ', $valid),
             );
         }
 
@@ -2147,7 +2147,7 @@ abstract class Driver implements LoggerAwareInterface
             && strncmp(
                 $callerClass,
                 'Hubzero\\Database\\',
-                17
+                17,
             ) === 0
         ) {
             return;
@@ -2167,7 +2167,7 @@ abstract class Driver implements LoggerAwareInterface
                     'line'        => $line,
                     'class'       => $callerClass,
                     'function'    => $function,
-                ]
+                ],
             );
             return;
         }
@@ -2177,7 +2177,7 @@ abstract class Driver implements LoggerAwareInterface
             "setQuery() called with raw SQL in strict mode. "
             . "Use the Query builder for portable queries. "
             . "Called from {$file}:{$line}"
-            . ($callerClass ? " ({$callerClass}::{$function})" : '')
+            . ($callerClass ? " ({$callerClass}::{$function})" : ''),
         );
     }
 
@@ -2829,7 +2829,7 @@ abstract class Driver implements LoggerAwareInterface
             $this->statement->bindValue(
                 $idx,
                 $binding,
-                isset($type[$idx]) ? $this->translateType($type[$idx]) : $this->inferType($binding)
+                isset($type[$idx]) ? $this->translateType($type[$idx]) : $this->inferType($binding),
             );
 
             $idx++;

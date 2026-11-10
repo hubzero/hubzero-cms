@@ -36,7 +36,7 @@ $this->css('edit')
 <?php
     $formUrl = Route::url(
         'index.php?option=' . $this->option
-        . '&controller=' . $this->controller
+        . '&controller=' . $this->controller,
     );
     ?>
 <form action="<?php echo $formUrl; ?>" method="post" name="adminForm" id="item-form">

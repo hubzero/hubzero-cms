@@ -18,16 +18,16 @@ defined('_HZEXEC_') or die();
 if (Pathway::count() <= 0) {
     Pathway::append(
         Lang::txt(strtoupper($this->option)),
-        'index.php?option=' . $this->option
+        'index.php?option=' . $this->option,
     );
 }
 Pathway::append(
     Lang::txt('COM_ANSWERS_NEW'),
-    'index.php?option=' . $this->option . '&task=new'
+    'index.php?option=' . $this->option . '&task=new',
 );
 
 Document::setTitle(
-    Lang::txt('COM_ANSWERS') . ': ' . Lang::txt('COM_ANSWERS_NEW')
+    Lang::txt('COM_ANSWERS') . ': ' . Lang::txt('COM_ANSWERS_NEW'),
 );
 
 $this->css();
@@ -137,7 +137,7 @@ $this->css();
                             35,
                             10,
                             'field-question',
-                            ['class' => 'form-control']
+                            ['class' => 'form-control'],
                         );
                         ?>
                     </label>

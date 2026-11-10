@@ -139,7 +139,7 @@ class Sliders
             \App::get('document')->addScriptDeclaration(
                 "jQuery(document).ready(function($){
 					$('div#" . $group . "').accordion(" . $options . ");
-				});"
+				});",
             );
         }
     }

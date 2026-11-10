@@ -111,7 +111,7 @@ class Cache extends Plugin
             App::get('cache')->put(
                 $this->getId(),
                 App::get('response')->getContent(),
-                App::get('config')->get('lifetime', 45)
+                App::get('config')->get('lifetime', 45),
             );
         }
     }
@@ -156,7 +156,7 @@ class Cache extends Plugin
 
         $paths = [
             $dir . '/site/site.css',
-            $dir . '/site/site.less.cache'
+            $dir . '/site/site.less.cache',
         ];
 
         foreach ($paths as $path) {

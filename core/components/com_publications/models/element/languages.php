@@ -215,7 +215,7 @@ class Languages extends Base
         "yo" => "Yoruba",
         "za" => "Zhuang",
         "zh" => "Chinese",
-        "zu" => "Zulu"
+        "zu" => "Zulu",
     ];
 
     /**
@@ -252,7 +252,7 @@ class Languages extends Base
             'value',
             'text',
             $value,
-            $fieldId
+            $fieldId,
         );
         return '<span class="field-wrap">' . $selectHtml . '</span>';
     }

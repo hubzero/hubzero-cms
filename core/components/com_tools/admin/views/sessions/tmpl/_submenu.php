@@ -16,12 +16,12 @@ defined('_HZEXEC_') or die();
 $task = strtolower(Request::getCmd('task', ''));
 $baseUrl = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 $classesUrl = Route::url(
     'index.php?option=' . $this->option
     . '&controller=' . $this->controller
-    . '&task=classes'
+    . '&task=classes',
 );
 $activeLabel = Lang::txt('COM_TOOLS_SESSION_ACTIVE');
 $classesLabel = Lang::txt('COM_TOOLS_SESSION_CLASSES');

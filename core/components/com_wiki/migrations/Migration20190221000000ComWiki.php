@@ -23,24 +23,24 @@ class Migration20190221000000ComWiki extends Base
      **/
     public static $tables = [
         '#__wiki_attachments' => [
-            'created'
+            'created',
         ],
         '#__wiki_comments' => [
-            'created'
+            'created',
         ],
         '#__wiki_links' => [
-            'timestamp'
+            'timestamp',
         ],
         '#__wiki_logs' => [
-            'timestamp'
+            'timestamp',
         ],
         '#__wiki_pages' => [
             'created',
-            'modified'
+            'modified',
         ],
         '#__wiki_versions' => [
-            'created'
-        ]
+            'created',
+        ],
     ];
 
     /**

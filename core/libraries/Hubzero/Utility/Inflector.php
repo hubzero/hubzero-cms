@@ -22,7 +22,7 @@ class Inflector
         'equipment', 'information', 'rice', 'money',
         'species', 'series', 'fish', 'meta', 'metadata',
         'buffalo', 'elk', 'rhinoceros', 'salmon',
-        'bison', 'headquarters', 'moose'
+        'bison', 'headquarters', 'moose',
     ];
 
     /**

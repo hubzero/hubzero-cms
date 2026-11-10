@@ -16,11 +16,11 @@ defined('_HZEXEC_') or die();
 $task = Request::getCmd('task');
 $reportsUrl = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 $checkUrl = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller . '&task=check'
+    . '&controller=' . $this->controller . '&task=check',
 );
 $reportsClass = ($task != 'check') ? ' class="active"' : '';
 $checkClass = ($task == 'check') ? ' class="active"' : '';

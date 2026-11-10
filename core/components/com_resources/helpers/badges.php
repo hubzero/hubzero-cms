@@ -134,7 +134,7 @@ class Badges
             'raw_tag' => $rawTagName,
             'admin' => $admin,
             'created' => Date::toSql(),
-            'created_by' => $taggerId
+            'created_by' => $taggerId,
         ];
         $tag->set($tagData);
 
@@ -181,7 +181,7 @@ class Badges
             'taggerid' => $taggerId,
             'taggedon' => $taggedOn,
             'tbl' => $this->scope,
-            'label' => self::LABEL
+            'label' => self::LABEL,
         ]);
 
         $tagAssociation->save();

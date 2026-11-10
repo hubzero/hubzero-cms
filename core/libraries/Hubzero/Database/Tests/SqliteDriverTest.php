@@ -106,7 +106,7 @@ class SqliteDriverTest extends AbstractDriverTestCase
         // Insert test data
         $query = new Query($driver);
         $query->insertMany('drv_rebuild_test', [
-            ['id' => 1, 'name' => 'Test', 'email' => 'test@test.com', 'age' => 25]
+            ['id' => 1, 'name' => 'Test', 'email' => 'test@test.com', 'age' => 25],
         ]);
 
         // Use AlterTableBuilder to drop the email column
@@ -155,7 +155,7 @@ class SqliteDriverTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $query->insertMany('drv_modify_test', [
-            ['id' => 1, 'status' => 'active']
+            ['id' => 1, 'status' => 'active'],
         ]);
 
         // Modify the status column (this should trigger rebuild)
@@ -204,7 +204,7 @@ class SqliteDriverTest extends AbstractDriverTestCase
 
         $query = new Query($driver);
         $query->insertMany('drv_combined_test', [
-            ['id' => 1, 'old_col' => 'old', 'keep_col' => 'keep']
+            ['id' => 1, 'old_col' => 'old', 'keep_col' => 'keep'],
         ]);
 
         // Drop old_col and add new_col in one operation
@@ -264,7 +264,7 @@ class SqliteDriverTest extends AbstractDriverTestCase
 
         $this->assertTrue(
             $hasRebuild,
-            "compileAlterTable should generate rebuild statements for DROP COLUMN. Got:\n" . $sqlString
+            "compileAlterTable should generate rebuild statements for DROP COLUMN. Got:\n" . $sqlString,
         );
     }
 

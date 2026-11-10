@@ -97,7 +97,7 @@ class Projectsv2r0 extends ApiController
             'sortdir'    => strtoupper(Request::getWord('sort_Dir', 'ASC')),
             'getowner'   => 1,
             'updates'    => 1,
-            'mine'       => 1
+            'mine'       => 1,
         ];
 
         $admin = false;
@@ -388,7 +388,7 @@ class Projectsv2r0 extends ApiController
             'provisioned'     => 0,
             'private'         => Request::getInt('private', $row->config('privacy', 1), 'post'),
             //'access'          => Request::getInt('access', $row->config('access', 5), 'post'),
-            'owned_by_group'  => Request::getInt('owned_by_group', 0, 'post')
+            'owned_by_group'  => Request::getInt('owned_by_group', 0, 'post'),
         ];
 
         $fields['access'] = Project::PRIVACY_PUBLIC;
@@ -464,7 +464,7 @@ class Projectsv2r0 extends ApiController
                 'hipaa_data'  => Request::getString('hipaa', 'no', 'post'),
                 'ferpa_data'  => Request::getString('ferpa', 'no', 'post'),
                 'export_data' => Request::getString('export', 'no', 'post'),
-                'irb_data'    => Request::getString('irb', 'no', 'post')
+                'irb_data'    => Request::getString('irb', 'no', 'post'),
             ];
 
             // Save individual restrictions
@@ -578,7 +578,7 @@ class Projectsv2r0 extends ApiController
             'groupid'   => $row->get('owned_by_group'),
             'status'    => 1,
             'role'      => 1,
-            'native'    => 1
+            'native'    => 1,
         ];
 
         foreach ($team as $user_id) {
@@ -622,12 +622,12 @@ class Projectsv2r0 extends ApiController
                 'scope'       => 'project',
                 'scope_id'    => $row->get('id'),
                 'description' => Lang::txt('COM_PROJECTS_ACTIVITY_ENTRY_CREATED', '<a href="' . $url . '">' . htmlspecialchars((string) $row->get('title'), ENT_QUOTES, 'UTF-8') . ' (' . $row->get('alias') . ')</a>'),
-                'details'     => $fields
+                'details'     => $fields,
             ],
             'recipients' => [
                 $row->get('created_by_user'),
-                $row->get('owned_by_user')
-            ]
+                $row->get('owned_by_user'),
+            ],
         ]);
 
         // Trigger project create event
@@ -880,7 +880,7 @@ class Projectsv2r0 extends ApiController
             'title'          => Request::getString('title', $row->get('title')),
             'about'          => Request::getString('about', $row->get('about')),
             'type'           => 1,
-            'provisioned'    => 0
+            'provisioned'    => 0,
         ];
         if ($isManager) {
             $fields['alias']          = Request::getString('alias', $row->get('alias'));
@@ -956,7 +956,7 @@ class Projectsv2r0 extends ApiController
                 'hipaa_data'  => Request::getString('hipaa', $row->params->get('hipaa_data')),
                 'ferpa_data'  => Request::getString('ferpa', $row->params->get('ferpa_data')),
                 'export_data' => Request::getString('export', $row->params->get('export_data')),
-                'irb_data'    => Request::getString('irb', $row->params->get('irb_data'))
+                'irb_data'    => Request::getString('irb', $row->params->get('irb_data')),
             ];
 
             // Save individual restrictions
@@ -1079,7 +1079,7 @@ class Projectsv2r0 extends ApiController
                         'status'    => 1,
                         'role'      => 1,
                         'native'    => 1,
-                        'userid'    => $user_id
+                        'userid'    => $user_id,
                     ]);
 
                     if (!$owner->save()) {
@@ -1112,13 +1112,13 @@ class Projectsv2r0 extends ApiController
                 'description' => Lang::txt('COM_PROJECTS_ACTIVITY_ENTRY_UPDATED', '<a href="' . $url . '">' . htmlspecialchars((string) $row->get('title'), ENT_QUOTES, 'UTF-8') . ' (' . $row->get('alias') . ')</a>'),
                 'details'     => [
                     'title' => $row->get('title'),
-                    'url'   => $url
-                ]
+                    'url'   => $url,
+                ],
             ],
             'recipients' => [
                 $row->get('created_by_user'),
-                $row->get('owned_by_user')
-            ]
+                $row->get('owned_by_user'),
+            ],
         ]);
 
         $this->send($row->toObject());
@@ -1183,12 +1183,12 @@ class Projectsv2r0 extends ApiController
                     'scope'       => 'project',
                     'scope_id'    => $id,
                     'description' => Lang::txt('COM_PROJECTS_ACTIVITY_ENTRY_DELETED', '<a href="' . $url . '">' . htmlspecialchars((string) $data['title'], ENT_QUOTES, 'UTF-8') . ' (' . $data['alias'] . ')</a>'),
-                    'details'     => $data
+                    'details'     => $data,
                 ],
                 'recipients' => [
                     $row->get('created_by_user'),
-                    $row->get('owned_by_user')
-                ]
+                    $row->get('owned_by_user'),
+                ],
             ]);
         }
 

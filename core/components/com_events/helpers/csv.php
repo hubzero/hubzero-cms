@@ -40,7 +40,7 @@ class Csv
         'race' => 16,
         'fax' => 17,
         'title' => 18,
-        'registered' => 19 // folded into previous entries
+        'registered' => 19, // folded into previous entries
     ];
 
     /**
@@ -105,7 +105,7 @@ class Csv
         $ee = new \Components\Events\Tables\Event($database);
         $fields = [
             'name', 'registered', 'affiliation', 'email', 'telephone',
-            'arrival', 'departure', 'disability', 'dietary', 'dinner'
+            'arrival', 'departure', 'disability', 'dietary', 'dinner',
         ];
 
         header('Content-type: text/comma-separated-values');
@@ -124,7 +124,7 @@ class Csv
                 $respondent->set('first_name', '[unknown]');
             }
             $row = [
-                $respondent->last_name . ', ' . $respondent->first_name
+                $respondent->last_name . ', ' . $respondent->first_name,
             ];
 
             foreach ($fields as $field) {

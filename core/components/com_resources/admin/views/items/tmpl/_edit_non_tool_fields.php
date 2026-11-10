@@ -59,7 +59,7 @@ $time = $this->time;
                     echo
                     ($this->row->get(
                         'license',
-                        $this->row->params->get('license')
+                        $this->row->params->get('license'),
                     )
                     ==
                     '')
@@ -75,7 +75,7 @@ $time = $this->time;
                         echo
                         ($this->row->get(
                             'license',
-                            $this->row->params->get('license')
+                            $this->row->params->get('license'),
                         )
                         ==
                         $license->get('name'))
@@ -209,7 +209,7 @@ $time = $this->time;
         45,
         5,
         'field-introtext',
-        ['buttons' => false]
+        ['buttons' => false],
     );
     ?>
 </div>
@@ -222,7 +222,7 @@ $time = $this->time;
         45,
         15,
         'field-fulltxt',
-        ['buttons' => false]
+        ['buttons' => false],
     );
     ?>
 </div>

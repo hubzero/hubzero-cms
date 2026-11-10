@@ -37,7 +37,7 @@ class Migration20170207025659PlgFilesystemDropbox extends Base
                     ->insert('#__projects_connection_providers')
                     ->set([
                         'alias' => 'dropbox',
-                        'name'  => 'Dropbox'
+                        'name'  => 'Dropbox',
                     ])
                     ->execute();
             }

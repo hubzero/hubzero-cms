@@ -40,7 +40,7 @@ class DayOfWeekField extends AbstractField
             'WED' => 3,
             'THU' => 4,
             'FRI' => 5,
-            'SAT' => 6
+            'SAT' => 6,
         ]);
 
         $currentYear = $date->format('Y');

@@ -86,20 +86,20 @@ class FirebirdDriverTest extends AbstractDriverTestCase
         $driver->exec("INSERT INTO FT_CATEGORIES (NAME, SLUG, SORT_ORDER) VALUES ('Electronics', 'electronics', 1)");
         $driver->exec("INSERT INTO FT_CATEGORIES (NAME, SLUG, SORT_ORDER) VALUES ('Books', 'books', 2)");
         $driver->exec(
-            "INSERT INTO FT_CATEGORIES (NAME, SLUG, SORT_ORDER, ACTIVE) VALUES ('Archived', 'archived', 99, 0)"
+            "INSERT INTO FT_CATEGORIES (NAME, SLUG, SORT_ORDER, ACTIVE) VALUES ('Archived', 'archived', 99, 0)",
         );
 
         $driver->exec(
-            "INSERT INTO FT_ITEMS (CATEGORY_ID, TITLE, PRICE, STOCK, STATUS) VALUES (1, 'Laptop', 999.99, 10, 'active')"
+            "INSERT INTO FT_ITEMS (CATEGORY_ID, TITLE, PRICE, STOCK, STATUS) VALUES (1, 'Laptop', 999.99, 10, 'active')",
         );
         $driver->exec(
-            "INSERT INTO FT_ITEMS (CATEGORY_ID, TITLE, PRICE, STOCK, STATUS) VALUES (1, 'Phone', 599.99, 25, 'active')"
+            "INSERT INTO FT_ITEMS (CATEGORY_ID, TITLE, PRICE, STOCK, STATUS) VALUES (1, 'Phone', 599.99, 25, 'active')",
         );
         $driver->exec(
-            "INSERT INTO FT_ITEMS (CATEGORY_ID, TITLE, PRICE, STOCK, STATUS) VALUES (2, 'Novel', 19.99, 100, 'active')"
+            "INSERT INTO FT_ITEMS (CATEGORY_ID, TITLE, PRICE, STOCK, STATUS) VALUES (2, 'Novel', 19.99, 100, 'active')",
         );
         $driver->exec(
-            "INSERT INTO FT_ITEMS (CATEGORY_ID, TITLE, PRICE, STOCK, STATUS) VALUES (2, 'Textbook', 79.99, 5, 'draft')"
+            "INSERT INTO FT_ITEMS (CATEGORY_ID, TITLE, PRICE, STOCK, STATUS) VALUES (2, 'Textbook', 79.99, 5, 'draft')",
         );
     }
 
@@ -126,12 +126,12 @@ class FirebirdDriverTest extends AbstractDriverTestCase
             'MIG_ADD_COL', 'MIG_INDEX_TEST', 'MIG_FK_CHILD', 'MIG_FK_PARENT',
             'MIG_TRUNCATE', 'MIG_VARCHAR_LEN', 'MIG_INT_BIGINT',
             'MIG_DEFAULTS', 'MIG_NOTNULL',
-            'MIG_VIEW_CRE', 'MIG_VIEW_REP', 'MIG_VIEW_EXI', 'MIG_VIEW_DRO'
+            'MIG_VIEW_CRE', 'MIG_VIEW_REP', 'MIG_VIEW_EXI', 'MIG_VIEW_DRO',
         ];
 
         $migGenerators = [
             'GEN_MIG_ADD_PK_ID', 'GEN_MIG_CUSTOM_PK_ID',
-            'GEN_MIG_COMPLEX_ID', 'GEN_MIG_RESOURCE_ASSOC_ID'
+            'GEN_MIG_COMPLEX_ID', 'GEN_MIG_RESOURCE_ASSOC_ID',
         ];
 
         $migViews = ['MIG_TEST_VIEW_CRE', 'MIG_REPLACE_VIEW', 'MIG_EXISTS_VIEW', 'MIG_DROP_VIEW'];
@@ -869,7 +869,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
         $driver->exec(
             "INSERT INTO FT_ITEMS (CATEGORY_ID, TITLE, DESCRIPTION, STATUS) "
-            . "VALUES (1, 'Blob Test', '$longText', 'active')"
+            . "VALUES (1, 'Blob Test', '$longText', 'active')",
         );
 
         $driver->setQuery("SELECT DESCRIPTION FROM FT_ITEMS WHERE TITLE = 'Blob Test'");

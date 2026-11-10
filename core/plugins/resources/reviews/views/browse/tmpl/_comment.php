@@ -245,7 +245,7 @@ if ($this->comment->get('resource_id')) {
             $replies = $this->comment->replies()
                 ->whereIn('state', [
                     \Components\Resources\Models\Reviewcomment::STATE_PUBLISHED,
-                    \Components\Resources\Models\Reviewcomment::STATE_FLAGGED
+                    \Components\Resources\Models\Reviewcomment::STATE_FLAGGED,
                 ])
                 ->ordered()
                 ->rows();

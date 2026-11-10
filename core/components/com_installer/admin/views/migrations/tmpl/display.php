@@ -55,7 +55,7 @@ $migTxt = Lang::txt('COM_INSTALLER_SUBMENU_MIGRATIONS');
 </nav>
 <?php
 $formAction = Route::url(
-    'index.php?option=' . $this->option . '&controller=' . $this->controller
+    'index.php?option=' . $this->option . '&controller=' . $this->controller,
 );
 ?>
 <form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="updateRepositoryForm">
@@ -64,7 +64,7 @@ $formAction = Route::url(
             <?php
             $breadcrumbUrl = Route::url(
                 'index.php?option=' . $this->option
-                . '&controller=' . $this->controller . '&folder='
+                . '&controller=' . $this->controller . '&folder=',
             );
             $filterLabel = Lang::txt('JGLOBAL_FILTER_TYPE_LABEL');
             ?>
@@ -96,7 +96,7 @@ $formAction = Route::url(
                     echo $this->pagination(
                         $this->total,
                         $this->filters['start'],
-                        $this->filters['limit']
+                        $this->filters['limit'],
                     );
                     ?>
                 </td>
@@ -142,7 +142,7 @@ $formAction = Route::url(
                         $scopeUrl = Route::url(
                             'index.php?option=' . $this->option
                             . '&controller=' . $this->controller
-                            . '&folder=' . urlencode($scopePath)
+                            . '&folder=' . urlencode($scopePath),
                         );
                         ?>
                         <a href="<?php echo $scopeUrl; ?>"
@@ -158,7 +158,7 @@ $formAction = Route::url(
                             $migrateUrl = Route::url(
                                 'index.php?option=' . $this->option
                                 . '&controller=' . $this->controller
-                                . '&task=migrate&file=' . $row['file']
+                                . '&task=migrate&file=' . $row['file'],
                             ) . '&' . Session::getFormToken() . '=1';
                             ?>
                             <a href="<?php echo $migrateUrl; ?>">

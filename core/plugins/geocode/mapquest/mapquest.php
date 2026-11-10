@@ -38,7 +38,7 @@ class Mapquest extends Plugin
 
         return new \Geocoder\Provider\MapQuest\MapQuest(
             $adapter,
-            $this->params->get('apiKey')
+            $this->params->get('apiKey'),
         );
     }
 }

@@ -30,7 +30,7 @@ class Modules extends Renderer
             'state'     => [1],
             'approved'  => ($this->allMods == 1) ? [0,1] : [1],
             'position'  => $this->params->position ?? null,
-            'orderby'   => 'ordering ASC'
+            'orderby'   => 'ordering ASC',
         ]);
 
         // loop through each module to display

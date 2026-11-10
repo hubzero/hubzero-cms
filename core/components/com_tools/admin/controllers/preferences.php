@@ -36,40 +36,40 @@ class Preferences extends AdminController
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             )),
             'search_field' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search_field',
                 'search_field',
-                'name'
+                'name',
             )),
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'user_id'
+                'user_id',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
+                'ASC',
             ),
             'class_alias' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.class_alias',
                 'class_alias',
-                ''
+                '',
             ),
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limitstart',
                 'limitstart',
                 0,
-                'int'
-            )
+                'int',
+            ),
         ];
 
         $obj = new Tables\Preferences($this->database);
@@ -148,7 +148,7 @@ class Preferences extends AdminController
             $selected,
             'class_id',
             false,
-            false
+            false,
         );
 
         // Set any errors
@@ -223,7 +223,7 @@ class Preferences extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
         );
     }
 
@@ -258,7 +258,7 @@ class Preferences extends AdminController
                     App::redirect(
                         Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                         Lang::txt('COM_TOOLS_USER_PREFS_MISSING_DEFAULT_CLASS'),
-                        'error'
+                        'error',
                     );
                     return;
                 }
@@ -273,14 +273,14 @@ class Preferences extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                 Lang::txt('COM_TOOLS_USER_PREFS_DELETE_NO_ROWS'),
-                'warning'
+                'warning',
             );
         }
 
         // Output messsage and redirect
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-            Lang::txt('COM_TOOLS_USER_PREFS_SET_TO_DEFAULT')
+            Lang::txt('COM_TOOLS_USER_PREFS_SET_TO_DEFAULT'),
         );
     }
 

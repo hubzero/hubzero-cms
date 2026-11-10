@@ -480,7 +480,7 @@ class SoftDeletesTest extends AbstractDriverTestCase
             ->values([
                 'title' => 'Non-Soft Post',
                 'content' => 'Test',
-                'status' => 1
+                'status' => 1,
             ])
             ->execute();
 

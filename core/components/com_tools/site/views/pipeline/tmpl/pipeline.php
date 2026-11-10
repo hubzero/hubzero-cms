@@ -27,7 +27,7 @@ $this->css('pipeline.css')
 $pageNav = $this->pagination(
     $this->total,
     $this->filters['start'],
-    $this->filters['limit']
+    $this->filters['limit'],
 );
 $pageNav->setAdditionalUrlParam('search', $this->filters['search']);
 $pageNav->setAdditionalUrlParam('filterby', $this->filters['filterby']);

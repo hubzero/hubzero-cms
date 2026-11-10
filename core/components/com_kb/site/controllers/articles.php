@@ -56,7 +56,7 @@ class Articles extends SiteController
             ->set('catid', 0)
             ->set('filters', [
                 'sort'   => '',
-                'search' => ''
+                'search' => '',
             ])
             ->setLayout('display')
             ->display();
@@ -120,7 +120,7 @@ class Articles extends SiteController
         $this->view->filters = [
             'sort'     => Request::getWord('sort', 'recent'),
             'category' => $category->get('id'),
-            'search'   => Request::getString('search', '')
+            'search'   => Request::getString('search', ''),
         ];
 
         if (!in_array($this->view->filters['sort'], ['recent', 'popularity'])) {
@@ -168,7 +168,7 @@ class Articles extends SiteController
                 $article->get('id'),
                 User::get('id'),
                 Request::ip(),
-                'article'
+                'article',
             );
             $this->view->vote = $vote->get('vote');
         } else {
@@ -219,7 +219,7 @@ class Articles extends SiteController
             }
 
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($return, false)))
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($return, false))),
             );
             return;
         }
@@ -284,7 +284,7 @@ class Articles extends SiteController
         } else {
             if ($type == 'article') {
                 App::redirect(
-                    Route::url($row->link())
+                    Route::url($row->link()),
                 );
                 return;
             }
@@ -306,7 +306,7 @@ class Articles extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
                 Lang::txt('COM_KB_LOGIN_NOTICE'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -354,7 +354,7 @@ class Articles extends SiteController
             'created_by' => $row->get('created_by'),
             'state'      => $row->get('state'),
             'helpful'    => $row->get('helpful'),
-            'nothelpful' => $row->get('nothelpful')
+            'nothelpful' => $row->get('nothelpful'),
         ];
 
         $row->set($comment);
@@ -422,14 +422,14 @@ class Articles extends SiteController
                 'details'     => [
                     'title'    => $article->get('title'),
                     'entry_id' => $article->get('id'),
-                    'url'      => $article->link()
-                ]
+                    'url'      => $article->link(),
+                ],
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         App::redirect(
-            Route::url($article->link() . '#comments')
+            Route::url($article->link() . '#comments'),
         );
     }
 
@@ -567,7 +567,7 @@ class Articles extends SiteController
                 // the description as HTML would run. This order strips whatever
                 // the decode produces, and still un-escapes ordinary entities.
                 $item->description = \Hubzero\Utility\Sanitize::stripAll(
-                    html_entity_decode($comment->content('clean'))
+                    html_entity_decode($comment->content('clean')),
                 );
             }
 

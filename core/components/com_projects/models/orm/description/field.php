@@ -72,7 +72,7 @@ class Field extends Relational
      */
     protected $rules = [
         'label' => 'notempty',
-        'type'  => 'notempty'
+        'type'  => 'notempty',
     ];
 
     /**
@@ -81,7 +81,7 @@ class Field extends Relational
      * @var  array
      */
     public $initiate = [
-        'ordering'
+        'ordering',
     ];
 
     /**
@@ -90,7 +90,7 @@ class Field extends Relational
      * @var  array
      */
     public $always = [
-        'name'
+        'name',
     ];
 
     /**

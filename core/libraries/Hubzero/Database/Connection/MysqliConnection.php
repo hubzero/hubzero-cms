@@ -104,7 +104,7 @@ class MysqliConnection implements ConnectionInterface
             $this->password,
             $this->database,
             (int)$this->port,
-            $this->socket
+            $this->socket,
         );
 
         if ($this->mysqli->connect_error) {

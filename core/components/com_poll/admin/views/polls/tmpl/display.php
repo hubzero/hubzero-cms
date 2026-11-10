@@ -150,7 +150,7 @@ $canEdit = $canDo->get('core.edit');
 
             $editUrl = Route::url(
                 'index.php?option=' . $this->option
-                . '&view=poll&task=edit&id=' . $row->get('id')
+                . '&view=poll&task=edit&id=' . $row->get('id'),
             );
 
             $token = Session::getFormToken();
@@ -158,13 +158,13 @@ $canEdit = $canDo->get('core.edit');
                 'index.php?option=' . $this->option
                 . '&task=' . $task
                 . '&id=' . $row->get('id')
-                . '&' . $token . '=1'
+                . '&' . $token . '=1',
             );
             $openUrl = Route::url(
                 'index.php?option=' . $this->option
                 . '&task=' . $task2
                 . '&id=' . $row->get('id')
-                . '&' . $token . '=1'
+                . '&' . $token . '=1',
             );
             $stateTitle = Lang::txt('COM_POLL_SET_TO', $task);
             $openTitle = Lang::txt('COM_POLL_SET_TO', $task2);

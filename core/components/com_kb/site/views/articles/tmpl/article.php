@@ -23,16 +23,16 @@ $this->css()
 if (Pathway::count() <= 0) {
     Pathway::append(
         Lang::txt('COM_KB'),
-        'index.php?option=' . $this->option
+        'index.php?option=' . $this->option,
     );
 }
 Pathway::append(
     $this->category->get('title'),
-    $this->category->link()
+    $this->category->link(),
 );
 Pathway::append(
     $this->article->get('title'),
-    $this->article->link()
+    $this->article->link(),
 );
 
 Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . ': ' . $this->article->get('title'));
@@ -157,7 +157,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
             $comments = $this->article->comments()
                 ->whereIn('state', [
                     Components\Kb\Models\Comment::STATE_PUBLISHED,
-                    Components\Kb\Models\Comment::STATE_FLAGGED
+                    Components\Kb\Models\Comment::STATE_FLAGGED,
                 ])
                 ->rows();
 

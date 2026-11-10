@@ -51,7 +51,7 @@ class Csv implements Adapter
             'csv',
             'text/plain',
             'text/csv',
-            'application/vnd.ms-excel'
+            'application/vnd.ms-excel',
         ]);
     }
 

@@ -639,7 +639,7 @@ class Screenshots extends SiteController
             }
         } else {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option)
+                Route::url('index.php?option=' . $this->_option),
             );
         }
     }

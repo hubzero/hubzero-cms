@@ -56,7 +56,7 @@ class Helper
         // get list of all sessions
         $sessions = App::get('session')->getStore()->all([
             'guest'    => 0,
-            'distinct' => 1
+            'distinct' => 1,
         ]);
 
         // see if any session matches our userid

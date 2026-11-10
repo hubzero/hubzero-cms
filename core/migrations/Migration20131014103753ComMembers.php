@@ -59,7 +59,7 @@ class Migration20131014103753ComMembers extends Base
                     'hard_files'  => 0,
                     'soft_files'  => 0,
                     'hard_blocks' => 1000000,
-                    'soft_blocks' => 900000
+                    'soft_blocks' => 900000,
                 ])
                 ->execute();
         }

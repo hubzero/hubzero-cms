@@ -88,7 +88,7 @@ class View
                 'name'             => 'overview',
                 'title'            => 'Overview',
                 'default_access'   => 'anyone',
-                'display_menu_tab' => true
+                'display_menu_tab' => true,
             ]);
 
             //set instance variable
@@ -114,7 +114,7 @@ class View
         //get before group content
         $beforeGroupContent = Event::trigger('groups.onBeforeGroup', [
             $group,
-            $authorized
+            $authorized,
         ]);
 
         //return any before content
@@ -158,7 +158,7 @@ class View
                     $start,
                     $action,
                     $pluginAccess,
-                    [$tab]
+                    [$tab],
                 ]);
 
             // Push the overview content to the array of sections we're going to output
@@ -195,7 +195,7 @@ class View
             $pages = $pageArchive->pages('list', [
                 'gidNumber' => $group->get('gidNumber'),
                 'state'     => [0,1],
-                'orderby'   => 'lft ASC'
+                'orderby'   => 'lft ASC',
             ]);
 
             // fetch the active page
@@ -229,7 +229,7 @@ class View
         $view = new \Hubzero\Component\View([
             'base_path' => dirname(__DIR__) . '/site',
             'name'   => 'groups',
-            'layout' => '_menu'
+            'layout' => '_menu',
         ]);
 
         // get group pages if any
@@ -238,7 +238,7 @@ class View
         $pages = $pageArchive->pages('tree', [
             'gidNumber' => $group->get('gidNumber'),
             'state'     => [1],
-            'orderby'   => 'lft ASC'
+            'orderby'   => 'lft ASC',
         ], true);
 
         // pass vars to view
@@ -334,7 +334,7 @@ class View
         $view = new \Hubzero\Component\View([
             'base_path' => dirname(__DIR__) . '/site',
             'name'   => 'groups',
-            'layout' => '_content'
+            'layout' => '_content',
         ]);
 
         // need objects
@@ -411,7 +411,7 @@ class View
         $view = new \Hubzero\Component\View([
             'base_path' => dirname(__DIR__) . '/site',
             'name'   => 'groups',
-            'layout' => '_toolbar'
+            'layout' => '_toolbar',
         ]);
 
         // pass vars to view
@@ -640,7 +640,7 @@ class View
             'template'  => 'system',
             'file'      => 'group.php',
             'directory' => PATH_CORE . DS . 'templates',
-            'baseurl'   => rtrim(Request::root(true), '/') . '/core'
+            'baseurl'   => rtrim(Request::root(true), '/') . '/core',
         ]);
 
         // echo to screen
@@ -668,7 +668,7 @@ class View
             App::redirect(
                 Route::url('index.php?option=com_groups&cn=' . $group->get('cn')),
                 Lang::txt('COM_GROUPS_VIEW_ALREADY_LOGGED_IN', User::get('name'), User::get('email')),
-                'warning'
+                'warning',
             );
         }
 
@@ -676,7 +676,7 @@ class View
         $view = new \Hubzero\Component\View([
             'base_path' => dirname(__DIR__) . '/site',
             'name'   => 'pages',
-            'layout' => '_view_login'
+            'layout' => '_view_login',
         ]);
 
         // if super group add super group folder
@@ -734,7 +734,7 @@ class View
         $view = new \Hubzero\Component\View([
             'base_path' => dirname(__DIR__) . '/site',
             'name'   => 'pages',
-            'layout' => '_view_component'
+            'layout' => '_view_component',
         ]);
 
         // if super group add super group folder
@@ -828,7 +828,7 @@ class View
         $view = new \Hubzero\Component\View([
             'base_path' => dirname(__DIR__) . '/site',
             'name'   => 'pages',
-            'layout' => '_view_php'
+            'layout' => '_view_php',
         ]);
 
         // if super group add super group folder

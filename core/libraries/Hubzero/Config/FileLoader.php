@@ -136,7 +136,7 @@ class FileLoader
                     try {
                         $data[$group] = array_replace_recursive(
                             $data[$group],
-                            $this->getParser($extension)->parse($path)
+                            $this->getParser($extension)->parse($path),
                         );
                     } catch (UnsupportedFormatException $e) {
                         continue;

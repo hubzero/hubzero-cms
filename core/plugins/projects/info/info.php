@@ -43,7 +43,7 @@ class Info extends Plugin
             'title' => Lang::txt('PLG_PROJECTS_INFO'),
             'submenu' => null,
             'show' => true,
-            'icon' => 'f05a'
+            'icon' => 'f05a',
         ];
         return $area;
     }
@@ -62,7 +62,7 @@ class Info extends Plugin
 
         $arr = [
             'html' => '',
-            'metadata' => ''
+            'metadata' => '',
         ];
 
         // Get this area details

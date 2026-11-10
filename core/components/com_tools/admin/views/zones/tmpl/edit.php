@@ -36,7 +36,7 @@ $this->js('zones.js');
 <?php
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 $hn = Request::host();
 $websocketEnabled = $this->row->params->get('websocket_enable');
@@ -54,16 +54,16 @@ $wsSecureDefault  = 'wss://' . $hn . ':8443';
 $vncServerDefault = 'http://' . $hn . ':80';
 $vncSecureDefault = 'https://' . $hn . ':80';
 $wsServerVal      = $this->escape(
-    stripslashes($this->row->params->get('websocket_server', $wsServerDefault))
+    stripslashes($this->row->params->get('websocket_server', $wsServerDefault)),
 );
 $wsSecureVal      = $this->escape(
-    stripslashes($this->row->params->get('websocket_secure_server', $wsSecureDefault))
+    stripslashes($this->row->params->get('websocket_secure_server', $wsSecureDefault)),
 );
 $vncServerVal     = $this->escape(
-    stripslashes($this->row->params->get('vnc_server', $vncServerDefault))
+    stripslashes($this->row->params->get('vnc_server', $vncServerDefault)),
 );
 $vncSecureVal     = $this->escape(
-    stripslashes($this->row->params->get('vnc_secure_server', $vncSecureDefault))
+    stripslashes($this->row->params->get('vnc_secure_server', $vncSecureDefault)),
 );
 $selLocal  = ($this->row->get('type') == 'local') ? ' selected="selected"' : '';
 $selRemote = ($this->row->get('type') == 'remote') ? ' selected="selected"' : '';
@@ -75,22 +75,22 @@ $ajaxUrl  = Route::url(
     'index.php?option=' . $this->option
     . '&controller=' . $this->controller
     . '&task=upload&id=' . $this->row->get('id')
-    . '&no_html=1&' . Session::getFormToken() . '=1'
+    . '&no_html=1&' . Session::getFormToken() . '=1',
 );
 $filerUrl = Route::url(
     'index.php?option=' . $this->option
     . '&controller=' . $this->controller
-    . '&tmpl=component&id=' . $this->row->get('id')
+    . '&tmpl=component&id=' . $this->row->get('id'),
 );
 $deleteImgUrl = Route::url(
     'index.php?option=' . $this->option
     . '&controller=' . $this->controller
     . '&tmpl=component&task=removefile&id=' . $this->row->get('id')
-    . '&' . Session::getFormToken() . '=1'
+    . '&' . Session::getFormToken() . '=1',
 );
 $locIframeUrl = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=locations&tmpl=component&zone=' . $this->row->get('id')
+    . '&controller=locations&tmpl=component&zone=' . $this->row->get('id'),
 );
 ?>
 <form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="item-form">

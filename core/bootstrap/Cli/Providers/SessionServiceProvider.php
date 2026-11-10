@@ -33,7 +33,7 @@ class SessionServiceProvider extends ServiceProvider
             // Use 'none' handler for CLI - no persistence needed
             $session = new Manager('none', [
                 'name'   => 'cli_session',
-                'expire' => 900
+                'expire' => 900,
             ]);
 
             return $session;

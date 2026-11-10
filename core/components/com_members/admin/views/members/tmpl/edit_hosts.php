@@ -18,7 +18,7 @@ defined('_HZEXEC_') or die();
     <?php
     $hostsUrl = Route::url(
         'index.php?option=' . $this->option . '&controller=hosts&tmpl=component&id='
-        . $this->profile->get('id') . '&t=' . time()
+        . $this->profile->get('id') . '&t=' . time(),
     );
     ?>
     <iframe height="500" name="hosts" id="hosts-list" src="<?php echo $hostsUrl; ?>"></iframe>

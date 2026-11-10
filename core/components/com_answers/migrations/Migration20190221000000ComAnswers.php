@@ -22,11 +22,11 @@ class Migration20190221000000ComAnswers extends Base
      **/
     public static $tables = [
         '#__answers_questions' => [
-            'created'
+            'created',
         ],
         '#__answers_responses' => [
-            'created'
-        ]
+            'created',
+        ],
     ];
 
     /**

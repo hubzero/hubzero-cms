@@ -150,7 +150,7 @@ class Entriesv1r1 extends ApiController
             'sort'       => Request::getString('sort', 'created'),
             'sort_Dir'   => strtolower(Request::getString('sort_Dir', 'desc')),
         'limit'      => Request::getInt('limit', Config::get('list_limit')),
-            'start'      => Request::getInt('start', 0)
+            'start'      => Request::getInt('start', 0),
         ];
 
         if (!in_array($filters['sort_Dir'], ['asc', 'desc'])) {
@@ -168,7 +168,7 @@ class Entriesv1r1 extends ApiController
             foreach ($rs as $r) {
                 $recipient = [
                     'scope'    => 'user',
-                    'scope_id' => 0
+                    'scope_id' => 0,
                 ];
 
                 $parts = explode(':', $r);
@@ -418,7 +418,7 @@ class Entriesv1r1 extends ApiController
                 ? Request::getInt('created_by', User::get('id'), 'post')
                 : User::get('id')),
             'anonymous'      => Request::getInt('anonymous', 0, 'post'),
-            'parent'         => Request::getInt('parent', 0, 'post')
+            'parent'         => Request::getInt('parent', 0, 'post'),
         ];
 
         $row = Activity::blank();
@@ -455,7 +455,7 @@ class Entriesv1r1 extends ApiController
 
                     $recipient = [
                         'scope'    => $parts[0],
-                        'scope_id' => $parts[1]
+                        'scope_id' => $parts[1],
                     ];
                 }
 
@@ -471,7 +471,7 @@ class Entriesv1r1 extends ApiController
             foreach ($subscriptions as $subscription) {
                 $recipients[] = [
                     'scope'    => 'user',
-                    'scope_id' => $subscription->user_id
+                    'scope_id' => $subscription->user_id,
                 ];
             }
 
@@ -483,7 +483,7 @@ class Entriesv1r1 extends ApiController
                 if (!is_array($receiver)) {
                     $receiver = [
                         'scope'    => 'user',
-                        'scope_id' => $receiver
+                        'scope_id' => $receiver,
                     ];
                 }
 
@@ -510,7 +510,7 @@ class Entriesv1r1 extends ApiController
                     'scope'    => $receiver['scope'],
                     'scope_id' => $receiver['scope_id'],
                     'log_id'   => $row->get('id'),
-                    'state'    => 1
+                    'state'    => 1,
                 ]);
 
                 $recipient->save();
@@ -692,7 +692,7 @@ class Entriesv1r1 extends ApiController
                 : $row->get('created')),
             'created_by'     => $row->get('created_by'),
             'anonymous'      => Request::getInt('anonymous', $row->get('anonymous')),
-            'parent'         => Request::getInt('parent', $row->get('parent'))
+            'parent'         => Request::getInt('parent', $row->get('parent')),
         ];
 
         if (!$row->set($fields)) {
@@ -719,7 +719,7 @@ class Entriesv1r1 extends ApiController
 
                     $recipient = [
                         'scope'    => $parts[0],
-                        'scope_id' => $parts[1]
+                        'scope_id' => $parts[1],
                     ];
                 }
 
@@ -735,7 +735,7 @@ class Entriesv1r1 extends ApiController
             foreach ($subscriptions as $subscription) {
                 $recipients[] = [
                     'scope'    => 'user',
-                    'scope_id' => $subscription->user_id
+                    'scope_id' => $subscription->user_id,
                 ];
             }
 
@@ -747,7 +747,7 @@ class Entriesv1r1 extends ApiController
                 if (!is_array($receiver)) {
                     $receiver = [
                         'scope'    => 'user',
-                        'scope_id' => $receiver
+                        'scope_id' => $receiver,
                     ];
                 }
 
@@ -774,7 +774,7 @@ class Entriesv1r1 extends ApiController
                     'scope'    => $receiver['scope'],
                     'scope_id' => $receiver['scope_id'],
                     'log_id'   => $row->get('id'),
-                    'state'    => 1
+                    'state'    => 1,
                 ]);
 
                 $recipient->save();

@@ -114,7 +114,7 @@ class Migration
                 PATH_CORE . DS . 'components',
                 PATH_APP . DS . 'components',
                 PATH_CORE . DS . 'modules',
-                PATH_APP . DS . 'modules'
+                PATH_APP . DS . 'modules',
             ];
 
             foreach ($nodes as $base) {
@@ -142,7 +142,7 @@ class Migration
             // Plugins have one extra level of directories
             $nodes = [
                 PATH_CORE . DS . 'plugins',
-                PATH_APP . DS . 'plugins'
+                PATH_APP . DS . 'plugins',
             ];
 
             foreach ($nodes as $base) {
@@ -600,7 +600,7 @@ class Migration
                                         $runDb->transactionRollback();
                                         $this->log(
                                             "All-or-nothing: rolling back entire batch due to fatal error",
-                                            'error'
+                                            'error',
                                         );
                                     } elseif ($useTransaction) {
                                         $runDb->transactionRollback();
@@ -615,7 +615,7 @@ class Migration
                                             $hash,
                                             $direction,
                                             'fatal',
-                                            $executionTime
+                                            $executionTime,
                                         );
                                     }
                                     return false;
@@ -633,7 +633,7 @@ class Migration
                                     // Migration chose to skip - will retry on next run
                                     $this->log(
                                         "Skipped {$direction}() in {$scope}/{$file}: {$error['message']}",
-                                        'info'
+                                        'info',
                                     );
                                     $status = 'skipped';
                                 }
@@ -654,7 +654,7 @@ class Migration
                                 'hash' => $hash,
                                 'direction' => $direction,
                                 'status' => $status,
-                                'executionTime' => $executionTime
+                                'executionTime' => $executionTime,
                             ];
                         } else {
                             $this->recordMigration($file, $scope, $hash, $direction, $status, $executionTime);
@@ -728,14 +728,14 @@ class Migration
                         $migration['hash'],
                         $migration['direction'],
                         $migration['status'],
-                        $migration['executionTime']
+                        $migration['executionTime'],
                     );
                 }
 
                 if (count($completedMigrations) > 0) {
                     $this->log(
                         "All-or-nothing: recorded " . count($completedMigrations) . " migration(s)",
-                        'success'
+                        'success',
                     );
                 }
             } catch (\Exception $e) {
@@ -795,7 +795,7 @@ class Migration
 
                     $found[] = [
                         'base' => $path . DS . 'migrations' . DS . 'hooks',
-                        'name' => $hook
+                        'name' => $hook,
                     ];
                 }
 
@@ -851,7 +851,7 @@ class Migration
                             !empty($result['message'])) ? $result['message'] : '[no message provided]';
                         $this->log(
                             "Warning: {$timing} hook '{$hook['name']}' resulted in an error: {$message}",
-                            'warning'
+                            'warning',
                         );
                     }
                 }
@@ -888,7 +888,7 @@ class Migration
                 'hash'      => $hash,
                 'direction' => $direction,
                 'date'      => $date->toSql(),
-                'action_by' => (php_sapi_name() == 'cli') ? (function_exists('posix_geteuid') ? (posix_getpwuid(posix_geteuid())['name'] ?? get_current_user()) : get_current_user()) : User::get('id')
+                'action_by' => (php_sapi_name() == 'cli') ? (function_exists('posix_geteuid') ? (posix_getpwuid(posix_geteuid())['name'] ?? get_current_user()) : get_current_user()) : User::get('id'),
             ];
 
             if ($this->db->tableHasField($this->get('tbl_name'), 'scope')) {
@@ -1315,7 +1315,7 @@ class Migration
                 return [
                     'file' => basename($filepath),
                     'path' => $filepath,
-                    'info' => 'First migration (oldest)'
+                    'info' => 'First migration (oldest)',
                 ];
 
             case 'latest':
@@ -1324,7 +1324,7 @@ class Migration
                 return [
                     'file' => basename($filepath),
                     'path' => $filepath,
-                    'info' => 'Latest migration (newest)'
+                    'info' => 'Latest migration (newest)',
                 ];
 
             case 'current':
@@ -1333,7 +1333,7 @@ class Migration
                     return [
                         'file' => null,
                         'path' => null,
-                        'info' => 'No migrations have been executed yet'
+                        'info' => 'No migrations have been executed yet',
                     ];
                 }
                 $current = $history[0];
@@ -1343,14 +1343,14 @@ class Migration
                         return [
                             'file' => $current->file,
                             'path' => $filepath,
-                            'info' => 'Currently executed migration'
+                            'info' => 'Currently executed migration',
                         ];
                     }
                 }
                 return [
                     'file' => $current->file,
                     'path' => null,
-                    'info' => 'Currently executed migration (file not found in search paths)'
+                    'info' => 'Currently executed migration (file not found in search paths)',
                 ];
 
             case 'next':
@@ -1359,14 +1359,14 @@ class Migration
                     return [
                         'file' => null,
                         'path' => null,
-                        'info' => 'No pending migrations'
+                        'info' => 'No pending migrations',
                     ];
                 }
                 $filepath = $pending[0];
                 return [
                     'file' => basename($filepath),
                     'path' => $filepath,
-                    'info' => 'Next pending migration'
+                    'info' => 'Next pending migration',
                 ];
 
             case 'prev':
@@ -1375,7 +1375,7 @@ class Migration
                     return [
                         'file' => null,
                         'path' => null,
-                        'info' => 'No migrations have been executed yet'
+                        'info' => 'No migrations have been executed yet',
                     ];
                 }
 
@@ -1393,7 +1393,7 @@ class Migration
                     return [
                         'file' => null,
                         'path' => null,
-                        'info' => 'No previous migration (already at first)'
+                        'info' => 'No previous migration (already at first)',
                     ];
                 }
 
@@ -1401,7 +1401,7 @@ class Migration
                 return [
                     'file' => basename($filepath),
                     'path' => $filepath,
-                    'info' => 'Previous migration'
+                    'info' => 'Previous migration',
                 ];
         }
 

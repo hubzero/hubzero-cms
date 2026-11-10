@@ -466,7 +466,7 @@ class Archive extends Obj
                         $groups = $tbl->getRecords([
                             'object_type' => 'group',
                             'object_id'   => $usergroup->gidNumber,
-                            'state'       => 1
+                            'state'       => 1,
                         ]);
                         if ($groups) {
                             if (!isset($usergroup->params) || !is_object($usergroup->params)) {
@@ -498,7 +498,7 @@ class Archive extends Obj
                 $collections = $tbl->getRecords([
                     'object_type' => 'member',
                     'object_id'   => $user->get('id'),
-                    'state'       => 1
+                    'state'       => 1,
                 ]);
                 break;
         }
@@ -596,7 +596,7 @@ class Archive extends Obj
                 'following_id'   => $id,
                 'following_type' => $what,
                 'follower_id'    => $follower_id,
-                'follower_type'  => $follower_type
+                'follower_type'  => $follower_type,
             ]);
             if (!$follow->store(true)) {
                 $this->setError($follow->getError());

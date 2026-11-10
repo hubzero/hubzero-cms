@@ -40,7 +40,7 @@ class Tomtom extends Plugin
 
         return new \Geocoder\Provider\TomTom\TomTom(
             $adapter,
-            $this->params->get('apiKey')
+            $this->params->get('apiKey'),
         );
     }
 }

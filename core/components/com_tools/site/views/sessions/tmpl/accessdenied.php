@@ -26,10 +26,10 @@ $this->css('tools.css');
         <ul>
             <?php
             $supportUrl = Route::url(
-                'index.php?option=com_support&controller=tickets&task=new'
+                'index.php?option=com_support&controller=tickets&task=new',
             );
             $browseUrl = Route::url(
-                'index.php?option=' . $this->option
+                'index.php?option=' . $this->option,
             );
             ?>
             <li><?php echo Lang::txt('COM_TOOLS_ACCESSDENIED_OPT_CONTACT_SUPPORT', $supportUrl); ?></li>

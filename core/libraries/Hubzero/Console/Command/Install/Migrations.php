@@ -234,7 +234,7 @@ class Migrations
             escapeshellarg($rootPath),
             escapeshellarg(PHP_BINARY),
             escapeshellarg($musePath),
-            $ansiFlag
+            $ansiFlag,
         );
 
         // Open process with pipes for streaming output

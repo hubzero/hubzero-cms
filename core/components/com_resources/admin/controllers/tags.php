@@ -54,7 +54,7 @@ class Tags extends AdminController
         // Get all tags
         $tags = $rt->tags('list', [
             'scope'    => null,
-            'scope_id' => 0
+            'scope_id' => 0,
         ], true);
 
         $objtags = new stdClass();
@@ -120,7 +120,7 @@ class Tags extends AdminController
     public function cancelTask()
     {
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=items', false)
+            Route::url('index.php?option=' . $this->_option . '&controller=items', false),
         );
     }
 }

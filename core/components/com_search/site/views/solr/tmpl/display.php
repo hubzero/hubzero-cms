@@ -64,8 +64,8 @@ endif;
             $tags_list = Event::trigger(
                 'hubzero.onGetMultiEntry',
                 [
-                    ['tags', 'tags', 'actags', '', $this->tags]
-                ]
+                    ['tags', 'tags', 'actags', '', $this->tags],
+                ],
             );
 
             if (count($tags_list) > 0) {
@@ -105,7 +105,7 @@ endif;
                                 <?php
                                     $wordUrl = Route::url(
                                         'search?terms=' . $word['word']
-                                        . '&section=content'
+                                        . '&section=content',
                                     );
                                 ?>
                                 <a href="<?php echo $wordUrl; ?>">
@@ -126,7 +126,7 @@ endif;
                         <?php
                             $allUrl = Route::url(
                                 'index.php?option=com_search&terms='
-                                . $this->terms
+                                . $this->terms,
                             );
                             $activeClass = ($this->type == '')
                                 ? 'class="active"' : '';
@@ -148,7 +148,7 @@ endif;
                                         $this->facetCounts,
                                         $this->type,
                                         $this->terms,
-                                        $this->childTermsString
+                                        $this->childTermsString,
                                     ); ?>
                                 <?php endforeach; ?>
                             </ul>
@@ -166,7 +166,7 @@ endif;
                                     $this->type,
                                     $this->terms,
                                     $this->childTermsString,
-                                    $this->filters
+                                    $this->filters,
                                 );?>
                             </ul>
                         <?php endif; ?>
@@ -190,7 +190,7 @@ endif;
                                 $templateOverride = '';
                                 if (!empty($this->viewOverrides[$hubType])) {
                                     $overrideView = new \Hubzero\View\View(
-                                        $this->viewOverrides[$hubType]
+                                        $this->viewOverrides[$hubType],
                                     );
                                     $overrideView->set('result', $result)
                                         ->set('terms', $this->terms)

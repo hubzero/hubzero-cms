@@ -46,7 +46,7 @@ if (!$this->ajax) {
 
                     $mc = Event::trigger(
                         'hubzero.onGetSingleEntryWithSelect',
-                        [['members', 'owner', 'owner', '', $selected, '', 'owner']]
+                        [['members', 'owner', 'owner', '', $selected, '', 'owner']],
                     );
                     $mc = implode("\n", $mc);
                     $ms = trim($mc);

@@ -130,7 +130,7 @@ class Attachments extends Obj
                     $params,
                     $attachments,
                     $oldVersion,
-                    $newVersion
+                    $newVersion,
                 );
             }
         }
@@ -243,7 +243,7 @@ class Attachments extends Obj
                 $element->id,
                 $pub,
                 $element->block,
-                $authorized
+                $authorized,
             );
         }
         $output .= $links;
@@ -515,7 +515,7 @@ class Attachments extends Obj
                 $pub,
                 $element->block,
                 $readme,
-                $bundleDir
+                $bundleDir,
             );
 
             if ($type->getError()) {
@@ -560,7 +560,7 @@ class Attachments extends Obj
                 $element->id,
                 $pub,
                 $element->block,
-                true
+                true,
             );
         }
         return $contents;

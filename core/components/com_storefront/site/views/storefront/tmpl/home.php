@@ -55,7 +55,7 @@ $this->css()
                     echo '<div class="img" style="background-image: url(';
                     $collectionsFolder = $this->config->get(
                         'collectionsImagesFolder',
-                        '/site/storefront/collections'
+                        '/site/storefront/collections',
                     );
                     $imgPath = '/app/' . trim($collectionsFolder, DS)
                         . DS . $category->cId . DS;

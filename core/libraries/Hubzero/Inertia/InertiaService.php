@@ -115,7 +115,7 @@ class InertiaService
             'component' => $component,
             'props'     => $props,
             'url'       => $this->url(),
-            'version'   => $this->version()
+            'version'   => $this->version(),
         ];
     }
 
@@ -135,7 +135,7 @@ class InertiaService
         // fill in after the first client side visit.
         $props = $this->resolveProps(
             $component,
-            array_merge($this->resolveSharedProps(), $props)
+            array_merge($this->resolveSharedProps(), $props),
         );
 
         $page = $this->page($component, $props);
@@ -254,7 +254,7 @@ class InertiaService
         if ($this->isInertiaRequest()) {
             $this->sendAndTerminate(409, [
                 'X-Inertia' => 'true',
-                'X-Inertia-Location' => $url
+                'X-Inertia-Location' => $url,
             ]);
             return;
         }
@@ -279,7 +279,7 @@ class InertiaService
         }
 
         $this->sendAndTerminate($status, [
-            'Location' => $url
+            'Location' => $url,
         ]);
     }
 
@@ -313,7 +313,7 @@ class InertiaService
 
         $this->sendAndTerminate(200, [
             'X-Inertia' => 'true',
-            'Content-Type' => 'application/json; charset=utf-8'
+            'Content-Type' => 'application/json; charset=utf-8',
         ], $encoded);
     }
 
@@ -555,7 +555,7 @@ class InertiaService
             'inertia_debug_panel_',
             'hz-inertia-debug-panel',
             'hz-inertia-debug-bar',
-            'hz-inertia-debug-actions'
+            'hz-inertia-debug-actions',
         );
     }
 

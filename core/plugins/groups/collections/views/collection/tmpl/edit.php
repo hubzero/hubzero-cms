@@ -45,7 +45,7 @@ $descriptionEditor = $this->editor(
     35,
     5,
     'field-description',
-    $editorArgs
+    $editorArgs,
 );
 
 $layoutValue = $this->entry->get('layout');

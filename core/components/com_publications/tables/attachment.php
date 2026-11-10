@@ -199,7 +199,7 @@ class Attachment extends Table
                 '1'        => [],
                 '2'        => [],
                 '3'        => [],
-                'elements' => []
+                'elements' => [],
             ];
 
             foreach ($results as $result) {
@@ -625,7 +625,7 @@ class Attachment extends Table
             'id' => '',
             'title' => '',
             'version' => 'default',
-            'version_label' => ''
+            'version_label' => '',
         ];
 
         $query  = "SELECT a.publication_id , v.title, v.version_number, v.version_label FROM $this->_tbl as a ";

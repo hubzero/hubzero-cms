@@ -21,7 +21,7 @@ $isNew = $this->item->isNew();
 Toolbar::title(
     $isNew ? Lang::txt('COM_TEMPLATES_MANAGER_ADD_STYLE')
             : Lang::txt('COM_TEMPLATES_MANAGER_EDIT_STYLE'),
-    'thememanager'
+    'thememanager',
 );
 
 // If not checked out, can save the item.
@@ -48,15 +48,15 @@ $this->js();
 $formAction = Route::url(
     'index.php?option=' . $this->option
     . '&controller=' . $this->controller
-    . '&task=edit&id=' . (int) $this->item->id
+    . '&task=edit&id=' . (int) $this->item->id,
 );
 $invalidMsg = $this->escape(
-    Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')
+    Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'),
 );
 $titleLabel = Lang::txt('COM_TEMPLATES_FIELD_TITLE_LABEL');
 $requiredTxt = Lang::txt('JOPTION_REQUIRED');
 $titleValue = $this->escape(
-    stripslashes($this->item->get('title'))
+    stripslashes($this->item->get('title')),
 );
 $homeDesc = Lang::txt('COM_TEMPLATES_FIELD_HOME_SITE_DESC');
 $homeLabel = Lang::txt('COM_TEMPLATES_FIELD_HOME_LABEL');
@@ -182,7 +182,7 @@ $homeLabel = Lang::txt('COM_TEMPLATES_FIELD_HOME_LABEL');
                     <?php if ($this->item->parent->xml) : ?>
                         <?php
                         $text = trim(
-                            $this->item->parent->xml->get('description', '')
+                            $this->item->parent->xml->get('description', ''),
                         );
                         ?>
                         <?php if ($text) : ?>

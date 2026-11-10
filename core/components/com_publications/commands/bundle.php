@@ -305,7 +305,7 @@ class Bundle extends Base implements CommandInterface
 
         $this->output->addLine(
             sprintf('Audited %d version(s): %d ok, %d with issues.', $audited, $okc, $probc),
-            ($probc ? 'warning' : 'success')
+            ($probc ? 'warning' : 'success'),
         );
     }
 

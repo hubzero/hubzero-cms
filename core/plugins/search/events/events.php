@@ -65,7 +65,7 @@ class Events extends Plugin
 				state = 1 AND
 				approved AND $weight > 0" .
                 ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
-            " ORDER BY $weight DESC"
+            " ORDER BY $weight DESC",
         );
 
         foreach ($rows->to_associative() as $row) {

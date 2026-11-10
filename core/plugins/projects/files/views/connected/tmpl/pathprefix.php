@@ -60,7 +60,7 @@ $parentUrl = Route::url($this->model->link('files') . '&action=browse&connection
                         echo \Components\Projects\Models\File::drawIcon($this->current_dir->getExtension());
                         $dirLabel = Lang::txt(
                             'PLG_PROJECTS_FILES_CONNECTED_CURRENT_DIRECTORY',
-                            $this->escape($this->current_dir->getDisplayName())
+                            $this->escape($this->current_dir->getDisplayName()),
                         );
                         ?>
                         <span><?php echo $dirLabel; ?></span>

@@ -33,7 +33,7 @@ class Storage extends SiteController
         if (User::isGuest()) {
             // Redirect to home page
             App::redirect(
-                $this->config->get('mw_redirect', '/home')
+                $this->config->get('mw_redirect', '/home'),
             );
             return;
         }
@@ -51,7 +51,7 @@ class Storage extends SiteController
         ) {
             // Redirect to home page
             App::redirect(
-                $this->config->get('mw_redirect', '/home')
+                $this->config->get('mw_redirect', '/home'),
             );
             return;
         }
@@ -71,16 +71,16 @@ class Storage extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt('COM_MEMBERS'),
-                'index.php?option=com_members'
+                'index.php?option=com_members',
             );
         }
         Pathway::append(
             stripslashes(User::get('name')),
-            'index.php?option=com_members&id=' . User::get('id')
+            'index.php?option=com_members&id=' . User::get('id'),
         );
         Pathway::append(
             Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
-            'index.php?option=' . $this->_option . '&task=storage'
+            'index.php?option=' . $this->_option . '&task=storage',
         );
     }
 
@@ -109,7 +109,7 @@ class Storage extends SiteController
             $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task), 'server');
         }
         App::redirect(
-            Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
+            Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
         );
         return;
     }
@@ -156,7 +156,7 @@ class Storage extends SiteController
 
             $view = new \Hubzero\Component\View([
                 'name'   => $this->_controller,
-                'layout' => 'diskusage'
+                'layout' => 'diskusage',
             ]);
             $view->set('option', $this->_option);
             $view->amt       = $this->percent;
@@ -201,7 +201,7 @@ class Storage extends SiteController
 
         if (!($shost = $this->config->get('storagehost'))) {
             App::redirect(
-                Route::url($this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount'))
+                Route::url($this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount')),
             );
             return;
         }
@@ -284,7 +284,7 @@ class Storage extends SiteController
         //if ($this->percent >= 100 && $this->remaining == 0) {
         if ($this->percent >= 100 && !$this->exceeded) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&task=storageexceeded')
+                Route::url('index.php?option=' . $this->_option . '&task=storageexceeded'),
             );
         }
     }

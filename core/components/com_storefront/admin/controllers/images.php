@@ -179,7 +179,7 @@ class Images extends AdminController
             'imgId'     => $imgId,
             'size'      => \Hubzero\Utility\Number::formatBytes($this_size),
             'width'     => $width,
-            'height'    => $height
+            'height'    => $height,
         ]);
     }
 
@@ -341,7 +341,7 @@ class Images extends AdminController
             'id'        => $id,
             'size'      => 0,
             'width'     => 0,
-            'height'    => 0
+            'height'    => 0,
         ]);
     }
 
@@ -401,7 +401,7 @@ class Images extends AdminController
         \App::redirect(
             \Route::url('index.php?option=' . $this->_option . '&controller=' . $controller . ($id ? '&task=edit&id=' . (int) $id : ''), false),
             $this->getError(),
-            'error'
+            'error',
         );
     }
 

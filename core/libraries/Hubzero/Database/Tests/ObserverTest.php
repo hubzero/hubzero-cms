@@ -416,7 +416,7 @@ class ObserverTest extends AbstractDriverTestCase
         $this->assertLessThan(
             $secondCallOrder,
             $firstCallOrder,
-            'First observer should be called before second observer'
+            'First observer should be called before second observer',
         );
     }
 

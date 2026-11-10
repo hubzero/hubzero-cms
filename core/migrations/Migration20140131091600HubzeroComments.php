@@ -35,7 +35,7 @@ class Migration20140131091600HubzeroComments extends Base
                         $parents[$r->id] = [
                             'referenceid' => $r->referenceid,
                             'category'    => $r->category,
-                            'id'          => 0
+                            'id'          => 0,
                         ];
                     }
                 }
@@ -54,7 +54,7 @@ class Migration20140131091600HubzeroComments extends Base
                             'anonymous'  => $r->anonymous,
                             'notify'     => $r->email,
                             'item_id'    => $r->referenceid,
-                            'item_type'  => $r->category
+                            'item_type'  => $r->category,
                         ];
 
                         if (substr($r->category, -7) == 'comment') {
@@ -93,7 +93,7 @@ class Migration20140131091600HubzeroComments extends Base
                         $parents[$r->id] = [
                             'referenceid' => $r->referenceid,
                             'category'    => $r->category,
-                            'id'          => $record->id
+                            'id'          => $record->id,
                         ];
                     }
                 }

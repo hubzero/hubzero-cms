@@ -70,7 +70,7 @@ Toolbar::cancel();
                 <?php
                 $data_hintTxt = Lang::txt(
                     'COM_RESOURCES_IMPORT_EDIT_FIELD_DATA_FILE_HINT',
-                    $this->import->fileSpacePath()
+                    $this->import->fileSpacePath(),
                 );
                 ?>
                 <div class="input-wrap"
@@ -97,7 +97,7 @@ Toolbar::cancel();
                         <?php
                         echo Lang::txt(
                             'COM_RESOURCES_IMPORT_EDIT_FIELD_DATA_FILE_HINT',
-                            $this->import->fileSpacePath()
+                            $this->import->fileSpacePath(),
                         );
                         ?>
                     </span>
@@ -263,7 +263,7 @@ Toolbar::cancel();
                                 echo
                                 ($this->params->get(
                                     'status',
-                                    1
+                                    1,
                                 )
                                 ==
                                 2)
@@ -279,7 +279,7 @@ Toolbar::cancel();
                                 echo
                                 ($this->params->get(
                                     'status',
-                                    1
+                                    1,
                                 )
                                 ==
                                 5)
@@ -295,7 +295,7 @@ Toolbar::cancel();
                                 echo
                                 ($this->params->get(
                                     'status',
-                                    1
+                                    1,
                                 )
                                 ==
                                 3)
@@ -311,7 +311,7 @@ Toolbar::cancel();
                                 echo
                                 ($this->params->get(
                                     'status',
-                                    1
+                                    1,
                                 )
                                 ==
                                 0)
@@ -327,7 +327,7 @@ Toolbar::cancel();
                                 echo
                                 ($this->params->get(
                                     'status',
-                                    1
+                                    1,
                                 )
                                 ==
                                 1)
@@ -343,7 +343,7 @@ Toolbar::cancel();
                                 echo
                                 ($this->params->get(
                                     'status',
-                                    1
+                                    1,
                                 )
                                 ==
                                 4)
@@ -368,7 +368,7 @@ Toolbar::cancel();
                         echo \Components\Resources\Helpers\Html::selectAccess(
                             $rconfig->get('accesses'),
                             $this->params->get('access', 0),
-                            'params[access]'
+                            'params[access]',
                         );
                         ?>
                     <span class="hint"><?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_ACCESS_HINT'); ?></span>
@@ -383,7 +383,7 @@ Toolbar::cancel();
                         $this->groups,
                         $this->params->get('group', ''),
                         'params[group]',
-                        'import-group'
+                        'import-group',
                     );
                     ?>
                     <span class="hint"><?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_GROUP_HINT'); ?></span>

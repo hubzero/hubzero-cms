@@ -61,7 +61,7 @@ class Wishlist extends Plugin
         $arr = [
             'area'     => $this->_name,
             'html'     => '',
-            'metadata' => ''
+            'metadata' => '',
         ];
 
         // Check if our area is in the array of areas we want to return results for
@@ -269,13 +269,13 @@ class Wishlist extends Plugin
                         "(SELECT COUNT(*) FROM `" . $vote->getTableName()
                             . "` AS v WHERE v.helpful='yes' AND v.category='wish' AND v.referenceid="
                             . $entries->getTableName() . ".id)",
-                        'positive'
+                        'positive',
                     )
                     ->select(
                         "(SELECT COUNT(*) FROM `" . $vote->getTableName()
                             . "` AS v WHERE v.helpful='no' AND v.category='wish' AND v.referenceid="
                             . $entries->getTableName() . ".id)",
-                        'negative'
+                        'negative',
                     );
 
                 // list sorting
@@ -310,7 +310,7 @@ class Wishlist extends Plugin
                                 ->select(
                                     "(SELECT SUM(amount) FROM `#__users_transactions` WHERE category='wish'"
                                         . " AND type='hold' AND referenceid=" . $entries->getTableName() . ".id)",
-                                    'bonus'
+                                    'bonus',
                                 )
                                 ->order('status', 'asc')
                                 ->order('bonus', 'desc')

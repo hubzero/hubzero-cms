@@ -18,7 +18,7 @@ defined('_HZEXEC_') or die();
 // Breadcrumbs
 Pathway::append(
     Lang::txt('COM_WIKI_SPECIAL_LINKS'),
-    $this->page->link()
+    $this->page->link(),
 );
 
 // Sorting

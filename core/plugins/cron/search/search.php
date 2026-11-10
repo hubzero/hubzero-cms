@@ -39,13 +39,13 @@ class Search extends Plugin
             [
                 'name'   => 'processQueue',
                 'label'  => Lang::txt('PLG_CRON_SEARCH_PROCESS_QUEUE'),
-                'params' => ''
+                'params' => '',
             ],
             [
                 'name'   => 'runFullIndex',
                 'label'  => Lang::txt('PLG_CRON_SEARCH_RUN_FULL_INDEX'),
-                'params' => ''
-            ]
+                'params' => '',
+            ],
         ];
 
         return $obj;

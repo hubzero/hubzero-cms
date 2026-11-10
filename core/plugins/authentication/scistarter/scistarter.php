@@ -79,7 +79,7 @@ class Scistarter extends \Hubzero\Plugin\OauthClient
             App::redirect(
                 Route::url('index.php?option=com_users&view=login'),
                 Lang::txt('PLG_AUTHENTICATION_SCISTARTER_MUST_AUTHORIZE_TO_LOGIN', Config::get('sitename')),
-                'error'
+                'error',
             );
         }
 
@@ -95,7 +95,7 @@ class Scistarter extends \Hubzero\Plugin\OauthClient
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode('/members/myaccount')),
                 Lang::txt('PLG_AUTHENTICATION_SCISTARTER_MUST_AUTHORIZE_TO_LOGIN', Config::get('sitename')),
-                'error'
+                'error',
             );
         }
     }
@@ -164,12 +164,12 @@ class Scistarter extends \Hubzero\Plugin\OauthClient
             if (!isset($account->user_id) || $account->user_id <= 0) {
                 $accountIsOk = false;
                 $error_message = $response->error_message = Lang::txt(
-                    'PLG_AUTHENTICATION_SCISTARTER_AUTHENTICATION_FAILED_NO_UID'
+                    'PLG_AUTHENTICATION_SCISTARTER_AUTHENTICATION_FAILED_NO_UID',
                 );
             } elseif (!isset($account->email) || !$account->email) {
                 $accountIsOk = false;
                 $error_message = $response->error_message = Lang::txt(
-                    'PLG_AUTHENTICATION_SCISTARTER_AUTHENTICATION_FAILED_NO_EMAIL'
+                    'PLG_AUTHENTICATION_SCISTARTER_AUTHENTICATION_FAILED_NO_EMAIL',
                 );
             }
 
@@ -222,7 +222,7 @@ class Scistarter extends \Hubzero\Plugin\OauthClient
                     $prefs = [
                         'user_id'       => $user->get('id'),
                         'user_img'      => $user->picture(0, false),
-                        'authenticator' => 'scistarter'
+                        'authenticator' => 'scistarter',
                     ];
 
                     $namespace = 'authenticator';
@@ -263,7 +263,7 @@ class Scistarter extends \Hubzero\Plugin\OauthClient
             App::redirect(
                 Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
                 Lang::txt('PLG_AUTHENTICATION_SCISTARTER_MUST_AUTHORIZE_TO_LINK', Config::get('sitename')),
-                'error'
+                'error',
             );
         }
 
@@ -276,7 +276,7 @@ class Scistarter extends \Hubzero\Plugin\OauthClient
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode('/members/myaccount')),
                 Lang::txt('PLG_AUTHENTICATION_SCISTARTER_MUST_AUTHORIZE_TO_LOGIN', Config::get('sitename')),
-                'error'
+                'error',
             );
         }
 
@@ -287,7 +287,7 @@ class Scistarter extends \Hubzero\Plugin\OauthClient
             App::redirect(
                 Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
                 Lang::txt('PLG_AUTHENTICATION_SCISTARTER_MUST_AUTHORIZE_TO_LINK', Config::get('sitename')),
-                'error'
+                'error',
             );
         }
 
@@ -303,7 +303,7 @@ class Scistarter extends \Hubzero\Plugin\OauthClient
                 App::redirect(
                     Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
                     Lang::txt('PLG_AUTHENTICATION_SCISTARTER_ACCOUNT_ALREADY_LINKED'),
-                    'error'
+                    'error',
                 );
             } else {
                 $hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'scistarter', null, $username);
@@ -317,7 +317,7 @@ class Scistarter extends \Hubzero\Plugin\OauthClient
                 } else {
                     Log::error(sprintf(
                         'Hubzero\Auth\Link::find_or_create("authentication", "scistarter", null, %s) returned false',
-                        $username
+                        $username,
                     ));
                 }
             }
@@ -326,7 +326,7 @@ class Scistarter extends \Hubzero\Plugin\OauthClient
             App::redirect(
                 Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
                 Lang::txt('PLG_AUTHENTICATION_SCISTARTER_AUTHENTICATION_FAILED', Config::get('sitename')),
-                'error'
+                'error',
             );
         }
     }

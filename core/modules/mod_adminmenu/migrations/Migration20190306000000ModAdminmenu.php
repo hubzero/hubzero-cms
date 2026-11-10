@@ -41,7 +41,7 @@ class Migration20190306000000ModAdminmenu extends Base
         'com_redirect',
         'com_system',
         'com_templates',
-        'com_users'
+        'com_users',
     ];
 
     /**

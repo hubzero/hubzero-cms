@@ -24,7 +24,7 @@ $this->js();
                 $param = $line->alias ? 'alias=' . $line->alias : 'id=' . $line->id;
                 $url = Route::url(
                     'index.php?option=' . $this->option
-                    . '&' . $param . '&rec_ref=' . $this->resource->id
+                    . '&' . $param . '&rec_ref=' . $this->resource->id,
                 );
                 ?>
                 <li>

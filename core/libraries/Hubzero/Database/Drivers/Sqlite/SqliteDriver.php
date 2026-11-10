@@ -159,7 +159,7 @@ class SqliteDriver extends BaseSqlDriver
                     'Null'    => ($field->notnull == '1' ? 'NO' : 'YES'),
                     'Default' => $field->dflt_value,
                     'Key'     => ($field->pk != '0' ? 'PRI' : ''),
-                    'Extra'   => ''
+                    'Extra'   => '',
                 ];
             }
         }
@@ -190,7 +190,7 @@ class SqliteDriver extends BaseSqlDriver
                     'Key_name'    => 'PRIMARY',
                     'Column_name' => $column->name,
                     'Non_unique'  => 0,
-                    'Seq_in_index' => $column->pk
+                    'Seq_in_index' => $column->pk,
                 ];
             }
         }
@@ -209,7 +209,7 @@ class SqliteDriver extends BaseSqlDriver
                     'Key_name'     => $index->name,
                     'Column_name'  => $indexColumn->name,
                     'Non_unique'   => $index->unique ? 0 : 1,
-                    'Seq_in_index' => $indexColumn->seqno + 1
+                    'Seq_in_index' => $indexColumn->seqno + 1,
                 ];
             }
         }
@@ -225,7 +225,7 @@ class SqliteDriver extends BaseSqlDriver
     public function getTableList()
     {
         $this->setQuery(
-            "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%' ORDER BY name"
+            "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%' ORDER BY name",
         );
 
         return $this->loadColumn();
@@ -246,7 +246,7 @@ class SqliteDriver extends BaseSqlDriver
 
             $this->setQuery(
                 "SELECT sql FROM sqlite_master WHERE type = 'table' AND name = " .
-                $this->quote($table)
+                $this->quote($table),
             );
 
             $row = $this->loadResult();
@@ -343,7 +343,7 @@ class SqliteDriver extends BaseSqlDriver
         // SQLite stores auto-increment values in sqlite_sequence table
         // This table only exists if AUTOINCREMENT has been used
         $this->setQuery(
-            "SELECT seq FROM sqlite_sequence WHERE name = " . $this->quote($table)
+            "SELECT seq FROM sqlite_sequence WHERE name = " . $this->quote($table),
         );
 
         $result = $this->loadResult();
@@ -357,7 +357,7 @@ class SqliteDriver extends BaseSqlDriver
         $pk = $this->getPrimaryKey($table);
         if ($pk) {
             $this->setQuery(
-                "SELECT MAX(" . $this->quoteName($pk) . ") FROM " . $this->quoteName($table)
+                "SELECT MAX(" . $this->quoteName($pk) . ") FROM " . $this->quoteName($table),
             );
             $max = $this->loadResult();
             return $max !== null ? (int) $max + 1 : 1;
@@ -383,13 +383,13 @@ class SqliteDriver extends BaseSqlDriver
 
         // Check if table has an entry in sqlite_sequence
         $this->setQuery(
-            "SELECT COUNT(*) FROM sqlite_sequence WHERE name = " . $this->quote($table)
+            "SELECT COUNT(*) FROM sqlite_sequence WHERE name = " . $this->quote($table),
         );
 
         if ($this->loadResult() > 0) {
             // Update existing entry
             $this->setQuery(
-                "UPDATE sqlite_sequence SET seq = $value WHERE name = " . $this->quote($table)
+                "UPDATE sqlite_sequence SET seq = $value WHERE name = " . $this->quote($table),
             );
             $this->execute();
             return true;
@@ -398,7 +398,7 @@ class SqliteDriver extends BaseSqlDriver
         // If no entry exists, SQLite will use MAX(rowid)+1 automatically
         // We can insert an entry to set a higher starting value
         $this->setQuery(
-            "INSERT OR IGNORE INTO sqlite_sequence (name, seq) VALUES (" . $this->quote($table) . ", $value)"
+            "INSERT OR IGNORE INTO sqlite_sequence (name, seq) VALUES (" . $this->quote($table) . ", $value)",
         );
         $this->execute();
         return true;
@@ -608,7 +608,7 @@ class SqliteDriver extends BaseSqlDriver
     {
         $tableName = $this->replacePrefix($name);
         $this->setQuery(
-            "SELECT COUNT(*) FROM sqlite_master WHERE type = 'view' AND name = " . $this->quote($tableName)
+            "SELECT COUNT(*) FROM sqlite_master WHERE type = 'view' AND name = " . $this->quote($tableName),
         );
 
         return (bool) $this->loadResult();
@@ -622,7 +622,7 @@ class SqliteDriver extends BaseSqlDriver
     public function getViews(): array
     {
         $this->setQuery(
-            "SELECT name FROM sqlite_master WHERE type = 'view' ORDER BY name"
+            "SELECT name FROM sqlite_master WHERE type = 'view' ORDER BY name",
         );
 
         return $this->loadColumn() ?: [];
@@ -677,12 +677,12 @@ class SqliteDriver extends BaseSqlDriver
                 . '"current_value" BIGINT NOT NULL DEFAULT 0, '
                 . '"increment_value" INT NOT NULL DEFAULT 1, '
                 . '"table_name" VARCHAR(255) NULL'
-                . ')'
+                . ')',
             );
             $this->execute();
         } elseif (!$this->tableHasField('_sequences', 'table_name')) {
             $this->setQuery(
-                'ALTER TABLE "_sequences" ADD COLUMN "table_name" VARCHAR(255) NULL'
+                'ALTER TABLE "_sequences" ADD COLUMN "table_name" VARCHAR(255) NULL',
             );
             $this->execute();
         }
@@ -699,7 +699,7 @@ class SqliteDriver extends BaseSqlDriver
     {
         $this->ensureSequenceTable();
         $this->setQuery(
-            'SELECT * FROM "_sequences" ORDER BY "name"'
+            'SELECT * FROM "_sequences" ORDER BY "name"',
         );
         $rows = $this->loadObjectList();
 
@@ -725,7 +725,7 @@ class SqliteDriver extends BaseSqlDriver
         $name,
         $start = 1,
         $increment = 1,
-        array $options = []
+        array $options = [],
     ): bool {
         $this->ensureSequenceTable();
         $name = $this->replacePrefix($name);
@@ -742,7 +742,7 @@ class SqliteDriver extends BaseSqlDriver
             . ($tableName ? $this->quote($tableName) : 'NULL');
 
         $this->setQuery(
-            "INSERT INTO \"_sequences\" ({$columns}) VALUES ({$values})"
+            "INSERT INTO \"_sequences\" ({$columns}) VALUES ({$values})",
         );
         $this->execute();
 
@@ -763,7 +763,7 @@ class SqliteDriver extends BaseSqlDriver
 
         $this->setQuery(
             'DELETE FROM "_sequences" WHERE "name" = '
-            . $this->quote($name)
+            . $this->quote($name),
         );
         $this->execute();
 
@@ -775,7 +775,7 @@ class SqliteDriver extends BaseSqlDriver
         if ($this->sequenceTableReady || $this->tableExists('_sequences')) {
             $this->setQuery(
                 'DELETE FROM "_sequences" WHERE "table_name" = '
-                . $this->quote($tableName)
+                . $this->quote($tableName),
             );
             $this->execute();
         }
@@ -794,7 +794,7 @@ class SqliteDriver extends BaseSqlDriver
 
         $this->setQuery(
             'SELECT COUNT(*) FROM "_sequences" WHERE "name" = '
-            . $this->quote($name)
+            . $this->quote($name),
         );
 
         return (int) $this->loadResult() > 0;
@@ -816,13 +816,13 @@ class SqliteDriver extends BaseSqlDriver
         $this->setQuery(
             'UPDATE "_sequences" SET "current_value" = '
             . '"current_value" + "increment_value" '
-            . 'WHERE "name" = ' . $this->quote($name)
+            . 'WHERE "name" = ' . $this->quote($name),
         );
         $this->execute();
 
         $this->setQuery(
             'SELECT "current_value" FROM "_sequences" '
-            . 'WHERE "name" = ' . $this->quote($name)
+            . 'WHERE "name" = ' . $this->quote($name),
         );
 
         return (int) $this->loadResult();
@@ -841,7 +841,7 @@ class SqliteDriver extends BaseSqlDriver
 
         $this->setQuery(
             'SELECT "current_value" FROM "_sequences" '
-            . 'WHERE "name" = ' . $this->quote($name)
+            . 'WHERE "name" = ' . $this->quote($name),
         );
         $result = $this->loadResult();
 
@@ -898,7 +898,7 @@ class SqliteDriver extends BaseSqlDriver
 
         $this->setQuery(
             'ALTER TABLE ' . $this->quoteName($oldTable) .
-            ' RENAME TO ' . $this->quoteName($newTable)
+            ' RENAME TO ' . $this->quoteName($newTable),
         )->execute();
 
         return $this;
@@ -1082,7 +1082,7 @@ class SqliteDriver extends BaseSqlDriver
     protected function applyColumnModifiers(
         string $abstractType,
         string $nativeType,
-        array $modifiers
+        array $modifiers,
     ): string {
         // SQLite uses dynamic typing — no length/precision needed
         return $nativeType;
@@ -1175,7 +1175,7 @@ class SqliteDriver extends BaseSqlDriver
                 'name'     => $index->name,
                 'unique'   => (bool) $index->unique,
                 'columns'  => $columnNames,
-                'partial'  => isset($index->partial) ? (bool) $index->partial : false
+                'partial'  => isset($index->partial) ? (bool) $index->partial : false,
             ];
         }
 
@@ -1446,7 +1446,7 @@ class SqliteDriver extends BaseSqlDriver
      */
     public function normalizeColumnType(
         string $type,
-        array $modifiers = []
+        array $modifiers = [],
     ): string {
         $mappedType = $this->getSchemaGrammar()->getTypeMapping($type);
         if ($mappedType !== null) {
@@ -1732,7 +1732,7 @@ class SqliteDriver extends BaseSqlDriver
         string $column,
         string $definition,
         string $afterColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         return $this->sqliteModifyColumnAtPosition($table, $column, $definition, 'after', $afterColumn);
     }
@@ -1754,7 +1754,7 @@ class SqliteDriver extends BaseSqlDriver
         string $column,
         string $definition,
         string $beforeColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         return $this->sqliteModifyColumnAtPosition($table, $column, $definition, 'before', $beforeColumn);
     }
@@ -1798,7 +1798,7 @@ class SqliteDriver extends BaseSqlDriver
         string $column,
         string $definition,
         string $position,
-        ?string $referenceColumn
+        ?string $referenceColumn,
     ): bool {
         $table = $this->replacePrefix($table);
 
@@ -1943,7 +1943,7 @@ class SqliteDriver extends BaseSqlDriver
         string $oldColumn,
         string $newColumn,
         string $definition,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         $table = $this->replacePrefix($table);
 
@@ -2072,7 +2072,7 @@ class SqliteDriver extends BaseSqlDriver
         string $table,
         string $column,
         string $definition,
-        string $comment
+        string $comment,
     ): string {
         return "ALTER TABLE `$table` ADD COLUMN `$column` $definition";
     }
@@ -2095,7 +2095,7 @@ class SqliteDriver extends BaseSqlDriver
         string $column,
         string $definition,
         string $afterColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         return $this->sqliteAddColumnAtPosition($table, $column, $definition, 'after', $afterColumn);
     }
@@ -2118,7 +2118,7 @@ class SqliteDriver extends BaseSqlDriver
         string $column,
         string $definition,
         string $beforeColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         return $this->sqliteAddColumnAtPosition($table, $column, $definition, 'before', $beforeColumn);
     }
@@ -2374,7 +2374,7 @@ class SqliteDriver extends BaseSqlDriver
         string $column,
         string $definition,
         string $position,
-        ?string $referenceColumn
+        ?string $referenceColumn,
     ): bool {
         $table = $this->replacePrefix($table);
 
@@ -2535,7 +2535,7 @@ class SqliteDriver extends BaseSqlDriver
     public function setTableCharset(
         string $table,
         string $charset = 'utf8',
-        string $collation = 'utf8_general_ci'
+        string $collation = 'utf8_general_ci',
     ): bool {
         // SQLite uses UTF-8 by default - no-op
         return true;
@@ -2624,7 +2624,7 @@ class SqliteDriver extends BaseSqlDriver
         string $table,
         string $column = 'id',
         bool $first = false,
-        bool $useBigInt = true
+        bool $useBigInt = true,
     ): bool {
         $table = $this->replacePrefix($table);
 
@@ -2865,7 +2865,7 @@ class SqliteDriver extends BaseSqlDriver
      */
     protected function buildSqliteTableRebuild(
         string $table,
-        \Hubzero\Database\Schema\AlterTableBuilder $builder
+        \Hubzero\Database\Schema\AlterTableBuilder $builder,
     ): array {
         $statements = [];
         $tempTable = $table . '_rebuild_' . time();
@@ -3072,7 +3072,7 @@ class SqliteDriver extends BaseSqlDriver
             foreach ($matches as $match) {
                 $constraints[] = (object) [
                     'name' => $match[1],
-                    'expression' => $match[2]
+                    'expression' => $match[2],
                 ];
             }
         }

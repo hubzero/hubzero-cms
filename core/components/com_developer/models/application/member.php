@@ -44,7 +44,7 @@ class Member extends Relational
      */
     protected $rules = [
         'application_id' => 'positive|nonzero',
-        'uidNumber'      => 'positive|nonzero'
+        'uidNumber'      => 'positive|nonzero',
     ];
 
     /**

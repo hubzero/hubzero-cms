@@ -214,7 +214,7 @@ $area = Request::getString('area', 'about');
                 'about' => Lang::txt('COM_CITATIONS_ABOUT'),
                 'resources' => Lang::txt('COM_CITATIONS_CITED'),
                 'reviews' => Lang::txt('COM_CITATIONS_REVIEWS'),
-                'find' => Lang::txt('COM_CITATIONS_FINDTHISTEXT')
+                'find' => Lang::txt('COM_CITATIONS_FINDTHISTEXT'),
             ];
             ?>
 
@@ -541,7 +541,7 @@ $area = Request::getString('area', 'about');
                 $citation,
                 $this->option,
                 Route::url('index.php?option=' . $this->option . '&task=view&id=' . $citation->id . '&area=reviews'),
-                ['png','jpg','gif','tiff','pdf']
+                ['png','jpg','gif','tiff','pdf'],
             ];
             $comments = Event::trigger('hubzero.onAfterDisplayContent', $params);
             echo $comments[0];
@@ -652,7 +652,7 @@ if (function_exists('mbstring')) {
         "ctx_ver=Z39.88-2004",
         "rft_val_fmt=info:ofi/fmt:kev:mtx:{$coinsType}",
         "rfr_id=info:sid/{$hubUrl}:{$hubName}",
-        "rft.atitle={$title}"
+        "rft.atitle={$title}",
     ];
 
     //add doi to coins

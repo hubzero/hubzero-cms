@@ -100,7 +100,7 @@ class Collect extends Module
                     'item_id'       => $this->item->get('id'),
                     'limit'         => 25,
                     'start'         => 0,
-                    'access'        => [0,1,4]
+                    'access'        => [0,1,4],
                 ]);
 
                 if ($posts) {

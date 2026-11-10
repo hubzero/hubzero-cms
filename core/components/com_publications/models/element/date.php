@@ -143,7 +143,7 @@ class Date extends Base
                 'value',
                 'text',
                 $year,
-                $fieldId
+                $fieldId,
             );
         }
 
@@ -152,7 +152,7 @@ class Date extends Base
 
             // Build the list of years
             $options = [
-                Html::select('option', '0', Lang::txt('Month...'))
+                Html::select('option', '0', Lang::txt('Month...')),
             ];
             $i = 1;
             $y = 13;
@@ -170,7 +170,7 @@ class Date extends Base
                 'value',
                 'text',
                 $month,
-                $fieldId
+                $fieldId,
             );
         }
 
@@ -179,7 +179,7 @@ class Date extends Base
 
             // Build the list of years
             $options = [
-                Html::select('option', '0', Lang::txt('Day...'))
+                Html::select('option', '0', Lang::txt('Day...')),
             ];
             $i = 1;
             $y = 32;
@@ -197,7 +197,7 @@ class Date extends Base
                 'value',
                 'text',
                 $day,
-                $fieldId
+                $fieldId,
             );
         }
 

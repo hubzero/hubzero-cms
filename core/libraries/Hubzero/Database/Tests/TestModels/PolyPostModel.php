@@ -25,7 +25,7 @@ class PolyPostModel extends Relational
             'poly_taggables',
             null,
             null,
-            'tag_id'
+            'tag_id',
         );
     }
 }

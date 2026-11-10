@@ -424,7 +424,7 @@ trait Revisionable
         // Get all fields from both revisions
         $allFields = array_unique(array_merge(
             array_keys($fromRev->data ?? []),
-            array_keys($toRev->data ?? [])
+            array_keys($toRev->data ?? []),
         ));
 
         foreach ($allFields as $field) {

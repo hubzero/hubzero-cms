@@ -60,7 +60,7 @@ $this->css('jquery.ui.css', 'system');
         <?php
             $resultPages = [
                 'open' => $this->dep->getResultsOpen(),
-                'closed' => $this->dep->getResultsClosed()
+                'closed' => $this->dep->getResultsClosed(),
             ];
             ?>
         <h3>Results</h3>

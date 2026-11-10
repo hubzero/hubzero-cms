@@ -70,7 +70,7 @@ class Migration20141202211549PlgMembersDashboard extends Base
                     'col'    => $col,
                     'row'    => $row,
                     'size_x' => 1,
-                    'size_y' => 2
+                    'size_y' => 2,
                 ]);
             }
         }

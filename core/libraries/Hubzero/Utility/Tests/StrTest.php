@@ -29,16 +29,16 @@ class StrTest extends Basic
         $strings = [
             'a href="http://hubzero.org" title="HUBzero"' => [
                 'href'  => 'http://hubzero.org',
-                'title' => 'HUBzero'
+                'title' => 'HUBzero',
             ],
             $fieldStr => [
                 'description' => 'Duis mollis, est non commodo luctus.',
                 //'default'     => '0',
                 //'height'      => '55',
                 'width'       => '35',
-                'type'        => 'list'
+                'type'        => 'list',
             ],
-            'Sed posuere consectetur est at lobortis.' => []
+            'Sed posuere consectetur est at lobortis.' => [],
         ];
 
         foreach ($strings as $string => $pairs) {
@@ -129,7 +129,7 @@ class StrTest extends Basic
         $strings = [
             'lorem ipsum',
             'mattis Cras',
-            'mattis consectetur'
+            'mattis consectetur',
         ];
 
         $this->assertTrue(Str::contains($string, $strings), 'String does not contain given value.');
@@ -139,7 +139,7 @@ class StrTest extends Basic
         $strings = [
             'Donec id',
             'elit non mi',
-            'porta gravida.'
+            'porta gravida.',
         ];
 
         $this->assertFalse(Str::contains($string, $strings), 'String does not contain given value.');
@@ -157,15 +157,15 @@ class StrTest extends Basic
         $this->assertTrue(
             Str::startsWith(
                 $string,
-                'Cras mattis consectetur'
+                'Cras mattis consectetur',
             ),
-            'String does not start with given value.'
+            'String does not start with given value.',
         );
 
         $strings = [
             'mattis consectetur',
             'Cras',
-            'amet fermentum.'
+            'amet fermentum.',
         ];
 
         $this->assertTrue(Str::startsWith($string, $strings), 'String does not start with given value.');
@@ -175,7 +175,7 @@ class StrTest extends Basic
         $strings = [
             'cras mattis',
             'consectetur purus',
-            'amet fermentum.'
+            'amet fermentum.',
         ];
 
         $this->assertFalse(Str::startsWith($string, $strings), 'String does not start with given value.');
@@ -195,7 +195,7 @@ class StrTest extends Basic
         $strings = [
             'Cras mattis',
             'consectetur purus',
-            'amet fermentum.'
+            'amet fermentum.',
         ];
 
         $this->assertTrue(Str::endsWith($string, $strings), 'String does not end with given value.');
@@ -205,7 +205,7 @@ class StrTest extends Basic
         $strings = [
             'Cras mattis',
             'consectetur purus',
-            'amet fermentum'
+            'amet fermentum',
         ];
 
         $this->assertFalse(Str::endsWith($string, $strings), 'String does not end with given value.');
@@ -325,45 +325,45 @@ class StrTest extends Basic
         $result = Str::cleanInsert(':incomplete', [
             'clean'  => true,
             'before' => ':',
-            'after'  => ''
+            'after'  => '',
         ]);
         $this->assertEquals('', $result);
 
         $result = Str::cleanInsert(':incomplete', [
             'clean'  => [
                 'method'      => 'text',
-                'replacement' => 'complete'
+                'replacement' => 'complete',
             ],
             'before' => ':',
-            'after'  => ''
+            'after'  => '',
         ]);
         $this->assertEquals('complete', $result);
 
         $result = Str::cleanInsert(':in.complete', [
             'clean'  => true,
             'before' => ':',
-            'after'  => ''
+            'after'  => '',
         ]);
         $this->assertEquals('', $result);
 
         $result = Str::cleanInsert(':in.complete and', [
             'clean'  => true,
             'before' => ':',
-            'after'  => ''
+            'after'  => '',
         ]);
         $this->assertEquals('', $result);
 
         $result = Str::cleanInsert(':in.complete or stuff', [
             'clean'  => true,
             'before' => ':',
-            'after'  => ''
+            'after'  => '',
         ]);
         $this->assertEquals('stuff', $result);
 
         $result = Str::cleanInsert('<p class=":missing" id=":missing">Text here</p>', [
             'clean'  => 'html',
             'before' => ':',
-            'after'  => ''
+            'after'  => '',
         ]);
         $this->assertEquals('<p>Text here</p>', $result);
     }
@@ -383,7 +383,7 @@ class StrTest extends Basic
 
         $this->assertEquals(
             $result,
-            'Cras mattis &#f0c2; consectetur &amp; purus &amp; sit &&amp; amet &amp; fermentum.'
+            'Cras mattis &#f0c2; consectetur &amp; purus &amp; sit &&amp; amet &amp; fermentum.',
         );
     }
 
@@ -494,7 +494,7 @@ class StrTest extends Basic
         $text4 = 'What a strong mouse: <img src="what-a-strong-mouse.png" alt="What a strong mouse!" />';
         $options = [
             'format' => '<b>\1</b>',
-            'html'   => true
+            'html'   => true,
         ];
         $expected = '<p><b>strong</b>bow isn&rsquo;t real cider</p>';
 

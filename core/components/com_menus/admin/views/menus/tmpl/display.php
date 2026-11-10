@@ -36,7 +36,7 @@ Toolbar::custom(
     'refresh.png',
     'refresh_f2.png',
     'JTOOLBAR_REBUILD',
-    false
+    false,
 );
 if ($canDo->get('core.admin')) {
     Toolbar::divider();
@@ -61,7 +61,7 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
 
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 ?>
 
@@ -132,7 +132,7 @@ $formAction = Route::url(
                     <?php
                     $itemsUrl = Route::url(
                         'index.php?option=' . $this->option
-                        . '&controller=items&menutype=' . $menutype
+                        . '&controller=items&menutype=' . $menutype,
                     );
                     ?>
                     <a href="<?php echo $itemsUrl; ?> ">
@@ -145,7 +145,7 @@ $formAction = Route::url(
                             $editUrl = Route::url(
                                 'index.php?option=' . $this->option
                                 . '&controller=' . $this->controller
-                                . '&task=edit&id=' . $item->get('id')
+                                . '&task=edit&id=' . $item->get('id'),
                             );
                             $desc = $this->escape($item->get('description'));
                             $menutypeEsc = $this->escape($menutype);
@@ -171,7 +171,7 @@ $formAction = Route::url(
                     $pubUrl = Route::url(
                         'index.php?option=' . $this->option
                         . '&controller=items&menutype=' . $menutype
-                        . '&filter_published=1'
+                        . '&filter_published=1',
                     );
                     ?>
                     <a href="<?php echo $pubUrl; ?>">
@@ -183,7 +183,7 @@ $formAction = Route::url(
                     $unpubUrl = Route::url(
                         'index.php?option=' . $this->option
                         . '&controller=items&menutype=' . $menutype
-                        . '&filter_published=0'
+                        . '&filter_published=0',
                     );
                     ?>
                     <a href="<?php echo $unpubUrl; ?>">
@@ -195,7 +195,7 @@ $formAction = Route::url(
                     $trashUrl = Route::url(
                         'index.php?option=' . $this->option
                         . '&controller=items&menutype=' . $menutype
-                        . '&filter_published=-2'
+                        . '&filter_published=-2',
                     );
                     ?>
                     <a href="<?php echo $trashUrl; ?>">
@@ -212,14 +212,14 @@ $formAction = Route::url(
                                 $modUrl = Route::url(
                                     'index.php?option=com_modules&task=edit'
                                     . '&id=' . $module->id
-                                    . '&return=' . $return
+                                    . '&return=' . $return,
                                 );
                                 $editTitle = Lang::txt('COM_MENUS_EDIT_MODULE_SETTINGS');
                                 $modAccess = Lang::txt(
                                     'COM_MENUS_MODULE_ACCESS_POSITION',
                                     $this->escape($module->title),
                                     $this->escape($module->access_title),
-                                    $this->escape($module->position)
+                                    $this->escape($module->position),
                                 );
                                 $modRel = '{handler: \'iframe\', size: {x: 1024, y: 450},'
                                     . ' onClose: function() {window.location.reload()}}';
@@ -236,7 +236,7 @@ $formAction = Route::url(
                                     'COM_MENUS_MODULE_ACCESS_POSITION',
                                     $this->escape($module->title),
                                     $this->escape($module->access_title),
-                                    $this->escape($module->position)
+                                    $this->escape($module->position),
                                 );
                                 ?>
                             <?php endif; ?>
@@ -251,7 +251,7 @@ $formAction = Route::url(
                         $addModUrl = Route::url(
                             'index.php?option=com_modules&task=add'
                             . '&eid=' . $this->modMenuId
-                            . '&params[menutype]=' . $menutype
+                            . '&params[menutype]=' . $menutype,
                         );
                         ?>
                         <a href="<?php echo $addModUrl; ?>">

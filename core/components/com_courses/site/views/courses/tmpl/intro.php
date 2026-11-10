@@ -41,7 +41,7 @@ if (count($this->notifications) > 0) {
 <section id="introduction" class="section">
     <?php
         $routeUrl = Route::url(
-            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=browse'
+            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=browse',
         );
         ?>
     <form class="section-inner" action="<?php echo $routeUrl; ?>" method="get">
@@ -64,7 +64,7 @@ if (count($this->notifications) > 0) {
                 <p><?php echo Lang::txt('COM_COURSES_WATCH_LEARN_TEST_EARN'); ?></p>
                 <?php
                     $routeUrl = Route::url(
-                        'index.php?option=com_help&component=' . substr($this->option, 4) . '&page=index'
+                        'index.php?option=com_help&component=' . substr($this->option, 4) . '&page=index',
                     );
                     ?>
                 <p><a
@@ -75,7 +75,7 @@ if (count($this->notifications) > 0) {
                 <div>
                     <?php
                         $routeUrl = Route::url(
-                            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=browse'
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=browse',
                         );
                         ?>
                     <a class="btn icon-browse" href="<?php echo $routeUrl; ?>">

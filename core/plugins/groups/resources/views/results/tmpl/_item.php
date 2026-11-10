@@ -73,14 +73,14 @@ switch ($this->row->access) {
                                 $database,
                                 $this->row->id,
                                 $this->row->category,
-                                $this->row->rating
+                                $this->row->rating,
                             );
                         } else {
                             $stats = new \Components\Resources\Helpers\Usage\Andmore(
                                 $database,
                                 $this->row->id,
                                 $this->row->category,
-                                $this->row->rating
+                                $this->row->rating,
                             );
                         }
                         echo $stats->display();
@@ -134,7 +134,7 @@ switch ($this->row->access) {
                     <span>
                         <?php echo Lang::txt(
                             'PLG_GROUPS_RESOURCES_OUT_OF_5_STARS',
-                            $this->row->rating
+                            $this->row->rating,
                         ); ?>
                     </span>&nbsp;
                 </span>

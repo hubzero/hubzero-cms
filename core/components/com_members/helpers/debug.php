@@ -95,7 +95,7 @@ class Debug
                                 foreach ($field->children() as $action) {
                                     $actions[(string) $action['title']] = [
                                         (string) $action['name'],
-                                        (string) $action['description']
+                                        (string) $action['description'],
                                     ];
                                 }
                                 break;

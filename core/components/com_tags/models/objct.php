@@ -62,7 +62,7 @@ class Objct extends Relational
     protected $rules = [
         'tbl'      => 'notempty',
         'tagid'    => 'positive|nonzero',
-        'objectid' => 'positive|nonzero'
+        'objectid' => 'positive|nonzero',
     ];
 
     /**
@@ -72,7 +72,7 @@ class Objct extends Relational
      */
     public $initiate = [
         'taggedon',
-        'taggerid'
+        'taggerid',
     ];
 
     /**
@@ -212,7 +212,7 @@ class Objct extends Relational
         $log->set([
             'tag_id'   => $newtagid,
             'action'   => 'objects_moved',
-            'comments' => json_encode($data)
+            'comments' => json_encode($data),
         ]);
         $log->save();
 
@@ -278,7 +278,7 @@ class Objct extends Relational
             $log->set([
                 'tag_id'   => $newtagid,
                 'action'   => 'objects_copied',
-                'comments' => json_encode($data)
+                'comments' => json_encode($data),
             ]);
             $log->save();
         }

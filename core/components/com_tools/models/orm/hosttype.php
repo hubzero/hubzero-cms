@@ -45,7 +45,7 @@ class Hosttype extends Relational
     protected $rules = [
         'name'  => 'notempty',
         'value' => 'notempty',
-        'description' => 'notempty'
+        'description' => 'notempty',
     ];
 
     /**

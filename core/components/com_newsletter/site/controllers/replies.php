@@ -43,7 +43,7 @@ class Replies extends SiteController
             'input' => json_encode(Request::getArray('reply')),
             'page_id' => $pageId,
             'user_id' => $userId,
-            'created' => Date::toSql()
+            'created' => Date::toSql(),
         ]);
 
         if ($reply->save()) {

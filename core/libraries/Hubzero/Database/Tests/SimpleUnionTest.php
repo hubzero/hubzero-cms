@@ -47,11 +47,11 @@ class SimpleUnionTest extends AbstractDriverTestCase
         $query = new Query($driver);
         $query->insertMany('TEST_USERS', [
             ['name' => 'User1'],
-            ['name' => 'User2']
+            ['name' => 'User2'],
         ]);
 
         $query->insertMany('TEST_ADMINS', [
-            ['name' => 'Admin1']
+            ['name' => 'Admin1'],
         ]);
 
         // Test union query
@@ -91,7 +91,7 @@ class SimpleUnionTest extends AbstractDriverTestCase
         $query->insertMany('TEST_USERS', [
             ['id' => 1, 'name' => 'Sam Wilson', 'email' => 'sam@example.com'],
             ['id' => 2, 'name' => 'Sally Smith', 'email' => 'sally@example.com'],
-            ['id' => 3, 'name' => 'Steve Rogers', 'email' => 'steve@example.com']
+            ['id' => 3, 'name' => 'Steve Rogers', 'email' => 'steve@example.com'],
         ]);
 
         // Test basic fetch with WHERE clause

@@ -881,7 +881,7 @@ final class Expression
             'Expression(%s%s%s)',
             $this->type,
             $this->function ? ':' . $this->function : '',
-            $this->alias ? ' AS ' . $this->alias : ''
+            $this->alias ? ' AS ' . $this->alias : '',
         );
     }
 }

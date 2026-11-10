@@ -41,17 +41,17 @@ class Jobs extends AbstractComponent
         Submenu::addEntry(
             Lang::txt('COM_JOBS_JOBS'),
             Route::url('index.php?option=com_jobs&controller=jobs'),
-            $controllerName == 'jobs'
+            $controllerName == 'jobs',
         );
         Submenu::addEntry(
             Lang::txt('COM_JOBS_CATEGORIES'),
             Route::url('index.php?option=com_jobs&controller=categories'),
-            $controllerName == 'categories'
+            $controllerName == 'categories',
         );
         Submenu::addEntry(
             Lang::txt('COM_JOBS_TYPES'),
             Route::url('index.php?option=com_jobs&controller=types'),
-            $controllerName == 'types'
+            $controllerName == 'types',
         );
 
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);

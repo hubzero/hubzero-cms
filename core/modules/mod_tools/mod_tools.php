@@ -54,7 +54,7 @@ class Tools extends Module
         $database->setQuery(
             "SELECT f.state FROM `#__tool` as f
 				JOIN `#__tool_version` AS v ON f.id=v.toolid AND v.state=3
-				WHERE f.id != 0 ORDER BY f.state_changed DESC"
+				WHERE f.id != 0 ORDER BY f.state_changed DESC",
         );
         $this->data = $database->loadObjectList();
         if ($this->data) {

@@ -311,7 +311,7 @@ class Geocode
                     array_push($countries, [
                         'code' => strtolower($row->code),
                         'id'   => $row->code,
-                        'name' => $row->name
+                        'name' => $row->name,
                     ]);
                 }
             }

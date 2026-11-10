@@ -306,7 +306,7 @@ class Media extends AdminController
             'onchange="goUpDir()" ',
             'value',
             'text',
-            $subdir
+            $subdir,
         );
 
         // Output the HTML

@@ -276,7 +276,7 @@ class MigrationOperationsTest extends AbstractDriverTestCase
         $this->assertTrue($driver->tableHasField('temp_complex_migrate', 'id'), 'Should have id column');
         $this->assertTrue(
             $driver->tableHasKey('temp_complex_migrate', 'uidx_author_resource'),
-            'Should have unique index'
+            'Should have unique index',
         );
 
         // Verify data preserved

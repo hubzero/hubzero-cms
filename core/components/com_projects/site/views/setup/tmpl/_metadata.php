@@ -25,7 +25,7 @@ if (!$this->model->exists()) {
             . $this->option
             . '&alias='
             . $this->model->get('alias')
-            . '&task=media'
+            . '&task=media',
         );
         ?>
         <img src="<?php echo $routeUrl; ?>" alt="" />

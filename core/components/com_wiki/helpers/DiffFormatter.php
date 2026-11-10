@@ -82,7 +82,7 @@ class DiffFormatter
                             $ntrail + $xi - $x0,
                             $y0,
                             $ntrail + $yi - $y0,
-                            $block
+                            $block,
                         );
                         $block = false;
                     }
@@ -130,7 +130,7 @@ class DiffFormatter
                 $xi - $x0,
                 $y0,
                 $yi - $y0,
-                $block
+                $block,
             );
         }
         echo "\t" . '</tbody>' . "\n";

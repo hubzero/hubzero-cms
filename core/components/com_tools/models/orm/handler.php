@@ -38,7 +38,7 @@ class Handler extends Relational
      **/
     protected $rules = [
         'tool_id' => 'notempty|nonzero',
-        'prompt'  => 'notempty'
+        'prompt'  => 'notempty',
     ];
 
     /**
@@ -88,7 +88,7 @@ class Handler extends Relational
             foreach ($rows as $row) {
                 $results[] = [
                     'prompt' => $row->prompt,
-                    'url'    => '/tools/' . $row->tool->toolname . '/invoke?params=file:' . urlencode($filename)
+                    'url'    => '/tools/' . $row->tool->toolname . '/invoke?params=file:' . urlencode($filename),
                 ];
             }
         }

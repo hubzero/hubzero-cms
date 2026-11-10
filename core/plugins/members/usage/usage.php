@@ -39,7 +39,7 @@ class Usage extends Plugin
             'usage' => Lang::txt('PLG_MEMBERS_USAGE'),
             'icon' => 'f080',
             'icon-class' => 'icon-bar-chart',
-            'menu' => $this->params->get('display_tab', 1)
+            'menu' => $this->params->get('display_tab', 1),
         ];
         return $areas;
     }
@@ -59,7 +59,7 @@ class Usage extends Plugin
 
         $arr = [
             'html' => '',
-            'metadata' => []
+            'metadata' => [],
         ];
 
         // Check if our area is in the array of areas we want to return results for
@@ -348,7 +348,7 @@ class Usage extends Plugin
             $results,
             function ($a, $b) {
                 return $b->contribs <=> $a->contribs;
-            }
+            },
         );
 
         if ($results) {

@@ -45,7 +45,7 @@ class Events extends Plugin
             'title'   => Lang::txt('PLG_TAGS_EVENTS'),
             'total'   => 0,
             'results' => null,
-            'sql'     => ''
+            'sql'     => '',
         ];
 
         if (empty($tags)) {
@@ -140,7 +140,7 @@ class Events extends Plugin
             $row->ftext = strip_tags($row->ftext);
             $html .= "\t\t" . \Hubzero\Utility\Str::truncate(
                 \Hubzero\Utility\Sanitize::stripAll(stripslashes($row->ftext)),
-                200
+                200,
             ) . "\n";
         }
         $html .= "\t\t" . '<p class="href">' . Request::base() . trim($row->href, '/') . '</p>' . "\n";

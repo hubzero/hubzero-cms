@@ -34,7 +34,7 @@ class Wiki extends Plugin
     public function onWhatsnewAreas()
     {
         return [
-            'wiki' => Lang::txt('PLG_WHATSNEW_WIKI')
+            'wiki' => Lang::txt('PLG_WHATSNEW_WIKI'),
         ];
     }
 

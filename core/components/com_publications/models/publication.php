@@ -76,7 +76,7 @@ class Publication extends Obj
         'public'  => 'pub.orcid.org',
         'publicsandbox'  => 'pub.sandbox.orcid.org',
         'members' => 'api.orcid.org',
-        'sandbox' => 'api.sandbox.orcid.org'
+        'sandbox' => 'api.sandbox.orcid.org',
     ];
 
     /**
@@ -328,7 +328,7 @@ class Publication extends Obj
             $this->$val = $this->version->getAttribute(
                 $this->get('id'),
                 $versionAlias,
-                $property
+                $property,
             );
         }
         return $this->$val;
@@ -1310,14 +1310,14 @@ class Publication extends Obj
                         'pagename' => 'publications',
                         'pageid'   => '',
                         'filepath' => '',
-                        'domain'   => ''
+                        'domain'   => '',
                     ];
 
                     $content = (string) stripslashes($this->get('description', ''));
                     Event::trigger('content.onContentPrepare', [
                         'com_publications.publication.description',
                         &$this,
-                        &$config
+                        &$config,
                     ]);
 
                     $this->set('description.parsed', (string) $this->get('description', ''));
@@ -1380,14 +1380,14 @@ class Publication extends Obj
                         'pagename' => 'publications',
                         'pageid'   => '',
                         'filepath' => '',
-                        'domain'   => ''
+                        'domain'   => '',
                     ];
 
                     $content = (string) stripslashes($this->get('release_notes', ''));
                     Event::trigger('content.onContentPrepare', [
                         'com_publications.publication.release_notes',
                         &$this,
-                        &$config
+                        &$config,
                     ]);
 
                     $this->set('release_notes.parsed', (string) $this->get('release_notes', ''));
@@ -1479,7 +1479,7 @@ class Publication extends Obj
                         'pagename' => 'publications',
                         'pageid'   => '',
                         'filepath' => '',
-                        'domain'   => ''
+                        'domain'   => '',
                     ];
 
                     $content = (string) stripslashes($this->get($field, ''));
@@ -1489,7 +1489,7 @@ class Publication extends Obj
                     Event::trigger('content.onContentPrepare', [
                         'com_publications.publication.' . $field,
                         &$this,
-                        &$config
+                        &$config,
                     ]);
 
                     $parsed = (string) stripslashes($this->get($field, ''));
@@ -1990,7 +1990,7 @@ class Publication extends Obj
         $this->version->saveParam(
             $this->get('version_id'),
             trim($param),
-            htmlentities($value)
+            htmlentities($value),
         );
 
         return $value;
@@ -2326,7 +2326,7 @@ class Publication extends Obj
                 $contributor['contributor-orcid'] = [
                 'uri' => "https://orcid.org" . DS . $author->orcid,
                 'path' => $author->orcid,
-                "host" => "orcid.org"
+                "host" => "orcid.org",
                 ];
             }
 
@@ -2379,7 +2379,7 @@ class Publication extends Obj
         $publishedDate = [
         'year' => ['value' => date('Y', strtotime($this->version->accepted))],
         'month' => ['value' => date('m', strtotime($this->version->accepted))],
-        'day' => ['value' => date(('d'), strtotime($this->version->accepted))]
+        'day' => ['value' => date(('d'), strtotime($this->version->accepted))],
         ];
 
         // external IDs
@@ -2387,7 +2387,7 @@ class Publication extends Obj
         'external-id-type' => 'doi',
         'external-id-value' => $this->version->doi,
         'external-id-url' => ['value' => "https://doi.org" . DS . $this->version->doi],
-        'external-id-relationship' => 'self'
+        'external-id-relationship' => 'self',
         ];
 
         $data = ['title' => $title,
@@ -2399,7 +2399,7 @@ class Publication extends Obj
         'url' => $url,
         'contributors' => $contributors,
         'language-code' => 'en',
-        'country' => ['value' => 'US']
+        'country' => ['value' => 'US'],
         ];
 
         if (!empty($putCode)) {

@@ -25,7 +25,7 @@ class ClientManagerTest extends Basic
         'one'   => 'for the money',
         'two'   => 'for the show',
         'three' => 'to get ready',
-        'four'  => 'to go'
+        'four'  => 'to go',
     ];
 
     /**
@@ -98,7 +98,7 @@ class ClientManagerTest extends Basic
         $foo = [
             'id' => 9,
             'name' => 'foo',
-            'url' => 'foo'
+            'url' => 'foo',
         ];
 
         $bar = new \stdClass();

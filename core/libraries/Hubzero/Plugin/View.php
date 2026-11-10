@@ -244,7 +244,7 @@ class View extends AbstractView
             'folder'  => $this->_folder,
             'element' => $this->_element,
             'name'    => ($name ? $name : $this->_name),
-            'layout'  => $layout
+            'layout'  => $layout,
         ]);
         $view->set('folder', $this->_folder)
              ->set('element', $this->_element);

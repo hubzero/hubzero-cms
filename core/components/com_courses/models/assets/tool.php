@@ -31,7 +31,7 @@ class Tool extends Content
      **/
     protected static $info = [
         'action_message' => 'Tool',
-        'responds_to'    => ['tool']
+        'responds_to'    => ['tool'],
     ];
 
     /**
@@ -68,7 +68,7 @@ class Tool extends Content
         if (!is_dir($uploadDirectory)) {
             if (!Filesystem::makeDirectory($uploadDirectory)) {
                 return [
-                    'error' => 'Server error. Unable to create upload directory'
+                    'error' => 'Server error. Unable to create upload directory',
                 ];
             }
             // Set the right permissions on the folder for the tools to access

@@ -33,13 +33,13 @@ class Newsletter extends Plugin
             [
                 'name'   => 'processMailings',
                 'label'  => Lang::txt('PLG_CRON_NEWSLETTER_PROCESS_QUEUE'),
-                'params' => 'processmailings'
+                'params' => 'processmailings',
             ],
             [
                 'name'   => 'processIps',
                 'label'  => Lang::txt('PLG_CRON_NEWSLETTER_IP_ADDRESSES_TO_LOCATION'),
-                'params' => 'processips'
-            ]
+                'params' => 'processips',
+            ],
         ];
 
         return $obj;

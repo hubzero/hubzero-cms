@@ -83,11 +83,11 @@ class Pagination
         $instance->total = $total;
         $instance->start = Request::getInt(
             $start,
-            User::getState($namespace . '.start', 0)
+            User::getState($namespace . '.start', 0),
         );
         $instance->limit = Request::getInt(
             $limit,
-            User::getState($namespace . '.limit', Config::get('list_limit'))
+            User::getState($namespace . '.limit', Config::get('list_limit')),
         );
 
         if ($instance->limit < 0) {

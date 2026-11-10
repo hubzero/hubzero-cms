@@ -25,7 +25,7 @@ $text = ($this->task == 'edit'
 Toolbar::title(
     Lang::txt('COM_ANSWERS_TITLE') . ': '
         . Lang::txt('COM_ANSWERS_QUESTIONS') . ': ' . $text,
-    'answers'
+    'answers',
 );
 if ($canDo->get('core.edit')) {
     Toolbar::apply();
@@ -43,10 +43,10 @@ $this->js();
 
 $formAction = Route::url(
     'index.php?option=' . $this->option
-        . '&controller=' . $this->controller
+        . '&controller=' . $this->controller,
 );
 $invalidMsg = $this->escape(
-    Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')
+    Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'),
 );
 $anonChecked = ($this->row->get('anonymous'))
     ? 'checked="checked"'
@@ -56,7 +56,7 @@ $emailChecked = ($this->row->get('email'))
     : '';
 $subjectVal = $this->escape($this->row->get('subject'));
 $tagsVal = $this->escape(
-    stripslashes($this->row->tags('string'))
+    stripslashes($this->row->tags('string')),
 );
 $createdByVal = $this->row->get('created_by', User::get('id'));
 ?>
@@ -136,7 +136,7 @@ $createdByVal = $this->row->get('created_by', User::get('id'));
                         [
                             'class' => 'minimal no-footer',
                             'buttons' => false,
-                        ]
+                        ],
                     );
                     ?>
                 </div>
@@ -190,7 +190,7 @@ $createdByVal = $this->row->get('created_by', User::get('id'));
                             <td>
                                 <?php
                                 echo $this->escape(
-                                    stripslashes($this->row->creator->get('name'))
+                                    stripslashes($this->row->creator->get('name')),
                                 );
                                 ?>
                             </td>
@@ -225,7 +225,7 @@ $createdByVal = $this->row->get('created_by', User::get('id'));
                         'calendar',
                         'question[created]',
                         $this->row->get('created', Date::toSql()),
-                        ['id' => 'field-created']
+                        ['id' => 'field-created'],
                     );
                     ?>
                 </div>

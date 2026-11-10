@@ -121,7 +121,7 @@ class Recaptcha extends Plugin
         $verificationResponse = $this->_submitHttpGet(static::$_verifyUrl, [
             'secret'   => $this->params->get('private'),
             'remoteip' => $remoteIp,
-            'response' => $response
+            'response' => $response,
         ]);
 
         // json decode response

@@ -185,7 +185,7 @@ class PgsqlDriver extends BaseSqlDriver
                     'Null'    => ($field->is_nullable == 'YES' ? 'YES' : 'NO'),
                     'Default' => $field->column_default,
                     'Key'     => ($isPk ? 'PRI' : ''),
-                    'Extra'   => ''
+                    'Extra'   => '',
                 ];
             }
         }
@@ -289,7 +289,7 @@ class PgsqlDriver extends BaseSqlDriver
                 'Key_name'     => $keyName,
                 'Column_name'  => $index->column_name ?? '(expression)',
                 'Non_unique'   => $index->is_unique ? 0 : 1,
-                'Seq_in_index' => $index->seq
+                'Seq_in_index' => $index->seq,
             ];
         }
 
@@ -304,7 +304,7 @@ class PgsqlDriver extends BaseSqlDriver
     public function getTableList()
     {
         $this->setQuery(
-            "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' ORDER BY table_name"
+            "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' ORDER BY table_name",
         );
 
         return $this->loadColumn();
@@ -690,7 +690,7 @@ class PgsqlDriver extends BaseSqlDriver
         $this->setQuery(
             "SELECT COUNT(*) FROM information_schema.views"
             . " WHERE table_schema = 'public'"
-            . " AND table_name = " . $this->quote($tableName)
+            . " AND table_name = " . $this->quote($tableName),
         );
 
         return (bool) $this->loadResult();
@@ -704,7 +704,7 @@ class PgsqlDriver extends BaseSqlDriver
     public function getViews(): array
     {
         $this->setQuery(
-            "SELECT table_name FROM information_schema.views WHERE table_schema = 'public' ORDER BY table_name"
+            "SELECT table_name FROM information_schema.views WHERE table_schema = 'public' ORDER BY table_name",
         );
 
         return $this->loadColumn() ?: [];
@@ -787,7 +787,7 @@ class PgsqlDriver extends BaseSqlDriver
     {
         $this->setQuery(
             "SELECT COUNT(*) FROM information_schema.sequences WHERE sequence_schema = 'public' AND sequence_name = " .
-            $this->quote($name)
+            $this->quote($name),
         );
         return (bool) $this->loadResult();
     }
@@ -813,7 +813,7 @@ class PgsqlDriver extends BaseSqlDriver
     public function currentSequenceValue($name): int
     {
         $this->setQuery(
-            "SELECT last_value FROM " . $this->quoteName($name)
+            "SELECT last_value FROM " . $this->quoteName($name),
         );
         return (int) $this->loadResult();
     }
@@ -855,7 +855,7 @@ class PgsqlDriver extends BaseSqlDriver
 
         $this->setQuery(
             'ALTER TABLE ' . $this->quoteName($oldTable) .
-            ' RENAME TO ' . $this->quoteName($newTable)
+            ' RENAME TO ' . $this->quoteName($newTable),
         )->execute();
 
         return $this;
@@ -1114,7 +1114,7 @@ class PgsqlDriver extends BaseSqlDriver
                 'name'     => $index->index_name,
                 'unique'   => (bool) $index->is_unique,
                 'columns'  => json_decode($index->columns),
-                'partial'  => false
+                'partial'  => false,
             ];
         }
 
@@ -1805,7 +1805,7 @@ class PgsqlDriver extends BaseSqlDriver
         string $table,
         string $column,
         string $definition,
-        string $comment
+        string $comment,
     ): string {
         return "ALTER TABLE " . $this->quoteName($table)
             . " ALTER COLUMN " . $this->quoteName($column)
@@ -1817,7 +1817,7 @@ class PgsqlDriver extends BaseSqlDriver
         string $column,
         string $definition,
         string $afterColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         return $this->modifyColumn($table, $column, $definition, $comment);
     }
@@ -1827,7 +1827,7 @@ class PgsqlDriver extends BaseSqlDriver
         string $column,
         string $definition,
         string $beforeColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         return $this->modifyColumn($table, $column, $definition, $comment);
     }
@@ -1855,7 +1855,7 @@ class PgsqlDriver extends BaseSqlDriver
         string $oldColumn,
         string $newColumn,
         string $definition,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         $table = $this->replacePrefix($table);
         $quotedTable = $this->quoteName($table);
@@ -1864,7 +1864,7 @@ class PgsqlDriver extends BaseSqlDriver
             $this->setQuery(
                 "ALTER TABLE $quotedTable RENAME COLUMN "
                 . $this->quoteName($oldColumn)
-                . " TO " . $this->quoteName($newColumn)
+                . " TO " . $this->quoteName($newColumn),
             );
             if (!$this->execute()) {
                 return false;
@@ -1892,7 +1892,7 @@ class PgsqlDriver extends BaseSqlDriver
         string $table,
         string $column,
         string $definition,
-        string $comment
+        string $comment,
     ): string {
         return "ALTER TABLE " . $this->quoteName($table)
             . " ADD COLUMN " . $this->quoteName($column)
@@ -1904,7 +1904,7 @@ class PgsqlDriver extends BaseSqlDriver
         string $column,
         string $definition,
         string $afterColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         return $this->addColumn($table, $column, $definition, $comment);
     }
@@ -1914,7 +1914,7 @@ class PgsqlDriver extends BaseSqlDriver
         string $column,
         string $definition,
         string $beforeColumn,
-        string $comment = ''
+        string $comment = '',
     ): bool {
         return $this->addColumn($table, $column, $definition, $comment);
     }
@@ -1971,7 +1971,7 @@ class PgsqlDriver extends BaseSqlDriver
     public function setTableCharset(
         string $table,
         string $charset = 'utf8',
-        string $collation = 'utf8_general_ci'
+        string $collation = 'utf8_general_ci',
     ): bool {
         // PostgreSQL sets encoding at database level - no-op
         return true;
@@ -2069,7 +2069,7 @@ class PgsqlDriver extends BaseSqlDriver
         string $table,
         string $column = 'id',
         bool $first = false,
-        bool $useBigInt = true
+        bool $useBigInt = true,
     ): bool {
         $table = $this->replacePrefix($table);
 
@@ -2349,7 +2349,7 @@ class PgsqlDriver extends BaseSqlDriver
         // PostgreSQL 12+ supports GENERATED ALWAYS AS ... STORED
         $this->setQuery(
             "ALTER TABLE $quotedTable ADD COLUMN $quotedColumn"
-            . " $type GENERATED ALWAYS AS ($expression) STORED"
+            . " $type GENERATED ALWAYS AS ($expression) STORED",
         );
         return (bool) $this->execute();
     }

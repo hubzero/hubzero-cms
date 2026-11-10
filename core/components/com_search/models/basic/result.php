@@ -593,7 +593,7 @@ abstract class Result
             $this->excerpt = preg_replace(
                 "#$this->highlight_regex#ims",
                 '<span class="highlight">$1</span>',
-                $this->excerpt
+                $this->excerpt,
             );
         }
         return $this->excerpt;

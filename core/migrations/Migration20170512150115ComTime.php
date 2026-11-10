@@ -41,7 +41,7 @@ class Migration20170512150115ComTime extends Base
             '#__time_liaisons',
             '#__time_proxies',
             '#__time_records',
-            '#__time_tasks'
+            '#__time_tasks',
         ];
 
         foreach ($tables as $table) {

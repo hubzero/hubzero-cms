@@ -141,7 +141,7 @@ if ($this->page->get('id')) {
                                 'fileBrowserImageBrowseUrl'   => Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=filebrowser&tmpl=component&' . Session::getFormToken() . '=1', false),
                                 'fileBrowserUploadUrl'        => Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=editorupload&tmpl=component&' . Session::getFormToken() . '=1', false),
                                 'allowPhpTags'                => $allowPhp,
-                                'allowScriptTags'             => $allowScripts
+                                'allowScriptTags'             => $allowScripts,
                             ];
 
                             // if super group add to templates

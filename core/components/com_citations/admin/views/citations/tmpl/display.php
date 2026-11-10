@@ -37,7 +37,7 @@ Toolbar::help('citations');
 $this->setEscape("htmlentities");
 
 $formAction = Route::url(
-    'index.php?option=' . $this->option
+    'index.php?option=' . $this->option,
 );
 ?>
 
@@ -53,7 +53,7 @@ $formAction = Route::url(
                 <?php
                 $searchVal = $this->escape($this->filters['search']);
                 $searchPlaceholder = Lang::txt(
-                    'COM_CITATIONS_FILTER_SEARCH_PLACEHOLDER'
+                    'COM_CITATIONS_FILTER_SEARCH_PLACEHOLDER',
                 );
                 ?>
                 <label for="filter_search">
@@ -242,7 +242,7 @@ $formAction = Route::url(
                         $author = (!preg_match('!\S!u', $author)) ? mbstring($author) : $author;
                     }
                     $editUrl = Route::url(
-                        $baseUrl . '&task=edit&id=' . $row->id
+                        $baseUrl . '&task=edit&id=' . $row->id,
                     );
                     ?>
                     <?php if ($canDo->get('core.edit')) { ?>
@@ -264,17 +264,17 @@ $formAction = Route::url(
                         if ($row->published == 1) :
                             $pubUrl = Route::url(
                                 $baseUrl . '&task=unpublish&id='
-                                . $row->id . '&' . $token . '=1'
+                                . $row->id . '&' . $token . '=1',
                             );
                         elseif ($row->published == 0) :
                             $pubUrl = Route::url(
                                 $baseUrl . '&task=publish&id='
-                                . $row->id . '&' . $token . '=1'
+                                . $row->id . '&' . $token . '=1',
                             );
                         elseif ($row->published == 2) :
                             $pubUrl = Route::url(
                                 $baseUrl . '&task=publish&id='
-                                . $row->id . '&' . $token . '=1'
+                                . $row->id . '&' . $token . '=1',
                             );
                         endif;
                         ?>
@@ -296,7 +296,7 @@ $formAction = Route::url(
                     <?php
                     $affUrl = Route::url(
                         $baseUrl . '&task=affiliate&id='
-                        . $row->id . '&' . $token . '=1'
+                        . $row->id . '&' . $token . '=1',
                     );
                     ?>
                     <?php if ($row->affiliated == 1) : ?>
@@ -317,7 +317,7 @@ $formAction = Route::url(
                     <?php
                     $fundUrl = Route::url(
                         $baseUrl . '&task=fund&id='
-                        . $row->id . '&' . $token . '=1'
+                        . $row->id . '&' . $token . '=1',
                     );
                     ?>
                     <?php if ($row->fundedby == 1) : ?>

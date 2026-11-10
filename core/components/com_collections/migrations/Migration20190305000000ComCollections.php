@@ -22,8 +22,8 @@ class Migration20190305000000ComCollections extends Base
      **/
     public static $tables = [
         '#__collections_votes' => [
-            'created'
-        ]
+            'created',
+        ],
     ];
 
     /**

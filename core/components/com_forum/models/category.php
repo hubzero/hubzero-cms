@@ -50,7 +50,7 @@ class Category extends Relational
      */
     protected $rules = [
         'title'      => 'notempty',
-        'section_id' => 'positive|nonzero'
+        'section_id' => 'positive|nonzero',
     ];
 
     /**
@@ -63,7 +63,7 @@ class Category extends Relational
         'modified',
         'modified_by',
         'scope',
-        'asset_id'
+        'asset_id',
     ];
 
     /**
@@ -74,7 +74,7 @@ class Category extends Relational
     public $initiate = [
         'created',
         'created_by',
-        'ordering'
+        'ordering',
     ];
 
     /**
@@ -327,7 +327,7 @@ class Category extends Relational
             $results = Event::trigger('content.onContentBeforeSave', [
                 'com_forum.category.description',
                 &$this,
-                $this->isNew()
+                $this->isNew(),
             ]);
 
             foreach ($results as $result) {

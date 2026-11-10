@@ -48,7 +48,7 @@ class Mypublications extends Module
             'state'         => Version::STATE_DRAFT,
             //'access'        => array(0, 1, 3),
             'limitstart'    => 0,
-            'limit'         => intval($this->params->get('limit', 5))
+            'limit'         => intval($this->params->get('limit', 5)),
         ];
 
         // Get results

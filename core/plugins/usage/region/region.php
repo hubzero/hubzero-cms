@@ -33,7 +33,7 @@ class Region extends Plugin
     public function onUsageAreas()
     {
         return [
-            'region' => Lang::txt('PLG_USAGE_REGION')
+            'region' => Lang::txt('PLG_USAGE_REGION'),
         ];
     }
 
@@ -99,7 +99,7 @@ class Region extends Plugin
             $period = [
                 ['key' => 1,  'name' => $monthtext],
                 ['key' => 0,  'name' => $yeartext],
-                ['key' => 12, 'name' => $twelvetext]
+                ['key' => 12, 'name' => $twelvetext],
             ];
 
             // Process each different date/time periods/range...

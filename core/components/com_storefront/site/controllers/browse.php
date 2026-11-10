@@ -108,12 +108,12 @@ class Browse extends \Hubzero\Component\SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
 
         Pathway::append(
-            Lang::txt($collectionName)
+            Lang::txt($collectionName),
         );
 
         $view->display();

@@ -34,37 +34,37 @@ class Codes extends AdminController
             'section' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.section',
                 'section',
-                0
+                0,
             ),
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             )),
             'redeemed' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.redeemed',
                 'redeemed',
-                '-1'
+                '-1',
             ),
             // Filters for returning results
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limitstart',
                 'limitstart',
                 0,
-                'int'
-            )
+                'int',
+            ),
         ];
 
         $this->view->section = \Components\Courses\Models\Section::getInstance($this->view->filters['section']);
         if (!$this->view->section->exists()) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=courses', false)
+                Route::url('index.php?option=' . $this->_option . '&controller=courses', false),
             );
             return;
         }
@@ -172,7 +172,7 @@ class Codes extends AdminController
         // Output messsage and redirect
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $model->get('section_id'), false),
-            Lang::txt('COM_COURSES_CODE_SAVED')
+            Lang::txt('COM_COURSES_CODE_SAVED'),
         );
     }
 
@@ -219,7 +219,7 @@ class Codes extends AdminController
         // Redirect back to the courses page
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . Request::getInt('section', 0), false),
-            Lang::txt('COM_COURSES_ITEMS_REMOVED', $num)
+            Lang::txt('COM_COURSES_ITEMS_REMOVED', $num),
         );
     }
 
@@ -258,7 +258,7 @@ class Codes extends AdminController
 
         if (!Request::getInt('no_html', 0)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $section, false)
+                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $section, false),
             );
         }
     }
@@ -306,7 +306,7 @@ class Codes extends AdminController
     public function cancelTask()
     {
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . Request::getInt('section', 0), false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . Request::getInt('section', 0), false),
         );
     }
 
@@ -355,7 +355,7 @@ class Codes extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . Request::getInt('section', 0), false),
                 Lang::txt('No section specified'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -369,7 +369,7 @@ class Codes extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . Request::getInt('section', 0), false),
                 Lang::txt('No codes selected'),
-                'warning'
+                'warning',
             );
             return;
         }

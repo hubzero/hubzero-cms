@@ -234,7 +234,7 @@ class Support extends Plugin
                 $from = [
                     'name' => Config::get('sitename') . ' ' . Lang::txt('COM_SUPPORT'),
                     'email' => Config::get('mailfrom'),
-                    'multipart' => md5(date('U'))
+                    'multipart' => md5(date('U')),
                 ];
 
                 // Set mail additional args (mail return path - used for bounces)
@@ -294,7 +294,7 @@ class Support extends Plugin
                     $eview = new \Hubzero\Mail\View([
                         'base_path' => Component::path('com_support') . DS . 'site',
                         'name' => 'emails',
-                        'layout' => 'comment_plain'
+                        'layout' => 'comment_plain',
                     ]);
                     $eview->option = 'com_support';
                     $eview->controller = 'tickets';

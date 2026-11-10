@@ -40,7 +40,7 @@ class Template extends Document
         'content',
         'googleanalytics',
         'stylesheet',
-        'script'
+        'script',
     ];
 
     /**
@@ -101,7 +101,7 @@ class Template extends Document
             // build array of possible page templates to load
             $possibleTemplates = [
                 $base . 'index.php',
-                $base . 'default.php'
+                $base . 'default.php',
             ];
 
             // if we have an active page, add other template possibilities

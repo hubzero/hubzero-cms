@@ -310,7 +310,7 @@ class Media extends SiteController
         echo json_encode([
             'success'   => true,
             'file'      => $filename . '.' . $ext,
-            'directory' => str_replace(PATH_APP, '', $path)
+            'directory' => str_replace(PATH_APP, '', $path),
         ]);
     }
 

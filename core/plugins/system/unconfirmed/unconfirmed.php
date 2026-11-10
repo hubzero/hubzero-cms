@@ -60,7 +60,7 @@ class Unconfirmed extends Plugin
                 'com_members.save.profiles',
                 'com_members.profiles.save',
                 'com_members.profiles.save.profiles',
-                'com_members.changepassword'
+                'com_members.changepassword',
             ];
 
             $current  = Request::getWord('option', '');

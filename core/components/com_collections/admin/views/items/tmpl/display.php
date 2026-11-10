@@ -18,7 +18,7 @@ $canDo = \Components\Collections\Helpers\Permissions::getActions('post');
 
 Toolbar::title(
     Lang::txt('COM_COLLECTIONS') . ': ' . Lang::txt('COM_COLLECTIONS_ITEMS'),
-    'collections'
+    'collections',
 );
 if ($canDo->get('core.create')) {
     Toolbar::addNew();
@@ -32,7 +32,7 @@ if ($canDo->get('core.delete')) {
 
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 $sortDir = @$this->filters['sort_Dir'];
 $sort = @$this->filters['sort'];
@@ -48,7 +48,7 @@ $sort = @$this->filters['sort'];
                 <?php
                 $searchVal = $this->escape($this->filters['search']);
                 $searchPlaceholder = Lang::txt(
-                    'COM_COLLECTIONS_FILTER_SEARCH_PLACEHOLDER'
+                    'COM_COLLECTIONS_FILTER_SEARCH_PLACEHOLDER',
                 );
                 ?>
                 <label for="filter_search">
@@ -70,10 +70,10 @@ $sort = @$this->filters['sort'];
             <div class="col span6">
                 <?php
                 $filterTypeLabel = Lang::txt(
-                    'COM_COLLECTIONS_FILTER_TYPE'
+                    'COM_COLLECTIONS_FILTER_TYPE',
                 );
                 $filterTypeAll = Lang::txt(
-                    'COM_COLLECTIONS_FILTER_TYPE_ALL'
+                    'COM_COLLECTIONS_FILTER_TYPE_ALL',
                 );
                 ?>
                 <label for="filter-type">
@@ -151,7 +151,7 @@ $sort = @$this->filters['sort'];
         foreach ($this->rows as $row) {
             $content = \Hubzero\Utility\Str::truncate(
                 strip_tags($row->get('description')),
-                75
+                75,
             );
             $content = $content ?: Lang::txt('COM_COLLECTIONS_NONE');
             ?>
@@ -178,7 +178,7 @@ $sort = @$this->filters['sort'];
                         $editUrl = Route::url(
                             'index.php?option=' . $this->option
                             . '&controller=' . $this->controller
-                            . '&task=edit&id=' . $row->get('id')
+                            . '&task=edit&id=' . $row->get('id'),
                         );
                         ?>
                         <a href="<?php echo $editUrl; ?>">
@@ -200,7 +200,7 @@ $sort = @$this->filters['sort'];
                         <?php
                         $creatorName = $row->creator->get(
                             'name',
-                            Lang::txt('COM_COLLECTIONS_UNKNOWN')
+                            Lang::txt('COM_COLLECTIONS_UNKNOWN'),
                         );
                         echo $this->escape($creatorName);
                         ?>

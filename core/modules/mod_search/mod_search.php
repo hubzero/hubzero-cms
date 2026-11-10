@@ -44,7 +44,7 @@ class Search extends Module
                 Request::base() . Route::url('&option=com_search&format=opensearch'),
                 'search',
                 'rel',
-                ['title' => htmlspecialchars($ostitle), 'type' => 'application/opensearchdescription+xml']
+                ['title' => htmlspecialchars($ostitle), 'type' => 'application/opensearchdescription+xml'],
             );
         }
 

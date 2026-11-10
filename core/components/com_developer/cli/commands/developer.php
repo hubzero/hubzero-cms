@@ -54,7 +54,7 @@ class Developer extends Base implements CommandInterface
         $this
             ->output
             ->addOverview(
-                'Api developer related commands.'
+                'Api developer related commands.',
             );
     }
 }

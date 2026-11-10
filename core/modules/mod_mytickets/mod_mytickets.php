@@ -52,7 +52,7 @@ class Mytickets extends Module
 				WHERE st.owner=" . $database->quote(User::get('id')) . " AND st.open=1 AND type=0
 				ORDER BY created DESC
 				LIMIT $limit
-			)"
+			)",
         );
         $this->rows = $database->loadObjectList();
         if ($database->getErrorNum()) {
@@ -96,7 +96,7 @@ class Mytickets extends Module
 				FROM `#__support_tickets` as st
 				WHERE st.open=1 AND type=0 AND st.group_id IN ($groups)
 				ORDER BY created DESC
-				LIMIT $limit"
+				LIMIT $limit",
             );
             $this->rows3 = $database->loadObjectList();
             if ($database->getErrorNum()) {

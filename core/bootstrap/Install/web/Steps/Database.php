@@ -174,7 +174,7 @@ class Database implements StepInterface
                     $this->installer->addMessage(
                         "Database '{$config['db']}' does not exist and could not be created. "
                         . "Please create it manually or use an account with CREATE DATABASE privileges.",
-                        'error'
+                        'error',
                     );
                     return null;
                 }
@@ -195,7 +195,7 @@ class Database implements StepInterface
     {
         try {
             $stmt = $connection->prepare(
-                "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = ?"
+                "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = ?",
             );
             $connection->bind($stmt, [$name]);
             $connection->execute($stmt);
@@ -216,7 +216,7 @@ class Database implements StepInterface
             }
 
             $connection->exec(
-                "CREATE DATABASE `{$name}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
+                "CREATE DATABASE `{$name}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci",
             );
             return true;
         } catch (PDOException $e) {

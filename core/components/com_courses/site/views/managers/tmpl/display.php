@@ -34,7 +34,7 @@ $offerings = $this->course->offerings();
                         <?php echo Lang::txt('COM_COURSES_ADD_MANAGER_LABEL'); ?>
                         <?php
                         $mc = Event::trigger('hubzero.onGetMultiEntry', [
-                            ['members', 'usernames', 'field-usernames', '', '']
+                            ['members', 'usernames', 'field-usernames', '', ''],
                         ]);
                         if (count($mc) > 0) {
                             echo $mc[0];

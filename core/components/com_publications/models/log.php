@@ -169,7 +169,7 @@ class Log extends Model
                             date('m', strtotime($date)),
                             $count,
                             $type,
-                            'unique'
+                            'unique',
                         );
 
                         // Get filtered count
@@ -184,7 +184,7 @@ class Log extends Model
                             date('m', strtotime($date)),
                             $count,
                             $type,
-                            'filtered'
+                            'filtered',
                         );
                     }
                 }

@@ -114,7 +114,7 @@ $timezone = $userLocalizer->getTimezone();
                 $pageNav = $this->pagination(
                     $this->eventsCount,
                     $this->filters['start'],
-                    $this->filters['limit']
+                    $this->filters['limit'],
                 );
                 $pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
                 $pageNav->setAdditionalUrlParam('active', 'calendar');

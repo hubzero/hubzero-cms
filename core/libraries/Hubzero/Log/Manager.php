@@ -42,7 +42,7 @@ class Manager
         'level'       => 'debug',
         'dateFormat'  => 'Y-m-d H:i:s',
         'permissions' => 0640,
-        'dispatcher'  => null
+        'dispatcher'  => null,
     ];
 
     /**
@@ -121,7 +121,7 @@ class Manager
 
             $log = new Writer(
                 new Monolog($name),
-                $config['dispatcher']
+                $config['dispatcher'],
             );
 
             $log->useFiles(
@@ -129,7 +129,7 @@ class Manager
                 $config['level'],
                 $config['format'],
                 $config['dateFormat'],
-                $config['permissions']
+                $config['permissions'],
             );
 
             return $log;

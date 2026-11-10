@@ -143,7 +143,7 @@ class Migration20140108233318ComGroups extends Base
                             Expression::now(),
                             '1000',
                         ])
-                        ->from('#__xgroups_pages')
+                        ->from('#__xgroups_pages'),
                 )
                 ->execute();
         }
@@ -172,7 +172,7 @@ class Migration20140108233318ComGroups extends Base
                             0,
                             1,
                             'default',
-                            $group->overview_type
+                            $group->overview_type,
                         ])
                         ->execute();
 
@@ -199,7 +199,7 @@ class Migration20140108233318ComGroups extends Base
                             1000,
                             1,
                             Expression::now(),
-                            1000
+                            1000,
                         ])
                         ->execute();
                 }
@@ -285,7 +285,7 @@ class Migration20140108233318ComGroups extends Base
                             ->update('#__xgroups')
                             ->set([
                                 'overview_content' => $page->content,
-                                'overview_type' => $page->home
+                                'overview_type' => $page->home,
                             ])
                             ->where('gidNumber', '=', $group->gidNumber)
                             ->execute();

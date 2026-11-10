@@ -38,7 +38,7 @@ class Respondents extends AdminController
 
         if (!$id) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option, false)
+                Route::url('index.php?option=' . $this->_option, false),
             );
             return;
         }
@@ -48,19 +48,19 @@ class Respondents extends AdminController
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             )),
             // Get sorting variables
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'registered'
+                'registered',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'DESC'
-            )
+                'DESC',
+            ),
         ];
 
         $event = Event::oneOrFail($id);
@@ -107,24 +107,24 @@ class Respondents extends AdminController
             'event_id' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.event_id',
                 'id',
-                []
+                [],
             ),
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             )),
             // Get sorting variables
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'registered'
+                'registered',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'DESC'
-            )
+                'DESC',
+            ),
         ];
 
         $query = Respondent::all();
@@ -193,7 +193,7 @@ class Respondents extends AdminController
 
         // Output messsage and redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&id[]=' . Request::getInt('event', 0), false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&id[]=' . Request::getInt('event', 0), false),
         );
     }
 }

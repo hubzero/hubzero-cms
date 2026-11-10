@@ -154,7 +154,7 @@ class Data extends Base
         $attachments = $this->_parent->getElementAttachments(
             $elementId,
             $attachments,
-            $this->_name
+            $this->_name,
         );
 
         $disabled = 0;
@@ -240,7 +240,7 @@ class Data extends Base
             $newVersion->id,
             '',
             'data',
-            1
+            1,
         );
         $newConfigs->servePath = Route::url('index.php?option=com_publications&id=' . $pub->id) . '/?vid=' . $newVersion->id . '&amp;task=serve';
 
@@ -440,7 +440,7 @@ class Data extends Base
                 ['object_name' => $database_name],
                 $elementId,
                 $this->_name,
-                $element->role
+                $element->role,
             )
         ) {
             // Already attached
@@ -667,8 +667,8 @@ class Data extends Base
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => 'attachments',
-                'layout'  => $this->_name
-            ]
+                'layout'  => $this->_name,
+            ],
         );
         $view->data   = $data;
         $view->params = $params;

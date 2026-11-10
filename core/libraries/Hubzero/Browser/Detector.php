@@ -471,7 +471,7 @@ class Detector
         'ViolaBot',
         'webbandit',
         'www\.almaden\.ibm\.com\/cs\/crawler',
-        'ZyBorg'
+        'ZyBorg',
     ];
 
     /**
@@ -493,7 +493,7 @@ class Detector
         'png',
         'pjpeg',
         'x-png',
-        'bmp'
+        'bmp',
     ];
 
     /**
@@ -508,140 +508,140 @@ class Detector
             'name'     => 'Opera',
             'platform' => '',
             'mobile'   => false,
-            'engine'   => ''
+            'engine'   => '',
         ],
         [
             'regex'    => '|OPR[/ ]([0-9.]+)|',
             'name'     => 'Opera',
             'platform' => '',
             'mobile'   => false,
-            'engine'   => ''
+            'engine'   => '',
         ],
         [
             'regex'    => '|OPiOS[/ ]([0-9.]+)|',
             'name'     => 'Opera Mini',
             'platform' => 'iOS',
             'mobile'   => true,
-            'engine'   => ''
+            'engine'   => '',
         ],
         [
             'regex'    => '|Edge[/ ]([0-9.]+)|',
             'name'     => 'Edge',
             'platform' => 'Windows',
             'mobile'   => false,
-            'engine'   => 'Edge'
+            'engine'   => 'Edge',
         ],
         [
             'regex'    => '|Vivaldi[/ ]([0-9.]+)|',
             'name'     => 'Vivaldi',
             'platform' => 'Windows',
             'mobile'   => false,
-            'engine'   => 'Blink'
+            'engine'   => 'Blink',
         ],
         [
             'regex'    => '|YaBrowser[/ ]([0-9.]+)|',
             'name'     => 'Yandex',
             'platform' => 'Mac OS',
             'mobile'   => false,
-            'engine'   => ''
+            'engine'   => '',
         ],
         [
             'regex'    => '|Yowser[/ ]([0-9.]+)|',
             'name'     => 'Yandex',
             'platform' => 'Mac OS',
             'mobile'   => false,
-            'engine'   => ''
+            'engine'   => '',
         ],
         [
             'regex'    => '|Chrome[/ ]([0-9.]+)|',
             'name'     => 'Chrome',
             'platform' => '',
             'mobile'   => false,
-            'engine'   => ''
+            'engine'   => '',
         ],
         [
             'regex'    => '|CrMo[/ ]([0-9.]+)|',
             'name'     => 'Chrome',
             'platform' => '',
             'mobile'   => false,
-            'engine'   => 'WebKit'
+            'engine'   => 'WebKit',
         ],
         [
             'regex'    => '|CriOS[/ ]([0-9.]+)|',
             'name'     => 'Chrome',
             'platform' => '',
             'mobile'   => true,
-            'engine'   => 'WebKit'
+            'engine'   => 'WebKit',
         ],
         [
             'regex'    => '|MSIE ([0-9.]+)|',
             'name'     => 'MSIE',
             'platform' => 'Windows',
             'mobile'   => false,
-            'engine'   => ''
+            'engine'   => '',
         ],
         [
             'regex'    => '|Internet Explorer/([0-9.]+)|',
             'name'     => 'MSIE',
             'platform' => 'Windows',
             'mobile'   => false,
-            'engine'   => ''
+            'engine'   => '',
         ],
         [
             'regex'    => '|elaine/|',
             'name'     => 'Palm',
             'platform' => '',
             'mobile'   => true,
-            'engine'   => ''
+            'engine'   => '',
         ],
         [
             'regex'    => '|palmsource|',
             'name'     => 'Palm',
             'platform' => '',
             'mobile'   => true,
-            'engine'   => ''
+            'engine'   => '',
         ],
         [
             'regex'    => '|digital paths|',
             'name'     => 'Palm',
             'platform' => '',
             'mobile'   => true,
-            'engine'   => ''
+            'engine'   => '',
         ],
         [
             'regex'    => '|amaya/([0-9.]+)|',
             'name'     => 'Amaya',
             'platform' => '',
             'mobile'   => false,
-            'engine'   => ''
+            'engine'   => '',
         ],
         [
             'regex'    => '|ANTFresco/([0-9]+)|',
             'name'     => 'Fresco',
             'platform' => '',
             'mobile'   => false,
-            'engine'   => ''
+            'engine'   => '',
         ],
         [
             'regex'    => '|avantgo|',
             'name'     => 'Avantgo',
             'platform' => '',
             'mobile'   => false,
-            'engine'   => ''
+            'engine'   => '',
         ],
         [
             'regex'    => '|Android|',
             'name'     => 'Android',
             'platform' => 'Android',
             'mobile'   => true,
-            'engine'   => 'WebKit'
+            'engine'   => 'WebKit',
         ],
         [
             'regex'    => '|[Kk]onqueror/([0-9]+)|',
             'name'     => 'Konqueror',
             'platform' => '',
             'mobile'   => false,
-            'engine'   => ''
+            'engine'   => '',
         ],
         [
             'regex'    => '|Safari/([0-9]+)\.?([0-9]+)?|',
@@ -649,99 +649,99 @@ class Detector
             'name'     => 'Safari',
             'platform' => '',
             'mobile'   => false,
-            'engine'   => 'WebKit'
+            'engine'   => 'WebKit',
         ],
         [
             'regex'    => '|Iceweasel/([0-9.]+)|',
             'name'     => 'Iceweasel',
             'platform' => 'Linux',
             'mobile'   => false,
-            'engine'   => ''
+            'engine'   => '',
         ],
         [
             'regex'    => '|Firefox/([0-9.]+)|',
             'name'     => 'Firefox',
             'platform' => '',
             'mobile'   => false,
-            'engine'   => ''
+            'engine'   => '',
         ],
         [
             'regex'    => '|Mozilla/([0-9.]+)|',
             'name'     => 'Mozilla',
             'platform' => '',
             'mobile'   => false,
-            'engine'   => ''
+            'engine'   => '',
         ],
         [
             'regex'    => '|Lynx/([0-9]+)|',
             'name'     => 'Lynx',
             'platform' => '',
             'mobile'   => false,
-            'engine'   => ''
+            'engine'   => '',
         ],
         [
             'regex'    => '|Links \(([0-9]+)|',
             'name'     => 'Links',
             'platform' => '',
             'mobile'   => false,
-            'engine'   => ''
+            'engine'   => '',
         ],
         [
             'regex'    => '|HotJava/([0-9]+)|',
             'name'     => 'HotJava',
             'platform' => '',
             'mobile'   => false,
-            'engine'   => ''
+            'engine'   => '',
         ],
         [
             'regex'    => '|UP[\/\.B\.L]|',
             'name'     => 'Up',
             'platform' => '',
             'mobile'   => false,
-            'engine'   => ''
+            'engine'   => '',
         ],
         [
             'regex'    => '|Xiino/|',
             'name'     => 'Xiino',
             'platform' => '',
             'mobile'   => true,
-            'engine'   => ''
+            'engine'   => '',
         ],
         [
             'regex'    => '|Nokia|',
             'name'     => 'Nokia',
             'platform' => '',
             'mobile'   => true,
-            'engine'   => ''
+            'engine'   => '',
         ],
         [
             'regex'    => '|Ericsson|',
             'name'     => 'Ericsson',
             'platform' => '',
             'mobile'   => true,
-            'engine'   => ''
+            'engine'   => '',
         ],
         [
             'regex'    => '/BlackBerry|PlayBook|BB10/',
             'name'     => 'BlackBerry',
             'platform' => '',
             'mobile'   => true,
-            'engine'   => ''
+            'engine'   => '',
         ],
         [
             'regex'    => '|MOT-|',
             'name'     => 'Motorola',
             'platform' => '',
             'mobile'   => true,
-            'engine'   => ''
+            'engine'   => '',
         ],
         [
             'regex'    => '/docomo|portalmmm/',
             'name'     => 'imode',
             'platform' => '',
             'mobile'   => false,
-            'engine'   => ''
-        ]
+            'engine'   => '',
+        ],
     ];
 
     /**
@@ -863,11 +863,11 @@ class Detector
         // use this order since some navigator user agents will put 'macintosh' in the navigator user agent string
         // which would make the nt test register true
         $a_mobile = [
-            'ios', 'android', 'blackberry os', 'symbian os', 'web os' //, 'windows'
+            'ios', 'android', 'blackberry os', 'symbian os', 'web os', //, 'windows'
         ];
 
         $a_mac = [
-            'mac68k', 'macppc'
+            'mac68k', 'macppc',
         ]; // this is not used currently
         // same logic, check in order to catch the os's in order, last is always default item
         $a_unix = [
@@ -875,18 +875,18 @@ class Detector
             'freebsd', 'openbsd', 'bsd' , 'irix5', 'irix6', 'irix', 'hpux9',
             'hpux10', 'hpux11', 'hpux', 'hp-ux', 'aix1', 'aix2', 'aix3', 'aix4',
             'aix5', 'aix', 'sco', 'unixware', 'mpras', 'reliant', 'dec', 'sinix',
-            'unix'
+            'unix',
         ];
         // only sometimes will you get a linux distro to id itself...
         $a_linux = [
             'kanotix', 'ubuntu', 'mepis', 'debian', 'suse', 'redhat', 'slackware',
-            'mandrake', 'gentoo', 'linux'
+            'mandrake', 'gentoo', 'linux',
         ];
         // note, order of os very important in os array, you will get failed ids if changed
         $a_os = [
             'beos', 'os2', 'amiga', 'webtv', 'android', 'iphone', 'ipad', 'mac', 'nt', 'win',
             $a_unix,
-            $a_linux
+            $a_linux,
         ];
 
         //os tester

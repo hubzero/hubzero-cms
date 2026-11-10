@@ -103,12 +103,12 @@ class HtmxService
         return $this->isTruthyHeader($request, [
             'HX-Request',
             'Hx-Request',
-            'hx-request'
+            'hx-request',
         ], [
             'HTTP_HX_REQUEST',
             'REDIRECT_HTTP_HX_REQUEST',
             'HX_REQUEST',
-            'REDIRECT_HX_REQUEST'
+            'REDIRECT_HX_REQUEST',
         ]);
     }
 
@@ -125,12 +125,12 @@ class HtmxService
         return $this->isTruthyHeader($request, [
             'HX-Boosted',
             'Hx-Boosted',
-            'hx-boosted'
+            'hx-boosted',
         ], [
             'HTTP_HX_BOOSTED',
             'REDIRECT_HTTP_HX_BOOSTED',
             'HX_BOOSTED',
-            'REDIRECT_HX_BOOSTED'
+            'REDIRECT_HX_BOOSTED',
         ]);
     }
 
@@ -147,12 +147,12 @@ class HtmxService
         return $this->isTruthyHeader($request, [
             'HX-History-Restore-Request',
             'Hx-History-Restore-Request',
-            'hx-history-restore-request'
+            'hx-history-restore-request',
         ], [
             'HTTP_HX_HISTORY_RESTORE_REQUEST',
             'REDIRECT_HTTP_HX_HISTORY_RESTORE_REQUEST',
             'HX_HISTORY_RESTORE_REQUEST',
-            'REDIRECT_HX_HISTORY_RESTORE_REQUEST'
+            'REDIRECT_HX_HISTORY_RESTORE_REQUEST',
         ]);
     }
 
@@ -304,7 +304,7 @@ class HtmxService
         $normalized = strtolower($strategy);
         if (!in_array($normalized, self::RESWAP_STRATEGIES, true)) {
             throw new \InvalidArgumentException(
-                'Unsupported HX-Reswap strategy "' . $strategy . '".'
+                'Unsupported HX-Reswap strategy "' . $strategy . '".',
             );
         }
 
@@ -518,7 +518,7 @@ class HtmxService
 
         $query = [
             'option' => $component,
-            'task'   => trim($task)
+            'task'   => trim($task),
         ];
 
         return $this->url('index.php', array_merge($query, $params));
@@ -584,7 +584,7 @@ class HtmxService
     {
         $payload = [
             'count' => count($errors),
-            'errors' => $errors
+            'errors' => $errors,
         ];
         $this->trigger('hubzero:validation-failed', $payload);
         $this->fragment($html, 422);
@@ -821,7 +821,7 @@ class HtmxService
         return [
             'incoming' => $incoming,
             'outgoing' => $this->sentHeaders,
-            'context'  => array_merge($this->requestContext(), $this->debugContext)
+            'context'  => array_merge($this->requestContext(), $this->debugContext),
         ];
     }
 
@@ -874,7 +874,7 @@ class HtmxService
             'htmx_debug_panel_',
             'hz-htmx-debug-panel',
             'hz-htmx-debug-bar',
-            'hz-htmx-debug-actions'
+            'hz-htmx-debug-actions',
         );
     }
 

@@ -35,7 +35,7 @@ class Storefront extends Plugin
             [
                 'name'   => 'emailPublishDownNotifications',
                 'label'  => Lang::txt('PLG_CRON_STOREFRONT_EMAIL_PUBLISH_DOWN_NOTIFICATIONS'),
-                'params' => 'emailPublishDownNotifications'
+                'params' => 'emailPublishDownNotifications',
             ],
         ];
 
@@ -233,7 +233,7 @@ class Storefront extends Plugin
         $eview = new \Hubzero\Component\View([
             'base_path' => Component::path('com_storefront') . DS . 'site',
             'name'      => 'emails',
-            'layout'    => 'publish_down_notification'
+            'layout'    => 'publish_down_notification',
         ]);
         $eview->set('option', 'com_storefront');
         $eview->skus     = $skusInfo;

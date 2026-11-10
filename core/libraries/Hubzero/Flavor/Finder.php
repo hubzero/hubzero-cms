@@ -190,7 +190,7 @@ class Finder
         foreach ($data as $name => $definition) {
             if (!is_string($name) || !is_array($definition)) {
                 throw new RuntimeException(
-                    "{$file} should be an object of flavor names, each holding that flavor's levers"
+                    "{$file} should be an object of flavor names, each holding that flavor's levers",
                 );
             }
         }
@@ -211,7 +211,7 @@ class Finder
     {
         if (in_array($name, $trail)) {
             throw new InvalidArgumentException(
-                'Flavors extend each other in a circle: ' . implode(' -> ', $trail) . ' -> ' . $name
+                'Flavors extend each other in a circle: ' . implode(' -> ', $trail) . ' -> ' . $name,
             );
         }
 
@@ -229,7 +229,7 @@ class Finder
         if (!isset($defined[$parent])) {
             throw new InvalidArgumentException(
                 "Flavor '{$name}' extends '{$parent}', which is not defined anywhere in: "
-                . implode(', ', $this->dirs)
+                . implode(', ', $this->dirs),
             );
         }
 

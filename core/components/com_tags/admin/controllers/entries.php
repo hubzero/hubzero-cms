@@ -51,23 +51,23 @@ class Entries extends AdminController
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             )),
             'by' => strtolower(Request::getState(
                 $this->_option . '.' . $this->_controller . '.by',
                 'filterby',
-                'all'
+                'all',
             )),
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'raw_tag'
+                'raw_tag',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         $model = Tag::all();

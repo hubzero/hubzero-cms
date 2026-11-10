@@ -35,7 +35,7 @@ class Packages extends AdminController
             $view = new \Hubzero\Component\View([
                 'base_path' => dirname(__DIR__),
                 'name'      => 'warnings',
-                'layout'    => 'composer'
+                'layout'    => 'composer',
             ]);
             $view->display();
             return;
@@ -57,25 +57,25 @@ class Packages extends AdminController
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limitstart',
                 'limitstart',
                 0,
-                'int'
+                'int',
             ),
             // Sorting
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'created'
+                'created',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'DESC'
-            )
+                'DESC',
+            ),
         ];
 
         try {

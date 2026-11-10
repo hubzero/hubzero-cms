@@ -12,7 +12,7 @@ defined('_HZEXEC_') or die();
 // Load base styles
 $this->addStyleSheet(
     $this->baseurl . '/templates/' . $this->template
-        . '/css/component.css?v=' . filemtime(__DIR__ . '/css/component.css')
+        . '/css/component.css?v=' . filemtime(__DIR__ . '/css/component.css'),
 );
 
 // Load theme
@@ -24,7 +24,7 @@ if ($theme == 'custom') {
 
 $this->addScript(
     $this->baseurl . '/templates/' . $this->template
-        . '/js/component.js?v=' . filemtime(__DIR__ . '/js/component.js')
+        . '/js/component.js?v=' . filemtime(__DIR__ . '/js/component.js'),
 );
 
 $browser = new \Hubzero\Browser\Detector();
@@ -34,7 +34,7 @@ $cls = [
     $this->direction,
     $theme,
     $browser->name(),
-    $browser->name() . $browser->major()
+    $browser->name() . $browser->major(),
 ];
 ?>
 <!DOCTYPE html>

@@ -80,7 +80,7 @@ class UpdateTimezoneDatabase extends Base
             $return = [
                 'success' => false,
                 'message' => "Insufficient privileges to update timezone tables. "
-                    . "Try running with: sudo muse migration run"
+                    . "Try running with: sudo muse migration run",
             ];
             return $return;
         }
@@ -97,7 +97,7 @@ class UpdateTimezoneDatabase extends Base
         if (!$converter) {
             return [
                 'success' => false,
-                'message' => "No mariadb-tzinfo-to-sql or mysql_tzinfo_to_sql to load the timezone tables with."
+                'message' => "No mariadb-tzinfo-to-sql or mysql_tzinfo_to_sql to load the timezone tables with.",
             ];
         }
 
@@ -127,7 +127,7 @@ class UpdateTimezoneDatabase extends Base
                 } catch (\Exception $e) {
                     $return = [
                         'success' => false,
-                        'message' => $e->getMessage()
+                        'message' => $e->getMessage(),
                     ];
 
                     return $return;

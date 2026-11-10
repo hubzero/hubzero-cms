@@ -56,7 +56,7 @@ class Members extends Plugin
         return [
             'name'  => 'area',
             'value' => 'interest',
-            'label' => Lang::txt('COM_ANSWERS_QUESTIONS_TAGGED_WITH_MY_INTERESTS')
+            'label' => Lang::txt('COM_ANSWERS_QUESTIONS_TAGGED_WITH_MY_INTERESTS'),
         ];
     }
 }

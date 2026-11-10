@@ -51,7 +51,7 @@ class Myprojects extends Module
             'start'    => 0,
             'updates'  => 1,
             'sortby'   => 'myprojects',
-            'getowner' => 1
+            'getowner' => 1,
         ];
 
         if (!$this->params->get('include_archived', 1)) {

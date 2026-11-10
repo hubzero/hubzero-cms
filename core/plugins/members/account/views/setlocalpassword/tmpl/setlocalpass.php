@@ -38,7 +38,7 @@ $this->css()
         'index.php?option=' . $this->option .
                                         '&id=' . $this->id .
                                         '&active=account' .
-        '&task=setlocalpass'
+        '&task=setlocalpass',
     ); ?>" method="post">
         <fieldset>
             <legend><?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_SET_LOCAL_PASSWORD'); ?></legend>

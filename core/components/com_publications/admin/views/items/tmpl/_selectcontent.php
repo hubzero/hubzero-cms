@@ -47,7 +47,7 @@ if (isset($pub->_curationModel)) {
     $list  = $attModel->listItems(
         $prime,
         $pub,
-        'administrator'
+        'administrator',
     );
     $html .= $list ? $list : '<p class="notice">' . Lang::txt('COM_PUBLICATIONS_NO_CONTENT') . '</p>';
 
@@ -56,7 +56,7 @@ if (isset($pub->_curationModel)) {
     $list  = $attModel->listItems(
         $second,
         $pub,
-        'administrator'
+        'administrator',
     );
     $html .= $list ? $list : '<p class="notice">' . Lang::txt('COM_PUBLICATIONS_NO_CONTENT') . '</p>';
 
@@ -65,7 +65,7 @@ if (isset($pub->_curationModel)) {
     $list  = $attModel->listItems(
         $gallery,
         $pub,
-        'administrator'
+        'administrator',
     );
     $html .= $list ? $list : '<p class="notice">' . Lang::txt('COM_PUBLICATIONS_NO_CONTENT') . '</p>';
 } else {

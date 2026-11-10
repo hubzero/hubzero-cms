@@ -44,7 +44,7 @@ class Subscription extends Relational
     protected $rules = [
         'user_id'  => 'positive|nonzero',
         'scope'    => 'notempty',
-        'scope_id' => 'positive|nonzero'
+        'scope_id' => 'positive|nonzero',
     ];
 
     /**
@@ -53,7 +53,7 @@ class Subscription extends Relational
      * @var  array
      */
     public $initiate = [
-        'created'
+        'created',
     ];
 
     /**

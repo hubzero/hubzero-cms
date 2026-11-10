@@ -76,8 +76,8 @@ class Select extends Element
             [
                 'id' => $control_name . $name,
                 'list.attr' => $attribs,
-                'list.select' => $value
-            ]
+                'list.select' => $value,
+            ],
         );
     }
 }

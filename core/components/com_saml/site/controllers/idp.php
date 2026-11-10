@@ -182,8 +182,8 @@ class Idp extends SiteController
             'qs'   => isset($_SERVER['QUERY_STRING']) ? (string) $_SERVER['QUERY_STRING'] : '',
             'post' => [
                 'SAMLRequest' => isset($_POST['SAMLRequest']) ? (string) $_POST['SAMLRequest'] : '',
-                'RelayState'  => isset($_POST['RelayState']) ? (string) $_POST['RelayState'] : ''
-            ]
+                'RelayState'  => isset($_POST['RelayState']) ? (string) $_POST['RelayState'] : '',
+            ],
         ]);
 
         return $key;
@@ -213,7 +213,7 @@ class Idp extends SiteController
 
         Session::set(
             'saml.pending',
-            array_values(array_diff((array) Session::get('saml.pending', []), [$key]))
+            array_values(array_diff((array) Session::get('saml.pending', []), [$key])),
         );
 
         if (!is_array($stashed)) {
@@ -274,7 +274,7 @@ class Idp extends SiteController
         // encoding) and the posted fields for the POST binding.
         if (User::isGuest()) {
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode('/saml/idp/login?rk=' . $this->stashRequest()), false)
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode('/saml/idp/login?rk=' . $this->stashRequest()), false),
             );
         }
 
@@ -305,7 +305,7 @@ class Idp extends SiteController
             $sp,
             User::getInstance(),
             $id,
-            $samlSession->get('session_index')
+            $samlSession->get('session_index'),
         );
 
         $this->log('login issued: ' . User::get('username') . ' -> ' . $issuer . ' (session ' . $samlSession->get('session_index') . ')');
@@ -508,12 +508,12 @@ class Idp extends SiteController
                 $log->register('saml', [
                     'file'   => 'saml.log',
                     'level'  => 'info',
-                    'format' => "%datetime% %message%\n"
+                    'format' => "%datetime% %message%\n",
                 ]);
             }
 
             $log->logger('saml')->info(
-                Request::ip() . ' ' . (User::isGuest() ? '-' : User::get('username')) . ' ' . $message
+                Request::ip() . ' ' . (User::isGuest() ? '-' : User::get('username')) . ' ' . $message,
             );
         } catch (\Exception $e) {
             // Never fatal

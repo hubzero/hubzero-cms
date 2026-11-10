@@ -61,37 +61,37 @@ class Overrides extends AdminController
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'filter_search',
-                ''
+                '',
             ),
             'language_client' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.language_client',
                 'filter_language_client',
                 $default,
-                'cmd'
+                'cmd',
             ),
             // Get sorting variables
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'folder'
+                'folder',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
+                'ASC',
             ),
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limitstart',
                 'limitstart',
                 0,
-                'int'
-            )
+                'int',
+            ),
         ];
 
         $old_language_client = User::getState('com_languages.overrides.filter.language_client', '');
@@ -122,7 +122,7 @@ class Overrides extends AdminController
         $pagination = new \Hubzero\Pagination\Paginator(
             $model->total(),
             $filters['start'],
-            $filters['limit']
+            $filters['limit'],
         );
 
         $languages = $model->languages();
@@ -161,7 +161,7 @@ class Overrides extends AdminController
 
             $model = new Override([
                 'client'   => $client->name,
-                'language' => $language
+                'language' => $language,
             ]);
 
             $row = $model->one(Request::getString('id'));
@@ -197,7 +197,7 @@ class Overrides extends AdminController
 
         $model = new Override([
             'client'   => $fields['client'],
-            'language' => $fields['language']
+            'language' => $fields['language'],
         ]);
 
         if (!isset($fields['id'])) {
@@ -253,7 +253,7 @@ class Overrides extends AdminController
             // Get the model
             $model = new Override([
                 'client'   => $client->name,
-                'language' => $language
+                'language' => $language,
             ]);
 
             // Remove the items
@@ -326,7 +326,7 @@ class Overrides extends AdminController
                         $entry = Overrider::blank()->set([
                             'constant' => $key,
                             'string'   => $string,
-                            'file'     => $file
+                            'file'     => $file,
                         ]);
 
                         if (!$entry->save()) {

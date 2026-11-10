@@ -56,7 +56,7 @@ class Posts extends SiteController
         }
         $return = base64_encode($return);
         App::redirect(
-            Route::url('index.php?option=com_users&view=login&return=' . $return, false)
+            Route::url('index.php?option=com_users&view=login&return=' . $return, false),
         );
     }
 
@@ -236,7 +236,7 @@ class Posts extends SiteController
                 'count'   => true,
                 'access'  => 0,
                 'state'   => 1,
-                'user_id' => User::get('id')
+                'user_id' => User::get('id'),
             ];
             $this->view->counts['collections'] = $this->model->collections($filters);
             $this->view->counts['posts'] = $this->model->posts($filters);
@@ -390,7 +390,7 @@ class Posts extends SiteController
 
         // Redirect to main listing
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=collections')
+            Route::url('index.php?option=' . $this->_option . '&controller=collections'),
         );
     }
 
@@ -498,7 +498,7 @@ class Posts extends SiteController
         $recipients = [
             ['collection', $post->get('collection_id')],
             ['user', $row->get('created_by')],
-            ['user', $post->item()->get('created_by')]
+            ['user', $post->item()->get('created_by')],
         ];
 
         if ($row->get('parent')) {
@@ -516,10 +516,10 @@ class Posts extends SiteController
                     'collection_id' => $post->get('collection_id'),
                     'post_id' => $post->get('id'),
                     'item_id' => $row->get('item_id'),
-                    'url'     => Route::url($url)
-                ]
+                    'url'     => Route::url($url),
+                ],
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         $this->displayTask();
@@ -593,14 +593,14 @@ class Posts extends SiteController
                     'collection_id' => $post->get('collection_id'),
                     'post_id' => $post->get('id'),
                     'item_id' => $comment->get('item_id'),
-                    'url'     => Route::url($url)
-                ]
+                    'url'     => Route::url($url),
+                ],
             ],
             'recipients' => [
                 ['collection', $post->get('collection_id')],
                 ['user', $comment->get('created_by')],
-                ['user', $post->item()->get('created_by')]
-            ]
+                ['user', $post->item()->get('created_by')],
+            ],
         ]);
 
         // Return the topics list
@@ -663,13 +663,13 @@ class Posts extends SiteController
                     'collection_id' => $post->get('collection_id'),
                     'post_id' => $post->get('id'),
                     'item_id' => $post->get('item_id'),
-                    'url'     => Route::url($url)
-                ]
+                    'url'     => Route::url($url),
+                ],
             ],
             'recipients' => [
                 ['collection', $post->get('collection_id')],
-                ['user', $post->item()->get('created_by')]
-            ]
+                ['user', $post->item()->get('created_by')],
+            ],
         ]);
 
         // Display updated item stats if called via AJAX
@@ -681,7 +681,7 @@ class Posts extends SiteController
 
         // Display the main listing
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&controller=collections&task=posts')
+            Route::url('index.php?option=' . $this->option . '&controller=collections&task=posts'),
         );
     }
 
@@ -810,19 +810,19 @@ class Posts extends SiteController
                 'scope_id'    => $post->id,
                 'description' => Lang::txt(
                     'COM_COLLECTIONS_ACTIVITY_COLLECTED',
-                    '<a href="' . Route::url($collection->link()) . '">' . $collection->get('title') . '</a>'
+                    '<a href="' . Route::url($collection->link()) . '">' . $collection->get('title') . '</a>',
                 ),
                 'details'     => [
                     'collection_id' => $post->collection_id,
                     'post_id' => $post->id,
-                    'item_id' => $post->item_id
-                ]
+                    'item_id' => $post->item_id,
+                ],
             ],
             'recipients' => [
                 ['collection', $post->collection_id],
                 ['user', $collection->get('created_by')],
-                ['user', $post->created_by]
-            ]
+                ['user', $post->created_by],
+            ],
         ]);
 
         // Display updated item stats if called via AJAX
@@ -833,7 +833,7 @@ class Posts extends SiteController
 
         // Display the main listing
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&controller=collections&task=posts')
+            Route::url('index.php?option=' . $this->option . '&controller=collections&task=posts'),
         );
     }
 
@@ -883,7 +883,7 @@ class Posts extends SiteController
             // Output messsage and redirect
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
-                Lang::txt('COM_COLLECTIONS_POSTS_REORDERED')
+                Lang::txt('COM_COLLECTIONS_POSTS_REORDERED'),
             );
             return;
         }
@@ -909,7 +909,7 @@ class Posts extends SiteController
         if (!Request::getInt('no_html', 0)) {
             // Output messsage and redirect
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
+                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
             );
             return;
         }

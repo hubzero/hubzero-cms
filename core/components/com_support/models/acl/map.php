@@ -54,7 +54,7 @@ class Map extends Relational
      */
     protected $rules = [
         'aco_id' => 'positive|nonzero',
-        'aro_id' => 'positive|nonzero'
+        'aro_id' => 'positive|nonzero',
     ];
 
     /**

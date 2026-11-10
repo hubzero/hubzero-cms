@@ -77,24 +77,24 @@ class Form extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
 
         Pathway::append(
             Lang::txt(ucfirst($this->course->get('title'))),
-            'index.php?option=com_courses&controller=form&gid=' . $this->course->get('alias')
+            'index.php?option=com_courses&controller=form&gid=' . $this->course->get('alias'),
         );
 
         Pathway::append(
             Lang::txt(ucfirst($this->course->offering()->get('title'))),
-            $this->base
+            $this->base,
         );
 
         if ($this->_task != 'index') {
             Pathway::append(
                 Lang::txt(ucfirst($this->_task)),
-                'index.php?option=' . $this->_option . '&controller=form&task=' . $this->_task
+                'index.php?option=' . $this->_option . '&controller=form&task=' . $this->_task,
             );
         }
     }
@@ -170,7 +170,7 @@ class Form extends SiteController
             if (Request::getInt('no_html', false)) {
                 echo json_encode([
                     'success' => true,
-                    'id'      => $pdf->getId()
+                    'id'      => $pdf->getId(),
                 ]);
                 exit();
             } else // Otherwise, redirect
@@ -178,7 +178,7 @@ class Form extends SiteController
                 App::redirect(
                     Route::url('index.php?option=com_courses&controller=form&task=layout&formId=' . $pdf->getId(), false),
                     Lang::txt('COM_COURSES_PDF_UPLOAD_SUCCESSFUL'),
-                    'passed'
+                    'passed',
                 );
                 return;
             }
@@ -284,7 +284,7 @@ class Form extends SiteController
                 echo json_encode([
                     'success' => true,
                     'id'      => $dep->save(),
-                    'formId'  => $pdf->getId()
+                    'formId'  => $pdf->getId(),
                 ]);
                 exit();
             } else {
@@ -292,7 +292,7 @@ class Form extends SiteController
                 App::redirect(
                     Route::url($this->base . '&task=form.showDeployment&id=' . $dep->save() . '&formId=' . $pdf->getId() . $tmpl, false),
                     Lang::txt('COM_COURSES_DEPLOYMENT_CREATED'),
-                    'passed'
+                    'passed',
                 );
                 return;
             }
@@ -327,7 +327,7 @@ class Form extends SiteController
             App::redirect(
                 Route::url($this->base . '&task=form.showDeployment&id=' . $dep->save($deploymentId) . '&formId=' . $pdf->getId() . $tmpl, false),
                 Lang::txt('COM_COURSES_DEPLOYMENT_UPDATED'),
-                'passed'
+                'passed',
             );
             return;
         }
@@ -481,7 +481,7 @@ class Form extends SiteController
         $att  = ($attempt > 1) ? '&attempt=' . $attempt : '';
 
         App::redirect(
-            Route::url($this->base . '&task=form.complete&crumb=' . $crumb . $att . $tmpl, false)
+            Route::url($this->base . '&task=form.complete&crumb=' . $crumb . $att . $tmpl, false),
         );
         return;
     }
@@ -572,7 +572,7 @@ class Form extends SiteController
                 $answers,
                 function ($ans) {
                     return is_null($ans[0]);
-                }
+                },
             );
             $this->completeTask();
         }
@@ -591,7 +591,7 @@ class Form extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return),
                 Lang::txt('COM_COURSES_NOT_LOGGEDIN'),
-                'warning'
+                'warning',
             );
             return;
         }

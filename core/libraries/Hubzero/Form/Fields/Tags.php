@@ -41,7 +41,7 @@ class Tags extends Text
             'maxlength'    => ($this->element['maxlength'] ? (int) $this->element['maxlength'] : ''),
             'class'        => ($this->element['class']     ? (string) $this->element['class']  : ''),
             'readonly'     => ((string) $this->element['readonly'] == 'true'    ? 'readonly' : ''),
-            'disabled'     => ((string) $this->element['disabled'] == 'true'    ? 'disabled' : '')
+            'disabled'     => ((string) $this->element['disabled'] == 'true'    ? 'disabled' : ''),
         ];
 
         Behavior::framework(true);
@@ -52,8 +52,8 @@ class Tags extends Text
                 ['tags',
                     $this->name,
                     $this->id,
-                    $attributes['class'], $this->value, null, null, 'multi', ($attributes['disabled'] ? true : null)]
-            ]
+                    $attributes['class'], $this->value, null, null, 'multi', ($attributes['disabled'] ? true : null)],
+            ],
         );
 
         if (count($results) > 0) {

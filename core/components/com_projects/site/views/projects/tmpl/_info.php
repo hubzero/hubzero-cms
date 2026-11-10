@@ -30,7 +30,7 @@ $config = $this->model->config();
         . $this->option
         . '&task=edit&alias='
         . $this->model->get('alias')
-        . '&active=info'
+        . '&active=info',
     );
     ?>
     <p class="editing"><a href="<?php echo $routeUrl; ?>"><?php echo Lang::txt('COM_PROJECTS_EDIT_PROJECT'); ?></a></p>
@@ -76,7 +76,7 @@ $config = $this->model->config();
                                     . $this->option
                                     . '&task=edit&alias='
                                     . $this->model->get('alias')
-                                    . '&active=settings'
+                                    . '&active=settings',
                                 );
                                 $langTxt8 = Lang::txt('COM_PROJECTS_EDIT_THIS');
                                 ?>
@@ -96,7 +96,7 @@ $config = $this->model->config();
                     $previewUrl = Route::url(
                         'index.php?option=' . $this->option
                         . '&alias=' . $this->model->get('alias')
-                        . '&preview=1'
+                        . '&preview=1',
                     );
                     $previewTxt = Lang::txt('COM_PROJECTS_PREVIEW_PUBLIC_PROFILE');
                     ?><span class="mini faded">[<a href="<?php

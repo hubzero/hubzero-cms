@@ -313,20 +313,20 @@ class Resources extends Base
         if (!$title) {
             Pathway::append(
                 Lang::txt('Resources'),
-                'index.php?option=com_resources'
+                'index.php?option=com_resources',
             );
             Pathway::append(
                 stripslashes($this->_item->title),
-                'index.php?option=com_resources&id=' . $this->get('referenceid')
+                'index.php?option=com_resources&id=' . $this->get('referenceid'),
             );
             Pathway::append(
                 Lang::txt('Wishlist'),
-                'index.php?option=com_resources&active=wishlist&id=' . $this->get('referenceid')
+                'index.php?option=com_resources&active=wishlist&id=' . $this->get('referenceid'),
             );
         } else {
             Pathway::append(
                 $title,
-                $url
+                $url,
             );
         }
 

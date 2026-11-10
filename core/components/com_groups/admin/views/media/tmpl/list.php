@@ -29,7 +29,7 @@ $this->css('media.css')
         '&controller=' .
         $this->controller .
         '&gidNumber=' .
-        $this->group->get('gidNumber')
+        $this->group->get('gidNumber'),
     );
     ?>
     <form action="<?php echo $url; ?>" method="post" id="filelist">
@@ -56,7 +56,7 @@ $this->css('media.css')
                                     $this->group->get('gidNumber') .
                                     '&tmpl=component&' .
                                     Session::getFormToken() .
-                                    '=1'
+                                    '=1',
                             ); ?>
                             <a class="icon-folder folder" target="media" href="<?php echo $val; ?>">
                                 <?php echo trim($k, DS); ?>
@@ -78,7 +78,7 @@ $this->css('media.css')
                                         $this->group->get('gidNumber') .
                                         '&tmpl=component&' .
                                         Session::getFormToken() .
-                                        '=1'
+                                        '=1',
                                 ); ?>
                                 href="<?php echo $val; ?>"
                                 data-folder="<?php echo basename($folder); ?>"
@@ -102,7 +102,7 @@ $this->css('media.css')
                                 '&gidNumber=' . $this->group->get('gidNumber') .
                                 '&task=download&file=' .
                                 urlencode(substr($k, strlen(PATH_ROOT))) .
-                                '&' . Session::getFormToken() . '=1'
+                                '&' . Session::getFormToken() . '=1',
                             );
                             $ext = Filesystem::extension($doc);
                             ?>
@@ -129,7 +129,7 @@ $this->css('media.css')
                                         $this->group->get('gidNumber') .
                                         '&tmpl=component&' .
                                         Session::getFormToken() .
-                                        '=1'
+                                        '=1',
                                 ); ?>
                                 href="<?php echo $val; ?>"
                                 data-file="<?php echo basename($doc); ?>"

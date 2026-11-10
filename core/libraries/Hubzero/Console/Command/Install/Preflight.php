@@ -103,7 +103,7 @@ class Preflight
             self::output(
                 "\e[37;41mERROR:\e[39;49m Pre-flight checks failed. Please resolve the issues above.\n",
                 $ansi,
-                true
+                true,
             );
             self::output("\n", $ansi, true);
         } else {

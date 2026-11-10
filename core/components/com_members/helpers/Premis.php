@@ -52,7 +52,7 @@ class Premis
             if (!$member || !$member->get('id')) {
                 return [
                     'status' => 'error',
-                    'message' => 'Failed to create user account for ' . $user['email'] . '.'
+                    'message' => 'Failed to create user account for ' . $user['email'] . '.',
                 ];
             }
 
@@ -75,7 +75,7 @@ class Premis
 
         return [
             'status' => 'ok',
-            'message' => implode(' ', $messages)
+            'message' => implode(' ', $messages),
         ];
     }
 

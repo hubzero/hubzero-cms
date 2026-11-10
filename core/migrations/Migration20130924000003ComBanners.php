@@ -336,7 +336,7 @@ class Migration20130924000003ComBanners extends Base
                         ->from('#__banner_tracks')
                         ->group('track_date')
                         ->group('track_type')
-                        ->group('banner_id')
+                        ->group('banner_id'),
                 )
                 ->execute();
 

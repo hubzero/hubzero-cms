@@ -25,7 +25,7 @@ $text = ($this->task == 'edit'
 Toolbar::title(
     Lang::txt('COM_ANSWERS_TITLE') . ': '
         . Lang::txt('COM_ANSWERS_QUESTIONS') . ': ' . $text,
-    'answers'
+    'answers',
 );
 if ($canDo->get('core.edit')) {
     Toolbar::apply();
@@ -43,16 +43,16 @@ $this->js();
 
 $formAction = Route::url(
     'index.php?option=' . $this->option
-        . '&controller=' . $this->controller
+        . '&controller=' . $this->controller,
 );
 $invalidMsg = $this->escape(
-    Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')
+    Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'),
 );
 $anonChecked = ($this->row->get('anonymous'))
     ? 'checked="checked"'
     : '';
 $questionVal = $this->escape(
-    strip_tags($this->question->get('subject'))
+    strip_tags($this->question->get('subject')),
 );
 $stateChecked = $this->row->get('state')
     ? 'checked="checked"'
@@ -61,7 +61,7 @@ $stateLabel = ($this->row->get('state') == 1)
     ? Lang::txt('COM_ANSWERS_STATE_ACCEPTED')
     : Lang::txt('COM_ANSWERS_STATE_UNACCEPTED');
 $createdByVal = $this->escape(
-    $this->row->get('created_by', User::get('id'))
+    $this->row->get('created_by', User::get('id')),
 );
 ?>
 
@@ -119,7 +119,7 @@ $createdByVal = $this->escape(
                         [
                             'class' => 'required minimal no-footer',
                             'buttons' => false,
-                        ]
+                        ],
                     );
                     ?>
                 </div>
@@ -144,7 +144,7 @@ $createdByVal = $this->escape(
                         <td>
                             <?php
                             echo $this->escape(
-                                stripslashes($this->row->creator->get('name'))
+                                stripslashes($this->row->creator->get('name')),
                             );
                             ?>
                         </td>
@@ -164,10 +164,10 @@ $createdByVal = $this->escape(
                                 || $this->row->get('nothelpful') > 0;
                             if ($hasVotes) {
                                 $confirmTxt = Lang::txt(
-                                    "COM_ANSWERS_CONFIRM_RESET"
+                                    "COM_ANSWERS_CONFIRM_RESET",
                                 );
                                 $resetVal = Lang::txt(
-                                    'COM_ANSWERS_FIELD_RESET'
+                                    'COM_ANSWERS_FIELD_RESET',
                                 );
                                 ?>
                                 <input
@@ -223,7 +223,7 @@ $createdByVal = $this->escape(
                         'calendar',
                         'answer[created]',
                         $this->row->get('created', Date::toSql()),
-                        ['id' => 'field-created']
+                        ['id' => 'field-created'],
                     );
                     ?>
                 </div>

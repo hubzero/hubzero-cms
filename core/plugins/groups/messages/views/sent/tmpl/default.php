@@ -23,7 +23,7 @@ defined('_HZEXEC_') or die();
     $newMessageUrl = Route::url(
         'index.php?option=' . $this->option
         . '&cn=' . $this->group->get('cn')
-        . '&active=messages&action=new'
+        . '&active=messages&action=new',
     );
     ?>
 <ul id="page_options">
@@ -43,7 +43,7 @@ defined('_HZEXEC_') or die();
         $messagesUrl = Route::url(
             'index.php?option=' . $this->option
             . '&cn=' . $this->group->get('cn')
-            . '&active=messages'
+            . '&active=messages',
         );
         ?>
         <form action="<?php echo $messagesUrl; ?>"
@@ -69,17 +69,17 @@ defined('_HZEXEC_') or die();
                                 'index.php?option=' . $this->option
                                 . '&cn=' . $this->group->get('cn')
                                 . '&active=messages&action=viewmessage&msg='
-                                . $row->id
+                                . $row->id,
                             );
                             $memberUrl = Route::url(
                                 'index.php?option=com_members&id='
-                                . $row->created_by
+                                . $row->created_by,
                             );
                             $subject = $this->escape(
-                                stripslashes($row->subject)
+                                stripslashes($row->subject),
                             );
                             $name = $this->escape(
-                                stripslashes($row->name)
+                                stripslashes($row->name),
                             );
                             $dateFormatted = Date::of($row->created)
                                 ->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
@@ -112,7 +112,7 @@ defined('_HZEXEC_') or die();
         $pageNav = $this->pagination(
             $this->total,
             $this->filters['start'],
-            $this->filters['limit']
+            $this->filters['limit'],
         );
         $pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
         $pageNav->setAdditionalUrlParam('active', 'messages');

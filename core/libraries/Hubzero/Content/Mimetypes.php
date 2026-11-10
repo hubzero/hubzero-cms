@@ -731,7 +731,7 @@ class Mimetypes
         'ppsx'      => 'application/vnd.openxmlformats-officedocument.presentationml.slideshow',
         'potx'      => 'application/vnd.openxmlformats-officedocument.presentationml.template',
         'xltx'      => 'application/vnd.openxmlformats-officedocument.spreadsheetml.template',
-        'dmg'       => 'application/x-apple-diskimage'
+        'dmg'       => 'application/x-apple-diskimage',
     ];
 
     /**

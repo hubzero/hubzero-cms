@@ -32,7 +32,7 @@ class Upgrade extends Base implements CommandInterface
 
         if (!Install\Vendor::install($ansi, false, PATH_CORE)) {
             $this->output->error(
-                'Composer failed, so the database was not changed. Correct the cause and run muse upgrade again.'
+                'Composer failed, so the database was not changed. Correct the cause and run muse upgrade again.',
             );
         }
 
@@ -47,7 +47,7 @@ class Upgrade extends Base implements CommandInterface
         $this->output->addLine('');
         $this->output->addLine(
             'The hub is up to date with its code. Reload PHP so that it serves the new code.',
-            'success'
+            'success',
         );
     }
 
@@ -64,7 +64,7 @@ class Upgrade extends Base implements CommandInterface
                  'Finish an upgrade once the new code is in place: install the
                  libraries it needs with Composer, bring the database up to date
                  with the migrations, and clear the cache. Run it after
-                 muse repository update -f.'
+                 muse repository update -f.',
              )
              ->render();
     }

@@ -49,7 +49,7 @@ class Migration20190620000000PlgPublicationsCitations extends Base
                             'Updated citation association #%s from publication ID %s to publication version ID %s',
                             $citation->id,
                             $citation->oid,
-                            $version->id
+                            $version->id,
                         );
                     } else {
                         $query = "INSERT INTO `$table` (`cid`, `oid`, `type`, `tbl`) VALUES (" .
@@ -59,7 +59,7 @@ class Migration20190620000000PlgPublicationsCitations extends Base
                         $msg = sprintf(
                             'Creating citation association for citation ID %s and publication version ID %s',
                             $citation->cid,
-                            $version->id
+                            $version->id,
                         );
                     }
                     $this->db->setQuery($query);
@@ -103,7 +103,7 @@ class Migration20190620000000PlgPublicationsCitations extends Base
                             'Updated citation association #%s from publication version ID %s to publication ID %s',
                             $citation->id,
                             $citation->oid,
-                            $version->publication_id
+                            $version->publication_id,
                         ));
                     }
                 }

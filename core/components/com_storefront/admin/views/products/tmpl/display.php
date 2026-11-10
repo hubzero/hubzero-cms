@@ -42,7 +42,7 @@ Toolbar::help('products');
 <?php
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 ?>
 <form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
@@ -122,7 +122,7 @@ $sort = @$this->filters['sort'];
                 echo $this->pagination(
                     $this->total,
                     $this->filters['start'],
-                    $this->filters['limit']
+                    $this->filters['limit'],
                 );
                 ?></td>
         </tr>
@@ -183,7 +183,7 @@ foreach ($this->rows as $row) {
                     $editUrl = Route::url(
                         'index.php?option=' . $this->option
                         . '&controller=' . $this->controller
-                        . '&task=edit&id=' . $row->pId
+                        . '&task=edit&id=' . $row->pId,
                     );
                     $editTitle = Lang::txt('COM_STOREFRONT_EDIT_PRODUCT');
                     ?>
@@ -207,7 +207,7 @@ foreach ($this->rows as $row) {
     <?php
     $skusUrl = Route::url(
         'index.php?option=' . $this->option
-        . '&controller=skus&task=display&id=' . $row->pId
+        . '&controller=skus&task=display&id=' . $row->pId,
     );
     ?>
                     <a href="<?php echo $skusUrl; ?>" title="View SKUs">
@@ -225,7 +225,7 @@ foreach ($this->rows as $row) {
                         <?php
                         $addSkuUrl = Route::url(
                             'index.php?option=' . $this->option
-                            . '&controller=skus&task=add&pId=' . $row->pId
+                            . '&controller=skus&task=add&pId=' . $row->pId,
                         );
                         ?>
                         <a class="state add" href="<?php echo $addSkuUrl; ?>">
@@ -239,7 +239,7 @@ foreach ($this->rows as $row) {
                     $stateUrl = Route::url(
                         'index.php?option=' . $this->option
                         . '&controller=' . $this->controller
-                        . '&task=' . $task . '&id=' . $row->pId
+                        . '&task=' . $task . '&id=' . $row->pId,
                     );
                     $stateTitle = Lang::txt('COM_STOREFRONT_SET_TASK', $task);
                     ?>

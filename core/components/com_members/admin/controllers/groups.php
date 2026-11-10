@@ -195,7 +195,7 @@ class Groups extends AdminController
             'search'     => '',
             'fields'     => ['cn', 'description', 'published', 'gidNumber', 'type'],
             'sortby'     => 'title',
-            'authorized' => 'admin'
+            'authorized' => 'admin',
         ]);
 
         // Output the HTML

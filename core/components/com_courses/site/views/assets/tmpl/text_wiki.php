@@ -21,7 +21,7 @@ $config = [
     'pagename' => $this->asset->id,
     'pageid'   => '',
     'filepath' => $asset->path($this->course->get('id')),
-    'domain'   => $this->course->get('alias')
+    'domain'   => $this->course->get('alias'),
 ];
 
 $this->model->set('content', stripslashes($this->model->get('content')));
@@ -29,7 +29,7 @@ $this->model->set('content', stripslashes($this->model->get('content')));
 Event::trigger('content.onContentPrepare', [
     'com_courses.asset.content',
     &$this->model,
-    &$config
+    &$config,
 ]);
 ?>
 

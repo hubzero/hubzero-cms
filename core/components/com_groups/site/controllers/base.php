@@ -87,7 +87,7 @@ class Base extends SiteController
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($return))),
             $message,
-            'warning'
+            'warning',
         );
         return;
     }
@@ -106,7 +106,7 @@ class Base extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
 
@@ -117,7 +117,7 @@ class Base extends SiteController
             if ($group) {
                 Pathway::append(
                     stripslashes($group->get('description')),
-                    'index.php?option=' . $this->_option . '&cn=' . $this->cn
+                    'index.php?option=' . $this->_option . '&cn=' . $this->cn,
                 );
             }
         }
@@ -129,12 +129,12 @@ class Base extends SiteController
             if (in_array($this->_task, ['new', 'browse'])) {
                 Pathway::append(
                     Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
-                    'index.php?option=' . $this->_option . '&task=' . $this->_task
+                    'index.php?option=' . $this->_option . '&task=' . $this->_task,
                 );
             } else {
                 Pathway::append(
                     Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
-                    'index.php?option=' . $this->_option . '&cn=' . $this->cn . '&task=' . $this->_task
+                    'index.php?option=' . $this->_option . '&cn=' . $this->cn . '&task=' . $this->_task,
                 );
             }
         }
@@ -151,12 +151,12 @@ class Base extends SiteController
             if ($page !== null) {
                 Pathway::append(
                     Lang::txt($page->get('title')),
-                    'index.php?option=' . $this->_option . '&cn=' . $this->cn . '&active=' . $this->active
+                    'index.php?option=' . $this->_option . '&cn=' . $this->cn . '&active=' . $this->active,
                 );
             } elseif ($this->active != 'overview') {
                 Pathway::append(
                     Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->active)),
-                    'index.php?option=' . $this->_option . '&cn=' . $this->cn . '&active=' . $this->active
+                    'index.php?option=' . $this->_option . '&cn=' . $this->cn . '&active=' . $this->active,
                 );
             }
         }
@@ -164,7 +164,7 @@ class Base extends SiteController
         if (in_array($this->_controller, ['pages', 'modules', 'categories'])) {
             Pathway::append(
                 Lang::txt('COM_GROUPS_PAGES'),
-                'index.php?option=' . $this->_option . '&cn=' . $this->cn . '&controller=' . $this->_controller
+                'index.php?option=' . $this->_option . '&cn=' . $this->cn . '&controller=' . $this->_controller,
             );
 
             if ($this->_task && $this->_task != 'view') {
@@ -174,7 +174,7 @@ class Base extends SiteController
                     . '&task=' . $this->_task;
                 Pathway::append(
                     Lang::txt('COM_GROUPS_PAGES_' . strtoupper($this->_task)),
-                    $taskUrl
+                    $taskUrl,
                 );
             }
         }
@@ -234,7 +234,7 @@ class Base extends SiteController
         if ($no_html) {
             $error = ['error' => [
                 'code'    => $errorCode,
-                'message' => $errorMessage
+                'message' => $errorMessage,
             ]];
             echo json_encode($error);
             exit();

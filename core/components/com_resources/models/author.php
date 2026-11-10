@@ -57,7 +57,7 @@ class Author extends Relational
      */
     protected $rules = [
         'subtable' => 'notempty',
-        'subid'    => 'positive|nonzero'
+        'subid'    => 'positive|nonzero',
     ];
 
     /**
@@ -67,7 +67,7 @@ class Author extends Relational
      */
     public $initiate = [
         'ordering',
-        'subtable'
+        'subtable',
     ];
 
     /**

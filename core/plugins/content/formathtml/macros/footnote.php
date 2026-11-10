@@ -57,7 +57,7 @@ class FootNote extends Macro
                 $this->pagename,
                 $this->pageid,
                 $this->filepath,
-                $this->domain
+                $this->domain,
             );
 
             $note = $p->parse(trim($note));
@@ -79,7 +79,7 @@ class FootNote extends Macro
             $footnote->content = $note;
             $footnote->id      = 'fnref-' . $i;
             $footnote->refs    = [
-                'fndef-' . $i
+                'fndef-' . $i,
             ];
 
             $wm->footnotes_notes[] = $note;
@@ -90,7 +90,7 @@ class FootNote extends Macro
         } else {
             $letters = [
                 'A','B','C','D','E','F','G','H','I','J','K','L','M',
-                'N','O','P','Q','R','S','T','U','V','W','X','Y','Z'
+                'N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
             ];
 
             $html  = '<ol class="footnotes">';

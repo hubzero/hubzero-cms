@@ -59,7 +59,7 @@ class HtmlMenus
                     'COM_MENUS_TIP_ASSOCIATED_LANGUAGE',
                     $img,
                     $item->title,
-                    $item->menu_title
+                    $item->menu_title,
                 );
             }
         }
@@ -67,7 +67,7 @@ class HtmlMenus
             'tooltip',
             implode('<br />', $text),
             Lang::txt('COM_MENUS_TIP_ASSOCIATION'),
-            'menu/icon-16-links.png'
+            'menu/icon-16-links.png',
         );
     }
 
@@ -90,7 +90,7 @@ class HtmlMenus
                 '',
                 false,
                 'publish',
-                'publish'
+                'publish',
             ],
             6 => [
                 'publish',
@@ -99,7 +99,7 @@ class HtmlMenus
                 '',
                 false,
                 'unpublish',
-                'unpublish'
+                'unpublish',
             ],
             5 => [
                 'unpublish',
@@ -108,7 +108,7 @@ class HtmlMenus
                 '',
                 false,
                 'publish',
-                'publish'
+                'publish',
             ],
             4 => [
                 'publish',
@@ -117,7 +117,7 @@ class HtmlMenus
                 '',
                 false,
                 'unpublish',
-                'unpublish'
+                'unpublish',
             ],
             3 => [
                 'unpublish',
@@ -126,7 +126,7 @@ class HtmlMenus
                 '',
                 false,
                 'publish',
-                'publish'
+                'publish',
             ],
             2 => [
                 'publish',
@@ -135,7 +135,7 @@ class HtmlMenus
                 '',
                 false,
                 'unpublish',
-                'unpublish'
+                'unpublish',
             ],
             1 => [
                 'unpublish',
@@ -144,7 +144,7 @@ class HtmlMenus
                 'COM_MENUS_EXTENSION_PUBLISHED_ENABLED',
                 true,
                 'publish',
-                'publish'
+                'publish',
             ],
             0 => [
                 'publish',
@@ -153,7 +153,7 @@ class HtmlMenus
                 'COM_MENUS_EXTENSION_UNPUBLISHED_ENABLED',
                 true,
                 'unpublish',
-                'unpublish'
+                'unpublish',
             ],
             -1 => [
                 'unpublish',
@@ -162,7 +162,7 @@ class HtmlMenus
                 'COM_MENUS_EXTENSION_PUBLISHED_DISABLED',
                 true,
                 'warning',
-                'warning'
+                'warning',
             ],
             -2 => [
                 'publish',
@@ -171,7 +171,7 @@ class HtmlMenus
                 'COM_MENUS_EXTENSION_UNPUBLISHED_DISABLED',
                 true,
                 'unpublish',
-                'unpublish'
+                'unpublish',
             ],
         ];
 

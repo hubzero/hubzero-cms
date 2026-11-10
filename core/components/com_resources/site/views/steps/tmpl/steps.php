@@ -99,7 +99,7 @@ $this->group_cn = (isset($this->group_cn) ? $this->group_cn : Request::getString
                         'index.php?option='
                         . $this->option
                         . '&task=discard&id='
-                        . $this->id
+                        . $this->id,
                     );
                     ?>
                     <a class="icon-delete" href="<?php echo $hrefUrl; ?>"><?php echo Lang::txt('JCANCEL'); ?></a>

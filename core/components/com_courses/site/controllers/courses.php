@@ -44,7 +44,7 @@ class Courses extends SiteController
                 $offering->section($section->get('alias'));
 
                 App::redirect(
-                    Route::url($offering->link('overview'))
+                    Route::url($offering->link('overview')),
                 );
             }
         }
@@ -68,13 +68,13 @@ class Courses extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         if ($this->_task && $this->_task != 'intro') {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
-                'index.php?option=' . $this->_option . '&task=' . $this->_task
+                'index.php?option=' . $this->_option . '&task=' . $this->_task,
             );
         }
     }
@@ -118,14 +118,14 @@ class Courses extends SiteController
         // Get all courses
         $all_courses = $model->courses([
             'sort'  => 'students',
-            'state' => 1
+            'state' => 1,
         ], true);
 
         // Get first 12 courses
         $this->view->popularcourses = $model->courses([
             'limit' => self::INTRO_COURSE_LIMIT,
             'sort'  => 'students',
-            'state' => 1
+            'state' => 1,
         ], true);
 
         // Output HTML
@@ -152,7 +152,7 @@ class Courses extends SiteController
             'state'  => 1,
             'search' => Request::getString('search', ''),
             'sortby' => strtolower(Request::getWord('sortby', 'title')),
-            'group'  => Request::getString('group', '')
+            'group'  => Request::getString('group', ''),
         ];
         if ($this->view->filters['group']) {
             $group = \Hubzero\User\Group::getInstance($this->view->filters['group']);
@@ -183,7 +183,7 @@ class Courses extends SiteController
         $this->view->filters['index']  = strtolower(Request::getWord('index', ''));
         $validIndexes = [
             'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
-            'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
+            'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
         ];
         $index = $this->view->filters['index'];
         if ($index && !in_array($index, $validIndexes)) {

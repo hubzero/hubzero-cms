@@ -157,7 +157,7 @@ class Toolbar extends Facade
             \Hubzero\Facades\Route::url('index.php?option=com_media&tmpl=component&task=popupUpload&folder=' .
             $directory),
             800,
-            520
+            520,
         );
     }
 
@@ -435,7 +435,7 @@ class Toolbar extends Facade
         $width = '875',
         $alt = 'JToolbar_Options',
         $path = '',
-        $onClose = ''
+        $onClose = '',
     ) {
         $component = urlencode($component == null ? '' : $component);
         $path = urlencode($path);
@@ -454,7 +454,7 @@ class Toolbar extends Facade
             $height,
             $top,
             $left,
-            $onClose
+            $onClose,
         );
     }
 
@@ -473,7 +473,7 @@ class Toolbar extends Facade
         $name = 'delete',
         $task = 'remove',
         $alt = 'JTOOLBAR_DELETE',
-        $list = true
+        $list = true,
     ) {
         static::getRoot()->appendButton('Confirm', $msg, $name, $alt, $task, $list);
     }

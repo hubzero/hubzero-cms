@@ -109,7 +109,7 @@ class Collection extends Table
         $fields = [
             'object_id'   => intval($object_id),
             'object_type' => trim($object_type),
-            'is_default'  => 1
+            'is_default'  => 1,
         ];
 
         return parent::load($fields);
@@ -134,7 +134,7 @@ class Collection extends Table
             'object_type' => $object_type,
             'is_default'  => 1,
             'created_by'  => $object_id,
-            'access'      => 4 // Private by default
+            'access'      => 4, // Private by default
         ];
         if (!$result['created_by']) {
             $result['created_by'] = User::get('id');

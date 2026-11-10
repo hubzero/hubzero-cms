@@ -108,7 +108,7 @@ class Macrolist extends WikiMacro
         $files = [];
 
         $iterator = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($path, FilesystemIterator::SKIP_DOTS)
+            new RecursiveDirectoryIterator($path, FilesystemIterator::SKIP_DOTS),
         );
 
         foreach ($iterator as $file) {

@@ -22,7 +22,7 @@ $this->css()
 if (Pathway::count() <= 0) {
     Pathway::append(
         Lang::txt('COM_KB'),
-        'index.php?option=' . $this->option
+        'index.php?option=' . $this->option,
     );
 }
 

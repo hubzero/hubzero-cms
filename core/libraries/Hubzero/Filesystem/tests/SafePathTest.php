@@ -242,7 +242,7 @@ class SafePathTest extends Basic
 			'.',
 			'./victim',
 			'..' . DS . '..' . DS . 'etc',
-			"data\0/victim"
+			"data\0/victim",
 		];
 
 		foreach ($paths as $relative)

@@ -94,7 +94,7 @@ class Forum extends Plugin
             'title'            => Lang::txt('PLG_GROUPS_FORUM'),
             'default_access'   => $this->params->get('plugin_access', 'members'),
             'display_menu_tab' => $this->params->get('display_tab', 1),
-            'icon'             => 'f086'
+            'icon'             => 'f086',
         ];
         return $area;
     }
@@ -122,7 +122,7 @@ class Forum extends Plugin
         $arr = [
             'html' => '',
             'metadata' => [],
-            'name' => $active
+            'name' => $active,
         ];
 
         //get this area details
@@ -167,7 +167,7 @@ class Forum extends Plugin
                 App::redirect(
                     Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return), false),
                     Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active_real)),
-                    'warning'
+                    'warning',
                 );
                 return;
             }
@@ -470,7 +470,7 @@ class Forum extends Plugin
             'state'      => Section::STATE_PUBLISHED,
             'sort'       => 'ordering',
             'sort_Dir'   => 'ASC',
-            'access'     => User::getAuthorisedViewLevels()
+            'access'     => User::getAuthorisedViewLevels(),
         ];
 
         if (!User::isGuest()) {
@@ -518,7 +518,7 @@ class Forum extends Plugin
             $recvEmailOption = \Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
                 $this->group->get('gidNumber'),
                 User::get('id'),
-                'receive-forum-email'
+                'receive-forum-email',
             );
 
             $recvEmailOptionID = $recvEmailOption->get('id', 0);
@@ -606,7 +606,7 @@ class Forum extends Plugin
             App::redirect(
                 Route::url($this->base),
                 Lang::txt('PLG_GROUPS_FORUM_NOT_AUTHORIZED'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -633,7 +633,7 @@ class Forum extends Plugin
             App::redirect(
                 Route::url($this->base),
                 Lang::txt('PLG_GROUPS_FORUM_SECTION_TITLE_RESERVED', $section->get('alias')),
-                'error'
+                'error',
             );
         }
 
@@ -642,7 +642,7 @@ class Forum extends Plugin
             App::redirect(
                 Route::url($this->base),
                 Lang::txt('PLG_GROUPS_FORUM_ERROR_SECTION_ALREADY_EXISTS'),
-                'error'
+                'error',
             );
         }
 
@@ -659,21 +659,21 @@ class Forum extends Plugin
                     'description' => Lang::txt('PLG_GROUPS_FORUM_ACTIVITY_SECTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($this->base) . '">' . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
                     'details'     => [
                         'title' => $section->get('title'),
-                        'url'   => Route::url($this->base)
-                    ]
+                        'url'   => Route::url($this->base),
+                    ],
                 ],
                 'recipients' => [
                     ['group', $this->group->get('gidNumber')],
                     ['forum.' . $this->forum->get('scope'), $this->forum->get('scope_id')],
                     ['forum.section', $section->get('id')],
-                    ['user', $section->get('created_by')]
-                ]
+                    ['user', $section->get('created_by')],
+                ],
             ]);
         }
 
         // Set the redirect
         App::redirect(
-            Route::url($this->base)
+            Route::url($this->base),
         );
     }
 
@@ -716,7 +716,7 @@ class Forum extends Plugin
             App::redirect(
                 Route::url($this->base),
                 Lang::txt('PLG_GROUPS_FORUM_NOT_AUTHORIZED'),
-                'warning'
+                'warning',
             );
         }
 
@@ -740,21 +740,21 @@ class Forum extends Plugin
                     'description' => Lang::txt('PLG_GROUPS_FORUM_ACTIVITY_SECTION_DELETED', '<a href="' . Route::url($this->base) . '">' . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
                     'details'     => [
                         'title' => $section->get('title'),
-                        'url'   => Route::url($this->base)
-                    ]
+                        'url'   => Route::url($this->base),
+                    ],
                 ],
                 'recipients' => [
                     ['group', $this->group->get('gidNumber')],
                     ['forum.' . $this->forum->get('scope'), $this->forum->get('scope_id')],
                     ['forum.section', $section->get('id')],
-                    ['user', $section->get('created_by')]
-                ]
+                    ['user', $section->get('created_by')],
+                ],
             ]);
         }
 
         // Redirect to main listing
         App::redirect(
-            Route::url($this->base)
+            Route::url($this->base),
         );
     }
 
@@ -776,7 +776,7 @@ class Forum extends Plugin
             'scope_id'   => $this->forum->get('scope_id'),
             'state'      => 1,
             'parent'     => 0,
-            'access'     => User::getAuthorisedViewLevels()
+            'access'     => User::getAuthorisedViewLevels(),
         ];
         if (!User::isGuest()) {
             $filters['access'][] = 2;
@@ -883,7 +883,7 @@ class Forum extends Plugin
             'scope'      => $this->forum->get('scope'),
             'scope_id'   => $this->forum->get('scope_id'),
             'state'      => 1,
-            'access'     => User::getAuthorisedViewLevels()
+            'access'     => User::getAuthorisedViewLevels(),
         ];
         if (!$filters['search']) {
             return $this->sections();
@@ -993,7 +993,7 @@ class Forum extends Plugin
             $category->set('access', $this->defaultContentAccess());
         } elseif ($category->get('created_by') != User::get('id') && !$this->params->get('access-create-category')) {
             App::redirect(
-                Route::url($this->base)
+                Route::url($this->base),
             );
         }
 
@@ -1037,7 +1037,7 @@ class Forum extends Plugin
             App::redirect(
                 Route::url($this->base),
                 Lang::txt('PLG_GROUPS_FORUM_NOT_AUTHORIZED'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -1064,7 +1064,7 @@ class Forum extends Plugin
             App::redirect(
                 Route::url($this->base),
                 Lang::txt('PLG_GROUPS_FORUM_NOT_AUTHORIZED'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -1075,7 +1075,7 @@ class Forum extends Plugin
         if (!$this->params->get('access-edit-category')) {
             // Set the redirect
             App::redirect(
-                Route::url($this->base)
+                Route::url($this->base),
             );
         }
 
@@ -1112,20 +1112,20 @@ class Forum extends Plugin
                 'description' => Lang::txt('PLG_GROUPS_FORUM_ACTIVITY_CATEGORY_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($this->base) . '">' . htmlspecialchars((string) ($category->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
                 'details'     => [
                     'title' => $category->get('title'),
-                    'url'   => Route::url($this->base)
-                ]
+                    'url'   => Route::url($this->base),
+                ],
             ],
             'recipients' => [
                 ['group', $this->group->get('gidNumber')],
                 ['forum.' . $this->forum->get('scope'), $this->forum->get('scope_id')],
                 ['forum.section', $category->get('section_id')],
-                ['user', $category->get('created_by')]
-            ]
+                ['user', $category->get('created_by')],
+            ],
         ]);
 
         // Set the redirect
         App::redirect(
-            Route::url($this->base)
+            Route::url($this->base),
         );
     }
 
@@ -1159,7 +1159,7 @@ class Forum extends Plugin
             App::redirect(
                 Route::url($this->base),
                 Lang::txt('PLG_GROUPS_FORUM_MISSING_ID'),
-                'error'
+                'error',
             );
         }
 
@@ -1170,7 +1170,7 @@ class Forum extends Plugin
             App::redirect(
                 Route::url($this->base),
                 Lang::txt('PLG_GROUPS_FORUM_NOT_AUTHORIZED'),
-                'warning'
+                'warning',
             );
         }
 
@@ -1184,7 +1184,7 @@ class Forum extends Plugin
             App::redirect(
                 Route::url($this->base),
                 $category->getError(),
-                'error'
+                'error',
             );
         }
 
@@ -1197,22 +1197,22 @@ class Forum extends Plugin
                 'description' => Lang::txt('PLG_GROUPS_FORUM_ACTIVITY_CATEGORY_DELETED', '<a href="' . Route::url($this->base) . '">' . htmlspecialchars((string) ($category->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
                 'details'     => [
                     'title' => $category->get('title'),
-                    'url'   => Route::url($this->base)
-                ]
+                    'url'   => Route::url($this->base),
+                ],
             ],
             'recipients' => [
                 ['group', $this->group->get('gidNumber')],
                 ['forum.' . $this->forum->get('scope'), $this->forum->get('scope_id')],
                 ['forum.section', $category->get('section_id')],
-                ['user', $category->get('created_by')]
-            ]
+                ['user', $category->get('created_by')],
+            ],
         ]);
 
         // Redirect to main listing
         App::redirect(
             Route::url($this->base),
             Lang::txt('PLG_GROUPS_FORUM_CATEGORY_DELETED'),
-            'passed'
+            'passed',
         );
     }
 
@@ -1233,7 +1233,7 @@ class Forum extends Plugin
             'scope'    => $this->forum->get('scope'),
             'scope_id' => $this->forum->get('scope_id'),
             'state'    => Post::STATE_PUBLISHED,
-            'access'   => User::getAuthorisedViewLevels()
+            'access'   => User::getAuthorisedViewLevels(),
         ];
         if (!User::isGuest()) {
             $filters['access'][] = 2; // Registered
@@ -1282,7 +1282,7 @@ class Forum extends Plugin
             App::redirect(
                 Route::url($this->base . '&scope=' . $filters['section'] . '/' . $filters['category']),
                 Lang::txt('PLG_GROUPS_FORUM_ERROR_THREAD_NOT_FOUND'),
-                'error'
+                'error',
             );
         }
 
@@ -1307,7 +1307,7 @@ class Forum extends Plugin
         if (User::isGuest() && !in_array($thread->get('access'), User::getAuthorisedViewLevels())) {
             $return = Route::url($this->base, false, true);
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
         }
 
@@ -1419,7 +1419,7 @@ class Forum extends Plugin
             App::redirect(
                 Route::url($this->base . '&scope=' . $section->get('alias') . '/' . $category->get('alias')),
                 Lang::txt('PLG_GROUPS_FORUM_NOT_AUTHORIZED'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -1545,7 +1545,7 @@ class Forum extends Plugin
                 App::redirect(
                     Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum'),
                     Lang::txt('PLG_GROUPS_FORUM_NOT_AUTHORIZED'),
-                    'warning'
+                    'warning',
                 );
                 return;
             }
@@ -1558,7 +1558,7 @@ class Forum extends Plugin
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum'),
                 Lang::txt('PLG_GROUPS_FORUM_NOT_AUTHORIZED'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -1617,7 +1617,7 @@ class Forum extends Plugin
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum'),
                 Lang::txt('PLG_GROUPS_FORUM_NOT_AUTHORIZED'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -1724,7 +1724,7 @@ class Forum extends Plugin
                 $section->get('access'),
                 $category->get('access'),
                 $thread->get('access'),
-                $post->get('access')
+                $post->get('access'),
                 ]);
 
                 $allowEmailResponses = true;
@@ -1739,7 +1739,7 @@ class Forum extends Plugin
                 'name'  => (!$post->get('anonymous') ? $post->creator->get('name', Lang::txt('PLG_GROUPS_FORUM_UNKNOWN')) : Lang::txt('JANONYMOUS')) . ' @ ' . Config::get('sitename'),
                 'email' => Config::get('mailfrom'),
                 'replytoname'  => Config::get('sitename'),
-                'replytoemail' => Config::get('mailfrom')
+                'replytoemail' => Config::get('mailfrom'),
                 ];
 
             // Email each group member separately, each needs a user specific token
@@ -1774,7 +1774,7 @@ class Forum extends Plugin
                     $eview = new \Hubzero\Mail\View([
                     'base_path' => __DIR__,
                     'name'      => 'email',
-                    'layout'    => 'comment_plain'
+                    'layout'    => 'comment_plain',
                     ]);
 
                     // plain text
@@ -1812,7 +1812,7 @@ class Forum extends Plugin
         $recipients = [
             ['group', $this->group->get('gidNumber')],
             ['forum.' . $this->forum->get('scope'), $this->forum->get('scope_id')],
-            ['user', $post->get('created_by')]
+            ['user', $post->get('created_by')],
         ];
         foreach ($this->group->get('managers') as $recipient) {
             $recipients[] = ['user', $recipient];
@@ -1820,7 +1820,7 @@ class Forum extends Plugin
         $type = 'thread';
         $desc = Lang::txt(
             'PLG_GROUPS_FORUM_ACTIVITY_' . strtoupper($type) . '_' . ($fields['id'] ? 'UPDATED' : 'CREATED'),
-            '<a href="' . Route::url($url) . '">' . htmlspecialchars((string) $post->get('title'), ENT_QUOTES, 'UTF-8') . '</a>'
+            '<a href="' . Route::url($url) . '">' . htmlspecialchars((string) $post->get('title'), ENT_QUOTES, 'UTF-8') . '</a>',
         );
         // If this is a post in a thread and not the thread starter...
         if ($post->get('parent')) {
@@ -1832,7 +1832,7 @@ class Forum extends Plugin
             $desc = Lang::txt(
                 'PLG_GROUPS_FORUM_ACTIVITY_' . strtoupper($type) . '_' . ($fields['id'] ? 'UPDATED' : 'CREATED'),
                 $post->get('id'),
-                '<a href="' . Route::url($url) . '">' . htmlspecialchars((string) $thread->get('title'), ENT_QUOTES, 'UTF-8') . '</a>'
+                '<a href="' . Route::url($url) . '">' . htmlspecialchars((string) $thread->get('title'), ENT_QUOTES, 'UTF-8') . '</a>',
             );
 
             // If the parent post is not the same as the
@@ -1868,17 +1868,17 @@ class Forum extends Plugin
                 'description' => $desc,
                 'details'     => [
                     'thread' => $post->get('thread'),
-                    'url'    => Route::url($url)
-                ]
+                    'url'    => Route::url($url),
+                ],
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         // Set the redirect
         App::redirect(
             Route::url($url), // . '#c' . $model->id),
             $message,
-            'passed'
+            'passed',
         );
     }
 
@@ -1903,7 +1903,7 @@ class Forum extends Plugin
         $eView = new \Hubzero\Mail\View([
             'base_path' => __DIR__,
             'name'      => 'email',
-            'layout'    => 'mentions_html'
+            'layout'    => 'mentions_html',
         ]);
 
         $eView->comment = $comment;
@@ -1961,7 +1961,7 @@ class Forum extends Plugin
             if (!empty($accessLevels)) {
                 $viewable = array_merge(
                     [1, 2, 4, 5],
-                    \Hubzero\Access\Access::getAuthorisedViewLevels($userId)
+                    \Hubzero\Access\Access::getAuthorisedViewLevels($userId),
                 );
 
                 if (array_diff($accessLevels, $viewable)) {
@@ -2048,7 +2048,7 @@ class Forum extends Plugin
             $usersGroupSettings = \Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
                 $groupId,
                 $userId,
-                'receive-forum-email'
+                'receive-forum-email',
             );
 
             $sendEmail = $usersGroupSettings->get('optionvalue', 0);
@@ -2072,7 +2072,7 @@ class Forum extends Plugin
             App::redirect(
                 $redirect,
                 Lang::txt('PLG_GROUPS_FORUM_LOGIN_NOTICE'),
-                'warning'
+                'warning',
             );
         }
 
@@ -2095,7 +2095,7 @@ class Forum extends Plugin
             App::redirect(
                 $redirect,
                 Lang::txt('PLG_GROUPS_FORUM_MISSING_ID'),
-                'error'
+                'error',
             );
         }
 
@@ -2114,7 +2114,7 @@ class Forum extends Plugin
             App::redirect(
                 $redirect,
                 Lang::txt('PLG_GROUPS_FORUM_NOT_AUTHORIZED'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -2126,7 +2126,7 @@ class Forum extends Plugin
             App::redirect(
                 $redirect,
                 Lang::txt('PLG_GROUPS_FORUM_NOT_AUTHORIZED'),
-                'warning'
+                'warning',
             );
         }
 
@@ -2141,7 +2141,7 @@ class Forum extends Plugin
             // Record the activity
             $recipients = [
                 ['group', $this->group->get('gidNumber')],
-                ['forum.' . $this->forum->get('scope'), $this->forum->get('scope_id')]
+                ['forum.' . $this->forum->get('scope'), $this->forum->get('scope_id')],
             ];
             foreach ($this->group->get('managers') as $recipient) {
                 $recipients[] = ['user', $recipient];
@@ -2157,10 +2157,10 @@ class Forum extends Plugin
                     'description' => Lang::txt('PLG_GROUPS_FORUM_THREAD_DELETED', '<a href="' . Route::url($url) . '">' . htmlspecialchars((string) ($post->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
                     'details'     => [
                         'thread' => $post->get('thread'),
-                        'url'    => Route::url($url)
-                    ]
+                        'url'    => Route::url($url),
+                    ],
                 ],
-                'recipients' => $recipients
+                'recipients' => $recipients,
             ]);
         }
 
@@ -2168,7 +2168,7 @@ class Forum extends Plugin
         App::redirect(
             $redirect,
             Lang::txt('PLG_GROUPS_FORUM_THREAD_DELETED'),
-            'passed'
+            'passed',
         );
     }
 
@@ -2467,7 +2467,7 @@ class Forum extends Plugin
         // Record the activity
         $recipients = [
             ['group', $this->group->get('gidNumber')],
-            ['forum.' . $this->forum->get('scope'), $this->forum->get('scope_id')]
+            ['forum.' . $this->forum->get('scope'), $this->forum->get('scope_id')],
         ];
         foreach ($this->group->get('managers') as $recipient) {
             $recipients[] = ['user', $recipient];
@@ -2478,15 +2478,15 @@ class Forum extends Plugin
                 'action'      => 'updated',
                 'scope'       => 'forum.settings',
                 'scope_id'    => $row->get('id'),
-                'description' => Lang::txt('PLG_GROUPS_FORUM_ACTIVITY_SETTINGS_UPDATED')
+                'description' => Lang::txt('PLG_GROUPS_FORUM_ACTIVITY_SETTINGS_UPDATED'),
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         // Redirect to setting spage
         App::redirect(
             Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&action=settings'),
-            Lang::txt('PLG_GROUPS_FORUM_SETTINGS_SAVED')
+            Lang::txt('PLG_GROUPS_FORUM_SETTINGS_SAVED'),
         );
     }
 
@@ -2505,7 +2505,7 @@ class Forum extends Plugin
             App::redirect(
                 Route::url($rtrn),
                 Lang::txt('PLG_GROUPS_FORUM_UNSUBSCRIBE_MISSING_TOKEN'),
-                'error'
+                'error',
             );
         }
 
@@ -2520,7 +2520,7 @@ class Forum extends Plugin
             App::redirect(
                 Route::url($rtrn),
                 Lang::txt('PLG_GROUPS_FORUM_UNSUBSCRIBE_INVALID_TOKEN'),
-                'error'
+                'error',
             );
         }
 
@@ -2529,7 +2529,7 @@ class Forum extends Plugin
         $groupMemberOption = \Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
             $this->group->get('gidNumber'),
             $tokenDetails[0],
-            'receive-forum-email'
+            'receive-forum-email',
         );
 
         // mark that they dont want to be received anymore.
@@ -2543,14 +2543,14 @@ class Forum extends Plugin
             App::redirect(
                 Route::url($rtrn),
                 Lang::txt('PLG_GROUPS_FORUM_UNSUBSCRIBE_UNABLE_TO_UNSUBSCRIBE'),
-                'error'
+                'error',
             );
         }
 
         // success
         App::redirect(
             Route::url($rtrn),
-            Lang::txt('PLG_GROUPS_FORUM_UNSUBSCRIBE_SUCCESSFULLY_UNSUBSCRIBED')
+            Lang::txt('PLG_GROUPS_FORUM_UNSUBSCRIBE_SUCCESSFULLY_UNSUBSCRIBED'),
         );
     }
 
@@ -2602,7 +2602,7 @@ class Forum extends Plugin
             $recipients = [
                 ['group', $this->group->get('gidNumber')],
                 ['forum.' . $this->forum->get('scope'), $this->forum->get('scope_id')],
-                ['forum.section', $section->get('id')]
+                ['forum.section', $section->get('id')],
             ];
             foreach ($this->group->get('managers') as $recipient) {
                 $recipients[] = ['user', $recipient];
@@ -2616,16 +2616,16 @@ class Forum extends Plugin
                     'description' => Lang::txt('PLG_GROUPS_FORUM_ACTIVITY_SECTION_REORDERED', '<a href="' . Route::url($this->base) . '">' . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
                     'details'     => [
                         'title' => $section->get('title'),
-                        'url'   => Route::url($this->base)
-                    ]
+                        'url'   => Route::url($this->base),
+                    ],
                 ],
-                'recipients' => $recipients
+                'recipients' => $recipients,
             ]);
         }
 
         // Redirect to main lsiting
         App::redirect(
-            Route::url($this->base)
+            Route::url($this->base),
         );
     }
 }

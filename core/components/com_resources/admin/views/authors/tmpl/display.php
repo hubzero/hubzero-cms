@@ -66,7 +66,7 @@ if ($canDo->get('core.edit')) {
                         'COM_RESOURCES_COL_ID',
                         'authorid',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     );
                     ?></th>
                 <th scope="col"><?php
@@ -76,7 +76,7 @@ if ($canDo->get('core.edit')) {
                         'COM_RESOURCES_COL_NAME',
                         'name',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     );
                     ?></th>
                 <th scope="col" class="priority-2"><?php echo Lang::txt('COM_RESOURCES_COL_MEMBER'); ?></th>
@@ -150,7 +150,7 @@ if ($canDo->get('core.edit')) {
                             . '&controller='
                             . $this->controller
                             . '&task=edit&id='
-                            . $row->authorid
+                            . $row->authorid,
                         );
                         ?>
                         <a href="<?php echo $hrefUrl; ?>">

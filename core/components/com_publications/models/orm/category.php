@@ -31,7 +31,7 @@ class Category extends Relational
     protected $rules = [
         'name'      => 'notempty',
         'alias'     => 'notempty',
-        'url_alias' => 'notempty'
+        'url_alias' => 'notempty',
     ];
 
     /**

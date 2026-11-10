@@ -294,7 +294,7 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 }
             } else {
                 $string = $this->connection->quoteName(
-                    $from['table']
+                    $from['table'],
                 );
 
                 // Oracle uses space, not AS, for table aliases
@@ -342,7 +342,7 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                     . $this->connection->quoteName($join['left'])
                     . ' = '
                     . $this->connection->quoteName(
-                        $join['right']
+                        $join['right'],
                     );
             } elseif (isset($join['raw'])) {
                 $joins[] = strtoupper($join['type'])
@@ -350,12 +350,12 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                     . ' ON ' . $join['raw'];
             } elseif (isset($join['conditions'])) {
                 $tableExpr = $this->connection->wrap(
-                    $join['table']
+                    $join['table'],
                 );
                 if (!empty($join['alias'])) {
                     $tableExpr .= ' '
                         . $this->connection->quoteName(
-                            $join['alias']
+                            $join['alias'],
                         );
                 }
 
@@ -363,16 +363,16 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                     . ' JOIN ' . $tableExpr
                     . ' ON '
                     . $this->buildJoinConditions(
-                        $join['conditions']
+                        $join['conditions'],
                     );
             } else {
                 $tableExpr = $this->connection->wrap(
-                    $join['table']
+                    $join['table'],
                 );
                 if (!empty($join['alias'])) {
                     $tableExpr .= ' '
                         . $this->connection->quoteName(
-                            $join['alias']
+                            $join['alias'],
                         );
                 }
 
@@ -382,7 +382,7 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                     . $this->connection->quoteName($join['left'])
                     . ' = '
                     . $this->connection->quoteName(
-                        $join['right']
+                        $join['right'],
                     );
             }
         }
@@ -401,7 +401,7 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      */
     protected function buildJoinExistsClause(
         string $operatorLower,
-        $subquery
+        $subquery,
     ): string {
         if (
             is_object($subquery)
@@ -415,7 +415,7 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
         $sql = trim($sql);
         if ($sql === '') {
             throw new \InvalidArgumentException(
-                'EXISTS join conditions require a subquery expression.'
+                'EXISTS join conditions require a subquery expression.',
             );
         }
 
@@ -424,7 +424,7 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             preg_match(
                 '/^SELECT\s+(.+?)$/i',
                 $sql,
-                $matches
+                $matches,
             ) && !preg_match('/\bFROM\b/i', $sql)
         ) {
             $sql = rtrim($sql) . ' FROM DUAL';
@@ -452,7 +452,7 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
         if (!empty($this->update) && !empty($this->join)) {
             $updateTable = $this->update;
             $quotedTable = $this->connection->quoteName(
-                $updateTable
+                $updateTable,
             );
 
             $subquery = "SELECT " . $quotedTable . ".ROWID"
@@ -464,7 +464,7 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 $originalWhere = preg_replace(
                     '/^WHERE\\s+/i',
                     '',
-                    $originalWhere
+                    $originalWhere,
                 );
                 $subquery .= ' WHERE ' . $originalWhere;
             }
@@ -532,7 +532,7 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                     'raw_type'  => $field->type,
                     'allownull' => (strtoupper($field->nullable_flag ?? '') === 'YES'),
                     'default'   => $this->normalizeDefault($field->default_value ?? null),
-                    'pk'        => (($field->key_type ?? '') === 'PRI')
+                    'pk'        => (($field->key_type ?? '') === 'PRI'),
                 ];
             }
         }
@@ -630,7 +630,7 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             'raw'      => $raw,
             'bindings' => [$value],
             'logical'  => $logical,
-            'depth'    => $depth
+            'depth'    => $depth,
         ];
     }
 
@@ -666,7 +666,7 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             'raw'      => $raw,
             'bindings' => [$jsonValue],
             'logical'  => $logical,
-            'depth'    => $depth
+            'depth'    => $depth,
         ];
     }
 
@@ -705,7 +705,7 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             'raw'      => $raw,
             'bindings' => [(int) $value],
             'logical'  => $logical,
-            'depth'    => $depth
+            'depth'    => $depth,
         ];
     }
 
@@ -754,7 +754,7 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             'raw'      => $raw,
             'bindings' => [$value],
             'logical'  => $logical,
-            'depth'    => $depth
+            'depth'    => $depth,
         ];
     }
 
@@ -820,7 +820,7 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
 
         $quotedConflict = array_map(
             fn($col) => $this->connection->quoteName($col),
-            $conflictColumns
+            $conflictColumns,
         );
 
         // Build the ON condition for MERGE
@@ -844,7 +844,7 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             $this->bind(
                 is_string($this->upsertValues[$column])
                     ? trim($this->upsertValues[$column])
-                    : $this->upsertValues[$column]
+                    : $this->upsertValues[$column],
             );
         }
 
@@ -876,7 +876,7 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
         $columns = array_keys($this->upsertManyRows[0]);
         $quotedColumns = array_map(
             fn($col) => $this->connection->quoteName($col),
-            $columns
+            $columns,
         );
 
         $conflictColumns = !empty($this->upsertManyConflictColumns)
@@ -892,7 +892,7 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                     . $this->connection->quoteName($column);
                 $value = $row[$column] ?? null;
                 $this->bind(
-                    is_string($value) ? trim($value) : $value
+                    is_string($value) ? trim($value) : $value,
                 );
             }
             $sourceRows[] = 'SELECT ' . implode(', ', $sourceCols)
@@ -913,7 +913,7 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
 
         $insertValues = array_map(
             fn($c) => 's.' . $this->connection->quoteName($c),
-            $columns
+            $columns,
         );
 
         return 'MERGE INTO '
@@ -971,12 +971,12 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
         $quotedColumns = [];
         foreach ($columns as $column) {
             $quotedColumns[] = $this->connection->quoteName(
-                $column
+                $column,
             );
         }
 
         $quotedTable = $this->connection->quoteName(
-            $this->insertManyTable
+            $this->insertManyTable,
         );
         $columnList = implode(', ', $quotedColumns);
 
@@ -989,7 +989,7 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 $placeholders[] = '?';
                 $value = $row[$column] ?? null;
                 $this->bind(
-                    is_string($value) ? trim($value) : $value
+                    is_string($value) ? trim($value) : $value,
                 );
             }
             $sql .= "INTO {$quotedTable} ({$columnList})"
@@ -1012,17 +1012,17 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
      * @return  bool
      */
     protected function tableHasIdentityConflict(
-        array $columns
+        array $columns,
     ): bool {
         $table = strtoupper(
-            $this->connection->replacePrefix($this->insertManyTable)
+            $this->connection->replacePrefix($this->insertManyTable),
         );
 
         // Check for identity column
         $this->connection->setQuery(
             "SELECT column_name FROM user_tab_identity_cols"
             . " WHERE table_name = "
-            . $this->connection->quote($table)
+            . $this->connection->quote($table),
         );
         $identityCol = $this->connection->loadResult();
 
@@ -1036,7 +1036,7 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
         return !in_array(
             strtoupper($identityCol),
             $upperColumns,
-            true
+            true,
         );
     }
 

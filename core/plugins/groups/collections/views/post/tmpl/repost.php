@@ -29,7 +29,7 @@ $formAction = Route::url(
     'index.php?option=' . $this->option
     . '&cn=' . $this->group->get('cn')
     . '&active=' . $this->name
-    . '&scope=' . $task
+    . '&scope=' . $task,
 );
 ?>
 <form action="<?php echo $formAction; ?>"
@@ -120,7 +120,7 @@ echo $this->editor(
     35,
     5,
     'field_description',
-    $editorAttrs
+    $editorAttrs,
 );
 ?>
             </label>

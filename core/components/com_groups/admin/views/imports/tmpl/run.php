@@ -66,7 +66,7 @@ $this->js('import')
             '&controller=' .
             $this->controller .
             '&task=progress&id=' .
-            $this->import->get('id')
+            $this->import->get('id'),
         );
         ?>
         <div class="countdown-actions" data-progress="<?php echo $url; ?>">

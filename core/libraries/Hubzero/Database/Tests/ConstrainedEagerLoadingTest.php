@@ -170,7 +170,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
             'scope' => 'approved',
             'conditions' => ['featured' => 1],
             'order' => ['created_at' => 'desc'],
-            'limit' => 10
+            'limit' => 10,
         ];
         $closure = $method->invoke($model, $config);
 
@@ -205,7 +205,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
 
         $result = $model->with([
             'comments' => ['scope' => 'approved'],
-            'user'
+            'user',
         ]);
 
         $this->assertSame($model, $result);
@@ -217,8 +217,8 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
 
         $result = $model->with([
             'comments' => [
-                'conditions' => ['approved' => 1, 'spam' => 0]
-            ]
+                'conditions' => ['approved' => 1, 'spam' => 0],
+            ],
         ]);
 
         $this->assertSame($model, $result);
@@ -233,10 +233,10 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
                 'scope' => ['approved', 'notSpam'],
                 'conditions' => ['featured' => 1],
                 'order' => ['created_at' => 'desc'],
-                'limit' => 5
+                'limit' => 5,
             ],
             'user' => ['scope' => 'active'],
-            'tags'
+            'tags',
         ]);
 
         $this->assertSame($model, $result);
@@ -306,7 +306,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
             $this->assertGreaterThanOrEqual(
                 $comments[$i]->rating,
                 $comments[$i - 1]->rating,
-                "[$dbName] order(rating, desc) should sort descending"
+                "[$dbName] order(rating, desc) should sort descending",
             );
         }
     }
@@ -504,7 +504,7 @@ class ConstrainedEagerLoadingTest extends AbstractDriverTestCase
         $config = [
             'conditions' => ['approved' => 1],
             'order' => ['rating' => 'desc'],
-            'limit' => 2
+            'limit' => 2,
         ];
         $closure = $method->invoke($model, $config);
 

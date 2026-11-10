@@ -131,7 +131,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                         'index.php?option=' . $this->option
                         . '&controller=assets&tmpl=component&scope=asset_group'
                         . '&scope_id=' . $this->row->get('id')
-                        . '&course_id=' . $this->offering->get('course_id')
+                        . '&course_id=' . $this->offering->get('course_id'),
                     );
                     ?>
                     <iframe
@@ -208,7 +208,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                     $param = new \Hubzero\Html\Parameter(
                         (is_object($data) ? $data->toString() : $data),
                         PATH_CORE . DS . 'plugins' . DS . 'courses' . DS
-                        . $plugin['name'] . DS . $plugin['name'] . '.xml'
+                        . $plugin['name'] . DS . $plugin['name'] . '.xml',
                     );
                     foreach ($default->toArray() as $k => $v) {
                         if (substr($k, 0, strlen('default_')) == 'default_') {

@@ -87,7 +87,7 @@ $this->js();
                         50,
                         30,
                         'field-content',
-                        ['class' => 'required']
+                        ['class' => 'required'],
                     );
                     ?>
                 </div>
@@ -151,7 +151,7 @@ $this->js();
                         $routeUrl = Route::url(
                             'index.php?option=' . $this->option
                             . '&controller=pages&task=files&tmpl=component&listdir='
-                            . $this->row->get('offering_id') . '&course=' . $this->course->get('id')
+                            . $this->row->get('offering_id') . '&course=' . $this->course->get('id'),
                         );
                     ?>
                     <iframe

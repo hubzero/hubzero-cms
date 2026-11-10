@@ -48,7 +48,7 @@ class Redirect extends Plugin
         $renderer = new \Hubzero\Error\Renderer\Page(
             App::get('document'),
             App::get('template.loader'),
-            App::get('config')->get('debug')
+            App::get('config')->get('debug'),
         );
 
         // Make sure the error is a 404 and we are not in the administrator.
@@ -116,7 +116,7 @@ class Redirect extends Plugin
                     'comment'   => '',
                     'hits'      => 1,
                     'published' => 0,
-                    'created_date' => Date::toSql()
+                    'created_date' => Date::toSql(),
                 ]);
             } else {
                 $row->set('hits', intval($row->get('hits', 0)) + 1);

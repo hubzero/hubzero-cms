@@ -50,12 +50,12 @@ $start = ($this->showPrivacy == 2 && $this->model->access('member')) ? '<span cl
         <?php
         $projectUrl = Route::url(
             'index.php?option=' . $this->option
-            . '&alias=' . $this->model->get('alias')
+            . '&alias=' . $this->model->get('alias'),
         );
         $thumbUrl = Route::url(
             'index.php?option=' . $this->option
             . '&alias=' . $this->model->get('alias')
-            . '&controller=media&media=thumb'
+            . '&controller=media&media=thumb',
         );
         $updatesTxt = Lang::txt('COM_PROJECTS_VIEW_UPDATES');
         $titleAlt = $this->escape($this->model->get('title'));

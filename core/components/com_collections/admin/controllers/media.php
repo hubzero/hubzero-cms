@@ -149,7 +149,7 @@ class Media extends AdminController
                         'errors'    => $item->getErrors(),
                         'file'      => 'http://',
                         'directory' => '',
-                        'id'        => $listdir
+                        'id'        => $listdir,
                     ]);
                     return;
                 }
@@ -171,7 +171,7 @@ class Media extends AdminController
                 'errors'    => $asset->getErrors(),
                 'file'      => 'http://',
                 'directory' => '',
-                'id'        => $listdir
+                'id'        => $listdir,
             ]);
             return;
         }
@@ -181,7 +181,7 @@ class Media extends AdminController
             'success'   => true,
             'file'      => 'http://',
             'directory' => '',
-            'id'        => $listdir
+            'id'        => $listdir,
         ]);
     }
 
@@ -205,7 +205,7 @@ class Media extends AdminController
                 $item->set('title', $listdir);
                 if (!$item->save()) {
                     echo json_encode([
-                        'error' => $item->getError()
+                        'error' => $item->getError(),
                     ]);
                     return;
                 }
@@ -260,7 +260,7 @@ class Media extends AdminController
             $pattern = '/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/';
             $max = preg_replace($pattern, '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
             echo json_encode([
-                'error' => Lang::txt('COM_COLLECTIONS_ERROR_FILE_TOO_LARGE', $max)
+                'error' => Lang::txt('COM_COLLECTIONS_ERROR_FILE_TOO_LARGE', $max),
             ]);
             return;
         }
@@ -286,7 +286,7 @@ class Media extends AdminController
 
         if (!empty($allowed) && !in_array(strtolower($ext), $allowed)) {
             echo json_encode([
-                'error' => Lang::txt('COM_COLLECTIONS_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed))
+                'error' => Lang::txt('COM_COLLECTIONS_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)),
             ]);
             return;
         }
@@ -316,14 +316,14 @@ class Media extends AdminController
 
         if (!$asset->save()) {
             echo json_encode([
-                'error' => intval($listdir) . ' ' . $asset->getError()
+                'error' => intval($listdir) . ' ' . $asset->getError(),
             ]);
             return;
         }
 
         $view = new \Hubzero\Component\View([
             'name'   => 'media',
-            'layout' => '_asset'
+            'layout' => '_asset',
         ]);
         $view->i          = Request::getInt('i', 0);
         $view->set('option', $this->_option);
@@ -339,7 +339,7 @@ class Media extends AdminController
             'file'      => $filename . '.' . $ext,
             'directory' => str_replace(PATH_APP, '', $path),
             'id'        => $listdir,
-            'html'      => $html
+            'html'      => $html,
         ]);
     }
 
@@ -483,7 +483,7 @@ class Media extends AdminController
             if (!$model->destroy()) {
                 echo json_encode([
                     'success' => false,
-                    'error'   => $model->getError()
+                    'error'   => $model->getError(),
                 ]);
                 return;
             }
@@ -492,7 +492,7 @@ class Media extends AdminController
         //echo result
         echo json_encode([
             'success' => true,
-            'asset'   => $id
+            'asset'   => $id,
         ]);
     }
 

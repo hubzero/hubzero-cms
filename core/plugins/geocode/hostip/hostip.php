@@ -36,7 +36,7 @@ class Hostip extends Plugin
         }
 
         return new \Geocoder\Provider\HostIp\HostIp(
-            $adapter
+            $adapter,
         );
     }
 }

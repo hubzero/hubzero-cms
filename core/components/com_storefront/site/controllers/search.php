@@ -70,12 +70,12 @@ class Search extends \Hubzero\Component\SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
 
         Pathway::append(
-            Lang::txt('Search')
+            Lang::txt('Search'),
         );
 
         $this->view->display();

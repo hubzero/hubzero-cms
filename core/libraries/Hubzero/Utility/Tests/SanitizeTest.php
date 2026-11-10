@@ -51,7 +51,7 @@ class SanitizeTest extends Basic
 	public function testVideoKeepsControlsAndSource()
 	{
 		$html = SanitizeWhitelist::purify(
-			'<video controls width="640"><source src="/site/media/a.mp4" type="video/mp4"></video>'
+			'<video controls width="640"><source src="/site/media/a.mp4" type="video/mp4"></video>',
 		);
 
 		$this->assertStringContainsString('<video controls="controls" width="640">', $html);
@@ -78,12 +78,12 @@ class SanitizeTest extends Basic
 	public function testTrackIsKept()
 	{
 		$html = SanitizeWhitelist::purify(
-			'<video controls src="/a.mp4"><track kind="captions" src="/a.vtt" srclang="en" label="English" default></video>'
+			'<video controls src="/a.mp4"><track kind="captions" src="/a.vtt" srclang="en" label="English" default></video>',
 		);
 
 		$this->assertStringContainsString(
 			'<track kind="captions" src="/a.vtt" srclang="en" label="English" default="default" />',
-			$html
+			$html,
 		);
 	}
 
@@ -109,7 +109,7 @@ class SanitizeTest extends Basic
 	{
 		$html = SanitizeWhitelist::purify(
 			'<video src="javascript:alert(1)" poster="javascript:alert(2)" onerror="alert(3)">'
-			. '<source src="javascript:alert(4)"><track src="javascript:alert(5)"></video>'
+			. '<source src="javascript:alert(4)"><track src="javascript:alert(5)"></video>',
 		);
 
 		$this->assertStringNotContainsString('javascript', $html);

@@ -43,7 +43,7 @@ class Resources extends Module
             'draftUser'     => 2,
             'pending'       => 3,
             'removed'       => 4,
-            'draftInternal' => 5
+            'draftInternal' => 5,
         ];
 
         foreach ($queries as $key => $state) {

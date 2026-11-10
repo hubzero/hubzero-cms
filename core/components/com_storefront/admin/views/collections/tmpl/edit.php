@@ -41,7 +41,7 @@ $this->css()
 <?php
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
 ?>
@@ -153,13 +153,13 @@ $aliasValue = $this->escape(stripslashes($this->row->getAlias()));
                         'index.php?option=' . $this->option
                         . '&controller=images&task=upload&type=collection&id='
                         . $this->row->getId() . '&no_html=1&'
-                        . Session::getFormToken() . '=1'
+                        . Session::getFormToken() . '=1',
                     );
                     $uploadTxt = Lang::txt('COM_STOREFRONT_UPLOAD_CLICK_OR_DROP');
                     $iframeSrc = Route::url(
                         'index.php?option=' . $this->option
                         . '&controller=images&tmpl=component&file=' . $file
-                        . '&type=collection&id=' . $this->row->getId()
+                        . '&type=collection&id=' . $this->row->getId(),
                     );
                     ?>
                     <div class="uploader-wrap">
@@ -227,7 +227,7 @@ $aliasValue = $this->escape(stripslashes($this->row->getAlias()));
                         . '&controller=images&tmpl=component&task=remove'
                         . '&currentfile=' . $img->imgId
                         . '&type=collection&id=' . $this->row->getId()
-                        . '&' . Session::getFormToken() . '=1'
+                        . '&' . Session::getFormToken() . '=1',
                     );
                     $hideClass = $image ? '' : 'hide';
                     $noImgPath = '/core/components/com_storefront/site/assets/img/noimage.png';

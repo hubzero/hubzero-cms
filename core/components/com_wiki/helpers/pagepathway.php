@@ -32,14 +32,14 @@ trait PagePathway
             foreach ($parents as $p) {
                 Pathway::append(
                     $p->get('title'),
-                    $p->link()
+                    $p->link(),
                 );
             }
         }
 
         Pathway::append(
             $this->page->title,
-            $this->page->link()
+            $this->page->link(),
         );
 
         // Off by default, since a site or group template may already show the pathway

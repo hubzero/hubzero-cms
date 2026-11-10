@@ -70,7 +70,7 @@ if (empty($this->meta->globalDownloadLimit)) {
                     50,
                     10,
                     'eula',
-                    ['buttons' => false]
+                    ['buttons' => false],
                 ); ?>
             </div>
 

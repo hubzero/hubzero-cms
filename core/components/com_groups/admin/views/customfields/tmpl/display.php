@@ -35,7 +35,7 @@ Html::behavior('tooltip');
 
 <?php
 $formAction = Route::url(
-    'index.php?option=' . $this->option . '&controller=' . $this->controller
+    'index.php?option=' . $this->option . '&controller=' . $this->controller,
 );
 ?>
 <form action="<?php echo $formAction; ?>" method="post" name="adminForm">
@@ -134,7 +134,7 @@ $formAction = Route::url(
                         $editUrl = Route::url(
                             'index.php?option=' . $this->option
                             . '&controller=' . $this->controller
-                            . '&task=edit&id=' . $row->get('id')
+                            . '&task=edit&id=' . $row->get('id'),
                         );
                         ?>
                         <a href="<?php echo $editUrl; ?>">
@@ -156,7 +156,7 @@ $formAction = Route::url(
                         . '&controller=' . $this->controller
                         . '&task=anonymous&state=' . $state
                         . '&id=' . $row->get('id')
-                        . '&' . Session::getFormToken() . '=1'
+                        . '&' . Session::getFormToken() . '=1',
                     );
                     ?>
                     <a class="state <?php echo $cls2; ?>" href="<?php echo $anonUrl; ?>">

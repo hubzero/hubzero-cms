@@ -16,7 +16,7 @@ defined('_HZEXEC_') or die();
 $formUrl = Route::url(
     'index.php?option=' . $this->option
     . '&cn=' . $this->group->get('cn')
-    . '&active=members'
+    . '&active=members',
 );
 ?>
 <form action="<?php echo $formUrl; ?>" method="post" id="hubForm">

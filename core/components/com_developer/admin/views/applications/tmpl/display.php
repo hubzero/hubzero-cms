@@ -52,7 +52,7 @@ $this->js();
 
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 $resetConfirm = Lang::txt('COM_DEVELOPER_RESET_CLIENT_SECRET_CONFIRM');
 $revokeConfirm = Lang::txt('COM_DEVELOPER_REVOKE_TOKENS_CONFIRM');
@@ -158,7 +158,7 @@ $sort = @$this->filters['sort'];
                         $editUrl = Route::url(
                             'index.php?option=' . $this->option
                             . '&controller=' . $this->controller
-                            . '&task=edit&id=' . $row->get('id')
+                            . '&task=edit&id=' . $row->get('id'),
                         );
                         ?>
                         <a href="<?php echo $editUrl; ?>">
@@ -178,7 +178,7 @@ $sort = @$this->filters['sort'];
                             . '&controller=' . $this->controller
                             . '&task=' . $task
                             . '&id=' . $row->get('id')
-                            . '&' . Session::getFormToken() . '=1'
+                            . '&' . Session::getFormToken() . '=1',
                         );
                         ?>
                         <a class="state <?php echo $cls; ?>" href="<?php echo $stateUrl; ?>">

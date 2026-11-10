@@ -50,7 +50,7 @@ $course_id = 0;
 <?php
 $routeUrl = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
 ?>
@@ -142,7 +142,7 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                 if ($model->courses()->total() > 0) {
                                     foreach ($model->courses() as $course) {
                                         $courseAlias = $this->escape(
-                                            stripslashes($course->get('alias'))
+                                            stripslashes($course->get('alias')),
                                         );
                                         ?>
                                             <optgroup label="<?php echo $courseAlias; ?>">
@@ -153,12 +153,12 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                                     $course_id = $offering->get('course_id');
                                                 }
                                                 $offeringVal = $this->escape(
-                                                    stripslashes($offering->get('id'))
+                                                    stripslashes($offering->get('id')),
                                                 );
                                                 $sel = ($offering->get('id') == $this->row->get('offering_id'))
                                                     ? ' selected="selected"' : '';
                                                 $offeringAlias = $this->escape(
-                                                    stripslashes($offering->get('alias'))
+                                                    stripslashes($offering->get('alias')),
                                                 );
                                                 ?>
                                             <option
@@ -180,7 +180,7 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                         $aliasHint = Lang::txt('COM_COURSES_FIELD_ALIAS_HINT');
                         $aliasTxt = Lang::txt('COM_COURSES_FIELD_ALIAS');
                         $aliasVal = $this->escape(
-                            stripslashes($this->row->get('alias'))
+                            stripslashes($this->row->get('alias')),
                         );
                         ?>
                         <div class="input-wrap" data-hint="<?php echo $aliasHint; ?>">
@@ -204,7 +204,7 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                             </label><br />
                             <?php
                             $titleVal = $this->escape(
-                                stripslashes($this->row->get('title'))
+                                stripslashes($this->row->get('title')),
                             );
                             ?>
                             <input
@@ -256,7 +256,7 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                 <?php
                                 $enrollVal = $this->row->get(
                                     'enrollment',
-                                    $this->row->config('default_enrollment', 0)
+                                    $this->row->config('default_enrollment', 0),
                                 );
                                 $sel = ($enrollVal == 0) ? ' selected="selected"' : '';
                                 ?>
@@ -325,7 +325,7 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                     'calendar',
                                     'fields[publish_up]',
                                     $dateVal,
-                                    ['id' => 'field-publish_up']
+                                    ['id' => 'field-publish_up'],
                                 );
                                 ?>
                             <?php $hintPubUp = Lang::txt('COM_COURSES_FIELD_PUBLISH_UP_HINT'); ?>
@@ -346,7 +346,7 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                     'calendar',
                                     'fields[start_date]',
                                     $dateVal,
-                                    ['id' => 'field-start_date']
+                                    ['id' => 'field-start_date'],
                                 );
                                 ?>
                             <?php $hintStart = Lang::txt('COM_COURSES_FIELD_SECTION_STARTS_HINT'); ?>
@@ -367,7 +367,7 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                     'calendar',
                                     'fields[end_date]',
                                     $dateVal,
-                                    ['id' => 'field-end_date']
+                                    ['id' => 'field-end_date'],
                                 );
                                 ?>
                             <?php $finishHintTxt = Lang::txt('COM_COURSES_FIELD_FINISHES_HINT'); ?>
@@ -388,7 +388,7 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                     'calendar',
                                     'fields[publish_down]',
                                     $dateVal,
-                                    ['id' => 'field-publish_down']
+                                    ['id' => 'field-publish_down'],
                                 );
                                 ?>
                             <?php $hintPubDown = Lang::txt('COM_COURSES_FIELD_PUBLISH_DOWN_HINT'); ?>
@@ -456,7 +456,7 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                     'index.php?option=' . $this->option
                                     . '&controller=logo&task=upload&type=section&id='
                                     . $this->row->get('id') . '&no_html=1&'
-                                    . Session::getFormToken() . '=1'
+                                    . Session::getFormToken() . '=1',
                                 );
                                 $uploadTxt = Lang::txt('COM_COURSES_UPLOAD_CLICK_OR_DROP');
                                 ?>
@@ -470,7 +470,7 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                             'index.php?option=' . $this->option
                                             . '&controller=logo&tmpl=component&file='
                                             . $logo . '&type=section&id='
-                                            . $this->row->get('id')
+                                            . $this->row->get('id'),
                                         );
                                         ?>
                                     <iframe
@@ -492,7 +492,7 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
 
                                     $this_size = filesize(PATH_APP . $path . DS . $logo);
                                     list($width, $height, $type, $attr) = getimagesize(
-                                        PATH_APP . $path . DS . $logo
+                                        PATH_APP . $path . DS . $logo,
                                     );
                                     $pic = $logo;
                                 } else {
@@ -522,7 +522,7 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                                 <?php
                                                 $picName = $this->row->params(
                                                     'logo',
-                                                    Lang::txt('COM_COURSES_NONE')
+                                                    Lang::txt('COM_COURSES_NONE'),
                                                 );
                                                 ?>
                                                 <span id="img-name">
@@ -538,7 +538,7 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                                     . '&task=remove&currentfile=' . $logo
                                                     . '&type=section&id='
                                                     . $this->row->get('id') . '&'
-                                                    . Session::getFormToken() . '=1'
+                                                    . Session::getFormToken() . '=1',
                                                 );
                                                 $delTitle = Lang::txt('COM_COURSES_DELETE');
                                                 $defImg = '../core/components/com_courses/admin/assets/img/blank.png';
@@ -655,7 +655,7 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                             $param = new \Hubzero\Html\Parameter(
                                 (is_object($data) ? $data->toString() : $data),
                                 PATH_CORE . DS . 'plugins' . DS . 'courses'
-                                . DS . $plugin['name'] . DS . $plugin['name'] . '.xml'
+                                . DS . $plugin['name'] . DS . $plugin['name'] . '.xml',
                             );
                             $out = $param->render('params', 'onSectionEdit');
                             if (!$out) {
@@ -668,7 +668,7 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                 <?php
                                 $paramTxt = Lang::txt(
                                     'COM_COURSES_FIELDSET_PARAMETERS',
-                                    $plugin['title']
+                                    $plugin['title'],
                                 );
                                 ?>
                             <legend><?php echo $paramTxt; ?></legend>
@@ -694,7 +694,7 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                             'index.php?option=' . $this->option
                             . '&controller=supervisors&tmpl=component&offering='
                             . $this->row->get('offering_id')
-                            . '&section=' . $this->row->get('id')
+                            . '&section=' . $this->row->get('id'),
                         );
                         ?>
                     <iframe
@@ -1396,14 +1396,14 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                 <td>
                                     <?php
                                         $criteriaVal = $this->escape(
-                                            stripslashes($this->badge->get('criteria_text'))
+                                            stripslashes($this->badge->get('criteria_text')),
                                         );
                                     echo $this->editor(
                                         'badge[criteria]',
                                         $criteriaVal,
                                         50,
                                         10,
-                                        'badge-criteria'
+                                        'badge-criteria',
                                     );
                                     ?>
                                 </td>
@@ -1471,7 +1471,7 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                 <td>
                                     <?php
                                     $provName = $this->escape(
-                                        stripslashes($this->badge->get('provider_name'))
+                                        stripslashes($this->badge->get('provider_name')),
                                     );
                                     echo $provName;
                                     ?>
@@ -1487,14 +1487,14 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                 <td>
                                     <?php
                                         $criteriaVal = $this->escape(
-                                            stripslashes($this->badge->get('criteria_text'))
+                                            stripslashes($this->badge->get('criteria_text')),
                                         );
                                     echo $this->editor(
                                         'badge[criteria]',
                                         $criteriaVal,
                                         35,
                                         5,
-                                        'badge-criteria'
+                                        'badge-criteria',
                                     );
                                     ?>
                                     <?php

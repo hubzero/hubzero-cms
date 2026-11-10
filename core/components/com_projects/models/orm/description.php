@@ -43,7 +43,7 @@ class Description extends Relational
      */
     protected $rules = [
         'description_key' => 'notempty',
-        'project_id'      => 'positive|nonzero'
+        'project_id'      => 'positive|nonzero',
     ];
 
     /**
@@ -52,7 +52,7 @@ class Description extends Relational
      * @var  array
      */
     public $initiate = [
-        'ordering'
+        'ordering',
     ];
 
     /**

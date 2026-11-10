@@ -34,7 +34,7 @@ $menuTypes = \Components\Menus\Helpers\Menus::getMenuLinks();
                     echo Html::tabs(
                         'panel',
                         $typeTitle,
-                        $type->menutype . '-details'
+                        $type->menutype . '-details',
                     );
                     ?>
                     <ul class="menu-links">

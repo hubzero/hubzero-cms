@@ -66,7 +66,7 @@ class LayoutPathTest extends Basic
     {
         $this->assertSame(
             PATH_CORE . '/modules/mod_announcements/tmpl/default.php',
-            $this->loader->getLayoutPath('mod_announcements')
+            $this->loader->getLayoutPath('mod_announcements'),
         );
     }
 

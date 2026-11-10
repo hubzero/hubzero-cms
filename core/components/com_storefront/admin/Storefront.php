@@ -41,17 +41,17 @@ class Storefront extends AbstractComponent
         Submenu::addEntry(
             Lang::txt('COM_STOREFRONT_PRODUCTS'),
             Route::url('index.php?option=com_storefront&id=0'),
-            $controllerName == 'products'
+            $controllerName == 'products',
         );
         Submenu::addEntry(
             Lang::txt('COM_STOREFRONT_COLLECTIONS'),
             Route::url('index.php?option=com_storefront&controller=collections&id=0'),
-            $controllerName == 'collections'
+            $controllerName == 'collections',
         );
         Submenu::addEntry(
             Lang::txt('COM_STOREFRONT_OPTION_GROUPS'),
             Route::url('index.php?option=com_storefront&controller=optiongroups&id=0'),
-            $controllerName == 'optiongroups'
+            $controllerName == 'optiongroups',
         );
 
         if (!is_subclass_of(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName), \Hubzero\Component\ControllerInterface::class)) {

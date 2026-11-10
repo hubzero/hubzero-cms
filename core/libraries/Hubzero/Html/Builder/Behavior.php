@@ -127,7 +127,7 @@ class Behavior
                     $data['scripts'][$url] = [
                         'mime'  => $type,
                         'defer' => $defer,
-                        'async' => $async
+                        'async' => $async,
                     ];
                     $pushed = true;
                 }
@@ -142,7 +142,7 @@ class Behavior
                 $data['scripts'][$url] = [
                     'mime'  => $type,
                     'defer' => $defer,
-                    'async' => $async
+                    'async' => $async,
                 ];
             }
 
@@ -269,7 +269,7 @@ class Behavior
 					},
 					tooltipClass: 'tooltip'
 				});
-			});"
+			});",
         );
 
         // Set static array
@@ -444,7 +444,7 @@ class Behavior
         App::get('document')->addScriptDeclaration(
             "jQuery(document).ready(function($){
 				$('#" . $toggler . "').switcher();
-			});"
+			});",
         );
 
         self::$loaded[__METHOD__] = true;
@@ -543,7 +543,7 @@ class Behavior
 					},
 					tooltipClass: 'tool-tip'
 				});
-			});"
+			});",
         );
 
         self::$loaded[__METHOD__][$sig] = true;
@@ -649,7 +649,7 @@ class Behavior
             App::get('document')->addScriptDeclaration(
                 'jQuery(document).ready(function($){
 					$("' . $selector . '").fancybox(' . $options . ');
-				});'
+				});',
             );
         }
 
@@ -678,7 +678,7 @@ class Behavior
         App::get('document')->addScriptDeclaration(
             "jQuery(document).ready(function($){
 				new Hubzero.MultiSelect('" . $id . "');
-			});"
+			});",
         );
 
         // Set static array
@@ -815,7 +815,7 @@ class Behavior
 					$(this).colpickSetColor(this.value);
 				});
 			});
-		"
+		",
             );
 
         self::$loaded[__METHOD__] = true;

@@ -179,7 +179,7 @@ class Whatsnew extends Module
                 $count,
                 0,
                 $activeareas,
-                []
+                [],
             ]);
 
         $rows = [];
@@ -217,7 +217,7 @@ class Whatsnew extends Module
                         $count,
                         0,
                         $activeareas,
-                        $tagids
+                        $tagids,
                     ]);
 
                 $rows2 = [];

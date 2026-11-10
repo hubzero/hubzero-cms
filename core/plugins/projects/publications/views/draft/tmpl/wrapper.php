@@ -67,7 +67,7 @@ $isFirst = $this->pub->curation()->getFirstBlock() == $this->step ? true : false
                             $showAboutLink = $this->manifest->about
                                 && !$this->pub->_project->isProvisioned();
                             $learnMoreTitle = Lang::txt(
-                                'PLG_PROJECTS_PUBLICATIONS_CLICK_TO_LEARN_MORE'
+                                'PLG_PROJECTS_PUBLICATIONS_CLICK_TO_LEARN_MORE',
                             );
                             ?>
                             <h5><?php echo $tagline; ?> <?php if ($showAboutLink) {

@@ -36,7 +36,7 @@ class File extends None
         '__macosx',
         'index.html',
         'site.css',
-        'site.less.cache'
+        'site.less.cache',
     ];
 
     /**
@@ -109,7 +109,7 @@ class File extends None
         $data = [
             'time'  => time(),
             'value' => $value,
-            'ttl'   => $this->expiration($minutes)
+            'ttl'   => $this->expiration($minutes),
         ];
 
         return $this->writeCacheFile($file, $data);

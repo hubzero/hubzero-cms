@@ -42,35 +42,35 @@ class Publications extends AbstractComponent
         Submenu::addEntry(
             Lang::txt('COM_PUBLICATIONS_PUBLICATIONS'),
             Route::url('index.php?option=com_publications&controller=items'),
-            $controllerName == 'items'
+            $controllerName == 'items',
         );
         Submenu::addEntry(
             Lang::txt('COM_PUBLICATIONS_LICENSES'),
             Route::url('index.php?option=com_publications&controller=licenses'),
-            $controllerName == 'licenses'
+            $controllerName == 'licenses',
         );
         Submenu::addEntry(
             Lang::txt('COM_PUBLICATIONS_CATEGORIES'),
             Route::url('index.php?option=com_publications&controller=categories'),
-            $controllerName == 'categories'
+            $controllerName == 'categories',
         );
         Submenu::addEntry(
             Lang::txt('COM_PUBLICATIONS_MASTER_TYPES'),
             Route::url('index.php?option=com_publications&controller=types'),
-            $controllerName == 'types'
+            $controllerName == 'types',
         );
         Submenu::addEntry(
             Lang::txt('COM_PUBLICATIONS_BATCH_CREATE'),
             Route::url('index.php?option=com_publications&controller=batchcreate'),
-            $controllerName == 'batchcreate'
+            $controllerName == 'batchcreate',
         );
 
         if (\Components\Plugins\Helpers\Plugins::getActions()->get('core.manage')) {
             Submenu::addEntry(
                 Lang::txt('COM_PUBLICATIONS_PLUGINS'),
                 Route::url(
-                    'index.php?option=com_plugins&view=plugins&filter_folder=publications&filter_type=publications'
-                )
+                    'index.php?option=com_plugins&view=plugins&filter_folder=publications&filter_type=publications',
+                ),
             );
         }
 

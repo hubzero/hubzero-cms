@@ -49,7 +49,7 @@ $hasContent = empty($this->item->get('module'))
 
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&task=edit&id=' . (int) $this->item->id
+    . '&task=edit&id=' . (int) $this->item->id,
 );
 $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
 ?>

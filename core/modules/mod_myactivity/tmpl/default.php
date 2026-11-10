@@ -24,7 +24,7 @@ $this->css();
             <?php
             $activityUrl = Route::url(
                 'index.php?option=com_members&id='
-                . User::get('id') . '&active=activity'
+                . User::get('id') . '&active=activity',
             );
             ?>
             <a class="icon-browse" href="<?php echo $activityUrl; ?>">
@@ -38,7 +38,7 @@ $this->css();
         <?php
         $activityListUrl = Route::url(
             'index.php?option=com_members&id='
-            . User::get('id') . '&active=activity'
+            . User::get('id') . '&active=activity',
         );
         ?>
         <ul class="compactlist" data-url="<?php echo $activityListUrl; ?>">

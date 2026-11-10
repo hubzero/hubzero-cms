@@ -56,7 +56,7 @@ class Doi extends Relational
      * @var  array
      */
     protected $rules = [
-        'rid' => 'positive|nonzero'
+        'rid' => 'positive|nonzero',
     ];
 
     /**
@@ -65,7 +65,7 @@ class Doi extends Relational
      * @var  array
      */
     public $initiate = [
-        'doi_shoulder'
+        'doi_shoulder',
     ];
 
     /**

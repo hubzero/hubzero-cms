@@ -58,7 +58,7 @@ foreach (
         . 'text()="http://id.incommon.org/category/research-and-scholarship" or '
         . 'text()="http://refeds.org/category/research-and-scholarship"'
         . ']'
-        . ']'
+        . ']',
     ) as $entity
 ) {
     // easier to work with as an array, the SimpleXMLElement class is bizarre
@@ -78,7 +78,7 @@ foreach (
     $rv[] = [
         'entity_id' => $id,
         'label'     => $title,
-        'host'      => $host
+        'host'      => $host,
 //              'logo'      => $logo
     ];
 }

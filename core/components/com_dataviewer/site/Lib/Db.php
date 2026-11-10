@@ -270,19 +270,19 @@ class Db
                     $having_filter[$col_id] = [
                         'val' => $search_str,
                         'col' => $colExpr,
-                        'fieldtype' => $fieldtype
+                        'fieldtype' => $fieldtype,
                     ];
                 } elseif ($col['raw']) {
                     $where_filter[$col_id] = [
                         'val' => $search_str,
                         'col' => $col['expr'],
-                        'fieldtype' => $fieldtype
+                        'fieldtype' => $fieldtype,
                     ];
                 } else {
                     $where_filter[$col_id] = [
                         'val' => $search_str,
                         'col' => $col_id,
-                        'fieldtype' => $fieldtype
+                        'fieldtype' => $fieldtype,
                     ];
                 }
             }
@@ -312,7 +312,7 @@ class Db
                         'col' => $colExpr,
                         'fieldtype' => $fieldtype,
                         'filtered_view' => true,
-                        'filter_type' => $filter_type
+                        'filter_type' => $filter_type,
                     ];
                 } elseif ($col['raw']) {
                     $where_filter[$col_id] = [
@@ -320,7 +320,7 @@ class Db
                         'col' => $col['expr'],
                         'fieldtype' => $fieldtype,
                         'filtered_view' => true,
-                        'filter_type' => $filter_type
+                        'filter_type' => $filter_type,
                     ];
                 } else {
                     $where_filter[$col_id] = [
@@ -328,7 +328,7 @@ class Db
                         'col' => $col_id,
                         'fieldtype' => $fieldtype,
                         'filtered_view' => true,
-                        'filter_type' => $filter_type
+                        'filter_type' => $filter_type,
                     ];
                 }
             }

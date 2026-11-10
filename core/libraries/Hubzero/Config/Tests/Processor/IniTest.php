@@ -106,7 +106,7 @@ sitename_pagetitles=0';
         $this->obj = $data;
         $this->arr = [
             'app' => (array) $data->app,
-            'seo' => (array) $data->seo
+            'seo' => (array) $data->seo,
         ];
 
         $this->processor = new Ini();

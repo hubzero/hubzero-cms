@@ -73,7 +73,7 @@ class Filters extends Field
                 $this->value[$group->value] = [
                     'filter_type' => 'BL',
                     'filter_tags' => '',
-                    'filter_attributes' => ''
+                    'filter_attributes' => '',
                 ];
             }
             $group_filter = $this->value[$group->value];

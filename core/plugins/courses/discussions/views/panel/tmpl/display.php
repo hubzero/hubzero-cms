@@ -33,7 +33,7 @@ if (count($inst) > 0) {
             'folder'  => 'courses',
             'element' => 'outline',
             'name'    => 'shared',
-            'layout'  => '_not_enrolled'
+            'layout'  => '_not_enrolled',
         ]);
 
         $view->set('course', $this->course)

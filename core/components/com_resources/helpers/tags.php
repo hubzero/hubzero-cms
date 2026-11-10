@@ -164,7 +164,7 @@ class Tags extends Cloud
         // " AND (() OR ())" and turned the page into a SQL syntax error.
         $filterby = array_values(array_intersect(
             (array) $filterby,
-            ['level0', 'level1', 'level2', 'level3', 'level4']
+            ['level0', 'level1', 'level2', 'level3', 'level4'],
         ));
 
         if ($tag || $tag2) {

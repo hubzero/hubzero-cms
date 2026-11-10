@@ -50,7 +50,7 @@ class Cloud extends \Hubzero\Base\Obj
         'tags.count'  => null,
         'tags.list'   => null,
         'tags.string' => null,
-        'tags.cloud'  => null
+        'tags.cloud'  => null,
     ];
 
     /**
@@ -472,7 +472,7 @@ class Cloud extends \Hubzero\Base\Obj
                     $view = new View([
                         'base_path' => dirname(__DIR__) . '/site',
                         'name'      => 'tags',
-                        'layout'    => '_cloud'
+                        'layout'    => '_cloud',
                     ]);
                     $view->set('config', Component::params('com_tags'))
                          ->set('tags', $this->tags('list', $filters, $clear));

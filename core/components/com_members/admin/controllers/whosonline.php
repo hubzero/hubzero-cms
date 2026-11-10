@@ -26,7 +26,7 @@ class WhosOnline extends AdminController
         // get all sessions
         $this->view->rows = SessionHelper::getAllSessions([
             'guest'    => 0,
-            'distinct' => 1
+            'distinct' => 1,
         ]);
 
         // Output the HTML

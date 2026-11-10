@@ -48,7 +48,7 @@ $this->css()
             <?php
             $deleteWarning = Lang::txt(
                 'PLG_GROUPS_BLOG_DELETE_WARNING',
-                $this->escape(stripslashes($this->entry->get('title')))
+                $this->escape(stripslashes($this->entry->get('title'))),
             );
             ?>
             <p class="warning"><?php echo $deleteWarning; ?></p>

@@ -21,11 +21,11 @@ $newstate         = ($this->action == 'confirm') ? 'Approved' :  $this->status['
 
 $codeChoices = [
     '@OPEN' => 'open source (anyone can access code)',
-    '@DEV'  => 'closed code'
+    '@DEV'  => 'closed code',
 ];
 
 $licenseChoices = [
-    'c1' => Lang::txt('Load a standard license')
+    'c1' => Lang::txt('Load a standard license'),
 ];
 if ($this->licenses) {
     foreach ($this->licenses as $l) {
@@ -47,12 +47,12 @@ $this->css('pipeline.css')
             $statusUrl = Route::url(
                 'index.php?option=' . $this->option
                 . '&controller=' . $this->controller
-                . '&task=status&app=' . $this->status['toolname']
+                . '&task=status&app=' . $this->status['toolname'],
             );
             $newUrl = Route::url(
                 'index.php?option=' . $this->option
                 . '&controller=' . $this->controller
-                . '&task=create'
+                . '&task=create',
             );
             ?>
             <li><a class="icon-status status btn" href="<?php echo $statusUrl; ?>">
@@ -84,7 +84,7 @@ $this->css('pipeline.css')
             $versionFormAction = Route::url(
                 'index.php?option=' . $this->option
                 . '&controller=' . $this->controller
-                . '&task=license'
+                . '&task=license',
             );
             $licTemplate = $this->license_choice['template'];
             ?>
@@ -98,7 +98,7 @@ $this->css('pipeline.css')
                         $codeChoices,
                         $this->code,
                         'shifted',
-                        ''
+                        '',
                     ); ?>
 
                     <div id="lic_cl"><?php echo Lang::txt('LICENSE'); ?>:</div>
@@ -139,7 +139,7 @@ $this->css('pipeline.css')
                             $licenseChoices,
                             $licTemplate,
                             'shifted',
-                            ''
+                            '',
                         ); ?>
                     </div>
                     <div id="legendnotes">

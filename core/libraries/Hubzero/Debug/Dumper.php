@@ -41,7 +41,7 @@ class Dumper
         '_'  => '',
         ' '  => '',
         '\\' => '',
-        '/'  => ''
+        '/'  => '',
     ];
 
     /**
@@ -99,7 +99,7 @@ class Dumper
                 throw new RendererNotFoundException(sprintf(
                     '%s: failed retrieving renderer via invokable class "%s"; class does not exist',
                     __CLASS__ . '::' . __FUNCTION__,
-                    $invokable
+                    $invokable,
                 ));
             }
             $renderer = new $invokable();
@@ -109,7 +109,7 @@ class Dumper
             throw new InvalidArgumentException(sprintf(
                 '%s was unable to fetch renderer or renderer was not an instance of %s',
                 get_class($this) . '::' . __FUNCTION__,
-                __NAMESPACE__ . '\\Dumper\\Renderable'
+                __NAMESPACE__ . '\\Dumper\\Renderable',
             ));
         }
 
@@ -142,7 +142,7 @@ class Dumper
         $varc = (is_object($var) ? clone $var : $var);
         $this->_messages[] = [
             'var'  => $varc,
-            'time' => microtime(true)
+            'time' => microtime(true),
         ];
 
         return $this;
@@ -189,7 +189,7 @@ class Dumper
 
         return [
             'count'    => count($messages),
-            'messages' => $messages
+            'messages' => $messages,
         ];
     }
 

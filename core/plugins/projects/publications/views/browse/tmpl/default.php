@@ -77,7 +77,7 @@ if (count($this->rows) > 0) {
                 ? Lang::txt('COM_PROJECTS_OUT_OF') . ' ' . $this->total
                 : '';
             $pubsLabel = Lang::txt(
-                'PLG_PROJECTS_PUBLICATIONS_PUBLICATIONS_S'
+                'PLG_PROJECTS_PUBLICATIONS_PUBLICATIONS_S',
             );
             ?>
             <div class="list-menu">
@@ -98,18 +98,18 @@ if (count($this->rows) > 0) {
             $titleActive = ($this->filters['sortby'] == 'title')
                 ? ' activesort' : '';
             $titleUrl = Route::url(
-                $pubLink . $sortAppend . '&sortby=title'
+                $pubLink . $sortAppend . '&sortby=title',
             );
             $titleSort = $sortByLabel . ' '
                 . Lang::txt('PLG_PROJECTS_PUBLICATIONS_TITLE');
             $titleLabel = Lang::txt(
-                'PLG_PROJECTS_PUBLICATIONS_TITLE'
+                'PLG_PROJECTS_PUBLICATIONS_TITLE',
             );
 
             $idActive = ($this->filters['sortby'] == 'id')
                 ? ' activesort' : '';
             $idUrl = Route::url(
-                $pubLink . $sortAppend . '&sortby=id'
+                $pubLink . $sortAppend . '&sortby=id',
             );
             $idSort = $sortByLabel . ' '
                 . Lang::txt('PLG_PROJECTS_PUBLICATIONS_ID');
@@ -118,27 +118,27 @@ if (count($this->rows) > 0) {
             $typeActive = ($this->filters['sortby'] == 'type')
                 ? ' activesort' : '';
             $typeUrl = Route::url(
-                $pubLink . $sortAppend . '&sortby=type'
+                $pubLink . $sortAppend . '&sortby=type',
             );
             $typeSort = $sortByLabel . ' '
                 . Lang::txt('PLG_PROJECTS_PUBLICATIONS_TYPE');
             $typeLabel = Lang::txt(
-                'PLG_PROJECTS_PUBLICATIONS_CONTENT_TYPE'
+                'PLG_PROJECTS_PUBLICATIONS_CONTENT_TYPE',
             );
 
             $statusActive = ($this->filters['sortby'] == 'status')
                 ? ' class="activesort"' : '';
             $statusUrl = Route::url(
-                $pubLink . $sortAppend . '&sortby=status'
+                $pubLink . $sortAppend . '&sortby=status',
             );
             $statusSort = $sortByLabel . ' '
                 . Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATUS');
             $statusLabel = Lang::txt(
-                'PLG_PROJECTS_PUBLICATIONS_STATUS'
+                'PLG_PROJECTS_PUBLICATIONS_STATUS',
             );
 
             $releasesLabel = Lang::txt(
-                'PLG_PROJECTS_PUBLICATIONS_RELEASES'
+                'PLG_PROJECTS_PUBLICATIONS_RELEASES',
             );
             ?>
             <table id="filelist" class="listing">
@@ -198,7 +198,7 @@ if (count($this->rows) > 0) {
             $pageNav = new \Hubzero\Pagination\Paginator(
                 $this->total,
                 $this->filters['start'],
-                $this->filters['limit']
+                $this->filters['limit'],
             );
             $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
             $pageNav->setAdditionalUrlParam('sortdir', $this->filters['sortdir']);
@@ -234,22 +234,22 @@ if (count($this->rows) > 0) {
 <?php
 if (count($this->rows) > 0) {
     $diskUrl = Route::url(
-        $this->project->link('publications') . '&action=diskspace'
+        $this->project->link('publications') . '&action=diskspace',
     );
     $diskTooltip = Lang::txt(
-        'PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_TOOLTIP'
+        'PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_TOOLTIP',
     );
     $warningClass = $warning ? 'class="quota-warning"' : '';
     $usedLabel = $inuse . '% '
         . Lang::txt('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_USED');
     $quotaLabel = Lang::txt(
-        'PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_QUOTA'
+        'PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_QUOTA',
     ) . ': ' . \Hubzero\Utility\Number::formatBytes($this->quota);
     $statsUrl = Route::url(
-        $this->project->link('publications') . '&action=stats'
+        $this->project->link('publications') . '&action=stats',
     );
     $statsLabel = Lang::txt(
-        'PLG_PROJECTS_PUBLICATIONS_VIEW_USAGE_STATS'
+        'PLG_PROJECTS_PUBLICATIONS_VIEW_USAGE_STATS',
     );
     ?>
     <p class="extras">

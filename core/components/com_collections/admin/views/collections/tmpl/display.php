@@ -207,7 +207,7 @@ Toolbar::help('collections');
                         $editUrl = Route::url(
                             'index.php?option=' . $this->option
                             . '&controller=' . $this->controller
-                            . '&task=edit&id=' . $row->get('id')
+                            . '&task=edit&id=' . $row->get('id'),
                         );
                         ?>
                         <a class="glyph category" href="<?php echo $editUrl; ?>">
@@ -227,7 +227,7 @@ Toolbar::help('collections');
                             . '&controller=' . $this->controller
                             . '&task=' . $task
                             . '&id=' . $row->get('id')
-                            . '&' . Session::getFormToken() . '=1'
+                            . '&' . Session::getFormToken() . '=1',
                         );
                         $stateTitle = Lang::txt('COM_COLLECTIONS_SET_TASK', $task);
                         ?>
@@ -250,7 +250,7 @@ Toolbar::help('collections');
                             . '&controller=' . $this->controller
                             . '&task=' . $task_access
                             . '&id=' . $row->get('id')
-                            . '&' . Session::getFormToken() . '=1'
+                            . '&' . Session::getFormToken() . '=1',
                         );
                         $accessTitle = Lang::txt('COM_COLLECTIONS_CHANGE_ACCESS');
                         ?>
@@ -281,7 +281,7 @@ Toolbar::help('collections');
                         <?php
                         $postsUrl = Route::url(
                             'index.php?option=' . $this->option
-                            . '&controller=posts&collection_id=' . $row->get('id')
+                            . '&controller=posts&collection_id=' . $row->get('id'),
                         );
                         ?>
                         <a href="<?php echo $postsUrl; ?>">

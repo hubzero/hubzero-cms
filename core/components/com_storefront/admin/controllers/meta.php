@@ -31,17 +31,17 @@ class Meta extends AdminController
     {
         // Get filters
         $this->view->filters = [
-            'access' => -1
+            'access' => -1,
         ];
         $this->view->filters['sort'] = trim(Request::getState(
             $this->_option . '.' . $this->_controller . '.sort',
             'filter_order',
-            'title'
+            'title',
         ));
         $this->view->filters['sort_Dir'] = trim(Request::getState(
             $this->_option . '.' . $this->_controller . '.sortdir',
             'filter_order_Dir',
-            'ASC'
+            'ASC',
         ));
 
         // Get paging variables
@@ -49,13 +49,13 @@ class Meta extends AdminController
             $this->_option . '.' . $this->_controller . '.limit',
             'limit',
             Config::get('list_limit'),
-            'int'
+            'int',
         );
         $this->view->filters['start'] = Request::getState(
             $this->_option . '.' . $this->_controller . '.limitstart',
             'limitstart',
             0,
-            'int'
+            'int',
         );
 
         $obj = new Archive();
@@ -175,7 +175,7 @@ class Meta extends AdminController
             // Redirect
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=products&task=edit&id=' . Request::getInt('id', 0)),
-                Lang::txt('COM_STOREFRONT_PRODUCT_SAVED')
+                Lang::txt('COM_STOREFRONT_PRODUCT_SAVED'),
             );
             return;
         }
@@ -193,7 +193,7 @@ class Meta extends AdminController
     {
         // Set the redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=products&task=edit&id=' . Request::getInt('id', 0))
+            Route::url('index.php?option=' . $this->_option . '&controller=products&task=edit&id=' . Request::getInt('id', 0)),
         );
     }
 }

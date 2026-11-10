@@ -100,7 +100,7 @@ class Passport implements ProviderInterface
             'https://www.openpassport.org/oauth/token',
             $params,
             OAUTH_HTTP_METHOD_POST,
-            ['user-agent' => $userAgent]
+            ['user-agent' => $userAgent],
         );
         $access = json_decode($this->request->getLastResponse());
         $this->credentials->access_token = $access->access_token;
@@ -132,7 +132,7 @@ class Passport implements ProviderInterface
             'Cache-Control: no-cache',
             'Content-Type: application/json',
             "Authorization: Bearer $accessToken",
-            "user-agent: $userAgent"
+            "user-agent: $userAgent",
         ];
 
         $request = curl_init();
@@ -194,7 +194,7 @@ class Passport implements ProviderInterface
                     "assertions/",
                     $assertionsData,
                     OAUTH_HTTP_METHOD_POST,
-                    ['Content-Type' => 'application/json']
+                    ['Content-Type' => 'application/json'],
                 );
             } catch (Exception $e) {
                 throw new Exception('Badge grant request failed.');

@@ -213,7 +213,7 @@ class Media extends Base
         }
 
         echo json_encode([
-            'success' => true
+            'success' => true,
         ]);
         return;
     }
@@ -337,7 +337,7 @@ class Media extends Base
             return;
         } elseif ($ajax) {
             echo json_encode([
-                'success' => true
+                'success' => true,
             ]);
             return;
         }
@@ -415,7 +415,7 @@ class Media extends Base
             exit;
         } elseif ($redirect) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option, false)
+                Route::url('index.php?option=' . $this->_option, false),
             );
         }
     }

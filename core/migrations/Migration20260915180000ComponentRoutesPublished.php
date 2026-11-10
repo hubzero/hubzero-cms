@@ -66,7 +66,7 @@ class Migration20260915180000ComponentRoutesPublished extends Base
         }
 
         $this->db->setQuery(
-            "UPDATE `#__menu` SET `published` = 1 WHERE `id` IN (" . implode(',', $ids) . ")"
+            "UPDATE `#__menu` SET `published` = 1 WHERE `id` IN (" . implode(',', $ids) . ")",
         );
         $this->db->query();
     }

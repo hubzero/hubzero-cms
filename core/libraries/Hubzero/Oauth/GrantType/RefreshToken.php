@@ -51,7 +51,7 @@ class RefreshToken implements GrantTypeInterface
     {
         $this->storage = $storage;
         $this->config  = array_merge([
-            'always_issue_new_refresh_token' => false
+            'always_issue_new_refresh_token' => false,
         ], $config);
     }
 

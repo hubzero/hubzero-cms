@@ -45,7 +45,7 @@ class Whosonline extends Module
         // Get all sessions
         $sessions = SessionHelper::getAllSessions([
             'distinct' => 1,
-            'client'   => 0
+            'client'   => 0,
         ]);
 
         // Vars to hold guests & logged in members
@@ -82,7 +82,7 @@ class Whosonline extends Module
         // get active sessions (users online)
         $this->rows = SessionHelper::getAllSessions([
             'guest'    => 0,
-            'distinct' => 1
+            'distinct' => 1,
         ]);
 
         // Get the view

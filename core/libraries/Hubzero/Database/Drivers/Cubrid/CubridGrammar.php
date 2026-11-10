@@ -290,7 +290,7 @@ class CubridGrammar extends \Hubzero\Database\Drivers\Mysql\MysqlGrammar
             $blueprint->getUniqueIndexes(),
             function ($name, $columns) {
                 return $this->compileInlineUniqueIndex($name, $columns);
-            }
+            },
         );
 
         // Regular indexes (inline)
@@ -299,7 +299,7 @@ class CubridGrammar extends \Hubzero\Database\Drivers\Mysql\MysqlGrammar
             $blueprint->getIndexes(),
             function ($name, $columns) {
                 return $this->compileInlineIndex($name, $columns);
-            }
+            },
         );
 
         // Foreign keys

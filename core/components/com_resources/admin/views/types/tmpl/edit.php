@@ -115,7 +115,7 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
                         Lang::txt('COM_RESOURCES_SELECT'),
                         '',
                         '',
-                        ''
+                        '',
                     );
                     ?>
                 </div>
@@ -275,7 +275,7 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
                         45,
                         10,
                         'field-description',
-                        ['class' => 'minimal']
+                        ['class' => 'minimal'],
                     );
                     ?>
                 </div>
@@ -304,7 +304,7 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
                         "SELECT * FROM `#__extensions`"
                         . " WHERE `type`='plugin'"
                         . " AND `folder`='resources'"
-                        . " AND `enabled`=1"
+                        . " AND `enabled`=1",
                     );
                     $plugins = $database->loadObjectList();
 
@@ -323,11 +323,11 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
                             $lang->load($plugin->name . '.sys')
                             || $lang->load(
                                 $plugin->name . '.sys',
-                                PATH_APP . $plgPath
+                                PATH_APP . $plgPath,
                             )
                             || $lang->load(
                                 $plugin->name . '.sys',
-                                PATH_CORE . $plgPath
+                                PATH_CORE . $plgPath,
                             );
                         }
                         ?>
@@ -378,7 +378,7 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
         <?php
         $hrefUrl = Route::url(
             'index.php?option=com_resources&controller=types'
-            . '&no_html=1&task=element&ctrl=fields'
+            . '&no_html=1&task=element&ctrl=fields',
         );
         ?>
         <table class="admintable" id="fields" data-href="<?php echo $hrefUrl; ?>">
@@ -416,7 +416,7 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
                     . 'sponsoredby,references,publications';
                 $fs = explode(
                     ',',
-                    $this->config->get('tagsothr', $defaultTags)
+                    $this->config->get('tagsothr', $defaultTags),
                 );
                 foreach ($fs as $f) {
                     $f = trim($f);
@@ -588,7 +588,7 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
                                 'citations', 'questions',
                                 'recommendations', 'reviews', 'share',
                                 'sponsors', 'usage', 'versions',
-                                'wishlist'
+                                'wishlist',
                             ];
                             foreach ($plugins as $plugin) {
                                 if (

@@ -47,7 +47,7 @@ class Recommendation extends Relational
      */
     protected $rules = [
         'fromID' => 'positive|nonzero',
-        'toID'   => 'positive|nonzero'
+        'toID'   => 'positive|nonzero',
     ];
 
     /**

@@ -30,7 +30,7 @@ Toolbar::cancel();
 $dcTypes = [
     'Collection' , 'Dataset' , 'Event' , 'Image' ,
     'InteractivePublication' , 'MovingImage' , 'PhysicalObject' ,
-    'Service' , 'Software' , 'Sound' , 'StillImage' , 'Text'
+    'Service' , 'Software' , 'Sound' , 'StillImage' , 'Text',
 ];
 
 $params = $this->row->params;
@@ -233,7 +233,7 @@ Html::behavior('framework', true);
                     $database = App::get('db');
                     $database->setQuery(
                         "SELECT * FROM `#__extensions`"
-                        . " WHERE `type`='plugin' AND `folder`='publications'"
+                        . " WHERE `type`='plugin' AND `folder`='publications'",
                     );
 
                     if ($plugins = $database->loadObjectList()) {
@@ -294,7 +294,7 @@ Html::behavior('framework', true);
                 . '&controller=categories'
                 . '&no_html=1'
                 . '&task=element'
-                . '&ctrl=fields'
+                . '&ctrl=fields',
             );
             ?>
             <table class="admintable" id="fields" data-href="<?php echo $routeUrl; ?>">
@@ -331,7 +331,7 @@ Html::behavior('framework', true);
                 if (count($schema->fields) <= 0) {
                     $fs = explode(
                         ',',
-                        $this->config->get('tagsothr', 'bio,credits,citations,sponsoredby,references,publications')
+                        $this->config->get('tagsothr', 'bio,credits,citations,sponsoredby,references,publications'),
                     );
                     foreach ($fs as $f) {
                         $f = trim($f);

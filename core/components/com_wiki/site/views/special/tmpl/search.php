@@ -17,7 +17,7 @@ defined('_HZEXEC_') or die();
 
 Pathway::append(
     Lang::txt('COM_WIKI_SEARCH'),
-    $this->page->link('base') . '&pagename=Special:Search'
+    $this->page->link('base') . '&pagename=Special:Search',
 );
 
 $database = App::get('db');

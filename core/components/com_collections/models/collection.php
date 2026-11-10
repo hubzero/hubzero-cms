@@ -161,7 +161,7 @@ class Collection extends Base
             'object_type' => $object_type,
             'is_default'  => 1,
             'created_by'  => $object_id,
-            'access'      => 4 // Private by default
+            'access'      => 4, // Private by default
         ];
         if (!$result['created_by']) {
             $result['created_by'] = User::get('id');
@@ -413,7 +413,7 @@ class Collection extends Base
                     $tbl = new Tables\Following($this->_db);
                     $this->_counts[$what] = $tbl->count([
                         'following_type' => 'collection',
-                        'following_id'   => $this->get('id')
+                        'following_id'   => $this->get('id'),
                     ]);
                 }
                 return $this->_counts[$what];
@@ -427,7 +427,7 @@ class Collection extends Base
                     $tbl = new Tables\Item($this->_db);
                     $this->set('likes', $tbl->getLikes([
                         'object_type' => 'collection',
-                        'object_id'   => $this->get('id')
+                        'object_id'   => $this->get('id'),
                     ]));
                 }
                 return (int) $this->get('likes', 0);
@@ -439,7 +439,7 @@ class Collection extends Base
                     $tbl = new Tables\Item($this->_db);
                     $this->set('reposts', $tbl->getReposts([
                         'object_type' => 'collection',
-                        'object_id'   => $this->get('id')
+                        'object_id'   => $this->get('id'),
                     ]));
                 }
                 return (int) $this->get('reposts', 0);
@@ -449,7 +449,7 @@ class Collection extends Base
             case 'post':
                 if ($this->get('posts', null) == null) {
                     $this->set('posts', $this->posts([
-                        'count' => true
+                        'count' => true,
                     ]));
                 }
                 return (int) $this->get('posts', 0);
@@ -523,7 +523,7 @@ class Collection extends Base
             'following_id'   => $this->get('id'),
             'following_type' => 'collection',
             'follower_id'    => $follower_id,
-            'follower_type'  => $follower_type
+            'follower_type'  => $follower_type,
         ]);
         if (!$follow->store(true)) {
             $this->setError($follow->getError());
@@ -565,14 +565,14 @@ class Collection extends Base
                         'pagename' => $this->get('alias'),
                         'pageid'   => 0,
                         'filepath' => $this->get('path', '/site/collections'),
-                        'domain'   => ''
+                        'domain'   => '',
                     ];
 
                     $content = stripslashes((string) $this->get('description', ''));
                     $this->importPlugin('content')->trigger('onContentPrepare', [
                         $this->_context,
                         &$this,
-                        &$config
+                        &$config,
                     ]);
 
                     $this->set('description.parsed', (string) $this->get('description', ''));
@@ -618,7 +618,7 @@ class Collection extends Base
                 throw new \InvalidArgumentException(Lang::txt(
                     'Invalid scope of "%s" for collection #%s',
                     $scope,
-                    $this->get('id')
+                    $this->get('id'),
                 ));
             }
 

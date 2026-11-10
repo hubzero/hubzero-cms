@@ -98,7 +98,7 @@ class Antispam extends Plugin
             'id'         => User::get('id'),
             'ip'         => Request::ip(),
             'user_agent' => Request::getString('HTTP_USER_AGENT', null, 'server'),
-            'text'       => $content
+            'text'       => $content,
         ];
 
         $result = $service->check($data);
@@ -116,7 +116,7 @@ class Antispam extends Plugin
             if ($this->params->get('learn_spam', 1)) {
                 Event::trigger('antispam.onAntispamTrain', [
                     $content,
-                    true
+                    true,
                 ]);
             }
 
@@ -140,7 +140,7 @@ class Antispam extends Plugin
         if ($this->params->get('learn_ham', 0)) {
             Event::trigger('antispam.onAntispamTrain', [
                 $content,
-                false
+                false,
             ]);
         }
     }
@@ -188,7 +188,7 @@ class Antispam extends Plugin
             $data['id'],
             $data['username'],
             md5($data['text']),
-            $from
+            $from,
         ];
 
         App::get('log')

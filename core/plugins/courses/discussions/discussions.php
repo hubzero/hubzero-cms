@@ -106,7 +106,7 @@ class Discussions extends Plugin
             'title' => Lang::txt('PLG_COURSES_' . strtoupper($this->_name)),
             'default_access' => $this->params->get('plugin_access', 'members'),
             'display_menu_tab' => true,
-            'icon' => 'f086'
+            'icon' => 'f086',
         ];
         return $area;
     }
@@ -432,7 +432,7 @@ class Discussions extends Plugin
 
             Pathway::append(
                 Lang::txt('PLG_COURSES_' . strtoupper($this->_name)),
-                $this->base
+                $this->base,
             );
 
             switch ($action) {
@@ -526,7 +526,7 @@ class Discussions extends Plugin
                 'folder'  => 'courses',
                 'element' => 'outline',
                 'name'    => 'shared',
-                'layout'  => '_not_enrolled'
+                'layout'  => '_not_enrolled',
             ]);
             $view->set('course', $course)
                 ->set('option', 'com_courses')
@@ -567,7 +567,7 @@ class Discussions extends Plugin
             'search'    => Request::getString('search', ''),
             'sort_Dir'  => 'DESC',
             'sort'      => 'c.created',
-            'object_id' => $lecture->get('id')
+            'object_id' => $lecture->get('id'),
         ];
         if ($this->params->get('discussions_threads', 'all') != 'all') {
             $filters['scope_sub_id'] = $course->offering()->section()->get('id');
@@ -1194,7 +1194,7 @@ class Discussions extends Plugin
             'state'      => Post::STATE_PUBLISHED,
             'limit'      => Request::getInt('limit', 500),
             'start'      => Request::getInt('limitstart', 0),
-            'access'     => User::getAuthorisedViewLevels()
+            'access'     => User::getAuthorisedViewLevels(),
         ];
         if ($this->params->get('discussions_threads', 'all') != 'all') {
             $filters['scope_sub_id'] = $this->offering->section()->get('id');
@@ -1453,7 +1453,7 @@ class Discussions extends Plugin
             'section_id'   => 0,
             'state'        => Section::STATE_PUBLISHED,
             'limit'        => Request::getInt('limit', 500),
-            'start'        => Request::getInt('limitstart', 0)
+            'start'        => Request::getInt('limitstart', 0),
         ];
 
         $post = Post::blank();
@@ -1548,7 +1548,7 @@ class Discussions extends Plugin
             'scope_id' => $this->forum->get('scope_id'),
             'state'    => Section::STATE_PUBLISHED,
             'search'   => Request::getString('q', ''),
-            'access'   => User::getAuthorisedViewLevels()
+            'access'   => User::getAuthorisedViewLevels(),
         ];
 
         $edit = Request::getString('section', '');
@@ -1606,7 +1606,7 @@ class Discussions extends Plugin
             App::redirect(
                 Route::url($this->base),
                 Lang::txt('You are not authorized to perform this action.'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -1620,7 +1620,7 @@ class Discussions extends Plugin
             App::redirect(
                 Route::url($this->base . '&unit=manage'),
                 Lang::txt('COM_FORUM_ERROR_SECTION_ALREADY_EXISTS'),
-                'error'
+                'error',
             );
         }
 
@@ -1638,20 +1638,20 @@ class Discussions extends Plugin
                 'description' => Lang::txt('PLG_COURSES_DISCUSSIONS_ACTIVITY_SECTION_' . ($__sid ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($this->base) . '">' . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
                 'details'     => [
                     'title' => $section->get('title'),
-                    'url'   => Route::url($this->base)
-                ]
+                    'url'   => Route::url($this->base),
+                ],
             ],
             'recipients' => [
                 ['course', $this->offering->get('id')],
                 ['forum.' . $this->forum->get('scope'), $this->forum->get('scope_id')],
                 ['forum.section', $section->get('id')],
-                ['user', $section->get('created_by')]
-            ]
+                ['user', $section->get('created_by')],
+            ],
         ]);
 
         // Set the redirect
         App::redirect(
-            Route::url($this->base . '&unit=manage')
+            Route::url($this->base . '&unit=manage'),
         );
     }
 
@@ -1681,7 +1681,7 @@ class Discussions extends Plugin
             App::redirect(
                 Route::url($this->base . '&unit=manage'),
                 Lang::txt('PLG_COURSES_DISCUSSIONS_MISSING_ID'),
-                'error'
+                'error',
             );
             return;
         }
@@ -1695,7 +1695,7 @@ class Discussions extends Plugin
             App::redirect(
                 Route::url($this->base . '&unit=manage'),
                 Lang::txt('PLG_COURSES_DISCUSSIONS_NOT_AUTHORIZED'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -1718,20 +1718,20 @@ class Discussions extends Plugin
                 'description' => Lang::txt('PLG_COURSES_DISCUSSIONS_ACTIVITY_SECTION_DELETED', '<a href="' . Route::url($this->base) . '">' . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
                 'details'     => [
                     'title' => $section->get('title'),
-                    'url'   => Route::url($this->base)
-                ]
+                    'url'   => Route::url($this->base),
+                ],
             ],
             'recipients' => [
                 ['course', $this->offering->get('id')],
                 ['forum.' . $this->forum->get('scope'), $this->forum->get('scope_id')],
                 ['forum.section', $section->get('id')],
-                ['user', $section->get('created_by')]
-            ]
+                ['user', $section->get('created_by')],
+            ],
         ]);
 
         // Redirect to main listing
         App::redirect(
-            Route::url($this->base . '&unit=manage')
+            Route::url($this->base . '&unit=manage'),
         );
     }
 
@@ -1755,7 +1755,7 @@ class Discussions extends Plugin
             'scope_id'   => $this->forum->get('scope_id'),
             'state'      => Category::STATE_PUBLISHED,
             'parent'     => 0,
-            'access'     => User::getAuthorisedViewLevels()
+            'access'     => User::getAuthorisedViewLevels(),
         ];
 
         $filters['sortby'] = Request::getWord('sortby', 'activity');
@@ -1844,7 +1844,7 @@ class Discussions extends Plugin
         if (User::isGuest()) {
             $return = Route::url($this->base . '&unit=manage');
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
             return;
         }
@@ -1872,7 +1872,7 @@ class Discussions extends Plugin
             $category->set('section_id', $section->get('id'));
         } elseif ($category->get('created_by') != User::get('id') && !$this->params->get('access-create-category')) {
             App::redirect(
-                Route::url($this->base . '&unit=manage')
+                Route::url($this->base . '&unit=manage'),
             );
             return;
         }
@@ -1923,7 +1923,7 @@ class Discussions extends Plugin
             App::redirect(
                 Route::url($this->base),
                 Lang::txt('You are not authorized to perform this action.'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -1949,7 +1949,7 @@ class Discussions extends Plugin
             App::redirect(
                 Route::url($this->base),
                 Lang::txt('You are not authorized to perform this action.'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -1960,7 +1960,7 @@ class Discussions extends Plugin
         if (!$this->params->get('access-edit-category')) {
             // Set the redirect
             App::redirect(
-                Route::url($this->base . '&unit=manage')
+                Route::url($this->base . '&unit=manage'),
             );
         }
 
@@ -1997,20 +1997,20 @@ class Discussions extends Plugin
                 'description' => Lang::txt('PLG_COURSES_DISCUSSIONS_ACTIVITY_CATEGORY_' . ($__cid ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($this->base) . '">' . htmlspecialchars((string) ($category->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
                 'details'     => [
                     'title' => $category->get('title'),
-                    'url'   => Route::url($this->base)
-                ]
+                    'url'   => Route::url($this->base),
+                ],
             ],
             'recipients' => [
                 ['course', $this->offering->get('id')],
                 ['forum.' . $this->forum->get('scope'), $this->forum->get('scope_id')],
                 ['forum.section', $category->get('section_id')],
-                ['user', $category->get('created_by')]
-            ]
+                ['user', $category->get('created_by')],
+            ],
         ]);
 
         // Set the redirect
         App::redirect(
-            Route::url($this->base . '&unit=manage')
+            Route::url($this->base . '&unit=manage'),
         );
     }
 
@@ -2040,7 +2040,7 @@ class Discussions extends Plugin
             App::redirect(
                 Route::url($this->base . '&unit=manage'),
                 Lang::txt('PLG_COURSES_DISCUSSIONS_MISSING_ID'),
-                'error'
+                'error',
             );
             return;
         }
@@ -2052,7 +2052,7 @@ class Discussions extends Plugin
             App::redirect(
                 Route::url($this->base . '&unit=manage'),
                 Lang::txt('PLG_COURSES_DISCUSSIONS_NOT_AUTHORIZED'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -2064,7 +2064,7 @@ class Discussions extends Plugin
             App::redirect(
                 Route::url($this->base . '&unit=manage'),
                 $category->getError(),
-                'error'
+                'error',
             );
             return;
         }
@@ -2078,22 +2078,22 @@ class Discussions extends Plugin
                 'description' => Lang::txt('PLG_COURSES_DISCUSSIONS_ACTIVITY_CATEGORY_DELETED', '<a href="' . Route::url($this->base) . '">' . htmlspecialchars((string) ($category->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
                 'details'     => [
                     'title' => $category->get('title'),
-                    'url'   => Route::url($this->base)
-                ]
+                    'url'   => Route::url($this->base),
+                ],
             ],
             'recipients' => [
                 ['course', $this->offering->get('id')],
                 ['forum.' . $this->forum->get('scope'), $this->forum->get('scope_id')],
                 ['forum.section', $category->get('section_id')],
-                ['user', $category->get('created_by')]
-            ]
+                ['user', $category->get('created_by')],
+            ],
         ]);
 
         // Redirect to main listing
         App::redirect(
             Route::url($this->base . '&unit=manage'),
             Lang::txt('PLG_COURSES_DISCUSSIONS_CATEGORY_DELETED'),
-            'passed'
+            'passed',
         );
     }
 
@@ -2118,7 +2118,7 @@ class Discussions extends Plugin
             'scope'    => $this->forum->get('scope'),
             'scope_id' => $this->forum->get('scope_id'),
             'state'    => Post::STATE_PUBLISHED,
-            'access'   => User::getAuthorisedViewLevels()
+            'access'   => User::getAuthorisedViewLevels(),
         ];
 
         // Section
@@ -2161,7 +2161,7 @@ class Discussions extends Plugin
             App::redirect(
                 Route::url($this->base),
                 Lang::txt('PLG_COURSES_DISCUSSIONS_ERROR_THREAD_NOT_FOUND'),
-                'error'
+                'error',
             );
             return;
         }
@@ -2178,7 +2178,7 @@ class Discussions extends Plugin
         if (User::isGuest() && !in_array($thread->get('access'), User::getAuthorisedViewLevels())) {
             $return = Route::url($this->base, false, true);
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
             return;
         }
@@ -2260,7 +2260,7 @@ class Discussions extends Plugin
                 $return = Route::url($this->offering->link() . '&active=' . $this->_name . '&unit=' . $section . '&b=' . $category . '&c=' . $id . '/edit');
             }
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
             return;
         }
@@ -2298,7 +2298,7 @@ class Discussions extends Plugin
             ->set('forum', $this->forum)
             ->set('sections', $this->forum->sections([
                 'state'  => Section::STATE_PUBLISHED,
-                'access' => User::getAuthorisedViewLevels()
+                'access' => User::getAuthorisedViewLevels(),
             ])->rows())
             ->set('section', $section)
             ->set('category', $category)
@@ -2319,7 +2319,7 @@ class Discussions extends Plugin
         // Must be logged in
         if (User::isGuest()) {
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->base, false, true)))
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->base, false, true))),
             );
             return;
         }
@@ -2344,7 +2344,7 @@ class Discussions extends Plugin
             App::redirect(
                 Route::url($this->base),
                 Lang::txt('You are not authorized to perform this action.'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -2370,7 +2370,7 @@ class Discussions extends Plugin
             App::redirect(
                 Route::url($this->base),
                 Lang::txt('You are not authorized to perform this action.'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -2418,7 +2418,7 @@ class Discussions extends Plugin
             App::redirect(
                 Route::url($this->base),
                 Lang::txt('You are not authorized to perform this action.'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -2480,7 +2480,7 @@ class Discussions extends Plugin
         App::redirect(
             $rtrn,
             Lang::txt('Post successfully saved'),
-            'passed'
+            'passed',
         );
     }
 
@@ -2500,7 +2500,7 @@ class Discussions extends Plugin
             App::redirect(
                 Route::url($this->base),
                 Lang::txt('PLG_COURSES_DISCUSSIONS_LOGIN_NOTICE'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -2519,7 +2519,7 @@ class Discussions extends Plugin
             App::redirect(
                 Route::url($this->base),
                 Lang::txt('PLG_COURSES_DISCUSSIONS_MISSING_ID'),
-                'error'
+                'error',
             );
             return;
         }
@@ -2545,7 +2545,7 @@ class Discussions extends Plugin
             App::redirect(
                 Route::url($this->base),
                 Lang::txt('PLG_COURSES_DISCUSSIONS_NOT_AUTHORIZED'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -2557,7 +2557,7 @@ class Discussions extends Plugin
             App::redirect(
                 Route::url($this->base),
                 Lang::txt('PLG_COURSES_DISCUSSIONS_NOT_AUTHORIZED'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -2573,7 +2573,7 @@ class Discussions extends Plugin
             App::redirect(
                 Route::url($this->base),
                 $post->getError(),
-                'error'
+                'error',
             );
             return;
         }
@@ -2583,7 +2583,7 @@ class Discussions extends Plugin
             App::redirect(
                 Route::url($this->base),
                 Lang::txt('PLG_COURSES_DISCUSSIONS_THREAD_DELETED'),
-                'passed'
+                'passed',
             );
         }
     }
@@ -2672,7 +2672,7 @@ class Discussions extends Plugin
         if (User::isGuest()) {
             $return = Route::url($this->offering->link() . '&active=' . $this->_name . '&unit=download&b=' . $thread . '&file=' . $file);
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
             return;
         }
@@ -2800,19 +2800,19 @@ class Discussions extends Plugin
                 'description' => Lang::txt('PLG_COURSES_DISCUSSIONS_ACTIVITY_SECTION_REORDERED', '<a href="' . Route::url($this->base) . '">' . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
                 'details'     => [
                     'title' => $section->get('title'),
-                    'url'   => Route::url($this->base)
-                ]
+                    'url'   => Route::url($this->base),
+                ],
             ],
             'recipients' => [
                 ['course', $this->offering->get('id')],
                 ['forum.course', $this->offering->get('id')],
-                ['forum.section', $section->get('id')]
-            ]
+                ['forum.section', $section->get('id')],
+            ],
         ]);
 
         // Redirect to main lsiting
         App::redirect(
-            Route::url($this->base . '&unit=manage')
+            Route::url($this->base . '&unit=manage'),
         );
     }
 

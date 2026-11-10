@@ -39,11 +39,11 @@ defined('_HZEXEC_') or die();
     $countries = $hubzero_Geo->countries();
 
     $dashboardUrl = Route::url(
-        'index.php?option=' . $this->option . '&task=dashboard'
+        'index.php?option=' . $this->option . '&task=dashboard',
     );
     $shortlistUrl = Route::url(
         'index.php?option=' . $this->option
-        . '&task=resumes&filterby=shortlisted'
+        . '&task=resumes&filterby=shortlisted',
     );
     ?>
 <header id="content-header">

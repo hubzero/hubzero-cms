@@ -196,7 +196,7 @@ class MigrationSquasher
     public function generateFromDatabase(
         ?string $prefix = null,
         string $component = 'SquashedSchema',
-        string $description = ''
+        string $description = '',
     ): string {
         // Introspect the database
         $filter = $this->excludeTables ? function ($name) {
@@ -219,7 +219,7 @@ class MigrationSquasher
     public function generateFromSchema(
         DatabaseInfo $schema,
         string $component = 'SquashedSchema',
-        string $description = ''
+        string $description = '',
     ): string {
         $tables = $schema->getTables();
 
@@ -619,7 +619,7 @@ class MigrationSquasher
         string $component,
         string $description,
         string $upCode,
-        string $downCode
+        string $downCode,
     ): string {
         if ($this->template !== null) {
             return $this->applyTemplate($component, $description, $upCode, $downCode);
@@ -645,7 +645,7 @@ class MigrationSquasher
         return str_replace(
             ['<namespace>', '<className>', '<description>', '<year>', '<upCode>', '<downCode>'],
             ['Migrations', $className, $description, $this->copyrightYear, $upCode, $downCode],
-            $this->template
+            $this->template,
         );
     }
 
@@ -662,7 +662,7 @@ class MigrationSquasher
         string $component,
         string $description,
         string $upCode,
-        string $downCode
+        string $downCode,
     ): string {
         $timestamp = date('YmdHis');
         $className = "Migration{$timestamp}{$component}";
@@ -726,7 +726,7 @@ PHP;
         string $content,
         string $directory,
         string $component,
-        ?string $timestamp = null
+        ?string $timestamp = null,
     ): string {
         if ($timestamp === null) {
             $timestamp = date('YmdHis');

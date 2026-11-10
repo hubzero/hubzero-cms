@@ -73,7 +73,7 @@ class Database implements StorageInterface
         $countLong,
         $expiresShort,
         $expiresLong,
-        $created
+        $created,
     ) {
         $sql = "INSERT INTO `#__developer_rate_limit` (`application_id`, `uidNumber`, `ip`, `limit_short`, 
             `limit_long`, `count_short`, `count_long`, `expires_short`, `expires_long`, `created`)

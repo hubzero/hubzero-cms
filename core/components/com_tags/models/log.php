@@ -57,7 +57,7 @@ class Log extends Relational
     protected $rules = [
         'action'  => 'notempty',
         'tag_id'  => 'positive|nonzero',
-        'user_id' => 'positive|nonzero'
+        'user_id' => 'positive|nonzero',
     ];
 
     /**
@@ -68,7 +68,7 @@ class Log extends Relational
     public $initiate = [
         'timestamp',
         'user_id',
-        'actorid'
+        'actorid',
     ];
 
     /**

@@ -24,7 +24,7 @@ $addUrl = Route::url(
     'index.php?option=' . $this->option
     . '&controller=' . $this->controller
     . '&task=add&zone=' . $this->filters['zone']
-    . '&tmpl=' . $this->filters['tmpl']
+    . '&tmpl=' . $this->filters['tmpl'],
 );
 ?>
 <form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
@@ -48,7 +48,7 @@ $addUrl = Route::url(
                     'COM_TOOLS_COL_ZONE',
                     'zone',
                     @$this->filters['sort_Dir'],
-                    @$this->filters['sort']
+                    @$this->filters['sort'],
                 );
                 ?>
                 <th scope="col"><?php echo $zoneSort; ?></th>
@@ -58,42 +58,42 @@ $addUrl = Route::url(
                     'COM_TOOLS_COL_IP_FROM',
                     'ipFROM',
                     @$this->filters['sort_Dir'],
-                    @$this->filters['sort']
+                    @$this->filters['sort'],
                 ); ?></th>
                 <th scope="col"><?php echo Html::grid(
                     'sort',
                     'COM_TOOLS_COL_IP_TO',
                     'ipTO',
                     @$this->filters['sort_Dir'],
-                    @$this->filters['sort']
+                    @$this->filters['sort'],
                 ); ?></th>
                 <th scope="col"><?php echo Html::grid(
                     'sort',
                     'COM_TOOLS_COL_CONTINENT',
                     'continent',
                     @$this->filters['sort_Dir'],
-                    @$this->filters['sort']
+                    @$this->filters['sort'],
                 ); ?></th>
                 <th scope="col"><?php echo Html::grid(
                     'sort',
                     'COM_TOOLS_COL_COUNTRY',
                     'countrySHORT',
                     @$this->filters['sort_Dir'],
-                    @$this->filters['sort']
+                    @$this->filters['sort'],
                 ); ?></th>
                 <th scope="col"><?php echo Html::grid(
                     'sort',
                     'COM_TOOLS_COL_REGION',
                     'ipREGION',
                     @$this->filters['sort_Dir'],
-                    @$this->filters['sort']
+                    @$this->filters['sort'],
                 ); ?></th>
                 <th scope="col"><?php echo Html::grid(
                     'sort',
                     'COM_TOOLS_COL_CITY',
                     'ipCITY',
                     @$this->filters['sort_Dir'],
-                    @$this->filters['sort']
+                    @$this->filters['sort'],
                 ); ?></th>
                 <th scope="col">X</th>
             </tr>
@@ -108,14 +108,14 @@ foreach ($this->rows as $row) {
         'index.php?option=' . $this->option
         . '&controller=' . $this->controller
         . '&task=edit&id=' . $row->get('id')
-        . '&tmpl=' . $this->filters['tmpl']
+        . '&tmpl=' . $this->filters['tmpl'],
     );
     $removeUrl = Route::url(
         'index.php?option=' . $this->option
         . '&controller=' . $this->controller
         . '&task=remove&id=' . $row->get('id')
         . '&tmpl=' . $this->filters['tmpl']
-        . '&' . Session::getFormToken() . '=1'
+        . '&' . Session::getFormToken() . '=1',
     );
     ?>
             <tr class="<?php echo "row$k"; ?>">

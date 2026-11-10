@@ -51,8 +51,8 @@ class ArgumentsTest extends Basic
             'aliases' => [
                 'env'  => 'environment',
                 't'    => 'test::run',
-                'inst' => 'repository:package::install'
-            ]
+                'inst' => 'repository:package::install',
+            ],
         ]));
 
         putenv('HOME=' . self::$home);
@@ -88,7 +88,7 @@ class ArgumentsTest extends Basic
         $args = [
             'muse',
             'repository',
-            'update'
+            'update',
         ];
 
         $arguments = new Arguments($args);
@@ -97,7 +97,7 @@ class ArgumentsTest extends Basic
         $this->assertEquals(
             'Hubzero\Console\Command\Repository',
             $arguments->get('class'),
-            'Arguments parser failed to find the proper command'
+            'Arguments parser failed to find the proper command',
         );
         $this->assertEquals('update', $arguments->get('task'), 'Arguments parser failed to find the proper task');
     }
@@ -111,7 +111,7 @@ class ArgumentsTest extends Basic
     {
         $args = [
             'muse',
-            'alternative:subcommand'
+            'alternative:subcommand',
         ];
 
         Arguments::registerNamespace('Hubzero\Console\Tests\Mock\{$1}\Cli\Commands');
@@ -122,7 +122,7 @@ class ArgumentsTest extends Basic
         $this->assertEquals(
             'Hubzero\Console\Tests\Mock\Alternative\Cli\Commands\Subcommand',
             $arguments->get('class'),
-            'Arguments parser failed to find the proper command'
+            'Arguments parser failed to find the proper command',
         );
         $this->assertEquals('execute', $arguments->get('task'), 'Arguments parser failed to find the proper task');
     }
@@ -137,7 +137,7 @@ class ArgumentsTest extends Basic
         $args = [
             'muse',
             'repository:package',
-            'install'
+            'install',
         ];
 
         $arguments = new Arguments($args);
@@ -146,7 +146,7 @@ class ArgumentsTest extends Basic
         $this->assertEquals(
             'Hubzero\Console\Command\Repository\Package',
             $arguments->get('class'),
-            'Arguments parser failed to find the proper command'
+            'Arguments parser failed to find the proper command',
         );
         $this->assertEquals('install', $arguments->get('task'), 'Arguments parser failed to find the proper task');
     }
@@ -160,7 +160,7 @@ class ArgumentsTest extends Basic
     {
         $args = [
             'muse',
-            'env'
+            'env',
         ];
 
         $arguments = new Arguments($args);
@@ -169,7 +169,7 @@ class ArgumentsTest extends Basic
         $this->assertEquals(
             'Hubzero\Console\Command\Environment',
             $arguments->get('class'),
-            'Arguments parser failed to find the proper command'
+            'Arguments parser failed to find the proper command',
         );
         $this->assertEquals('execute', $arguments->get('task'), 'Arguments parser failed to find the proper task');
     }
@@ -183,7 +183,7 @@ class ArgumentsTest extends Basic
     {
         $args = [
             'muse',
-            't'
+            't',
         ];
 
         $arguments = new Arguments($args);
@@ -192,7 +192,7 @@ class ArgumentsTest extends Basic
         $this->assertEquals(
             'Hubzero\Console\Command\Test',
             $arguments->get('class'),
-            'Arguments parser failed to find the proper command'
+            'Arguments parser failed to find the proper command',
         );
         $this->assertEquals('run', $arguments->get('task'), 'Arguments parser failed to find the proper task');
     }
@@ -206,7 +206,7 @@ class ArgumentsTest extends Basic
     {
         $args = [
             'muse',
-            'inst'
+            'inst',
         ];
 
         $arguments = new Arguments($args);
@@ -215,7 +215,7 @@ class ArgumentsTest extends Basic
         $this->assertEquals(
             'Hubzero\Console\Command\Repository\Package',
             $arguments->get('class'),
-            'Arguments parser failed to find the proper command'
+            'Arguments parser failed to find the proper command',
         );
         $this->assertEquals('install', $arguments->get('task'), 'Arguments parser failed to find the proper task');
     }
@@ -230,7 +230,7 @@ class ArgumentsTest extends Basic
     {
         $args = [
             'muse',
-            'blah'
+            'blah',
         ];
 
         $arguments = new Arguments($args);
@@ -260,7 +260,7 @@ class ArgumentsTest extends Basic
             '-g=bar',
             '-h=1',
             '-h=2',
-            '--i-j'
+            '--i-j',
         ];
 
         $arguments = new Arguments($args);
@@ -291,7 +291,7 @@ class ArgumentsTest extends Basic
             'f'   => true,
             'g'   => 'bar',
             'h'   => ['1', '2'],
-            'i-j' => true
+            'i-j' => true,
         ], $arguments->getOpts(), 'Failed to properly fetch all options');
     }
 }

@@ -45,11 +45,11 @@ class Content extends AbstractComponent
         Submenu::addEntry(
             Lang::txt('COM_CONTENT_ARTICLES'),
             Route::url('index.php?option=com_content&controller=' . $defaultController),
-            ($controllerName == $defaultController)
+            ($controllerName == $defaultController),
         );
         Submenu::addEntry(
             Lang::txt('COM_CONTENT_SUBMENU_CATEGORIES'),
-            Route::url('index.php?option=com_categories&extension=com_content')
+            Route::url('index.php?option=com_categories&extension=com_content'),
         );
 
         if (!is_subclass_of(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)), \Hubzero\Component\ControllerInterface::class)) {

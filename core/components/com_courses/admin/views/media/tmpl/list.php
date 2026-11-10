@@ -27,7 +27,7 @@ $imgBase = $base . '/core/components/'
         <?php
             $routeUrl = Route::url(
                 'index.php?option=' . $this->option
-                . '&controller=' . $this->controller
+                . '&controller=' . $this->controller,
             );
             ?>
         <form action="<?php echo $routeUrl; ?>" method="post" id="filelist" name="filelist">
@@ -85,16 +85,16 @@ $imgBase = $base . '/core/components/'
                                     . '&tmpl=component&subdir='
                                     . $this->subdir . '&course='
                                     . $this->course_id . '&'
-                                    . Session::getFormToken() . '=1'
+                                    . Session::getFormToken() . '=1',
                                 );
                                 $confirmMsg = Lang::txt(
                                     'Are you sure you want to delete'
                                     . ' the folder "%s"?',
-                                    $folderName
+                                    $folderName,
                                 );
                                 $txt = Lang::txt('COM_COURSES_FILES');
                                 $clearMsg = Lang::txt(
-                                    'COM_COURSES_CLEAR_FOLDER'
+                                    'COM_COURSES_CLEAR_FOLDER',
                                 ) . ' ' . $txt;
                             ?>
                             <a
@@ -144,12 +144,12 @@ $imgBase = $base . '/core/components/'
                                     . '&tmpl=component&subdir='
                                     . $this->subdir . '&course='
                                     . $this->course_id . '&'
-                                    . Session::getFormToken() . '=1'
+                                    . Session::getFormToken() . '=1',
                                 );
                                 $confirmMsg = Lang::txt(
                                     'Are you sure you want to delete'
                                     . ' the file "%s"?',
-                                    $docs[$docName]
+                                    $docs[$docName],
                                 );
                             ?>
                             <a

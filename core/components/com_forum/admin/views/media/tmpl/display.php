@@ -24,7 +24,7 @@ $attachments = $this->post->attachments;
 
 $formAction = Route::url(
     'index.php?option=' . $this->option . '&controller='
-    . $this->controller . '&id=' . $this->post->get('id')
+    . $this->controller . '&id=' . $this->post->get('id'),
 );
 ?>
 
@@ -43,7 +43,7 @@ $formAction = Route::url(
                                 'index.php?option=' . $this->option . '&controller='
                                 . $this->controller . '&id=' . $this->post->get('id')
                                 . '&task=download&attachment=' . $attachment->get('id')
-                                . '&' . Session::getFormToken() . '=1'
+                                . '&' . Session::getFormToken() . '=1',
                             );
                             $fileExt = Filesystem::extension($attachment->get('filename'));
                             ?>
@@ -59,11 +59,11 @@ $formAction = Route::url(
                                 'index.php?option=' . $this->option . '&controller='
                                 . $this->controller . '&task=delete&attachment='
                                 . $attachment->get('id') . '&id=' . $this->post->get('id')
-                                . '&tmpl=component&' . Session::getFormToken() . '=1'
+                                . '&tmpl=component&' . Session::getFormToken() . '=1',
                             );
                             $confirmMsg = Lang::txt(
                                 'COM_FORUM_MEDIA_DELETE_FILE',
-                                $attachment->get('filename')
+                                $attachment->get('filename'),
                             );
                             ?>
                             <a class="icon-delete delete deletefile"

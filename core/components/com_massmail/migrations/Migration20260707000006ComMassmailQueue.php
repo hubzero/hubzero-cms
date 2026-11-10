@@ -33,7 +33,7 @@ class Migration20260707000006ComMassmailQueue extends Base
 					`depth` int(11) NOT NULL DEFAULT '0',
 					PRIMARY KEY (`id`),
 					KEY `idx_recorded` (`recorded`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;"
+				) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
             );
             $this->db->query();
         }

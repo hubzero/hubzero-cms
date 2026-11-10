@@ -38,7 +38,7 @@ trait AssetAware
         $attr = array_merge([
             'type'    => 'text/css',
             'media'   => null,
-            'attribs' => []
+            'attribs' => [],
         ], $attributes);
 
         $asset = new Stylesheet($extension, $stylesheet);
@@ -71,7 +71,7 @@ trait AssetAware
         $attr = array_merge([
             'type'  => 'text/javascript',
             'defer' => false,
-            'async' => false
+            'async' => false,
         ], $attributes);
 
         $asset = new Javascript($extension, $asset);

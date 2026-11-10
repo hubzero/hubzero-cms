@@ -37,7 +37,7 @@ class Events extends Plugin
     public function onWhatsnewAreas()
     {
         return [
-            'events' => Lang::txt('PLG_WHATSNEW_EVENTS')
+            'events' => Lang::txt('PLG_WHATSNEW_EVENTS'),
         ];
     }
 
@@ -135,7 +135,7 @@ class Events extends Plugin
             $row->itext = str_replace('[[BR]]', '', $row->itext);
             $text = \Hubzero\Utility\Str::truncate(
                 \Hubzero\Utility\Sanitize::stripAll(stripslashes($row->itext)),
-                200
+                200,
             );
             $html .= "\t\t" . '<p>' . $text . '</p>' . "\n";
         }

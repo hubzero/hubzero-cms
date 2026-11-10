@@ -103,8 +103,8 @@ class Entriesv1r0 extends ApiController
                 $p,
                 999,
                 0,
-                $areas
-            ]
+                $areas,
+            ],
         );
 
         $whatsnew = [];

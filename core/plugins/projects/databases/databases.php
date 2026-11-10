@@ -114,7 +114,7 @@ class Databases extends Plugin
             'title' => 'Databases',
             'submenu' => 'Assets',
             'show' => true,
-            'icon' => 'f001'
+            'icon' => 'f001',
         ];
 
         return $area;
@@ -200,7 +200,7 @@ class Databases extends Plugin
             'html' => '',
             'metadata' => '',
             'message' => '',
-            'error' => ''
+            'error' => '',
         ];
 
         // Get this area details
@@ -325,8 +325,8 @@ class Databases extends Plugin
                 'folder' => 'projects',
                 'element' => 'databases',
                 'name' => 'selector',
-                'layout' => 'default'
-            ]
+                'layout' => 'default',
+            ],
         );
 
         $view->publication = new \Components\Publications\Models\Publication($pid, null, $vid);
@@ -338,8 +338,8 @@ class Databases extends Plugin
                 [
                     'folder' => 'projects',
                     'element' => 'files',
-                    'name' => 'error'
-                ]
+                    'name' => 'error',
+                ],
             );
 
             $view->title = '';
@@ -393,7 +393,7 @@ class Databases extends Plugin
             'html' => $view->loadTemplate(),
             'metadata' => '',
             'msg' => '',
-            'referer' => ''
+            'referer' => '',
         ];
 
         return $arr;
@@ -431,8 +431,8 @@ class Databases extends Plugin
             [
                 'folder' => 'projects',
                 'element' => 'databases',
-                'name' => 'browser'
-            ]
+                'name' => 'browser',
+            ],
         );
 
         // Get current attachments
@@ -442,7 +442,7 @@ class Databases extends Plugin
 
         $view->attachments = $pContent->getAttachments(
             $versionid,
-            $filters = ['role' => $role, 'type' => 'data']
+            $filters = ['role' => $role, 'type' => 'data'],
         );
 
         // Output HTML
@@ -465,7 +465,7 @@ class Databases extends Plugin
             'html' => $view->loadTemplate(),
             'metadata' => '',
             'msg' => '',
-            'referer' => ''
+            'referer' => '',
         ];
 
         return $arr;
@@ -515,8 +515,8 @@ class Databases extends Plugin
             [
                 'folder' => 'projects',
                 'element' => 'databases',
-                'name' => 'list'
-            ]
+                'name' => 'list',
+            ],
         );
         $view->model = $this->model;
         $view->option = $this->_option;
@@ -579,7 +579,7 @@ class Databases extends Plugin
             $files[$l->get('dirname', '/')][] = [
                 'name' => $l->get('name'),
                 'hash' => $l->get('date')->toUnix(),
-                'date' => $l->get('date')
+                'date' => $l->get('date'),
             ];
         }
 
@@ -588,8 +588,8 @@ class Databases extends Plugin
             [
                 'folder' => 'projects',
                 'element' => 'databases',
-                'name' => 'create'
-            ]
+                'name' => 'create',
+            ],
         );
 
         $view->model = $this->model;
@@ -678,7 +678,7 @@ class Databases extends Plugin
                 'wd' => trim($dir, '/'),
                 'base' => '/projects/' . $this->model->get('alias')
                     . '/files/?action=download&subdir=' . trim($dir, '/'),
-                'sub_dirs' => $sub_dirs
+                'sub_dirs' => $sub_dirs,
             ];
 
             // Check if expert mode CSV
@@ -723,7 +723,7 @@ class Databases extends Plugin
                         $type_info[$i]['type'] = $this->_guess_data_type(
                             $val,
                             $type_info[$i]['type'],
-                            $type_info[$i]['max_len']
+                            $type_info[$i]['max_len'],
                         );
                     }
 
@@ -1096,11 +1096,11 @@ class Databases extends Plugin
                     'databases',
                     Route::url(
                         'index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias')
-                        . '&active=databases'
+                        . '&active=databases',
                     ),
                     'databases',
                     'databases',
-                    1
+                    1,
                 );
                 ob_clean();
                 $this->_msg = Lang::txt('PLG_PROJECTS_DATABASES_CREATED');
@@ -1159,7 +1159,7 @@ class Databases extends Plugin
 
                 $header[1][] = rtrim(
                     ltrim(str_replace('","', "\",\r\n\"", json_encode($prop)), '{'),
-                    '}'
+                    '}',
                 );
             }
 
@@ -1217,11 +1217,11 @@ class Databases extends Plugin
                 $file,
                 'files',
                 Route::url(
-                    'index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=files'
+                    'index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=files',
                 ),
                 'files',
                 'files',
-                1
+                1,
             );
             ob_clean();
         }
@@ -1281,11 +1281,11 @@ class Databases extends Plugin
                 $id,
                 'databases',
                 Route::url(
-                    'index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=databases'
+                    'index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=databases',
                 ),
                 'databases',
                 'databases',
-                1
+                1,
             );
         }
 

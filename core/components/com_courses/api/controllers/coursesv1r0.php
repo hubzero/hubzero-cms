@@ -48,7 +48,7 @@ class Coursesv1r0 extends base
     {
         $filters = [
             'limit' => Request::getInt('limit', 25),
-            'start' => Request::getInt('limitstart', 0)
+            'start' => Request::getInt('limitstart', 0),
         ];
 
         // Search API hooks

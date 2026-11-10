@@ -398,7 +398,7 @@ class Set extends Obj implements Iterator
                         ? $refl->getMethod('getName')->invoke(null)
                         : ucwords($plugin->name),
                 'plugin_name' => $plugin->name,
-                'count' => 0
+                'count' => 0,
             ];
 
             // custom results like Google does when you enter a stock symbol.
@@ -617,7 +617,7 @@ class Set extends Obj implements Iterator
     {
         $weight = [
             'a' => 0,
-            'b' => 0
+            'b' => 0,
         ];
         if (($relevance_diff = $a->get_weight() - $b->get_weight())) {
             $weight[$relevance_diff > 0 ? 'a' : 'b'] += self::$plugin_weights['sortrelevance'];

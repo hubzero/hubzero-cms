@@ -127,7 +127,7 @@ class PdfFormDeployment
             . 'results_open AS resultsOpen, time_limit AS timeLimit, crumb, '
             . 'results_closed AS resultsClosed, '
             . '(SELECT name FROM #__users WHERE id = user_id) AS userName '
-            . 'FROM #__courses_form_deployments WHERE form_id = ' . (int)$formId
+            . 'FROM #__courses_form_deployments WHERE form_id = ' . (int)$formId,
         );
 
         foreach ($dbh->loadAssocList() as $depData) {
@@ -214,7 +214,7 @@ class PdfFormDeployment
 			LEFT JOIN `#__courses_form_answers` pfa ON pfa.id = pfr2.answer_id AND pfa.correct
 			WHERE deployment_id = {$this->id} {$where}
 			GROUP BY member_id, started, finished, version
-			ORDER BY member_id ASC, score ASC"
+			ORDER BY member_id ASC, score ASC",
         );
 
         return $dbh->loadAssocList($key);
@@ -299,7 +299,7 @@ class PdfFormDeployment
             'SELECT id, form_id AS formId, start_time AS startTime, end_time AS endTime, '
             . 'results_open AS resultsOpen, time_limit AS timeLimit, crumb, '
             . 'results_closed AS resultsClosed, allowed_attempts AS allowedAttempts '
-            . 'FROM #__courses_form_deployments WHERE ' . $where
+            . 'FROM #__courses_form_deployments WHERE ' . $where,
         );
 
         if (!($res = $dbh->loadAssoc())) {
@@ -615,7 +615,7 @@ class PdfFormDeployment
                     $dbh->quote($this->crumb) . ', ' .
                     (int)User::get('id') . ', ' .
                     (int)$this->allowedAttempts .
-                ')'
+                ')',
             );
             $dbh->query();
 
@@ -635,7 +635,7 @@ class PdfFormDeployment
                 'results_closed = ' . $dbh->quote($this->resultsClosed) . ', ' .
                 'time_limit = ' . (int)$this->timeLimit . ', ' .
                 'allowed_attempts = ' . (int)$this->allowedAttempts .
-            ' WHERE id = ' . (int)$id
+            ' WHERE id = ' . (int)$id,
         );
         $dbh->query();
 
@@ -653,7 +653,7 @@ class PdfFormDeployment
         $fid = $this->formId;
 
         $dbh->setQuery(
-            'SELECT `asset_id` FROM `#__courses_forms` WHERE `id` = ' . $dbh->Quote($fid)
+            'SELECT `asset_id` FROM `#__courses_forms` WHERE `id` = ' . $dbh->Quote($fid),
         );
 
         if ($result = $dbh->loadResult()) {

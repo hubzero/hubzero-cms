@@ -168,7 +168,7 @@ class MockDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function driverIsMockAndSqliteInstance(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMock($driver)) {
             return;
@@ -182,7 +182,7 @@ class MockDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function driverIsNotPlainSqlite(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMock($driver)) {
             return;
@@ -191,7 +191,7 @@ class MockDriverTest extends AbstractDriverTestCase
         // Mock is a subclass of Sqlite, not Sqlite itself
         $this->assertNotSame(
             SqliteDriver::class,
-            $driver::class
+            $driver::class,
         );
     }
 
@@ -199,7 +199,7 @@ class MockDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function constructorIgnoresOptions(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMock($driver)) {
             return;
@@ -230,7 +230,7 @@ class MockDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canExecuteBasicQuery(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMock($driver)) {
             return;
@@ -244,7 +244,7 @@ class MockDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canGetVersion(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMock($driver)) {
             return;
@@ -263,7 +263,7 @@ class MockDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function tableExistsReturnsTrueForExistingTable(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMock($driver)) {
             return;
@@ -276,7 +276,7 @@ class MockDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function tableExistsReturnsFalseForMissingTable(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMock($driver)) {
             return;
@@ -289,7 +289,7 @@ class MockDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getTableListIncludesTestTables(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMock($driver)) {
             return;
@@ -304,7 +304,7 @@ class MockDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getTableColumnsTypeOnly(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMock($driver)) {
             return;
@@ -321,7 +321,7 @@ class MockDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getPrimaryKeyReturnsColumnName(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMock($driver)) {
             return;
@@ -339,14 +339,14 @@ class MockDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canSelectAll(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMock($driver)) {
             return;
         }
 
         $driver->setQuery(
-            'SELECT * FROM mk_categories ORDER BY id'
+            'SELECT * FROM mk_categories ORDER BY id',
         );
         $rows = $driver->loadObjectList();
 
@@ -358,7 +358,7 @@ class MockDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canSelectWithWhere(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMock($driver)) {
             return;
@@ -366,7 +366,7 @@ class MockDriverTest extends AbstractDriverTestCase
 
         $driver->setQuery(
             "SELECT * FROM mk_items WHERE status = 'active'"
-            . " ORDER BY id"
+            . " ORDER BY id",
         );
         $rows = $driver->loadObjectList();
 
@@ -377,7 +377,7 @@ class MockDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canSelectWithJoin(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMock($driver)) {
             return;
@@ -388,7 +388,7 @@ class MockDriverTest extends AbstractDriverTestCase
             . " FROM mk_items i"
             . " INNER JOIN mk_categories c"
             . "   ON i.category_id = c.id"
-            . " ORDER BY i.id"
+            . " ORDER BY i.id",
         );
         $rows = $driver->loadObjectList();
 
@@ -400,7 +400,7 @@ class MockDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canInsertAndGetAutoIncrementId(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMock($driver)) {
             return;
@@ -408,14 +408,14 @@ class MockDriverTest extends AbstractDriverTestCase
 
         $driver->exec(
             "INSERT INTO mk_categories (name, slug)"
-            . " VALUES ('Test', 'test-auto')"
+            . " VALUES ('Test', 'test-auto')",
         );
         $id = $driver->insertid();
 
         $this->assertGreaterThan(0, $id);
 
         $driver->exec(
-            "DELETE FROM mk_categories WHERE id = $id"
+            "DELETE FROM mk_categories WHERE id = $id",
         );
     }
 
@@ -423,7 +423,7 @@ class MockDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUpdateRecord(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMock($driver)) {
             return;
@@ -431,22 +431,22 @@ class MockDriverTest extends AbstractDriverTestCase
 
         $driver->exec(
             "INSERT INTO mk_categories (name, slug)"
-            . " VALUES ('Before', 'update-test')"
+            . " VALUES ('Before', 'update-test')",
         );
         $driver->exec(
             "UPDATE mk_categories SET name = 'After'"
-            . " WHERE slug = 'update-test'"
+            . " WHERE slug = 'update-test'",
         );
 
         $driver->setQuery(
             "SELECT name FROM mk_categories"
-            . " WHERE slug = 'update-test'"
+            . " WHERE slug = 'update-test'",
         );
         $this->assertEquals('After', $driver->loadResult());
 
         $driver->exec(
             "DELETE FROM mk_categories"
-            . " WHERE slug = 'update-test'"
+            . " WHERE slug = 'update-test'",
         );
     }
 
@@ -454,7 +454,7 @@ class MockDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canDeleteRecord(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMock($driver)) {
             return;
@@ -462,16 +462,16 @@ class MockDriverTest extends AbstractDriverTestCase
 
         $driver->exec(
             "INSERT INTO mk_categories (name, slug)"
-            . " VALUES ('Delete Me', 'delete-test')"
+            . " VALUES ('Delete Me', 'delete-test')",
         );
         $driver->exec(
             "DELETE FROM mk_categories"
-            . " WHERE slug = 'delete-test'"
+            . " WHERE slug = 'delete-test'",
         );
 
         $driver->setQuery(
             "SELECT COUNT(*) FROM mk_categories"
-            . " WHERE slug = 'delete-test'"
+            . " WHERE slug = 'delete-test'",
         );
         $this->assertEquals(0, $driver->loadResult());
     }
@@ -484,7 +484,7 @@ class MockDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canCommitTransaction(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMock($driver)) {
             return;
@@ -493,19 +493,19 @@ class MockDriverTest extends AbstractDriverTestCase
         $driver->transactionStart();
         $driver->exec(
             "INSERT INTO mk_categories (name, slug)"
-            . " VALUES ('Committed', 'trans-commit')"
+            . " VALUES ('Committed', 'trans-commit')",
         );
         $driver->transactionCommit();
 
         $driver->setQuery(
             "SELECT COUNT(*) FROM mk_categories"
-            . " WHERE slug = 'trans-commit'"
+            . " WHERE slug = 'trans-commit'",
         );
         $this->assertEquals(1, $driver->loadResult());
 
         $driver->exec(
             "DELETE FROM mk_categories"
-            . " WHERE slug = 'trans-commit'"
+            . " WHERE slug = 'trans-commit'",
         );
     }
 
@@ -513,7 +513,7 @@ class MockDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canRollbackTransaction(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMock($driver)) {
             return;
@@ -522,13 +522,13 @@ class MockDriverTest extends AbstractDriverTestCase
         $driver->transactionStart();
         $driver->exec(
             "INSERT INTO mk_categories (name, slug)"
-            . " VALUES ('RolledBack', 'trans-rollback')"
+            . " VALUES ('RolledBack', 'trans-rollback')",
         );
         $driver->transactionRollback();
 
         $driver->setQuery(
             "SELECT COUNT(*) FROM mk_categories"
-            . " WHERE slug = 'trans-rollback'"
+            . " WHERE slug = 'trans-rollback'",
         );
         $this->assertEquals(0, $driver->loadResult());
     }
@@ -541,7 +541,7 @@ class MockDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function newMockInstanceIsIsolated(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMock($driver)) {
             return;
@@ -559,7 +559,7 @@ class MockDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function twoMockInstancesAreIndependent(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMock($driver)) {
             return;
@@ -571,11 +571,11 @@ class MockDriverTest extends AbstractDriverTestCase
         // Create table in A only
         $mockA->exec(
             "CREATE TABLE mk_isolation_test"
-            . " (id INTEGER PRIMARY KEY, val TEXT)"
+            . " (id INTEGER PRIMARY KEY, val TEXT)",
         );
         $mockA->exec(
             "INSERT INTO mk_isolation_test (id, val)"
-            . " VALUES (1, 'hello')"
+            . " VALUES (1, 'hello')",
         );
 
         // A should see the table
@@ -593,7 +593,7 @@ class MockDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseAggregateFunctions(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMock($driver)) {
             return;
@@ -614,14 +614,14 @@ class MockDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseLimitOffset(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMock($driver)) {
             return;
         }
 
         $driver->setQuery(
-            "SELECT * FROM mk_items ORDER BY id LIMIT 2 OFFSET 1"
+            "SELECT * FROM mk_items ORDER BY id LIMIT 2 OFFSET 1",
         );
         $rows = $driver->loadObjectList();
 
@@ -633,7 +633,7 @@ class MockDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseCoalesce(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMock($driver)) {
             return;
@@ -641,7 +641,7 @@ class MockDriverTest extends AbstractDriverTestCase
 
         $driver->setQuery(
             "SELECT COALESCE(description, 'N/A') AS descr"
-            . " FROM mk_items WHERE id = 1"
+            . " FROM mk_items WHERE id = 1",
         );
         $result = $driver->loadResult();
 
@@ -652,7 +652,7 @@ class MockDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseCaseExpression(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMock($driver)) {
             return;
@@ -674,7 +674,7 @@ class MockDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseGroupByAndHaving(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMock($driver)) {
             return;
@@ -696,7 +696,7 @@ class MockDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseSubquery(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMock($driver)) {
             return;
@@ -722,7 +722,7 @@ class MockDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canCreateAndDropTable(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMock($driver)) {
             return;
@@ -730,7 +730,7 @@ class MockDriverTest extends AbstractDriverTestCase
 
         $driver->exec(
             "CREATE TABLE mk_ddl_test"
-            . " (id INTEGER PRIMARY KEY, name TEXT)"
+            . " (id INTEGER PRIMARY KEY, name TEXT)",
         );
         $this->assertTrue($driver->tableExists('mk_ddl_test'));
 
@@ -742,7 +742,7 @@ class MockDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canAddColumn(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMock($driver)) {
             return;
@@ -750,10 +750,10 @@ class MockDriverTest extends AbstractDriverTestCase
 
         $driver->exec(
             "CREATE TABLE mk_ddl_test"
-            . " (id INTEGER PRIMARY KEY, name TEXT)"
+            . " (id INTEGER PRIMARY KEY, name TEXT)",
         );
         $driver->exec(
-            "ALTER TABLE mk_ddl_test ADD COLUMN email TEXT"
+            "ALTER TABLE mk_ddl_test ADD COLUMN email TEXT",
         );
 
         $columns = $driver->getTableColumns('mk_ddl_test', true);
@@ -770,7 +770,7 @@ class MockDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function queryBuilderSelectWithLimit(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMock($driver)) {
             return;
@@ -790,7 +790,7 @@ class MockDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function queryBuilderWhereInSubquery(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMock($driver)) {
             return;
@@ -817,7 +817,7 @@ class MockDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function featureDetectionReturnsExpectedValues(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMock($driver)) {
             return;
@@ -839,7 +839,7 @@ class MockDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseCreateTableBuilder(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMock($driver)) {
             return;

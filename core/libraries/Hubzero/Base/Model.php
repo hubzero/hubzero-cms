@@ -98,7 +98,7 @@ abstract class Model extends Obj
 
             if (!($this->_tbl instanceof \Hubzero\Database\Table)) {
                 $this->_logError(
-                    __CLASS__ . '::' . __FUNCTION__ . '(); ' . Lang::txt('Table class must be an instance of Table.')
+                    __CLASS__ . '::' . __FUNCTION__ . '(); ' . Lang::txt('Table class must be an instance of Table.'),
                 );
                 throw new \LogicException(Lang::txt('Table class must be an instance of Table.'));
             }
@@ -296,13 +296,13 @@ abstract class Model extends Obj
                     '::' .
                     __FUNCTION__ .
                     '(); ' .
-                    Lang::txt('Data must be of type object or array. Type given was %s', gettype($data))
+                    Lang::txt('Data must be of type object or array. Type given was %s', gettype($data)),
             );
             throw new \InvalidArgumentException(
                 Lang::txt(
                     'Data must be of type object or array. Type given was %s',
-                    gettype($data)
-                )
+                    gettype($data),
+                ),
             );
         }
 
@@ -393,7 +393,7 @@ abstract class Model extends Obj
                 $results = Event::trigger('content.onContentBeforeSave', [
                     $this->_context,
                     &$this,
-                    $this->exists()
+                    $this->exists(),
                 ]);
                 foreach ($results as $result) {
                     if ($result === false) {

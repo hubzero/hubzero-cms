@@ -70,7 +70,7 @@ class Solr extends AdminController
             $this->displayTask();
         }
         App::redirect(
-            Route::url('index.php?option=com_search&task=display', false)
+            Route::url('index.php?option=com_search&task=display', false),
         );
     }
 
@@ -246,7 +246,7 @@ class Solr extends AdminController
             . '&task=documentlisting&facet=' . $facet . '&limitstart=' . $limitstart
             . '&limit=' . $limit . '&filter=' . $filter;
         App::redirect(
-            Route::url($url, false)
+            Route::url($url, false),
         );
     }
 
@@ -267,7 +267,7 @@ class Solr extends AdminController
         App::redirect(
             Route::url($url, false),
             'Successfully removed entry #' . $entryID,
-            'success'
+            'success',
         );
     }
 }

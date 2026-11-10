@@ -38,7 +38,7 @@ class Ipinfodb extends Plugin
 
         return new \Geocoder\Provider\IpInfoDb\IpInfoDb(
             $adapter,
-            $this->params->get('apiKey')
+            $this->params->get('apiKey'),
         );
     }
 }

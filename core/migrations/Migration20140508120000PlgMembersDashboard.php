@@ -113,7 +113,7 @@ class Migration20140508120000PlgMembersDashboard extends Base
                 $newpreferences[] = [
                     'uid'      => $preference->uid,
                     'prefs'    => $newPrefCols,
-                    'modified' => $preference->modified
+                    'modified' => $preference->modified,
                 ];
             }
 
@@ -126,7 +126,7 @@ class Migration20140508120000PlgMembersDashboard extends Base
                         ->values([
                             $pref['uid'],
                             json_encode($pref['prefs']),
-                            $pref['modified']
+                            $pref['modified'],
                         ])
                         ->execute();
                 }

@@ -49,7 +49,7 @@ class Comment extends Relational
      */
     protected $rules = [
         //'comment' => 'notempty',
-        'ticket'  => 'positive|nonzero'
+        'ticket'  => 'positive|nonzero',
     ];
 
     /**
@@ -59,7 +59,7 @@ class Comment extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**
@@ -83,7 +83,7 @@ class Comment extends Relational
      */
     private $cache = [
         'recipients.added'  => [],
-        'recipients.failed' => []
+        'recipients.failed' => [],
     ];
 
     /**
@@ -312,7 +312,7 @@ class Comment extends Relational
                     'role'    => $role,
                     'name'    => $user->get('name'),
                     'email'   => $user->get('email'),
-                    'id'      => $user->get('id')
+                    'id'      => $user->get('id'),
                 ];
                 $added = true;
             }
@@ -326,7 +326,7 @@ class Comment extends Relational
                     'role'    => $role,
                     'name'    => Lang::txt('COM_SUPPORT_UNKNOWN'),
                     'email'   => $to,
-                    'id'      => 0
+                    'id'      => 0,
                 ];
                 $added = true;
             } else {
@@ -340,7 +340,7 @@ class Comment extends Relational
                         'role'    => $role,
                         'name'    => $user->get('name'),
                         'email'   => $user->get('email'),
-                        'id'      => $user->get('id')
+                        'id'      => $user->get('id'),
                     ];
                     $added = true;
                 }

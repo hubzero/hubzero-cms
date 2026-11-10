@@ -108,7 +108,7 @@ $browser = new \Hubzero\Browser\Detector();
 $cls = [
     $this->direction,
     $browser->name(),
-    $browser->name() . $browser->major()
+    $browser->name() . $browser->major(),
 ];
 
 $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
@@ -211,18 +211,18 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
                                     <?php
                                     $userId = User::get('id');
                                     $profileUrl = Route::url(
-                                        'index.php?option=com_members&id=' . $userId
+                                        'index.php?option=com_members&id=' . $userId,
                                     );
                                     $dashboardUrl = Route::url(
                                         'index.php?option=com_members&id=' . $userId
-                                        . '&active=dashboard'
+                                        . '&active=dashboard',
                                     );
                                     $profileEditUrl = Route::url(
                                         'index.php?option=com_members&id=' . $userId
-                                        . '&active=profile'
+                                        . '&active=profile',
                                     );
                                     $logoutUrl = Route::url(
-                                        'index.php?option=com_users&view=logout'
+                                        'index.php?option=com_users&view=logout',
                                     );
                                     $userName = stripslashes(User::get('name'));
                                     $userLogin = stripslashes(User::get('username'));
@@ -283,7 +283,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
                                     <li>
                                         <?php
                                         $loginUrl = Route::url(
-                                            'index.php?option=com_users&view=login'
+                                            'index.php?option=com_users&view=login',
                                         );
                                         ?>
                                         <a href="<?php echo $loginUrl; ?>"

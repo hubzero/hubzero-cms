@@ -17,7 +17,7 @@ defined('_HZEXEC_') or die();
 $total = $this->application->accessTokens()->count();
 $filters = [
     'limit' => Request::getInt('limit', 25),
-    'start' => Request::getInt('limitstart', Request::getInt('start', 0))
+    'start' => Request::getInt('limitstart', Request::getInt('start', 0)),
 ];
 $tokens = $this->application->accessTokens()
     ->limit($filters['limit'], $filters['start'])
@@ -79,7 +79,7 @@ $revokeLabel = Lang::txt('COM_DEVELOPER_API_APPLICATION_TOKENS_REVOKE_TOKEN');
                             $revokeUrl = Route::url(
                                 $this->application->link('revoke')
                                 . '&token=' . $token->get('id')
-                                . '&return=tokens'
+                                . '&return=tokens',
                             );
                             ?>
                             <a
@@ -95,7 +95,7 @@ $revokeLabel = Lang::txt('COM_DEVELOPER_API_APPLICATION_TOKENS_REVOKE_TOKEN');
                                     <?php
                                     echo Lang::txt(
                                         'COM_DEVELOPER_API_APPLICATION_TOKENS_ACCESS_TOKEN_CREATED',
-                                        $token->created('m/d/Y @ g:ia')
+                                        $token->created('m/d/Y @ g:ia'),
                                     );
                                     ?>
                                 </dd>
@@ -103,7 +103,7 @@ $revokeLabel = Lang::txt('COM_DEVELOPER_API_APPLICATION_TOKENS_REVOKE_TOKEN');
                                     <?php
                                     echo Lang::txt(
                                         'COM_DEVELOPER_API_APPLICATION_TOKENS_ACCESS_TOKEN_EXPIRES',
-                                        $token->expires('m/d/Y @ g:ia')
+                                        $token->expires('m/d/Y @ g:ia'),
                                     );
                                     ?>
                                 </dd>

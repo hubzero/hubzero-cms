@@ -137,7 +137,7 @@ class SiteSettings
         $settings['sitename'] = self::promptInput(
             "Site name",
             $existing['sitename'] ?? "myhub",
-            $ansi
+            $ansi,
         );
         if ($settings['sitename'] === null) {
             return null;
@@ -148,7 +148,7 @@ class SiteSettings
         $settings['mailfrom'] = self::promptEmail(
             "Admin email address",
             $existing['mailfrom'] ?? "admin@localhost",
-            $ansi
+            $ansi,
         );
         if ($settings['mailfrom'] === null) {
             return null;
@@ -162,7 +162,7 @@ class SiteSettings
             "Site URL",
             $existing['live_site'] ?? "",
             $ansi,
-            true  // Allow empty
+            true,  // Allow empty
         );
         if ($settings['live_site'] === null) {
             return null;
@@ -182,7 +182,7 @@ class SiteSettings
         $settings['MetaDesc'] = self::promptInput(
             "Site description (for search engines)",
             $defaultDesc,
-            $ansi
+            $ansi,
         );
         if ($settings['MetaDesc'] === null) {
             return null;
@@ -481,7 +481,7 @@ class SiteSettings
                 self::output(
                     "  \e[31mInvalid timezone. Please enter a valid PHP timezone identifier.\e[39m\n",
                     $ansi,
-                    true
+                    true,
                 );
                 continue;
             }

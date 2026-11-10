@@ -223,7 +223,7 @@ class ViewLevelGateTest extends Basic
         $this->assertNotNull($this->redirect);
         $this->assertSame(
             'index.php?option=com_users&view=login&return=' . base64_encode('/publications/browse?tag=data'),
-            $this->redirect['url']
+            $this->redirect['url'],
         );
         $this->assertSame('COM_X_LOGIN', $this->redirect['message']);
         $this->assertSame('warning', $this->redirect['type']);

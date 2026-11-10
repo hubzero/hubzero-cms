@@ -91,27 +91,27 @@ class SearchMigration extends Base implements CommandInterface
         $this
             ->output
             ->addOverview(
-                'Run a solr search migration. Searches for and indexes models with the searcable interface.'
+                'Run a solr search migration. Searches for and indexes models with the searcable interface.',
             )
             ->addTasks($this)
             ->addArgument(
                 '-url: the base url of the site being indexed.',
-                'Example: -url=\'https://localhost\''
+                'Example: -url=\'https://localhost\'',
             )
             ->addArgument(
                 '-components: component(s) that should be indexed.',
                 'If multiple, separate each component name with a comma.',
-                'Example: -components=\'blog, content, kb, resources\''
+                'Example: -components=\'blog, content, kb, resources\'',
             )
             ->addArgument(
                 '--all: index all searchable components',
                 'Any component that contains a model that implements Searchable will be added to the solr index.',
-                'Example: --all'
+                'Example: --all',
             )
             ->addArgument(
                 '--rebuild: include components that have already had a full index run previously.',
                 'this will overwrite any existing search documents with a new version.',
-                'example: --rebuild'
+                'example: --rebuild',
             );
     }
 }

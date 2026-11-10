@@ -162,7 +162,7 @@ class Resume extends Plugin
         $arr = [
             'html' => '',
             'metadata' => [],
-            'searchresult' => ''
+            'searchresult' => '',
         ];
 
         // Do we need to return any data?

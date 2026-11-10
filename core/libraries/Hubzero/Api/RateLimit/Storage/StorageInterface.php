@@ -47,7 +47,7 @@ interface StorageInterface
         $countLong,
         $expiresShort,
         $expiresLong,
-        $created
+        $created,
     );
     /**
      * Increment rate limit record

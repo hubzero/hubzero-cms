@@ -86,7 +86,7 @@ $this->css()
             $pageNav = $this->pagination(
                 $this->total,
                 $this->filters['start'],
-                $this->filters['limit']
+                $this->filters['limit'],
             );
             $pageNav->setAdditionalUrlParam('id', $this->member->get('id'));
             $pageNav->setAdditionalUrlParam('active', 'collections');

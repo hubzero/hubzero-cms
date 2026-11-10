@@ -54,7 +54,7 @@ class Featuredblog extends Module
             'search'     => '',
             'scope'      => 'member',
             'scope_id'   => 0,
-            'authorized' => false
+            'authorized' => false,
         ];
 
         $row = Entry::all()

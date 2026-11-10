@@ -159,7 +159,7 @@ class Base
     {
         $this->callback('migration', 'log', [
             'message' => $message,
-            'type'    => $type
+            'type'    => $type,
         ]);
     }
 
@@ -268,7 +268,7 @@ class Base
     protected function executeWithEscalation($command)
     {
         return PrivilegeManager::getInstance()->withElevatedPrivileges(
-            fn() => shell_exec($command)
+            fn() => shell_exec($command),
         );
     }
 
@@ -344,7 +344,7 @@ class Base
                 'user'     => 'root',
                 'password' => '',
                 'database' => $database,
-                'prefix'   => Config::get('dbprefix')
+                'prefix'   => Config::get('dbprefix'),
             ]);
 
             if ($db->connected()) {
@@ -495,7 +495,7 @@ class Base
         $query = $this->_generateSafeAlterTableColumnOperation(
             $table,
             $columns,
-            '_safeAddColumn'
+            '_safeAddColumn',
         );
 
         return $query;
@@ -533,7 +533,7 @@ class Base
         $query = $this->_generateSafeAlterTableColumnOperation(
             $table,
             $columns,
-            '_safeDropColumn'
+            '_safeDropColumn',
         );
 
         return $query;

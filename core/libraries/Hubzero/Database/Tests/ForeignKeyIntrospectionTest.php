@@ -143,13 +143,13 @@ class ForeignKeyIntrospectionTest extends AbstractDriverTestCase
             $this->assertContains(
                 $fk->on_update,
                 ['CASCADE', 'RESTRICT', 'NO ACTION'],
-                "[$dbName] FK on_update should be a valid action"
+                "[$dbName] FK on_update should be a valid action",
             );
         } else {
             $this->assertEquals(
                 'NO ACTION',
                 $fk->on_delete,
-                "[$dbName] FK on_delete should be NO ACTION (referential actions not supported)"
+                "[$dbName] FK on_delete should be NO ACTION (referential actions not supported)",
             );
         }
     }
@@ -173,7 +173,7 @@ class ForeignKeyIntrospectionTest extends AbstractDriverTestCase
         $this->assertContains(
             $fk->on_delete,
             ['SET NULL', 'RESTRICT', 'NO ACTION'],
-            "[$dbName] FK on_delete should be SET NULL or a fallback action"
+            "[$dbName] FK on_delete should be SET NULL or a fallback action",
         );
     }
 
@@ -194,7 +194,7 @@ class ForeignKeyIntrospectionTest extends AbstractDriverTestCase
         // Test hasForeignKey
         $this->assertTrue(
             $driver->hasForeignKey('fki_child', $fkName),
-            "[$dbName] hasForeignKey should return true for existing constraint"
+            "[$dbName] hasForeignKey should return true for existing constraint",
         );
     }
 
@@ -208,7 +208,7 @@ class ForeignKeyIntrospectionTest extends AbstractDriverTestCase
     {
         $this->assertFalse(
             $driver->hasForeignKey('fki_grandparent', 'nonexistent_fk_xyz'),
-            "[$dbName] hasForeignKey should return false for nonexistent constraint"
+            "[$dbName] hasForeignKey should return false for nonexistent constraint",
         );
     }
 
@@ -251,12 +251,12 @@ class ForeignKeyIntrospectionTest extends AbstractDriverTestCase
 
         $this->assertTrue(
             $schema->hasForeignKey('fki_child', $fkName),
-            "[$dbName] SchemaManager::hasForeignKey should return true for existing constraint"
+            "[$dbName] SchemaManager::hasForeignKey should return true for existing constraint",
         );
 
         $this->assertFalse(
             $schema->hasForeignKey('fki_child', 'nonexistent_fk'),
-            "[$dbName] SchemaManager::hasForeignKey should return false for nonexistent constraint"
+            "[$dbName] SchemaManager::hasForeignKey should return false for nonexistent constraint",
         );
     }
 
@@ -301,12 +301,12 @@ class ForeignKeyIntrospectionTest extends AbstractDriverTestCase
 
         $this->assertTrue(
             $table->hasForeignKey($fkName),
-            "[$dbName] Table::hasForeignKey should return true for existing constraint"
+            "[$dbName] Table::hasForeignKey should return true for existing constraint",
         );
 
         $this->assertFalse(
             $table->hasForeignKey('nonexistent_fk'),
-            "[$dbName] Table::hasForeignKey should return false for nonexistent constraint"
+            "[$dbName] Table::hasForeignKey should return false for nonexistent constraint",
         );
     }
 
@@ -361,7 +361,7 @@ class ForeignKeyIntrospectionTest extends AbstractDriverTestCase
     {
         $this->assertFalse(
             $driver->hasForeignKey('nonexistent_table_xyz', 'any_fk'),
-            "[$dbName] Should return false for nonexistent table"
+            "[$dbName] Should return false for nonexistent table",
         );
     }
 }

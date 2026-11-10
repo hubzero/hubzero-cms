@@ -161,7 +161,7 @@ if ($this->comment->isReported()) {
             $comments = $this->comment->replies()
                 ->whereIn('state', [
                     Components\Kb\Models\Comment::STATE_PUBLISHED,
-                    Components\Kb\Models\Comment::STATE_FLAGGED
+                    Components\Kb\Models\Comment::STATE_FLAGGED,
                 ])
                 ->rows();
 

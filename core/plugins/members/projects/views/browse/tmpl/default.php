@@ -34,11 +34,11 @@ $this->css();
     $memberId = $this->user->get('id');
     $allUrl = Route::url(
         'index.php?option=com_members&id=' . $memberId
-        . '&active=projects&action=all'
+        . '&active=projects&action=all',
     );
     $updatesUrl = Route::url(
         'index.php?option=com_members&id=' . $memberId
-        . '&active=projects&action=updates'
+        . '&active=projects&action=updates',
     );
     $listLabel = Lang::txt('PLG_MEMBERS_PROJECTS_LIST')
         . ' (' . $this->total . ')';
@@ -71,14 +71,14 @@ $this->css();
             ? ' class="active"' : '';
         $filterAllUrl = Route::url(
             'index.php?option=com_members&id=' . $memberId
-            . '&active=projects&action=all'
+            . '&active=projects&action=all',
         );
         $filterArchivedUrl = Route::url(
             'index.php?option=com_members&id=' . $memberId
-            . '&active=projects&action=all&filterby=archived'
+            . '&active=projects&action=all&filterby=archived',
         );
         $filterLabel = Lang::txt(
-            'JGLOBAL_FILTER_AND_SORT_RESULTS'
+            'JGLOBAL_FILTER_AND_SORT_RESULTS',
         );
         ?>
         <nav class="entries-filters"
@@ -90,7 +90,7 @@ $this->css();
                         href="<?php echo $filterAllUrl; ?>">
                         <?php
                         echo Lang::txt(
-                            'PLG_MEMBERS_PROJECTS_FILTER_STATUS_ACTIVE'
+                            'PLG_MEMBERS_PROJECTS_FILTER_STATUS_ACTIVE',
                         );
                         ?>
                     </a>
@@ -101,7 +101,7 @@ $this->css();
                         href="<?php echo $filterArchivedUrl; ?>">
                         <?php
                         echo Lang::txt(
-                            'PLG_MEMBERS_PROJECTS_FILTER_STATUS_ARCHIVED'
+                            'PLG_MEMBERS_PROJECTS_FILTER_STATUS_ARCHIVED',
                         );
                         ?>
                     </a>
@@ -124,7 +124,7 @@ $this->css();
 
                     foreach ($this->invites as $invite) {
                         $row = new Components\Projects\Models\Project(
-                            $invite->projectid
+                            $invite->projectid,
                         );
                         $rowUrl = Route::url($row->link());
                         $thumbUrl = Route::url($row->link('thumb'));
@@ -136,10 +136,10 @@ $this->css();
                             'index.php?option=com_projects'
                             . '&alias=' . $invite->alias
                             . '&confirm=' . $invite->invited_code
-                            . '&email=' . $invite->invited_email
+                            . '&email=' . $invite->invited_email,
                         );
                         $acceptLabel = Lang::txt(
-                            'PLG_MEMBERS_PROJECTS_ACCEPT'
+                            'PLG_MEMBERS_PROJECTS_ACCEPT',
                         );
                         ?>
                         <tr class="mline">

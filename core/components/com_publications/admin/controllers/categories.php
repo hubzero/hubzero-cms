@@ -52,29 +52,29 @@ class Categories extends AdminController
                 $this->_option . '.categories.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.categories.limitstart',
                 'limitstart',
                 0,
-                'int'
+                'int',
             ),
             'search' => Request::getState(
                 $this->_option . '.categories.search',
                 'search',
-                ''
+                '',
             ),
             'sort' => Request::getState(
                 $this->_option . '.categories.sort',
                 'filter_order',
-                'id'
+                'id',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.categories.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         $filters['state'] = 'all';
@@ -175,7 +175,7 @@ class Categories extends AdminController
                         $element->name = $val['name'];
                     } else {
                         $element->name = strtolower(
-                            preg_replace("/[^a-zA-Z0-9]/", '', trim($val['title']))
+                            preg_replace("/[^a-zA-Z0-9]/", '', trim($val['title'])),
                         );
                     }
                     $element->label    = $val['title'];
@@ -302,7 +302,7 @@ class Categories extends AdminController
         $field->type        = Request::getString('type', '');
         $field->options     = [
             $option,
-            $option
+            $option,
         ];
 
         $elements = new Elements();

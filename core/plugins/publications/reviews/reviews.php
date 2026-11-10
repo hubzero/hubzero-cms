@@ -57,7 +57,7 @@ class Reviews extends Plugin
     {
         $arr = [
             'html'    => '',
-            'metadata' => ''
+            'metadata' => '',
         ];
 
         $h = new Helper();
@@ -84,7 +84,7 @@ class Reviews extends Plugin
         $arr = [
             'area'     => $this->_name,
             'html'     => '',
-            'metadata' => ''
+            'metadata' => '',
         ];
 
         // Check if our area is in the array of areas we want to return results for
@@ -129,7 +129,7 @@ class Reviews extends Plugin
                 App::redirect(
                     Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
                     Lang::txt('PLG_PUBLICATIONS_REVIEWS_LOGIN_NOTICE'),
-                    'warning'
+                    'warning',
                 );
                 return;
             }

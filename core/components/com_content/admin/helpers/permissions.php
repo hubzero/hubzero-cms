@@ -46,7 +46,7 @@ class Permissions
             'core.edit',
             'core.edit.state',
             'core.edit.own',
-            'core.delete'
+            'core.delete',
         ];
 
         foreach ($actions as $action) {

@@ -79,7 +79,7 @@ SQL;
                     'passfail',
                     $gradeCriteria1,
                     $scoreCriteria1,
-                    'pass'
+                    'pass',
                 ])
                 ->execute();
 
@@ -147,7 +147,7 @@ SQL;
                     'passfail',
                     $gradeCriteria2,
                     $scoreCriteria2,
-                    'pass'
+                    'pass',
                 ])
                 ->execute();
         }

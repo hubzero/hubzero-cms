@@ -42,7 +42,7 @@ class Converter
                     $newTag = preg_replace(
                         '/href=[\'"][^\'"]+[\'"]/i',
                         'href="/" ',
-                        $matches[0]
+                        $matches[0],
                     );
                 } else {
                     $newHref = Converter::encode($originalUrl);
@@ -50,12 +50,12 @@ class Converter
                     $newTag = preg_replace(
                         '/href=[\'"][^\'"]+[\'"]/i',
                         'href="' . $newHref . '" rel="noreferrer nofollow noopener"',
-                        $matches[0]
+                        $matches[0],
                     );
                 }
                     return $newTag;
             },
-            $html
+            $html,
         );
     }
 

@@ -310,7 +310,7 @@ class Schema
                 $dsn,
                 (string) ($config['user'] ?? ''),
                 (string) ($config['password'] ?? ''),
-                []
+                [],
             );
 
             return $connection->getNativeConnection();
@@ -342,7 +342,7 @@ class Schema
         if (in_array($requested, ['pgsql', 'sqlite', 'firebird', 'informix'], true)) {
             throw new \PDOException(
                 "CLI installer currently supports MySQL-family drivers only"
-                . " (mysql/mariadb/percona). Requested: {$requested}"
+                . " (mysql/mariadb/percona). Requested: {$requested}",
             );
         }
 
@@ -531,7 +531,7 @@ class Schema
             $stmt = $pdo->prepare(
                 "SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES
                  WHERE TABLE_SCHEMA = DATABASE()
-                 AND TABLE_NAME LIKE :prefix"
+                 AND TABLE_NAME LIKE :prefix",
             );
             $stmt->execute(['prefix' => $prefix . '%']);
             return (int) $stmt->fetchColumn();
@@ -555,7 +555,7 @@ class Schema
             // Check for extensions table and essential extension records
             $stmt = $pdo->prepare(
                 "SELECT COUNT(*) FROM `{$prefix}extensions`
-                 WHERE element IN ('com_content', 'com_users', 'com_menus')"
+                 WHERE element IN ('com_content', 'com_users', 'com_menus')",
             );
             $stmt->execute();
             $count = (int) $stmt->fetchColumn();
@@ -580,7 +580,7 @@ class Schema
         try {
             // Every set brings articles with it, and the base data brings none
             $stmt = $pdo->prepare(
-                "SELECT COUNT(*) FROM `{$prefix}content` WHERE state >= 0"
+                "SELECT COUNT(*) FROM `{$prefix}content` WHERE state >= 0",
             );
             $stmt->execute();
             return (int) $stmt->fetchColumn() > 0;

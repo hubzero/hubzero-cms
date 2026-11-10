@@ -94,7 +94,7 @@ if ($this->file && file_exists($this->path . DS . $this->file)) {
                         $routeUrl = Route::url(
                             'index.php?option=' . $this->option  . '&controller=' . $this->controller
                             . '&tmpl=component&task=remove&type=' . $this->type . '&file=' . $this->file . '&id='
-                            . $this->id . '&' . Session::getFormToken() . '=1'
+                            . $this->id . '&' . Session::getFormToken() . '=1',
                         );
                     ?>
                     <td><a href="<?php echo $routeUrl; ?>">[ <?php echo Lang::txt('COM_COURSES_DELETE'); ?> ]</a></td>

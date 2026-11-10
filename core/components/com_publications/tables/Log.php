@@ -88,7 +88,7 @@ class Log extends Table
             'nutch',
             'robot',
             'fetch',
-            'findlinks'
+            'findlinks',
         ];
         // With no reverse DNS, gethostbyaddr() gives the address back, and an
         // IPv6 address can spell a bot word ('feed' in 2001:db8:feed::1)
@@ -247,7 +247,7 @@ class Log extends Table
         $month = null,
         $count = 0,
         $type = 'view',
-        $category = ''
+        $category = '',
     ) {
         if (!$pid || !$vid || !$year || !$month || !$count) {
             return false;

@@ -51,7 +51,7 @@ class Wishvoters extends Module
 			FROM `#__wishlist_vote` as v
 			INNER JOIN `#__wishlist_item` as w ON w.id=v.wishid
 			WHERE w.wishlist=" . $database->quote($listid) . "
-			GROUP BY v.userid ORDER BY times DESC, v.voted DESC "
+			GROUP BY v.userid ORDER BY times DESC, v.voted DESC ",
         );
         $this->rows = $database->loadObjectList();
         if ($database->getErrorNum()) {

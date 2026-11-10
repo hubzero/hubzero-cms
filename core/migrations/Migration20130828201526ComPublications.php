@@ -108,8 +108,8 @@ class Migration20130828201526ComPublications extends Base
                     '0',
                     '0',
                     $customFields,
-                    $params
-                ]
+                    $params,
+                ],
             ];
 
             foreach ($categories as $category) {
@@ -125,7 +125,7 @@ class Migration20130828201526ComPublications extends Base
                         'contributable' => $category[6],
                         'state'         => $category[7],
                         'customFields'  => $category[8],
-                        'params'        => $category[9]
+                        'params'        => $category[9],
                     ])
                     ->execute();
             }

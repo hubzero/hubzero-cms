@@ -43,7 +43,7 @@ class Answers extends Plugin
             'title'   => Lang::txt('PLG_TAGS_ANSWERS'),
             'total'   => 0,
             'results' => null,
-            'sql'     => ''
+            'sql'     => '',
         ];
 
         if (empty($tags)) {

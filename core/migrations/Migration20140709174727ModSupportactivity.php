@@ -65,7 +65,7 @@ class Migration20140709174727ModSupportactivity extends Base
                     'checked_out'       => 0,
                     'checked_out_time'  => '0000-00-00 00:00:00',
                     'ordering'          => $ordering,
-                    'state'             => 0
+                    'state'             => 0,
                 ])
                 ->execute();
         }

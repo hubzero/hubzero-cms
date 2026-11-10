@@ -34,7 +34,7 @@ class Request extends BaseRequest
         'int'   => '/-?[0-9]+/',
         'float' => '/-?[0-9]+(\.[0-9]+)?/',
         'cmd'   => '/[^A-Z0-9_\.-]/i',
-        'word'  => '/[^A-Z_]/i'
+        'word'  => '/[^A-Z_]/i',
     ];
 
     /**

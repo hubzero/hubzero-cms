@@ -53,7 +53,7 @@ if (count($this->authors) > 0) {
                     <label>
                         <?php
                         $lookUpLabel = ucfirst(Lang::txt(
-                            'PLG_PROJECTS_TEAM_SELECTOR_LOOK_UP_BY_ID'
+                            'PLG_PROJECTS_TEAM_SELECTOR_LOOK_UP_BY_ID',
                         ));
                         ?>
                         <span class="formlabel">
@@ -117,7 +117,7 @@ if (count($this->authors) > 0) {
                     <label for="firstName">
                         <?php
                         $firstNameLabel = ucfirst(Lang::txt(
-                            'PLG_PROJECTS_TEAM_SELECTOR_FIRST_NAME'
+                            'PLG_PROJECTS_TEAM_SELECTOR_FIRST_NAME',
                         ));
                         ?>
                         <span class="formlabel">
@@ -131,7 +131,7 @@ if (count($this->authors) > 0) {
                     <label for="lastName">
                         <?php
                         $lastNameLabel = ucfirst(Lang::txt(
-                            'PLG_PROJECTS_TEAM_SELECTOR_LAST_NAME'
+                            'PLG_PROJECTS_TEAM_SELECTOR_LAST_NAME',
                         ));
                         ?>
                         <span class="formlabel">
@@ -160,7 +160,7 @@ if (count($this->authors) > 0) {
                     <label for="organization">
                         <?php
                         $orgLabel = ucfirst(Lang::txt(
-                            'PLG_PROJECTS_TEAM_SELECTOR_ORGANIZATION'
+                            'PLG_PROJECTS_TEAM_SELECTOR_ORGANIZATION',
                         ));
                         ?>
                         <span class="formlabel">
@@ -202,10 +202,10 @@ if (count($this->authors) > 0) {
                 <div class="block">
                     <?php
                     $inviteLabel = ucfirst(Lang::txt(
-                        'PLG_PROJECTS_TEAM_SELECTOR_INVITE_TO_TEAM'
+                        'PLG_PROJECTS_TEAM_SELECTOR_INVITE_TO_TEAM',
                     ));
                     $emailLabel = ucfirst(Lang::txt(
-                        'PLG_PROJECTS_TEAM_SELECTOR_EMAIL'
+                        'PLG_PROJECTS_TEAM_SELECTOR_EMAIL',
                     ));
                     ?>
                     <p class="invite-question">

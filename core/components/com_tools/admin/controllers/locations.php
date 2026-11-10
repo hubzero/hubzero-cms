@@ -49,24 +49,24 @@ class Locations extends AdminController
                 $this->_option . '.' . $this->_controller . '.zone',
                 'zone',
                 0,
-                'int'
+                'int',
             )),
             'tmpl' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.tmpl',
                 'tmpl',
-                ''
+                '',
             ),
             // Sorting
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'zone'
+                'zone',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         if ($this->view->filters['tmpl'] == 'component') {
@@ -77,13 +77,13 @@ class Locations extends AdminController
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             );
             $this->view->filters['start'] = Request::getState(
                 $this->_option . '.' . $this->_controller . '.limitstart',
                 'limitstart',
                 0,
-                'int'
+                'int',
             );
 
             // In case limit has been changed, adjust limitstart accordingly
@@ -189,7 +189,7 @@ class Locations extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
         );
     }
 
@@ -209,7 +209,7 @@ class Locations extends AdminController
 
         if ($state != 'up' && $state != 'down') {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
             );
             return;
         }
@@ -221,14 +221,14 @@ class Locations extends AdminController
                 App::redirect(
                     Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                     Lang::txt('COM_TOOLS_ERROR_STATE_UPDATE_FAILED'),
-                    'error'
+                    'error',
                 );
                 return;
             }
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
         );
     }
 
@@ -259,7 +259,7 @@ class Locations extends AdminController
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
             Lang::txt('COM_TOOLS_ITEM_DELETED'),
-            'message'
+            'message',
         );
     }
 }

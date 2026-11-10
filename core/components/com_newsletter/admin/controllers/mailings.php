@@ -36,18 +36,18 @@ class Mailings extends AdminController
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             ),
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'subject'
+                'subject',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         $mailings = Mailing::all()
@@ -236,7 +236,7 @@ class Mailings extends AdminController
             "washington" => 'wa',
             "west virginia" => 'wv',
             "wisconsin" => 'wi',
-            "wyoming" => 'wy'
+            "wyoming" => 'wy',
         ];
 
         // Get opens
@@ -262,7 +262,7 @@ class Mailings extends AdminController
         // Build return data
         $geo = [
             'country' => $countryGeo,
-            'state'   => $statesGeo
+            'state'   => $statesGeo,
         ];
 
         if ($no_html) {

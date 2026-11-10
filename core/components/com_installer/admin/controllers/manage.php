@@ -50,55 +50,55 @@ class Manage extends AdminController
             $this->_option . '.' . $this->_controller . '.limit',
             'limit',
             Config::get('list_limit'),
-            'int'
+            'int',
         );
         $start = Request::getState(
             $this->_option . '.' . $this->_controller . '.limitstart',
             'limitstart',
             0,
-            'int'
+            'int',
         );
 
         $filters = [
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'filter_search',
-                ''
+                '',
             )),
             'client_id' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.client_id',
                 'filter_location',
-                ''
+                '',
             ),
             'status' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.status',
                 'filter_status',
                 '',
-                ''
+                '',
             ),
             'type' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.type',
                 'filter_type',
                 '',
-                ''
+                '',
             ),
             'group' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.group',
                 'filter_group',
                 '',
-                ''
+                '',
             ),
             // Get sorting variables
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'name'
+                'name',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         $entries = Extension::all();
@@ -166,7 +166,7 @@ class Manage extends AdminController
                 $filters['sort'],
                 $sortDir,
                 true,
-                $lang->getLocale()
+                $lang->getLocale(),
             );
 
             $total = count($result);

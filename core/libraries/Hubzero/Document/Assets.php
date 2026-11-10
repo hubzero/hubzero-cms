@@ -568,7 +568,7 @@ class Assets
                 // Add the template path to the import list
                 $less->setImportDir([
                     $template . DS,
-                    $lesspath . DS
+                    $lesspath . DS,
                 ]);
 
                 $cacheFile = $cachedir . DS . $primary . '.less.cache';
@@ -693,13 +693,13 @@ class Assets
                 $patterns = [
                     '!/\*[^*]*\*+([^/][^*]*\*+)*/!',  /* remove comments */
                     '/[\n\r \t]/',                    /* remove tabs, spaces, newlines, etc. */
-                    '/ +/'                           /* collapse multiple spaces to a single space */
+                    '/ +/',                           /* collapse multiple spaces to a single space */
                     /* '/ ?([,:;{}]) ?/'                 remove space before and after , : ; { }     [!] apparently, IE 7 doesn't like this and won't process the stylesheet */
                 ];
                 $replacements = [
                     '',
                     ' ',
-                    ' '/*,
+                    ' ',/*,
                     '$1'*/
                 ];
                 $contents = preg_replace($patterns, $replacements, $contents);

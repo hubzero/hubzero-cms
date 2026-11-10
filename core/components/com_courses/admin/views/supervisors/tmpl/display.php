@@ -101,7 +101,7 @@ $this->js('managers.js');
             'student'     => 0,
             'course_id'   => $this->model->get('course_id'),
             'offering_id' => $this->model->get('id'),
-            'section_id'  => $this->model->section()->get('id')
+            'section_id'  => $this->model->section()->get('id'),
         ], true);
 
         $i = 0;
@@ -142,7 +142,7 @@ $this->js('managers.js');
                         <?php
                             $routeUrl = Route::url(
                                 'index.php?option=' . $this->option  . '&controller=members&task=edit&id='
-                                . $u->get('id')
+                                . $u->get('id'),
                             );
                         ?>
                         <a href="<?php echo $routeUrl; ?>" target="_parent">

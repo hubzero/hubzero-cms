@@ -193,7 +193,7 @@ class Loader
 
         return $this->render(
             $this->byName($name),
-            $style
+            $style,
         );
     }
 
@@ -466,7 +466,7 @@ class Loader
 
             if ($db->getErrorNum()) {
                 $this->app['notification']->error(
-                    $this->app['language']->txt('JLIB_APPLICATION_ERROR_MODULE_LOAD', $db->getErrorMsg())
+                    $this->app['language']->txt('JLIB_APPLICATION_ERROR_MODULE_LOAD', $db->getErrorMsg()),
                 );
 
                 return $clean;
@@ -567,7 +567,7 @@ class Loader
                     $cacheparams->methodparams,
                     $cacheparams->modeparams,
                     $wrkarounds,
-                    $wrkaroundoptions
+                    $wrkaroundoptions,
                 );
                 break;
 
@@ -589,7 +589,7 @@ class Loader
                     $cacheparams->methodparams,
                     $module->id . $view_levels . $secureid,
                     $wrkarounds,
-                    $wrkaroundoptions
+                    $wrkaroundoptions,
                 );
                 break;
 
@@ -599,7 +599,7 @@ class Loader
                     $cacheparams->methodparams,
                     $module->module . md5(serialize($cacheparams->methodparams)),
                     $wrkarounds,
-                    $wrkaroundoptions
+                    $wrkaroundoptions,
                 );
                 break;
 
@@ -609,7 +609,7 @@ class Loader
                     $cacheparams->methodparams,
                     $module->id . $view_levels,
                     $wrkarounds,
-                    $wrkaroundoptions
+                    $wrkaroundoptions,
                 );
                 break;
 
@@ -620,7 +620,7 @@ class Loader
                     $cacheparams->methodparams,
                     $module->id . $view_levels . Request::getInt('Itemid', 0),
                     $wrkarounds,
-                    $wrkaroundoptions
+                    $wrkaroundoptions,
                 );
                 break;
         }
@@ -711,7 +711,7 @@ class Loader
             PATH_APP . DS . 'modules' . DS . $unprefixed . DS . $unprefixed . '.php',
             PATH_APP . DS . 'modules' . DS . $prefixed . DS . $prefixed . '.php',
             PATH_CORE . DS . 'modules' . DS . $unprefixed . DS . $unprefixed . '.php',
-            PATH_CORE . DS . 'modules' . DS . $prefixed . DS . $prefixed . '.php'
+            PATH_CORE . DS . 'modules' . DS . $prefixed . DS . $prefixed . '.php',
         ];
 
         foreach ($paths as $path) {

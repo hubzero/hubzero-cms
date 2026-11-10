@@ -64,7 +64,7 @@ class Wishlist extends Plugin
     {
         $arr = [
             'html'     => '',
-            'metadata' => ''
+            'metadata' => '',
         ];
 
         // Check if our area is in the array of areas we want to return results for
@@ -383,7 +383,7 @@ class Wishlist extends Plugin
 
         $arr = [
             'html'     => $html,
-            'metadata' => $metadata
+            'metadata' => $metadata,
         ];
 
         if ($publication->state == 1) {

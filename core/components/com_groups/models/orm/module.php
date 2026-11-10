@@ -45,7 +45,7 @@ class Module extends Relational
      */
     protected $rules = [
         'gidNumber' => 'positive|nonzero',
-        'title'     => 'notempty'
+        'title'     => 'notempty',
     ];
 
     /**
@@ -55,7 +55,7 @@ class Module extends Relational
      **/
     public $always = [
         'modified',
-        'modified_by'
+        'modified_by',
     ];
 
     /**
@@ -65,7 +65,7 @@ class Module extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**

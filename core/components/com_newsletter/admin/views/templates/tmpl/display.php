@@ -92,7 +92,7 @@ if ($this->getError()) {
                                 $editUrl = Route::url(
                                     'index.php?option=' . $this->option
                                     . '&controller=' . $this->controller
-                                    . '&task=edit&id=' . $template->id
+                                    . '&task=edit&id=' . $template->id,
                                 );
                                 ?>
                                 <a href="<?php echo $editUrl; ?>">

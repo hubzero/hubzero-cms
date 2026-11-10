@@ -124,7 +124,7 @@ if (substr($this->profile->get('email', ''), -8) == '@invalid') {
                                 Html::access('assetgroups'),
                                 'value',
                                 'text',
-                                $this->profile->get('access')
+                                $this->profile->get('access'),
                             );
                             ?>
                             <?php echo $val; ?>
@@ -137,7 +137,7 @@ if (substr($this->profile->get('email', ''), -8) == '@invalid') {
                             //mailPreferenceOption
                             $options = [
                                 '1'  => Lang::txt('JYES'),
-                                '0'  => Lang::txt('JNO')
+                                '0'  => Lang::txt('JNO'),
                             ];
                             // -1 means "not chosen yet": the member is asked the next time
                             // they sign in. Only offer it for an account already in that
@@ -395,7 +395,7 @@ if (substr($this->profile->get('email', ''), -8) == '@invalid') {
                                     . '&id=' . $this->profile->get('id')
                                     . '&task=edit&',
                                 false,
-                                true
+                                true,
                             ));
 
                             $confirmLink = Route::url(
@@ -404,7 +404,7 @@ if (substr($this->profile->get('email', ''), -8) == '@invalid') {
                                 . '&id=' . $this->profile->get('id')
                                 . '&task=resendConfirm&'
                                 . Session::getFormToken() . '=1'
-                                . '&return=' . $return
+                                . '&return=' . $return,
                             );
                             $confirmed .= '<div class="input-wrap"><a href="'
                                 . $confirmLink

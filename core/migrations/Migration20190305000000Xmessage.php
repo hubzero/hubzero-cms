@@ -23,15 +23,15 @@ class Migration20190305000000Xmessage extends Base
      **/
     public static $tables = [
         '#__xmessage' => [
-            'created'
+            'created',
         ],
         '#__xmessage_recipient' => [
             'created',
-            'expires'
+            'expires',
         ],
         '#__xmessage_seen' => [
-            'whenseen'
-        ]
+            'whenseen',
+        ],
     ];
 
     /**

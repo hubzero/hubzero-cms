@@ -39,7 +39,7 @@ class Textarea extends Field
             'cols'         => ($this->element['cols'] ? (int) $this->element['cols'] : ''),
             'rows'         => ($this->element['rows'] ? (int) $this->element['rows'] : ''),
             'disabled'     => ((string) $this->element['disabled'] == 'true'    ? 'disabled' : ''),
-            'onchange'     => ($this->element['onchange']  ? (string) $this->element['onchange'] : '')
+            'onchange'     => ($this->element['onchange']  ? (string) $this->element['onchange'] : ''),
         ];
 
         $attr = [];

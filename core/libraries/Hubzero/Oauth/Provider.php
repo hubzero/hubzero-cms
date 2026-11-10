@@ -360,7 +360,7 @@ class Provider
                 $db->quote($this->provider->nonce) .
                 "," .
                 $db->quote($this->provider->timestamp) .
-                ", UTC_TIMESTAMP());"
+                ", UTC_TIMESTAMP());",
         );
 
         if (($db->query() === false) && ($db->getErrorNum() != 1062)) { // duplicate row error ok (well expected anyway)

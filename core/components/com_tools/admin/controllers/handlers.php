@@ -37,13 +37,13 @@ class Handlers extends AdminController
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'tool.title'
+                'tool.title',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         $this->view->rows = Handler::all()
@@ -106,7 +106,7 @@ class Handlers extends AdminController
 
         $handler = Handler::oneOrNew(Request::getInt('id'))->set([
             'tool_id' => Request::getInt('tool'),
-            'prompt'  => Request::getString('prompt')
+            'prompt'  => Request::getString('prompt'),
         ]);
 
         $rules = [];
@@ -169,7 +169,7 @@ class Handlers extends AdminController
         // Redirect
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-            Lang::txt('COM_TOOLS_HANDLER_SUCCESSFULLY_SAVED')
+            Lang::txt('COM_TOOLS_HANDLER_SUCCESSFULLY_SAVED'),
         );
     }
 
@@ -199,7 +199,7 @@ class Handlers extends AdminController
                 if (!$handler->rules->destroyAll() || !$handler->destroy()) {
                     App::redirect(
                         Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-                        Lang::txt('COM_TOOLS_HANDLERS_DELETE_FAILED')
+                        Lang::txt('COM_TOOLS_HANDLERS_DELETE_FAILED'),
                     );
                     return;
                 }
@@ -209,7 +209,7 @@ class Handlers extends AdminController
         // Redirect
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-            Lang::txt('COM_TOOLS_HANDLERS_SUCCESSFULLY_DELETED', count($ids))
+            Lang::txt('COM_TOOLS_HANDLERS_SUCCESSFULLY_DELETED', count($ids)),
         );
     }
 }

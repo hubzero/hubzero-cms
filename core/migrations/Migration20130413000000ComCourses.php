@@ -40,7 +40,7 @@ class Migration20130413000000ComCourses extends Base
             $schema->addUniqueIndex(
                 '#__courses_grade_book',
                 'alternate_key',
-                [$member, 'scope', 'scope_id']
+                [$member, 'scope', 'scope_id'],
             );
         }
 

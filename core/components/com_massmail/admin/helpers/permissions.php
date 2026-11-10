@@ -51,7 +51,7 @@ class Permissions
             'core.send',
             'core.override',
             'core.approve',
-            'core.release'
+            'core.release',
         ];
 
         foreach ($actions as $action) {

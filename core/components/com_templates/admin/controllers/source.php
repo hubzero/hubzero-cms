@@ -43,7 +43,7 @@ class Source extends AdminController
     public function displayTask()
     {
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=templates', false)
+            Route::url('index.php?option=' . $this->_option . '&controller=templates', false),
         );
     }
 
@@ -115,7 +115,7 @@ class Source extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=templates', false)
+            Route::url('index.php?option=' . $this->_option . '&controller=templates', false),
         );
     }
 }

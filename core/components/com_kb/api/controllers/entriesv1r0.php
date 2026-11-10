@@ -359,7 +359,7 @@ class Entriesv1r0 extends ApiController
             'state'      => Request::getInt('state', Article::STATE_PUBLISHED),
             'access'     => Request::getInt('access', Article::ACCESS_PUBLIC),
             'created'    => Request::getString('created', ''),
-            'created_by' => Request::getInt('created_by', User::get('id'))
+            'created_by' => Request::getInt('created_by', User::get('id')),
         ]);
 
         $this->storeArticle($article);
@@ -692,7 +692,7 @@ class Entriesv1r0 extends ApiController
             'params'      => '{}',
             'metadata'    => '{}',
             'metadesc'    => '',
-            'metakey'     => ''
+            'metakey'     => '',
         ]);
 
         // The root of the category tree, which every extension's top-level

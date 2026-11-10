@@ -66,13 +66,13 @@ class ObjectExpander extends Middleware
             'user_id',
             'user_id_to',
             'user_id_from',
-            'voter'
+            'voter',
         ],
         'group' => [
             'groupid',
             'group_id',
-            'gidNumber'
-        ]
+            'gidNumber',
+        ],
     ];
 
     /**

@@ -97,7 +97,7 @@ if (!$this->activity->log->get('anonymous')) {
                     $projectUrl = Route::url($this->model->link());
                     $projectTitle = \Hubzero\Utility\Str::truncate(
                         $this->model->get('title'),
-                        65
+                        65,
                     );
                     ?>
                     <span class="project-name">
@@ -109,11 +109,11 @@ if (!$this->activity->log->get('anonymous')) {
                 <span class="activity-actor"><?php echo $name; ?></span>
                 <?php
                 $createdDatetime = Date::of(
-                    $this->activity->get('created')
+                    $this->activity->get('created'),
                 )->format('Y-m-d\TH:i:s\Z');
                 $createdDisplay = \Components\Projects\Helpers\Html::showTime(
                     $this->activity->log->get('created'),
-                    true
+                    true,
                 );
                 ?>
                 <span class="activity-time"><time
@@ -132,7 +132,7 @@ if (!$this->activity->log->get('anonymous')) {
                     if (
                         preg_match(
                             '/^(<([a-z]+)[^>]*>.+<\/([a-z]+)[^>]*>|<(\?|%|([a-z]+)[^>]*).*(\?|%|)>)/is',
-                            $content
+                            $content,
                         )
                     ) {
                         $isHtml = true;
@@ -284,7 +284,7 @@ if (!$this->activity->log->get('anonymous')) {
                             $editUrl = Route::url(
                                 $this->model->link('feed')
                                 . '&action=edit&activity='
-                                . $this->activity->log->get('id')
+                                . $this->activity->log->get('id'),
                             );
                             ?>
                             <li>
@@ -304,7 +304,7 @@ if (!$this->activity->log->get('anonymous')) {
                             $deleteUrl = Route::url(
                                 $this->model->link('feed')
                                 . '&action=delete&activity='
-                                . $this->activity->log->get('id')
+                                . $this->activity->log->get('id'),
                             );
                             ?>
                             <li>
@@ -347,7 +347,7 @@ if (!$this->activity->log->get('anonymous')) {
                                     5,
                                     5,
                                     $editorId,
-                                    ['class' => 'minimal no-footer']
+                                    ['class' => 'minimal no-footer'],
                                 );
                                 ?>
 

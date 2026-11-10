@@ -45,7 +45,7 @@ class Local extends Plugin
 
         return new \Plugins\Geocode\Local\LocalProvider(
             $adapter,
-            $provider
+            $provider,
         );
     }
 }

@@ -52,10 +52,10 @@ class Software_Auditor extends BaseAuditor
                     if ($skuDownloadCount >= $skuDownloadLimit) {
                         $this->setResponseStatus('error');
                         $this->setResponseNotice(
-                            'You have reached the maximum number of allowed downloads for this product.'
+                            'You have reached the maximum number of allowed downloads for this product.',
                         );
                         $this->setResponseError(
-                            ': you have reached the maximum number of allowed downloads for this product.'
+                            ': you have reached the maximum number of allowed downloads for this product.',
                         );
                     }
                 }
@@ -76,11 +76,11 @@ class Software_Auditor extends BaseAuditor
                     $this->setResponseStatus('error');
                     $this->setResponseNotice(
                         'This product has reached the maximum number of allowed downloads '
-                        . 'and cannot be downloaded.'
+                        . 'and cannot be downloaded.',
                     );
                     $this->setResponseError(
                         ': this product has reached the maximum number of allowed downloads '
-                        . 'and cannot be downloaded.'
+                        . 'and cannot be downloaded.',
                     );
                 }
             }
@@ -97,11 +97,11 @@ class Software_Auditor extends BaseAuditor
                 $this->setResponseStatus('error');
                 $this->setResponseNotice(
                     'This product has reached the maximum number of allowed downloads '
-                    . 'and cannot be downloaded.'
+                    . 'and cannot be downloaded.',
                 );
                 $this->setResponseError(
                     ': this product has reached the maximum number of allowed downloads '
-                    . 'and cannot be downloaded.'
+                    . 'and cannot be downloaded.',
                 );
             }
         }

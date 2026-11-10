@@ -38,7 +38,7 @@ class Citations extends Plugin
     {
         if ($publication->_category->_params->get('plg_citations')) {
             $areas = [
-                'citations' => Lang::txt('PLG_PUBLICATION_CITATIONS')
+                'citations' => Lang::txt('PLG_PUBLICATION_CITATIONS'),
             ];
         } else {
             $areas = [];
@@ -61,7 +61,7 @@ class Citations extends Plugin
     {
         $arr = [
             'html'     => '',
-            'metadata' => ''
+            'metadata' => '',
         ];
 
         // Check if our area is in the array of areas we want to return results for

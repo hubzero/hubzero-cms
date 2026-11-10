@@ -220,9 +220,9 @@ class QueryTest extends AbstractDriverTestCase
         $row = $query->select(
             Expression::percent(
                 Expression::count('posts.id'),
-                Expression::count('posts.id')
+                Expression::count('posts.id'),
             ),
-            'score'
+            'score',
         )
             ->from('posts')
             ->first();
@@ -259,7 +259,7 @@ class QueryTest extends AbstractDriverTestCase
         // Try to add a new row
         $query->push('users', [
             'name'  => 'new user',
-            'email' => 'newuser@gmail.com'
+            'email' => 'newuser@gmail.com',
         ]);
 
         // There are 4 default users in the seed data, and adding a new one should a rowcount of 5
@@ -267,7 +267,7 @@ class QueryTest extends AbstractDriverTestCase
         $this->assertEquals(
             5,
             $count,
-            'Push did not return the expected row count of 5'
+            'Push did not return the expected row count of 5',
         );
     }
 
@@ -282,7 +282,7 @@ class QueryTest extends AbstractDriverTestCase
         // Try to update an existing row
         $query->alter('users', 'id', 1, [
             'name'  => 'Updated User',
-            'email' => 'updateduser@gmail.com'
+            'email' => 'updateduser@gmail.com',
         ]);
 
         // Verify the update worked
@@ -306,7 +306,7 @@ class QueryTest extends AbstractDriverTestCase
         // Try to update an existing row with Basic value objects
         $query->alter('users', 'id', 1, [
             'name'  => new Basic('Updated User'),
-            'email' => new Basic('updateduser@gmail.com')
+            'email' => new Basic('updateduser@gmail.com'),
         ]);
 
         // Verify the update worked
@@ -333,7 +333,7 @@ class QueryTest extends AbstractDriverTestCase
         $this->assertEquals(
             3,
             $count,
-            'Remove did not return the expected row count of 3'
+            'Remove did not return the expected row count of 3',
         );
     }
 
@@ -466,7 +466,7 @@ class QueryTest extends AbstractDriverTestCase
         $this->assertGreaterThanOrEqual(
             2,
             count($results),
-            'orWhereIsNull should find Sam Wilson and NULL email users'
+            'orWhereIsNull should find Sam Wilson and NULL email users',
         );
 
         $names = array_map(fn($r) => $r->name, $results);
@@ -567,7 +567,7 @@ class QueryTest extends AbstractDriverTestCase
         $this->assertGreaterThanOrEqual(
             1,
             count($results),
-            'orWhereNotIn should include Sam and anyone not in the list'
+            'orWhereNotIn should include Sam and anyone not in the list',
         );
 
         $names = array_map(fn($r) => $r->name, $results);
@@ -1467,7 +1467,7 @@ class QueryTest extends AbstractDriverTestCase
         $this->assertEquals(
             '__CACHE_MARKER__',
             $result2[0]->name,
-            "[$dbName] Cached fetch should return the same stdClass objects (shared reference)"
+            "[$dbName] Cached fetch should return the same stdClass objects (shared reference)",
         );
 
         // Restore and clean up
@@ -1498,7 +1498,7 @@ class QueryTest extends AbstractDriverTestCase
         $this->assertEquals(
             $original,
             $result2[0]->name,
-            "[$dbName] Non-cached fetch should return fresh objects from the database"
+            "[$dbName] Non-cached fetch should return fresh objects from the database",
         );
 
         Query::purgeCache();
@@ -1800,13 +1800,13 @@ class QueryTest extends AbstractDriverTestCase
         $query = new Query($driver);
         $this->assertTrue(
             $query->from('users')->whereEquals('email', 'sam@example.com')->exists(),
-            'exists() should return true for a matching row'
+            'exists() should return true for a matching row',
         );
 
         $query = new Query($driver);
         $this->assertTrue(
             $query->from('users')->whereEquals('email', 'nope@example.com')->doesntExist(),
-            'doesntExist() should return true when no rows match'
+            'doesntExist() should return true when no rows match',
         );
     }
 
@@ -1819,13 +1819,13 @@ class QueryTest extends AbstractDriverTestCase
         $query = new Query($driver);
         $this->assertTrue(
             $query->select('id')->from('users')->whereEquals('email', 'sam@example.com')->exists(),
-            'exists() should work with a select and where clause'
+            'exists() should work with a select and where clause',
         );
 
         $query = new Query($driver);
         $this->assertTrue(
             $query->select('id')->from('users')->whereEquals('email', 'missing@example.com')->doesntExist(),
-            'doesntExist() should work with a select and where clause'
+            'doesntExist() should work with a select and where clause',
         );
     }
 
@@ -1906,7 +1906,7 @@ class QueryTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testPaginatedSubquery(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ) {
         // Insert 15 groups for pagination testing
         $qInsert = new Query($driver);
@@ -1935,17 +1935,17 @@ class QueryTest extends AbstractDriverTestCase
         $this->assertCount(
             5,
             $results,
-            "[$dbName] Subquery LIMIT should restrict to 5 rows"
+            "[$dbName] Subquery LIMIT should restrict to 5 rows",
         );
         $this->assertEquals(
             1,
             $results[0]->id,
-            "[$dbName] First row should be id=1"
+            "[$dbName] First row should be id=1",
         );
         $this->assertEquals(
             5,
             $results[4]->id,
-            "[$dbName] Last row should be id=5"
+            "[$dbName] Last row should be id=5",
         );
 
         // SELECT * FROM (SELECT ... LIMIT 5 OFFSET 5) sub
@@ -1964,17 +1964,17 @@ class QueryTest extends AbstractDriverTestCase
         $this->assertCount(
             5,
             $results2,
-            "[$dbName] Subquery LIMIT+OFFSET should return 5 rows"
+            "[$dbName] Subquery LIMIT+OFFSET should return 5 rows",
         );
         $this->assertEquals(
             6,
             $results2[0]->id,
-            "[$dbName] First row after offset should be id=6"
+            "[$dbName] First row after offset should be id=6",
         );
         $this->assertEquals(
             10,
             $results2[4]->id,
-            "[$dbName] Last row after offset should be id=10"
+            "[$dbName] Last row after offset should be id=10",
         );
     }
 
@@ -1987,7 +1987,7 @@ class QueryTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testUnionAllWithLimit(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ) {
         // Insert users (already seeded: 4 users with ids 1-4)
         // Insert groups for the union
@@ -2018,7 +2018,7 @@ class QueryTest extends AbstractDriverTestCase
         $this->assertCount(
             5,
             $results,
-            "[$dbName] UNION ALL with LIMIT should return 5 rows"
+            "[$dbName] UNION ALL with LIMIT should return 5 rows",
         );
     }
 
@@ -2028,7 +2028,7 @@ class QueryTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testUnionWithLimit(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ) {
         // Insert groups with some names matching users
         $qInsert = new Query($driver);
@@ -2053,7 +2053,7 @@ class QueryTest extends AbstractDriverTestCase
         $this->assertCount(
             3,
             $results,
-            "[$dbName] UNION with LIMIT should return 3 rows"
+            "[$dbName] UNION with LIMIT should return 3 rows",
         );
     }
 
@@ -2066,7 +2066,7 @@ class QueryTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testFromSubUnionPatternWithOuterFilterOrderAndLimit(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ) {
         // Add group rows with high IDs for deterministic ordering.
         $this->seedGroups($driver, [
@@ -2102,22 +2102,22 @@ class QueryTest extends AbstractDriverTestCase
         $this->assertCount(
             3,
             $results,
-            "[$dbName] Pattern should return 3 rows after outer limit"
+            "[$dbName] Pattern should return 3 rows after outer limit",
         );
         $this->assertEquals(
             101,
             (int) $results[0]->id,
-            "[$dbName] First row should be highest id from unioned derived table"
+            "[$dbName] First row should be highest id from unioned derived table",
         );
         $this->assertEquals(
             100,
             (int) $results[1]->id,
-            "[$dbName] Second row should be next highest id"
+            "[$dbName] Second row should be next highest id",
         );
         $this->assertEquals(
             4,
             (int) $results[2]->id,
-            "[$dbName] Third row should be top matching users id"
+            "[$dbName] Third row should be top matching users id",
         );
     }
 
@@ -2130,7 +2130,7 @@ class QueryTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testFromSubUnionPatternWithOptionalOuterStartFilter(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ) {
         $this->seedGroups($driver, [
             ['id' => 100, 'cn' => 'group-100', 'name' => 'Group 100'],
@@ -2176,28 +2176,28 @@ class QueryTest extends AbstractDriverTestCase
         $this->assertCount(
             4,
             $withoutStart,
-            "[$dbName] Without start filter, outer limit should control row count"
+            "[$dbName] Without start filter, outer limit should control row count",
         );
         $this->assertEquals(
             101,
             (int) $withoutStart[0]->created,
-            "[$dbName] Highest created should appear first without start filter"
+            "[$dbName] Highest created should appear first without start filter",
         );
 
         $this->assertCount(
             1,
             $withStart,
-            "[$dbName] Start filter should be applied at outer query level"
+            "[$dbName] Start filter should be applied at outer query level",
         );
         $this->assertEquals(
             101,
             (int) $withStart[0]->created,
-            "[$dbName] Filtered result should only contain rows above the start threshold"
+            "[$dbName] Filtered result should only contain rows above the start threshold",
         );
         $this->assertEquals(
             'group',
             $withStart[0]->category,
-            "[$dbName] Category alias from unioned subquery should be preserved"
+            "[$dbName] Category alias from unioned subquery should be preserved",
         );
     }
 
@@ -2262,12 +2262,12 @@ class QueryTest extends AbstractDriverTestCase
         $this->assertArrayHasKey(
             'example.com',
             $countsByDomain,
-            "[$dbName] Expected default seeded domain to be present"
+            "[$dbName] Expected default seeded domain to be present",
         );
         $this->assertSame(
             4,
             $countsByDomain['example.com'],
-            "[$dbName] Expected 4 seeded users in example.com"
+            "[$dbName] Expected 4 seeded users in example.com",
         );
     }
 
@@ -2291,7 +2291,7 @@ class QueryTest extends AbstractDriverTestCase
 
         $this->assertNotEmpty(
             $rows,
-            "[$dbName] sqlDateSub expression should compile and execute in whereRaw"
+            "[$dbName] sqlDateSub expression should compile and execute in whereRaw",
         );
     }
 
@@ -2308,7 +2308,7 @@ class QueryTest extends AbstractDriverTestCase
             $this->assertStringContainsStringIgnoringCase(
                 'RANDOM',
                 $driver->sqlRand(),
-                '[mock] sqlRand() should produce a RANDOM-like SQL token'
+                '[mock] sqlRand() should produce a RANDOM-like SQL token',
             );
             return;
         }
@@ -2323,7 +2323,7 @@ class QueryTest extends AbstractDriverTestCase
         $this->assertContains(
             $userId,
             [1, 2, 3, 4],
-            "[$dbName] sqlRand order + value should return one of seeded user IDs"
+            "[$dbName] sqlRand order + value should return one of seeded user IDs",
         );
     }
 }

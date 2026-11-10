@@ -102,7 +102,7 @@ Html::behavior('multiselect');
                         'COM_MEMBERS_HEADING_LEVEL_NAME',
                         'title',
                         $this->filters['sort_Dir'],
-                        $this->filters['sort']
+                        $this->filters['sort'],
                     ); ?>
                 </th>
                 <th>
@@ -111,7 +111,7 @@ Html::behavior('multiselect');
                         'JGRID_HEADING_ORDERING',
                         'ordering',
                         $this->filters['sort_Dir'],
-                        $this->filters['sort']
+                        $this->filters['sort'],
                     ); ?>
                     <?php if ($canOrder && $saveOrder) :?>
                         <?php echo Html::grid('order', $this->rows); ?>
@@ -172,7 +172,7 @@ Html::behavior('multiselect');
                                             '',
                                             'JLIB_HTML_MOVE_DOWN',
                                             true,
-                                            'cb'
+                                            'cb',
                                         )
                                         : '&#160;';
                                         ?></span>
@@ -192,7 +192,7 @@ Html::behavior('multiselect');
                                             '',
                                             'JLIB_HTML_MOVE_DOWN',
                                             true,
-                                            'cb'
+                                            'cb',
                                         )
                                         : '&#160;';
                                         ?></span>

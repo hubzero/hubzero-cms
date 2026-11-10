@@ -54,7 +54,7 @@ class Migration20140114091331PlgGeocode extends Base
                 'oiorest',
                 'openstreetmap',
                 'tomtom',
-                'yandex'
+                'yandex',
             ];
 
             foreach ($plugins as $plugin) {

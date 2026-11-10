@@ -36,7 +36,7 @@ $content = $this->module->get('content');
 $formUrl = Route::url(
     'index.php?option=' . $this->option .
     '&controller=' . $this->controller .
-    '&gid=' . $this->group->cn
+    '&gid=' . $this->group->cn,
 );
 $confirmTxt = Lang::txt('COM_GROUPS_MODULES_MARK_SCANNED_CONFIRM');
 $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));

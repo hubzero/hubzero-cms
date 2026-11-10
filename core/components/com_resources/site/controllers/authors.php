@@ -226,14 +226,14 @@ class Authors extends SiteController
                             'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_AUTHOR_ADDED', $name, '<a href="' . Route::url('index.php?option=com_resources&id=' . $resource->get('id')) . '">' . htmlspecialchars((string) ($resource->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
                             'details'     => [
                                 'title' => $resource->get('title'),
-                                'url'   => Route::url('index.php?option=com_resources&id=' . $resource->get('id'))
-                            ]
+                                'url'   => Route::url('index.php?option=com_resources&id=' . $resource->get('id')),
+                            ],
                         ],
                         'recipients' => [
                             ['resource', $resource->get('id')],
                             ['user', $resource->get('created_by')],
-                            ['user', $authorid]
-                        ]
+                            ['user', $authorid],
+                        ],
                     ]);
                 }
             }
@@ -287,14 +287,14 @@ class Authors extends SiteController
                             'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_AUTHOR_REMOVED', $author->get('name'), '<a href="' . Route::url('index.php?option=com_resources&id=' . $resource->get('id')) . '">' . htmlspecialchars((string) ($resource->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
                             'details'     => [
                                 'title' => $resource->get('title'),
-                                'url'   => Route::url('index.php?option=com_resources&id=' . $resource->get('id'))
-                            ]
+                                'url'   => Route::url('index.php?option=com_resources&id=' . $resource->get('id')),
+                            ],
                         ],
                         'recipients' => [
                             ['resource', $resource->get('id')],
                             ['user', $resource->get('created_by')],
-                            ['user', $author->get('authorid')]
-                        ]
+                            ['user', $author->get('authorid')],
+                        ],
                     ]);
                 }
             }

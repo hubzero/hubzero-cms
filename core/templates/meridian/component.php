@@ -8,7 +8,7 @@ $browser = new \Hubzero\Browser\Detector();
 $cls = [
     $this->direction,
     $browser->name(),
-    $browser->name() . $browser->major()
+    $browser->name() . $browser->major(),
 ];
 
 Html::behavior('framework', true);

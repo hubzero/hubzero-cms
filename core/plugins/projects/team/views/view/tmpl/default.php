@@ -185,7 +185,7 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
             $pageNav = $this->pagination(
                 $this->total,
                 $this->filters['start'],
-                $this->filters['limit']
+                $this->filters['limit'],
             );
             $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
             $pageNav->setAdditionalUrlParam('sortdir', $this->filters['sortdir']);

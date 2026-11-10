@@ -77,7 +77,7 @@ class Comment extends ItemComment
             $results = Event::trigger('content.onContentBeforeSave', [
                 'com_answers.comment.content',
                 &$this,
-                $this->isNew()
+                $this->isNew(),
             ]);
 
             foreach ($results as $result) {

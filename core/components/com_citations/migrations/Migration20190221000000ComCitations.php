@@ -25,8 +25,8 @@ class Migration20190221000000ComCitations extends Base
             'created',
             'date_submit',
             'date_accept',
-            'date_publish'
-        ]
+            'date_publish',
+        ],
     ];
 
     /**

@@ -254,20 +254,20 @@ class Publication extends Base
         if (!$title) {
             Pathway::append(
                 Lang::txt('Publications'),
-                'index.php?option=com_publications'
+                'index.php?option=com_publications',
             );
             Pathway::append(
                 stripslashes($this->_item->title),
-                'index.php?option=com_publications&id=' . $this->get('referenceid')
+                'index.php?option=com_publications&id=' . $this->get('referenceid'),
             );
             Pathway::append(
                 Lang::txt('Wishlist'),
-                'index.php?option=com_publications&task=wishlist&id=' . $this->get('referenceid')
+                'index.php?option=com_publications&task=wishlist&id=' . $this->get('referenceid'),
             );
         } else {
             Pathway::append(
                 $title,
-                $url
+                $url,
             );
         }
 

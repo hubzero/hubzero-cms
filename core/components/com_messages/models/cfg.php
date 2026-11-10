@@ -55,7 +55,7 @@ class Cfg extends Relational
      */
     protected $rules = [
         'cfg_name' => 'notempty',
-        'cfg_value' => 'notempty'
+        'cfg_value' => 'notempty',
     ];
 
     /**
@@ -64,7 +64,7 @@ class Cfg extends Relational
      * @var  array
      */
     public $initiate = [
-        'user_id'
+        'user_id',
     ];
 
     /**

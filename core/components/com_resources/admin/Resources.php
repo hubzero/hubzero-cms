@@ -45,50 +45,50 @@ class Resources extends AbstractComponent
         Submenu::addEntry(
             Lang::txt('COM_RESOURCES'),
             Route::url('index.php?option=' . $option),
-            ($controllerName == 'items' && $task != 'orphans')
+            ($controllerName == 'items' && $task != 'orphans'),
         );
         Submenu::addEntry(
             Lang::txt('COM_RESOURCES_ORPHANS'),
             Route::url('index.php?option=' . $option . '&controller=items&task=orphans'),
-            $task == 'orphans'
+            $task == 'orphans',
         );
         Submenu::addEntry(
             Lang::txt('COM_RESOURCES_TYPES'),
             Route::url('index.php?option=' . $option . '&controller=types'),
-            $controllerName == 'types'
+            $controllerName == 'types',
         );
         Submenu::addEntry(
             Lang::txt('COM_RESOURCES_LICENSES'),
             Route::url('index.php?option=' . $option . '&controller=licenses'),
-            $controllerName == 'licenses'
+            $controllerName == 'licenses',
         );
         Submenu::addEntry(
             Lang::txt('COM_RESOURCES_AUTHORS'),
             Route::url('index.php?option=' . $option . '&controller=authors'),
-            $controllerName == 'authors'
+            $controllerName == 'authors',
         );
         Submenu::addEntry(
             Lang::txt('COM_RESOURCES_ROLES'),
             Route::url('index.php?option=' . $option . '&controller=roles'),
-            $controllerName == 'roles'
+            $controllerName == 'roles',
         );
 
         if (\Components\Plugins\Helpers\Plugins::getActions()->get('core.manage')) {
             Submenu::addEntry(
                 Lang::txt('COM_RESOURCES_PLUGINS'),
                 Route::url('index.php?option=' . $option . '&controller=plugins'),
-                $controllerName == 'plugins'
+                $controllerName == 'plugins',
             );
         }
         Submenu::addEntry(
             Lang::txt('COM_RESOURCES_IMPORT'),
             Route::url('index.php?option=' . $option . '&controller=imports'),
-            $controllerName == 'imports'
+            $controllerName == 'imports',
         );
         Submenu::addEntry(
             Lang::txt('COM_RESOURCES_IMPORTHOOK'),
             Route::url('index.php?option=' . $option . '&controller=importhooks'),
-            $controllerName == 'importhooks'
+            $controllerName == 'importhooks',
         );
 
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);

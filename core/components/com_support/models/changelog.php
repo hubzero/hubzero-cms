@@ -57,7 +57,7 @@ class Changelog extends Obj
                 $log = [
                     'changes'       => [],
                     'notifications' => [],
-                    'cc'            => []
+                    'cc'            => [],
                 ];
 
                 $data = preg_replace("/\n\t\r/i", '', $data);
@@ -78,20 +78,20 @@ class Changelog extends Obj
                     $obj = [
                         'field'  => '',
                         'before' => '',
-                        'after'  => ''
+                        'after'  => '',
                     ];
                     if (preg_match('/Comment submitted via email from (.+)/i', $item, $matches)) {
                         $obj = [
                             'role'    => 'commenter',
                             'name'    => Lang::txt('COM_SUPPORT_NONE'),
-                            'address' => trim($matches[1])
+                            'address' => trim($matches[1]),
                         ];
                     }
                     if (preg_match('/E\-mailed ticket ([^ ]+) (.+)/i', $item, $matches)) {
                         $obj = [
                             'role'    => trim($matches[1]),
                             'name'    => Lang::txt('COM_SUPPORT_NONE'),
-                            'address' => trim($matches[2])
+                            'address' => trim($matches[2]),
                         ];
                     }
                     if (preg_match('/<strong>(.*?)<\/strong>/i', $item, $matches)) {
@@ -100,7 +100,7 @@ class Changelog extends Obj
                             $obj = [
                                 'role'    => $matches[1],
                                 'name'    => '',
-                                'address' => ''
+                                'address' => '',
                             ];
                         } else {
                             $obj['field'] = $matches[1];
@@ -421,21 +421,21 @@ class Changelog extends Obj
             $this->changed(
                 Lang::txt('COM_SUPPORT_CHANGELOG_FIELD_GROUP'),
                 ($bg ? $bg->get('cn') : Lang::txt('COM_SUPPORT_NONE')),
-                ($ag ? $ag->get('cn') : Lang::txt('COM_SUPPORT_NONE'))
+                ($ag ? $ag->get('cn') : Lang::txt('COM_SUPPORT_NONE')),
             );
         }
         if ($after->get('severity') != $before->get('severity')) {
             $this->changed(
                 Lang::txt('COM_SUPPORT_CHANGELOG_FIELD_SEVERITY'),
                 $before->get('severity'),
-                $after->get('severity')
+                $after->get('severity'),
             );
         }
         if (intval($after->get('owner')) != intval($before->get('owner'))) {
             $this->changed(
                 Lang::txt('COM_SUPPORT_CHANGELOG_FIELD_OWNER'),
                 $before->assignee->get('username', Lang::txt('COM_SUPPORT_NONE')),
-                $after->assignee->get('username', Lang::txt('COM_SUPPORT_NONE'))
+                $after->assignee->get('username', Lang::txt('COM_SUPPORT_NONE')),
             );
         }
         /*if ($after->get('resolved') != $before->get('resolved'))
@@ -464,14 +464,14 @@ class Changelog extends Obj
             $this->changed(
                 Lang::txt('COM_SUPPORT_CHANGELOG_FIELD_STATUS'),
                 $bstatus->get('title'),
-                $astatus->get('title')
+                $astatus->get('title'),
             );
         }
         if ($after->get('category') != $before->get('category')) {
             $this->changed(
                 Lang::txt('COM_SUPPORT_CHANGELOG_FIELD_CATEGORY'),
                 $before->get('category', Lang::txt('COM_SUPPORT_BLANK')),
-                $after->get('category', Lang::txt('COM_SUPPORT_BLANK'))
+                $after->get('category', Lang::txt('COM_SUPPORT_BLANK')),
             );
         }
         if ($after->get('target_date') != $before->get('target_date')) {
@@ -486,7 +486,7 @@ class Changelog extends Obj
             $this->changed(
                 Lang::txt('COM_SUPPORT_CHANGELOG_FIELD_TARGET_DATE'),
                 $b,
-                $a
+                $a,
             );
         }
 
@@ -494,7 +494,7 @@ class Changelog extends Obj
             $this->changed(
                 Lang::txt('COM_SUPPORT_CHANGELOG_FIELD_TAGS'),
                 ($before->get('tags') ? $before->get('tags') : Lang::txt('COM_SUPPORT_BLANK')),
-                ($after->get('tags') ? $after->get('tags') : Lang::txt('COM_SUPPORT_BLANK'))
+                ($after->get('tags') ? $after->get('tags') : Lang::txt('COM_SUPPORT_BLANK')),
             );
         }
 

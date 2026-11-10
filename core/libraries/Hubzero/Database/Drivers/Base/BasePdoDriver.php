@@ -56,7 +56,7 @@ abstract class BasePdoDriver extends Driver
             (string)$options['dsn'],
             (string)($options['user'] ?? ''),
             (string)($options['password'] ?? ''),
-            (array)$options['extras']
+            (array)$options['extras'],
         ));
 
         // Call parent construct

@@ -42,7 +42,7 @@ class AddComponentEntry extends Macro
         $enabled = 1,
         $params = '',
         $createMenuItem = true,
-        $createRoute = null
+        $createRoute = null,
     ) {
         if (!$this->db->tableExists('#__extensions')) {
             $this->log(sprintf('Required table not found for adding component "%s"', $name), 'warning');
@@ -91,7 +91,7 @@ class AddComponentEntry extends Macro
                     'system_data'    => '',
                     'checked_out'    => 0,
                     'ordering'       => $ordering,
-                    'state'          => 0
+                    'state'          => 0,
                 ])
                 ->toString();
 
@@ -115,15 +115,15 @@ class AddComponentEntry extends Macro
                 // Build default ruleset
                 $defaulRules = [
                     "core.admin"      => [
-                        "7" => 1
+                        "7" => 1,
                     ],
                     "core.manage"     => [
-                        "6" => 1
+                        "6" => 1,
                     ],
                     "core.create"     => [],
                     "core.delete"     => [],
                     "core.edit"       => [],
-                    "core.edit.state" => []
+                    "core.edit.state" => [],
                 ];
 
                 // Register the component container just under root in the assets table
@@ -182,7 +182,7 @@ class AddComponentEntry extends Macro
                     'rgt'               => 0,
                     'home'              => 0,
                     'language'          => '*',
-                    'client_id'         => 1
+                    'client_id'         => 1,
                 ])
                 ->toString();
             $this->db->setQuery($query);

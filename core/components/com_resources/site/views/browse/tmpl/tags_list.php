@@ -83,7 +83,7 @@ switch ($this->level) {
 
         $sortbys = [
             'date'  => Lang::txt('COM_RESOURCES_SORT_BY') . ' ' . Lang::txt('COM_RESOURCES_DATE'),
-            'title' => Lang::txt('COM_RESOURCES_SORT_BY') . ' ' . Lang::txt('COM_RESOURCES_TITLE')
+            'title' => Lang::txt('COM_RESOURCES_SORT_BY') . ' ' . Lang::txt('COM_RESOURCES_TITLE'),
         ];
         if ($this->bits['ranking']) {
             $sortbys['ranking'] = Lang::txt('COM_RESOURCES_SORT_BY') . ' ' . Lang::txt('COM_RESOURCES_RANKING');

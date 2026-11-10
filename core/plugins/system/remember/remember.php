@@ -45,7 +45,7 @@ class Remember extends Plugin
 
                 $crypt = new \Hubzero\Encryption\Encrypter(
                     new \Hubzero\Encryption\Cipher\Simple(),
-                    new \Hubzero\Encryption\Key('simple', $privateKey, $privateKey)
+                    new \Hubzero\Encryption\Key('simple', $privateKey, $privateKey),
                 );
 
                 try {
@@ -71,7 +71,7 @@ class Remember extends Plugin
                         $credentials['username'] = (string) preg_replace(
                             '/[\x00-\x1F\x7F<>"\'%&]/',
                             '',
-                            $cookieData->username
+                            $cookieData->username,
                         );
                     } else {
                         throw new \Exception('Malformed username.');
@@ -86,7 +86,7 @@ class Remember extends Plugin
                     // We're only doing this for the site app, so we explicitly set the action here
                     $return = App::get('auth')->login(
                         $credentials,
-                        ['silent' => true, 'action' => 'core.login.site']
+                        ['silent' => true, 'action' => 'core.login.site'],
                     );
 
                     if (!$return) {
@@ -102,7 +102,7 @@ class Remember extends Plugin
                         false,
                         time() - 86400,
                         $cookie_path,
-                        $cookie_domain
+                        $cookie_domain,
                     );
 
                     Log::warning('A remember me cookie was unset for the following reason: ' . $e->getMessage());

@@ -45,7 +45,7 @@ class Groups
                 function ($v) {
                     return $v['label'];
                 },
-                self::$dbh->loadAssocList('field')
+                self::$dbh->loadAssocList('field'),
             );
         }
     }
@@ -63,13 +63,13 @@ class Groups
 			FROM `#__incremental_registration_groups` irg
 			LEFT JOIN `#__incremental_registration_group_label_rel` irglr ON irglr.group_id = irg.id
 			INNER JOIN `#__incremental_registration_labels` irl ON irl.id = irglr.label_id
-			ORDER BY hours'
+			ORDER BY hours',
         );
         foreach (self::$dbh->loadAssocList() as $row) {
             if (!isset($groups[$row['group_id']])) {
                 $groups[$row['group_id']] = [
                     'hours' => $row['hours'],
-                    'cols'  => []
+                    'cols'  => [],
                 ];
             }
             $groups[$row['group_id']]['cols'][] = $row['field'];

@@ -26,8 +26,8 @@ class Migration20190221000000ComContent extends Base
             'modified',
             'checked_out_time',
             'publish_up',
-            'publish_down'
-        ]
+            'publish_down',
+        ],
     ];
 
     /**

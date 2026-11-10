@@ -136,7 +136,7 @@ class OverrideRootsTest extends Basic
 
         $this->assertSame(
             $this->expectedOverrides('com_groups', 'pages'),
-            array_slice($this->templatePaths($view), 0, 2)
+            array_slice($this->templatePaths($view), 0, 2),
         );
     }
 
@@ -156,7 +156,7 @@ class OverrideRootsTest extends Basic
 
         $this->assertSame(
             $this->expectedOverrides('com_wiki', 'pages'),
-            array_slice($this->templatePaths($view), 0, 2)
+            array_slice($this->templatePaths($view), 0, 2),
         );
 
         $child = $this->templatePaths($view->view('wikimenu'));
@@ -180,7 +180,7 @@ class OverrideRootsTest extends Basic
 
         $this->assertSame(
             $this->expectedOverrides('com_wiki', 'pages'),
-            array_slice($this->templatePaths($view), 0, 2)
+            array_slice($this->templatePaths($view), 0, 2),
         );
     }
 

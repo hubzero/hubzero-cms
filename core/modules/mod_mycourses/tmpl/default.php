@@ -49,7 +49,7 @@ $total = count($this->courses);
                         <?php
                         $courseUrl = Route::url(
                             'index.php?option=com_courses&gid='
-                            . $course->alias . $sfx
+                            . $course->alias . $sfx,
                         );
                         ?>
                         <a href="<?php echo $courseUrl; ?>">
@@ -97,7 +97,7 @@ $total = count($this->courses);
         <?php
         $coursesUrl = Route::url(
             'index.php?option=com_members&id='
-            . User::get('id') . '&active=courses'
+            . User::get('id') . '&active=courses',
         );
         $note = Lang::txt('MOD_MYCOURSES_YOU_HAVE_MORE', $this->limit, $total, $coursesUrl);
         ?>

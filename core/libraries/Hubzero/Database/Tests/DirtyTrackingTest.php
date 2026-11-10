@@ -87,7 +87,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
         $model = DirtyPost::newFromResults((object)[
             'id' => 1,
             'title' => 'Original Title',
-            'content' => 'Original Content'
+            'content' => 'Original Content',
         ]);
 
         $this->assertFalse($model->isDirty(), 'Model loaded from results should not be dirty');
@@ -102,7 +102,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
         $model = DirtyPost::newFromResults((object)[
             'id' => 1,
             'title' => 'Original Title',
-            'content' => 'Original Content'
+            'content' => 'Original Content',
         ]);
 
         $model->set('title', 'New Title');
@@ -121,18 +121,18 @@ class DirtyTrackingTest extends AbstractDriverTestCase
         $model = DirtyPost::newFromResults((object)[
             'id' => 1,
             'title' => 'Original Title',
-            'content' => 'Original Content'
+            'content' => 'Original Content',
         ]);
 
         $model->set('title', 'New Title');
 
         $this->assertTrue(
             $model->isDirty(['title', 'content']),
-            'Should be dirty if any specified attribute is dirty'
+            'Should be dirty if any specified attribute is dirty',
         );
         $this->assertFalse(
             $model->isDirty(['content', 'id']),
-            'Should not be dirty if no specified attributes are dirty'
+            'Should not be dirty if no specified attributes are dirty',
         );
     }
 
@@ -144,7 +144,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
 
         $model = DirtyPost::newFromResults((object)[
             'id' => 1,
-            'title' => 'Same Title'
+            'title' => 'Same Title',
         ]);
 
         $model->set('title', 'Same Title');
@@ -165,7 +165,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
         $model = DirtyPost::newFromResults((object)[
             'id' => 1,
             'title' => 'Original Title',
-            'content' => 'Original Content'
+            'content' => 'Original Content',
         ]);
 
         $model->set('title', 'New Title');
@@ -206,7 +206,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
 
         $model = DirtyPost::newFromResults((object)[
             'id' => 1,
-            'title' => 'Original Title'
+            'title' => 'Original Title',
         ]);
 
         $model->set('title', 'New Title');
@@ -225,7 +225,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
 
         $model = DirtyPost::newFromResults((object)[
             'id' => 1,
-            'title' => 'Original Title'
+            'title' => 'Original Title',
         ]);
 
         $model->set('title', 'New Title');
@@ -241,7 +241,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
         $this->setupTestData($driver);
 
         $model = DirtyPost::newFromResults((object)[
-            'id' => 1
+            'id' => 1,
         ]);
 
         $this->assertNull($model->getOriginal('nonexistent'));
@@ -260,7 +260,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
 
         $model = DirtyPost::newFromResults((object)[
             'id' => 1,
-            'title' => 'Original Title'
+            'title' => 'Original Title',
         ]);
 
         $model->set('title', 'New Title');
@@ -281,7 +281,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
         $model = DirtyPost::newFromResults((object)[
             'id' => 1,
             'title' => 'Original Title',
-            'content' => 'Original Content'
+            'content' => 'Original Content',
         ]);
 
         $model->set('title', 'New Title');
@@ -305,7 +305,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
 
         $model = DirtyPost::newFromResults((object)[
             'id' => 1,
-            'title' => 'Original Title'
+            'title' => 'Original Title',
         ]);
 
         $model->set('title', 'New Title');
@@ -321,7 +321,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
 
         $model = DirtyPost::newFromResults((object)[
             'id' => 1,
-            'title' => 'Original Title'
+            'title' => 'Original Title',
         ]);
 
         $model->set('title', 'New Title');
@@ -342,7 +342,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
         $model = DirtyPost::newFromResults((object)[
             'id' => 1,
             'title' => 'Original Title',
-            'content' => 'Original Content'
+            'content' => 'Original Content',
         ]);
 
         $model->set('title', 'New Title');
@@ -364,7 +364,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
         $model = DirtyPost::newFromResults((object)[
             'id' => 1,
             'title' => 'Original Title',
-            'content' => 'Original Content'
+            'content' => 'Original Content',
         ]);
 
         $model->set('title', 'New Title');
@@ -386,7 +386,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
 
         $model = DirtyPost::newFromResults((object)[
             'id' => 1,
-            'title' => 'Original Title'
+            'title' => 'Original Title',
         ]);
 
         $model->set('new_field', 'new value');
@@ -408,7 +408,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
 
         $model = DirtyPost::newFromResults((object)[
             'id' => '1',  // String from DB
-            'count' => '42'  // String from DB
+            'count' => '42',  // String from DB
         ]);
 
         $model->set('id', 1);
@@ -426,7 +426,7 @@ class DirtyTrackingTest extends AbstractDriverTestCase
 
         $model = DirtyPost::newFromResults((object)[
             'id' => 1,
-            'deleted_at' => null
+            'deleted_at' => null,
         ]);
 
         $model->set('deleted_at', null);
@@ -455,11 +455,11 @@ class DirtyTrackingTest extends AbstractDriverTestCase
 
         $this->assertTrue(
             $model->wasChanged(['title', 'content']),
-            'Should return true if any specified attribute was changed'
+            'Should return true if any specified attribute was changed',
         );
         $this->assertFalse(
             $model->wasChanged(['content', 'author']),
-            'Should return false if no specified attributes were changed'
+            'Should return false if no specified attributes were changed',
         );
     }
 }

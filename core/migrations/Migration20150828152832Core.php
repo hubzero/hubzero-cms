@@ -32,7 +32,7 @@ class Migration20150828152832Core extends Base
                     'manifest_cache' => Expression::replace(
                         'manifest_cache',
                         '2013 Open Source Matters',
-                        '2014 Open Source Matters'
+                        '2014 Open Source Matters',
                     ),
                 ])
                 ->where('extension_id', '<', 10000)
@@ -65,7 +65,7 @@ class Migration20150828152832Core extends Base
                     'params' => Expression::replace(
                         'params',
                         'ABQIAAAAPq8QOefNUw20Lc6RX2gKqhQkcPnh--THxGDMaCLza-8u_rvH7hQmdZgwooOYuoIkEqFAtrnkoY4ElA',
-                        ''
+                        '',
                     ),
                 ])
                 ->where('type', '=', 'component')

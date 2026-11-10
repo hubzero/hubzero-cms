@@ -70,7 +70,7 @@ if (!$no_html && $tmpl != 'component') :
         'folder'  => 'courses',
         'element' => 'outline',
         'name'    => 'shared',
-        'layout'  => '_not_enrolled'
+        'layout'  => '_not_enrolled',
     ]);
 
     $view->set('course', $this->course)
@@ -87,7 +87,7 @@ if (!$no_html && $tmpl != 'component') :
                     <p><strong><?php echo Lang::txt('COM_COURSES_WHERE_TO_LEARN_MORE'); ?></strong></p>
                     <?php
                         $routeUrl = Route::url(
-                            'index.php?option=' . $this->option . '&controller=courses&task=browse'
+                            'index.php?option=' . $this->option . '&controller=courses&task=browse',
                         );
                     ?>
                     <p><?php echo $routeUrl; ?></p>

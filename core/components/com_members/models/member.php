@@ -359,7 +359,7 @@ class Member extends User implements \Hubzero\Search\Searchable
                         'profile_key'   => $key,
                         'profile_value' => $val,
                         'ordering'      => $i,
-                        'access'        => (isset($access[$key]) ? $access[$key] : $field->get('access', 5))
+                        'access'        => (isset($access[$key]) ? $access[$key] : $field->get('access', 5)),
                     ]);
 
                     if (!$field->save()) {
@@ -409,7 +409,7 @@ class Member extends User implements \Hubzero\Search\Searchable
                     'profile_key'   => $key,
                     'profile_value' => $val,
                     'ordering'      => $i,
-                    'access'        => (isset($access[$key]) ? $access[$key] : $field->get('access', 5))
+                    'access'        => (isset($access[$key]) ? $access[$key] : $field->get('access', 5)),
                 ]);
 
                 if (!$field->save()) {

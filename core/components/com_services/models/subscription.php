@@ -51,7 +51,7 @@ class Subscription extends Relational
      */
     protected $rules = [
         'uid'       => 'positive|nonzero',
-        'serviceid' => 'positive|nonzero'
+        'serviceid' => 'positive|nonzero',
     ];
 
     /**
@@ -60,7 +60,7 @@ class Subscription extends Relational
      * @var  array
      */
     public $initiate = [
-        'added'
+        'added',
     ];
 
     /**

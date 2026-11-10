@@ -37,7 +37,7 @@ Toolbar::spacer();
 Toolbar::help('thread');
 
 $formAction = Route::url(
-    'index.php?option=' . $this->option . '&controller=' . $this->controller
+    'index.php?option=' . $this->option . '&controller=' . $this->controller,
 );
 ?>
 
@@ -98,7 +98,7 @@ $formAction = Route::url(
                         Html::access('assetgroups'),
                         'value',
                         'text',
-                        $this->filters['access']
+                        $this->filters['access'],
                     ); ?>
                 </select>
             </div>
@@ -197,7 +197,7 @@ $formAction = Route::url(
                         $editUrl = Route::url(
                             'index.php?option=' . $this->option . '&controller='
                             . $this->controller . '&task=edit&id=' . $row->id
-                            . '&thread=' . $this->filters['thread']
+                            . '&thread=' . $this->filters['thread'],
                         );
                         ?>
                         <a href="<?php echo $editUrl; ?>">
@@ -212,7 +212,7 @@ $formAction = Route::url(
                                 . $this->controller . '&category_id='
                                 . $this->filters['category_id'] . '&task=' . $task
                                 . '&id=' . $row->get('id') . '&'
-                                . Session::getFormToken() . '=1'
+                                . Session::getFormToken() . '=1',
                             );
                             $stateTitle = Lang::txt('COM_FORUM_SET_TO', $task);
                             ?>

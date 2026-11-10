@@ -105,7 +105,7 @@ class Honeypot
 
             $crypt = new Encrypter(
                 new Simple(),
-                new Key('simple', $key, $key)
+                new Key('simple', $key, $key),
             );
         }
 

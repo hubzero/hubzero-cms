@@ -44,7 +44,7 @@ class Permissions
             'create',
             'edit',
             'edit.state',
-            'delete'
+            'delete',
         ];
 
         foreach ($actions as $action) {

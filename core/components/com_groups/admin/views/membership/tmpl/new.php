@@ -42,7 +42,7 @@ $formUrl = Route::url('index.php?option=' . $this->option);
 $redirectUrl = Route::url(
     'index.php?option=' . $this->option .
     '&controller=' . $this->controller .
-    '&gid=' . $this->group->get('cn')
+    '&gid=' . $this->group->get('cn'),
 );
 $invalidMsg = Lang::txt('COM_GROUPS_ERROR_MISSING_INFORMATION');
 ?>

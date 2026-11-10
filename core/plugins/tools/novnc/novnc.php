@@ -78,7 +78,7 @@ class Novnc extends Plugin
             'folder'  => $this->_type,
             'element' => $this->_name,
             'name'    => 'session',
-            'layout'  => 'default'
+            'layout'  => 'default',
         ]);
 
         return $view->set('option', Request::getCmd('option', 'com_tools'))
@@ -114,7 +114,7 @@ class Novnc extends Plugin
         $db->setQuery(
             "SELECT h.`hostreq` FROM `#__tool_version_hostreq` AS h
 			INNER JOIN `#__tool_version` AS v ON v.`id`=h.`tool_version_id`
-			WHERE v.`instance`=" . $db->quote($tool->name)
+			WHERE v.`instance`=" . $db->quote($tool->name),
         );
         $hostreqs = array_map('trim', array_map('strtolower', (array) $db->loadColumn()));
 

@@ -31,7 +31,7 @@ class Preference extends Relational
      * @var  array
      **/
     protected $rules = [
-        'user_id' => 'positive|nonzero'
+        'user_id' => 'positive|nonzero',
     ];
 
     /**

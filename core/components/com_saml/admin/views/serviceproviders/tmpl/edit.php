@@ -36,13 +36,13 @@ $allowedGroups = $allowedGroups ? implode(', ', $allowedGroups) : '';
 $nameidFormats = [
     'urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified'  => Lang::txt('COM_SAML_NAMEID_FORMAT_UNSPECIFIED'),
     'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress' => Lang::txt('COM_SAML_NAMEID_FORMAT_EMAIL'),
-    'urn:oasis:names:tc:SAML:2.0:nameid-format:persistent'   => Lang::txt('COM_SAML_NAMEID_FORMAT_PERSISTENT')
+    'urn:oasis:names:tc:SAML:2.0:nameid-format:persistent'   => Lang::txt('COM_SAML_NAMEID_FORMAT_PERSISTENT'),
 ];
 
 $nameidSources = [
     'username' => Lang::txt('COM_SAML_NAMEID_SOURCE_USERNAME'),
     'email'    => Lang::txt('COM_SAML_NAMEID_SOURCE_EMAIL'),
-    'id'       => Lang::txt('COM_SAML_NAMEID_SOURCE_ID')
+    'id'       => Lang::txt('COM_SAML_NAMEID_SOURCE_ID'),
 ];
 ?>
 

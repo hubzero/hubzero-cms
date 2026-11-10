@@ -90,7 +90,7 @@ class SectionCode extends Table
 
         return parent::load([
             'code'       => $oid,
-            'section_id' => $section_id
+            'section_id' => $section_id,
         ]);
     }
 

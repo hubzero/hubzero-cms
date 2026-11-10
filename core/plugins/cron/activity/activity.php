@@ -35,7 +35,7 @@ class Activity extends Plugin
             [
                 'name'   => 'emailMemberDigest',
                 'label'  => Lang::txt('PLG_CRON_ACTIVITY_EMAIL_MEMBER_DIGEST'),
-                'params' => 'emailmemberdigest'
+                'params' => 'emailmemberdigest',
             ],
         ];
 
@@ -76,7 +76,7 @@ class Activity extends Plugin
             1 => 'now',
             2 => 'day',
             3 => 'week',
-            4 => 'month'
+            4 => 'month',
         ];
 
         // Check frequency (this plugin should run early every morning)
@@ -168,7 +168,7 @@ class Activity extends Plugin
         $eview = new \Hubzero\Mail\View([
             'base_path' => PATH_CORE . DS . 'plugins' . DS . 'members' . DS . 'activity',
             'name'      => 'emails',
-            'layout'    => 'digest_plain'
+            'layout'    => 'digest_plain',
         ]);
         $eview->member   = $user;
         $eview->rows     = $posts;

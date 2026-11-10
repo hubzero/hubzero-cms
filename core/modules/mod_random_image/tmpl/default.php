@@ -20,7 +20,7 @@ defined('_HZEXEC_') or die;
                 'image',
                 $image->folder . '/' . $image->name,
                 $image->name,
-                ['width' => $image->width, 'height' => $image->height]
+                ['width' => $image->width, 'height' => $image->height],
             );
             ?>
     <?php if ($link) : ?>

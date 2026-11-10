@@ -19,7 +19,7 @@ $this->css()
 
 $rows = $this->offering->announcements([
     'limit' => $this->params->get('display_limit', 1),
-    'published' => true
+    'published' => true,
 ]);
 ?>
 <div class="sub-section announcements">

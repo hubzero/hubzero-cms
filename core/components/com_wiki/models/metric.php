@@ -43,7 +43,7 @@ class Metric extends Relational
      */
     protected $rules = [
         'page_id' => 'positive|nonzero',
-        'scope'   => 'notempty'
+        'scope'   => 'notempty',
     ];
 
     /**

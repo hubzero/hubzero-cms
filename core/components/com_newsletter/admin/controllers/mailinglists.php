@@ -53,18 +53,18 @@ class Mailinglists extends AdminController
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             ),
             'sort' => Request::getstate(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'name'
+                'name',
             ),
             'sort_Dir' => Request::getstate(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         // instantiate mailing list object
@@ -233,13 +233,13 @@ class Mailinglists extends AdminController
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.' . $this->_task . '.sort',
                 'filter_order',
-                'email'
+                'email',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.' . $this->_task . '.sortdir',
                 'filter_order_Dir',
-                'DESC'
-            )
+                'DESC',
+            ),
         ];
         if (!in_array($filters['sort'], ['id', 'email', 'date_added', 'date_confirmed'])) {
             $filters['sort'] = 'email';
@@ -299,7 +299,7 @@ class Mailinglists extends AdminController
         // get list of groups
         $filters = [
             'fields' => ['gidNumber', 'description'],
-            'type'   => ['hub', 'project', 'super', 'course']
+            'type'   => ['hub', 'project', 'super', 'course'],
         ];
         $groups = \Hubzero\User\Group::find($filters);
 
@@ -428,7 +428,7 @@ class Mailinglists extends AdminController
                     'email'      => $email,
                     'status'     => 'active',
                     'confirmed'  => 0,
-                    'date_added' => Date::toSql()
+                    'date_added' => Date::toSql(),
                 ]);
                 if ($insert->save()) {
                     $inserts++;
@@ -612,7 +612,7 @@ class Mailinglists extends AdminController
         if ($email->save()) {
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=manage&id=' . $mid, false),
-                Lang::txt('COM_NEWSLETTER_MAILINGLIST_SUBSCRIBED_EMAIL_SUCCESS')
+                Lang::txt('COM_NEWSLETTER_MAILINGLIST_SUBSCRIBED_EMAIL_SUCCESS'),
             );
         } else {
             $this->setError($email->getError());
@@ -710,7 +710,7 @@ class Mailinglists extends AdminController
         $mid = (isset($email['mid']) ? $email['mid'] : Request::getInt('mid', 0));
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=manage&id=' . $mid, false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=manage&id=' . $mid, false),
         );
     }
 

@@ -54,22 +54,22 @@ $this->css()
                     $followerObj = $row->follower();
                     $followerImg = $followerObj->image();
                     $followerTitle = $this->escape(
-                        stripslashes($followerObj->title() ?: '')
+                        stripslashes($followerObj->title() ?: ''),
                     );
                     $profilePicAlt = Lang::txt(
                         'PLG_MEMBERS_COLLECTIONS_PROFILE_PICTURE',
-                        $followerTitle
+                        $followerTitle,
                     );
                     $followerLink = Route::url(
-                        $followerObj->link()
+                        $followerObj->link(),
                     );
                     $followerCount = Lang::txt(
                         'PLG_MEMBERS_COLLECTIONS_NUM_FOLLOWERS',
-                        $row->count('followers')
+                        $row->count('followers'),
                     );
                     $followingCount = Lang::txt(
                         'PLG_MEMBERS_COLLECTIONS_NUM_FOLLOWING',
-                        $row->count('following')
+                        $row->count('following'),
                     );
                     $createdDate = $row->get('created');
                     $formattedDate = Date::of($createdDate)
@@ -112,7 +112,7 @@ $this->css()
             $pageNav = $this->pagination(
                 $this->total,
                 $this->filters['start'],
-                $this->filters['limit']
+                $this->filters['limit'],
             );
             $pageNav->setAdditionalUrlParam('id', $this->member->get('id'));
             $pageNav->setAdditionalUrlParam('active', 'collections');
@@ -130,7 +130,7 @@ $this->css()
                 <div class="questions">
                     <?php
                     $whatAreFollowers = Lang::txt(
-                        'PLG_MEMBERS_COLLECTIONS_FOLLOW_WHAT_ARE_FOLLOWERS'
+                        'PLG_MEMBERS_COLLECTIONS_FOLLOW_WHAT_ARE_FOLLOWERS',
                     );
                     ?>
                     <p><strong><?php echo $whatAreFollowers; ?></strong></p>

@@ -98,11 +98,11 @@ $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . 
             <?php
             $offeringsUrl = Route::url(
                 'index.php?option=' . $this->option
-                . '&controller=offerings&course=' . $this->course->get('id')
+                . '&controller=offerings&course=' . $this->course->get('id'),
             );
             $unitsUrl = Route::url(
                 'index.php?option=' . $this->option
-                . '&controller=units&offering=' . $this->unit->get('offering_id')
+                . '&controller=units&offering=' . $this->unit->get('offering_id'),
             );
             ?>
             (<a href="<?php echo $offeringsUrl; ?>">
@@ -146,7 +146,7 @@ $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . 
                     $pageNav = $this->pagination(
                         $this->total,
                         $this->filters['start'],
-                        $this->filters['limit']
+                        $this->filters['limit'],
                     );
                     echo $pageNav->render();
                     ?>
@@ -206,7 +206,7 @@ $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . 
                         'index.php?option=' . $this->option
                         . '&controller=' . $this->controller
                         . '&task=edit&unit=' . $this->unit->get('id')
-                        . '&id=' . $row->get('id')
+                        . '&id=' . $row->get('id'),
                     );
                     ?>
                     <?php if ($canDo->get('core.edit')) { ?>
@@ -239,7 +239,7 @@ $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . 
                             . '&task=' . $task
                             . '&unit=' . $this->unit->get('id')
                             . '&id=' . $row->get('id')
-                            . '&' . Session::getFormToken() . '=1'
+                            . '&' . Session::getFormToken() . '=1',
                         );
                         $stateTitle = Lang::txt('COM_COURSES_SET_TASK', $task);
                         ?>
@@ -266,7 +266,7 @@ $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . 
                         $canOrderUp,
                         'orderup',
                         'COM_COURSES_MOVE_UP',
-                        $ordering
+                        $ordering,
                     );
                     $canOrderDown = isset($this->ordering[$row->get('parent')][$orderkey + 1]);
                     $orderDownIcon = $pageNav->orderDownIcon(
@@ -275,7 +275,7 @@ $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . 
                         $canOrderDown,
                         'orderdown',
                         'COM_COURSES_MOVE_DOWN',
-                        $ordering
+                        $ordering,
                     );
                     ?>
                     <span><?php echo $orderUpIcon; ?></span>
@@ -287,7 +287,7 @@ $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . 
                         $assetEditUrl = Route::url(
                             'index.php?option=' . $this->option
                             . '&controller=' . $this->controller
-                            . '&task=edit&id=' . $row->get('id')
+                            . '&task=edit&id=' . $row->get('id'),
                         );
                         ?>
                         <a class="glyph assets" href="<?php echo $assetEditUrl; ?>">

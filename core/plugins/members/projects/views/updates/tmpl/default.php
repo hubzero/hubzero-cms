@@ -32,11 +32,11 @@ $this->css();
     <?php
     $allUrl = Route::url(
         'index.php?option=com_members&id=' . $this->uid
-        . '&active=projects&action=all'
+        . '&active=projects&action=all',
     );
     $updatesUrl = Route::url(
         'index.php?option=com_members&id=' . $this->uid
-        . '&active=projects&action=updates'
+        . '&active=projects&action=updates',
     );
     ?>
     <li>

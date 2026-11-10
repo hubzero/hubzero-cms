@@ -37,7 +37,7 @@ class Respondent extends Relational
      * @var array
      **/
     protected $rules = [
-        'event_id' => 'positive|nonzero'
+        'event_id' => 'positive|nonzero',
     ];
 
     /**
@@ -48,7 +48,7 @@ class Respondent extends Relational
     public $always = [
         'alias',
         'modified',
-        'modified_by'
+        'modified_by',
     ];
 
     /**
@@ -58,7 +58,7 @@ class Respondent extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**

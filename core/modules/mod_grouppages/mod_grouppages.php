@@ -38,13 +38,13 @@ class Grouppages extends Module
         // get unapproved pages
         $groupModelPageArchive = new Models\Page\Archive();
         $this->unapprovedPages = $groupModelPageArchive->pages('unapproved', [
-            'state' => [0, 1]
+            'state' => [0, 1],
         ], true);
 
         // get unapproved modules
         $groupModelModuleArchive = new Models\Module\Archive();
         $this->unapprovedModules = $groupModelModuleArchive->modules('unapproved', [
-            'state' => [0, 1]
+            'state' => [0, 1],
         ], true);
 
         // Get the view

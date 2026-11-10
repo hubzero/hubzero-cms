@@ -33,7 +33,7 @@ class Googlemaps extends Plugin
         }
 
         return new \Geocoder\Provider\GoogleMaps\GoogleMaps(
-            $adapter
+            $adapter,
         );
     }
 }

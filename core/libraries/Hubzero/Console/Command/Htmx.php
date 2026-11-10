@@ -89,12 +89,12 @@ class Htmx extends Base implements CommandInterface
             ->addArgument(
                 'scaffold [component]',
                 'Generate HTMX controller/view boilerplate inside an existing component.',
-                'Example: muse htmx scaffold com_projects --view=items --controller=items --with-test'
+                'Example: muse htmx scaffold com_projects --view=items --controller=items --with-test',
             )
             ->addArgument(
                 'lint [path]',
                 'Warn about common HTMX template issues (target/swap/id/layout mistakes).',
-                'Example: muse htmx lint core/components/com_todo/site/views --strict'
+                'Example: muse htmx lint core/components/com_todo/site/views --strict',
             );
     }
 
@@ -106,7 +106,7 @@ class Htmx extends Base implements CommandInterface
     {
         $files = [];
         $iter = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($root, \FilesystemIterator::SKIP_DOTS)
+            new \RecursiveDirectoryIterator($root, \FilesystemIterator::SKIP_DOTS),
         );
 
         foreach ($iter as $info) {
@@ -147,7 +147,7 @@ class Htmx extends Base implements CommandInterface
             $warnings[] = [
                 'file' => $file,
                 'line' => 1,
-                'message' => 'Fragment-like template appears to contain full document wrappers.'
+                'message' => 'Fragment-like template appears to contain full document wrappers.',
             ];
         }
 
@@ -160,7 +160,7 @@ class Htmx extends Base implements CommandInterface
                     $warnings[] = [
                         'file' => $file,
                         'line' => $this->lineNumberFromOffset($contents, $offset),
-                        'message' => 'Duplicate id attribute "' . $id . '".'
+                        'message' => 'Duplicate id attribute "' . $id . '".',
                     ];
                     continue;
                 }
@@ -177,7 +177,7 @@ class Htmx extends Base implements CommandInterface
                     $warnings[] = [
                         'file' => $file,
                         'line' => $this->lineNumberFromOffset($contents, $offset),
-                        'message' => 'hx-target appears empty/invalid.'
+                        'message' => 'hx-target appears empty/invalid.',
                     ];
                 }
             }
@@ -192,7 +192,7 @@ class Htmx extends Base implements CommandInterface
                 'beforeend',
                 'afterend',
                 'delete',
-                'none'
+                'none',
             ];
             foreach ($swapMatches[1] as $match) {
                 $swap = trim((string) $match[0]);
@@ -202,7 +202,7 @@ class Htmx extends Base implements CommandInterface
                     $warnings[] = [
                         'file' => $file,
                         'line' => $this->lineNumberFromOffset($contents, $offset),
-                        'message' => 'Unrecognized hx-swap value "' . $swap . '".'
+                        'message' => 'Unrecognized hx-swap value "' . $swap . '".',
                     ];
                 }
             }
@@ -213,7 +213,7 @@ class Htmx extends Base implements CommandInterface
                 '/\bhx-(get|post|put|patch|delete)=["\']([^"\']+)["\']/i',
                 $contents,
                 $routeMatches,
-                PREG_OFFSET_CAPTURE
+                PREG_OFFSET_CAPTURE,
             )
         ) {
             foreach ($routeMatches[2] as $match) {
@@ -228,7 +228,7 @@ class Htmx extends Base implements CommandInterface
                         'file' => $file,
                         'line' => $this->lineNumberFromOffset($contents, $offset),
                         'message' => 'Hardcoded component/task route in hx-* attribute;'
-                            . ' prefer Htmx::actionUrl(...).'
+                            . ' prefer Htmx::actionUrl(...).',
                     ];
                 }
             }

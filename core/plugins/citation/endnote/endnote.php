@@ -263,7 +263,7 @@ class Endnote extends Plugin
             'isbn'             => ['%@'],
             'short_title'      => ['%!'],
             'author_address'   => ['%+'],
-            'research_notes'   => ['%<']
+            'research_notes'   => ['%<'],
         ];
 
         // Get any custom tags that we want to use

@@ -25,7 +25,7 @@ defined('_HZEXEC_') or die();
         <span>|</span>
         <?php
         $memberUrl = Route::url(
-            'index.php?option=com_members&id=' . $this->entry->get('created_by')
+            'index.php?option=com_members&id=' . $this->entry->get('created_by'),
         );
         $authorName = $this->escape(stripslashes($this->entry->creator->get('name')));
         $authorLink = '<cite><a href="' . $memberUrl . '">' . $authorName . '</a></cite>';

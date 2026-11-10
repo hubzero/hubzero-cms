@@ -130,7 +130,7 @@ $this->js();
                         $routeUrl = Route::url(
                             'index.php?option=' . $this->option
                             . '&controller=assets&tmpl=component&scope=unit&scope_id=' . $this->row->get('id')
-                            . '&course_id=' . $this->offering->get('course_id')
+                            . '&course_id=' . $this->offering->get('course_id'),
                         );
                     ?>
                     <iframe

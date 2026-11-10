@@ -46,7 +46,7 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
         if (self::$testDir !== '' && is_dir(self::$testDir)) {
             $it = new \RecursiveIteratorIterator(
                 new \RecursiveDirectoryIterator(self::$testDir, \FilesystemIterator::SKIP_DOTS),
-                \RecursiveIteratorIterator::CHILD_FIRST
+                \RecursiveIteratorIterator::CHILD_FIRST,
             );
             foreach ($it as $file) {
                 if ($file->isDir()) {

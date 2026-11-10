@@ -65,7 +65,7 @@ $this->css();
                             . '&controller='
                             . $this->controller
                             . '&task=edit&uid='
-                            . $row->uid
+                            . $row->uid,
                         );
                         ?>
                         <a class="icon-16-preview" href="<?php echo $href; ?>">
@@ -132,7 +132,7 @@ $this->css();
             . $this->option
             . '&controller='
             . $this->controller
-            . '&task=royalty&auto=0'
+            . '&task=royalty&auto=0',
         );
         ?>
         <!--<p>Distribute <a href="<?php echo $href; ?>">Royalties</a> for current month.</p>//-->

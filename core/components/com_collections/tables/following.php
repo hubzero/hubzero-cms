@@ -50,7 +50,7 @@ class Following extends Table
 
         $fields = [
             'following_id'   => (int) $oid,
-            'following_type' => (string) $following_type
+            'following_type' => (string) $following_type,
         ];
         if ($follower_id !== null) {
             $fields['follower_id'] = (int) $follower_id;

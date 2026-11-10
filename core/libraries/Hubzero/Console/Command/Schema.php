@@ -462,7 +462,7 @@ class Schema extends Base implements CommandInterface
                 $migrationDir,
                 $component,
                 $description,
-                $dryRun
+                $dryRun,
             );
             return;
         }
@@ -472,7 +472,7 @@ class Schema extends Base implements CommandInterface
             "Please specify what to generate migration from:\n" .
             "  --from=table1 --to=table2    Compare two tables\n" .
             "  --input=schema.json          Compare current DB to schema file\n\n" .
-            "Or use 'muse schema blank' to create an empty migration stub."
+            "Or use 'muse schema blank' to create an empty migration stub.",
         );
     }
 
@@ -540,7 +540,7 @@ class Schema extends Base implements CommandInterface
         string $migrationDir,
         string $component,
         string $description,
-        bool $dryRun = false
+        bool $dryRun = false,
     ): void {
         if (!file_exists($inputFile)) {
             $this->output->error("Schema file not found: {$inputFile}");
@@ -645,7 +645,7 @@ class Schema extends Base implements CommandInterface
         string $migrationDir,
         string $component,
         string $description,
-        bool $dryRun = false
+        bool $dryRun = false,
     ): void {
         $db = \App::get('db');
         $schema = $db->schema();
@@ -933,7 +933,7 @@ class Schema extends Base implements CommandInterface
             $this->output->error(
                 "Please provide snapshot name(s):\n" .
                 "  muse schema snapshot compare <name>           Compare current DB to snapshot\n" .
-                "  muse schema snapshot compare <from> --to=<to> Compare two snapshots"
+                "  muse schema snapshot compare <from> --to=<to> Compare two snapshots",
             );
             return;
         }
@@ -1173,7 +1173,7 @@ class Schema extends Base implements CommandInterface
             $this->output->error(
                 "Please provide both name and file:\n" .
                 "  muse schema snapshot import <name> --file=<path>\n" .
-                "  muse schema snapshot import <name> <path>"
+                "  muse schema snapshot import <name> <path>",
             );
             return;
         }
@@ -1393,71 +1393,71 @@ class Schema extends Base implements CommandInterface
                 generating diffs, producing migration SQL, and managing snapshots.
 
                 Supports safe mode to prevent destructive operations like
-                DROP TABLE and DROP COLUMN from being generated.'
+                DROP TABLE and DROP COLUMN from being generated.',
             )
             ->addTasks($this)
             ->addArgument(
                 '--table1, --table2: Tables to compare',
                 'Specify two tables to compare their structures.',
-                'Example: muse schema diff --table1=users --table2=users_backup'
+                'Example: muse schema diff --table1=users --table2=users_backup',
             )
             ->addArgument(
                 '--from, --to: Source and target for SQL generation',
                 'Generate SQL to transform one table to match another.',
-                'Example: muse schema sql --from=old_table --to=new_table'
+                'Example: muse schema sql --from=old_table --to=new_table',
             )
             ->addArgument(
                 '--sql: Output SQL statements',
                 'Include this flag to output the SQL needed to apply changes.',
-                'Example: muse schema diff --table1=a --table2=b --sql'
+                'Example: muse schema diff --table1=a --table2=b --sql',
             )
             ->addArgument(
                 '--safe: Enable safe mode (all protections)',
                 'Prevents all destructive operations (DROP TABLE, DROP COLUMN, etc.)',
-                'Example: muse schema sql --from=a --to=b --safe'
+                'Example: muse schema sql --from=a --to=b --safe',
             )
             ->addArgument(
                 '--safe-tables: Prevent DROP TABLE',
                 'Only prevent DROP TABLE operations.',
-                'Example: muse schema compare --input=schema.json --sql --safe-tables'
+                'Example: muse schema compare --input=schema.json --sql --safe-tables',
             )
             ->addArgument(
                 '--safe-columns: Prevent DROP COLUMN',
                 'Only prevent DROP COLUMN operations.',
-                'Example: muse schema sql --from=a --to=b --safe-columns'
+                'Example: muse schema sql --from=a --to=b --safe-columns',
             )
             ->addArgument(
                 '--safe-indexes: Prevent DROP INDEX',
-                'Only prevent DROP INDEX operations.'
+                'Only prevent DROP INDEX operations.',
             )
             ->addArgument(
                 '--safe-foreign-keys: Prevent DROP FOREIGN KEY',
-                'Only prevent DROP FOREIGN KEY operations.'
+                'Only prevent DROP FOREIGN KEY operations.',
             )
             ->addArgument(
                 '--safe-shrinking: Prevent data-losing type changes',
                 'Prevents column modifications that could lose data
-                (e.g., VARCHAR(255) to VARCHAR(100), INT to TINYINT).'
+                (e.g., VARCHAR(255) to VARCHAR(100), INT to TINYINT).',
             )
             ->addArgument(
                 '--column-renames: Hint for column renames',
                 'Provide hints for detecting column renames (old:new pairs).',
-                'Example: --column-renames=old_name:new_name,foo:bar'
+                'Example: --column-renames=old_name:new_name,foo:bar',
             )
             ->addArgument(
                 '--detect-renames: Enable heuristic rename detection',
                 'Automatically detect table and column renames using similarity analysis.',
-                'Example: muse schema compare --input=schema.json --detect-renames'
+                'Example: muse schema compare --input=schema.json --detect-renames',
             )
             ->addArgument(
                 '--rename-threshold: Rename detection threshold',
                 'Similarity threshold for rename detection (0.0-1.0, default 0.7).',
-                'Example: --detect-renames --rename-threshold=0.8'
+                'Example: --detect-renames --rename-threshold=0.8',
             )
             ->addArgument(
                 '--all: Show all tables',
                 'Include non-prefixed tables in the list.',
-                'Example: muse schema tables --all'
+                'Example: muse schema tables --all',
             )
             ->addArgument(
                 '--filter: Filter tables with pattern',
@@ -1472,110 +1472,110 @@ class Schema extends Base implements CommandInterface
                   muse schema tables --filter=user
                   muse schema tables --filter="/^jos_/"
                   muse schema export --filter="user,!session"
-                  muse schema snapshot save --filter="!/^jos_session/"'
+                  muse schema snapshot save --filter="!/^jos_session/"',
             )
             ->addArgument(
                 '--full: Compare full database schema',
-                'Compare the entire database schema instead of individual tables.'
+                'Compare the entire database schema instead of individual tables.',
             )
             ->addArgument(
                 '--input: Input schema file',
                 'JSON file containing the target schema for comparison.',
-                'Example: muse schema compare --input=schema.json'
+                'Example: muse schema compare --input=schema.json',
             )
             ->addArgument(
                 '--output: Output file path',
                 'Path for export output file.',
-                'Example: muse schema export --output=/path/to/schema.json'
+                'Example: muse schema export --output=/path/to/schema.json',
             )
             ->addArgument(
                 '--prefix: Table prefix filter',
                 'Only include tables with this prefix.',
-                'Example: muse schema export --prefix=jos_'
+                'Example: muse schema export --prefix=jos_',
             )
             ->addArgument(
                 '--component: Component name for migration',
                 'Name appended to migration class (e.g., ComUsers, Core).',
-                'Example: muse schema generate --component=ComUsers'
+                'Example: muse schema generate --component=ComUsers',
             )
             ->addArgument(
                 '--dir, --directory: Migration directory',
                 'Directory to write migration files to. Defaults to core/migrations.',
-                'Example: muse schema generate --dir=/path/to/migrations'
+                'Example: muse schema generate --dir=/path/to/migrations',
             )
             ->addArgument(
                 '--description: Migration description',
                 'Description for the generated migration file.',
-                'Example: muse schema generate --description="Add user preferences table"'
+                'Example: muse schema generate --description="Add user preferences table"',
             )
             ->addArgument(
                 '--no-checks: Skip table existence checks',
                 'Do not generate if (tableExists) checks in migration code.',
-                'Example: muse schema generate --from=a --to=b --no-checks'
+                'Example: muse schema generate --from=a --to=b --no-checks',
             )
             ->addArgument(
                 '--snapshot-dir: Snapshot storage directory',
                 'Directory to store schema snapshots. Defaults to core/bootstrap/Install/snapshots.',
-                'Example: muse schema snapshot save --snapshot-dir=/path/to/snapshots'
+                'Example: muse schema snapshot save --snapshot-dir=/path/to/snapshots',
             )
             ->addArgument(
                 '--name: Snapshot name',
                 'Name for the snapshot (alphanumeric, dashes, underscores).',
-                'Example: muse schema snapshot save --name=production-v1'
+                'Example: muse schema snapshot save --name=production-v1',
             )
             ->addArgument(
                 '--sort: Sort order for snapshot list',
                 'Sort snapshots by: name, date, or tables.',
-                'Example: muse schema snapshot list --sort=name'
+                'Example: muse schema snapshot list --sort=name',
             )
             ->addArgument(
                 '--asc: Ascending sort order',
                 'Sort in ascending order (default is descending for dates).',
-                'Example: muse schema snapshot list --sort=date --asc'
+                'Example: muse schema snapshot list --sort=date --asc',
             )
             ->addArgument(
                 '--tables: Show table list in snapshot',
                 'Include table listing when showing snapshot details.',
-                'Example: muse schema snapshot show mysnap --tables'
+                'Example: muse schema snapshot show mysnap --tables',
             )
             ->addArgument(
                 '--force: Skip confirmation prompts',
                 'Skip confirmation when deleting snapshots.',
-                'Example: muse schema snapshot delete oldsnap --force'
+                'Example: muse schema snapshot delete oldsnap --force',
             )
             ->addArgument(
                 '--file: Schema file for import',
                 'Path to schema JSON file when importing as a snapshot.',
-                'Example: muse schema snapshot import mysnap --file=schema.json'
+                'Example: muse schema snapshot import mysnap --file=schema.json',
             )
             ->addArgument(
                 '--dry-run: Preview without creating files',
                 'Show what migration would be generated without writing files.
                 Useful for reviewing changes before committing.',
-                'Example: muse schema generate --from=a --to=b --dry-run'
+                'Example: muse schema generate --from=a --to=b --dry-run',
             )
             ->addArgument(
                 '--write-sql: Write SQL to file',
                 'Output generated SQL to a file instead of console.
                 If a directory is specified, a timestamped filename is generated.
                 Useful for DBA review or audit trails.',
-                'Example: muse schema sql --from=a --to=b --write-sql=/path/to/output.sql'
+                'Example: muse schema sql --from=a --to=b --write-sql=/path/to/output.sql',
             )
             ->addArgument(
                 '--exclude: Tables to exclude from squash',
                 'Comma-separated list of table names to exclude from squashing.',
-                'Example: muse schema squash --exclude=sessions,cache'
+                'Example: muse schema squash --exclude=sessions,cache',
             )
             ->addArgument(
                 '--no-foreign-keys: Exclude foreign keys from squash',
                 'Generate squashed migration without foreign key constraints.
                 Useful for databases with circular references.',
-                'Example: muse schema squash --no-foreign-keys'
+                'Example: muse schema squash --no-foreign-keys',
             )
             ->addArgument(
                 '--prune: Prune old migrations after squash',
                 'NOT YET IMPLEMENTED. Would remove old migration files after squashing.',
-                'Example: muse schema squash --prune (future feature)'
+                'Example: muse schema squash --prune (future feature)',
             );
     }
 
@@ -2210,7 +2210,7 @@ class Schema extends Base implements CommandInterface
         $downCount = count($downSql);
         $this->output->addLine(
             "File contains {$upCount} UP statement(s) and {$downCount} DOWN statement(s).",
-            'info'
+            'info',
         );
 
         if ($safeFlags > 0) {

@@ -44,7 +44,7 @@ class Developer extends AbstractComponent
         Submenu::addEntry(
             Lang::txt('COM_DEVELOPER_APPLICATIONS'),
             Route::url('index.php?option=com_developer&controller=applications'),
-            ($controllerName == 'applications')
+            ($controllerName == 'applications'),
         );
 
         // Build the class name

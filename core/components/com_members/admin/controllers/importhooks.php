@@ -58,18 +58,18 @@ class ImportHooks extends AdminController
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limitstart',
                 'limitstart',
                 0,
-                'int'
+                'int',
             ),
             'state'    => [1],
             'sort'     => 'name',
             'sort_Dir' => 'ASC',
-            'type'     => 'members'
+            'type'     => 'members',
         ];
 
         $model = Hook::all();

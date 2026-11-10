@@ -23,8 +23,8 @@ class Migration20190305000000ComSupport extends Base
     public static $tables = [
         '#__abuse_reports' => [
             'created',
-            'reviewed'
-        ]
+            'reviewed',
+        ],
     ];
 
     /**

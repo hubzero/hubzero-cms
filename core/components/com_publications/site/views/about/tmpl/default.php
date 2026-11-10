@@ -30,7 +30,7 @@ preg_match_all(
     "#<nb:(.*?)>(.*?)</nb:(.*?)>#s",
     $this->publication->metadata == null ? '' : $this->publication->metadata,
     $matches,
-    PREG_SET_ORDER
+    PREG_SET_ORDER,
 );
 if (count($matches) > 0) {
     foreach ($matches as $match) {
@@ -88,14 +88,14 @@ if ($listAll) {
             $this->publication->version_id,
             $webpath,
             '',
-            1
+            1,
         );
         $licFile = $path . DS . 'LICENSE.txt';
         if (file_exists($licFile)) {
             $licenseUrl = Route::url(
                 'index.php?option=' . $this->option
                 . '&id=' . $this->publication->id
-                . '&task=license&v=' . $this->publication->version_id
+                . '&task=license&v=' . $this->publication->version_id,
             );
             $append = '<li><a href="' . $licenseUrl . '" class="license-terms play" rel="external">'
                 . Lang::txt('COM_PUBLICATIONS_LICENSE_TERMS') . '</a></li>';
@@ -117,7 +117,7 @@ if ($listAll) {
             $elements,
             $this->publication,
             $authorized,
-            $append
+            $append,
         );
         ?>
             <h3 class="list-header">

@@ -285,7 +285,7 @@ class Importer extends Obj
         $results = [
             'saved'     => [],
             'not_saved' => [],
-            'error'     => []
+            'error'     => [],
         ];
 
         $now       = with(new Date('now'))->toSql();

@@ -22,11 +22,11 @@ class Migration20190221000000ComPoll extends Base
      **/
     public static $tables = [
         '#__polls' => [
-            'checked_out_time'
+            'checked_out_time',
         ],
         '#__poll_dates' => [
-            'date'
-        ]
+            'date',
+        ],
     ];
 
     /**

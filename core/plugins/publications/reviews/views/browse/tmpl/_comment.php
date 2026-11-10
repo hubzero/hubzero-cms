@@ -90,8 +90,8 @@ if ($this->comment->get('publication_id')) {
                         'folder'  => 'publications',
                         'element' => 'reviews',
                         'name'    => 'browse',
-                        'layout'  => '_rateitem'
-                    ]
+                        'layout'  => '_rateitem',
+                    ],
                 );
                 $view->option = $this->option;
                 $view->item   = $this->comment;

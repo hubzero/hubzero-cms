@@ -39,7 +39,7 @@ class Migration20151118164723ComAnswers extends Base
                         'ip'        => $row->ip,
                         'created'   => $row->expires,
                         'created_by' => $row->voter,
-                        'vote'      => 0
+                        'vote'      => 0,
                     ])
                     ->execute();
             }
@@ -63,7 +63,7 @@ class Migration20151118164723ComAnswers extends Base
                         'ip'        => $row->ip,
                         'created'   => '0000-00-00 00:00:00',
                         'created_by' => 0,
-                        'vote'      => ($row->helpful == 'yes' ? 1 : -1)
+                        'vote'      => ($row->helpful == 'yes' ? 1 : -1),
                     ])
                     ->execute();
             }
@@ -113,7 +113,7 @@ class Migration20151118164723ComAnswers extends Base
                         'question_id' => $row->item_id,
                         'expires'     => $row->created,
                         'voter'       => $row->created_by,
-                        'ip'          => $row->ip
+                        'ip'          => $row->ip,
                     ])
                     ->execute();
             }
@@ -144,7 +144,7 @@ class Migration20151118164723ComAnswers extends Base
                         'id'          => null,
                         'response_id' => $row->item_id,
                         'ip'          => $row->ip,
-                        'helpful'     => ($row->vote == 1 ? 'yes' : 'no')
+                        'helpful'     => ($row->vote == 1 ? 'yes' : 'no'),
                     ])
                     ->execute();
             }

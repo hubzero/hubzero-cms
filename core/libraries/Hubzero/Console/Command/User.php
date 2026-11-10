@@ -110,7 +110,7 @@ class User extends Base implements CommandInterface
             'sent_by', 'redeemed_by', 'userid', 'creator_id', 'addedBy', 'editedBy', 'user_id_to', 'user_id_from',
             'commenter', 'uploaded_by', 'posted_by', 'assigned_to', 'closed_by', 'owned_by_user', 'created_by_user',
             'ran_by', 'foreign_key', 'taggerid', 'actor_id', 'voter', 'proposed_by', 'granted_by', 'assigned',
-            'approved_by', 'action_by', 'authorid'
+            'approved_by', 'action_by', 'authorid',
         ];
         $unames = [
             $prefix . 'event_registration.username',
@@ -123,20 +123,20 @@ class User extends Base implements CommandInterface
             $prefix . 'tool.team',
             $prefix . 'tool.registered_by',
             $prefix . 'tool_version.released_by',
-            $prefix . 'wiki_page.authors'
+            $prefix . 'wiki_page.authors',
         ];
         $excludes = [
             $prefix . 'xprofiles',
             $prefix . 'session_log',
             $prefix . 'session',
-            $prefix . 'users_quotas'
+            $prefix . 'users_quotas',
         ];
         $constraints = [
             $prefix . 'collections.object_id'              => "AND `object_type` = 'member'",
             $prefix . 'collections_following.follower_id'  => "AND `follower_type` = 'member'",
             $prefix . 'collections_following.following_id' => "AND `following_type` = 'member'",
             $prefix . 'support_acl_aros.foreign_key'       => "AND `model` = 'user'",
-            $prefix . 'support_acl_aros.alias'             => "AND `model` = 'user'"
+            $prefix . 'support_acl_aros.alias'             => "AND `model` = 'user'",
         ];
 
         // First, make sure we were given valid user ids
@@ -521,7 +521,7 @@ class User extends Base implements CommandInterface
 
         $this->output->addLine(
             'Password updated for ' . $user->get('username') . ' (' . $user->get('id') . ')',
-            'success'
+            'success',
         );
     }
 

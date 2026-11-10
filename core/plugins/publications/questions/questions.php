@@ -67,7 +67,7 @@ class Questions extends Plugin
     {
         $arr = [
             'html'     => '',
-            'metadata' => ''
+            'metadata' => '',
         ];
 
         // Check if our area is in the array of areas we want to return results for
@@ -94,7 +94,7 @@ class Questions extends Plugin
             'start'    => Request::getInt('limitstart', 0),
             'search'   => Request::getString('q', ''),
             'filterby' => Request::getString('filterby', ''),
-            'sortby'   => Request::getString('sortby', 'withinplugin')
+            'sortby'   => Request::getString('sortby', 'withinplugin'),
         ];
 
         $identifier = $this->publication->identifier();
@@ -248,7 +248,7 @@ class Questions extends Plugin
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
                 Lang::txt('PLG_PUBLICATIONS_QUESTIONS_LOGIN_TO_ASK_QUESTION'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -368,7 +368,7 @@ class Questions extends Plugin
 
         // Redirect to the question
         App::redirect(
-            Route::url($this->publication->link() . '&active=questions&v=' . $this->publication->get('version_number'))
+            Route::url($this->publication->link() . '&active=questions&v=' . $this->publication->get('version_number')),
         );
     }
 }

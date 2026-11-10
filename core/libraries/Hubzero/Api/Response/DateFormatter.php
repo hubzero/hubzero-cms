@@ -46,7 +46,7 @@ class DateFormatter extends Middleware
         // get date keys from response options
         $this->dateKeys = array_merge(
             $this->dateKeys,
-            $response->getTransformKeys('dates')
+            $response->getTransformKeys('dates'),
         );
 
         // make sure to handle array different then a single object

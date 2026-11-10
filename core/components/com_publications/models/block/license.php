@@ -70,8 +70,8 @@ class License extends Base
             $view = new \Hubzero\Component\View(
                 [
                     'name'      => 'curation',
-                    'layout'    => 'block'
-                ]
+                    'layout'    => 'block',
+                ],
             );
         } else {
             $name = $viewname == 'freeze' ? 'freeze' : 'draft';
@@ -82,8 +82,8 @@ class License extends Base
                     'folder'    => 'projects',
                     'element'   => 'publications',
                     'name'      => $name,
-                    'layout'    => 'wrapper'
-                ]
+                    'layout'    => 'wrapper',
+                ],
             );
         }
 
@@ -118,8 +118,8 @@ class License extends Base
                 'folder'    => 'projects',
                 'element'   => 'publications',
                 'name'      => $name,
-                'layout'    => 'license'
-            ]
+                'layout'    => 'license',
+            ],
         );
 
         $view->pub      = $pub;
@@ -382,8 +382,8 @@ class License extends Base
                     'required' => 1,
                     'published_editing' => 0,
                     'include' => [],
-                    'exclude' => []
-                ]
+                    'exclude' => [],
+                ],
             ];
 
             return json_decode(json_encode($manifest), false);

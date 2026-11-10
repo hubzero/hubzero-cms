@@ -85,7 +85,7 @@ hr {
                 $removeUrl = Route::url(
                     'index.php?option=' . $this->option . '&controller=' . $this->controller
                     . '&task=remove&id=' . $this->profile->get('id') . '&file=profile.png&'
-                    . Session::getFormToken() . '=1&tmpl=' . Request::getCmd('tmpl')
+                    . Session::getFormToken() . '=1&tmpl=' . Request::getCmd('tmpl'),
                 );
                 ?>
                 <?php $text = Lang::txt('JACTION_DELETE'); ?>

@@ -51,8 +51,8 @@ class DataStore extends Base
                 'required_ext' => ['csv'],
                 'min_allowed'  => 1,
                 'max_allowed'  => 1,
-                'enforced'     => 0
-            ]
+                'enforced'     => 0,
+            ],
         ];
 
         $parsedConfig = $this->_parent->parseConfig($this->_name, $configs, $savedConfig);

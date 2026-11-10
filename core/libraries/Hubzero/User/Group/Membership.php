@@ -179,7 +179,7 @@ class Membership
         $db->setQuery(
             "SELECT `expires` FROM `#__xgroups_members`
 			  WHERE `gidNumber`=" . $db->quote((int) $gidNumber) . "
-			    AND `uidNumber`=" . $db->quote((int) $uidNumber) . " LIMIT 1"
+			    AND `uidNumber`=" . $db->quote((int) $uidNumber) . " LIMIT 1",
         );
 
         $value = $db->loadResult();
@@ -207,7 +207,7 @@ class Membership
         $db->setQuery(
             "SELECT `uidNumber`, `expires` FROM `#__xgroups_members`
 			  WHERE `gidNumber`=" . $db->quote((int) $gidNumber) . "
-			    AND `expires` IS NOT NULL"
+			    AND `expires` IS NOT NULL",
         );
 
         $rows = $db->loadObjectList() ?: [];
@@ -241,7 +241,7 @@ class Membership
         $db->setQuery(
             "SELECT COUNT(*) FROM `#__xgroups_members`
 			  WHERE `gidNumber`=" . $db->quote((int) $gidNumber) . "
-			    AND `uidNumber`=" . $db->quote((int) $uidNumber) . $where
+			    AND `uidNumber`=" . $db->quote((int) $uidNumber) . $where,
         );
 
         return (bool) $db->loadResult();
@@ -269,7 +269,7 @@ class Membership
 
         $db->setQuery(
             "SELECT COUNT(*) FROM `#__xgroups_members`
-			  WHERE `gidNumber`=" . $db->quote($gid) . " AND `uidNumber`=" . $db->quote($uid)
+			  WHERE `gidNumber`=" . $db->quote($gid) . " AND `uidNumber`=" . $db->quote($uid),
         );
 
         if (!$db->loadResult()) {
@@ -304,7 +304,7 @@ class Membership
 			        `expires_set_by`=" . ($actor ? $db->quote($actor) : 'NULL') . ",
 			        `expires_notified`=NULL
 			  WHERE `gidNumber`=" . $db->quote($gid) . "
-			    AND `uidNumber`=" . $db->quote($uid)
+			    AND `uidNumber`=" . $db->quote($uid),
         );
 
         if (!$db->query()) {
@@ -316,7 +316,7 @@ class Membership
             $uid,
             is_null($expires) ? 'group_member_term_cleared' : 'group_member_term_set',
             ['uidNumber' => $uid, 'expires' => $expires],
-            $actor
+            $actor,
         );
 
         return true;
@@ -379,7 +379,7 @@ class Membership
 			    SET `expires`=(UTC_TIMESTAMP() + INTERVAL " . $days . " DAY)
 			  WHERE `gidNumber`=" . $db->quote($gid) . "
 			    AND `uidNumber` IN (" . implode(',', $ids) . ")
-			    AND `expires` IS NULL"
+			    AND `expires` IS NULL",
         );
 
         if (!$db->query()) {
@@ -439,7 +439,7 @@ class Membership
 			  WHERE `expires` IS NOT NULL
 			    AND `expires` <= " . $cut . "
 			  ORDER BY `expires` ASC
-			  LIMIT " . (int) $limit
+			  LIMIT " . (int) $limit,
         );
 
         return $db->loadObjectList() ?: [];
@@ -464,7 +464,7 @@ class Membership
 
         $db->setQuery(
             "SELECT COUNT(*) FROM `#__xgroups_members`
-			  WHERE `expires` IS NOT NULL AND `expires` <= UTC_TIMESTAMP()"
+			  WHERE `expires` IS NOT NULL AND `expires` <= UTC_TIMESTAMP()",
         );
 
         return (int) $db->loadResult();
@@ -484,7 +484,7 @@ class Membership
         $db->setQuery(
             "SELECT COUNT(*) FROM `#__xgroups_managers`
 			  WHERE `gidNumber`=" . $db->quote((int) $gidNumber) . "
-			    AND `uidNumber`=" . $db->quote((int) $uidNumber)
+			    AND `uidNumber`=" . $db->quote((int) $uidNumber),
         );
 
         if (!$db->loadResult()) {
@@ -493,7 +493,7 @@ class Membership
 
         $db->setQuery(
             "SELECT COUNT(*) FROM `#__xgroups_managers`
-			  WHERE `gidNumber`=" . $db->quote((int) $gidNumber)
+			  WHERE `gidNumber`=" . $db->quote((int) $gidNumber),
         );
 
         return ((int) $db->loadResult()) <= 1;
@@ -517,7 +517,7 @@ class Membership
             "DELETE mr FROM `#__xgroups_member_roles` AS mr
 			  INNER JOIN `#__xgroups_roles` AS r ON r.`id`=mr.`roleid`
 			  WHERE mr.`uidNumber`=" . $db->quote((int) $uidNumber) . "
-			    AND r.`gidNumber`=" . $db->quote((int) $gidNumber)
+			    AND r.`gidNumber`=" . $db->quote((int) $gidNumber),
         );
 
         return (bool) $db->query();
@@ -553,7 +553,7 @@ class Membership
 
         $db->setQuery(
             "SELECT COUNT(*) FROM `#__xgroups_members`
-			  WHERE `gidNumber`=" . $db->quote($gid) . " AND `uidNumber`=" . $db->quote($uid)
+			  WHERE `gidNumber`=" . $db->quote($gid) . " AND `uidNumber`=" . $db->quote($uid),
         );
 
         if (!$db->loadResult()) {
@@ -563,7 +563,7 @@ class Membership
 
         $db->setQuery(
             "SELECT COUNT(*) FROM `#__xgroups_managers`
-			  WHERE `gidNumber`=" . $db->quote($gid) . " AND `uidNumber`=" . $db->quote($uid)
+			  WHERE `gidNumber`=" . $db->quote($gid) . " AND `uidNumber`=" . $db->quote($uid),
         );
 
         $wasManager = (int) $db->loadResult() ? 1 : 0;
@@ -571,7 +571,7 @@ class Membership
         // 1. the row that grants access
         $db->setQuery(
             "DELETE FROM `#__xgroups_members`
-			  WHERE `gidNumber`=" . $db->quote($gid) . " AND `uidNumber`=" . $db->quote($uid)
+			  WHERE `gidNumber`=" . $db->quote($gid) . " AND `uidNumber`=" . $db->quote($uid),
         );
 
         if (!$db->query()) {
@@ -581,7 +581,7 @@ class Membership
         // 2. a manager row without a membership row is a phantom manager
         $db->setQuery(
             "DELETE FROM `#__xgroups_managers`
-			  WHERE `gidNumber`=" . $db->quote($gid) . " AND `uidNumber`=" . $db->quote($uid)
+			  WHERE `gidNumber`=" . $db->quote($gid) . " AND `uidNumber`=" . $db->quote($uid),
         );
         $db->query();
 
@@ -596,7 +596,7 @@ class Membership
 
         $recipients = [
             ['group', $gid],
-            ['user', $uid]
+            ['user', $uid],
         ];
 
         try {
@@ -609,10 +609,10 @@ class Membership
                     'details'     => [
                         'gidNumber' => $gid,
                         'uidNumber' => $uid,
-                        'reason'    => $reason
-                    ]
+                        'reason'    => $reason,
+                    ],
                 ],
-                'recipients' => $recipients
+                'recipients' => $recipients,
             ]);
         } catch (\Exception $e) {
             // activity logging must never take the revocation down with it
@@ -655,7 +655,7 @@ class Membership
                 . $db->quote($reason) . ","
                 . $db->quote((int) $wasManager) . ","
                 . (is_null($actor) ? 'NULL' : $db->quote((int) $actor))
-            . ")"
+            . ")",
         );
 
         return (bool) $db->query();
@@ -687,7 +687,7 @@ class Membership
 				  WHERE g.`gidNumber`=m.`gidNumber` AND g.`uidNumber`=m.`uidNumber`),
 				" . ((int) User::get('id') ?: 'NULL') . "
 			   FROM `#__xgroups_members` AS m
-			  WHERE m.`gidNumber`=" . $db->quote((int) $gidNumber)
+			  WHERE m.`gidNumber`=" . $db->quote((int) $gidNumber),
         );
 
         if (!$db->query()) {
@@ -744,7 +744,7 @@ class Membership
 				" . (is_null($actor) ? 'NULL' : $db->quote((int) $actor)) . "
 			   FROM `#__xgroups_members` AS m
 			  WHERE m.`gidNumber`=" . $db->quote((int) $gidNumber) . "
-			    AND m.`uidNumber` IN (" . implode(',', $ids) . ")"
+			    AND m.`uidNumber` IN (" . implode(',', $ids) . ")",
         );
 
         if (!$db->query()) {
@@ -780,7 +780,7 @@ class Membership
 				  WHERE g.`gidNumber`=m.`gidNumber` AND g.`uidNumber`=m.`uidNumber`),
 				NULL
 			   FROM `#__xgroups_members` AS m
-			  WHERE m.`uidNumber`=" . $db->quote((int) $uidNumber)
+			  WHERE m.`uidNumber`=" . $db->quote((int) $uidNumber),
         );
 
         if (!$db->query()) {
@@ -820,7 +820,7 @@ class Membership
                 . $db->quote($action) . ","
                 . $db->quote(json_encode($comments)) . ","
                 . $db->quote((int) $actor)
-            . ")"
+            . ")",
         );
 
         return (bool) $db->query();
@@ -901,7 +901,7 @@ class Membership
 			    AND (`expires_notified` IS NULL
 			         OR `expires_notified` < (`expires` - INTERVAL " . $days . " DAY))
 			  ORDER BY `expires` ASC
-			  LIMIT " . (int) $limit
+			  LIMIT " . (int) $limit,
         );
 
         return $db->loadObjectList() ?: [];
@@ -925,7 +925,7 @@ class Membership
         $db->setQuery(
             "UPDATE `#__xgroups_members` SET `expires_notified`=UTC_TIMESTAMP()
 			  WHERE `gidNumber`=" . $db->quote((int) $gidNumber) . "
-			    AND `uidNumber`=" . $db->quote((int) $uidNumber)
+			    AND `uidNumber`=" . $db->quote((int) $uidNumber),
         );
 
         return (bool) $db->query();
@@ -952,12 +952,12 @@ class Membership
         $comments = json_encode([
             'revoked' => isset($result['revoked']) ? (int) $result['revoked'] : 0,
             'skipped' => isset($result['skipped']) ? (int) $result['skipped'] : 0,
-            'groups'  => isset($result['groups']) ? (int) $result['groups'] : 0
+            'groups'  => isset($result['groups']) ? (int) $result['groups'] : 0,
         ]);
 
         $db->setQuery(
             "INSERT INTO `#__xgroups_log` (`gidNumber`,`timestamp`,`userid`,`action`,`comments`,`actorid`)
-			 VALUES (NULL, UTC_TIMESTAMP(), 0, 'membership_reaper_run', " . $db->quote($comments) . ", 0)"
+			 VALUES (NULL, UTC_TIMESTAMP(), 0, 'membership_reaper_run', " . $db->quote($comments) . ", 0)",
         );
 
         $ok = (bool) $db->query();
@@ -968,7 +968,7 @@ class Membership
         $db->setQuery(
             "DELETE FROM `#__xgroups_log`
 			  WHERE `action`='membership_reaper_run'
-			    AND `timestamp` < (UTC_TIMESTAMP() - INTERVAL 7 DAY)"
+			    AND `timestamp` < (UTC_TIMESTAMP() - INTERVAL 7 DAY)",
         );
         $db->query();
 
@@ -991,7 +991,7 @@ class Membership
         $db->setQuery(
             "SELECT `timestamp`, `comments` FROM `#__xgroups_log`
 			  WHERE `action`='membership_reaper_run'
-			  ORDER BY `timestamp` DESC LIMIT 1"
+			  ORDER BY `timestamp` DESC LIMIT 1",
         );
 
         return $db->loadObject();
@@ -1059,7 +1059,7 @@ class Membership
                     self::log($gid, $uid, 'group_member_expiry_blocked', [
                         'uidNumber' => $uid,
                         'expires'   => $row->expires,
-                        'reason'    => 'last manager'
+                        'reason'    => 'last manager',
                     ]);
 
                     $result['skipped']++;

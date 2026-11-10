@@ -57,7 +57,7 @@ class Todo extends Plugin
                 'todo' => Lang::txt('PLG_MEMBERS_TODO'),
                 'icon' => 'f08d',
                 'icon-class' => 'icon-pushpin',
-                'menu' => $this->params->get('display_tab', 1)
+                'menu' => $this->params->get('display_tab', 1),
             ];
         }
         return $areas;
@@ -88,7 +88,7 @@ class Todo extends Plugin
 
         $arr = [
             'html' => '',
-            'metadata' => []
+            'metadata' => [],
         ];
 
         // Include models
@@ -109,7 +109,7 @@ class Todo extends Plugin
             'sortby' => Request::getWord('sortby', 'due'),
             'sortdir' => Request::getWord('sortdir', 'ASC'),
             'assignedto' => Request::getInt('mine', 0) ? $member->get('id') : 0,
-            'state' => Request::getInt('state', 0)
+            'state' => Request::getInt('state', 0),
         ];
 
         if ($returnhtml) {
@@ -195,7 +195,7 @@ class Todo extends Plugin
             'mine' => 1,
             'active' => 1,
             'editor' => 1,
-            'sortby' => 'title'
+            'sortby' => 'title',
         ];
         $view->projects = $this->model->entries('list', $filters);
 
@@ -294,10 +294,10 @@ class Todo extends Plugin
                 'to do',
                 Route::url(
                     'index.php?option=com_projects&alias=' . $model->get('alias')
-                    . '&active=todo&action=view&todoid=' . $objTD->id
+                    . '&active=todo&action=view&todoid=' . $objTD->id,
                 ),
                 'todo',
-                1
+                1,
             );
 
             // Store activity ID
@@ -309,7 +309,7 @@ class Todo extends Plugin
 
         App::redirect(
             Route::url($this->member->link() . '&active=' . $this->_name),
-            Lang::txt('PLG_MEMBERS_TODO_SAVED')
+            Lang::txt('PLG_MEMBERS_TODO_SAVED'),
         );
     }
 }

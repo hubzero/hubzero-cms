@@ -92,7 +92,7 @@ class Notifier
                     'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_SUBMITTER'),
                     'name'  => $ticket->submitter->get('name', $ticket->get('name')),
                     'email' => $ticket->submitter->get('email', $ticket->get('email')),
-                    'id'    => $ticket->submitter->get('id')
+                    'id'    => $ticket->submitter->get('id'),
                 ]);
             } elseif ($ticket->get('email')) {
                 $comment->addTo($ticket->get('email'));
@@ -105,7 +105,7 @@ class Notifier
                     'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_PRIOR_OWNER'),
                     'name'  => $before->assignee->get('name'),
                     'email' => $before->assignee->get('email'),
-                    'id'    => $before->assignee->get('id')
+                    'id'    => $before->assignee->get('id'),
                 ]);
             }
 
@@ -114,7 +114,7 @@ class Notifier
                     'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_OWNER'),
                     'name'  => $ticket->assignee->get('name'),
                     'email' => $ticket->assignee->get('email'),
-                    'id'    => $ticket->assignee->get('id')
+                    'id'    => $ticket->assignee->get('id'),
                 ]);
             } elseif ($ticket->get('group_id')) {
                 $group = \Hubzero\User\Group::getInstance($ticket->get('group_id'));
@@ -131,7 +131,7 @@ class Notifier
                             'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_GROUPMANAGER'),
                             'name'  => $manager->get('name'),
                             'email' => $manager->get('email'),
-                            'id'    => $manager->get('id')
+                            'id'    => $manager->get('id'),
                         ]);
                     }
                 }
@@ -154,7 +154,7 @@ class Notifier
         $acl->setUser(User::get('id'));
 
         $recipients = [
-            ['support.tickets', 1]
+            ['support.tickets', 1],
         ];
 
         if (count($comment->to())) {
@@ -173,7 +173,7 @@ class Notifier
             $from = [
                 'name'      => Lang::txt('COM_SUPPORT_EMAIL_FROM', Config::get('sitename')),
                 'email'     => Config::get('mailfrom'),
-                'multipart' => md5(date('U'))  // Html email
+                'multipart' => md5(date('U')),  // Html email
             ];
 
             // The e-mail layouts live with the site views, wherever the
@@ -183,7 +183,7 @@ class Notifier
             $eview = new MailView([
                 'base_path' => dirname(__DIR__) . DS . 'site',
                 'name'      => 'emails',
-                'layout'    => 'comment_plain'
+                'layout'    => 'comment_plain',
             ]);
             $eview->option     = $options['option'];
             $eview->controller = $options['controller'];
@@ -283,10 +283,10 @@ class Notifier
                     'id'      => $ticket->get('id'),
                     'summary' => $ticket->get('summary'),
                     'url'     => $link,
-                    'comment' => $comment->get('id')
-                ]
+                    'comment' => $comment->get('id'),
+                ],
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         return $errors;

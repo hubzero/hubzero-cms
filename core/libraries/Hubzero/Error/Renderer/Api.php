@@ -75,7 +75,7 @@ class Api implements RendererInterface
                                 "%s %s %s()",
                                 $backtrace[$i]['class'],
                                 $backtrace[$i]['type'],
-                                $backtrace[$i]['function']
+                                $backtrace[$i]['function'],
                             );
                     } else {
                         $line = "[$i] " . sprintf("%s()", $backtrace[$i]['function']);
@@ -85,7 +85,7 @@ class Api implements RendererInterface
                         $line .= sprintf(
                             ' @ %s:%d',
                             str_replace(PATH_ROOT, '', $backtrace[$i]['file']),
-                            $backtrace[$i]['line']
+                            $backtrace[$i]['line'],
                         );
                     }
 

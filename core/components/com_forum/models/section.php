@@ -47,7 +47,7 @@ class Section extends Relational
      * @var  array
      */
     protected $rules = [
-        'title' => 'notempty'
+        'title' => 'notempty',
     ];
 
     /**
@@ -58,7 +58,7 @@ class Section extends Relational
     public $always = [
         'alias',
         'scope',
-        'asset_id'
+        'asset_id',
     ];
 
     /**
@@ -69,7 +69,7 @@ class Section extends Relational
     public $initiate = [
         'created',
         'created_by',
-        'ordering'
+        'ordering',
     ];
 
     /**

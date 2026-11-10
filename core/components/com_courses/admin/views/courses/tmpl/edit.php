@@ -72,7 +72,7 @@ $this->css();
                             'authorized' => 'admin',
                             'fields'     => ['cn', 'description', 'published', 'gidNumber', 'type'],
                             'type'       => [1, 3],
-                            'sortby'     => 'description'
+                            'sortby'     => 'description',
                         ];
                         $groups = \Hubzero\User\Group::find($filters);
                         if ($groups) {
@@ -157,7 +157,7 @@ $this->css();
                         $this->escape($this->row->description('raw')),
                         40,
                         15,
-                        'field-description'
+                        'field-description',
                     ); ?>
                     <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_DESCRIPTION_HINT'); ?></span>
                 </div>
@@ -178,7 +178,7 @@ $this->css();
                     <?php
                         $routeUrl = Route::url(
                             'index.php?option=' . $this->option  . '&controller=managers&tmpl=component&id='
-                            . $this->row->get('id')
+                            . $this->row->get('id'),
                         );
                     ?>
                     <iframe height="400" name="managers" id="managers" src="<?php echo $routeUrl; ?>"></iframe>
@@ -243,7 +243,7 @@ $this->css();
                     $param = new \Hubzero\Html\Parameter(
                         (is_object($data) ? $data->toString() : $data),
                         PATH_CORE . DS . 'plugins' . DS . 'courses' . DS . $plugin['name'] . DS . $plugin['name']
-                            . '.xml'
+                            . '.xml',
                     );
                     $out = $param->render('params', 'onCourseEdit');
                     if (!$out) {
@@ -272,7 +272,7 @@ $this->css();
                     <?php
                         $routeUrl = Route::url(
                             'index.php?option=' . $this->option  . '&controller=logo&task=upload&type=course&id='
-                            . $this->row->get('id') . '&no_html=1&' . Session::getFormToken() . '=1'
+                            . $this->row->get('id') . '&no_html=1&' . Session::getFormToken() . '=1',
                         );
                     ?>
                     <div
@@ -283,7 +283,7 @@ $this->css();
                             <?php
                                 $routeUrl = Route::url(
                                     'index.php?option=' . $this->option  . '&controller=logo&tmpl=component&file='
-                                    . $file . '&type=course&id=' . $this->row->get('id')
+                                    . $file . '&type=course&id=' . $this->row->get('id'),
                                 );
                             ?>
                             <iframe height="350" name="filer" id="filer" src="<?php echo $routeUrl; ?>"></iframe>
@@ -337,7 +337,7 @@ $this->css();
                                             'index.php?option=' . $this->option
                                             . '&controller=logo&tmpl=component&task=remove&currentfile=' . $logo
                                             . '&type=course&id=' . $this->row->get('id') . '&'
-                                            . Session::getFormToken() . '=1'
+                                            . Session::getFormToken() . '=1',
                                         );
                                     ?>
                                     <a

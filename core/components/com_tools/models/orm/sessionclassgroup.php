@@ -42,7 +42,7 @@ class SessionClassGroup extends Relational
      **/
     protected $rules = [
         'class_id' => 'positive|nonzero',
-        'group_id' => 'positive|nonzero'
+        'group_id' => 'positive|nonzero',
     ];
 
     /**

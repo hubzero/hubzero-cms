@@ -69,7 +69,7 @@ class Publication extends Base
             $pub->version_id,
             '',
             'logs',
-            0
+            0,
         );
 
         // replace current attachments?
@@ -123,7 +123,7 @@ class Publication extends Base
                 //$publication = new \Components\Publications\Models\Publication($attach->object_id, 'default');
                 $publication = new \Components\Publications\Models\Publication(
                     $version->publication_id,
-                    $version->version_number
+                    $version->version_number,
                 );
 
                 $itemUrl = Route::url($publication->link() . '&v=' . $version->version_number);
@@ -387,7 +387,7 @@ class Publication extends Base
                 User::get('id'),
                 $elementId,
                 $element,
-                $ordering
+                $ordering,
             );
             if ($attached) {
                 $i++;
@@ -450,7 +450,7 @@ class Publication extends Base
             ['path' => $path],
             $elementId,
             $this->_name,
-            $element->role
+            $element->role,
         );
         if ($loaded) {
             // Link already attached
@@ -653,8 +653,8 @@ class Publication extends Base
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => 'attachments',
-                'layout'  => $this->_name
-            ]
+                'layout'  => $this->_name,
+            ],
         );
         $view->data   = $data;
         $view->params = $params;

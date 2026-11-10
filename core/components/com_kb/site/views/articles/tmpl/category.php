@@ -21,12 +21,12 @@ $this->css()
 if (Pathway::count() <= 0) {
     Pathway::append(
         Lang::txt('COM_KB'),
-        'index.php?option=' . $this->option
+        'index.php?option=' . $this->option,
     );
 }
 Pathway::append(
     $this->category->get('title'),
-    $this->category->link()
+    $this->category->link(),
 );
 
 Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title'));

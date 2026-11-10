@@ -40,44 +40,44 @@ class Systickets extends Plugin
 
         $database->setQuery(
             "SELECT count(DISTINCT f.id) FROM `#__support_tickets` AS f " .
-            "WHERE f.`open` = '1' AND f.`type` = '0'"
+            "WHERE f.`open` = '1' AND f.`type` = '0'",
         );
         $response->data['open'] = $this->obj('Open', intval($database->loadResult()));
 
         $database->setQuery(
             "SELECT count(DISTINCT f.id) FROM `#__support_tickets` AS f " .
-            "WHERE f.`open` = '1' AND f.`type` = '0' AND f.`status` = '0'"
+            "WHERE f.`open` = '1' AND f.`type` = '0' AND f.`status` = '0'",
         );
         $response->data['open_new'] = $this->obj('(open) New', intval($database->loadResult()));
 
         $database->setQuery(
             "SELECT count(DISTINCT f.id) FROM `#__support_tickets` AS f " .
             "WHERE f.`open` = '1' AND f.`type` = '0' AND " .
-            "(f.`owner` = '' OR f.`owner` IS NULL)"
+            "(f.`owner` = '' OR f.`owner` IS NULL)",
         );
         $response->data['open_unassigned'] = $this->obj('(open) Unassigned', intval($database->loadResult()));
 
         $database->setQuery(
             "SELECT count(DISTINCT f.id) FROM `#__support_tickets` AS f " .
-            "WHERE f.`open` = '1' AND f.`type` = '0' AND f.`status` = '1'"
+            "WHERE f.`open` = '1' AND f.`type` = '0' AND f.`status` = '1'",
         );
         $response->data['open_waiting'] = $this->obj('(open) Waiting', intval($database->loadResult()));
 
         $database->setQuery(
             "SELECT f.`created` FROM `#__support_tickets` AS f " .
-            "WHERE f.`open` = '1' AND f.`type` = '0' ORDER BY f.`created` ASC LIMIT 1"
+            "WHERE f.`open` = '1' AND f.`type` = '0' ORDER BY f.`created` ASC LIMIT 1",
         );
         $response->data['open_oldest'] = $this->obj('(open) Oldest', $database->loadResult());
 
         $database->setQuery(
             "SELECT f.`created` FROM `#__support_tickets` AS f " .
-            "WHERE f.`open` = '1' AND f.`type` = '0' ORDER BY f.`created` DESC LIMIT 1"
+            "WHERE f.`open` = '1' AND f.`type` = '0' ORDER BY f.`created` DESC LIMIT 1",
         );
         $response->data['open_newest'] = $this->obj('(open) Newest', $database->loadResult());
 
         $database->setQuery(
             "SELECT count(DISTINCT f.id) FROM `#__support_tickets` AS f " .
-            "WHERE f.`open` = '0' AND f.`type` = '0'"
+            "WHERE f.`open` = '0' AND f.`type` = '0'",
         );
         $response->data['closed'] = $this->obj('Closed', intval($database->loadResult()));
 

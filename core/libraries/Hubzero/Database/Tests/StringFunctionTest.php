@@ -70,7 +70,7 @@ class StringFunctionTest extends AbstractDriverTestCase
                 'last_name' => 'Doe',
                 'username' => 'JohnDoe',
                 'code' => 'abc123',
-                'description' => 'Hello World'
+                'description' => 'Hello World',
             ])
             ->execute();
 
@@ -81,7 +81,7 @@ class StringFunctionTest extends AbstractDriverTestCase
                 'last_name' => 'Smith',
                 'username' => 'JaneSmith',
                 'code' => 'xyz789',
-                'description' => 'Test String'
+                'description' => 'Test String',
             ])
             ->execute();
     }

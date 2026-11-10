@@ -41,7 +41,7 @@ $max = $this->maxDays > 0 ? Date::of('now')->modify('+' . $this->maxDays . ' day
             if (!empty($this->current[$user])) {
                 $label .= ' (' . Lang::txt(
                     'PLG_GROUPS_MEMBERS_EXPIRATION_CURRENTLY',
-                    Date::of($this->current[$user])->toLocal(Lang::txt('DATE_FORMAT_HZ1'))
+                    Date::of($this->current[$user])->toLocal(Lang::txt('DATE_FORMAT_HZ1')),
                 ) . ')';
             }
 

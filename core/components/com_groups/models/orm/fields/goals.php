@@ -177,7 +177,7 @@ class Goals extends Radio
                 'goal' => '',
                 'skills_needed' => '',
                 'skills_level' => '',
-                'id' => 0
+                'id' => 0,
             ];
         }
 
@@ -254,7 +254,7 @@ class Goals extends Radio
                     'content'   => '',
                     'completed' => '',
                     'badge'     => 0,
-                    'id'        => 0
+                    'id'        => 0,
                 ];
             }
                 $html[] = '<fieldset class="goals-strategies" data-index="' . count($value['strategy']) . '">';

@@ -402,7 +402,7 @@ class Processor extends Obj
             $resource,
             $transparencyColor['red'],
             $transparencyColor['green'],
-            $transparencyColor['blue']
+            $transparencyColor['blue'],
         );
         imagefill($resource, 0, 0, $transparencyIndex);
         imagecolortransparent($resource, $transparencyIndex);
@@ -459,7 +459,7 @@ class Processor extends Obj
                 'latitude'  => $latitude,
                 'longitude' => $longitude,
                 'latitude_formatted'  => $latitude_formatted,
-                'longitude_formatted' => $longitude_formatted
+                'longitude_formatted' => $longitude_formatted,
             ];
         } else {
             $geo = [];

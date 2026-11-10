@@ -84,7 +84,7 @@ class Profilesv1r1 extends ApiController
             'sortby'     => Request::getWord('sort', 'name'),
             'sort_Dir'   => strtoupper(Request::getWord('sortDir', 'DESC')),
             'activation' => 1,
-            'access'     => User::getAuthorisedViewLevels()
+            'access'     => User::getAuthorisedViewLevels(),
         ];
 
         $admin = false;
@@ -389,10 +389,10 @@ class Profilesv1r1 extends ApiController
             'member_since'      => $result->get('registerDate'),
             'picture'   => [
                 'thumb' => $result->picture(0, true),
-                'full'  => $result->picture(0, false)
+                'full'  => $result->picture(0, false),
             ],
             'interests' => [],
-            'url'       => str_replace('/api', '', $base . '/' . ltrim(Route::url($result->link()), '/'))
+            'url'       => str_replace('/api', '', $base . '/' . ltrim(Route::url($result->link()), '/')),
         ];
 
         // Get custom fields

@@ -347,7 +347,7 @@ class Html extends Obj
             '(y)'   =>  'thumbsup',
             '^_^'   =>  'squint',
             '-_-'   =>  'squint',
-            '3:)'   =>  'devil'
+            '3:)'   =>  'devil',
         ];
 
         return $icons;
@@ -909,7 +909,7 @@ class Html extends Obj
             $suggestions[] = [
                 'class' => 's-picture',
                 'text'  => Lang::txt('COM_PROJECTS_WELCOME_ADD_THUMB'),
-                'url'   => Route::url('index.php?option=' . $option . $goto . '&task=edit')
+                'url'   => Route::url('index.php?option=' . $option . $goto . '&task=edit'),
             ];
         }
 
@@ -921,7 +921,7 @@ class Html extends Obj
             $suggestions[] = [
                 'class' => 's-about',
                 'text'  => Lang::txt('COM_PROJECTS_WELCOME_ADD_GRANT_INFO'),
-                'url'   => Route::url('index.php?option=' . $option . $goto . '&task=edit&active=settings')
+                'url'   => Route::url('index.php?option=' . $option . $goto . '&task=edit&active=settings'),
             ];
         }
 
@@ -930,7 +930,7 @@ class Html extends Obj
             $suggestions[] = [
                 'class' => 's-about',
                 'text'  => Lang::txt('COM_PROJECTS_WELCOME_ADD_ABOUT'),
-                'url'   => Route::url('index.php?option=' . $option . $goto . '&task=edit')
+                'url'   => Route::url('index.php?option=' . $option . $goto . '&task=edit'),
             ];
         }
 
@@ -942,7 +942,7 @@ class Html extends Obj
             $suggestions[] = [
                 'class' => 's-files',
                 'text'  => $text,
-                'url'   => Route::url('index.php?option=' . $option . $goto . '&active=files')
+                'url'   => Route::url('index.php?option=' . $option . $goto . '&active=files'),
             ];
         }
 
@@ -951,7 +951,7 @@ class Html extends Obj
             $suggestions[] = [
                 'class' => 's-team',
                 'text'  => Lang::txt('COM_PROJECTS_WELCOME_INVITE_USERS'),
-                'url'   => Route::url('index.php?option=' . $option . $goto . '&task=edit&active=team')
+                'url'   => Route::url('index.php?option=' . $option . $goto . '&task=edit&active=team'),
             ];
         }
 
@@ -960,7 +960,7 @@ class Html extends Obj
             $suggestions[] = [
                 'class' => 's-todo',
                 'text'  => Lang::txt('COM_PROJECTS_WELCOME_ADD_TODO'),
-                'url'   => Route::url('index.php?option=' . $option . $goto . '&active=todo')
+                'url'   => Route::url('index.php?option=' . $option . $goto . '&active=todo'),
             ];
         }
 
@@ -969,7 +969,7 @@ class Html extends Obj
             $suggestions[] = [
                 'class' => 's-notes',
                 'text'  => Lang::txt('COM_PROJECTS_WELCOME_START_NOTE'),
-                'url'   => Route::url('index.php?option=' . $option . $goto . '&active=notes')
+                'url'   => Route::url('index.php?option=' . $option . $goto . '&active=notes'),
             ];
         }
 
@@ -1186,7 +1186,7 @@ class Html extends Obj
         $eview = new \Hubzero\Mail\View([
             'base_path' => dirname(__DIR__) . DS . 'site',
             'name'      => 'emails',
-            'layout'    => $layout . '_plain'
+            'layout'    => $layout . '_plain',
         ]);
 
         $eview->option   = $option;
@@ -1213,8 +1213,8 @@ class Html extends Obj
                 $body,
                 $from,
                 $addressees,
-                $option
-            ]
+                $option,
+            ],
         );
     }
 

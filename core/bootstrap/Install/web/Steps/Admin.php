@@ -301,7 +301,7 @@ class Admin implements StepInterface
                  INNER JOIN `{$prefix}user_usergroup_map` m ON u.id = m.user_id
                  WHERE m.group_id = ?
                  AND u.block = 0
-                 LIMIT 1"
+                 LIMIT 1",
             );
             $connection->bind($stmt, [self::SUPER_USERS_GROUP_ID]);
             $connection->execute($stmt);
@@ -373,7 +373,7 @@ class Admin implements StepInterface
 
             $this->installer->addMessage(
                 'Failed to bootstrap application: ' . $e->getMessage(),
-                'error'
+                'error',
             );
             return false;
         }

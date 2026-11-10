@@ -58,7 +58,7 @@ class ManyToMany extends OneToManyThrough
             function ($event) use ($model, $relationship) {
                 $relationship->connect([$model->id]);
             },
-            $model->getTableName() . '_new'
+            $model->getTableName() . '_new',
         );
 
         return $model;

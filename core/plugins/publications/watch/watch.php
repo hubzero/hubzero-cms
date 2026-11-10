@@ -62,7 +62,7 @@ class Watch extends Plugin
         $arr = [
             'html'    => '',
             'metadata' => '',
-            'name'    => 'watch'
+            'name'    => 'watch',
         ];
 
         // Check if our area is in the array of areas we want to return results for
@@ -116,7 +116,7 @@ class Watch extends Plugin
             ->set('watched', \Hubzero\Item\Watch::isWatching(
                 $this->publication->get('id'),
                 'publication',
-                User::get('id')
+                User::get('id'),
             ));
 
         // Return the output
@@ -137,7 +137,7 @@ class Watch extends Plugin
             $subscribeUrl = Route::url($this->publication->link('version') . '&active=watch&action=' . $this->action . '&confirm=' . $confirm, false);
             $loginUrl = Route::url('index.php?option=com_users&view=login&return=' . base64_encode($subscribeUrl));
             App::redirect(
-                $loginUrl
+                $loginUrl,
             );
         }
 
@@ -163,14 +163,14 @@ class Watch extends Plugin
             $this->publication->get('id'),
             'publication',
             User::get('id'),
-            $email
+            $email,
         );
 
         if ($this->action == 'unsubscribe' && !$watch->get('id')) {
             App::redirect(
                 $url,
                 Lang::txt('PLG_PUBLICATIONS_WATCH_FAIL_UNSUBSCRIBE'),
-                'error'
+                'error',
             );
         }
 
@@ -184,7 +184,7 @@ class Watch extends Plugin
             App::redirect(
                 $url,
                 $err,
-                'error'
+                'error',
             );
         }
 
@@ -197,10 +197,10 @@ class Watch extends Plugin
                 'description' => Lang::txt('PLG_PUBLICATIONS_WATCH_' . strtoupper($this->action) . 'D', '<a href="' . $url . '">' . htmlspecialchars((string) ($this->publication->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
                 'details'     => [
                     'title' => $this->publication->get('title'),
-                    'url'   => $url
-                ]
+                    'url'   => $url,
+                ],
             ],
-            'recipients' => [User::get('id')]
+            'recipients' => [User::get('id')],
         ]);
 
         // Redirect back to the publication
@@ -210,7 +210,7 @@ class Watch extends Plugin
 
         App::redirect(
             $url,
-            $msg
+            $msg,
         );
     }
 
@@ -271,7 +271,7 @@ class Watch extends Plugin
         $eview = new \Hubzero\Mail\View([
             'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',
             'name'   => 'emails',
-            'layout' => 'watch_plain'
+            'layout' => 'watch_plain',
         ]);
         $eview->delimiter   = '~!~!~!~!~!~!~!~!~!~!';
         $eview->message     = $message;

@@ -168,7 +168,7 @@ class Google extends Obj
         $mimeType,
         $parentId,
         &$metadata,
-        $convert = false
+        $convert = false,
     ) {
         // Check for what we need
         if (!$apiService || !$title || !$parentId || !file_exists($localPath) || !$mimeType) {
@@ -236,7 +236,7 @@ class Google extends Obj
                 $mimeType,
                 null,
                 true,
-                $chunkSizeBytes
+                $chunkSizeBytes,
             );
 
             $media->setFileSize($size);
@@ -287,7 +287,7 @@ class Google extends Obj
         $mimeType,
         $parentId,
         &$metadata,
-        $convert = false
+        $convert = false,
     ) {
         // Check for what we need
         if (!$apiService || !$id) {
@@ -346,7 +346,7 @@ class Google extends Obj
                 $mimeType,
                 null,
                 true,
-                $chunkSizeBytes
+                $chunkSizeBytes,
             );
             $media->setFileSize($size);
 
@@ -509,7 +509,7 @@ class Google extends Obj
 
         try {
             $createdFolder = $apiService->files->create($file, [
-                'mimeType' => 'application/vnd.google-apps.folder'
+                'mimeType' => 'application/vnd.google-apps.folder',
             ]);
 
             $metadata = $createdFolder;
@@ -539,7 +539,7 @@ class Google extends Obj
         &$deletes,
         $path = '',
         $startChangeId = null,
-        $connections = []
+        $connections = [],
     ) {
         // Check for what we need
         if (!$apiService || !$folderID) {
@@ -661,7 +661,7 @@ class Google extends Obj
                         $doc['mimeType'],
                         $connections,
                         $remotes,
-                        $duplicates
+                        $duplicates,
                     );
 
                     // Detect a rename or move
@@ -699,7 +699,7 @@ class Google extends Obj
                         'mimeType'   => $doc['mimeType'],
                         'thumb'      => $thumb,
                         'rename'     => $rename,
-                        'fileSize'   => $fileSize
+                        'fileSize'   => $fileSize,
                     ];
 
                     if (preg_match("/.folder/", $doc['mimeType'])) {
@@ -711,7 +711,7 @@ class Google extends Obj
                             $deletes,
                             $fpath,
                             $connections,
-                            $duplicates
+                            $duplicates,
                         );
                     }
                 }
@@ -813,7 +813,7 @@ class Google extends Obj
         $q .= " and mimeType = 'application/vnd.google-apps.folder' ";
 
         $parameters = [
-            'q' => $q//,
+            'q' => $q,//,
             //'fields' => 'items(id,title,labels/trashed,parents/id)'
         ];
 
@@ -837,7 +837,7 @@ class Google extends Obj
                     $remoteFolders[$fpath] = [
                         'remoteid' => $item->getId(),
                         'status'   => $status,
-                        'rParent'  => self::getParentID($item->getParents())
+                        'rParent'  => self::getParentID($item->getParents()),
                     ];
 
                     // Recurse
@@ -924,7 +924,7 @@ class Google extends Obj
         $q = "'" . $folderID . "' in parents";
 
         $parameters = [
-            'q' => $q//,
+            'q' => $q,//,
             //'fields' => 'items(id,title,mimeType,downloadUrl,md5Checksum,labels,fileSize,thumbnailLink,modifiedDate,parents/id,originalFilename,lastModifyingUserName,ownerNames)'
         ];
 
@@ -987,7 +987,7 @@ class Google extends Obj
                         $item->getMimeType(),
                         $connections,
                         $remotes,
-                        $duplicates
+                        $duplicates,
                     );
 
                     // Detect a rename or move
@@ -1037,7 +1037,7 @@ class Google extends Obj
                             'mimeType'   => $item->getMimeType(),
                             'thumb'      => $thumb,
                             'rename'     => $rename,
-                            'fileSize'   => $fileSize
+                            'fileSize'   => $fileSize,
                         ];
                     }
 
@@ -1050,7 +1050,7 @@ class Google extends Obj
                             $fpath,
                             $since,
                             $connections,
-                            $duplicates
+                            $duplicates,
                         );
                     }
                 }
@@ -1220,7 +1220,7 @@ class Google extends Obj
         $getAll = false,
         $getExt = false,
         $getPaired = 0,
-        $original_ext = ''
+        $original_ext = '',
     ) {
         $formats = [];
         $ext = '';
@@ -1269,7 +1269,7 @@ class Google extends Obj
                     'Plain text',
                     'Rich text',
                     'Open Office doc',
-                    'LaTeX'
+                    'LaTeX',
                 ];
 
                 // LaTeX files get special treatment, hey!
@@ -1378,7 +1378,7 @@ class Google extends Obj
             'gif',
             'png',
             'pdf',
-            'tex'
+            'tex',
         ];
 
         return $formats;
@@ -1400,7 +1400,7 @@ class Google extends Obj
             'gtable',
             'gvi',
             'glink',
-            'gvp'
+            'gvp',
         ];
 
         return $formats;

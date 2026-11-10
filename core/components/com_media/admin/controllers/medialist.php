@@ -53,7 +53,7 @@ class Medialist extends AdminController
             'media.list.layout',
             'layout',
             'thumbs',
-            'word'
+            'word',
         );
 
         $this->view
@@ -108,7 +108,7 @@ class Medialist extends AdminController
             'modified'      => filemtime($path),
             'size'          => 0,
             'width'         => 0,
-            'height'        => 0
+            'height'        => 0,
         ];
 
         if ($data['type'] == 'file') {

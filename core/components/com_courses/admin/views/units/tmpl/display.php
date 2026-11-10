@@ -81,7 +81,7 @@ Html::behavior('tooltip');
         <caption>
             <?php
                 $routeUrl = Route::url(
-                    'index.php?option=' . $this->option  . '&controller=offerings&course=' . $this->course->get('id')
+                    'index.php?option=' . $this->option  . '&controller=offerings&course=' . $this->course->get('id'),
                 );
                 ?>
             (<a href="<?php echo $routeUrl; ?>">
@@ -89,7 +89,7 @@ Html::behavior('tooltip');
             </a>)
             <?php
                 $routeUrl = Route::url(
-                    'index.php?option=' . $this->option  . '&controller=offerings&course=' . $this->course->get('id')
+                    'index.php?option=' . $this->option  . '&controller=offerings&course=' . $this->course->get('id'),
                 );
                 ?>
             <a href="<?php echo $routeUrl; ?>">
@@ -126,7 +126,7 @@ Html::behavior('tooltip');
                     $pageNav = $this->pagination(
                         $this->total,
                         $this->filters['start'],
-                        $this->filters['limit']
+                        $this->filters['limit'],
                     );
                     echo $pageNav->render();
                     ?>
@@ -180,7 +180,7 @@ Html::behavior('tooltip');
                         <?php
                             $routeUrl = Route::url(
                                 'index.php?option=' . $this->option  . '&controller=' . $this->controller
-                                . '&task=edit&id=' . $row->get('id')
+                                . '&task=edit&id=' . $row->get('id'),
                             );
                         ?>
                         <a href="<?php echo $routeUrl; ?>">
@@ -197,7 +197,7 @@ Html::behavior('tooltip');
                         <?php
                             $routeUrl = Route::url(
                                 'index.php?option=' . $this->option  . '&controller=' . $this->controller
-                                . '&task=edit&id=' . $row->get('id')
+                                . '&task=edit&id=' . $row->get('id'),
                             );
                         ?>
                         <a href="<?php echo $routeUrl; ?>">
@@ -215,7 +215,7 @@ Html::behavior('tooltip');
                             $routeUrl = Route::url(
                                 'index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task='
                                 . $task . '&offering=' . $this->offering->get('id') . '&id=' . $row->get('id') . '&'
-                                . Session::getFormToken() . '=1'
+                                . Session::getFormToken() . '=1',
                             );
                         ?>
                         <a
@@ -252,7 +252,7 @@ Html::behavior('tooltip');
                     <?php if ($canDo->get('core.manage') && $assetgroups > 0) { ?>
                         <?php
                             $routeUrl = Route::url(
-                                'index.php?option=' . $this->option  . '&controller=assetgroups&unit=' . $row->get('id')
+                                'index.php?option=' . $this->option  . '&controller=assetgroups&unit=' . $row->get('id'),
                             );
                         ?>
                         <a class="glyph list" href="<?php echo $routeUrl; ?>">
@@ -265,7 +265,7 @@ Html::behavior('tooltip');
                             <?php
                             $routeUrl = Route::url(
                                 'index.php?option=' . $this->option  . '&controller=assetgroups&unit=' . $row->get('id')
-                                . '&task=add'
+                                . '&task=add',
                             );
                             ?>
                         <a class="state add" href="<?php echo $routeUrl; ?>">
@@ -279,7 +279,7 @@ Html::behavior('tooltip');
                         <?php
                             $routeUrl = Route::url(
                                 'index.php?option=' . $this->option  . '&controller=' . $this->controller
-                                . '&task=edit&id=' . $row->get('id')
+                                . '&task=edit&id=' . $row->get('id'),
                             );
                         ?>
                         <a class="glyph assets" href="<?php echo $routeUrl; ?>">

@@ -63,7 +63,7 @@ class Preferences extends Table
     public function loadByUser($user_id)
     {
         return parent::load([
-            'user_id' => (int) $user_id
+            'user_id' => (int) $user_id,
         ]);
     }
 

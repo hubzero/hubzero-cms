@@ -23,7 +23,7 @@ if (substr($base, -13) == 'administrator') {
     $sef = Route::url(
         'index.php?option=' . $this->option
         . '&controller=' . $this->controller
-        . '&task=new&case=' . $this->report->id
+        . '&task=new&case=' . $this->report->id,
     );
 }
 $link = rtrim($base, '/') . '/' . trim($sef, '/');
@@ -36,7 +36,7 @@ $this->css(
 			float: none !important;
 			width: auto !important;
 		}
-	}'
+	}',
 );
 ?>
     <!-- Start Header -->
@@ -157,9 +157,9 @@ $this->css(
                                 </th>
                                 <td style="<?php echo $tdStyleLeft; ?>" align="left">
                                     @ <?php echo Date::of($this->report->created)->toLocal(
-                                        Lang::txt('TIME_FORMAT_HZ1')
+                                        Lang::txt('TIME_FORMAT_HZ1'),
                                     ); ?> on <?php echo Date::of($this->report->created)->toLocal(
-                                        Lang::txt('DATE_FORMAT_HZ1')
+                                        Lang::txt('DATE_FORMAT_HZ1'),
                                     ); ?>
                                 </td>
                             </tr>
@@ -215,7 +215,7 @@ $this->css(
                                     <?php echo Lang::txt(
                                         'COM_SUPPORT_EMAIL_DISPUTE_EXPLANATION',
                                         $link,
-                                        $this->report->id
+                                        $this->report->id,
                                     ); ?>
                                 </td>
                             </tr>

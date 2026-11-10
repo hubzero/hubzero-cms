@@ -37,7 +37,7 @@ $levels = [
     'anyone'     => Lang::txt('COM_GROUPS_PLUGIN_ANYONE'),
     'registered' => Lang::txt('COM_GROUPS_PLUGIN_REGISTERED'),
     'members'    => Lang::txt('COM_GROUPS_PLUGIN_MEMBERS'),
-    'nobody'     => Lang::txt('COM_GROUPS_PLUGIN_DISABLED')
+    'nobody'     => Lang::txt('COM_GROUPS_PLUGIN_DISABLED'),
 ];
 
 //build back link

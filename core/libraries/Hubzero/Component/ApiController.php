@@ -47,7 +47,7 @@ class ApiController implements ControllerInterface
      * @var  array
      */
     protected $_taskMap = [
-        '__default' => 'index'
+        '__default' => 'index',
     ];
 
     /**
@@ -371,7 +371,7 @@ class ApiController implements ControllerInterface
                 $output->errors[] = Lang::txt(
                     'JLIB_APPLICATION_ERROR_DOCBLOCK_MISSING',
                     $method->getName(),
-                    str_replace(PATH_ROOT, '', $classReflector->getFileName())
+                    str_replace(PATH_ROOT, '', $classReflector->getFileName()),
                 );
                 continue;
             }
@@ -382,7 +382,7 @@ class ApiController implements ControllerInterface
                 'description' => preg_replace('/\s+/', ' ', $phpdoc->getSummary()),
                 'method'      => '',
                 'uri'         => '',
-                'parameters'  => []
+                'parameters'  => [],
             ];
 
             // loop through each tag
@@ -400,7 +400,7 @@ class ApiController implements ControllerInterface
                         $output->errors[] = Lang::txt(
                             'JLIB_APPLICATION_ERROR_DOCLBOCK_PARSING',
                             $method->getName(),
-                            str_replace(PATH_ROOT, '', $classReflector->getFileName())
+                            str_replace(PATH_ROOT, '', $classReflector->getFileName()),
                         );
                         continue;
                     }
@@ -432,7 +432,7 @@ class ApiController implements ControllerInterface
                         'description' => '',
                         'type'        => $type,
                         'required'    => false,
-                        'default'     => null
+                        'default'     => null,
                     ];
 
                     if ($prop == $model->getPrimaryKey() && in_array($endpoint['name'], ['read', 'update', 'delete'])) {
@@ -680,11 +680,11 @@ class ApiController implements ControllerInterface
                 'scope_id'    => $model->get($model->getPrimaryKey()),
                 'description' => Lang::txt(
                     'JLIB_ACTIVITY_ITEM_CREATED',
-                    $model->getModelName() . ' #' . $model->get($model->getPrimaryKey())
+                    $model->getModelName() . ' #' . $model->get($model->getPrimaryKey()),
                 ),
-                'details'     => $model->toArray()
+                'details'     => $model->toArray(),
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         /*if ($model->hasAttribute('created_by')
@@ -852,11 +852,11 @@ class ApiController implements ControllerInterface
                 'scope_id'    => $model->get($model->getPrimaryKey()),
                 'description' => Lang::txt(
                     'JLIB_ACTIVITY_ITEM_UPDATED',
-                    $model->getModelName() . ' #' . $model->get($model->getPrimaryKey())
+                    $model->getModelName() . ' #' . $model->get($model->getPrimaryKey()),
                 ),
-                'details'     => $model->toArray()
+                'details'     => $model->toArray(),
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         // Format timestamps before sending output
@@ -946,11 +946,11 @@ class ApiController implements ControllerInterface
                 'scope_id'    => $model->get($model->getPrimaryKey()),
                 'description' => Lang::txt(
                     'JLIB_ACTIVITY_ITEM_DELETED',
-                    $model->getModelName() . ' #' . $model->get($model->getPrimaryKey())
+                    $model->getModelName() . ' #' . $model->get($model->getPrimaryKey()),
                 ),
-                'details'     => $model->toArray()
+                'details'     => $model->toArray(),
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         // Send status

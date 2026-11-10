@@ -74,7 +74,7 @@ class Progress extends Plugin
                 'folder' => 'courses',
                 'element' => 'outline',
                 'name' => 'shared',
-                'layout' => '_not_enrolled'
+                'layout' => '_not_enrolled',
             ]);
 
             $view->set('course', $course)
@@ -189,7 +189,7 @@ class Progress extends Plugin
         $this->view->details = \Components\Courses\Models\FormReport::getLetterResponseCountsForAssetId(
             $this->db,
             $asset_id,
-            $this->course->offering()->section()->get('id')
+            $this->course->offering()->section()->get('id'),
         );
 
         $this->css('assessmentdetails.css');
@@ -221,8 +221,8 @@ class Progress extends Plugin
             [
                 'student' => 1,
                 'limit' => $limit,
-                'start' => $start
-            ]
+                'start' => $start,
+            ],
         );
         $member_ids = [];
         $mems = [];
@@ -246,7 +246,7 @@ class Progress extends Plugin
                         : 'unknown'),
                     'lastvisit' => (($lst && $lst != '0000-00-00 00:00:00')
                         ? Date::of($lst)->format('M j, Y')
-                        : 'never')
+                        : 'never'),
                 ];
             }
 
@@ -266,8 +266,8 @@ class Progress extends Plugin
                 'grades' => $grades,
                 'progress' => $progress,
                 'passing' => $passing,
-                'recognitions' => $recognitions
-            ]
+                'recognitions' => $recognitions,
+            ],
         );
 
         exit();
@@ -289,7 +289,7 @@ class Progress extends Plugin
         // Get the grading policy
         $gradePolicy = new \Components\Courses\Models\GradePolicies(
             $this->course->offering()->section()->get('grade_policy_id'),
-            $this->course->offering()->section()->get('id')
+            $this->course->offering()->section()->get('id'),
         );
         $policy = new \stdClass();
         $policy->description = $gradePolicy->get('description');
@@ -323,8 +323,8 @@ class Progress extends Plugin
                 'gradepolicy' => $policy,
                 'units' => $units,
                 'members_cnt' => $members_cnt,
-                'course_id' => $this->course->get('id')
-            ]
+                'course_id' => $this->course->get('id'),
+            ],
         );
 
         exit();
@@ -369,11 +369,11 @@ class Progress extends Plugin
                     'offering_id' => $this->course->offering()->get('id'),
                     'graded' => true,
                     'state' => 1,
-                    'asset_scope' => 'asset_group'
+                    'asset_scope' => 'asset_group',
                 ],
                 'order_by' => 'title',
-                'order_dir' => 'ASC'
-            ]
+                'order_dir' => 'ASC',
+            ],
         );
 
         // Get gradebook auxiliary assets
@@ -384,8 +384,8 @@ class Progress extends Plugin
                 'asset_type' => 'gradebook',
                 'asset_subtype' => 'auxiliary',
                 'graded' => true,
-                'state' => 1
-            ]
+                'state' => 1,
+            ],
         );
 
         $assets = array_merge($assets, $auxiliary);
@@ -399,8 +399,8 @@ class Progress extends Plugin
                 'assets' => $assets,
                 'members' => $mems,
                 'grades' => $grades,
-                'canManage' => (($this->course->access('manage')) ? true : false)
-            ]
+                'canManage' => (($this->course->access('manage')) ? true : false),
+            ],
         );
         exit();
     }
@@ -431,11 +431,11 @@ class Progress extends Plugin
                     'offering_id' => $this->course->offering()->get('id'),
                     'graded' => true,
                     'state' => 1,
-                    'asset_scope' => 'asset_group'
+                    'asset_scope' => 'asset_group',
                 ],
                 'order_by' => 'title',
-                'order_dir' => 'ASC'
-            ]
+                'order_dir' => 'ASC',
+            ],
         );
 
         // Get gradebook auxiliary assets
@@ -446,8 +446,8 @@ class Progress extends Plugin
                 'asset_type' => 'gradebook',
                 'asset_subtype' => 'auxiliary',
                 'graded' => true,
-                'state' => 1
-            ]
+                'state' => 1,
+            ],
         );
 
         $assets = array_merge($assets, $auxiliary);
@@ -459,8 +459,8 @@ class Progress extends Plugin
         echo json_encode(
             [
                 'stats' => $stats,
-                'assets' => $assets
-            ]
+                'assets' => $assets,
+            ],
         );
         exit();
     }
@@ -498,11 +498,11 @@ class Progress extends Plugin
                     'offering_id' => $this->course->offering()->get('id'),
                     'graded' => true,
                     'state' => 1,
-                    'asset_scope' => 'asset_group'
+                    'asset_scope' => 'asset_group',
                 ],
                 'order_by' => 'title',
-                'order_dir' => 'ASC'
-            ]
+                'order_dir' => 'ASC',
+            ],
         );
 
         // Get gradebook auxiliary assets
@@ -513,8 +513,8 @@ class Progress extends Plugin
                 'asset_type' => 'gradebook',
                 'asset_subtype' => 'auxiliary',
                 'graded' => true,
-                'state' => 1
-            ]
+                'state' => 1,
+            ],
         );
 
         $assets = array_merge($assets, $auxiliary);
@@ -625,7 +625,7 @@ class Progress extends Plugin
                     $this->db,
                     $asset_id,
                     true,
-                    $this->course->offering()->section()->get('id')
+                    $this->course->offering()->section()->get('id'),
                 )
             ) {
                 $output = implode(',', $details['headers']) . "\n";
@@ -889,7 +889,7 @@ class Progress extends Plugin
             App::redirect(
                 Route::url($this->base, false),
                 'You don\'t have permission to do this!',
-                'warning'
+                'warning',
             );
             return;
         }
@@ -903,7 +903,7 @@ class Progress extends Plugin
             App::redirect(
                 Route::url($this->base . '&active=progress', false),
                 'You don\'t have permission to do this!',
-                'warning'
+                'warning',
             );
             return;
         }
@@ -924,7 +924,7 @@ class Progress extends Plugin
                 App::redirect(
                     Route::url($this->base . '&active=progress', false),
                     'The sum of all weights should be 100.',
-                    'error'
+                    'error',
                 );
                 return;
             }
@@ -952,7 +952,7 @@ class Progress extends Plugin
             App::redirect(
                 Route::url($this->base . '&active=progress', false),
                 'Something went wrong!',
-                'error'
+                'error',
             );
             return;
         }
@@ -971,7 +971,7 @@ class Progress extends Plugin
             App::redirect(
                 Route::url($this->base . '&active=progress', false),
                 'Scoring policy successfully saved!',
-                'passed'
+                'passed',
             );
             return;
         }
@@ -990,7 +990,7 @@ class Progress extends Plugin
             App::redirect(
                 Route::url($this->base, false),
                 'You don\'t have permission to do this!',
-                'warning'
+                'warning',
             );
             return;
         }
@@ -1004,7 +1004,7 @@ class Progress extends Plugin
             App::redirect(
                 Route::url($this->base . '&active=progress', false),
                 'You don\'t have permission to do this!',
-                'warning'
+                'warning',
             );
             return;
         }
@@ -1037,8 +1037,8 @@ class Progress extends Plugin
                 [
                     'success' => true,
                     'message' => 'Scoring policy successfully restored to the default configuration!',
-                    'gradepolicy' => $policy
-                ]
+                    'gradepolicy' => $policy,
+                ],
             );
             exit();
         } else {
@@ -1046,7 +1046,7 @@ class Progress extends Plugin
             App::redirect(
                 Route::url($this->base . '&active=progress', false),
                 'Scoring policy successfully restored to the default configuration!',
-                'passed'
+                'passed',
             );
             return;
         }

@@ -84,7 +84,7 @@ class Checkout extends ComponentController
             // redirect back to cart to display all messages
             //$redirect_url = Route::url('index.php?option=' . 'com_cart');
             App::redirect(
-                Route::url('index.php?option=' . $this->_option)
+                Route::url('index.php?option=' . $this->_option),
             );
         }
 
@@ -203,12 +203,12 @@ class Checkout extends ComponentController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         if ($this->_task) {
             Pathway::append(
-                Lang::txt('EULA')
+                Lang::txt('EULA'),
             );
         }
 
@@ -248,7 +248,7 @@ class Checkout extends ComponentController
                     'pName' => $info->pName,
                     'sSku' => $info->sSku,
                     'sCheckoutNotes' => $info->sCheckoutNotes,
-                    'sCheckoutNotesRequired' => $info->sCheckoutNotesRequired
+                    'sCheckoutNotesRequired' => $info->sCheckoutNotesRequired,
                 ];
             }
         }
@@ -265,9 +265,9 @@ class Checkout extends ComponentController
                         $errors[] = [
                             Lang::txt(
                                 'Please add Notes/Comments for '
-                                . $fieldInfo['pName'] . ', ' . $fieldInfo['sSku']
+                                . $fieldInfo['pName'] . ', ' . $fieldInfo['sSku'],
                             ),
-                            'error'
+                            'error',
                         ];
                     }
                 }
@@ -300,12 +300,12 @@ class Checkout extends ComponentController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         if ($this->_task) {
             Pathway::append(
-                Lang::txt('Notes')
+                Lang::txt('Notes'),
             );
         }
 
@@ -388,12 +388,12 @@ class Checkout extends ComponentController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         if ($this->_task) {
             Pathway::append(
-                Lang::txt('Shipping')
+                Lang::txt('Shipping'),
             );
         }
 
@@ -445,12 +445,12 @@ class Checkout extends ComponentController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         if ($this->_task) {
             Pathway::append(
-                Lang::txt('Review your order')
+                Lang::txt('Review your order'),
             );
         }
 
@@ -605,7 +605,7 @@ class Checkout extends ComponentController
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . $return),
             $message,
-            'warning'
+            'warning',
         );
         return;
     }

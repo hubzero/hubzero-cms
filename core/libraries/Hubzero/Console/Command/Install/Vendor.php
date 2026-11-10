@@ -52,7 +52,7 @@ class Vendor
             self::output(
                 "Please install composer dependencies manually: composer install -d {$corePath}\n",
                 $ansi,
-                true
+                true,
             );
             self::output("\n", $ansi, true);
             return false;

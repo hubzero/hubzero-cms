@@ -142,7 +142,7 @@ class Provider extends AbstractService
             'DOCUMENT_ROOT',
             'SERVER_ADMIN',
             'QUERY_STRING',
-            'PHP_SELF'
+            'PHP_SELF',
         ],
         'querystring' => [
             'url',
@@ -150,8 +150,8 @@ class Provider extends AbstractService
             'apiPort',
             'apiKey',
             'akismetServer',
-            'akismetVersion'
-        ]
+            'akismetVersion',
+        ],
     ];
 
     /**
@@ -182,7 +182,7 @@ class Provider extends AbstractService
             'user_ip',
             ($_SERVER['REMOTE_ADDR'] != getenv('SERVER_ADDR')
                 ? $_SERVER['REMOTE_ADDR']
-                : getenv('HTTP_X_FORWARDED_FOR'))
+                : getenv('HTTP_X_FORWARDED_FOR')),
         );
 
         if ($properties !== null) {
@@ -207,7 +207,7 @@ class Provider extends AbstractService
         $response = $this->sendRequest(
             'key=' . $this->apiKey . '&blog=' . $this->url,
             $this->akismetServer,
-            '/' . $this->akismetVersion . '/verify-key'
+            '/' . $this->akismetVersion . '/verify-key',
         );
 
         if (!$response || !is_array($response) || !isset($response[1])) {
@@ -292,7 +292,7 @@ class Provider extends AbstractService
         $response = $this->sendRequest(
             'blog=' . Request::base() . '&' . $this->getQueryString(),
             $this->apiKey . '.rest.akismet.com',
-            '/' . $this->akismetVersion . '/comment-check'
+            '/' . $this->akismetVersion . '/comment-check',
         );
 
         if (!$response || !is_array($response) || !isset($response[1])) {
@@ -303,7 +303,7 @@ class Provider extends AbstractService
         if ($response[1] == 'invalid' && !$this->isKeyValid()) {
             throw new Exception(
                 'The API key passed to the Akismet adapter is invalid. '
-                . 'Please obtain a valid one from http://wordpress.com/api-keys/'
+                . 'Please obtain a valid one from http://wordpress.com/api-keys/',
             );
         }
 
@@ -322,7 +322,7 @@ class Provider extends AbstractService
         $this->sendRequest(
             $this->getQueryString(),
             $this->apiKey . '.' . $this->akismetServer,
-            '/' . $this->akismetVersion . '/submit-spam'
+            '/' . $this->akismetVersion . '/submit-spam',
         );
     }
 
@@ -338,7 +338,7 @@ class Provider extends AbstractService
         $this->sendRequest(
             $this->getQueryString(),
             $this->apiKey . '.' . $this->akismetServer,
-            '/' . $this->akismetVersion . '/submit-ham'
+            '/' . $this->akismetVersion . '/submit-ham',
         );
     }
 }

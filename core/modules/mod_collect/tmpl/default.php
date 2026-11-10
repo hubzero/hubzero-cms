@@ -27,7 +27,7 @@ $foo = App::get('editor')->display(
     'field_description',
     null,
     null,
-    ['class' => 'minimal no-footer']
+    ['class' => 'minimal no-footer'],
 );
 
 $url  = urldecode(Request::path());

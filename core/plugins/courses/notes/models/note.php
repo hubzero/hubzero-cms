@@ -44,7 +44,7 @@ class Note extends Relational
     protected $rules = [
         'scope'      => 'notempty',
         'scope_id'   => 'positive|nonzero',
-        'section_id' => 'positive|nonzero'
+        'section_id' => 'positive|nonzero',
     ];
 
     /**
@@ -55,7 +55,7 @@ class Note extends Relational
     public $initiate = [
         'created',
         'created_by',
-        'state'
+        'state',
     ];
 
     /**

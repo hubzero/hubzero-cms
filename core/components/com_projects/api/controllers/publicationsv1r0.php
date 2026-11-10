@@ -124,7 +124,7 @@ class Publicationsv1r0 extends ApiController
             'limitstart'    => Request::getInt('limitstart', 0),
             'sortby'        => Request::getWord('sortby', 'title', 'post'),
             'sortdir'       => strtoupper(Request::getWord('sortdir', 'ASC')),
-            'ignore_access' => 1
+            'ignore_access' => 1,
         ];
         $published = Request::getInt('published', '0', 'post');
         if (!$published) {
@@ -158,12 +158,12 @@ class Publicationsv1r0 extends ApiController
                 $obj->thumbUrl      = str_replace(
                     '/api',
                     '',
-                    $base . '/' . ltrim(Route::url($entry->link('thumb')), '/')
+                    $base . '/' . ltrim(Route::url($entry->link('thumb')), '/'),
                 );
                 $obj->uri           = str_replace(
                     '/api',
                     '',
-                    $base . '/' . ltrim(Route::url($entry->link('version')), '/')
+                    $base . '/' . ltrim(Route::url($entry->link('version')), '/'),
                 );
 
                 $response->publications[] = $obj;

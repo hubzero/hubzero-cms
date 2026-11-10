@@ -84,7 +84,7 @@ $this->css()
                     $comments = $this->row->comments()
                         ->whereIn('state', [
                             Components\Blog\Models\Comment::STATE_PUBLISHED,
-                            Components\Blog\Models\Comment::STATE_FLAGGED
+                            Components\Blog\Models\Comment::STATE_FLAGGED,
                         ])
                         ->count();
                 ?>
@@ -127,7 +127,7 @@ $this->css()
             <?php
             $filters = [
                 'state' => [Components\Blog\Models\Entry::STATE_PUBLISHED],
-                'access' => User::getAuthorisedViewLevels()
+                'access' => User::getAuthorisedViewLevels(),
             ];
             if (User::get('id') == $this->member->get('id')) {
                 $filters['state'][] = Components\Blog\Models\Entry::STATE_UNPUBLISHED;
@@ -167,7 +167,7 @@ $this->css()
                 }])
                 ->whereIn('state', [
                     Components\Blog\Models\Comment::STATE_PUBLISHED,
-                    Components\Blog\Models\Comment::STATE_FLAGGED
+                    Components\Blog\Models\Comment::STATE_FLAGGED,
                 ])
                 ->whereEquals('parent', 0)
                 ->ordered()
@@ -208,7 +208,7 @@ $this->css()
                             ->whereEquals('id', Request::getInt('reply', 0))
                             ->whereIn('state', [
                                 Components\Blog\Models\Comment::STATE_PUBLISHED,
-                                Components\Blog\Models\Comment::STATE_FLAGGED
+                                Components\Blog\Models\Comment::STATE_FLAGGED,
                             ])
                             ->row();
 

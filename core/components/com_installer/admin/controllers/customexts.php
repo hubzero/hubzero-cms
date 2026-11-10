@@ -55,55 +55,55 @@ class Customexts extends AdminController
             $this->_option . '.' . $this->_controller . '.limit',
             'limit',
             Config::get('list_limit'),
-            'int'
+            'int',
         );
         $start = Request::getState(
             $this->_option . '.' . $this->_controller . '.limitstart',
             'limitstart',
             0,
-            'int'
+            'int',
         );
 
         $filters = [
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'filter_search',
-                ''
+                '',
             )),
             'client_id' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.client_id',
                 'filter_location',
-                ''
+                '',
             ),
             'status' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.status',
                 'filter_status',
                 '',
-                ''
+                '',
             ),
             'type' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.type',
                 'filter_type',
                 '',
-                ''
+                '',
             ),
             'group' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.group',
                 'filter_group',
                 '',
-                ''
+                '',
             ),
             // Get sorting variables
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'name'
+                'name',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         $entries = Custom_extensions::all();
@@ -674,7 +674,7 @@ class Customexts extends AdminController
             if (is_null($update_response) || !empty($update_response)) {
                 $failed[] = [
                     'extension' => $extension->get('name'),
-                    'message'   => is_array($update_response) ? $update_response : [Lang::txt('COM_INSTALLER_CUSTOMEXTS_PULL_FAIL_GENERIC')]
+                    'message'   => is_array($update_response) ? $update_response : [Lang::txt('COM_INSTALLER_CUSTOMEXTS_PULL_FAIL_GENERIC')],
                 ];
             } else {
                 // Run migrations only when the update succeeded
@@ -687,7 +687,7 @@ class Customexts extends AdminController
 
                 $success[] = [
                     'extension' => $extension->get('name'),
-                    'message'   => [Lang::txt('COM_INSTALLER_CUSTOMEXTS_PULL_SUCCESS')]
+                    'message'   => [Lang::txt('COM_INSTALLER_CUSTOMEXTS_PULL_SUCCESS')],
                 ];
             }
         }

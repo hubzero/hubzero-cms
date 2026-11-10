@@ -127,7 +127,7 @@ class Resources extends Plugin
 			WHERE
 				$whereClause
 				AND ($weight > 0)" .
-                ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
+                ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : ''),
         );
         $assoc = $sql->to_associative();
 
@@ -176,13 +176,13 @@ class Resources extends Plugin
 					ON rt.id = r.type
 					WHERE
 						$whereClause2
-						AND r.id in ($tagIds)" . $addtlWhereStr
+						AND r.id in ($tagIds)" . $addtlWhereStr,
                 );
                 foreach ($sql->to_associative() as $row) {
                     if ($tag_map[$row->get('id')] > 1) {
                         $row->adjust_weight(
                             $tag_map[$row->get('id')] / 8,
-                            'tag bonus for non-matching but tagged resources'
+                            'tag bonus for non-matching but tagged resources',
                         );
                     }
                     $id_assoc[$row->get('id')] = $row;

@@ -204,7 +204,7 @@ class MigrationGenerator
     public function generateFromSchemaDiff(
         SchemaDiff $diff,
         string $component = 'Core',
-        string $description = ''
+        string $description = '',
     ): string {
         $upSql = $this->sqlGenerator->generateSchemaUp($diff, $this->safeFlags);
         $downSql = $this->sqlGenerator->generateSchemaDown($diff, $this->safeFlags);
@@ -230,7 +230,7 @@ class MigrationGenerator
     {
         if ($this->strictBlankMigrations) {
             throw new \RuntimeException(
-                'Strict blank migration mode is enabled; provide explicit up/down bodies.'
+                'Strict blank migration mode is enabled; provide explicit up/down bodies.',
             );
         }
 
@@ -253,7 +253,7 @@ class MigrationGenerator
         string $upCode,
         string $downCode,
         string $component = 'Core',
-        string $description = 'Migration script'
+        string $description = 'Migration script',
     ): string {
         $trimmedUp = trim($upCode);
         $trimmedDown = trim($downCode);
@@ -270,7 +270,7 @@ class MigrationGenerator
             )
         ) {
             throw new \RuntimeException(
-                'Strict blank migration mode rejects TODO placeholder bodies.'
+                'Strict blank migration mode rejects TODO placeholder bodies.',
             );
         }
 
@@ -293,7 +293,7 @@ class MigrationGenerator
         string $content,
         string $directory,
         string $component,
-        ?string $timestamp = null
+        ?string $timestamp = null,
     ): string {
         if ($timestamp === null) {
             $timestamp = date('YmdHis');
@@ -324,7 +324,7 @@ class MigrationGenerator
         $diff,
         string $directory,
         string $component = 'Core',
-        string $description = ''
+        string $description = '',
     ): string {
         if ($diff instanceof SchemaDiff) {
             $content = $this->generateFromSchemaDiff($diff, $component, $description);
@@ -366,7 +366,7 @@ class MigrationGenerator
         string $component,
         string $description,
         string $upCode,
-        string $downCode
+        string $downCode,
     ): string {
         if ($this->template !== null) {
             return $this->applyTemplate($component, $description, $upCode, $downCode);
@@ -392,7 +392,7 @@ class MigrationGenerator
         return str_replace(
             ['<namespace>', '<className>', '<description>', '<year>', '<upCode>', '<downCode>'],
             ['Migrations', $className, $description, $this->copyrightYear, $upCode, $downCode],
-            $this->template
+            $this->template,
         );
     }
 
@@ -409,7 +409,7 @@ class MigrationGenerator
         string $component,
         string $description,
         string $upCode,
-        string $downCode
+        string $downCode,
     ): string {
         $timestamp = date('YmdHis');
         $className = "Migration{$timestamp}{$component}";

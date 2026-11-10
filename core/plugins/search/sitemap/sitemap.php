@@ -54,7 +54,7 @@ class Sitemap extends Plugin
 				title, description, link, $weight as weight
 			FROM
 				`#__ysearch_site_map` s
-			WHERE $weight > 0" . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
+			WHERE $weight > 0" . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : ''),
         ));
     }
 

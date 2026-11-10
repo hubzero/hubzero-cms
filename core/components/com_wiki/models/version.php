@@ -55,7 +55,7 @@ class Version extends Relational
     protected $rules = [
         'page_id'  => 'positive|nonzero',
         'version'  => 'positive',
-        'pagetext' => 'notempty'
+        'pagetext' => 'notempty',
     ];
 
     /**
@@ -65,7 +65,7 @@ class Version extends Relational
      */
     public $always = [
         'version',
-        'length'
+        'length',
     ];
 
     /**
@@ -75,7 +75,7 @@ class Version extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**
@@ -198,7 +198,7 @@ class Version extends Relational
             'url'           => $page->link(),
             'loglinks'      => true,
             'automatic_toc' => $tocSettings['mode'],
-            'toc_threshold' => $tocSettings['threshold']
+            'toc_threshold' => $tocSettings['threshold'],
         ];
 
         $parser = Parser::getInstance();

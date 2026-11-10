@@ -82,7 +82,7 @@ class ClientCredentials implements GrantTypeInterface, ClientAssertionTypeInterf
         if (!is_null($request->headers('PHP_AUTH_USER')) && !is_null($request->headers('PHP_AUTH_PW'))) {
             $clientData = [
                 'client_id'     => $request->headers('PHP_AUTH_USER'),
-                'client_secret' => $request->headers('PHP_AUTH_PW')
+                'client_secret' => $request->headers('PHP_AUTH_PW'),
             ];
         }
 
@@ -92,7 +92,7 @@ class ClientCredentials implements GrantTypeInterface, ClientAssertionTypeInterf
             if (!is_null($request->request('client_id'))) {
                 $clientData = [
                     'client_id'     => $request->request('client_id'),
-                    'client_secret' => $request->request('client_secret')
+                    'client_secret' => $request->request('client_secret'),
                 ];
             }
         }
@@ -117,7 +117,7 @@ class ClientCredentials implements GrantTypeInterface, ClientAssertionTypeInterf
                 $response->setError(
                     400,
                     'invalid_client',
-                    'This client is invalid or must authenticate using a client secret'
+                    'This client is invalid or must authenticate using a client secret',
                 );
                 return false;
             }

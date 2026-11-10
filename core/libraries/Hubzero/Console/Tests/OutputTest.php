@@ -52,7 +52,7 @@ class OutputTest extends Basic
         $this->assertEquals(
             '\033[0mHello, friend\033[0m\n',
             $string,
-            'Output did not have the expected string with trailing new line'
+            'Output did not have the expected string with trailing new line',
         );
     }
 
@@ -72,7 +72,7 @@ class OutputTest extends Basic
         $this->assertEquals(
             '\033[0mHello, friend\033[0m',
             $string,
-            'Output did not have the expected string without trailing new line'
+            'Output did not have the expected string without trailing new line',
         );
     }
 
@@ -142,7 +142,7 @@ class OutputTest extends Basic
         $this->assertEquals(
             $expected,
             $actual,
-            'Output did not have the expected string in appropriate paragraph format'
+            'Output did not have the expected string in appropriate paragraph format',
         );
     }
 

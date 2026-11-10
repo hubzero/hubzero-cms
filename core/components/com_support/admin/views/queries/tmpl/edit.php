@@ -45,7 +45,7 @@ if (!$tmpl) :
     <?php
     $formAction = Route::url(
         'index.php?option=' . $this->option
-        . '&controller=' . $this->controller
+        . '&controller=' . $this->controller,
     );
     ?>
     <form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="item-form">
@@ -96,7 +96,7 @@ if (!$tmpl) :
                             <td colspan="2">
                                 <?php
                                 $titleVal = $this->escape(
-                                    stripslashes($this->row->title == null ? '' : $this->row->title)
+                                    stripslashes($this->row->title == null ? '' : $this->row->title),
                                 );
                                 ?>
                                 <input
@@ -184,7 +184,7 @@ if (!$tmpl) :
         <input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
         <?php
         $condVal = $this->escape(
-            stripslashes($this->row->conditions == null ? '' : $this->row->conditions)
+            stripslashes($this->row->conditions == null ? '' : $this->row->conditions),
         );
         ?>
         <input
@@ -216,7 +216,7 @@ else :
     <?php
     $formAction2 = Route::url(
         'index.php?option=' . $this->option
-        . '&controller=' . $this->controller
+        . '&controller=' . $this->controller,
     );
     $missingTitleMsg = Lang::txt('COM_SUPPORT_QUERY_ERROR_MISSING_TITLE');
     $actionUrl = Route::url('index.php?option=' . $this->option);
@@ -247,7 +247,7 @@ else :
             <label for="field-title"><?php echo Lang::txt('COM_SUPPORT_FIELD_TITLE'); ?></label>
             <?php
             $titleVal2 = $this->escape(
-                stripslashes($this->row->title == null ? '' : $this->row->title)
+                stripslashes($this->row->title == null ? '' : $this->row->title),
             );
             ?>
             <input
@@ -362,7 +362,7 @@ else :
         />
         <?php
         $condVal2 = $this->escape(
-            stripslashes($this->row->conditions == null ? '' : $this->row->conditions)
+            stripslashes($this->row->conditions == null ? '' : $this->row->conditions),
         );
         ?>
         <input

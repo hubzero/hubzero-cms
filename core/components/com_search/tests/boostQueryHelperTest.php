@@ -21,14 +21,14 @@ class BoostQueryHelperTest extends Basic
     {
         $boosts = [1, 1, 1];
         $factoryMock = $this->mock([
-            'class' => 'BoostQueries', 'methods' => ['one']
+            'class' => 'BoostQueries', 'methods' => ['one'],
         ]);
         $ormMock = $this->mock([
-            'class' => 'Boost', 'methods' => ['all' => $boosts]
+            'class' => 'Boost', 'methods' => ['all' => $boosts],
         ]);
         $helper = new Helper([
             'boosts' => $ormMock,
-            'queries' => $factoryMock
+            'queries' => $factoryMock,
         ]);
 
         $factoryMock->expects($this->once())

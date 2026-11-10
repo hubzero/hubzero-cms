@@ -68,7 +68,7 @@ class Migration20130930160944ComBillboards extends Base
                     'published'           => 1,
                     'ordering'            => 1,
                     'checked_out'        => 0,
-                    'checked_out_time'    => '0000-00-00 00:00:00'
+                    'checked_out_time'    => '0000-00-00 00:00:00',
                 ])
                 ->execute();
 
@@ -94,7 +94,7 @@ class Migration20130930160944ComBillboards extends Base
                     'published'           => 1,
                     'ordering'            => 2,
                     'checked_out'        => 0,
-                    'checked_out_time'    => '0000-00-00 00:00:00'
+                    'checked_out_time'    => '0000-00-00 00:00:00',
                 ])
                 ->execute();
 
@@ -118,7 +118,7 @@ class Migration20130930160944ComBillboards extends Base
                     'published'           => 1,
                     'ordering'            => 3,
                     'checked_out'        => 0,
-                    'checked_out_time'    => '0000-00-00 00:00:00'
+                    'checked_out_time'    => '0000-00-00 00:00:00',
                 ])
                 ->execute();
 
@@ -145,7 +145,7 @@ class Migration20130930160944ComBillboards extends Base
                     'published'           => 1,
                     'ordering'            => 4,
                     'checked_out'        => 0,
-                    'checked_out_time'    => '0000-00-00 00:00:00'
+                    'checked_out_time'    => '0000-00-00 00:00:00',
                 ])
                 ->execute();
         }

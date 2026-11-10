@@ -114,7 +114,7 @@ class Entriesv1r0 extends ApiController
         $filters = [
             'folder'   => Request::getString('folder', ''),
             'enabled'  => Request::getInt('enabled', 0),
-            'access'   => Request::getInt('access', 1)
+            'access'   => Request::getInt('access', 1),
         ];
 
         $response = new stdClass();
@@ -211,7 +211,7 @@ class Entriesv1r0 extends ApiController
             'enabled'        => Request::getInt('enabled', 0, 'post'),
             'access'         => Request::getInt('access', 1, 'post'),
             'protected'      => 0,
-            'params'         => Request::getString('params', null, 'post', 'none')
+            'params'         => Request::getString('params', null, 'post', 'none'),
         ];
 
         $row = Plugin::blank();
@@ -342,7 +342,7 @@ class Entriesv1r0 extends ApiController
             'enabled'      => Request::getInt('enabled', $row->get('enabled')),
             'access'       => Request::getInt('access', $row->get('access')),
             'protected'    => $row->get('protected'),
-            'params'       => Request::getString('params', $row->get('params'))
+            'params'       => Request::getString('params', $row->get('params')),
         ];
 
         if (!$row->set($fields)) {

@@ -273,7 +273,7 @@ abstract class Modules
                 'COM_MODULES_EXTENSION_PUBLISHED_ENABLED',
                 true,
                 'publish',
-                'publish'
+                'publish',
             ],
             0 => [
                 'publish',
@@ -282,7 +282,7 @@ abstract class Modules
                 'COM_MODULES_EXTENSION_UNPUBLISHED_ENABLED',
                 true,
                 'unpublish',
-                'unpublish'
+                'unpublish',
             ],
             -1 => [
                 'unpublish',
@@ -291,7 +291,7 @@ abstract class Modules
                 'COM_MODULES_EXTENSION_PUBLISHED_DISABLED',
                 true,
                 'warning',
-                'warning'
+                'warning',
             ],
             -2 => [
                 'publish',
@@ -300,7 +300,7 @@ abstract class Modules
                 'COM_MODULES_EXTENSION_UNPUBLISHED_DISABLED',
                 true,
                 'unpublish',
-                'unpublish'
+                'unpublish',
             ],
         ];
 
@@ -318,7 +318,7 @@ abstract class Modules
         // Create the copy/move options.
         $options = [
             Html::select('option', 'c', Lang::txt('JLIB_HTML_BATCH_COPY')),
-            Html::select('option', 'm', Lang::txt('JLIB_HTML_BATCH_MOVE'))
+            Html::select('option', 'm', Lang::txt('JLIB_HTML_BATCH_MOVE')),
         ];
 
         // Create the batch selector to change select the category by which to move or copy.
@@ -334,7 +334,7 @@ abstract class Modules
                     Html::select('options', self::positionList($clientId)),
                 '</select>',
                 Html::select('radiolist', $options, 'batch[move_copy]', '', 'value', 'text', 'm'),
-            '</fieldset>'
+            '</fieldset>',
         ];
 
         return implode("\n", $lines);

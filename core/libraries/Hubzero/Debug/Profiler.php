@@ -203,7 +203,7 @@ class Profiler
             'start'  => $this->started(),
             'end'    => $this->ended(),
             'total'  => $this->duration(),
-            'memory' => $this->memory()
+            'memory' => $this->memory(),
         ];
 
         return $summary;

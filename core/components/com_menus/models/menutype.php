@@ -243,7 +243,7 @@ class Menutype extends Obj
                                             $o->request     = [
                                                 'option' => $component->option,
                                                 'view'   => $view,
-                                                (string) $optionsNode['var'] => (string) $child['value']
+                                                (string) $optionsNode['var'] => (string) $child['value'],
                                             ];
 
                                             $options[] = $o;
@@ -254,7 +254,7 @@ class Menutype extends Obj
                                             $o->description = (string) $child['msg'];
                                             $o->request     = [
                                                 'option' => $component->option,
-                                                'view'   => $view
+                                                'view'   => $view,
                                             ];
 
                                             $options[] = $o;
@@ -359,7 +359,7 @@ class Menutype extends Obj
                 $o->description = '';
                 $o->request     = [
                     'option' => $component->option,
-                    'view'   => $view
+                    'view'   => $view,
                 ];
 
                 // Only add the layout request argument if not the default layout.

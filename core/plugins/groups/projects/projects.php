@@ -95,7 +95,7 @@ class Projects extends Plugin
             'title'            => Lang::txt('PLG_GROUPS_PROJECTS'),
             'default_access'   => $this->params->get('plugin_access', 'members'),
             'display_menu_tab' => $this->params->get('display_tab', 1),
-            'icon'             => 'f03f'
+            'icon'             => 'f03f',
         ];
         return $area;
     }
@@ -121,7 +121,7 @@ class Projects extends Plugin
         // The output array we're returning
         $arr = [
             'html'     => '',
-            'metadata' => []
+            'metadata' => [],
         ];
 
         // Get this area details
@@ -141,7 +141,7 @@ class Projects extends Plugin
 
         $this->_projects = $this->model->table()->getGroupProjectIds(
             $group->get('gidNumber'),
-            User::get('id')
+            User::get('id'),
         );
 
         // If we want to return content
@@ -154,7 +154,7 @@ class Projects extends Plugin
                 'group'    => $group->get('gidNumber'),
                 'sortby'   => Request::getString('sortby', 'title'),
                 'sortdir'  => Request::getString('sortdir', 'ASC'),
-                'filterby' => Request::getString('filterby', 'active')
+                'filterby' => Request::getString('filterby', 'active'),
             ];
             if (!in_array($this->_filters['filterby'], ['active', 'archived'])) {
                 $this->_filters['filterby'] = 'active';
@@ -190,7 +190,7 @@ class Projects extends Plugin
                 App::redirect(
                     Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
                     Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
-                    'warning'
+                    'warning',
                 );
                 return;
             }
@@ -251,7 +251,7 @@ class Projects extends Plugin
         // Get group projects
         $projects = $this->model->table()->getGroupProjects(
             $group->get('gidNumber'),
-            User::get('id')
+            User::get('id'),
         );
 
         // Project-group sync
@@ -260,11 +260,11 @@ class Projects extends Plugin
                 $this->model->table('Owner')->reconcileGroups(
                     $project->id,
                     $project->owned_by_group,
-                    $project->sync_group
+                    $project->sync_group,
                 );
                 $this->model->table('Owner')->sysGroup(
                     $project->alias,
-                    $this->_config->get('group_prefix', 'pr-')
+                    $this->_config->get('group_prefix', 'pr-'),
                 );
             }
         }
@@ -289,7 +289,7 @@ class Projects extends Plugin
             // Get group projects
             $projects = $model->table()->getGroupProjects(
                 $after->get('gidNumber'),
-                User::get('id')
+                User::get('id'),
             );
 
             if ($projects) {
@@ -363,7 +363,7 @@ class Projects extends Plugin
     protected function _updates()
     {
         $filters = [
-            'limit' => Request::getInt('limit', 25)
+            'limit' => Request::getInt('limit', 25),
         ];
 
         // Get shared updates feed from feed plugin
@@ -372,7 +372,7 @@ class Projects extends Plugin
             $this->model,
             $this->_projects,
             User::get('id'),
-            $filters/*,
+            $filters,/*,
             in_array(User::get('id'), $this->group->get('managers')),
             array(
                 'option' => 'com_groups',
@@ -391,7 +391,7 @@ class Projects extends Plugin
             ->set('content', $content)
             ->set('newcount', $this->model->table()->getUpdateCount(
                 $this->_projects,
-                User::get('id')
+                User::get('id'),
             ))
             ->set('projectcount', count($this->_projects))
             ->set('projects', $this->_projects)
@@ -442,13 +442,13 @@ class Projects extends Plugin
                 $entry,
                 $managers,
                 $posted_by,
-                $posted
+                $posted,
             ]);
         }
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=projects&action=updates')
+            Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=projects&action=updates'),
         );
     }
 }

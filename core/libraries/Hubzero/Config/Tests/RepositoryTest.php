@@ -990,7 +990,7 @@ class RepositoryTest extends TestCase
             $this->assertInstanceOf(
                 stdClass::class,
                 $value,
-                "Group '$group' should return stdClass"
+                "Group '$group' should return stdClass",
             );
         }
     }

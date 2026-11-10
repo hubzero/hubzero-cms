@@ -96,14 +96,14 @@ class Conditions extends Obj
                 $this->operator('LIKE \'%$1\'', 'ends with', false),
                 $this->operator('NOT LIKE \'%$1%\'', 'does not contain', false),
                 $this->operator('NOT LIKE \'$1%\'', 'does not start with', false),
-                $this->operator('NOT LIKE \'%$1\'', 'does not end with', false)
+                $this->operator('NOT LIKE \'%$1\'', 'does not end with', false),
             ],
-            'text'
+            'text',
         );
 
         // Groups
         $items = [
-            $this->value('*', Lang::txt('(any of mine)'), true)
+            $this->value('*', Lang::txt('(any of mine)'), true),
         ];
 
         if ($xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'members')) {
@@ -121,9 +121,9 @@ class Conditions extends Obj
                 $this->operator('LIKE \'%$1\'', 'ends with', false),
                 $this->operator('NOT LIKE \'%$1%\'', 'does not contain', false),
                 $this->operator('NOT LIKE \'$1%\'', 'does not start with', false),
-                $this->operator('NOT LIKE \'%$1\'', 'does not end with', false)
+                $this->operator('NOT LIKE \'%$1\'', 'does not end with', false),
             ],
-            $items
+            $items,
         );
         $conditions->login = $this->expression(
             [
@@ -134,9 +134,9 @@ class Conditions extends Obj
                 $this->operator('LIKE \'%$1\'', 'ends with', false),
                 $this->operator('NOT LIKE \'%$1%\'', 'does not contain', false),
                 $this->operator('NOT LIKE \'$1%\'', 'does not start with', false),
-                $this->operator('NOT LIKE \'%$1\'', 'does not end with', false)
+                $this->operator('NOT LIKE \'%$1\'', 'does not end with', false),
             ],
-            'text'
+            'text',
         );
         $conditions->id = $this->expression(
             [
@@ -145,9 +145,9 @@ class Conditions extends Obj
                 $this->operator('lt', 'less than', false),
                 $this->operator('gt', 'grater than', false),
                 $this->operator('lt=', 'less than or equal to', false),
-                $this->operator('gt=', 'greater than or equal to', false)
+                $this->operator('gt=', 'greater than or equal to', false),
             ],
-            'text'
+            'text',
         );
         $conditions->report = $this->expression(
             [
@@ -158,19 +158,19 @@ class Conditions extends Obj
                 $this->operator('LIKE \'%$1\'', 'ends with', false),
                 $this->operator('NOT LIKE \'%$1%\'', 'does not contain', false),
                 $this->operator('NOT LIKE \'$1%\'', 'does not start with', false),
-                $this->operator('NOT LIKE \'%$1\'', 'does not end with', false)
+                $this->operator('NOT LIKE \'%$1\'', 'does not end with', false),
             ],
-            'text'
+            'text',
         );
         $conditions->open = $this->expression(
             [
                 $this->operator('=', 'is', true),
-                $this->operator('!=', 'is not', false)
+                $this->operator('!=', 'is not', false),
             ],
             [
                 $this->value('1', 'open', true),
-                $this->value('0', 'closed', false)
-            ]
+                $this->value('0', 'closed', false),
+            ],
         );
 
         $status = Status::all()
@@ -192,43 +192,43 @@ class Conditions extends Obj
         $conditions->status = $this->expression(
             [
                 $this->operator('=', 'is', true),
-                $this->operator('!=', 'is not', false)
+                $this->operator('!=', 'is not', false),
             ],
-            $items
+            $items,
         );
         $conditions->created = $this->expression(
             [
                 $this->operator('=', 'on', true),
                 $this->operator('lt', 'before', false),
-                $this->operator('gt', 'after', false)
+                $this->operator('gt', 'after', false),
             ],
-            'text'
+            'text',
         );
         $conditions->closed = $this->expression(
             [
                 $this->operator('=', 'on', true),
                 $this->operator('lt', 'before', false),
-                $this->operator('gt', 'after', false)
+                $this->operator('gt', 'after', false),
             ],
-            'text'
+            'text',
         );
         $conditions->tag = $this->expression(
             [
                 $this->operator('=', 'is', true),
-                $this->operator('!=', 'is not', false)
+                $this->operator('!=', 'is not', false),
             ],
-            'text'
+            'text',
         );
         $conditions->type = $this->expression(
             [
                 $this->operator('=', 'is', true),
-                $this->operator('!=', 'is not', false)
+                $this->operator('!=', 'is not', false),
             ],
             [
                 $this->value('0', 'user submitted', true),
                 $this->value('1', 'automatic', false),
-                $this->value('3', 'tool', false)
-            ]
+                $this->value('3', 'tool', false),
+            ],
         );
 
         $severities = Utilities::getSeverities($this->config->get('severities'));
@@ -246,9 +246,9 @@ class Conditions extends Obj
         $conditions->severity = $this->expression(
             [
                 $this->operator('=', 'is', true),
-                $this->operator('!=', 'is not', false)
+                $this->operator('!=', 'is not', false),
             ],
-            $items
+            $items,
         );
 
         $categories = Category::all()->rows();
@@ -263,9 +263,9 @@ class Conditions extends Obj
         $conditions->category = $this->expression(
             [
                 $this->operator('=', 'is', true),
-                $this->operator('!=', 'is not', false)
+                $this->operator('!=', 'is not', false),
             ],
-            $items
+            $items,
         );
         return $conditions;
     }

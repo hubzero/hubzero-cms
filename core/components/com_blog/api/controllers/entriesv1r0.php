@@ -148,7 +148,7 @@ class Entriesv1r0 extends ApiController
             'search'     => Request::getString('search', ''),
             'authorized' => false,
             'state'      => 1,
-            'access'     => User::getAuthorisedViewLevels()
+            'access'     => User::getAuthorisedViewLevels(),
         ];
 
         // ordered() treats a dotted sort as relationship.field and calls the
@@ -298,7 +298,7 @@ class Entriesv1r0 extends ApiController
         list($scope, $scopeId, $createdBy) = $this->authorizedScope(
             Request::getString('scope', '', 'post'),
             Request::getInt('scope_id', 0, 'post'),
-            Request::getInt('created_by', User::get('id'), 'post')
+            Request::getInt('created_by', User::get('id'), 'post'),
         );
 
         $fields = [
@@ -364,12 +364,12 @@ class Entriesv1r0 extends ApiController
                 'description' => Lang::txt('COM_BLOG_ACTIVITY_ENTRY_CREATED', '<a href="' . $url . '">' . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
                 'details'     => [
                     'title' => $row->get('title'),
-                    'url'   => $url
-                ]
+                    'url'   => $url,
+                ],
             ],
             'recipients' => [
-                $row->get('created_by')
-            ]
+                $row->get('created_by'),
+            ],
         ]);
 
         $this->send($row->toObject());
@@ -568,7 +568,7 @@ class Entriesv1r0 extends ApiController
             list($scope, $scopeId, $createdBy) = $this->authorizedScope(
                 $reqScope,
                 $reqScopeId,
-                Request::getInt('created_by', $row->get('created_by'))
+                Request::getInt('created_by', $row->get('created_by')),
             );
         }
 
@@ -585,7 +585,7 @@ class Entriesv1r0 extends ApiController
             'allow_comments' => Request::getInt('allow_comments', $row->get('allow_comments')),
             'publish_up'     => Request::getString('publish_up', $row->get('publish_up')),
             'publish_down'   => Request::getString('publish_down', $row->get('publish_down')),
-            'hits'           => Request::getInt('hits', $row->get('hits'))
+            'hits'           => Request::getInt('hits', $row->get('hits')),
         ];
 
         if (!$row->set($fields)) {
@@ -633,12 +633,12 @@ class Entriesv1r0 extends ApiController
                 'description' => Lang::txt('COM_BLOG_ACTIVITY_ENTRY_UPDATED', '<a href="' . $url . '">' . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
                 'details'     => [
                     'title' => $row->get('title'),
-                    'url'   => $url
-                ]
+                    'url'   => $url,
+                ],
             ],
             'recipients' => [
-                $row->get('created_by')
-            ]
+                $row->get('created_by'),
+            ],
         ]);
 
         $this->send($row->toObject());
@@ -703,12 +703,12 @@ class Entriesv1r0 extends ApiController
                     'description' => Lang::txt('COM_BLOG_ACTIVITY_ENTRY_DELETED', '<a href="' . $url . '">' . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
                     'details'     => [
                         'title' => $row->get('title'),
-                        'url'   => $url
-                    ]
+                        'url'   => $url,
+                    ],
                 ],
                 'recipients' => [
-                    $row->get('created_by')
-                ]
+                    $row->get('created_by'),
+                ],
             ]);
         }
 

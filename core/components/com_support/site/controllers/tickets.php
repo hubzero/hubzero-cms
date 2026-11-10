@@ -69,7 +69,7 @@ class Tickets extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt('COM_SUPPORT'),
-                'index.php?option=' . $this->_option . '&controller=index'
+                'index.php?option=' . $this->_option . '&controller=index',
             );
         }
         if (Pathway::count() == 1  && $this->_task) {
@@ -82,19 +82,19 @@ class Tickets extends SiteController
             }
             Pathway::append(
                 Lang::txt('COM_SUPPORT_' . strtoupper($task)),
-                'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $task
+                'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $task,
             );
             if ($this->_task == 'new') {
                 Pathway::append(
                     Lang::txt('COM_SUPPORT_' . strtoupper($this->_task)),
-                    'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task
+                    'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task,
                 );
             }
         }
         if (is_object($ticket) && $ticket->get('id')) {
             Pathway::append(
                 '#' . $ticket->get('id'),
-                $ticket->link()
+                $ticket->link(),
             );
         }
     }
@@ -138,7 +138,7 @@ class Tickets extends SiteController
         if (User::isGuest()) {
             $return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . $return, false)
+                Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );
             return;
         }
@@ -474,7 +474,7 @@ class Tickets extends SiteController
         if (User::isGuest()) {
             $return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . $return, false)
+                Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );
             return;
         }
@@ -486,26 +486,26 @@ class Tickets extends SiteController
             $this->_option . '.' . $this->_controller . '.limit',
             'limit',
             Config::get('list_limit'),
-            'int'
+            'int',
         );
         $filters['start'] = Request::getState(
             $this->_option . '.' . $this->_controller . '.limitstart',
             'limitstart',
             0,
-            'int'
+            'int',
         );
         // Query to filter by
         $filters['show'] = Request::getState(
             $this->_option . '.' . $this->_controller . '.show',
             'show',
             0,
-            'int'
+            'int',
         );
         // Search
         $search       = urldecode(Request::getState(
             $this->_option . '.' . $this->_controller . '.search',
             'search',
-            ''
+            '',
         ));
 
         // Get query list
@@ -568,13 +568,13 @@ class Tickets extends SiteController
                     $filters['sort']         = trim(Request::getState(
                         $this->_option . '.' . $this->_controller . '.sort',
                         'sort',
-                        $query->get('sort')
+                        $query->get('sort'),
                     ));
 
                     $filters['sortdir']     = trim(Request::getState(
                         $this->_option . '.' . $this->_controller . '.sortdir',
                         'sortdir',
-                        $query->get('sort_dir')
+                        $query->get('sort_dir'),
                     ));
 
                     // Get the records
@@ -590,7 +590,7 @@ class Tickets extends SiteController
 
         $watch = [
             'open'   => Ticket::all()->whereEquals('open', 1)->whereIn('id', $watching)->total(),
-            'closed' => Ticket::all()->whereEquals('open', 0)->whereIn('id', $watching)->total()
+            'closed' => Ticket::all()->whereEquals('open', 0)->whereIn('id', $watching)->total(),
         ];
 
         $filters['search'] = $search;
@@ -634,12 +634,12 @@ class Tickets extends SiteController
             $filters['sort']   = trim(Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                $query->sort
+                $query->sort,
             ));
             $filters['sortdir'] = trim(Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                $query->sort_dir
+                $query->sort_dir,
             ));
 
             // Get the records
@@ -720,13 +720,13 @@ class Tickets extends SiteController
                     '',
                     1,
                     '',
-                    trim($this->config->get('group', ''))
+                    trim($this->config->get('group', '')),
                 );
             } else {
                 $lists['owner'] = $this->_userSelect(
                     'problem[owner]',
                     '',
-                    1
+                    1,
                 );
             }
 
@@ -978,13 +978,13 @@ class Tickets extends SiteController
             $message->setSubject(Config::get('sitename') . ' ' . Lang::txt('COM_SUPPORT_EMAIL_SUBJECT_NEW_TICKET', $row->get('id')));
             $message->addFrom(
                 Config::get('mailfrom'),
-                Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option))
+                Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option)),
             );
 
             // Plain text email
             $eview = new \Hubzero\Mail\View([
                 'name'   => 'emails',
-                'layout' => 'ticket_plain'
+                'layout' => 'ticket_plain',
             ]);
             $eview->option     = $this->_option;
             $eview->controller = $this->_controller;
@@ -1048,13 +1048,13 @@ class Tickets extends SiteController
                     'details'     => [
                         'id'      => $row->get('id'),
                         'summary' => $row->get('summary'),
-                        'url'     => Route::url($row->link())
-                    ]
+                        'url'     => Route::url($row->link()),
+                    ],
                 ],
                 'recipients' => [
                     ['support.tickets', 1],
-                    ['user', $creator->get('id')]
-                ]
+                    ['user', $creator->get('id')],
+                ],
             ]);
         }
 
@@ -1092,7 +1092,7 @@ class Tickets extends SiteController
                         'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_OWNER'),
                         'name'  => $row->assignee->get('name'),
                         'email' => $row->assignee->get('email'),
-                        'id'    => $row->assignee->get('id')
+                        'id'    => $row->assignee->get('id'),
                     ]);
                 } elseif ($row->get('group_id')) {
                     $group = \Hubzero\User\Group::getInstance($row->get('group_id'));
@@ -1109,7 +1109,7 @@ class Tickets extends SiteController
                                 'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_GROUPMANAGER'),
                                 'name'  => $manager->get('name'),
                                 'email' => $manager->get('email'),
-                                'id'    => $manager->get('id')
+                                'id'    => $manager->get('id'),
                             ]);
                         }
                     }
@@ -1121,7 +1121,7 @@ class Tickets extends SiteController
                 }
 
                 $recipients = [
-                    ['support.tickets', 1]
+                    ['support.tickets', 1],
                 ];
 
                 // Check if the notify list has eny entries
@@ -1143,7 +1143,7 @@ class Tickets extends SiteController
                     $from = [
                         'name'      => Lang::txt('COM_SUPPORT_EMAIL_FROM', Config::get('sitename')),
                         'email'     => Config::get('mailfrom'),
-                        'multipart' => md5(date('U'))
+                        'multipart' => md5(date('U')),
                     ];
 
                     $message = [];
@@ -1151,7 +1151,7 @@ class Tickets extends SiteController
                     // Plain text email
                     $eview = new \Hubzero\Mail\View([
                         'name'   => 'emails',
-                        'layout' => 'comment_plain'
+                        'layout' => 'comment_plain',
                     ]);
                     $eview->option     = $this->_option;
                     $eview->controller = $this->_controller;
@@ -1186,7 +1186,7 @@ class Tickets extends SiteController
                         $rowc->changelog()->notified(
                             $to['role'],
                             $to['name'],
-                            $to['email']
+                            $to['email'],
                         );
                     }
 
@@ -1196,7 +1196,7 @@ class Tickets extends SiteController
 
                             $email = [
                                 $to['email'],
-                                'htc-' . $token . strstr(Config::get('mailfrom'), '@')
+                                'htc-' . $token . strstr(Config::get('mailfrom'), '@'),
                             ];
 
                             // In this case each item in email in an array, 1- To, 2:reply to address
@@ -1209,7 +1209,7 @@ class Tickets extends SiteController
                         $rowc->changelog()->notified(
                             $to['role'],
                             $to['name'],
-                            $to['email']
+                            $to['email'],
                         );
                     }
                 }
@@ -1246,10 +1246,10 @@ class Tickets extends SiteController
                             'id'      => $row->get('id'),
                             'summary' => $row->get('summary'),
                             'url'     => Route::url($row->link()),
-                            'comment' => $rowc->get('id')
-                        ]
+                            'comment' => $rowc->get('id'),
+                        ],
                     ],
-                    'recipients' => $recipients
+                    'recipients' => $recipients,
                 ]);
             }
         }
@@ -1342,7 +1342,7 @@ class Tickets extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->controller . '&task=tickets'),
                 Lang::txt('COM_SUPPORT_ERROR_MISSING_TICKET_ID'),
-                'error'
+                'error',
             );
             return;
         }
@@ -1354,7 +1354,7 @@ class Tickets extends SiteController
         if (User::isGuest()) {
             $return = base64_encode(Route::url($row->link(), false, true));
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . $return, false)
+                Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );
             return;
         }
@@ -1370,27 +1370,27 @@ class Tickets extends SiteController
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limitstart',
                 'limitstart',
                 0,
-                'int'
+                'int',
             ),
             // Query to filter by
             'show' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.show',
                 'show',
                 0,
-                'int'
+                'int',
             ),
             // Search
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
-            ))
+                '',
+            )),
         ];
 
         if ($watch = Request::getWord('watch', '')) {
@@ -1430,7 +1430,7 @@ class Tickets extends SiteController
                 $row->get('owner'),
                 1,
                 '',
-                $row->get('group_id')
+                $row->get('group_id'),
             );
         } elseif (trim($this->config->get('group', ''))) {
             $lists['owner'] = $this->_userSelectGroup(
@@ -1438,13 +1438,13 @@ class Tickets extends SiteController
                 $row->get('owner'),
                 1,
                 '',
-                trim($this->config->get('group', ''))
+                trim($this->config->get('group', '')),
             );
         } else {
             $lists['owner'] = $this->_userSelect(
                 'ticket[owner]',
                 $row->get('owner'),
-                1
+                1,
             );
         }
 
@@ -1490,7 +1490,7 @@ class Tickets extends SiteController
         if (User::isGuest()) {
             $return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true));
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . $return, false)
+                Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );
             return;
         }
@@ -1643,7 +1643,7 @@ class Tickets extends SiteController
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=ticket&id=' . $id),
             ($this->getError() ? $this->getError() :  null),
-            ($this->getError() ? 'error' :  null)
+            ($this->getError() ? 'error' :  null),
         );
     }
 
@@ -1658,7 +1658,7 @@ class Tickets extends SiteController
         if (User::isGuest()) {
             $return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=tickets', false, true));
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . $return, false)
+                Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );
             return;
         }
@@ -1682,7 +1682,7 @@ class Tickets extends SiteController
         // Check for an ID
         if (!$id) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=tickets')
+                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=tickets'),
             );
             return;
         }
@@ -1699,7 +1699,7 @@ class Tickets extends SiteController
 
         // Log the activity
         $recipients = [
-            ['support.tickets', 1]
+            ['support.tickets', 1],
         ];
 
         $creator = User::getInstance($ticket->get('login'));
@@ -1717,15 +1717,15 @@ class Tickets extends SiteController
                 'scope_id'    => $id,
                 'description' => $description,
                 'details'     => [
-                    'id'      => $id
-                ]
+                    'id'      => $id,
+                ],
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         // Output messsage and redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=tickets')
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=tickets'),
         );
     }
 
@@ -1767,7 +1767,7 @@ class Tickets extends SiteController
         // and id are not the reporter's to set
         $incoming = array_intersect_key($_POST, array_flip([
             'login', 'severity', 'category', 'summary', 'report', 'email', 'name',
-            'os', 'browser', 'ip', 'hostname', 'uas', 'referrer', 'cookies', 'section', 'tags'
+            'os', 'browser', 'ip', 'hostname', 'uas', 'referrer', 'cookies', 'section', 'tags',
         ]));
 
         // trim and addslashes all posted items
@@ -1900,7 +1900,7 @@ class Tickets extends SiteController
         if (User::isGuest()) {
             $return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . $return, false)
+                Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );
             return;
         }
@@ -2088,7 +2088,7 @@ class Tickets extends SiteController
                     'ticket'      => $listdir,
                     'comment_id'  => $comment_id,
                     'filename'    => $filename . '.' . $ext,
-                    'description' => $description
+                    'description' => $description,
                 ]);
                 if (!$row->save()) {
                     $this->setError($row->getError());
@@ -2117,7 +2117,7 @@ class Tickets extends SiteController
             'reportedby' => '',
             'severity'   => 'normal',
             'sort'       => trim(Request::getString('filter_order', 'created')),
-            'sortdir'    => trim(Request::getString('filter_order_Dir', 'DESC'))
+            'sortdir'    => trim(Request::getString('filter_order_Dir', 'DESC')),
         ];
 
         // Paging vars

@@ -14,7 +14,7 @@ defined('_HZEXEC_') or die();
 
 // Load base styles
 $this->addStyleSheet(
-    $this->baseurl . '/templates/' . $this->template . '/css/login.css?v=' . filemtime(__DIR__ . '/css/login.css')
+    $this->baseurl . '/templates/' . $this->template . '/css/login.css?v=' . filemtime(__DIR__ . '/css/login.css'),
 );
 
 // Load theme
@@ -31,7 +31,7 @@ $cls = [
     $this->direction,
     $theme,
     $browser->name(),
-    $browser->name() . $browser->major()
+    $browser->name() . $browser->major(),
 ];
 ?>
 <!DOCTYPE html>

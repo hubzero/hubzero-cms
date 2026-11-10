@@ -46,7 +46,7 @@ class Stat extends Relational
      * @var  array
      */
     protected $rules = [
-        'stats' => 'notempty'
+        'stats' => 'notempty',
     ];
 
     /**
@@ -55,7 +55,7 @@ class Stat extends Relational
      * @var  array
      */
     public $always = [
-        'processed'
+        'processed',
     ];
 
     /**

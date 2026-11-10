@@ -69,7 +69,7 @@ class Media extends SiteController
         $entry = Entry::oneByScope(
             Request::getString('alias', ''),
             'site',
-            0
+            0,
         );
 
         if (!$entry->get('id') || !$entry->access('view')) {
@@ -189,7 +189,7 @@ class Media extends SiteController
         if ($file['size'] > $sizeLimit) {
             $this->setError(Lang::txt(
                 'COM_BLOG_ERROR_UPLOADING_FILE_TOO_BIG',
-                \Hubzero\Utility\Number::formatBytes($sizeLimit)
+                \Hubzero\Utility\Number::formatBytes($sizeLimit),
             ));
 
             return $this->displayTask();

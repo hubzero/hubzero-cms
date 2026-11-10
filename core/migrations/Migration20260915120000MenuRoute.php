@@ -45,7 +45,7 @@ class Migration20260915120000MenuRoute extends Base
         $this->db->setQuery(
             "ALTER TABLE `#__menu` ADD COLUMN `route` VARCHAR(1024) DEFAULT NULL"
             . " COMMENT 'An address of its own, so a page can sit anywhere in the menu"
-            . " and still answer where it always did.' AFTER `path`"
+            . " and still answer where it always did.' AFTER `path`",
         );
         $this->db->query();
 
@@ -78,7 +78,7 @@ class Migration20260915120000MenuRoute extends Base
             $this->log(
                 'The address /' . (is_object($row) ? $row->path : $row['path'])
                 . ' was declared and will now follow the menu again',
-                'warning'
+                'warning',
             );
         }
 

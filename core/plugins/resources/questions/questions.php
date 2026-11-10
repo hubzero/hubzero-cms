@@ -79,7 +79,7 @@ class Questions extends Plugin
         $arr = [
             'area'     => $this->_name,
             'html'     => '',
-            'metadata' => ''
+            'metadata' => '',
         ];
 
         // Check if our area is in the array of areas we want to return results for
@@ -109,7 +109,7 @@ class Questions extends Plugin
             'search'   => Request::getString('q', ''),
             'filterby' => Request::getString('filterby', ''),
             'sortby'   => Request::getString('sortby', 'withinplugin'),
-            'sort_Dir' => 'desc'
+            'sort_Dir' => 'desc',
         ];
 
         $this->count = $this->find()->count();
@@ -251,7 +251,7 @@ class Questions extends Plugin
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
                 Lang::txt('PLG_RESOURCES_QUESTIONS_LOGIN_TO_ASK_QUESTION'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -266,7 +266,7 @@ class Questions extends Plugin
                     App::redirect(
                         Route::url('index.php?option=com_answers'),
                         Lang::txt('COM_ANSWERS_RESTRICTED_USERS'),
-                        'warning'
+                        'warning',
                     );
             }
         }
@@ -436,7 +436,7 @@ class Questions extends Plugin
             $from = [
                 'email'     => Config::get('mailfrom'),
                 'name'      => Config::get('sitename') . ' ' . Lang::txt('COM_ANSWERS_ANSWERS'),
-                'multipart' => md5(date('U'))
+                'multipart' => md5(date('U')),
             ];
 
             // Build the message subject
@@ -446,7 +446,7 @@ class Questions extends Plugin
             $eview = new \Hubzero\Mail\View([
                 'base_path' => Component::path('com_answers') . DS . 'site',
                 'name'      => 'emails',
-                'layout'    => 'question_plaintext'
+                'layout'    => 'question_plaintext',
             ]);
             $eview->option   = 'com_answers';
             $eview->sitename = Config::get('sitename');
@@ -477,15 +477,15 @@ class Questions extends Plugin
                 'description' => Lang::txt('PLG_RESOURCES_QUESTIONS_ACTIVITY_QUESTION_' . (isset($fields['id']) && $fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($row->link()) . '">' . htmlspecialchars((string) ($row->get('subject')), ENT_QUOTES, 'UTF-8') . '</a>'),
                 'details'     => [
                     'title' => $row->get('title'),
-                    'url'   => $row->link()
-                ]
+                    'url'   => $row->link(),
+                ],
             ],
-            'recipients' => $receivers
+            'recipients' => $receivers,
         ]);
 
         // Redirect to the question
         App::redirect(
-            Route::url($this->model->link() . '&active=' . $this->_name)
+            Route::url($this->model->link() . '&active=' . $this->_name),
         );
     }
 }

@@ -33,7 +33,7 @@ class Cookie
         $key = App::hash('');
         $crypt = new \Hubzero\Encryption\Encrypter(
             new \Hubzero\Encryption\Cipher\Simple(),
-            new \Hubzero\Encryption\Key('simple', $key, $key)
+            new \Hubzero\Encryption\Key('simple', $key, $key),
         );
         $cookie = $crypt->encrypt(serialize($data));
 
@@ -64,7 +64,7 @@ class Cookie
         $key = App::hash('');
         $crypt = new \Hubzero\Encryption\Encrypter(
             new \Hubzero\Encryption\Cipher\Simple(),
-            new \Hubzero\Encryption\Key('simple', $key, $key)
+            new \Hubzero\Encryption\Key('simple', $key, $key),
         );
 
         if ($str = App::get('request')->getString($hash, '', 'cookie')) {

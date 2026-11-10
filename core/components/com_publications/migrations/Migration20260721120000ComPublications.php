@@ -39,7 +39,7 @@ class Migration20260721120000ComPublications extends Base
 
         $this->db->setQuery(
             "SELECT COUNT(*) FROM `#__cron_jobs`
-			 WHERE `plugin` = 'publications' AND `event` = 'buildPublicationBundles'"
+			 WHERE `plugin` = 'publications' AND `event` = 'buildPublicationBundles'",
         );
 
         if ((int) $this->db->loadResult() > 0) {
@@ -50,7 +50,7 @@ class Migration20260721120000ComPublications extends Base
             "INSERT INTO `#__cron_jobs`
 				(`title`, `state`, `plugin`, `event`, `recurrence`, `next_run`, `created`, `created_by`, `active`, `ordering`, `params`)
 			 VALUES
-				('Build publication bundles (async)', 1, 'publications', 'buildPublicationBundles', '*/5 * * * *', NOW(), NOW(), 0, 0, 0, '')"
+				('Build publication bundles (async)', 1, 'publications', 'buildPublicationBundles', '*/5 * * * *', NOW(), NOW(), 0, 0, 0, '')",
         );
         $this->db->query();
     }
@@ -63,7 +63,7 @@ class Migration20260721120000ComPublications extends Base
         if ($this->db->tableExists('#__cron_jobs')) {
             $this->db->setQuery(
                 "DELETE FROM `#__cron_jobs`
-				 WHERE `plugin` = 'publications' AND `event` = 'buildPublicationBundles'"
+				 WHERE `plugin` = 'publications' AND `event` = 'buildPublicationBundles'",
             );
             $this->db->query();
         }

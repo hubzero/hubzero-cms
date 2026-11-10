@@ -32,7 +32,7 @@ Toolbar::help('queries');
 <?php
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 ?>
 <form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
@@ -58,7 +58,7 @@ $formAction = Route::url(
                         'COM_SUPPORT_COL_ID',
                         'id',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     ); ?>
                 </th>
                 <th scope="col">
@@ -67,7 +67,7 @@ $formAction = Route::url(
                         'COM_SUPPORT_COL_TITLE',
                         'title',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     ); ?>
                 </th>
                 <th scope="col">
@@ -76,7 +76,7 @@ $formAction = Route::url(
                         'COM_SUPPORT_COL_TYPE',
                         'iscore',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     ); ?>
                 </th>
             </tr>
@@ -134,7 +134,7 @@ $formAction = Route::url(
                     $editUrl = Route::url(
                         'index.php?option=' . $this->option
                         . '&controller=' . $this->controller
-                        . '&task=edit&id=' . $row->id
+                        . '&task=edit&id=' . $row->id,
                     );
                     ?>
                     <a href="<?php echo $editUrl; ?>">

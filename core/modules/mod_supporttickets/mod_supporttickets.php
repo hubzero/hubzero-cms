@@ -46,7 +46,7 @@ class Supporttickets extends Module
         $st = new Ticket($database);
 
         $types = [
-            'common' => []
+            'common' => [],
             //'mine'   => $sq->getMine()
         ];
         $queries = Query::allCommon()->rows();

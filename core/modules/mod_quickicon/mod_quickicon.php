@@ -67,73 +67,73 @@ class Quickicon extends Module
                         'link'   => Route::url('index.php?option=com_content&task=article.add'),
                         'id'     => 'icon-article-add',
                         'text'   => Lang::txt('MOD_QUICKICON_ADD_NEW_ARTICLE'),
-                        'access' => ['core.manage', 'com_content', 'core.create', 'com_content', ]
+                        'access' => ['core.manage', 'com_content', 'core.create', 'com_content', ],
                     ],
                     [
                         'link'   => Route::url('index.php?option=com_content'),
                         'id'     => 'icon-article',
                         'text'   => Lang::txt('MOD_QUICKICON_ARTICLE_MANAGER'),
-                        'access' => ['core.manage', 'com_content']
+                        'access' => ['core.manage', 'com_content'],
                     ],
                     [
                         'link'   => Route::url('index.php?option=com_categories&extension=com_content'),
                         'id'     => 'icon-category',
                         'text'   => Lang::txt('MOD_QUICKICON_CATEGORY_MANAGER'),
-                        'access' => ['core.manage', 'com_content']
+                        'access' => ['core.manage', 'com_content'],
                     ],
                     [
                         'link'   => Route::url('index.php?option=com_media'),
                         'id'     => 'icon-media',
                         'text'   => Lang::txt('MOD_QUICKICON_MEDIA_MANAGER'),
-                        'access' => ['core.manage', 'com_media']
+                        'access' => ['core.manage', 'com_media'],
                     ],
                     [
                         'link'   => Route::url('index.php?option=com_menus'),
                         'id'     => 'icon-menumgr',
                         'text'   => Lang::txt('MOD_QUICKICON_MENU_MANAGER'),
-                        'access' => ['core.manage', 'com_menus']
+                        'access' => ['core.manage', 'com_menus'],
                     ],
                     [
                         'link'   => Route::url('index.php?option=com_members'),
                         'id'     => 'icon-user',
                         'text'   => Lang::txt('MOD_QUICKICON_USER_MANAGER'),
-                        'access' => ['core.manage', 'com_members']
+                        'access' => ['core.manage', 'com_members'],
                     ],
                     [
                         'link'   => Route::url('index.php?option=com_modules'),
                         'id'     => 'icon-module',
                         'text'   => Lang::txt('MOD_QUICKICON_MODULE_MANAGER'),
-                        'access' => ['core.manage', 'com_modules']
+                        'access' => ['core.manage', 'com_modules'],
                     ],
                     [
                         'link'   => Route::url('index.php?option=com_installer'),
                         'id'     => 'icon-extension',
                         'text'   => Lang::txt('MOD_QUICKICON_EXTENSION_MANAGER'),
-                        'access' => ['core.manage', 'com_installer']
+                        'access' => ['core.manage', 'com_installer'],
                     ],
                     [
                         'link'   => Route::url('index.php?option=com_languages'),
                         'id'     => 'icon-language',
                         'text'   => Lang::txt('MOD_QUICKICON_LANGUAGE_MANAGER'),
-                        'access' => ['core.manage', 'com_languages']
+                        'access' => ['core.manage', 'com_languages'],
                     ],
                     [
                         'link'   => Route::url('index.php?option=com_config'),
                         'id'     => 'icon-config',
                         'text'   => Lang::txt('MOD_QUICKICON_GLOBAL_CONFIGURATION'),
-                        'access' => ['core.manage', 'com_config', 'core.admin', 'com_config']
+                        'access' => ['core.manage', 'com_config', 'core.admin', 'com_config'],
                     ],
                     [
                         'link'   => Route::url('index.php?option=com_templates'),
                         'id'     => 'icon-themes',
                         'text'   => Lang::txt('MOD_QUICKICON_TEMPLATE_MANAGER'),
-                        'access' => ['core.manage', 'com_templates']
+                        'access' => ['core.manage', 'com_templates'],
                     ],
                     [
                         'link'   => Route::url('index.php?option=com_members&task=edit&id=' . User::get('id')),
                         'id'     => 'icon-user-profile',
                         'text'   => Lang::txt('MOD_QUICKICON_PROFILE'),
-                        'access' => true
+                        'access' => true,
                     ],
                 ];
             } else {
@@ -152,7 +152,7 @@ class Quickicon extends Module
                         'id'     => '',
                         'class'  => 'icon-config',
                         'text'   => null,
-                        'access' => true
+                        'access' => true,
                     ];
                     $icon = array_merge($default, $icon);
                     if (!is_null($icon['link']) && !is_null($icon['text'])) {

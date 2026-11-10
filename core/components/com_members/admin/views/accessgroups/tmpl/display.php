@@ -136,7 +136,7 @@ Html::behavior('multiselect');
                         <?php
                         $editUrl = Route::url(
                             'index.php?option=' . $this->option . '&controller='
-                            . $this->controller . '&task=edit&id=' . $row->get('id')
+                            . $this->controller . '&task=edit&id=' . $row->get('id'),
                         );
                         ?>
                         <a href="<?php echo $editUrl; ?>">
@@ -149,7 +149,7 @@ Html::behavior('multiselect');
                         <?php
                         $debugUrl = Route::url(
                             'index.php?option=' . $this->option . '&controller='
-                            . $this->controller . '&task=debug&id=' . (int) $row->get('id')
+                            . $this->controller . '&task=debug&id=' . (int) $row->get('id'),
                         );
                         ?>
                         <a class="button fltrt" href="<?php echo $debugUrl; ?>">

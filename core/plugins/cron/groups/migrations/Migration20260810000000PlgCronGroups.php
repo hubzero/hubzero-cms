@@ -29,12 +29,12 @@ class Migration20260810000000PlgCronGroups extends Base
     protected static $jobs = [
         'expireGroupMemberships' => [
             'Group Membership Expiration',
-            '*/15 * * * *'
+            '*/15 * * * *',
         ],
         'notifyExpiringMemberships' => [
             'Group Membership Expiration Warnings',
-            '0 7 * * *'
-        ]
+            '0 7 * * *',
+        ],
     ];
 
     /**

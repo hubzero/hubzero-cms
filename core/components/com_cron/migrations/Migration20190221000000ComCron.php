@@ -27,8 +27,8 @@ class Migration20190221000000ComCron extends Base
             'last_run',
             'next_run',
             'publish_up',
-            'publish_down'
-        ]
+            'publish_down',
+        ],
     ];
 
     /**

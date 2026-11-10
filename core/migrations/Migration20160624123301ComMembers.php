@@ -59,7 +59,7 @@ class Migration20160624123301ComMembers extends Base
                     'reset_count' => 10,
                     'reset_time' => 1,
                     'login_attempts_limit' => 10,
-                    'login_attempts_timeframe' => 1
+                    'login_attempts_timeframe' => 1,
                 ];
 
                 foreach ($params as $param => $dflt) {

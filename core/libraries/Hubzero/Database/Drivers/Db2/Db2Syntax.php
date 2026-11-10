@@ -142,7 +142,7 @@ class Db2Syntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                     'raw_type'  => $fieldType,
                     'allownull' => ($fieldNull !== null && strtoupper($fieldNull) === 'YES'),
                     'default'   => $this->normalizeDefault($fieldDefault),
-                    'pk'        => ($fieldKey === 'PRI')
+                    'pk'        => ($fieldKey === 'PRI'),
                 ];
             }
         }
@@ -247,7 +247,7 @@ class Db2Syntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             'raw'      => $raw,
             'bindings' => [$value],
             'logical'  => $logical,
-            'depth'    => $depth
+            'depth'    => $depth,
         ];
     }
 
@@ -283,7 +283,7 @@ class Db2Syntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             'raw'      => $raw,
             'bindings' => [],
             'logical'  => $logical,
-            'depth'    => $depth
+            'depth'    => $depth,
         ];
     }
 
@@ -322,7 +322,7 @@ class Db2Syntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             'raw'      => $raw,
             'bindings' => [(int) $value],
             'logical'  => $logical,
-            'depth'    => $depth
+            'depth'    => $depth,
         ];
     }
 
@@ -400,7 +400,7 @@ class Db2Syntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             'raw'      => $raw,
             'bindings' => [$value],
             'logical'  => $logical,
-            'depth'    => $depth
+            'depth'    => $depth,
         ];
     }
 
@@ -444,7 +444,7 @@ class Db2Syntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
 
         $quotedConflict = array_map(
             fn($col) => $this->connection->quoteName($col),
-            $conflictColumns
+            $conflictColumns,
         );
 
         // Build the ON condition for MERGE
@@ -468,7 +468,7 @@ class Db2Syntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             $this->bind(
                 is_string($this->upsertValues[$column])
                     ? trim($this->upsertValues[$column])
-                    : $this->upsertValues[$column]
+                    : $this->upsertValues[$column],
             );
         }
 
@@ -500,7 +500,7 @@ class Db2Syntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
         $columns = array_keys($this->upsertManyRows[0]);
         $quotedColumns = array_map(
             fn($col) => $this->connection->quoteName($col),
-            $columns
+            $columns,
         );
 
         $conflictColumns = !empty($this->upsertManyConflictColumns)
@@ -515,7 +515,7 @@ class Db2Syntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 $placeholders[] = '?';
                 $value = $row[$column] ?? null;
                 $this->bind(
-                    is_string($value) ? trim($value) : $value
+                    is_string($value) ? trim($value) : $value,
                 );
             }
             $valueRows[] = '(' . implode(', ', $placeholders) . ')';
@@ -535,7 +535,7 @@ class Db2Syntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
 
         $insertValues = array_map(
             fn($c) => 's.' . $this->connection->quoteName($c),
-            $columns
+            $columns,
         );
 
         return 'MERGE INTO '
@@ -584,7 +584,7 @@ class Db2Syntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             // Build column lists
             $quotedColumns = array_map(
                 [$this->connection, 'quoteName'],
-                $this->insertColumns
+                $this->insertColumns,
             );
             $columnList = implode(', ', $quotedColumns);
 

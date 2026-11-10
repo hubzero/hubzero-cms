@@ -68,8 +68,8 @@ $base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
                                 'fields[user_id]',        // Name of the input field
                                 'field-user_id', // ID of the input field
                                 '',          // CSS class(es) for the input field
-                                ''  // The value of the input field
-                            ]
+                                '',  // The value of the input field
+                            ],
                         ]);
                         if (count($mc) > 0) {
                             echo implode("\n", $mc);

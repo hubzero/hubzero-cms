@@ -43,7 +43,7 @@ class Version extends Relational
      */
     protected $rules = [
         'pageid'  => 'positive|nonzero',
-        'content' => 'notempty'
+        'content' => 'notempty',
     ];
 
     /**
@@ -53,7 +53,7 @@ class Version extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**

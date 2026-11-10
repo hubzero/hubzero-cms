@@ -44,7 +44,7 @@ class Author extends Relational
      */
     protected $rules = [
         'user_id' => 'positive|nonzero',
-        'page_id' => 'positive|nonzero'
+        'page_id' => 'positive|nonzero',
     ];
 
     /**

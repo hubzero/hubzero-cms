@@ -40,7 +40,7 @@ class Constantcontact extends Plugin
             $accessToken,
             $refreshToken,
             $tokenExpires,
-            [$this, 'persistTokens']
+            [$this, 'persistTokens'],
         );
     }
 
@@ -64,7 +64,7 @@ class Constantcontact extends Plugin
             $db = App::get('db');
             $db->setQuery(
                 "UPDATE `#__extensions` SET `params` = " . $db->quote($this->params->toString())
-                . " WHERE `type` = 'plugin' AND `folder` = 'user' AND `element` = 'constantcontact'"
+                . " WHERE `type` = 'plugin' AND `folder` = 'user' AND `element` = 'constantcontact'",
             );
             $db->query();
         } catch (\Exception $e) {

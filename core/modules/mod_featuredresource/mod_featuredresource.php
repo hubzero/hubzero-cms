@@ -52,7 +52,7 @@ class Featuredresource extends Module
             'published'  => 1,
             'standalone' => 1,
             // Only published tools
-            'toolState'  => 7
+            'toolState'  => 7,
         ];
 
         $rows = Entry::allWithFilters($filters)

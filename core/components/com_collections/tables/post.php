@@ -40,7 +40,7 @@ class Post extends Table
     {
         $fields = [
             'collection_id' => (int) $collection_id,
-            'item_id'       => (int) $item_id
+            'item_id'       => (int) $item_id,
         ];
 
         return parent::load($fields);

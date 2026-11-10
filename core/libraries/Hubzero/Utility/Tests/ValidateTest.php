@@ -54,25 +54,25 @@ class ValidateTest extends Basic
                 'str' => 'Donec id elit non mi porta gravida at eget metus.',
                 'min' => 3,
                 'max' => 100,
-                'val' => true
+                'val' => true,
             ],
             [
                 'str' => 'Vehicula Sit Dolor',
                 'min' => 1,
                 'max' => 7,
-                'val' => false
+                'val' => false,
             ],
             [
                 'str' => '123456789',
                 'min' => 0,
                 'max' => 10,
-                'val' => true
+                'val' => true,
             ],
             [
                 'str' => 'dolo',
                 'min' => 5,
                 'max' => 8,
-                'val' => false
+                'val' => false,
             ],
         ];
 
@@ -177,7 +177,7 @@ class ValidateTest extends Basic
             '-1337' => true,
             "not numeric" => false,
             "9.1" => false,
-            null => false
+            null => false,
         ];
 
         foreach ($tests as $value => $result) {
@@ -202,7 +202,7 @@ class ValidateTest extends Basic
             1337 => true,
             "not numeric" => false,
             "9.1" => false,
-            null => false
+            null => false,
         ];
 
         foreach ($tests as $value => $result) {
@@ -227,7 +227,7 @@ class ValidateTest extends Basic
             1337 => false,
             "not numeric" => false,
             "9.1" => false,
-            null => false
+            null => false,
         ];
 
         foreach ($tests as $value => $result) {
@@ -253,7 +253,7 @@ class ValidateTest extends Basic
             '1234-4567-8910' => false,
             '1234-4567' => false,
             '1234' => false,
-            'A123-4567-8910-1112' => false
+            'A123-4567-8910-1112' => false,
         ];
 
         foreach ($tests as $value => $result) {
@@ -309,7 +309,7 @@ class ValidateTest extends Basic
             'Test Name' => false,
             'TESTNAME' => false,
             'test-name' => false,
-            'bin' => false
+            'bin' => false,
         ];
 
         foreach ($tests as $value => $result) {
@@ -317,7 +317,7 @@ class ValidateTest extends Basic
         }
 
         $tests = [
-            'test-name' => true
+            'test-name' => true,
         ];
 
         foreach ($tests as $value => $result) {
@@ -344,7 +344,7 @@ class ValidateTest extends Basic
             'test.name ' => false,
             'TESTNAME' => false,
             'test-name' => false,
-            'bin' => false
+            'bin' => false,
         ];
 
         foreach ($tests as $value => $result) {
@@ -644,7 +644,7 @@ class ValidateTest extends Basic
             'Test Name' => false,
             'TESTNAME' => true,
             'test!' => false,
-            'test-name' => false
+            'test-name' => false,
         ];
 
         foreach ($tests as $value => $result) {

@@ -46,7 +46,7 @@ class Hit extends Relational
     protected $rules = [
         'gidNumber' => 'positive|nonzero',
         'pageid'    => 'positive|nonzero',
-        'userid'    => 'positive|nonzero'
+        'userid'    => 'positive|nonzero',
     ];
 
     /**
@@ -56,7 +56,7 @@ class Hit extends Relational
      */
     public $initiate = [
         'date',
-        'ip'
+        'ip',
     ];
 
     /**

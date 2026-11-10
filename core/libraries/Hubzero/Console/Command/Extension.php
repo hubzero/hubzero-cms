@@ -271,7 +271,7 @@ class Extension extends Base implements CommandInterface
             ->addOverview(
                 'Extension management utility functions. Extensions are named as on disk: ' .
                 'com_name, mod_name, plg_folder_element or tpl_name. Options: --name=..., ' .
-                '--client=site|admin (modules and templates), --position=... (module install), --core (templates).'
+                '--client=site|admin (modules and templates), --position=... (module install), --core (templates).',
             )
             ->addTasks($this);
     }

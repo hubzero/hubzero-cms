@@ -27,7 +27,7 @@ $assignment = $this->item->disableCaching()->purgeCache()->menuAssignment();
                 <select name="menu[assignment]" id="jform_assignment">
                     <?php
                     $assignOpts = \Components\Modules\Helpers\Modules::getAssignmentOptions(
-                        $this->item->client_id
+                        $this->item->client_id,
                     );
                     echo Html::select(
                         'options',
@@ -35,7 +35,7 @@ $assignment = $this->item->disableCaching()->purgeCache()->menuAssignment();
                         'value',
                         'text',
                         $assignment,
-                        true
+                        true,
                     );
                     ?>
                 </select>

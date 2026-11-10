@@ -22,8 +22,8 @@ class Migration20190411000000ComSupport extends Base
      **/
     public static $tables = [
         '#__support_tickets' => [
-            'target_date'
-        ]
+            'target_date',
+        ],
     ];
 
     /**

@@ -24,7 +24,7 @@ class Migration20130423204715ComCourses extends Base
             $roles = [
                 ['offering_id' => 0, 'alias' => 'instructor', 'title' => 'Instructor', 'permissions' => ''],
                 ['offering_id' => 0, 'alias' => 'manager',    'title' => 'Manager',    'permissions' => ''],
-                ['offering_id' => 0, 'alias' => 'student',    'title' => 'Student',    'permissions' => '']
+                ['offering_id' => 0, 'alias' => 'student',    'title' => 'Student',    'permissions' => ''],
             ];
 
             foreach ($roles as $role) {

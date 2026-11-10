@@ -176,7 +176,7 @@ class Course extends Table
         }
 
         return parent::load([
-            'alias' => $keys
+            'alias' => $keys,
         ], $reset);
     }
 

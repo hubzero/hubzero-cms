@@ -35,13 +35,13 @@ class Cron extends AbstractComponent
         Submenu::addEntry(
             Lang::txt('COM_CRON_JOBS'),
             Route::url('index.php?option=com_cron'),
-            true
+            true,
         );
 
         if (\Components\Plugins\Helpers\Plugins::getActions()->get('core.manage')) {
             Submenu::addEntry(
                 Lang::txt('COM_CRON_PLUGINS'),
-                Route::url('index.php?option=com_plugins&view=plugins&filter_folder=cron&filter_type=cron')
+                Route::url('index.php?option=com_plugins&view=plugins&filter_folder=cron&filter_type=cron'),
             );
         }
 

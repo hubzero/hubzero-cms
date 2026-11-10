@@ -77,7 +77,7 @@ class Spacer extends Field
                                 description) : $this->
                                 description),
                         ENT_COMPAT,
-                        'UTF-8'
+                        'UTF-8',
                     ) . '"';
             }
 

@@ -195,7 +195,7 @@ class Utility
         $eview = new \Hubzero\Mail\View([
             'name'   => 'emails',
             'layout' => 'create',
-            'base_path' => Component::path('members') . '/site'
+            'base_path' => Component::path('members') . '/site',
         ]);
         $eview->option        = 'com_members';//$this->_option; //com_members
         $eview->controller    = 'register'; //$this->_controller; //register
@@ -297,7 +297,7 @@ class Utility
             "?" => "\?",
             ":" => "\:",
             "\\" => "\\\\",
-            "/" => "\/"
+            "/" => "\/",
         ];
 
         return str_replace(array_keys($special_chars), array_values($special_chars), $term);

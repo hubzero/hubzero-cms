@@ -32,7 +32,7 @@ defined('_HZEXEC_') or die();
             method="post"
             action="<?php echo Route::url(
                 'index.php?option=' . $this->option
-                . '&alias=' . $this->model->get('alias')
+                . '&alias=' . $this->model->get('alias'),
             ); ?>"
             id="hubForm">
             <fieldset>

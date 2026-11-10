@@ -34,7 +34,7 @@ $tmpl = Request::getCmd('tmpl');
                         $ticketUrl = Route::url(
                             'index.php?option=' . $this->option
                             . '&controller=' . $this->controller
-                            . '&task=ticket&id=' . $this->ticket
+                            . '&task=ticket&id=' . $this->ticket,
                         );
                         $targetAttr = ($tmpl) ? 'target="_parent"' : '';
                         ?>
@@ -61,7 +61,7 @@ $tmpl = Request::getCmd('tmpl');
                     <?php
                     $newUrl = Route::url(
                         'index.php?option=' . $this->option
-                        . '&controller=' . $this->controller . '&task=new'
+                        . '&controller=' . $this->controller . '&task=new',
                     );
                     ?>
                     <a class="btn" href="<?php echo $newUrl; ?>">

@@ -26,7 +26,7 @@ $this->css();
             <li class="last">
                 <?php $url = Route::url(
                     'index.php?option=' . $this->option .
-                    '&cn=' . $this->group->get('cn')
+                    '&cn=' . $this->group->get('cn'),
                 ); ?>
                 <a class="icon-group btn" href="<?php echo $url; ?>">
                     <?php echo Lang::txt('COM_GROUPS_ACTION_BACK_TO_GROUP'); ?>
@@ -70,8 +70,8 @@ $this->css();
                             'hubzero.onGetMultiEntry',
                             [[
                                 'members', 'logins', 'acmembers',
-                                '', $inviteList
-                            ]]
+                                '', $inviteList,
+                            ]],
                         );
                         if (count($mc) > 0) {
                             echo $mc[0];

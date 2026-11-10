@@ -32,7 +32,7 @@ Toolbar::help('categories');
 
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 ?>
 
@@ -49,7 +49,7 @@ $formAction = Route::url(
                         'COM_JOBS_COL_ID',
                         'id',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     ); ?>
                 </th>
                 <th scope="col">
@@ -58,7 +58,7 @@ $formAction = Route::url(
                         'COM_JOBS_COL_ORDER',
                         'ordernum',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     ); ?>
                 </th>
                 <th scope="col">
@@ -67,7 +67,7 @@ $formAction = Route::url(
                         'COM_JOBS_COL_TITLE',
                         'category',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     ); ?>
                 </th>
             </tr>
@@ -79,7 +79,7 @@ $formAction = Route::url(
                 echo $this->pagination(
                     $this->total,
                     $this->filters['start'],
-                    $this->filters['limit']
+                    $this->filters['limit'],
                 );
                 ?></td>
             </tr>
@@ -93,7 +93,7 @@ for ($i = 0, $n = count($this->rows); $i < $n; $i++) {
     $editUrl = Route::url(
         'index.php?option=' . $this->option
         . '&controller=' . $this->controller
-        . '&task=edit&id=' . $row->id
+        . '&task=edit&id=' . $row->id,
     );
     ?>
             <tr class="<?php echo "row$k"; ?>">

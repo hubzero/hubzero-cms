@@ -46,7 +46,7 @@ class Routes extends Base implements CommandInterface
              ->getHelpOutput()
              ->addOverview(
                  'The addresses a hub\'s components answer at. "check" says what is out'
-                 . ' of step; "fix" puts it right.'
+                 . ' of step; "fix" puts it right.',
              )
              ->addTasks($this)
              ->render();
@@ -86,7 +86,7 @@ class Routes extends Base implements CommandInterface
                     'Left #' . $row['id'] . ' alone: /' . substr($element, 4) . ' is switched off'
                     . ' in ' . $row['menutype'] . ', and that is not a generated entry to switch'
                     . ' back on - somebody chose it',
-                    'warning'
+                    'warning',
                 );
 
                 continue;
@@ -100,7 +100,7 @@ class Routes extends Base implements CommandInterface
 
             $this->output->addLine(
                 'Switched the address /' . substr($element, 4) . ' back on',
-                'success'
+                'success',
             );
         }
 
@@ -110,7 +110,7 @@ class Routes extends Base implements CommandInterface
             if ($routes->create($element, $id)) {
                 $this->output->addLine(
                     'Gave ' . $element . ' the address /' . substr($element, 4),
-                    'success'
+                    'success',
                 );
             } else {
                 $this->output->addLine('Could not give ' . $element . ' an address', 'warning');
@@ -121,7 +121,7 @@ class Routes extends Base implements CommandInterface
             $this->output->addLine(
                 'Left /' . $alias . ' alone: ' . $element . ' is not installed here,'
                 . ' and an address somebody may be linking to is not this command\'s to remove',
-                'warning'
+                'warning',
             );
         }
     }
@@ -264,7 +264,7 @@ class Routes extends Base implements CommandInterface
     protected function report($found)
     {
         $this->output->addLine(
-            count($found['components']) . ' site components should have an address.'
+            count($found['components']) . ' site components should have an address.',
         );
 
         if (!$found['missing']) {
@@ -272,7 +272,7 @@ class Routes extends Base implements CommandInterface
         } else {
             $this->output->addLine(
                 count($found['missing']) . ' with no address:',
-                'warning'
+                'warning',
             );
 
             foreach ($found['missing'] as $element => $id) {
@@ -287,19 +287,19 @@ class Routes extends Base implements CommandInterface
                 count($found['asleep']) . ' address'
                 . (count($found['asleep']) == 1 ? ' exists but is' : 'es exist but are')
                 . ' switched off, so nothing answers there with an Itemid:',
-                'warning'
+                'warning',
             );
 
             foreach ($found['asleep'] as $element => $row) {
                 $this->output->addLine(
                     '  ' . $element . '  ->  #' . $row['id'] . ' in ' . $row['menutype']
-                    . ($row['generated'] ? ' (generated)' : ' (not a generated entry)')
+                    . ($row['generated'] ? ' (generated)' : ' (not a generated entry)'),
                 );
             }
 
             $this->output->addLine(
                 '"muse routes fix" will publish the generated ones. The others are'
-                . ' somebody has decided and are left alone.'
+                . ' somebody has decided and are left alone.',
             );
         }
 
@@ -308,7 +308,7 @@ class Routes extends Base implements CommandInterface
                 count($found['shared']) . ' address'
                 . (count($found['shared']) == 1 ? ' is' : 'es are')
                 . ' claimed by more than one menu item:',
-                'warning'
+                'warning',
             );
 
             foreach ($found['shared'] as $path => $items) {
@@ -318,7 +318,7 @@ class Routes extends Base implements CommandInterface
                     $this->output->addLine(
                         '    ' . ($i === 0 ? 'answers:' : 'shadowed:')
                         . ' #' . $item['id'] . ' in ' . $item['menutype']
-                        . ' (' . $item['kind'] . ')'
+                        . ' (' . $item['kind'] . ')',
                     );
                 }
             }
@@ -327,7 +327,7 @@ class Routes extends Base implements CommandInterface
                 'The one that answers is decided by the kind of menu it is in -'
                 . ' a menu the hub shows beats one it does not, and both beat a'
                 . ' generated entry. Where that ties, the item earlier in the'
-                . ' tree wins, which is not something worth relying on.'
+                . ' tree wins, which is not something worth relying on.',
             );
         }
 
@@ -336,7 +336,7 @@ class Routes extends Base implements CommandInterface
                 count($found['orphaned']) . ' address'
                 . (count($found['orphaned']) == 1 ? '' : 'es')
                 . ' for something not installed or switched off:',
-                'warning'
+                'warning',
             );
 
             foreach ($found['orphaned'] as $alias => $element) {
@@ -344,7 +344,7 @@ class Routes extends Base implements CommandInterface
             }
 
             $this->output->addLine(
-                'These are left alone: somebody may be linking to them.'
+                'These are left alone: somebody may be linking to them.',
             );
         }
     }

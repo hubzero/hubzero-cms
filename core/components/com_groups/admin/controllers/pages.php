@@ -43,7 +43,7 @@ class Pages extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=manage', false),
                 Lang::txt('COM_GROUPS_MISSING_ID'),
-                'error'
+                'error',
             );
             return;
         }
@@ -67,7 +67,7 @@ class Pages extends AdminController
         $this->view->pages = $pageArchive->pages('list', [
             'gidNumber' => $this->group->get('gidNumber'),
             'state'     => [0, 1, 2],
-            'orderby'   => 'lft ASC'
+            'orderby'   => 'lft ASC',
         ]);
 
         // get page approvers
@@ -82,7 +82,7 @@ class Pages extends AdminController
             $this->view->needsAttention = $pageArchive->pages('unapproved', [
                 'gidNumber' => $this->group->get('gidNumber'),
                 'state'     => [0, 1],
-                'orderby'   => 'lft ASC'
+                'orderby'   => 'lft ASC',
             ]);
         }
 
@@ -127,14 +127,14 @@ class Pages extends AdminController
         $this->view->pages = $pageArchive->pages('list', [
             'gidNumber' => $this->group->get('gidNumber'),
             'state'     => [0, 1],
-            'orderby'   => 'lft ASC'
+            'orderby'   => 'lft ASC',
         ]);
 
         // get page categories
         $categoryArchive = new Page\Category\Archive();
         $this->view->categories = $categoryArchive->categories('list', [
             'gidNumber' => $this->group->get('gidNumber'),
-            'orderby'   => 'title'
+            'orderby'   => 'title',
         ]);
 
         // pass vars to view
@@ -302,13 +302,13 @@ class Pages extends AdminController
         Log::log([
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'group_page_saved',
-            'comments'  => ['page' => $page, 'version' => $version]
+            'comments'  => ['page' => $page, 'version' => $version],
         ]);
 
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
             Lang::txt('COM_GROUPS_PAGES_SAVED'),
-            'passed'
+            'passed',
         );
     }
 
@@ -339,7 +339,7 @@ class Pages extends AdminController
                 App::redirect(
                     Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
                     Lang::txt('COM_GROUPS_PAGES_CANT_DELETE_HOME'),
-                    'error'
+                    'error',
                 );
                 return;
             }
@@ -355,7 +355,7 @@ class Pages extends AdminController
                 App::redirect(
                     Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
                     $page->getError(),
-                    'error'
+                    'error',
                 );
                 return;
             }
@@ -365,14 +365,14 @@ class Pages extends AdminController
         Log::log([
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'group_page_deleted',
-            'comments'  => $ids
+            'comments'  => $ids,
         ]);
 
         //inform user & redirect
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
             Lang::txt('COM_GROUPS_PAGES_DELETED'),
-            'passed'
+            'passed',
         );
     }
 
@@ -388,7 +388,7 @@ class Pages extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
                 Lang::txt('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
-                'error'
+                'error',
             );
             return;
         }
@@ -408,7 +408,7 @@ class Pages extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
                 Lang::txt('COM_GROUPS_PAGES_ALREADY_APPROVED'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -467,7 +467,7 @@ class Pages extends AdminController
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
             Lang::txt('COM_GROUPS_PAGES_NO_XSS'),
-            'passed'
+            'passed',
         );
     }
 
@@ -483,7 +483,7 @@ class Pages extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
                 Lang::txt('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
-                'error'
+                'error',
             );
             return;
         }
@@ -503,7 +503,7 @@ class Pages extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
                 Lang::txt('COM_GROUPS_PAGES_ALREADY_APPROVED'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -552,7 +552,7 @@ class Pages extends AdminController
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
             Lang::txt('COM_GROUPS_PAGES_NO_ERRORS'),
-            'passed'
+            'passed',
         );
     }
 
@@ -571,7 +571,7 @@ class Pages extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
                 Lang::txt('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
-                'error'
+                'error',
             );
             return;
         }
@@ -602,7 +602,7 @@ class Pages extends AdminController
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
             Lang::txt('COM_GROUPS_PAGES_SCANNED'),
-            'passed'
+            'passed',
         );
     }
 
@@ -621,7 +621,7 @@ class Pages extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
                 Lang::txt('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
-                'error'
+                'error',
             );
             return;
         }
@@ -643,7 +643,7 @@ class Pages extends AdminController
 
         // redirect to scan url
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid . '&task=scan&id=' . $groupPage->get('id'), false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid . '&task=scan&id=' . $groupPage->get('id'), false),
         );
     }
 
@@ -663,7 +663,7 @@ class Pages extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
                 Lang::txt('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
-                'error'
+                'error',
             );
             return;
         }
@@ -685,7 +685,7 @@ class Pages extends AdminController
 
         //go back to error checker
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid . '&task=errors&id=' . $groupPage->get('id'), false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid . '&task=errors&id=' . $groupPage->get('id'), false),
         );
     }
 
@@ -704,7 +704,7 @@ class Pages extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
                 Lang::txt('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
-                'error'
+                'error',
             );
             return;
         }
@@ -724,7 +724,7 @@ class Pages extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
                 Lang::txt('COM_GROUPS_PAGES_ALREADY_APPROVED'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -744,7 +744,7 @@ class Pages extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
                 $currentVersion->getError(),
-                'error'
+                'error',
             );
             return;
         }
@@ -756,14 +756,14 @@ class Pages extends AdminController
         Log::log([
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'group_page_approved',
-            'comments'  => [$page->get('id')]
+            'comments'  => [$page->get('id')],
         ]);
 
         // inform user and redirect
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
             Lang::txt('COM_GROUPS_PAGES_APPROVED'),
-            'passed'
+            'passed',
         );
     }
 
@@ -780,7 +780,7 @@ class Pages extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
                 Lang::txt('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
-                'error'
+                'error',
             );
             return;
         }
@@ -827,7 +827,7 @@ class Pages extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
                 Lang::txt('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
-                'error'
+                'error',
             );
             return;
         }
@@ -857,7 +857,7 @@ class Pages extends AdminController
     public function cancelTask()
     {
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . Request::getString('gid', ''), false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . Request::getString('gid', ''), false),
         );
     }
 
@@ -869,7 +869,7 @@ class Pages extends AdminController
     public function manageTask()
     {
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=manage&task=edit&id=' . Request::getString('gid', ''), false)
+            Route::url('index.php?option=' . $this->_option . '&controller=manage&task=edit&id=' . Request::getString('gid', ''), false),
         );
     }
 }

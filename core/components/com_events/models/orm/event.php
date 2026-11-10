@@ -39,7 +39,7 @@ class Event extends Relational
      * @var array
      **/
     protected $rules = [
-        'title' => 'notempty'
+        'title' => 'notempty',
     ];
 
     /**
@@ -49,7 +49,7 @@ class Event extends Relational
      **/
     public $always = [
         'modified',
-        'modified_by'
+        'modified_by',
     ];
 
     /**

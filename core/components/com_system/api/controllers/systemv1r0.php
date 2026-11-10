@@ -83,7 +83,7 @@ class Systemv1r0 extends ApiController
             //'server'      => $sf,
             //'last_update' => null, //$commit,
             //'last_core_update' => null,
-            'environment' => Config::get('application_env', 'production')
+            'environment' => Config::get('application_env', 'production'),
         ];
 
         if (file_exists(Component::path('com_update') . DS . 'helpers' . DS . 'cli.php')) {
@@ -107,8 +107,8 @@ class Systemv1r0 extends ApiController
                     false,
                     true,
                     false,
-                    null
-                )
+                    null,
+                ),
             );
             if ($rows) {
                 $props = get_object_vars($rows);
@@ -126,8 +126,8 @@ class Systemv1r0 extends ApiController
                     false,
                     true,
                     false,
-                    null
-                )
+                    null,
+                ),
             );
 
             if ($rows) {

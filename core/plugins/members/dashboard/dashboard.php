@@ -113,7 +113,7 @@ class Dashboard extends Plugin
 
         $arr = [
             'html' => '',
-            'metadata' => []
+            'metadata' => [],
         ];
 
         // Build the final HTML
@@ -341,7 +341,7 @@ class Dashboard extends Plugin
         // build return
         echo json_encode([
             'saved'   => true,
-            'modules' => json_decode($modules)
+            'modules' => json_decode($modules),
         ]);
         exit();
     }

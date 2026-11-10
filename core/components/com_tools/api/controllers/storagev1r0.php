@@ -68,7 +68,7 @@ class Storagev1r0 extends ApiController
             'percent'   => $percent,
             'used_gb'   => round($used / 1024000000, 2),
             'soft_gb'   => round($soft / 1024000000, 2),
-            'free_gb'   => round($free / 1024000000, 2)
+            'free_gb'   => round($free / 1024000000, 2),
         ]);
     }
 
@@ -115,7 +115,7 @@ class Storagev1r0 extends ApiController
                         'name'      => $name,
                         'dir'       => $rel,
                         // Mirrors the site view: the storage roots are protected
-                        'deletable' => !in_array(strtolower($name), ['data', 'sessions'])
+                        'deletable' => !in_array(strtolower($name), ['data', 'sessions']),
                     ];
                 } else if ($f->isFile()) {
                     $ln = strtolower($name);
@@ -126,7 +126,7 @@ class Storagev1r0 extends ApiController
                     $files[$name] = [
                         'name'   => $name,
                         'size'   => (int) $size,
-                        'size_h' => \Hubzero\Utility\Number::formatBytes((float) $size)
+                        'size_h' => \Hubzero\Utility\Number::formatBytes((float) $size),
                     ];
                 }
             }
@@ -151,7 +151,7 @@ class Storagev1r0 extends ApiController
             'dir'        => trim($dir, '/'),
             'breadcrumb' => $crumbs,
             'folders'    => array_values($folders),
-            'files'      => array_values($files)
+            'files'      => array_values($files),
         ]);
     }
 

@@ -102,7 +102,7 @@ class Media extends Base
         $writeTasks = [
             'upload', 'ajaxupload', 'editorupload', 'doupload', 'domovefile', 'dorenamefile',
             'deletefile', 'savefolder', 'dorenamefolder', 'domovefolder',
-            'deletefolder', 'extractfile'
+            'deletefolder', 'extractfile',
         ];
         if (in_array($mtask, $writeTasks) && !$this->authorized) {
             $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
@@ -468,7 +468,7 @@ class Media extends Base
         echo json_encode([
             'uploaded' => ($message) ? 0 : 1,
             'url'      => ($message) ? '' : $url,
-            'error'    => ['message' => $message]
+            'error'    => ['message' => $message],
         ]);
         die();
     }
@@ -748,7 +748,7 @@ class Media extends Base
             if (!empty($reviewers)) {
                 $from = [
                     'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name)),
-                    'email' => Config::get('mailfrom')
+                    'email' => Config::get('mailfrom'),
                 ];
 
                 $subject = Lang::txt('COM_GROUPS_ACTIVITY_UPLOAD_FILE_NOTICE', Config::get('sitename'));
@@ -1311,7 +1311,7 @@ class Media extends Base
         // Buld recipients list
         $recipients = [
             ['group', $this->group->get('gidNumber')],
-            ['user', User::get('id')]
+            ['user', User::get('id')],
         ];
         foreach ($this->group->get('managers') as $recipient) {
             $recipients[] = ['user', $recipient];
@@ -1324,7 +1324,7 @@ class Media extends Base
             'title'     => $this->group->get('description'),
             'url'       => $url,
             'cn'        => $this->group->get('cn'),
-            'gidNumber' => $this->group->get('gidNumber')
+            'gidNumber' => $this->group->get('gidNumber'),
         ];
         $key = $isFile ? 'file' : 'folder';
 
@@ -1335,13 +1335,13 @@ class Media extends Base
                 strtoupper('COM_GROUPS_ACTIVITY_' . $key . '_' . $action),
                 trim($item[0], '/'),
                 trim($item[1], '/'),
-                '<a href="' . $url . '">' . htmlspecialchars((string) $this->group->get('description'), ENT_QUOTES, 'UTF-8') . '</a>'
+                '<a href="' . $url . '">' . htmlspecialchars((string) $this->group->get('description'), ENT_QUOTES, 'UTF-8') . '</a>',
             );
         } else {
             $description = Lang::txt(
                 strtoupper('COM_GROUPS_ACTIVITY_' . $key . '_' . $action),
                 trim($item, '/'),
-                '<a href="' . $url . '">' . htmlspecialchars((string) $this->group->get('description'), ENT_QUOTES, 'UTF-8') . '</a>'
+                '<a href="' . $url . '">' . htmlspecialchars((string) $this->group->get('description'), ENT_QUOTES, 'UTF-8') . '</a>',
             );
         }
 
@@ -1352,9 +1352,9 @@ class Media extends Base
                 'scope'       => 'group.file',
                 'scope_id'    => $this->group->get('gidNumber'),
                 'description' => $description,
-                'details'     => $details
+                'details'     => $details,
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
     }
 }

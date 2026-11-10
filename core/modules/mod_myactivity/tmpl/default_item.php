@@ -30,7 +30,7 @@ $name = $this->escape(stripslashes($row->log->creator->get('name')));
         echo $this->escape(
             $row->get('scope') . '.'
             . $row->get('scope_id') . ' '
-            . $row->log->get('action')
+            . $row->log->get('action'),
         ) . ' ' . $status;
         ?>">
 
@@ -52,7 +52,7 @@ $name = $this->escape(stripslashes($row->log->creator->get('name')));
             <span class="activity-channel"><?php
                 echo $this->escape(
                     $row->get('scope') . '.'
-                    . $row->get('scope_id')
+                    . $row->get('scope_id'),
                 );
                 ?></span>
             -->

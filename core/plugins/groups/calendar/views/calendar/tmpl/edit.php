@@ -179,7 +179,7 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                         'daily'   => 'Daily',
                         'weekly'  => 'Weekly',
                         'monthly' => 'Monthly',
-                        'yearly'  => 'Yearly'
+                        'yearly'  => 'Yearly',
                     ];
                     ?>
                 <fieldset class="reccurance">

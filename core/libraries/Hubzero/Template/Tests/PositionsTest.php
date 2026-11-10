@@ -113,7 +113,7 @@ class PositionsTest extends TestCase
         $this->assertSame('footer', $positions[0]);
         $this->assertLessThan(
             array_search('home-2', $positions),
-            array_search('home-1', $positions)
+            array_search('home-1', $positions),
         );
     }
 

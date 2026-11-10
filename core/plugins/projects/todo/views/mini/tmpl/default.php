@@ -63,7 +63,7 @@ $seeAll = ucfirst(Lang::txt('COM_PROJECTS_SEE_ALL'));
                 $byName = Lang::txt('COM_PROJECTS_BY')
                     . ' '
                     . \Components\Projects\Helpers\Html::shortenName(
-                        $row->creator('name')
+                        $row->creator('name'),
                     );
                 ?>
             <span><?php echo $byName; ?></span> |

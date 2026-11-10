@@ -49,7 +49,7 @@ $startPub = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION'));
             <?php
             $actionUrl = Route::url(
                 $this->route . '&action=' . $action
-                . '&base=' . $current->alias
+                . '&base=' . $current->alias,
             );
             $contactEmail = $this->pubConfig->get('contact_email');
             $doiPublisher = $this->pubConfig->get('doi_publisher');
@@ -60,19 +60,19 @@ $startPub = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION'));
                 $seriesType = Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEWPUB_SERIES');
                 if ($current->type == $filesType) {
                     $pubTypeText = Lang::txt(
-                        'PLG_PROJECTS_PUBLICATIONS_NEWPUB_FILES_DESCRIPTION'
+                        'PLG_PROJECTS_PUBLICATIONS_NEWPUB_FILES_DESCRIPTION',
                     );
                 } elseif ($current->type == $dbType) {
                     $pubTypeText = Lang::txt(
                         'PLG_PROJECTS_PUBLICATIONS_NEWPUB_DATABASES_DESCRIPTION',
                         $contactEmail,
-                        $doiPublisher
+                        $doiPublisher,
                     );
                 } elseif ($current->type == $seriesType) {
                     $pubTypeText = Lang::txt(
                         'PLG_PROJECTS_PUBLICATIONS_NEWPUB_SERIES_DESCRIPTION',
                         $contactEmail,
-                        $doiPublisher
+                        $doiPublisher,
                     );
                 }
             }
@@ -104,10 +104,10 @@ $startPub = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION'));
             <p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTRIB_START'); ?></p>
             <?php
             $viewProjectsTxt = Lang::txt(
-                'PLG_PROJECTS_PUBLICATIONS_VIEW_YOUR_PROJECTS'
+                'PLG_PROJECTS_PUBLICATIONS_VIEW_YOUR_PROJECTS',
             );
             $startProjectTxt = Lang::txt(
-                'PLG_PROJECTS_PUBLICATIONS_START_PROJECT'
+                'PLG_PROJECTS_PUBLICATIONS_START_PROJECT',
             );
             ?>
             <p class="getstarted-links">

@@ -46,7 +46,7 @@ class Math extends Plugin
 
         $problem = [
             'operand1' => rand($lower, $upper),
-            'operand2' => rand($lower, $upper)
+            'operand2' => rand($lower, $upper),
         ];
         $problem['sum'] = $problem['operand1'] + $problem['operand2'];
         $problem['key'] = $this->generateHash($problem['sum'], date('j'));

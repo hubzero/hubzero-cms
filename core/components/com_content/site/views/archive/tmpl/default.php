@@ -35,7 +35,7 @@ Html::addIncludePath(PATH_COMPONENT . '/helpers');
                         $filterLabel = Lang::txt(
                             'COM_CONTENT_'
                             . $this->params->get('filter_field')
-                            . '_FILTER_LABEL'
+                            . '_FILTER_LABEL',
                         ) . '&#160;';
                         ?>
                         <label class="filter-search-lbl" for="filter-search">

@@ -46,7 +46,7 @@ class Tool extends Relational
      * @var  array
      */
     protected $rules = [
-        'resid' => 'positive|nonzero'
+        'resid' => 'positive|nonzero',
     ];
 
     /**

@@ -75,7 +75,7 @@ class Stack
         // Merge existing layers (core)
         $this->layers = array_merge(
             $this->layers,
-            $layers
+            $layers,
         );
 
         // Put the layers in reverse

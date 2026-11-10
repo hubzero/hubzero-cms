@@ -33,7 +33,7 @@ class Partners extends Plugin
     public function onUsageAreas()
     {
         return [
-            'partners' => Lang::txt('PLG_USAGE_PARTNERS')
+            'partners' => Lang::txt('PLG_USAGE_PARTNERS'),
         ];
     }
 
@@ -68,7 +68,7 @@ class Partners extends Plugin
             $enddate,
             $thisyear,
             $monthsReverse,
-            'check_for_regiondata'
+            'check_for_regiondata',
         );
 
         // Build HTML

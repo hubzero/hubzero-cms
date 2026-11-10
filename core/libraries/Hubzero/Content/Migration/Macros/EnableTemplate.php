@@ -33,7 +33,7 @@ class EnableTemplate extends Macro
             $query = $this->db->getQuery()
                 ->update('#__extensions')
                 ->set([
-                    'enabled' => $enabled
+                    'enabled' => $enabled,
                 ])
                 ->whereEquals('type', 'template')
                 ->whereEquals('element', $element);

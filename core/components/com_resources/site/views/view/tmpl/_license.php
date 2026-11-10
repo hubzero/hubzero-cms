@@ -30,7 +30,7 @@ if (empty($name)) {
         <?php
         $licenseUrl = Route::url(
             'index.php?option=com_resources&task=license&resource='
-            . substr($name, 6) . '&no_html=1'
+            . substr($name, 6) . '&no_html=1',
         );
         ?>
         <a target='_blank'

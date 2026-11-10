@@ -78,8 +78,8 @@ class Migration20160602102201ComWiki extends Base
                                         Expression::concat(
                                             Expression::literal('%'),
                                             'm.username',
-                                            Expression::literal('%')
-                                        )
+                                            Expression::literal('%'),
+                                        ),
                                     );
                             }, 'or');
                     });

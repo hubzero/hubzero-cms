@@ -76,7 +76,7 @@ $version = $record['summary']['version'];
                     <?php
                         $routeUrl = Route::url(
                             $this->base . '&task=form.complete&crumb=' . $this->dep->getCrumb() . '&attempt='
-                            . $nextAttempt
+                            . $nextAttempt,
                         );
                     ?>
                     <a class="btn btn-warning" href="<?php echo $routeUrl; ?>">

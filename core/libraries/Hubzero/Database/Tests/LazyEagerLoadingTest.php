@@ -430,8 +430,8 @@ class LazyEagerLoadingTest extends AbstractDriverTestCase
 
         $user->load([
             'posts' => [
-                'conditions' => ['published' => 1]
-            ]
+                'conditions' => ['published' => 1],
+            ],
         ]);
 
         $posts = $user->getRelationship('posts');

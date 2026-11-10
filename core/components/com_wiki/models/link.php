@@ -45,7 +45,7 @@ class Link extends Relational
      */
     protected $rules = [
         'page_id' => 'positive|nonzero',
-        'scope'   => 'notempty'
+        'scope'   => 'notempty',
     ];
 
     /**
@@ -54,7 +54,7 @@ class Link extends Relational
      * @var  array
      */
     public $initiate = [
-        'timestamp'
+        'timestamp',
     ];
 
     /**

@@ -242,7 +242,7 @@ class SchemaManager
         string $oldTable,
         string $newTable,
         ?string $backup = null,
-        ?string $prefix = null
+        ?string $prefix = null,
     ): self {
         $this->driver->renameTable($oldTable, $newTable, $backup, $prefix);
 
@@ -782,7 +782,7 @@ class SchemaManager
         string $table,
         string $column = 'id',
         bool $first = false,
-        bool $useBigInt = true
+        bool $useBigInt = true,
     ): bool {
         return $this->driver->addAutoIncrementPrimaryKey($table, $column, $first, $useBigInt);
     }
@@ -1173,7 +1173,7 @@ class SchemaManager
         string $table,
         string $column,
         ?string $definition = null,
-        string $comment = ''
+        string $comment = '',
     ): ColumnBuilder {
         return new ColumnBuilder($this->driver, $table, $column, $definition, 'add', $comment);
     }
@@ -1219,7 +1219,7 @@ class SchemaManager
         string $table,
         string $column,
         ?string $definition = null,
-        string $comment = ''
+        string $comment = '',
     ): ColumnBuilder {
         return new ColumnBuilder($this->driver, $table, $column, $definition, 'modify', $comment);
     }
@@ -1253,7 +1253,7 @@ class SchemaManager
         string $oldColumn,
         string $newColumn = '',
         ?string $definition = null,
-        string $comment = ''
+        string $comment = '',
     ): ColumnBuilder {
         return new ColumnBuilder(
             $this->driver,
@@ -1262,7 +1262,7 @@ class SchemaManager
             $definition,
             'rename',
             $comment,
-            $newColumn ?: null
+            $newColumn ?: null,
         );
     }
 

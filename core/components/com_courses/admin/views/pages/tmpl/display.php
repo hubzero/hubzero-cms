@@ -78,7 +78,7 @@ Toolbar::help('pages');
                     <?php
                     $routeUrl = Route::url(
                         'index.php?option=' . $this->option  . '&controller=offerings&course='
-                        . $this->course->get('id')
+                        . $this->course->get('id'),
                     );
                     ?>
                 <a href="<?php echo $routeUrl; ?>">
@@ -116,7 +116,7 @@ Toolbar::help('pages');
                     $pageNav = $this->pagination(
                         $this->total,
                         $this->filters['start'],
-                        $this->filters['limit']
+                        $this->filters['limit'],
                     );
                     echo $pageNav->render();
                     ?>
@@ -158,7 +158,7 @@ Toolbar::help('pages');
                             <?php
                                 $routeUrl = Route::url(
                                     'index.php?option=' . $this->option  . '&controller=' . $this->controller
-                                    . '&task=edit&id=' . $this->escape($page->get('id'))
+                                    . '&task=edit&id=' . $this->escape($page->get('id')),
                                 );
                             ?>
                             <a href="<?php echo $routeUrl; ?>">
@@ -177,7 +177,7 @@ Toolbar::help('pages');
                                 $routeUrl = Route::url(
                                     'index.php?option=' . $this->option  . '&controller=' . $this->controller
                                     . '&task=unpublish&id=' . $page->get('id') . '&' . Session::getFormToken()
-                                    . '=1'
+                                    . '=1',
                                 );
                                 ?>
                             <a
@@ -193,7 +193,7 @@ Toolbar::help('pages');
                                 <?php
                                 $routeUrl = Route::url(
                                     'index.php?option=' . $this->option  . '&controller=' . $this->controller
-                                    . '&task=publish&id=' . $page->get('id') . '&' . Session::getFormToken() . '=1'
+                                    . '&task=publish&id=' . $page->get('id') . '&' . Session::getFormToken() . '=1',
                                 );
                                 ?>
                             <a
@@ -209,7 +209,7 @@ Toolbar::help('pages');
                                 <?php
                                 $routeUrl = Route::url(
                                     'index.php?option=' . $this->option  . '&controller=' . $this->controller
-                                    . '&task=publish&id=' . $page->get('id') . '&' . Session::getFormToken() . '=1'
+                                    . '&task=publish&id=' . $page->get('id') . '&' . Session::getFormToken() . '=1',
                                 );
                                 ?>
                             <a
@@ -225,7 +225,7 @@ Toolbar::help('pages');
                                 <?php
                                 $routeUrl = Route::url(
                                     'index.php?option=' . $this->option  . '&controller=' . $this->controller
-                                    . '&task=publish&id=' . $page->get('id') . '&' . Session::getFormToken() . '=1'
+                                    . '&task=publish&id=' . $page->get('id') . '&' . Session::getFormToken() . '=1',
                                 );
                                 ?>
                             <a
@@ -248,7 +248,7 @@ Toolbar::help('pages');
                             isset($rows[$i - 1]),
                             'orderup',
                             'COM_COURSES_MOVE_UP',
-                            true
+                            true,
                         );
                         $orderDownIcon = $pageNav->orderDownIcon(
                             $i,
@@ -256,7 +256,7 @@ Toolbar::help('pages');
                             isset($rows[$i + 1]),
                             'orderdown',
                             'COM_COURSES_MOVE_DOWN',
-                            true
+                            true,
                         );
                         ?>
                         <span><?php echo $orderUpIcon; ?></span>

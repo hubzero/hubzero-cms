@@ -84,7 +84,7 @@ class Migration20190620000000ComPublications extends Base
                                 'Updated tag association from publication ID %s '
                                 . 'to publication version ID %s',
                                 $publication,
-                                $version->id
+                                $version->id,
                             ));
                         }
                     } else {
@@ -106,7 +106,7 @@ class Migration20190620000000ComPublications extends Base
                                     'Creating tag association for tag ID %s '
                                     . 'and publication version ID %s',
                                     $tag->tagid,
-                                    $version->id
+                                    $version->id,
                                 ));
                             }
                         }
@@ -150,7 +150,7 @@ class Migration20190620000000ComPublications extends Base
                             . 'version ID %s to publication ID %s',
                             $tag->id,
                             $tag->objectid,
-                            $version->publication_id
+                            $version->publication_id,
                         ));
                     }
                 }

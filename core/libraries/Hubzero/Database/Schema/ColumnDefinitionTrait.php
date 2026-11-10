@@ -689,7 +689,7 @@ trait ColumnDefinitionTrait
             } else {
                 $parts[] = 'DEFAULT ' . $this->compileDefaultValue(
                     $this->columnModifiers['default'],
-                    $driver
+                    $driver,
                 );
             }
         }
@@ -774,20 +774,20 @@ trait ColumnDefinitionTrait
 
         if ($syntaxClass === null) {
             $syntaxClass = \Hubzero\Database\BackendRegistry::firstExistingClassCandidate(
-                \Hubzero\Database\BackendRegistry::conventionSyntaxClassCandidates($syntaxName)
+                \Hubzero\Database\BackendRegistry::conventionSyntaxClassCandidates($syntaxName),
             );
         }
 
         if ($syntaxClass === null) {
             throw new \InvalidArgumentException(
-                'Unsupported database syntax "' . $syntaxName . '" for expression compilation.'
+                'Unsupported database syntax "' . $syntaxName . '" for expression compilation.',
             );
         }
 
         if (!is_subclass_of($syntaxClass, '\\Hubzero\\Database\\Drivers\\Base\\BaseSqlSyntax')) {
             throw new \InvalidArgumentException(
                 'Invalid syntax class "' . $syntaxClass
-                . '" for expression compilation. Class must extend Hubzero\\Database\\Drivers\\Base\\BaseSqlSyntax.'
+                . '" for expression compilation. Class must extend Hubzero\\Database\\Drivers\\Base\\BaseSqlSyntax.',
             );
         }
 

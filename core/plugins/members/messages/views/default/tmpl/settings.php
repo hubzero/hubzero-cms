@@ -84,7 +84,7 @@ $this->css()
                         $this->notimethods,
                         $component->action,
                         $this->settings[$component->action]['methods'],
-                        $this->settings[$component->action]['ids']
+                        $this->settings[$component->action]['ids'],
                     ); ?>
                 </tr>
                 <?php

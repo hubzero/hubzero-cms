@@ -54,7 +54,7 @@ class Comment extends Relational
      */
     protected $rules = [
         'content'  => 'notempty',
-        'entry_id' => 'positive|nonzero'
+        'entry_id' => 'positive|nonzero',
     ];
 
     /**
@@ -64,7 +64,7 @@ class Comment extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**
@@ -77,7 +77,7 @@ class Comment extends Relational
         'anonymous',
         'state',
         'modified',
-        'modified_by'
+        'modified_by',
     ];
 
     /**
@@ -86,7 +86,7 @@ class Comment extends Relational
      * @var  array
      */
     protected $parsed = [
-        'content'
+        'content',
     ];
 
     /**
@@ -171,7 +171,7 @@ class Comment extends Relational
                 'pagename' => $this->get('alias'),
                 'pageid'   => 0,
                 'filepath' => $this->get('path'),
-                'domain'   => ''
+                'domain'   => '',
             ];
 
             $this->$property = Html::content('prepare', $this->get($field, ''), $params);
@@ -341,7 +341,7 @@ class Comment extends Relational
             $results = Event::trigger('content.onContentBeforeSave', [
                 'com_blog.comment.content',
                 &$this,
-                $this->isNew()
+                $this->isNew(),
             ]);
 
             foreach ($results as $result) {

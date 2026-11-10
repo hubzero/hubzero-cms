@@ -36,7 +36,7 @@ class Template extends Html
                 $db->setQuery(
                     "SELECT s.`template`, e.protected FROM `#__template_styles` AS s " .
                     "INNER JOIN `#__extensions` AS e ON e.`element`=s.`template` " .
-                    "WHERE s.`client_id`=0 AND s.`home`=1"
+                    "WHERE s.`client_id`=0 AND s.`home`=1",
                 );
                 $result = $db->loadObject();
             } else {

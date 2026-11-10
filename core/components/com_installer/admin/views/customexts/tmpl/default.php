@@ -128,7 +128,7 @@ $saveOrder = $listOrder == 'ordering';
                         'value',
                         'text',
                         $this->filters['client_id'],
-                        true
+                        true,
                     ); ?>
                 </select>
 
@@ -148,7 +148,7 @@ $saveOrder = $listOrder == 'ordering';
                         'value',
                         'text',
                         $this->filters['status'],
-                        true
+                        true,
                     ); ?>
                 </select>
 
@@ -167,7 +167,7 @@ $saveOrder = $listOrder == 'ordering';
                         $typeOpts,
                         'value',
                         'text',
-                        $this->filters['type']
+                        $this->filters['type'],
                     ); ?>
                 </select>
 
@@ -186,7 +186,7 @@ $saveOrder = $listOrder == 'ordering';
                         $groupOpts,
                         'value',
                         'text',
-                        $this->filters['group']
+                        $this->filters['group'],
                     ); ?>
                 </select>
 
@@ -219,7 +219,7 @@ $saveOrder = $listOrder == 'ordering';
                             'COM_INSTALLER_CUSTOMEXTS_HEADING_NAME',
                             'name',
                             $listDirn,
-                            $listOrder
+                            $listOrder,
                         ); ?>
                     </th>
                     <th class="center">
@@ -228,7 +228,7 @@ $saveOrder = $listOrder == 'ordering';
                             'COM_INSTALLER_CUSTOMEXTS_HEADING_STATUS',
                             'status',
                             $listDirn,
-                            $listOrder
+                            $listOrder,
                         ); ?>
                     </th>
                     <th class="priority-2">
@@ -237,7 +237,7 @@ $saveOrder = $listOrder == 'ordering';
                             'COM_INSTALLER_CUSTOMEXTS_HEADING_LOCATION',
                             'client_id',
                             $listDirn,
-                            $listOrder
+                            $listOrder,
                         ); ?>
                     </th>
                     <th class="priority-3">
@@ -246,7 +246,7 @@ $saveOrder = $listOrder == 'ordering';
                             'COM_INSTALLER_CUSTOMEXTS_HEADING_TYPE',
                             'type',
                             $listDirn,
-                            $listOrder
+                            $listOrder,
                         ); ?>
                     </th>
                     <th class="priority-4 center">
@@ -255,7 +255,7 @@ $saveOrder = $listOrder == 'ordering';
                             'COM_INSTALLER_CUSTOMEXTS_HEADING_FOLDER',
                             'folder',
                             $listDirn,
-                            $listOrder
+                            $listOrder,
                         ); ?>
                     </th>
                     <th class="priority-5">
@@ -276,7 +276,7 @@ $saveOrder = $listOrder == 'ordering';
                             'COM_INSTALLER_CUSTOMEXTS_HEADING_ID',
                             'extension_id',
                             $listDirn,
-                            $listOrder
+                            $listOrder,
                         ); ?>
                     </th>
                 </tr>
@@ -307,7 +307,7 @@ $saveOrder = $listOrder == 'ordering';
                             $editUrl = Route::url(
                                 'index.php?option=' . $this->option
                                 . '&controller=' . $this->controller
-                                . '&task=edit&id=' . $item->get('extension_id')
+                                . '&task=edit&id=' . $item->get('extension_id'),
                             );
                             ?>
                         <a href="<?php echo $editUrl; ?>">

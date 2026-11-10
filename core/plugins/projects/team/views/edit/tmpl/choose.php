@@ -29,7 +29,7 @@ $notteam = array_diff($members, $team);
 $formAction = Route::url(
     'index.php?option=' . $this->option
     . '&task=save&alias=' . $this->model->get('alias')
-    . '&active=team'
+    . '&active=team',
 );
 $totalLabel = ucfirst(Lang::txt('PLG_PROJECTS_TEAM_TOTAL_MEMBERS'));
 ?>

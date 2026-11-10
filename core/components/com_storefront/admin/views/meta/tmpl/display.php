@@ -41,7 +41,7 @@ Toolbar::help('categories');
 <?php
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 $sortDir = @$this->filters['sort_Dir'];
 $sort = @$this->filters['sort'];
@@ -135,7 +135,7 @@ foreach ($this->rows as $row) {
                     $editUrl = Route::url(
                         'index.php?option=' . $this->option
                         . '&controller=' . $this->controller
-                        . '&task=edit&id=' . $row->pId
+                        . '&task=edit&id=' . $row->pId,
                     );
                     $editTitle = Lang::txt('COM_STOREFRONT_EDIT_PRODUCT');
                     ?>
@@ -157,7 +157,7 @@ foreach ($this->rows as $row) {
                     $stateUrl = Route::url(
                         'index.php?option=' . $this->option
                         . '&controller=' . $this->controller
-                        . '&task=' . $task . '&id=' . $row->pId
+                        . '&task=' . $task . '&id=' . $row->pId,
                     );
                     $stateTitle = Lang::txt('COM_STOREFRONT_SET_TASK', $task);
                     ?>
@@ -180,7 +180,7 @@ foreach ($this->rows as $row) {
                         $accessUrl = Route::url(
                             'index.php?option=' . $this->option
                             . '&controller=' . $this->controller
-                            . '&task=' . $task_access . '&id=' . $row->pId
+                            . '&task=' . $task_access . '&id=' . $row->pId,
                         );
                         $changeAccessTitle = Lang::txt('COM_STOREFRONT_CHANGE_ACCESS');
                         ?>

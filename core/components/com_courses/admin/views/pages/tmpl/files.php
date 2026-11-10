@@ -41,7 +41,7 @@ $this->js('media.js');
         <?php
             $routeUrl = Route::url(
                 'index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=upload&course='
-                . $this->course_id . '&listdir=' . $this->listdir . '&no_html=1&' . Session::getFormToken() . '=1'
+                . $this->course_id . '&listdir=' . $this->listdir . '&no_html=1&' . Session::getFormToken() . '=1',
             );
             ?>
         <div
@@ -66,14 +66,14 @@ $this->js('media.js');
             <?php
                 $routeUrl = Route::url(
                     'index.php?option=' . $this->option  . '&controller=' . $this->controller
-                    . '&task=list&tmpl=component&listdir=' . $this->listdir . '&course=' . $this->course_id
+                    . '&task=list&tmpl=component&listdir=' . $this->listdir . '&course=' . $this->course_id,
                 );
                 ?>
             <iframe src="<?php echo $routeUrl; ?>" name="imgManager" id="imgManager" width="98%" height="150"
                 <?php
                     $routeUrl = Route::url(
                         'index.php?option=' . $this->option  . '&controller=' . $this->controller
-                        . '&task=list&tmpl=component&course=' . $this->course_id
+                        . '&task=list&tmpl=component&course=' . $this->course_id,
                     );
                     ?>
                 data-dir="<?php echo $routeUrl; ?>"></iframe>

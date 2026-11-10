@@ -21,7 +21,7 @@ $this->css();
 $all = [
     'category' => '',
     'title'    => Lang::txt('COM_WHATSNEW_ALL_CATEGORIES'),
-    'total'    => $this->total
+    'total'    => $this->total,
 ];
 
 array_unshift($this->cats, $all);
@@ -73,7 +73,7 @@ foreach ($this->cats as $cat) {
 
                         Pathway::append(
                             $subcat['title'],
-                            'index.php?option=' . $this->option . '&period=' . urlencode(stripslashes($blob))
+                            'index.php?option=' . $this->option . '&period=' . urlencode(stripslashes($blob)),
                         );
                     }
 
@@ -218,7 +218,7 @@ foreach ($this->cats as $cat) {
                         $pageNav = $this->pagination(
                             $this->total,
                             $this->start,
-                            $this->limit
+                            $this->limit,
                         );
 
                         $pageNav->setAdditionalUrlParam('category', urlencode(strToLower($this->active)));
@@ -241,10 +241,10 @@ foreach ($this->cats as $cat) {
                         }
                         if ($ttl > 5) {
                             $morePeriod = urlencode(
-                                strToLower($this->cats[$ci]['category']) . ':' . stripslashes($this->period)
+                                strToLower($this->cats[$ci]['category']) . ':' . stripslashes($this->period),
                             );
                             $moreUrl = Route::url(
-                                'index.php?option=' . $this->option . '&period=' . $morePeriod
+                                'index.php?option=' . $this->option . '&period=' . $morePeriod,
                             );
                             $html .= ' | <a href="' . $moreUrl . '">'
                                 . Lang::txt('COM_WHATSNEW_SEE_MORE_RESULTS') . '</a>';

@@ -41,8 +41,8 @@ class Resourcemenu extends Module
             [
                 '',
                 $obj,
-                $this->params
-            ]
+                $this->params,
+            ],
         );
 
         $this->html = $obj->text;

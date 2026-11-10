@@ -187,22 +187,22 @@ class User extends Base
         if (!$title) {
             Pathway::append(
                 Lang::txt('Members'),
-                'index.php?option=' . $this->get('option')
+                'index.php?option=' . $this->get('option'),
             );
             Pathway::append(
                 stripslashes((string) $this->_item->get('name')),
-                'index.php?option=' . $this->get('option') . '&id=' . $this->get('referenceid')
+                'index.php?option=' . $this->get('option') . '&id=' . $this->get('referenceid'),
             );
             $url = 'index.php?option=' . $this->get('option') . '&active=wishlist&category='
                 . $this->get('category') . '&rid=' . $this->get('referenceid');
             Pathway::append(
                 Lang::txt('Wishlist'),
-                $url
+                $url,
             );
         } else {
             Pathway::append(
                 $title,
-                $url
+                $url,
             );
         }
 

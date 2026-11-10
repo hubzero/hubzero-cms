@@ -82,7 +82,7 @@ $this->css('form.css')
                                     <?php
                                         $routeUrl = Route::url(
                                             $this->base . '&task=showDeployment&id=' . $dep->getId() . '&formId='
-                                            . $form['id']
+                                            . $form['id'],
                                         );
                                     ?>
                                     <a href="<?php echo $routeUrl; ?>">

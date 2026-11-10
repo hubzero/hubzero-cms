@@ -54,37 +54,37 @@ class Units extends AdminController
             'offering' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.offering',
                 'offering',
-                0
+                0,
             ),
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             )),
             'state' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.state',
                 'state',
-                '-1'
+                '-1',
             ),
             // Filters for returning results
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limitstart',
                 'limitstart',
                 0,
-                'int'
-            )
+                'int',
+            ),
         ];
 
         $this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->filters['offering']);
         if (!$this->view->offering->exists()) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=courses', false)
+                Route::url('index.php?option=' . $this->_option . '&controller=courses', false),
             );
             return;
         }
@@ -207,7 +207,7 @@ class Units extends AdminController
             . '&offering=' . Request::getInt('offering', 0);
         App::redirect(
             Route::url($url, false),
-            Lang::txt('COM_COURSES_ITEM_SAVED')
+            Lang::txt('COM_COURSES_ITEM_SAVED'),
         );
     }
 
@@ -233,7 +233,7 @@ class Units extends AdminController
             App::redirect(
                 Route::url($url, false),
                 Lang::txt('COM_COURSES_ERROR_NO_ID'),
-                'error'
+                'error',
             );
             return;
         }
@@ -247,7 +247,7 @@ class Units extends AdminController
             App::redirect(
                 Route::url($url, false),
                 Lang::txt('COM_COURSES_ERROR_COPY_FAILED') . ': ' . $unit->getError(),
-                'error'
+                'error',
             );
             return;
         }
@@ -255,7 +255,7 @@ class Units extends AdminController
         // Redirect back to the courses page
         App::redirect(
             Route::url($url, false),
-            Lang::txt('COM_COURSES_ITEM_COPIED')
+            Lang::txt('COM_COURSES_ITEM_COPIED'),
         );
     }
 
@@ -313,7 +313,7 @@ class Units extends AdminController
             . '&offering=' . Request::getInt('offering', 0);
         App::redirect(
             Route::url($url, false),
-            Lang::txt('COM_COURSES_ITEMS_REMOVED', $num)
+            Lang::txt('COM_COURSES_ITEMS_REMOVED', $num),
         );
     }
 
@@ -341,7 +341,7 @@ class Units extends AdminController
             App::redirect(
                 Route::url($url, false),
                 $msg,
-                'error'
+                'error',
             );
             return;
         }
@@ -370,7 +370,7 @@ class Units extends AdminController
         // Set the redirect
         App::redirect(
             Route::url($url, false),
-            $message
+            $message,
         );
     }
 
@@ -403,7 +403,7 @@ class Units extends AdminController
             . '&controller=' . $this->_controller
             . '&offering=' . Request::getInt('offering', 0);
         App::redirect(
-            Route::url($url, false)
+            Route::url($url, false),
         );
     }
 
@@ -418,7 +418,7 @@ class Units extends AdminController
             . '&controller=' . $this->_controller
             . '&offering=' . Request::getInt('offering', 0);
         App::redirect(
-            Route::url($url, false)
+            Route::url($url, false),
         );
     }
 }

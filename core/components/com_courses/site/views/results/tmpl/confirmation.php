@@ -39,7 +39,7 @@ $dep  = $this->dep;
                 $endLocal = Date::of($dep->getEndTime())->toLocal('r');
                 $diff = \Components\Courses\Helpers\Form::timeDiff(
                     strtotime($this->dep->getEndTime())
-                    - strtotime(Date::of('now'))
+                    - strtotime(Date::of('now')),
                 );
                 echo $endLocal . " (about " . $diff . " from now)";
             } else {
@@ -56,7 +56,7 @@ $dep  = $this->dep;
                 $endLocal = Date::of($dep->getEndTime())->toLocal('r');
                 $diff = \Components\Courses\Helpers\Form::timeDiff(
                     strtotime($this->dep->getEndTime())
-                    - strtotime(Date::of('now'))
+                    - strtotime(Date::of('now')),
                 );
                 echo $endLocal . " (about " . $diff . " from now)";
             } else {
@@ -85,7 +85,7 @@ $dep  = $this->dep;
                                 $sel = ($completedAttempt == $attempt)
                                     ? ' selected="selected"' : '';
                                 $ord = \Components\Courses\Helpers\Form::toOrdinal(
-                                    $completedAttempt
+                                    $completedAttempt,
                                 );
                             ?>
                             <option value="<?php echo $completedAttempt; ?>"<?php echo $sel; ?>>
@@ -107,7 +107,7 @@ $dep  = $this->dep;
                     <?php
                         $routeUrl = Route::url(
                             $this->base . '&task=form.complete&crumb=' . $this->dep->getCrumb() . '&attempt='
-                            . $nextAttempt
+                            . $nextAttempt,
                         );
                     ?>
                     <a class="btn btn-warning" href="<?php echo $routeUrl; ?>">

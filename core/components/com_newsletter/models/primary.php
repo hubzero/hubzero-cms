@@ -55,7 +55,7 @@ class Primary extends Relational
      * @var  array
      */
     protected $rules = [
-        'story' => 'notempty'
+        'story' => 'notempty',
     ];
 
     /**
@@ -64,7 +64,7 @@ class Primary extends Relational
      * @var  array
      */
     public $initiate = [
-        'order'
+        'order',
     ];
 
     /**

@@ -46,7 +46,7 @@ class Store extends Plugin
     {
         $area = [
             'name' => $this->_name,
-            'title' => Lang::txt('PLG_COURSES_' . strtoupper($this->_name))
+            'title' => Lang::txt('PLG_COURSES_' . strtoupper($this->_name)),
         ];
         return $area;
     }

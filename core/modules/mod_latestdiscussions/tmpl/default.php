@@ -37,11 +37,11 @@ $c = 0;
                         $location = '<a href="'
                             . Route::url(
                                 'index.php?option=com_groups&cn='
-                                . $post->get('group_alias')
+                                . $post->get('group_alias'),
                             )
                             . '">'
                             . $this->escape(
-                                stripslashes($post->get('group_title'))
+                                stripslashes($post->get('group_title')),
                             )
                             . '</a>';
                     }
@@ -63,10 +63,10 @@ $c = 0;
                             } else {
                                 $creatorUrl = Route::url(
                                     'index.php?option=com_members&id='
-                                    . $post->creator()->get('id')
+                                    . $post->creator()->get('id'),
                                 );
                                 $creatorName = $this->escape(
-                                    stripslashes($post->creator()->get('name'))
+                                    stripslashes($post->creator()->get('name')),
                                 );
                                 echo '<a href="' . $creatorUrl . '">'
                                     . $creatorName . '</a>';
@@ -83,7 +83,7 @@ $c = 0;
                                 echo Lang::txt(
                                     'MOD_LATESTDISCUSSIONS_AT_TIME_ON_DATE',
                                     $post->created('time'),
-                                    $post->created('date')
+                                    $post->created('date'),
                                 );
                                 ?>
                             </time>
@@ -93,7 +93,7 @@ $c = 0;
                             <?php
                             echo \Hubzero\Utility\Str::truncate(
                                 strip_tags($post->get('comment')),
-                                $this->charlimit
+                                $this->charlimit,
                             );
                             ?>
                         </span>
@@ -119,7 +119,7 @@ $c = 0;
             $rssUrl = Route::url(
                 'index.php?option=com_forum&task=latest.rss',
                 true,
-                -1
+                -1,
             );
             ?>
             <a href="<?php echo $rssUrl; ?>" class="newsfeed">

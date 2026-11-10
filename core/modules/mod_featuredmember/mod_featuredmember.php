@@ -41,7 +41,7 @@ class Featuredmember extends Module
             'start'      => 0,
             'sortby'     => $database->sqlRand(),
             'search'     => '',
-            'authorized' => false
+            'authorized' => false,
         ];
         if ($min = $this->params->get('min_contributions')) {
             $filters['contributions'] = $min;

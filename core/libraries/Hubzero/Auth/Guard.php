@@ -205,7 +205,7 @@ class Guard
                 // Bail here if the plugin can't be created
                 $this->app['log.debug']->error($this->app['language']->txts(
                     'JLIB_USER_ERROR_AUTHENTICATION_FAILED_LOAD_PLUGIN',
-                    $className
+                    $className,
                 ));
                 continue;
             }

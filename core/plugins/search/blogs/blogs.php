@@ -77,7 +77,7 @@ class Blogs extends Plugin
 			WHERE
 				be.state=1 AND
 				$weight > 0" .
-                ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
+                ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : ''),
         );
 
         if (($rows = $rows->to_associative()) instanceof \Components\Search\Models\Basic\Result\Blank) {
@@ -106,7 +106,7 @@ class Blogs extends Plugin
 				INNER JOIN `#__users` u
 					ON u.id = bc.created_by
 				WHERE bc.entry_id IN (" . implode(',', array_keys($id_map)) . ")
-				ORDER BY bc.created"
+				ORDER BY bc.created",
             );
             foreach ($comments->to_associative() as $comment) {
                 $rows->at($id_map[$comment->get('entry_id')])->add_child($comment);

@@ -53,7 +53,7 @@ class Action extends Relational
      * @var  array
      */
     protected $rules = [
-        'element' => 'notempty'
+        'element' => 'notempty',
     ];
 
     /**

@@ -101,7 +101,7 @@ class Request
             'mandatory' => $this->terms->get_mandatory_chunks(),
             'optional'  => $this->terms->get_optional_chunks(),
             'forbidden' => $this->terms->get_forbidden_chunks(),
-            'stemmed'   => $this->terms->get_stemmed_chunks()
+            'stemmed'   => $this->terms->get_stemmed_chunks(),
         ];
         $this->load_tags();
     }
@@ -143,7 +143,7 @@ class Request
 			WHERE
 				$weight > 0" .
                 ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
-            " ORDER BY $weight DESC"
+            " ORDER BY $weight DESC",
         );
         $this->tags = $tags->to_associative();
 
@@ -155,7 +155,7 @@ class Request
         if ($tag_ids) {
             $dbh = App::get('db');
             $dbh->setQuery(
-                'SELECT objectid, tbl FROM `#__tags_object` WHERE tagid IN (' . join(',', $tag_ids) . ')'
+                'SELECT objectid, tbl FROM `#__tags_object` WHERE tagid IN (' . join(',', $tag_ids) . ')',
             );
             foreach ($dbh->loadAssocList() as $row) {
                 if (!array_key_exists($row['tbl'], $this->object_tags)) {

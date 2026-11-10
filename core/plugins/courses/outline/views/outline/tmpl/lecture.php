@@ -43,7 +43,7 @@ if (
     <?php
     $restrictedMsg = Lang::txt(
         'Access to this content is restricted to students only.'
-        . ' You must be enrolled to view the content.'
+        . ' You must be enrolled to view the content.',
     );
     ?>
     <p class="info"><?php echo $restrictedMsg; ?></p>
@@ -63,7 +63,7 @@ if (
             <?php
             $scheduledMsg = Lang::txt(
                 'This lecture is <strong>scheduled</strong> to be available at %s.',
-                $lecture->get('publish_up')
+                $lecture->get('publish_up'),
             );
             ?>
         <div class="asset-status pending">
@@ -110,7 +110,7 @@ if (
                     if (
                         !$this->course->offering()->access('manage') && !$prerequisites->hasMet(
                             'asset',
-                            $used_asset->get('id')
+                            $used_asset->get('id'),
                         )
                     ) {
                         $prereqs      = $prerequisites->get('asset', $used_asset->get('id'));
@@ -126,7 +126,7 @@ if (
                         App::redirect(
                             Route::url($base),
                             Lang::txt('COM_COURSES_ERROR_ASSET_HAS_PREREQ', $requirements),
-                            'warning'
+                            'warning',
                         );
                         return;
                     }
@@ -149,7 +149,7 @@ if (
                             <?php
                             $assetScheduledMsg = Lang::txt(
                                 'This asset is <strong>scheduled</strong> to be available at %s.',
-                                $used_asset->get('publish_up')
+                                $used_asset->get('publish_up'),
                             );
                             ?>
                         <div class="asset-status pending">
@@ -241,7 +241,7 @@ if (
                         $found = true;
                         $prevUrl = Route::url(
                             $base . '&unit=' . $unit->get('alias')
-                            . '&b=' . $lecture->sibling('prev')->get('alias')
+                            . '&b=' . $lecture->sibling('prev')->get('alias'),
                         );
                         ?>
                             <a
@@ -308,7 +308,7 @@ if (
         $results = Event::trigger('courses.onCourseAfterLecture', [
             $this->course,
             $unit,
-            $lecture
+            $lecture,
         ]);
         // Output results
         echo implode("\n", $results);

@@ -197,7 +197,7 @@ namespace Hubzero\Component\Tests {
                 return [
                 'allowEval' => true,
                 'allowScriptTags' => true,
-                'historyCacheSize' => 5
+                'historyCacheSize' => 5,
                 ];
             }
 

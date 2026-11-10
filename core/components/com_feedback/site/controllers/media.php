@@ -208,7 +208,7 @@ class Media extends SiteController
             ->set('webpath', $this->config->get('uploadpath', '/site/quotes'))
             ->set(
                 'default_picture',
-                $this->config->get('defaultpic', '/core/components/com_feedback/site/assets/img/contributor.gif')
+                $this->config->get('defaultpic', '/core/components/com_feedback/site/assets/img/contributor.gif'),
             )
             ->set('path', $dir)
             ->set('file', $file)

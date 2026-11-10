@@ -124,7 +124,7 @@ class IdPResponseTest extends Basic
 
         $key = openssl_pkey_new([
             'private_key_bits' => 2048,
-            'private_key_type' => OPENSSL_KEYTYPE_RSA
+            'private_key_type' => OPENSSL_KEYTYPE_RSA,
         ]);
 
         $csr  = openssl_csr_new(['commonName' => 'test-idp.example.org'], $key);
@@ -139,14 +139,14 @@ class IdPResponseTest extends Basic
             'IdPKeyFile'          => $this->dir . '/saml.pem',
             'signature_algorithm' => 'rsa-sha256',
             'assertion_lifetime'  => 180,
-            'clock_skew'          => 60
+            'clock_skew'          => 60,
         ]));
 
         $this->sp = new StubSamlSp([
             'entity_id'     => 'https://sp.example.com/saml2',
             'acs_url'       => 'https://sp.example.com/acs',
             'nameid_source' => 'username',
-            'nameid_format' => \LightSaml\SamlConstants::NAME_ID_FORMAT_UNSPECIFIED
+            'nameid_format' => \LightSaml\SamlConstants::NAME_ID_FORMAT_UNSPECIFIED,
         ]);
 
         $this->user = new StubSamlUser([
@@ -155,7 +155,7 @@ class IdPResponseTest extends Basic
             'email'     => 'jdoe@example.org',
             'name'      => 'Jane Doe',
             'givenName' => 'Jane',
-            'surname'   => 'Doe'
+            'surname'   => 'Doe',
         ]);
     }
 
@@ -234,7 +234,7 @@ class IdPResponseTest extends Basic
         $byEmail = new StubSamlSp([
             'entity_id'     => 'https://sp.example.com/saml2',
             'acs_url'       => 'https://sp.example.com/acs',
-            'nameid_source' => 'email'
+            'nameid_source' => 'email',
         ]);
 
         $x = $this->xpath($this->idp->createSAMLResponse($byEmail, $this->user, '_r', '_s'));
@@ -267,9 +267,9 @@ class IdPResponseTest extends Basic
             [
                 'entity_id'     => 'https://sp.example.com/saml2',
                 'acs_url'       => 'https://sp.example.com/acs',
-                'nameid_source' => 'username'
+                'nameid_source' => 'username',
             ],
-            [['name' => 'eppn', 'friendly' => 'eppn', 'source' => 'username']]
+            [['name' => 'eppn', 'friendly' => 'eppn', 'source' => 'username']],
         );
 
         $x = $this->xpath($this->idp->createSAMLResponse($mapped, $this->user, '_r', '_s'));
@@ -311,14 +311,14 @@ class IdPResponseTest extends Basic
         $this->assertEquals(0, $x->query('//saml:Assertion/ds:Signature')->length);
         $this->assertEquals(
             1,
-            $x->query('//ds:SignatureMethod[@Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"]')->length
+            $x->query('//ds:SignatureMethod[@Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"]')->length,
         );
 
         $signing = new StubSamlSp([
             'entity_id'      => 'https://sp.example.com/saml2',
             'acs_url'        => 'https://sp.example.com/acs',
             'nameid_source'  => 'username',
-            'sign_assertion' => 1
+            'sign_assertion' => 1,
         ]);
 
         $x = $this->xpath($this->idp->createSAMLResponse($signing, $this->user, '_r', '_s'));

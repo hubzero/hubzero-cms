@@ -142,7 +142,7 @@ class Migration20130924000006ComFinder extends Base
                     'title'     => 'ROOT',
                     'state'     => 0,
                     'access'    => 0,
-                    'ordering'  => 0
+                    'ordering'  => 0,
                 ])
                 ->execute();
         }
@@ -256,7 +256,7 @@ class Migration20130924000006ComFinder extends Base
             'then', 'there', 'these', 'they', 'this', 'those', 'thus', 'time', 'times', 'to', 'too', 'true',
             'under', 'until', 'up', 'upon', 'use', 'user', 'users', 'veri', 'version', 'very', 'via', 'want',
             'was', 'way', 'were', 'what', 'when', 'where', 'whi', 'which', 'who', 'whom', 'whose', 'why', 'wide',
-            'will', 'with', 'within', 'without', 'would', 'yes', 'yet', 'you', 'your', 'yours'
+            'will', 'with', 'within', 'without', 'would', 'yes', 'yet', 'you', 'your', 'yours',
         ];
 
         foreach ($terms as $term) {
@@ -264,7 +264,7 @@ class Migration20130924000006ComFinder extends Base
                 ->insert('#__finder_terms_common')
                 ->set([
                     'term'     => $term,
-                    'language' => 'en'
+                    'language' => 'en',
                 ])
                 ->execute();
         }

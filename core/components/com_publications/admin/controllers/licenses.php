@@ -49,29 +49,29 @@ class Licenses extends AdminController
                 $this->_option . '.licenses.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.licenses.limitstart',
                 'limitstart',
                 0,
-                'int'
+                'int',
             ),
             'search' => Request::getState(
                 $this->_option . '.licenses.search',
                 'search',
-                ''
+                '',
             ),
             'sort' => Request::getState(
                 $this->_option . '.licenses.sort',
                 'filter_order',
-                'title'
+                'title',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.licenses.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         // Instantiate an object

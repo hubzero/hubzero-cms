@@ -53,7 +53,7 @@ class Slack extends Plugin
                 'notify_updated'  => $this->params->get('notify_updated' . $sfx),
                 'notify_private'  => $this->params->get('notify_private' . $sfx),
                 'group_updated'   => $this->params->get('group_updated' . $sfx),
-                'channel_updated' => ($this->params->get('channel_updated' . $sfx) ? $this->params->get('channel_updated' . $sfx) : $this->params->get('channel' . $sfx))
+                'channel_updated' => ($this->params->get('channel_updated' . $sfx) ? $this->params->get('channel_updated' . $sfx) : $this->params->get('channel' . $sfx)),
             ];
         }
 
@@ -103,8 +103,8 @@ class Slack extends Plugin
                 'username'       => $username,
                 'channel'        => '#' . trim($channel, '#'),
                 'link_names'     => ($this->params->get('link_names', 1) ? true : false),
-                'allow_markdown' => ($this->params->get('allow_markdown', 1) ? true : false)
-            ]
+                'allow_markdown' => ($this->params->get('allow_markdown', 1) ? true : false),
+            ],
         );
 
         try {
@@ -175,7 +175,7 @@ class Slack extends Plugin
                 $endpoint['endpoint'],
                 $endpoint['username'],
                 $endpoint['channel_created'],
-                $data
+                $data,
             );
         }
     }
@@ -250,7 +250,7 @@ class Slack extends Plugin
                                 $fields[] = [
                                     'title' => ucfirst($items->field),
                                     'value' => $items->after,
-                                    'short' => true
+                                    'short' => true,
                                 ];
                             }
                         }
@@ -265,7 +265,7 @@ class Slack extends Plugin
                 $endpoint['endpoint'],
                 $endpoint['username'],
                 $endpoint['channel_updated'],
-                $data
+                $data,
             );
         }
     }

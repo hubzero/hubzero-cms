@@ -63,7 +63,7 @@ class TagActivityLogsv2r0 extends ApiController
         $limit = min(max(Request::getInt('limit', 100), 1), 500);
 
         $response = [
-            'logs' => []
+            'logs' => [],
         ];
 
         if ($tagId && $logId) {

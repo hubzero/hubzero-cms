@@ -71,7 +71,7 @@ Toolbar::help('campaign');
                 'calendar',
                 'campaign[expire_date_display]',
                 Date::of($exDate)->toLocal(),
-                ['id' => 'campaign-expire_date']
+                ['id' => 'campaign-expire_date'],
             );
             ?>
         </div>

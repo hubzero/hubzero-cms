@@ -38,7 +38,7 @@ $this->view('_submenu')
 <?php
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 ?>
 <form action="<?php echo $formAction; ?>"
@@ -145,7 +145,7 @@ $formAction = Route::url(
                     echo $this->pagination(
                         $this->total,
                         $this->filters['start'],
-                        $this->filters['limit']
+                        $this->filters['limit'],
                     );
                     ?></td>
             </tr>
@@ -163,7 +163,7 @@ $formAction = Route::url(
                         <?php
                         $skuEditUrl = Route::url(
                             'index.php?option=com_storefront&controller=skus&task=edit&id='
-                            . $itemInfo->sId
+                            . $itemInfo->sId,
                         );
                         ?>
                         <a href="<?php echo $skuEditUrl; ?>">
@@ -177,7 +177,7 @@ $formAction = Route::url(
                         'index.php?option=' . $this->option
                         . '&controller=' . $this->controller
                         . '&task=' . $this->task
-                        . '&pId=' . $itemInfo->pId
+                        . '&pId=' . $itemInfo->pId,
                     );
                     $pName = $this->escape(stripslashes($itemInfo->pName));
                     $product = '<a href="' . $pUrl . '">' . $pName . '</a>';
@@ -191,7 +191,7 @@ $formAction = Route::url(
                             'index.php?option=' . $this->option
                             . '&controller=' . $this->controller
                             . '&task=' . $this->task
-                            . '&sId=' . $row->sId
+                            . '&sId=' . $row->sId,
                         );
                         $sName = $this->escape(stripslashes($itemInfo->sSku));
                         $product .= '<br />SKU: <a href="' . $sUrl . '">' . $sName . '</a>';
@@ -210,7 +210,7 @@ $formAction = Route::url(
                         <?php
                         $orderUrl = Route::url(
                             'index.php?option=com_cart&controller=orders&task=view&id='
-                            . $row->tId
+                            . $row->tId,
                         );
                         ?>
                         <a href="<?php echo $orderUrl; ?>">
@@ -227,7 +227,7 @@ $formAction = Route::url(
                         <?php
                         $memberUrl = Route::url(
                             'index.php?option=com_members&task=edit&id='
-                            . $row->uidNumber
+                            . $row->uidNumber,
                         );
                         ?>
                         <a href="<?php echo $memberUrl; ?>">

@@ -36,12 +36,12 @@ class Utilities
         Submenu::addEntry(
             Lang::txt('COM_TEMPLATES_SUBMENU_STYLES'),
             Route::url('index.php?option=com_templates&controller=styles'),
-            $controller == 'styles'
+            $controller == 'styles',
         );
         Submenu::addEntry(
             Lang::txt('COM_TEMPLATES_SUBMENU_TEMPLATES'),
             Route::url('index.php?option=com_templates&controller=templates'),
-            $controller == 'templates'
+            $controller == 'templates',
         );
     }
 

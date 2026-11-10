@@ -28,7 +28,7 @@ if ($this->course->access('edit', 'course') && $field == 'description') {
                     $this->escape($this->course->description('raw')),
                     35,
                     50,
-                    'field_description'
+                    'field_description',
                 );
             ?>
         </label>
@@ -38,7 +38,7 @@ if ($this->course->access('edit', 'course') && $field == 'description') {
             <?php
             $cancelUrl = Route::url(
                 'index.php?option=' . $this->option
-                . '&controller=course&gid=' . $this->course->get('alias')
+                . '&controller=course&gid=' . $this->course->get('alias'),
             );
             ?>
             <a class="btn btn-secondary" href="<?php echo $cancelUrl; ?>">

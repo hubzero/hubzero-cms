@@ -33,7 +33,7 @@ class Pec extends Plugin
     {
         $area = [
             'name' => $this->_name,
-            'title' => Lang::txt('PLG_COURSES_' . strtoupper($this->_name))
+            'title' => Lang::txt('PLG_COURSES_' . strtoupper($this->_name)),
         ];
         return $area;
     }
@@ -59,7 +59,7 @@ class Pec extends Plugin
             $url = str_replace(
                 '{{course}}',
                 $offering->params('pec_course', 0),
-                $offering->params('url', 'https://www.distance.purdue.edu/{{course}}')
+                $offering->params('url', 'https://www.distance.purdue.edu/{{course}}'),
             );
         }
 

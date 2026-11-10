@@ -161,7 +161,7 @@ Html::behavior('tooltip');
                 </a>:
                 <?php
                     $routeUrl = Route::url(
-                        'index.php?option=' . $this->option . '&controller=offerings&course=' . $this->course->get('id')
+                        'index.php?option=' . $this->option . '&controller=offerings&course=' . $this->course->get('id'),
                     );
                 ?>
                 <a href="<?php echo $routeUrl; ?>">
@@ -200,7 +200,7 @@ Html::behavior('tooltip');
                     echo $this->pagination(
                         $this->total,
                         $this->filters['start'],
-                        $this->filters['limit']
+                        $this->filters['limit'],
                     );
                     ?>
                 </td>
@@ -234,7 +234,7 @@ Html::behavior('tooltip');
                         <?php
                             $routeUrl = Route::url(
                                 'index.php?option=' . $this->option . '&controller=' . $this->controller
-                                . '&task=edit&offering=' . $row->get('offering_id') . '&id=' . $row->get('id')
+                                . '&task=edit&offering=' . $row->get('offering_id') . '&id=' . $row->get('id'),
                             );
                         ?>
                         <a href="<?php echo $routeUrl; ?>">
@@ -251,7 +251,7 @@ Html::behavior('tooltip');
                         <?php
                             $routeUrl = Route::url(
                                 'index.php?option=' . $this->option . '&controller=' . $this->controller
-                                . '&task=edit&offering=' . $row->get('offering_id') . '&id=' . $row->get('id')
+                                . '&task=edit&offering=' . $row->get('offering_id') . '&id=' . $row->get('id'),
                             );
                         ?>
                         <a href="<?php echo $routeUrl; ?>">

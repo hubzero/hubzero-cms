@@ -42,7 +42,7 @@ $this->css('
 <?php
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 ?>
 <form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
@@ -82,7 +82,7 @@ $formAction = Route::url(
                         'COM_SUPPORT_COL_ID',
                         'id',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     ); ?>
                 </th>
                 <th scope="col" class="priority-2">
@@ -91,7 +91,7 @@ $formAction = Route::url(
                         'COM_SUPPORT_COL_FOR',
                         'open',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     ); ?>
                 </th>
                 <th scope="col">
@@ -100,7 +100,7 @@ $formAction = Route::url(
                         'COM_SUPPORT_COL_TITLE',
                         'title',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     ); ?>
                 </th>
                 <th scope="col" class="priority-3">
@@ -109,7 +109,7 @@ $formAction = Route::url(
                         'COM_SUPPORT_COL_ALIAS',
                         'alias',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     ); ?>
                 </th>
                 <th scope="col" class="priority-4">
@@ -118,7 +118,7 @@ $formAction = Route::url(
                         'COM_SUPPORT_COL_COLOR',
                         'color',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     ); ?>
                 </th>
             </tr>
@@ -170,7 +170,7 @@ $formAction = Route::url(
                     $editUrl = Route::url(
                         'index.php?option=' . $this->option
                         . '&controller=' . $this->controller
-                        . '&task=edit&id=' . $row->get('id')
+                        . '&task=edit&id=' . $row->get('id'),
                     );
                     ?>
                     <?php if ($canDo->get('core.edit')) { ?>

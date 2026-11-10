@@ -20,7 +20,7 @@ $tmpl = Request::getCmd('tmpl');
 $canDo = \Components\Collections\Helpers\Permissions::getActions('post');
 
 $formAction = Route::url(
-    'index.php?option=' . $this->option . '&controller=' . $this->controller
+    'index.php?option=' . $this->option . '&controller=' . $this->controller,
 );
 $sortDir = @$this->filters['sort_Dir'];
 $sort = @$this->filters['sort'];
@@ -52,7 +52,7 @@ $searchPlaceholder = Lang::txt('COM_COLLECTIONS_FILTER_SEARCH_PLACEHOLDER');
                     <th colspan="6">
                         <?php
                         $collection = \Components\Collections\Models\Orm\Collection::oneOrFail(
-                            $this->filters['collection_id']
+                            $this->filters['collection_id'],
                         );
                         ?>
                         (<?php echo $this->escape(stripslashes($collection->get('alias'))); ?>)
@@ -129,7 +129,7 @@ $searchPlaceholder = Lang::txt('COM_COLLECTIONS_FILTER_SEARCH_PLACEHOLDER');
                         $editUrl = Route::url(
                             'index.php?option=' . $this->option
                             . '&controller=' . $this->controller
-                            . '&task=edit&id=' . $row->get('id')
+                            . '&task=edit&id=' . $row->get('id'),
                         );
                         ?>
                         <a href="<?php echo $editUrl; ?>">
@@ -151,7 +151,7 @@ $searchPlaceholder = Lang::txt('COM_COLLECTIONS_FILTER_SEARCH_PLACEHOLDER');
                         <?php
                         $creatorName = $row->creator->get(
                             'name',
-                            Lang::txt('COM_COLLECTIONS_UNKNOWN')
+                            Lang::txt('COM_COLLECTIONS_UNKNOWN'),
                         );
                         echo $this->escape($creatorName);
                         ?>
@@ -175,7 +175,7 @@ $searchPlaceholder = Lang::txt('COM_COLLECTIONS_FILTER_SEARCH_PLACEHOLDER');
                             . '&controller=' . $this->controller
                             . '&task=remove&id=' . $row->get('id')
                             . '&' . Session::getFormToken() . '=1'
-                            . ($tmpl ? '&tmpl=' . $tmpl : '')
+                            . ($tmpl ? '&tmpl=' . $tmpl : ''),
                         );
                         ?>
                         <a class="delete" href="<?php echo $deleteUrl; ?>">

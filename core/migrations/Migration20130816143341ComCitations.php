@@ -67,7 +67,7 @@ class Migration20130816143341ComCitations extends Base
                 ->set([
                     'typeid' => null,
                     'style'  => 'custom',
-                    'format' => $citationParams->get('citation_format', '')
+                    'format' => $citationParams->get('citation_format', ''),
                 ])
                 ->execute();
         }

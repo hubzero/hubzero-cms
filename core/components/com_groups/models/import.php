@@ -285,7 +285,7 @@ class Import extends Base
             $map = [
                 'label' => $header,
                 'name'  => $norm,
-                'field' => ''
+                'field' => '',
             ];
 
             foreach ($this->fieldMap() as $column => $aliases) {
@@ -321,7 +321,7 @@ class Import extends Base
                 $this->_fieldMap[$field->get('name')] = [
                     $field->get('name'),
                     strtolower($field->get('name')),
-                    preg_replace('/[^a-zA-Z0-9]/', '', $field->get('name'))
+                    preg_replace('/[^a-zA-Z0-9]/', '', $field->get('name')),
                 ];
             }
         }

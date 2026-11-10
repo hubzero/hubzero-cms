@@ -108,7 +108,7 @@ class Notes extends Plugin
             'title'   => Lang::txt('COM_PROJECTS_TAB_NOTES'),
             'submenu' => null,
             'show'    => true,
-            'icon'    => 'f0c1'
+            'icon'    => 'f0c1',
         ];
 
         return $area;
@@ -149,7 +149,7 @@ class Notes extends Plugin
 
         $arr = [
             'html'     => '',
-            'metadata' => ''
+            'metadata' => '',
         ];
 
         // Get this area details
@@ -206,7 +206,7 @@ class Notes extends Plugin
             $this->note = new \Components\Projects\Models\Note(
                 $this->_masterScope,
                 $this->_group,
-                $this->model->get('id')
+                $this->model->get('id'),
             );
 
             // What's the task?
@@ -304,8 +304,8 @@ class Notes extends Plugin
                 'folder'  => 'projects',
                 'element' => 'notes',
                 'name'    => 'wrap',
-                'layout'  => 'wrap'
-            ]
+                'layout'  => 'wrap',
+            ],
         );
 
         // Get first project note
@@ -342,8 +342,8 @@ class Notes extends Plugin
                     'folder'  => 'projects',
                     'element' => 'notes',
                     'name'    => 'pages',
-                    'layout'  => 'doesnotexist'
-                ]
+                    'layout'  => 'doesnotexist',
+                ],
             );
             $nview->scope   = $scope;
             $nview->option  = $this->_option;
@@ -366,7 +366,7 @@ class Notes extends Plugin
                 'base_path' => $basePath,
                 'scope'     => 'project',
                 'scope_id'  => $this->model->get('id'),
-                'sub'       => true
+                'sub'       => true,
             ]);
 
             // Catch any echoed content with ob
@@ -476,8 +476,8 @@ class Notes extends Plugin
             [
                 'folder'  => 'projects',
                 'element' => 'notes',
-                'name'    => 'pubsettings'
-            ]
+                'name'    => 'pubsettings',
+            ],
         );
 
         // Get/update public stamp for page
@@ -492,8 +492,8 @@ class Notes extends Plugin
                 [
                     'folder'  => 'projects',
                     'element' => 'files',
-                    'name'    => 'error'
-                ]
+                    'name'    => 'error',
+                ],
             );
 
             $view->set('title', '');
@@ -528,49 +528,49 @@ class Notes extends Plugin
         if ($this->model->groupOwner()) {
             Pathway::append(
                 Lang::txt('COM_PROJECTS_GROUPS_COMPONENT'),
-                Route::url('index.php?option=com_groups')
+                Route::url('index.php?option=com_groups'),
             );
             Pathway::append(
                 \Hubzero\Utility\Str::truncate($this->model->groupOwner('description'), 50),
-                Route::url('index.php?option=com_groups&cn=' . $this->model->groupOwner('cn'))
+                Route::url('index.php?option=com_groups&cn=' . $this->model->groupOwner('cn')),
             );
             Pathway::append(
                 Lang::txt('COM_PROJECTS_PROJECTS'),
-                Route::url('index.php?option=com_groups&cn=' . $this->model->groupOwner('cn') . '&active=projects')
+                Route::url('index.php?option=com_groups&cn=' . $this->model->groupOwner('cn') . '&active=projects'),
             );
         } else {
             Pathway::append(
                 Lang::txt('COMPONENT_LONG_NAME'),
-                Route::url('index.php?option=' . $this->_option)
+                Route::url('index.php?option=' . $this->_option),
             );
         }
 
         if ($this->model->exists()) {
             Pathway::append(
                 stripslashes($this->model->get('title')),
-                Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias'))
+                Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias')),
             );
         }
 
         if ($this->_tool && $this->_tool->id) {
             Pathway::append(
                 ucfirst(Lang::txt('COM_PROJECTS_PANEL_TOOLS')),
-                Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=tools')
+                Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=tools'),
             );
 
             Pathway::append(
                 \Hubzero\Utility\Str::truncate($this->_tool->title, 50),
-                Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=tools&tool=' . $this->_tool->id)
+                Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=tools&tool=' . $this->_tool->id),
             );
 
             Pathway::append(
                 ucfirst(Lang::txt('COM_PROJECTS_TOOLS_TAB_WIKI')),
-                Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=tools&tool=' . $this->_tool->id . '&action=wiki')
+                Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=tools&tool=' . $this->_tool->id . '&action=wiki'),
             );
         } else {
             Pathway::append(
                 ucfirst(Lang::txt('COM_PROJECTS_TAB_NOTES')),
-                Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=notes')
+                Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=notes'),
             );
         }
     }
@@ -596,8 +596,8 @@ class Notes extends Plugin
             [
                 'folder'  => 'projects',
                 'element' => 'notes',
-                'name'    => 'browser'
-            ]
+                'name'    => 'browser',
+            ],
         );
 
         // Get current attachments
@@ -607,7 +607,7 @@ class Notes extends Plugin
 
         $view->attachments = $pContent->getAttachments(
             $versionid,
-            $filters = ['role' => $role, 'type' => 'note']
+            $filters = ['role' => $role, 'type' => 'note'],
         );
 
         // Output HTML
@@ -629,7 +629,7 @@ class Notes extends Plugin
 
         $arr = [
             'html'     => $html,
-            'metadata' => ''
+            'metadata' => '',
         ];
 
         return $arr;
@@ -691,8 +691,8 @@ class Notes extends Plugin
             [
                 'folder'  => 'projects',
                 'element' => 'notes',
-                'name'    => 'pubview'
-            ]
+                'name'    => 'pubview',
+            ],
         );
         $view->option = $this->_option;
         $view->model = $this->model;
@@ -725,8 +725,8 @@ class Notes extends Plugin
             [
                 'folder'  => 'projects',
                 'element' => 'notes',
-                'name'    => 'mini'
-            ]
+                'name'    => 'mini',
+            ],
         );
 
         $group = $model->config()->get('group_prefix', 'pr-') . $model->get('alias');
@@ -736,7 +736,7 @@ class Notes extends Plugin
         $note = new \Components\Projects\Models\Note(
             $masterScope,
             $group,
-            $model->get('id')
+            $model->get('id'),
         );
         $view->notes = $note->getNotes();
         $view->model = $model;
@@ -764,8 +764,8 @@ class Notes extends Plugin
             [
                 'folder'  => 'projects',
                 'element' => 'notes',
-                'name'    => 'publist'
-            ]
+                'name'    => 'publist',
+            ],
         );
 
         $database = App::get('db');

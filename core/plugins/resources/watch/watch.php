@@ -41,7 +41,7 @@ class Watch extends Plugin
     public function &onResourcesSubAreas($publication)
     {
         $areas = [
-            'watch' => Lang::txt('PLG_RESOURCES_WATCH')
+            'watch' => Lang::txt('PLG_RESOURCES_WATCH'),
         ];
 
         return $areas;
@@ -60,7 +60,7 @@ class Watch extends Plugin
         $arr = [
             'area'     => $this->_name,
             'html'     => '',
-            'metadata' => ''
+            'metadata' => '',
         ];
 
         // Only show for logged-in users
@@ -100,7 +100,7 @@ class Watch extends Plugin
             ->set('watched', \Hubzero\Activity\Subscription::oneByScope(
                 $this->resource->id,
                 'resource',
-                User::get('id')
+                User::get('id'),
             ));
 
         // Return the output
@@ -115,7 +115,7 @@ class Watch extends Plugin
         // Login required
         if (User::isGuest() || !$this->resource->id) {
             App::redirect(
-                Route::url($this->link)
+                Route::url($this->link),
             );
         }
 
@@ -131,7 +131,7 @@ class Watch extends Plugin
         $watch = \Hubzero\Activity\Subscription::oneByScope(
             $this->resource->id,
             'resource',
-            User::get('id')
+            User::get('id'),
         );
 
         // Unsubscribing
@@ -171,19 +171,19 @@ class Watch extends Plugin
                 'description' => Lang::txt('PLG_RESOURCES_WATCH_' . strtoupper($this->action) . 'D', '<a href="' . $url . '">' . htmlspecialchars((string) ($this->resource->title), ENT_QUOTES, 'UTF-8') . '</a>'),
                 'details'     => [
                     'title' => $this->resource->title,
-                    'url'   => $url
-                ]
+                    'url'   => $url,
+                ],
             ],
             'recipients' => [
-                User::get('id')
-            ]
+                User::get('id'),
+            ],
         ]);
 
         // Redirect
         App::redirect(
             Route::url($this->link),
             ($this->getError() ? $this->getError() : $msg),
-            ($this->getError() ? 'error' : null)
+            ($this->getError() ? 'error' : null),
         );
     }
 }

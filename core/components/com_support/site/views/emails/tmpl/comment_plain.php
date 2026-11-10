@@ -67,14 +67,14 @@ if (!$this->config->get('email_terse')) {
                             'COM_SUPPORT_CHANGELOG_BEFORE_AFTER',
                             $items->field,
                             $items->before,
-                            $items->after
+                            $items->after,
                         ) . "\n";
                     } elseif ($type == 'notifications') {
                         $message  .= ' * ' . Lang::txt(
                             'COM_SUPPORT_CHANGELOG_NOTIFIED',
                             $items->role,
                             $items->name,
-                            $items->address
+                            $items->address,
                         ) . "\n";
                     }
                 }

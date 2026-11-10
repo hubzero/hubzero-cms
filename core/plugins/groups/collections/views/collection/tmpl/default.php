@@ -235,7 +235,7 @@ if (!in_array($viewas, ['grid', 'list'])) {
             $pageNav = $this->pagination(
                 $this->count,
                 $this->filters['start'],
-                $this->filters['limit']
+                $this->filters['limit'],
             );
             $pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
             $pageNav->setAdditionalUrlParam('active', 'collections');

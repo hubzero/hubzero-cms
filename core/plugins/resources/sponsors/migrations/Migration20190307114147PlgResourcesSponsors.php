@@ -24,8 +24,8 @@ class Migration20190307114147PlgResourcesSponsors extends Base
     public static $tables = [
         '#__resource_sponsors' => [
             'created',
-            'modified'
-        ]
+            'modified',
+        ],
     ];
 
     /**

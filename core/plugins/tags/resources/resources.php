@@ -61,7 +61,7 @@ class Resources extends Plugin
             'total'    => 0,
             'results'  => null,
             'sql'      => '',
-            'children' => []
+            'children' => [],
         ];
 
         $database = App::get('db');
@@ -73,7 +73,7 @@ class Resources extends Plugin
                 'total'    => 0,
                 'results'  => null,
                 'sql'      => '',
-                'id'       => $category->id
+                'id'       => $category->id,
             ];
         }
 
@@ -265,7 +265,7 @@ class Resources extends Plugin
         $view = new \Hubzero\Component\View([
             'base_path' => Component::path('com_resources') . '/site',
             'name'      => 'browse',
-            'layout'    => 'item'
+            'layout'    => 'item',
         ]);
 
         $view->set('line', $row)

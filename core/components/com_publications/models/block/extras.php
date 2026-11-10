@@ -92,9 +92,9 @@ class Extras extends Base
                                 'directory'         => 'gallery',
                                 'reuse'             => 1,
                                 'dirHierarchy'      => 0,
-                                'multiZip'          => 0
-                            ]
-                        ]
+                                'multiZip'          => 0,
+                            ],
+                        ],
                     ],
                     3 =>  [
                         'name'      => 'dataselector',
@@ -118,17 +118,17 @@ class Extras extends Base
                                 'directory'         => '',
                                 'reuse'             => 1,
                                 'dirHierarchy'      => 1,
-                                'multiZip'          => 0
-                            ]
-                        ]
-                    ]
+                                'multiZip'          => 0,
+                            ],
+                        ],
+                    ],
                 ],
                 'params'    => [
                     'required'          => 0,
                     'published_editing' => 1,
                     'collapse_elements' => 0,
-                    'verify_types'      => 1
-                ]
+                    'verify_types'      => 1,
+                ],
             ];
 
             return json_decode(json_encode($manifest), false);

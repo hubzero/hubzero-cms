@@ -30,7 +30,7 @@ class Utilities
         $states = [
             -2 => ['trashed', 'unpublish', 'JTRASHED', 'COM_MESSAGES_MARK_AS_UNREAD'],
             1 => ['published', 'unpublish', 'COM_MESSAGES_OPTION_READ', 'COM_MESSAGES_MARK_AS_UNREAD'],
-            0 => ['unpublished', 'publish', 'COM_MESSAGES_OPTION_UNREAD', 'COM_MESSAGES_MARK_AS_READ']
+            0 => ['unpublished', 'publish', 'COM_MESSAGES_OPTION_UNREAD', 'COM_MESSAGES_MARK_AS_READ'],
         ];
         $state = Arr::getValue($states, (int) $value, $states[0]);
         $html  = '<span class="state ' . $state[0] . '"><span>' . Lang::txt($state[2]) . '</span></span>';

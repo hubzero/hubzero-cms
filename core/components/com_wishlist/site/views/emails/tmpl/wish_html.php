@@ -141,8 +141,8 @@ $link = $base . '/' . ltrim(Route::url($this->wish->link()), '/');
                                     } else {
                                         echo $this->escape(
                                             stripslashes(
-                                                $this->wish->proposer->get('name', Lang::txt('COM_WISHLIST_UNKNOWN'))
-                                            )
+                                                $this->wish->proposer->get('name', Lang::txt('COM_WISHLIST_UNKNOWN')),
+                                            ),
                                         );
                                     }
                                     ?>
@@ -217,7 +217,7 @@ $link = $base . '/' . ltrim(Route::url($this->wish->link()), '/');
                                             '<b style="color: #333;">'
                                                 . $this->escape($this->oldlist->get('title')) . '</b>',
                                             '<b style="color: #333;">'
-                                                . $this->escape($this->wishlist->get('title')) . '</b>'
+                                                . $this->escape($this->wishlist->get('title')) . '</b>',
                                         );
                                         ?>
                                     </td>
@@ -234,7 +234,7 @@ $link = $base . '/' . ltrim(Route::url($this->wish->link()), '/');
                                         <?php
                                         echo Lang::txt(
                                             'Wish <span style="color: #4e7ac7;">status</span> changed to %s',
-                                            '<b style="color: #333;">' . $this->status . '</b>'
+                                            '<b style="color: #333;">' . $this->status . '</b>',
                                         );
                                         ?>
                                     </td>

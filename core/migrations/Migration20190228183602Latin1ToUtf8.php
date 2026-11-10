@@ -37,7 +37,7 @@ class Migration20190228183602Latin1ToUtf8 extends Base
         '#__shibboleth_sessions',
         '#__solr_search_searchcomponents',
         '#__storefront_skus',
-        '#__support_criteria'
+        '#__support_criteria',
     ];
 
     /**

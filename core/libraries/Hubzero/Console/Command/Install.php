@@ -172,7 +172,7 @@ class Install extends Base implements CommandInterface
         // until something says otherwise.
         Install\Template::configure(
             $ansi,
-            $this->arguments->getOpt('template') ?: Install\Template::asked(Install\Answers::section('site'))
+            $this->arguments->getOpt('template') ?: Install\Template::asked(Install\Answers::section('site')),
         );
 
         // Shape the hub with a flavor, now that every table a lever touches
@@ -559,7 +559,7 @@ class Install extends Base implements CommandInterface
         if (!$flavor) {
             $this->output->error(
                 "There is no '{$name}' flavor in " . implode(', ', $finder->directories())
-                . ". The hub is left as the data shipped it; 'muse repository:flavor set' can shape it later."
+                . ". The hub is left as the data shipped it; 'muse repository:flavor set' can shape it later.",
             );
             return;
         }
@@ -581,7 +581,7 @@ class Install extends Base implements CommandInterface
         $this->say(
             $left
                 ? "\033[33mApplied, but the hub still differs: " . implode('; ', $left) . "\033[39m\n"
-                : "\033[32mThe hub is the {$flavor->name()} flavor.\033[39m\n"
+                : "\033[32mThe hub is the {$flavor->name()} flavor.\033[39m\n",
         );
     }
 
@@ -617,11 +617,11 @@ class Install extends Base implements CommandInterface
                 'mysql:host=' . ($dbConfig['host'] ?? 'localhost') . ';dbname=' . $dbConfig['db'] . ';charset=utf8mb4',
                 $dbConfig['user'],
                 $dbConfig['password'],
-                [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]
+                [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION],
             );
             $stmt = $pdo->query(
                 "SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES
-                 WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME LIKE '{$prefix}%'"
+                 WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME LIKE '{$prefix}%'",
             );
             $tableCount = (int) $stmt->fetchColumn();
 
@@ -789,7 +789,7 @@ class Install extends Base implements CommandInterface
         if ($live === '') {
             $passed = $this->report(
                 'fail',
-                'live_site is not set in app/config/app.php, so the scheduled tasks cannot reach the hub'
+                'live_site is not set in app/config/app.php, so the scheduled tasks cannot reach the hub',
             );
         } else {
             $passed = $this->checkServed($live);
@@ -899,7 +899,7 @@ class Install extends Base implements CommandInterface
         return $this->report(
             'fail',
             "{$live}/app/config/database.php answered HTTP {$code}: "
-            . "the web server's rules for private paths are missing"
+            . "the web server's rules for private paths are missing",
         );
     }
 
@@ -948,7 +948,7 @@ class Install extends Base implements CommandInterface
             if (strpos($mode, 'STRICT_TRANS_TABLES') === false) {
                 $this->report(
                     'warn',
-                    "MariaDB's SQL mode is not strict ('{$mode}'). Leave it at the server's default"
+                    "MariaDB's SQL mode is not strict ('{$mode}'). Leave it at the server's default",
                 );
             } else {
                 $this->report('ok', "MariaDB's SQL mode is strict");
@@ -960,7 +960,7 @@ class Install extends Base implements CommandInterface
                 $this->report(
                     'warn',
                     "MariaDB's time zone tables are empty. Load them: "
-                    . 'mariadb-tzinfo-to-sql /usr/share/zoneinfo | sudo mariadb mysql'
+                    . 'mariadb-tzinfo-to-sql /usr/share/zoneinfo | sudo mariadb mysql',
                 );
             } else {
                 $this->report('ok', "MariaDB's time zone tables are loaded");
@@ -975,7 +975,7 @@ class Install extends Base implements CommandInterface
             $this->report(
                 'warn',
                 'The usage statistics have no database. Create ' . Config::get('db') . '_metrics'
-                . ' for the hub\'s account, then run: muse migration run -f'
+                . ' for the hub\'s account, then run: muse migration run -f',
             );
             return;
         }
@@ -1030,7 +1030,7 @@ class Install extends Base implements CommandInterface
             $this->report(
                 'warn',
                 'Mail goes to ' . ($program ?: 'nothing') . ', which is not there. '
-                . 'Give the hub an SMTP server in its Mail Settings'
+                . 'Give the hub an SMTP server in its Mail Settings',
             );
         }
     }
@@ -1048,7 +1048,7 @@ class Install extends Base implements CommandInterface
         $owner = fileowner(PATH_APP);
         $files = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator(PATH_APP, \FilesystemIterator::SKIP_DOTS),
-            \RecursiveIteratorIterator::SELF_FIRST
+            \RecursiveIteratorIterator::SELF_FIRST,
         );
 
         try {
@@ -1057,7 +1057,7 @@ class Install extends Base implements CommandInterface
                     $this->report(
                         'warn',
                         $file->getPathname() . ' belongs to another account, so the hub may not be able to write it. '
-                        . 'Give it back: sudo chown -R --reference=' . PATH_APP . ' ' . PATH_APP
+                        . 'Give it back: sudo chown -R --reference=' . PATH_APP . ' ' . PATH_APP,
                     );
                     return;
                 }

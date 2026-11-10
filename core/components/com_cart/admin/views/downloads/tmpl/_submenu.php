@@ -17,14 +17,14 @@ $task = strtolower(Request::getCmd('task', ''));
 
 $allUrl = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 $allLabel = Lang::txt('COM_CART_DOWNLOADS_REPORT_ALL');
 
 $skuUrl = Route::url(
     'index.php?option=' . $this->option
     . '&controller=' . $this->controller
-    . '&task=sku'
+    . '&task=sku',
 );
 $skuLabel = Lang::txt('COM_CART_DOWNLOADS_REPORT_SKU');
 

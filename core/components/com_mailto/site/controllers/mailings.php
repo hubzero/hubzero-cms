@@ -100,7 +100,7 @@ class Mailings extends SiteController
             'MIME-Version:',
             'Content-Transfer-Encoding:',
             'bcc:',
-            'cc:'
+            'cc:',
         ];
 
         // An array of the input fields to scan for injected headers

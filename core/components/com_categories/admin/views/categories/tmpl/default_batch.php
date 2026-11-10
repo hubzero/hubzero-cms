@@ -14,7 +14,7 @@ defined('_HZEXEC_') or die();
 
 $options = [
     Html::select('option', 'c', Lang::txt('JLIB_HTML_BATCH_COPY')),
-    Html::select('option', 'm', Lang::txt('JLIB_HTML_BATCH_MOVE'))
+    Html::select('option', 'm', Lang::txt('JLIB_HTML_BATCH_MOVE')),
 ];
 $published = $this->filters['published'];
 $extension = $this->filters['extension'];
@@ -50,7 +50,7 @@ $extension = $this->filters['extension'];
                             $catOptions = Html::category(
                                 'categories',
                                 $extension,
-                                ['filter.published' => $published]
+                                ['filter.published' => $published],
                             );
                             ?>
                             <select name="batch[category_id]"
@@ -62,7 +62,7 @@ $extension = $this->filters['extension'];
                                 </option>
                                 <?php echo Html::select(
                                     'options',
-                                    $catOptions
+                                    $catOptions,
                                 ); ?>
                             </select>
                         </div>
@@ -74,7 +74,7 @@ $extension = $this->filters['extension'];
                                 '',
                                 'value',
                                 'text',
-                                'm'
+                                'm',
                             ); ?>
                         </div>
                     </div>

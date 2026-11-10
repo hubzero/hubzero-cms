@@ -29,7 +29,7 @@ class EnableModule extends Macro
             $query = $this->db->getQuery()
                 ->update('#__extensions')
                 ->set([
-                    'enabled' => $enabled
+                    'enabled' => $enabled,
                 ])
                 ->whereEquals('element', $element)
                 ->toString();
@@ -41,7 +41,7 @@ class EnableModule extends Macro
                     $query = $this->db->getQuery()
                         ->update('#__modules')
                         ->set([
-                            'published' => $enabled
+                            'published' => $enabled,
                         ])
                         ->whereEquals('module', $element)
                         ->toString();

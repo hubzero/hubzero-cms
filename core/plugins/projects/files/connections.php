@@ -151,7 +151,7 @@ class Connections
             'folder'  => 'projects',
             'element' => 'files',
             'name'    => 'connections',
-            'layout'  => 'display'
+            'layout'  => 'display',
         ]);
 
         // Assign vars
@@ -193,7 +193,7 @@ class Connections
         if ($this->connection->isNew()) {
             $this->connection->set([
                 'project_id'  => $this->model->get('id'),
-                'provider_id' => Request::getInt('provider_id')
+                'provider_id' => Request::getInt('provider_id'),
             ]);
         }
 
@@ -206,7 +206,7 @@ class Connections
             'folder'  => 'projects',
             'element' => 'files',
             'name'    => 'connections',
-            'layout'  => 'edit'
+            'layout'  => 'edit',
         ]);
 
         // Assign vars
@@ -335,7 +335,7 @@ class Connections
             App::redirect(
                 Route::url($this->model->link('files'), false),
                 $connection->getError(),
-                'error'
+                'error',
             );
         }
         // Instantiate the connection to trigger any oauth flow required
@@ -552,7 +552,7 @@ class Connections
             'folder'  => 'projects',
             'element' => 'files',
             'name'    => 'connected',
-            'layout'  => 'browse'
+            'layout'  => 'browse',
         ]);
 
         // Do we have any changes to report?
@@ -598,7 +598,7 @@ class Connections
             'folder'    => 'projects',
             'element'   => 'files',
             'name'      => 'connected',
-            'layout'    => 'pathprefix'
+            'layout'    => 'pathprefix',
         ]);
         $subdir = \Hubzero\Filesystem\SafePath::relative((string) Request::getString('subdir', ''));
         if ($subdir === false) {
@@ -661,7 +661,7 @@ class Connections
             App::redirect(
                 Route::url($this->model->link('files'), false),
                 $this->connection->getError(),
-                'error'
+                'error',
             );
         }
         $url  = $this->model->link('files') . '&action=browse';
@@ -726,8 +726,8 @@ class Connections
                 'folder'  => 'projects',
                 'element' => 'files',
                 'name'    => 'connected',
-                'layout'  => 'preview'
-            ]
+                'layout'  => 'preview',
+            ],
         );
 
         $file = Request::getString('asset');
@@ -760,7 +760,7 @@ class Connections
             'folder'  => 'projects',
             'element' => 'files',
             'name'    => 'connected',
-            'layout'  => 'upload'
+            'layout'  => 'upload',
         ]);
 
         $view->set('url', $this->model->link('files') . '&connection=' . $this->connection->id);
@@ -865,13 +865,13 @@ class Connections
                     if ($ajaxUpload) {
                         if ($updateType == 'failed') {
                             return json_encode([
-                                'error' => 'error uploading file'
+                                'error' => 'error uploading file',
                             ]);
                         } else {
                             return json_encode([
                                 'success'   => 1,
                                 'file'      => $file,
-                                'isNew'     => $updateType == 'uploaded' ? true : false
+                                'isNew'     => $updateType == 'uploaded' ? true : false,
                                 ]);
                         }
                     }
@@ -1091,7 +1091,7 @@ class Connections
                             $_POST['flowChunkSize'],
                             $_POST['flowTotalSize'],
                             $_POST['flowTotalChunks'],
-                            $expand
+                            $expand,
                         );
                     }
                 }
@@ -1146,13 +1146,13 @@ class Connections
                     if ($ajaxUpload) {
                         if ($updateType == 'failed') {
                             return json_encode([
-                                'error' => 'error uploading file'
+                                'error' => 'error uploading file',
                             ]);
                         } else {
                             return json_encode([
                                 'success'   => 1,
                                 'file'      => $file,
-                                'isNew'     => $updateType == 'uploaded' ? true : false
+                                'isNew'     => $updateType == 'uploaded' ? true : false,
                             ]);
                         }
                     }
@@ -1189,7 +1189,7 @@ class Connections
             'folder'  => 'projects',
             'element' => 'files',
             'name'    => 'connected',
-            'layout'  => 'delete'
+            'layout'  => 'delete',
         ]);
 
         $view->set('items', $this->getCollection());
@@ -1263,7 +1263,7 @@ class Connections
             'folder'  => 'projects',
             'element' => 'files',
             'name'    => 'connected',
-            'layout'  => 'move'
+            'layout'  => 'move',
         ]);
 
         $root = Entity::fromPath('', $this->connection->adapter());
@@ -1365,7 +1365,7 @@ class Connections
             'folder'  => 'projects',
             'element' => 'files',
             'name'    => 'connected',
-            'layout'  => 'rename'
+            'layout'  => 'rename',
         ]);
 
         if (count($items) == 0) {
@@ -1432,7 +1432,7 @@ class Connections
             'folder'  => 'projects',
             'element' => 'files',
             'name'    => 'connected',
-            'layout'  => 'newfolder'
+            'layout'  => 'newfolder',
         ]);
 
         $view->set('option', $this->option);
@@ -1494,7 +1494,7 @@ class Connections
             'folder'  => 'projects',
             'element' => 'files',
             'name'    => 'connected',
-            'layout'  => 'annotate'
+            'layout'  => 'annotate',
         ]);
 
         // See if there is an edit interface that we should use
@@ -1566,7 +1566,7 @@ class Connections
             // Send the data off to the plugins
             $response = Event::trigger('metadata.onMetadataSave', [
                 $entity,
-                $metadata
+                $metadata,
             ]);
 
             if (empty($response)) {
@@ -1595,7 +1595,7 @@ class Connections
             'folder'  => 'projects',
             'element' => 'files',
             'name'    => 'connected',
-            'layout'  => 'compiled'
+            'layout'  => 'compiled',
         ]);
 
         // Combine file and folder data

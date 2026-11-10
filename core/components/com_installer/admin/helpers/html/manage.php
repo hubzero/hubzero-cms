@@ -34,7 +34,7 @@ abstract class Manage
                 'COM_INSTALLER_EXTENSION_PROTECTED',
                 false,
                 'protected',
-                'protected'
+                'protected',
             ],
             1 => [
                 'unpublish',
@@ -43,7 +43,7 @@ abstract class Manage
                 'COM_INSTALLER_EXTENSION_ENABLED',
                 false,
                 'publish',
-                'publish'
+                'publish',
             ],
             0 => [
                 'publish',
@@ -52,7 +52,7 @@ abstract class Manage
                 'COM_INSTALLER_EXTENSION_DISABLED',
                 false,
                 'unpublish',
-                'unpublish'
+                'unpublish',
             ],
         ];
 

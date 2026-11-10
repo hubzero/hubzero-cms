@@ -52,13 +52,13 @@ class Jobs extends AdminController
             'sort' => trim(Request::getState(
                 $this->_option . '.jobs.sort',
                 'filter_order',
-                'id'
+                'id',
             )),
             'sort_Dir' => trim(Request::getState(
                 $this->_option . '.jobs.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            ))
+                'ASC',
+            )),
         ];
 
         // Get records
@@ -129,7 +129,7 @@ class Jobs extends AdminController
             '0 0 1 * *',
             '0 0 * * 0',
             '0 0 * * *',
-            '0 * * * *'
+            '0 * * * *',
         ];
         if (!in_array($row->get('recurrence'), $defaults)) {
             $row->set('recurrence', 'custom');

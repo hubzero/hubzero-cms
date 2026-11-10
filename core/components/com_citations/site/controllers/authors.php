@@ -126,7 +126,7 @@ class Authors extends SiteController
                 'givenName'    => $user->get('givenName', ''),
                 'middleName'   => $user->get('middleName', ''),
                 'surname'      => $user->get('surname'),
-                'email'        => $user->get('email', '')
+                'email'        => $user->get('email', ''),
             ];
             $author = Author::blank()->set($authorValues);
 

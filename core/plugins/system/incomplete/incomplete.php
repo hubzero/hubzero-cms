@@ -54,7 +54,7 @@ class Incomplete extends Plugin
                 // support ticket, e.g. to report a broken login.
                 '/legal/terms',
                 'com_support.tickets.new.index',
-                'com_support.tickets.save.index'
+                'com_support.tickets.save.index',
             ];
 
             if ($allowed = $this->params->get('exceptions', '')) {

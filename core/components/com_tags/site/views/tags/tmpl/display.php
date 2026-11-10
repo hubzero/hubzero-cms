@@ -35,7 +35,7 @@ $this->css('introduction.css', 'system')
             <?php
             $helpUrl = Route::url(
                 'index.php?option=com_help&component='
-                . substr($this->option, 4) . '&page=index'
+                . substr($this->option, 4) . '&page=index',
             );
             ?>
             <p>
@@ -64,7 +64,7 @@ $this->css('introduction.css', 'system')
                 'limit'    => 50,
                 'admin'    => 0,
                 'sort'     => 'taggedon',
-                'sort_Dir' => 'DESC'
+                'sort_Dir' => 'DESC',
             ];
 
             if ($this->config->get('cache', 1)) {
@@ -90,7 +90,7 @@ $this->css('introduction.css', 'system')
                 'limit'    => 50,
                 'admin'    => 0,
                 'sort'     => 'objects',
-                'sort_Dir' => 'DESC'
+                'sort_Dir' => 'DESC',
             ];
 
             if ($this->config->get('cache', 1)) {

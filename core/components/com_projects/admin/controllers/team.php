@@ -32,7 +32,7 @@ class Team extends AdminController
     {
         if (!User::authorize('core.manage', $this->_option)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option, false)
+                Route::url('index.php?option=' . $this->_option, false),
             );
         }
 
@@ -51,8 +51,8 @@ class Team extends AdminController
             'project' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.project',
                 'project',
-                ''
-            )
+                '',
+            ),
         ];
 
         // Ensure we have a group ID
@@ -60,7 +60,7 @@ class Team extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option, false),
                 Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
-                'error'
+                'error',
             );
         }
 
@@ -71,7 +71,7 @@ class Team extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option, false),
                 Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
-                'error'
+                'error',
             );
         }
 
@@ -79,25 +79,25 @@ class Team extends AdminController
         $filters['sortby']         = trim(Request::getState(
             $this->_option . '.' . $this->_controller . '.sort',
             'filter_order',
-            'name'
+            'name',
         ));
         $filters['sortdir']     = trim(Request::getState(
             $this->_option . '.' . $this->_controller . '.sortdir',
             'filter_order_Dir',
-            'ASC'
+            'ASC',
         ));
         // Filters for returning results
         $filters['limit']  = Request::getState(
             $this->_option . '.' . $this->_controller . '.limit',
             'limit',
             Config::get('list_limit'),
-            'int'
+            'int',
         );
         $filters['start']  = Request::getState(
             $this->_option . '.' . $this->_controller . '.limitstart',
             'limitstart',
             0,
-            'int'
+            'int',
         );
 
         if (!in_array($filters['sortdir'], ['ASC', 'DESC'])) {
@@ -237,7 +237,7 @@ class Team extends AdminController
                 $groups,
                 $role,
                 $status = 1,
-                $native = 0
+                $native = 0,
             );
 
             if ($objO->getError()) {

@@ -27,7 +27,7 @@ class Migration20131011210918ComTools extends Base
             'name'     => 'default',
             'text'     => 'All rights reserved.',
             'title'    => 'Default license',
-            'ordering' => 0
+            'ordering' => 0,
         ];
 
             $textBSD = "Copyright (c) [YEAR], [OWNER]\nAll rights reserved.\n\nRedistribution and use in"
@@ -51,7 +51,7 @@ class Migration20131011210918ComTools extends Base
                 'name'     => 'BSD',
                 'text'     => $textBSD,
                 'title'    => 'BSD',
-                'ordering' => 1
+                'ordering' => 1,
             ];
 
             $textGPL = "[ONE LINE DESCRIPTION]\r\nCopyright (C) [YEAR]  [OWNER]\r\n\r\nThis program is"
@@ -443,7 +443,7 @@ class Migration20131011210918ComTools extends Base
                 'name'     => 'GPL',
                 'text'     => $textGPL,
                 'title'    => 'General Public License (GPL)',
-                'ordering' => 3
+                'ordering' => 3,
             ];
 
             $textNCSA = "Copyright (c) [YEAR] [OWNER] \nAll rights reserved.\n\nDeveloped by:	\n"
@@ -469,14 +469,14 @@ class Migration20131011210918ComTools extends Base
                 'name'     => 'NCSA',
                 'text'     => $textNCSA,
                 'title'    => 'NCSA Open Source License',
-                'ordering' => 2
+                'ordering' => 2,
             ];
 
             $licenses[] = [
                 'name'     => 'custom',
                 'text'     => '[ONE LINE DESCRIPTION]\nCopyright (C) [YEAR] [OWNER]',
                 'title'    => 'custom',
-                'ordering' => 5
+                'ordering' => 5,
             ];
 
             $textLGPL = "[ONE LINE DESCRIPTION]\r\nCopyright (C) [YEAR]  [OWNER]\r\n\r\nThis program is"
@@ -959,7 +959,7 @@ class Migration20131011210918ComTools extends Base
                 'name'     => 'LGPL',
                 'text'     => $textLGPL,
                 'title'    => 'LGPL',
-                'ordering' => 4
+                'ordering' => 4,
             ];
 
             foreach ($licenses as $license) {

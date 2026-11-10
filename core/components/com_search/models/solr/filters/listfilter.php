@@ -66,7 +66,7 @@ class Listfilter extends Filter
             $multifacet->createQuery(
                 $queryName,
                 $optionQuery,
-                ['exclude' => $filterField . '_type', 'include' => 'child_type']
+                ['exclude' => $filterField . '_type', 'include' => 'child_type'],
             );
         }
     }

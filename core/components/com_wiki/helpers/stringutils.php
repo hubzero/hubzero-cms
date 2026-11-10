@@ -120,7 +120,7 @@ class StringUtils
                     // Found match
                     $output .= call_user_func($callback, [
                         substr($subject, $outputPos, $tokenOffset + $tokenLength - $outputPos),
-                        substr($subject, $contentPos, $tokenOffset - $contentPos)
+                        substr($subject, $contentPos, $tokenOffset - $contentPos),
                     ]);
                     $foundStart = false;
                 } else {

@@ -120,7 +120,7 @@ class File extends WikiMacro
             '/[, ](alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap|link|rel' .
             '|details)=(?:["\'])([^"\']*)(?:["\'])/i',
             [&$this, 'parseAttributeValuePair'],
-            $content
+            $content,
         );
         // Get non-quoted attribute/value pairs
         // EX: [[Image(myimage.png, width=100)]]
@@ -128,7 +128,7 @@ class File extends WikiMacro
             '/[, ](alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap|link|rel' .
             '|details)=([^"\',]*)(?:[, ]|$)/i',
             [&$this, 'parseAttributeValuePair'],
-            $content
+            $content,
         );
 
         $attr = $this->attr;
@@ -152,7 +152,7 @@ class File extends WikiMacro
             'jpe2',
             'jp2',
             'jpg2',
-            'svg'
+            'svg',
         ];
 
         $ret = false;
@@ -540,7 +540,7 @@ class File extends WikiMacro
                     . com/download_webplayer-3
                     . x/3
                     . 0/uo/UnityObject2
-                    . js');
+                    . js',);
                 $fileJs = Request::root() . 'core/plugins/wiki/parserdefault/macros/macro-assets/file/file.js'
                     . '?t=' . filemtime(__DIR__ . '/macro-assets/file/file.js');
                 Document::addScript($fileJs);

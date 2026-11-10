@@ -136,7 +136,7 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function zeroDatetimeDefaultCreatesNullableColumn(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $driver->dropTable('zerodate_test', true);
 
@@ -147,7 +147,7 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
 
         $this->assertTrue(
             $driver->tableHasField('zerodate_test', 'published'),
-            "[$dbName] Column 'published' should exist"
+            "[$dbName] Column 'published' should exist",
         );
 
         // Insert a row without specifying 'published' — default should be NULL
@@ -162,7 +162,7 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
 
         $this->assertNull(
             $row->published,
-            "[$dbName] Zero-date default should be translated to NULL"
+            "[$dbName] Zero-date default should be translated to NULL",
         );
 
         $driver->dropTable('zerodate_test', true);
@@ -172,7 +172,7 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function zeroDateDefaultCreatesNullableColumn(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $driver->dropTable('zerodate_test', true);
 
@@ -183,7 +183,7 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
 
         $this->assertTrue(
             $driver->tableHasField('zerodate_test', 'event_date'),
-            "[$dbName] Column 'event_date' should exist"
+            "[$dbName] Column 'event_date' should exist",
         );
 
         // Insert without specifying event_date
@@ -198,7 +198,7 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
 
         $this->assertNull(
             $row->event_date,
-            "[$dbName] Zero-date default should be translated to NULL"
+            "[$dbName] Zero-date default should be translated to NULL",
         );
 
         $driver->dropTable('zerodate_test', true);
@@ -208,7 +208,7 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function normalDatetimeDefaultIsUnchanged(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $driver->dropTable('zerodate_test', true);
 
@@ -231,12 +231,12 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
         $this->assertEquals(
             0,
             (int) $row->status,
-            "[$dbName] Normal integer default should be unchanged"
+            "[$dbName] Normal integer default should be unchanged",
         );
         $this->assertEquals(
             'pending',
             $row->label,
-            "[$dbName] Normal string default should be unchanged"
+            "[$dbName] Normal string default should be unchanged",
         );
 
         $driver->dropTable('zerodate_test', true);
@@ -246,7 +246,7 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function nullableColumnWithZeroDateDefaultAcceptsNull(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $driver->dropTable('zerodate_test', true);
 
@@ -261,7 +261,7 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
         $driver->setQuery(
             "INSERT INTO " . $driver->quoteName('zerodate_test')
             . " (" . $driver->quoteName('expires') . ")"
-            . " VALUES (NULL)"
+            . " VALUES (NULL)",
         );
         $driver->execute();
 
@@ -272,7 +272,7 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
 
         $this->assertNull(
             $row->expires,
-            "[$dbName] Column should accept NULL"
+            "[$dbName] Column should accept NULL",
         );
 
         $driver->dropTable('zerodate_test', true);
@@ -286,7 +286,7 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function alterTableZeroDateDefaultBecomesNull(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $driver->dropTable('zerodate_test', true);
 
@@ -305,7 +305,7 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
 
         $this->assertTrue(
             $driver->tableHasField('zerodate_test', 'modified'),
-            "[$dbName] Column 'modified' should exist after ALTER"
+            "[$dbName] Column 'modified' should exist after ALTER",
         );
 
         // Insert without specifying 'modified'
@@ -319,7 +319,7 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
 
         $this->assertNull(
             $row->modified,
-            "[$dbName] ALTER TABLE zero-date default should be NULL"
+            "[$dbName] ALTER TABLE zero-date default should be NULL",
         );
 
         $driver->dropTable('zerodate_test', true);
@@ -333,7 +333,7 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function tableDefinitionZeroDateDefaultBecomesNull(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $driver->dropTable('zerodate_test', true);
 
@@ -356,11 +356,11 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
 
         $this->assertNull(
             $row->publish_up,
-            "[$dbName] publish_up zero-date default should be NULL"
+            "[$dbName] publish_up zero-date default should be NULL",
         );
         $this->assertNull(
             $row->publish_down,
-            "[$dbName] publish_down zero-date default should be NULL"
+            "[$dbName] publish_down zero-date default should be NULL",
         );
 
         $driver->dropTable('zerodate_test', true);
@@ -374,7 +374,7 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function multipleZeroDateColumnsInSameTable(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $driver->dropTable('zerodate_test', true);
 
@@ -407,7 +407,7 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function explicitDateValueOverridesZeroDateDefault(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $driver->dropTable('zerodate_test', true);
 
@@ -430,7 +430,7 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
         $this->assertEquals(
             '2024-06-15 10:30:00',
             $row->created,
-            "[$dbName] Explicit date should be stored as-is"
+            "[$dbName] Explicit date should be stored as-is",
         );
 
         $driver->dropTable('zerodate_test', true);
@@ -440,7 +440,7 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function mixedZeroDateAndNormalDefaults(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $driver->dropTable('zerodate_test', true);
 
@@ -462,17 +462,17 @@ class ZeroDateDefaultTest extends AbstractDriverTestCase
 
         $this->assertNull(
             $row->created,
-            "[$dbName] Zero-date default translated to NULL"
+            "[$dbName] Zero-date default translated to NULL",
         );
         $this->assertEquals(
             1,
             (int) $row->status,
-            "[$dbName] Normal integer default unchanged"
+            "[$dbName] Normal integer default unchanged",
         );
         $this->assertEquals(
             'Untitled',
             $row->title,
-            "[$dbName] Normal string default unchanged"
+            "[$dbName] Normal string default unchanged",
         );
 
         $driver->dropTable('zerodate_test', true);

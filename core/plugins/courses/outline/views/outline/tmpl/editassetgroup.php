@@ -47,7 +47,7 @@ if ($plugins = Event::trigger('courses.onAssetgroupEdit')) {
 
         $param = new \Hubzero\Html\Parameter(
             (is_object($data) ? $data->toString() : $data),
-            PATH_CORE . DS . 'plugins' . DS . 'courses' . DS . $plugin['name'] . DS . $plugin['name'] . '.xml'
+            PATH_CORE . DS . 'plugins' . DS . 'courses' . DS . $plugin['name'] . DS . $plugin['name'] . '.xml',
         );
         foreach ($default->toArray() as $k => $v) {
             if (substr($k, 0, strlen('default_')) == 'default_') {

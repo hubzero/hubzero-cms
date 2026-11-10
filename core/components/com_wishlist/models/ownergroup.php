@@ -29,7 +29,7 @@ class Ownergroup extends Relational
      */
     protected $rules = [
         'groupid'  => 'positive|nonzero',
-        'wishlist' => 'positive|nonzero'
+        'wishlist' => 'positive|nonzero',
     ];
 
     /**

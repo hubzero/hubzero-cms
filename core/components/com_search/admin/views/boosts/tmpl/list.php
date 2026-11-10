@@ -17,7 +17,7 @@ $toolbarElements = [
     'title' => [Lang::txt('COM_SEARCH_HEADING_BOOSTS')],
     'addNew' => ['new'],
     'spacer' => [],
-    'preferences' => [$this->option, '550']
+    'preferences' => [$this->option, '550'],
 ];
 
 $this->view('_toolbar', 'shared')

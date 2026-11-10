@@ -59,37 +59,37 @@ class Assetgroups extends AdminController
             'unit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.unit',
                 'unit',
-                0
+                0,
             ),
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             )),
             'state' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.state',
                 'state',
-                '-1'
+                '-1',
             ),
             // Filters for returning results
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limitstart',
                 'limitstart',
                 0,
-                'int'
-            )
+                'int',
+            ),
         ];
 
         $this->view->unit = \Components\Courses\Models\Unit::getInstance($this->view->filters['unit']);
         if (!$this->view->unit->exists()) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=courses', false)
+                Route::url('index.php?option=' . $this->_option . '&controller=courses', false),
             );
             return;
         }
@@ -100,7 +100,7 @@ class Assetgroups extends AdminController
 
         // establish the hierarchy of the menu
         $children = [
-            0 => []
+            0 => [],
         ];
 
         $levellimit = ($this->view->filters['limit'] == 0) ? 500 : $this->view->filters['limit'];
@@ -204,7 +204,7 @@ class Assetgroups extends AdminController
 
         // establish the hierarchy of the menu
         $children = [
-            0 => []
+            0 => [],
         ];
 
         $levellimit = 500;
@@ -268,7 +268,7 @@ class Assetgroups extends AdminController
             . '&unit=' . $model->get('unit_id');
         App::redirect(
             Route::url($url, false),
-            Lang::txt('COM_COURSES_ASSETGROUP_SAVED')
+            Lang::txt('COM_COURSES_ASSETGROUP_SAVED'),
         );
     }
 
@@ -294,7 +294,7 @@ class Assetgroups extends AdminController
             App::redirect(
                 Route::url($url, false),
                 Lang::txt('COM_COURSES_ERROR_NO_ID'),
-                'error'
+                'error',
             );
             return;
         }
@@ -306,7 +306,7 @@ class Assetgroups extends AdminController
             App::redirect(
                 Route::url($url, false),
                 Lang::txt('COM_COURSES_ERROR_COPY_FAILED') . ': ' . $assetgroup->getError(),
-                'error'
+                'error',
             );
             return;
         }
@@ -314,7 +314,7 @@ class Assetgroups extends AdminController
         // Redirect back to the courses page
         App::redirect(
             Route::url($url, false),
-            Lang::txt('COM_COURSES_ITEM_COPIED')
+            Lang::txt('COM_COURSES_ITEM_COPIED'),
         );
     }
 
@@ -360,7 +360,7 @@ class Assetgroups extends AdminController
             . '&unit=' . Request::getInt('unit', 0);
         App::redirect(
             Route::url($url, false),
-            Lang::txt('COM_COURSES_ITEMS_REMOVED', $num)
+            Lang::txt('COM_COURSES_ITEMS_REMOVED', $num),
         );
     }
 
@@ -386,7 +386,7 @@ class Assetgroups extends AdminController
             App::redirect(
                 Route::url($url, false),
                 $msg,
-                'error'
+                'error',
             );
             return;
         }
@@ -418,7 +418,7 @@ class Assetgroups extends AdminController
             . '&unit=' . Request::getInt('unit', 0);
         App::redirect(
             Route::url($url, false),
-            $message
+            $message,
         );
     }
 
@@ -460,7 +460,7 @@ class Assetgroups extends AdminController
             . '&controller=' . $this->_controller
             . '&unit=' . Request::getInt('unit', 0);
         App::redirect(
-            Route::url($url, false)
+            Route::url($url, false),
         );
     }
 
@@ -475,7 +475,7 @@ class Assetgroups extends AdminController
             . '&controller=' . $this->_controller
             . '&unit=' . Request::getInt('unit', 0);
         App::redirect(
-            Route::url($url, false)
+            Route::url($url, false),
         );
     }
 
@@ -506,7 +506,7 @@ class Assetgroups extends AdminController
             App::redirect(
                 Route::url($url, false),
                 Lang::txt('COM_COURSES_ERROR_NO_ID'),
-                'error'
+                'error',
             );
             return;
         }
@@ -534,12 +534,12 @@ class Assetgroups extends AdminController
             'asset_scope_id' => $scopeId,
             'course_id' => $courseId,
             'limit' => Config::get('list_limit'),
-            'start' => 0
+            'start' => 0,
         ];
 
         $tbl = new Tables\Asset($this->database);
         $assetRows = $tbl->find([
-            'w' => $this->view->filters
+            'w' => $this->view->filters,
         ]);
 
         $this->view->assetrows = $assetRows;
@@ -552,7 +552,7 @@ class Assetgroups extends AdminController
 
         // Establish the hierarchy of the menu
         $children = [
-            0 => []
+            0 => [],
         ];
 
         $levellimit = 500;
@@ -609,7 +609,7 @@ class Assetgroups extends AdminController
             App::redirect(
                 Route::url($url, false),
                 Lang::txt('COM_COURSES_ERROR_COPY_FAILED') . ': ' . $assetgroup->getError(),
-                'error'
+                'error',
             );
             return;
         }
@@ -620,7 +620,7 @@ class Assetgroups extends AdminController
         // Redirect to the asset groups
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-            $message
+            $message,
         );
     }
 }

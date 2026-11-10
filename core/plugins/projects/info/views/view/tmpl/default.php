@@ -24,7 +24,7 @@ $alias = $this->model->get('alias');
 $editInfoUrl = Route::url(
     'index.php?option=' . $this->option
     . '&task=edit&alias=' . $alias
-    . '&active=info'
+    . '&active=info',
 );
 $canEdit = $this->model->access('manager')
     || ($this->model->access('content')
@@ -52,24 +52,24 @@ $canEdit = $this->model->access('manager')
                     <?php
                     $params = $this->model->params;
                     $grantTitleLabel = Lang::txt(
-                        'COM_PROJECTS_SETUP_TERMS_GRANT_TITLE'
+                        'COM_PROJECTS_SETUP_TERMS_GRANT_TITLE',
                     );
                     $grantPiLabel = Lang::txt(
-                        'COM_PROJECTS_SETUP_TERMS_GRANT_PI'
+                        'COM_PROJECTS_SETUP_TERMS_GRANT_PI',
                     );
                     $awardNumLabel = Lang::txt(
-                        'COM_PROJECTS_SETUP_TERMS_AWARD_NUMBER'
+                        'COM_PROJECTS_SETUP_TERMS_AWARD_NUMBER',
                     );
                     $grantAgencyLabel = Lang::txt(
-                        'COM_PROJECTS_SETUP_TERMS_GRANT_AGENCY'
+                        'COM_PROJECTS_SETUP_TERMS_GRANT_AGENCY',
                     );
                     $grantBudgetLabel = Lang::txt(
-                        'COM_PROJECTS_SETUP_TERMS_GRANT_BUDGET'
+                        'COM_PROJECTS_SETUP_TERMS_GRANT_BUDGET',
                     );
                     $editSettingsUrl = Route::url(
                         'index.php?option=' . $this->option
                         . '&task=edit&alias=' . $alias
-                        . '&active=settings'
+                        . '&active=settings',
                     );
                     ?>
                     <td rowspan="5" class="grantinfo">
@@ -113,10 +113,10 @@ $canEdit = $this->model->access('manager')
                 <?php
                 $previewUrl = Route::url(
                     'index.php?option=' . $this->option
-                    . '&alias=' . $alias . '&preview=1'
+                    . '&alias=' . $alias . '&preview=1',
                 );
                 $previewLabel = Lang::txt(
-                    'COM_PROJECTS_PREVIEW_PUBLIC_PROFILE'
+                    'COM_PROJECTS_PREVIEW_PUBLIC_PROFILE',
                 );
                 ?>
                 <td>
@@ -164,7 +164,7 @@ $canEdit = $this->model->access('manager')
                     $val = preg_replace(
                         '#<a\s[^>]*href="([^"]*)"[^>]*?>(.*?)</a>#is',
                         "<a href='$1' rel='nofollow'>$2</a>",
-                        $val
+                        $val,
                     );
                 }
                 ?>

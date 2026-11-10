@@ -109,7 +109,7 @@ class Teamv1r0 extends ApiController
             'start'   => Request::getInt('limitstart', 0, 'post'),
             'sortby'  => Request::getString('sortby', 'name', 'post'),
             'sortdir' => Request::getString('sortdir', 'ASC', 'post'),
-            'status'  => 'active'
+            'status'  => 'active',
         ];
         $response->count   = count($this->model->team());
         $response->team    = [];

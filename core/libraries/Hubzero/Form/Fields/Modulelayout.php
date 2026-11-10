@@ -214,8 +214,8 @@ class Modulelayout extends Field
                     'id'          => $this->id,
                     'group.id'    => 'id',
                     'list.attr'   => $attr,
-                    'list.select' => $selected
-                ]
+                    'list.select' => $selected,
+                ],
             );
 
             return implode($html);

@@ -370,7 +370,7 @@ class Ticketsv2r0 extends ApiController
 
         $props = [
             'status', 'created', 'severity', 'os', 'browser',
-            'ip', 'hostname', 'uas', 'referrer', 'open', 'closed'
+            'ip', 'hostname', 'uas', 'referrer', 'open', 'closed',
         ];
         foreach ($props as $prop) {
             $response->$prop = $ticket->get($prop);
@@ -380,12 +380,12 @@ class Ticketsv2r0 extends ApiController
         $response->report  = $ticket->get('report');
 
         $routeUrl = Route::url(
-            'index.php?option=com_support&controller=tickets&task=tickets&id=' . $response->id
+            'index.php?option=com_support&controller=tickets&task=tickets&id=' . $response->id,
         );
         $response->url = str_replace(
             '/api',
             '',
-            rtrim(Request::base(), '/') . '/' . ltrim($routeUrl, '/')
+            rtrim(Request::base(), '/') . '/' . ltrim($routeUrl, '/'),
         );
 
         $this->send($response);

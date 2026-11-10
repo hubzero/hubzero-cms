@@ -66,7 +66,7 @@ class Wikiwyg extends Plugin
         $id = null,
         $asset = null,
         $author = null,
-        $params = []
+        $params = [],
     ) {
         if (empty($id)) {
             $id = $name;

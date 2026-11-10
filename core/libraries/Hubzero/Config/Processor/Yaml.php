@@ -64,7 +64,7 @@ class Yaml extends Base
                     [
                         'message' => 'Error parsing YAML file: ' . $path,
                         'file' => $path,
-                    ]
+                    ],
                 );
             }
         }
@@ -76,7 +76,7 @@ class Yaml extends Base
                 [
                     'message' => 'Error parsing YAML file: ' . $path,
                     'file' => $path,
-                ]
+                ],
             );
         }
 
@@ -175,7 +175,7 @@ class Yaml extends Base
                 throw new ParseException(
                     [
                         'message' => 'Error parsing YAML',
-                    ]
+                    ],
                 );
             }
         } else {
@@ -186,7 +186,7 @@ class Yaml extends Base
             throw new ParseException(
                 [
                     'message' => 'Error parsing YAML',
-                ]
+                ],
             );
         }
 

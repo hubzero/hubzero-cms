@@ -24,7 +24,7 @@ $groupProjectPlugins = Event::trigger('groups.onGroupProjects', [$this->group]);
         $allUrl = Route::url(
             'index.php?option=com_groups&cn='
             . $this->group->get('cn')
-            . '&active=projects&action=all'
+            . '&active=projects&action=all',
         );
         ?>
         <a href="<?php echo $allUrl; ?>">
@@ -38,7 +38,7 @@ $groupProjectPlugins = Event::trigger('groups.onGroupProjects', [$this->group]);
         $updatesUrl = Route::url(
             'index.php?option=com_groups&cn='
             . $this->group->get('cn')
-            . '&active=projects&action=updates'
+            . '&active=projects&action=updates',
         );
         ?>
         <a href="<?php echo $updatesUrl; ?>">

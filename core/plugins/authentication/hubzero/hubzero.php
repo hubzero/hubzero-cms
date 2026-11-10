@@ -147,7 +147,7 @@ class Hubzero extends Plugin
                     $password_rules,
                     $result->username,
                     null,
-                    false
+                    false,
                 );
                 if (is_array($msg) && !empty($msg[0])) {
                     App::get('session')->set('badpassword', '1');
@@ -160,7 +160,7 @@ class Hubzero extends Plugin
                 $prefs = [
                     'user_id'       => $user->get('id'),
                     'user_img'      => $user->picture(0, false),
-                    'authenticator' => 'hubzero'
+                    'authenticator' => 'hubzero',
                 ];
 
                 $namespace = 'authenticator';
@@ -208,8 +208,8 @@ class Hubzero extends Plugin
             \Hubzero\User\User::oneOrFail($user->id)->logger()->auth()->save(
                 [
                 'username' => $user->username,
-                'status'   => 'blocked'
-                ]
+                'status'   => 'blocked',
+                ],
             );
         }
 

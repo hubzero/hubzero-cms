@@ -87,7 +87,7 @@ class Members extends Plugin
             'title' => Lang::txt('PLG_GROUPS_MEMBERS'),
             'default_access' => $this->params->get('plugin_access', 'members'),
             'display_menu_tab' => $this->params->get('display_tab', 1),
-            'icon' => 'f007'
+            'icon' => 'f007',
         ];
         return $area;
     }
@@ -113,7 +113,7 @@ class Members extends Plugin
         // The output array we're returning
         $arr = [
             'html' => '',
-            'metadata' => []
+            'metadata' => [],
         ];
 
         // Get this area details
@@ -154,7 +154,7 @@ class Members extends Plugin
                 App::redirect(
                     Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
                     Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
-                    'warning'
+                    'warning',
                 );
                 return;
             }
@@ -521,7 +521,7 @@ class Members extends Plugin
                 // Log activity
                 $recipients = [
                     ['group', $this->group->get('gidNumber')],
-                    ['user', $uid]
+                    ['user', $uid],
                 ];
                 foreach ($this->group->get('managers') as $recipient) {
                     $recipients[] = ['user', $recipient];
@@ -535,14 +535,14 @@ class Members extends Plugin
                         'description' => Lang::txt(
                             'PLG_GROUPS_MEMBERS_ACTIVITY_APPROVED',
                             '<a href="' . Route::url('index.php?option=com_members&id=' . $uid)  . '">' . $targetuser->get('name') . '</a>',
-                            '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>'
+                            '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>',
                         ),
                         'details'     => [
                             'user_id'  => $uid,
-                            'group_id' => $this->group->get('gidNumber')
-                        ]
+                            'group_id' => $this->group->get('gidNumber'),
+                        ],
                     ],
-                    'recipients' => $recipients
+                    'recipients' => $recipients,
                 ]);
 
                 // E-mail the user, letting them know they've been approved
@@ -565,7 +565,7 @@ class Members extends Plugin
         \Components\Groups\Models\Log::log([
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'membership_approved',
-            'comments'  => $users
+            'comments'  => $users,
         ]);
     }
 
@@ -630,7 +630,7 @@ class Members extends Plugin
                 // Log activity
                 $recipients = [
                     ['group', $this->group->get('gidNumber')],
-                    ['user', $uid]
+                    ['user', $uid],
                 ];
                 foreach ($this->group->get('managers') as $recipient) {
                     $recipients[] = ['user', $recipient];
@@ -644,14 +644,14 @@ class Members extends Plugin
                         'description' => Lang::txt(
                             'PLG_GROUPS_MEMBERS_ACTIVITY_PROMOTED',
                             '<a href="' . Route::url('index.php?option=com_members&id=' . $uid)  . '">' . $targetuser->get('name') . '</a>',
-                            '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>'
+                            '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>',
                         ),
                         'details'     => [
                             'user_id'  => $uid,
-                            'group_id' => $this->group->get('gidNumber')
-                        ]
+                            'group_id' => $this->group->get('gidNumber'),
+                        ],
                     ],
-                    'recipients' => $recipients
+                    'recipients' => $recipients,
                 ]);
             } else {
                 $this->setError(Lang::txt('PLG_GROUPS_MESSAGES_ERRORS_USER_NOTFOUND') . ' ' . $mbr);
@@ -668,7 +668,7 @@ class Members extends Plugin
         \Components\Groups\Models\Log::log([
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'membership_promoted',
-            'comments'  => $users
+            'comments'  => $users,
         ]);
 
         $start  = Request::getInt('limitstart', 0);
@@ -676,7 +676,7 @@ class Members extends Plugin
         $filter = Request::getWord('filter', 'members');
 
         App::redirect(
-            Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&filter=' . $filter . '&limit=' . $limit . '&limitstart=' . $start)
+            Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&filter=' . $filter . '&limit=' . $limit . '&limitstart=' . $start),
         );
     }
 
@@ -736,7 +736,7 @@ class Members extends Plugin
                 // Log activity
                 $recipients = [
                     ['group', $this->group->get('gidNumber')],
-                    ['user', $targetuser->get('id')]
+                    ['user', $targetuser->get('id')],
                 ];
                 foreach ($this->group->get('managers') as $recipient) {
                     $recipients[] = ['user', $recipient];
@@ -750,14 +750,14 @@ class Members extends Plugin
                         'description' => Lang::txt(
                             'PLG_GROUPS_MEMBERS_ACTIVITY_DEMOTED',
                             '<a href="' . Route::url('index.php?option=com_members&id=' . $targetuser->get('id')) . '">' . $targetuser->get('name') . '</a>',
-                            '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>'
+                            '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>',
                         ),
                         'details'     => [
                             'user_id'  => $targetuser->get('id'),
-                            'group_id' => $this->group->get('gidNumber')
-                        ]
+                            'group_id' => $this->group->get('gidNumber'),
+                        ],
                     ],
-                    'recipients' => $recipients
+                    'recipients' => $recipients,
                 ]);
             } else {
                 $this->setError(Lang::txt('PLG_GROUPS_MESSAGES_ERRORS_USER_NOTFOUND') . ' ' . $mbr);
@@ -780,7 +780,7 @@ class Members extends Plugin
         \Components\Groups\Models\Log::log([
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'membership_demoted',
-            'comments'  => $users
+            'comments'  => $users,
         ]);
 
         $start  = Request::getInt("limitstart", 0);
@@ -788,7 +788,7 @@ class Members extends Plugin
         $filter = Request::getWord("filter", "members");
 
         App::redirect(
-            Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&filter=' . $filter . '&limit=' . $limit . '&limitstart=' . $start)
+            Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&filter=' . $filter . '&limit=' . $limit . '&limitstart=' . $start),
         );
     }
 
@@ -928,7 +928,7 @@ class Members extends Plugin
             ($mode == 'clear'
                 ? Lang::txt('PLG_GROUPS_MEMBERS_EXPIRATION_CLEARED', $done)
                 : Lang::txt('PLG_GROUPS_MEMBERS_EXPIRATION_SAVED', $done)),
-            'passed'
+            'passed',
         );
     }
 
@@ -1040,7 +1040,7 @@ class Members extends Plugin
                 // Log activity
                 $recipients = [
                     ['group', $this->group->get('gidNumber')],
-                    ['user', $uid]
+                    ['user', $uid],
                 ];
                 foreach ($this->group->get('managers') as $recipient) {
                     $recipients[] = ['user', $recipient];
@@ -1054,14 +1054,14 @@ class Members extends Plugin
                         'description' => Lang::txt(
                             'PLG_GROUPS_MEMBERS_ACTIVITY_REMOVED',
                             '<a href="' . Route::url('index.php?option=com_members&id=' . $uid) . '">' . $targetuser->get('name') . '</a>',
-                            '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>'
+                            '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>',
                         ),
                         'details'     => [
                             'user_id'  => $uid,
-                            'group_id' => $this->group->get('gidNumber')
-                        ]
+                            'group_id' => $this->group->get('gidNumber'),
+                        ],
                     ],
-                    'recipients' => $recipients
+                    'recipients' => $recipients,
                 ]);
 
                 $this->notifyUser($targetuser);
@@ -1088,7 +1088,7 @@ class Members extends Plugin
         \Components\Groups\Models\Log::log([
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'membership_removed',
-            'comments'  => $users_mem
+            'comments'  => $users_mem,
         ]);
 
         App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members'));
@@ -1168,7 +1168,7 @@ class Members extends Plugin
             if (isset($response['text']) && trim($response['text']) !== '') {
                 $responses[] = [
                     'title' => isset($response['title']) ? (string) $response['title'] : '',
-                    'text'  => (string) $response['text']
+                    'text'  => (string) $response['text'],
                 ];
             }
         }
@@ -1239,7 +1239,7 @@ class Members extends Plugin
 
             $responses[] = [
                 'title' => $title,
-                'text'  => $text
+                'text'  => $text,
             ];
         }
 
@@ -1276,7 +1276,7 @@ class Members extends Plugin
         App::redirect(
             Route::url($url, false),
             Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSES_SAVED'),
-            'passed'
+            'passed',
         );
     }
 
@@ -1333,7 +1333,7 @@ class Members extends Plugin
                 // Log activity
                 $recipients = [
                     ['group', $this->group->get('gidNumber')],
-                    ['user', $targetuser->get('id')]
+                    ['user', $targetuser->get('id')],
                 ];
                 foreach ($this->group->get('managers') as $recipient) {
                     $recipients[] = ['user', $recipient];
@@ -1347,14 +1347,14 @@ class Members extends Plugin
                         'description' => Lang::txt(
                             'PLG_GROUPS_MEMBERS_ACTIVITY_DENIED',
                             '<a href="' . Route::url('index.php?option=com_members&id=' . $targetuser->get('id')) . '">' . $targetuser->get('name') . '</a>',
-                            '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>'
+                            '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>',
                         ),
                         'details'     => [
                             'user_id'  => $targetuser->get('id'),
-                            'group_id' => $this->group->get('gidNumber')
-                        ]
+                            'group_id' => $this->group->get('gidNumber'),
+                        ],
                     ],
-                    'recipients' => $recipients
+                    'recipients' => $recipients,
                 ]);
 
                 // E-mail the user, letting them know they've been denied
@@ -1374,7 +1374,7 @@ class Members extends Plugin
         \Components\Groups\Models\Log::log([
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'membership_denied',
-            'comments'  => $users
+            'comments'  => $users,
         ]);
     }
 
@@ -1465,7 +1465,7 @@ class Members extends Plugin
                     // Log activity
                     $recipients = [
                         ['group', $this->group->get('gidNumber')],
-                        ['user', $targetuser->get('id')]
+                        ['user', $targetuser->get('id')],
                     ];
                     foreach ($this->group->get('managers') as $recipient) {
                         $recipients[] = ['user', $recipient];
@@ -1479,14 +1479,14 @@ class Members extends Plugin
                             'description' => Lang::txt(
                                 'PLG_GROUPS_MEMBERS_ACTIVITY_CANCELLED',
                                 '<a href="' . Route::url('index.php?option=com_members&id=' . $targetuser->get('id')) . '">' . $targetuser->get('name') . '</a>',
-                                '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>'
+                                '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>',
                             ),
                             'details'     => [
                                 'user_id'  => $targetuser->get('id'),
-                                'group_id' => $this->group->get('gidNumber')
-                            ]
+                                'group_id' => $this->group->get('gidNumber'),
+                            ],
                         ],
-                        'recipients' => $recipients
+                        'recipients' => $recipients,
                     ]);
 
                     // E-mail the user, letting them know the invitation has been cancelled
@@ -1516,7 +1516,7 @@ class Members extends Plugin
         \Components\Groups\Models\Log::log([
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'membership_invite_cancelled',
-            'comments'  => array_merge($users, $user_emails)
+            'comments'  => array_merge($users, $user_emails),
         ]);
 
         App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&filter=invitees'), '', '', true);
@@ -1570,7 +1570,7 @@ class Members extends Plugin
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&active=members'),
             Lang::txt('PLG_GROUPS_MEMBERS_ROLE_SORT_DONE'),
-            'passed'
+            'passed',
         );
     }
 
@@ -1653,7 +1653,7 @@ class Members extends Plugin
             ->set('available_permissions', [
                 'group.invite' => Lang::txt('PLG_GROUPS_MEMBERS_ROLE_GROUPINVITE'),
                 'group.edit'   => Lang::txt('PLG_GROUPS_MEMBERS_ROLE_GROUPEDIT'),
-                'group.pages'  => Lang::txt('PLG_GROUPS_MEMBERS_ROLE_GROUPPAGES')
+                'group.pages'  => Lang::txt('PLG_GROUPS_MEMBERS_ROLE_GROUPPAGES'),
             ]);
 
         $view->setErrors($this->getErrors());
@@ -1708,7 +1708,7 @@ class Members extends Plugin
 
         // Log activity
         $recipients = [
-            ['group', $this->group->get('gidNumber')]
+            ['group', $this->group->get('gidNumber')],
         ];
         foreach ($this->group->get('managers') as $recipient) {
             $recipients[] = ['user', $recipient];
@@ -1722,20 +1722,20 @@ class Members extends Plugin
                 'description' => Lang::txt(
                     'PLG_GROUPS_MEMBERS_ACTIVITY_ROLE_' . ($fields['id'] ? 'UPDATED' : 'CREATED'),
                     $role->get('name'),
-                    '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>'
+                    '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>',
                 ),
                 'details'     => [
                     'role_id'  => $role->get('id'),
-                    'group_id' => $this->group->get('gidNumber')
-                ]
+                    'group_id' => $this->group->get('gidNumber'),
+                ],
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         App::redirect(
             Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members'),
             Lang::txt('PLG_GROUPS_MEMBERS_ROLE_SUCCESS'),
-            'passed'
+            'passed',
         );
     }
 
@@ -1780,7 +1780,7 @@ class Members extends Plugin
         // Log activity
         if (!$this->getError()) {
             $recipients = [
-                ['group', $this->group->get('gidNumber')]
+                ['group', $this->group->get('gidNumber')],
             ];
             foreach ($this->group->get('managers') as $recipient) {
                 $recipients[] = ['user', $recipient];
@@ -1794,21 +1794,21 @@ class Members extends Plugin
                     'description' => Lang::txt(
                         'PLG_GROUPS_MEMBERS_ACTIVITY_ROLE_DELETED',
                         $role->get('name'),
-                        '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>'
+                        '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>',
                     ),
                     'details'     => [
                         'role_id'  => $role->get('id'),
-                        'group_id' => $this->group->get('gidNumber')
-                    ]
+                        'group_id' => $this->group->get('gidNumber'),
+                    ],
                 ],
-                'recipients' => $recipients
+                'recipients' => $recipients,
             ]);
         }
 
         App::redirect(
             Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members'),
             ($this->getError() ? $this->getError() : ''),
-            ($this->getError() ? 'error' : 'message')
+            ($this->getError() ? 'error' : 'message'),
         );
     }
 
@@ -1911,7 +1911,7 @@ class Members extends Plugin
             App::redirect(
                 Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members'),
                 ($this->getError() ? $this->getError() : ''),
-                ($this->getError() ? 'error' : 'message')
+                ($this->getError() ? 'error' : 'message'),
             );
         }
     }
@@ -1964,7 +1964,7 @@ class Members extends Plugin
         App::redirect(
             Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members'),
             ($this->getError() ? $this->getError() : ''),
-            ($this->getError() ? 'error' : 'message')
+            ($this->getError() ? 'error' : 'message'),
         );
     }
 
@@ -2053,7 +2053,7 @@ class Members extends Plugin
         // Build the "from" data for the e-mail
         $from = [
             'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->name)),
-            'email' => Config::get('mailfrom')
+            'email' => Config::get('mailfrom'),
         ];
 
         // create message object
@@ -2088,7 +2088,7 @@ class Members extends Plugin
         // Build the "from" info for e-mails
         $from = [
             'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->name)),
-            'email' => Config::get('mailfrom')
+            'email' => Config::get('mailfrom'),
         ];
 
         //create the subject

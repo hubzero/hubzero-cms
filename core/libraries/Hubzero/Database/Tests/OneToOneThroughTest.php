@@ -298,7 +298,7 @@ class OneToOneThroughTest extends AbstractDriverTestCase
 
         $this->assertInstanceOf(
             'Hubzero\Database\Relationship\OneToOneThrough',
-            $relationship
+            $relationship,
         );
     }
 

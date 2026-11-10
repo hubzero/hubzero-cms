@@ -49,19 +49,19 @@ class Subscriptions extends AdminController
             'status' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.status',
                 'filter_status',
-                'all'
+                'all',
             ),
             // Get sorting variables
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'id'
+                'id',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         // Only the columns the list sorts by
@@ -271,7 +271,7 @@ class Subscriptions extends AdminController
             // E-mail "from" info
             $from = [
                 'email' => Config::get('mailfrom'),
-                'name'  => Config::get('sitename') . ' ' . Lang::txt('COM_SERVICES_SUBSCRIPTIONS')
+                'name'  => Config::get('sitename') . ' ' . Lang::txt('COM_SERVICES_SUBSCRIPTIONS'),
             ];
 
             // start email message

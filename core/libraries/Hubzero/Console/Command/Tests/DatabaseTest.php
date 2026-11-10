@@ -25,7 +25,7 @@ class DatabaseTest extends TestCase
     {
         $this->assertTrue(
             class_exists('\\Hubzero\\Console\\Command\\Database'),
-            'Database command class should exist'
+            'Database command class should exist',
         );
 
         $reflection = new ReflectionClass('\\Hubzero\\Console\\Command\\Database');
@@ -58,12 +58,12 @@ class DatabaseTest extends TestCase
         $this->assertStringContainsString(
             '@museDescription',
             $docComment,
-            'cli method should have @museDescription annotation'
+            'cli method should have @museDescription annotation',
         );
         $this->assertStringContainsString(
             'database client',
             strtolower($docComment),
-            'cli method description should mention database client'
+            'cli method description should mention database client',
         );
     }
 
@@ -81,12 +81,12 @@ class DatabaseTest extends TestCase
         $this->assertStringContainsString(
             '@museDescription',
             $docComment,
-            'query method should have @museDescription annotation'
+            'query method should have @museDescription annotation',
         );
         $this->assertStringContainsString(
             'sql query',
             strtolower($docComment),
-            'query method description should mention SQL query'
+            'query method description should mention SQL query',
         );
     }
 
@@ -105,7 +105,7 @@ class DatabaseTest extends TestCase
             $method = $reflection->getMethod($command);
             $this->assertTrue(
                 $method->isPublic(),
-                "{$command} method should be public"
+                "{$command} method should be public",
             );
         }
     }

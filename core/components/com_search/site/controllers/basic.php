@@ -35,7 +35,7 @@ class Basic extends SiteController
         // Set breadcrumbs
         Pathway::append(
             Lang::txt('COM_SEARCH'),
-            'index.php?option=com_search'
+            'index.php?option=com_search',
         );
 
         $terms = new Terms(Request::getString('terms'));

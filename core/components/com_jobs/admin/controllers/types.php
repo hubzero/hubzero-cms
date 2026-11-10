@@ -36,25 +36,25 @@ class Types extends AdminController
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limitstart',
                 'limitstart',
                 0,
-                'int'
+                'int',
             ),
             // Get sorting variables
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'id'
+                'id',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         // Instantiate an object
@@ -69,24 +69,24 @@ class Types extends AdminController
             $default = [
                 [
                     'id' => 0,
-                    'category' => ucfirst(Lang::txt('COM_JOBS_CATEGORY_FULLTIME'))
+                    'category' => ucfirst(Lang::txt('COM_JOBS_CATEGORY_FULLTIME')),
                 ],
                 [
                     'id' => 0,
-                    'category' => ucfirst(Lang::txt('COM_JOBS_CATEGORY_PARTTIME'))
+                    'category' => ucfirst(Lang::txt('COM_JOBS_CATEGORY_PARTTIME')),
                 ],
                 [
                     'id' => 0,
-                    'category' => ucfirst(Lang::txt('COM_JOBS_CATEGORY_CONTRACT'))
+                    'category' => ucfirst(Lang::txt('COM_JOBS_CATEGORY_CONTRACT')),
                 ],
                 [
                     'id' => 0,
-                    'category' => ucfirst(Lang::txt('COM_JOBS_CATEGORY_INTERNSHIP'))
+                    'category' => ucfirst(Lang::txt('COM_JOBS_CATEGORY_INTERNSHIP')),
                 ],
                 [
                     'id' => 0,
-                    'category' => ucfirst(Lang::txt('COM_JOBS_CATEGORY_TEMPORARY'))
-                ]
+                    'category' => ucfirst(Lang::txt('COM_JOBS_CATEGORY_TEMPORARY')),
+                ],
             ];
 
             foreach ($default as $d) {
@@ -169,7 +169,7 @@ class Types extends AdminController
         // Redirect
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-            Lang::txt('COM_JOBS_ITEM_SAVED')
+            Lang::txt('COM_JOBS_ITEM_SAVED'),
         );
     }
 
@@ -192,7 +192,7 @@ class Types extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                 Lang::txt('COM_JOBS_ERROR_NO_ITEM_SELECTED'),
-                'error'
+                'error',
             );
             return;
         }
@@ -207,7 +207,7 @@ class Types extends AdminController
         // Redirect
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-            Lang::txt('COM_JOBS_ITEMS_REMOVED', count($ids))
+            Lang::txt('COM_JOBS_ITEMS_REMOVED', count($ids)),
         );
     }
 }

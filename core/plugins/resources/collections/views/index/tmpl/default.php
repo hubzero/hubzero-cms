@@ -28,7 +28,7 @@ defined('_HZEXEC_') or die();
                     <?php
                     $placeholder = Lang::txt(
                         'PLG_RESOURCES_COLLECTIONS_SELECT_PLACEHOLDER',
-                        $this->type->type
+                        $this->type->type,
                     );
                     ?>
                     <select name="pid" id="pid">

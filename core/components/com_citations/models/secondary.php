@@ -44,7 +44,7 @@ class Secondary extends Relational
      * @var  array
      **/
     protected $rules = [
-        'cid' => 'positive|nonzero'
+        'cid' => 'positive|nonzero',
     ];
 
     /**

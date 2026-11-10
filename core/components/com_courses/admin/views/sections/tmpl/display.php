@@ -78,7 +78,7 @@ Html::behavior('tooltip');
         <caption>
             <?php
                 $routeUrl = Route::url(
-                    'index.php?option=' . $this->option  . '&controller=offerings&course=' . $this->course->get('id')
+                    'index.php?option=' . $this->option  . '&controller=offerings&course=' . $this->course->get('id'),
                 );
                 ?>
             (<a href="<?php echo $routeUrl; ?>">
@@ -86,7 +86,7 @@ Html::behavior('tooltip');
             </a>)
             <?php
                 $routeUrl = Route::url(
-                    'index.php?option=' . $this->option  . '&controller=offerings&course=' . $this->course->get('id')
+                    'index.php?option=' . $this->option  . '&controller=offerings&course=' . $this->course->get('id'),
                 );
                 ?>
             <a href="<?php echo $routeUrl; ?>">
@@ -114,7 +114,7 @@ Html::behavior('tooltip');
                             'COM_COURSES_COL_ID',
                             'id',
                             @$this->filters['sort_Dir'],
-                            @$this->filters['sort']
+                            @$this->filters['sort'],
                         ); ?>
                     </th>
                 <th scope="col">
@@ -123,7 +123,7 @@ Html::behavior('tooltip');
                         'COM_COURSES_COL_TITLE',
                         'title',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     ); ?>
                 </th>
                 <th
@@ -134,7 +134,7 @@ Html::behavior('tooltip');
                             'COM_COURSES_COL_ALIAS',
                             'alias',
                             @$this->filters['sort_Dir'],
-                            @$this->filters['sort']
+                            @$this->filters['sort'],
                         ); ?>
                     </th>
                 <th
@@ -145,7 +145,7 @@ Html::behavior('tooltip');
                             'COM_COURSES_COL_DEFAULT',
                             'is_default',
                             @$this->filters['sort_Dir'],
-                            @$this->filters['sort']
+                            @$this->filters['sort'],
                         ); ?>
                     </th>
                 <?php if ($canDo->get('core.edit.state')) { ?>
@@ -155,7 +155,7 @@ Html::behavior('tooltip');
                             'COM_COURSES_COL_STATE',
                             'state',
                             @$this->filters['sort_Dir'],
-                            @$this->filters['sort']
+                            @$this->filters['sort'],
                         ); ?>
                     </th>
                 <?php } ?>
@@ -167,7 +167,7 @@ Html::behavior('tooltip');
                             'COM_COURSES_COL_STARTS',
                             'start_date',
                             @$this->filters['sort_Dir'],
-                            @$this->filters['sort']
+                            @$this->filters['sort'],
                         ); ?>
                     </th>
                 <th
@@ -178,7 +178,7 @@ Html::behavior('tooltip');
                             'COM_COURSES_COL_ENDS',
                             'end_date',
                             @$this->filters['sort_Dir'],
-                            @$this->filters['sort']
+                            @$this->filters['sort'],
                         ); ?>
                     </th>
                 <th scope="col" class="priority-2"><?php echo Lang::txt('COM_COURSES_COL_ENROLLED'); ?></th>
@@ -193,7 +193,7 @@ Html::behavior('tooltip');
                     echo $this->pagination(
                         $this->total,
                         $this->filters['start'],
-                        $this->filters['limit']
+                        $this->filters['limit'],
                     );
                     ?>
                 </td>
@@ -230,7 +230,7 @@ Html::behavior('tooltip');
                         <?php
                             $routeUrl = Route::url(
                                 'index.php?option=' . $this->option  . '&controller=' . $this->controller
-                                . '&task=edit&id=' . $row->get('id')
+                                . '&task=edit&id=' . $row->get('id'),
                             );
                         ?>
                         <a href="<?php echo $routeUrl; ?>">
@@ -247,7 +247,7 @@ Html::behavior('tooltip');
                         <?php
                             $routeUrl = Route::url(
                                 'index.php?option=' . $this->option  . '&controller=' . $this->controller
-                                . '&task=edit&id=' . $row->get('id')
+                                . '&task=edit&id=' . $row->get('id'),
                             );
                         ?>
                         <a href="<?php echo $routeUrl; ?>">
@@ -265,7 +265,7 @@ Html::behavior('tooltip');
                             $routeUrl = Route::url(
                                 'index.php?option=' . $this->option  . '&controller=' . $this->controller
                                 . '&task=makedefault&id=' . $row->get('id') . '&offering='
-                                . $this->offering->get('id') . '&' . Session::getFormToken() . '=1'
+                                . $this->offering->get('id') . '&' . Session::getFormToken() . '=1',
                             );
                         ?>
                         <a href="<?php echo $routeUrl; ?>">
@@ -292,7 +292,7 @@ Html::behavior('tooltip');
                             $routeUrl = Route::url(
                                 'index.php?option=' . $this->option  . '&controller=' . $this->controller
                                 . '&task=unpublish&id=' . $row->get('id') . '&offering='
-                                . $this->offering->get('id') . '&' . Session::getFormToken() . '=1'
+                                . $this->offering->get('id') . '&' . Session::getFormToken() . '=1',
                             );
                             ?>
                         <a
@@ -309,7 +309,7 @@ Html::behavior('tooltip');
                             $routeUrl = Route::url(
                                 'index.php?option=' . $this->option  . '&controller=' . $this->controller
                                 . '&task=publish&id=' . $row->get('id') . '&offering=' . $this->offering->get('id')
-                                . '&' . Session::getFormToken() . '=1'
+                                . '&' . Session::getFormToken() . '=1',
                             );
                             ?>
                         <a
@@ -326,7 +326,7 @@ Html::behavior('tooltip');
                             $routeUrl = Route::url(
                                 'index.php?option=' . $this->option  . '&controller=' . $this->controller
                                 . '&task=publish&id=' . $row->get('id') . '&offering=' . $this->offering->get('id')
-                                . '&' . Session::getFormToken() . '=1'
+                                . '&' . Session::getFormToken() . '=1',
                             );
                             ?>
                         <a
@@ -343,7 +343,7 @@ Html::behavior('tooltip');
                             $routeUrl = Route::url(
                                 'index.php?option=' . $this->option  . '&controller=' . $this->controller
                                 . '&task=publish&id=' . $row->get('id') . '&offering=' . $this->offering->get('id')
-                                . '&' . Session::getFormToken() . '=1'
+                                . '&' . Session::getFormToken() . '=1',
                             );
                             ?>
                         <a
@@ -383,7 +383,7 @@ Html::behavior('tooltip');
                         <?php
                             $routeUrl = Route::url(
                                 'index.php?option=' . $this->option  . '&controller=students&offering='
-                                . $row->get('offering_id') . '&section=' . $row->get('id')
+                                . $row->get('offering_id') . '&section=' . $row->get('id'),
                             );
                         ?>
                         <a class="glyph list" href="<?php echo $routeUrl; ?>">
@@ -396,7 +396,7 @@ Html::behavior('tooltip');
                             <?php
                             $routeUrl = Route::url(
                                 'index.php?option=' . $this->option  . '&controller=students&offering='
-                                . $row->get('offering_id') . '&section=' . $row->get('id') . '&task=add'
+                                . $row->get('offering_id') . '&section=' . $row->get('id') . '&task=add',
                             );
                             ?>
                         <a class="state add" href="<?php echo $routeUrl; ?>">
@@ -408,7 +408,7 @@ Html::behavior('tooltip');
                 <td>
                     <?php
                         $routeUrl = Route::url(
-                            'index.php?option=' . $this->option  . '&controller=codes&section=' . $row->get('id')
+                            'index.php?option=' . $this->option  . '&controller=codes&section=' . $row->get('id'),
                         );
                     ?>
                     <a class="code" href="<?php echo $routeUrl; ?>">

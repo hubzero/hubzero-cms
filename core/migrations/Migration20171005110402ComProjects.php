@@ -279,7 +279,7 @@ class Migration20171005110402ComProjects extends Base
                         'scope_id'    => $scope_id,
                         'details'     => json_encode($activity),
                         'anonymous'   => 0,
-                        'parent'      => $parent
+                        'parent'      => $parent,
                     ])
                     ->execute();
 
@@ -301,7 +301,7 @@ class Migration20171005110402ComProjects extends Base
                         'created'  => $activity->recorded,
                         'viewed'   => $activity->recorded,
                         'state'    => ($activity->state == 2 ? $activity->state : 1),
-                        'starred'  => 0
+                        'starred'  => 0,
                     ])
                     ->execute();
 
@@ -329,7 +329,7 @@ class Migration20171005110402ComProjects extends Base
                             'created'  => $activity->recorded,
                             'viewed'   => $activity->recorded,
                             'state'    => 1,
-                            'starred'  => 0
+                            'starred'  => 0,
                         ])
                         ->execute();
                 }
@@ -407,7 +407,7 @@ class Migration20171005110402ComProjects extends Base
                             'highlighted'   => $details->highlighted,
                             'url'           => $details->url,
                             'class'         => $details->class,
-                            'preview'       => $details->preview
+                            'preview'       => $details->preview,
                         ])
                         ->execute();
                 }

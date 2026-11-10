@@ -70,7 +70,7 @@ class ErrorBagTraitTest extends TestCase
         $newerrors = [
             'Integer posuere erat',
             'Ante venenatis dapibus',
-            'Posuere velit aliquet.'
+            'Posuere velit aliquet.',
         ];
 
         $this->traitObject->setErrors($newerrors);

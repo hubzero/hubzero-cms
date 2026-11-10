@@ -92,7 +92,7 @@ class Migration extends Base implements CommandInterface
             if (!$this->arguments->getOpt('e') && !$this->arguments->getOpt('file')) {
                 $this->output->error(
                     'Error: You cannot specify the "force" option without ' .
-                    'specifying a specific extention or file'
+                    'specifying a specific extention or file',
                 );
             } else {
                 $force = true;
@@ -105,7 +105,7 @@ class Migration extends Base implements CommandInterface
             if (!$this->arguments->getOpt('e') && !$this->arguments->getOpt('file')) {
                 $this->output->error(
                     'Error: You cannot specify the "Log only (-m)" option without ' .
-                    'specifying a specific extention or file'
+                    'specifying a specific extention or file',
                 );
             } else {
                 $logOnly = true;
@@ -126,7 +126,7 @@ class Migration extends Base implements CommandInterface
             if (!preg_match($pattern, $this->arguments->getOpt('e'))) {
                 $this->output->error(
                     'Error: extension should match the pattern of ' .
-                    'com_*, mod_*, tpl_*, plg_*_*, or core'
+                    'com_*, mod_*, tpl_*, plg_*_*, or core',
                 );
             } else {
                 $extension = $this->arguments->getOpt('e');
@@ -272,7 +272,7 @@ class Migration extends Base implements CommandInterface
                                     preg_match(
                                         '/would run up\(\) (.*?)(Migration[0-9]{14}[[:alnum:]_]*\.php)/i',
                                         $log['message'],
-                                        $matches
+                                        $matches,
                                     )
                                 ) {
                                     $pending[] = $matches[1] . $matches[2];
@@ -281,13 +281,13 @@ class Migration extends Base implements CommandInterface
                                     preg_match(
                                         '/completed up\(\) in (.*?)(Migration[0-9]{14}[[:alnum:]_]*\.php)/i',
                                         $log['message'],
-                                        $matches
+                                        $matches,
                                     )
                                     ||
                                     preg_match(
                                         '/would ignore up\(\) (.*?)(Migration[0-9]{14}[[:alnum:]_]*\.php)/i',
                                         $log['message'],
-                                        $matches
+                                        $matches,
                                     )
                                 ) {
                                     $complete[] = $matches[1] . $matches[2];
@@ -370,7 +370,7 @@ class Migration extends Base implements CommandInterface
             if (!preg_match($pattern, $this->arguments->getOpt('e'))) {
                 $this->output->error(
                     'Error: extension should match the pattern of ' .
-                    'com_*, mod_*, tpl_*, plg_*_*, or core'
+                    'com_*, mod_*, tpl_*, plg_*_*, or core',
                 );
             } else {
                 $extension = $this->arguments->getOpt('e');
@@ -456,7 +456,7 @@ class Migration extends Base implements CommandInterface
                         $entry->direction,
                         $entry->status ?? 'success',
                         $entry->date,
-                        $execTime
+                        $execTime,
                     ];
                 }
                 $this->output->addTable($items, true);
@@ -495,7 +495,7 @@ class Migration extends Base implements CommandInterface
                     $entry->action_by,
                     $entry->direction,
                     $entry->status ?? 'success',
-                    $entry->date
+                    $entry->date,
                 ];
 
                 if ($hasExecTime) {
@@ -597,7 +597,7 @@ class Migration extends Base implements CommandInterface
             if (!preg_match($pattern, $this->arguments->getOpt('e'))) {
                 $this->output->error(
                     'Error: extension should match the pattern of ' .
-                    'com_*, mod_*, tpl_*, plg_*_*, or core'
+                    'com_*, mod_*, tpl_*, plg_*_*, or core',
                 );
             } else {
                 $extension = $this->arguments->getOpt('e');
@@ -633,7 +633,7 @@ class Migration extends Base implements CommandInterface
                     $this->output->addLine(
                         "Would mark {$file} as {$direction} (currently: {$currentStatus->direction}, " .
                         "status: " . ($currentStatus->status ?? 'success') . ")",
-                        'info'
+                        'info',
                     );
                 } else {
                     $this->output->addLine("Would mark {$file} as {$direction}", 'info');
@@ -657,7 +657,7 @@ class Migration extends Base implements CommandInterface
                     $this->output->addLine(
                         "Would remove tracking record for {$file} (currently: {$currentStatus->direction}, " .
                         "status: " . ($currentStatus->status ?? 'success') . ", date: {$currentStatus->date})",
-                        'info'
+                        'info',
                     );
                 } else {
                     $this->output->addLine("No tracking record found for {$file}", 'warning');
@@ -1027,13 +1027,13 @@ class Migration extends Base implements CommandInterface
             ->output
             ->addOverview(
                 'Run a migration. This includes searching for migration files,
-				depending on the options provided.'
+				depending on the options provided.',
             )
             ->addTasks($this)
             ->addArgument(
                 '-d: direction [up|down]',
                 'If not specified, defaults to "up".',
-                'Example: -d=up or -d=down'
+                'Example: -d=up or -d=down',
             )
             ->addArgument(
                 '-r: document root',
@@ -1042,7 +1042,7 @@ class Migration extends Base implements CommandInterface
 				for this is specifying an alternate directory for testing.
 				By default, it will use the PATH_CORE constant for
 				the document root.',
-                'Example: -r=/www/myhub/unittests/migrations'
+                'Example: -r=/www/myhub/unittests/migrations',
             )
             ->addArgument(
                 '-e: extension',
@@ -1050,7 +1050,7 @@ class Migration extends Base implements CommandInterface
 				This could be one of "com_componentname", "mod_modulename", "tpl_templatename",
 				or "plg_plugingroup_pluginname". This option is required
 				when using the force (--force) option and the log only option (-m).',
-                'Example: -e=com_courses, -e=plg_members_dashboard'
+                'Example: -e=com_courses, -e=plg_members_dashboard',
             )
             ->addArgument(
                 '-a: list all',
@@ -1060,7 +1060,7 @@ class Migration extends Base implements CommandInterface
 				the prior -i argument which was needed because, by default, only new
 				files were considered for a run. Now, all files needing to be run are
 				included by default, irrespective of whether or not they are dated after
-				the last run migration.'
+				the last run migration.',
             )
             ->addArgument(
                 '-i: ignore dates',
@@ -1074,14 +1074,14 @@ class Migration extends Base implements CommandInterface
 				before (whereas --force will run them irrespective of whether or not it
 				thinks they\'ve already been run). You do not have to use -e with this
 				option. This option is necessary when needing to run migrations that
-				have been skipped for one reason or another.'
+				have been skipped for one reason or another.',
             )
             ->addArgument(
                 '-f: full run',
                 'By default, using the migration command without any options will run
 				in dry-run mode (meaning no changes will actually be made), displaying
 				the migrations that would be run, were the command to be fully executed.
-				Use the "-f" (full run) option to do the full migration run.'
+				Use the "-f" (full run) option to do the full migration run.',
             )
             ->addArgument(
                 '-m: log only',
@@ -1090,7 +1090,7 @@ class Migration extends Base implements CommandInterface
 				precaution, this should not be run without the extension option (-e).
 				The primary use case for this option would be marking a migration
 				as run in the event that it had already been run (manually), yet
-				not logged in the database.'
+				not logged in the database.',
             )
             ->addArgument(
                 '--file: run a provided filed',
@@ -1099,13 +1099,13 @@ class Migration extends Base implements CommandInterface
 				It will not, however, force it to be run, if a log entry for this file
 				and direction already exists. Use the (--force) option to override this
 				behavior or run the opposite direction first.',
-                'Example: --file=Migration20130101000000ComMigrations.php'
+                'Example: --file=Migration20130101000000ComMigrations.php',
             )
             ->addArgument(
                 '--force: force mode',
                 'This option should be used carefully. It will run a migration,
 				even if it thinks it has already been run. When using this option,
-				you must also give a specific extension using the (-e) option.'
+				you must also give a specific extension using the (-e) option.',
             )
             ->addArgument(
                 '--target: version alias',
@@ -1116,29 +1116,29 @@ class Migration extends Base implements CommandInterface
 				- current: The last successfully executed migration
 				- next: The next pending migration
 				- latest: The newest migration file',
-                'Example: --target=next, --target=prev, --target=latest'
+                'Example: --target=next, --target=prev, --target=latest',
             )
             ->addArgument(
                 '--email: send email',
                 'Specify an email address to receive the output of this run. If no
 				files are executed during the migration, an email will not be sent.',
-                'Example: --email=sampleuser@hubzero.org'
+                'Example: --email=sampleuser@hubzero.org',
             )
             ->addArgument(
                 '-v: verbose (status command)',
                 'When used with the status command, shows detailed lists of pending,
-				failed, and recent migrations instead of just summary counts.'
+				failed, and recent migrations instead of just summary counts.',
             )
             ->addArgument(
                 '--group: super group',
                 'Run migrations for a specific super group. This will search for
 				migrations in the group\'s directory and run against the group\'s database.',
-                'Example: --group=mygroup'
+                'Example: --group=mygroup',
             )
             ->addArgument(
                 '--vendor: include vendor',
                 'Include vendor directory in migration search paths. Useful for
-				third-party packages that include their own migrations.'
+				third-party packages that include their own migrations.',
             )
             ->addArgument(
                 '--all-or-nothing: batch transaction mode',
@@ -1150,7 +1150,7 @@ class Migration extends Base implements CommandInterface
 				cause implicit commits and cannot be rolled back. This mode is most
 				useful for data-only migrations or with databases that support
 				transactional DDL (PostgreSQL, SQLite).',
-                'Example: muse migration run -f --all-or-nothing'
+                'Example: muse migration run -f --all-or-nothing',
             )
             ->addSpacer()
             ->addSection('Mark Command')
@@ -1159,7 +1159,7 @@ class Migration extends Base implements CommandInterface
 				without actually executing the migration. This is useful for:
 				- Fixing tracking table mismatches after manual database changes
 				- Recovering from partial failures
-				- Syncing tracking state with external changes'
+				- Syncing tracking state with external changes',
             )
             ->addArgument(
                 '--add',
@@ -1167,18 +1167,18 @@ class Migration extends Base implements CommandInterface
 				record as if the migration had been run successfully.
 				Use with --file to specify which migration to mark.
 				Use with -d to specify direction (defaults to "up").',
-                'Example: muse migration mark --add --file=Migration20230101000000Core.php -f'
+                'Example: muse migration mark --add --file=Migration20230101000000Core.php -f',
             )
             ->addArgument(
                 '--delete',
                 'Remove the most recent tracking record for a migration. This makes the
 				migration appear as "pending" again, allowing it to be re-run.
 				Use with --file to specify which migration to unmark.',
-                'Example: muse migration mark --delete --file=Migration20230101000000Core.php -f'
+                'Example: muse migration mark --delete --file=Migration20230101000000Core.php -f',
             )
             ->addParagraph(
                 'Note: Like other migration commands, mark runs in dry-run mode by default.
-				Use -f to actually make changes to the tracking table.'
+				Use -f to actually make changes to the tracking table.',
             )
             ->addSpacer()
             ->addSection('Refresh Command')
@@ -1188,13 +1188,13 @@ class Migration extends Base implements CommandInterface
 				database to a known state while preserving migration tracking.
 
 				WARNING: This is a DESTRUCTIVE operation that may result in data loss.
-				All data in affected tables will be lost when down() migrations run.'
+				All data in affected tables will be lost when down() migrations run.',
             )
             ->addArgument(
                 '--reset-all-migrations',
                 'REQUIRED safety flag. You must include this flag to confirm that you
 				understand the refresh command will rollback and re-run all migrations.',
-                'Example: muse migration refresh --reset-all-migrations -f'
+                'Example: muse migration refresh --reset-all-migrations -f',
             )
             ->addSpacer()
             ->addSection('Fresh Command')
@@ -1204,14 +1204,14 @@ class Migration extends Base implements CommandInterface
 				table directly. This is faster but more destructive.
 
 				!!! DANGER !!! This is an EXTREMELY DESTRUCTIVE operation.
-				ALL DATA IN ALL TABLES WILL BE PERMANENTLY LOST.'
+				ALL DATA IN ALL TABLES WILL BE PERMANENTLY LOST.',
             )
             ->addArgument(
                 '--drop-all-tables',
                 'REQUIRED safety flag. You must include this flag to confirm that you
 				understand the fresh command will drop ALL tables without running down()
 				migrations. This cannot be undone.',
-                'Example: muse migration fresh --drop-all-tables -f'
+                'Example: muse migration fresh --drop-all-tables -f',
             );
     }
 }

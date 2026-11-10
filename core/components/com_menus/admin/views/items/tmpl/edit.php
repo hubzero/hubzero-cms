@@ -83,7 +83,7 @@ $this->js();
 $formAction = Route::url(
     'index.php?option=' . $this->option
     . '&controller=' . $this->controller
-    . '&task=edit&cid[]=' . (int) $this->item->id
+    . '&task=edit&cid[]=' . (int) $this->item->id,
 );
 ?>
 <form action="<?php echo $formAction; ?>"
@@ -132,7 +132,7 @@ $formAction = Route::url(
                             <span class="hint">
                                 <?php echo Lang::txt(
                                     'COM_MENUS_ITEM_FIELD_ROUTE_NOW',
-                                    '/' . $this->escape($this->item->get('path'))
+                                    '/' . $this->escape($this->item->get('path')),
                                 ); ?>
                             </span>
                         <?php endif; ?>

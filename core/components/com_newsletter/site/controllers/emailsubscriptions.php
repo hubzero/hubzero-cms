@@ -68,7 +68,7 @@ class Emailsubscriptions extends SiteController
 
         $subHelper->updateSubscriptions(
             $userId,
-            $updatedSubscriptions
+            $updatedSubscriptions,
         );
 
         Notify::success(Lang::txt('SUBSCRIPTION_UPDATE_SUCCESS'));

@@ -54,6 +54,6 @@ class TokenCount extends Relational
      */
     protected $rules = [
         'good_count' => 'positive|nonzero',
-        'bad_count'  => 'positive|nonzero'
+        'bad_count'  => 'positive|nonzero',
     ];
 }

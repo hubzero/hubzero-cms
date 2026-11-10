@@ -132,7 +132,7 @@ class Jsonld extends Plugin
             $author = [
                 '@type'      => 'Person',
                 'givenName'  => $givenName,
-                'familyName' => $familyName
+                'familyName' => $familyName,
             ];
 
             if ($contributor->orcid) {
@@ -142,7 +142,7 @@ class Jsonld extends Plugin
             if ($contributor->organization) {
                 $org = [
                     '@type' => 'Organization',
-                    'name'  => $contributor->organization
+                    'name'  => $contributor->organization,
                 ];
 
                 if (isset($contributor->orgid) && $contributor->orgid) {
@@ -169,7 +169,7 @@ class Jsonld extends Plugin
         $data['publisher'] = [
             '@type' => 'Organization',
             'url' => Request::root(),
-            'name' => Config::get('sitename')
+            'name' => Config::get('sitename'),
         ];
 
         if ($desc = Config::get('MetaDesc')) {
@@ -209,7 +209,7 @@ class Jsonld extends Plugin
                 $publication->version->publication_id,
                 $publication->version->id,
                 $publication->version->secret,
-                $attachments
+                $attachments,
             );
         } elseif ($type->id == 5) {
             $quantity = count($attachments[1]);
@@ -219,7 +219,7 @@ class Jsonld extends Plugin
 
             $files = \Components\Publications\Helpers\Html::getdatabaseFiles(
                 $publication->version->publication_id,
-                $publication->version->id
+                $publication->version->id,
             );
 
             if ($files != false && !empty($files)) {
@@ -231,7 +231,7 @@ class Jsonld extends Plugin
                 $publication->version->publication_id,
                 $publication->version->id,
                 $publication->version->secret,
-                $attachments
+                $attachments,
             );
 
             if ($files != false && !empty($files)) {

@@ -40,8 +40,8 @@ class Help extends Base implements CommandInterface
                 'Muse: HUBzero Command Line Utility',
                 [
                     'color'  => 'blue',
-                    'format' => 'underline'
-                ]
+                    'format' => 'underline',
+                ],
             )
             ->addSpacer()
             ->addString('Usage: muse ')
@@ -190,8 +190,8 @@ class Help extends Base implements CommandInterface
                         $element,
                         [
                             'color'       => 'blue',
-                            'indentation' => $ind + 2
-                        ]
+                            'indentation' => $ind + 2,
+                        ],
                     );
                 }
 
@@ -203,8 +203,8 @@ class Help extends Base implements CommandInterface
                 $entry,
                 [
                     'color'       => (($ind > 3) ? 'blue' : 'green'),
-                    'indentation' => $ind
-                ]
+                    'indentation' => $ind,
+                ],
             );
 
             // Increment indentation
@@ -226,8 +226,8 @@ class Help extends Base implements CommandInterface
                         $method->name,
                         [
                             'color'       => 'yellow',
-                            'indentation' => $ind
-                        ]
+                            'indentation' => $ind,
+                        ],
                     );
                 }
             }

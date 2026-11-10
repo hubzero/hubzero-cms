@@ -56,7 +56,7 @@ class Threadsv1r0 extends ApiController
             'scope'      => Request::getWord('scope', 'site'),
             'scope_id'   => Request::getInt('scope_id', 0),
             'state'      => Section::STATE_PUBLISHED,
-            'access'     => User::getAuthorisedViewLevels()
+            'access'     => User::getAuthorisedViewLevels(),
         ];
 
         if ($filters['scope'] == 'group') {
@@ -74,7 +74,7 @@ class Threadsv1r0 extends ApiController
 
         $sections = $model->sections([
                 'state'  => $filters['state'],
-                'access' => User::getAuthorisedViewLevels()
+                'access' => User::getAuthorisedViewLevels(),
             ])
             ->ordered()
             ->rows();
@@ -101,7 +101,7 @@ class Threadsv1r0 extends ApiController
                 $obj->url        = str_replace(
                     '/api',
                     '',
-                    $base . '/' . ltrim(Route::url($section->link('base')), '/')
+                    $base . '/' . ltrim(Route::url($section->link('base')), '/'),
                 );
 
                 $response->sections[] = $obj;
@@ -180,7 +180,7 @@ class Threadsv1r0 extends ApiController
             'scope_id'   => Request::getInt('scope_id', 0),
             'state'      => Category::STATE_PUBLISHED,
             'closed'     => Request::getVar('closed', null),
-            'access'     => User::getAuthorisedViewLevels()
+            'access'     => User::getAuthorisedViewLevels(),
         ];
 
         if ($filters['scope'] == 'group') {
@@ -379,7 +379,7 @@ class Threadsv1r0 extends ApiController
             'scope'       => Request::getWord('scope', 'site'),
             'scope_id'    => Request::getInt('scope_id', 0),
             'state'       => Post::STATE_PUBLISHED,
-            'access'      => User::getAuthorisedViewLevels()
+            'access'      => User::getAuthorisedViewLevels(),
         ];
         $filters['threads'] = (!$filters['threads'] || $filters['threads'] == 'false') ? false : true;
 
@@ -743,12 +743,12 @@ class Threadsv1r0 extends ApiController
         $recipients = [
             ['forum.site', 1],
             ['forum.section', $category->get('section_id')],
-            ['user', $row->get('created_by')]
+            ['user', $row->get('created_by')],
         ];
         $type = 'thread';
         $desc = Lang::txt(
             'COM_FORUM_ACTIVITY_' . strtoupper($type) . '_CREATED',
-            '<a href="' . $url . '">' . htmlspecialchars((string) $row->get('title'), ENT_QUOTES, 'UTF-8') . '</a>'
+            '<a href="' . $url . '">' . htmlspecialchars((string) $row->get('title'), ENT_QUOTES, 'UTF-8') . '</a>',
         );
 
         // If this is a post in a thread and not the thread starter...
@@ -769,7 +769,7 @@ class Threadsv1r0 extends ApiController
             $desc = Lang::txt(
                 'COM_FORUM_ACTIVITY_' . strtoupper($type) . '_CREATED',
                 $row->get('id'),
-                '<a href="' . $url . '">' . htmlspecialchars((string) $thread->get('title'), ENT_QUOTES, 'UTF-8') . '</a>'
+                '<a href="' . $url . '">' . htmlspecialchars((string) $thread->get('title'), ENT_QUOTES, 'UTF-8') . '</a>',
             );
 
             // If the parent post is not the same as the
@@ -789,10 +789,10 @@ class Threadsv1r0 extends ApiController
                 'description' => $desc,
                 'details'     => [
                     'thread' => $row->get('thread'),
-                    'url'    => $url
-                ]
+                    'url'    => $url,
+                ],
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         $obj = $row->toObject();
@@ -925,7 +925,7 @@ class Threadsv1r0 extends ApiController
             'start_id'     => Request::getInt('start_id', 0),
             'start_at'     => Request::getString('start_at', ''),
             'sticky'       => false,
-            'access'       => User::getAuthorisedViewLevels()
+            'access'       => User::getAuthorisedViewLevels(),
         ];
 
         // Only published posts the caller may see, as listTask() does. Without
@@ -1001,7 +1001,7 @@ class Threadsv1r0 extends ApiController
                     $filters['limit'] = Request::getInt('limit', Config::get('list_limit'));
 
                     $children = [
-                        0 => []
+                        0 => [],
                     ];
 
                     $levellimit = ($filters['limit'] == 0) ? 500 : $filters['limit'];

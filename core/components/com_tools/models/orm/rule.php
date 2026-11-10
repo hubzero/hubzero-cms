@@ -32,7 +32,7 @@ class Rule extends Relational
     protected $rules = [
         'handler_id' => 'notempty|nonzero',
         'extension'  => 'notempty',
-        'quantity'   => 'notempty'
+        'quantity'   => 'notempty',
     ];
 
     /**

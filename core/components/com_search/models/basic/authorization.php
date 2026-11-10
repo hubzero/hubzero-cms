@@ -85,7 +85,7 @@ class Authorization
 				SELECT DISTINCT xm.gidNumber, g.cn
 				FROM `#__xgroups_managers` AS xm
 				INNER JOIN `#__xgroups` AS g ON g.gidNumber = xm.gidNumber
-				WHERE xm.uidNumber = ' . $this->uid
+				WHERE xm.uidNumber = ' . $this->uid,
             );
 
             $this->groups = [];

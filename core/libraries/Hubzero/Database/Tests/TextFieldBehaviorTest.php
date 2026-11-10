@@ -152,17 +152,17 @@ class TextFieldBehaviorTest extends AbstractDriverTestCase
             $this->assertSame(
                 $payload,
                 $this->rowValue($row, 'body_text'),
-                "{$dbName}: body_text mismatch for size {$size}"
+                "{$dbName}: body_text mismatch for size {$size}",
             );
             $this->assertSame(
                 $payload,
                 $this->rowValue($row, 'body_medium'),
-                "{$dbName}: body_medium mismatch for size {$size}"
+                "{$dbName}: body_medium mismatch for size {$size}",
             );
             $this->assertSame(
                 $payload,
                 $this->rowValue($row, 'body_long'),
-                "{$dbName}: body_long mismatch for size {$size}"
+                "{$dbName}: body_long mismatch for size {$size}",
             );
 
             $id++;
@@ -204,19 +204,19 @@ class TextFieldBehaviorTest extends AbstractDriverTestCase
             $text,
             $acceptable,
             true,
-            "{$dbName}: body_text should preserve empty string, normalize to NULL, or pad to space"
+            "{$dbName}: body_text should preserve empty string, normalize to NULL, or pad to space",
         );
         $this->assertContains(
             $medium,
             $acceptable,
             true,
-            "{$dbName}: body_medium should preserve empty string, normalize to NULL, or pad to space"
+            "{$dbName}: body_medium should preserve empty string, normalize to NULL, or pad to space",
         );
         $this->assertContains(
             $long,
             $acceptable,
             true,
-            "{$dbName}: body_long should preserve empty string, normalize to NULL, or pad to space"
+            "{$dbName}: body_long should preserve empty string, normalize to NULL, or pad to space",
         );
     }
 
@@ -263,7 +263,7 @@ class TextFieldBehaviorTest extends AbstractDriverTestCase
             $supportsNullEmptyDistinction || $normalizesEmptyToNull,
             "{$dbName}: expected either distinct NULL/empty"
             . " semantics (1/1) or empty-string normalization"
-            . " to NULL (2/0); got {$nullCount}/{$notNullCount}"
+            . " to NULL (2/0); got {$nullCount}/{$notNullCount}",
         );
     }
 }

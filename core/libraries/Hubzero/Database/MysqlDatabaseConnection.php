@@ -111,7 +111,7 @@ class MysqlDatabaseConnection
                 $dsn,
                 $config['user'] ?? '',
                 $config['password'] ?? '',
-                $options
+                $options,
             );
             self::$lastError = null;
             return $pdo;
@@ -139,7 +139,7 @@ class MysqlDatabaseConnection
                 $dsn,
                 $config['user'] ?? '',
                 $config['password'] ?? '',
-                $options
+                $options,
             );
             self::$lastError = null;
             return $pdo;
@@ -184,7 +184,7 @@ class MysqlDatabaseConnection
     {
         try {
             $stmt = $pdo->prepare(
-                "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = :name"
+                "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = :name",
             );
             $stmt->execute(['name' => $name]);
 
@@ -213,7 +213,7 @@ class MysqlDatabaseConnection
             }
 
             $pdo->exec(
-                "CREATE DATABASE `{$name}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
+                "CREATE DATABASE `{$name}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci",
             );
 
             self::$lastError = null;

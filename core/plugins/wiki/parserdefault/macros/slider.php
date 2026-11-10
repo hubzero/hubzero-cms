@@ -106,13 +106,13 @@ class Slider extends WikiMacro
             . css?t='
             . filemtime(__DIR__
             . '/macro-assets/slider/slider
-            . css'));
+            . css',));
         Document::addScript(Request::root()
             . 'core/plugins/wiki/parserdefault/macros/macro-assets/slider/slider
             . js?t='
             . filemtime(__DIR__
             . '/macro-assets/slider/slider
-            . js'));
+            . js',));
 
         return $html;
     }

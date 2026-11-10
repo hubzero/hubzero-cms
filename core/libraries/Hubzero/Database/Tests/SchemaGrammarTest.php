@@ -37,7 +37,7 @@ class SchemaGrammarTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function compileCreateTableFromDefinitionUsesGenericCompilationByDefault(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $grammar = new class ($driver) extends Grammar {
             public function compileCreate(TableDefinition $blueprint): array
@@ -117,7 +117,7 @@ class SchemaGrammarTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function compileCreateTableFromDefinitionConfiguredOverrideReturnsSqlList(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $grammar = $driver->getSchemaGrammar();
 
@@ -187,7 +187,7 @@ class SchemaGrammarTest extends AbstractDriverTestCase
             $declaringClass = $method->getDeclaringClass()->getName();
             $this->assertTrue(
                 $declaringClass === $class || is_subclass_of($class, $declaringClass),
-                $class
+                $class,
             );
             $this->assertNotSame(\Hubzero\Database\Drivers\Base\BaseSchemaGrammar::class, $declaringClass, $class);
 

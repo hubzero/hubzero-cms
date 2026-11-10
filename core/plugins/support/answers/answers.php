@@ -335,7 +335,7 @@ class Answers extends Plugin
                                     $from = Lang::txt('PLG_SUPPORT_ANSWERS_TITLE', Config::get('sitename'));
                                     $hub  = [
                                         'email' => $admin_email,
-                                        'name'  => $from
+                                        'name'  => $from,
                                     ];
 
                                     $mes  = Lang::txt('PLG_SUPPORT_ANSWERS_BODY') . "\r\n";

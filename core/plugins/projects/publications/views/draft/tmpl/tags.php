@@ -52,7 +52,7 @@ $searchCategory = $this->pub->config('search_category', 1);
                 <?php
                 $tf = Event::trigger(
                     'hubzero.onGetMultiEntry',
-                    [['tags', 'tags', 'actags', '', $this->pub->getTagsForEditing()]]
+                    [['tags', 'tags', 'actags', '', $this->pub->getTagsForEditing()]],
                 );
 
                 if (count($tf) > 0) {

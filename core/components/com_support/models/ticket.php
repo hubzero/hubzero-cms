@@ -48,7 +48,7 @@ class Ticket extends Relational
      */
     public $initiate = [
         'created',
-        'summary'
+        'summary',
     ];
 
     /**
@@ -59,7 +59,7 @@ class Ticket extends Relational
     public $always = [
         'owner',
         'group_id',
-        'target_date'
+        'target_date',
     ];
 
     /**

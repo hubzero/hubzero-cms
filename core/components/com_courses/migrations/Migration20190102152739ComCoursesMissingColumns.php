@@ -47,7 +47,7 @@ class Migration20190102152739ComCoursesMissingColumns extends Base
         $offeringSectionsTable = self::$offeringSectionsTable;
         $offeringSectionsTableQuery = $this->_generateSafeAddColumns(
             $offeringSectionsTable,
-            self::$offeringSectionsColumns
+            self::$offeringSectionsColumns,
         );
         $this->_queryIfTableExists($offeringSectionsTable, $offeringSectionsTableQuery);
 
@@ -65,7 +65,7 @@ class Migration20190102152739ComCoursesMissingColumns extends Base
         $offeringSectionsTable = self::$offeringSectionsTable;
         $offeringSectionsTableQuery = $this->_generateSafeDropColumns(
             $offeringSectionsTable,
-            self::$offeringSectionsColumns
+            self::$offeringSectionsColumns,
         );
         $this->_queryIfTableExists($offeringSectionsTable, $offeringSectionsTableQuery);
 
@@ -80,7 +80,7 @@ class Migration20190102152739ComCoursesMissingColumns extends Base
         $query = $this->_generateSafeAlterTableColumnOperation(
             $table,
             $columns,
-            '_safeAddColumn'
+            '_safeAddColumn',
         );
 
         return $query;
@@ -106,7 +106,7 @@ class Migration20190102152739ComCoursesMissingColumns extends Base
         $query = $this->_generateSafeAlterTableColumnOperation(
             $table,
             $columns,
-            '_safeDropColumn'
+            '_safeDropColumn',
         );
 
         return $query;

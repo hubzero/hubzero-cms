@@ -41,8 +41,8 @@ class Remote extends Plugin
                 'form_params' => [
                     'access_token' => $token,
                     'result' => json_encode($results),
-                    'method' => $method
-                ]
+                    'method' => $method,
+                ],
             ]);
             $body = $response->getBody();
         } catch (\Exception $e) {

@@ -91,7 +91,7 @@ class MacrosTest extends TestCase
         $this->assertSame(
             [],
             $missing,
-            $reflection->getShortName() . ' calls ' . implode(', ', $missing) . ' on itself, which it does not have'
+            $reflection->getShortName() . ' calls ' . implode(', ', $missing) . ' on itself, which it does not have',
         );
     }
 
@@ -109,7 +109,7 @@ class MacrosTest extends TestCase
 
         $this->assertTrue(
             $reflection->hasMethod('__invoke'),
-            $reflection->getShortName() . ' should have an __invoke() for a migration to call'
+            $reflection->getShortName() . ' should have an __invoke() for a migration to call',
         );
     }
 }

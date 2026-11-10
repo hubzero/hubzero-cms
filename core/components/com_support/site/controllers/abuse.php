@@ -39,12 +39,12 @@ class Abuse extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option . '&controller=index'
+                'index.php?option=' . $this->_option . '&controller=index',
             );
         }
         Pathway::append(
             Lang::txt(strtoupper('COM_SUPPORT_REPORT_ABUSE')),
-            'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=reportabuse'
+            'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=reportabuse',
         );
     }
 
@@ -73,13 +73,13 @@ class Abuse extends SiteController
             $defaultUrl = Route::url(
                 'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
                 false,
-                true
+                true,
             );
             $return = base64_encode(
-                Request::getString('REQUEST_URI', $defaultUrl, 'server')
+                Request::getString('REQUEST_URI', $defaultUrl, 'server'),
             );
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . $return, false)
+                Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );
             return;
         }
@@ -103,7 +103,7 @@ class Abuse extends SiteController
         $results = Event::trigger('support.getReportedItem', [
             $refid,
             $cat,
-            $parentid
+            $parentid,
         ]);
 
         // Check the results returned for a reported item
@@ -167,7 +167,7 @@ class Abuse extends SiteController
             'subject'     => (isset($incoming['subject']) ? $incoming['subject'] : 'Other'),
             // `note` is TEXT NOT NULL with no default; under strict SQL a new
             // report without it failed with a 500 (the reviewer fills it later)
-            'note'        => ''
+            'note'        => '',
         ]);
 
         $row->set('report', Sanitize::clean($row->get('report')));
@@ -183,7 +183,7 @@ class Abuse extends SiteController
                     'success'  => false,
                     'message'  => $row->getError(),
                     'id'       => $refid,
-                    'category' => $cat
+                    'category' => $cat,
                 ]);
                 return;
             }
@@ -196,7 +196,7 @@ class Abuse extends SiteController
         // Get the search result totals
         $results = Event::trigger('support.onReportItem', [
             $refid,
-            $cat
+            $cat,
         ]);
 
         // Send notification email
@@ -210,7 +210,7 @@ class Abuse extends SiteController
             $results = Event::trigger('support.getReportedItem', [
                 $refid,
                 $cat,
-                0
+                0,
             ]);
 
             // Check the results returned for a reported item
@@ -233,7 +233,7 @@ class Abuse extends SiteController
             $message->setSubject(Config::get('sitename') . ' ' . Lang::txt('COM_SUPPORT_ABUSE_REPORT'))
                     ->addFrom(
                         Config::get('mailfrom'),
-                        Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option))
+                        Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option)),
                     )
                     ->addHeader('X-Component', 'com_support')
                     ->addHeader('X-Component-Object', 'abuse_item_report');
@@ -241,7 +241,7 @@ class Abuse extends SiteController
             // Plain text email
             $eview = new \Hubzero\Mail\View([
                 'name'   => 'emails',
-                'layout' => 'abuse_plain'
+                'layout' => 'abuse_plain',
             ]);
             $eview->option     = $this->_option;
             $eview->controller = $this->_controller;
@@ -263,7 +263,7 @@ class Abuse extends SiteController
             $message->addPart($html, 'text/html');
             $message->setTo(
                 Config::get('mailfrom'),
-                Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option))
+                Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option)),
             );
 
             // Loop through the addresses
@@ -291,7 +291,7 @@ class Abuse extends SiteController
                 'report_id' => $row->get('id'),
                 'message'   => Lang::txt('COM_SUPPORT_REPORT_NUMBER_REFERENCE', $row->id),
                 'id'        => $refid,
-                'category'  => $cat
+                'category'  => $cat,
             ]);
             return;
         }

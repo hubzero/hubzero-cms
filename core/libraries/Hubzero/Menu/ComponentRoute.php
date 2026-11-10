@@ -123,7 +123,7 @@ class ComponentRoute
             if ($typed) {
                 $this->db->setQuery(
                     "UPDATE `#__menu_types` SET `type` = 'component'"
-                    . " WHERE `menutype` = 'components' AND `type` <> 'component'"
+                    . " WHERE `menutype` = 'components' AND `type` <> 'component'",
                 );
                 $this->db->query();
             }
@@ -337,7 +337,7 @@ class ComponentRoute
                 'rgt'               => 0,
                 'home'              => 0,
                 'language'          => '*',
-                'client_id'         => 0
+                'client_id'         => 0,
             ])
             ->execute();
 
@@ -431,7 +431,7 @@ class ComponentRoute
                 'lft'   => (int) $leftId,
                 'rgt'   => (int) $rightId,
                 'level' => (int) $level,
-                'path'  => $path
+                'path'  => $path,
             ])
             ->whereEquals('id', (int) $parentId)
             ->execute();

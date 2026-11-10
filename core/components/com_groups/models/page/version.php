@@ -135,14 +135,14 @@ class Version extends Model
                         'pageid'         => 0,
                         'filepath'       => $basePath . DS . $group->get('gidNumber') . DS . 'uploads',
                         'domain'         => $group->get('cn'),
-                        'alt_macro_path' => PATH_APP . $basePath . DS . $group->get('gidNumber') . DS . 'macros'
+                        'alt_macro_path' => PATH_APP . $basePath . DS . $group->get('gidNumber') . DS . 'macros',
                     ];
 
                     $content = stripslashes($this->get('content'));
                     $this->importPlugin('content')->trigger('onContentPrepare', [
                         $this->_context,
                         &$this,
-                        &$config
+                        &$config,
                     ]);
 
                     $this->set('content_parsed', $this->get('content'));
@@ -185,7 +185,7 @@ class Version extends Model
 
         // Create array of custom filters
         $filters = [
-            new \Components\Groups\Helpers\Filters\GroupInclude()
+            new \Components\Groups\Helpers\Filters\GroupInclude(),
         ];
 
         // Is this trusted content

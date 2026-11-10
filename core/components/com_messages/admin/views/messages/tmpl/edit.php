@@ -42,8 +42,8 @@ Toolbar::help('JHELP_COMPONENTS_MESSAGING_WRITE');
                     'fields[user_id_to]',        // Name of the input field
                     'field-user_id_to', // ID of the input field
                     'required',          // CSS class(es) for the input field
-                    '' // The value of the input field
-                ]
+                    '', // The value of the input field
+                ],
             ]);
             if (count($mc) > 0) {
                 echo $mc[0];

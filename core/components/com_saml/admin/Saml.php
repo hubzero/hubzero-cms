@@ -41,17 +41,17 @@ class Saml extends AbstractComponent
         Submenu::addEntry(
             Lang::txt('COM_SAML_MENU_OVERVIEW'),
             Route::url('index.php?option=com_saml&controller=saml', false),
-            $controllerName == 'saml'
+            $controllerName == 'saml',
         );
         Submenu::addEntry(
             Lang::txt('COM_SAML_MENU_SERVICE_PROVIDERS'),
             Route::url('index.php?option=com_saml&controller=serviceproviders', false),
-            $controllerName == 'serviceproviders'
+            $controllerName == 'serviceproviders',
         );
         Submenu::addEntry(
             Lang::txt('COM_SAML_MENU_SESSIONS'),
             Route::url('index.php?option=com_saml&controller=sessions', false),
-            $controllerName == 'sessions'
+            $controllerName == 'sessions',
         );
 
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));

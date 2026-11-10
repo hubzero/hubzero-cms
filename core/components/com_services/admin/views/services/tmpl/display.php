@@ -94,7 +94,7 @@ Toolbar::help('services');
                         $editUrl = Route::url(
                             'index.php?option=' . $this->option
                             . '&controller=' . $this->controller
-                            . '&task=edit&id=' . $row->id
+                            . '&task=edit&id=' . $row->id,
                         );
                         ?>
                         <a href="<?php echo $editUrl; ?>">

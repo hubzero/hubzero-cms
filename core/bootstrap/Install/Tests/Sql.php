@@ -81,7 +81,7 @@ class Sql
                     $this->name($m[2]),
                     $m[3],
                     $m[4],
-                    strtoupper($m[1]) === 'REPLACE'
+                    strtoupper($m[1]) === 'REPLACE',
                 );
             }
         }

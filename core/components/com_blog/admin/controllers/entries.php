@@ -51,42 +51,42 @@ class Entries extends AdminController
             'scope' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.scope',
                 'scope',
-                ''
+                '',
             ),
             'scope_id' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.scope_id',
                 'scope_id',
                 0,
-                'int'
+                'int',
             ),
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             )),
             'state' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.state',
                 'state',
                 -1,
-                'int'
+                'int',
             ),
             'access' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.access',
                 'access',
                 0,
-                'int'
+                'int',
             ),
             // Get sorting variables
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'title'
+                'title',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         $entries = Entry::all();

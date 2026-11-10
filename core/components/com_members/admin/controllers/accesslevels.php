@@ -52,18 +52,18 @@ class Accesslevels extends AdminController
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             )),
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'title'
+                'title',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         $entries = Viewlevel::all();
@@ -249,7 +249,7 @@ class Accesslevels extends AdminController
                     $msg = Lang::txt(
                         'COM_MEMBERS_ERROR_VIEW_LEVEL_IN_USE',
                         $row->get('id'),
-                        $row->get('title')
+                        $row->get('title'),
                     );
                     Notify::warning($msg);
                     continue;

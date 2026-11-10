@@ -269,7 +269,7 @@ class Option
 
         if ($skusDisabled) {
             $this->addMessage(
-                'Some SKUs were unpublished because of the recent update. Check each SKU to fix the issues.'
+                'Some SKUs were unpublished because of the recent update. Check each SKU to fix the issues.',
             );
         }
     }

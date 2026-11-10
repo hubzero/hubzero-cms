@@ -21,7 +21,7 @@ Html::behavior('modal');
 
 // Include global scripts
 $this->addScript(
-    $this->baseurl . '/templates/' . $this->template . '/js/hub.js?v=' . filemtime(__DIR__ . '/js/hub.js')
+    $this->baseurl . '/templates/' . $this->template . '/js/hub.js?v=' . filemtime(__DIR__ . '/js/hub.js'),
 );
 
 // Load theme
@@ -52,7 +52,7 @@ $cls = [
     $browser->name() . $browser->major(),
     $this->direction,
     $this->params->get('header', 'light'),
-    ($isFrontPage ? 'home' : '')
+    ($isFrontPage ? 'home' : ''),
 ];
 
 // Prepend site name to document title
@@ -161,7 +161,7 @@ if ($this->getTitle() != Config::get('sitename')) {
                                 <?php } else { ?>
                                     <?php $loginUrl = Route::url(
                                         'index.php?option=com_users&view=login&return=' . base64_encode($url),
-                                        false
+                                        false,
                                     ); ?>
                                     <li class="user-account loggedout">
                                         <a class="icon-login"

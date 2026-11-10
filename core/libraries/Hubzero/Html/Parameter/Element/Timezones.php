@@ -70,7 +70,7 @@ class Timezones extends Element
             Select::option(5.5, $lang->txt('UTC__05_30__BOMBAY__CALCUTTA__MADRAS__NEW_DELHI__COLOMBO')),
             Select::option(
                 5.75,
-                $lang->txt('UTC__05_45__KATHMANDU')
+                $lang->txt('UTC__05_45__KATHMANDU'),
             ),
                 Select::option(6, $lang->txt('UTC__06_00__ALMATY__DHAKA')),
             Select::option(6.5, $lang->txt('UTC__06_30__YAGOON')),
@@ -86,9 +86,9 @@ class Timezones extends Element
             Select::option(12, $lang->txt('UTC__12_00__AUCKLAND__WELLINGTON__FIJI__KAMCHATKA')),
             Select::option(
                 12.75,
-                $lang->txt('UTC__12_45__CHATHAM_ISLAND')
+                $lang->txt('UTC__12_45__CHATHAM_ISLAND'),
             ), Select::option(13, $lang->txt('UTC__13_00__TONGA')),
-            Select::option(14, $lang->txt('UTC__14_00__KIRIBATI'))
+            Select::option(14, $lang->txt('UTC__14_00__KIRIBATI')),
         ];
 
         return Select::genericlist(
@@ -97,8 +97,8 @@ class Timezones extends Element
             [
                 'id' => $control_name . $name,
                 'list.attr' => 'class="inputbox"',
-                'list.select' => $value
-            ]
+                'list.select' => $value,
+            ],
         );
     }
 }

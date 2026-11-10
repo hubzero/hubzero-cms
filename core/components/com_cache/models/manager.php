@@ -105,7 +105,7 @@ class Manager extends Obj
                 'com_cache.filter.client_id',
                 'filter_client_id',
                 0,
-                'int'
+                'int',
             );
             $this->state->set('clientId', $value);
 
@@ -117,7 +117,7 @@ class Manager extends Obj
                 'global.list.limit',
                 'limit',
                 App::get('config')->get('list_limit'),
-                'int'
+                'int',
             );
             $limit = $value;
             $this->state->set('list.limit', $limit);
@@ -126,7 +126,7 @@ class Manager extends Obj
                 'com_cache.limitstart',
                 'limitstart',
                 0,
-                'int'
+                'int',
             );
             $limitstart = ($limit != 0 ? (floor($value / $limit) * $limit) : 0);
             $this->state->set('list.start', $limitstart);
@@ -135,7 +135,7 @@ class Manager extends Obj
             $value = Request::getState(
                 'com_cache.list.ordering',
                 'filter_order',
-                'group'
+                'group',
             );
             if (!in_array($value, ['group', 'count', 'size'])) {
                 $value = 'group';
@@ -146,7 +146,7 @@ class Manager extends Obj
             $value = Request::getState(
                 'com_cache.list.direction',
                 'filter_order_Dir',
-                'asc'
+                'asc',
             );
             if (!in_array(strtoupper($value), ['ASC', 'DESC', ''])) {
                 $value = 'asc';
@@ -256,7 +256,7 @@ class Manager extends Obj
             $this->pagination = new \Hubzero\Pagination\Paginator(
                 $this->total(),
                 $this->state('list.start'),
-                $this->state('list.limit')
+                $this->state('list.limit'),
             );
         }
 

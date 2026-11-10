@@ -23,8 +23,8 @@ class Migration20190305000000AuditResults extends Base
      **/
     public static $tables = [
         '#__audit_results' => [
-            'processed'
-        ]
+            'processed',
+        ],
     ];
 
     /**

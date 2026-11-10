@@ -165,7 +165,7 @@ class Languagefilter extends Plugin
                         $lang_code,
                         $this->getLangCookieTime(),
                         $cookie_path,
-                        $cookie_domain
+                        $cookie_domain,
                     );
                     // set the request var
                     Request::setVar('language', $lang_code);
@@ -272,7 +272,7 @@ class Languagefilter extends Plugin
                 //$uri->setPath($uri->getPath() . '/' . $sef);
                 $uri->setPath('/' . trim($sef, '/') . '/' . ltrim(
                     $uri->getPath(),
-                    '/'
+                    '/',
                 ));
             } else {
                 $uri->setPath($uri->getPath());
@@ -444,7 +444,7 @@ class Languagefilter extends Plugin
                     User::setState(
                         'com_members.edit.profile.redirect',
                         'index.php?Itemid=' . App::get('menu')->getDefault($lang_code)->id
-                        . '&lang=' . self::$lang_codes[$lang_code]->sef
+                        . '&lang=' . self::$lang_codes[$lang_code]->sef,
                     );
                     self::$tag = $lang_code;
                     // Create a cookie
@@ -455,7 +455,7 @@ class Languagefilter extends Plugin
                         $lang_code,
                         $this->getLangCookieTime(),
                         $cookie_path,
-                        $cookie_domain
+                        $cookie_domain,
                     );
                 }
             }
@@ -500,7 +500,7 @@ class Languagefilter extends Plugin
                     $lang_code,
                     $this->getLangCookieTime(),
                     $cookie_path,
-                    $cookie_domain
+                    $cookie_domain,
                 );
 
                 // Change the language code
@@ -568,12 +568,12 @@ class Languagefilter extends Plugin
                                 if (Config::get('sef')) {
                                     $link = Route::url(
                                         'index.php?Itemid=' . $associations[$language->lang_code]
-                                        . '&lang=' . $language->sef
+                                        . '&lang=' . $language->sef,
                                     );
                                 } else {
                                     $link = Route::url(
                                         $item->link . '&Itemid=' . $associations[$language->lang_code]
-                                        . '&lang=' . $language->sef
+                                        . '&lang=' . $language->sef,
                                     );
                                 }
 
@@ -588,8 +588,8 @@ class Languagefilter extends Plugin
                                         'alternate',
                                         'rel',
                                         [
-                                        'hreflang' => $language->lang_code
-                                        ]
+                                        'hreflang' => $language->lang_code,
+                                        ],
                                     );
                                 } else {
                                     Document::addHeadLink(
@@ -597,8 +597,8 @@ class Languagefilter extends Plugin
                                         'alternate',
                                         'rel',
                                         [
-                                        'hreflang' => $language->lang_code
-                                        ]
+                                        'hreflang' => $language->lang_code,
+                                        ],
                                     );
                                 }
                             }
@@ -617,12 +617,12 @@ class Languagefilter extends Plugin
                         ) {
                             if (Config::get('sef')) {
                                 $link = Route::url(
-                                    'index.php?Itemid=' . $item->id . '&lang=' . $language->sef
+                                    'index.php?Itemid=' . $item->id . '&lang=' . $language->sef,
                                 );
                             } else {
                                 $link = Route::url(
                                     $item->link . '&Itemid=' . $item->id
-                                    . '&lang=' . $language->sef
+                                    . '&lang=' . $language->sef,
                                 );
                             }
 
@@ -637,8 +637,8 @@ class Languagefilter extends Plugin
                                     'alternate',
                                     'rel',
                                     [
-                                        'hreflang' => $language->lang_code
-                                    ]
+                                        'hreflang' => $language->lang_code,
+                                    ],
                                 );
                             } else {
                                 Document::addHeadLink(
@@ -646,8 +646,8 @@ class Languagefilter extends Plugin
                                     'alternate',
                                     'rel',
                                     [
-                                        'hreflang' => $language->lang_code
-                                    ]
+                                        'hreflang' => $language->lang_code,
+                                    ],
                                 );
                             }
                         }

@@ -71,7 +71,7 @@ class Publications extends Plugin
     public function onWhatsnewAreas()
     {
         return [
-            'publications' => Lang::txt('PLG_WHATSNEW_PUBLICATIONS')
+            'publications' => Lang::txt('PLG_WHATSNEW_PUBLICATIONS'),
         ];
     }
 
@@ -110,7 +110,7 @@ class Publications extends Plugin
         $filters = [
             'startdate' => $period->cStartDate,
             'enddate' => $period->cEndDate,
-            'sortby' => 'date'
+            'sortby' => 'date',
         ];
         if (count($tagids) > 0) {
             $filters['tag'] = $tagids;
@@ -141,11 +141,11 @@ class Publications extends Plugin
                     $rows[$key]->text = null;
                     if ($row->alias) {
                         $rows[$key]->href = Route::url(
-                            'index.php?option=com_publications&alias=' . $row->alias
+                            'index.php?option=com_publications&alias=' . $row->alias,
                         );
                     } else {
                         $rows[$key]->href = Route::url(
-                            'index.php?option=com_publications&id=' . $row->id
+                            'index.php?option=com_publications&id=' . $row->id,
                         );
                     }
                     if ($row->abstract) {
@@ -199,7 +199,7 @@ class Publications extends Plugin
         // Start building HTML
         $html = "\t" . '<li class="publication">' . "\n";
         $imgUrl = Route::url(
-            'index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_id
+            'index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_id,
         ) . '/Image:thumb';
         $html .= "\t\t" . '<p><span class="pub-thumb"><img src="' . $imgUrl . '" alt="" /></span>';
         $html .= '<span class="pub-details"><a href="' . $row->href . '">'
@@ -214,7 +214,7 @@ class Publications extends Plugin
         if ($row->text) {
             $text = \Hubzero\Utility\Str::truncate(
                 \Hubzero\Utility\Sanitize::stripAll(stripslashes($row->text)),
-                200
+                200,
             );
             $html .= "\t\t" . '<p>' . $text . '</p>' . "\n";
         }

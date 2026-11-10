@@ -41,15 +41,15 @@ $editor = Hubzero\Html\Editor::getInstance();
 
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 $invalidMsg = $this->escape(
-    Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')
+    Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'),
 );
 $filenameLegend = Lang::txt(
     'COM_TEMPLATES_TEMPLATE_FILENAME',
     $this->file->get('name'),
-    $this->file->template()->element
+    $this->file->template()->element,
 );
 ?>
 

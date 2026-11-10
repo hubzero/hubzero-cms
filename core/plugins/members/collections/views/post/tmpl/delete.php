@@ -40,7 +40,7 @@ $this->css();
             <p class="warning"><?php
                 echo Lang::txt(
                     'PLG_MEMBERS_COLLECTIONS_DELETE_WARNING',
-                    $this->escape(stripslashes($identifier))
+                    $this->escape(stripslashes($identifier)),
                 );
                 ?></p>
 

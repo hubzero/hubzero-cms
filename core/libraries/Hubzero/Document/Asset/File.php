@@ -70,7 +70,7 @@ class File extends Obj
     protected $paths = [
         'source'   => null,
         'override' => null,
-        'target'   => null
+        'target'   => null,
     ];
 
     /**

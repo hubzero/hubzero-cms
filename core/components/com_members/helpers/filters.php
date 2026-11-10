@@ -43,7 +43,7 @@ class Filters
             $q[] = [
                 'field'    => 'name',
                 'operator' => 'like',
-                'value'    => $search
+                'value'    => $search,
             ];
         }
 
@@ -56,7 +56,7 @@ class Filters
             'search' => $search,
             'q'      => $query,
             'tags'   => $tags,
-            'sortby' => strtolower(Request::getWord('sortby', 'surname'))
+            'sortby' => strtolower(Request::getWord('sortby', 'surname')),
         ];
     }
 
@@ -73,7 +73,7 @@ class Filters
 
         $columns[] = [
             'raw'   => 'name',
-            'human' => Lang::txt('COM_MEMBERS_FIELD_NAME')
+            'human' => Lang::txt('COM_MEMBERS_FIELD_NAME'),
         ];
 
         $fields = Field::all()
@@ -89,7 +89,7 @@ class Filters
 
             $columns[] = [
                 'raw'   => $field->get('name'),
-                'human' => $field->get('label')
+                'human' => $field->get('label'),
             ];
         }
 
@@ -146,7 +146,7 @@ class Filters
                     $val = [
                         'field' => $key,
                         'operator' => 'e',
-                        'value' => $val
+                        'value' => $val,
                     ];
                 }
 

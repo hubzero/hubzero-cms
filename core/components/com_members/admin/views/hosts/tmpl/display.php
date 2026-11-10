@@ -52,7 +52,7 @@ $canDo = (User::authorise('core.admin', $this->option) || User::authorise('core.
                                 $removeUrl = Route::url(
                                     'index.php?option=' . $this->option . '&controller=' . $this->controller
                                     . '&tmpl=component&task=remove&host=' . $row->get('host')
-                                    . '&id=' . $this->id . '&' . Session::getFormToken() . '=1'
+                                    . '&id=' . $this->id . '&' . Session::getFormToken() . '=1',
                                 );
                                 ?>
                                 <td class="paramlist_value">

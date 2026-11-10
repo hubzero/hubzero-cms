@@ -47,7 +47,7 @@ class Style extends Relational
      */
     protected $rules = [
         'template' => 'notempty',
-        'title'    => 'notempty'
+        'title'    => 'notempty',
     ];
 
     /**
@@ -56,7 +56,7 @@ class Style extends Relational
      * @var  array
      */
     public $always = [
-        'template'
+        'template',
     ];
 
     /**
@@ -217,7 +217,7 @@ class Style extends Relational
             Log::warning(sprintf(
                 'Default template changed to "%s" but %s could not be updated; the config fallback is stale.',
                 $this->get('template'),
-                $configFile
+                $configFile,
             ));
             return false;
         }
@@ -259,7 +259,7 @@ class Style extends Relational
 
         $paths = [
             PATH_APP . DS . 'templates' . DS . $this->get('template'),
-            PATH_CORE . DS . 'templates' . DS . $this->get('template')
+            PATH_CORE . DS . 'templates' . DS . $this->get('template'),
         ];
 
         foreach ($paths as $dir) {

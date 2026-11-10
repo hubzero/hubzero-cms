@@ -91,12 +91,12 @@ class Tags extends \Hubzero\Base\Obj
         $tagger_id = null,
         $strength = 0,
         $admin = 0,
-        $label = ''
+        $label = '',
     ) {
         $cloud = new Cloud($object_id, $this->_tbl);
         return $cloud->tags('list', [
             'objectid' => $object_id,
-            'tbl' => $this->_tbl
+            'tbl' => $this->_tbl,
         ]);
     }
 
@@ -392,7 +392,7 @@ class Tags extends \Hubzero\Base\Obj
         $tagger_id = null,
         $strength = 0,
         $admin = 0,
-        $label = ''
+        $label = '',
     ) {
         $cloud = new Cloud($oid, $this->_tbl);
         return $cloud->render('string');
@@ -424,7 +424,7 @@ class Tags extends \Hubzero\Base\Obj
         } else {
             $errorMsg = Lang::txt(
                 'Tag lsit must be an array or string. Type of "%s" passed.',
-                gettype($tag_string)
+                gettype($tag_string),
             );
             throw new \InvalidArgumentException($errorMsg);
         }
@@ -478,7 +478,7 @@ class Tags extends \Hubzero\Base\Obj
         $category = 0,
         $sortby = 'title',
         $tag2 = '',
-        $filterby = []
+        $filterby = [],
     ) {
         $now  = Date::toSql();
 
@@ -717,7 +717,7 @@ class Tags extends \Hubzero\Base\Obj
         $typealias = '',
         $attached_tags = [],
         $limit = 10,
-        $tcount = 2
+        $tcount = 2,
     ) {
         $picked = '';
         $k = 1;
@@ -902,7 +902,7 @@ class Tags extends \Hubzero\Base\Obj
                 $tag->raw_tag = str_replace('&amp;', '&', $tag->raw_tag);
                 $tag->raw_tag = str_replace('&', '&amp;', $tag->raw_tag);
                 $tagUrl = Route::url(
-                    'index.php?option=com_publications&task=browse&tag=' . implode(',', $lsst)
+                    'index.php?option=com_publications&task=browse&tag=' . implode(',', $lsst),
                 );
                 $adminClass = $tag->admin ? ' admin' : '';
                 $rawTag = stripslashes($tag->raw_tag);

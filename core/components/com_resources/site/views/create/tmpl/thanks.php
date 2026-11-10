@@ -180,7 +180,7 @@ $this->css('create.css');
                         <?php
                         $viewUrl = Route::url(
                             'index.php?option=' . $this->option
-                            . '&id=' . $this->resource->id
+                            . '&id=' . $this->resource->id,
                         );
                         ?>
                         <p>Your contribution is now published.
@@ -193,7 +193,7 @@ $this->css('create.css');
                         $supportUrl = Route::url('index.php?option=com_support');
                         $resourceUrl = Route::url(
                             'index.php?option=' . $this->option
-                            . '&id=' . $this->resource->id
+                            . '&id=' . $this->resource->id,
                         );
                         ?>
                         <p>No worries! You can either

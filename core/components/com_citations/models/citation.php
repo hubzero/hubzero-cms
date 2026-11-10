@@ -48,7 +48,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
      */
     protected $rules = [
         'type'  => 'notempty',
-        'title' => 'notempty'
+        'title' => 'notempty',
     ];
 
     /**
@@ -260,7 +260,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
             'research' => ['R', 'N', 'S'],
             'education' => ['E'],
             'cyberinfrastructure' => ['C', 'A', 'HD', 'I'],
-            'eduresearch' => ['research', 'education']
+            'eduresearch' => ['research', 'education'],
         ];
 
         if (isset($filters['reftype']) && is_array($filters['reftype'])) {
@@ -273,7 +273,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
             if (!empty($filters['reftype']) && count($filters['reftype']) < 4) {
                 $refKeys = array_values(array_intersect(
                     array_keys($filters['reftype']),
-                    array_keys($refTypes)
+                    array_keys($refTypes),
                 ));
                 if (empty($refKeys)) {
                     return $this;
@@ -710,7 +710,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
         $coins_data = [
             "ctx_ver=Z39.88-2004",
             "rft_val_fmt=info:ofi/fmt:kev:mtx:{$c_type}",
-            "rfr_id=info:sid/{$hub_url}:{$hub_name}"
+            "rfr_id=info:sid/{$hub_url}:{$hub_name}",
         ];
 
         // array to hold replace vals
@@ -767,7 +767,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
             "year" => "{YEAR}",
             "month" => "{MONTH}",
             "search_string" => "{SECONDARY LINK}",
-            "sec_cnt" => "{SECONDARY COUNT}"
+            "sec_cnt" => "{SECONDARY COUNT}",
         ];
 
         // Values used by COINs
@@ -783,7 +783,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
             'type'         => 'rft.genre',
             'author'       => 'rft.au',
             'url'          => 'rft_id',
-            'doi'          => 'rft_id=info:doi/'
+            'doi'          => 'rft_id=info:doi/',
         ];
 
             // form the formatted citation
@@ -997,7 +997,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
             '","' => '',
             'doi:.' => '',
             '(DOI:).' => '',
-            '(DOI: )' => ''
+            '(DOI: )' => '',
         ];
 
         foreach ($b as $k => $i) {
@@ -1015,7 +1015,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
             '? ',
             '! ',
             ': ',
-            '; '
+            '; ',
         ];
 
         foreach ($c as $k) {

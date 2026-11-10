@@ -64,7 +64,7 @@ class Dashboard extends Plugin
 
             Pathway::append(
                 Lang::txt('PLG_COURSES_' . strtoupper($this->_name)),
-                $offering->link() . '&active=' . $this->_name
+                $offering->link() . '&active=' . $this->_name,
             );
 
             $view = with($this->view('default', 'overview'))

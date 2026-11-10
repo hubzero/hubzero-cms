@@ -86,7 +86,7 @@ class ArticlesNews extends Module
                 $articleRoute = \Components\Content\Site\Helpers\Route::getArticleRoute(
                     $item->slug,
                     $item->catid,
-                    $item->language
+                    $item->language,
                 );
                 $item->link = Route::url($articleRoute);
                 $item->linkText = Lang::txt('MOD_ARTICLES_NEWS_READMORE');

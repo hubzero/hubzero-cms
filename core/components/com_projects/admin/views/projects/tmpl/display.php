@@ -119,7 +119,7 @@ if (substr($base, -13) == 'administrator') {
                 echo $this->pagination(
                     $this->total,
                     $this->start,
-                    $this->limit
+                    $this->limit,
                 );
                 ?></td>
             </tr>

@@ -14,14 +14,14 @@ $data = $this->data;
 $row = $this->row;
 $acos = [
     'tickets' => [
-        'read', 'update', 'delete'
+        'read', 'update', 'delete',
     ],
     'comments' => [
-        'create', 'read'
+        'create', 'read',
     ],
     'private_comments' => [
-        'create', 'read'
-    ]
+        'create', 'read',
+    ],
 ];
 ?>
 

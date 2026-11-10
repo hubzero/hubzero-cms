@@ -19,7 +19,7 @@ class ApiControllerTest extends TestCase
     {
         $controller = new DummyApiController(new Response(), [
             'name' => 'example',
-            'controller' => 'dummy'
+            'controller' => 'dummy',
         ]);
 
         $this->assertFalse($controller->inspectInertiaState());

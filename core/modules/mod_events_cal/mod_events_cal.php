@@ -128,7 +128,7 @@ class EventsCal extends Module
             Lang::txt('EVENTS_CAL_LANG_WEDNESDAYSHORT'),
             Lang::txt('EVENTS_CAL_LANG_THURSDAYSHORT'),
             Lang::txt('EVENTS_CAL_LANG_FRIDAYSHORT'),
-            Lang::txt('EVENTS_CAL_LANG_SATURDAYSHORT')
+            Lang::txt('EVENTS_CAL_LANG_SATURDAYSHORT'),
         ];
 
         $this->content = '';
@@ -148,7 +148,7 @@ class EventsCal extends Module
                 $lastMonthTime,
                 Lang::txt('_CAL_LANG_LAST_MONTH'),
                 $day_name,
-                $disp_lastMonth == 2
+                $disp_lastMonth == 2,
             );
         }
 
@@ -159,7 +159,7 @@ class EventsCal extends Module
             $startday,
             $thisMonthTime,
             Lang::txt('EVENTS_CAL_LANG_THIS_MONTH'),
-            $day_name
+            $day_name,
         );
 
         // Display next month?
@@ -172,7 +172,7 @@ class EventsCal extends Module
                 $nextMonthTime,
                 Lang::txt('_CAL_LANG_NEXT_MONTH'),
                 $day_name,
-                $disp_nextMonth == 2
+                $disp_nextMonth == 2,
             );
         }
 
@@ -208,13 +208,13 @@ class EventsCal extends Module
             $prevYear = ($cal_month == 1 ? $cal_year - 1 : $cal_year);
             $prevMonth = ($cal_month == 1 ? 12 : $cal_month - 1);
             $prevUrl = Route::url(
-                'index.php?option=com_events&year=' . $prevYear . '&month=' . $prevMonth
+                'index.php?option=com_events&year=' . $prevYear . '&month=' . $prevMonth,
             );
             $content .= ' <a class="prev month" href="' . $prevUrl . '">' .
                 Html::getMonthName($prevMonth) . '</a>' . "\n";
         }
         $currentUrl = Route::url(
-            'index.php?option=com_events&year=' . $cal_year . '&month=' . $cal_month
+            'index.php?option=com_events&year=' . $cal_year . '&month=' . $cal_month,
         );
         $content .= ' <a class="current month" href="' . $currentUrl . '">' .
             Html::getMonthName($cal_month) . '</a>' . "\n";
@@ -222,7 +222,7 @@ class EventsCal extends Module
             $nextYear = ($cal_month == 12 ? $cal_year + 1 : $cal_year);
             $nextMonth = ($cal_month == 12 ? 1 : $cal_month + 1);
             $nextUrl = Route::url(
-                'index.php?option=com_events&year=' . $nextYear . '&month=' . $nextMonth
+                'index.php?option=com_events&year=' . $nextYear . '&month=' . $nextMonth,
             );
             $content .= ' <a class="next month" href="' . $nextUrl . '">' .
                 Html::getMonthName($nextMonth) . '</a>' . "\n";
@@ -289,7 +289,7 @@ class EventsCal extends Module
             if ($class == 'todaywithevents' || $class == 'daywithevents') {
                 $dayUrl = Route::url(
                     'index.php?option=com_events&year=' . $cal_year .
-                    '&month=' . $cal_month . '&day=' . $do
+                    '&month=' . $cal_month . '&day=' . $do,
                 );
                 $content .= '<a class="mod_events_daylink" href="' . $dayUrl . '">' . $d . '</a>';
             } else {

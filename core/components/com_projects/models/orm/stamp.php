@@ -46,7 +46,7 @@ class Stamp extends Relational
      */
     protected $rules = [
         'projectid' => 'positive|nonzero',
-        'stamp' => 'notempty'
+        'stamp' => 'notempty',
     ];
 
     /**
@@ -56,7 +56,7 @@ class Stamp extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**
@@ -155,7 +155,7 @@ class Stamp extends Relational
             'listed'    => $listed,
             'type'      => $type,
             'reference' => $reference,
-            'expires'   => $expires
+            'expires'   => $expires,
         ]);
 
         if (!$obj->save()) {

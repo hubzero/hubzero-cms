@@ -71,7 +71,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     protected $rules = [
         'title'     => 'notempty',
         'introtext' => 'notempty',
-        'scope'     => 'notempty'
+        'scope'     => 'notempty',
     ];
 
     /**
@@ -90,7 +90,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
         'modified_by',
         'metadata',
         'attribs',
-        'asset_id'
+        'asset_id',
     ];
 
     /**
@@ -101,7 +101,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     public $initiate = [
         'created',
         'created_by',
-        'ordering'
+        'ordering',
     ];
 
     /**
@@ -299,7 +299,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
             '0' => 'Unpublished',
             '1' => 'Published',
             '2' => 'Archived',
-            '-2' => 'Trashed'
+            '-2' => 'Trashed',
         ];
         $stateNum = $this->get('state', 0);
         return $states[$stateNum];
@@ -1159,7 +1159,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
                         $filterLike = $db->quote('%' . $db->escape($filter, true) . '%', false);
                         $query->whereRaw(
                             'LOWER( CASE WHEN a.created_by_alias > ' . $db->quote(' ')
-                            . ' THEN a.created_by_alias ELSE ua.name END ) LIKE ' . $filterLike . ' '
+                            . ' THEN a.created_by_alias ELSE ua.name END ) LIKE ' . $filterLike . ' ',
                         );
                         break;
 

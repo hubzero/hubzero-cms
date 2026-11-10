@@ -34,7 +34,7 @@ class EnableComponent extends Macro
             $query = $this->db->getQuery()
                 ->update($table)
                 ->set([
-                    'enabled' => $enabled
+                    'enabled' => $enabled,
                 ])
                 ->whereEquals('element', $element)
                 ->toString();

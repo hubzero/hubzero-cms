@@ -476,7 +476,7 @@ class Flysystem
                     null,
                     $this->quietly(function () use ($path) {
                         return $this->filesystem->lastModified($path);
-                    })
+                    }),
                 );
             } elseif ($this->filesystem->directoryExists($path)) {
                 $attributes = new DirectoryAttributes(
@@ -484,7 +484,7 @@ class Flysystem
                     null,
                     $this->quietly(function () use ($path) {
                         return $this->filesystem->lastModified($path);
-                    })
+                    }),
                 );
             } else {
                 return false;

@@ -149,7 +149,7 @@ class Migration20260913090000MainMenu extends Base
 
         $this->log(
             'This hub had no navigation, so it has been given one: five groups'
-            . ' covering every part of the front end.'
+            . ' covering every part of the front end.',
         );
     }
 

@@ -140,7 +140,7 @@ class Base extends SiteController
             : Lang::txt('COM_PROJECTS_LOGIN_PRIVATE_PROJECT_AREA');
 
         $defaultUrl = Route::url(
-            'index.php?option=' . $this->_option . '&controller=' . $this->_controller . $task
+            'index.php?option=' . $this->_option . '&controller=' . $this->_controller . $task,
         );
         $rtrn = Request::getString('REQUEST_URI', $defaultUrl, 'server');
 
@@ -154,7 +154,7 @@ class Base extends SiteController
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
             $this->_msg,
-            'warning'
+            'warning',
         );
         return;
     }
@@ -170,7 +170,7 @@ class Base extends SiteController
     {
         // Need to be project creator
         $view = new \Hubzero\Component\View(
-            ['name' => 'error', 'layout' => $layout]
+            ['name' => 'error', 'layout' => $layout],
         );
         $view->error = $this->getError();
         $view->title = $this->title;
@@ -255,20 +255,20 @@ class Base extends SiteController
             Pathway::clear();
             Pathway::append(
                 Lang::txt('COM_PROJECTS_GROUPS_COMPONENT'),
-                Route::url('index.php?option=com_groups')
+                Route::url('index.php?option=com_groups'),
             );
             Pathway::append(
                 \Hubzero\Utility\Str::truncate($group->get('description'), 50),
-                Route::url('index.php?option=com_groups&cn=' . $group->cn)
+                Route::url('index.php?option=com_groups&cn=' . $group->cn),
             );
             Pathway::append(
                 Lang::txt('COM_PROJECTS_PROJECTS'),
-                Route::url('index.php?option=com_groups&cn=' . $group->cn . '&active=projects')
+                Route::url('index.php?option=com_groups&cn=' . $group->cn . '&active=projects'),
             );
         } elseif (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt('COMPONENT_LONG_NAME'),
-                Route::url('index.php?option=' . $this->_option)
+                Route::url('index.php?option=' . $this->_option),
             );
         }
 
@@ -283,12 +283,12 @@ class Base extends SiteController
             if (!empty($provisioned)) {
                 Pathway::append(
                     stripslashes(Lang::txt('COM_PROJECTS_PROVISIONED_PROJECT')),
-                    Route::url('index.php?option=' . $this->_option . '&alias=' . $alias . '&action=activate')
+                    Route::url('index.php?option=' . $this->_option . '&alias=' . $alias . '&action=activate'),
                 );
             } else {
                 Pathway::append(
                     stripslashes($title),
-                    Route::url('index.php?option=' . $this->_option . '&alias=' . $alias)
+                    Route::url('index.php?option=' . $this->_option . '&alias=' . $alias),
                 );
             }
         }
@@ -298,7 +298,7 @@ class Base extends SiteController
             case 'reports':
                 Pathway::append(
                     Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_controller)),
-                    Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
+                    Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
                 );
                 break;
 
@@ -325,7 +325,7 @@ class Base extends SiteController
                                 . '&alias=' . $alias . '&active=' . $active;
                             Pathway::append(
                                 ucfirst(Lang::txt('COM_PROJECTS_TAB_' . strtoupper($this->active))),
-                                Route::url($url)
+                                Route::url($url),
                             );
                             break;
                     }
@@ -337,7 +337,7 @@ class Base extends SiteController
                 if (empty($alias)) {
                     Pathway::append(
                         Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
-                        Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task)
+                        Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task),
                     );
                     break;
                 }
@@ -353,12 +353,12 @@ class Base extends SiteController
 
                     Pathway::append(
                         $title,
-                        Route::url('index.php?option=' . $this->_option . '&task=browse&reviewer=' . $reviewer)
+                        Route::url('index.php?option=' . $this->_option . '&task=browse&reviewer=' . $reviewer),
                     );
                 } else {
                     Pathway::append(
                         Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
-                        Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task)
+                        Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task),
                     );
                 }
                 break;
@@ -371,7 +371,7 @@ class Base extends SiteController
             default:
                 Pathway::append(
                     Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
-                    Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task)
+                    Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task),
                 );
                 break;
         }
@@ -457,7 +457,7 @@ class Base extends SiteController
         // Message body
         $eview = new \Hubzero\Mail\View([
             'name'   => 'emails',
-            'layout' => 'invite_plain'
+            'layout' => 'invite_plain',
         ]);
         $eview->option    = $this->_option;
         $eview->project   = $this->model;
@@ -494,8 +494,8 @@ class Base extends SiteController
                         $message,
                         $from,
                         [$member->userid],
-                        $this->_option
-                    ]
+                        $this->_option,
+                    ],
                 );
             } elseif ($member->invited_email && $member->invited_code) {
                 $eview->uid   = 0;

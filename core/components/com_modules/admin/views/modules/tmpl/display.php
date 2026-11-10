@@ -22,7 +22,7 @@ Toolbar::title(Lang::txt('COM_MODULES_MANAGER_MODULES'), 'module.png');
 if ($canDo->get('core.create')) {
     //Toolbar::addNew('module.add');
     $selectUrl = Route::url(
-        'index.php?option=com_modules&task=select&tmpl=component'
+        'index.php?option=com_modules&task=select&tmpl=component',
     );
     Toolbar::appendButton(
         'Popup',
@@ -30,7 +30,7 @@ if ($canDo->get('core.create')) {
         'JTOOLBAR_NEW',
         $selectUrl,
         850,
-        400
+        400,
     );
 }
 
@@ -107,7 +107,7 @@ $saveOrder = $listOrder == 'ordering';
                     $clientOptions,
                     'value',
                     'text',
-                    $this->filters['client_id']
+                    $this->filters['client_id'],
                 );
                 ?>
             </select>
@@ -123,7 +123,7 @@ $saveOrder = $listOrder == 'ordering';
                     $stateOptions,
                     'value',
                     'text',
-                    $this->filters['state']
+                    $this->filters['state'],
                 );
                 ?>
             </select>
@@ -134,14 +134,14 @@ $saveOrder = $listOrder == 'ordering';
                 <option value=""><?php echo $posLabel; ?></option>
                 <?php
                 $posOptions = \Components\Modules\Helpers\Modules::getPositions(
-                    $this->filters['client_id']
+                    $this->filters['client_id'],
                 );
                 echo Html::select(
                     'options',
                     $posOptions,
                     'value',
                     'text',
-                    $this->filters['position']
+                    $this->filters['position'],
                 );
                 ?>
             </select>
@@ -152,14 +152,14 @@ $saveOrder = $listOrder == 'ordering';
                 <option value=""><?php echo $modLabel; ?></option>
                 <?php
                 $modOptions = \Components\Modules\Helpers\Modules::getModules(
-                    $this->filters['client_id']
+                    $this->filters['client_id'],
                 );
                 echo Html::select(
                     'options',
                     $modOptions,
                     'value',
                     'text',
-                    $this->filters['module']
+                    $this->filters['module'],
                 );
                 ?>
             </select>
@@ -174,7 +174,7 @@ $saveOrder = $listOrder == 'ordering';
                     Html::access('assetgroups'),
                     'value',
                     'text',
-                    $this->filters['access']
+                    $this->filters['access'],
                 );
                 ?>
             </select>
@@ -189,7 +189,7 @@ $saveOrder = $listOrder == 'ordering';
                     Html::contentlanguage('existing', true, true),
                     'value',
                     'text',
-                    $this->filters['language']
+                    $this->filters['language'],
                 );
                 ?>
             </select>
@@ -252,7 +252,7 @@ $saveOrder = $listOrder == 'ordering';
                     $pagination = $this->pagination(
                         $this->total,
                         $this->filters['start'],
-                        $this->filters['limit']
+                        $this->filters['limit'],
                     );
                     echo $pagination;
                     ?>
@@ -292,7 +292,7 @@ $saveOrder = $listOrder == 'ordering';
                             $item->editor,
                             $item->checked_out_time,
                             'modules.',
-                            $canCheckin
+                            $canCheckin,
                         ); ?>
                     <?php endif; ?>
                     <?php if ($canEdit) : ?>
@@ -327,7 +327,7 @@ $saveOrder = $listOrder == 'ordering';
                             <p class="smallsub warning">
                                 <?php echo Lang::txt(
                                     'COM_MODULES_WARNING_POSITION_NOT_IN_TEMPLATE',
-                                    $this->escape($this->template)
+                                    $this->escape($this->template),
                                 ); ?>
                             </p>
                         <?php endif; ?>
@@ -349,7 +349,7 @@ $saveOrder = $listOrder == 'ordering';
                                     $prevMatch,
                                     'orderup',
                                     'JLIB_HTML_MOVE_UP',
-                                    $ordering
+                                    $ordering,
                                 );
                                 $downIcon = $pagination->orderDownIcon(
                                     $i,
@@ -357,7 +357,7 @@ $saveOrder = $listOrder == 'ordering';
                                     $nextMatch,
                                     'orderdown',
                                     'JLIB_HTML_MOVE_DOWN',
-                                    $ordering
+                                    $ordering,
                                 );
                                 ?>
                                 <span><?php echo $upIcon; ?></span>
@@ -369,7 +369,7 @@ $saveOrder = $listOrder == 'ordering';
                                     $prevMatch,
                                     'orderdown',
                                     'JLIB_HTML_MOVE_UP',
-                                    $ordering
+                                    $ordering,
                                 );
                                 $downIcon = $pagination->orderDownIcon(
                                     $i,
@@ -377,7 +377,7 @@ $saveOrder = $listOrder == 'ordering';
                                     $nextMatch,
                                     'orderup',
                                     'JLIB_HTML_MOVE_DOWN',
-                                    $ordering
+                                    $ordering,
                                 );
                                 ?>
                                 <span><?php echo $upIcon; ?></span>

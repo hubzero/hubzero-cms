@@ -77,7 +77,7 @@ class Groups extends Plugin
 
         $arr = [
             'html' => '',
-            'metadata' => []
+            'metadata' => [],
         ];
 
         $applicants = [];

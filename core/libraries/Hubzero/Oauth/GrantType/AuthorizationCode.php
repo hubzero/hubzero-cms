@@ -94,7 +94,7 @@ class AuthorizationCode implements GrantTypeInterface
                     400,
                     'redirect_uri_mismatch',
                     "The redirect URI is missing or do not match",
-                    "#section-4.1.3"
+                    "#section-4.1.3",
                 );
                 return false;
             }

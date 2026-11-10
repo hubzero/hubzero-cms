@@ -46,7 +46,7 @@ $this->css();
                             $roleTitle = $this->escape(stripslashes($s->title));
                             $roleHref = Route::url(
                                 $base . '&task=' . $s->alias
-                                . '&sort=' . $this->filters['sort']
+                                . '&sort=' . $this->filters['sort'],
                             );
                             ?>
                             <li>
@@ -65,20 +65,20 @@ $this->css();
                     <?php
                     $taskParam = urlencode($this->filters['task']);
                     $titleSortUrl = Route::url(
-                        $base . '&task=' . $taskParam . '&sort=title'
+                        $base . '&task=' . $taskParam . '&sort=title',
                     );
                     $enrolledSortUrl = Route::url(
-                        $base . '&task=' . $taskParam . '&sort=enrolled'
+                        $base . '&task=' . $taskParam . '&sort=enrolled',
                     );
                     $titleSortClass = ($this->filters['sort'] == 'title')
                         ? ' class="active"' : '';
                     $enrolledSortClass = ($this->filters['sort'] == 'enrolled')
                         ? ' class="active"' : '';
                     $titleSortTitle = Lang::txt(
-                        'PLG_MEMBERS_COURSES_SORT_BY_TITLE'
+                        'PLG_MEMBERS_COURSES_SORT_BY_TITLE',
                     );
                     $enrolledSortTitle = Lang::txt(
-                        'PLG_MEMBERS_COURSES_SORT_BY_ENROLLED'
+                        'PLG_MEMBERS_COURSES_SORT_BY_ENROLLED',
                     );
                     ?>
                     <li>
@@ -110,7 +110,7 @@ $this->css();
                         : $this->total;
 
                     echo $this->escape(
-                        stripslashes($this->active->title)
+                        stripslashes($this->active->title),
                     );
                     ?>
                     <span>(<?php echo Lang::txt('PLG_MEMBERS_COURSES_RESULTS_TOTAL', $s, $e, $this->total); ?>)</span>
@@ -148,19 +148,19 @@ $this->css();
 
                 $courseUrl = Route::url(
                     'index.php?option=com_courses&gid='
-                    . $row->alias . $sfx
+                    . $row->alias . $sfx,
                 );
                 $enrolledTime = Date::of($row->enrolled)->toLocal(
-                    Lang::txt('TIME_FORMAT_HZ1')
+                    Lang::txt('TIME_FORMAT_HZ1'),
                 );
                 $enrolledDate = Date::of($row->enrolled)->toLocal(
-                    Lang::txt('DATE_FORMAT_HZ1')
+                    Lang::txt('DATE_FORMAT_HZ1'),
                 );
                 $sectionLabel = Lang::txt(
-                    'PLG_MEMBERS_COURSES_SECTION'
+                    'PLG_MEMBERS_COURSES_SECTION',
                 );
                 $escapedSection = $this->escape(
-                    stripslashes($row->section_title)
+                    stripslashes($row->section_title),
                 );
                 ?>
                     <tr class="course<?php echo ($cls) ? ' ' . $cls : ''; ?>">
@@ -212,10 +212,10 @@ $this->css();
                         <?php if ($row->starts) { ?>
                                 <?php
                                 $startsTime = Date::of($row->starts)->toLocal(
-                                    Lang::txt('TIME_FORMAT_HZ1')
+                                    Lang::txt('TIME_FORMAT_HZ1'),
                                 );
                                 $startsDate = Date::of($row->starts)->toLocal(
-                                    Lang::txt('DATE_FORMAT_HZ1')
+                                    Lang::txt('DATE_FORMAT_HZ1'),
                                 );
                                 $atLabel = Lang::txt('PLG_MEMBERS_COURSES_AT');
                                 $onLabel = Lang::txt('PLG_MEMBERS_COURSES_ON');
@@ -249,10 +249,10 @@ $this->css();
                         <?php if ($row->ends) { ?>
                                 <?php
                                 $endsTime = Date::of($row->ends)->toLocal(
-                                    Lang::txt('TIME_FORMAT_HZ1')
+                                    Lang::txt('TIME_FORMAT_HZ1'),
                                 );
                                 $endsDate = Date::of($row->ends)->toLocal(
-                                    Lang::txt('DATE_FORMAT_HZ1')
+                                    Lang::txt('DATE_FORMAT_HZ1'),
                                 );
                                 $atLabel = Lang::txt('PLG_MEMBERS_COURSES_AT');
                                 $onLabel = Lang::txt('PLG_MEMBERS_COURSES_ON');
@@ -287,10 +287,10 @@ $this->css();
                                 <?php
                                 $copyUrl = Route::url(
                                     'index.php?option=com_courses&gid='
-                                    . $row->alias . '&task=copy&return=' . $rtrn
+                                    . $row->alias . '&task=copy&return=' . $rtrn,
                                 );
                                 $copyLabel = Lang::txt(
-                                    'PLG_MEMBERS_COURSES_ACTION_COPY'
+                                    'PLG_MEMBERS_COURSES_ACTION_COPY',
                                 );
                                 ?>
                                 <a class="icon-copy btn btn-copy"
@@ -318,7 +318,7 @@ $this->css();
             $pageNav = $this->pagination(
                 $this->total,
                 $this->filters['start'],
-                $this->filters['limit']
+                $this->filters['limit'],
             );
             $pageNav->setAdditionalUrlParam('id', $this->member->get('id'));
             $pageNav->setAdditionalUrlParam('active', 'courses');
@@ -339,7 +339,7 @@ $this->css();
                 $coursesUrl = Route::url('index.php?option=com_courses');
                 $findCourse = Lang::txt(
                     'PLG_MEMBERS_COURSES_FIND_COURSE',
-                    $coursesUrl
+                    $coursesUrl,
                 );
                 ?>
                 <li><?php echo $findCourse; ?></li>

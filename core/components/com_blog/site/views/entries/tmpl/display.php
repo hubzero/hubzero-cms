@@ -22,7 +22,7 @@ $title = Lang::txt('COM_BLOG');
 if (Pathway::count() <= 0) {
     Pathway::append(
         Lang::txt('COM_BLOG'),
-        'index.php?option=' . $this->option
+        'index.php?option=' . $this->option,
     );
 }
 if ($year = $this->filters['year']) {
@@ -30,7 +30,7 @@ if ($year = $this->filters['year']) {
 
     Pathway::append(
         $year,
-        'index.php?option=' . $this->option . '&year=' . $year
+        'index.php?option=' . $this->option . '&year=' . $year,
     );
 }
 if ($month = $this->filters['month']) {
@@ -38,7 +38,7 @@ if ($month = $this->filters['month']) {
 
     Pathway::append(
         sprintf("%02d", $month),
-        'index.php?option=' . $this->option . '&year=' . $year . '&month=' . sprintf("%02d", $month)
+        'index.php?option=' . $this->option . '&year=' . $year . '&month=' . sprintf("%02d", $month),
     );
 }
 
@@ -51,7 +51,7 @@ $first = $this->archive->entries([
         'state'      => 1,
         'authorized' => $this->filters['authorized'],
         'scope'      => $this->filters['scope'],
-        'scope_id'   => $this->filters['scope_id']
+        'scope_id'   => $this->filters['scope_id'],
     ])
     ->order('publish_up', 'asc')
     ->limit(1)
@@ -92,7 +92,7 @@ $rows = $this->archive->entries($this->filters)
 <section class="main section">
     <?php
     $browseUrl = Route::url(
-        'index.php?option=' . $this->option . '&task=browse'
+        'index.php?option=' . $this->option . '&task=browse',
     );
     ?>
     <form action="<?php echo $browseUrl; ?>"
@@ -183,14 +183,14 @@ $rows = $this->archive->entries($this->filters)
                                                 <a href="<?php echo Route::url($row->creator->link()); ?>">
                                                     <?php
                                                     echo $this->escape(
-                                                        stripslashes($row->creator->get('name'))
+                                                        stripslashes($row->creator->get('name')),
                                                     );
                                                     ?>
                                                 </a>
                                             <?php } else { ?>
                                                 <?php
                                                 echo $this->escape(
-                                                    stripslashes($row->creator->get('name'))
+                                                    stripslashes($row->creator->get('name')),
                                                 );
                                                 ?>
                                             <?php } ?>
@@ -250,7 +250,7 @@ $rows = $this->archive->entries($this->filters)
                                             <?php
                                             echo \Hubzero\Utility\Str::truncate(
                                                 strip_tags($row->content),
-                                                $introLength
+                                                $introLength,
                                             );
                                             ?>
                                         </p>
@@ -259,7 +259,7 @@ $rows = $this->archive->entries($this->filters)
                                         echo \Hubzero\Utility\Str::truncate(
                                             $row->content,
                                             $introLength,
-                                            ['html' => true]
+                                            ['html' => true],
                                         );
                                         ?>
                                     <?php } ?>
@@ -288,7 +288,7 @@ $rows = $this->archive->entries($this->filters)
                 <p>
                     <?php
                     $newEntryUrl = Route::url(
-                        'index.php?option=' . $this->option . '&task=new'
+                        'index.php?option=' . $this->option . '&task=new',
                     );
                     ?>
                     <a class="icon-add add btn"
@@ -313,7 +313,7 @@ $rows = $this->archive->entries($this->filters)
                         <li>
                             <?php
                             $yearUrl = Route::url(
-                                'index.php?option=' . $this->option . '&year=' . $i
+                                'index.php?option=' . $this->option . '&year=' . $i,
                             );
                             ?>
                             <a href="<?php echo $yearUrl; ?>"><?php echo $i; ?></a>
@@ -336,7 +336,7 @@ $rows = $this->archive->entries($this->filters)
                                 'COM_BLOG_SEPTEMBER',
                                 'COM_BLOG_OCTOBER',
                                 'COM_BLOG_NOVEMBER',
-                                'COM_BLOG_DECEMBER'
+                                'COM_BLOG_DECEMBER',
                             ];
                             //if (($this->year && $i == $this->year) || (!$this->year && $i == $now)) {
                             if ($i == $now) {
@@ -352,7 +352,7 @@ $rows = $this->archive->entries($this->filters)
                                     $monthUrl = Route::url(
                                         'index.php?option=' . $this->option
                                         . '&year=' . $i
-                                        . '&month=' . sprintf("%02d", ($k + 1))
+                                        . '&month=' . sprintf("%02d", ($k + 1)),
                                     );
                                     $activeClass = '';
                                     if ($this->filters['month'] && $this->filters['month'] == ($k + 1)) {
@@ -383,7 +383,7 @@ $rows = $this->archive->entries($this->filters)
                 <?php
                 $popular = $this->archive->entries([
                         'state'  => $this->filters['state'],
-                        'access' => $this->filters['access']
+                        'access' => $this->filters['access'],
                     ])
                     ->order('hits', 'desc')
                     ->limit(5)

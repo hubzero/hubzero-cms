@@ -24,7 +24,7 @@ $this->css()
     <?php
     $formAction = Route::url(
         'index.php?option=' . $this->option
-        . '&controller=' . $this->controller
+        . '&controller=' . $this->controller,
     );
     ?>
     <form action="<?php echo $formAction; ?>"
@@ -57,16 +57,16 @@ $this->css()
                                 . '&scope=' . urlencode($this->archive->get('scope'))
                                 . '&id=' . $this->archive->get('scope_id')
                                 . '&tmpl=component&'
-                                . Session::getFormToken() . '=1'
+                                . Session::getFormToken() . '=1',
                             );
                             $confirmMsg = Lang::txt(
                                 'Are you sure you want to delete folder "%s"?',
-                                basename($folder)
+                                basename($folder),
                             );
                             $notEmptyMsg = Lang::txt(
                                 'There are %s files/folders in the folder.'
                                 . ' Please delete all files/folder first.',
-                                $num_files
+                                $num_files,
                             );
                             ?>
                             <a class="icon-delete delete delete-folder"
@@ -99,11 +99,11 @@ $this->css()
                                 . '&scope=' . urlencode($this->archive->get('scope'))
                                 . '&id=' . $this->archive->get('scope_id')
                                 . '&tmpl=component&'
-                                . Session::getFormToken() . '=1'
+                                . Session::getFormToken() . '=1',
                             );
                             $confirmFileMsg = Lang::txt(
                                 'Are you sure you want to delete file "%s"?',
-                                basename($doc)
+                                basename($doc),
                             );
                             ?>
                             <a class="icon-delete delete delete-file"

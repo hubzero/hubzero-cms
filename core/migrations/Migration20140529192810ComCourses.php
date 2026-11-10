@@ -52,7 +52,7 @@ class Migration20140529192810ComCourses extends Base
                             'asset_id' => $result->id,
                             'scope_id' => $offering->id,
                             'scope'    => 'offering',
-                            'ordering' => $ordering[$offering->id]
+                            'ordering' => $ordering[$offering->id],
                         ])
                         ->execute();
                 }

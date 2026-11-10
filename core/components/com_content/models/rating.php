@@ -58,6 +58,6 @@ class Rating extends Relational
      * @var  array
      */
     protected $rules = [
-        'content_id' => 'positive|nonzero'
+        'content_id' => 'positive|nonzero',
     ];
 }

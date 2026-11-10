@@ -50,33 +50,33 @@ class Collections extends AdminController
             'object_type' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.object_type',
                 'object_type',
-                ''
+                '',
             ),
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'title'
+                'title',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
+                'ASC',
             ),
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             )),
             'state' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.state',
                 'state',
-                '-1'
+                '-1',
             ),
             'access' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.access',
                 'access',
-                '-1'
-            )
+                '-1',
+            ),
         ];
 
         $model = Collection::all();
@@ -91,7 +91,7 @@ class Collections extends AdminController
             ->select($collections . '.*')
             ->select(
                 '(SELECT COUNT(*) FROM `' . $posts . '` AS p WHERE p.collection_id=' . $collections . '.id)',
-                'posts'
+                'posts',
             )
             ->including(['creator', function ($creator) {
                 $creator->select('*');

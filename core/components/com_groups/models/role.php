@@ -45,7 +45,7 @@ class Role extends Relational
      */
     protected $rules = [
         'name'      => 'notempty',
-        'gidNumber' => 'positive|nonzero'
+        'gidNumber' => 'positive|nonzero',
     ];
 
     /**
@@ -91,7 +91,7 @@ class Role extends Relational
 
         $db->setQuery(
             "UPDATE `#__xgroups_roles` SET `ordering` = CASE `id`" . $cases . " ELSE `ordering` END" .
-            " WHERE `gidNumber` = " . (int) $gidNumber . " AND `id` IN (" . implode(',', $ids) . ")"
+            " WHERE `gidNumber` = " . (int) $gidNumber . " AND `id` IN (" . implode(',', $ids) . ")",
         );
 
         return (bool) $db->query();

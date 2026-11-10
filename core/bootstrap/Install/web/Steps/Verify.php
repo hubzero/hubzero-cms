@@ -83,7 +83,7 @@ class Verify implements StepInterface
             $this->security->logSecurityEvent('LOCKOUT_ATTEMPT', "Attempt during lockout");
             $this->installer->addMessage(
                 "Too many failed attempts. Please wait {$remaining} minute(s).",
-                'error'
+                'error',
             );
             return false;
         }
@@ -102,7 +102,7 @@ class Verify implements StepInterface
             $this->security->logSecurityEvent('BIND_FAIL', 'Failed to bind client');
             $this->installer->addMessage(
                 'Failed to complete verification. Please check file permissions.',
-                'error'
+                'error',
             );
             return false;
         }
@@ -110,7 +110,7 @@ class Verify implements StepInterface
         // Log successful verification
         $this->security->logSecurityEvent(
             'VERIFY_SUCCESS',
-            'Installation authorized from IP: ' . $this->security->getClientIP()
+            'Installation authorized from IP: ' . $this->security->getClientIP(),
         );
 
         $this->installer->markStepComplete('verify');

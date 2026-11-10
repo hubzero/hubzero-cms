@@ -27,7 +27,7 @@ class Migration20141120215253ComHubgraph extends Base
             "host"           => "unix:///var/run/hubgraph-server.sock",
             "port"           => null,
             "showTagCloud"   => true,
-            "enabledOptions" => ""
+            "enabledOptions" => "",
         ];
         $this->addComponentEntry('Hubgraph', 'com_hubgraph', 1, $params, false);
 

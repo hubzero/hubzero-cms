@@ -95,7 +95,7 @@ class Document extends Obj
                 $this->_tags[$matches[0][$i]] = [
                     'type'   => $type,
                     'name'   => $name,
-                    'params' => $params
+                    'params' => $params,
                 ];
             }
         }

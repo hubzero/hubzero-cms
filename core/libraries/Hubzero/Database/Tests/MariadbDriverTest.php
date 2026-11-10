@@ -74,32 +74,32 @@ class MariadbDriverTest extends AbstractDriverTestCase
 
         $driver->exec(
             "INSERT INTO mdb_categories (name, slug, sort_order)"
-            . " VALUES ('Electronics', 'electronics', 1)"
+            . " VALUES ('Electronics', 'electronics', 1)",
         );
         $driver->exec(
             "INSERT INTO mdb_categories (name, slug, sort_order)"
-            . " VALUES ('Books', 'books', 2)"
+            . " VALUES ('Books', 'books', 2)",
         );
         $driver->exec(
             "INSERT INTO mdb_categories (name, slug, sort_order, active)"
-            . " VALUES ('Archived', 'archived', 99, 0)"
+            . " VALUES ('Archived', 'archived', 99, 0)",
         );
 
         $driver->exec(
             "INSERT INTO mdb_items (category_id, title, price, stock, status)"
-            . " VALUES (1, 'Laptop', 999.99, 10, 'active')"
+            . " VALUES (1, 'Laptop', 999.99, 10, 'active')",
         );
         $driver->exec(
             "INSERT INTO mdb_items (category_id, title, price, stock, status)"
-            . " VALUES (1, 'Phone', 599.99, 25, 'active')"
+            . " VALUES (1, 'Phone', 599.99, 25, 'active')",
         );
         $driver->exec(
             "INSERT INTO mdb_items (category_id, title, price, stock, status)"
-            . " VALUES (2, 'Novel', 19.99, 100, 'active')"
+            . " VALUES (2, 'Novel', 19.99, 100, 'active')",
         );
         $driver->exec(
             "INSERT INTO mdb_items (category_id, title, price, stock, status)"
-            . " VALUES (2, 'Textbook', 79.99, 5, 'draft')"
+            . " VALUES (2, 'Textbook', 79.99, 5, 'draft')",
         );
     }
 
@@ -173,7 +173,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function driverIsMariadbInstance(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -186,7 +186,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canExecuteBasicQuery(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -212,7 +212,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canGetServerInfo(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -231,7 +231,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function tableExistsReturnsTrueForExistingTable(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -244,7 +244,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getTableListIncludesTestTables(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -259,7 +259,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getTableColumnsTypeOnly(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -276,7 +276,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getPrimaryKeyReturnsColumnName(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -290,7 +290,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function getForeignKeysForChildTable(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -313,7 +313,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
         }
 
         $driver->setQuery(
-            'SELECT * FROM mdb_categories ORDER BY id'
+            'SELECT * FROM mdb_categories ORDER BY id',
         );
         $rows = $driver->loadObjectList();
 
@@ -325,7 +325,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canInsertAndGetAutoIncrementId(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -333,14 +333,14 @@ class MariadbDriverTest extends AbstractDriverTestCase
 
         $driver->exec(
             "INSERT INTO mdb_categories (name, slug)"
-            . " VALUES ('Test', 'test-auto')"
+            . " VALUES ('Test', 'test-auto')",
         );
         $id = $driver->insertid();
 
         $this->assertGreaterThan(0, $id);
 
         $driver->exec(
-            "DELETE FROM mdb_categories WHERE id = $id"
+            "DELETE FROM mdb_categories WHERE id = $id",
         );
     }
 
@@ -348,7 +348,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUpdateRecord(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -356,22 +356,22 @@ class MariadbDriverTest extends AbstractDriverTestCase
 
         $driver->exec(
             "INSERT INTO mdb_categories (name, slug)"
-            . " VALUES ('Before', 'update-test')"
+            . " VALUES ('Before', 'update-test')",
         );
         $driver->exec(
             "UPDATE mdb_categories SET name = 'After'"
-            . " WHERE slug = 'update-test'"
+            . " WHERE slug = 'update-test'",
         );
 
         $driver->setQuery(
             "SELECT name FROM mdb_categories"
-            . " WHERE slug = 'update-test'"
+            . " WHERE slug = 'update-test'",
         );
         $this->assertEquals('After', $driver->loadResult());
 
         $driver->exec(
             "DELETE FROM mdb_categories"
-            . " WHERE slug = 'update-test'"
+            . " WHERE slug = 'update-test'",
         );
     }
 
@@ -379,7 +379,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canDeleteRecord(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -387,15 +387,15 @@ class MariadbDriverTest extends AbstractDriverTestCase
 
         $driver->exec(
             "INSERT INTO mdb_categories (name, slug)"
-            . " VALUES ('Delete Me', 'delete-test')"
+            . " VALUES ('Delete Me', 'delete-test')",
         );
         $driver->exec(
-            "DELETE FROM mdb_categories WHERE slug = 'delete-test'"
+            "DELETE FROM mdb_categories WHERE slug = 'delete-test'",
         );
 
         $driver->setQuery(
             "SELECT COUNT(*) FROM mdb_categories"
-            . " WHERE slug = 'delete-test'"
+            . " WHERE slug = 'delete-test'",
         );
         $this->assertEquals(0, $driver->loadResult());
     }
@@ -408,7 +408,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canCommitTransaction(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -417,19 +417,19 @@ class MariadbDriverTest extends AbstractDriverTestCase
         $driver->transactionStart();
         $driver->exec(
             "INSERT INTO mdb_categories (name, slug)"
-            . " VALUES ('Committed', 'trans-commit')"
+            . " VALUES ('Committed', 'trans-commit')",
         );
         $driver->transactionCommit();
 
         $driver->setQuery(
             "SELECT COUNT(*) FROM mdb_categories"
-            . " WHERE slug = 'trans-commit'"
+            . " WHERE slug = 'trans-commit'",
         );
         $this->assertEquals(1, $driver->loadResult());
 
         $driver->exec(
             "DELETE FROM mdb_categories"
-            . " WHERE slug = 'trans-commit'"
+            . " WHERE slug = 'trans-commit'",
         );
     }
 
@@ -437,7 +437,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canRollbackTransaction(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -450,13 +450,13 @@ class MariadbDriverTest extends AbstractDriverTestCase
         $driver2->transactionStart();
         $driver2->exec(
             "INSERT INTO mdb_categories (name, slug)"
-            . " VALUES ('Rolled Back', 'trans-rollback')"
+            . " VALUES ('Rolled Back', 'trans-rollback')",
         );
         $driver2->transactionRollback();
 
         $driver->setQuery(
             "SELECT COUNT(*) FROM mdb_categories"
-            . " WHERE slug = 'trans-rollback'"
+            . " WHERE slug = 'trans-rollback'",
         );
         $count = (int) $driver->loadResult();
 
@@ -465,7 +465,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
         $this->assertEquals(
             0,
             $count,
-            'Rolled back row should not be visible'
+            'Rolled back row should not be visible',
         );
     }
 
@@ -477,14 +477,14 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseRegexp(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
         }
 
         $driver->setQuery(
-            "SELECT * FROM mdb_items WHERE title REGEXP '^L'"
+            "SELECT * FROM mdb_items WHERE title REGEXP '^L'",
         );
         $items = $driver->loadObjectList();
 
@@ -496,7 +496,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function hasAriaOrInnoDBEngine(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -510,7 +510,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseAggregateFunctions(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -535,7 +535,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function sequenceSupportReflectsVersion(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -559,7 +559,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
 
         $this->assertTrue($driver->createOrReplaceView(
             'mdb_active_items',
-            "SELECT id, title FROM mdb_items WHERE status = 'active'"
+            "SELECT id, title FROM mdb_items WHERE status = 'active'",
         ));
         $this->assertTrue($driver->viewExists('mdb_active_items'));
 
@@ -578,7 +578,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canAddAndDropColumn(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -587,17 +587,17 @@ class MariadbDriverTest extends AbstractDriverTestCase
         $driver->exec(
             "CREATE TABLE mdb_ddl_test"
             . " (id INT AUTO_INCREMENT PRIMARY KEY,"
-            . " name VARCHAR(100)) ENGINE=InnoDB"
+            . " name VARCHAR(100)) ENGINE=InnoDB",
         );
 
         $this->assertTrue(
-            $driver->addColumn('mdb_ddl_test', 'email', 'VARCHAR(200)')
+            $driver->addColumn('mdb_ddl_test', 'email', 'VARCHAR(200)'),
         );
         $columns = $driver->getTableColumns('mdb_ddl_test', true);
         $this->assertArrayHasKey('email', $columns);
 
         $this->assertTrue(
-            $driver->dropColumn('mdb_ddl_test', 'email')
+            $driver->dropColumn('mdb_ddl_test', 'email'),
         );
         $columns = $driver->getTableColumns('mdb_ddl_test', true);
         $this->assertArrayNotHasKey('email', $columns);
@@ -607,7 +607,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canTruncateTable(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -616,13 +616,13 @@ class MariadbDriverTest extends AbstractDriverTestCase
         $driver->exec(
             "CREATE TABLE mdb_trunc_test"
             . " (id INT AUTO_INCREMENT PRIMARY KEY,"
-            . " name VARCHAR(50)) ENGINE=InnoDB"
+            . " name VARCHAR(50)) ENGINE=InnoDB",
         );
         $driver->exec(
-            "INSERT INTO mdb_trunc_test (name) VALUES ('one')"
+            "INSERT INTO mdb_trunc_test (name) VALUES ('one')",
         );
         $driver->exec(
-            "INSERT INTO mdb_trunc_test (name) VALUES ('two')"
+            "INSERT INTO mdb_trunc_test (name) VALUES ('two')",
         );
 
         $driver->truncateTable('mdb_trunc_test');
@@ -639,7 +639,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function queryBuilderSelectWithLimit(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -659,7 +659,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function queryBuilderWhereInSubquery(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -686,7 +686,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function featureDetectionReturnsExpectedValues(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;
@@ -708,7 +708,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function canUseCreateTableBuilder(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$this->requiresMariadb($driver)) {
             return;

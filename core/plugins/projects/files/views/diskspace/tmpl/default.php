@@ -64,10 +64,10 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
     $filesUrl = Route::url(
         'index.php?option=' . $this->option
         . '&alias=' . $this->model->get('alias')
-        . '&active=files'
+        . '&active=files',
     );
     $diskUsageLabel = Lang::txt(
-        'PLG_PROJECTS_FILES_DISK_USAGE'
+        'PLG_PROJECTS_FILES_DISK_USAGE',
     );
     ?>
     <div id="plg-header">
@@ -103,7 +103,7 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
                 $quotaAlert = ($inuse == '> 100')
                     ? Lang::txt('PLG_PROJECTS_FILES_OVER_QUOTA')
                     : Lang::txt(
-                        'PLG_PROJECTS_FILES_APPROACHING_QUOTA'
+                        'PLG_PROJECTS_FILES_APPROACHING_QUOTA',
                     );
                 ?>
                 <span id="indicator-value">
@@ -142,7 +142,7 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
                     } ?>
                     <?php
                     $unusedLabel = Lang::txt(
-                        'PLG_PROJECTS_FILES_UNUSED_SPACE'
+                        'PLG_PROJECTS_FILES_UNUSED_SPACE',
                     ) . ' (' . $unused . ')';
                     ?>
                     <span class="l-unused">&nbsp;</span>
@@ -152,18 +152,18 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
             <div id="usage-labels" class="usage-admin">
                 <?php
                 $adminFilesLabel = Lang::txt(
-                    'PLG_PROJECTS_FILES_FILES'
+                    'PLG_PROJECTS_FILES_FILES',
                 ) . ': ' . \Hubzero\Utility\Number::formatBytes(
-                    $working
+                    $working,
                 );
                 $adminHistoryLabel = Lang::txt(
-                    'PLG_PROJECTS_FILES_HISTORY'
+                    'PLG_PROJECTS_FILES_HISTORY',
                 ) . ': ' . $versions;
                 $adminAvailLabel = Lang::txt(
-                    'PLG_PROJECTS_FILES_AVAILABLE'
+                    'PLG_PROJECTS_FILES_AVAILABLE',
                 ) . ': ' . $unused;
                 $projectFilesLabel = Lang::txt(
-                    'PLG_PROJECTS_FILES_PROJECT_FILES'
+                    'PLG_PROJECTS_FILES_PROJECT_FILES',
                 );
                 ?>
                 <span class="l-h">
@@ -179,15 +179,15 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
                     $unusedPub = $this->pubQuota - $this->pubDiskUsage;
                     $unusedPub = $unusedPub <= 0 ? 'none' : \Hubzero\Utility\Number::formatBytes($unusedPub);
                     $pubLabel = Lang::txt(
-                        'PLG_PROJECTS_FILES_SPACE_PUBLISHED'
+                        'PLG_PROJECTS_FILES_SPACE_PUBLISHED',
                     ) . ': ' . \Hubzero\Utility\Number::formatBytes(
-                        $this->pubDiskUsage
+                        $this->pubDiskUsage,
                     );
                     $pubAvailLabel = Lang::txt(
-                        'PLG_PROJECTS_FILES_AVAILABLE'
+                        'PLG_PROJECTS_FILES_AVAILABLE',
                     ) . ': ' . $unusedPub;
                     $pubHeadLabel = Lang::txt(
-                        'PLG_PROJECTS_FILES_PUBLICATIONS'
+                        'PLG_PROJECTS_FILES_PUBLICATIONS',
                     );
                     ?>
                 <span class="l-h">
@@ -214,24 +214,24 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
     $optimizeUrl = Route::url(
         'index.php?option=' . $this->option
         . '&alias=' . $this->model->get('alias')
-        . '&active=files&action=optimize'
+        . '&active=files&action=optimize',
     );
     $optimizeLabel = Lang::txt(
-        'PLG_PROJECTS_FILES_OPTIMIZE'
+        'PLG_PROJECTS_FILES_OPTIMIZE',
     );
     $optimizeAbout = Lang::txt(
-        'PLG_PROJECTS_FILES_ABOUT_FILE_OPTIMIZE'
+        'PLG_PROJECTS_FILES_ABOUT_FILE_OPTIMIZE',
     );
     $advOptimizeUrl = Route::url(
         'index.php?option=' . $this->option
         . '&alias=' . $this->model->get('alias')
-        . '&active=files&action=advoptimize'
+        . '&active=files&action=advoptimize',
     );
     $advOptimizeLabel = Lang::txt(
-        'PLG_PROJECTS_FILES_OPTIMIZE_ADV'
+        'PLG_PROJECTS_FILES_OPTIMIZE_ADV',
     );
     $advOptimizeAbout = Lang::txt(
-        'PLG_PROJECTS_FILES_ABOUT_FILE_OPTIMIZE_ADV'
+        'PLG_PROJECTS_FILES_ABOUT_FILE_OPTIMIZE_ADV',
     );
     ?>
     <div id="disk-manage">

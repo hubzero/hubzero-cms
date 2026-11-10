@@ -23,8 +23,8 @@ class Migration20190305000000MarketHistory extends Base
      **/
     public static $tables = [
         '#__market_history' => [
-            'date'
-        ]
+            'date',
+        ],
     ];
 
     /**

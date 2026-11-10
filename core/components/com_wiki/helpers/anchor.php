@@ -26,7 +26,7 @@ class Anchor
      */
     const ENTITY_ALIASES = [
         "\u{05E8}\u{05DC}\u{05DE}" => 'rlm',
-        "\u{0631}\u{0644}\u{0645}" => 'rlm'
+        "\u{0631}\u{0644}\u{0645}" => 'rlm',
     ];
 
     /**
@@ -76,7 +76,7 @@ class Anchor
 
                 return html_entity_decode('&' . $name . ';', ENT_QUOTES | ENT_HTML401, 'UTF-8');
             },
-            $text
+            $text,
         );
     }
 

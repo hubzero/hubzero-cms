@@ -38,7 +38,7 @@ class Migration20150827120311Core extends Base
         'Migration2016090710490000Core.php'          => 'Migration20160907104900Core.php',
         'Migration2016090710530000ComUsers.php'      => 'Migration20160907105300ComUsers.php',
         'Migration2016090710560000ComSupport.php'    => 'Migration20160907105600ComSupport.php',
-        'Migration2016090711260000Core.php'          => 'Migration20160907112600Core.php'
+        'Migration2016090711260000Core.php'          => 'Migration20160907112600Core.php',
     ];
 
     /**

@@ -29,7 +29,7 @@ class PostfixCollector
 
     protected static $months = [
         'Jan' => 1, 'Feb' => 2, 'Mar' => 3, 'Apr' => 4, 'May' => 5, 'Jun' => 6,
-        'Jul' => 7, 'Aug' => 8, 'Sep' => 9, 'Oct' => 10, 'Nov' => 11, 'Dec' => 12
+        'Jul' => 7, 'Aug' => 8, 'Sep' => 9, 'Oct' => 10, 'Nov' => 11, 'Dec' => 12,
     ];
 
     /**
@@ -234,14 +234,14 @@ class PostfixCollector
         foreach ($hours as $hk => $c) {
             $db->setQuery(
                 "INSERT INTO `#__massmail_postfix_hourly` (`hour`, `sent`) VALUES (" . $db->quote($hk) . ", " . (int) $c . ")
-				 ON DUPLICATE KEY UPDATE `sent` = `sent` + " . (int) $c
+				 ON DUPLICATE KEY UPDATE `sent` = `sent` + " . (int) $c,
             );
             $db->execute();
         }
         foreach ($days as $dk => $c) {
             $db->setQuery(
                 "INSERT INTO `#__massmail_postfix_daily` (`day`, `sent`) VALUES (" . $db->quote($dk) . ", " . (int) $c . ")
-				 ON DUPLICATE KEY UPDATE `sent` = `sent` + " . (int) $c
+				 ON DUPLICATE KEY UPDATE `sent` = `sent` + " . (int) $c,
             );
             $db->execute();
         }
@@ -252,7 +252,7 @@ class PostfixCollector
         $db->setQuery(
             "UPDATE `#__massmail_postfix_state`
 			 SET last_inode = " . (int) $curInode . ", last_offset = " . (int) $curSize . ", last_run = " . $db->quote(\Date::toSql()) . "
-			 WHERE id = 1"
+			 WHERE id = 1",
         );
         $db->execute();
 
@@ -269,7 +269,7 @@ class PostfixCollector
             $ls = gmdate('Y-m-d H:i:s', self::$maxTs);
             $db->setQuery(
                 "UPDATE `#__massmail_postfix_state` SET last_sent = " . $db->quote($ls) . "
-				 WHERE id = 1 AND (last_sent IS NULL OR last_sent < " . $db->quote($ls) . ")"
+				 WHERE id = 1 AND (last_sent IS NULL OR last_sent < " . $db->quote($ls) . ")",
             );
             $db->execute();
             $result['last_sent'] = $ls;
@@ -281,7 +281,7 @@ class PostfixCollector
         $depth = Queue::size();
         if ($depth >= 0) {
             $db->setQuery(
-                "INSERT INTO `#__massmail_queue_samples` (`recorded`, `depth`) VALUES (" . $db->quote(\Date::toSql()) . ", " . (int) $depth . ")"
+                "INSERT INTO `#__massmail_queue_samples` (`recorded`, `depth`) VALUES (" . $db->quote(\Date::toSql()) . ", " . (int) $depth . ")",
             );
             $db->execute();
 
@@ -289,7 +289,7 @@ class PostfixCollector
             $db->setQuery(
                 "INSERT INTO `#__massmail_queue_daily` (`day`, `samples`, `total`, `max`)
 				 VALUES (" . $db->quote(gmdate('Y-m-d')) . ", 1, " . (int) $depth . ", " . (int) $depth . ")
-				 ON DUPLICATE KEY UPDATE `samples` = `samples` + 1, `total` = `total` + " . (int) $depth . ", `max` = GREATEST(`max`, " . (int) $depth . ")"
+				 ON DUPLICATE KEY UPDATE `samples` = `samples` + 1, `total` = `total` + " . (int) $depth . ", `max` = GREATEST(`max`, " . (int) $depth . ")",
             );
             $db->execute();
 

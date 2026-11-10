@@ -41,17 +41,17 @@ class Forum extends AbstractComponent
         Submenu::addEntry(
             Lang::txt('COM_FORUM_SECTIONS'),
             Route::url('index.php?option=com_forum&controller=sections'),
-            ($controllerName == 'sections')
+            ($controllerName == 'sections'),
         );
         Submenu::addEntry(
             Lang::txt('COM_FORUM_CATEGORIES'),
             Route::url('index.php?option=com_forum&controller=categories&section_id=-1'),
-            ($controllerName == 'categories')
+            ($controllerName == 'categories'),
         );
         Submenu::addEntry(
             Lang::txt('COM_FORUM_THREADS'),
             Route::url('index.php?option=com_forum&controller=threads&category_id=-1'),
-            ($controllerName == 'threads')
+            ($controllerName == 'threads'),
         );
 
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);

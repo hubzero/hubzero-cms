@@ -77,7 +77,7 @@ if (count($this->citations) > 0) :
                                         $cite,
                                         $this->filters['search'],
                                         $this->coins,
-                                        $this->config
+                                        $this->config,
                                     );
 
                             if ($cite->doi) {
@@ -85,7 +85,7 @@ if (count($this->citations) > 0) :
                                     'doi:' . $cite->doi,
                                     '<a href="' . $this->escape($cite->url) . '" rel="external">'
                                     . 'doi:' . $this->escape($cite->doi) . '</a>',
-                                    $formatted
+                                    $formatted,
                                 );
                             }
 
@@ -131,7 +131,7 @@ if (count($this->citations) > 0) :
                                     $this->database,
                                     $this->config,
                                     $this->openurl,
-                                    true
+                                    true,
                                 );
                             }
                             ?>
@@ -140,7 +140,7 @@ if (count($this->citations) > 0) :
                                 <?php
                                 echo \Components\Citations\Helpers\Format::citationBadges(
                                     $cite,
-                                    $this->database
+                                    $this->database,
                                 );
                                 ?>
                             <?php endif; ?>
@@ -150,7 +150,7 @@ if (count($this->citations) > 0) :
                                 <?php
                                 echo \Components\Citations\Helpers\Format::citationTags(
                                     $cite,
-                                    $this->database
+                                    $this->database,
                                 );
                                 ?>
                             <?php endif; ?>

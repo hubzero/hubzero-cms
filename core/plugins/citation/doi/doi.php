@@ -83,7 +83,7 @@ class Doi extends Plugin
         $assocParams = Request::getArray('assocs', [], 'post');
         $citation = array_map(
             'trim',
-            Request::getArray('citation', [], 'post')
+            Request::getArray('citation', [], 'post'),
         );
 
         if (!empty($assocParams)) {
@@ -187,7 +187,7 @@ class Doi extends Plugin
                         $pos = strpos($citation['url'], self::HANDLE_DOMAIN_NAME);
                         $citationArr[self::KEY_HANDLE] = substr(
                             $citation['url'],
-                            $pos + strlen(self::HANDLE_DOMAIN_NAME) + 1
+                            $pos + strlen(self::HANDLE_DOMAIN_NAME) + 1,
                         );
                     } else {
                         $pos = strpos($citation['url'], self::HANDLE);
@@ -229,7 +229,7 @@ class Doi extends Plugin
                 CURLOPT_USERPWD         => $this->_configs->dataciteUserPW,
                 CURLOPT_RETURNTRANSFER  => true,
                 CURLOPT_HTTPHEADER      => [
-                    'Content-Type:text/plain;charset=UTF-8'
+                    'Content-Type:text/plain;charset=UTF-8',
                 ],
             ];
 
@@ -373,7 +373,7 @@ class Doi extends Plugin
         $dom = new \DomDocument();
         $dom->loadXML($xml);
         $relatedIdentifiersNodeList = $dom->getElementsByTagName(
-            "relatedIdentifiers"
+            "relatedIdentifiers",
         );
 
         if ($relatedIdentifiersNodeList->length != 0) {
@@ -389,7 +389,7 @@ class Doi extends Plugin
                     $resourceElementNodeList,
                     $sizeElementNodeList,
                     $citation,
-                    $relationType
+                    $relationType,
                 );
             } else {
                 $formatElementNodeList = $dom->getElementsByTagName("formats");
@@ -401,7 +401,7 @@ class Doi extends Plugin
                         $resourceElementNodeList,
                         $formatElementNodeList,
                         $citation,
-                        $relationType
+                        $relationType,
                     );
                 } else {
                     $versionElementNodeList = $dom->getElementsByTagName("version");
@@ -413,7 +413,7 @@ class Doi extends Plugin
                             $resourceElementNodeList,
                             $versionElementNodeList,
                             $citation,
-                            $relationType
+                            $relationType,
                         );
                     }
                 }
@@ -467,7 +467,7 @@ class Doi extends Plugin
             $relatedIdentifiersElement = $dom->createElement("relatedIdentifiers");
             $relatedIdentifiersNode = $resourceNode->item(0)->insertBefore(
                 $relatedIdentifiersElement,
-                $specNode->item(0)
+                $specNode->item(0),
             );
             $relatedIdentifierElement = $dom->createElement("relatedIdentifier", current($identifier));
             $relatedIdentifierNode = $relatedIdentifiersNode->appendChild($relatedIdentifierElement);
@@ -496,7 +496,7 @@ class Doi extends Plugin
         curl_setopt(
             $ch,
             CURLOPT_HTTPHEADER,
-            ['Content-Type:text/plain;charset=UTF-8']
+            ['Content-Type:text/plain;charset=UTF-8'],
         );
         curl_setopt($ch, CURLOPT_FAILONERROR, true);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
@@ -544,7 +544,7 @@ class Doi extends Plugin
                 self::KEY_ARK,
                 self::KEY_ARXIV,
                 self::KEY_URN,
-                self::KEY_URL
+                self::KEY_URL,
             ];
 
             foreach ($checkKeys as $key) {

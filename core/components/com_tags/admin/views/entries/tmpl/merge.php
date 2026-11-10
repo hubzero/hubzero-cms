@@ -59,8 +59,8 @@ Toolbar::help('merge');
                     $tf = Event::trigger(
                         'hubzero.onGetMultiEntry',
                         [
-                            ['tags', 'newtag', 'newtag']
-                        ]
+                            ['tags', 'newtag', 'newtag'],
+                        ],
                     );
                     if (count($tf)) {
                         echo implode("\n", $tf);

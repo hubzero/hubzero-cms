@@ -45,7 +45,7 @@ class Tag extends Relational
      * @var  array
      */
     protected $rules = [
-        'raw_tag' => 'notempty'
+        'raw_tag' => 'notempty',
     ];
 
     /**
@@ -55,7 +55,7 @@ class Tag extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**
@@ -66,7 +66,7 @@ class Tag extends Relational
     public $always = [
         'tag',
         'modified',
-        'modified_by'
+        'modified_by',
     ];
 
     /**
@@ -75,7 +75,7 @@ class Tag extends Relational
      * @var array
      */
     protected $parsed = [
-        'description'
+        'description',
     ];
 
     /**
@@ -166,7 +166,7 @@ class Tag extends Relational
             'ъ' => '', 'Ъ' => '', 'ы' => 'y',
             'Ы' => 'y', 'ь' => '', 'Ь' => '',
             'э' => 'e', 'Э' => 'e', 'ю' => 'ju',
-            'Ю' => 'ju', 'я' => 'ja', 'Я' => 'ja'
+            'Ю' => 'ju', 'я' => 'ja', 'Я' => 'ja',
         ];
 
         $tag = str_replace(array_keys($transliterationTable), array_values($transliterationTable), $tag == null ? '' : $tag);

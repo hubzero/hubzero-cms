@@ -37,7 +37,7 @@ class Geoplugin extends Plugin
         }
 
         return new \Geocoder\Provider\GeoPlugin\GeoPlugin(
-            $adapter
+            $adapter,
         );
     }
 }

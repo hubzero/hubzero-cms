@@ -52,28 +52,28 @@ class Styles extends AdminController
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'filter_search',
-                ''
+                '',
             )),
             'client_id' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.client_id',
                 'filter_client_id',
-                '*'
+                '*',
             ),
             'template' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.template',
                 'filter_template',
-                '0'
+                '0',
             ),
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'title'
+                'title',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         $model = Style::all();
@@ -262,7 +262,7 @@ class Styles extends AdminController
 
         $result = Event::trigger(
             'extension.onExtensionBeforeSave',
-            ['com_templates.style', $style, ($fields['id'] ? false : true)]
+            ['com_templates.style', $style, ($fields['id'] ? false : true)],
         );
 
         if (in_array(false, $result, true)) {
@@ -324,7 +324,7 @@ class Styles extends AdminController
         // Trigger the onExtensionAfterSave event.
         Event::trigger(
             'extension.onExtensionAfterSave',
-            ['com_templates.style', $style, ($fields['id'] ? false : true)]
+            ['com_templates.style', $style, ($fields['id'] ? false : true)],
         );
 
         Notify::success(Lang::txt('COM_TEMPLATES_STYLE_SAVE_SUCCESS'));

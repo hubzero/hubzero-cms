@@ -38,7 +38,7 @@ class Hidden extends Field
             'class'        => ($this->element['class']     ? (string) $this->element['class']  : ''),
             'autocomplete' => ((string) $this->element['autocomplete'] == 'off' ? 'off'      : ''),
             'disabled'     => ((string) $this->element['disabled'] == 'true'    ? 'disabled' : ''),
-            'onchange'     => ($this->element['onchange']  ? (string) $this->element['onchange'] : '')
+            'onchange'     => ($this->element['onchange']  ? (string) $this->element['onchange'] : ''),
         ];
 
         $attr = [];

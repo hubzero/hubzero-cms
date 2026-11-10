@@ -58,7 +58,7 @@ class Migration20140814103014ComSupport extends Base
                         'id'    => $i,
                         'open'  => 0,
                         'title' => $result->title,
-                        'alias' => $result->alias
+                        'alias' => $result->alias,
                     ];
                     $i++;
                 }

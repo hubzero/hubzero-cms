@@ -28,8 +28,8 @@ $params = &$this->params;
                         \Components\Content\Site\Helpers\Route::getArticleRoute(
                             $item->slug,
                             $item->catslug,
-                            $item->language
-                        )
+                            $item->language,
+                        ),
                     );
                     ?>
                     <a href="<?php echo $articleUrl; ?>">
@@ -58,8 +58,8 @@ $params = &$this->params;
                         $title = $this->escape($item->parent_title);
                         $catUrl = Route::url(
                             \Components\Content\Site\Helpers\Route::getCategoryRoute(
-                                $item->parent_slug
-                            )
+                                $item->parent_slug,
+                            ),
                         );
                         $url = '<a href="' . $catUrl . '">'
                             . $title . '</a>';
@@ -77,8 +77,8 @@ $params = &$this->params;
                         $title = $this->escape($item->category_title);
                         $catUrl = Route::url(
                             \Components\Content\Site\Helpers\Route::getCategoryRoute(
-                                $item->catslug
-                            )
+                                $item->catslug,
+                            ),
                         );
                         $url = '<a href="' . $catUrl . '">'
                             . $title . '</a>';
@@ -123,7 +123,7 @@ $params = &$this->params;
                             <?php
                             $contactUrl = Route::url(
                                 'index.php?option=com_contact&view=contact&id='
-                                . $item->contactid
+                                . $item->contactid,
                             );
                             $authorLink = '<a href="' . $contactUrl . '">'
                                 . $author . '</a>';

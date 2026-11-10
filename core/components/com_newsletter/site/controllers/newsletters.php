@@ -182,7 +182,7 @@ class Newsletters extends SiteController
                 App::redirect(
                     Route::url('index.php?option=' . $this->_option . '&id=' . $id),
                     Lang::txt('Unable to create the filepath.'),
-                    'error'
+                    'error',
                 );
                 return;
             }
@@ -229,7 +229,7 @@ class Newsletters extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&id=' . $id),
                 Lang::txt('COM_NEWSLETTER_VIEW_OUTPUT_PDFERROR'),
-                'error'
+                'error',
             );
             return;
         }

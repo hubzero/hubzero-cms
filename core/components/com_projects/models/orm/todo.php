@@ -61,7 +61,7 @@ class Todo extends Relational
      */
     protected $rules = [
         'projectid' => 'positive|nonzero',
-        'content'   => 'notempty'
+        'content'   => 'notempty',
     ];
 
     /**
@@ -70,7 +70,7 @@ class Todo extends Relational
      * @var  array
      */
     public $always = [
-        'content'
+        'content',
     ];
 
     /**
@@ -81,7 +81,7 @@ class Todo extends Relational
     public $initiate = [
         'created',
         'created_by',
-        'priority'
+        'priority',
     ];
 
     /**

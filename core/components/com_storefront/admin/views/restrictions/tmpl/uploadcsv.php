@@ -33,7 +33,7 @@ Html::behavior('framework');
 $redirectUrl = Route::url(
     "index.php?option=" . $this->option
     . "&controller=" . $this->controller
-    . "&id=" . $this->sId
+    . "&id=" . $this->sId,
 );
 ?>
         window.parent.location='<?php echo $redirectUrl; ?>';

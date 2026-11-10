@@ -60,7 +60,7 @@ class Configure extends AdminController
         foreach ($config as $n => $v) {
             $box = [
                 'param' => $n,
-                'value' => $v
+                'value' => $v,
             ];
 
             $row = new EventsConfig($this->database);
@@ -118,7 +118,7 @@ class Configure extends AdminController
         // Redirect
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-            Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_SAVED')
+            Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_SAVED'),
         );
     }
 }

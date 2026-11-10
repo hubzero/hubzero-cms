@@ -138,7 +138,7 @@ class Searchv1r0 extends ApiController
         $highlightOptions = [
             'format' => '<span class="highlight">\1</span>',
             'html'   => false,
-            'regex'  => "|%s|iu"
+            'regex'  => "|%s|iu",
         ];
 
         foreach ($results as &$result) {

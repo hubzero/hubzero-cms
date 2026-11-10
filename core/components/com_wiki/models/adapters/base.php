@@ -94,7 +94,7 @@ abstract class Base extends Obj
     public function routing($task = 'save')
     {
         return [
-            'task' => $task
+            'task' => $task,
         ];
     }
 

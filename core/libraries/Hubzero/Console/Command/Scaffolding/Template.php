@@ -112,7 +112,7 @@ class Template extends Scaffolding
     {
         $this->output
             ->addOverview(
-                'Scaffolding for templates'
+                'Scaffolding for templates',
             );
     }
 }

@@ -37,7 +37,7 @@ class Migration20260912140000ComWishlist extends Base
             "UPDATE `#__wishlist`
                 SET `title` = CONCAT('Publication', SUBSTRING(`title`, 27))
               WHERE `category` = 'publication'
-                AND `title` LIKE 'COM\\_WISHLIST\\_NAME\\_RESOURCE %'"
+                AND `title` LIKE 'COM\\_WISHLIST\\_NAME\\_RESOURCE %'",
         );
         $this->db->query();
     }
@@ -55,7 +55,7 @@ class Migration20260912140000ComWishlist extends Base
             "UPDATE `#__wishlist`
                 SET `title` = CONCAT('COM_WISHLIST_NAME_RESOURCE', SUBSTRING(`title`, 12))
               WHERE `category` = 'publication'
-                AND `title` LIKE 'Publication %'"
+                AND `title` LIKE 'Publication %'",
         );
         $this->db->query();
     }

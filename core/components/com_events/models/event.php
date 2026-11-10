@@ -115,7 +115,7 @@ class Event extends Model
             'interval' => '',
             'end'      => 'never',
             'count'    => '',
-            'until'    => ''
+            'until'    => '',
         ];
 
         // split rules

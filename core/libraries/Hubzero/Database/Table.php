@@ -725,7 +725,7 @@ abstract class Table extends \stdClass
         // If the store failed return false.
         if (!$stored) {
             $e = new Exception(
-                'Store failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg()
+                'Store failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg(),
             );
             $this->setError($e);
             return false;
@@ -788,14 +788,14 @@ abstract class Table extends \stdClass
             $query = $this->_db->getQuery();
             $query->update($this->_tbl);
             $query->set([
-                'asset_id' => (int) $this->asset_id
+                'asset_id' => (int) $this->asset_id,
             ]);
             $query->whereEquals($k, (int) $this->$k);
             $this->_db->setQuery($query->toString());
 
             if (!$this->_db->execute()) {
                 $e = new Exception(
-                    'Failed to update asset ID: ' . $this->_db->getErrorMsg()
+                    'Failed to update asset ID: ' . $this->_db->getErrorMsg(),
                 );
                 $this->setError($e);
                 return false;
@@ -903,7 +903,7 @@ abstract class Table extends \stdClass
         // Check for a database error.
         if (!$this->_db->execute()) {
             $e = new Exception(
-                'Delete failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg()
+                'Delete failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg(),
             );
             $this->setError($e);
             return false;
@@ -951,14 +951,14 @@ abstract class Table extends \stdClass
         $query->update($this->_tbl);
         $query->set([
             'checked_out' => (int) $userId,
-            'checked_out_time' => $time
+            'checked_out_time' => $time,
         ]);
         $query->whereEquals($this->_tbl_key, $pk);
         $this->_db->setQuery($query->toString());
 
         if (!$this->_db->execute()) {
             $e = new Exception(
-                'Checkout failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg()
+                'Checkout failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg(),
             );
             $this->setError($e);
             return false;
@@ -1013,7 +1013,7 @@ abstract class Table extends \stdClass
         $query->update($this->_tbl);
         $query->set([
             'checked_out' => $data['checked_out'],
-            'checked_out_time' => $data['checked_out_time']
+            'checked_out_time' => $data['checked_out_time'],
         ]);
         $query->whereEquals($this->_tbl_key, $pk);
         $this->_db->setQuery($query->toString());
@@ -1021,7 +1021,7 @@ abstract class Table extends \stdClass
         // Check for a database error.
         if (!$this->_db->execute()) {
             $e = new Exception(
-                'Checkin failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg()
+                'Checkin failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg(),
             );
             $this->setError($e);
             return false;
@@ -1061,7 +1061,7 @@ abstract class Table extends \stdClass
         $query = $this->_db->getQuery();
         $query->update($this->_tbl);
         $query->set([
-            'hits' => new \Hubzero\Database\Value\Raw('(hits + 1)')
+            'hits' => new \Hubzero\Database\Value\Raw('(hits + 1)'),
         ]);
         $query->whereEquals($this->_tbl_key, $pk);
         $this->_db->setQuery($query->toString());
@@ -1069,7 +1069,7 @@ abstract class Table extends \stdClass
         // Check for a database error.
         if (!$this->_db->execute()) {
             $e = new Exception(
-                'Hit update failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg()
+                'Hit update failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg(),
             );
             $this->setError($e);
             return false;
@@ -1166,7 +1166,7 @@ abstract class Table extends \stdClass
         // Check for a database error.
         if ($this->_db->getErrorNum()) {
             $e = new Exception(
-                'Failed to get next ordering for ' . get_class($this) . ': ' . $this->_db->getErrorMsg()
+                'Failed to get next ordering for ' . get_class($this) . ': ' . $this->_db->getErrorMsg(),
             );
             $this->setError($e);
 
@@ -1215,7 +1215,7 @@ abstract class Table extends \stdClass
         // Check for a database error.
         if ($this->_db->getErrorNum()) {
             $e = new Exception(
-                'Reorder failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg()
+                'Reorder failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg(),
             );
             $this->setError($e);
 
@@ -1232,7 +1232,7 @@ abstract class Table extends \stdClass
                     $query = $this->_db->getQuery();
                     $query->update($this->_tbl);
                     $query->set([
-                        'ordering' => ($i + 1)
+                        'ordering' => ($i + 1),
                     ]);
                     $query->whereEquals($this->_tbl_key, $row->$k);
                     $this->_db->setQuery($query->toString());
@@ -1241,7 +1241,7 @@ abstract class Table extends \stdClass
                     if (!$this->_db->execute()) {
                         $e = new Exception(
                             'Reorder update row ' . $i . ' failed for '
-                            . get_class($this) . ': ' . $this->_db->getErrorMsg()
+                            . get_class($this) . ': ' . $this->_db->getErrorMsg(),
                         );
                         $this->setError($e);
 
@@ -1317,7 +1317,7 @@ abstract class Table extends \stdClass
             // Check for a database error.
             if (!$this->_db->execute()) {
                 $e = new Exception(
-                    'Move failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg()
+                    'Move failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg(),
                 );
                 $this->setError($e);
 
@@ -1334,7 +1334,7 @@ abstract class Table extends \stdClass
             // Check for a database error.
             if (!$this->_db->execute()) {
                 $e = new Exception(
-                    'Move failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg()
+                    'Move failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg(),
                 );
                 $this->setError($e);
 
@@ -1354,7 +1354,7 @@ abstract class Table extends \stdClass
             // Check for a database error.
             if (!$this->_db->execute()) {
                 $e = new Exception(
-                    'Move failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg()
+                    'Move failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg(),
                 );
                 $this->setError($e);
 
@@ -1422,7 +1422,7 @@ abstract class Table extends \stdClass
         // Check for a database error.
         if (!$this->_db->execute()) {
             $e = new Exception(
-                'Publish failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg()
+                'Publish failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg(),
             );
             $this->setError($e);
 

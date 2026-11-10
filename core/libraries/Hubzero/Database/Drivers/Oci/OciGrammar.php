@@ -377,7 +377,7 @@ class OciGrammar extends BaseSchemaGrammar
             foreach ($addColumns as $name => $definition) {
                 $defs[] = $this->driver->buildAlterColumnDefinition(
                     $name,
-                    $definition
+                    $definition,
                 );
             }
             $statements[] = "ALTER TABLE " . $quotedTable
@@ -391,7 +391,7 @@ class OciGrammar extends BaseSchemaGrammar
             foreach ($modifyColumns as $name => $definition) {
                 $defs[] = $this->driver->buildAlterColumnDefinition(
                     $name,
-                    $definition
+                    $definition,
                 );
             }
             $statements[] = "ALTER TABLE " . $quotedTable
@@ -415,7 +415,7 @@ class OciGrammar extends BaseSchemaGrammar
                 function ($c) {
                     return $this->wrap(strtoupper($c));
                 },
-                $addPk
+                $addPk,
             );
             $statements[] = "ALTER TABLE " . $quotedTable
                 . " ADD PRIMARY KEY ("
@@ -433,7 +433,7 @@ class OciGrammar extends BaseSchemaGrammar
                 . " FOREIGN KEY (" . $this->wrap($fk['column'])
                 . ") REFERENCES "
                 . $this->wrap(
-                    $this->driver->replacePrefix($fk['referencedTable'])
+                    $this->driver->replacePrefix($fk['referencedTable']),
                 )
                 . " (" . $this->wrap($fk['referencedColumn'])
                 . ")";
@@ -450,7 +450,7 @@ class OciGrammar extends BaseSchemaGrammar
                 function ($c) {
                     return $this->wrap($c);
                 },
-                $index['columns']
+                $index['columns'],
             );
             $statements[] = "CREATE {$type}INDEX "
                 . $this->wrap($name)
@@ -464,7 +464,7 @@ class OciGrammar extends BaseSchemaGrammar
                 function ($c) {
                     return $this->wrap(strtoupper($c));
                 },
-                $columns
+                $columns,
             );
             // Use regular index (Oracle Text requires CTXSYS which
             // may not be available). Single-column for CONTEXT type.

@@ -517,7 +517,7 @@ class TableDefinition
     {
         return $this->addColumn(new Column($name, 'float', [
             'precision' => $precision,
-            'scale' => $scale
+            'scale' => $scale,
         ]));
     }
 
@@ -533,7 +533,7 @@ class TableDefinition
     {
         return $this->addColumn(new Column($name, 'double', [
             'precision' => $precision,
-            'scale' => $scale
+            'scale' => $scale,
         ]));
     }
 
@@ -549,7 +549,7 @@ class TableDefinition
     {
         return $this->addColumn(new Column($name, 'decimal', [
             'precision' => $precision,
-            'scale' => $scale
+            'scale' => $scale,
         ]));
     }
 
@@ -906,7 +906,7 @@ class TableDefinition
         $this->indexes[] = [
             'type' => 'unique',
             'columns' => $columns,
-            'name' => $name
+            'name' => $name,
         ];
         return $this;
     }
@@ -925,7 +925,7 @@ class TableDefinition
         $this->indexes[] = [
             'type' => 'index',
             'columns' => $columns,
-            'name' => $name
+            'name' => $name,
         ];
         return $this;
     }
@@ -946,7 +946,7 @@ class TableDefinition
             'type' => 'fulltext',
             'columns' => $columns,
             'name' => $name,
-            'language' => $language
+            'language' => $language,
         ];
         return $this;
     }
@@ -965,7 +965,7 @@ class TableDefinition
         $this->indexes[] = [
             'type' => 'spatial',
             'columns' => $columns,
-            'name' => $name
+            'name' => $name,
         ];
         return $this;
     }

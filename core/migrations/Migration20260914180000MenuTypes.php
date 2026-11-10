@@ -45,7 +45,7 @@ class Migration20260914180000MenuTypes extends Base
         if (!$this->db->tableHasField('#__menu_types', 'type')) {
             $this->db->setQuery(
                 "ALTER TABLE `#__menu_types` ADD COLUMN `type` VARCHAR(16) NOT NULL"
-                . " DEFAULT 'display' COMMENT 'display, component or routing'"
+                . " DEFAULT 'display' COMMENT 'display, component or routing'",
             );
             $this->db->query();
 
@@ -57,7 +57,7 @@ class Migration20260914180000MenuTypes extends Base
         // typed display. Whatever made it, it is the component menu.
         $this->db->setQuery(
             "UPDATE `#__menu_types` SET `type` = 'component'"
-            . " WHERE `menutype` = 'components' AND `type` <> 'component'"
+            . " WHERE `menutype` = 'components' AND `type` <> 'component'",
         );
         $this->db->query();
 
@@ -82,7 +82,7 @@ class Migration20260914180000MenuTypes extends Base
 
         if ($taken) {
             $this->db->setQuery(
-                "UPDATE `#__menu_types` SET `type` = 'component' WHERE `id` = " . (int) $existing
+                "UPDATE `#__menu_types` SET `type` = 'component' WHERE `id` = " . (int) $existing,
             );
             $this->db->query();
 
@@ -98,7 +98,7 @@ class Migration20260914180000MenuTypes extends Base
             . " `description` = 'One entry per component, so every component has an address"
             . " and a page of its own. Generated; not edited here.',"
             . " `type` = 'component'"
-            . " WHERE `id` = " . (int) $existing
+            . " WHERE `id` = " . (int) $existing,
         );
         $this->db->query();
 
@@ -130,7 +130,7 @@ class Migration20260914180000MenuTypes extends Base
         }
 
         $this->db->setQuery(
-            "UPDATE `#__menu` SET `menutype` = 'components' WHERE `menutype` = 'default'"
+            "UPDATE `#__menu` SET `menutype` = 'components' WHERE `menutype` = 'default'",
         );
         $this->db->query();
 
@@ -191,13 +191,13 @@ class Migration20260914180000MenuTypes extends Base
         }
 
         $this->db->setQuery(
-            "UPDATE `#__menu` SET `menutype` = 'default' WHERE `menutype` = 'components'"
+            "UPDATE `#__menu` SET `menutype` = 'default' WHERE `menutype` = 'components'",
         );
         $this->db->query();
 
         $this->db->setQuery(
             "UPDATE `#__menu_types` SET `menutype` = 'default', `title` = 'Default',"
-            . " `description` = 'default' WHERE `menutype` = 'components'"
+            . " `description` = 'default' WHERE `menutype` = 'components'",
         );
         $this->db->query();
 

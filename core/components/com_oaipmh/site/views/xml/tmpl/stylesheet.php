@@ -15,46 +15,46 @@ $mprefix = Request::getString('metadataPrefix', 'oai_dc');
 
 $baseQuery = 'index.php?option=' . $this->option;
 $identifyUrl = Route::url(
-    $baseQuery . '&verb=Identify&metadataPrefix=' . $mprefix
+    $baseQuery . '&verb=Identify&metadataPrefix=' . $mprefix,
 );
 $listRecordsUrl = Route::url(
-    $baseQuery . '&verb=ListRecords&metadataPrefix=' . $mprefix
+    $baseQuery . '&verb=ListRecords&metadataPrefix=' . $mprefix,
 );
 $listSetsUrl = Route::url(
-    $baseQuery . '&verb=ListSets&metadataPrefix=' . $mprefix
+    $baseQuery . '&verb=ListSets&metadataPrefix=' . $mprefix,
 );
 $listFormatsUrl = Route::url(
-    $baseQuery . '&verb=ListMetadataFormats&metadataPrefix=' . $mprefix
+    $baseQuery . '&verb=ListMetadataFormats&metadataPrefix=' . $mprefix,
 );
 $listIdsUrl = Route::url(
-    $baseQuery . '&verb=ListIdentifiers&metadataPrefix=' . $mprefix
+    $baseQuery . '&verb=ListIdentifiers&metadataPrefix=' . $mprefix,
 );
 $listRecordsPrefixUrl = Route::url(
     $baseQuery
-    . '&verb=ListRecords&metadataPrefix={oai:metadataPrefix}'
+    . '&verb=ListRecords&metadataPrefix={oai:metadataPrefix}',
 );
 $getRecordPrefixUrl = Route::url(
     $baseQuery
-    . '&verb=GetRecord&metadataPrefix={.}&identifier={$identifier}'
+    . '&verb=GetRecord&metadataPrefix={.}&identifier={$identifier}',
 );
 $getRecordUrl = Route::url(
     $baseQuery . '&verb=GetRecord&metadataPrefix='
     . '&metadataPrefix=' . $mprefix
-    . '&identifier={oai:identifier}'
+    . '&identifier={oai:identifier}',
 );
 $listIdSetUrl = Route::url(
     $baseQuery . '&verb=ListIdentifiers&metadataPrefix='
-    . $mprefix . '&set={.}'
+    . $mprefix . '&set={.}',
 );
 $listRecSetUrl = Route::url(
     $baseQuery . '&verb=ListRecords&metadataPrefix='
-    . $mprefix . '&set={.}'
+    . $mprefix . '&set={.}',
 );
 $resumeUrl = Route::url(
     $baseQuery
     . '&verb={/oai:OAI-PMH/oai:request/@verb}'
     . '&metadataPrefix=' . $mprefix
-    . '&resumptionToken={.}'
+    . '&resumptionToken={.}',
 );
 
 echo '<?xml version="1.0" encoding="utf-8"?>';
@@ -743,7 +743,7 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
                             echo Route::url(
                                 $baseQuery
                                 . '&verb=ListMetadataFormats'
-                                . '&identifier={oai:identifier}'
+                                . '&identifier={oai:identifier}',
                             );
                             ?>">formats</a>
                     </span>-->

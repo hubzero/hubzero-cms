@@ -122,7 +122,7 @@ class Mysubmissions extends Module
             'Attach',
             'Authors',
             'Tags',
-            'Review'
+            'Review',
         ];
 
         $this->rows = Entry::all()

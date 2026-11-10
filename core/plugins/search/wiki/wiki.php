@@ -96,7 +96,7 @@ class Wiki extends Plugin
 				wv.id = (SELECT MAX(wv2.id) FROM `#__wiki_versions` wv2 WHERE wv2.page_id = wv.page_id) " .
                 ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
                 " AND (xg.gidNumber IS NULL OR (" . implode(' OR ', $groupAuth) . "))
-			 ORDER BY $weight DESC"
+			 ORDER BY $weight DESC",
         );
 
         // @TODO: Move these to separate plugins so Wiki doesn't directly reference other extensions

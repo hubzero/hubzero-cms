@@ -77,7 +77,7 @@ class Following extends Model
         $oid = null,
         $following_type = null,
         $follower_id = 0,
-        $follower_type = 'member'
+        $follower_type = 'member',
     ) {
         static $instances;
 
@@ -157,7 +157,7 @@ class Following extends Model
                 if ($value === null) {
                     $value = $this->_tbl->count([
                         'follower_type' => $this->get('following_type'),
-                        'follower_id'   => $this->get('following_id')
+                        'follower_id'   => $this->get('following_id'),
                     ]);
                     $this->set($what, $value);
                 }
@@ -167,7 +167,7 @@ class Following extends Model
                 if ($value === null) {
                     $value = $this->_tbl->count([
                         'following_type' => $this->get('following_type'),
-                        'following_id'   => $this->get('following_id')
+                        'following_id'   => $this->get('following_id'),
                     ]);
                     $this->set($what, $value);
                 }

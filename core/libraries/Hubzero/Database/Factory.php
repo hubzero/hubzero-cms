@@ -179,7 +179,7 @@ abstract class Factory
         'in', 'reprehenderit', 'voluptate', 'velit', 'esse', 'cillum', 'fugiat',
         'nulla', 'pariatur', 'excepteur', 'sint', 'occaecat', 'cupidatat',
         'non', 'proident', 'sunt', 'culpa', 'qui', 'officia', 'deserunt',
-        'mollit', 'anim', 'id', 'est', 'laborum'
+        'mollit', 'anim', 'id', 'est', 'laborum',
     ];
 
     // =========================================================================

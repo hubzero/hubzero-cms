@@ -40,17 +40,17 @@ class System extends AbstractComponent
         Submenu::addEntry(
             Lang::txt('COM_SYSTEM_LDAP'),
             Route::url('index.php?option=com_system&controller=ldap'),
-            $controllerName == 'ldap'
+            $controllerName == 'ldap',
         );
         Submenu::addEntry(
             Lang::txt('COM_SYSTEM_GEO'),
             Route::url('index.php?option=com_system&controller=geodb'),
-            $controllerName == 'geodb'
+            $controllerName == 'geodb',
         );
         Submenu::addEntry(
             Lang::txt('COM_SYSTEM_APC'),
             Route::url('index.php?option=com_system&controller=apc'),
-            $controllerName == 'apc'
+            $controllerName == 'apc',
         );
 
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);

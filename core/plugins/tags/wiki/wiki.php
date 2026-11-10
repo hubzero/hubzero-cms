@@ -46,7 +46,7 @@ class Wiki extends Plugin
             'title'   => Lang::txt('PLG_TAGS_WIKI'),
             'total'   => 0,
             'results' => null,
-            'sql'     => ''
+            'sql'     => '',
         ];
 
         if (empty($tags)) {
@@ -157,7 +157,7 @@ class Wiki extends Plugin
         }
         $query .= "WHERE w.id=v.page_id AND v.approved=1 AND w.state < 2 AND (xg.gidNumber IS NULL OR (" . implode(
             ' OR ',
-            $groupAuth
+            $groupAuth,
         ) . "))";
         if (isset($filters['tags'])) {
             $ids = implode(',', $filters['tags']);

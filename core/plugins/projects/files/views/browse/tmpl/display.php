@@ -24,7 +24,7 @@ $sortbyDir = $this->params['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
 $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs(
     $this->subdir,
     Route::url($this->model->link('files') . '&action=browse'),
-    $parent
+    $parent,
 );
 
 $min = $this->model->access('content') ? 1 : 0;
@@ -127,7 +127,7 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
                 <?php
                 $downloadUrl = Route::url(
                     $this->model->link('files')
-                    . '&action=download' . $subdirlink . '&a=1'
+                    . '&action=download' . $subdirlink . '&a=1',
                 );
                 $downloadTitle = Lang::txt('PLG_PROJECTS_FILES_DOWNLOAD_TOOLTIP');
                 $downloadLabel = Lang::txt('PLG_PROJECTS_FILES_DOWNLOAD');
@@ -196,7 +196,7 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
                 $sortNameUrl = Route::url(
                     $this->model->link('files')
                     . '&action=browse' . $subdirlink
-                    . '&sortby=name&sortdir=' . $sortbyDir
+                    . '&sortby=name&sortdir=' . $sortbyDir,
                 );
                 $sortNameTitle = Lang::txt('PLG_PROJECTS_FILES_SORT_BY')
                     . ' ' . Lang::txt('PLG_PROJECTS_FILES_NAME');
@@ -214,7 +214,7 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
                 $sortSizeUrl = Route::url(
                     $this->model->link('files')
                     . '&action=browse' . $subdirlink
-                    . '&sortby=size&sortdir=' . $sortbyDir
+                    . '&sortby=size&sortdir=' . $sortbyDir,
                 );
                 $sortSizeTitle = Lang::txt('PLG_PROJECTS_FILES_SORT_BY')
                     . ' ' . Lang::txt('PLG_PROJECTS_FILES_SIZE');
@@ -231,7 +231,7 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
                 $sortModUrl = Route::url(
                     $this->model->link('files')
                     . '&action=browse' . $subdirlink
-                    . '&sortby=modified&sortdir=' . $sortbyDir
+                    . '&sortby=modified&sortdir=' . $sortbyDir,
                 );
                 $modLabel = ucfirst(Lang::txt('PLG_PROJECTS_FILES_MODIFIED'));
                 $sortModTitle = Lang::txt('PLG_PROJECTS_FILES_SORT_BY')
@@ -265,10 +265,10 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
                         ? 7 - $min : 6 - $min;
                     $parentUrl = Route::url(
                         $this->model->link('files')
-                        . '&action=browse&subdir=' . $parent
+                        . '&action=browse&subdir=' . $parent,
                     );
                     $parentLabel = Lang::txt(
-                        'PLG_PROJECTS_FILES_BACK_TO_PARENT_DIR'
+                        'PLG_PROJECTS_FILES_BACK_TO_PARENT_DIR',
                     );
                     ?>
                     <td colspan="<?php echo $colspan; ?>"
@@ -327,14 +327,14 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
                     $params = [
                         'working' => true,
                         'history' => false,
-                        'git' => $this->fileparams->get('disk_usage')
-                    ]
+                        'git' => $this->fileparams->get('disk_usage'),
+                    ],
                 );
             } else {
                 // Original Code
                 $dirsize = $this->repo->call(
                     'getDiskUsage',
-                    $params = [ 'git' => $this->fileparams->get('disk_usage')]
+                    $params = [ 'git' => $this->fileparams->get('disk_usage')],
                 );
             }
 
@@ -343,7 +343,7 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
             : \Components\Projects\Helpers\Html::convertSize(
                 floatval($this->model->config()->get('defaultQuota', '1')),
                 'GB',
-                'b'
+                'b',
             );
 
             // Disc space indicator

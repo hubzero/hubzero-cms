@@ -219,7 +219,7 @@ class Migration20151001185523ComKb extends Base
                     ->update('#__faq')
                     ->set([
                         'section'  => $article->section,
-                        'category' => 0
+                        'category' => 0,
                     ])
                     ->where('id', '=', (int)$article->id)
                     ->execute();
@@ -287,7 +287,7 @@ class Migration20151001185523ComKb extends Base
                     'section'     => $tbl->parent_id,
                     'state'       => $tbl->published,
                     'access'      => $tbl->access,
-                    'asset_id'    => null
+                    'asset_id'    => null,
                 ])
                 ->execute();
 

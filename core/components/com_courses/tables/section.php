@@ -77,12 +77,12 @@ class Section extends Table
         if ($oid == '!!default!!') {
             $fields = [
                 'is_default'  => 1,
-                'offering_id' => intval($offering_id)
+                'offering_id' => intval($offering_id),
             ];
         } else {
             $fields = [
                 'alias'       => trim($oid),
-                'offering_id' => intval($offering_id)
+                'offering_id' => intval($offering_id),
             ];
         }
 
@@ -115,12 +115,12 @@ class Section extends Table
 
         $this->_db->setQuery(
             "SELECT id FROM `#__courses_offering_sections` WHERE `offering_id`="
-            . $this->_db->quote($this->offering_id) . " AND `alias`=" . $this->_db->quote($this->alias)
+            . $this->_db->quote($this->offering_id) . " AND `alias`=" . $this->_db->quote($this->alias),
         );
         $id = $this->_db->loadResult();
         if ($id && $id != $this->id) {
             $this->setError(
-                Lang::txt('A section with the alias "%s" already exists for the specified offering.', $this->alias)
+                Lang::txt('A section with the alias "%s" already exists for the specified offering.', $this->alias),
             );
             return false;
         }

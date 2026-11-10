@@ -260,8 +260,8 @@ class Jobs extends Base implements CommandInterface
                 Lang::txt('ID'),
                 Lang::txt('Title'),
                 Lang::txt('Last Run'),
-                Lang::txt('Next Run')
-            ]
+                Lang::txt('Next Run'),
+            ],
         ];
 
         foreach ($jobs as $job) {
@@ -269,7 +269,7 @@ class Jobs extends Base implements CommandInterface
                 $job->get('id'),
                 Str::truncate($job->get('title'), 30),
                 $job->get('last_run'),
-                $job->get('next_run')
+                $job->get('next_run'),
             ];
         }
 
@@ -355,12 +355,12 @@ class Jobs extends Base implements CommandInterface
             ->addArgument(
                 '--job: run a provided job ID',
                 'Provide the ID of the job to be run. This and only this job will be run.',
-                'Example: --job=5'
+                'Example: --job=5',
             )
             ->addArgument(
                 '-a: list all published jobs',
                 'List all published jobs regardless of pending status.',
-                'Example: -a'
+                'Example: -a',
             )
             ->render();
     }

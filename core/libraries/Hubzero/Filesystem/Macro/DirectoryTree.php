@@ -66,7 +66,7 @@ class DirectoryTree extends Base
                     'parent'   => $parent,
                     'name'     => ltrim($name['path'], '\\/'),
                     'fullname' => $fullName,
-                    'relname'  => str_replace(PATH_ROOT, '', $fullName)
+                    'relname'  => str_replace(PATH_ROOT, '', $fullName),
                 ];
 
                 $dirs2 = $this->handle($fullName, $filter, $maxLevel, $level + 1, $this->index);

@@ -15,7 +15,7 @@ $order = $this->order;
 $boost = $this->boost;
 $id = $boost->getId();
 $boostEditUrl = Route::url(
-    "index.php?option=$this->option&controller=boosts&task=edit&id=$id"
+    "index.php?option=$this->option&controller=boosts&task=edit&id=$id",
 );
 $type = $boost->getFormattedFieldValue();
 $strength = $boost->getStrength();

@@ -74,32 +74,32 @@ class InformixDriverTest extends AbstractDriverTestCase
 
         $driver->exec(
             "INSERT INTO ix_categories (name, slug, sort_order)"
-            . " VALUES ('Electronics', 'electronics', 1)"
+            . " VALUES ('Electronics', 'electronics', 1)",
         );
         $driver->exec(
             "INSERT INTO ix_categories (name, slug, sort_order)"
-            . " VALUES ('Books', 'books', 2)"
+            . " VALUES ('Books', 'books', 2)",
         );
         $driver->exec(
             "INSERT INTO ix_categories (name, slug, sort_order, active)"
-            . " VALUES ('Archived', 'archived', 99, 0)"
+            . " VALUES ('Archived', 'archived', 99, 0)",
         );
 
         $driver->exec(
             "INSERT INTO ix_items (category_id, title, price, stock, status)"
-            . " VALUES (1, 'Laptop', 999.99, 10, 'active')"
+            . " VALUES (1, 'Laptop', 999.99, 10, 'active')",
         );
         $driver->exec(
             "INSERT INTO ix_items (category_id, title, price, stock, status)"
-            . " VALUES (1, 'Phone', 599.99, 25, 'active')"
+            . " VALUES (1, 'Phone', 599.99, 25, 'active')",
         );
         $driver->exec(
             "INSERT INTO ix_items (category_id, title, price, stock, status)"
-            . " VALUES (2, 'Novel', 19.99, 100, 'active')"
+            . " VALUES (2, 'Novel', 19.99, 100, 'active')",
         );
         $driver->exec(
             "INSERT INTO ix_items (category_id, title, price, stock, status)"
-            . " VALUES (2, 'Textbook', 79.99, 5, 'draft')"
+            . " VALUES (2, 'Textbook', 79.99, 5, 'draft')",
         );
     }
 
@@ -310,7 +310,7 @@ class InformixDriverTest extends AbstractDriverTestCase
             $service,
             $database,
             $server,
-            $protocol
+            $protocol,
         );
 
         $connections = [];
@@ -323,14 +323,14 @@ class InformixDriverTest extends AbstractDriverTestCase
                     $dsn,
                     $user,
                     $password,
-                    [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]
+                    [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION],
                 );
 
                 $stmt = $pdo->prepare('SELECT FIRST 1 tabid FROM systables WHERE tabid >= ?');
                 $stmt->execute([1]);
                 $this->assertNotFalse(
                     $stmt->fetchColumn(),
-                    sprintf('Connection #%d could not run prepared query', $i + 1)
+                    sprintf('Connection #%d could not run prepared query', $i + 1),
                 );
 
                 $connections[] = $pdo;
@@ -975,7 +975,7 @@ class InformixDriverTest extends AbstractDriverTestCase
             'fk_ix_child_parent',
             'parent_id',
             'ix_fk_parent',
-            'id'
+            'id',
         ));
 
         $fks = $driver->getForeignKeys('ix_fk_child');

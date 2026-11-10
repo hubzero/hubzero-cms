@@ -59,7 +59,7 @@ if ($this->types) {
                 'index.php?option=' . $this->option
                 . '&task=draft&step=' . $this->step
                 . '&type=' . $type->id
-                . ($this->group ? '&group=' . $this->group : '')
+                . ($this->group ? '&group=' . $this->group : ''),
             );
         }
 
@@ -87,8 +87,8 @@ if ($this->types) {
             str_replace(
                 '&amp;',
                 '&',
-                strip_tags(stripslashes($type->description))
-            )
+                strip_tags(stripslashes($type->description)),
+            ),
         );
         ?>
         <div class="col span-third <?php echo $clm; ?>">
@@ -157,7 +157,7 @@ if ($this->types) {
                     <?php
                     $supportUrl = Route::url(
                         'index.php?option=com_support'
-                        . '&controller=tickets&task=new'
+                        . '&controller=tickets&task=new',
                     );
                     ?>
                     <p>If you feel your contribution does not fit
@@ -196,7 +196,7 @@ if ($this->types) {
                     <?php
                     $browseUrl = Route::url(
                         'index.php?option=' . $this->option
-                        . '&task=browse'
+                        . '&task=browse',
                     );
                     ?>
                     <p>After submitting your contribution, it will be

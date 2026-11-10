@@ -38,7 +38,7 @@ class Timezone extends Groupedlist
         'Australia',
         'Europe',
         'Indian',
-        'Pacific'
+        'Pacific',
     ];
 
     /**
@@ -86,7 +86,7 @@ class Timezone extends Groupedlist
                         str_replace('_', ' ', $locale),
                         'value',
                         'text',
-                        false
+                        false,
                     );
                 }
             }

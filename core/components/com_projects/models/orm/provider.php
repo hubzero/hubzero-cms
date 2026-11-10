@@ -44,7 +44,7 @@ class Provider extends Relational
      * @var  array
      */
     protected $rules = [
-        'name' => 'notempty'
+        'name' => 'notempty',
     ];
 
     /**
@@ -53,7 +53,7 @@ class Provider extends Relational
      * @var  array
      */
     public $always = [
-        'alias'
+        'alias',
     ];
 
     /**

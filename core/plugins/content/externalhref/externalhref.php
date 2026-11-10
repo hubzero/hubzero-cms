@@ -91,7 +91,7 @@ class Externalhref extends Plugin
 
         $tags = [
             'a'    => '/<a\s+([^>]*)>/i',
-            'area' => '/<area\s+([^>]*)>/i'
+            'area' => '/<area\s+([^>]*)>/i',
         ];
         foreach ($tags as $tag => $pattern) {
             $links = [];

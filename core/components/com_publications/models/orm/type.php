@@ -29,7 +29,7 @@ class Type extends Relational
      */
     protected $rules = [
         'type'  => 'notempty',
-        'alias' => 'notempty'
+        'alias' => 'notempty',
     ];
 
     /**

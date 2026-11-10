@@ -46,7 +46,7 @@ class Type extends Relational
      * @var  array
      */
     protected $rules = [
-        'type' => 'notempty'
+        'type' => 'notempty',
     ];
 
     /**
@@ -55,7 +55,7 @@ class Type extends Relational
      * @var  array
      */
     public $always = [
-        'alias'
+        'alias',
     ];
 
     /**

@@ -74,8 +74,8 @@ class Tags extends Base
             $view = new \Hubzero\Component\View(
                 [
                     'name'   => 'curation',
-                    'layout' => 'block'
-                ]
+                    'layout' => 'block',
+                ],
             );
         } else {
             $name = $viewname == 'freeze' ? 'freeze' : 'draft';
@@ -86,8 +86,8 @@ class Tags extends Base
                     'folder'  => 'projects',
                     'element' => 'publications',
                     'name'    => $name,
-                    'layout'  => 'wrapper'
-                ]
+                    'layout'  => 'wrapper',
+                ],
             );
         }
 
@@ -121,8 +121,8 @@ class Tags extends Base
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => $name,
-                'layout'  => 'tags'
-            ]
+                'layout'  => 'tags',
+            ],
         );
 
         $view->pub      = $pub;
@@ -235,8 +235,8 @@ class Tags extends Base
                 'elements'     => [],
                 'params'       => [
                     'required' => 1,
-                    'published_editing' => 0
-                ]
+                    'published_editing' => 0,
+                ],
             ];
 
             return json_decode(json_encode($manifest), false);

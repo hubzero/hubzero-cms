@@ -101,7 +101,7 @@ class Wishlists extends SiteController
                 case 'wish':
                     Pathway::append(
                         $this->_wishtitle,
-                        $this->_wishpath
+                        $this->_wishpath,
                     );
                     break;
                 case 'add':
@@ -109,13 +109,13 @@ class Wishlists extends SiteController
                 case 'editwish':
                     Pathway::append(
                         $this->_taskname,
-                        $this->_taskpath
+                        $this->_taskpath,
                     );
                     break;
                 case 'settings':
                     Pathway::append(
                         Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
-                        'index.php?option=' . $this->_option . '&task=settings&id=' . $this->_listid
+                        'index.php?option=' . $this->_option . '&task=settings&id=' . $this->_listid,
                     );
                     break;
                 case 'view':
@@ -140,7 +140,7 @@ class Wishlists extends SiteController
                     // XSS fix, passing raw user supplied/maniuplatable data to function that creates link. See ticket 1420
                     Pathway::append(
                         Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
-                        'index.php?option=' . $this->_option . '&task=' . htmlentities($this->_task)
+                        'index.php?option=' . $this->_option . '&task=' . htmlentities($this->_task),
                     );
                     break;
             }
@@ -163,7 +163,7 @@ class Wishlists extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
                 $this->_msg,
-                'warning'
+                'warning',
             );
             return;
         }
@@ -191,7 +191,7 @@ class Wishlists extends SiteController
         if ($cat && !preg_replace("/" . $cat . "/", '', $cats) && !$plugin) {
             // oups, this looks like a wrong URL
             App::redirect(
-                Route::url('index.php?option=' . $this->_option)
+                Route::url('index.php?option=' . $this->_option),
             );
             return;
         }
@@ -288,7 +288,7 @@ class Wishlists extends SiteController
                     $entries
                         ->whereIn('status', [
                             Wish::WISH_STATE_OPEN,
-                            Wish::WISH_STATE_ACCEPTED
+                            Wish::WISH_STATE_ACCEPTED,
                         ])
                         ->whereEquals('accepted', 1);
                     break;
@@ -655,7 +655,7 @@ class Wishlists extends SiteController
             $wishlist->rank();
 
             App::redirect(
-                Route::url($wishlist->link('', '&saved=1'))
+                Route::url($wishlist->link('', '&saved=1')),
             );
             return;
         }
@@ -690,7 +690,7 @@ class Wishlists extends SiteController
         $wishlist->rank();
 
         App::redirect(
-            Route::url($wishlist->link('', '&saved=1'))
+            Route::url($wishlist->link('', '&saved=1')),
         );
     }
 
@@ -862,7 +862,7 @@ class Wishlists extends SiteController
 
             $from = [
                 'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option)),
-                'email' => Config::get('mailfrom')
+                'email' => Config::get('mailfrom'),
             ];
 
             $message = [];
@@ -870,7 +870,7 @@ class Wishlists extends SiteController
             // Plain text email
             $eview = new \Hubzero\Mail\View([
                 'name'   => 'emails',
-                'layout' => 'wish_plain'
+                'layout' => 'wish_plain',
             ]);
             $eview->option     = $this->_option;
             $eview->controller = $this->_controller;
@@ -894,7 +894,7 @@ class Wishlists extends SiteController
         }
 
         App::redirect(
-            Route::url($objWish->link('plan'))
+            Route::url($objWish->link('plan')),
         );
     }
 
@@ -1169,7 +1169,7 @@ class Wishlists extends SiteController
             $subject = Lang::txt(strtoupper($this->_option)) . ', ' . Lang::txt('COM_WISHLIST_NEW_WISH') . ' ' . Lang::txt('COM_WISHLIST_FOR') . ' ' . $this->_list_title . ' ' . Lang::txt('from') . ' ' . $name;
             $from = [
                 'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option)),
-                'email' => Config::get('mailfrom')
+                'email' => Config::get('mailfrom'),
             ];
 
             $message = [];
@@ -1177,7 +1177,7 @@ class Wishlists extends SiteController
             // Plain text email
             $eview = new \Hubzero\Mail\View([
                 'name'   => 'emails',
-                'layout' => 'wish_plain'
+                'layout' => 'wish_plain',
             ]);
             $eview->option     = $this->_option;
             $eview->controller = $this->_controller;
@@ -1216,19 +1216,19 @@ class Wishlists extends SiteController
                 'description' => Lang::txt('COM_WISHLIST_ACTIVITY_WISH_' . ($wishid ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($row->link('permalink')) . '">' . htmlspecialchars((string) ($row->get('subject')), ENT_QUOTES, 'UTF-8') . '</a>'),
                 'details'     => [
                     'subject'    => $row->get('subject'),
-                    'url'      => Route::url($row->link('permalink'))
-                ]
+                    'url'      => Route::url($row->link('permalink')),
+                ],
             ],
             'recipients' => [
                 ['wishlist.' . $wishlist->get('category'), $wishlist->get('referenceid')],
-                ['user', $row->get('proposed_by')]
-            ]
+                ['user', $row->get('proposed_by')],
+            ],
         ]);
 
         $saved = $wishid ? 2 : 3;
 
         App::redirect(
-            Route::url($row->link('permalink', ['saved' => $saved]))
+            Route::url($row->link('permalink', ['saved' => $saved])),
         );
     }
 
@@ -1352,7 +1352,7 @@ class Wishlists extends SiteController
 
                 $from = [
                     'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option)),
-                    'email' => Config::get('mailfrom')
+                    'email' => Config::get('mailfrom'),
                 ];
 
                 $message = [];
@@ -1360,7 +1360,7 @@ class Wishlists extends SiteController
                 // Plain text email
                 $eview = new \Hubzero\Mail\View([
                     'name'   => 'emails',
-                    'layout' => 'wish_plain'
+                    'layout' => 'wish_plain',
                 ]);
                 $eview->option     = $this->_option;
                 $eview->controller = $this->_controller;
@@ -1405,7 +1405,7 @@ class Wishlists extends SiteController
         }
 
         App::redirect(
-            Route::url($wish->link())
+            Route::url($wish->link()),
         );
     }
 
@@ -1467,7 +1467,7 @@ class Wishlists extends SiteController
                     'wish',
                     $wishid,
                     $category,
-                    $options
+                    $options,
                 ]);
         } else {
             // moving to another list
@@ -1549,7 +1549,7 @@ class Wishlists extends SiteController
 
                 $from = [
                     'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option)),
-                    'email' => Config::get('mailfrom')
+                    'email' => Config::get('mailfrom'),
                 ];
 
                 $message = [];
@@ -1557,7 +1557,7 @@ class Wishlists extends SiteController
                 // Plain text email
                 $eview = new \Hubzero\Mail\View([
                     'name'   => 'emails',
-                    'layout' => 'wish_plain'
+                    'layout' => 'wish_plain',
                 ]);
                 $eview->option     = $this->_option;
                 $eview->controller = $this->_controller;
@@ -1658,11 +1658,11 @@ class Wishlists extends SiteController
             $amount,
             Lang::txt('COM_WISHLIST_BANKING_HOLD') . ' #' . $wish->get('id') . ' ' . Lang::txt('COM_WISHLIST_FOR') . ' ' . $wishlist->get('title'),
             'wish',
-            $wish->get('id')
+            $wish->get('id'),
         );
 
         App::redirect(
-            Route::url($wish->link())
+            Route::url($wish->link()),
         );
     }
 
@@ -1676,7 +1676,7 @@ class Wishlists extends SiteController
         // Check if wish exists on this list
         $wishlist = Wishlist::oneByReference(
             Request::getInt('rid', 0),
-            Request::getCmd('category', '')
+            Request::getCmd('category', ''),
         );
 
         if (!$wishlist->get('id')) {
@@ -1734,20 +1734,20 @@ class Wishlists extends SiteController
                 'description' => Lang::txt('COM_WISHLIST_ACTIVITY_WISH_DELETED', '<a href="' . Route::url($wish->link('permalink')) . '">' . htmlspecialchars((string) ($wish->get('subject')), ENT_QUOTES, 'UTF-8') . '</a>'),
                 'details'     => [
                     'subject' => $wish->get('subject'),
-                    'url'     => Route::url($wish->link('permalink'))
-                ]
+                    'url'     => Route::url($wish->link('permalink')),
+                ],
             ],
             'recipients' => [
                 ['wishlist.' . $wishlist->get('category'), $wishlist->get('referenceid')],
-                ['user', $wish->get('proposed_by')]
-            ]
+                ['user', $wish->get('proposed_by')],
+            ],
         ]);
 
         // go back to the wishlist
         App::redirect(
             $wishlist->link(),
             $this->getError(),
-            ($this->getError() ? 'error' : null)
+            ($this->getError() ? 'error' : null),
         );
     }
 
@@ -1803,7 +1803,7 @@ class Wishlists extends SiteController
             App::redirect(
                 Route::url($wish->link()),
                 Lang::txt('Please be sure to provide both an importance and an effort'),
-                'error'
+                'error',
             );
             return;
         }
@@ -1813,7 +1813,7 @@ class Wishlists extends SiteController
             App::redirect(
                 Route::url($wish->link()),
                 $wish->getError(),
-                'error'
+                'error',
             );
             return;
         }
@@ -1832,18 +1832,18 @@ class Wishlists extends SiteController
                 'description' => Lang::txt('COM_WISHLIST_ACTIVITY_WISH_VOTED', '<a href="' . Route::url($wish->link()) . '">' . htmlspecialchars((string) ($wish->get('subject')), ENT_QUOTES, 'UTF-8') . '</a>'),
                 'details'     => [
                     'subject' => $wish->get('subject'),
-                    'url'     => Route::url($wish->link())
-                ]
+                    'url'     => Route::url($wish->link()),
+                ],
             ],
             'recipients' => [
                 ['wishlist.' . $wishlist->get('category'), $wishlist->get('referenceid')],
                 ['user', $wish->get('proposed_by')],
-                ['user', User::get('id')]
-            ]
+                ['user', User::get('id')],
+            ],
         ]);
 
         App::redirect(
-            Route::url($wish->link())
+            Route::url($wish->link()),
         );
     }
 
@@ -1930,7 +1930,7 @@ class Wishlists extends SiteController
                     $fields['parent'],
                     $fields['created'],
                     $fields['created_by'],
-                    $fields['state']
+                    $fields['state'],
                 );
             }
 
@@ -1962,7 +1962,7 @@ class Wishlists extends SiteController
                     $row->get('content') == Lang::txt('COM_WISHLIST_ENTER_COMMENTS')
                         ? ''
                         : $row->get('content')
-                )
+                ),
             );
 
             if ($attachment = $this->uploadTask($wishid)) {
@@ -1997,7 +1997,7 @@ class Wishlists extends SiteController
             // email components
             $from = [
                 'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option)),
-                'email' => Config::get('mailfrom')
+                'email' => Config::get('mailfrom'),
             ];
 
             // for the wish owner
@@ -2017,7 +2017,7 @@ class Wishlists extends SiteController
             // Plain text email
             $eview = new \Hubzero\Mail\View([
                 'name'   => 'emails',
-                'layout' => 'comment_plain'
+                'layout' => 'comment_plain',
             ]);
             $eview->option     = $this->_option;
             $eview->controller = $this->_controller;
@@ -2098,19 +2098,19 @@ class Wishlists extends SiteController
                     'description' => Lang::txt('COM_WISHLIST_ACTIVITY_COMMENT_CREATED', $row->get('id'), '<a href="' . Route::url($objWish->link()) . '">' . htmlspecialchars((string) ($objWish->get('subject')), ENT_QUOTES, 'UTF-8') . '</a>'),
                     'details'     => [
                         'wish'    => $objWish->get('id'),
-                        'url'     => Route::url($objWish->link())
-                    ]
+                        'url'     => Route::url($objWish->link()),
+                    ],
                 ],
                 'recipients' => [
                     ['wishlist.' . $category, $id],
                     ['user', $objWish->get('proposed_by')],
-                    ['user', $row->get('created_by')]
-                ]
+                    ['user', $row->get('created_by')],
+                ],
             ]);
         } // -- end if id & category
 
         App::redirect(
-            Route::url($objWish->link())
+            Route::url($objWish->link()),
         );
     }
 
@@ -2139,7 +2139,7 @@ class Wishlists extends SiteController
             App::redirect(
                 Request::getString('HTTP_REFERER', null, 'server'),
                 Lang::txt('COM_WISHLIST_ERROR_CANNOT_DELETE_REPLY'),
-                'error'
+                'error',
             );
             return;
         }
@@ -2168,18 +2168,18 @@ class Wishlists extends SiteController
                 'description' => Lang::txt('COM_WISHLIST_ACTIVITY_COMMENT_DELETED', $row->get('id'), '<a href="' . Route::url($wish->link()) . '">' . htmlspecialchars((string) ($wish->get('subject')), ENT_QUOTES, 'UTF-8') . '</a>'),
                 'details'     => [
                     'id'  => $row->get('id'),
-                    'url' => Route::url($wish->link())
-                ]
+                    'url' => Route::url($wish->link()),
+                ],
             ],
             'recipients' => [
                 ['wishlist.' . $wishlist->get('category'), $wishlist->get('referenceid')],
-                ['user', $row->get('created_by')]
-            ]
+                ['user', $row->get('created_by')],
+            ],
         ]);
 
         // Go back to the page
         App::redirect(
-            Request::getString('HTTP_REFERER', null, 'server')
+            Request::getString('HTTP_REFERER', null, 'server'),
         );
     }
 
@@ -2283,7 +2283,7 @@ class Wishlists extends SiteController
         }
 
         App::redirect(
-            str_replace('&amp;', '&', Route::url($route . $filter))
+            str_replace('&amp;', '&', Route::url($route . $filter)),
         );
     }
 
@@ -2430,7 +2430,7 @@ class Wishlists extends SiteController
         $attachment = Attachment::blank()->set([
             'description' => Request::getString('description', ''),
             'wish'        => $listdir,
-            'filename'    => $file['name']
+            'filename'    => $file['name'],
         ]);
 
         // Get media config

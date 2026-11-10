@@ -113,8 +113,8 @@ class Xusers extends Plugin
         \Hubzero\User\User::oneOrFail($xuser->get('id'))->logger()->auth()->save(
             [
             'username' => $xuser->get('username'),
-            'status'   => 'success'
-            ]
+            'status'   => 'success',
+            ],
         );
 
         // update session tracking with new data
@@ -156,7 +156,7 @@ class Xusers extends Plugin
         $key = App::hash('');
         $crypt = new \Hubzero\Encryption\Encrypter(
             new \Hubzero\Encryption\Cipher\Simple(),
-            new \Hubzero\Encryption\Key('simple', $key, $key)
+            new \Hubzero\Encryption\Key('simple', $key, $key),
         );
 
         $tracker = [];
@@ -319,11 +319,11 @@ class Xusers extends Plugin
                 : $hubHomeDir . DS . $user['username']);
             $xprofile->set(
                 'loginShell',
-                isset($user['loginShell']) && $user['loginShell'] ? $user['loginShell'] : '/bin/bash'
+                isset($user['loginShell']) && $user['loginShell'] ? $user['loginShell'] : '/bin/bash',
             );
             $xprofile->set(
                 'ftpShell',
-                isset($user['ftpShell']) && $user['ftpShell'] ? $user['ftpShell'] : '/usr/lib/sftp-server'
+                isset($user['ftpShell']) && $user['ftpShell'] ? $user['ftpShell'] : '/usr/lib/sftp-server',
             );
             $xprofile->set('name', $user['name']);
             $xprofile->set('email', $user['email']);
@@ -333,7 +333,7 @@ class Xusers extends Plugin
             //$xprofile->set('emailConfirmed', '3');
             $xprofile->set(
                 'emailConfirmed',
-                isset($user['activation']) ? $user['activation'] : -rand(1, pow(2, 31) - 1)
+                isset($user['activation']) ? $user['activation'] : -rand(1, pow(2, 31) - 1),
             );
             $xprofile->set('public', $params->get('privacy', 0));
 
@@ -625,8 +625,8 @@ class Xusers extends Plugin
             [
             'user_id'  => 0,
             'username' => isset($response['username']) ? $response['username'] : '[unknown]',
-            'status'   => 'failure'
-            ]
+            'status'   => 'failure',
+            ],
         )->save();
 
         return true;

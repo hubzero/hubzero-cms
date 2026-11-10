@@ -39,12 +39,12 @@ class Blog extends AbstractComponent
         Submenu::addEntry(
             Lang::txt('COM_BLOG_MENU_ENTRIES'),
             Route::url('index.php?option=com_blog&controller=entries'),
-            ($controllerName == 'entries')
+            ($controllerName == 'entries'),
         );
         Submenu::addEntry(
             Lang::txt('COM_BLOG_MENU_COMMENTS'),
             Route::url('index.php?option=com_blog&controller=comments'),
-            ($controllerName == 'comments')
+            ($controllerName == 'comments'),
         );
 
         if (!is_subclass_of(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)), \Hubzero\Component\ControllerInterface::class)) {

@@ -21,7 +21,7 @@ $task = strtolower(Request::getCmd('task', ''));
             <?php $cls = (!$task) ? ' class="active"' : ''; ?>
             <?php $url = Route::url(
                 'index.php?option=' . $this->option
-                . '&controller=' . $this->controller
+                . '&controller=' . $this->controller,
             ); ?>
             <a<?php echo $cls; ?> href="<?php echo $url; ?>"><?php
                 echo Lang::txt('COM_MEMBERS_QUOTAS');
@@ -32,7 +32,7 @@ $task = strtolower(Request::getCmd('task', ''));
             <?php $href = Route::url(
                 'index.php?option=' . $this->option
                 . '&controller=' . $this->controller
-                . '&task=displayClasses'
+                . '&task=displayClasses',
             ); ?>
             <a<?php echo $cls; ?> href="<?php echo $href; ?>"><?php
                 echo Lang::txt('COM_MEMBERS_QUOTA_CLASSES');
@@ -43,7 +43,7 @@ $task = strtolower(Request::getCmd('task', ''));
             <?php $href = Route::url(
                 'index.php?option=' . $this->option
                 . '&controller=' . $this->controller
-                . '&task=import'
+                . '&task=import',
             ); ?>
             <a<?php echo $cls; ?> href="<?php echo $href; ?>"><?php
                 echo Lang::txt('COM_MEMBERS_QUOTAS_IMPORT');

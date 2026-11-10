@@ -43,7 +43,7 @@ class Formula extends Relational
      */
     protected $rules = [
         'inputhash'  => 'notempty',
-        'outputhash' => 'notempty'
+        'outputhash' => 'notempty',
     ];
 
     /**

@@ -52,10 +52,10 @@ class Helper extends Obj
                                 'Unable to update recipient records %s for user %s',
                                 implode(
                                     ',',
-                                    $mids
+                                    $mids,
                                 ),
-                                $uid
-                            )
+                                $uid,
+                            ),
                         );
                     }
                 }
@@ -88,7 +88,7 @@ class Helper extends Obj
         $component = '',
         $element = null,
         $description = '',
-        $group_id = 0
+        $group_id = 0,
     ) {
         // Do we have a message?
         if (!$message) {

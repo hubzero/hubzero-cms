@@ -143,7 +143,7 @@ class Migration20150626141512Core extends Base
         'com_users',
         'com_whatsnew',
         'com_wiki',
-        'com_wishlist'
+        'com_wishlist',
     ];
 
     protected static $modules = [
@@ -245,7 +245,7 @@ class Migration20150626141512Core extends Base
         'mod_wishlist',
         'mod_wishvoters',
         'mod_wrapper',
-        'mod_youtube'
+        'mod_youtube',
     ];
 
     protected static $templates = [
@@ -254,7 +254,7 @@ class Migration20150626141512Core extends Base
         'hubbasic2013',
         'kameleon',
         'system',
-        'welcome'
+        'welcome',
     ];
 
     protected static $plugins = [
@@ -265,7 +265,7 @@ class Migration20150626141512Core extends Base
             'blacklist',
             'linkrife',
             'mollom',
-            'spamassassin'
+            'spamassassin',
         ],
         'authentication' => [
             'certificate',
@@ -275,19 +275,19 @@ class Migration20150626141512Core extends Base
             'linkedin',
             'pucas',
             'shibboleth',
-            'twitter'
+            'twitter',
         ],
         'authfactors' => [
             'authy',
-            'certificate'
+            'certificate',
         ],
         'captcha' => [
-            'recaptcha'
+            'recaptcha',
         ],
         'citation' => [
             'bibtex',
             'default',
-            'endnote'
+            'endnote',
         ],
         'content' => [
             'antispam',
@@ -300,7 +300,7 @@ class Migration20150626141512Core extends Base
             'pagebreak',
             'pagenavigation',
             'vote',
-            'xhubtags'
+            'xhubtags',
         ],
         'courses' => [
             'announcements',
@@ -317,7 +317,7 @@ class Migration20150626141512Core extends Base
             'progress',
             'related',
             'reviews',
-            'store'
+            'store',
         ],
         'cron' => [
             'cache',
@@ -331,7 +331,7 @@ class Migration20150626141512Core extends Base
             'register',
             'resources',
             'support',
-            'users'
+            'users',
         ],
         'editors' => [
             'ckeditor',
@@ -339,16 +339,16 @@ class Migration20150626141512Core extends Base
             'none',
             'tinymce',
             'wikitoolbar',
-            'wikiwyg'
+            'wikiwyg',
         ],
         'editors-xtd' => [
             'article',
             'image',
             'pagebreak',
-            'readmore'
+            'readmore',
         ],
         'extension' => [
-            'joomla'
+            'joomla',
         ],
         'geocode' => [
             'arcgisonline',
@@ -377,7 +377,7 @@ class Migration20150626141512Core extends Base
             'oiorest',
             'openstreetmap',
             'tomtom',
-            'yandex'
+            'yandex',
         ],
         'groups' => [
             'announcements',
@@ -394,7 +394,7 @@ class Migration20150626141512Core extends Base
             'resources',
             'usage',
             'wiki',
-            'wishlist'
+            'wishlist',
         ],
         'hubzero' => [
             'autocompleter',
@@ -404,10 +404,10 @@ class Migration20150626141512Core extends Base
             'recaptcha',
             'systemplate',
             'systickets',
-            'sysusers'
+            'sysusers',
         ],
         'mail' => [
-            'mandrill'
+            'mandrill',
         ],
         'members' => [
             'account',
@@ -426,11 +426,11 @@ class Migration20150626141512Core extends Base
             'resources',
             'resume',
             'usage',
-            'wiki'
+            'wiki',
         ],
         'oaipmh' => [
             'publications',
-            'resources'
+            'resources',
         ],
         'projects' => [
             'blog',
@@ -442,7 +442,7 @@ class Migration20150626141512Core extends Base
             'notes',
             'publications',
             'team',
-            'todo'
+            'todo',
         ],
         'publications' => [
             'citations',
@@ -456,11 +456,11 @@ class Migration20150626141512Core extends Base
             'usage',
             'versions',
             'watch',
-            'wishlist'
+            'wishlist',
         ],
         'quickicon' => [
             'extensionupdate',
-            'joomlaupdate'
+            'joomlaupdate',
         ],
         'resources' => [
             'about',
@@ -477,7 +477,7 @@ class Migration20150626141512Core extends Base
             'supportingdocs',
             'usage',
             'versions',
-            'wishlist'
+            'wishlist',
         ],
         'search' => [
             'blogs',
@@ -502,7 +502,7 @@ class Migration20150626141512Core extends Base
             'weighttitle',
             'weighttools',
             'wiki',
-            'wishlists'
+            'wishlists',
         ],
         'support' => [
             'answers',
@@ -516,7 +516,7 @@ class Migration20150626141512Core extends Base
             'time',
             'transfer',
             'wiki',
-            'wishlist'
+            'wishlist',
         ],
         'system' => [
             'authfactors',
@@ -538,7 +538,7 @@ class Migration20150626141512Core extends Base
             'spamjail',
             'supergroup',
             'userconsent',
-            'xfeed'
+            'xfeed',
         ],
         'tags' => [
             'answers',
@@ -553,15 +553,15 @@ class Migration20150626141512Core extends Base
             'publications',
             'resources',
             'support',
-            'wiki'
+            'wiki',
         ],
         'time' => [
             'csv',
-            'summary'
+            'summary',
         ],
         'tools' => [
             'java',
-            'novnc'
+            'novnc',
         ],
         'usage' => [
             'domainclass',
@@ -570,7 +570,7 @@ class Migration20150626141512Core extends Base
             'overview',
             'partners',
             'region',
-            'tools'
+            'tools',
         ],
         'user' => [
             'constantcontact',
@@ -579,7 +579,7 @@ class Migration20150626141512Core extends Base
             'ldap',
             'middleware',
             'profile',
-            'xusers'
+            'xusers',
         ],
         'whatsnew' => [
             'blogs',
@@ -588,12 +588,12 @@ class Migration20150626141512Core extends Base
             'kb',
             'publications',
             'resources',
-            'wiki'
+            'wiki',
         ],
         'wiki' => [
             'editortoolbar',
             'editorwykiwyg',
-            'parserdefault'
+            'parserdefault',
         ],
         'xmessage' => [
             'email',
@@ -601,7 +601,7 @@ class Migration20150626141512Core extends Base
             'im',
             'internal',
             'rss',
-            'smstxt'
-        ]
+            'smstxt',
+        ],
     ];
 }

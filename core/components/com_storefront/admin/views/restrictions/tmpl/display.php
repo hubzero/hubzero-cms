@@ -23,7 +23,7 @@ Toolbar::title(Lang::txt('COM_STOREFRONT') . ': SKU\'s permitted users', 'storef
 $popupUrl = Route::url(
     'index.php?option=' . $this->option
     . '&controller=' . $this->controller
-    . '&tmpl=component&task=new&id=' . $this->sku->getId()
+    . '&tmpl=component&task=new&id=' . $this->sku->getId(),
 );
 Toolbar::appendButton(
     'Popup',
@@ -31,7 +31,7 @@ Toolbar::appendButton(
     'Add Users',
     $popupUrl,
     570,
-    170
+    170,
 );
 if ($canDo->get('core.delete')) {
     Toolbar::deleteList();
@@ -42,7 +42,7 @@ Toolbar::spacer();
 $uploadPopupUrl = Route::url(
     'index.php?option=' . $this->option
     . '&controller=' . $this->controller
-    . '&tmpl=component&task=upload&id=' . $this->sku->getId()
+    . '&tmpl=component&task=upload&id=' . $this->sku->getId(),
 );
 Toolbar::appendButton(
     'Popup',
@@ -50,7 +50,7 @@ Toolbar::appendButton(
     'Upload CSV',
     $uploadPopupUrl,
     570,
-    170
+    170,
 );
 Toolbar::spacer();
 Toolbar::cancel();
@@ -58,7 +58,7 @@ Toolbar::cancel();
 App::get('document')->addScriptDeclaration(
     'jQuery(document).ready(function($) {
 		$(\'a[data-title="Add Users"]\').removeClass(\'modal\').addClass(\'specialPop\');
-	});'
+	});',
 );
 Behavior::modal('a.specialPop', ['onHide' => '\\function() { refreshMe(); }']);
 
@@ -74,7 +74,7 @@ Behavior::modal('a.specialPop', ['onHide' => '\\function() { refreshMe(); }']);
 $formAction = Route::url('index.php?option=' . $this->option);
 $skuEditUrl = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=skus&task=edit&id=' . $this->sku->getId()
+    . '&controller=skus&task=edit&id=' . $this->sku->getId(),
 );
 $editSkuTitle = Lang::txt('Edit SKU');
 ?>
@@ -119,7 +119,7 @@ $sort = @$this->filters['sort'];
                 echo $this->pagination(
                     $this->total,
                     $this->filters['start'],
-                    $this->filters['limit']
+                    $this->filters['limit'],
                 );
                 ?></td>
         </tr>

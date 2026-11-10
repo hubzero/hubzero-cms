@@ -39,7 +39,7 @@ class Migration20150626201931Core extends Base
                 $this->setError(
                     'The site directory cannot be moved (perhaps because it is on a different file system). '
                         . 'Please move manually and mark this migration as having been run.',
-                    'fatal'
+                    'fatal',
                 );
                 return false;
             }
@@ -47,7 +47,7 @@ class Migration20150626201931Core extends Base
             if (!mkdir($new, 0775)) {
                 $this->setError(
                     'Unable to create new site directory (there was no old site directory).',
-                    'warning'
+                    'warning',
                 );
                 return false;
             }
@@ -55,7 +55,7 @@ class Migration20150626201931Core extends Base
             $this->setError(
                 'A site directory already exists in app and an old site directory also exists. '
                     . 'Please manually move your site data and mark this migration as having been run.',
-                'fatal'
+                'fatal',
             );
             return false;
         } elseif (!is_dir($old) && is_dir($new)) {
@@ -86,7 +86,7 @@ class Migration20150626201931Core extends Base
                 $this->setError(
                     'The site directory cannot be moved (perhaps because it is on a different file system). '
                         . 'Please move manually and mark this migration as having been run.',
-                    'fatal'
+                    'fatal',
                 );
                 return false;
             }
@@ -94,7 +94,7 @@ class Migration20150626201931Core extends Base
             if (!mkdir($new, 0775)) {
                 $this->setError(
                     'Unable to create new site directory (there was no old site directory).',
-                    'warning'
+                    'warning',
                 );
                 return false;
             }
@@ -102,7 +102,7 @@ class Migration20150626201931Core extends Base
             $this->setError(
                 'A site directory already exists in root and in app. '
                     . 'Please manually move your site data and mark this migration as having been run.',
-                'fatal'
+                'fatal',
             );
             return false;
         } elseif (!is_dir($old) && is_dir($new)) {

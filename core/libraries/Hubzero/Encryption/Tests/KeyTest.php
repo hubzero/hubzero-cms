@@ -71,7 +71,7 @@ class KeyTest extends Basic
         string $public,
         string $expectedType,
         string $expectedPrivate,
-        string $expectedPublic
+        string $expectedPublic,
     ): void {
         $key = new Key($type, $private, $public);
 

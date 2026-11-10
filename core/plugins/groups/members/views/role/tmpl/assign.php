@@ -21,7 +21,7 @@ defined('_HZEXEC_') or die();
 $formUrl = Route::url(
     'index.php?option=' . $this->option
     . '&cn=' . $this->group->get('cn')
-    . '&active=members'
+    . '&active=members',
 );
 $formId = 'hubForm' . (($this->no_html) ? '-ajax' : '');
 ?>
@@ -39,7 +39,7 @@ $formId = 'hubForm' . (($this->no_html) ? '-ajax' : '');
                 $current_roles = [];
                 $roles = Components\Groups\Helpers\Permissions::getGroupMemberRoles(
                     $u->get('id'),
-                    $this->group->get('gidNumber')
+                    $this->group->get('gidNumber'),
                 );
                 if ($roles) {
                     foreach ($roles as $role) {

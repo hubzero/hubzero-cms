@@ -72,7 +72,7 @@ class Oauth extends Base implements CommandInterface
             'client_id' => 'CLIENT ID',
             'state'     => 'STATE',
             'owner'     => 'OWNER',
-            'redirect'  => 'REDIRECT URI'
+            'redirect'  => 'REDIRECT URI',
         ]];
 
         foreach ($query->order('id', 'desc')->rows() as $app) {
@@ -82,7 +82,7 @@ class Oauth extends Base implements CommandInterface
                 'client_id' => $app->get('client_id'),
                 'state'     => $app->get('state') == 1 ? 'enabled' : 'disabled',
                 'owner'     => $app->get('created_by'),
-                'redirect'  => strtok((string)$app->get('redirect_uri'), "\n")
+                'redirect'  => strtok((string)$app->get('redirect_uri'), "\n"),
             ];
         }
 
@@ -114,7 +114,7 @@ class Oauth extends Base implements CommandInterface
             'grant_types'  => $app->get('grant_types'),
             'state'        => $app->get('state') == 1 ? 'enabled' : 'disabled',
             'created'      => $app->get('created'),
-            'created_by'   => $app->get('created_by')
+            'created_by'   => $app->get('created_by'),
         ];
 
         // A client secret is a credential: print it only when asked, so it does
@@ -161,7 +161,7 @@ class Oauth extends Base implements CommandInterface
             'redirect_uri' => $uris,
             'created_by'   => $owner->get('id'),
             'state'        => 1,
-            'hub_account'  => 0
+            'hub_account'  => 0,
         ]);
 
         if ($grants = $this->arguments->getOpt('grants')) {
@@ -181,7 +181,7 @@ class Oauth extends Base implements CommandInterface
             'client_id'    => $app->get('client_id'),
             'redirect_uri' => $app->get('redirect_uri'),
             'grant_types'  => $app->get('grant_types'),
-            'owner'        => $owner->get('username') . ' (#' . $owner->get('id') . ')'
+            'owner'        => $owner->get('username') . ' (#' . $owner->get('id') . ')',
         ]);
 
         $this->output->addSpacer();
@@ -259,7 +259,7 @@ class Oauth extends Base implements CommandInterface
         $this->output->addLine('Rotated credentials for #' . $app->get('id'), 'success');
         $this->output->addRawFromAssocArray([
             'previous_client_id' => $previous,
-            'client_id'          => $app->get('client_id')
+            'client_id'          => $app->get('client_id'),
         ]);
         $this->output->addLine('Existing access and refresh tokens for this client are now invalid.', 'warning');
     }
@@ -404,48 +404,48 @@ class Oauth extends Base implements CommandInterface
             ->addArgument(
                 '--id=: Application id',
                 'Identifies the application for show, update, rotate, enable, disable and delete.',
-                'muse developer:oauth show --id=42'
+                'muse developer:oauth show --id=42',
             )
             ->addArgument(
                 '--name=: Application name',
                 'Required when registering.',
-                'muse developer:oauth register --name="nanoDT" --user=jdoe --redirect-uri=http://127.0.0.1:47813/callback'
+                'muse developer:oauth register --name="nanoDT" --user=jdoe --redirect-uri=http://127.0.0.1:47813/callback',
             )
             ->addArgument(
                 '--redirect-uri=: Redirect URI(s)',
                 'Comma separate multiple URIs. Each must be a valid absolute URL; note that "localhost" '
                     . 'fails validation, so use 127.0.0.1 for native loopback redirects.',
-                '--redirect-uri=http://127.0.0.1:47813/callback'
+                '--redirect-uri=http://127.0.0.1:47813/callback',
             )
             ->addArgument(
                 '--user=: Owning user',
                 'Username or numeric id. The application is created as this user.',
-                '--user=jdoe'
+                '--user=jdoe',
             )
             ->addArgument(
                 '--grants=: Grant types',
                 'Space separated. Defaults to "authorization_code password refresh_token".',
-                '--grants="authorization_code refresh_token"'
+                '--grants="authorization_code refresh_token"',
             )
             ->addArgument(
                 '--description=: Description',
-                'Free text shown in the developer UI. Required when registering; the model rejects an empty value.'
+                'Free text shown in the developer UI. Required when registering; the model rejects an empty value.',
             )
             ->addArgument(
                 '--show-secret: Reveal the client secret',
-                'Client secrets are hidden by default so they do not leak into logs.'
+                'Client secrets are hidden by default so they do not leak into logs.',
             )
             ->addArgument(
                 '--user=: Filter by owner (show)',
-                'Restricts the listing to one user\'s applications.'
+                'Restricts the listing to one user\'s applications.',
             )
             ->addArgument(
                 '--search=: Filter by name (show)',
-                'Substring match against the application name.'
+                'Substring match against the application name.',
             )
             ->addArgument(
                 '--force: Skip confirmation',
-                'Required for rotate and delete when there is no terminal attached.'
+                'Required for rotate and delete when there is no terminal attached.',
             );
     }
 }

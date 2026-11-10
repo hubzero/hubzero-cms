@@ -212,7 +212,7 @@ class Auth extends SiteController
 
                 $authenticators[$p->name] = [
                     'name'    => $p->name,
-                    'display' => $display
+                    'display' => $display,
                 ];
 
                 $multiAuth = true;
@@ -328,7 +328,7 @@ class Auth extends SiteController
         $data = [
             'username' => Request::getString('username', '', 'post'),
             'password' => Request::getString('passwd', '', 'post'),
-            'return'   => Request::getString('return', '', 'post')
+            'return'   => Request::getString('return', '', 'post'),
         ];
         if (!$this->isBase64($data['return'])) {
             $data['return'] = '';
@@ -429,7 +429,7 @@ class Auth extends SiteController
         // either way.
         $credentials = [
             'username' => $data['username'],
-            'password' => $data['password']
+            'password' => $data['password'],
         ];
 
         try {
@@ -461,7 +461,7 @@ class Auth extends SiteController
             if (Request::getInt('no_html', 0)) {
                 echo json_encode([
                     'success'  => true,
-                    'redirect' => $target
+                    'redirect' => $target,
                 ]);
                 exit;
             } else {
@@ -487,7 +487,7 @@ class Auth extends SiteController
             if (Request::getInt('no_html', 0)) {
                 echo json_encode([
                     'error'   => $error,
-                    'freturn' => Route::url($return, false)
+                    'freturn' => Route::url($return, false),
                 ]);
                 exit;
             } else {
@@ -600,7 +600,7 @@ class Auth extends SiteController
                 $conflict[] = [
                     'auth_domain_name' => $dname,
                     'name'  => $auser->name,
-                    'email' => $auser->email
+                    'email' => $auser->email,
                 ];
             }
         }
@@ -611,7 +611,7 @@ class Auth extends SiteController
                 $conflict[] = [
                     'auth_domain_name' => $l['auth_domain_name'],
                     'name'  => $auser->name,
-                    'email' => $l['email']
+                    'email' => $l['email'],
                 ];
             }
         }

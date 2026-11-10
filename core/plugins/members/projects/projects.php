@@ -106,7 +106,7 @@ class Projects extends Plugin
 
         $arr = [
             'html'     => '',
-            'metadata' => ''
+            'metadata' => '',
         ];
 
         // Load classes
@@ -122,7 +122,7 @@ class Projects extends Plugin
             'sortby'   => Request::getString('sortby', 'title'),
             'sortdir'  => Request::getString('sortdir', 'ASC'),
             'filterby' => Request::getString('filterby', 'active'),
-            'uid'      => $member->get('id')
+            'uid'      => $member->get('id'),
         ];
         if (!in_array($this->_filters['filterby'], ['active', 'archived'])) {
             $this->_filters['filterby'] = 'active';
@@ -253,7 +253,7 @@ class Projects extends Plugin
         $projects = $this->model->table()->getUserProjectIds($this->_user->get('id'));
 
         $view->filters = [
-            'limit' => Request::getInt('limit', 25, 'request')
+            'limit' => Request::getInt('limit', 25, 'request'),
         ];
 
         // Get shared updates feed from blog plugin
@@ -264,14 +264,14 @@ class Projects extends Plugin
             $this->model,
             $projects,
             $this->_user->get('id'),
-            $view->filters
-            ]
+            $view->filters,
+            ],
         );
 
         $view->content      = !empty($results) && isset($results[0]) ? $results[0] : null;
         $view->newcount     = $this->model->table()->getUpdateCount(
             $projects,
-            $this->_user->get('id')
+            $this->_user->get('id'),
         );
         $view->projectcount = $this->_total;
         $view->uid          = $this->_user->get('id');

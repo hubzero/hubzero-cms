@@ -228,7 +228,7 @@ class Message extends \Symfony\Component\Mime\Email
         // instead of trying to remove attachments after the fact.
         throw new \BadMethodCallException(
             'Removing individual attachments is not supported by '
-            . 'the underlying Symfony Mime Email class.'
+            . 'the underlying Symfony Mime Email class.',
         );
     }
 

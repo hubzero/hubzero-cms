@@ -24,7 +24,7 @@ if ($urls && (!empty($urls->urla) || !empty($urls->urlb) || !empty($urls->urlc))
             $urlarray = [
                 [$urls->urla ?? '', $urls->urlatext ?? '', $urls->targeta ?? '', 'a'],
                 [$urls->urlb ?? '', $urls->urlbtext ?? '', $urls->targetb ?? '', 'b'],
-                [$urls->urlc ?? '', $urls->urlctext ?? '', $urls->targetc ?? '', 'c']
+                [$urls->urlc ?? '', $urls->urlctext ?? '', $urls->targetc ?? '', 'c'],
             ];
             foreach ($urlarray as $url) :
                 $link = $url[0];

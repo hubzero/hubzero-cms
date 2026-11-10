@@ -123,7 +123,7 @@ class Address extends Field
                 'value',
                 'text',
                 $value['country'],
-                $this->id . '-' . $i . '-country'
+                $this->id . '-' . $i . '-country',
             );
             $html[] = '<input type="hidden" id="' . $this->id . '-' . $i . '" '
                 . 'name="' . $this->name . '[' . $i . '][latitude]" '
@@ -207,12 +207,12 @@ class Address extends Field
 					});
 				}
 			};
-		");
+		",);
         App::get('document')->addScriptDeclaration(
-            "jQuery(document).ready(function($){\nmanageProfileAddresses();\n});"
+            "jQuery(document).ready(function($){\nmanageProfileAddresses();\n});",
         );
         App::get('document')->addScriptDeclaration(
-            "jQuery(document).on('ajaxLoad', function($){\nmanageProfileAddresses();\n});"
+            "jQuery(document).on('ajaxLoad', function($){\nmanageProfileAddresses();\n});",
         );
 
         return implode($html);
@@ -247,7 +247,7 @@ class Address extends Field
                 (string) $option->code,
                 App::get('language')->alt(trim((string) $option->name), $altKey),
                 'value',
-                'text'
+                'text',
             );
 
             // Add the option object to the result set.

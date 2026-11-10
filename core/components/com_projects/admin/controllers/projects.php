@@ -88,29 +88,29 @@ class Projects extends AdminController
                 $this->_option . '.projects.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.projects.limitstart',
                 'limitstart',
                 0,
-                'int'
+                'int',
             ),
             'search' => urldecode(Request::getState(
                 $this->_option . '.projects.search',
                 'search',
-                ''
+                '',
             )),
             'filterby' => Request::getState(
                 $this->_option . '.projects.filterby',
                 'filterby',
-                ''
+                '',
             ),
             'access' => Request::getState(
                 $this->_option . '.projects.access',
                 'access',
                 0,
-                'int'
+                'int',
             ),
             /*'private' => Request::getState(
                 $this->_option . '.projects.private',
@@ -121,17 +121,17 @@ class Projects extends AdminController
             'sortby' => Request::getState(
                 $this->_option . '.projects.sort',
                 'filter_order',
-                'id'
+                'id',
             ),
             'sortdir' => Request::getState(
                 $this->_option . '.projects.sortdir',
                 'filter_order_Dir',
-                'DESC'
+                'DESC',
             ),
             'authorized' => true,
             'getowner'   => 1,
             'activity'   => 1,
-            'quota'      => Request::getString('quota', 'all', 'post')
+            'quota'      => Request::getString('quota', 'all', 'post'),
         ];
 
         if (!in_array($this->view->filters['filterby'], ['setting_up_in_progress', 'active', 'deleted', 'archived', 'rejected', 'pending_approval'])) {
@@ -468,7 +468,7 @@ class Projects extends AdminController
         if (in_array($action, ['delete', 'reinstate'], true)) {
             $model->table('Owner')->sysGroup(
                 $model->get('alias'),
-                $this->config->get('group_prefix', 'pr-')
+                $this->config->get('group_prefix', 'pr-'),
             );
         }
 
@@ -523,7 +523,7 @@ class Projects extends AdminController
             // Message body
             $eview = new \Hubzero\Mail\View([
                 'name'   => 'emails',
-                'layout' => 'admin_plain'
+                'layout' => 'admin_plain',
             ]);
             $eview->option  = $this->_option;
             $eview->subject = $subject;
@@ -580,7 +580,7 @@ class Projects extends AdminController
                     0,
                     $role,
                     $status = 1,
-                    0
+                    0,
                 );
             }
         }
@@ -910,7 +910,7 @@ class Projects extends AdminController
             $this->database->setQuery(
                 "SELECT DISTINCT p.id FROM `#__wiki_pages` AS p
 				WHERE p.scope_id=" . $this->database->quote($id)
-                . " AND p.scope=" . $this->database->quote('project')
+                . " AND p.scope=" . $this->database->quote('project'),
             );
             $notes = $this->database->loadObjectList();
 
@@ -949,7 +949,7 @@ class Projects extends AdminController
         // Redirect
         App::redirect(
             Route::url('index.php?option=' . $this->_option, false),
-            Lang::txt('COM_PROJECTS_PROJECT') . ' #' . $id . ' (' . $alias . ') ' . Lang::txt('COM_PROJECTS_PROJECT_ERASED')
+            Lang::txt('COM_PROJECTS_PROJECT') . ' #' . $id . ' (' . $alias . ') ' . Lang::txt('COM_PROJECTS_PROJECT_ERASED'),
         );
     }
 
@@ -982,7 +982,7 @@ class Projects extends AdminController
             App::redirect(
                 $url,
                 Lang::txt('Please specify a file/directory path to add and commit into project'),
-                'error'
+                'error',
             );
             return;
         }
@@ -1011,7 +1011,7 @@ class Projects extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&task=edit&id=' . $id, false)
+            Route::url('index.php?option=' . $this->_option . '&task=edit&id=' . $id, false),
         );
     }
 
@@ -1039,7 +1039,7 @@ class Projects extends AdminController
         $repo = new \Components\Projects\Models\Repo($project, 'local');
         $params = [
             'path' => $repo->get('path'),
-            'adv'  => true
+            'adv'  => true,
         ];
         $repo->call('optimize', $params);
 
@@ -1047,7 +1047,7 @@ class Projects extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&task=edit&id=' . $id, false)
+            Route::url('index.php?option=' . $this->_option . '&task=edit&id=' . $id, false),
         );
     }
 
@@ -1093,7 +1093,7 @@ class Projects extends AdminController
         // Redirect
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&task=edit&id=' . $id, false),
-            Lang::txt('Sync log unavailable')
+            Lang::txt('Sync log unavailable'),
         );
     }
 
@@ -1201,7 +1201,7 @@ class Projects extends AdminController
                 'option_blank'  => (isset($element->field_options->include_blank_option) ? (int) $element->field_options->include_blank_option : ''),
                 'action_create' => (isset($element->create) ? (int) $element->create : 1),
                 'action_update' => (isset($element->update) ? (int) $element->update : 1),
-                'action_edit'   => (isset($element->edit)   ? (int) $element->edit   : 1)
+                'action_edit'   => (isset($element->edit)   ? (int) $element->edit   : 1),
             ]);
 
             if ($field->get('type') == 'dropdown') {
@@ -1255,7 +1255,7 @@ class Projects extends AdminController
                         'value'      => (isset($opt->value)   ? (string) $opt->value : ''),
                         'checked'    => (isset($opt->checked) ? (int) $opt->checked : 0),
                         'ordering'   => ($k + 1),
-                        'dependents' => json_encode($dependents)
+                        'dependents' => json_encode($dependents),
                     ]);
 
                     if (!$option->save()) {
@@ -1289,7 +1289,7 @@ class Projects extends AdminController
         if ($this->getTask() == 'applydescription') {
             // Redirect, instead of falling through, to avoid caching issues
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=customizeDescription', false)
+                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=customizeDescription', false),
             );
         }
 

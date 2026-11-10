@@ -53,7 +53,7 @@ class Migration20130924000005Core extends Base
             $columns = [
                 'extension_id', 'name', 'type', 'element', 'folder', 'client_id', 'enabled',
                 'access', 'protected', 'manifest_cache', 'params', 'custom_data', 'system_data',
-                'checked_out', 'checked_out_time', 'ordering', 'state'
+                'checked_out', 'checked_out_time', 'ordering', 'state',
             ];
 
             $values = [
@@ -691,7 +691,7 @@ class Migration20130924000005Core extends Base
             $columns = [
                 'extension_id', 'name', 'type', 'element', 'folder', 'client_id', 'enabled',
                 'access', 'protected', 'manifest_cache', 'params', 'custom_data', 'system_data',
-                'checked_out', 'checked_out_time', 'ordering', 'state'
+                'checked_out', 'checked_out_time', 'ordering', 'state',
             ];
 
             $values = [
@@ -754,7 +754,7 @@ class Migration20130924000005Core extends Base
             $columns = [
                 'extension_id', 'name', 'type', 'element', 'folder', 'client_id', 'enabled',
                 'access', 'protected', 'manifest_cache', 'params', 'custom_data', 'system_data',
-                'checked_out', 'checked_out_time', 'ordering', 'state'
+                'checked_out', 'checked_out_time', 'ordering', 'state',
             ];
 
             $values = [
@@ -1217,7 +1217,7 @@ class Migration20130924000005Core extends Base
             $columns = [
                 'extension_id', 'name', 'type', 'element', 'folder', 'client_id', 'enabled',
                 'access', 'protected', 'manifest_cache', 'params', 'custom_data', 'system_data',
-                'checked_out', 'checked_out_time', 'ordering', 'state'
+                'checked_out', 'checked_out_time', 'ordering', 'state',
             ];
 
             $values = [
@@ -1489,7 +1489,7 @@ class Migration20130924000005Core extends Base
             $columns = [
                 'extension_id', 'name', 'type', 'element', 'folder', 'client_id', 'enabled',
                 'access', 'protected', 'manifest_cache', 'params', 'custom_data', 'system_data',
-                'checked_out', 'checked_out_time', 'ordering', 'state'
+                'checked_out', 'checked_out_time', 'ordering', 'state',
             ];
 
             $values = [
@@ -2473,7 +2473,7 @@ class Migration20130924000005Core extends Base
             $columns = [
                 'extension_id', 'name', 'type', 'element', 'folder', 'client_id', 'enabled',
                 'access', 'protected', 'manifest_cache', 'params', 'custom_data', 'system_data',
-                'checked_out', 'checked_out_time', 'ordering', 'state'
+                'checked_out', 'checked_out_time', 'ordering', 'state',
             ];
 
             $values = [
@@ -2614,7 +2614,7 @@ class Migration20130924000005Core extends Base
             $columns = [
                 'extension_id', 'name', 'type', 'element', 'folder', 'client_id', 'enabled',
                 'access', 'protected', 'manifest_cache', 'params', 'custom_data', 'system_data',
-                'checked_out', 'checked_out_time', 'ordering', 'state'
+                'checked_out', 'checked_out_time', 'ordering', 'state',
             ];
 
             $values = [
@@ -2675,7 +2675,7 @@ class Migration20130924000005Core extends Base
                 ->columns([
                     'extension_id', 'name', 'type', 'element', 'folder', 'client_id', 'enabled',
                     'access', 'protected', 'manifest_cache', 'params', 'custom_data', 'system_data',
-                    'checked_out', 'checked_out_time', 'ordering', 'state'
+                    'checked_out', 'checked_out_time', 'ordering', 'state',
                 ])
                 ->values([
                     700,
@@ -2722,7 +2722,7 @@ class Migration20130924000005Core extends Base
                     'checked_out'    => 0,
                     'checked_out_time' => '0000-00-00 00:00:00',
                     'ordering'       => 0,
-                    'state'          => 0
+                    'state'          => 0,
                 ])
                 ->execute();
 
@@ -2743,7 +2743,7 @@ class Migration20130924000005Core extends Base
                 'com_hub',
                 'com_storefront',
                 'com_contribute',
-                'com_contribtool'
+                'com_contribtool',
             ];
 
             foreach ($results as $r) {
@@ -2787,7 +2787,7 @@ class Migration20130924000005Core extends Base
                         'checked_out'       => 0,
                         'checked_out_time'  => '0000-00-00 00:00:00',
                         'ordering'          => 0,
-                        'state'             => 0
+                        'state'             => 0,
                     ])
                     ->execute();
                 continue;
@@ -2828,7 +2828,7 @@ class Migration20130924000005Core extends Base
                         'checked_out'       => 0,
                         'checked_out_time'  => '0000-00-00 00:00:00',
                         'ordering'          => 0,
-                        'state'             => 0
+                        'state'             => 0,
                     ])
                     ->execute();
             }
@@ -2868,7 +2868,7 @@ class Migration20130924000005Core extends Base
                         'checked_out'       => 0,
                         'checked_out_time'  => '0000-00-00 00:00:00',
                         'ordering'          => 0,
-                        'state'             => 0
+                        'state'             => 0,
                     ])
                     ->execute();
             }
@@ -2918,7 +2918,7 @@ class Migration20130924000005Core extends Base
                         'checked_out'       => $r->checked_out,
                         'checked_out_time'  => $r->checked_out_time,
                         'ordering'          => $r->ordering,
-                        'state'             => 0
+                        'state'             => 0,
                     ])
                     ->execute();
             }
@@ -2958,7 +2958,7 @@ class Migration20130924000005Core extends Base
                         'checked_out'       => 0,
                         'checked_out_time'  => '0000-00-00 00:00:00',
                         'ordering'          => 0,
-                        'state'             => 0
+                        'state'             => 0,
                     ])
                     ->execute();
             }
@@ -2999,7 +2999,7 @@ class Migration20130924000005Core extends Base
                         'checked_out'       => 0,
                         'checked_out_time'  => '0000-00-00 00:00:00',
                         'ordering'          => 0,
-                        'state'             => 0
+                        'state'             => 0,
                     ])
                     ->execute();
             }
@@ -3007,7 +3007,7 @@ class Migration20130924000005Core extends Base
             // Migrate templates
             $templates = array_diff(
                 scandir(PATH_CORE . DS . 'templates'),
-                [".", "..", "system"]
+                [".", "..", "system"],
             );
             foreach ($templates as $t) {
                 $query = $this->db->getQuery(true)
@@ -3043,7 +3043,7 @@ class Migration20130924000005Core extends Base
                         'checked_out'       => 0,
                         'checked_out_time'  => '0000-00-00 00:00:00',
                         'ordering'          => 0,
-                        'state'             => 0
+                        'state'             => 0,
                     ])
                     ->execute();
             }
@@ -3052,7 +3052,7 @@ class Migration20130924000005Core extends Base
             // @TODO: 2.0.0+ we can't differentiate admin templates at filesystem level
             $templates = array_diff(
                 scandir(PATH_CORE . DS . 'templates'),
-                [".", "..", "system"]
+                [".", "..", "system"],
             );
             foreach ($templates as $t) {
                 $query = $this->db->getQuery(true)
@@ -3088,7 +3088,7 @@ class Migration20130924000005Core extends Base
                         'checked_out'       => 0,
                         'checked_out_time'  => '0000-00-00 00:00:00',
                         'ordering'          => 0,
-                        'state'             => 0
+                        'state'             => 0,
                     ])
                     ->execute();
             }

@@ -57,7 +57,7 @@ class Accesstoken extends Relational
     protected $rules = [
         'access_token'   => 'notempty',
         'application_id' => 'positive|nonzero',
-        'uidNumber'      => 'positive|nonzero'
+        'uidNumber'      => 'positive|nonzero',
     ];
 
     /**
@@ -67,7 +67,7 @@ class Accesstoken extends Relational
      */
     public $initiate = [
         'created',
-        'expires'
+        'expires',
     ];
 
     /**

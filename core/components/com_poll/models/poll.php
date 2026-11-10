@@ -36,7 +36,7 @@ class Poll extends Relational
      */
     protected $rules = [
         'title' => 'notempty',
-        'lag'   => 'positive|nonzero'
+        'lag'   => 'positive|nonzero',
     ];
 
     /**
@@ -45,7 +45,7 @@ class Poll extends Relational
      * @var  array
      */
     public $always = [
-        'alias'
+        'alias',
     ];
 
     /**
@@ -137,7 +137,7 @@ class Poll extends Relational
         $dt->set([
             'date'    => \Date::toSql(),
             'vote_id' => (int) $option_id,
-            'poll_id' => (int) $this->get('id')
+            'poll_id' => (int) $this->get('id'),
         ]);
 
         if (!$dt->save()) {

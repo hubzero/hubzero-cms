@@ -49,7 +49,7 @@ class Language extends Select
         // Merge any additional options in the XML definition.
         $options = array_merge(
             parent::getOptions(),
-            App::get('language')->getList($this->value, $path, true, true, $client_id)
+            App::get('language')->getList($this->value, $path, true, true, $client_id),
         );
 
         return $options;

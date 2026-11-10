@@ -42,7 +42,7 @@ if ($canDo->get('core.delete')) {
             Lang::txt('COM_RESOURCES_SELECT'),
             '',
             '',
-            ''
+            '',
         );
         ?>
 
@@ -77,7 +77,7 @@ if ($canDo->get('core.delete')) {
                         'COM_RESOURCES_COL_ID',
                         'id',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     );
                     ?></th>
                 <th scope="col"><?php
@@ -87,7 +87,7 @@ if ($canDo->get('core.delete')) {
                         'COM_RESOURCES_COL_TITLE',
                         'type',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     );
                     ?></th>
                 <th scope="col"
@@ -98,7 +98,7 @@ if ($canDo->get('core.delete')) {
                         'COM_RESOURCES_COL_ALIAS',
                         'alias',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     );
                     ?></th>
                 <th scope="col"
@@ -109,7 +109,7 @@ if ($canDo->get('core.delete')) {
                         'COM_RESOURCES_COL_CATEGORY',
                         'category',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     );
                     ?></th>
                 <th scope="col"
@@ -120,7 +120,7 @@ if ($canDo->get('core.delete')) {
                         'COM_RESOURCES_COL_PUBLISHED',
                         'state',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     );
                     ?></th>
             </tr>
@@ -178,7 +178,7 @@ if ($canDo->get('core.delete')) {
                         $editUrl = Route::url(
                             'index.php?option=' . $this->option
                             . '&controller=' . $this->controller
-                            . '&task=edit&id=' . $row->get('id')
+                            . '&task=edit&id=' . $row->get('id'),
                         );
                         ?>
                         <a href="<?php echo $editUrl; ?>">
@@ -211,7 +211,7 @@ if ($canDo->get('core.delete')) {
                         . '&controller=' . $this->controller
                         . '&task=' . $task
                         . '&id=' . $row->get('id')
-                        . '&' . Session::getFormToken() . '=1'
+                        . '&' . Session::getFormToken() . '=1',
                     );
                     ?>
                     <a class="state <?php echo $cls; ?>"

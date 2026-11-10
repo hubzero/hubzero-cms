@@ -42,7 +42,7 @@ class Recipient extends Relational
      * @var  array
      */
     protected $rules = [
-        'email' => 'notempty'
+        'email' => 'notempty',
     ];
 
     /**

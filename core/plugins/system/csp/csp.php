@@ -42,7 +42,7 @@ class Csp extends Plugin
         'frame-src',
         'img-src',
         'script-src',
-        'style-src'
+        'style-src',
     ];
 
     /**

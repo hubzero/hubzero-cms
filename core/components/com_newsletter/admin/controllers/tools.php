@@ -95,7 +95,7 @@ class Tools extends AdminController
         //config for mozify
         $config = [
             'imageUrl'   => $image,
-            'mosaicSize' => $mosaicSize
+            'mosaicSize' => $mosaicSize,
         ];
 
         //instantiate new hubzero image mozify object

@@ -59,7 +59,7 @@ class Mailings extends AdminController
             'search' => urldecode(Request::getState($this->_option . '.' . $this->_controller . '.search', 'search', '')),
             'status' => Request::getState($this->_option . '.' . $this->_controller . '.status', 'status', ''),
             'sort'   => Request::getState($this->_option . '.' . $this->_controller . '.sort', 'filter_order', 'created'),
-            'sort_Dir' => Request::getState($this->_option . '.' . $this->_controller . '.sortdir', 'filter_order_Dir', 'DESC')
+            'sort_Dir' => Request::getState($this->_option . '.' . $this->_controller . '.sortdir', 'filter_order_Dir', 'DESC'),
         ];
 
         $rows = Mailing::all();
@@ -414,7 +414,7 @@ class Mailings extends AdminController
             'needs_optout_approval'  => $ignore,
             'held'                   => !$this->sendingEnabled(),
             'scheduled'              => $this->isScheduledFuture($row),
-            'scheduled_local'        => $this->isScheduledFuture($row) ? $this->scheduledLocal($row) : ''
+            'scheduled_local'        => $this->isScheduledFuture($row) ? $this->scheduledLocal($row) : '',
         ];
 
         $this->view
@@ -537,7 +537,7 @@ class Mailings extends AdminController
             $db->setQuery(
                 "SELECT gidNumber, cn, description FROM `#__xgroups`
 				 WHERE published = 1 AND ($where)
-				 ORDER BY cn ASC LIMIT 15"
+				 ORDER BY cn ASC LIMIT 15",
             );
             foreach ((array) $db->loadObjectList() as $g) {
                 $out[] = ['cn' => $g->cn, 'id' => (int) $g->gidNumber, 'title' => (string) $g->description];
@@ -570,7 +570,7 @@ class Mailings extends AdminController
             $db->setQuery(
                 "SELECT id, username, name FROM `#__users`
 				 WHERE block = 0 AND ($where)
-				 ORDER BY username ASC LIMIT 15"
+				 ORDER BY username ASC LIMIT 15",
             );
             foreach ((array) $db->loadObjectList() as $u) {
                 $out[] = ['cn' => $u->username, 'id' => (int) $u->id, 'title' => (string) $u->name];
@@ -632,7 +632,7 @@ class Mailings extends AdminController
         header('Content-Type: application/json');
         echo json_encode([
             'count' => $count,
-            'text'  => Lang::txt('COM_MASSMAIL_WILL_REACH', number_format($count))
+            'text'  => Lang::txt('COM_MASSMAIL_WILL_REACH', number_format($count)),
         ]);
         exit;
     }
@@ -698,7 +698,7 @@ class Mailings extends AdminController
                     'filename'   => $clean,
                     'stored_path' => $target,
                     'size'       => (int) $files['size'][$i],
-                    'mimetype'   => (string) $files['type'][$i]
+                    'mimetype'   => (string) $files['type'][$i],
                 ]);
                 $att->save();
             }
@@ -717,7 +717,7 @@ class Mailings extends AdminController
             'php', 'php3', 'php4', 'php5', 'php7', 'phtml', 'phar', 'js', 'exe', 'java', 'perl', 'pl',
             'py', 'asp', 'aspx', 'dll', 'go', 'ade', 'adp', 'bat', 'chm', 'cmd', 'com', 'cpl', 'hta',
             'htaccess', 'ins', 'isp', 'jse', 'lib', 'mde', 'msc', 'msi', 'msp', 'mst', 'pif', 'scr',
-            'sct', 'sh', 'shb', 'svg', 'sys', 'vb', 'vbe', 'vbs', 'vxd', 'wsc', 'wsf', 'wsh'
+            'sct', 'sh', 'shb', 'svg', 'sys', 'vb', 'vbe', 'vbs', 'vxd', 'wsc', 'wsf', 'wsh',
         ];
 
         foreach (explode('.', strtolower($name)) as $segment) {
@@ -935,10 +935,10 @@ class Mailings extends AdminController
                 Mailing::STATUS_PAUSED,
                 Mailing::STATUS_PENDING_APPROVAL,
                 Mailing::STATUS_HELD,
-                Mailing::STATUS_SCHEDULED
+                Mailing::STATUS_SCHEDULED,
             ],
             Mailing::STATUS_CANCELLED,
-            'COM_MASSMAIL_CANCELLED'
+            'COM_MASSMAIL_CANCELLED',
         );
     }
 

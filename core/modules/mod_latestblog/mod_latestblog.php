@@ -44,7 +44,7 @@ class Latestblog extends Module
             'scope'    => $this->params->get('blog', 'site'),
             'scope_id' => 0,
             'state'    => 1,
-            'access'   => User::getAuthorisedViewLevels()
+            'access'   => User::getAuthorisedViewLevels(),
         ];
         if ($filters['scope'] == 'both' || $filters['scope'] == 'group') {
             // Since some groups May have private entries, we need to up the limit to try and catch more

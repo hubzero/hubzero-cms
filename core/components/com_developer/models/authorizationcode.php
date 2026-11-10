@@ -58,7 +58,7 @@ class Authorizationcode extends Relational
     protected $rules = [
         'authorization_code' => 'notempty',
         'uidNumber'          => 'positive|nonzero',
-        'application_id'     => 'positive|nonzero'
+        'application_id'     => 'positive|nonzero',
     ];
 
     /**

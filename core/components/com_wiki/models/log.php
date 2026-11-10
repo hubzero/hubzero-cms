@@ -45,7 +45,7 @@ class Log extends Relational
      */
     protected $rules = [
         'page_id' => 'positive|nonzero',
-        'user_id' => 'positive|nonzero'
+        'user_id' => 'positive|nonzero',
     ];
 
     /**
@@ -54,7 +54,7 @@ class Log extends Relational
      * @var  array
      */
     public $always = [
-        'timestamp'
+        'timestamp',
     ];
 
     /**

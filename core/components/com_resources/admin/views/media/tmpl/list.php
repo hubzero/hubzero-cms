@@ -66,7 +66,7 @@ $this->js('media.js');
                             <?php
                             $data_confirmTxt = Lang::txt(
                                 'Are you sure you want to delete the folder "%s"?',
-                                $folderName
+                                $folderName,
                             );
                             ?>
                             <a class="delete-folder state trash"
@@ -78,7 +78,7 @@ $this->js('media.js');
                                     . DS . $folders[$folderName]
                                     . '&listdir=' . $this->listdir
                                     . '&tmpl=component&subdir=' . $subdir
-                                    . '&' . Session::getFormToken() . '=1'
+                                    . '&' . Session::getFormToken() . '=1',
                                 );
                                 ?>
                                href="<?php echo $delFolderUrl; ?>"
@@ -113,7 +113,7 @@ $this->js('media.js');
                             <?php
                             $data_confirmTxt = Lang::txt(
                                 'Are you sure you want to delete the file "%s"?',
-                                $docs[$docName]
+                                $docs[$docName],
                             );
                             ?>
                             <a class="delete-file state trash"
@@ -126,7 +126,7 @@ $this->js('media.js');
                                     . '&listdir=' . $this->listdir
                                     . '&tmpl=component&subdir='
                                     . $this->subdir
-                                    . '&' . Session::getFormToken() . '=1'
+                                    . '&' . Session::getFormToken() . '=1',
                                 );
                                 ?>
                                href="<?php echo $delFileUrl; ?>"

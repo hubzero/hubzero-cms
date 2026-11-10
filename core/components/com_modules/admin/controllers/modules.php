@@ -74,62 +74,62 @@ class Modules extends AdminController
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limitstart',
                 'limitstart',
                 0,
-                'int'
+                'int',
             ),
             'position' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.position',
                 'filter_position',
-                ''
+                '',
             ),
             'module' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.module',
                 'filter_module',
-                ''
+                '',
             ),
             'language' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.language',
                 'filter_language',
-                ''
+                '',
             ),
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'filter_search',
-                ''
+                '',
             )),
             'state' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.state',
                 'filter_state',
-                ''
+                '',
             ),
             'access' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.access',
                 'filter_access',
                 0,
-                'int'
+                'int',
             ),
             'client_id' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.client_id',
                 'filter_client_id',
                 0,
-                'int'
+                'int',
             ),
             // Get sorting variables
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'position'
+                'position',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         $query = Module::all();
@@ -467,11 +467,11 @@ class Modules extends AdminController
                 $this->_option . '.' . $this->_controller . '.client_id',
                 'filter_client_id',
                 0,
-                'int'
+                'int',
             ),
             // Get sorting variables
             'sort' => 'name',
-            'sort_Dir' => 'ASC'
+            'sort_Dir' => 'ASC',
         ];
 
         $db = App::get('db');
@@ -539,51 +539,51 @@ class Modules extends AdminController
                 $this->_option . '.' . $this->_controller . '.positions.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.positions.limitstart',
                 'limitstart',
                 0,
-                'int'
+                'int',
             ),
             'type' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.positions.type',
                 'filter_type',
-                ''
+                '',
             ),
             'template' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.positions.template',
                 'filter_template',
-                ''
+                '',
             ),
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.positions.search',
                 'filter_search',
-                ''
+                '',
             )),
             'state' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.positions.state',
                 'filter_state',
-                ''
+                '',
             ),
             'client_id' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.positions.client_id',
                 'filter_client_id',
                 0,
-                'int'
+                'int',
             ),
             // Get sorting variables
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.positions.sort',
                 'filter_order',
-                'position'
+                'position',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.positions.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
         $client = \Hubzero\Base\ClientManager::client($filters['client_id']);
 
@@ -625,12 +625,12 @@ class Modules extends AdminController
                     $label    = preg_replace(
                         '/[^a-zA-Z0-9_\-]/',
                         '_',
-                        'TPL_' . $template->element . '_POSITION_' . $value
+                        'TPL_' . $template->element . '_POSITION_' . $value,
                     );
                     $altlabel = preg_replace(
                         '/[^a-zA-Z0-9_\-]/',
                         '_',
-                        'COM_MODULES_POSITION_' . $value
+                        'COM_MODULES_POSITION_' . $value,
                     );
                     if (!Lang::hasKey($label) && Lang::hasKey($altlabel)) {
                         $label = $altlabel;
@@ -848,7 +848,7 @@ class Modules extends AdminController
             'unpublish' => 0,
             'archive'   => 2,
             'trash'     => -2,
-            'report'    => -3
+            'report'    => -3,
         ];
         $task  = $this->getTask();
         $value = Arr::getValue($data, $task, 0, 'int');
@@ -1030,7 +1030,7 @@ class Modules extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . $this->getRedirectToListAppend(), false)
+            Route::url('index.php?option=' . $this->_option . $this->getRedirectToListAppend(), false),
         );
     }
 
@@ -1245,7 +1245,7 @@ class Modules extends AdminController
                         ->insert('#__modules_menu')
                         ->values([
                             'moduleid' => $newId,
-                            'menuid'   => $menu
+                            'menuid'   => $menu,
                         ]);
 
                     $db->setQuery($query->toString());

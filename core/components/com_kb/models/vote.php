@@ -60,7 +60,7 @@ class Vote extends Relational
      * @var  array
      */
     public $always = [
-        'vote'
+        'vote',
     ];
 
     /**

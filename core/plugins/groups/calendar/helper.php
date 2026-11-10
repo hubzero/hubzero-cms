@@ -80,7 +80,7 @@ class Helper
             '12'    => ['abbreviation' => 'NZST',  'name' => 'New Zealand Standard Time'],
             '12.75' => ['abbreviation' => 'CHAST', 'name' => 'Chatham Island Standard Time'],
             '13'    => ['abbreviation' => 'TOT',   'name' => 'Tonga Time'],
-            '14'    => ['abbreviation' => 'LINT',  'name' => 'Line Islands Time']
+            '14'    => ['abbreviation' => 'LINT',  'name' => 'Line Islands Time'],
         ];
 
         if (isset($abbreviations[$timezone])) {

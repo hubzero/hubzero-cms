@@ -91,7 +91,7 @@ class Groups extends Base
         $this->view->mygroups = [
             'members'    => null,
             'invitees'   => null,
-            'applicants' => null
+            'applicants' => null,
         ];
         $this->view->populargroups = [];
         $this->view->interestinggroups = [];
@@ -112,7 +112,7 @@ class Groups extends Base
             // Get groups user may be interested in
             $this->view->interestinggroups = Group\Helper::getGroupsMatchingTagString(
                 $mytags,
-                \Hubzero\User\Helper::getGroups(User::get('id'))
+                \Hubzero\User\Helper::getGroups(User::get('id')),
             );
         }
 
@@ -157,7 +157,7 @@ class Groups extends Base
             'search'    => Request::getString('search', ''),
             'sortby'    => strtolower(Request::getWord('sortby', 'title')),
             'policy'    => strtolower(Request::getWord('policy', '')),
-            'index'     => htmlentities(Request::getString('index', ''))
+            'index'     => htmlentities(Request::getString('index', '')),
         ];
 
         if (!in_array($filters['published'], [1, 2])) {
@@ -295,7 +295,7 @@ class Groups extends Base
         $pages = $pageArchive->pages('list', [
             'gidNumber' => $this->view->group->get('gidNumber'),
             'state'     => [0,1],
-            'orderby'   => 'lft ASC'
+            'orderby'   => 'lft ASC',
         ]);
 
         // Custom error handling for super groups
@@ -391,7 +391,7 @@ class Groups extends Base
             App::redirect(
                 Route::url('index.php?option=' . $this->_option),
                 Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'),
-                'warning'
+                'warning',
             );
         }
 
@@ -415,7 +415,7 @@ class Groups extends Base
             App::redirect(
                 Route::url('index.php?option=' . $this->_option),
                 Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'),
-                'warning'
+                'warning',
             );
         }
 
@@ -493,7 +493,7 @@ class Groups extends Base
             'name'             => 'overview',
             'title'            => 'Overview',
             'default_access'   => 'anyone',
-            'display_menu_tab' => true
+            'display_menu_tab' => true,
         ]);
 
         // Get plugin access
@@ -549,7 +549,7 @@ class Groups extends Base
             App::redirect(
                 Route::url('index.php?option=' . $this->_option),
                 Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'),
-                'warning'
+                'warning',
             );
         }
 
@@ -635,7 +635,7 @@ class Groups extends Base
             $results = Event::trigger('content.onContentBeforeSave', [
                 'com_groups.group.public_desc',
                 &$g_public_desc,
-                ($this->_task == 'new')
+                ($this->_task == 'new'),
             ]);
             foreach ($results as $result) {
                 if ($result === false) {
@@ -720,7 +720,7 @@ class Groups extends Base
                 'discussion_email_autosubscribe' => $group->get('discussion_email_autosubscribe'),
                 'access'                         => \Hubzero\User\Group\Helper::getPluginAccess($group),
                 'page_comments'                  => $beforeParams->get('page_comments'),
-                'page_author'                    => $beforeParams->get('page_author')
+                'page_author'                    => $beforeParams->get('page_author'),
             ];
         }
 
@@ -776,14 +776,14 @@ class Groups extends Base
         Log::log([
             'gidNumber' => $group->get('gidNumber'),
             'action'    => $log_action,
-            'comments'  => $log_comments
+            'comments'  => $log_comments,
         ]);
 
         // Build the e-mail message
         // Note: this is done *before* pushing the changes to the group so we can show, in the message, what was changed
         $eview = new \Hubzero\Mail\View([
             'name'   => 'emails',
-            'layout' => 'saved_plain'
+            'layout' => 'saved_plain',
         ]);
 
         $eview->option = $this->_option;
@@ -803,7 +803,7 @@ class Groups extends Base
         // Get the "from" info
         $from = [
             'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name)),
-            'email' => Config::get('mailfrom')
+            'email' => Config::get('mailfrom'),
         ];
 
         // Only email managers if updating group
@@ -869,7 +869,7 @@ class Groups extends Base
                 'title'     => 'Overview',
                 'state'     => 1,
                 'privacy'   => 'default',
-                'home'      => 1
+                'home'      => 1,
             ]);
             $page->store(false);
 
@@ -880,7 +880,7 @@ class Groups extends Base
                 'content'    => "<!-- {FORMAT:HTML} -->\n<p>[[Group.DefaultHomePage()]]</p>",
                 'created'    => Date::toSql(),
                 'created_by' => User::get('id'),
-                'approved'   => 1
+                'approved'   => 1,
             ]);
             $version->store(false);
         }
@@ -890,7 +890,7 @@ class Groups extends Base
         // Log activity
         $recipients = [
             ['group', $group->get('gidNumber')],
-            ['user', User::get('id')]
+            ['user', User::get('id')],
         ];
         foreach ($group->get('managers') as $recipient) {
             $recipients[] = ['user', $recipient];
@@ -906,10 +906,10 @@ class Groups extends Base
                     'title'     => $group->get('description'),
                     'url'       => $url,
                     'cn'        => $group->get('cn'),
-                    'gidNumber' => $group->get('gidNumber')
-                ]
+                    'gidNumber' => $group->get('gidNumber'),
+                ],
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         // Show success message to user
@@ -1004,7 +1004,7 @@ class Groups extends Base
             // Return to the confirmation form rather than to this POST-only task
             return $this->loginTask(
                 Lang::txt('COM_GROUPS_DELETE_MUST_BE_LOGGED_IN'),
-                'index.php?option=' . $this->_option . '&cn=' . $this->cn . '&task=delete'
+                'index.php?option=' . $this->_option . '&cn=' . $this->cn . '&task=delete',
             );
         }
 
@@ -1136,13 +1136,13 @@ class Groups extends Base
         Log::log([
             'gidNumber' => $deletedgroup->get('gidNumber'),
             'action'    => 'group_deleted',
-            'comments'  => $log
+            'comments'  => $log,
         ]);
 
         // Log activity
         $recipients = [
             ['group', $deletedgroup->get('gidNumber')],
-            ['user', User::get('id')]
+            ['user', User::get('id')],
         ];
         foreach ($managers as $recipient) {
             $recipients[] = ['user', $recipient];
@@ -1158,10 +1158,10 @@ class Groups extends Base
                     'title'     => $deletedgroup->get('description'),
                     'url'       => Route::url('index.php?option=' . $this->_option . '&cn=' . $deletedgroup->get('cn')),
                     'cn'        => $deletedgroup->get('cn'),
-                    'gidNumber' => $deletedgroup->get('gidNumber')
-                ]
+                    'gidNumber' => $deletedgroup->get('gidNumber'),
+                ],
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         // Redirect back to the groups page
@@ -1182,7 +1182,7 @@ class Groups extends Base
         // Set notification
         $this->setNotification(
             Lang::txt('COM_GROUPS_CREATE_SUGGEST', Route::url('index.php?option=' . $this->_option . '&task=new' . (is_numeric($this->cn) ? '' : '&suggested_cn=' . $this->cn))),
-            'warning'
+            'warning',
         );
 
         // Get view notifications
@@ -1220,7 +1220,7 @@ class Groups extends Base
         $filters = [
             'limit'  => 20,
             'start'  => 0,
-            'search' => trim(Request::getString('value', ''))
+            'search' => trim(Request::getString('value', '')),
         ];
 
         $query = "SELECT t.gidNumber, t.cn, t.description
@@ -1240,7 +1240,7 @@ class Groups extends Base
 
                 $item = [
                     'id'   => $row->cn,
-                    'name' => $name
+                    'name' => $name,
                 ];
                 $json[] = $item;
             }

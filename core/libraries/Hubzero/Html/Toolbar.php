@@ -198,9 +198,9 @@ class Toolbar extends Obj
                     Lang::txt(
                         'JLIB_HTML_BUTTON_NO_LOAD',
                         $buttonClass,
-                        $buttonFile
+                        $buttonFile,
                     ),
-                    500
+                    500,
                 );
             }
         }
@@ -210,9 +210,9 @@ class Toolbar extends Obj
                 Lang::txt(
                     'JLIB_HTML_BUTTON_NO_LOAD',
                     $buttonClass,
-                    ''
+                    '',
                 ),
-                500
+                500,
             );
         }
 

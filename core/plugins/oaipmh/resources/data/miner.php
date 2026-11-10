@@ -49,7 +49,7 @@ class Miner extends Obj implements Provider
      */
     protected $provides = [
         'resources',
-        'resource'
+        'resource',
     ];
 
     /**
@@ -238,7 +238,7 @@ class Miner extends Obj implements Provider
             "SELECT a.*
 			FROM `#__doi_mapping` AS a
 			WHERE a.`doi`=" . $this->database->quote($identifier) . "
-			LIMIT 1"
+			LIMIT 1",
         );
         $doi = $this->database->loadObject();
         if ($doi && $doi->rid) {
@@ -269,7 +269,7 @@ class Miner extends Obj implements Provider
             . "r.fulltxt, r.created, r.publish_up, r.alias, rt.alias AS type
             FROM `#__resources` AS r
             INNER JOIN `#__resource_types` AS rt ON r.type = rt.id
-            WHERE r.id = " . $this->database->quote($id)
+            WHERE r.id = " . $this->database->quote($id),
         );
         $record = $this->database->loadObject();
 
@@ -283,7 +283,7 @@ class Miner extends Obj implements Provider
                 "SELECT *
                 FROM `#__tool_version`
                 WHERE toolname=" . $aliasQuoted . " AND revision=" . $revQuoted . "
-                LIMIT 1"
+                LIMIT 1",
             );
             $tool = $this->database->loadObject();
             if ($tool->id) {
@@ -316,7 +316,7 @@ class Miner extends Obj implements Provider
                 "SELECT id
 				FROM `#__tool`
 				WHERE toolname=" . $this->database->quote($record->alias) . "
-				LIMIT 1"
+				LIMIT 1",
             );
             $isTool = $this->database->loadResult();
         }
@@ -333,7 +333,7 @@ class Miner extends Obj implements Provider
                 "SELECT a.*
                 FROM `#__doi_mapping` AS a
                 WHERE a.rid=" . $idQuoted . " AND a.local_revision=" . $revQuoted . "
-                LIMIT 1"
+                LIMIT 1",
             );
         } else {
             $idQuoted = $this->database->quote($id);
@@ -341,7 +341,7 @@ class Miner extends Obj implements Provider
                 "SELECT a.*
                 FROM `#__doi_mapping` AS a
                 WHERE a.rid=" . $idQuoted . "
-                ORDER BY `versionid` DESC LIMIT 1"
+                ORDER BY `versionid` DESC LIMIT 1",
             );
         }
         $record->identifier = $this->identifier($id, $this->database->loadObject(), $revision);
@@ -352,7 +352,7 @@ class Miner extends Obj implements Provider
             FROM `#__tags` t, `#__tags_object` tos
             WHERE t.id = tos.tagid AND tos.objectid=" . $idQuoted . " "
             . "AND tos.tbl='resources' AND t.admin=0
-            ORDER BY t.raw_tag"
+            ORDER BY t.raw_tag",
         );
         $record->subject = $this->database->loadColumn();
 
@@ -366,7 +366,7 @@ class Miner extends Obj implements Provider
 			INNER JOIN `#__resource_assoc` AS a ON r.id=a.child_id
 			LEFT JOIN `#__resource_types` AS t ON r.logical_type=t.id
 			WHERE r.published=1 AND a.parent_id=" . $this->database->quote($id) . "
-			ORDER BY a.ordering, a.grouping"
+			ORDER BY a.ordering, a.grouping",
         );
         if ($children = $this->database->loadObjectList()) {
             foreach ($children as $child) {
@@ -379,7 +379,7 @@ class Miner extends Obj implements Provider
 
                 $record->relation[] = [
                     'type'  => 'hasPart',
-                    'value' => $uri
+                    'value' => $uri,
                 ];
             }
         }
@@ -389,13 +389,13 @@ class Miner extends Obj implements Provider
 			FROM `#__resources` AS r
 			INNER JOIN `#__resource_assoc` AS a ON r.id=a.parent_id
 			WHERE r.published=1 AND a.child_id=" . $this->database->quote($id) . "
-			ORDER BY a.parent_id"
+			ORDER BY a.parent_id",
         );
         if ($parents = $this->database->loadObjectList()) {
             foreach ($parents as $parent) {
                 $record->relation[] = [
                     'type'  => 'isPartOf',
-                    'value' => $this->identifier($parent->parent_id, 0)
+                    'value' => $this->identifier($parent->parent_id, 0),
                 ];
             }
         }
@@ -413,7 +413,7 @@ class Miner extends Obj implements Provider
                     WHERE n.uidNumber=t.uid AND t.toolname=" . $aliasQuoted . " "
                     . "AND v.id=t.version_id and v.state<>3
                     AND t.revision=" . $revQuoted . "
-                    ORDER BY t.ordering"
+                    ORDER BY t.ordering",
                 );
                 $record->creator = $this->database->loadColumn();
 
@@ -431,7 +431,7 @@ class Miner extends Obj implements Provider
 				AND d.local_revision=v.revision
 				WHERE v.toolname = " . $this->database->quote($record->alias) . "
 				AND v.state!=3
-				ORDER BY v.state DESC, v.revision DESC"
+				ORDER BY v.state DESC, v.revision DESC",
             );
             $versions = $this->database->loadObjectList();
             foreach ($versions as $i => $v) {
@@ -441,7 +441,7 @@ class Miner extends Obj implements Provider
 
                 $record->relation[] = [
                     'type'  => 'hasVersion',
-                    'value' => $this->identifier($id, $v, $v->revision)
+                    'value' => $this->identifier($id, $v, $v->revision),
                 ];
             }
         }
@@ -455,7 +455,7 @@ class Miner extends Obj implements Provider
 				FROM `#__author_assoc` AS a
 				LEFT JOIN `#__xprofiles` AS n ON n.uidNumber=a.authorid
 				WHERE a.subtable='resources' AND a.subid=" . $this->database->quote($id) . " AND a.role!='submitter'
-				ORDER BY a.ordering, a.name"
+				ORDER BY a.ordering, a.name",
             );
             $record->creator = $this->database->loadColumn();
         }
@@ -470,7 +470,7 @@ class Miner extends Obj implements Provider
                 INNER JOIN `#__citations_assoc` AS n ON n.`cid`=a.`id`
                 WHERE n.`tbl`='resource' AND n.`oid`=" . $idQuoted . " "
                 . "AND n.`type`!='references' AND a.`published`=1
-                ORDER BY `year` DESC"
+                ORDER BY `year` DESC",
             );
             $references = $this->database->loadObjectList();
             if (count($references) && file_exists($formatterPath)) {
@@ -487,7 +487,7 @@ class Miner extends Obj implements Provider
 
                     $record->relation[] = [
                         'type'  => 'isReferencedBy',
-                        'value' => trim($cite)
+                        'value' => trim($cite),
                     ];
                 }
             }
@@ -498,7 +498,7 @@ class Miner extends Obj implements Provider
                 INNER JOIN `#__citations_assoc` AS n ON n.`cid`=a.`id`
                 WHERE n.`tbl`='resource' AND n.`oid`=" . $idQuoted . " "
                 . "AND n.`type`='references' AND a.`published`=1
-                ORDER BY `year` DESC"
+                ORDER BY `year` DESC",
             );
             $references = $this->database->loadObjectList();
             if (count($references) && file_exists($formatterPath)) {
@@ -515,7 +515,7 @@ class Miner extends Obj implements Provider
 
                     $record->relation[] = [
                         'type'  => 'references',
-                        'value' => trim($cite)
+                        'value' => trim($cite),
                     ];
                 }
             }

@@ -33,7 +33,7 @@ class Migration20260912090000ComResources extends Base
 
         $this->db->setQuery(
             "UPDATE `#__resource_types` SET `type` = 'Datasets'
-             WHERE `alias` = 'datasets' AND `type` = 'datasets'"
+             WHERE `alias` = 'datasets' AND `type` = 'datasets'",
         );
         $this->db->query();
     }
@@ -49,7 +49,7 @@ class Migration20260912090000ComResources extends Base
 
         $this->db->setQuery(
             "UPDATE `#__resource_types` SET `type` = 'datasets'
-             WHERE `alias` = 'datasets' AND `type` = 'Datasets'"
+             WHERE `alias` = 'datasets' AND `type` = 'Datasets'",
         );
         $this->db->query();
     }

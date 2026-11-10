@@ -14,7 +14,7 @@ defined('_HZEXEC_') or die();
 <?php
 $formUrl = Route::url(
     'index.php?option=com_support&task=new&tmpl=component&referrer='
-    . $this->referrer
+    . $this->referrer,
 );
 ?>
 <div id="help-pane" data-form="<?php echo $formUrl; ?>">

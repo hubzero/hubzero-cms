@@ -39,7 +39,7 @@ class Router
      */
     protected $rules = [
         'build' => null,
-        'parse' => null
+        'parse' => null,
     ];
 
     /**
@@ -186,7 +186,7 @@ class Router
     {
         $this->rules = [
             'build' => new Rules(),
-            'parse' => new Rules()
+            'parse' => new Rules(),
         ];
         $this->vars = [];
 

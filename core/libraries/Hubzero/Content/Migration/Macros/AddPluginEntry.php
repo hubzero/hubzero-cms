@@ -80,7 +80,7 @@ class AddPluginEntry extends Macro
                 'system_data'    => '',
                 'checked_out'    => 0,
                 'ordering'       => $ordering,
-                'state'          => 0
+                'state'          => 0,
             ])
             ->toString();
         $this->db->setQuery($query);

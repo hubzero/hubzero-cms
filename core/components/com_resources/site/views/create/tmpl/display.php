@@ -114,31 +114,31 @@ $this->css('introduction.css', 'system')
                     $baseUrl = 'index.php?option=' . $this->option;
                     $step1Url = Route::url(
                         $baseUrl . '&task=draft&step=1&id='
-                        . $submission->id
+                        . $submission->id,
                     );
                     $step2Url = Route::url(
                         $baseUrl . '&task=draft&step=2&id='
-                        . $submission->id
+                        . $submission->id,
                     );
                     $step3Url = Route::url(
                         $baseUrl . '&task=draft&step=3&id='
-                        . $submission->id
+                        . $submission->id,
                     );
                     $step4Url = Route::url(
                         $baseUrl . '&task=draft&step=4&id='
-                        . $submission->id
+                        . $submission->id,
                     );
                     $step5Url = Route::url(
                         $baseUrl . '&task=draft&step=5&id='
-                        . $submission->id
+                        . $submission->id,
                     );
                     $retractUrl = Route::url(
                         $baseUrl . '&task=retract&id='
-                        . $submission->id
+                        . $submission->id,
                     );
                     $discardUrl = Route::url(
                         $baseUrl . '&task=discard&id='
-                        . $submission->id
+                        . $submission->id,
                     );
                     $titleText = stripslashes($submission->title);
                     $typeText = stripslashes($submission->typetitle);
@@ -295,7 +295,7 @@ if ($categories) {
                     $catUrl = Route::url(
                         'index.php?option=' . $this->option
                         . '&task=draft&step=1&type='
-                        . $category->get('id')
+                        . $category->get('id'),
                     );
                     ?>
                     <h3><a href="<?php echo $catUrl; ?>"><?php

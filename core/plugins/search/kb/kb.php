@@ -68,7 +68,7 @@ class Kb extends Plugin
 				f.state = 1 AND c.published = 1 AND
 				$weight > 0" .
                 ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
-            " ORDER BY $weight DESC"
+            " ORDER BY $weight DESC",
         ));
     }
 

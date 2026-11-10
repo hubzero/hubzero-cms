@@ -21,7 +21,7 @@ if (count($this->activities) > 0) { ?>
         $online = [];
         $sessions = \Hubzero\Session\Helper::getAllSessions([
             'guest' => 0,
-            'distinct' => 1
+            'distinct' => 1,
         ]);
         if ($sessions) {
             // see if any session matches our userid

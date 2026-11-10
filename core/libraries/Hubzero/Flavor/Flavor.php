@@ -197,7 +197,7 @@ class Flavor
                 case 'plugins':
                     $result[$lever] = self::mergeSwitches(
                         isset($parent[$lever]) ? $parent[$lever] : [],
-                        $value
+                        $value,
                     );
                     break;
 
@@ -209,7 +209,7 @@ class Flavor
                     foreach ($value as $key => $states) {
                         $result[$lever][$key] = self::over(
                             $states,
-                            isset($result[$lever][$key]) ? $result[$lever][$key] : []
+                            isset($result[$lever][$key]) ? $result[$lever][$key] : [],
                         );
                     }
                     break;
@@ -220,7 +220,7 @@ class Flavor
                     foreach ($value as $alias => $columns) {
                         $result[$lever][$alias] = self::over(
                             $columns,
-                            isset($result[$lever][$alias]) ? $result[$lever][$alias] : []
+                            isset($result[$lever][$alias]) ? $result[$lever][$alias] : [],
                         );
                     }
                     break;
@@ -283,7 +283,7 @@ class Flavor
         // Module instances, by id or title: the child's word on each
         $items = self::over(
             isset($child['items']) ? $child['items'] : [],
-            isset($parent['items']) ? $parent['items'] : []
+            isset($parent['items']) ? $parent['items'] : [],
         );
 
         if ($items) {
@@ -320,7 +320,7 @@ class Flavor
         foreach ($this->data as $lever => $value) {
             if (!array_key_exists($lever, self::LEVERS)) {
                 $this->complain(
-                    "'{$lever}' is not a lever. The levers are: " . implode(', ', array_keys(self::LEVERS))
+                    "'{$lever}' is not a lever. The levers are: " . implode(', ', array_keys(self::LEVERS)),
                 );
             }
 
@@ -339,7 +339,7 @@ class Flavor
                 if (!array_key_exists($key, $shape)) {
                     $this->complain(
                         "'{$lever}.{$key}' is not a lever. Under '{$lever}' there is: "
-                        . implode(', ', array_keys($shape))
+                        . implode(', ', array_keys($shape)),
                     );
                 }
 
@@ -407,7 +407,7 @@ class Flavor
     protected function complain($what)
     {
         throw new InvalidArgumentException(
-            "Flavor '{$this->name}'" . ($this->file ? " in {$this->file}" : '') . ': ' . $what
+            "Flavor '{$this->name}'" . ($this->file ? " in {$this->file}" : '') . ': ' . $what,
         );
     }
 }

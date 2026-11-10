@@ -102,7 +102,7 @@ $total = $this->model->entries('count', $this->filters);
                 $pageNav = $this->pagination(
                     $total,
                     $this->filters['start'],
-                    $this->filters['limit']
+                    $this->filters['limit'],
                 );
                 $pagenavhtml = $pageNav->render();
                 $pagenavhtml = str_replace('projects/?', 'projects/browse/?', $pagenavhtml);

@@ -35,7 +35,7 @@ class InstallTemplateEntry extends AddTemplateEntry
         $enabled = 1,
         $home = 0,
         $styles = null,
-        $protected = 0
+        $protected = 0,
     ) {
         // This macro used to take ($element, $name, $client, $styles, $protected);
         // a migration written that way has its styles in the fourth slot

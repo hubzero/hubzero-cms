@@ -53,7 +53,7 @@ class FileServiceProvider extends Middleware
             $this->app['dispatcher']->trigger('onFileServe', [
                 'file'       => $filename,
                 'timestamp'  => $dt->format('Y-m-d H:i:s'),
-                'session_id' => $this->app->has('session') ? $this->app['session'] : '???'
+                'session_id' => $this->app->has('session') ? $this->app['session'] : '???',
             ]);
         }
 

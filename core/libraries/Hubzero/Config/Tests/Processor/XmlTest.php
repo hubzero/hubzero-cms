@@ -97,7 +97,7 @@ class XmlTest extends TestCase
         $data->app->feed_email = "author";
         $data->app->ratelimit = [
             'short' => 500.1,
-            'long' => 5000.7
+            'long' => 5000.7,
         ];
 
         $data->seo = new stdClass();
@@ -111,7 +111,7 @@ class XmlTest extends TestCase
         $this->obj = $data;
         $this->arr = [
             'app' => (array) $data->app,
-            'seo' => (array) $data->seo
+            'seo' => (array) $data->seo,
         ];
 
         $this->processor = new Xml();
@@ -185,7 +185,7 @@ class XmlTest extends TestCase
         // Test object to string conversion
         $result = $this->processor->objectToString($this->obj, [
             'name' => 'config',
-            'nodeName' => 'setting'
+            'nodeName' => 'setting',
         ]);
 
         $str = str_replace(["\n", "\t"], '', $this->str);

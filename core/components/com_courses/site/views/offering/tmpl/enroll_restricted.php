@@ -81,7 +81,7 @@ $this->css('offering');
                 <?php
                 $offeringVal = $this->escape(
                     $this->course->offering()->get('alias')
-                    . ':' . $this->course->offering()->section()->get('alias')
+                    . ':' . $this->course->offering()->section()->get('alias'),
                 );
                 ?>
                 value="<?php echo $offeringVal; ?>" />

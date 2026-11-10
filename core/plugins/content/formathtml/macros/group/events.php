@@ -142,7 +142,7 @@ class Events extends GroupMacro
             'state'        => [1],
             'publish_up'   => $start,
             'publish_down' => $end,
-            'non_repeating'    => true
+            'non_repeating'    => true,
         ]);
 
         // get repeating events
@@ -153,7 +153,7 @@ class Events extends GroupMacro
             'state'        => [1],
             'publish_up'   => $start,
             'publish_down' => $end,
-            'until'        => $end
+            'until'        => $end,
         ]);
 
         // merge events with repeating events

@@ -44,13 +44,13 @@ class Wiki extends AbstractComponent
         Submenu::addEntry(
             Lang::txt('COM_WIKI_PAGES'),
             Route::url('index.php?option=com_wiki'),
-            true
+            true,
         );
 
         if (\Components\Plugins\Helpers\Plugins::getActions()->get('core.manage')) {
             Submenu::addEntry(
                 Lang::txt('COM_WIKI_PLUGINS'),
-                Route::url('index.php?option=com_plugins&view=plugins&filter_folder=wiki&filter_type=wiki')
+                Route::url('index.php?option=com_plugins&view=plugins&filter_folder=wiki&filter_type=wiki'),
             );
         }
 

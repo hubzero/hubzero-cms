@@ -206,7 +206,7 @@ class Page extends Model
             $aliases = $pageArchive->pages('list', [
                 'gidNumber' => $group->get('gidNumber'),
                 'state'     => [0,1],
-                'depth'     => $this->get('depth')
+                'depth'     => $this->get('depth'),
             ]);
 
             $aliasUrls = [];
@@ -332,7 +332,7 @@ class Page extends Model
             'gidNumber' => $this->get('gidNumber'),
             'left'      => $this->get('lft'),
             'right'     => $this->get('rgt'),
-            'orderby'   => 'lft ASC'
+            'orderby'   => 'lft ASC',
         ]);
 
         return $children;

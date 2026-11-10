@@ -25,8 +25,8 @@ class Migration20190305000000Announcements extends Base
         '#__announcements' => [
             'created',
             'publish_up',
-            'publish_down'
-        ]
+            'publish_down',
+        ],
     ];
 
     /**

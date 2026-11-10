@@ -55,7 +55,7 @@ class Migration20130829203107ComProjects extends Base
                 ->values([
                     'component' => 'com_projects',
                     'action'    => 'projects_member_added',
-                    'title'     => 'You were added or invited to a project'
+                    'title'     => 'You were added or invited to a project',
                 ])
                 ->execute();
 
@@ -64,7 +64,7 @@ class Migration20130829203107ComProjects extends Base
                 ->values([
                     'component' => 'com_projects',
                     'action'    => 'projects_new_project_admin',
-                    'title'     => 'Receive notifications about project(s) you monitor as an admin or reviewer'
+                    'title'     => 'Receive notifications about project(s) you monitor as an admin or reviewer',
                 ])
                 ->execute();
 
@@ -73,7 +73,7 @@ class Migration20130829203107ComProjects extends Base
                 ->values([
                     'component' => 'com_projects',
                     'action'    => 'projects_admin_message',
-                    'title'     => 'Receive administrative messages about your project(s)'
+                    'title'     => 'Receive administrative messages about your project(s)',
                 ])
                 ->execute();
         }
@@ -209,7 +209,7 @@ class Migration20130829203107ComProjects extends Base
                     ->values([
                         'type'        => 'General',
                         'description' => 'Individual or collaborative projects of general nature',
-                        'params'      => $params1
+                        'params'      => $params1,
                     ])
                     ->execute();
             }
@@ -228,7 +228,7 @@ class Migration20130829203107ComProjects extends Base
                     ->values([
                         'type'        => 'Content publication',
                         'description' => $desc2,
-                        'params'      => $params1
+                        'params'      => $params1,
                     ])
                     ->execute();
             }
@@ -246,7 +246,7 @@ class Migration20130829203107ComProjects extends Base
                     ->values([
                         'type'        => 'Application development',
                         'description' => $desc3,
-                        'params'      => $params2
+                        'params'      => $params2,
                     ])
                     ->execute();
             }
@@ -380,7 +380,7 @@ class Migration20130829203107ComProjects extends Base
             "group_prefix" => "pr-",
             "use_alias" => "1",
             "documentation" => "/projects/features",
-            "dbcheck" => "1"
+            "dbcheck" => "1",
         ];
         $filesParams = [
             "maxUpload" => "104857600",
@@ -396,7 +396,7 @@ class Migration20130829203107ComProjects extends Base
             "auto_sync" => "1",
             "latex" => "1",
             "texpath" => "/usr/bin/",
-            "gspath" => "/usr/bin/"
+            "gspath" => "/usr/bin/",
         ];
 
         $this->addComponentEntry('Projects', 'com_projects', 1, $componentParams);

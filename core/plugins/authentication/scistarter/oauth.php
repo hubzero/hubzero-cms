@@ -254,7 +254,7 @@ class Oauth
             'client_secret' => $this->clientSecret,
             'code'          => $code,
             'redirect_uri'  => urlencode($this->redirectUri),
-            'grant_type'    => 'authorization_code'
+            'grant_type'    => 'authorization_code',
         ];
 
         $this->http->setUrl($url)
@@ -309,7 +309,7 @@ class Oauth
         $this->http->setHeader([
             //'Content-Type'  => 'application/json',
             'Accept'        => 'application/json',
-            'Authorization' => 'Bearer ' . $this->getAccessToken()
+            'Authorization' => 'Bearer ' . $this->getAccessToken(),
         ]);
 
         $account = json_decode($this->http->execute());

@@ -42,7 +42,7 @@ class Group extends Relational
      * @var  array
      */
     protected $rules = [
-        'class_id' => 'nonzero|positive'
+        'class_id' => 'nonzero|positive',
     ];
 
     /**

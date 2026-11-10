@@ -195,7 +195,7 @@ use Hubzero\System\Requirements;
                         // Success! Redirect to main bootstrap page
                         $security->logSecurityEvent(
                             'VERIFY_SUCCESS',
-                            'Bootstrap installation authorized from IP: ' . $security->getClientIP()
+                            'Bootstrap installation authorized from IP: ' . $security->getClientIP(),
                         );
                         header('Location: ' . $this->getSelfUrl());
                         exit;
@@ -359,7 +359,7 @@ use Hubzero\System\Requirements;
             'cd %s && %s %s install --no-interaction --no-ansi --no-scripts 2>&1',
             escapeshellarg($this->corePath),
             $php,
-            $composer
+            $composer,
         );
 
         // Open process with pipes
@@ -404,7 +404,7 @@ use Hubzero\System\Requirements;
 
         $this->sendSSE('done', json_encode([
             'success' => $success && $vendorExists,
-            'returnCode' => $returnCode
+            'returnCode' => $returnCode,
         ]));
     }
 

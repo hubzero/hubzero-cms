@@ -66,7 +66,7 @@ class Links extends Plugin
             'name'    => 'links',
             'title'   => 'Links',
             'submenu' => null,
-            'show'    => false
+            'show'    => false,
         ];
 
         return $area;
@@ -113,7 +113,7 @@ class Links extends Plugin
         $tasks = [
             'browser', 'select' , 'parseurl',
             'parsedoi', 'addcitation', 'deletecitation',
-            'newcite', 'editcite', 'savecite'
+            'newcite', 'editcite', 'savecite',
         ];
 
         // Publishing?
@@ -169,7 +169,7 @@ class Links extends Plugin
 
             $arr = [
                 'html'     => $html,
-                'metadata' => ''
+                'metadata' => '',
             ];
 
             return $arr;
@@ -597,8 +597,8 @@ class Links extends Plugin
                 'folder'  => 'projects',
                 'element' => 'links',
                 'name'    => 'selector',
-                'layout'  => $layout
-            ]
+                'layout'  => $layout,
+            ],
         );
 
         $view->publication = new \Components\Publications\Models\Publication($pid, null, $vid);
@@ -610,8 +610,8 @@ class Links extends Plugin
                 [
                     'folder'  => 'projects',
                     'element' => 'files',
-                    'name'    => 'error'
-                ]
+                    'name'    => 'error',
+                ],
             );
 
             $view->title  = '';
@@ -683,8 +683,8 @@ class Links extends Plugin
                 'folder'  => 'projects',
                 'element' => 'links',
                 'name'    => 'selector',
-                'layout'  => 'edit'
-            ]
+                'layout'  => 'edit',
+            ],
         );
 
         // Load classes
@@ -711,8 +711,8 @@ class Links extends Plugin
                 [
                     'folder'  => 'projects',
                     'element' => 'files',
-                    'name'    => 'error'
-                ]
+                    'name'    => 'error',
+                ],
             );
 
             $view->title  = '';
@@ -761,8 +761,8 @@ class Links extends Plugin
             [
                 'folder'  => 'projects',
                 'element' => 'links',
-                'name'    => 'browser'
-            ]
+                'name'    => 'browser',
+            ],
         );
 
         // Get current attachments
@@ -1078,16 +1078,16 @@ class Links extends Plugin
                 $ch,
                 CURLOPT_HTTPHEADER,
                 [
-                "Accept: text/x-bibliography; style=" . $format
-                ]
+                "Accept: text/x-bibliography; style=" . $format,
+                ],
             );
         } else {
             curl_setopt(
                 $ch,
                 CURLOPT_HTTPHEADER,
                 [
-                "Accept: application/x-datacite+xml;q=0.9, application/citeproc+json;q=1.0"
-                ]
+                "Accept: application/x-datacite+xml;q=0.9, application/citeproc+json;q=1.0",
+                ],
             );
         }
 

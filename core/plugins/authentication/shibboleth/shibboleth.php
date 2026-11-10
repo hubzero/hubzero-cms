@@ -47,7 +47,7 @@ class Shibboleth extends Plugin
                     'path'   => implode(DS, $location),
                     'file'   => $file,
                     'level'  => 'info',
-                    'format' => "%datetime% %message%\n"
+                    'format' => "%datetime% %message%\n",
                 ]);
             }
 
@@ -177,7 +177,7 @@ class Shibboleth extends Plugin
                 self::log('getInstitutionByEntityId', [
                     'eid' => $eid,
                     'key' => $key,
-                    'rv'  => $key ? $inst[$key] : $inst
+                    'rv'  => $key ? $inst[$key] : $inst,
                 ]);
                 return $key ? $inst[$key] : $inst;
             }
@@ -264,7 +264,7 @@ class Shibboleth extends Plugin
             },
             function ($str) {
                 return htmlentities($str);
-            }
+            },
         ];
     }
 
@@ -281,7 +281,7 @@ class Shibboleth extends Plugin
             !$prefill && // no cookie
                 ($host = self::getHostByAddress(
                     self::clientAddress((bool) $params->get('behind_proxy', 0)),
-                    $params->get('dns', '8.8.8.8')
+                    $params->get('dns', '8.8.8.8'),
                 )) && // can get a host
                 preg_match('/[.]([^.]*?[.][a-z0-9]+?)$/', $host, $ma)
         ) { // Hostname lookup seems php jsonrational (not an ip address, has a few dots in it)
@@ -301,7 +301,7 @@ class Shibboleth extends Plugin
             'shibboleth.js',
             'bootstrap-select.min.css',
             'bootstrap-theme.min.css',
-            'shibboleth.css'
+            'shibboleth.css',
             ] as $asset
         ) {
             $mtd = 'addPlugin' . (preg_match('/[.]js$/', $asset) ? 'script' : 'stylesheet');
@@ -397,7 +397,7 @@ class Shibboleth extends Plugin
             list($service, $com_user, $task) = self::getLoginParams();
             App::redirect(
                 $service . '/index.php?option=' . $com_user . '&task=' . $task
-                . '&authenticator=shibboleth&shib-session=' . urlencode($_COOKIE['shib-session'])
+                . '&authenticator=shibboleth&shib-session=' . urlencode($_COOKIE['shib-session']),
             );
         }
 
@@ -414,12 +414,12 @@ class Shibboleth extends Plugin
                 'id' => $sid,
                 'idp' => isset($_SERVER['REDIRECT_Shib-Identity-Provider'])
                     ? $_SERVER['REDIRECT_Shib-Identity-Provider']
-                    : $_SERVER['Shib-Identity-Provider']
+                    : $_SERVER['Shib-Identity-Provider'],
             ];
             foreach (
                 [
                 'email', 'eppn', 'displayName', 'givenName', 'sn', 'mail', 'middleName', 'lastName',
-                'userPrincipalName', 'eduPersonPrincipalName', 'eduPersonUniqueId'
+                'userPrincipalName', 'eduPersonPrincipalName', 'eduPersonUniqueId',
                 ] as $key
             ) {
                 if (isset($_SERVER[$key])) {
@@ -516,10 +516,10 @@ class Shibboleth extends Plugin
         if (!isset($eid) || !self::getInstitutionByEntityId($eid)) {
             self::log('failed to look up entity id, redirect', [
                 'eid' => $eid,
-                'url' => $service . '/index.php?option=' . $com_user . '&view=login' . $return
+                'url' => $service . '/index.php?option=' . $com_user . '&view=login' . $return,
             ]);
             App::redirect(
-                $service . '/index.php?option=' . $com_user . '&view=login' . $return
+                $service . '/index.php?option=' . $com_user . '&view=login' . $return,
             );
         }
 
@@ -610,7 +610,7 @@ class Shibboleth extends Plugin
                 'authentication',
                 'shibboleth',
                 $options['shibboleth']['idp'],
-                $options['shibboleth']['eppn']
+                $options['shibboleth']['eppn'],
             );
 
             if ($hzal === false) {
@@ -640,7 +640,7 @@ class Shibboleth extends Plugin
                 if ($user->username == '') {
                     self::log(
                         'INTEGRITY ERROR username not set;  account link setup in table jos_auth_link could '
-                        . 'point to an invalid account'
+                        . 'point to an invalid account',
                     );
                     $response->username = $options['shibboleth']['username'];
                 } else {
@@ -650,7 +650,7 @@ class Shibboleth extends Plugin
                 if ($user->email == '') {
                     self::log(
                         'INTEGRITY ERROR email not set;  account link setup in table jos_auth_link'
-                        . ' could point to an invalid account'
+                        . ' could point to an invalid account',
                     );
                     $response->email    = $options['shibboleth']['email'];
                 } else {
@@ -660,7 +660,7 @@ class Shibboleth extends Plugin
                 if ($user->name == '') {
                     self::log(
                         'INTEGRITY ERROR name not set;  account link setup in table jos_auth_link'
-                        . ' could point to an invalid account'
+                        . ' could point to an invalid account',
                     );
                     $response->fullname = $options['shibboleth']['displayName'];
                 } else {
@@ -683,7 +683,7 @@ class Shibboleth extends Plugin
                 $prefs = [
                     'user_id'       => $user->get('id'),
                     'user_img'      => $user->picture(0, false),
-                    'authenticator' => 'shibboleth'
+                    'authenticator' => 'shibboleth',
                 ];
                 self::log('auth cookie', $prefs);
 
@@ -718,7 +718,7 @@ class Shibboleth extends Plugin
                 App::redirect(
                     Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
                     'This account appears to already be linked to a hub account',
-                    'error'
+                    'error',
                 );
             } else {
                 $hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'shibboleth', $status['idp'], $username);
@@ -735,7 +735,7 @@ class Shibboleth extends Plugin
                     Log::error(sprintf(
                         'Hubzero\Auth\Link::find_or_create("authentication", "shibboleth", %s, %s) returned false',
                         $status['idp'],
-                        $username
+                        $username,
                     ));
                 }
             }
@@ -745,7 +745,7 @@ class Shibboleth extends Plugin
             App::redirect(
                 Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
                 'There was an error linking your account, please try again later.',
-                'error'
+                'error',
             );
         }
     }

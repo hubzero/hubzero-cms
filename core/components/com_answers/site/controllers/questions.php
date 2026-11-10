@@ -68,7 +68,7 @@ class Questions extends SiteController
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false),
             ($this->getError() ? $this->getError() : null),
-            ($this->getError() ? 'warning' : 'success')
+            ($this->getError() ? 'warning' : 'success'),
         );
     }
 
@@ -163,7 +163,7 @@ class Questions extends SiteController
         $from = [
             'email'     => Config::get('mailfrom'),
             'name'      => Config::get('sitename') . ' ' . Lang::txt('COM_ANSWERS_ANSWERS'),
-            'multipart' => md5(date('U'))
+            'multipart' => md5(date('U')),
         ];
 
         // Build the message subject
@@ -173,7 +173,7 @@ class Questions extends SiteController
         // Plain text message
         $eview = new \Hubzero\Mail\View([
             'name'   => 'emails',
-            'layout' => 'response_plaintext'
+            'layout' => 'response_plaintext',
         ]);
         $eview->option   = $this->_option;
         $eview->sitename = Config::get('sitename');
@@ -242,14 +242,14 @@ class Questions extends SiteController
                 'description' => Lang::txt('COM_ANSWERS_ACTIVITY_COMMENT_' . ($comment['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($question->link()) . '">' . htmlspecialchars((string) $question->get('subject'), ENT_QUOTES, 'UTF-8') . '</a>'),
                 'details'     => [
                     'title' => $question->get('title'),
-                    'url'   => $question->link()
-                ]
+                    'url'   => $question->link(),
+                ],
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&task=question&id=' . $questionID)
+            Route::url('index.php?option=' . $this->_option . '&task=question&id=' . $questionID),
         );
     }
 
@@ -318,7 +318,7 @@ class Questions extends SiteController
                 App::redirect(
                     Route::url('index.php?option=' . $this->_option),
                     Lang::txt('COM_ANSWERS_ERROR_ID_NOT_FOUND'),
-                    'error'
+                    'error',
                 );
             }
             return;
@@ -341,7 +341,7 @@ class Questions extends SiteController
                 App::redirect(
                     Route::url('index.php?option=' . $this->_option),
                     Lang::txt('COM_ANSWERS_ERROR_ID_NOT_FOUND'),
-                    'error'
+                    'error',
                 );
             }
             return;
@@ -353,7 +353,7 @@ class Questions extends SiteController
                 App::redirect(
                     Route::url($row->link()),
                     Lang::txt('COM_ANSWERS_ERROR_CANNOT_VOTE_FOR_OWN'),
-                    'warning'
+                    'warning',
                 );
             }
             return;
@@ -364,7 +364,7 @@ class Questions extends SiteController
                 App::redirect(
                     Route::url($row->link()),
                     Lang::txt('COM_ANSWERS_ERROR_VOTE_NOT_FOUND'),
-                    'warning'
+                    'warning',
                 );
             }
             return;
@@ -406,10 +406,10 @@ class Questions extends SiteController
                     'details'     => [
                         'title'       => $question->get('title'),
                         'question_id' => $question->get('id'),
-                        'url'         => $question->link()
-                    ]
+                        'url'         => $question->link(),
+                    ],
                 ],
-                'recipients' => $recipients
+                'recipients' => $recipients,
             ]);
         }
 
@@ -425,7 +425,7 @@ class Questions extends SiteController
                 ->display();
         } else {
             App::redirect(
-                Route::url($row->link())
+                Route::url($row->link()),
             );
         }
     }
@@ -446,7 +446,7 @@ class Questions extends SiteController
             'filterby' => Request::getWord('filterby', ''),
             'sortby'   => Request::getWord('sortby', 'date'),
             'sort_Dir' => strtolower(Request::getWord('sortdir', 'desc')),
-            'area'     => Request::getString('area', '')
+            'area'     => Request::getString('area', ''),
         ];
 
         // Validate inputs
@@ -636,7 +636,7 @@ class Questions extends SiteController
                 App::redirect(
                     Route::url('index.php?option=com_answers'),
                     Lang::txt('COM_ANSWERS_RESTRICTED_USERS'),
-                    'warning'
+                    'warning',
                 );
             }
         }
@@ -793,7 +793,7 @@ class Questions extends SiteController
                 $fields['reward'],
                 Lang::txt('COM_ANSWERS_HOLD_REWARD_FOR_BEST_ANSWER'),
                 'answers',
-                $row->get('id')
+                $row->get('id'),
             );
         }
 
@@ -814,7 +814,7 @@ class Questions extends SiteController
             $from = [
                 'email'     => Config::get('mailfrom'),
                 'name'      => Config::get('sitename') . ' ' . Lang::txt('COM_ANSWERS_ANSWERS'),
-                'multipart' => md5(date('U'))
+                'multipart' => md5(date('U')),
             ];
 
             // Build the message subject
@@ -825,7 +825,7 @@ class Questions extends SiteController
             // Plain text message
             $eview = new \Hubzero\Mail\View([
                 'name'   => 'emails',
-                'layout' => 'question_plaintext'
+                'layout' => 'question_plaintext',
             ]);
             $eview->option   = $this->_option;
             $eview->sitename = Config::get('sitename');
@@ -857,10 +857,10 @@ class Questions extends SiteController
                 'description' => Lang::txt('COM_ANSWERS_ACTIVITY_QUESTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($row->link()) . '">' . htmlspecialchars((string) $row->get('subject'), ENT_QUOTES, 'UTF-8') . '</a>'),
                 'details'     => [
                     'title' => $row->get('title'),
-                    'url'   => $row->link()
-                ]
+                    'url'   => $row->link(),
+                ],
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         // Set the session flag indicating the new submission
@@ -869,7 +869,7 @@ class Questions extends SiteController
         // Redirect to the question
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&task=question&id=' . $row->get('id')),
-            Lang::txt('COM_ANSWERS_NOTICE_QUESTION_POSTED_THANKS')
+            Lang::txt('COM_ANSWERS_NOTICE_QUESTION_POSTED_THANKS'),
         );
     }
 
@@ -1009,15 +1009,15 @@ class Questions extends SiteController
                 'description' => Lang::txt('COM_ANSWERS_ACTIVITY_QUESTION_DELETED', '<a href="' . Route::url($question->link()) . '">' . htmlspecialchars((string) $question->get('subject'), ENT_QUOTES, 'UTF-8') . '</a>'),
                 'details'     => [
                     'title' => $question->get('title'),
-                    'url'   => $question->link()
-                ]
+                    'url'   => $question->link(),
+                ],
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         // Redirect to the question
         App::redirect(
-            Route::url('index.php?option=' . $this->_option)
+            Route::url('index.php?option=' . $this->_option),
         );
     }
 
@@ -1047,7 +1047,7 @@ class Questions extends SiteController
                 App::redirect(
                     Route::url('index.php?option=com_answers'),
                     Lang::txt('COM_ANSWERS_RESTRICTED_USERS'),
-                    'warning'
+                    'warning',
                 );
             }
         }
@@ -1111,7 +1111,7 @@ class Questions extends SiteController
         $from = [
             'email'     => Config::get('mailfrom'),
             'name'      => Config::get('sitename') . ' ' . Lang::txt('COM_ANSWERS_ANSWERS'),
-            'multipart' => md5(date('U'))
+            'multipart' => md5(date('U')),
         ];
 
         // Build the message subject
@@ -1122,7 +1122,7 @@ class Questions extends SiteController
         // Plain text message
         $eview = new \Hubzero\Mail\View([
             'name'   => 'emails',
-            'layout' => 'response_plaintext'
+            'layout' => 'response_plaintext',
         ]);
         $eview->option   = $this->_option;
         $eview->sitename = Config::get('sitename');
@@ -1184,17 +1184,17 @@ class Questions extends SiteController
                 'details'     => [
                     'title'       => $question->get('title'),
                     'question_id' => $question->get('id'),
-                    'url'         => $question->link()
-                ]
+                    'url'         => $question->link(),
+                ],
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         // Redirect to the question
         App::redirect(
             Route::url($question->link()),
             Lang::txt('COM_ANSWERS_NOTICE_POSTED_THANKS'),
-            'success'
+            'success',
         );
     }
 
@@ -1222,7 +1222,7 @@ class Questions extends SiteController
             App::redirect(
                 Route::url($question->link()),
                 Lang::txt('COM_ANSWERS_ERROR_MUST_BE_ASKER'),
-                'error'
+                'error',
             );
         }
 
@@ -1249,10 +1249,10 @@ class Questions extends SiteController
                     'details'     => [
                         'title'       => $question->get('title'),
                         'question_id' => $question->get('id'),
-                        'url'         => $question->link()
-                    ]
+                        'url'         => $question->link(),
+                    ],
                 ],
-                'recipients' => $recipients
+                'recipients' => $recipients,
             ]);
         }
 
@@ -1260,7 +1260,7 @@ class Questions extends SiteController
         App::redirect(
             Route::url($question->link()),
             ($this->getError() ? $this->getError() : Lang::txt('COM_ANSWERS_NOTICE_QUESTION_CLOSED')),
-            ($this->getError() ? 'error' : 'success')
+            ($this->getError() ? 'error' : 'success'),
         );
     }
 

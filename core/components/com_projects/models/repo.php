@@ -114,12 +114,12 @@ class Repo extends Obj
             $cls = "Helpers\\" . ucfirst($engine);
             if ($engine == 'git') {
                 $helper = new Helpers\Git(Helpers\Html::getProjectRepoPath(
-                    $this->get('project')->get('alias')
+                    $this->get('project')->get('alias'),
                 ));
                 $helper->iniGit();
             } else {
                 $helper = new Helpers\Nogit(Helpers\Html::getProjectRepoPath(
-                    $this->get('project')->get('alias')
+                    $this->get('project')->get('alias'),
                 ));
             }
 
@@ -131,7 +131,7 @@ class Repo extends Obj
             $this->set('path', Helpers\Html::getProjectRepoPath(
                 $this->get('project')->get('alias'),
                 'files',
-                false
+                false,
             ));
         }
     }
@@ -656,7 +656,7 @@ class Repo extends Obj
                 $newDirParams = [
                     'subdir' => $dirPath,
                     'path'   => $path,
-                    'newDir' => $targetDir
+                    'newDir' => $targetDir,
                 ];
                 $target = $this->makeDirectory($newDirParams);
                 if (!$target) {
@@ -670,7 +670,7 @@ class Repo extends Obj
         // Target item metadata
         $targetParams = [
             'subdir' => $targetDir,
-            'path'   => $path
+            'path'   => $path,
         ];
 
         $targetFile = $this->getMetadata(basename($item), $type, $targetParams);
@@ -679,7 +679,7 @@ class Repo extends Obj
         $moveParams = [
             'fromFile' => $params['file'],
             'toFile'   => $targetFile,
-            'type'     => $type
+            'type'     => $type,
         ];
         if ($this->call('move', $moveParams)) {
             return true;
@@ -836,7 +836,7 @@ class Repo extends Obj
             'uploaded' => [],
             'updated'  => [],
             'failed'   => [],
-            'expanded' => []
+            'expanded' => [],
         ];
 
         // Destination path
@@ -1008,7 +1008,7 @@ class Repo extends Obj
         if ($dirPath && !$this->dirExists($dirPath)) {
             $newDirParams = [
                 'path'   => $path,
-                'newDir' => $dirPath
+                'newDir' => $dirPath,
             ];
             $targetDir = $this->makeDirectory($newDirParams);
             if (!$targetDir) {
@@ -1168,7 +1168,7 @@ class Repo extends Obj
             '.',
             true,
             true,
-            $exclude = ['.svn', 'CVS', '.DS_Store', '__MACOSX']
+            $exclude = ['.svn', 'CVS', '.DS_Store', '__MACOSX'],
         );
 
         // Check for viruses — recursive scan over the extracted dir is
@@ -1186,7 +1186,7 @@ class Repo extends Obj
         // failures and confused users whose files were actually clean).
         $scanner = trim(App::get('config')->get(
             'virus_scanner',
-            'clamscan -i --no-summary --block-encrypted'
+            'clamscan -i --no-summary --block-encrypted',
         ));
         $command = $scanner . ' -r ' . escapeshellarg($extractPath) . ' 2>&1';
         $output = [];
@@ -1203,7 +1203,7 @@ class Repo extends Obj
                     . 'Scanner "%s". Output: %s',
                     __METHOD__,
                     $scanner,
-                    implode(' | ', $output)
+                    implode(' | ', $output),
                 ));
                 $this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_VIRUS'));
             } else {
@@ -1215,7 +1215,7 @@ class Repo extends Obj
                     __METHOD__,
                     $scanner,
                     $virus_status,
-                    implode(' | ', $output)
+                    implode(' | ', $output),
                 ));
                 $this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_VIRUS_SCAN_FAILED'));
             }
@@ -1418,8 +1418,8 @@ class Repo extends Obj
                     $params = [
                         'path'    => $path,
                         'working' => true,
-                        'git'     => true
-                    ]
+                        'git'     => true,
+                    ],
                 );
             } else {
                 if ($this->get('project')) {
@@ -1622,8 +1622,8 @@ class Repo extends Obj
             'getDiskUsage',
             $params = [
                 'working' => true,
-                'history' => $pParams->get('disk_usage')
-            ]
+                'history' => $pParams->get('disk_usage'),
+            ],
         );
 
         // Get quota

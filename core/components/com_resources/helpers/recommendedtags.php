@@ -28,7 +28,7 @@ class RecommendedTags
     {
         $opts = array_merge([
             'min_len' => 4,
-            'count'   => 20
+            'count'   => 20,
         ], $opts);
 
         $dbh = App::get('db');
@@ -36,7 +36,7 @@ class RecommendedTags
         $dbh->setQuery(
             'SELECT t.raw_tag, fa.*
 			FROM #__focus_areas fa
-			INNER JOIN #__tags t ON t.id = fa.tag_id'
+			INNER JOIN #__tags t ON t.id = fa.tag_id',
         );
         $this->fa_properties = $dbh->loadAssocList('raw_tag');
 
@@ -44,7 +44,7 @@ class RecommendedTags
             'SELECT raw_tag, (label IS NOT NULL AND label != "") AS is_focus_area
 			FROM #__tags_object to1
 			INNER JOIN #__tags t ON t.id = to1.tagid
-			WHERE to1.tbl = \'resources\' AND to1.objectid = ' . $rid
+			WHERE to1.tbl = \'resources\' AND to1.objectid = ' . $rid,
         );
         if (!$existing) {
             foreach ($dbh->loadAssocList() as $tag) {
@@ -81,7 +81,7 @@ class RecommendedTags
             'SELECT body FROM #__resource_assoc ra
 			LEFT JOIN #__document_resource_rel drr ON drr.resource_id = ra.child_id
 			INNER JOIN #__document_text_data dtd ON dtd.id = drr.document_id
-			WHERE ra.parent_id = ' . $rid
+			WHERE ra.parent_id = ' . $rid,
         );
         $words = preg_split('/\W+/', join(' ', $dbh->loadColumn()));
         $word_count = count($words);
@@ -104,7 +104,7 @@ class RecommendedTags
             if (isset($words[$idx + 2]) && !self::is_stop_word($words[$idx + 2], $opts['min_len'])) {
                 $stems[] = [
                     $stems[0][0] . ' ' . $stemmer->stem($words[$idx + 1]) . ' ' . $stemmer->stem($words[$idx + 2]),
-                    \Hubzero\Utility\Inflector::singularize(strtolower($word)) . ' ' . strtolower($words[$idx + 1]) . ' ' . strtolower($words[$idx + 2])
+                    \Hubzero\Utility\Inflector::singularize(strtolower($word)) . ' ' . strtolower($words[$idx + 1]) . ' ' . strtolower($words[$idx + 2]),
                 ];
             }
             foreach ($stems as $set_idx => $set) {
@@ -166,7 +166,7 @@ class RecommendedTags
             "well" =>    true, "will" =>    true, "with" =>      true, "would" =>     true, "yet" =>     true,
             "you" =>     true, "your" =>    true, "one" =>       true, "two" =>       true, "three" =>   true,
             "four" =>    true, "five" =>    true, "six" =>       true, "seven" =>     true, "eight" =>   true,
-            "nine" =>    true, "ten" =>     true
+            "nine" =>    true, "ten" =>     true,
         ];
         return isset($stop_words[$word]) || strlen($word) < $word_min_len;
     }

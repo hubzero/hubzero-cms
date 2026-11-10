@@ -135,7 +135,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
         $this->assertEquals('Test Article', $revision->data['title']);
         $this->assertEquals(
             'Original content',
-            $revision->data['content']
+            $revision->data['content'],
         );
     }
 
@@ -241,7 +241,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'Test v1', 'content' => 'C1']),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
+                'log' => null,
             ],
             [
                 'article_id' => 1,
@@ -249,7 +249,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'Test v2', 'content' => 'C2']),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
+                'log' => null,
             ],
             [
                 'article_id' => 1,
@@ -257,8 +257,8 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'Test v3', 'content' => 'C3']),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
-            ]
+                'log' => null,
+            ],
         ]);
 
         $article = RevisionableArticle::one($id);
@@ -295,7 +295,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'V1']),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
+                'log' => null,
             ],
             [
                 'article_id' => 1,
@@ -303,8 +303,8 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'V2']),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
-            ]
+                'log' => null,
+            ],
         ]);
 
         $article = RevisionableArticle::one($id);
@@ -337,7 +337,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'Version 1', 'content' => 'C1']),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
+                'log' => null,
             ],
             [
                 'article_id' => 1,
@@ -345,8 +345,8 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'Version 2', 'content' => 'C2']),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
-            ]
+                'log' => null,
+            ],
         ]);
 
         $article = RevisionableArticle::one($id);
@@ -401,7 +401,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'V1']),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
+                'log' => null,
             ],
             [
                 'article_id' => 1,
@@ -409,7 +409,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'V2']),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
+                'log' => null,
             ],
             [
                 'article_id' => 1,
@@ -417,8 +417,8 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'V3']),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
-            ]
+                'log' => null,
+            ],
         ]);
 
         $article = RevisionableArticle::one($id);
@@ -473,7 +473,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'V1']),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
+                'log' => null,
             ],
             [
                 'article_id' => 1,
@@ -481,8 +481,8 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'V2']),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
-            ]
+                'log' => null,
+            ],
         ]);
 
         $article = RevisionableArticle::one($id);
@@ -537,8 +537,8 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'Old Title', 'content' => 'Old Content', 'state' => 1]),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
-            ]
+                'log' => null,
+            ],
         ]);
 
         $article = RevisionableArticle::one($id);
@@ -575,8 +575,8 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'Old Title', 'content' => 'Old Content', 'state' => 1]),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
-            ]
+                'log' => null,
+            ],
         ]);
 
         $article = RevisionableArticle::one($id);
@@ -609,8 +609,8 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'Old Title', 'content' => 'Old Content', 'state' => 1]),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
-            ]
+                'log' => null,
+            ],
         ]);
 
         $article = RevisionableArticle::one($id);
@@ -668,7 +668,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'Title v1', 'content' => 'Same content', 'state' => 1]),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
+                'log' => null,
             ],
             [
                 'article_id' => 1,
@@ -676,8 +676,8 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'Title v2', 'content' => 'Same content', 'state' => 0]),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
-            ]
+                'log' => null,
+            ],
         ]);
 
         $article = RevisionableArticle::one($id);
@@ -739,8 +739,8 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'Old Title', 'content' => 'New Content', 'state' => 1]),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
-            ]
+                'log' => null,
+            ],
         ]);
 
         $article = RevisionableArticle::one($id);
@@ -777,8 +777,8 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'Original Title', 'content' => 'Original Content', 'state' => 1]),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
-            ]
+                'log' => null,
+            ],
         ]);
 
         $article = RevisionableArticle::one($id);
@@ -839,7 +839,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'V1']),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
+                'log' => null,
             ],
             [
                 'article_id' => 1,
@@ -847,7 +847,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'V2']),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
+                'log' => null,
             ],
             [
                 'article_id' => 1,
@@ -855,8 +855,8 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'V3']),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
-            ]
+                'log' => null,
+            ],
         ]);
 
         $article = RevisionableArticle::one($id);
@@ -889,7 +889,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'V1']),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
+                'log' => null,
             ],
             [
                 'article_id' => 1,
@@ -897,7 +897,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'V2']),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
+                'log' => null,
             ],
             [
                 'article_id' => 1,
@@ -905,7 +905,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'V3']),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
+                'log' => null,
             ],
             [
                 'article_id' => 1,
@@ -913,7 +913,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'V4']),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
+                'log' => null,
             ],
             [
                 'article_id' => 1,
@@ -921,8 +921,8 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'V5']),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
-            ]
+                'log' => null,
+            ],
         ]);
 
         $article = RevisionableArticle::one($id);
@@ -960,7 +960,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'V1']),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
+                'log' => null,
             ],
             [
                 'article_id' => 1,
@@ -968,8 +968,8 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'V2']),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
-            ]
+                'log' => null,
+            ],
         ]);
 
         $article = RevisionableArticle::one($id);
@@ -992,7 +992,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
         $query = new Query($driver);
         $query->insertMany('revisionable_articles', [
             ['title' => 'Article 1', 'content' => 'Content', 'state' => 1],
-            ['title' => 'Article 2', 'content' => 'Content', 'state' => 1]
+            ['title' => 'Article 2', 'content' => 'Content', 'state' => 1],
         ]);
         $id1 = 1;
         $id2 = 2;
@@ -1005,7 +1005,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'A1-V1']),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
+                'log' => null,
             ],
             [
                 'article_id' => 1,
@@ -1013,7 +1013,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'A1-V2']),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
+                'log' => null,
             ],
             [
                 'article_id' => 1,
@@ -1021,7 +1021,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'A1-V3']),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
+                'log' => null,
             ],
             [
                 'article_id' => 2,
@@ -1029,7 +1029,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'A2-V1']),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
+                'log' => null,
             ],
             [
                 'article_id' => 2,
@@ -1037,7 +1037,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'A2-V2']),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
+                'log' => null,
             ],
             [
                 'article_id' => 2,
@@ -1045,7 +1045,7 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'A2-V3']),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
+                'log' => null,
             ],
             [
                 'article_id' => 2,
@@ -1053,8 +1053,8 @@ class RevisionableTraitTest extends AbstractDriverTestCase
                 'data' => json_encode(['title' => 'A2-V4']),
                 'created' => '2024-01-15 10:00:00',
                 'created_by' => 1,
-                'log' => null
-            ]
+                'log' => null,
+            ],
         ]);
 
         // Prune to keep 2 per record

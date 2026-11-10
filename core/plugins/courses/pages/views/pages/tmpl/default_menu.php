@@ -33,10 +33,10 @@ $base = $this->offering->link() . '&active=pages';
                 $pageClass .= ' active';
             }
             $pageUrl = Route::url(
-                $base . '&unit=' . $page->get('url')
+                $base . '&unit=' . $page->get('url'),
             );
             $pageTitle = $this->escape(
-                stripslashes($page->get('title'))
+                stripslashes($page->get('title')),
             );
             ?>
         <li>

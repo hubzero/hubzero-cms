@@ -82,7 +82,7 @@ class ToolSessionToken implements GrantTypeInterface, ClientAssertionTypeInterfa
         if (
             !$userId = $this->storage->validateToolSessionData(
                 $toolData['toolSessionId'],
-                $toolData['toolSessionToken']
+                $toolData['toolSessionToken'],
             )
         ) {
             $response->setError(401, 'tool_session_authentication_invalid', 'Unable to find valid tool session data.');
@@ -92,7 +92,7 @@ class ToolSessionToken implements GrantTypeInterface, ClientAssertionTypeInterfa
         // store user info locally
         $this->userInfo = [
             'user_id' => $userId,
-            'scope'   => ''
+            'scope'   => '',
         ];
         return true;
     }

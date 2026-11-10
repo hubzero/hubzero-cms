@@ -57,7 +57,7 @@ class Plan extends Relational
      */
     protected $rules = [
         'pagetext' => 'notempty',
-        'wishid'   => 'positive|nonzero'
+        'wishid'   => 'positive|nonzero',
     ];
 
     /**
@@ -67,7 +67,7 @@ class Plan extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**
@@ -76,7 +76,7 @@ class Plan extends Relational
      * @var  array
      */
     protected $parsed = [
-        'pagetext'
+        'pagetext',
     ];
 
     /**
@@ -138,7 +138,7 @@ class Plan extends Relational
                 'pagename' => 'wishlist',
                 'pageid'   => $this->get('wishid'),
                 'filepath' => '',
-                'domain'   => $this->get('wishid')
+                'domain'   => $this->get('wishid'),
             ];
 
             $this->$property = Html::content('prepare', $this->get($field, ''), $params);

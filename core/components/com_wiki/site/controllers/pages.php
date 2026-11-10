@@ -105,7 +105,7 @@ class Pages extends SiteController
 
         if (in_array($this->page->getNamespace(), ['image', 'file'])) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=media&scope=' . $this->page->get('scope') . '&pagename=' . $this->page->get('pagename') . '&task=download')
+                Route::url('index.php?option=' . $this->_option . '&controller=media&scope=' . $this->page->get('scope') . '&pagename=' . $this->page->get('pagename') . '&task=download'),
             );
         }
 
@@ -134,7 +134,7 @@ class Pages extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_name)),
-                'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+                'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
             );
         }
 
@@ -274,7 +274,7 @@ class Pages extends SiteController
             App::redirect(
                 Route::url($this->page->link()),
                 Lang::txt('COM_WIKI_ERROR_NOTAUTH'),
-                'error'
+                'error',
             );
         }
 
@@ -311,7 +311,7 @@ class Pages extends SiteController
         if (User::isGuest()) {
             $url = Request::getString('REQUEST_URI', '', 'server');
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url), false)
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url), false),
             );
         }
 
@@ -323,7 +323,7 @@ class Pages extends SiteController
             App::redirect(
                 Route::url($this->page->link()),
                 Lang::txt('COM_WIKI_ERROR_NOTAUTH'),
-                'error'
+                'error',
             );
         }
 
@@ -332,7 +332,7 @@ class Pages extends SiteController
             App::redirect(
                 Route::url($this->page->link()),
                 Lang::txt('COM_WIKI_WARNING_NO_EDIT'),
-                'warning'
+                'warning',
             );
         }
 
@@ -341,7 +341,7 @@ class Pages extends SiteController
             App::redirect(
                 Route::url($this->page->link()),
                 Lang::txt('COM_WIKI_WARNING_NOT_AUTH_EDITOR'),
-                'warning'
+                'warning',
             );
         }
 
@@ -354,7 +354,7 @@ class Pages extends SiteController
             App::redirect(
                 Route::url($this->page->link()),
                 Lang::txt('COM_WIKI_WARNING_NOT_AUTH_EDITOR'),
-                'warning'
+                'warning',
             );
         }
 
@@ -404,20 +404,20 @@ class Pages extends SiteController
         Document::setTitle(
             Document::getTitle() . ': ' .
             $this->page->title . ': ' .
-            Lang::txt(strtoupper($this->_option . '_' . $this->_task))
+            Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
         );
 
         // Set the pathway
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+                'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
             );
         }
         $parents = $this->appendPagePathway();
         Pathway::append(
             Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
-            $this->page->link() . '&task=' . $this->_task
+            $this->page->link() . '&task=' . $this->_task,
         );
 
         // Are we previewing?
@@ -487,7 +487,7 @@ class Pages extends SiteController
         if (User::isGuest()) {
             $url = Request::getString('REQUEST_URI', '', 'server');
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url), false)
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url), false),
             );
         }
 
@@ -739,7 +739,7 @@ class Pages extends SiteController
         if ($suggestOnly) {
             // a suggestion changed no page content: nothing to announce or log
             App::redirect(
-                Route::url($this->page->link())
+                Route::url($this->page->link()),
             );
             return;
         }
@@ -751,7 +751,7 @@ class Pages extends SiteController
         $recipients = [
             ['wiki.site', 1],
             ['user', $this->page->get('created_by')],
-            ['user', $revision->get('created_by')]
+            ['user', $revision->get('created_by')],
         ];
         if ($this->page->get('scope') != 'site') {
             $recipients[]  = [$this->page->get('scope'), $this->page->get('scope_id')];
@@ -768,15 +768,15 @@ class Pages extends SiteController
                     'title'    => $this->page->title,
                     'url'      => Route::url($this->page->link()),
                     'name'     => $this->page->get('pagename'),
-                    'revision' => $revision->get('id')
-                ]
+                    'revision' => $revision->get('id'),
+                ],
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         // Redirect
         App::redirect(
-            Route::url($this->page->link())
+            Route::url($this->page->link()),
         );
     }
 
@@ -791,7 +791,7 @@ class Pages extends SiteController
         if (User::isGuest()) {
             $url = Request::getString('REQUEST_URI', '', 'server');
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url), false)
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url), false),
             );
         }
 
@@ -799,7 +799,7 @@ class Pages extends SiteController
             App::redirect(
                 Route::url($this->page->link('base')),
                 Lang::txt('COM_WIKI_ERROR_PAGE_NOT_FOUND'),
-                'error'
+                'error',
             );
         }
         // Make sure they're authorized to delete. access('delete') already
@@ -808,7 +808,7 @@ class Pages extends SiteController
             App::redirect(
                 Route::url($this->page->link()),
                 Lang::txt('COM_WIKI_ERROR_NOTAUTH'),
-                'error'
+                'error',
             );
         }
 
@@ -831,7 +831,7 @@ class Pages extends SiteController
                 // Log activity
                 $recipients = [
                     ['wiki.site', 1],
-                    ['user', $this->page->get('created_by')]
+                    ['user', $this->page->get('created_by')],
                 ];
                 if ($this->page->get('scope') != 'site') {
                     $recipients[]  = [$this->page->get('scope'), $this->page->get('scope_id')];
@@ -847,10 +847,10 @@ class Pages extends SiteController
                         'details'     => [
                             'title' => $this->page->title,
                             'url'   => Route::url($this->page->link()),
-                            'name'  => $this->page->get('pagename')
-                        ]
+                            'name'  => $this->page->get('pagename'),
+                        ],
                     ],
-                    'recipients' => $recipients
+                    'recipients' => $recipients,
                 ]);
                 break;
 
@@ -859,21 +859,21 @@ class Pages extends SiteController
                 Document::setTitle(
                     Lang::txt(strtoupper($this->_option)) . ': ' .
                     $this->page->title . ': ' .
-                    Lang::txt(strtoupper($this->_option . '_' . $this->_task))
+                    Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
                 );
 
                 // Set the pathway
                 if (Pathway::count() <= 0) {
                     Pathway::append(
                         Lang::txt(strtoupper($this->_option)),
-                        'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+                        'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
                     );
                 }
 
                 $parents = $this->appendPagePathway();
                 Pathway::append(
                     Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
-                    $this->page->link('delete')
+                    $this->page->link('delete'),
                 );
 
                 $this->view
@@ -889,7 +889,7 @@ class Pages extends SiteController
         }
 
         App::redirect(
-            Route::url($this->page->link('base'))
+            Route::url($this->page->link('base')),
         );
     }
 
@@ -902,7 +902,7 @@ class Pages extends SiteController
         if (User::isGuest()) {
             $url = Request::getString('REQUEST_URI', '', 'server');
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url), false)
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url), false),
             );
         }
 
@@ -911,7 +911,7 @@ class Pages extends SiteController
             App::redirect(
                 Route::url($this->page->link('base')),
                 Lang::txt('COM_WIKI_ERROR_NOTAUTH'),
-                'error'
+                'error',
             );
         }
 
@@ -923,7 +923,7 @@ class Pages extends SiteController
             App::redirect(
                 Route::url($this->page->link()),
                 Lang::txt('COM_WIKI_WARNING_NO_RENAME_HOME'),
-                'warning'
+                'warning',
             );
         }
 
@@ -931,21 +931,21 @@ class Pages extends SiteController
         Document::setTitle(
             Lang::txt(strtoupper($this->_name)) . ': ' .
             $this->page->title . ': ' .
-            Lang::txt('RENAME')
+            Lang::txt('RENAME'),
         );
 
         // Set the pathway
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_name)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
 
         $parents = $this->appendPagePathway();
         Pathway::append(
             Lang::txt(strtoupper('COM_WIKI_RENAME')),
-            $this->page->link('rename')
+            $this->page->link('rename'),
         );
 
         // Output HTML
@@ -974,7 +974,7 @@ class Pages extends SiteController
         if (User::isGuest()) {
             $url = Request::getString('REQUEST_URI', '', 'server');
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url), false)
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url), false),
             );
         }
 
@@ -990,7 +990,7 @@ class Pages extends SiteController
             App::redirect(
                 Route::url($this->page->link()),
                 Lang::txt('COM_WIKI_ERROR_NOTAUTH'),
-                'error'
+                'error',
             );
         }
 
@@ -1002,7 +1002,7 @@ class Pages extends SiteController
             App::redirect(
                 Route::url($this->page->link()),
                 Lang::txt('COM_WIKI_WARNING_NO_RENAME_HOME'),
-                'warning'
+                'warning',
             );
         }
 
@@ -1041,7 +1041,7 @@ class Pages extends SiteController
         // Log activity
         $recipients = [
             ['wiki.site', 1],
-            ['user', $this->page->get('created_by')]
+            ['user', $this->page->get('created_by')],
         ];
         if ($this->page->get('scope') != 'site') {
             $recipients[]  = [$this->page->get('scope'), $this->page->get('scope_id')];
@@ -1057,15 +1057,15 @@ class Pages extends SiteController
                 'details'     => [
                     'title' => $this->page->get('title'),
                     'url'   => Route::url($this->page->link()),
-                    'name'  => $this->page->get('pagename')
-                ]
+                    'name'  => $this->page->get('pagename'),
+                ],
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         // Redirect to the newly named page
         App::redirect(
-            Route::url($this->page->link())
+            Route::url($this->page->link()),
         );
     }
 
@@ -1110,7 +1110,7 @@ class Pages extends SiteController
 
         // Log activity
         $recipients = [
-            ['wiki.site', 1]
+            ['wiki.site', 1],
         ];
         if ($this->page->get('scope') != 'site') {
             $recipients[]  = [$this->page->get('scope'), $this->page->get('scope_id')];
@@ -1126,10 +1126,10 @@ class Pages extends SiteController
                 'details'     => [
                     'title' => $this->page->title,
                     'url'   => Route::url($this->page->link()),
-                    'name'  => $this->page->get('pagename')
-                ]
+                    'name'  => $this->page->get('pagename'),
+                ],
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         Request::setVar('format', 'pdf');

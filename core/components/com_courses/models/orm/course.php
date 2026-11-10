@@ -50,7 +50,7 @@ class Course extends Relational implements \Hubzero\Search\Searchable
      * @var  array
      */
     protected $rules = [
-        'title' => 'notempty'
+        'title' => 'notempty',
     ];
 
     /**
@@ -59,7 +59,7 @@ class Course extends Relational implements \Hubzero\Search\Searchable
      * @var  array
      */
     public $always = [
-        'alias'
+        'alias',
     ];
 
     /**
@@ -69,7 +69,7 @@ class Course extends Relational implements \Hubzero\Search\Searchable
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**
@@ -78,7 +78,7 @@ class Course extends Relational implements \Hubzero\Search\Searchable
      * @var array
      */
     protected $parsed = [
-        'description'
+        'description',
     ];
 
     /**
@@ -208,7 +208,7 @@ class Course extends Relational implements \Hubzero\Search\Searchable
         if ($what == 'list') {
             $filters = [
                 'scope' => 'courses',
-                'scope_id' => $this->id
+                'scope_id' => $this->id,
             ];
             return $cloud->tags('list', $filters);
         }
@@ -352,7 +352,7 @@ class Course extends Relational implements \Hubzero\Search\Searchable
                 'pagename' => $this->get('alias'),
                 'pageid'   => 0,
                 'filepath' => '',
-                'domain'   => ''
+                'domain'   => '',
             ];
 
             $this->$property = Html::content('prepare', $this->get($field, ''), $params);
@@ -481,13 +481,13 @@ class Course extends Relational implements \Hubzero\Search\Searchable
                     'description' => $description,
                     'access_level' => $tag->admin == 0 ? 'public' : 'private',
                     'type' => 'course-tag',
-                    'badge_b' => $label == 'badge' ? true : false
+                    'badge_b' => $label == 'badge' ? true : false,
                 ];
             }
         } else {
             $obj->tags[] = [
                 'id' => '',
-                'title' => ''
+                'title' => '',
             ];
         }
         $managers = $this->managers;

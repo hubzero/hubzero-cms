@@ -58,7 +58,7 @@ class Type extends Field
             'value',
             'text',
             $this->value,
-            $this->id
+            $this->id,
         );
 
         return $return;

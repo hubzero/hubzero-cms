@@ -166,7 +166,7 @@ class BulkInsertTest extends AbstractDriverTestCase
             $rows[] = [
                 'name' => "User $i",
                 'email' => "user$i@example.com",
-                'status' => 1
+                'status' => 1,
             ];
         }
 
@@ -203,7 +203,7 @@ class BulkInsertTest extends AbstractDriverTestCase
         // Verify Alice
         $alice = $driver->setQuery(
             'SELECT * FROM ' . $driver->quoteName(self::$testTable)
-            . ' WHERE email = ' . $driver->quote('alice@example.com')
+            . ' WHERE email = ' . $driver->quote('alice@example.com'),
         )
             ->loadObject();
         $this->assertEquals('Alice', $alice->name);
@@ -212,7 +212,7 @@ class BulkInsertTest extends AbstractDriverTestCase
         // Verify Bob
         $bob = $driver->setQuery(
             'SELECT * FROM ' . $driver->quoteName(self::$testTable)
-            . ' WHERE email = ' . $driver->quote('bob@example.com')
+            . ' WHERE email = ' . $driver->quote('bob@example.com'),
         )
             ->loadObject();
         $this->assertEquals('Bob', $bob->name);
@@ -242,7 +242,7 @@ class BulkInsertTest extends AbstractDriverTestCase
         // Verify null was preserved
         $alice = $driver->setQuery(
             'SELECT * FROM ' . $driver->quoteName(self::$testTable)
-            . ' WHERE name = ' . $driver->quote('Alice')
+            . ' WHERE name = ' . $driver->quote('Alice'),
         )
             ->loadObject();
         $this->assertNull($alice->email);
@@ -327,7 +327,7 @@ class BulkInsertTest extends AbstractDriverTestCase
             $rows[] = [
                 'name' => "User $i",
                 'email' => "user$i@example.com",
-                'status' => 1
+                'status' => 1,
             ];
         }
 

@@ -55,7 +55,7 @@ class Courses extends Plugin
 			WHERE
 				$authorization AND
 				$weight > 0" .
-                ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
+                ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : ''),
         );
         if (($rows = $rows->to_associative()) instanceof \Components\Search\Models\Basic\Result\Blank) {
             return;

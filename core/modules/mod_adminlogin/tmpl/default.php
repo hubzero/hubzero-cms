@@ -36,7 +36,7 @@ Html::behavior('keepalive');
                         <?php
                         $authUrl = Route::url(
                             'index.php?option=com_login&task=display&authenticator='
-                            . $a['name'] . $returnQueryString
+                            . $a['name'] . $returnQueryString,
                         );
                         ?>
                         <a class="<?php echo $a['name']; ?> account"

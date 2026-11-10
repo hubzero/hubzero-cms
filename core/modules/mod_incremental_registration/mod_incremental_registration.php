@@ -105,7 +105,7 @@ class IncrementalRegistration extends Module
             if ($row) {
                 $dbh->setQuery(
                     'SELECT popover_text, award_per FROM `#__incremental_registration_options` ' .
-                    'ORDER BY added DESC LIMIT 1'
+                    'ORDER BY added DESC LIMIT 1',
                 );
                 list($introText, $awardPer) = $dbh->loadRow();
 
@@ -149,15 +149,15 @@ class IncrementalRegistration extends Module
                             trim(implode(' ', [
                                 $nameInput['first'] ?? '',
                                 $nameInput['middle'] ?? '',
-                                $nameInput['last'] ?? ''
-                            ]))
+                                $nameInput['last'] ?? '',
+                            ])),
                         );
                     }
 
                     if (isset($row['gender'])) {
                         $validGender = in_array(
                             $_POST['gender'] ?? '',
-                            ['male', 'female', 'refused']
+                            ['male', 'female', 'refused'],
                         );
                         if (!isset($_POST['gender']) || !$validGender) {
                             $errors['gender'] = true;
@@ -255,7 +255,7 @@ class IncrementalRegistration extends Module
                     } else {
                         $dbh->setQuery(
                             'SELECT ' . implode(', ', array_keys($row)) .
-                            ' FROM #__profile_completion_awards WHERE user_id = ' . $uid
+                            ' FROM #__profile_completion_awards WHERE user_id = ' . $uid,
                         );
                         $award = 0;
                         $awarded = $dbh->loadAssoc();
@@ -282,7 +282,7 @@ class IncrementalRegistration extends Module
                                 $award,
                                 Lang::txt('MOD_INCREMENTAL_REGISTRATION_PROFILE_COMPLETION_AWARD'),
                                 'registration',
-                                0
+                                0,
                             );
                         }
 
@@ -380,14 +380,14 @@ class IncrementalRegistration extends Module
                                     'UPDATE `#__users` SET givenName = ' .
                                     $dbh->quote($_POST['name']['first']) . ', middleName = ' .
                                     $dbh->quote($_POST['name']['middle']) . ', surname = ' .
-                                    $dbh->quote($_POST['name']['last']) . ' WHERE id = ' . $uid
+                                    $dbh->quote($_POST['name']['last']) . ' WHERE id = ' . $uid,
                                 );
                                 $dbh->execute();
                             }
                             if ($k == 'mailPreferenceOption') {
                                 $dbh->setQuery(
                                     'UPDATE `#__users` SET sendEmail = ' . $dbh->quote($$k) .
-                                    ' WHERE id = ' . $uid
+                                    ' WHERE id = ' . $uid,
                                 );
                                 $dbh->execute();
                             }
@@ -420,7 +420,7 @@ class IncrementalRegistration extends Module
                 list($allGroups) = $groups->getAllGroups();
                 $dbh->setQuery(
                     'SELECT ' . implode(', ', $allGroups['cols']) .
-                    ' FROM #__profile_completion_awards WHERE user_id = ' . $uid
+                    ' FROM #__profile_completion_awards WHERE user_id = ' . $uid,
                 );
                 $row = $dbh->loadRow();
                 // never entered anything so far, or entered partial information w/r/t requested profile groups

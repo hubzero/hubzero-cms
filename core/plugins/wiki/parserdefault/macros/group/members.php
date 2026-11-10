@@ -61,7 +61,7 @@ class Members extends GroupMacro
 
         //array of filters
         $filters = [
-            'limit' => (count($args) == 1 && is_numeric($args[0])) ? $args[0] : 12
+            'limit' => (count($args) == 1 && is_numeric($args[0])) ? $args[0] : 12,
         ];
 
         // get members
@@ -114,7 +114,7 @@ class Members extends GroupMacro
                 function ($userid) {
                     return ($userid < 1000) ? null : $userid;
                 },
-                $members
+                $members,
             );
             $members = array_values(array_filter($members));
         }

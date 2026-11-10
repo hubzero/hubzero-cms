@@ -100,7 +100,7 @@ class Passportv1r0 extends base
         $db->setQuery(
             "SELECT o.course_id FROM `#__courses_offering_sections` AS s"
             . " JOIN `#__courses_offerings` AS o ON o.id = s.offering_id"
-            . " WHERE s.id = " . (int) $section_id
+            . " WHERE s.id = " . (int) $section_id,
         );
         $sectionCourseId = (int) $db->loadResult();
 

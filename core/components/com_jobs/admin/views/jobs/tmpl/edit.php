@@ -95,33 +95,33 @@ $this->js();
 
 $formAction = Route::url('index.php?option=' . $this->option);
 $invalidMsg = $this->escape(
-    Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')
+    Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'),
 );
 $requiredLabel = Lang::txt('JOPTION_REQUIRED');
 $companyNameValue = $this->escape(
-    stripslashes($this->row->companyName)
+    stripslashes($this->row->companyName),
 );
 $companyWebsiteValue = $this->escape(
-    stripslashes($this->row->companyWebsite)
+    stripslashes($this->row->companyWebsite),
 );
 $companyLocationValue = $this->escape(
-    stripslashes($this->row->companyLocation)
+    stripslashes($this->row->companyLocation),
 );
 $locationHint = Lang::txt('COM_JOBS_FIELD_LOCATION_HINT');
 $titleValue = $this->escape(stripslashes($this->row->title));
 $descHint = Lang::txt('COM_JOBS_FIELD_DESCRIPTION_HINT');
 $externalUrlHint = Lang::txt('COM_JOBS_FIELD_EXTERNAL_URL_HINT');
 $applyExternalValue = $this->escape(
-    stripslashes($this->row->applyExternalUrl)
+    stripslashes($this->row->applyExternalUrl),
 );
 $contactNameValue = $this->escape(
-    stripslashes($this->row->contactName)
+    stripslashes($this->row->contactName),
 );
 $contactEmailValue = $this->escape(
-    stripslashes($this->row->contactEmail)
+    stripslashes($this->row->contactEmail),
 );
 $contactPhoneValue = $this->escape(
-    stripslashes($this->row->contactPhone)
+    stripslashes($this->row->contactPhone),
 );
 ?>
 
@@ -194,7 +194,7 @@ $contactPhoneValue = $this->escape(
                         $this->cats,
                         $this->row->cid,
                         '',
-                        ''
+                        '',
                     );
                     ?>
                 </div>
@@ -208,7 +208,7 @@ $contactPhoneValue = $this->escape(
                         $this->types,
                         $this->row->type,
                         '',
-                        ''
+                        '',
                     );
                     ?>
                 </div>
@@ -260,7 +260,7 @@ $contactPhoneValue = $this->escape(
                     </label><br />
                     <?php
                     $descValue = $this->escape(
-                        stripslashes($this->row->description)
+                        stripslashes($this->row->description),
                     );
                     echo $this->editor(
                         'description',
@@ -268,7 +268,7 @@ $contactPhoneValue = $this->escape(
                         50,
                         30,
                         'description',
-                        ['class' => 'required']
+                        ['class' => 'required'],
                     );
                     ?>
                     <span class="hint"><?php echo $descHint; ?></span>
@@ -420,7 +420,7 @@ $contactPhoneValue = $this->escape(
                                 if (!$this->job->inactive) {
                                     $expiresMsg = Lang::txt(
                                         'COM_JOBS_FIELD_USER_SUBSCRIPTION_EXPIRES',
-                                        $this->subscription->expires
+                                        $this->subscription->expires,
                                     );
                                     echo ' ' . $expiresMsg;
                                 }

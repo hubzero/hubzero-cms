@@ -38,7 +38,7 @@ class Gravatar implements Resolver
         'forceExtension' => false,
         'forceDefault'   => false,
         'maximumRating'  => null,
-        'size'           => null
+        'size'           => null,
     ];
 
     /**
@@ -57,7 +57,7 @@ class Gravatar implements Resolver
                         ||
                         in_array(
                             $config['fallback'],
-                            ['mm', 'identicon', 'monsterid', 'wavatar', 'retro', 'blank']
+                            ['mm', 'identicon', 'monsterid', 'wavatar', 'retro', 'blank'],
                         )
                     ) {
                         $this->set('fallback', $config['fallback']);

@@ -166,7 +166,7 @@ class Checkbox extends Base
     public function display($value)
     {
         $values = [
-            '<ul>'
+            '<ul>',
         ];
 
         $pattern = "/<\d>(.*?)<\/\d>/i";

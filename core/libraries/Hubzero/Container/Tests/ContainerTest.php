@@ -190,7 +190,7 @@ class ContainerTest extends Basic
             'lorem',
             function () {
                 return 'ipsum';
-            }
+            },
         );
     }
 
@@ -210,7 +210,7 @@ class ContainerTest extends Basic
             'param',
             function () {
                 return 'ipsum';
-            }
+            },
         );
     }
 
@@ -228,7 +228,7 @@ class ContainerTest extends Basic
 
         $container->extend(
             'param',
-            'ipsum'
+            'ipsum',
         );
     }
 

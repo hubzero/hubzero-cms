@@ -26,7 +26,7 @@ $this->js('batchcreate');
 $formAction = Route::url(
     'index.php?option=' . $this->option
     . '&controller=' . $this->controller
-    . '&task=process'
+    . '&task=process',
 );
 ?>
 <form
@@ -87,7 +87,7 @@ $formAction = Route::url(
                 $xsdUrl = Route::url(
                     'index.php?option=' . $this->option
                     . '&controller=' . $this->controller
-                    . '&task=xsd'
+                    . '&task=xsd',
                 );
                 $xsdLabel = Lang::txt('COM_PUBLICATIONS_BATCH_XSD');
                 ?>

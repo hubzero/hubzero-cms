@@ -147,14 +147,14 @@ class Comment extends Model
                         'pagename' => $this->get('alias'),
                         'pageid'   => 0,
                         'filepath' => $this->get('path'),
-                        'domain'   => ''
+                        'domain'   => '',
                     ];
 
                     $content = str_replace(['\"', "\'"], ['"', "'"], (string) $this->get('comment', ''));
                     $this->importPlugin('content')->trigger('onContentPrepare', [
                         $this->_context,
                         &$this,
-                        &$config
+                        &$config,
                     ]);
 
                     $this->set('comment.parsed', (string) $this->get('comment', ''));

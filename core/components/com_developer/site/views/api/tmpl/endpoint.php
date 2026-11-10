@@ -80,14 +80,14 @@ $base = 'index.php?option=' . $this->option
 
 $skipKeys = [
     'name', 'method', 'description', 'replaces',
-    'deprecated', 'uri', 'parameters', 'return', '_metadata'
+    'deprecated', 'uri', 'parameters', 'return', '_metadata',
 ];
 
 $typeStyle = 'color: var(--dev-text-muted); font-weight: normal; font-size: 0.9em;';
 
 $docsVersionUrl = Route::url(
     'index.php?option=com_developer&controller=api&task=docs&version='
-    . $activeVersion
+    . $activeVersion,
 );
 ?>
 <header id="content-header">
@@ -143,7 +143,7 @@ $docsVersionUrl = Route::url(
                                 <?php
                                 $versionUrl = Route::url(
                                     $base . '&task=endpoint&active='
-                                    . $this->active . '&version=' . $version
+                                    . $this->active . '&version=' . $version,
                                 );
                                 ?>
                                 <li>
@@ -174,7 +174,7 @@ $docsVersionUrl = Route::url(
                 if ($endpoint['_metadata']['version'] < $activeVersion) {
                     $inherited = ' ' . Lang::txt(
                         'COM_DEVELOPER_API_DOC_ENDPOINT_INHERITED',
-                        $endpoint['_metadata']['version']
+                        $endpoint['_metadata']['version'],
                     );
                 }
 
@@ -217,7 +217,7 @@ $docsVersionUrl = Route::url(
                             <?php
                             $replacesMsg = Lang::txt(
                                 'COM_DEVELOPER_API_DOC_REPLACES',
-                                $endpoint['replaces']
+                                $endpoint['replaces'],
                             );
                             ?>
                             <p class="info"><?php echo $replacesMsg; ?></p>
@@ -228,7 +228,7 @@ $docsVersionUrl = Route::url(
                                 <?php
                                 echo Lang::txt(
                                     'COM_DEVELOPER_API_DOC_DEPRECATED',
-                                    $endpoint['deprecated']
+                                    $endpoint['deprecated'],
                                 );
                                 ?>
                             </p>
@@ -334,7 +334,7 @@ $docsVersionUrl = Route::url(
                                         if (isset($param['name'])) {
                                             $isPathParam = strpos(
                                                 $endpoint['uri'],
-                                                '{' . $param['name'] . '}'
+                                                '{' . $param['name'] . '}',
                                             ) !== false;
                                             $paramId = 'param-' . $key . '-' . $param['name'];
                                             $paramType = isset($param['type'])

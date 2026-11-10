@@ -82,7 +82,7 @@ class UpsertTest extends AbstractDriverTestCase
         Driver $driver,
         string $code,
         string $name,
-        int $value = 0
+        int $value = 0,
     ): void {
         (new Query($driver))->push('upsert_items', [
             'code' => $code,
@@ -96,13 +96,13 @@ class UpsertTest extends AbstractDriverTestCase
      */
     private function getRowByCode(
         Driver $driver,
-        string $code
+        string $code,
     ): ?object {
         $driver->setQuery(
             'SELECT * FROM '
             . $driver->quoteName('upsert_items')
             . ' WHERE ' . $driver->quoteName('code')
-            . ' = ' . $driver->quote($code)
+            . ' = ' . $driver->quote($code),
         );
 
         $result = $driver->loadObject();
@@ -121,7 +121,7 @@ class UpsertTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testUpsertInsertsNewRow(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $this->setupTestData($driver);
 
@@ -139,12 +139,12 @@ class UpsertTest extends AbstractDriverTestCase
         $this->assertSame(
             'Alpha',
             $row->name,
-            "$dbName: Name should be Alpha"
+            "$dbName: Name should be Alpha",
         );
         $this->assertSame(
             10,
             (int) $row->value,
-            "$dbName: Value should be 10"
+            "$dbName: Value should be 10",
         );
     }
 
@@ -155,7 +155,7 @@ class UpsertTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testUpsertUpdatesExistingRow(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $this->setupTestData($driver);
         $this->insertRow($driver, 'A001', 'Alpha', 10);
@@ -174,12 +174,12 @@ class UpsertTest extends AbstractDriverTestCase
         $this->assertSame(
             'Alpha Updated',
             $row->name,
-            "$dbName: Name should be updated"
+            "$dbName: Name should be updated",
         );
         $this->assertSame(
             20,
             (int) $row->value,
-            "$dbName: Value should be updated"
+            "$dbName: Value should be updated",
         );
     }
 
@@ -190,7 +190,7 @@ class UpsertTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testUpsertWithSelectiveUpdateColumns(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $this->setupTestData($driver);
         $this->insertRow($driver, 'A001', 'Alpha', 10);
@@ -209,14 +209,14 @@ class UpsertTest extends AbstractDriverTestCase
         $this->assertSame(
             99,
             (int) $row->value,
-            "$dbName: Value should be updated to 99"
+            "$dbName: Value should be updated to 99",
         );
 
         if ($driver->supportsSelectiveUpsertUpdateColumns()) {
             $this->assertSame(
                 'Alpha',
                 $row->name,
-                "$dbName: Name should remain unchanged"
+                "$dbName: Name should remain unchanged",
             );
         }
     }
@@ -228,7 +228,7 @@ class UpsertTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testUpsertWithExplicitConflictColumns(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $this->setupTestData($driver);
         $this->insertRow($driver, 'B001', 'Beta', 5);
@@ -246,12 +246,12 @@ class UpsertTest extends AbstractDriverTestCase
         $this->assertSame(
             'Beta Updated',
             $row->name,
-            "$dbName: Should update via UNIQUE code column"
+            "$dbName: Should update via UNIQUE code column",
         );
         $this->assertSame(
             50,
             (int) $row->value,
-            "$dbName: Value should be updated"
+            "$dbName: Value should be updated",
         );
     }
 
@@ -262,7 +262,7 @@ class UpsertTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testUpsertPreservesOtherRows(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $this->setupTestData($driver);
         $this->insertRow($driver, 'A001', 'Alpha', 10);
@@ -281,12 +281,12 @@ class UpsertTest extends AbstractDriverTestCase
         $this->assertSame(
             'Beta',
             $beta->name,
-            "$dbName: Beta row should be unchanged"
+            "$dbName: Beta row should be unchanged",
         );
         $this->assertSame(
             20,
             (int) $beta->value,
-            "$dbName: Beta value should be unchanged"
+            "$dbName: Beta value should be unchanged",
         );
     }
 
@@ -301,7 +301,7 @@ class UpsertTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testPushOrUpdateInsertsNewRow(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $this->setupTestData($driver);
 
@@ -309,12 +309,12 @@ class UpsertTest extends AbstractDriverTestCase
             'upsert_items',
             ['code' => 'C001', 'name' => 'Charlie', 'value' => 30],
             ['name', 'value'],
-            ['code']
+            ['code'],
         );
 
         $this->assertNotFalse(
             $result,
-            "$dbName: pushOrUpdate should succeed"
+            "$dbName: pushOrUpdate should succeed",
         );
 
         $row = $this->getRowByCode($driver, 'C001');
@@ -329,7 +329,7 @@ class UpsertTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testPushOrUpdateUpdatesExistingRow(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $this->setupTestData($driver);
         $this->insertRow($driver, 'C001', 'Charlie', 30);
@@ -338,19 +338,19 @@ class UpsertTest extends AbstractDriverTestCase
             'upsert_items',
             ['code' => 'C001', 'name' => 'Charlie Updated', 'value' => 60],
             ['name', 'value'],
-            ['code']
+            ['code'],
         );
 
         $this->assertNotFalse(
             $result,
-            "$dbName: pushOrUpdate should succeed"
+            "$dbName: pushOrUpdate should succeed",
         );
 
         $row = $this->getRowByCode($driver, 'C001');
         $this->assertSame(
             'Charlie Updated',
             $row->name,
-            "$dbName: Name should be updated"
+            "$dbName: Name should be updated",
         );
     }
 
@@ -365,7 +365,7 @@ class UpsertTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testUpsertManyInsertsMultipleNewRows(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $this->setupTestData($driver);
 
@@ -379,13 +379,13 @@ class UpsertTest extends AbstractDriverTestCase
             'upsert_items',
             $rows,
             ['name', 'value'],
-            ['code']
+            ['code'],
         );
 
         $this->assertSame(
             3,
             $count,
-            "$dbName: Should report 3 rows affected"
+            "$dbName: Should report 3 rows affected",
         );
 
         $this->assertNotNull($this->getRowByCode($driver, 'X01'));
@@ -400,7 +400,7 @@ class UpsertTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testUpsertManyUpdatesExistingRows(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $this->setupTestData($driver);
         $this->insertRow($driver, 'X01', 'X-One', 1);
@@ -415,7 +415,7 @@ class UpsertTest extends AbstractDriverTestCase
             'upsert_items',
             $rows,
             ['name', 'value'],
-            ['code']
+            ['code'],
         );
 
         $this->assertSame(2, $count, "$dbName: Should report 2 rows");
@@ -424,7 +424,7 @@ class UpsertTest extends AbstractDriverTestCase
         $this->assertSame(
             'X-One Updated',
             $row1->name,
-            "$dbName: X01 name should be updated"
+            "$dbName: X01 name should be updated",
         );
         $this->assertSame(100, (int) $row1->value);
 
@@ -440,7 +440,7 @@ class UpsertTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testUpsertManyMixedInsertAndUpdate(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $this->setupTestData($driver);
         $this->insertRow($driver, 'M01', 'Existing', 10);
@@ -454,7 +454,7 @@ class UpsertTest extends AbstractDriverTestCase
             'upsert_items',
             $rows,
             ['name', 'value'],
-            ['code']
+            ['code'],
         );
 
         $this->assertSame(2, $count);
@@ -475,7 +475,7 @@ class UpsertTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testUpsertManyEmptyArray(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $this->setupTestData($driver);
 
@@ -483,7 +483,7 @@ class UpsertTest extends AbstractDriverTestCase
             'upsert_items',
             [],
             ['name', 'value'],
-            ['code']
+            ['code'],
         );
 
         $this->assertSame(0, $count, "$dbName: Empty array = 0 rows");
@@ -496,7 +496,7 @@ class UpsertTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testUpsertManyInconsistentColumnsThrows(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $this->setupTestData($driver);
 
@@ -509,7 +509,7 @@ class UpsertTest extends AbstractDriverTestCase
                 ['code' => 'B', 'name' => 'Second'],
             ],
             ['name', 'value'],
-            ['code']
+            ['code'],
         );
     }
 
@@ -524,20 +524,20 @@ class UpsertTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testFirstOrCreateFindsExisting(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $this->setupTestData($driver);
         $this->insertRow($driver, 'F001', 'Found', 42);
 
         $item = UpsertItem::firstOrCreate(
             ['code' => 'F001'],
-            ['name' => 'Should Not Create', 'value' => 0]
+            ['name' => 'Should Not Create', 'value' => 0],
         );
 
         $this->assertSame(
             'Found',
             $item->get('name'),
-            "$dbName: Should return existing record"
+            "$dbName: Should return existing record",
         );
         $this->assertSame(42, (int) $item->get('value'));
     }
@@ -549,13 +549,13 @@ class UpsertTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testFirstOrCreateCreatesNew(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $this->setupTestData($driver);
 
         $item = UpsertItem::firstOrCreate(
             ['code' => 'NEW1'],
-            ['name' => 'Created', 'value' => 77]
+            ['name' => 'Created', 'value' => 77],
         );
 
         $this->assertSame('NEW1', $item->get('code'));
@@ -574,14 +574,14 @@ class UpsertTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testUpdateOrCreateUpdatesExisting(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $this->setupTestData($driver);
         $this->insertRow($driver, 'U001', 'Original', 10);
 
         $item = UpsertItem::updateOrCreate(
             ['code' => 'U001'],
-            ['name' => 'Modified', 'value' => 88]
+            ['name' => 'Modified', 'value' => 88],
         );
 
         $this->assertSame('Modified', $item->get('name'));
@@ -599,13 +599,13 @@ class UpsertTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testUpdateOrCreateCreatesNew(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $this->setupTestData($driver);
 
         $item = UpsertItem::updateOrCreate(
             ['code' => 'U002'],
-            ['name' => 'Brand New', 'value' => 55]
+            ['name' => 'Brand New', 'value' => 55],
         );
 
         $this->assertSame('U002', $item->get('code'));
@@ -623,7 +623,7 @@ class UpsertTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testRelationalUpsertMany(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $this->setupTestData($driver);
         $this->insertRow($driver, 'R01', 'Existing R', 10);
@@ -634,7 +634,7 @@ class UpsertTest extends AbstractDriverTestCase
                 ['code' => 'R02', 'name' => 'New R', 'value' => 50],
             ],
             ['name', 'value'],
-            ['code']
+            ['code'],
         );
 
         $this->assertSame(2, $count);

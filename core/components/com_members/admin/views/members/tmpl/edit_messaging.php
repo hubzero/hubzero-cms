@@ -18,7 +18,7 @@ defined('_HZEXEC_') or die();
     <?php
     $msgUrl = Route::url(
         'index.php?option=' . $this->option . '&controller=messages&tmpl=component&task=settings&id='
-        . $this->profile->get('id') . '&t=' . time()
+        . $this->profile->get('id') . '&t=' . time(),
     );
     ?>
     <iframe height="500" name="messaging" id="messaging-settings" src="<?php echo $msgUrl; ?>"></iframe>

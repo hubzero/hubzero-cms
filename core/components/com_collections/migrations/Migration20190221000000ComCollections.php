@@ -22,24 +22,24 @@ class Migration20190221000000ComCollections extends Base
      **/
     public static $tables = [
         '#__collections' => [
-            'created'
+            'created',
         ],
         '#__collections_assets' => [
-            'created'
+            'created',
         ],
         '#__collections_following' => [
-            'created'
+            'created',
         ],
         '#__collections_items' => [
             'created',
-            'modified'
+            'modified',
         ],
         '#__collections_posts' => [
-            'created'
+            'created',
         ],
         '#__collections_votes' => [
-            'created'
-        ]
+            'created',
+        ],
     ];
 
     /**

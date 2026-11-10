@@ -36,7 +36,7 @@ $this->js();
 
 $formUrl = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
 $required = Lang::txt('JOPTION_REQUIRED');
@@ -63,7 +63,7 @@ $required = Lang::txt('JOPTION_REQUIRED');
                         $this->categories,
                         $this->row->get('category'),
                         'fields[category]',
-                        'field-category'
+                        'field-category',
                     ); ?>
                 </div>
 
@@ -110,8 +110,8 @@ $required = Lang::txt('JOPTION_REQUIRED');
                         'field-fulltxt',
                         [
                             'class' => 'required',
-                            'buttons' => ['pagebreak', 'readmore', 'article']
-                        ]
+                            'buttons' => ['pagebreak', 'readmore', 'article'],
+                        ],
                     );
                     ?>
                 </div>
@@ -153,7 +153,7 @@ $required = Lang::txt('JOPTION_REQUIRED');
                             <?php
                             $creatorName = $this->row->creator->get(
                                 'name',
-                                Lang::txt('COM_KB_UNKNOWN')
+                                Lang::txt('COM_KB_UNKNOWN'),
                             );
                             echo $this->escape($creatorName);
                             ?>
@@ -183,7 +183,7 @@ $required = Lang::txt('JOPTION_REQUIRED');
                                     <?php
                                     $modName = $modifier->get(
                                         'name',
-                                        Lang::txt('COM_KB_UNKNOWN')
+                                        Lang::txt('COM_KB_UNKNOWN'),
                                     );
                                     echo $this->escape($modName);
                                     ?>
@@ -256,7 +256,7 @@ $required = Lang::txt('JOPTION_REQUIRED');
                             Html::access('assetgroups'),
                             'value',
                             'text',
-                            $this->row->get('access')
+                            $this->row->get('access'),
                         ); ?>
                     </select>
                 </div>

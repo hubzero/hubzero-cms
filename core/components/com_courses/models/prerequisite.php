@@ -88,7 +88,7 @@ class Prerequisite extends Base
             $key = $prerequisite->item_scope . '.' . $prerequisite->item_id;
             $this->prerequisites[$key][] = [
                 'scope'    => $prerequisite->requisite_scope,
-                'scope_id' => $prerequisite->requisite_id
+                'scope_id' => $prerequisite->requisite_id,
             ];
         }
 

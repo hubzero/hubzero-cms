@@ -102,7 +102,7 @@ $subdirlink = $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
                                         $parent,
                                         false,
                                         $this->connection->adapter(),
-                                        '/'
+                                        '/',
                                     );
                                 }
                                 ?>

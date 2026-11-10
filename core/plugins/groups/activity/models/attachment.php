@@ -194,7 +194,7 @@ class Attachment extends Obj
         // Make sure there are no filename conflicts
         $filename = $this->uniqueFilename([
             'filename' => $name,
-            'subdir'   => $this->get('subdir')
+            'subdir'   => $this->get('subdir'),
         ]);
 
         $destination .= DS . $filename;
@@ -324,7 +324,7 @@ class Attachment extends Obj
             'filename'    => $this->get('filename'),
             'path'        => $this->uploadDir,
             'description' => $this->get('description'),
-            'subdir'      => $this->get('subdir')
+            'subdir'      => $this->get('subdir'),
         ];
     }
 }

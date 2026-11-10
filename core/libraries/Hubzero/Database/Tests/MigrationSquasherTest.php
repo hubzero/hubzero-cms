@@ -48,7 +48,7 @@ class MigrationSquasherTest extends AbstractDriverTestCase
                 'squash_users',
                 'id',
                 $driver->supportsReferentialActions() ? 'CASCADE' : 'NO ACTION',
-                $driver->supportsReferentialActions() ? 'CASCADE' : 'NO ACTION'
+                $driver->supportsReferentialActions() ? 'CASCADE' : 'NO ACTION',
             )
             ->execute();
     }
@@ -159,7 +159,7 @@ class MigrationSquasherTest extends AbstractDriverTestCase
 
         $schema = new DatabaseInfo([
             'name' => 'test_db',
-            'tables' => []
+            'tables' => [],
         ]);
 
         $content = $squasher->generateFromSchema($schema, 'TestCore', 'Empty test');
@@ -245,7 +245,7 @@ class MigrationSquasherTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testGenerateFromSchemaWithMultipleTablesRespectsDependencyOrder(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $squasher = new MigrationSquasher($driver);
 

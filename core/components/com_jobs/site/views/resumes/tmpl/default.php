@@ -23,10 +23,10 @@ defined('_HZEXEC_') or die();
     $types      = $this->types;
 
 $dashboardUrl = Route::url(
-    'index.php?option=' . $this->option . '&task=dashboard'
+    'index.php?option=' . $this->option . '&task=dashboard',
 );
 $resumesUrl = Route::url(
-    'index.php?option=' . $this->option . '&task=resumes'
+    'index.php?option=' . $this->option . '&task=resumes',
 );
 ?>
 <header id="content-header">
@@ -107,7 +107,7 @@ $resumesUrl = Route::url(
                         $this->task = 'resumes';
                         $view = $this->view('seeker');
                         $params = new \Hubzero\Config\Registry(
-                            Plugin::params('members', 'resume')
+                            Plugin::params('members', 'resume'),
                         );
 
                         $view->seeker   = $seeker;
@@ -184,7 +184,7 @@ $resumesUrl = Route::url(
                         $cats,
                         $filters['category'],
                         '',
-                        ''
+                        '',
                     ); ?>
                 </label>
                 <label>
@@ -206,7 +206,7 @@ $resumesUrl = Route::url(
                 $allCandidatesLink = '<a href="' . $resumesUrl . '">'
                     . Lang::txt('All Candidates') . '</a>';
                 echo Lang::txt(
-                    'The listed candidates are those you bookmarked for further contact. Return to a list of '
+                    'The listed candidates are those you bookmarked for further contact. Return to a list of ',
                 ) . $allCandidatesLink . '.';
                 ?>
             </p>

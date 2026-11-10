@@ -89,7 +89,7 @@ $base = rtrim($base, '/');
 <?php
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 ?>
 <form
@@ -136,7 +136,7 @@ $formAction = Route::url(
                     -
                     <?php
                     echo Date::of(
-                        $this->filters['year'] . '-' . $this->filters['month'] . '-01'
+                        $this->filters['year'] . '-' . $this->filters['month'] . '-01',
                     )->format('M Y');
                     ?>
                 </span>
@@ -223,7 +223,7 @@ $formAction = Route::url(
                             <td class="block">
                                 <?php
                                 $lifetime = \Components\Support\Helpers\Utilities::calculateAverageLife(
-                                    $this->closedTickets
+                                    $this->closedTickets,
                                 );
                                 ?>
                                 <?php echo (isset($lifetime[0])) ? $lifetime[0] : 0; ?>
@@ -287,11 +287,11 @@ $formAction = Route::url(
                                 '#e5e5e5',
                                 '#828282',
                                 '#404040',
-                                '#3a3a3a'
+                                '#3a3a3a',
                             ];
 
                             $severities = \Components\Support\Helpers\Utilities::getSeverities(
-                                $this->config->get('severities')
+                                $this->config->get('severities'),
                             );
 
                             $cls = 'odd';
@@ -379,7 +379,7 @@ $formAction = Route::url(
                             $noResVal = isset($res[0]) ? $res[0] / $total : '0';
                             $data = [
                                 '{"label": "' . $noResLabel . '", "data": ' . $noResVal
-                                . ', "color": "' . $colors[0] . '"}'
+                                . ', "color": "' . $colors[0] . '"}',
                             ];
                             $i = 1;
                             foreach ($resolutions as $resolution) {
@@ -475,7 +475,7 @@ $formAction = Route::url(
                     }
                     $photoAlt = Lang::txt(
                         'COM_SUPPORT_STATS_PHOTO_FOR',
-                        $this->escape(stripslashes($user->name))
+                        $this->escape(stripslashes($user->name)),
                     );
                     ?>
                     <fieldset class="adminform">
@@ -496,7 +496,7 @@ $formAction = Route::url(
                                         <?php
                                         echo Lang::txt(
                                             'COM_SUPPORT_STATS_NUM_ASSIGNED',
-                                            number_format($user->assigned)
+                                            number_format($user->assigned),
                                         );
                                         ?>
                                     </span>
@@ -539,7 +539,7 @@ $formAction = Route::url(
                                             <td class="block">
                                                 <?php
                                                 $lifetime = \Components\Support\Helpers\Utilities::calculateAverageLife(
-                                                    $user->tickets
+                                                    $user->tickets,
                                                 );
                                                 ?>
                                                 <?php echo (isset($lifetime[0])) ? $lifetime[0] : 0; ?>

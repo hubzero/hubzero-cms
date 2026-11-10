@@ -22,8 +22,8 @@ class Migration20190221000000ComDeveloper extends Base
      **/
     public static $tables = [
         '#__developer_access_tokens' => [
-            'expires'
-        ]
+            'expires',
+        ],
     ];
 
     /**

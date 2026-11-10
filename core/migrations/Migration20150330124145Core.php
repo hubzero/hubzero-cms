@@ -68,7 +68,7 @@ class Migration20150330124145Core extends Base
         if (substr($permissions, 1, 1) != '6') {
             App::get('filesystem')->setPermissions(
                 $configFile,
-                substr_replace($permissions, '6', 1, 1)
+                substr_replace($permissions, '6', 1, 1),
             );
         }
 
@@ -111,7 +111,7 @@ class Migration20150330124145Core extends Base
         $configuration = preg_replace(
             '/([\'"]dbtype[\'"]\s*=>\s*[\'"])mysql([\'"])/',
             '$1pdo$2',
-            $configuration
+            $configuration,
         );
 
         if (!file_put_contents($configFile, $configuration)) {

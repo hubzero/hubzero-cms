@@ -38,19 +38,19 @@ class LogServiceProvider extends ServiceProvider
 
             $manager->register('debug', [
                 'file'       => 'cmsdebug.log',
-                'dispatcher' => $dispatcher
+                'dispatcher' => $dispatcher,
             ]);
 
             $manager->register('auth', [
                 'file'       => 'cmsauth.log',
                 'level'      => 'info',
                 'format'     => "%datetime% %message%\n",
-                'dispatcher' => $dispatcher
+                'dispatcher' => $dispatcher,
             ]);
 
             $manager->register('spam', [
                 'file'       => 'cmsspam.log',
-                'dispatcher' => $dispatcher
+                'dispatcher' => $dispatcher,
             ]);
 
             return $manager;

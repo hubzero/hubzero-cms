@@ -53,7 +53,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     protected $rules = [
         'title'    => 'notempty',
         'category' => 'positive|nonzero',
-        'fulltxt'  => 'notempty'
+        'fulltxt'  => 'notempty',
     ];
 
     /**
@@ -64,7 +64,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     public $always = [
         'alias',
         'modified',
-        'modified_by'
+        'modified_by',
     ];
 
     /**
@@ -74,7 +74,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**
@@ -83,7 +83,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
      * @var  array
      **/
     protected $parsed = [
-        'fulltxt'
+        'fulltxt',
     ];
 
     /**

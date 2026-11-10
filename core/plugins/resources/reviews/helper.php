@@ -143,7 +143,7 @@ class Helper extends \Hubzero\Base\Obj
 
         // Perform some text cleaning, etc.
         $row->set('content', \Hubzero\Utility\Sanitize::stripImages(
-            \Hubzero\Utility\Sanitize::clean($row->get('content'))
+            \Hubzero\Utility\Sanitize::clean($row->get('content')),
         ));
         $row->set('anonymous', ($row->get('anonymous') == 1 || $row->get('anonymous') == '1')
             ? $row->get('anonymous') : 0);
@@ -205,7 +205,7 @@ class Helper extends \Hubzero\Base\Obj
         $reply->save();
 
         App::Redirect(
-            Route::url($this->resource->link() . '&active=reviews', false)
+            Route::url($this->resource->link() . '&active=reviews', false),
         );
     }
 
@@ -260,8 +260,8 @@ class Helper extends \Hubzero\Base\Obj
                     'folder'  => 'resources',
                     'element' => 'reviews',
                     'name'    => 'browse',
-                    'layout'  => '_rateitem'
-                ]
+                    'layout'  => '_rateitem',
+                ],
             );
             $view->option = $this->_option;
             $view->item = $rev;
@@ -271,7 +271,7 @@ class Helper extends \Hubzero\Base\Obj
         }
 
         App::redirect(
-            Route::url($this->resource->link() . '&active=reviews', false)
+            Route::url($this->resource->link() . '&active=reviews', false),
         );
     }
 
@@ -380,7 +380,7 @@ class Helper extends \Hubzero\Base\Obj
             $row->set('state', \Components\Resources\Models\Review::STATE_PUBLISHED);
         }
         $row->set('comment', \Hubzero\Utility\Sanitize::stripImages(
-            \Hubzero\Utility\Sanitize::clean($row->get('comment'))
+            \Hubzero\Utility\Sanitize::clean($row->get('comment')),
         ));
         $row->set('anonymous', ($row->get('anonymous') ? 1 : 0));
 
@@ -411,8 +411,8 @@ class Helper extends \Hubzero\Base\Obj
             [
                 'folder'  => 'resources',
                 'element' => 'reviews',
-                'name'    => 'emails'
-            ]
+                'name'    => 'emails',
+            ],
         );
         $eview->option   = $this->_option;
         $eview->user     = User::getInstance();
@@ -423,14 +423,14 @@ class Helper extends \Hubzero\Base\Obj
         // Build the "from" data for the e-mail
         $from = [
             'name'  => Config::get('sitename') . ' ' . Lang::txt('PLG_RESOURCES_REVIEWS_CONTRIBUTIONS'),
-            'email' => Config::get('mailfrom')
+            'email' => Config::get('mailfrom'),
         ];
 
         // Send message
         if (
             !Event::trigger(
                 'xmessage.onSendMessage',
-                ['resources_new_comment', $subject, $message, $from, $users, $this->_option]
+                ['resources_new_comment', $subject, $message, $from, $users, $this->_option],
             )
         ) {
             $this->setError(Lang::txt('PLG_RESOURCES_REVIEWS_FAILED_TO_MESSAGE'));
@@ -508,7 +508,7 @@ class Helper extends \Hubzero\Base\Obj
         $this->resource->save();
 
         App::redirect(
-            Route::url($this->resource->link() . '&active=reviews', false)
+            Route::url($this->resource->link() . '&active=reviews', false),
         );
     }
 }

@@ -70,7 +70,7 @@ function definedKeys($root)
             continue;
         }
         $it = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($base, FilesystemIterator::SKIP_DOTS)
+            new RecursiveDirectoryIterator($base, FilesystemIterator::SKIP_DOTS),
         );
         foreach ($it as $file) {
             if ($file->getExtension() !== 'ini' || strpos($file->getPathname(), '/language/') === false) {
@@ -146,7 +146,7 @@ foreach ($paths as $spec) {
         $files[] = $base;
     } elseif (is_dir($base)) {
         $it = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($base, FilesystemIterator::SKIP_DOTS)
+            new RecursiveDirectoryIterator($base, FilesystemIterator::SKIP_DOTS),
         );
         foreach ($it as $file) {
             if ($file->getExtension() === 'php' && strpos($file->getPathname(), '/vendor/') === false) {

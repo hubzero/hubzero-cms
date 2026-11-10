@@ -59,7 +59,7 @@ class Audience extends Relational
      * @var  array
      */
     protected $rules = [
-        'rid' => 'positive|nonzero'
+        'rid' => 'positive|nonzero',
     ];
 
     /**
@@ -69,7 +69,7 @@ class Audience extends Relational
      */
     public $initiate = [
         'added',
-        'added_by'
+        'added_by',
     ];
 
     /**

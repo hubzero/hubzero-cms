@@ -63,7 +63,7 @@ class Documentation extends Base implements CommandInterface
         $this
             ->output
             ->addOverview(
-                'Api documentation related commands.'
+                'Api documentation related commands.',
             );
     }
 }

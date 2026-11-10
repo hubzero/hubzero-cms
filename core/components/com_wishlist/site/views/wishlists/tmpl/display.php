@@ -377,7 +377,7 @@ if ($this->wishlist->get('id')) {
                             $pageNav = $this->pagination(
                                 $this->total,
                                 $this->filters['start'],
-                                $this->filters['limit']
+                                $this->filters['limit'],
                             );
                             $pageNav->setAdditionalUrlParam('filterby', $this->filters['filterby']);
                             $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
@@ -403,7 +403,7 @@ if ($this->wishlist->get('id')) {
                             'scope'    => 'wishlist',
                             'scope_id' => 0,
                             'base'     => $base,
-                            'filters'  => $this->filters
+                            'filters'  => $this->filters,
                         ]);
 
                         if ($tags) {

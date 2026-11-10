@@ -11,6 +11,6 @@ return [
     'sef_rewrite' => '1',
     'sef_suffix' => '0',
     'unicodeslugs' => '0',
-    'sitename_pagetitles' => '0'
+    'sitename_pagetitles' => '0',
 ];
 // @codeCoverageIgnoreEnd

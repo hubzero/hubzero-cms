@@ -254,7 +254,7 @@ class Categories
                 $query->joinRaw(
                     $db->quoteName($this->_table) . ' AS i',
                     'i.' . $db->quoteName($this->_field) . ' = c.id AND i.' . $this->_statefield . ' = 1',
-                    'left'
+                    'left',
                 );
             } else {
                 $tableAlias = $db->quoteName($this->_table) . ' AS i';

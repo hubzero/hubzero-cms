@@ -50,11 +50,11 @@ $this->css();
                 <div class="details">
                     <?php if ($poll->get('open')) {
                         $voteAction = Route::url(
-                            'index.php?option=com_poll&task=vote'
+                            'index.php?option=com_poll&task=vote',
                         );
                         $resultsUrl = Route::url(
                             'index.php?option=com_poll&view=poll&id='
-                            . $this->escape($poll->get('id'))
+                            . $this->escape($poll->get('id')),
                         );
                         ?>
                         <form

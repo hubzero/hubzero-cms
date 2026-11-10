@@ -40,7 +40,7 @@ class Url extends Text
             'autocomplete' => ((string) $this->element['autocomplete'] == 'off' ? 'off'      : ''),
             'readonly'     => ((string) $this->element['readonly'] == 'true'    ? 'readonly' : ''),
             'disabled'     => ((string) $this->element['disabled'] == 'true'    ? 'disabled' : ''),
-            'onchange'     => ($this->element['onchange']  ? (string) $this->element['onchange'] : '')
+            'onchange'     => ($this->element['onchange']  ? (string) $this->element['onchange'] : ''),
         ];
 
         $attr = [];

@@ -124,7 +124,7 @@ class Archive extends Model
                 'scope'       => $scope,
                 'scope_id'    => $scope_id,
                 'calendar_id' => $calendarId,
-                'state'       => [1]
+                'state'       => [1],
             ]);
 
             // merge with full events list

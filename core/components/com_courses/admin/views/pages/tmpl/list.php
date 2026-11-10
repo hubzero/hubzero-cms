@@ -45,7 +45,7 @@ $this->js('media.js');
                                         'index.php?option=' . $this->option  . '&controller=' . $this->controller
                                         . '&task=deletefile&delFile=' . $docs[$docName] . '&listdir='
                                         . $this->listdir . '&tmpl=component&subdir=' . $this->subdir . '&course='
-                                        . $this->course_id . '&' . Session::getFormToken() . '=1'
+                                        . $this->course_id . '&' . Session::getFormToken() . '=1',
                                     );
                                 ?>
                                 <a
@@ -54,7 +54,7 @@ $this->js('media.js');
                                     <?php
                                         $confirmMsg = Lang::txt(
                                             'Are you sure you want to delete the file "%s"?',
-                                            $docs[$docName]
+                                            $docs[$docName],
                                         );
                                     ?>
                                     data-confirm="<?php echo $confirmMsg; ?>"

@@ -312,7 +312,7 @@ class Service extends Obj
             'adminEmail',
             'earliestDatestamp',
             'deletedRecord',
-            'granularity'
+            'granularity',
         ];
 
         foreach ($fields as $key) {
@@ -444,7 +444,7 @@ class Service extends Obj
                 '',
                 '',
                 '',
-                $this->get('metadataPrefix')
+                $this->get('metadataPrefix'),
             );
 
             $this->response
@@ -537,7 +537,7 @@ class Service extends Obj
                 $from,
                 $until,
                 $set,
-                $this->get('metadataPrefix')
+                $this->get('metadataPrefix'),
             );
 
             $this->response
@@ -572,7 +572,7 @@ class Service extends Obj
             $from,
             $until,
             $set,
-            $prefix
+            $prefix,
         ]);
         if (function_exists('gzcompress')) {
             $resumption = gzcompress($resumption);
@@ -604,7 +604,7 @@ class Service extends Obj
             'from'   => $from,
             'until'  => $until,
             'set'    => $set,
-            'prefix' => $prefix
+            'prefix' => $prefix,
         ];
     }
 

@@ -48,7 +48,7 @@ class Message extends Relational
      */
     protected $rules = [
         'message'    => 'notempty',
-        'created_by' => 'positive|nonzero'
+        'created_by' => 'positive|nonzero',
     ];
 
     /**
@@ -210,7 +210,7 @@ class Message extends Relational
         $l = sprintf(
             ' <a class="ext-link" href="%s" rel="external">%s</a>',
             $href,
-            $name
+            $name,
         );
         return $l;
     }

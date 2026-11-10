@@ -121,7 +121,7 @@ class CustomFields extends AdminController
             'min' => 0,
             'max' => 0,
             'default_value' => '',
-            'placeholder' => ''
+            'placeholder' => '',
         ];
         $currentFields = array_reduce($form, function ($currentFields, $field) use ($defaultValues) {
             $subTypes = ['address', 'facultyadvisor'];
@@ -205,7 +205,7 @@ class CustomFields extends AdminController
                         'value'      => (isset($opt['value']) ? (string) $opt['value'] : ''),
                         'checked'    => (isset($opt['selected']) ? (int) $opt['selected'] : 0),
                         'ordering'   => $j + 1,
-                        'dependents' => json_encode($dependents)
+                        'dependents' => json_encode($dependents),
                     ]);
 
                     if (!$option->save()) {

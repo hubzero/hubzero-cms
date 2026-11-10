@@ -18,14 +18,14 @@ $bdcolor = [
     'major'    => '#e9e1bc',
     'normal'   => '#e1e1e1',
     'minor'    => '#bccbe9',
-    'trivial'  => '#bce1e9'
+    'trivial'  => '#bce1e9',
 ];
 $bgcolor = [
     'critical' => '#ffd3d4',
     'major'    => '#fbf1be',
     'normal'   => '#f1f1f1',
     'minor'    => '#d3e3ff',
-    'trivial'  => '#d3f9ff'
+    'trivial'  => '#d3f9ff',
 ];
 $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id=';
 $site = rtrim(Request::base(), '/');

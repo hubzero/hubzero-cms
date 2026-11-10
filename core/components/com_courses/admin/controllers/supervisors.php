@@ -48,7 +48,7 @@ class Supervisors extends AdminController
         $managers = $model->managers([
             'student'     => 0,
             'section_id'  => [0, $section],
-            'offering_id' => [0, $id]
+            'offering_id' => [0, $id],
         ]);
 
         // Incoming host

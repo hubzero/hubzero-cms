@@ -81,7 +81,7 @@ class ValidationError implements \Stringable, \JsonSerializable
         string $rule,
         string $message,
         array $params = [],
-        $value = null
+        $value = null,
     ) {
         $this->field = $field;
         $this->rule = $rule;

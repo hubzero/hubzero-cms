@@ -51,7 +51,7 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
             $this->cilogon = new \CILogon\OAuth2\Client\Provider\CILogon([
                 'clientId' => $this->params->get('app_id'),
                 'clientSecret' => $this->params->get('app_secret'),
-                'redirectUri' => $redirect
+                'redirectUri' => $redirect,
             ]);
         }
 
@@ -116,7 +116,7 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return),
                 Lang::txt('PLG_AUTHENTICATION_CILOGON_MUST_AUTHORIZE_TO_LOGIN', Config::get('sitename')),
-                'error'
+                'error',
             );
         }
     }
@@ -142,7 +142,7 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
         $provider = $this->cilogon();
 
         $authParams = [
-            'scope' => ['openid', 'email', 'profile', 'org.cilogon.userinfo']
+            'scope' => ['openid', 'email', 'profile', 'org.cilogon.userinfo'],
         ];
 
         // Optionally restrict logins to specific identity providers. When a
@@ -275,7 +275,7 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
                 // Set cookie with login preference info
                 $prefs = [
                     'user_id'       => $user->get('id'),
-                    'authenticator' => 'cilogon'
+                    'authenticator' => 'cilogon',
                 ];
 
                 $namespace = 'authenticator';
@@ -320,7 +320,7 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
                 App::redirect(
                     Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
                     Lang::txt('PLG_AUTHENTICATION_CILOGON_ERROR_RETRIEVING_PROFILE', $e->getMessage()),
-                    'error'
+                    'error',
                 );
                 return;
             }
@@ -335,7 +335,7 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
                     App::redirect(
                         Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
                         Lang::txt('PLG_AUTHENTICATION_CILOGON_IDP_NOT_ALLOWED'),
-                        'error'
+                        'error',
                     );
                     return;
                 }
@@ -349,7 +349,7 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
                 App::redirect(
                     Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
                     Lang::txt('PLG_AUTHENTICATION_CILOGON_ACCOUNT_ALREADY_LINKED'),
-                    'error'
+                    'error',
                 );
             } else {
                 $hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'cilogon', null, $id);
@@ -370,7 +370,7 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
             App::redirect(
                 Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
                 Lang::txt('PLG_AUTHENTICATION_CILOGON_MUST_AUTHORIZE_TO_LINK', Config::get('sitename')),
-                'error'
+                'error',
             );
         }
     }

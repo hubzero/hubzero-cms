@@ -141,7 +141,7 @@ class Reviews extends Plugin
             $this->params->set('access-view-' . $assetType, true);
 
             $actions = [
-                'admin', 'manage', 'edit', 'edit-own', 'create', 'delete'
+                'admin', 'manage', 'edit', 'edit-own', 'create', 'delete',
             ];
 
             $yearFormat  = "Y";
@@ -233,7 +233,7 @@ class Reviews extends Plugin
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             Lang::txt('PLG_COURSES_REVIEWS_LOGIN_NOTICE'),
-            'warning'
+            'warning',
         );
     }
 
@@ -296,7 +296,7 @@ class Reviews extends Plugin
             App::redirect(
                 $this->url,
                 $this->getError(),
-                'error'
+                'error',
             );
             return;
         }
@@ -310,7 +310,7 @@ class Reviews extends Plugin
             App::redirect(
                 $this->url,
                 Lang::txt('PLG_COURSES_REVIEWS_VOTE_SAVED'),
-                'message'
+                'message',
             );
             return;
         }
@@ -337,7 +337,7 @@ class Reviews extends Plugin
             ->whereEquals('parent', 0)
             ->whereIn('state', [
                 \Components\Courses\Models\Comment::STATE_PUBLISHED,
-                \Components\Courses\Models\Comment::STATE_FLAGGED
+                \Components\Courses\Models\Comment::STATE_FLAGGED,
             ])
             ->limit($this->params->get('display_limit', 25))
             ->ordered()
@@ -388,7 +388,7 @@ class Reviews extends Plugin
                 App::redirect(
                     $this->url,
                     Lang::txt('PLG_COURSES_REVIEWS_NOTAUTH'),
-                    'warning'
+                    'warning',
                 );
                 return;
             }
@@ -430,14 +430,14 @@ class Reviews extends Plugin
                 App::redirect(
                     $this->url,
                     Lang::txt('PLG_COURSES_REVIEWS_NOTAUTH'),
-                    'warning'
+                    'warning',
                 );
             }
         } elseif (!$this->params->get('access-create-comment')) {
             App::redirect(
                 $this->url,
                 Lang::txt('PLG_COURSES_REVIEWS_NOTAUTH'),
-                'warning'
+                'warning',
             );
         }
 
@@ -446,14 +446,14 @@ class Reviews extends Plugin
             App::redirect(
                 $this->url,
                 $row->getError(),
-                'error'
+                'error',
             );
         }
 
         App::redirect(
             $this->url,
             Lang::txt('PLG_COURSES_REVIEWS_SAVED'),
-            'message'
+            'message',
         );
     }
 
@@ -516,7 +516,7 @@ class Reviews extends Plugin
         App::redirect(
             $this->url,
             Lang::txt('PLG_COURSES_REVIEWS_REMOVED'),
-            'message'
+            'message',
         );
     }
 }

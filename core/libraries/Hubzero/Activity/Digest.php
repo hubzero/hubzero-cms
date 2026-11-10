@@ -43,7 +43,7 @@ class Digest extends Relational
      */
     protected $rules = [
         'scope'    => 'notempty',
-        'scope_id' => 'positive|nonzero'
+        'scope_id' => 'positive|nonzero',
     ];
 
     /**

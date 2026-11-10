@@ -88,11 +88,11 @@ class Notes extends Base
                             'default'       => '',
                             'maxlength'     => '3000',
                             'cols'          => '50',
-                            'rows'          => '6'
-                        ]
-                    ]
+                            'rows'          => '6',
+                        ],
+                    ],
                 ],
-                'params'    => [ 'required' => 0, 'published_editing' => 0, 'collapse_elements' => 1 ]
+                'params'    => [ 'required' => 0, 'published_editing' => 0, 'collapse_elements' => 1 ],
             ];
 
             return json_decode(json_encode($manifest), false);

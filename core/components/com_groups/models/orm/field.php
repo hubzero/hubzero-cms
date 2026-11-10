@@ -54,7 +54,7 @@ class Field extends Relational
      */
     protected $rules = [
         'label' => 'notempty',
-        'type'  => 'notempty'
+        'type'  => 'notempty',
     ];
 
     /**
@@ -65,7 +65,7 @@ class Field extends Relational
     public $initiate = [
         'ordering',
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**
@@ -83,7 +83,7 @@ class Field extends Relational
         'readonly',
         'disabled',
         'multiple',
-        'parent_option'
+        'parent_option',
     ];
 
     /**

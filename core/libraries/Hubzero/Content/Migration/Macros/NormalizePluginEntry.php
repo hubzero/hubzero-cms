@@ -33,7 +33,7 @@ class NormalizePluginEntry extends Macro
         if (!$this->db->tableExists('#__extensions')) {
             $this->log(
                 sprintf('Required table not found for plugin "plg_%s_%s"', $folder, $element),
-                'warning'
+                'warning',
             );
 
             return false;

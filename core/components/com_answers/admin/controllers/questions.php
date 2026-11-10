@@ -53,30 +53,30 @@ class Questions extends AdminController
             'tag' => Request::getstate(
                 $this->_option . '.' . $this->_controller . '.tag',
                 'tag',
-                ''
+                '',
             ),
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             ),
             'state' => Request::getstate(
                 $this->_option . '.' . $this->_controller . '.state',
                 'state',
                 -1,
-                'int'
+                'int',
             ),
             // Sorting
             'sort' => Request::getstate(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'created'
+                'created',
             ),
             'sort_Dir' => Request::getstate(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'DESC'
-            )
+                'DESC',
+            ),
         ];
 
         $records = Question::all()

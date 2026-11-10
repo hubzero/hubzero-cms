@@ -86,11 +86,11 @@ class Polls extends SiteController
         //Set pathway information
         Pathway::append(
             Lang::txt('COM_POLL'),
-            Route::url('index.php?option=' . $this->_option)
+            Route::url('index.php?option=' . $this->_option),
         );
         Pathway::append(
             $poll->get('title'),
-            Route::url('index.php?option=' . $this->_option . '&id=' . $poll->get('id') . ':' . $poll->get('alias'))
+            Route::url('index.php?option=' . $this->_option . '&id=' . $poll->get('id') . ':' . $poll->get('alias')),
         );
 
         $params->def('show_page_title', 1);
@@ -147,8 +147,8 @@ class Polls extends SiteController
                 'class="inputbox" size="1" onchange="' . $onchange . '"',
                 'url',
                 'title',
-                Route::url('index.php?option=com_poll&id=' . $poll->get('id') . ':' . $poll->get('alias'))
-            )
+                Route::url('index.php?option=com_poll&id=' . $poll->get('id') . ':' . $poll->get('alias')),
+            ),
         ];
 
         $graphwidth = 200;
@@ -245,11 +245,11 @@ class Polls extends SiteController
         //Set pathway information
         Pathway::append(
             Lang::txt('COM_POLL'),
-            Route::url('index.php?option=' . $this->_option)
+            Route::url('index.php?option=' . $this->_option),
         );
         Pathway::append(
             $poll->get('title'),
-            Route::url('index.php?option=' . $this->_option . '&id=' . $poll->get('id') . ':' . $poll->get('alias'))
+            Route::url('index.php?option=' . $this->_option . '&id=' . $poll->get('id') . ':' . $poll->get('alias')),
         );
 
         $params->def('show_page_title', 1);
@@ -318,7 +318,7 @@ class Polls extends SiteController
         $itemid = isset($items[0]) ? '&Itemid=' . $items[0]->id : '';
 
         App::redirect(
-            Route::url('index.php?option=com_poll&id=' . $poll_id . ':' . $poll->get('alias') . $itemid, false)
+            Route::url('index.php?option=com_poll&id=' . $poll_id . ':' . $poll->get('alias') . $itemid, false),
         );
     }
 }

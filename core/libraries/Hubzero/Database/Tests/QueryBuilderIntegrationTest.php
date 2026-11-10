@@ -224,7 +224,7 @@ class QueryBuilderIntegrationTest extends AbstractDriverTestCase
         $result = $query->push(self::$testTable, [
             'name' => 'Dave',
             'email' => 'dave@example.com',
-            'age' => 28
+            'age' => 28,
         ]);
 
         $this->assertTrue($result > 0, "[$dbName] Insert should return insert ID");
@@ -287,7 +287,7 @@ class QueryBuilderIntegrationTest extends AbstractDriverTestCase
         $insertId = $query->push(self::$testTable, [
             'name' => 'Frank',
             'email' => 'frank@example.com',
-            'age' => 40
+            'age' => 40,
         ]);
 
         $this->assertTrue($insertId > 0, "[$dbName] Insert should return insert ID");

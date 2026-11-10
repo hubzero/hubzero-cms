@@ -56,7 +56,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     protected $rules = [
         'title'    => 'notempty',
         'content'  => 'notempty',
-        'scope'    => 'notempty'
+        'scope'    => 'notempty',
     ];
 
     /**
@@ -67,7 +67,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     public $always = [
         'alias',
         'publish_up',
-        'publish_down'
+        'publish_down',
     ];
 
     /**
@@ -78,7 +78,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     public $initiate = [
         'created',
         'created_by',
-        'params'
+        'params',
     ];
 
     /**
@@ -87,7 +87,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      * @var array
      */
     protected $parsed = [
-        'content'
+        'content',
     ];
 
     /**
@@ -469,7 +469,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 
             if (!class_exists($cls)) {
                 throw new \InvalidArgumentException(
-                    Lang::txt('Invalid scope of "%s" for entry #%s', $scope, $this->get('id'))
+                    Lang::txt('Invalid scope of "%s" for entry #%s', $scope, $this->get('id')),
                 );
             }
 
@@ -580,7 +580,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
                 'pagename' => $this->get('alias'),
                 'pageid'   => 0,
                 'filepath' => $this->adapter()->get('path'),
-                'domain'   => ''
+                'domain'   => '',
             ];
 
             $this->$property = Html::content('prepare', $this->get($field, ''), $params);
@@ -627,7 +627,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
                 foreach (['admin', 'manage', 'delete', 'edit', 'edit-state', 'edit-own'] as $option) {
                     $this->params->set(
                         'access-' . $option . '-entry',
-                        User::authorise('core.' . ($option == 'admin' ? 'admin' : 'manage'), $this->get('id'))
+                        User::authorise('core.' . ($option == 'admin' ? 'admin' : 'manage'), $this->get('id')),
                     );
                 }
 
@@ -701,7 +701,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
             $results = Event::trigger('content.onContentBeforeSave', [
                 'com_blog.entry.content',
                 &$this,
-                $this->isNew()
+                $this->isNew(),
             ]);
 
             foreach ($results as $result) {
@@ -805,7 +805,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
                     'description' => $description,
                     'access_level' => $tag->admin == 0 ? 'public' : 'private',
                     'type' => 'blog-tag',
-                    'badge_b' => $label == 'badge' ? true : false
+                    'badge_b' => $label == 'badge' ? true : false,
                 ];
             }
         }

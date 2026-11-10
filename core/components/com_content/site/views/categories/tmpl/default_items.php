@@ -33,7 +33,7 @@ if (count($this->items[$this->parent->id]) > 0 && $this->maxLevelcat != 0) : ?>
                     <span class="item-title">
                         <?php
                         $catUrl = Route::url(
-                            \Components\Content\Site\Helpers\Route::getCategoryRoute($item->id)
+                            \Components\Content\Site\Helpers\Route::getCategoryRoute($item->id),
                         );
                         ?>
                         <a href="<?php echo $catUrl; ?>">
@@ -49,7 +49,7 @@ if (count($this->items[$this->parent->id]) > 0 && $this->maxLevelcat != 0) : ?>
                                     'prepare',
                                     $item->description,
                                     '',
-                                    'com_content.categories'
+                                    'com_content.categories',
                                 );
                                 ?>
                             </div>

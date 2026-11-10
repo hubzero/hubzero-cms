@@ -31,7 +31,7 @@ class Stats extends AdminController
             'group' => Request::getString('group', ''),
             'sort'  => Request::getString('sort', 'name'),
             'year'  => Request::getInt('year', Date::of('now')->format('Y')),
-            'month' => Date::of('now')->format('m')
+            'month' => Date::of('now')->format('m'),
         ];
 
         $filters['type'] = ($filters['type'] == 'automatic') ? 1 : 0;

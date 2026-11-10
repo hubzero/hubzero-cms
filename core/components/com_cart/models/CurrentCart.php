@@ -338,7 +338,7 @@ class CurrentCart extends Cart
         }
 
         App::redirect(
-            $redirect_url
+            $redirect_url,
         );
     }
 

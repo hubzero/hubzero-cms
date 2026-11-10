@@ -55,7 +55,7 @@ class QueryFolder extends Relational
      * @var  array
      */
     protected $rules = [
-        'title'   => 'notempty'
+        'title'   => 'notempty',
     ];
 
     /**
@@ -66,7 +66,7 @@ class QueryFolder extends Relational
     public $always = [
         'alias',
         'modified',
-        'modified_by'
+        'modified_by',
     ];
 
     /**
@@ -77,7 +77,7 @@ class QueryFolder extends Relational
     public $initiate = [
         'created',
         'created_by',
-        'ordering'
+        'ordering',
     ];
 
     /**

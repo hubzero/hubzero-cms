@@ -18,7 +18,7 @@ $canDo = \Components\Collections\Helpers\Permissions::getActions('post');
 
 Toolbar::title(
     Lang::txt('COM_COLLECTIONS') . ': ' . Lang::txt('COM_COLLECTIONS_POSTS'),
-    'collections'
+    'collections',
 );
 if ($canDo->get('core.create')) {
     Toolbar::addNew();
@@ -31,7 +31,7 @@ if ($canDo->get('core.delete')) {
 }
 
 $formAction = Route::url(
-    'index.php?option=' . $this->option . '&controller=' . $this->controller
+    'index.php?option=' . $this->option . '&controller=' . $this->controller,
 );
 $sortDir = @$this->filters['sort_Dir'];
 $sort = @$this->filters['sort'];
@@ -64,7 +64,7 @@ $sort = @$this->filters['sort'];
                     <th colspan="7">
                         <?php
                         $collection = \Components\Collections\Models\Orm\Collection::oneOrFail(
-                            $this->filters['collection_id']
+                            $this->filters['collection_id'],
                         );
                         ?>
                         (<?php echo $this->escape(stripslashes($collection->get('alias'))); ?>)
@@ -163,7 +163,7 @@ $sort = @$this->filters['sort'];
                         $editUrl = Route::url(
                             'index.php?option=' . $this->option
                             . '&controller=' . $this->controller
-                            . '&task=edit&id=' . $row->get('id')
+                            . '&task=edit&id=' . $row->get('id'),
                         );
                         ?>
                         <a href="<?php echo $editUrl; ?>">
@@ -185,7 +185,7 @@ $sort = @$this->filters['sort'];
                         <?php
                         $creatorName = $row->creator->get(
                             'name',
-                            Lang::txt('COM_COLLECTIONS_UNKNOWN')
+                            Lang::txt('COM_COLLECTIONS_UNKNOWN'),
                         );
                         echo $this->escape($creatorName);
                         ?>
@@ -196,7 +196,7 @@ $sort = @$this->filters['sort'];
                         <?php
                         $itemEditUrl = Route::url(
                             'index.php?option=' . $this->option
-                            . '&controller=items&task=edit&id=' . $row->get('item_id')
+                            . '&controller=items&task=edit&id=' . $row->get('item_id'),
                         );
                         ?>
                         <a href="<?php echo $itemEditUrl; ?>">
@@ -215,7 +215,7 @@ $sort = @$this->filters['sort'];
                             $collEditUrl = Route::url(
                                 'index.php?option=' . $this->option
                                 . '&controller=collections&task=edit&id='
-                                . $row->get('collection_id')
+                                . $row->get('collection_id'),
                             );
                             ?>
                             <a href="<?php echo $collEditUrl; ?>">

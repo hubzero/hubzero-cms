@@ -54,7 +54,7 @@ $this->css();
                     <?php
                     $subject = \Hubzero\Utility\Str::truncate(
                         strip_tags($this->openquestions[$i]->subject),
-                        60
+                        60,
                     );
                     echo $this->escape($subject);
                     ?>
@@ -99,7 +99,7 @@ $this->css();
                         <?php
                         $subject = \Hubzero\Utility\Str::truncate(
                             strip_tags($this->assigned[$i]->subject),
-                            60
+                            60,
                         );
                         echo $this->escape($subject);
                         ?>
@@ -124,7 +124,7 @@ $this->css();
 <?php if ($this->show_interests) { // Questions of interest ?>
     <?php
     $interestUrl = Route::url(
-        'index.php?option=com_answers&task=search&area=interest&filterby=open'
+        'index.php?option=com_answers&task=search&area=interest&filterby=open',
     );
     ?>
     <h4>
@@ -165,7 +165,7 @@ $this->css();
                         <?php
                         $subject = \Hubzero\Utility\Str::truncate(
                             strip_tags($this->otherquestions[$i]->subject),
-                            60
+                            60,
                         );
                         echo $this->escape($subject);
                         ?>

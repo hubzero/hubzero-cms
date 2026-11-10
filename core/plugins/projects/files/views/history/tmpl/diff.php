@@ -41,14 +41,14 @@ $endPath = ' &raquo; <span class="subheader"><a href="' . $this->url . '/?action
         'rev'   => $rev1Parts[0],
         'hash'  => $rev1Parts[1],
         'fpath' => $rev1Parts[2],
-        'val'   => urlencode($this->params['rev1'])
+        'val'   => urlencode($this->params['rev1']),
     ];
 
     $new = [
         'rev'   => $rev2Parts[0],
         'hash'  => $rev2Parts[1],
         'fpath' => $rev2Parts[2],
-        'val'   => urlencode($this->params['rev2'])
+        'val'   => urlencode($this->params['rev2']),
     ];
     ?>
 

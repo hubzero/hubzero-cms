@@ -48,7 +48,7 @@ class Newsletter extends AbstractComponent
             'mailinglists' => Lang::txt('COM_NEWSLETTER_LISTS'),
             'templates'    => Lang::txt('COM_NEWSLETTER_TEMPLATES'),
             'tools'        => Lang::txt('COM_NEWSLETTER_TOOLS'),
-            'campaigns'    => Lang::txt('COM_NEWSLETTER_CAMPAIGNS')
+            'campaigns'    => Lang::txt('COM_NEWSLETTER_CAMPAIGNS'),
         ];
 
         foreach ($menuItems as $k => $v) {

@@ -77,7 +77,7 @@ $this->css('import');
                     'COM_GROUPS_IMPORT_DISPLAY_FIELD_NAME',
                     'name',
                     @$this->filters['sort_Dir'],
-                    @$this->filters['sort']
+                    @$this->filters['sort'],
                 ); ?>
                 <th scope="col"><?php echo $val; ?></th>
                 <?php $txt = Lang::txt('COM_GROUPS_IMPORT_DISPLAY_FIELD_NUMRECORDS'); ?>
@@ -87,7 +87,7 @@ $this->css('import');
                     'COM_GROUPS_IMPORT_DISPLAY_FIELD_CREATED',
                     'created_at',
                     @$this->filters['sort_Dir'],
-                    @$this->filters['sort']
+                    @$this->filters['sort'],
                 ); ?>
                 <th scope="col" class="priority-3"><?php echo $val; ?></th>
                 <?php $val = Html::grid(
@@ -95,7 +95,7 @@ $this->css('import');
                     'COM_GROUPS_IMPORT_DISPLAY_FIELD_LASTRUN',
                     'ran_at',
                     @$this->filters['sort_Dir'],
-                    @$this->filters['sort']
+                    @$this->filters['sort'],
                 ); ?>
                 <th scope="col"><?php echo $val; ?></th>
                 <?php $txt = Lang::txt('COM_GROUPS_IMPORT_DISPLAY_FIELD_RUNCOUNT'); ?>
@@ -138,7 +138,7 @@ $this->css('import');
                                     '&controller=' .
                                     $this->controller .
                                     '&task=edit&id=' .
-                                    $import->get('id')
+                                    $import->get('id'),
                                 );
                                 ?>
                                 <a href="<?php echo $url; ?>">

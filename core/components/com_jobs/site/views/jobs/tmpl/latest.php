@@ -23,7 +23,7 @@ defined('_HZEXEC_') or die();
                 $view = new \Hubzero\Component\View([
                     'base_path' => Component::path('com_jobs') . DS . 'site',
                     'name'      => 'jobs',
-                    'layout'    => '_list'
+                    'layout'    => '_list',
                 ]);
                 $view->set('option', $this->option)
                     ->set('filters', $this->filters)

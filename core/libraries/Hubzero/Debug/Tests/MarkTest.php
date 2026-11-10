@@ -134,7 +134,7 @@ class MarkTest extends Basic
             'label'  => 'test',
             'start'  => 0.0,
             'end'    => 1.5,
-            'memory' => 1048576
+            'memory' => 1048576,
         ];
 
         $this->assertEquals($mark->toArray(), $result);

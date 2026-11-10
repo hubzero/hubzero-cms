@@ -43,7 +43,7 @@ $formId = ($tmpl == 'component') ? 'component' : 'item';
 $invalidMsg = Lang::txt('COM_GROUPS_ERROR_MISSING_INFORMATION');
 $redirectUrl = Route::url(
     'index.php?option=' . $this->option .
-    '&controller=membership&gid=' . $this->group->get('cn')
+    '&controller=membership&gid=' . $this->group->get('cn'),
 );
 ?>
 <form

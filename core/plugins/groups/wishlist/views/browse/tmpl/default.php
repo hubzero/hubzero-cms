@@ -140,7 +140,7 @@ $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . 
                                 $view = new \Hubzero\Component\View([
                                     'base_path' => Component::path('com_wishlist') . DS . 'site',
                                     'name'      => 'wishlists',
-                                    'layout'    => '_vote'
+                                    'layout'    => '_vote',
                                 ]);
                                 $view->set('option', 'com_wishlist')
                                      ->set('item', $item)

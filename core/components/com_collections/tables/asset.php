@@ -92,7 +92,7 @@ class Asset extends Table
 
         $fields = [
             'item_id'  => (int) $item_id,
-            'filename' => (string) $oid
+            'filename' => (string) $oid,
         ];
 
         return parent::load($fields);

@@ -112,7 +112,7 @@ class Curation extends SiteController
         $this->view->pageNav = new \Hubzero\Pagination\Paginator(
             $this->view->total,
             $this->view->filters['start'],
-            $this->view->filters['limit']
+            $this->view->filters['limit'],
         );
 
         // Set page title
@@ -157,18 +157,18 @@ class Curation extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         Pathway::append(
             Lang::txt('COM_PUBLICATIONS_CURATION'),
-            'index.php?option=' . $this->_option . '&controller=' . $this->_controller .  '&task=display'
+            'index.php?option=' . $this->_option . '&controller=' . $this->_controller .  '&task=display',
         );
 
         if ($this->_pub) {
             Pathway::append(
                 $this->_pub->title,
-                'index.php?option=' . $this->_option . '&controller=' . $this->_controller .  '&task=view&id=' . $this->_pub->id
+                'index.php?option=' . $this->_option . '&controller=' . $this->_controller .  '&task=view&id=' . $this->_pub->id,
             );
         }
     }
@@ -202,7 +202,7 @@ class Curation extends SiteController
             Notify::warning(Lang::txt('COM_PUBLICATIONS_CURATION_PUB_WRONG_STATUS'));
 
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=curation', false)
+                Route::url('index.php?option=' . $this->_option . '&controller=curation', false),
             );
             return;
         }
@@ -393,7 +393,7 @@ class Curation extends SiteController
                         $this->_pub,
                         [$owner],
                         Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED_SUBJECT'),
-                        $message
+                        $message,
                     );
                 }
                 // Log assignment in history
@@ -445,7 +445,7 @@ class Curation extends SiteController
 
         // Redirect to main listing
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
         );
     }
 
@@ -618,7 +618,7 @@ class Curation extends SiteController
                             $eview = new \Hubzero\Mail\View([
                                 'base_path' => dirname(__DIR__),
                                 'name'      => 'emails',
-                                'layout'    => '_html'
+                                'layout'    => '_html',
                             ]);
 
                             $eview->publication = $this->_pub;
@@ -652,7 +652,7 @@ class Curation extends SiteController
 
         // Redirect to main listing
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
         );
     }
 
@@ -704,7 +704,7 @@ class Curation extends SiteController
 
         // Redirect to main listing
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
         );
     }
 
@@ -732,7 +732,7 @@ class Curation extends SiteController
         if (!$block || !$step) {
             echo json_encode([
                 'success' => 0,
-                'error'   => Lang::txt('Error parsing publication manifest')
+                'error'   => Lang::txt('Error parsing publication manifest'),
             ]);
             return;
         }
@@ -740,7 +740,7 @@ class Curation extends SiteController
         if ($action == 'fail' && !$review) {
             echo json_encode([
                 'success' => 0,
-                'error'   => Lang::txt('Please explain why the item requires changes')
+                'error'   => Lang::txt('Please explain why the item requires changes'),
             ]);
             return;
         }
@@ -752,7 +752,7 @@ class Curation extends SiteController
         if (!$this->_pub) {
             echo json_encode([
                 'success' => 0,
-                'error'   => Lang::txt('Error loading publication')
+                'error'   => Lang::txt('Error loading publication'),
             ]);
             return;
         }
@@ -761,7 +761,7 @@ class Curation extends SiteController
         if (!$this->_pub->access('curator')) {
             echo json_encode([
                 'success' => 0,
-                'error'  => Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED')
+                'error'  => Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED'),
             ]);
             return;
         }
@@ -787,13 +787,13 @@ class Curation extends SiteController
             echo json_encode([
                 'success' => 1,
                 'error'   => $this->getError(),
-                'notice'  => $notice
+                'notice'  => $notice,
             ]);
         } else {
             echo json_encode([
                 'success' => 0,
                 'error'   => Lang::txt('There was a problem saving curation item'),
-                'notice'  => ''
+                'notice'  => '',
             ]);
         }
     }
@@ -838,7 +838,7 @@ class Curation extends SiteController
             $pub->link('version'),
             'publication',
             0,
-            $admin = 1
+            $admin = 1,
         );
 
         // Start message
@@ -884,7 +884,7 @@ class Curation extends SiteController
             $authors,
             $subject,
             $message,
-            true
+            true,
         );
     }
 
@@ -949,7 +949,7 @@ class Curation extends SiteController
         Notify::warning($this->_msg);
 
         App::redirect(
-            Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)
+            Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false),
         );
     }
 

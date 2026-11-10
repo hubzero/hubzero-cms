@@ -36,7 +36,7 @@ if (file_exists(PATH_APP . DS . $this->group->getBasePath() . DS . 'pages' . DS 
                         $this->option .
                         '&cn=' .
                         $this->group->get('cn') .
-                        '&controller=media&task=filebrowser&tmpl=component&path=/uploads'
+                        '&controller=media&task=filebrowser&tmpl=component&path=/uploads',
                 ); ?>
                 <a class="icon-group group btn popup 1200x600" href="<?php echo $val; ?>">
                     <?php echo Lang::txt('COM_GROUPS_ACTION_UPLOAD_MANAGER'); ?>
@@ -64,18 +64,18 @@ if (file_exists(PATH_APP . DS . $this->group->getBasePath() . DS . 'pages' . DS 
     <div class="group-page-manager">
         <ul class="tabs clearfix">
             <?php $val1 = Route::url(
-                'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=pages#pages'
+                'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=pages#pages',
             ); ?>
             <?php $val = Lang::txt('COM_GROUPS_PAGES_MANAGE_PAGES'); ?>
             <li><a data-tab="pages" href="<?php echo $val1; ?>"><?php echo $val; ?></a></li>
             <?php $val1 = Route::url(
-                'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=pages#categories'
+                'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=pages#categories',
             ); ?>
             <?php $val = Lang::txt('COM_GROUPS_PAGES_MANAGE_PAGE_CATEGORIES'); ?>
             <li><a data-tab="categories" href="<?php echo $val1; ?>"><?php echo $val; ?></a></li>
             <?php if ($this->group->isSuperGroup() || $this->config->get('page_modules', 0) == 1) : ?>
                 <?php $val1 = Route::url(
-                    'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=pages#modules'
+                    'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=pages#modules',
                 ); ?>
                 <?php $val = Lang::txt('COM_GROUPS_PAGES_MANAGE_MODULES'); ?>
                 <li><a data-tab="modules" href="<?php echo $val1; ?>"><?php echo $val; ?></a></li>

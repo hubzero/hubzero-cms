@@ -226,7 +226,7 @@ class PgsqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                     'raw_type'  => $field->Type,
                     'allownull' => (strtoupper($field->Null) === 'YES'),
                     'default'   => $this->normalizeDefault($field->Default),
-                    'pk'        => ($field->Key === 'PRI')
+                    'pk'        => ($field->Key === 'PRI'),
                 ];
             }
         }
@@ -367,7 +367,7 @@ class PgsqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             'raw'      => $raw,
             'bindings' => [$value],
             'logical'  => $logical,
-            'depth'    => $depth
+            'depth'    => $depth,
         ];
     }
 
@@ -406,7 +406,7 @@ class PgsqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             'raw'      => $raw,
             'bindings' => [$jsonValue],
             'logical'  => $logical,
-            'depth'    => $depth
+            'depth'    => $depth,
         ];
     }
 
@@ -440,7 +440,7 @@ class PgsqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             'raw'      => $raw,
             'bindings' => [(int) $value],
             'logical'  => $logical,
-            'depth'    => $depth
+            'depth'    => $depth,
         ];
     }
 
@@ -508,7 +508,7 @@ class PgsqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             'raw'      => $raw,
             'bindings' => [$value],
             'logical'  => $logical,
-            'depth'    => $depth
+            'depth'    => $depth,
         ];
     }
 
@@ -549,7 +549,7 @@ class PgsqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             $this->bind(
                 is_string($this->upsertValues[$column])
                     ? trim($this->upsertValues[$column])
-                    : $this->upsertValues[$column]
+                    : $this->upsertValues[$column],
             );
         }
 
@@ -561,7 +561,7 @@ class PgsqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
 
         $quotedConflict = array_map(
             fn($col) => $this->connection->quoteName($col),
-            $conflictColumns
+            $conflictColumns,
         );
 
         $updates = [];
@@ -577,7 +577,7 @@ class PgsqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             implode(', ', $quotedColumns),
             implode(', ', $placeholders),
             implode(', ', $quotedConflict),
-            implode(', ', $updates)
+            implode(', ', $updates),
         );
     }
 
@@ -599,7 +599,7 @@ class PgsqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
         $columns = array_keys($this->upsertManyRows[0]);
         $quotedColumns = array_map(
             fn($col) => $this->connection->quoteName($col),
-            $columns
+            $columns,
         );
 
         $valueSets = [];
@@ -609,7 +609,7 @@ class PgsqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 $placeholders[] = '?';
                 $value = $row[$column] ?? null;
                 $this->bind(
-                    is_string($value) ? trim($value) : $value
+                    is_string($value) ? trim($value) : $value,
                 );
             }
             $valueSets[] = '(' . implode(', ', $placeholders) . ')';
@@ -621,7 +621,7 @@ class PgsqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
 
         $quotedConflict = array_map(
             fn($col) => $this->connection->quoteName($col),
-            $conflictColumns
+            $conflictColumns,
         );
 
         $updates = [];
@@ -637,7 +637,7 @@ class PgsqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             implode(', ', $quotedColumns),
             implode(', ', $valueSets),
             implode(', ', $quotedConflict),
-            implode(', ', $updates)
+            implode(', ', $updates),
         );
     }
 
@@ -683,7 +683,7 @@ class PgsqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             'INSERT INTO %s (%s) VALUES %s',
             $this->connection->quoteName($this->insertManyTable),
             implode(', ', $quotedColumns),
-            implode(', ', $valueSets)
+            implode(', ', $valueSets),
         );
 
         // PostgreSQL uses ON CONFLICT DO NOTHING for INSERT IGNORE behavior

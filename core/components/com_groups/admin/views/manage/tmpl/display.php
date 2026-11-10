@@ -52,7 +52,7 @@ Html::behavior('tooltip');
 
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 ?>
 
@@ -287,42 +287,42 @@ $formAction = Route::url(
                     'COM_GROUPS_ID',
                     'gidNumber',
                     $sortDir,
-                    $sort
+                    $sort,
                 );
                 $nameSort = Html::grid(
                     'sort',
                     'COM_GROUPS_NAME',
                     'description',
                     $sortDir,
-                    $sort
+                    $sort,
                 );
                 $cnSort = Html::grid(
                     'sort',
                     'COM_GROUPS_CN',
                     'cn',
                     $sortDir,
-                    $sort
+                    $sort,
                 );
                 $typeSort = Html::grid(
                     'sort',
                     'COM_GROUPS_TYPE',
                     'type',
                     $sortDir,
-                    $sort
+                    $sort,
                 );
                 $pubSort = Html::grid(
                     'sort',
                     'COM_GROUPS_PUBLISHED',
                     'published',
                     $sortDir,
-                    $sort
+                    $sort,
                 );
                 $appSort = Html::grid(
                     'sort',
                     'COM_GROUPS_APPROVED',
                     'approved',
                     $sortDir,
-                    $sort
+                    $sort,
                 );
                 ?>
                 <th scope="col" class="priority-6">
@@ -358,7 +358,7 @@ $formAction = Route::url(
                 echo $this->pagination(
                     $this->total,
                     $this->filters['start'],
-                    $this->filters['limit']
+                    $this->filters['limit'],
                 );
                 ?></td>
             </tr>
@@ -438,7 +438,7 @@ $formAction = Route::url(
             $editUrl = Route::url(
                 'index.php?option=' . $this->option
                 . '&controller=' . $this->controller
-                . '&task=edit&id=' . $row->cn
+                . '&task=edit&id=' . $row->cn,
             );
             $noneTxt = Lang::txt('COM_GROUPS_NONE');
             $descDisplay = $row->description
@@ -450,33 +450,33 @@ $formAction = Route::url(
                 'index.php?option=' . $this->option
                 . '&controller=' . $this->controller
                 . '&task=publish&id=' . $row->cn
-                . '&' . $token . '=1'
+                . '&' . $token . '=1',
             );
             $unpublishUrl = Route::url(
                 'index.php?option=' . $this->option
                 . '&controller=' . $this->controller
                 . '&task=unpublish&id=' . $row->cn
-                . '&' . $token . '=1'
+                . '&' . $token . '=1',
             );
             $approveUrl = Route::url(
                 'index.php?option=' . $this->option
                 . '&controller=' . $this->controller
                 . '&task=approve&id=' . $row->cn
-                . '&' . $token . '=1'
+                . '&' . $token . '=1',
             );
             $unapproveUrl = Route::url(
                 'index.php?option=' . $this->option
                 . '&controller=' . $this->controller
                 . '&task=unapprove&id=' . $row->cn
-                . '&' . $token . '=1'
+                . '&' . $token . '=1',
             );
             $memberUrl = Route::url(
                 'index.php?option=' . $this->option
-                . '&controller=membership&gid=' . $row->cn
+                . '&controller=membership&gid=' . $row->cn,
             );
             $pagesUrl = Route::url(
                 'index.php?option=' . $this->option
-                . '&controller=pages&gid=' . $row->cn
+                . '&controller=pages&gid=' . $row->cn,
             );
             $memberTip = Lang::txt('COM_GROUPS_MANAGE_MEMBERSHIP')
                 . '::' . $tip;

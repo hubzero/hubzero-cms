@@ -55,7 +55,7 @@ $this->css(
 		table#ticket-comments>tbody>tr>td {
 			padding: 0 !important;
 		}
-	}'
+	}',
 );
 
 $tblStyle = 'border-collapse: collapse;'
@@ -204,7 +204,7 @@ $tdStyleL = 'text-align: left; padding: 0 0.5em;';
                                         <?php echo Lang::txt(
                                             'COM_SUPPORT_TICKET_CREATED',
                                             $this->ticket->created('time'),
-                                            $this->ticket->created('date')
+                                            $this->ticket->created('date'),
                                         ); ?>
                                     </td>
                                 </tr>
@@ -260,7 +260,7 @@ $tdStyleL = 'text-align: left; padding: 0 0.5em;';
                                         <?php echo Lang::txt(
                                             'COM_SUPPORT_NOTIFY_TICKET_UPDATED',
                                             $this->ticket->get('id'),
-                                            $link
+                                            $link,
                                         ); ?>
                                     </td>
                                 </tr>
@@ -316,7 +316,7 @@ $tdStyleL = 'text-align: left; padding: 0 0.5em;';
                             <?php echo Lang::txt(
                                 'COM_SUPPORT_TICKET_CREATED',
                                 $this->comment->created('time'),
-                                $this->comment->created('date')
+                                $this->comment->created('date'),
                             ); ?>
                         </span>
                     </th>
@@ -358,7 +358,7 @@ $tdStyleL = 'text-align: left; padding: 0 0.5em;';
                                                         'COM_SUPPORT_CHANGELOG_BEFORE_AFTER',
                                                         $fieldSpan,
                                                         $beforeSpan,
-                                                        $afterSpan
+                                                        $afterSpan,
                                                     ) . '</td>';
                                             } elseif ($type == 'notifications') {
                                                 $clog .= '<td width="100%"'
@@ -368,7 +368,7 @@ $tdStyleL = 'text-align: left; padding: 0 0.5em;';
                                                         'COM_SUPPORT_CHANGELOG_NOTIFIED',
                                                         '</span> ' . $items->name,
                                                         $items->role,
-                                                        $items->address
+                                                        $items->address,
                                                     ) . '</td>';
                                             }
                                             $clog .= '</tr>';

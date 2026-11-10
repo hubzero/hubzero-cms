@@ -22,17 +22,17 @@ class Migration20190221000000ComWishlist extends Base
      **/
     public static $tables = [
         '#__wishlist' => [
-            'created'
+            'created',
         ],
         '#__wishlist_item' => [
             'proposed',
             'granted',
-            'due'
+            'due',
         ],
         '#__wishlist_vote' => [
             'voted',
-            'due'
-        ]
+            'due',
+        ],
     ];
 
     /**

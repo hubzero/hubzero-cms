@@ -94,7 +94,7 @@ if ($this->pub->state == 5 || $this->pub->state == 0 || !$this->pub->project()->
                 $this->pub->link('editversion')
                 . '&section=' . $blockname
                 . '&step=' . $blockId
-                . '&move=continue'
+                . '&move=continue',
             );
             $classAttr = $class ? 'class="' . $class . '"' : '';
             ?>

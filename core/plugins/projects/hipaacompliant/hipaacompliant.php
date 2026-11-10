@@ -67,7 +67,7 @@ class Hipaacompliant extends Plugin
                 App::redirect(
                     Route::url($pub->link('editbase')),
                     Lang::txt('Please select if the uploaded materials contain potentially sensitive data or not.'),
-                    'warning'
+                    'warning',
                 );
             }
 
@@ -77,9 +77,9 @@ class Hipaacompliant extends Plugin
                         Route::url($pub->link('editbase')),
                         Lang::txt(
                             'If materials are marked as containing potentially sensitive data, '
-                            . 'the Publication must be private to a group.'
+                            . 'the Publication must be private to a group.',
                         ),
-                        'warning'
+                        'warning',
                     );
                 }
             }

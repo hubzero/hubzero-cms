@@ -30,13 +30,13 @@ $defaultTitle = $this->manifest->params->title
             ? str_replace(
                 '{pubtitle}',
                 $this->pub->title,
-                $this->manifest->params->title
+                $this->manifest->params->title,
             ) : null;
 $defaultTitle = $this->manifest->params->title
             ? str_replace(
                 '{pubversion}',
                 $this->pub->version_label,
-                $defaultTitle
+                $defaultTitle,
             ) : null;
 
 $error          = $this->status->getError();
@@ -92,7 +92,7 @@ if ($this->name == 'curator') {
         $this->pub,
         $this->master->blockId,
         $this->elementId,
-        'curator'
+        'curator',
     );
 }
 ?>
@@ -120,7 +120,7 @@ if ($this->name == 'curator') {
                 $props,
                 $curatorStatus,
                 $checkerUrl,
-                $this->manifest->label
+                $this->manifest->label,
             );
             ?>
         <div class="block-subject">
@@ -155,7 +155,7 @@ if ($this->name == 'curator') {
                         $this->type,
                         $att,
                         $this,
-                        $i
+                        $i,
                     );
                     if ($data) {
                         $i++;
@@ -165,7 +165,7 @@ if ($this->name == 'curator') {
                             $att->type,
                             $data,
                             $this->manifest->params->typeParams,
-                            $handler
+                            $handler,
                         );
                     }
                 } ?>

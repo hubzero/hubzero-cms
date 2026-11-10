@@ -40,7 +40,7 @@ class Migration20141110143234ComMembers extends Base
                     'industry'                => 'Industry / Private Company',
                     'government'              => 'Government Agency',
                     'military'                => 'Military',
-                    'unemployed'              => 'Retired / Unemployed'
+                    'unemployed'              => 'Retired / Unemployed',
                 ];
 
                 foreach ($types as $alias => $title) {

@@ -113,7 +113,7 @@ foreach ($this->notifications as $notification) {
                         $pageNav = $this->pagination(
                             $this->total,
                             $this->filters['start'],
-                            $this->filters['limit']
+                            $this->filters['limit'],
                         );
                         $pageNav->setAdditionalUrlParam('index', $this->filters['index']);
                         $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);

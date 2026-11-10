@@ -72,7 +72,7 @@ class Date extends DateTime
         '8.75' => 'Australia/West', '9' => 'Asia/Tokyo', '9.5' => 'Australia/Adelaide', '10' => 'Australia/Brisbane',
         '10.5' => 'Australia/Lord_Howe', '11' => 'Pacific/Kosrae', '11.5' => 'Pacific/Norfolk',
             '12' => 'Pacific/Auckland',
-        '12.75' => 'Pacific/Chatham', '13' => 'Pacific/Tongatapu', '14' => 'Pacific/Kiritimati'
+        '12.75' => 'Pacific/Chatham', '13' => 'Pacific/Tongatapu', '14' => 'Pacific/Kiritimati',
     ];
 
     /**
@@ -187,7 +187,7 @@ class Date extends DateTime
                         $trace[0]['file'] .
                         ' on line ' .
                         $trace[0]['line'],
-                    E_USER_NOTICE
+                    E_USER_NOTICE,
                 );
         }
 

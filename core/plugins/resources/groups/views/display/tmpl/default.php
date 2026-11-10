@@ -23,12 +23,12 @@ if ($this->group) :
         $groupDesc = $this->escape(stripslashes($this->group->get('description')));
         $groupImgAlt = Lang::txt('PLG_RESOURCES_GROUPS_IMAGE', $groupDesc);
         $groupUrl = Route::url(
-            'index.php?option=com_groups&cn=' . $this->group->get('cn')
+            'index.php?option=com_groups&cn=' . $this->group->get('cn'),
         );
         $groupLink = '<a href="' . $groupUrl . '">' . $groupDesc . '</a>';
         $belongsText = Lang::txt(
             'PLG_RESOURCES_GROUPS_BELONGS_TO_GROUP',
-            $groupLink
+            $groupLink,
         );
         ?>
         <p class="group-img">
@@ -52,7 +52,7 @@ if ($this->group) :
             $aclDesc = $this->escape(stripslashes($group->get('description')));
             $aclAlt = Lang::txt('PLG_RESOURCES_GROUPS_IMAGE', $aclDesc);
             $aclUrl = Route::url(
-                'index.php?option=com_groups&cn=' . $group->get('cn')
+                'index.php?option=com_groups&cn=' . $group->get('cn'),
             );
             ?>
             <a href="<?php echo $aclUrl; ?>"

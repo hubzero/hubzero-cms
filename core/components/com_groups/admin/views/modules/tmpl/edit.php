@@ -49,7 +49,7 @@ Toolbar::cancel();
                         $states = [
                             1 => Lang::txt('COM_GROUPS_MODULES_STATUS_PUBLISHED'),
                             0 => Lang::txt('COM_GROUPS_MODULES_STATUS_UNPUBLISHED'),
-                            2 => Lang::txt('COM_GROUPS_MODULES_STATUS_DELETED')
+                            2 => Lang::txt('COM_GROUPS_MODULES_STATUS_DELETED'),
                         ];
 
                         foreach ($states as $k => $v) {

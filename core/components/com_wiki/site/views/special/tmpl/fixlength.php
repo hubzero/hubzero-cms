@@ -22,7 +22,7 @@ if (!$this->page->access('manage')) {
 
 Pathway::append(
     Lang::txt('COM_WIKI_SPECIAL_FIX_LENGTH'),
-    $this->page->link()
+    $this->page->link(),
 );
 
 $query = Components\Wiki\Models\Version::all();

@@ -28,7 +28,7 @@ $this->css('media.css')
         '&tmpl=component&controller=' .
         $this->controller .
         '&gidNumber=' .
-        $this->group->get('gidNumber')
+        $this->group->get('gidNumber'),
     );
     ?>
     <form action="<?php echo $url . '&task=upload'; ?>" id="adminForm" method="post" enctype="multipart/form-data">
@@ -91,7 +91,7 @@ $this->css('media.css')
                     '&task=list' .
                     ($this->dir ? '&dir=' . $this->dir : '') .
                     '&t=' .
-                    Date::toUnix()
+                    Date::toUnix(),
             ); ?>
             <iframe src="<?php echo $val; ?>" name="filer" id="filer" width="98%" height="400"></iframe>
         </div>

@@ -243,7 +243,7 @@ class Subtitle extends Handler
 
         $url = Route::url(
             'index.php?option=com_courses&controller=offering&gid=' . $course->get('alias')
-            . '&offering=' . $offering_alias . '&asset=' . $assetObj->get('id')
+            . '&offering=' . $offering_alias . '&asset=' . $assetObj->get('id'),
         );
 
         // build return info
@@ -258,7 +258,7 @@ class Subtitle extends Handler
             'scope_id'       => $this->assoc['scope_id'],
             'asset_ext'      => 'txt',
             'upload_path'    => $uploadDirectory,
-            'target_path'    => $transcript_target_path
+            'target_path'    => $transcript_target_path,
         ];
 
         // Return info

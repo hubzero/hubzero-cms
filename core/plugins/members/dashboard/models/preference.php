@@ -45,7 +45,7 @@ class Preference extends Relational
      */
     protected $rules = [
         'preferences' => 'notempty',
-        'uidNumber'   => 'positive|nonzero'
+        'uidNumber'   => 'positive|nonzero',
     ];
 
     /**
@@ -54,7 +54,7 @@ class Preference extends Relational
      * @var array
      */
     public $always = [
-        'modified'
+        'modified',
     ];
 
     /**

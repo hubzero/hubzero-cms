@@ -28,7 +28,7 @@ class Collaborator extends Relational
      * @var  array
      */
     protected $rules = [
-        'id' => 'notempty'
+        'id' => 'notempty',
     ];
 
     /**
@@ -37,7 +37,7 @@ class Collaborator extends Relational
      * @var  array
      */
     public $initiate = [
-        'id'
+        'id',
     ];
 
     /**

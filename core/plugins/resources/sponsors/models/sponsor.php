@@ -46,7 +46,7 @@ class Sponsor extends Relational
      * @var  array
      */
     protected $rules = [
-        'title' => 'notempty'
+        'title' => 'notempty',
     ];
 
     /**
@@ -58,7 +58,7 @@ class Sponsor extends Relational
         'title',
         'alias',
         'modified',
-        'modified_by'
+        'modified_by',
     ];
 
     /**
@@ -68,7 +68,7 @@ class Sponsor extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**

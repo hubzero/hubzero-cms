@@ -49,7 +49,7 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
         }
         $app['config']->set('foo', [
             'hash'      => '',
-            'cachebase' => ''
+            'cachebase' => '',
         ]);
 
         $this->cache = new Manager($app);

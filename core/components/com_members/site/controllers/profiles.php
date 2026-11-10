@@ -74,7 +74,7 @@ class Profiles extends SiteController
         App::redirect(
             Route::url(User::link() . '&active=profile'),
             Lang::txt('You have been successfully opted out of this promotion.'),
-            'passed'
+            'passed',
         );
     }
 
@@ -228,7 +228,7 @@ class Profiles extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
 
@@ -250,7 +250,7 @@ class Profiles extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&task=browse', false, true)), false),
                 Lang::txt('COM_MEMBERS_NOT_LOGGEDIN'),
-                'warning'
+                'warning',
             );
         }
 
@@ -268,7 +268,7 @@ class Profiles extends SiteController
             'q'        => [],
             'tags'     => Request::getString('tags', ''),
             'sort'     => strtolower(Request::getWord('sort', 'name')),
-            'sort_Dir' => strtolower(Request::getWord('sort_Dir', 'asc'))
+            'sort_Dir' => strtolower(Request::getWord('sort_Dir', 'asc')),
         ];
 
         // If we have a search and it's not an array (i.e. it's coming in fresh with this request)
@@ -277,7 +277,7 @@ class Profiles extends SiteController
                 'field'    => 'search',
                 'human_field' => Lang::txt('COM_MEMBERS_SEARCH'),
                 'operator' => 'like',
-                'value'    => $filters['search']
+                'value'    => $filters['search'],
             ];
         }
 
@@ -318,7 +318,7 @@ class Profiles extends SiteController
                 $val = [
                     'field'    => $key,
                     'operator' => 'e',
-                    'value'    => $val
+                    'value'    => $val,
                 ];
             }
 
@@ -449,7 +449,7 @@ class Profiles extends SiteController
                                 $entries->joinRaw(
                                     $b . ' AS s' . ($v . '_' . $z),
                                     's' . ($v . '_' . $z) . '.user_id=' . $a . '.id AND s' . ($v . '_' . $z) . '.profile_key=' . $db->quote($searching),
-                                    'left'
+                                    'left',
                                 );
 
                                 $entries->orWhere('s' . ($v . '_' . $z) . '.profile_value', ' ' . $q['o'] . ' ', strtolower((string)$term), 1);
@@ -463,7 +463,7 @@ class Profiles extends SiteController
                             $entries->joinRaw(
                                 $b . ' AS s' . $i,
                                 's' . $i . '.user_id=' . $a . '.id AND s' . $i . '.profile_key=' . $db->quote($searching),
-                                'left'
+                                'left',
                             );
 
                             $entries->orWhere('s' . $i . '.profile_value', ' ' . $q['o'] . ' ', (string)$q['value'], 1);
@@ -482,7 +482,7 @@ class Profiles extends SiteController
                     $entries->joinRaw(
                         $b . ' AS t' . $i,
                         't' . $i . '.user_id=' . $a . '.id AND t' . $i . '.profile_key=' . $db->quote($q['field']) . ' AND t' . $i . '.profile_value ' . $q['o'] . ' ' . (int)$q['value'],
-                        'inner'
+                        'inner',
                     );
                 } elseif (is_array($q['value'])) {
                     foreach ($q['value'] as $key => $val) {
@@ -491,13 +491,13 @@ class Profiles extends SiteController
                     $entries->joinRaw(
                         $b . ' AS t' . $i,
                         't' . $i . '.user_id=' . $a . '.id AND t' . $i . '.profile_key=' . $db->quote($q['field']) . ' AND t' . $i . '.profile_value IN (' . implode(', ', $q['value']) . ')',
-                        'inner'
+                        'inner',
                     );
                 } else {
                     $entries->joinRaw(
                         $b . ' AS t' . $i,
                         't' . $i . '.user_id=' . $a . '.id AND t' . $i . '.profile_key=' . $db->quote($q['field']) . ' AND t' . $i . '.profile_value ' . $q['o'] . ' ' . $db->quote($q['value']),
-                        'inner'
+                        'inner',
                     );
                 }
 
@@ -543,13 +543,13 @@ class Profiles extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_name)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         // Add to the pathway
         Pathway::append(
             Lang::txt(strtoupper($this->_task)),
-            'index.php?option=' . $this->_option . '&task=' . $this->_task
+            'index.php?option=' . $this->_option . '&task=' . $this->_task,
         );
 
         // Get stats
@@ -679,7 +679,7 @@ class Profiles extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&task=myaccount', false, true)), false),
                 Lang::txt('COM_MEMBERS_NOT_LOGGEDIN'),
-                'warning'
+                'warning',
             );
         }
 
@@ -741,7 +741,7 @@ class Profiles extends SiteController
                 $rtrn = Route::url($profile->link());
 
                 App::redirect(
-                    Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
+                    Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
                 );
             }
 
@@ -810,18 +810,18 @@ class Profiles extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         Pathway::append(
             stripslashes($profile->get('name')),
-            'index.php?option=' . $this->_option . '&id=' . $profile->get('id')
+            'index.php?option=' . $this->_option . '&id=' . $profile->get('id'),
         );
         foreach ($cats as $k => $c) {
             if ($tab == key($c)) {
                 Pathway::append(
                     $c[$tab],
-                    'index.php?option=' . $this->_option . '&id=' . $profile->get('id') . '&active=' . $tab
+                    'index.php?option=' . $this->_option . '&id=' . $profile->get('id') . '&active=' . $tab,
                 );
                 break;
             }
@@ -861,7 +861,7 @@ class Profiles extends SiteController
             $rtrn = Route::url('index.php?option=' . $this->_controller . '&task=changepassword', false, true);
 
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false),
             );
         }
 
@@ -897,16 +897,16 @@ class Profiles extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         Pathway::append(
             stripslashes($profile->get('name')),
-            'index.php?option=' . $this->_option . '&id=' . $profile->get('id')
+            'index.php?option=' . $this->_option . '&id=' . $profile->get('id'),
         );
         Pathway::append(
             Lang::txt('COM_MEMBERS_' . strtoupper($this->_task)),
-            'index.php?option=' . $this->_option . '&id=' . $profile->get('id') . '&task=' . $this->_task
+            'index.php?option=' . $this->_option . '&id=' . $profile->get('id') . '&task=' . $this->_task,
         );
 
         // Load some needed libraries
@@ -1068,7 +1068,7 @@ class Profiles extends SiteController
             $rtrn = Route::url('index.php?option=' . $this->_controller . '&task=raiselimit', false, true);
 
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false),
             );
         }
 
@@ -1098,16 +1098,16 @@ class Profiles extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         Pathway::append(
             stripslashes($profile->get('name')),
-            'index.php?option=' . $this->_option . '&id=' . $profile->get('id')
+            'index.php?option=' . $this->_option . '&id=' . $profile->get('id'),
         );
         Pathway::append(
             Lang::txt(strtoupper($this->_task)),
-            'index.php?option=' . $this->_option . '&id=' . $profile->get('id') . '&task=' . $this->_task
+            'index.php?option=' . $this->_option . '&id=' . $profile->get('id') . '&task=' . $this->_task,
         );
 
         // Incoming
@@ -1296,7 +1296,7 @@ class Profiles extends SiteController
             // attacker-controlled value over it.
             $rtrn = Route::url('index.php?option=' . $this->_controller . '&task=activity', false, true);
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false),
             );
         }
 
@@ -1335,16 +1335,16 @@ class Profiles extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         Pathway::append(
             stripslashes($profile->get('name')),
-            'index.php?option=' . $this->_option . '&id=' . $profile->get('id')
+            'index.php?option=' . $this->_option . '&id=' . $profile->get('id'),
         );
         Pathway::append(
             Lang::txt(strtoupper($this->_task)),
-            'index.php?option=' . $this->_option . '&id=' . $profile->get('id') . '&task=' . $this->_task
+            'index.php?option=' . $this->_option . '&id=' . $profile->get('id') . '&task=' . $this->_task,
         );
 
         foreach ($this->getErrors() as $error) {
@@ -1546,7 +1546,7 @@ class Profiles extends SiteController
 
         $errors = [
             '_missing' => [],
-            '_invalid' => []
+            '_invalid' => [],
         ];
 
         if (!$form->validate($profile)) {
@@ -1603,7 +1603,7 @@ class Profiles extends SiteController
                 // instead, so there is not always a new one to use.
                 $user->set(
                     'activation',
-                    isset($confirm) ? $confirm : $member->get('activation')
+                    isset($confirm) ? $confirm : $member->get('activation'),
                 );
 
                 // Add item to session to mark that the user changed emails
@@ -1647,7 +1647,7 @@ class Profiles extends SiteController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . ($id ? '&id=' . $id . '&active=profile' : ''))
+            Route::url('index.php?option=' . $this->_option . ($id ? '&id=' . $id . '&active=profile' : '')),
         );
     }
 
@@ -1667,7 +1667,7 @@ class Profiles extends SiteController
         // Email message
         $eview = new \Hubzero\Component\View([
             'name'   => 'emails',
-            'layout' => 'confirm'
+            'layout' => 'confirm',
         ]);
 
         $eview->set('option', $this->_option)
@@ -1716,12 +1716,12 @@ class Profiles extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         Pathway::append(
             Lang::txt(strtoupper($this->_task)),
-            'index.php?option=' . $this->_option . '&task=' . $this->_task
+            'index.php?option=' . $this->_option . '&task=' . $this->_task,
         );
 
         // Check if they're logged in
@@ -1736,14 +1736,14 @@ class Profiles extends SiteController
             // attacker-controlled value over it.
             $rtrn = Route::url('index.php?option=' . $this->_controller . '&task=activity', false, true);
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false),
             );
         }
 
         // Check authorization
         if (!User::authorise('core.manage', $this->_option)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option)
+                Route::url('index.php?option=' . $this->_option),
             );
         }
 
@@ -1755,7 +1755,7 @@ class Profiles extends SiteController
 
         // get sessions
         $result = SessionHelper::getAllSessions([
-            'guest' => 0
+            'guest' => 0,
         ]);
 
         if ($result && count($result) > 0) {
@@ -1793,7 +1793,7 @@ class Profiles extends SiteController
 
         // get sessions
         $result = SessionHelper::getAllSessions([
-            'guest' => 1
+            'guest' => 1,
         ]);
 
         if (count($result) > 0) {
@@ -1824,7 +1824,7 @@ class Profiles extends SiteController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&id=' . $id . '&active=profile')
+            Route::url('index.php?option=' . $this->_option . '&id=' . $id . '&active=profile'),
         );
     }
 
@@ -1848,7 +1848,7 @@ class Profiles extends SiteController
         // Only logged-in users should ever get to this page
         if (User::isGuest()) {
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Request::current(true)), false)
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Request::current(true)), false),
             );
         }
 

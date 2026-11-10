@@ -56,7 +56,7 @@ class Help extends Button
                 $ref = $type,
                 $com = false,
                 $override = false,
-                $component = Request::getCmd('option')
+                $component = Request::getCmd('option'),
             );
         }
 
@@ -184,7 +184,7 @@ class Help extends Button
             '{langregion}', // Region code (eg. 'GB')
             '{major}', // major version number
             '{minor}', // minor version number
-            '{maintenance}'// maintenance version number
+            '{maintenance}',// maintenance version number
         ];
 
         $replace = [
@@ -196,7 +196,7 @@ class Help extends Button
             $hlang[1], // {langregion}
             $hver[0], // {major}
             $hver[1], // {minor}
-            $hver[2]// {maintenance}
+            $hver[2],// {maintenance}
         ];
 
         // If the help file is local then check it exists.

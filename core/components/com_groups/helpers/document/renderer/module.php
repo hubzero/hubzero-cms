@@ -33,7 +33,7 @@ class Module extends Renderer
             'state'     => [1],
             'approved'  => ($this->allMods == 1) ? [0,1] : [1],
             'title'     => $this->params->title ?? null,
-            'orderby'   => 'ordering DESC'
+            'orderby'   => 'ordering DESC',
         ]);
 
         // make sure we have a module

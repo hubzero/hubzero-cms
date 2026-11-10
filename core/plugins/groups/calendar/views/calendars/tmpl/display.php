@@ -24,12 +24,12 @@ defined('_HZEXEC_') or die();
         'index.php?option=' . $this->option
         . '&cn=' . $this->group->cn
         . '&active=calendar&year=' . $this->year
-        . '&month=' . $this->month
+        . '&month=' . $this->month,
     );
     $addCalUrl = Route::url(
         'index.php?option=' . $this->option
         . '&cn=' . $this->group->cn
-        . '&active=calendar&action=addcalendar'
+        . '&active=calendar&action=addcalendar',
     );
     ?>
     <ul id="page_options">
@@ -106,13 +106,13 @@ defined('_HZEXEC_') or die();
                         . '&cn=' . $this->group->cn
                         . '&active=calendar';
                     $editUrl = Route::url(
-                        $calBase . '&action=editcalendar&calendar_id=' . $calId
+                        $calBase . '&action=editcalendar&calendar_id=' . $calId,
                     );
                     $refreshUrl = Route::url(
-                        $calBase . '&action=refreshcalendar&calendar_id=' . $calId
+                        $calBase . '&action=refreshcalendar&calendar_id=' . $calId,
                     );
                     $deleteUrl = Route::url(
-                        $calBase . '&action=deletecalendar&calendar_id=' . $calId
+                        $calBase . '&action=deletecalendar&calendar_id=' . $calId,
                     );
                     ?>
                     <td>

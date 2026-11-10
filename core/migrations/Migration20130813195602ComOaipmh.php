@@ -96,7 +96,7 @@ SQL;
                     [14, 'format', '', 1],
                     [15, 'coverage', '', 1],
                     [16, 'language', '', 1],
-                    [17, 'source', '', 1]
+                    [17, 'source', '', 1],
                 ])
                 ->execute();
         }

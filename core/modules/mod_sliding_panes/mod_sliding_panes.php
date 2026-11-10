@@ -67,11 +67,11 @@ class SlidingPanes extends Module
             ->whereEquals('a.state', 1)
             ->whereRaw(
                 '(a.publish_up IS NULL OR a.publish_up = ' . $quotedNullDate .
-                ' OR a.publish_up <= ' . $quotedNow . ')'
+                ' OR a.publish_up <= ' . $quotedNow . ')',
             )
             ->whereRaw(
                 '(a.publish_down IS NULL OR a.publish_down = ' . $quotedNullDate .
-                ' OR a.publish_down >= ' . $quotedNow . ')'
+                ' OR a.publish_down >= ' . $quotedNow . ')',
             )
             ->whereEquals('cc.id', (int) $catid)
             ->whereEquals('cc.published', 1);

@@ -19,10 +19,10 @@ $base = 'index.php?option=' . $this->option;
 
 $helpUrl = Route::url(
     'index.php?option=com_help&component='
-    . substr($this->option, 4) . '&page=index'
+    . substr($this->option, 4) . '&page=index',
 );
 $formUrl = Route::url(
-    $base . '&controller=' . $this->controller . '&task=posts'
+    $base . '&controller=' . $this->controller . '&task=posts',
 );
 ?>
 <header id="content-header">
@@ -73,16 +73,16 @@ $formUrl = Route::url(
             <p>
                 <?php
                 $collectionsUrl = Route::url(
-                    'index.php?option=com_members&task=myaccount/collections'
+                    'index.php?option=com_members&task=myaccount/collections',
                 );
                 $myaccountUrl = Route::url(
-                    'index.php?option=com_members&task=myaccount'
+                    'index.php?option=com_members&task=myaccount',
                 );
                 echo Lang::txt(
                     'COM_COLLECTIONS_FOLLOW_EXPLANATION',
                     $collectionsUrl,
                     $myaccountUrl,
-                    $collectionsUrl
+                    $collectionsUrl,
                 );
                 ?>
             </p>
@@ -94,7 +94,7 @@ $formUrl = Route::url(
                 <?php
                 echo Lang::txt(
                     'COM_COLLECTIONS_UNFOLLOW_EXPLANATION',
-                    $collectionsUrl
+                    $collectionsUrl,
                 );
                 ?>
             </p>
@@ -106,7 +106,7 @@ $formUrl = Route::url(
                 <?php
                 echo Lang::txt(
                     'COM_COLLECTIONS_LIVE_FEED_EXPLANATION',
-                    $collectionsUrl
+                    $collectionsUrl,
                 );
                 ?>
             </p>

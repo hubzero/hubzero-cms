@@ -95,10 +95,10 @@ class Detector implements DetectorInterface
         $plainKeywords = [
             "ßåßå", "Vå§hïkåråñ", "Lðvê", "§þê¢ïålï§†", "þrðßlêm", "Mµ†hkårñï", "jï", "Pℝℴℬℒℰℳ)","mðhïñï", "vå§hïkåråñ",
             "vå§hïKÄRÄñ", "mårrïågê", "§ðlµ", "†ïðñ§", "Äll", "vððÐðð", "ßLåÇk", "MåGïÇ",
-            "Haryana", "Ambala"
+            "Haryana", "Ambala",
         ];
         $regexKeywords = [
-            '/Black\-{0,1}Magic/i'
+            '/Black\-{0,1}Magic/i',
         ];
 
         foreach ($plainKeywords as $k) {

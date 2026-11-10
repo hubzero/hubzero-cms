@@ -47,12 +47,12 @@ if ($this->subscriptionCode && $this->employer) {
         $sortbys = [
             'category' => Lang::txt('COM_JOBS_CATEGORY'),
             'opendate' => Lang::txt('COM_JOBS_POSTED_DATE'),
-            'type'     => Lang::txt('COM_JOBS_TYPE')
+            'type'     => Lang::txt('COM_JOBS_TYPE'),
         ];
         $filterbys = [
             'all'   => Lang::txt('COM_JOBS_ALL'),
             'open'  => Lang::txt('COM_JOBS_ACTIVE'),
-            'closed' => Lang::txt('COM_JOBS_EXPIRED')
+            'closed' => Lang::txt('COM_JOBS_EXPIRED'),
         ];
         ?>
         <?php if (count($this->jobs) > 0) { ?>
@@ -72,7 +72,7 @@ if ($this->subscriptionCode && $this->employer) {
                     $view = new \Hubzero\Component\View([
                         'base_path' => Component::path('com_jobs') . DS . 'site',
                         'name'      => 'jobs',
-                        'layout'    => '_list'
+                        'layout'    => '_list',
                     ]);
                     $view->set('option', $this->option)
                         ->set('filters', $this->filters)

@@ -54,7 +54,7 @@ class Map extends Relational
      */
     protected $rules = [
         'user_id'  => 'positive|nonzero',
-        'group_id' => 'positive|nonzero'
+        'group_id' => 'positive|nonzero',
     ];
 
     /**
@@ -180,7 +180,7 @@ class Map extends Relational
                 ->insert($blank->getTableName())
                 ->values([
                     'user_id'  => $user_id,
-                    'group_id' => $group
+                    'group_id' => $group,
                 ]);
 
             if (!$query->execute()) {

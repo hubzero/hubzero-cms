@@ -38,7 +38,7 @@ if ($this->installedPackage) {
 $formAction = Route::url(
     'index.php?option=' . $this->option
     . '&controller=' . $this->controller
-    . '&task=install'
+    . '&task=install',
 );
 ?>
 <form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="item-form">

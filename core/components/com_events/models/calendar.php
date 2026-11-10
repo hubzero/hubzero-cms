@@ -246,7 +246,7 @@ class Calendar extends Model
             'scope'       => $this->get('scope'),
             'scope_id'    => $this->get('scope_id'),
             'calendar_id' => $this->get('id'),
-            'state'       => [1]
+            'state'       => [1],
         ]);
 
         //build calendar url

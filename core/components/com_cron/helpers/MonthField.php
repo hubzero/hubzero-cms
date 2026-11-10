@@ -30,7 +30,7 @@ class MonthField extends AbstractField
             'SEP' => 9,
             'OCT' => 10,
             'NOV' => 11,
-            'DEC' => 12
+            'DEC' => 12,
         ]);
 
         return $this->isSatisfied($date->format('m'), $value);

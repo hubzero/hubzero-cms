@@ -363,7 +363,7 @@ class ColumnInfo
     public function isDateTime(): bool
     {
         return in_array(strtolower($this->type), [
-            'date', 'time', 'datetime', 'timestamp', 'year'
+            'date', 'time', 'datetime', 'timestamp', 'year',
         ]);
     }
 

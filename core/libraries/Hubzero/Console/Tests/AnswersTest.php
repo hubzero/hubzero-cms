@@ -66,7 +66,7 @@ class AnswersTest extends Basic
         $this->assertTrue(Answers::isUnattended());
         $this->assertSame(
             ['sitename' => 'Example Hub', 'live_site' => 'https://hub.example.org'],
-            Answers::section('site')
+            Answers::section('site'),
         );
         $this->assertSame(['host' => 'hub-db', 'password' => 'secret'], Answers::section('database'));
         $this->assertSame(['username' => 'admin', 'email' => 'admin@example.org'], Answers::section('admin'));

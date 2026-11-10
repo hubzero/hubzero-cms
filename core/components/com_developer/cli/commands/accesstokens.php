@@ -61,7 +61,7 @@ class Accesstokens extends Base implements CommandInterface
         $this
             ->output
             ->addOverview(
-                'Api access token related commands.'
+                'Api access token related commands.',
             );
     }
 }

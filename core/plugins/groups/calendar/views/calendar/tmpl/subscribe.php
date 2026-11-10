@@ -34,7 +34,7 @@ foreach ($this->calendars as $calendar) {
                 'index.php?option=com_help'
                 . '&component=groups'
                 . '&extension=calendar'
-                . '&page=subscriptions'
+                . '&page=subscriptions',
             );
             ?>
             <a class="popup subscribe-help"
@@ -49,7 +49,7 @@ foreach ($this->calendars as $calendar) {
                 $credMsg = Lang::txt(
                     'If you are prompted to enter a username'
                     . ' & password when subscribing to a'
-                    . ' calendar, enter your HUB credentials.'
+                    . ' calendar, enter your HUB credentials.',
                 );
                 echo $credMsg;
                 ?>
@@ -122,7 +122,7 @@ foreach ($this->calendars as $calendar) {
             $subscribeMsg = Lang::txt(
                 'Click the subscribe button to the right'
                 . ' or add the link below to add as a'
-                . ' calendar subscription:'
+                . ' calendar subscription:',
             );
             ?>
             <label id="subscribe-link"><strong><?php echo $subscribeMsg; ?></strong>

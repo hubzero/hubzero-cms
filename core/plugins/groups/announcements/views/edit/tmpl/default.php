@@ -27,7 +27,7 @@ $this->js()
 $backUrl = Route::url(
     'index.php?option=' . $this->option
     . '&cn=' . $this->group->cn
-    . '&active=announcements'
+    . '&active=announcements',
 );
 ?>
 <ul id="page_options">
@@ -46,7 +46,7 @@ $backUrl = Route::url(
     $formAction = Route::url(
         'index.php?option=' . $this->option
         . '&cn=' . $this->group->get('cn')
-        . '&active=announcements'
+        . '&active=announcements',
     );
     ?>
     <form action="<?php echo $formAction; ?>"
@@ -72,7 +72,7 @@ $backUrl = Route::url(
                     <span class="required"><?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_REQUIRED'); ?></span>
                     <?php
                     $editorContent = $this->escape(
-                        stripslashes($this->announcement->get('content', ''))
+                        stripslashes($this->announcement->get('content', '')),
                     );
                     echo $this->editor(
                         'fields[content]',
@@ -80,7 +80,7 @@ $backUrl = Route::url(
                         35,
                         5,
                         'field_content',
-                        ['class' => 'form-control minimal no-footer']
+                        ['class' => 'form-control minimal no-footer'],
                     );
                     ?>
                 </label>

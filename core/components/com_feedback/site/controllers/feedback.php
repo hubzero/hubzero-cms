@@ -54,13 +54,13 @@ class Feedback extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         if ($this->_task && in_array($this->_task, ['story', 'poll', 'sendstory', 'suggestions'])) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
-                'index.php?option=' . $this->_option . '&task=' . $this->_task
+                'index.php?option=' . $this->_option . '&task=' . $this->_task,
             );
         }
     }
@@ -140,12 +140,12 @@ class Feedback extends SiteController
         if (User::isGuest()) {
             $here = Route::url(
                 'index.php?option=' . $this->_option
-                . '&controller=' . $this->_controller . '&task=' . $this->_task
+                . '&controller=' . $this->_controller . '&task=' . $this->_task,
             );
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($here)),
                 Lang::txt('COM_FEEDBACK_STORY_LOGIN'),
-                'warning'
+                'warning',
             );
         }
 
@@ -157,7 +157,7 @@ class Feedback extends SiteController
         // Incoming
         $quote = [
             'long'  => Request::getString('quote', '', 'post'),
-            'short' => Request::getString('short_quote', '', 'post')
+            'short' => Request::getString('short_quote', '', 'post'),
         ];
 
         // Set page title
@@ -217,12 +217,12 @@ class Feedback extends SiteController
         if (User::isGuest()) {
             $here = Route::url(
                 'index.php?option=' . $this->_option
-                . '&controller=' . $this->_controller . '&task=' . $this->_task
+                . '&controller=' . $this->_controller . '&task=' . $this->_task,
             );
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($here)),
                 Lang::txt('COM_FEEDBACK_STORY_LOGIN'),
-                'warning'
+                'warning',
             );
         }
 
@@ -338,7 +338,7 @@ class Feedback extends SiteController
     public function suggestionsTask()
     {
         App::redirect(
-            Route::url('index.php?option=com_wishlist')
+            Route::url('index.php?option=com_wishlist'),
         );
     }
 
@@ -449,7 +449,7 @@ class Feedback extends SiteController
             if (Filesystem::delete($file)) {
                 echo json_encode([
                     'success' => false,
-                    'error'  => Lang::txt('COM_FEEDBACK_ERROR_FILE_FAILED_VIRUS_SCAN')
+                    'error'  => Lang::txt('COM_FEEDBACK_ERROR_FILE_FAILED_VIRUS_SCAN'),
                 ]);
                 return;
             }

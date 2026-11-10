@@ -70,7 +70,7 @@ class Migration20141112191247ComCourses extends Base
                                     $deployment->asset_id,
                                     $deployment->start_time,
                                     $deployment->end_time,
-                                    with(new \Hubzero\Utility\Date('now'))->toSql()
+                                    with(new \Hubzero\Utility\Date('now'))->toSql(),
                                 ])
                                 ->execute();
                         } else {
@@ -85,7 +85,7 @@ class Migration20141112191247ComCourses extends Base
                                 ->update('#__courses_offering_section_dates')
                                 ->set([
                                     'publish_up' => $start,
-                                    'publish_down' => $end
+                                    'publish_down' => $end,
                                 ])
                                 ->where('id', '=', $found->id)
                                 ->execute();

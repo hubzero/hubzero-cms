@@ -130,7 +130,7 @@ class Migration20130924000011ComModules extends Base
                     ->insert('#__modules_menu')
                     ->values([
                         'moduleid' => $r->id,
-                        'menuid'   => 0
+                        'menuid'   => 0,
                     ])
                     ->execute();
             }

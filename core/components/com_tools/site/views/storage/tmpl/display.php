@@ -216,7 +216,7 @@ $purgeUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $t
                 'uploading'     => Lang::txt('COM_TOOLS_STORAGE_UPLOADING'),
                 'quota'         => Lang::txt('COM_TOOLS_STORAGE_QUOTA_EXCEEDED'),
                 'uploadFailed'  => Lang::txt('COM_TOOLS_STORAGE_UPLOAD_FAILED'),
-                'parent'        => Lang::txt('COM_TOOLS_STORAGE_PARENT')
+                'parent'        => Lang::txt('COM_TOOLS_STORAGE_PARENT'),
             ]); ?></script>
         </div>
     </div><!-- / #storage-manager -->

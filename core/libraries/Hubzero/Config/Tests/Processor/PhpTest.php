@@ -93,7 +93,7 @@ class PhpTest extends TestCase
             //'foo' => '1',
             //'bar' => '',
             'app' => (array) $data->app,
-            'seo' => (array) $data->seo
+            'seo' => (array) $data->seo,
         ];
 
         $this->processor = new Php();
@@ -221,14 +221,14 @@ class PhpTest extends TestCase
 
         // Test object to string conversion
         $result = $this->processor->objectToString($this->obj, [
-            'format' => 'array'
+            'format' => 'array',
         ]);
 
         $this->assertEquals($this->str, $result);
 
         // Test object to string conversion
         $result = $this->processor->objectToString($this->obj, [
-            'format' => 'object'
+            'format' => 'object',
         ]);
 
         $this->assertEquals($this->strObject, $result);

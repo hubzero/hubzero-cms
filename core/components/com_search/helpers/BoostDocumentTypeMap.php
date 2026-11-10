@@ -21,7 +21,7 @@ class BoostDocumentTypeMap
         $this->lang = Arr::getValue(
             $args,
             'lang',
-            new MockProxy(['class' => 'Lang'])
+            new MockProxy(['class' => 'Lang']),
         );
     }
 
@@ -39,7 +39,7 @@ class BoostDocumentTypeMap
 
         return [
             'field' => $field,
-            'field_value' => $fieldValue
+            'field_value' => $fieldValue,
         ];
     }
 

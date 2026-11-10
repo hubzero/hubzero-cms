@@ -41,27 +41,27 @@ class Citations extends AbstractComponent
         Submenu::addEntry(
             Lang::txt('CITATIONS'),
             Route::url('index.php?option=com_citations&controller=citations'),
-            ($controllerName == 'citations' && Request::getCmd('task', '') != 'stats')
+            ($controllerName == 'citations' && Request::getCmd('task', '') != 'stats'),
         );
         Submenu::addEntry(
             Lang::txt('CITATION_STATS'),
             Route::url('index.php?option=com_citations&controller=citations&task=stats'),
-            ($controllerName == 'citations' && Request::getCmd('task', '') == 'stats')
+            ($controllerName == 'citations' && Request::getCmd('task', '') == 'stats'),
         );
         Submenu::addEntry(
             Lang::txt('CITATION_TYPES'),
             Route::url('index.php?option=com_citations&controller=types'),
-            $controllerName == 'types'
+            $controllerName == 'types',
         );
         Submenu::addEntry(
             Lang::txt('CITATION_SPONSORS'),
             Route::url('index.php?option=com_citations&controller=sponsors'),
-            $controllerName == 'sponsors'
+            $controllerName == 'sponsors',
         );
         Submenu::addEntry(
             Lang::txt('CITATION_FORMAT'),
             Route::url('index.php?option=com_citations&controller=format'),
-            $controllerName == 'format'
+            $controllerName == 'format',
         );
 
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);

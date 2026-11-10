@@ -209,9 +209,9 @@ class GradeBook extends Table
                     'course_id'   => $course->get('id'),
                     'section_id'  => $course->offering()->section()->get('id'),
                     'offering_id' => $course->offering()->get('id'),
-                    'asset_type'  => 'form'
-                ]
-            ]
+                    'asset_type'  => 'form',
+                ],
+            ],
         );
 
         // Query for existing data

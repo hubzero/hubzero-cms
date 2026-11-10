@@ -204,7 +204,7 @@ class Media extends Field
             $attr = [
                 'id'    => $this->id . '_preview',
                 'class' => 'media-preview',
-                'style' => 'max-width:160px; max-height:100px;'
+                'style' => 'max-width:160px; max-height:100px;',
             ];
             $img = Asset::image($src, $lang->txt('JLIB_FORM_MEDIA_PREVIEW_ALT'), $attr);
             $previewImg = '<div id="' .
@@ -229,10 +229,10 @@ class Media extends Field
                     'title' => htmlspecialchars(
                         $lang->txt('JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE'),
                         ENT_COMPAT,
-                        'UTF-8'
+                        'UTF-8',
                     ),
                     'text'  => htmlspecialchars($lang->txt('JLIB_FORM_MEDIA_PREVIEW_TIP_TITLE'), ENT_COMPAT, 'UTF-8'),
-                    'class' => 'hasTipPreview'
+                    'class' => 'hasTipPreview',
                 ];
                 $html[] = '<span class="' .
                     $options['class'] .

@@ -80,7 +80,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
                             $attentionCount = count($citations_require_attention);
                             $attentionText = Lang::txt(
                                 'PLG_GROUPS_CITATIONS_IMPORT_REQUIRE_ATTENTION',
-                                $attentionCount
+                                $attentionCount,
                             );
                             ?>
                             <th><?php echo $attentionText; ?></th>
@@ -96,11 +96,11 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
                                 $type_title = $cc->relatedType->get('type_title');
                                 $tags = implode(
                                     ', ',
-                                    \Components\Citations\Helpers\Format::citationTags($c['duplicate'], false)
+                                    \Components\Citations\Helpers\Format::citationTags($c['duplicate'], false),
                                 );
                                 $badges = implode(
                                     ', ',
-                                    \Components\Citations\Helpers\Format::citationBadges($c['duplicate'], false)
+                                    \Components\Citations\Helpers\Format::citationBadges($c['duplicate'], false),
                                 );
                             ?>
                             <tr>
@@ -110,7 +110,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
                                     $dupLabel = Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_DUPLICATE');
                                     $cTitle = html_entity_decode($c['title']);
                                     $showDetails = Lang::txt(
-                                        'PLG_GROUPS_CITATIONS_IMPORT_SHOW_CITATION_DETAILS'
+                                        'PLG_GROUPS_CITATIONS_IMPORT_SHOW_CITATION_DETAILS',
                                     );
                                     ?>
                                     <span class="citation-title">
@@ -126,16 +126,16 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
                                             <tr>
                                                 <?php
                                                 $detailsText = Lang::txt(
-                                                    'PLG_GROUPS_CITATIONS_IMPORT_CITATION_DETAILS'
+                                                    'PLG_GROUPS_CITATIONS_IMPORT_CITATION_DETAILS',
                                                 );
                                                 $replaceText = Lang::txt(
-                                                    'PLG_GROUPS_CITATIONS_IMPORT_CITATION_REPLACE'
+                                                    'PLG_GROUPS_CITATIONS_IMPORT_CITATION_REPLACE',
                                                 );
                                                 $keepText = Lang::txt(
-                                                    'PLG_GROUPS_CITATIONS_IMPORT_CITATION_KEEP'
+                                                    'PLG_GROUPS_CITATIONS_IMPORT_CITATION_KEEP',
                                                 );
                                                 $nothingText = Lang::txt(
-                                                    'PLG_GROUPS_CITATIONS_IMPORT_CITATION_NOTHING'
+                                                    'PLG_GROUPS_CITATIONS_IMPORT_CITATION_NOTHING',
                                                 );
                                                 $replaceId  = "citation_action_attention-{$counter}-replace";
                                                 $keepId     = "citation_action_attention-{$counter}-keep";
@@ -194,10 +194,10 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
                                                         <td>
                                                             <?php
                                                             $uploadedLabel = Lang::txt(
-                                                                'PLG_GROUPS_CITATIONS_IMPORT_JUST_UPLOADED'
+                                                                'PLG_GROUPS_CITATIONS_IMPORT_JUST_UPLOADED',
                                                             );
                                                             $onFileLabel = Lang::txt(
-                                                                'PLG_GROUPS_CITATIONS_IMPORT_ON_FILE'
+                                                                'PLG_GROUPS_CITATIONS_IMPORT_ON_FILE',
                                                             );
                                                             $newVal = html_entity_decode(nl2br($c[$k]));
                                                             $oldVal = '';
@@ -266,7 +266,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
                             $noAttentionCount = count($citations_require_no_attention);
                             $noAttentionText = Lang::txt(
                                 'PLG_GROUPS_CITATIONS_IMPORT_REQUIRE_NO_ATTENTION',
-                                $noAttentionCount
+                                $noAttentionCount,
                             );
                             ?>
                             <th><?php echo $noAttentionText; ?></th>
@@ -298,10 +298,10 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
                                     </span>
                                     <?php
                                     $showDetailsText = Lang::txt(
-                                        'PLG_GROUPS_CITATIONS_IMPORT_SHOW_CITATION_DETAILS'
+                                        'PLG_GROUPS_CITATIONS_IMPORT_SHOW_CITATION_DETAILS',
                                     );
                                     $citDetailsText = Lang::txt(
-                                        'PLG_GROUPS_CITATIONS_IMPORT_CITATION_DETAILS'
+                                        'PLG_GROUPS_CITATIONS_IMPORT_CITATION_DETAILS',
                                     );
                                     ?>
                                     <span class="click-more">

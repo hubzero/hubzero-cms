@@ -42,7 +42,7 @@ Toolbar::help('categories');
 $formAction = Route::url('index.php?option=' . $this->option);
 $productEditUrl = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=products&task=edit&id=' . $this->product->getId()
+    . '&controller=products&task=edit&id=' . $this->product->getId(),
 );
 $editProductTitle = Lang::txt('Edit product');
 ?>
@@ -87,7 +87,7 @@ $sort = @$this->filters['sort'];
                 echo $this->pagination(
                     $this->total,
                     $this->filters['start'],
-                    $this->filters['limit']
+                    $this->filters['limit'],
                 );
                 ?></td>
         </tr>
@@ -147,7 +147,7 @@ foreach ($this->rows as $row) {
                     $editUrl = Route::url(
                         'index.php?option=' . $this->option
                         . '&controller=' . $this->controller
-                        . '&task=edit&id=' . $row->sId
+                        . '&task=edit&id=' . $row->sId,
                     );
                     $editTitle = Lang::txt('COM_STOREFRONT_EDIT_SKU');
                     ?>
@@ -166,7 +166,7 @@ foreach ($this->rows as $row) {
                     $stateUrl = Route::url(
                         'index.php?option=' . $this->option
                         . '&controller=' . $this->controller
-                        . '&task=' . $task . '&id=' . $row->sId
+                        . '&task=' . $task . '&id=' . $row->sId,
                     ) . '&pId=' . $row->pId;
                     $stateTitle = Lang::txt('COM_STOREFRONT_SET_TASK', $task);
                     ?>
@@ -188,7 +188,7 @@ foreach ($this->rows as $row) {
                         <?php
                         $restrictUrl = Route::url(
                             'index.php?option=' . $this->option
-                            . '&controller=restrictions&id=' . $row->sId
+                            . '&controller=restrictions&id=' . $row->sId,
                         );
                         $restrictTitle = Lang::txt('COM_STOREFRONT_VIEW_RESTRICTIONS');
                         ?>

@@ -41,17 +41,17 @@ class Collections extends AbstractComponent
         Submenu::addEntry(
             Lang::txt('COM_COLLECTIONS_COLLECTIONS'),
             Route::url('index.php?option=com_collections'),
-            $controllerName == 'collections'
+            $controllerName == 'collections',
         );
         Submenu::addEntry(
             Lang::txt('COM_COLLECTIONS_POSTS'),
             Route::url('index.php?option=com_collections&controller=posts&collection_id=0&item_id=0'),
-            $controllerName == 'posts'
+            $controllerName == 'posts',
         );
         Submenu::addEntry(
             Lang::txt('COM_COLLECTIONS_ITEMS'),
             Route::url('index.php?option=com_collections&controller=items'),
-            $controllerName == 'items'
+            $controllerName == 'items',
         );
 
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);

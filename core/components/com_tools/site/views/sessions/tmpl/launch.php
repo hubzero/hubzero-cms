@@ -35,8 +35,8 @@ $config = [
         'errStart'    => Lang::txt('COM_TOOLS_LAUNCH_ERROR_START'),
         'errExited'   => Lang::txt('COM_TOOLS_LAUNCH_ERROR_EXITED'),
         'errDisplay'  => Lang::txt('COM_TOOLS_LAUNCH_ERROR_DISPLAY'),
-        'errTimeout'  => Lang::txt('COM_TOOLS_LAUNCH_ERROR_TIMEOUT')
-    ]
+        'errTimeout'  => Lang::txt('COM_TOOLS_LAUNCH_ERROR_TIMEOUT'),
+    ],
 ];
 
 $classicUrl = Route::url('index.php?option=com_tools&controller=sessions&app=' . urlencode($this->app) . '&task=invoke&version=' . urlencode($this->version) . '&launch=legacy');

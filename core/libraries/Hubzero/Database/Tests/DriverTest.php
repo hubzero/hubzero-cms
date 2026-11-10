@@ -214,7 +214,7 @@ class DriverTest extends AbstractDriverTestCase
         $this->assertMatchesRegularExpression(
             '/\d+/',
             $version,
-            'Database version should contain version numbers'
+            'Database version should contain version numbers',
         );
     }
 
@@ -537,7 +537,7 @@ class DriverTest extends AbstractDriverTestCase
 
         $this->assertTrue(
             stripos($quoted, "test_table") !== false,
-            'Quoted name should contain table name (case-insensitive)'
+            'Quoted name should contain table name (case-insensitive)',
         );
         // Engines differ in identifier quoting behavior (quoted vs bare names).
         $this->assertIsString($quoted, 'quoteName should return a string');
@@ -676,7 +676,7 @@ class DriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testTruncateTableResetsAutoIncrement(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $table = self::$testTable;
 
@@ -686,7 +686,7 @@ class DriverTest extends AbstractDriverTestCase
                 "INSERT INTO " . $driver->quoteName($table)
                 . " (" . $driver->quoteName('name')
                 . ", " . $driver->quoteName('email') . ")"
-                . " VALUES ('User $i', 'user{$i}@example.com')"
+                . " VALUES ('User $i', 'user{$i}@example.com')",
             );
             $driver->execute();
         }
@@ -699,19 +699,19 @@ class DriverTest extends AbstractDriverTestCase
             "INSERT INTO " . $driver->quoteName($table)
             . " (" . $driver->quoteName('name')
             . ", " . $driver->quoteName('email') . ")"
-            . " VALUES ('After Truncate', 'after@example.com')"
+            . " VALUES ('After Truncate', 'after@example.com')",
         );
         $driver->execute();
 
         $driver->setQuery(
             "SELECT " . $driver->quoteName('id')
-            . " FROM " . $driver->quoteName($table)
+            . " FROM " . $driver->quoteName($table),
         );
         $id = (int) $driver->loadResult();
         $this->assertEquals(
             1,
             $id,
-            "[$dbName] Auto-increment should reset to 1 after truncate"
+            "[$dbName] Auto-increment should reset to 1 after truncate",
         );
 
         // Clean up for next test
@@ -722,7 +722,7 @@ class DriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testTruncateTableWithCustomNextId(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $table = self::$testTable;
 
@@ -734,19 +734,19 @@ class DriverTest extends AbstractDriverTestCase
             "INSERT INTO " . $driver->quoteName($table)
             . " (" . $driver->quoteName('name')
             . ", " . $driver->quoteName('email') . ")"
-            . " VALUES ('ID 100', 'id100@example.com')"
+            . " VALUES ('ID 100', 'id100@example.com')",
         );
         $driver->execute();
 
         $driver->setQuery(
             "SELECT " . $driver->quoteName('id')
-            . " FROM " . $driver->quoteName($table)
+            . " FROM " . $driver->quoteName($table),
         );
         $id = (int) $driver->loadResult();
         $this->assertEquals(
             100,
             $id,
-            "[$dbName] Auto-increment should start at 100"
+            "[$dbName] Auto-increment should start at 100",
         );
 
         // Clean up

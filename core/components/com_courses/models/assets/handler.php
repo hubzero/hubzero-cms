@@ -47,7 +47,7 @@ class Handler
         'state'        => 0, // upublished
         'course_id'    => '',
         'graded'       => 0,
-        'grade_weight' => ''
+        'grade_weight' => '',
     ];
 
     /**

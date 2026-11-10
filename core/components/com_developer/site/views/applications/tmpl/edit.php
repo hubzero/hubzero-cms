@@ -127,7 +127,7 @@ $requiredLabel = Lang::txt('JREQUIRED');
                         <?php
                             $mc = Event::trigger(
                                 'hubzero.onGetMultiEntry',
-                                [['members', 'team', 'acmembers']]
+                                [['members', 'team', 'acmembers']],
                             );
                             if (count($mc) > 0) {
                                 echo $mc[0];

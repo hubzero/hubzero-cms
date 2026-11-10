@@ -71,7 +71,7 @@ class RemoteFile extends Table
                     'rParent'   => $result->remote_parent,
                     'synced'    => $result->synced,
                     'original'  => $result->original_path,
-                    'modified'  => $result->remote_modified
+                    'modified'  => $result->remote_modified,
                 ];
 
                 $locals['paths'][$result->local_path] = $item;
@@ -229,7 +229,7 @@ class RemoteFile extends Table
         $service = 'google',
         $uid = 0,
         $item = [],
-        $connections = []
+        $connections = [],
     ) {
         if (!$projectid || empty($item)) {
             return false;
@@ -310,7 +310,7 @@ class RemoteFile extends Table
         $id = null,
         $filename = null,
         $local = [],
-        $remote = []
+        $remote = [],
     ) {
         if (!$projectid || (!$id && !$filename)) {
             return false;
@@ -385,7 +385,7 @@ class RemoteFile extends Table
         $remote_format = '',
         $local_format = '',
         $remote_modified = '',
-        $remote_author = ''
+        $remote_author = '',
     ) {
         if (!$projectid || !$id) {
             return false;

@@ -34,7 +34,7 @@ $dubCore = [
     'Source',
     'Subject',
     'Title',
-    'Type'
+    'Type',
 ];
 ?>
 

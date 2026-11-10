@@ -55,26 +55,26 @@ class Polls extends AdminController
                 $this->_option . '.' . $this->_controller . '.filter_state',
                 'filter_state',
                 '',
-                'word'
+                'word',
             ),
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
                 '',
-                'string'
+                'string',
             ),
             'order'  => Request::getState(
                 $this->_option . '.' . $this->_controller . '.filter_order',
                 'filter_order',
                 'id',
-                'cmd'
+                'cmd',
             ),
             'order_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.filter_order_Dir',
                 'filter_order_Dir',
                 '',
-                'word'
-            )
+                'word',
+            ),
         ];
 
         $polls = Poll::all()
@@ -383,7 +383,7 @@ class Polls extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option, false)
+            Route::url('index.php?option=' . $this->_option, false),
         );
     }
 }

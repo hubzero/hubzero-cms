@@ -39,8 +39,8 @@ defined('_HZEXEC_') or die();
                         'folder'  => 'projects',
                         'element' => 'files',
                         'name'    => 'selector',
-                        'layout'  => 'selector'
-                    ]
+                        'layout'  => 'selector',
+                    ],
                 );
                 $view->option       = $this->option;
                 $view->model        = $this->model;

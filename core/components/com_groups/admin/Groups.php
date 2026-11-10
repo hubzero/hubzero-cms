@@ -42,18 +42,18 @@ class Groups extends AbstractComponent
         Submenu::addEntry(
             Lang::txt('COM_GROUPS_MENU_GROUPS'),
             Route::url('index.php?option=com_groups'),
-            ($controllerName != 'imports' && $controllerName != 'importhooks' && $controllerName != 'customfields')
+            ($controllerName != 'imports' && $controllerName != 'importhooks' && $controllerName != 'customfields'),
         );
         if (User::authorise('core.admin', 'com_groups')) {
             Submenu::addEntry(
                 Lang::txt('COM_GROUPS_MENU_IMPORT'),
                 Route::url('index.php?option=com_groups&controller=imports'),
-                ($controllerName == 'imports' || $controllerName == 'importhooks')
+                ($controllerName == 'imports' || $controllerName == 'importhooks'),
             );
             Submenu::addEntry(
                 Lang::txt('COM_GROUPS_MENU_CUSTOMFIELDS'),
                 Route::url('index.php?option=com_groups&controller=customfields'),
-                ($controllerName == 'customfields')
+                ($controllerName == 'customfields'),
             );
         }
 

@@ -294,7 +294,7 @@ class Teller extends Obj
             'uid'      => $this->uid,
             'balance'  => $this->balance,
             'earnings' => $this->earnings,
-            'credit'   => $this->credit
+            'credit'   => $this->credit,
         ]);
 
         if (!$model->save()) {
@@ -326,7 +326,7 @@ class Teller extends Obj
             'description' => $desc,
             'category'    => $cat,
             'referenceid' => $ref,
-            'balance'     => $this->balance
+            'balance'     => $this->balance,
         ]);
 
         if (!$transaction->save()) {

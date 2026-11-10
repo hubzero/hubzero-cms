@@ -80,8 +80,8 @@ foreach ($roles as $role) {
                             'fields[user_id]',        // Name of the input field
                             'acmembers', // ID of the input field
                             '',          // CSS class(es) for the input field
-                            '' // The value of the input field
-                        ]
+                            '', // The value of the input field
+                        ],
                     ]);
                     if (count($mc) > 0) {
                         echo $mc[0];
@@ -109,7 +109,7 @@ foreach ($roles as $role) {
                                         $data[$j++] = [
                                             $offering->get('id'),
                                             $section->get('id'),
-                                            $section->get('title')
+                                            $section->get('title'),
                                         ];
                                     }
                                     $val = $this->escape(stripslashes($offering->get('id')));
@@ -153,7 +153,7 @@ foreach ($roles as $role) {
                         'calendar',
                         'fields[enrolled]',
                         $this->row->get('enrolled'),
-                        ['id' => 'enrolled']
+                        ['id' => 'enrolled'],
                     ); ?>
                 </div>
             </fieldset>

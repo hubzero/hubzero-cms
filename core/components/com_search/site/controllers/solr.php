@@ -258,7 +258,7 @@ class Solr extends SiteController
         // Set breadcrumbs
         Pathway::append(
             Lang::txt('COM_SEARCH'),
-            'index.php?option=' . $this->_option
+            'index.php?option=' . $this->_option,
         );
 
         // Set the document title
@@ -300,7 +300,7 @@ class Solr extends SiteController
         $highlightOptions = [
             'format' => '<strong>\1</strong>',
             'html'   => false,
-            'regex'  => "|%s|iu"
+            'regex'  => "|%s|iu",
         ];
 
         $snippetFields = ['description', 'fulltext', 'abstract'];

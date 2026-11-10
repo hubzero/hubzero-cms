@@ -73,13 +73,13 @@ if ($tmpl != 'component') {
                                     ? str_replace(
                                         '{pubtitle}',
                                         $this->pub->title,
-                                        $element->params->title
+                                        $element->params->title,
                                     ) : null;
                     $defaultTitle = $element->params->title
                                     ? str_replace(
                                         '{pubversion}',
                                         $this->pub->version_label,
-                                        $defaultTitle
+                                        $defaultTitle,
                                     ) : null;
 
                     $attachments = $this->pub->_attachments;

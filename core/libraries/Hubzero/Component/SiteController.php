@@ -72,7 +72,7 @@ class SiteController extends Obj implements ControllerInterface
      * @var  array
      */
     protected $_taskMap = [
-        '__default' => 'display'
+        '__default' => 'display',
     ];
 
     /**
@@ -166,7 +166,7 @@ class SiteController extends Obj implements ControllerInterface
                 // Uh-oh!
                     throw new InvalidControllerException(
                         Lang::txt('Controller::__construct() : Can\'t get or parse class name.'),
-                        500
+                        500,
                     );
                 }
 
@@ -307,7 +307,7 @@ class SiteController extends Obj implements ControllerInterface
         $this->view = new View([
             'base_path' => $this->_basePath,
             'name'      => $name,
-            'layout'    => $layout
+            'layout'    => $layout,
         ]);
 
         // Set some commonly used vars
@@ -335,7 +335,7 @@ class SiteController extends Obj implements ControllerInterface
     public function setView($name, $layout = null)
     {
         $config = [
-            'name' => $name
+            'name' => $name,
         ];
         if ($layout) {
             $config['layout'] = $layout;
@@ -533,7 +533,7 @@ class SiteController extends Obj implements ControllerInterface
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Request::current(true)), false),
                 $message,
-                'warning'
+                'warning',
             );
 
             return false;

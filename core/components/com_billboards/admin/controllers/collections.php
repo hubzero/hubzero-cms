@@ -105,7 +105,7 @@ class Collections extends AdminController
 
         // Create object
         $collection = Collection::oneOrNew(Request::getInt('id'))->set([
-            'name' => Request::getString('name')
+            'name' => Request::getString('name'),
         ]);
 
         if (!$collection->save()) {

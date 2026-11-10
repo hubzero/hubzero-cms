@@ -60,7 +60,7 @@ class Collections extends Plugin
 			WHERE
 				i.state=1 AND i.access=0 AND c.state=1 AND c.access=0 AND $weight > 0" .
                 ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
-            " ORDER BY $weight DESC"
+            " ORDER BY $weight DESC",
         ));
     }
 

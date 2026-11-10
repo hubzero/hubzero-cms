@@ -213,7 +213,7 @@ class Members extends Plugin
 				ON u.id = p.user_id AND p.profile_key = 'bio'
 			WHERE
 				u.block=0 AND u.approved>0 AND
-				u.access IN (" . $accessLevels . ") AND " . join(' AND ', $addtl_where)
+				u.access IN (" . $accessLevels . ") AND " . join(' AND ', $addtl_where),
         );
         $assoc = $sql->to_associative();
         if (!($assoc instanceof \Countable) || !count($assoc)) {
@@ -309,7 +309,7 @@ class Members extends Plugin
 						ON p.id = r.publication_id
 					LEFT JOIN #__publication_categories rt
 						ON rt.id = p.category
-					WHERE aa.user_id = " . $row->get('id')
+					WHERE aa.user_id = " . $row->get('id'),
             );
             $workp_assoc = $workp->to_associative();
 

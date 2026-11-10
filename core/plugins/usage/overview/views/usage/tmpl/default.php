@@ -209,28 +209,28 @@ if ($this->message) { ?>
                                 $residence[] = [
                                     'column' => 'US',
                                     'value'  => $row->value,
-                                    'color'  => 'rgba(19, 164, 164, 0.7)'
+                                    'color'  => 'rgba(19, 164, 164, 0.7)',
                                 ];
                                 break;
                             case 4:
                                 $residence[] = [
                                     'column' => 'Asia',
                                     'value'  => $row->value,
-                                    'color'  => 'rgba(222, 176, 88, 0.7)'
+                                    'color'  => 'rgba(222, 176, 88, 0.7)',
                                 ];
                                 break;
                             case 5:
                                 $residence[] = [
                                     'column' => 'Europe',
                                     'value'  => $row->value,
-                                    'color'  => 'rgba(233, 95, 87, 0.7)'
+                                    'color'  => 'rgba(233, 95, 87, 0.7)',
                                 ];
                                 break;
                             case 6:
                                 $residence[] = [
                                     'column' => 'Other',
                                     'value'  => $row->value,
-                                    'color'  => 'rgba(124, 145, 64, 0.7)'
+                                    'color'  => 'rgba(124, 145, 64, 0.7)',
                                 ];
                                 break;
 
@@ -238,28 +238,28 @@ if ($this->message) { ?>
                                 $organization[] = [
                                     'column' => 'Education',
                                     'value'  => $row->value,
-                                    'color'  => 'rgba(19, 164, 164, 0.7)'
+                                    'color'  => 'rgba(19, 164, 164, 0.7)',
                                 ];
                                 break;
                             case 9:
                                 $organization[] = [
                                     'column' => 'Industry',
                                     'value'  => $row->value,
-                                    'color'  => 'rgba(222, 176, 88, 0.7)'
+                                    'color'  => 'rgba(222, 176, 88, 0.7)',
                                 ];
                                 break;
                             case 10:
                                 $organization[] = [
                                     'column' => 'Government',
                                     'value'  => $row->value,
-                                    'color'  => 'rgba(233, 95, 87, 0.7)'
+                                    'color'  => 'rgba(233, 95, 87, 0.7)',
                                 ];
                                 break;
                             case 11:
                                 $organization[] = [
                                     'column' => 'Other',
                                     'value'  => $row->value,
-                                    'color'  => 'rgba(124, 145, 64, 0.7)'
+                                    'color'  => 'rgba(124, 145, 64, 0.7)',
                                 ];
                                 break;
                             break;
@@ -281,7 +281,7 @@ if ($this->message) { ?>
                                     '.users-visits-res-' . strtolower($res['column']) . ' .bar-value {
 										background-color: ' . $res['color'] . ';
 										width: ' . number_format($res['value']) . '%;
-									}'
+									}',
                                 );
                                 ?>
                                 <li id="users-visits-res-<?php echo strtolower($res['column']); ?>">
@@ -309,7 +309,7 @@ if ($this->message) { ?>
                                     '.users-visits-org-' . strtolower($res['column']) . ' .bar-value {
 										background-color: ' . $res['color'] . ';
 										width: ' . number_format($res['value']) . '%;
-									}'
+									}',
                                 );
                                 ?>
                                 <li id="users-visits-org-<?php echo strtolower($res['column']); ?>">
@@ -376,28 +376,28 @@ if ($this->message) { ?>
                                 $residence[] = [
                                     'column' => 'US',
                                     'value'  => $row->value,
-                                    'color'  => 'rgba(19, 164, 164, 0.7)'
+                                    'color'  => 'rgba(19, 164, 164, 0.7)',
                                 ];
                                 break;
                             case 4:
                                 $residence[] = [
                                     'column' => 'Asia',
                                     'value'  => $row->value,
-                                    'color'  => 'rgba(222, 176, 88, 0.7)'
+                                    'color'  => 'rgba(222, 176, 88, 0.7)',
                                 ];
                                 break;
                             case 5:
                                 $residence[] = [
                                     'column' => 'Europe',
                                     'value'  => $row->value,
-                                    'color'  => 'rgba(233, 95, 87, 0.7)'
+                                    'color'  => 'rgba(233, 95, 87, 0.7)',
                                 ];
                                 break;
                             case 6:
                                 $residence[] = [
                                     'column' => 'Other',
                                     'value'  => $row->value,
-                                    'color'  => 'rgba(124, 145, 64, 0.7)'
+                                    'color'  => 'rgba(124, 145, 64, 0.7)',
                                 ];
                                 break;
 
@@ -405,28 +405,28 @@ if ($this->message) { ?>
                                 $organization[] = [
                                     'column' => 'Education',
                                     'value'  => $row->value,
-                                    'color'  => 'rgba(19, 164, 164, 0.7)'
+                                    'color'  => 'rgba(19, 164, 164, 0.7)',
                                 ];
                                 break;
                             case 9:
                                 $organization[] = [
                                     'column' => 'Industry',
                                     'value'  => $row->value,
-                                    'color'  => 'rgba(222, 176, 88, 0.7)'
+                                    'color'  => 'rgba(222, 176, 88, 0.7)',
                                 ];
                                 break;
                             case 10:
                                 $organization[] = [
                                     'column' => 'Government',
                                     'value'  => $row->value,
-                                    'color'  => 'rgba(233, 95, 87, 0.7)'
+                                    'color'  => 'rgba(233, 95, 87, 0.7)',
                                 ];
                                 break;
                             case 11:
                                 $organization[] = [
                                     'column' => 'Other',
                                     'value'  => $row->value,
-                                    'color'  => 'rgba(124, 145, 64, 0.7)'
+                                    'color'  => 'rgba(124, 145, 64, 0.7)',
                                 ];
                                 break;
                             break;
@@ -448,7 +448,7 @@ if ($this->message) { ?>
                                     '.users-downloads-res-' . strtolower($res['column']) . ' .bar-value {
 										background-color: ' . $res['color'] . ';
 										width: ' . number_format($res['value']) . '%;
-									}'
+									}',
                                 );
                                 ?>
                                 <li id="users-downloads-res-<?php echo strtolower($res['column']); ?>">
@@ -476,7 +476,7 @@ if ($this->message) { ?>
                                     '.users-downloads-org-' . strtolower($res['column']) . ' .bar-value {
 										background-color: ' . $res['color'] . ';
 										width: ' . number_format($res['value']) . '%;
-									}'
+									}',
                                 );
                                 ?>
                                 <li id="users-downloads-org-<?php echo strtolower($res['column']); ?>">
@@ -516,7 +516,7 @@ if ($this->message) { ?>
 				FROM `summary_simusage_vals`
 				WHERE `period` = " . $db->quote($period) . "
 				AND `rowid`= " . $db->quote(1) . "
-				ORDER BY `datetime` ASC"
+				ORDER BY `datetime` ASC",
             );
             $results = $db->loadObjectList();
             if ($results) {
@@ -551,7 +551,7 @@ if ($this->message) { ?>
 				FROM `summary_simusage_vals`
 				WHERE `period` = " . $db->quote($period) . "
 				AND `rowid`= " . $db->quote(2) . "
-				ORDER BY `datetime` ASC"
+				ORDER BY `datetime` ASC",
             );
             $results = $db->loadObjectList();
             if ($results) {
@@ -589,7 +589,7 @@ if ($this->message) { ?>
 			    . period = " . $db->quote($period) . " AND b
 			    . datetime = " . $db->quote($datetime) . " AND a
 			    . id > 2
-			ORDER BY a.id"
+			ORDER BY a.id",
         );
         $results = $db->loadObjectList();
         if ($results) {
@@ -603,11 +603,11 @@ if ($this->message) { ?>
                             $simId = preg_replace(
                                 '/[^a-z0-9\-_]/',
                                 '',
-                                strtolower($result->label)
+                                strtolower($result->label),
                             );
                             $simValue = plgUsageOverview::formatValue(
                                 $result->value,
-                                $result->valfmt
+                                $result->valfmt,
                             );
                         ?>
                         <span
@@ -682,7 +682,7 @@ if ($this->message) { ?>
                             . $this->element
                             . '&action=getUsageForDate&period='
                             . $period . '&datetime=',
-                            false
+                            false,
                         );
                         ?>";
                     $.getJSON(jsonUrl + yyyy + "-" + mm, function(data){

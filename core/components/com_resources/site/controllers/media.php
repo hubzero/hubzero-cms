@@ -427,7 +427,7 @@ class Media extends SiteController
                 'farthest_position_timestamp' => Date::toSql(),
                 'completed'                   => 0,
                 'total_views'                 => 1,
-                'total_viewing_time'          => 0
+                'total_viewing_time'          => 0,
             ]);
         } else {
             // Get the amount of video watched from last tracking event
@@ -479,7 +479,7 @@ class Media extends SiteController
                 'farthest_position'           => $time,
                 'current_position_timestamp'  => Date::toSql(),
                 'farthest_position_timestamp' => Date::toSql(),
-                'completed'                   => 0
+                'completed'                   => 0,
             ]);
         } else {
             // Set the new current position

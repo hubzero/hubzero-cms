@@ -81,7 +81,7 @@ class SchemaConverter
         if (!in_array($from, $this->supportedFrom)) {
             $this->output->error(
                 "Error: Unsupported source database type '$from'. Supported: "
-                . implode(', ', $this->supportedFrom)
+                . implode(', ', $this->supportedFrom),
             );
             return;
         }
@@ -89,7 +89,7 @@ class SchemaConverter
         if (!in_array($to, $this->supportedTo)) {
             $this->output->error(
                 "Error: Unsupported target database type '$to'. Supported: "
-                . implode(', ', $this->supportedTo)
+                . implode(', ', $this->supportedTo),
             );
             return;
         }
@@ -209,7 +209,7 @@ class SchemaConverter
             . '(.+?)(?=;\s*(?:--|DROP VIEW|$))/si',
             $content,
             $viewMatches,
-            PREG_SET_ORDER
+            PREG_SET_ORDER,
         );
 
         foreach ($viewMatches as $match) {
@@ -309,12 +309,12 @@ class SchemaConverter
             $sql = preg_replace(
                 '/`' . $autoIncrementColumn . '`\s+INTEGER\s+NOT NULL\s+AUTO_INCREMENT/',
                 '`' . $autoIncrementColumn . '` INTEGER PRIMARY KEY AUTOINCREMENT',
-                $sql
+                $sql,
             );
             $sql = preg_replace(
                 '/`' . $autoIncrementColumn . '`\s+INTEGER\s+AUTO_INCREMENT/',
                 '`' . $autoIncrementColumn . '` INTEGER PRIMARY KEY AUTOINCREMENT',
-                $sql
+                $sql,
             );
 
             // Remove the separate PRIMARY KEY declaration for this column
@@ -329,12 +329,12 @@ class SchemaConverter
             $sql = preg_replace(
                 '/`' . $fallbackMatch[1] . '`\s+INTEGER\s+NOT NULL\s+AUTO_INCREMENT/i',
                 '`' . $fallbackMatch[1] . '` INTEGER PRIMARY KEY AUTOINCREMENT',
-                $sql
+                $sql,
             );
             $sql = preg_replace(
                 '/`' . $fallbackMatch[1] . '`\s+INTEGER\s+AUTO_INCREMENT/i',
                 '`' . $fallbackMatch[1] . '` INTEGER PRIMARY KEY AUTOINCREMENT',
-                $sql
+                $sql,
             );
             $sql = preg_replace('/,\s*PRIMARY KEY\s+\(`' . $fallbackMatch[1] . '`\)/', '', $sql);
         }

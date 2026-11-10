@@ -41,7 +41,7 @@ class Imports extends AdminController
             Notify::warning(Lang::txt('Not authorized'));
 
             App::redirect(
-                Route::url('index.php?option=com_members', false)
+                Route::url('index.php?option=com_members', false),
             );
         }
 
@@ -63,26 +63,26 @@ class Imports extends AdminController
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limitstart',
                 'limitstart',
                 0,
-                'int'
+                'int',
             ),
             'state'    => [1],
             'sort'       => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'created_at'
+                'created_at',
             ),
             'sort_Dir'   => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'DESC'
+                'DESC',
             ),
-            'type'     => 'groups'
+            'type'     => 'groups',
         ];
 
         $model = Import::all();
@@ -399,7 +399,7 @@ class Imports extends AdminController
         $resourceData = $importImporter->process($import, [
             'postparse'   => $this->getHooks('postparse', $import),
             'postmap'     => $this->getHooks('postmap', $import),
-            'postconvert' => $this->getHooks('postconvert', $import)
+            'postconvert' => $this->getHooks('postconvert', $import),
         ], $dryRun);
 
         // Calculate execution time
@@ -411,7 +411,7 @@ class Imports extends AdminController
             echo htmlentities(json_encode([
                 'import'  => 'success',
                 'time'    => $time,
-                'records' => $resourceData
+                'records' => $resourceData,
             ]));
             exit();
         }
@@ -420,7 +420,7 @@ class Imports extends AdminController
         echo json_encode([
             'import'  => 'success',
             'time'    => $time,
-            'records' => $resourceData
+            'records' => $resourceData,
         ]);
         exit();
     }
@@ -447,7 +447,7 @@ class Imports extends AdminController
         // build array of data to return
         $data = [
             'processed' => $run->get('processed', 0),
-            'total'     => $run->get('count', 0)
+            'total'     => $run->get('count', 0),
         ];
 
         // return progress update
@@ -610,7 +610,7 @@ class Imports extends AdminController
                 'radio',
                 'radios',
                 'checkbox',
-                'checkboxes'
+                'checkboxes',
             ];
             if ($field->options->count() || in_array($field->get('type'), $multiValueTypes)) {
                 $example = 'example;example;example';

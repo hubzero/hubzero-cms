@@ -91,7 +91,7 @@ class Entriesv1r0 extends ApiController
             'scope_id'   => Request::getInt('scope_id', 0),
             'search'     => Request::getString('search', ''),
             'action'     => Request::getCmd('action'),
-            'created_by' => Request::getInt('created_by', 0)
+            'created_by' => Request::getInt('created_by', 0),
         ];
 
         $model = Activity::all();
@@ -235,7 +235,7 @@ class Entriesv1r0 extends ApiController
                 ? Request::getInt('created_by', User::get('id'), 'post')
                 : User::get('id')),
             'anonymous'      => Request::getInt('anonymous', 0, 'post'),
-            'parent'         => Request::getInt('parent', 0, 'post')
+            'parent'         => Request::getInt('parent', 0, 'post'),
         ];
 
         $row = Activity::blank();
@@ -272,7 +272,7 @@ class Entriesv1r0 extends ApiController
 
                     $recipient = [
                         'scope'    => $parts[0],
-                        'scope_id' => $parts[1]
+                        'scope_id' => $parts[1],
                     ];
                 }
 
@@ -288,7 +288,7 @@ class Entriesv1r0 extends ApiController
             foreach ($subscriptions as $subscription) {
                 $recipients[] = [
                     'scope'    => 'user',
-                    'scope_id' => $subscription->user_id
+                    'scope_id' => $subscription->user_id,
                 ];
             }
 
@@ -300,7 +300,7 @@ class Entriesv1r0 extends ApiController
                 if (!is_array($receiver)) {
                     $receiver = [
                         'scope'    => 'user',
-                        'scope_id' => $receiver
+                        'scope_id' => $receiver,
                     ];
                 }
 
@@ -327,7 +327,7 @@ class Entriesv1r0 extends ApiController
                     'scope'    => $receiver['scope'],
                     'scope_id' => $receiver['scope_id'],
                     'log_id'   => $row->get('id'),
-                    'state'    => 1
+                    'state'    => 1,
                 ]);
 
                 $recipient->save();
@@ -495,7 +495,7 @@ class Entriesv1r0 extends ApiController
                 : $row->get('created')),
             'created_by'     => $row->get('created_by'),
             'anonymous'      => Request::getInt('anonymous', $row->get('anonymous')),
-            'parent'         => Request::getInt('parent', $row->get('parent'))
+            'parent'         => Request::getInt('parent', $row->get('parent')),
         ];
 
         if (!$row->set($fields)) {
@@ -522,7 +522,7 @@ class Entriesv1r0 extends ApiController
 
                     $recipient = [
                         'scope'    => $parts[0],
-                        'scope_id' => $parts[1]
+                        'scope_id' => $parts[1],
                     ];
                 }
 
@@ -538,7 +538,7 @@ class Entriesv1r0 extends ApiController
             foreach ($subscriptions as $subscription) {
                 $recipients[] = [
                     'scope'    => 'user',
-                    'scope_id' => $subscription->user_id
+                    'scope_id' => $subscription->user_id,
                 ];
             }
 
@@ -550,7 +550,7 @@ class Entriesv1r0 extends ApiController
                 if (!is_array($receiver)) {
                     $receiver = [
                         'scope'    => 'user',
-                        'scope_id' => $receiver
+                        'scope_id' => $receiver,
                     ];
                 }
 
@@ -577,7 +577,7 @@ class Entriesv1r0 extends ApiController
                     'scope'    => $receiver['scope'],
                     'scope_id' => $receiver['scope_id'],
                     'log_id'   => $row->get('id'),
-                    'state'    => 1
+                    'state'    => 1,
                 ]);
 
                 $recipient->save();

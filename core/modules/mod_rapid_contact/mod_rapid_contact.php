@@ -107,7 +107,7 @@ class RapidContact extends Module
         if (!$exact_url) {
             $this->url = filter_var(
                 \Hubzero\Utility\Uri::getInstance()->toString(),
-                FILTER_SANITIZE_URL
+                FILTER_SANITIZE_URL,
             );
         } else {
             if (!$disable_https) {
@@ -134,7 +134,7 @@ class RapidContact extends Module
             'name'    => '',
             'email'   => '',
             'subject' => '',
-            'message' => ''
+            'message' => '',
         ];
 
         if (isset($_POST['rp'])) {
@@ -180,7 +180,7 @@ class RapidContact extends Module
                     $this->posted['name'],
                     $this->posted['email'],
                     Request::getString('HTTP_REFERER', '', 'SERVER'),
-                    Config::get('sitename')
+                    Config::get('sitename'),
                 );
                 $myMessage .= "\n\n" . Sanitize::clean($this->posted['message']);
 

@@ -29,7 +29,7 @@ $type      = $this->filters['type'];
 <?php
 $formAction = Route::url(
     'index.php?option=com_modules&task=positions&tmpl=component'
-    . '&function=' . $function . '&client_id=' . $clientId
+    . '&function=' . $function . '&client_id=' . $clientId,
 );
 ?>
 <form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
@@ -94,7 +94,7 @@ $formAction = Route::url(
                         'COM_MODULES_HEADING_TEMPLATES',
                         'templates',
                         $direction,
-                        $ordering
+                        $ordering,
                     ); ?>
                 </th>
             </tr>
@@ -106,7 +106,7 @@ $formAction = Route::url(
                     $pagination = $this->pagination(
                         $this->total,
                         $this->filters['limit'],
-                        $this->filters['start']
+                        $this->filters['start'],
                     );
                     echo $pagination;
                     ?>
@@ -132,7 +132,7 @@ $formAction = Route::url(
                                     echo Lang::txt(
                                         'COM_MODULES_MODULE_TEMPLATE_POSITION',
                                         Lang::txt($template),
-                                        Lang::txt($label)
+                                        Lang::txt($label),
                                     );
                                 } else {
                                     echo Lang::txt($template);

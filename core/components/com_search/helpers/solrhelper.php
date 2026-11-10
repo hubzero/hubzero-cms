@@ -46,9 +46,9 @@ class SolrHelper
                     'port' => $port,
                     'path' => $path,
                     'context' => $context,
-                    'core' => $core
-                ]
-            ]
+                    'core' => $core,
+                ],
+            ],
         ];
 
         $adapter = new Solarium\Core\Client\Adapter\Curl();

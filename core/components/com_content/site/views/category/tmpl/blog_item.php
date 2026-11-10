@@ -37,8 +37,8 @@ Html::behavior('framework');
                 \Components\Content\Site\Helpers\Route::getArticleRoute(
                     $this->item->slug,
                     $this->item->catid,
-                    $this->item->language
-                )
+                    $this->item->language,
+                ),
             );
             ?>
             <a href="<?php echo $articleUrl; ?>">
@@ -93,7 +93,7 @@ Html::behavior('framework');
         <dd class="parent-category-name">
             <?php $title = $this->escape($this->item->parent_title);
                 $catUrl = Route::url(
-                    \Components\Content\Site\Helpers\Route::getCategoryRoute($this->item->parent_id)
+                    \Components\Content\Site\Helpers\Route::getCategoryRoute($this->item->parent_id),
                 );
             $url = '<a href="' . $catUrl . '">' . $title . '</a>';
             ?>
@@ -108,7 +108,7 @@ Html::behavior('framework');
         <dd class="category-name">
             <?php $title = $this->escape($this->item->category_title);
                     $catUrl = Route::url(
-                        \Components\Content\Site\Helpers\Route::getCategoryRoute($this->item->catid)
+                        \Components\Content\Site\Helpers\Route::getCategoryRoute($this->item->catid),
                     );
                     $url = '<a href="' . $catUrl . '">' . $title . '</a>';
             ?>
@@ -152,7 +152,7 @@ Html::behavior('framework');
                     <?php
                     $contactUrl = Route::url(
                         'index.php?option=com_contact&view=contact&id='
-                        . $this->item->contactid
+                        . $this->item->contactid,
                     );
                     $authorLink = '<a href="' . $contactUrl . '">'
                         . $author . '</a>';
@@ -200,22 +200,22 @@ Html::behavior('framework');
             \Components\Content\Site\Helpers\Route::getArticleRoute(
                 $this->item->slug,
                 $this->item->catid,
-                $this->item->language
-            )
+                $this->item->language,
+            ),
         );
     else :
         $menu = App::get('menu');
         $active = $menu->getActive();
         $itemId = $active->id;
         $link1 = Route::url(
-            'index.php?option=com_users&view=login&Itemid=' . $itemId
+            'index.php?option=com_users&view=login&Itemid=' . $itemId,
         );
         $returnURL = Route::url(
             \Components\Content\Site\Helpers\Route::getArticleRoute(
                 $this->item->slug,
                 $this->item->catid,
-                $this->item->language
-            )
+                $this->item->language,
+            ),
         );
         $link = new Hubzero\Utility\Uri($link1);
         $link->setUriVar('return', base64_encode(urlencode($returnURL)));

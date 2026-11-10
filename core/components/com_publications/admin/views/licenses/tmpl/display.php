@@ -20,7 +20,7 @@ $label = Lang::txt('COM_PUBLICATIONS_PUBLICATIONS');
 $label2 = Lang::txt('COM_PUBLICATIONS_LICENSES');
 Toolbar::title(
     $label . ': ' . $label2,
-    'publications'
+    'publications',
 );
 if ($canDo->get('core.create')) {
     Toolbar::addNew();
@@ -84,7 +84,7 @@ $this->css();
                     'COM_PUBLICATIONS_FIELD_ID',
                     'id',
                     @$this->filters['sort_Dir'],
-                    @$this->filters['sort']
+                    @$this->filters['sort'],
                 );
                 ?>
                 <th class="priority-4"><?php echo $sortHeader; ?></th>
@@ -94,7 +94,7 @@ $this->css();
                     'COM_PUBLICATIONS_FIELD_NAME',
                     'name',
                     @$this->filters['sort_Dir'],
-                    @$this->filters['sort']
+                    @$this->filters['sort'],
                 );
                 ?>
                 <th class="priority-3"><?php echo $sortHeader; ?></th>
@@ -104,7 +104,7 @@ $this->css();
                     'COM_PUBLICATIONS_FIELD_TITLE',
                     'title',
                     @$this->filters['sort_Dir'],
-                    @$this->filters['sort']
+                    @$this->filters['sort'],
                 );
                 ?>
                 <th><?php echo $sortHeader; ?></th>
@@ -114,7 +114,7 @@ $this->css();
                     'COM_PUBLICATIONS_FIELD_STATUS',
                     'active',
                     @$this->filters['sort_Dir'],
-                    @$this->filters['sort']
+                    @$this->filters['sort'],
                 );
                 ?>
                 <th class="priority-2"><?php echo $sortHeader; ?></th>
@@ -125,7 +125,7 @@ $this->css();
                     'COM_PUBLICATIONS_FIELD_ORDER',
                     'ordering',
                     @$this->filters['sort_Dir'],
-                    @$this->filters['sort']
+                    @$this->filters['sort'],
                 );
                 ?>
                 <th><?php echo $sortHeader; ?></th>
@@ -165,7 +165,7 @@ $this->css();
                         $editUrl = Route::url(
                             'index.php?option=' . $this->option
                             . '&controller=' . $this->controller
-                            . '&task=edit&id=' . $row->id
+                            . '&task=edit&id=' . $row->id,
                         );
                         ?>
                         <a href="<?php echo $editUrl; ?>">
@@ -198,7 +198,7 @@ $this->css();
                                 <?php echo $this->rows->pagination->orderDownIcon(
                                     $i,
                                     $this->rows->pagination->total,
-                                    isset($orderings[$i + 1])
+                                    isset($orderings[$i + 1]),
                                 ); ?>
                             </span>
                         <?php } ?>

@@ -86,7 +86,7 @@ class Categories extends AdminController
 
         $params = [
             'access' => isset($batchOptions['assetgroup_id']) ? $batchOptions['assetgroup_id'] : null,
-            'language' => isset($batchOptions['language_id']) ? $batchOptions['language_id'] : null
+            'language' => isset($batchOptions['language_id']) ? $batchOptions['language_id'] : null,
         ];
 
         $categories = Category::all()->whereIn('id', $ids);
@@ -109,45 +109,45 @@ class Categories extends AdminController
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . 'search',
                 'filter_search',
-                ''
+                '',
             ),
             'access' => Request::getState(
                 $this->_option . '.' . $this->_controller . 'access',
                 'filter_access',
-                null
+                null,
             ),
             'published' => Request::getState(
                 $this->_option . '.' . $this->_controller . 'published',
                 'filter_published',
-                ''
+                '',
             ),
             'level' => Request::getState(
                 $this->_option . '.' . $this->_controller . 'level',
-                'filter_level'
+                'filter_level',
             ),
             'language' => Request::getState(
                 $this->_option . '.' . $this->_controller . 'language',
-                ''
+                '',
             ),
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'lft'
+                'lft',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
+                'ASC',
             ),
             'extension' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.extension',
-                'extension'
-            )
+                'extension',
+            ),
         ];
         $filterableFields = [
             'category_id' => 'catid',
             'access'      => 'access',
-            'extension'   => 'extension'
+            'extension'   => 'extension',
         ];
         $categories = Category::all()
             ->select('`#__categories`.*')
@@ -342,7 +342,7 @@ class Categories extends AdminController
             $items['created_time'],
             $items['modified_user_id'],
             $items['modified_time'],
-            $items['hits']
+            $items['hits'],
         );
         $items['extension'] = $extension;
 
@@ -362,7 +362,7 @@ class Categories extends AdminController
                 function ($item) {
                     return array_filter($item, 'strlen');
                 },
-                $items['rules']
+                $items['rules'],
             );
             $category->assetRules = new Rules($rules);
             $category->setNameSpace($extension);
@@ -409,20 +409,20 @@ class Categories extends AdminController
         $states = [
             'publish' => [
                 'value' => '1',
-                'lang' => 'COM_CATEGORIES_N_ITEMS_PUBLISHED'
+                'lang' => 'COM_CATEGORIES_N_ITEMS_PUBLISHED',
             ],
             'unpublish' => [
                 'value' => '0',
-                'lang' => 'COM_CATEGORIES_N_ITEMS_UNPUBLISHED'
+                'lang' => 'COM_CATEGORIES_N_ITEMS_UNPUBLISHED',
             ],
             'archive' => [
                 'value' => '2',
-                'lang' => 'COM_CATEGORIES_N_ITEMS_ARCHIVED'
+                'lang' => 'COM_CATEGORIES_N_ITEMS_ARCHIVED',
             ],
             'trash' => [
                 'value' => '-2',
-                'lang' => 'COM_CATEGORIES_N_ITEMS_TRASHED'
-            ]
+                'lang' => 'COM_CATEGORIES_N_ITEMS_TRASHED',
+            ],
         ];
         if (!isset($states[$this->_task])) {
             return $this->cancelTask();
@@ -570,7 +570,7 @@ class Categories extends AdminController
 
         // Set the redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . ($this->_controller ? '&controller=' . $this->_controller : '') . '&extension=' . $extension, false)
+            Route::url('index.php?option=' . $this->_option . ($this->_controller ? '&controller=' . $this->_controller : '') . '&extension=' . $extension, false),
         );
     }
 

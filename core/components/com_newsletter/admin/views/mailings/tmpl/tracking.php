@@ -89,7 +89,7 @@ if ($this->getError()) {
                             <?php $topLocations = Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_TOP_LOCATIONS'); ?>
                             <?php
                             $opensCount = Lang::txt(
-                                'COM_NEWSLETTER_NEWSLETTER_MAILING_TOP_LOCATIONS_OPENS_COUNT'
+                                'COM_NEWSLETTER_NEWSLETTER_MAILING_TOP_LOCATIONS_OPENS_COUNT',
                             );
                             ?>
                             <th colspan="2"><?php echo $topLocations; ?></th>

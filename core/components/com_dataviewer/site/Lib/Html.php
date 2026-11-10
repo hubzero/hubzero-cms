@@ -28,13 +28,13 @@ class Html
                 foreach (glob("*.js") as $file) {
                     $document->addScript(
                         DV_COM_HTML . '/' . $path . '/' . $file . '?mt='
-                        . filemtime(DV_PATH_HTML . DS . $path . DS . $file)
+                        . filemtime(DV_PATH_HTML . DS . $path . DS . $file),
                     );
                 }
             } else {
                 $document->addScript(
                     DV_COM_HTML . '/' . $script . '?mt='
-                    . filemtime(DV_PATH_HTML . DS . $script)
+                    . filemtime(DV_PATH_HTML . DS . $script),
                 );
             }
         }
@@ -56,13 +56,13 @@ class Html
                 foreach (glob("*.css") as $file) {
                     $document->addStyleSheet(
                         DV_COM_HTML . '/' . $path . '/' . $file . '?mt='
-                        . filemtime(DV_PATH_HTML . DS . $path . DS . $file)
+                        . filemtime(DV_PATH_HTML . DS . $path . DS . $file),
                     );
                 }
             } else {
                 $document->addStyleSheet(
                     DV_COM_HTML . '/' . $css . '?mt='
-                    . filemtime(DV_PATH_HTML . DS . $css)
+                    . filemtime(DV_PATH_HTML . DS . $css),
                 );
             }
         }

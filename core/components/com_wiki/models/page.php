@@ -73,7 +73,7 @@ class Page extends Relational
      * @var  array
      */
     protected $rules = [
-        'title' => 'notempty'
+        'title' => 'notempty',
     ];
 
     /**
@@ -83,7 +83,7 @@ class Page extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**
@@ -93,7 +93,7 @@ class Page extends Relational
      */
     public $always = [
         'pagename',
-        'namespace'
+        'namespace',
     ];
 
     /**
@@ -533,7 +533,7 @@ class Page extends Relational
             $this->adapter = new $cls(
                 $this->get('pagename'),
                 $this->get('path'),
-                $this->get('scope_id')
+                $this->get('scope_id'),
             );
         }
 
@@ -1035,7 +1035,7 @@ class Page extends Relational
             'alnum' => "0-9A-Za-z\xc0-\xd6\xd8-\xf6\xf8-\xff",
             'alpha' => "A-Za-z\xc0-\xd6\xd8-\xf6\xf8-\xff",
             'upper' => "A-Z\xc0-\xd6\xd8-\xde",
-            'lower' => "a-z\xdf-\xf6\xf8-\xff"
+            'lower' => "a-z\xdf-\xf6\xf8-\xff",
         ];
 
         $keys = join('|', array_keys($classes));
@@ -1045,7 +1045,7 @@ class Page extends Relational
             function ($matches) use ($classes) {
                 return $classes[$matches[1]];
             },
-            $regexp
+            $regexp,
         );
     }
 

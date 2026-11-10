@@ -108,7 +108,7 @@ class Error extends Base
         $template  = isset($params['template'])  ? ltrim(preg_replace(
             '/[^A-Z0-9_\.-]/i',
             '',
-            (string) $params['template']
+            (string) $params['template'],
         ), '.') : 'system';
         if (!file_exists($directory . DS . $template . DS . $file)) {
             $directory = PATH_CORE . '/templates';

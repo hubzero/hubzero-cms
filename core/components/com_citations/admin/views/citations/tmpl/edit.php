@@ -82,7 +82,7 @@ if ($this->getError()) {
                             $sel = ($t['id'] == $this->row->type)
                                 ? 'selected="selected"' : '';
                             $typeTitle = $this->escape(
-                                stripslashes($t['type_title'] ?? '')
+                                stripslashes($t['type_title'] ?? ''),
                             );
                             $typeVal = $this->escape($t['type']);
                             ?>
@@ -98,7 +98,7 @@ if ($this->getError()) {
                         <div class="input-wrap">
                             <?php
                             $citeVal = $this->escape(
-                                stripslashes($this->row->cite ?? '')
+                                stripslashes($this->row->cite ?? ''),
                             );
                             ?>
                             <label for="cite">
@@ -120,7 +120,7 @@ if ($this->getError()) {
                         <div class="input-wrap">
                             <?php
                             $refTypeVal = $this->escape(
-                                stripslashes($this->row->ref_type ?? '')
+                                stripslashes($this->row->ref_type ?? ''),
                             );
                             ?>
                             <label for="ref_type">
@@ -144,7 +144,7 @@ if ($this->getError()) {
                             <?php
                             $dateSubmitVal = $this->escape(stripslashes(
                                 $this->row->date_submit == null
-                                    ? '' : $this->row->date_submit
+                                    ? '' : $this->row->date_submit,
                             ));
                             ?>
                             <label for="date_submit">
@@ -164,7 +164,7 @@ if ($this->getError()) {
                             <?php
                             $dateAcceptVal = $this->escape(stripslashes(
                                 $this->row->date_accept == null
-                                    ? '' : $this->row->date_accept
+                                    ? '' : $this->row->date_accept,
                             ));
                             ?>
                             <label for="date_accept">
@@ -187,7 +187,7 @@ if ($this->getError()) {
                             <?php
                             $datePubVal = $this->escape(stripslashes(
                                 $this->row->date_publish == null
-                                    ? '' : $this->row->date_publish
+                                    ? '' : $this->row->date_publish,
                             ));
                             ?>
                             <label for="date_publish">
@@ -208,7 +208,7 @@ if ($this->getError()) {
                                 <div class="input-wrap">
                                     <?php
                                     $yearVal = $this->escape(
-                                        stripslashes($this->row->year ?? '')
+                                        stripslashes($this->row->year ?? ''),
                                     );
                                     ?>
                                     <label for="year">
@@ -228,7 +228,7 @@ if ($this->getError()) {
                                 <div class="input-wrap">
                                     <?php
                                     $monthVal = $this->escape(
-                                        stripslashes($this->row->month ?? '')
+                                        stripslashes($this->row->month ?? ''),
                                     );
                                     ?>
                                     <label for="month">
@@ -262,10 +262,10 @@ if ($this->getError()) {
                 <div class="input-wrap">
                     <?php
                     $authorAddrLabel = Lang::txt(
-                        'COM_CITATIONS_FIELD_AUTHOR_ADDRESS'
+                        'COM_CITATIONS_FIELD_AUTHOR_ADDRESS',
                     );
                     $authorAddrVal = $this->escape(
-                        stripslashes($this->row->author_address ?? '')
+                        stripslashes($this->row->author_address ?? ''),
                     );
                     ?>
                     <label for="author_address">
@@ -317,7 +317,7 @@ if ($this->getError()) {
                 <div class="input-wrap">
                     <?php
                     $shortTitleLabel = Lang::txt(
-                        'COM_CITATIONS_FIELD_SHORT_TITLE'
+                        'COM_CITATIONS_FIELD_SHORT_TITLE',
                     );
                     ?>
                     <label for="shorttitle">
@@ -349,7 +349,7 @@ if ($this->getError()) {
                         <div class="input-wrap">
                             <?php
                             $volumeVal = $this->escape(
-                                stripslashes($this->row->volume ?? '')
+                                stripslashes($this->row->volume ?? ''),
                             );
                             ?>
                             <label for="volume">
@@ -368,7 +368,7 @@ if ($this->getError()) {
                         <div class="input-wrap">
                             <?php
                             $numberVal = $this->escape(
-                                stripslashes($this->row->number ?? '')
+                                stripslashes($this->row->number ?? ''),
                             );
                             ?>
                             <label for="number">
@@ -391,7 +391,7 @@ if ($this->getError()) {
                             <?php
                             $pagesVal = $this->escape(stripslashes(
                                 $this->row->pages == null
-                                    ? '' : $this->row->pages
+                                    ? '' : $this->row->pages,
                             ));
                             ?>
                             <label for="pages">
@@ -410,7 +410,7 @@ if ($this->getError()) {
                         <div class="input-wrap">
                             <?php
                             $isbnVal = $this->escape(
-                                stripslashes($this->row->isbn ?? '')
+                                stripslashes($this->row->isbn ?? ''),
                             );
                             ?>
                             <label for="isbn">
@@ -430,7 +430,7 @@ if ($this->getError()) {
                 <div class="input-wrap">
                     <?php
                     $doiVal = $this->escape(
-                        stripslashes($this->row->doi ?? '')
+                        stripslashes($this->row->doi ?? ''),
                     );
                     ?>
                     <label for="doi">
@@ -447,10 +447,10 @@ if ($this->getError()) {
                 <div class="input-wrap">
                     <?php
                     $callNumLabel = Lang::txt(
-                        'COM_CITATIONS_FIELD_CALL_NUMBER'
+                        'COM_CITATIONS_FIELD_CALL_NUMBER',
                     );
                     $callNumVal = $this->escape(
-                        stripslashes($this->row->call_number ?? '')
+                        stripslashes($this->row->call_number ?? ''),
                     );
                     ?>
                     <label for="callnumber">
@@ -467,10 +467,10 @@ if ($this->getError()) {
                 <div class="input-wrap">
                     <?php
                     $accNumLabel = Lang::txt(
-                        'COM_CITATIONS_FIELD_ACCESSION_NUMBER'
+                        'COM_CITATIONS_FIELD_ACCESSION_NUMBER',
                     );
                     $accNumVal = $this->escape(
-                        stripslashes($this->row->accession_number ?? '')
+                        stripslashes($this->row->accession_number ?? ''),
                     );
                     ?>
                     <label for="accessionnumber">
@@ -487,7 +487,7 @@ if ($this->getError()) {
                 <div class="input-wrap">
                     <?php
                     $seriesVal = $this->escape(
-                        stripslashes($this->row->series ?? '')
+                        stripslashes($this->row->series ?? ''),
                     );
                     ?>
                     <label for="series">
@@ -504,7 +504,7 @@ if ($this->getError()) {
                 <div class="input-wrap">
                     <?php
                     $editionVal = $this->escape(
-                        stripslashes($this->row->edition ?? '')
+                        stripslashes($this->row->edition ?? ''),
                     );
                     ?>
                     <label for="edition">
@@ -525,7 +525,7 @@ if ($this->getError()) {
                 <div class="input-wrap">
                     <?php
                     $schoolVal = $this->escape(
-                        stripslashes($this->row->school ?? '')
+                        stripslashes($this->row->school ?? ''),
                     );
                     ?>
                     <label for="school">
@@ -542,7 +542,7 @@ if ($this->getError()) {
                 <div class="input-wrap">
                     <?php
                     $publisherVal = $this->escape(
-                        stripslashes($this->row->publisher ?? '')
+                        stripslashes($this->row->publisher ?? ''),
                     );
                     ?>
                     <label for="publisher">
@@ -559,7 +559,7 @@ if ($this->getError()) {
                 <div class="input-wrap">
                     <?php
                     $institutionVal = $this->escape(
-                        stripslashes($this->row->institution ?? '')
+                        stripslashes($this->row->institution ?? ''),
                     );
                     $instLabel = Lang::txt('INSTITUTION_EXPLANATION');
                     ?>
@@ -579,7 +579,7 @@ if ($this->getError()) {
                 <div class="input-wrap">
                     <?php
                     $addressVal = $this->escape(
-                        stripslashes($this->row->address ?? '')
+                        stripslashes($this->row->address ?? ''),
                     );
                     ?>
                     <label for="address">
@@ -596,7 +596,7 @@ if ($this->getError()) {
                 <div class="input-wrap">
                     <?php
                     $locationVal = $this->escape(
-                        stripslashes($this->row->location ?? '')
+                        stripslashes($this->row->location ?? ''),
                     );
                     ?>
                     <label for="location">
@@ -616,7 +616,7 @@ if ($this->getError()) {
                 <div class="input-wrap">
                     <?php
                     $howpubVal = $this->escape(
-                        stripslashes($this->row->howpublished ?? '')
+                        stripslashes($this->row->howpublished ?? ''),
                     );
                     ?>
                     <label for="howpublished">
@@ -637,7 +637,7 @@ if ($this->getError()) {
                 <div class="input-wrap">
                     <?php
                     $urlVal = $this->escape(
-                        stripslashes($this->row->url ?? '')
+                        stripslashes($this->row->url ?? ''),
                     );
                     ?>
                     <label for="url">
@@ -654,7 +654,7 @@ if ($this->getError()) {
                 <div class="input-wrap">
                     <?php
                     $eprintVal = $this->escape(
-                        stripslashes($this->row->eprint ?? '')
+                        stripslashes($this->row->eprint ?? ''),
                     );
                     ?>
                     <label for="eprint">
@@ -675,10 +675,10 @@ if ($this->getError()) {
                 <div class="input-wrap">
                     <?php
                     $abstractLabel = Lang::txt(
-                        'COM_CITATIONS_FIELD_ABSTRACT'
+                        'COM_CITATIONS_FIELD_ABSTRACT',
                     );
                     $abstractContent = stripslashes(
-                        $this->row->abstract ?? ''
+                        $this->row->abstract ?? '',
                     );
                     ?>
                     <label for="abstract">
@@ -690,7 +690,7 @@ if ($this->getError()) {
                         50,
                         10,
                         'abstract',
-                        $editorOpts
+                        $editorOpts,
                     ); ?>
                 </div>
                 <div class="input-wrap">
@@ -699,7 +699,7 @@ if ($this->getError()) {
                     </label><br />
                     <?php
                     $noteContent = stripslashes(
-                        $this->row->note ?? ''
+                        $this->row->note ?? '',
                     );
                     echo $this->editor(
                         'citation[note]',
@@ -707,16 +707,16 @@ if ($this->getError()) {
                         50,
                         10,
                         'note',
-                        $editorOpts
+                        $editorOpts,
                     ); ?>
                 </div>
                 <div class="input-wrap">
                     <?php
                     $keywordsLabel = Lang::txt(
-                        'COM_CITATIONS_FIELD_KEYWORDS'
+                        'COM_CITATIONS_FIELD_KEYWORDS',
                     );
                     $keywordsContent = stripslashes(
-                        $this->row->keywords ?? ''
+                        $this->row->keywords ?? '',
                     );
                     ?>
                     <label for="keywords">
@@ -728,16 +728,16 @@ if ($this->getError()) {
                         50,
                         10,
                         'keywords',
-                        $editorOpts
+                        $editorOpts,
                     ); ?>
                 </div>
                 <div class="input-wrap">
                     <?php
                     $resNotesLabel = Lang::txt(
-                        'COM_CITATIONS_FIELD_RESEARCH_NOTES'
+                        'COM_CITATIONS_FIELD_RESEARCH_NOTES',
                     );
                     $resNotesContent = stripslashes(
-                        $this->row->research_notes ?? ''
+                        $this->row->research_notes ?? '',
                     );
                     ?>
                     <label for="research_notes">
@@ -749,7 +749,7 @@ if ($this->getError()) {
                         50,
                         10,
                         'research_notes',
-                        $editorOpts
+                        $editorOpts,
                     ); ?>
                 </div>
             </fieldset>
@@ -786,7 +786,7 @@ if ($this->getError()) {
                     <?php
                     $manualLabel = Lang::txt('MANUAL_FORMAT_CITATION');
                     $formattedContent = stripslashes(
-                        $this->row->get('formatted', '')
+                        $this->row->get('formatted', ''),
                     );
                     ?>
                     <label for="citation-formatted">
@@ -798,7 +798,7 @@ if ($this->getError()) {
                         50,
                         10,
                         'formatted',
-                        $editorOpts
+                        $editorOpts,
                     ); ?>
                 </div>
             </fieldset>
@@ -878,10 +878,10 @@ if ($this->getError()) {
                             $selectLabel = Lang::txt('SELECT');
                             $resourceLabel = Lang::txt('RESOURCE');
                             $refsLabel = Lang::txt(
-                                'COM_CITATIONS_CONTEXT_REFERENCES'
+                                'COM_CITATIONS_CONTEXT_REFERENCES',
                             );
                             $refByLabel = Lang::txt(
-                                'COM_CITATIONS_CONTEXT_REFERENCEDBY'
+                                'COM_CITATIONS_CONTEXT_REFERENCEDBY',
                             );
                             ?>
                             <tr>
@@ -1011,7 +1011,7 @@ if ($this->getError()) {
                 <div class="input-wrap">
                     <?php
                     $scopeIdVal = $this->escape(
-                        stripslashes($this->row->scope_id ?? '')
+                        stripslashes($this->row->scope_id ?? ''),
                     );
                     ?>
                     <label for="scope_id">
@@ -1036,10 +1036,10 @@ if ($this->getError()) {
 
                 <?php
                 $sponsorsHint = Lang::txt(
-                    'COM_CITATIONS_FIELD_SPONSORS_HINT'
+                    'COM_CITATIONS_FIELD_SPONSORS_HINT',
                 );
                 $sponsorsLabel = Lang::txt(
-                    'COM_CITATIONS_FIELD_SPONSORS'
+                    'COM_CITATIONS_FIELD_SPONSORS',
                 );
                 ?>
                 <div
@@ -1061,7 +1061,7 @@ if ($this->getError()) {
                             $sel = (in_array($s->get('id'), $this->row_sponsors))
                                 ? 'selected="selected"' : '';
                             $sponsorVal = $this->escape(
-                                stripslashes($s['sponsor'] ?? '')
+                                stripslashes($s['sponsor'] ?? ''),
                             );
                             ?>
                             <option <?php echo $sel; ?> value="<?php echo $s['id']; ?>">
@@ -1098,7 +1098,7 @@ if ($this->getError()) {
                             $b[] = stripslashes($badge ?? '');
                         }
                         $badgesLabel = Lang::txt(
-                            'COM_CITATIONS_FIELD_BADGES'
+                            'COM_CITATIONS_FIELD_BADGES',
                         );
                         ?>
                         <label for="field-badges">
@@ -1114,7 +1114,7 @@ if ($this->getError()) {
                 <div class="input-wrap">
                     <?php
                     $excludeLabel = Lang::txt(
-                        'COM_CITATIONS_FIELD_EXCLUDE_FROM_EXPORT'
+                        'COM_CITATIONS_FIELD_EXCLUDE_FROM_EXPORT',
                     );
                     ?>
                     <label for="field-exclude">
@@ -1148,7 +1148,7 @@ if ($this->getError()) {
                 }
 
                 $rolloverLabel = Lang::txt(
-                    'COM_CITATIONS_FIELD_ABSTRACT_ROLLOVER'
+                    'COM_CITATIONS_FIELD_ABSTRACT_ROLLOVER',
                 );
                 ?>
                 <div class="input-wrap">

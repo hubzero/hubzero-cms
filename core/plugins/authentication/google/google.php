@@ -134,7 +134,7 @@ class Google extends \Hubzero\Plugin\OauthClient
             App::redirect(
                 Route::url('index.php?option=com_users&view=login'),
                 Lang::txt('PLG_AUTHENTICATION_GOOGLE_MUST_AUTHORIZE_TO_LOGIN', Config::get('sitename')),
-                'error'
+                'error',
             );
         }
 
@@ -151,7 +151,7 @@ class Google extends \Hubzero\Plugin\OauthClient
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return),
                 Lang::txt('PLG_AUTHENTICATION_GOOGLE_MUST_AUTHORIZE_TO_LOGIN', Config::get('sitename')),
-                'error'
+                'error',
             );
         }
     }
@@ -174,7 +174,7 @@ class Google extends \Hubzero\Plugin\OauthClient
         $client->setState($view->return);
         $client->setApprovalPrompt('auto');
         $client->setScopes(
-            'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'
+            'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
         );
 
         // Create and follow the authorization URL
@@ -270,7 +270,7 @@ class Google extends \Hubzero\Plugin\OauthClient
                 $prefs = [
                     'user_id'       => $user->get('id'),
                     'user_img'      => $user_profile['picture'] . '?sz=100',
-                    'authenticator' => 'google'
+                    'authenticator' => 'google',
                 ];
 
                 $namespace = 'authenticator';
@@ -307,7 +307,7 @@ class Google extends \Hubzero\Plugin\OauthClient
             App::redirect(
                 Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
                 Lang::txt('PLG_AUTHENTICATION_GOOGLE_MUST_AUTHORIZE_TO_LINK', Config::get('sitename')),
-                'error'
+                'error',
             );
         }
 
@@ -333,7 +333,7 @@ class Google extends \Hubzero\Plugin\OauthClient
                 App::redirect(
                     Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
                     Lang::txt('PLG_AUTHENTICATION_GOOGLE_ACCOUNT_ALREADY_LINKED'),
-                    'error'
+                    'error',
                 );
             } else {
                 // Create the hubzero auth link
@@ -349,7 +349,7 @@ class Google extends \Hubzero\Plugin\OauthClient
                 } else {
                     Log::error(sprintf(
                         'Hubzero\Auth\Link::find_or_create("authentication", "google", null, %s) returned false',
-                        $username
+                        $username,
                     ));
                 }
             }
@@ -358,7 +358,7 @@ class Google extends \Hubzero\Plugin\OauthClient
             App::redirect(
                 Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
                 Lang::txt('PLG_AUTHENTICATION_GOOGLE_MUST_AUTHORIZE_TO_LINK', Config::get('sitename')),
-                'error'
+                'error',
             );
         }
     }
@@ -372,7 +372,7 @@ class Google extends \Hubzero\Plugin\OauthClient
     public static function onRenderOption($return = null)
     {
         Document::addStyleSheet(
-            Request::root(false) . 'core/plugins/authentication/google/assets/css/google.css'
+            Request::root(false) . 'core/plugins/authentication/google/assets/css/google.css',
         );
 
         $html = '<a class="google account" href="'

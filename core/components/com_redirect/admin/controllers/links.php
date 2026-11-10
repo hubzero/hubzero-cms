@@ -59,29 +59,29 @@ class Links extends AdminController
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             )),
             'state' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.state',
                 'state',
-                '*'
+                '*',
             ),
             'type' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.type',
                 'type',
-                'redirect'
+                'redirect',
             ),
             // Get sorting variables
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'created_date'
+                'created_date',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'desc'
-            )
+                'desc',
+            ),
         ];
 
         $entries = Link::all();
@@ -115,12 +115,12 @@ class Links extends AdminController
         Submenu::addEntry(
             Lang::txt('COM_REDIRECT_REDIRECTS'),
             Route::url('index.php?option=' . $this->_option . '&type=redirect'),
-            ($filters['type'] != '404')
+            ($filters['type'] != '404'),
         );
         Submenu::addEntry(
             Lang::txt('COM_REDIRECT_NOTFOUND'),
             Route::url('index.php?option=' . $this->_option . '&type=404'),
-            ($filters['type'] == '404')
+            ($filters['type'] == '404'),
         );
 
         $this->view
@@ -304,7 +304,7 @@ class Links extends AdminController
             'unpublish' => 0,
             'archive'   => 2,
             'trash'     => -2,
-            'report'    => -3
+            'report'    => -3,
         ];
 
         $value = \Hubzero\Utility\Arr::getValue($data, $this->_task, 0, 'int');

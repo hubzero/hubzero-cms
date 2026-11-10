@@ -29,7 +29,7 @@ class BackendRegistryTest extends TestCase
             $this->assertTrue(class_exists($class), $backend);
             $this->assertTrue(
                 is_subclass_of($class, Driver::class),
-                $backend
+                $backend,
             );
         }
     }
@@ -43,7 +43,7 @@ class BackendRegistryTest extends TestCase
             $this->assertTrue(class_exists($class), $backend);
             $this->assertTrue(
                 is_subclass_of($class, BaseSqlSyntax::class),
-                $backend
+                $backend,
             );
         }
     }
@@ -57,7 +57,7 @@ class BackendRegistryTest extends TestCase
             $this->assertTrue(class_exists($class), $backend);
             $this->assertTrue(
                 is_subclass_of($class, BaseSchemaGrammar::class),
-                $backend
+                $backend,
             );
         }
     }
@@ -79,7 +79,7 @@ class BackendRegistryTest extends TestCase
     {
         $this->assertSame(
             BackendRegistry::resolveGrammarClassFor('db2'),
-            BackendRegistry::resolveGrammarClassFor('ibm')
+            BackendRegistry::resolveGrammarClassFor('ibm'),
         );
     }
 
@@ -88,17 +88,17 @@ class BackendRegistryTest extends TestCase
     {
         $this->assertSame(
             BackendRegistry::resolveDriverClassFor('mysql'),
-            BackendRegistry::resolveDriverClassFor('  MySQL  ')
+            BackendRegistry::resolveDriverClassFor('  MySQL  '),
         );
 
         $this->assertSame(
             BackendRegistry::canonicalDriverClassFor('percona'),
-            BackendRegistry::canonicalDriverClassFor('  PerCona ')
+            BackendRegistry::canonicalDriverClassFor('  PerCona '),
         );
 
         $this->assertSame(
             BackendRegistry::conventionDriverClassCandidates(' customDriver '),
-            BackendRegistry::conventionDriverClassCandidates('CUSTOMDRIVER')
+            BackendRegistry::conventionDriverClassCandidates('CUSTOMDRIVER'),
         );
     }
 
@@ -123,14 +123,14 @@ class BackendRegistryTest extends TestCase
                 '\\Hubzero\\Database\\Driver\\Nope',
                 \Hubzero\Database\Drivers\Mock\MockDriver::class,
                 \Hubzero\Database\Drivers\Sqlite\SqliteDriver::class,
-            ])
+            ]),
         );
 
         $this->assertNull(
             BackendRegistry::firstExistingClassCandidate([
                 '\\Hubzero\\Database\\Driver\\Nope',
                 '\\Hubzero\\Database\\Syntax\\Nope',
-            ])
+            ]),
         );
     }
 
@@ -139,17 +139,17 @@ class BackendRegistryTest extends TestCase
     {
         $this->assertSame(
             BackendRegistry::canonicalDriverClassFor('mysql'),
-            BackendRegistry::conventionDriverClassCandidates('mysql')[0]
+            BackendRegistry::conventionDriverClassCandidates('mysql')[0],
         );
 
         $this->assertSame(
             BackendRegistry::canonicalSyntaxClassFor('pgsql'),
-            BackendRegistry::conventionSyntaxClassCandidates('pgsql')[0]
+            BackendRegistry::conventionSyntaxClassCandidates('pgsql')[0],
         );
 
         $this->assertSame(
             BackendRegistry::canonicalSyntaxClassFor('db2'),
-            BackendRegistry::conventionSyntaxClassCandidates('ibm')[0]
+            BackendRegistry::conventionSyntaxClassCandidates('ibm')[0],
         );
     }
 }

@@ -60,7 +60,7 @@ class Setup extends Base
             App::redirect(
                 Route::url('index.php?option=' . $this->_option),
                 Lang::txt('ALERTNOTAUTH'),
-                'warning'
+                'warning',
             );
         }
 
@@ -337,7 +337,7 @@ class Setup extends Base
         $task   = $setup ? 'setup' : 'edit';
         $append = $new && $this->model->exists() && $this->next == 'describe' ? '#describearea' : '';
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&task=' . $task . '&alias=' . $this->model->get('alias') . '&active=' . $this->next) . $append
+            Route::url('index.php?option=' . $this->_option . '&task=' . $task . '&alias=' . $this->model->get('alias') . '&active=' . $this->next) . $append,
         );
         return;
     }
@@ -379,7 +379,7 @@ class Setup extends Base
                     'hipaa_data'  => Request::getString('hipaa', 'no', 'post'),
                     'ferpa_data'  => Request::getString('ferpa', 'no', 'post'),
                     'export_data' => Request::getString('export', 'no', 'post'),
-                    'irb_data'    => Request::getString('irb', 'no', 'post')
+                    'irb_data'    => Request::getString('irb', 'no', 'post'),
                 ];
 
                 // Save individual restrictions
@@ -540,7 +540,7 @@ class Setup extends Base
                     $admins,
                     Lang::txt('COM_PROJECTS_EMAIL_ADMIN_REVIEWER_NOTIFICATION'),
                     'projects_new_project_admin',
-                    'new'
+                    'new',
                 );
             }
         }
@@ -812,7 +812,7 @@ class Setup extends Base
                                             'projects_new_project_admin',
                                             'admin',
                                             Lang::txt('COM_PROJECTS_PROJECT_MANAGER_GRANT_INFO_UPDATE'),
-                                            'sponsored'
+                                            'sponsored',
                                         );
                                     }
                                 }
@@ -862,7 +862,7 @@ class Setup extends Base
                             1,
                             '',
                             // Splitting by group role overrides the role asked for
-                            $split_group_roles = ($syncRole ? 0 : 1)
+                            $split_group_roles = ($syncRole ? 0 : 1),
                         );
                     }
                 }
@@ -871,7 +871,7 @@ class Setup extends Base
                 $content = Event::trigger('projects.onProject', [
                     $this->model,
                     'save',
-                    ['team']
+                    ['team'],
                 ]);
 
                 if (isset($content[0]) && $this->next == $this->section) {
@@ -940,7 +940,7 @@ class Setup extends Base
                                         'projects_new_project_admin',
                                         'admin',
                                         Lang::txt('COM_PROJECTS_PROJECT_MANAGER_GRANT_INFO_UPDATE'),
-                                        'sponsored'
+                                        'sponsored',
                                     );
                                 }
                             }
@@ -965,7 +965,7 @@ class Setup extends Base
         $content = Event::trigger('projects.onProject', [
             $this->model,
             $this->_task,
-            ['team']
+            ['team'],
         ]);
 
         if (!isset($content[0])) {
@@ -1071,7 +1071,7 @@ class Setup extends Base
         if ($ajax) {
             echo json_encode([
                 'error'   => $this->model->getError(),
-                'message' => Lang::txt('COM_PROJECTS_VERIFY_PASSED')
+                'message' => Lang::txt('COM_PROJECTS_VERIFY_PASSED'),
             ]);
             return;
         }

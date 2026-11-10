@@ -51,7 +51,7 @@ $rows = $this->model->entries('list', $this->filters);
                 <?php if (User::authorise('core.create', $this->option)) : ?>
                     <?php
                     $startUrl = Route::url(
-                        'index.php?option=' . $this->option . '&task=start'
+                        'index.php?option=' . $this->option . '&task=start',
                     );
                     ?>
                     <p><a
@@ -73,7 +73,7 @@ $rows = $this->model->entries('list', $this->filters);
                 </ul>
                 <?php
                 $featuresUrl = Route::url(
-                    'index.php?option=' . $this->option . '&task=features'
+                    'index.php?option=' . $this->option . '&task=features',
                 );
                 ?>
                 <p><a
@@ -106,7 +106,7 @@ $rows = $this->model->entries('list', $this->filters);
                     if (User::isGuest()) {
                         $loginUrl = Route::url(
                             'index.php?option=' . $this->option
-                            . '&task=intro&action=login'
+                            . '&task=intro&action=login',
                         );
                         echo Lang::txt('COM_PROJECTS_PLEASE')
                             . ' <a href="' . $loginUrl

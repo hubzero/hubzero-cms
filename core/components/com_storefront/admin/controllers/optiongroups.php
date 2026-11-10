@@ -36,26 +36,26 @@ class Optiongroups extends AdminController
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'title'
+                'title',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
+                'ASC',
             ),
             // Get paging variables
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limitstart',
                 'limitstart',
                 0,
-                'int'
-            )
+                'int',
+            ),
         ];
 
         $obj = new Archive();
@@ -189,7 +189,7 @@ class Optiongroups extends AdminController
             // Redirect
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-                Lang::txt('COM_STOREFRONT_OPTION_GROUP_SAVED')
+                Lang::txt('COM_STOREFRONT_OPTION_GROUP_SAVED'),
             );
             return;
         }
@@ -245,7 +245,7 @@ class Optiongroups extends AdminController
                     App::redirect(
                         Route::url($url, false),
                         Lang::txt('COM_STOREFRONT_NO_ID'),
-                        'error'
+                        'error',
                     );
                     return;
                 }
@@ -279,7 +279,7 @@ class Optiongroups extends AdminController
                             App::redirect(
                                 Route::url($url, false),
                                 $e->getMessage(),
-                                $type
+                                $type,
                             );
                             return;
                         }
@@ -295,7 +295,7 @@ class Optiongroups extends AdminController
                 App::redirect(
                     Route::url($url, false),
                     $msg,
-                    $type
+                    $type,
                 );
                 if ($warnings) {
                     foreach ($warnings as $warning) {
@@ -345,7 +345,7 @@ class Optiongroups extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                 $msg,
-                'error'
+                'error',
             );
             return;
         }
@@ -379,7 +379,7 @@ class Optiongroups extends AdminController
         // Redirect
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-            $message
+            $message,
         );
     }
 
@@ -392,7 +392,7 @@ class Optiongroups extends AdminController
     {
         // Set the redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
         );
     }
 }

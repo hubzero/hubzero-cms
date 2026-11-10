@@ -193,7 +193,7 @@ class Media extends AdminController
                 $max = preg_replace(
                     $pattern,
                     '$1',
-                    \Hubzero\Utility\Number::formatBytes($sizeLimit)
+                    \Hubzero\Utility\Number::formatBytes($sizeLimit),
                 );
 
                 $this->setError(Lang::txt('FILE_SIZE_TOO_BIG', $max));
@@ -334,7 +334,7 @@ class Media extends AdminController
         $dataPathUrl = Route::url(
             'index.php?option=' . $this->_option
             . '&controller=media&gidNumber=' . $this->group->get('gidNumber')
-            . '&task=list&tmpl=component&dir='
+            . '&task=list&tmpl=component&dir=',
         );
         $dirPath = Html::select(
             'genericlist',
@@ -343,7 +343,7 @@ class Media extends AdminController
             'data-path="' . $dataPathUrl . '" ',
             'value',
             'text',
-            $dir
+            $dir,
         );
 
         // Output the HTML

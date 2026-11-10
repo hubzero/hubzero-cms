@@ -40,7 +40,7 @@ class Contributions extends Plugin
             'contributions' => Lang::txt('PLG_MEMBERS_CONTRIBUTIONS'),
             'icon' => 'f02d',
             'icon-class' => 'icon-book',
-            'menu' => $this->params->get('display_tab', 1)
+            'menu' => $this->params->get('display_tab', 1),
         ];
         return $areas;
     }
@@ -70,7 +70,7 @@ class Contributions extends Plugin
 
         $arr = [
             'html' => '',
-            'metadata' => []
+            'metadata' => [],
         ];
 
         $database = App::get('db');
@@ -111,7 +111,7 @@ class Contributions extends Plugin
                 0,
                 $limitstart,
                 $sort,
-                $activeareas
+                $activeareas,
             ]);
 
         // Get the total results found (sum of all categories)

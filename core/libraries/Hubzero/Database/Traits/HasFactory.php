@@ -152,7 +152,7 @@ trait HasFactory
 
         throw new \RuntimeException(
             "No factory found for model [{$modelClass}]. " .
-            "Either create a factory class or override the newFactory() method."
+            "Either create a factory class or override the newFactory() method.",
         );
     }
 }

@@ -177,7 +177,7 @@ class Filesv1r0 extends ApiController
                 'sortby'           => 'localpath',
                 'showFullMetadata' => true,
                 'getParents'       => true,
-                'getChildren'      => true
+                'getChildren'      => true,
             ]);
 
             $response->results = $this->_parseResults($files);
@@ -248,7 +248,7 @@ class Filesv1r0 extends ApiController
                 'files'            => $files,
                 'showFullMetadata' => true,
                 'getParents'       => true,
-                'getChildren'      => true
+                'getChildren'      => true,
             ]);
             $response->results = $this->_parseResults($files);
         }
@@ -305,7 +305,7 @@ class Filesv1r0 extends ApiController
             // Set params
             $params = [
                 'subdir' => Request::getString('subdir', '', 'post'),
-                'newDir' => urldecode($directory)
+                'newDir' => urldecode($directory),
             ];
 
             if ($this->model->repo()->makeDirectory($params)) {
@@ -392,7 +392,7 @@ class Filesv1r0 extends ApiController
                 $params = [
                     'type'   => $type,
                     'item'   => $item,
-                    'subdir' => Request::getString('subdir', '', 'post')
+                    'subdir' => Request::getString('subdir', '', 'post'),
                 ];
 
                 if ($this->model->repo()->deleteItem($params)) {
@@ -486,7 +486,7 @@ class Filesv1r0 extends ApiController
                     'type'            => $type,
                     'item'            => $item,
                     'targetDir'       => $target,
-                    'createTargetDir' => true // allow new directories
+                    'createTargetDir' => true, // allow new directories
                 ];
 
                 if ($this->model->repo()->moveItem($params)) {
@@ -570,7 +570,7 @@ class Filesv1r0 extends ApiController
                 'subdir'  => Request::getString('subdir', ''),
                 'from'    => Request::getString('from', ''),
                 'to'      => Request::getString('to', ''),
-                'type'    => Request::getString('type', 'file')
+                'type'    => Request::getString('type', 'file'),
             ];
 
             if ($this->model->repo()->rename($params)) {
@@ -825,7 +825,7 @@ class Filesv1r0 extends ApiController
                         $flowChunkSize,
                         $flowTotalSize,
                         $flowTotalChunks,
-                        $subdir
+                        $subdir,
                     );
                 }
             }
@@ -980,8 +980,8 @@ class Filesv1r0 extends ApiController
                 'dataPath'    => $dataPath,
                 'allowReplace' => $this->_task == 'insert' ? false : true,
                 'update'      => $this->_task == 'insert' ? false : true,
-                'subdir'      => Request::getString('subdir', '')
-            ]
+                'subdir'      => Request::getString('subdir', ''),
+            ],
         );
 
         // Parse results
@@ -1004,7 +1004,7 @@ class Filesv1r0 extends ApiController
                 // Plugin params
                 $plugin_params = [
                     $this->model,
-                    [$updateType => $names]
+                    [$updateType => $names],
                 ];
 
                 Event::trigger('projects.onAfterUpdate', $plugin_params);

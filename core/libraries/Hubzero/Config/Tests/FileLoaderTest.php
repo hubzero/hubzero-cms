@@ -36,7 +36,7 @@ class FileLoaderTest extends TestCase
                 'sef_suffix' => '0',
                 'sef_groups' => '0',
                 'feed_limit' => '10',
-                'feed_email' => 'author'
+                'feed_email' => 'author',
             ],
             'seo' => [
                 'sef' => '1',
@@ -44,8 +44,8 @@ class FileLoaderTest extends TestCase
                 'sef_rewrite' => '1',
                 'sef_suffix' => '0',
                 'unicodeslugs' => '0',
-                'sitename_pagetitles' => '0'
-            ]
+                'sitename_pagetitles' => '0',
+            ],
         ];
 
         $basePath = __DIR__ . '/Files';
@@ -66,7 +66,7 @@ class FileLoaderTest extends TestCase
             'cookie_path' => '',
             'cookiesubdomains' => '0',
             'lifetime' => '45',
-            'session_handler' => 'database'
+            'session_handler' => 'database',
         ];
 
         $data = $loader->load('api');

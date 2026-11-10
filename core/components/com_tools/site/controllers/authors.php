@@ -33,7 +33,7 @@ class Authors extends SiteController
         if (User::isGuest()) {
             // Redirect to home page
             App::redirect(
-                $this->config->get('contribtool_redirect', '/home')
+                $this->config->get('contribtool_redirect', '/home'),
             );
             return;
         }

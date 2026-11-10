@@ -74,7 +74,7 @@ class Hubzero extends Plugin
             'base_path'     => __DIR__,
             'name'          => 'emails',
             'layout'        => 'admincreate_plain',
-            'override_path' => ''
+            'override_path' => '',
         ]);
         $eview->addTemplatePath(App::get('template')->path . '/html/plg_user_hubzero');
 
@@ -92,7 +92,7 @@ class Hubzero extends Plugin
         $mail
             ->addFrom(
                 $emailAddress,
-                Lang::txt('PLG_USER_HUBZERO_EMAIL_ADMIN', $config->get('sitename'))
+                Lang::txt('PLG_USER_HUBZERO_EMAIL_ADMIN', $config->get('sitename')),
             )
             ->addTo($emailAddress)
             ->addHeader('X-Component', Request::getCmd('option', 'com_members'))
@@ -195,7 +195,7 @@ class Hubzero extends Plugin
                 $emailSubject = Lang::txt(
                     'PLG_USER_HUBZERO_NEW_USER_EMAIL_SUBJECT',
                     $user['name'],
-                    $config->get('sitename')
+                    $config->get('sitename'),
                 );
 
                 // Compute the mail body.
@@ -205,7 +205,7 @@ class Hubzero extends Plugin
                     $config->get('sitename'),
                     Request::root(),
                     $user['username'],
-                    $user['password_clear']
+                    $user['password_clear'],
                 );
 
                 // Assemble the email data...the sexy way!
@@ -213,7 +213,7 @@ class Hubzero extends Plugin
                 $mail
                     ->addFrom(
                         $config->get('mailfrom'),
-                        $config->get('fromname')
+                        $config->get('fromname'),
                     )
                     ->addTo($user['email'])
                     ->setSubject($emailSubject)
@@ -304,7 +304,7 @@ class Hubzero extends Plugin
                                 'session_id' => $session->getId(),
                                 'client_id'  => (int) App::get('client')->id,
                                 'time'       => (int) time(),
-                                'ip'         => $ip
+                                'ip'         => $ip,
                             ]);
 
                         $db->setQuery($query->toString());
@@ -318,7 +318,7 @@ class Hubzero extends Plugin
                                 'time'       => (int) $session->get('session.timer.start'),
                                 'userid'     => (int) $instance->get('id'),
                                 'username'   => $instance->get('username'),
-                                'ip'         => $ip
+                                'ip'         => $ip,
                             ]);
 
                         $db->setQuery($query->toString());
@@ -346,7 +346,7 @@ class Hubzero extends Plugin
                 ->set([
                     'guest'    => $instance->get('guest'),
                     'username' => $instance->get('username'),
-                    'userid'   => (int) $instance->get('id')
+                    'userid'   => (int) $instance->get('id'),
                 ])
                 ->whereEquals('session_id', $session->getId());
             $db->setQuery($query->toString());

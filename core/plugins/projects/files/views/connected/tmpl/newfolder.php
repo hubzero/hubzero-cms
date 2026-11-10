@@ -24,7 +24,7 @@ defined('_HZEXEC_') or die();
             $browseUrl,
             $parent,
             false,
-            $this->connection->adapter()
+            $this->connection->adapter(),
         );
         ?> <?php echo Lang::txt('PLG_PROJECTS_FILES_IN'); ?> <?php echo $crumbs; ?></span> <?php
         } ?></h3>

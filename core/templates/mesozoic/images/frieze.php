@@ -82,7 +82,7 @@ function put(array $shape, $ground)
         $top,
         $sx,
         $scale,
-        Silhouettes::draw($name)
+        Silhouettes::draw($name),
     );
 }
 
@@ -110,7 +110,7 @@ function band($file, $width, $height, $ground, array $shapes)
         . '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' . $width . ' ' . $height . '"'
         . ' preserveAspectRatio="xMidYMax slice" role="presentation">' . "\n  "
         . implode("\n  ", $drawn) . "\n"
-        . '</svg>' . "\n"
+        . '</svg>' . "\n",
     );
 
     echo sprintf("  %-14s %4dKB\n", $file, round(filesize(__DIR__ . '/' . $file) / 1024));
@@ -396,7 +396,7 @@ function world($file, $size)
 
                 list($x, $y) = $project(
                     $from[0] + (($to[0] - $from[0]) * $t),
-                    $from[1] + (($to[1] - $from[1]) * $t)
+                    $from[1] + (($to[1] - $from[1]) * $t),
                 );
 
                 $points[] = sprintf('%.1f %.1f', $x, $y);
@@ -438,9 +438,9 @@ function world($file, $size)
             $cy,
             $cx - 0.8,
             $cy - 0.8,
-            MAPINK
+            MAPINK,
         ) . "\n"
-        . '</svg>' . "\n"
+        . '</svg>' . "\n",
     );
 
     echo sprintf("  %-14s %4dKB\n", $file, max(1, round(filesize(__DIR__ . '/' . $file) / 1024)));
@@ -525,7 +525,7 @@ function tear($file, $width, $height, $depth)
         . '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' . $width . ' ' . $height . '"'
         . ' preserveAspectRatio="none" role="presentation">' . "\n"
         . '  <path fill="#000" d="' . $path . '"/>' . "\n"
-        . '</svg>' . "\n"
+        . '</svg>' . "\n",
     );
 
     echo sprintf("  %-14s %4dKB\n", $file, max(1, round(filesize(__DIR__ . '/' . $file) / 1024)));

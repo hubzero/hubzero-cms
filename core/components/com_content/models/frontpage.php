@@ -58,7 +58,7 @@ class Frontpage extends Relational
      * @var  array
      */
     protected $rules = [
-        'content_id' => 'positive|nonzero'
+        'content_id' => 'positive|nonzero',
     ];
 
     /**
@@ -67,7 +67,7 @@ class Frontpage extends Relational
      * @var  array
      **/
     public $initiate = [
-        'ordering'
+        'ordering',
     ];
 
     /**

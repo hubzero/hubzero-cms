@@ -35,7 +35,7 @@ class Migration20180627111315ComPublications extends Base
             if ($params) {
                 $pubParams = new \Hubzero\Config\Registry($params);
                 $addParams = [
-                    'sftppath' => '/site/publications/ftp'
+                    'sftppath' => '/site/publications/ftp',
                 ];
                 $pubParams->merge($addParams);
 

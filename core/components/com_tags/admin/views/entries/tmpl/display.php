@@ -134,10 +134,10 @@ Toolbar::help('entries');
             $rowEditUrl = Route::url(
                 'index.php?option=' . $this->option
                 . '&controller=' . $this->controller
-                . '&task=edit&id=' . $rowId
+                . '&task=edit&id=' . $rowId,
             );
             $taggedUrl = Route::url(
-                'index.php?option=' . $this->option . '&controller=tagged&tag=' . $rowId
+                'index.php?option=' . $this->option . '&controller=tagged&tag=' . $rowId,
             );
             $rowCreated = $row->created();
             ?>

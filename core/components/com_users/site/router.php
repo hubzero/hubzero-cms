@@ -228,7 +228,7 @@ class Router extends Base
             $db->setQuery(
                 'SELECT ' . $db->quoteName('id') .
                 ' FROM ' . $db->quoteName('#__users') .
-                ' WHERE ' . $db->quoteName('id') . ' = ' . (int) $userId
+                ' WHERE ' . $db->quoteName('id') . ' = ' . (int) $userId,
             );
             $userId = $db->loadResult();
         }

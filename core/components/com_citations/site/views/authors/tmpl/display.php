@@ -29,7 +29,7 @@ if (count($authors)) { ?>
                     'index.php?option=com_citations&controller=authors'
                     . '&task=remove&citation=' . $this->citation->id
                     . '&author=' . $author->id
-                    . '&' . Session::getFormToken() . '=1'
+                    . '&' . Session::getFormToken() . '=1',
                 );
                 ?>
                 <a class="delete"

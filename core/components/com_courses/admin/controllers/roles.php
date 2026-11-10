@@ -38,29 +38,29 @@ class Roles extends AdminController
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limitstart',
                 'limitstart',
                 0,
-                'int'
+                'int',
             ),
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             ),
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'title'
+                'title',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         // Instantiate an object
@@ -171,7 +171,7 @@ class Roles extends AdminController
         // Redirect
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-            Lang::txt('COM_COURSES_ITEM_SAVED')
+            Lang::txt('COM_COURSES_ITEM_SAVED'),
         );
     }
 
@@ -195,7 +195,7 @@ class Roles extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                 Lang::txt('COM_COURSES_ERROR_NO_ENTRIES_SELECTED'),
-                'error'
+                'error',
             );
             return;
         }
@@ -210,7 +210,7 @@ class Roles extends AdminController
         // Redirect
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-            Lang::txt('COM_COURSES_ITEMS_REMOVED', count($ids))
+            Lang::txt('COM_COURSES_ITEMS_REMOVED', count($ids)),
         );
     }
 }

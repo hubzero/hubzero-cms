@@ -19,7 +19,7 @@ $label = Lang::txt('COM_PUBLICATIONS_PUBLICATION');
 $label2 = Lang::txt('COM_PUBLICATIONS_MASTER_TYPE');
 Toolbar::title(
     $label . ' ' . $label2 . ': ' . $text,
-    'publications'
+    'publications',
 );
 if ($this->row->id) {
     Toolbar::apply();
@@ -257,7 +257,7 @@ foreach ($this->blocks as $b) {
             $addBlockUrl = Route::url(
                 'index.php?option=' . $this->option
                 . '&controller=' . $this->controller
-                . '&task=addblock&id=' . $this->row->id
+                . '&task=addblock&id=' . $this->row->id,
             );
             $blocksLabel = Lang::txt('COM_PUBLICATIONS_FIELD_CURATION_BLOCKS');
             $addLabel = Lang::txt('COM_PUBLICATIONS_FIELD_CURATION_ADD_BLOCK');
@@ -304,13 +304,13 @@ foreach ($this->blocks as $b) {
                         $editOrderUrl = Route::url(
                             'index.php?option=' . $this->option
                             . '&controller=' . $this->controller
-                            . '&task=editblockorder&id=' . $this->row->id
+                            . '&task=editblockorder&id=' . $this->row->id,
                         );
                         $removeUrl = Route::url(
                             'index.php?option=' . $this->option
                             . '&controller=' . $this->controller
                             . '&task=removeblock&id=' . $this->row->id
-                            . '&blockid=' . $blockId
+                            . '&blockid=' . $blockId,
                         );
                         $editLabel = Lang::txt('COM_PUBLICATIONS_EDIT');
                         $deleteLabel = Lang::txt('COM_PUBLICATIONS_DELETE');
@@ -386,7 +386,7 @@ foreach ($this->blocks as $b) {
                         <?php foreach ($block->params as $paramname => $paramvalue) { ?>
                             <?php
                             $paramLabel = Lang::txt(
-                                'COM_PUBLICATIONS_FIELD_PARAMS_' . strtoupper($paramname)
+                                'COM_PUBLICATIONS_FIELD_PARAMS_' . strtoupper($paramname),
                             );
                             $inputName = 'curation[blocks][' . $blockId
                                 . '][params][' . $paramname . ']';
@@ -428,7 +428,7 @@ foreach ($this->blocks as $b) {
                                 'index.php?option=' . $this->option
                                 . '&controller=' . $this->controller
                                 . '&task=editelements&id=' . $this->row->id
-                                . '&bid=' . $blockId
+                                . '&bid=' . $blockId,
                             );
                             $elLabel = Lang::txt('COM_PUBLICATIONS_FIELD_BLOCK_ELEMENTS');
                             ?>
@@ -473,7 +473,7 @@ foreach ($this->blocks as $b) {
         $advancedUrl = Route::url(
             'index.php?option=' . $this->option
             . '&controller=' . $this->controller
-            . '&task=advanced&id=' . $this->row->id
+            . '&task=advanced&id=' . $this->row->id,
         );
         $advLabel = Lang::txt('COM_PUBLICATIONS_MTYPE_ADVANCED_CURATION_EDITING');
         ?>

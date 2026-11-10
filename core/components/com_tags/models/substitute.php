@@ -57,7 +57,7 @@ class Substitute extends Relational
      */
     protected $rules = [
         'raw_tag'  => 'notempty',
-        'tag_id'   => 'positive|nonzero'
+        'tag_id'   => 'positive|nonzero',
     ];
 
     /**
@@ -67,7 +67,7 @@ class Substitute extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**
@@ -76,7 +76,7 @@ class Substitute extends Relational
      * @var  array
      */
     public $always = [
-        'tag'
+        'tag',
     ];
 
     /**
@@ -191,7 +191,7 @@ class Substitute extends Relational
         $log->set([
             'tag_id'   => $newtagid,
             'action'   => 'substitutes_moved',
-            'comments' => json_encode($data)
+            'comments' => json_encode($data),
         ]);
         $log->save();
 
@@ -269,7 +269,7 @@ class Substitute extends Relational
             $log->set([
                 'tag_id'   => $newtagid,
                 'action'   => 'substitutions_copied',
-                'comments' => json_encode($data)
+                'comments' => json_encode($data),
             ]);
             $log->save();
         }

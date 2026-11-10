@@ -91,7 +91,7 @@ class MetadataTest extends Basic
         $xml = str_replace(
             'Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://sp.example.com/slo"',
             'Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="https://sp.example.com/slo_soap"',
-            $this->xml
+            $this->xml,
         );
 
         $fields = Metadata::parse($xml);
@@ -113,7 +113,7 @@ class MetadataTest extends Basic
             '<md:KeyDescriptor use="signing">',
             '<md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</md:NameIDFormat>'
             . '<md:KeyDescriptor use="signing">',
-            $this->xml
+            $this->xml,
         );
 
         $fields = Metadata::parse($xml);
@@ -136,7 +136,7 @@ class MetadataTest extends Basic
             '<md:KeyDescriptor use="signing">',
             '<md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat>'
             . '<md:KeyDescriptor use="signing">',
-            $this->xml
+            $this->xml,
         );
 
         $fields = Metadata::parse($xml);
@@ -160,7 +160,7 @@ class MetadataTest extends Basic
         $xml = str_replace(
             'Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://sp.example.com/acs"',
             'Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" Location="https://sp.example.com/acs_artifact"',
-            $this->xml
+            $this->xml,
         );
 
         $this->assertFalse(Metadata::parse($xml));
@@ -211,12 +211,12 @@ class MetadataTest extends Basic
 
         // IdP metadata is not SP metadata
         $this->assertFalse(Metadata::parse(
-            '<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="x"><md:IDPSSODescriptor/></md:EntityDescriptor>'
+            '<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="x"><md:IDPSSODescriptor/></md:EntityDescriptor>',
         ));
 
         // An SP descriptor without an ACS is unusable
         $this->assertFalse(Metadata::parse(
-            '<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="x"><md:SPSSODescriptor/></md:EntityDescriptor>'
+            '<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="x"><md:SPSSODescriptor/></md:EntityDescriptor>',
         ));
     }
 

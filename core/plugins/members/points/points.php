@@ -74,7 +74,7 @@ class Points extends Plugin
 
         $arr = [
             'html'     => '',
-            'metadata' => ''
+            'metadata' => '',
         ];
 
         $database = App::get('db');

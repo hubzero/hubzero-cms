@@ -53,7 +53,7 @@ class Migration20130924000007Core extends Base
                 [5, 4, 9, 10, 'Publisher'],
                 [6, 1, 2, 5, 'Manager'],
                 [7, 6, 3, 4, 'Administrator'],
-                [8, 1, 18, 19, 'Super Users']
+                [8, 1, 18, 19, 'Super Users'],
             ];
 
             foreach ($usergroups as $group) {
@@ -64,7 +64,7 @@ class Migration20130924000007Core extends Base
                         'parent_id' => $group[1],
                         'lft'       => $group[2],
                         'rgt'       => $group[3],
-                        'title'     => $group[4]
+                        'title'     => $group[4],
                     ])
                     ->execute();
             }
@@ -83,7 +83,7 @@ class Migration20130924000007Core extends Base
             $viewlevels = [
                 [1, 'Public', 0, '[1]'],
                 [2, 'Registered', 1, '[6,2,8]'],
-                [3, 'Special', 2, '[6,3,8]']
+                [3, 'Special', 2, '[6,3,8]'],
             ];
 
             foreach ($viewlevels as $level) {
@@ -93,7 +93,7 @@ class Migration20130924000007Core extends Base
                         'id'       => $level[0],
                         'title'    => $level[1],
                         'ordering' => $level[2],
-                        'rules'    => $level[3]
+                        'rules'    => $level[3],
                     ])
                     ->execute();
             }
@@ -132,7 +132,7 @@ class Migration20130924000007Core extends Base
                                 'Publisher'           => 5,
                                 'Manager'             => 6,
                                 'Administrator'       => 7,
-                                'Super Administrator' => 8
+                                'Super Administrator' => 8,
                             ];
                             $group_id = $m[$r->usertype];
                             break;
@@ -144,7 +144,7 @@ class Migration20130924000007Core extends Base
                         ->insert('#__user_usergroup_map')
                         ->values([
                             'user_id'  => $r->id,
-                            'group_id' => $group_id
+                            'group_id' => $group_id,
                         ])
                         ->execute();
                 }

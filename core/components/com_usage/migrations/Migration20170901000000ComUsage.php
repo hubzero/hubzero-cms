@@ -183,7 +183,7 @@ class Migration20170901000000ComUsage extends Base
                 'regionvals',
                 'classes',
                 'classvals',
-                'totalvals'
+                'totalvals',
             ];
 
             foreach ($tables as $table) {

@@ -65,7 +65,7 @@ class Wiki extends Plugin
             'title' => Lang::txt('PLG_GROUPS_WIKI'),
             'default_access' => $this->params->get('plugin_access', 'members'),
             'display_menu_tab' => $this->params->get('display_tab', 1),
-            'icon' => 'f072'
+            'icon' => 'f072',
         ];
         return $area;
     }
@@ -91,7 +91,7 @@ class Wiki extends Plugin
         // The output array we're returning
         $arr = [
             'html'     => '',
-            'metadata' => []
+            'metadata' => [],
         ];
 
         //get this area details
@@ -151,7 +151,7 @@ class Wiki extends Plugin
                 App::redirect(
                     Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
                     Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
-                    'warning'
+                    'warning',
                 );
                 return;
             }
@@ -200,7 +200,7 @@ class Wiki extends Plugin
 
                     App::redirect(
                         Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=wiki&action=settings'),
-                        Lang::txt('PLG_GROUPS_WIKI_SETTINGS_SAVED')
+                        Lang::txt('PLG_GROUPS_WIKI_SETTINGS_SAVED'),
                     );
                     return;
                 }
@@ -277,7 +277,7 @@ class Wiki extends Plugin
                 'base_path' => Component::path('com_wiki') . DS . 'site',
                 'scope'     => 'group',
                 'scope_id'  => $group->get('gidNumber'),
-                'sub'       => !($group->isSuperGroup())
+                'sub'       => !($group->isSuperGroup()),
             ]);
 
             // Catch any echoed content with ob

@@ -55,31 +55,31 @@ class Answers extends AdminController
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             ),
             'state' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.filterby',
                 'state',
                 -1,
-                'int'
+                'int',
             ),
             'question_id' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.qid',
                 'qid',
                 0,
-                'int'
+                'int',
             ),
             // Sorting
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'created'
+                'created',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'DESC'
-            )
+                'DESC',
+            ),
         ];
 
         $records = Response::all()

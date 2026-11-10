@@ -37,7 +37,7 @@ class Related extends Plugin
         $areas = [];
         if ($publication->category()->_params->get('plg_related', 1) == 1) {
             $areas = [
-                'related' => Lang::txt('PLG_PUBLICATION_RELATED')
+                'related' => Lang::txt('PLG_PUBLICATION_RELATED'),
             ];
         }
         return $areas;
@@ -55,7 +55,7 @@ class Related extends Plugin
     {
         $arr = [
             'html'     => '',
-            'metadata' => ''
+            'metadata' => '',
         ];
 
         // Check if our area is in the array of areas we want to return results for
@@ -201,8 +201,8 @@ class Related extends Plugin
                 'folder'  => 'publications',
                 'element' => 'related',
                 'name'    => 'browse',
-                'layout'  => $layout
-            ]
+                'layout'  => $layout,
+            ],
         );
 
         // Pass the view some info

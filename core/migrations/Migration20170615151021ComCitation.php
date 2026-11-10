@@ -27,7 +27,7 @@ class Migration20170615151021ComCitation extends Base
             $schema->addFulltextIndex(
                 '#__citations_authors',
                 'ftidx_jos_citations_authors_author_givenName_surname',
-                ['author', 'givenName', 'surname']
+                ['author', 'givenName', 'surname'],
             );
         }
     }

@@ -83,7 +83,7 @@ class Admin extends SiteController
         // needs to be admin
         if (!$this->config->get('access-manage-component')) {
             App::redirect(
-                $this->config->get('contribtool_redirect', '/home')
+                $this->config->get('contribtool_redirect', '/home'),
             );
             return;
         }
@@ -123,7 +123,7 @@ class Admin extends SiteController
             $this->_toolid,
             $this->_option,
             $status,
-            'dev'
+            'dev',
         );
         // Check for a status
         if (count($status) <= 0) {
@@ -170,7 +170,7 @@ class Admin extends SiteController
         // Output HTML
         if (!($no_html = Request::getInt('no_html', 0))) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=pipeline&task=status&app=' . $alias)
+                Route::url('index.php?option=' . $this->_option . '&controller=pipeline&task=status&app=' . $alias),
             );
             return;
         }
@@ -206,7 +206,7 @@ class Admin extends SiteController
             $this->_toolid,
             $this->_option,
             $status,
-            'dev'
+            'dev',
         );
         // Check for a status
         if (count($status) <= 0) {
@@ -313,7 +313,7 @@ class Admin extends SiteController
         // Output HTML
         if (!($no_html = Request::getInt('no_html', 0))) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=pipeline&task=status&app=' . $alias)
+                Route::url('index.php?option=' . $this->_option . '&controller=pipeline&task=status&app=' . $alias),
             );
             return;
         }
@@ -349,7 +349,7 @@ class Admin extends SiteController
             $this->_toolid,
             $this->_option,
             $status,
-            'dev'
+            'dev',
         );
         // Check for a status
         if (count($status) <= 0) {
@@ -379,7 +379,7 @@ class Admin extends SiteController
         // Output HTML
         if (!($no_html = Request::getInt('no_html', 0))) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=pipeline&task=status&app=' . $alias)
+                Route::url('index.php?option=' . $this->_option . '&controller=pipeline&task=status&app=' . $alias),
             );
             return;
         }
@@ -415,7 +415,7 @@ class Admin extends SiteController
             $this->_toolid,
             $this->_option,
             $status,
-            'dev'
+            'dev',
         );
         // Check for a status
         if (count($status) <= 0) {
@@ -435,7 +435,7 @@ class Admin extends SiteController
             $this->_toolid,
             $tools,
             '',
-            1
+            1,
         );
 
         // make checks
@@ -519,7 +519,7 @@ class Admin extends SiteController
                     'title'     => htmlspecialchars(stripslashes($status['title'])),
                     'version'   => $status['version'],
                     'abstract'  => htmlspecialchars(stripslashes($status['description'])),
-                    'license'   => $status['license']
+                    'license'   => $status['license'],
                 ];
 
                 // Get authors
@@ -540,7 +540,7 @@ class Admin extends SiteController
                                 'rid' => $status['resourceid'],
                                 'alias' => $status['toolname'],
                                 'versionid' => 0,
-                                'doi' => $doiSuccess
+                                'doi' => $doiSuccess,
                             ]);
                         if ($objDOI->save()) {
                             $this->setMessage(Lang::txt('COM_TOOLS_SUCCESS_DOI_CREATED') . ' ' . $doiSuccess);
@@ -580,7 +580,7 @@ class Admin extends SiteController
                 '@GROUP' => null,
                 '@US'    => 'us',
                 '@PU'    => 'pu',
-                '@D1'    => 'd1'
+                '@D1'    => 'd1',
             ];
 
             $new_hztv = \Components\Tools\Models\Version::createInstance($status['toolname'], $newtool);
@@ -681,7 +681,7 @@ class Admin extends SiteController
         // Output HTML
         if (!($no_html = Request::getInt('no_html', 0))) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=pipeline&task=status&app=' . $alias)
+                Route::url('index.php?option=' . $this->_option . '&controller=pipeline&task=status&app=' . $alias),
             );
             return;
         }
@@ -828,7 +828,7 @@ class Admin extends SiteController
                 $hztrac->add_user_permission(0, [
                     'BROWSER_VIEW',
                     'LOG_VIEW',
-                    'FILE_VIEW'
+                    'FILE_VIEW',
                 ]);
                 break;
 
@@ -836,7 +836,7 @@ class Admin extends SiteController
                 $hztrac->remove_user_permission(0, [
                     'BROWSER_VIEW',
                     'LOG_VIEW',
-                    'FILE_VIEW'
+                    'FILE_VIEW',
                 ]);
                 break;
 
@@ -851,7 +851,7 @@ class Admin extends SiteController
                     'WIKI_VIEW',
                     'MILESTONE_VIEW',
                     'ROADMAP_VIEW',
-                    'SEARCH_VIEW'
+                    'SEARCH_VIEW',
                 ]);
                 break;
 
@@ -860,7 +860,7 @@ class Admin extends SiteController
                     'WIKI_VIEW',
                     'MILESTONE_VIEW',
                     'ROADMAP_VIEW',
-                    'SEARCH_VIEW'
+                    'SEARCH_VIEW',
                 ]);
                 break;
 

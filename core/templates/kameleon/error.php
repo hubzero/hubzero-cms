@@ -24,7 +24,7 @@ $cls = [
     'nojs',
     $this->direction,
     $browser->name(),
-    $browser->name() . $browser->major()
+    $browser->name() . $browser->major(),
 ];
 ?>
 <!DOCTYPE html>
@@ -92,7 +92,7 @@ $cls = [
                         'TPL_KAMELEON_COPYRIGHT',
                         Request::root(),
                         Config::get('sitename'),
-                        date("Y")
+                        date("Y"),
                     ); ?>
                 </p>
                 <p class="promotion">

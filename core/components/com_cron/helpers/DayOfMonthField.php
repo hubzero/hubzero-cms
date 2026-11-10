@@ -49,7 +49,7 @@ class DayOfMonthField extends AbstractField
                 9  => 30,
                 10 => 31,
                 11 => 30,
-                12 => 31
+                12 => 31,
             ];
 
             return $dates[$month];

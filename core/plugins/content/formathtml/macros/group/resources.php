@@ -72,7 +72,7 @@ class Resources extends GroupMacro
             $resourceLink = Route::url('index.php?option=com_resources&id=' . $resource->get('id'));
             $resourceTypeLink = Route::url(
                 'index.php?option=com_groups&cn=' . $this->group->get('cn') .
-                '&active=resources&area=' . $resource->type->get('alias')
+                '&active=resources&area=' . $resource->type->get('alias'),
             );
 
             $html .= '<a href="' . $resourceLink . '"><strong>' . $resource->get('title') . '</strong></a>';

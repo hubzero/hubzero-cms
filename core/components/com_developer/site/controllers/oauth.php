@@ -78,7 +78,7 @@ class Oauth extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($_SERVER['REQUEST_URI'])),
                 Lang::txt('You must be logged in to authorize %s', $application->get('name')),
-                'warning'
+                'warning',
             );
         }
 
@@ -120,7 +120,7 @@ class Oauth extends SiteController
     {
         // Handle a request for an OAuth2.0 Access Token and send the response to the client
         $this->server->handleTokenRequest(
-            OAuth2\Request::createFromGlobals()
+            OAuth2\Request::createFromGlobals(),
         )->send();
 
         exit();

@@ -39,7 +39,7 @@ $cc = [];
 <?php
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 ?>
 <form
@@ -104,7 +104,7 @@ $formAction = Route::url(
                     </label>
                     <?php
                     $reportVal = $this->escape(
-                        trim($this->row->get('report') == null ? '' : $this->row->get('report'))
+                        trim($this->row->get('report') == null ? '' : $this->row->get('report')),
                     );
                     ?>
                     <textarea
@@ -121,7 +121,7 @@ $formAction = Route::url(
                     <?php
                     $tf = Event::trigger(
                         'hubzero.onGetMultiEntry',
-                        [['tags', 'tags', 'actags', '', '']]
+                        [['tags', 'tags', 'actags', '', '']],
                     );
                     if (count($tf) > 0) {
                         echo $tf[0];
@@ -139,7 +139,7 @@ $formAction = Route::url(
                             <?php
                             $gc = Event::trigger(
                                 'hubzero.onGetSingleEntryWithSelect',
-                                [['groups', 'ticket[group_id]', 'acgroup', '', '', '', 'owner']]
+                                [['groups', 'ticket[group_id]', 'acgroup', '', '', '', 'owner']],
                             );
                             if (count($gc) > 0) {
                                 echo $gc[0];
@@ -243,7 +243,7 @@ $formAction = Route::url(
                     <?php
                     $mc = Event::trigger(
                         'hubzero.onGetMultiEntry',
-                        [['members', 'cc', 'acmembers', '', implode(', ', $cc)]]
+                        [['members', 'cc', 'acmembers', '', implode(', ', $cc)]],
                     );
                     if (count($mc) > 0) {
                         echo $mc[0];

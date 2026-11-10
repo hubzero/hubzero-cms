@@ -154,7 +154,7 @@ class Media extends SiteController
             $this->logUploadIssue('no file in request (no qqfile / missing CONTENT_LENGTH)', [
                 'ticket'  => $ticket,
                 'has_get' => isset($_GET['qqfile']) ? 1 : 0,
-                'has_files' => isset($_FILES['qqfile']) ? 1 : 0
+                'has_files' => isset($_FILES['qqfile']) ? 1 : 0,
             ]);
             echo json_encode(['error' => Lang::txt('File not found')]);
             return;
@@ -212,7 +212,7 @@ class Media extends SiteController
             $this->logUploadIssue('extension not in allowed list', [
                 'ticket' => $ticket,
                 'file'   => $file,
-                'ext'    => ($ext === '' || $ext === null) ? '(none)' : $ext
+                'ext'    => ($ext === '' || $ext === null) ? '(none)' : $ext,
             ]);
             echo json_encode(['error' => Lang::txt('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE')]);
             return;
@@ -245,12 +245,12 @@ class Media extends SiteController
             $this->logUploadIssue('antivirus scan rejected file', [
                 'ticket' => $ticket,
                 'file'   => $filename . '.' . $ext,
-                'size'   => $size
+                'size'   => $size,
             ]);
 
             echo json_encode([
                 'success' => false,
-                'error'   => Lang::txt('ATTACHMENT: File rejected because the anti-virus scan failed.')
+                'error'   => Lang::txt('ATTACHMENT: File rejected because the anti-virus scan failed.'),
             ]);
             return;
         }
@@ -262,24 +262,24 @@ class Media extends SiteController
             'ticket'      => $ticket,
             'comment_id'  => $comment,
             'filename'    => $filename . '.' . $ext,
-            'description' => Request::getString('description', '')
+            'description' => Request::getString('description', ''),
         ]);
         if (!$asset->save()) {
             $this->logUploadIssue('attachment DB record failed to save', [
                 'ticket' => $ticket,
                 'file'   => $filename . '.' . $ext,
-                'error'  => $asset->getError()
+                'error'  => $asset->getError(),
             ]);
             echo json_encode([
                 'success' => false,
-                'error'   => $asset->getError()
+                'error'   => $asset->getError(),
             ]);
             return;
         }
 
         $view = new View([
             'name'   => 'media',
-            'layout' => '_asset'
+            'layout' => '_asset',
         ]);
         $view->set('option', $this->_option);
         $view->set('controller', $this->_controller);
@@ -319,7 +319,7 @@ class Media extends SiteController
             'directory'  => str_replace(PATH_APP, '', $path),
             'ticket'     => $ticket,
             'comment_id' => $comment,
-            'html'       => str_replace('>', '&gt;', $view->loadTemplate()) // Entities have to be encoded or IE 8 goes nuts
+            'html'       => str_replace('>', '&gt;', $view->loadTemplate()), // Entities have to be encoded or IE 8 goes nuts
         ]);
     }
 
@@ -409,7 +409,7 @@ class Media extends SiteController
             $this->logUploadIssue('extension not in allowed list', [
                 'ticket' => $ticket,
                 'file'   => $file['name'],
-                'ext'    => ($ext === '' || $ext === null) ? '(none)' : $ext
+                'ext'    => ($ext === '' || $ext === null) ? '(none)' : $ext,
             ]);
             $this->setError(Lang::txt('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE'));
             return $this->displayTask();
@@ -431,7 +431,7 @@ class Media extends SiteController
 
                 $this->logUploadIssue('antivirus scan rejected file', [
                     'ticket' => $ticket,
-                    'file'   => $filename
+                    'file'   => $filename,
                 ]);
 
                 $this->setError(Lang::txt('ATTACHMENT: File rejected because the anti-virus scan failed.'));
@@ -446,7 +446,7 @@ class Media extends SiteController
                 'ticket'      => $ticket,
                 'comment_id'  => $comment,
                 'filename'    => $filename,
-                'description' => Request::getString('description', '')
+                'description' => Request::getString('description', ''),
             ]);
 
             if (!$asset->save()) {
@@ -522,7 +522,7 @@ class Media extends SiteController
             if (!$model->destroy()) {
                 echo json_encode([
                     'success' => false,
-                    'error'   => $model->getError()
+                    'error'   => $model->getError(),
                 ]);
                 return;
             }
@@ -531,7 +531,7 @@ class Media extends SiteController
         //echo result
         echo json_encode([
             'success' => true,
-            'asset'   => $id
+            'asset'   => $id,
         ]);
     }
 
@@ -615,7 +615,7 @@ class Media extends SiteController
         error_log(sprintf(
             ' cms.WARNING support attachment upload failed: %s [%s]',
             $reason,
-            implode(' ', $parts)
+            implode(' ', $parts),
         ));
     }
 }

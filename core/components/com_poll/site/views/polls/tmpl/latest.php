@@ -19,7 +19,7 @@ $browseUrl = Route::url('index.php?option=com_poll');
 $voteAction = Route::url('index.php?option=com_poll&task=vote');
 $resultsUrl = Route::url(
     'index.php?option=com_poll&view=poll&id='
-    . $this->poll->id . ':' . $this->poll->alias
+    . $this->poll->id . ':' . $this->poll->alias,
 );
 ?>
 <header id="content-header" class="full">

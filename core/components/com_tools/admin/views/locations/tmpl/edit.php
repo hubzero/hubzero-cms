@@ -19,7 +19,7 @@ if (!$this->tmpl) {
     Toolbar::title(
         Lang::txt('COM_TOOLS') . ': ' . Lang::txt('COM_TOOLS_ZONES')
         . ': ' . Lang::txt('COM_TOOLS_LOCATIONS') . ': ' . $text,
-        'tools.png'
+        'tools.png',
     );
     Toolbar::save();
     Toolbar::cancel();
@@ -279,7 +279,7 @@ $countries = [
         ['code' => 'EH', 'name' => 'Western Sahara', 'continent' => 'AF'],
         ['code' => 'YE', 'name' => 'Yemen', 'continent' => 'AS'],
         ['code' => 'ZM', 'name' => 'Zambia', 'continent' => 'AF'],
-        ['code' => 'ZW', 'name' => 'Zimbabwe', 'continent' => 'AF']
+        ['code' => 'ZW', 'name' => 'Zimbabwe', 'continent' => 'AF'],
     ];
 ?>
 <script type="application/json" id="country-data" data-select="<?php echo Lang::txt('COM_TOOLS_SELECT'); ?>">

@@ -44,7 +44,7 @@ class Page extends Relational
      */
     protected $rules = [
         'title'   => 'notempty',
-        'content' => 'notempty'
+        'content' => 'notempty',
     ];
 
     /**
@@ -53,7 +53,7 @@ class Page extends Relational
      * @var  array
      */
     public $always = [
-        'url'
+        'url',
     ];
 
     /**
@@ -62,7 +62,7 @@ class Page extends Relational
      * @var  array
      */
     public $initiate = [
-        'ordering'
+        'ordering',
     ];
 
     /**
@@ -71,7 +71,7 @@ class Page extends Relational
      * @var array
      */
     protected $parsed = [
-        'description'
+        'description',
     ];
 
     /**
@@ -179,7 +179,7 @@ class Page extends Relational
                 'pagename' => $this->get('url'),
                 'pageid'   => 0,
                 'filepath' => '',
-                'domain'   => ''
+                'domain'   => '',
             ];
 
             $this->$property = Html::content('prepare', $this->get($field, ''), $params);

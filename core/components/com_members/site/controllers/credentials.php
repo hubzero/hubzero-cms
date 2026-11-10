@@ -44,7 +44,7 @@ class Credentials extends SiteController
         if (Request::getInt('no_html', 0)) {
             echo json_encode([
                 'success' => !in_array($type, ['error', 'warning'], true),
-                'message' => $message
+                'message' => $message,
             ]);
             exit;
         }
@@ -66,7 +66,7 @@ class Credentials extends SiteController
         $this->finish(
             Route::url('index.php?option=' . $this->_option . '&task=verify', false),
             Lang::txt('COM_MEMBERS_CREDENTIALS_EMAIL_SENT'),
-            'passed'
+            'passed',
         );
     }
 
@@ -110,7 +110,7 @@ class Credentials extends SiteController
             $this->finish(
                 Route::url('index.php?option=' . $this->_option . '&task=remind', false),
                 Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_MISSING_EMAIL'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -120,7 +120,7 @@ class Credentials extends SiteController
             $this->finish(
                 Route::url('index.php?option=' . $this->_option . '&task=remind', false),
                 Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_INVALID_EMAIL'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -135,14 +135,14 @@ class Credentials extends SiteController
             $this->finish(
                 Route::url('index.php?option=com_login', false),
                 Lang::txt('COM_MEMBERS_CREDENTIALS_EMAIL_SENT'),
-                'passed'
+                'passed',
             );
             return;
         }
 
         $eview  = new \Hubzero\Mail\View([
             'name'   => 'emails',
-            'layout' => 'remind_plain'
+            'layout' => 'remind_plain',
         ]);
 
         $eview->config  = Config::getRoot();
@@ -175,7 +175,7 @@ class Credentials extends SiteController
             $this->finish(
                 Route::url('index.php?option=' . $this->_option . '&task=remind', false),
                 Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_FIAILED_TO_SEND_MAIL'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -184,7 +184,7 @@ class Credentials extends SiteController
         $this->finish(
             Route::url('index.php?option=com_login', false),
             Lang::txt('COM_MEMBERS_CREDENTIALS_EMAIL_SENT'),
-            'passed'
+            'passed',
         );
     }
 
@@ -214,7 +214,7 @@ class Credentials extends SiteController
             $this->finish(
                 Route::url('index.php?option=' . $this->_option . '&task=reset', false),
                 Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_MISSING_USERNAME'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -234,7 +234,7 @@ class Credentials extends SiteController
             $this->finish(
                 Route::url('index.php?option=' . $this->_option . '&task=reset', false),
                 Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_INVALID_USERNAME'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -287,7 +287,7 @@ class Credentials extends SiteController
         // Send an email
         $sent = $this->sendResetMail($user, 'reset', 'password_reset', [
             'token'  => $token,
-            'return' => Route::url('index.php?option=' . $this->_option . '&task=verify')
+            'return' => Route::url('index.php?option=' . $this->_option . '&task=verify'),
         ]);
 
         if (!$sent) {
@@ -296,7 +296,7 @@ class Credentials extends SiteController
             $this->finish(
                 Route::url('index.php?option=' . $this->_option . '&task=remind', false),
                 Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_FIAILED_TO_SEND_MAIL'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -308,7 +308,7 @@ class Credentials extends SiteController
         $this->finish(
             Route::url('index.php?option=' . $this->_option . '&task=verify', false),
             Lang::txt('COM_MEMBERS_CREDENTIALS_EMAIL_SENT'),
-            'passed'
+            'passed',
         );
     }
 
@@ -338,7 +338,7 @@ class Credentials extends SiteController
             $this->finish(
                 Route::url('index.php?option=' . $this->_option . '&task=verify', false),
                 Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_MISSING_TOKEN'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -353,7 +353,7 @@ class Credentials extends SiteController
             $this->finish(
                 Route::url('index.php?option=' . $this->_option . '&task=reset', false),
                 Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_TOKENS_MISSING'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -368,7 +368,7 @@ class Credentials extends SiteController
             $this->finish(
                 Route::url('index.php?option=' . $this->_option . '&task=verify', false),
                 Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_TOKENS_MISSING'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -381,7 +381,7 @@ class Credentials extends SiteController
             $this->finish(
                 Route::url('index.php?option=' . $this->_option . '&task=verify', false),
                 Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_USER_NOT_FOUND'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -391,7 +391,7 @@ class Credentials extends SiteController
             $this->finish(
                 Route::url('index.php?option=' . $this->_option . '&task=verify', false),
                 Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_USER_NOT_FOUND'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -403,7 +403,7 @@ class Credentials extends SiteController
         $this->finish(
             Route::url('index.php?option=' . $this->_option . '&task=setpassword', false),
             Lang::txt('COM_MEMBERS_CREDENTIALS_TOKEN_CONFIRMED'),
-            'passed'
+            'passed',
         );
     }
 
@@ -461,7 +461,7 @@ class Credentials extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&task=setpassword', false),
                 Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_USER_NOT_FOUND'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -471,7 +471,7 @@ class Credentials extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&task=setpassword', false),
                 Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_USER_NOT_FOUND'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -520,7 +520,7 @@ class Credentials extends SiteController
             if ($no_html) {
                 $response = [
                     'success' => false,
-                    'message' => $error
+                    'message' => $error,
                 ];
 
                 echo json_encode($response);
@@ -529,7 +529,7 @@ class Credentials extends SiteController
                 App::redirect(
                     Route::url('index.php?option=' . $this->_option . '&task=setpassword', false),
                     $error,
-                    'warning'
+                    'warning',
                 );
                 return;
             }
@@ -545,7 +545,7 @@ class Credentials extends SiteController
             if ($no_html) {
                 $response = [
                     'success' => false,
-                    'message' => Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_GENERIC')
+                    'message' => Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_GENERIC'),
                 ];
 
                 echo json_encode($response);
@@ -554,7 +554,7 @@ class Credentials extends SiteController
                 App::redirect(
                     Route::url('index.php?option=' . $this->_option . '&task=setpassword', false),
                     Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_GENERIC'),
-                    'warning'
+                    'warning',
                 );
                 return;
             }
@@ -567,7 +567,7 @@ class Credentials extends SiteController
         if ($no_html) {
             $response = [
                 'success'  => true,
-                'redirect' => Route::url('index.php?option=com_login', false)
+                'redirect' => Route::url('index.php?option=com_login', false),
             ];
 
             echo json_encode($response);
@@ -577,7 +577,7 @@ class Credentials extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_login', false),
                 Lang::txt('COM_MEMBERS_CREDENTIALS_PASSWORD_RESET_COMPLETE'),
-                'passed'
+                'passed',
             );
         }
     }
@@ -590,12 +590,12 @@ class Credentials extends SiteController
     private function setTitle()
     {
         Document::setTitle(
-            Lang::txt('COM_MEMBERS_CREDENTIALS_' . ucfirst($this->_task))
+            Lang::txt('COM_MEMBERS_CREDENTIALS_' . ucfirst($this->_task)),
         );
 
         Pathway::append(
             Lang::txt('COM_MEMBERS_CREDENTIALS_' . ucfirst($this->_task)),
-            'index.php?option=' . $this->_option . '&task=' . $this->_task
+            'index.php?option=' . $this->_option . '&task=' . $this->_task,
         );
     }
 
@@ -612,7 +612,7 @@ class Credentials extends SiteController
     {
         $eview  = new \Hubzero\Mail\View([
             'name'   => 'emails',
-            'layout' => $layout . '_plain'
+            'layout' => $layout . '_plain',
         ]);
 
         $eview->config  = Config::getRoot();

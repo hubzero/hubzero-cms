@@ -33,7 +33,7 @@ class Roles extends AdminController
     {
         if (!User::authorize('core.manage', $this->_option)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option, false)
+                Route::url('index.php?option=' . $this->_option, false),
             );
         }
 
@@ -55,37 +55,37 @@ class Roles extends AdminController
             'gid' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.gid',
                 'gid',
-                ''
+                '',
             ),
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             )),
             // Sorting options
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'name'
+                'name',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
+                'ASC',
             ),
             // Filters for returning results
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limitstart',
                 'limitstart',
                 0,
-                'int'
-            )
+                'int',
+            ),
         ];
 
         // Ensure we have a group ID
@@ -93,7 +93,7 @@ class Roles extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option, false),
                 Lang::txt('COM_GROUPS_MISSING_ID'),
-                'error'
+                'error',
             );
             return;
         }
@@ -247,7 +247,7 @@ class Roles extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option, false),
                 Lang::txt('COM_GROUPS_MISSING_ID'),
-                'error'
+                'error',
             );
             return;
         }
@@ -262,7 +262,7 @@ class Roles extends AdminController
 
         if ($rtrn = Request::getString('return')) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $rtrn . '&gid=' . $gid, false)
+                Route::url('index.php?option=' . $this->_option . '&controller=' . $rtrn . '&gid=' . $gid, false),
             );
         }
 
@@ -287,7 +287,7 @@ class Roles extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option, false),
                 Lang::txt('COM_GROUPS_MISSING_ID'),
-                'error'
+                'error',
             );
         }
 
@@ -325,7 +325,7 @@ class Roles extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option, false),
                 Lang::txt('COM_GROUPS_MISSING_ID'),
-                'error'
+                'error',
             );
         }
 
@@ -356,7 +356,7 @@ class Roles extends AdminController
             . '&gid=' . $gid
             . ($tmpl ? '&tmpl=' . $tmpl : '');
         App::redirect(
-            Route::url($url, false)
+            Route::url($url, false),
         );
     }
 }

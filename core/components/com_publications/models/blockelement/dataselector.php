@@ -58,7 +58,7 @@ class Dataselector extends Base
         $viewname = 'edit',
         $status = null,
         $master = null,
-        $order = 0
+        $order = 0,
     ) {
         $html = '';
 
@@ -91,7 +91,7 @@ class Dataselector extends Base
                     $collapse,
                     $total,
                     $master,
-                    $order
+                    $order,
                 );
                 break;
 
@@ -103,7 +103,7 @@ class Dataselector extends Base
                     $pub,
                     $status->elements->$elementid,
                     $master,
-                    $viewname
+                    $viewname,
                 );
                 break;
         }
@@ -129,8 +129,8 @@ class Dataselector extends Base
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => 'freeze',
-                'layout'  => 'dataselector'
-            ]
+                'layout'  => 'dataselector',
+            ],
         );
 
         // Get attachment type model
@@ -150,7 +150,7 @@ class Dataselector extends Base
             $elementId,
             $attachments,
             $manifest->params->type,
-            $manifest->params->role
+            $manifest->params->role,
         );
 
         $view->type        = $manifest->params->type;
@@ -192,7 +192,7 @@ class Dataselector extends Base
         $collapse = 0,
         $total = 0,
         $master = null,
-        $order = 0
+        $order = 0,
     ) {
         // Get attachment type model
         $attModel = new \Components\Publications\Models\Attachments($this->_parent->_db);
@@ -211,7 +211,7 @@ class Dataselector extends Base
             $elementId,
             $attachments,
             $manifest->params->type,
-            $manifest->params->role
+            $manifest->params->role,
         );
 
         $view = new \Hubzero\Plugin\View(
@@ -219,8 +219,8 @@ class Dataselector extends Base
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => 'blockelement',
-                'layout'  => 'dataselector'
-            ]
+                'layout'  => 'dataselector',
+            ],
         );
 
         $view->type        = $manifest->params->type;

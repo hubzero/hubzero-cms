@@ -23,8 +23,8 @@ class Migration20190307114147PlgResourcesReviews extends Base
      **/
     public static $tables = [
         '#__resource_ratings' => [
-            'created'
-        ]
+            'created',
+        ],
     ];
 
     /**

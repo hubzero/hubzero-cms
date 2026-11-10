@@ -223,7 +223,7 @@ class Comments extends Plugin
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . base64_encode($this->url)),
             Lang::txt('PLG_HUBZERO_COMMENTS_LOGIN_NOTICE'),
-            'warning'
+            'warning',
         );
     }
 
@@ -292,7 +292,7 @@ class Comments extends Plugin
             }
 
             App::redirect(
-                $this->url
+                $this->url,
             );
         }
 
@@ -330,7 +330,7 @@ class Comments extends Plugin
             ->whereEquals('parent', 0)
             ->whereIn('state', [
                 \Plugins\Hubzero\Comments\Models\Comment::STATE_PUBLISHED,
-                \Plugins\Hubzero\Comments\Models\Comment::STATE_FLAGGED
+                \Plugins\Hubzero\Comments\Models\Comment::STATE_FLAGGED,
             ])
             ->limit($this->params->get('display_limit', 25))
             ->ordered()
@@ -386,7 +386,7 @@ class Comments extends Plugin
                 App::redirect(
                     Route::url('index.php?option=com_users&view=login&return=' . base64_encode($this->url)),
                     Lang::txt('PLG_HUBZERO_COMMENTS_NOTAUTH'),
-                    'warning'
+                    'warning',
                 );
             }
         }
@@ -441,13 +441,13 @@ class Comments extends Plugin
         if (!$row->save()) {
             User::setState(
                 'failed_comment',
-                $row->get('content')
+                $row->get('content'),
             );
 
             App::redirect(
                 $this->url,
                 $row->getError(),
-                'error'
+                'error',
             );
         }
 
@@ -475,7 +475,7 @@ class Comments extends Plugin
         App::redirect(
             $this->url,
             Lang::txt('PLG_HUBZERO_COMMENTS_SAVED'),
-            'message'
+            'message',
         );
     }
 
@@ -499,7 +499,7 @@ class Comments extends Plugin
         $id = Request::getInt('comment', 0);
         if (!$id) {
             App::redirect(
-                $this->url
+                $this->url,
             );
         }
 
@@ -541,7 +541,7 @@ class Comments extends Plugin
         App::redirect(
             $this->url,
             Lang::txt('PLG_HUBZERO_COMMENTS_REMOVED'),
-            'message'
+            'message',
         );
     }
 

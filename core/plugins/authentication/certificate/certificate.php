@@ -182,7 +182,7 @@ class Certificate extends Plugin
                 $prefs = [
                     'user_id'       => $user->get('id'),
                     'user_img'      => $user->picture(0, false),
-                    'authenticator' => 'certificate'
+                    'authenticator' => 'certificate',
                 ];
 
                 $namespace = 'authenticator';
@@ -217,7 +217,7 @@ class Certificate extends Plugin
                 App::redirect(
                     Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
                     Lang::txt('PLG_AUTHENTICATION_CERTIFICATE_ACCOUNT_ALREADY_LINKED'),
-                    'error'
+                    'error',
                 );
             } else {
                 $hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'certificate', $domain, $username);
@@ -233,7 +233,7 @@ class Certificate extends Plugin
                     Log::error(sprintf(
                         'Hubzero\Auth\Link::find_or_create("authentication", "certificate", %s, %s) returned false',
                         $domain,
-                        $username
+                        $username,
                     ));
                 }
             }
@@ -242,7 +242,7 @@ class Certificate extends Plugin
             App::redirect(
                 Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
                 Lang::txt('PLG_AUTHENTICATION_CERTIFICATE_ERROR_LINKING_CERT'),
-                'error'
+                'error',
             );
         }
     }
@@ -283,7 +283,7 @@ class Certificate extends Plugin
     public static function onRenderOption($return = null)
     {
         Document::addStyleSheet(
-            Request::root(false) . 'core/plugins/authentication/certificate/assets/css/certificate.css'
+            Request::root(false) . 'core/plugins/authentication/certificate/assets/css/certificate.css',
         );
 
         $html = '<a class="certificate account" href="'

@@ -88,7 +88,7 @@ class Configs extends AdminController
             $db->setQuery(
                 'INSERT INTO ' . $model->getTableName() .
                 ' (user_id, cfg_name, cfg_value)' .
-                ' VALUES ' . implode(',', $tuples)
+                ' VALUES ' . implode(',', $tuples),
             );
             $db->query();
 

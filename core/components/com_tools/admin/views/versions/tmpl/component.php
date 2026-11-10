@@ -26,7 +26,7 @@ $addZoneUrl = Route::url(
     'index.php?option=' . $this->option
     . '&controller=' . $this->controller
     . '&task=addZone&version=' . $this->version
-    . '&tmpl=component'
+    . '&tmpl=component',
 );
 ?>
 <form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
@@ -60,14 +60,14 @@ foreach ($this->rows as $row) {
         'index.php?option=' . $this->option
         . '&controller=' . $this->controller
         . '&task=editZone&id=' . $row->id
-        . '&tmpl=component'
+        . '&tmpl=component',
     );
     $removeZoneUrl = Route::url(
         'index.php?option=' . $this->option
         . '&controller=' . $this->controller
         . '&task=removeZone&id=' . $row->id
         . '&version=' . $this->version
-        . '&tmpl=component&' . Session::getFormToken() . '=1'
+        . '&tmpl=component&' . Session::getFormToken() . '=1',
     );
     ?>
             <tr class="<?php echo "row$k"; ?>">

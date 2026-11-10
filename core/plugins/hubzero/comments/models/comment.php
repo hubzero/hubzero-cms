@@ -51,7 +51,7 @@ class Comment extends ItemComment
         if (!isset($this->base)) {
             $this->base = $this->get(
                 'url',
-                'index.php?option=com_' . $this->get('item_type') . '&id=' . $this->get('item_id') . '&active=comments'
+                'index.php?option=com_' . $this->get('item_type') . '&id=' . $this->get('item_id') . '&active=comments',
             );
         }
         $link = $this->base;

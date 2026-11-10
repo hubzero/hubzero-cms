@@ -17,7 +17,7 @@ defined('_HZEXEC_') or die();
 
 Pathway::append(
     Lang::txt('COM_WIKI_SPECIAL_NEW_PAGES'),
-    $this->page->link()
+    $this->page->link(),
 );
 
 $sort = strtolower(Request::getString('sort', 'created'));
@@ -48,7 +48,7 @@ $rows = $this->book->pages($filters)
                 ->select('version')
                 ->select('created_by')
                 ->select('summary');
-        }
+        },
     ])
     ->order('created', $dir)
     ->paginated()

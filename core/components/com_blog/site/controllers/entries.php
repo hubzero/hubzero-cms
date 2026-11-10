@@ -72,7 +72,7 @@ class Entries extends SiteController
             'search'     => Request::getString('search', ''),
             'authorized' => false,
             'state'      => 1,
-            'access'     => User::getAuthorisedViewLevels()
+            'access'     => User::getAuthorisedViewLevels(),
         ];
 
         if ($filters['year'] > date("Y")) {
@@ -110,7 +110,7 @@ class Entries extends SiteController
 
         if (!$alias) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
+                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
             );
             return;
         }
@@ -119,7 +119,7 @@ class Entries extends SiteController
         $row = Entry::oneByScope(
             $alias,
             $this->model->get('scope'),
-            $this->model->get('scope_id')
+            $this->model->get('scope_id'),
         );
 
         if (!$row->get('id') || $row->isDeleted()) {
@@ -139,7 +139,7 @@ class Entries extends SiteController
             'scope_id'   => 0,
             'authorized' => false,
             'state'      => Entry::STATE_PUBLISHED,
-            'access'     => User::getAuthorisedViewLevels()
+            'access'     => User::getAuthorisedViewLevels(),
         ];
 
         if (!User::isGuest()) {
@@ -179,7 +179,7 @@ class Entries extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
                 Lang::txt('COM_BLOG_LOGIN_NOTICE'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -227,7 +227,7 @@ class Entries extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
                 Lang::txt('COM_BLOG_LOGIN_NOTICE'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -318,12 +318,12 @@ class Entries extends SiteController
                 'description' => Lang::txt('COM_BLOG_ACTIVITY_ENTRY_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($row->link()) . '">' . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
                 'details'     => [
                     'title' => $row->get('title'),
-                    'url'   => Route::url($row->link())
-                ]
+                    'url'   => Route::url($row->link()),
+                ],
             ],
             'recipients' => [
-                $row->get('created_by')
-            ]
+                $row->get('created_by'),
+            ],
         ]);
 
         // If the new resource is published, set the session flag indicating the new submission
@@ -333,7 +333,7 @@ class Entries extends SiteController
 
         // Redirect to the entry
         App::redirect(
-            Route::url($row->link())
+            Route::url($row->link()),
         );
     }
 
@@ -349,7 +349,7 @@ class Entries extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
                 Lang::txt('COM_BLOG_LOGIN_NOTICE'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -411,17 +411,17 @@ class Entries extends SiteController
                 'description' => Lang::txt('COM_BLOG_ACTIVITY_ENTRY_DELETED', '<a href="' . Route::url($entry->link()) . '">' . htmlspecialchars((string) ($entry->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
                 'details'     => [
                     'title' => $entry->get('title'),
-                    'url'   => Route::url($entry->link())
-                ]
+                    'url'   => Route::url($entry->link()),
+                ],
             ],
             'recipients' => [
-                $entry->get('created_by')
-            ]
+                $entry->get('created_by'),
+            ],
         ]);
 
         // Return the entries lsit
         App::redirect(
-            Route::url('index.php?option=' . $this->_option)
+            Route::url('index.php?option=' . $this->_option),
         );
     }
 
@@ -434,7 +434,7 @@ class Entries extends SiteController
     {
         if (!$this->config->get('feeds_enabled')) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option)
+                Route::url('index.php?option=' . $this->_option),
             );
             return;
         }
@@ -455,7 +455,7 @@ class Entries extends SiteController
             'search'     => Request::getString('search', ''),
             'authorized' => false,
             'state'      => 1,
-            'access'     => User::getAuthorisedViewLevels()
+            'access'     => User::getAuthorisedViewLevels(),
         ];
 
         if ($filters['year'] > date("Y")) {
@@ -530,7 +530,7 @@ class Entries extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
                 Lang::txt('COM_BLOG_LOGIN_NOTICE'),
-                'warning'
+                'warning',
             );
             return;
         }
@@ -619,10 +619,10 @@ class Entries extends SiteController
                 'details'     => [
                     'title'    => $entry->get('title'),
                     'entry_id' => $entry->get('id'),
-                    'url'      => $entry->link()
-                ]
+                    'url'      => $entry->link(),
+                ],
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         return $this->entryTask();
@@ -657,7 +657,7 @@ class Entries extends SiteController
 
         if (!$id) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias, false)
+                Route::url('index.php?option=' . $this->_option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias, false),
             );
             return;
         }
@@ -667,7 +667,7 @@ class Entries extends SiteController
 
         if (User::get('id') != $comment->get('created_by') && !$this->config->get('access-delete-comment')) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias, false)
+                Route::url('index.php?option=' . $this->_option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias, false),
             );
             return;
         }
@@ -693,17 +693,17 @@ class Entries extends SiteController
                 'details'     => [
                     'title'    => $entry->get('title'),
                     'entry_id' => $entry->get('id'),
-                    'url'      => $entry->link()
-                ]
+                    'url'      => $entry->link(),
+                ],
             ],
-            'recipients' => $recipients
+            'recipients' => $recipients,
         ]);
 
         // Return the topics list
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias),
             ($this->getError() ? $this->getError() : null),
-            ($this->getError() ? 'error' : null)
+            ($this->getError() ? 'error' : null),
         );
     }
 

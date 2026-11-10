@@ -418,7 +418,7 @@ $onOffLabel = function ($v) {
                                         'anyone' => 'Any HUB Visitor',
                                         'registered' => 'Only Registered User of the HUB',
                                         'members' => 'Only Group Members',
-                                        'nobody' => 'Disabled/Off'
+                                        'nobody' => 'Disabled/Off',
                                     ];
 
                                     // Get plugins
@@ -427,7 +427,7 @@ $onOffLabel = function ($v) {
                                         'name'             => 'overview',
                                         'title'            => 'Overview',
                                         'default_access'   => 'anyone',
-                                        'display_menu_tab' => true
+                                        'display_menu_tab' => true,
                                     ]);
 
                                     $access = \Hubzero\User\Group\Helper::getPluginAccess($this->group);

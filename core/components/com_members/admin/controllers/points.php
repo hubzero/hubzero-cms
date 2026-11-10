@@ -51,7 +51,7 @@ class Points extends AdminController
             'alltimetran'   => Transaction::getTotals('', 'deposit', '', 0, '', '', 1, '', $calc = 2),
             'thismonthtran' => Transaction::getTotals('', 'deposit', '', 0, '', '', 1, $thismonth, $calc = 2),
             'lastmonthtran' => Transaction::getTotals('', 'deposit', '', 0, '', '', 1, $lastmonth, $calc = 2),
-            'avg'           => round(Transaction::getTotals('', 'deposit', '', 0, '', '', 1, '', $calc = 1))
+            'avg'           => round(Transaction::getTotals('', 'deposit', '', 0, '', '', 1, '', $calc = 1)),
         ];
 
         // Get overall earnings on Answers
@@ -64,7 +64,7 @@ class Points extends AdminController
             'alltimetran'   => Transaction::getTotals('answers', 'deposit', '', 0, '', '', 1, '', $calc = 2),
             'thismonthtran' => Transaction::getTotals('answers', 'deposit', '', 0, '', '', 1, $thismonth, $calc = 2),
             'lastmonthtran' => Transaction::getTotals('answers', 'deposit', '', 0, '', '', 1, $lastmonth, $calc = 2),
-            'avg'           => round(Transaction::getTotals('answers', 'deposit', '', 0, '', '', 1, '', $calc = 1))
+            'avg'           => round(Transaction::getTotals('answers', 'deposit', '', 0, '', '', 1, '', $calc = 1)),
         ];
 
         // Get overall earnings on Wishes
@@ -77,7 +77,7 @@ class Points extends AdminController
             'alltimetran'   => Transaction::getTotals('wish', 'deposit', '', 0, '', '', 1, '', $calc = 2),
             'thismonthtran' => Transaction::getTotals('wish', 'deposit', '', 0, '', '', 1, $thismonth, $calc = 2),
             'lastmonthtran' => Transaction::getTotals('wish', 'deposit', '', 0, '', '', 1, $lastmonth, $calc = 2),
-            'avg'           => round(Transaction::getTotals('wish', 'deposit', '', 0, '', '', 1, '', $calc = 1))
+            'avg'           => round(Transaction::getTotals('wish', 'deposit', '', 0, '', '', 1, '', $calc = 1)),
         ];
 
         // Get overall spending
@@ -90,7 +90,7 @@ class Points extends AdminController
             'alltimetran'   => Transaction::getTotals('', 'withdraw', '', 0, '', '', 1, '', $calc = 2),
             'thismonthtran' => Transaction::getTotals('', 'withdraw', '', 0, '', '', 1, $thismonth, $calc = 2),
             'lastmonthtran' => Transaction::getTotals('', 'withdraw', '', 0, '', '', 1, $lastmonth, $calc = 2),
-            'avg'           => round(Transaction::getTotals('', 'withdraw', '', 0, '', '', 1, '', $calc = 1))
+            'avg'           => round(Transaction::getTotals('', 'withdraw', '', 0, '', '', 1, '', $calc = 1)),
         ];
 
         // Get overall spending in Store
@@ -103,7 +103,7 @@ class Points extends AdminController
             'alltimetran'   => Transaction::getTotals('store', 'withdraw', '', 0, '', '', 1, '', $calc = 2),
             'thismonthtran' => Transaction::getTotals('store', 'withdraw', '', 0, '', '', 1, $thismonth, $calc = 2),
             'lastmonthtran' => Transaction::getTotals('store', 'withdraw', '', 0, '', '', 1, $lastmonth, $calc = 2),
-            'avg'           => round(Transaction::getTotals('store', 'withdraw', '', 0, '', '', 1, '', $calc = 1))
+            'avg'           => round(Transaction::getTotals('store', 'withdraw', '', 0, '', '', 1, '', $calc = 1)),
         ];
 
         // Get overall spending on Answers
@@ -116,7 +116,7 @@ class Points extends AdminController
             'alltimetran'   => Transaction::getTotals('answers', 'withdraw', '', 0, '', '', 1, '', $calc = 2),
             'thismonthtran' => Transaction::getTotals('answers', 'withdraw', '', 0, '', '', 1, $thismonth, $calc = 2),
             'lastmonthtran' => Transaction::getTotals('answers', 'withdraw', '', 0, '', '', 1, $lastmonth, $calc = 2),
-            'avg'           => round(Transaction::getTotals('answers', 'withdraw', '', 0, '', '', 1, '', $calc = 1))
+            'avg'           => round(Transaction::getTotals('answers', 'withdraw', '', 0, '', '', 1, '', $calc = 1)),
         ];
 
         // Get overall spending on Wishes
@@ -129,7 +129,7 @@ class Points extends AdminController
             'alltimetran'   => Transaction::getTotals('wish', 'withdraw', '', 0, '', '', 1, '', $calc = 2),
             'thismonthtran' => Transaction::getTotals('wish', 'withdraw', '', 0, '', '', 1, $thismonth, $calc = 2),
             'lastmonthtran' => Transaction::getTotals('wish', 'withdraw', '', 0, '', '', 1, $lastmonth, $calc = 2),
-            'avg'           => round(Transaction::getTotals('wish', 'withdraw', '', 0, '', '', 1, '', $calc = 1))
+            'avg'           => round(Transaction::getTotals('wish', 'withdraw', '', 0, '', '', 1, '', $calc = 1)),
         ];
 
         // Get royalties
@@ -142,7 +142,7 @@ class Points extends AdminController
             'alltimetran'   => Transaction::getTotals('', 'deposit', '', $royalty = 1, '', '', 1, '', $calc = 2),
             'thismonthtran' => Transaction::getTotals('', 'deposit', '', $royalty = 1, '', '', 1, $thismonth, $calc = 2),
             'lastmonthtran' => Transaction::getTotals('', 'deposit', '', $royalty = 1, '', '', 1, $lastmonth, $calc = 2),
-            'avg'           => round(Transaction::getTotals('', 'deposit', '', $royalty = 1, '', '', 1, '', $calc = 1))
+            'avg'           => round(Transaction::getTotals('', 'deposit', '', $royalty = 1, '', '', 1, '', $calc = 1)),
         ];
 
         // Get royalties on answers
@@ -155,7 +155,7 @@ class Points extends AdminController
             'alltimetran'   => Transaction::getTotals('answers', 'deposit', '', $royalty = 1, '', '', 1, '', $calc = 2),
             'thismonthtran' => Transaction::getTotals('answers', 'deposit', '', $royalty = 1, '', '', 1, $thismonth, $calc = 2),
             'lastmonthtran' => Transaction::getTotals('answers', 'deposit', '', $royalty = 1, '', '', 1, $lastmonth, $calc = 2),
-            'avg'           => round(Transaction::getTotals('answers', 'deposit', '', $royalty = 1, '', '', 1, '', $calc = 1))
+            'avg'           => round(Transaction::getTotals('answers', 'deposit', '', $royalty = 1, '', '', 1, '', $calc = 1)),
         ];
 
         // Get royalties on reviews
@@ -168,7 +168,7 @@ class Points extends AdminController
             'alltimetran'   => Transaction::getTotals('review', 'deposit', '', $royalty = 1, '', '', 1, '', $calc = 2),
             'thismonthtran' => Transaction::getTotals('review', 'deposit', '', $royalty = 1, '', '', 1, $thismonth, $calc = 2),
             'lastmonthtran' => Transaction::getTotals('review', 'deposit', '', $royalty = 1, '', '', 1, $lastmonth, $calc = 2),
-            'avg'           => round(Transaction::getTotals('review', 'deposit', '', $royalty = 1, '', '', 1, '', $calc = 1))
+            'avg'           => round(Transaction::getTotals('review', 'deposit', '', $royalty = 1, '', '', 1, '', $calc = 1)),
         ];
 
         // Get royalties on resource contributions
@@ -181,7 +181,7 @@ class Points extends AdminController
             'alltimetran'   => Transaction::getTotals('resource', 'deposit', '', $royalty = 1, '', '', 1, '', $calc = 2),
             'thismonthtran' => Transaction::getTotals('resource', 'deposit', '', $royalty = 1, '', '', 1, $thismonth, $calc = 2),
             'lastmonthtran' => Transaction::getTotals('resource', 'deposit', '', $royalty = 1, '', '', 1, $lastmonth, $calc = 2),
-            'avg'           => round(Transaction::getTotals('resource', 'deposit', '', $royalty = 1, '', '', 1, '', $calc = 1))
+            'avg'           => round(Transaction::getTotals('resource', 'deposit', '', $royalty = 1, '', '', 1, '', $calc = 1)),
         ];
 
         // Set any errors
@@ -232,7 +232,7 @@ class Points extends AdminController
     public function cancelTask()
     {
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
         );
     }
 
@@ -301,7 +301,7 @@ class Points extends AdminController
 
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&uid=' . $row->uid, false),
-            Lang::txt('User info saved')
+            Lang::txt('User info saved'),
         );
     }
 
@@ -355,7 +355,7 @@ class Points extends AdminController
 
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=config', false),
-            Lang::txt('Config Saved')
+            Lang::txt('Config Saved'),
         );
     }
 
@@ -466,7 +466,7 @@ class Points extends AdminController
 
         // show output if run manually
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=batch', false)
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=batch', false),
         );
     }
 
@@ -632,7 +632,7 @@ class Points extends AdminController
             // show output if run manually
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-                Lang::txt($this->_message)
+                Lang::txt($this->_message),
             );
         }
     }

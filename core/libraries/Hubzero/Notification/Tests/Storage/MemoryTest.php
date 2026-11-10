@@ -26,23 +26,23 @@ class MemoryTest extends Basic
         [
             'message' => 'This is an info message.',
             'type'    => 'info',
-            'domain'  => 'test'
+            'domain'  => 'test',
         ],
         [
             'message' => 'This is a success message!',
             'type'    => 'success',
-            'domain'  => 'test'
+            'domain'  => 'test',
         ],
         [
             'message' => 'This is a warning message!',
             'type'    => 'warning',
-            'domain'  => 'test'
+            'domain'  => 'test',
         ],
         [
             'message' => 'This is an error message.',
             'type'    => 'error',
-            'domain'  => 'test'
-        ]
+            'domain'  => 'test',
+        ],
     ];
 
     /**
@@ -147,7 +147,7 @@ class MemoryTest extends Basic
         $this->assertEquals(
             count($this->data),
             $memory->total('one'),
-            'Total messages returned does not equal number added'
+            'Total messages returned does not equal number added',
         );
     }
 

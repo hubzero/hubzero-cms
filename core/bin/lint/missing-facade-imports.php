@@ -110,7 +110,7 @@ function phpFiles($root, array $paths)
             continue;
         }
         $it = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($base, FilesystemIterator::SKIP_DOTS)
+            new RecursiveDirectoryIterator($base, FilesystemIterator::SKIP_DOTS),
         );
         foreach ($it as $file) {
             if ($file->getExtension() === 'php' && strpos($file->getPathname(), '/vendor/') === false) {

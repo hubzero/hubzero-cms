@@ -130,7 +130,7 @@ if ($review->exists()) {
                         35,
                         10,
                         'review_comments',
-                        ['class' => 'minimal no-footer']
+                        ['class' => 'minimal no-footer'],
                     );
                     ?>
                 </label>

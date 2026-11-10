@@ -45,7 +45,7 @@ class Categories extends Plugin
 
         $tableInfo =  [
             'com_content'   => ['table_name' => '#__content'],
-            'com_newsfeeds' => ['table_name' => '#__newsfeeds']
+            'com_newsfeeds' => ['table_name' => '#__newsfeeds'],
         ];
 
         // Now check to see if this is a known core extension

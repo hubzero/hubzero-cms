@@ -43,7 +43,7 @@ class Permissions
             'core.create',
             'core.edit',
             'core.edit.state',
-            'core.delete'
+            'core.delete',
         ];
 
         $result = new Obj();

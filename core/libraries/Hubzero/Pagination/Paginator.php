@@ -258,7 +258,7 @@ class Paginator extends Obj
         $task = 'orderup',
         $alt = 'JLIB_HTML_MOVE_UP',
         $enabled = true,
-        $checkbox = 'cb'
+        $checkbox = 'cb',
     ) {
         if (($i > 0 || ($i + $this->limitstart > 0)) && $condition) {
             return Grid::orderUp($i, $task, '', $alt, $enabled, $checkbox);
@@ -286,7 +286,7 @@ class Paginator extends Obj
         $task = 'orderdown',
         $alt = 'JLIB_HTML_MOVE_DOWN',
         $enabled = true,
-        $checkbox = 'cb'
+        $checkbox = 'cb',
     ) {
         if (($i < $n - 1 || $i + $this->limitstart < $this->total - 1) && $condition) {
             return Grid::orderDown($i, $task, '', $alt, $enabled, $checkbox);

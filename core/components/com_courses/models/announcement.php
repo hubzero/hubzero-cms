@@ -115,13 +115,13 @@ class Announcement extends Base
                         'pagename' => $this->get('id'),
                         'pageid'   => 0,
                         'filepath' => '',
-                        'domain'   => ''
+                        'domain'   => '',
                     ];
 
                     $content = $this->get('content');
                     $this->importPlugin('content')->trigger(
                         'onContentPrepare',
-                        [$this->_context, &$this, &$config]
+                        [$this->_context, &$this, &$config],
                     );
 
                     $this->set('content_parsed', $this->get('content'));

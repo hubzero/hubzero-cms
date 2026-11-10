@@ -49,7 +49,7 @@ class Attachment extends Relational
         'type' => 'notempty',
         'path' => 'notempty',
         'publication_id' => 'positive|nonzero',
-        'publication_version_id' => 'positive|nonzero'
+        'publication_version_id' => 'positive|nonzero',
     ];
 
     /**
@@ -59,7 +59,7 @@ class Attachment extends Relational
      */
     public $always = [
         'modified',
-        'modified_by'
+        'modified_by',
     ];
 
     /**
@@ -69,7 +69,7 @@ class Attachment extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**

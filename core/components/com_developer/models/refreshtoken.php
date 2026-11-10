@@ -57,7 +57,7 @@ class Refreshtoken extends Relational
     protected $rules = [
         'refresh_token'  => 'notempty',
         'application_id' => 'positive|nonzero',
-        'uidNumber'      => 'positive|nonzero'
+        'uidNumber'      => 'positive|nonzero',
     ];
 
     /**
@@ -67,7 +67,7 @@ class Refreshtoken extends Relational
      */
     public $initiate = [
         'created',
-        'expires'
+        'expires',
     ];
 
     /**

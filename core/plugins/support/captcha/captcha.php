@@ -55,7 +55,7 @@ class Captcha extends Plugin
         [0, 3, 4, 2, 1],
         [2, 4, 1, 3, 0],
         [4, 2, 3, 0, 1],
-        [2, 0, 3, 1, 4]
+        [2, 0, 3, 1, 4],
     ];
 
     /**
@@ -66,7 +66,7 @@ class Captcha extends Plugin
         [
             'type'     => 'math',
             'question' => 'PLG_SUPPORT_TEXTCAPTCHA_MATH',
-            'answer'   => '@dynamic'
+            'answer'   => '@dynamic',
         ],
         [
             'type'     => 'list',
@@ -76,14 +76,14 @@ class Captcha extends Plugin
                 'MONDAY',
                 'THURSDAY',
                 'TUESDAY',
-                'FRIDAY'
+                'FRIDAY',
             ],
-            'answer'   => 'WEDNESDAY'
+            'answer'   => 'WEDNESDAY',
         ],
         [
             'type'     => 'text',
             'question' => 'PLG_SUPPORT_TEXTCAPTCHA_EYE_ANKLE_ARM',
-            'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_EYE_ANKLE_ARM_ANSWER'
+            'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_EYE_ANKLE_ARM_ANSWER',
         ],
         [
             'type'     => 'list',
@@ -93,9 +93,9 @@ class Captcha extends Plugin
                 'PLG_SUPPORT_TEXTCAPTCHA_SUN_RISES_NIGHT',
                 'PLG_SUPPORT_TEXTCAPTCHA_SUN_RISES_SOUTH',
                 'PLG_SUPPORT_TEXTCAPTCHA_SUN_RISES_WEST',
-                'PLG_SUPPORT_TEXTCAPTCHA_SUN_RISES_CHICKENS'
+                'PLG_SUPPORT_TEXTCAPTCHA_SUN_RISES_CHICKENS',
             ],
-            'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_SUN_RISES_EAST'
+            'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_SUN_RISES_EAST',
         ],
         [
             'type'     => 'list',
@@ -105,9 +105,9 @@ class Captcha extends Plugin
                 'PLG_SUPPORT_TEXTCAPTCHA_PYRAMIDS_ROCKS',
                 'PLG_SUPPORT_TEXTCAPTCHA_PYRAMIDS_JAPAN',
                 'PLG_SUPPORT_TEXTCAPTCHA_PYRAMIDS_NORTH_POLE',
-                'PLG_SUPPORT_TEXTCAPTCHA_PYRAMIDS_CANADA'
+                'PLG_SUPPORT_TEXTCAPTCHA_PYRAMIDS_CANADA',
             ],
-            'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_PYRAMIDS_EGYPT'
+            'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_PYRAMIDS_EGYPT',
         ],
         [
             'type'     => 'list',
@@ -117,19 +117,19 @@ class Captcha extends Plugin
                 'PLG_SUPPORT_TEXTCAPTCHA_MOON_AUTOMOBILES',
                 'PLG_SUPPORT_TEXTCAPTCHA_MOON_CLOSET',
                 'PLG_SUPPORT_TEXTCAPTCHA_MOON_MOVIES',
-                'PLG_SUPPORT_TEXTCAPTCHA_MOON_DRAWER'
+                'PLG_SUPPORT_TEXTCAPTCHA_MOON_DRAWER',
             ],
-            'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_MOON_SKY'
+            'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_MOON_SKY',
         ],
         [
             'type'     => 'text',
             'question' => 'PLG_SUPPORT_TEXTCAPTCHA_ICE',
-            'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_ICE_ANSWER'
+            'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_ICE_ANSWER',
         ],
         [
             'type'     => 'text',
             'question' => 'PLG_SUPPORT_TEXTCAPTCHA_BODY_PART',
-            'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_BODY_PART_ANSWER'
+            'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_BODY_PART_ANSWER',
         ],
         [
             'type'     => 'list',
@@ -139,24 +139,24 @@ class Captcha extends Plugin
                 'PLG_SUPPORT_TEXTCAPTCHA_SHARKS_APRICOTS',
                 'PLG_SUPPORT_TEXTCAPTCHA_SHARKS_GREENHOUSES',
                 'PLG_SUPPORT_TEXTCAPTCHA_SHARKS_BARRELS',
-                'PLG_SUPPORT_TEXTCAPTCHA_SHARKS_HOUSE'
+                'PLG_SUPPORT_TEXTCAPTCHA_SHARKS_HOUSE',
             ],
-            'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_SHARKS_SEA'
+            'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_SHARKS_SEA',
         ],
         [
             'type'     => 'text',
             'question' => 'PLG_SUPPORT_TEXTCAPTCHA_NIGHT',
-            'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_NIGHT_ANSWER'
+            'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_NIGHT_ANSWER',
         ],
         [
             'type'     => 'text',
             'question' => 'PLG_SUPPORT_TEXTCAPTCHA_COLOR',
-            'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_COLOR_ANSWER'
+            'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_COLOR_ANSWER',
         ],
         [
             'type'     => 'text',
             'question' => 'PLG_SUPPORT_TEXTCAPTCHA_CAPITAL_OF_FRANCE',
-            'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_CAPITAL_OF_FRANCE_ANSWER'
+            'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_CAPITAL_OF_FRANCE_ANSWER',
         ],
         [
             'type'     => 'list',
@@ -166,10 +166,10 @@ class Captcha extends Plugin
                 'PLG_SUPPORT_TEXTCAPTCHA_MICKEY_TEAPOT',
                 'PLG_SUPPORT_TEXTCAPTCHA_MICKEY_SUITCASE',
                 'PLG_SUPPORT_TEXTCAPTCHA_MICKEY_PENGUIN',
-                'PLG_SUPPORT_TEXTCAPTCHA_MICKEY_CHICKEN'
+                'PLG_SUPPORT_TEXTCAPTCHA_MICKEY_CHICKEN',
             ],
-            'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_MICKEY_MOUSE'
-        ]
+            'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_MICKEY_MOUSE',
+        ],
     ];
 
     /**

@@ -54,14 +54,14 @@ class Article extends Field
         $html = [];
         $link = Route::url(
             'index.php?option=com_content&view=articles&layout=modal&tmpl=component&function=jSelectArticle_'
-            . $this->id . '&' . Session::getFormToken() . '=1'
+            . $this->id . '&' . Session::getFormToken() . '=1',
         );
 
         $db = App::get('db');
         $db->setQuery(
             'SELECT title' .
             ' FROM #__content' .
-            ' WHERE id = ' . (int) $this->value
+            ' WHERE id = ' . (int) $this->value,
         );
         $title = $db->loadResult();
 

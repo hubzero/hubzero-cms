@@ -112,7 +112,7 @@ class Twitter extends \Hubzero\Plugin\OauthClient
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return),
                 Lang::txt('PLG_AUTHENTICATION_TWITTER_MUST_AUTHORIZE_TO_LOGIN', Config::get('sitename')),
-                'error'
+                'error',
             );
         }
     }
@@ -128,7 +128,7 @@ class Twitter extends \Hubzero\Plugin\OauthClient
     {
         $params = [
             'scope' => ['tweet.read', 'users.read', 'users.email', 'offline.access'],
-            'redirect_uri' => $this->getReturnUrl()
+            'redirect_uri' => $this->getReturnUrl(),
         ];
 
         $loginUrl = $this->provider->getAuthorizationUrl($params);
@@ -166,7 +166,7 @@ class Twitter extends \Hubzero\Plugin\OauthClient
 
         if ($code == null) {
             $authUrl = $this->provider->getAuthorizationUrl([
-                'scope' => ['tweet.read', 'users.read', 'users.email', 'offline.access']
+                'scope' => ['tweet.read', 'users.read', 'users.email', 'offline.access'],
             ]);
 
             Session::set('oauth2state', $this->provider->getState(), $this->name);
@@ -180,7 +180,7 @@ class Twitter extends \Hubzero\Plugin\OauthClient
             $response->status = \Hubzero\Auth\Status::FAILURE;
             $response->error_message = Lang::txt(
                 'PLG_AUTHENTICATION_TWITTER_ERROR_RETRIEVING_PROFILE',
-                'Mismatched state'
+                'Mismatched state',
             );
 
             return;
@@ -206,7 +206,7 @@ class Twitter extends \Hubzero\Plugin\OauthClient
                 $response->status = \Hubzero\Auth\Status::FAILURE;
                 $response->error_message = Lang::txt(
                     'PLG_AUTHENTICATION_TWITTER_ERROR_RETRIEVING_PROFILE',
-                    $e->getMessage()
+                    $e->getMessage(),
                 );
                 return;
             }
@@ -282,7 +282,7 @@ class Twitter extends \Hubzero\Plugin\OauthClient
 
         if ($code == null) {
             $authUrl = $this->provider->getAuthorizationUrl([
-                'scope' => ['tweet.read', 'users.read', 'users.email', 'offline.access']
+                'scope' => ['tweet.read', 'users.read', 'users.email', 'offline.access'],
             ]);
 
             Session::set('oauth2state', $this->provider->getState(), $this->name);
@@ -296,7 +296,7 @@ class Twitter extends \Hubzero\Plugin\OauthClient
             App::redirect(
                 Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
                 Lang::txt('PLG_AUTHENTICATION_TWITTER_ERROR'),
-                'error'
+                'error',
             );
             return;
         }
@@ -317,7 +317,7 @@ class Twitter extends \Hubzero\Plugin\OauthClient
                 App::redirect(
                     Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
                     Lang::txt('PLG_AUTHENTICATION_TWITTER_ERROR'),
-                    'error'
+                    'error',
                 );
                 return;
             }
@@ -330,7 +330,7 @@ class Twitter extends \Hubzero\Plugin\OauthClient
                 App::redirect(
                     Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
                     Lang::txt('PLG_AUTHENTICATION_TWITTER_ACCOUNT_ALREADY_LINKED'),
-                    'error'
+                    'error',
                 );
             } else {
                 $hzal = \Hubzero\Auth\Link::find_or_create('authentication', $this->name, null, $id);
@@ -341,7 +341,7 @@ class Twitter extends \Hubzero\Plugin\OauthClient
                 } else {
                     Log::error(sprintf(
                         'Hubzero\Auth\Link::find_or_create("authentication", "twitter", null, %s) returned false',
-                        $id
+                        $id,
                     ));
                 }
             }
@@ -350,7 +350,7 @@ class Twitter extends \Hubzero\Plugin\OauthClient
             App::redirect(
                 Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
                 Lang::txt('PLG_AUTHENTICATION_TWITTER_MUST_AUTHORIZE_TO_LINK', Config::get('sitename')),
-                'error'
+                'error',
             );
         }
     }

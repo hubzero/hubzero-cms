@@ -58,13 +58,13 @@ class Legacy extends Registry
             'sitename',
             'robots',
             'captcha',
-            'access'
+            'access',
         ],
         'cache' => [
             'caching',
             'cachetime',
             'cache_handler',
-            'memcache_settings'
+            'memcache_settings',
         ],
         'database' => [
             'dbtype',
@@ -74,7 +74,7 @@ class Legacy extends Registry
             'db',
             'dbcharset',
             'dbcollation',
-            'dbprefix'
+            'dbprefix',
         ],
         'ftp' => [
             'ftp_enabled',
@@ -82,7 +82,7 @@ class Legacy extends Registry
             'ftp_port',
             'ftp_user',
             'ftp_pass',
-            'ftp_root'
+            'ftp_root',
         ],
         'mail' => [
             'mailer',
@@ -94,7 +94,7 @@ class Legacy extends Registry
             'smtpuser',
             'smtppass',
             'smtpsecure',
-            'sendmail'
+            'sendmail',
         ],
         'meta' => [
             'MetaAuthor',
@@ -102,13 +102,13 @@ class Legacy extends Registry
             'MetaDesc',
             'MetaKeys',
             'MetaRights',
-            'MetaVersion'
+            'MetaVersion',
         ],
         'offline' => [
             'display_offline_message',
             'offline_image',
             'offline_message',
-            'offline'
+            'offline',
         ],
         'seo' => [
             'sef',
@@ -116,15 +116,15 @@ class Legacy extends Registry
             'sef_suffix',
             'sef_groups',
             'unicodeslugs',
-            'sitename_pagetitles'
+            'sitename_pagetitles',
         ],
         'session' => [
             'session_handler',
             'lifetime',
             'cookiesubdomains',
             'cookie_path',
-            'cookie_domain'
-        ]
+            'cookie_domain',
+        ],
     ];
 
     /**
@@ -254,7 +254,7 @@ class Legacy extends Registry
 
         $writer = new FileWriter(
             $format,
-            $path
+            $path,
         );
 
         foreach ($this->map as $group => $values) {

@@ -52,41 +52,41 @@ class Pages extends AdminController
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'id'
+                'id',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
+                'ASC',
             ),
             // Filters
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             ),
             'namespace' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.namespace',
                 'namespace',
-                ''
+                '',
             ),
             'scope' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.scope',
                 'scope',
-                ''
+                '',
             ),
             'state' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.state',
                 'state',
                 -1,
-                'int'
+                'int',
             ),
             'access' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.access',
                 'access',
                 0,
-                'int'
-            )
+                'int',
+            ),
         ];
 
         $scopes = Page::all()
@@ -295,7 +295,7 @@ class Pages extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                 Lang::txt('COM_WIKI_ERROR_MISSING_ID'),
-                'warning'
+                'warning',
             );
         }
 

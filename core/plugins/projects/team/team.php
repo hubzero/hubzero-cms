@@ -71,7 +71,7 @@ class Team extends Plugin
             'title'   => Lang::txt('PLG_PROJECTS_TEAM_TAB_TEAM'),
             'submenu' => null,
             'show'    => true,
-            'icon'    => 'f042'
+            'icon'    => 'f042',
         ];
 
         return $area;
@@ -86,7 +86,7 @@ class Team extends Plugin
     public function &onProjectCount($model)
     {
         $counts = [
-            'team' => count($model->team([], true))
+            'team' => count($model->team([], true)),
         ];
 
         return $counts;
@@ -106,7 +106,7 @@ class Team extends Plugin
 
         $arr = [
             'html'     => '',
-            'metadata' => ''
+            'metadata' => '',
         ];
 
         // Get this area details
@@ -227,8 +227,8 @@ class Team extends Plugin
             [
                 'folder'  => 'projects',
                 'element' => 'team',
-                'name'    => 'mini'
-            ]
+                'name'    => 'mini',
+            ],
         );
         $view->team  = $team;
         $view->model = $model;
@@ -255,8 +255,8 @@ class Team extends Plugin
                 'folder'  => 'projects',
                 'element' => 'team',
                 'name'    => 'view',
-                'layout'  => 'horizontal'
-            ]
+                'layout'  => 'horizontal',
+            ],
         );
 
         // Get team
@@ -281,8 +281,8 @@ class Team extends Plugin
             [
                 'folder'  => 'projects',
                 'element' => 'team',
-                'name'    => $layout
-            ]
+                'name'    => $layout,
+            ],
         );
 
         $view->total = count($this->model->team());
@@ -351,8 +351,8 @@ class Team extends Plugin
                 'folder'  => 'projects',
                 'element' => $this->_name,
                 'name'    => 'edit',
-                'layout'  => 'choose'
-            ]
+                'layout'  => 'choose',
+            ],
         );
 
         $view->filters = [];
@@ -415,8 +415,8 @@ class Team extends Plugin
                 'folder'  => 'projects',
                 'element' => 'team',
                 'name'    => 'selector',
-                'layout'  => $layout
-            ]
+                'layout'  => $layout,
+            ],
         );
 
         $view->publication = new \Components\Publications\Models\Publication($pid, null, $vid);
@@ -430,8 +430,8 @@ class Team extends Plugin
                 [
                     'folder'  => 'projects',
                     'element' => 'files',
-                    'name'    => 'error'
-                ]
+                    'name'    => 'error',
+                ],
             );
 
             $view->title  = '';
@@ -785,8 +785,8 @@ class Team extends Plugin
                 [
                     'folder'  => 'projects',
                     'element' => 'team',
-                    'name'    => 'delete'
-                ]
+                    'name'    => 'delete',
+                ],
             );
 
             $view->selected = $selected;
@@ -894,8 +894,8 @@ class Team extends Plugin
                     [
                         'folder'  => 'projects',
                         'element' => 'team',
-                        'name'    => 'memberrequest'
-                    ]
+                        'name'    => 'memberrequest',
+                    ],
                 );
 
                 $view->option = $this->_option;
@@ -946,7 +946,7 @@ class Team extends Plugin
             $subject,
             'projects_project_membershiprequest',
             'memberrequest',
-            $message
+            $message,
         );
     }
 
@@ -1016,8 +1016,8 @@ class Team extends Plugin
                 [
                     'folder'  => 'projects',
                     'element' => 'team',
-                    'name'    => 'changeowner'
-                ]
+                    'name'    => 'changeowner',
+                ],
             );
 
             // Get groups project owner belongs to
@@ -1084,7 +1084,7 @@ class Team extends Plugin
                     '',
                     '',
                     'team',
-                    0
+                    0,
                 );
 
                 // Sync with system group
@@ -1096,8 +1096,8 @@ class Team extends Plugin
                 [
                     'folder'  => 'projects',
                     'element' => 'team',
-                    'name'    => 'quit'
-                ]
+                    'name'    => 'quit',
+                ],
             );
 
             $view->group       = $this->model->groupOwner('id');
@@ -1166,8 +1166,8 @@ class Team extends Plugin
                 [
                     'folder'  => 'projects',
                     'element' => 'team',
-                    'name'    => 'role'
-                ]
+                    'name'    => 'role',
+                ],
             );
 
             $view->selected = $selected;
@@ -1249,7 +1249,7 @@ class Team extends Plugin
         $from = [
             'name'      => Config::get('sitename') . ' ' . Lang::txt(strtoupper($option)),
             'email'     => Config::get('mailfrom'),
-            'multipart' => md5(date('U'))
+            'multipart' => md5(date('U')),
         ];
 
         // Email message subject
@@ -1274,7 +1274,7 @@ class Team extends Plugin
         $eview = new \Hubzero\Mail\View([
             'base_path' => Component::path('com_projects') . DS . 'site',
             'name'      => 'emails',
-            'layout'    => 'invite_plain'
+            'layout'    => 'invite_plain',
         ]);
 
         $eview->option  = $option;
@@ -1313,7 +1313,7 @@ class Team extends Plugin
                     $email,
                     Config::get('sitename') . ': ' . $subject,
                     $message,
-                    $from
+                    $from,
                 )
             ) {
                 return true;

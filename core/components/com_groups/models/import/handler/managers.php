@@ -26,7 +26,7 @@ class Managers extends Obj
     {
         return [
             'header'  => 'managers',
-            'content' => 'username or id;username or id;username or id'
+            'content' => 'username or id;username or id;username or id',
         ];
     }
 

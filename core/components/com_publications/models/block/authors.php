@@ -74,8 +74,8 @@ class Authors extends Base
             $view = new \Hubzero\Component\View(
                 [
                     'name'   => 'curation',
-                    'layout' => 'block'
-                ]
+                    'layout' => 'block',
+                ],
             );
         } else {
             $name = $viewname == 'freeze' ? 'freeze' : 'draft';
@@ -86,8 +86,8 @@ class Authors extends Base
                     'folder'  => 'projects',
                     'element' => 'publications',
                     'name'    => $name,
-                    'layout'  => 'wrapper'
-                ]
+                    'layout'  => 'wrapper',
+                ],
             );
         }
 
@@ -465,7 +465,7 @@ class Authors extends Base
                 $code,
                 2,
                 $project,
-                'com_projects'
+                'com_projects',
             ];
 
             // Send invite
@@ -621,7 +621,7 @@ class Authors extends Base
                 $code,
                 2,
                 $project,
-                'com_projects'
+                'com_projects',
             ];
 
             // Send invite
@@ -687,8 +687,8 @@ class Authors extends Base
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => $name,
-                'layout'  => 'authors'
-            ]
+                'layout'  => 'authors',
+            ],
         );
 
         // Get authors
@@ -778,8 +778,8 @@ class Authors extends Base
                     'required'          => 1,
                     'published_editing' => 0,
                     'submitter'         => 1,
-                    'group_owner'       => 0
-                ]
+                    'group_owner'       => 0,
+                ],
             ];
 
             return json_decode(json_encode($manifest), false);

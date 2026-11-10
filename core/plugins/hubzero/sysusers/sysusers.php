@@ -40,7 +40,7 @@ class Sysusers extends Plugin
 
             $response->data['confirmed'] = $this->obj(
                 'Confirmed',
-                ($response->data['total']->value - $response->data['unconfirmed']->value)
+                ($response->data['total']->value - $response->data['unconfirmed']->value),
             );
 
             $database->setQuery("SELECT `lastvisitDate` FROM `#__users` ORDER BY `lastvisitDate` DESC LIMIT 1");
@@ -50,13 +50,13 @@ class Sysusers extends Plugin
         if ($values == 'all' || $values == 'short') {
             $database->setQuery(
                 "SELECT COUNT(*) FROM `#__session` WHERE `guest`=0 AND `time` >= " .
-                "UNIX_TIMESTAMP(NOW() - INTERVAL 15 MINUTE) AND `client_id`=0;"
+                "UNIX_TIMESTAMP(NOW() - INTERVAL 15 MINUTE) AND `client_id`=0;",
             );
             $response->data['site'] = $this->obj('Active (site)', $database->loadResult());
 
             $database->setQuery(
                 "SELECT COUNT(*) FROM `#__session` WHERE `guest`=0 AND `time` >= " .
-                "UNIX_TIMESTAMP(NOW() - INTERVAL 15 MINUTE) AND `client_id`=1;"
+                "UNIX_TIMESTAMP(NOW() - INTERVAL 15 MINUTE) AND `client_id`=1;",
             );
             $response->data['admin'] = $this->obj('Active (admin)', $database->loadResult());
         }

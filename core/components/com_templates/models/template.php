@@ -60,7 +60,7 @@ class Template extends Relational
      */
     protected $rules = [
         'name'    => 'notempty',
-        'element' => 'notempty'
+        'element' => 'notempty',
     ];
 
     /**
@@ -69,7 +69,7 @@ class Template extends Relational
      * @var  array
      */
     public $always = [
-        'element'
+        'element',
     ];
 
     /**
@@ -142,7 +142,7 @@ class Template extends Relational
         if (!$this->xmldata) {
             $basePath = $this->get('protected') ? PATH_CORE : PATH_APP;
             $filePath = Filesystem::cleanPath(
-                $basePath . '/templates/' . $this->get('element') . '/templateDetails.xml'
+                $basePath . '/templates/' . $this->get('element') . '/templateDetails.xml',
             );
 
             $this->xmldata = new Obj();
@@ -238,7 +238,7 @@ class Template extends Relational
                     'component.php',
                     'offline.php',
                     'group.php',
-                    'email.php'
+                    'email.php',
                 ];
 
                 $files = Filesystem::files($path, '\.css|\.php|\.less|\.js|\.scss$', true, true);

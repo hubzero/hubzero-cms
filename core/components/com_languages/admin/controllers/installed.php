@@ -47,19 +47,19 @@ class Installed extends AdminController
                 $this->_option . '.' . $this->_controller . '.client_id',
                 'client',
                 0,
-                'int'
+                'int',
             ),
             // Get sorting variables
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'folder'
+                'folder',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
-            )
+                'ASC',
+            ),
         ];
 
         $client = \Hubzero\Base\ClientManager::client($filters['client_id']);
@@ -110,7 +110,7 @@ class Installed extends AdminController
             $this->_option . '.' . $this->_controller . '.client_id',
             'client',
             0,
-            'int'
+            'int',
         );
 
         $client = \Hubzero\Base\ClientManager::client($client_id);

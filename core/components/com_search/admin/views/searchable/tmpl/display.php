@@ -23,14 +23,14 @@ Toolbar::custom(
     'unpublish',
     'deactivateindex',
     'COM_SEARCH_DELETE_COMPONENT_RESULTS',
-    true
+    true,
 );
 Toolbar::custom(
     'trashIndex',
     'trash',
     'trashindex',
     'COM_SEARCH_DELETE_COMPONENT_ENTRY',
-    true
+    true,
 );
 Toolbar::spacer();
 Toolbar::custom(
@@ -38,7 +38,7 @@ Toolbar::custom(
     'refresh',
     'refresh',
     'COM_SEARCH_SOLR_DISCOVER',
-    false
+    false,
 );
 Toolbar::spacer();
 Toolbar::preferences($this->option, '550');
@@ -60,7 +60,7 @@ $sort = Request::getString('filter_order', 'id');
 <?php
     $formUrl = Route::url(
         'index.php?option=' . $this->option
-        . '&controller=' . $this->controller
+        . '&controller=' . $this->controller,
     );
     ?>
 <form action="<?php echo $formUrl; ?>" method="post" name="adminForm" id="adminForm">
@@ -113,7 +113,7 @@ $sort = Request::getString('filter_order', 'id');
                         $editUrl = Route::url(
                             'index.php?option=' . $this->option
                             . '&controller=' . $this->controller
-                            . '&task=edit&id=' . $component->get('id')
+                            . '&task=edit&id=' . $component->get('id'),
                         );
                     ?>
                     <a href="<?php echo $editUrl; ?>">
@@ -139,7 +139,7 @@ $sort = Request::getString('filter_order', 'id');
                             . '&controller=' . $this->controller
                             . '&task=' . $task
                             . '&id=' . $component->get('id')
-                            . '&' . Session::getFormToken() . '=1'
+                            . '&' . Session::getFormToken() . '=1',
                         );
                     ?>
                     <a class="state <?php echo $cls; ?>"
@@ -159,7 +159,7 @@ $sort = Request::getString('filter_order', 'id');
                             'index.php?option=com_search&controller='
                             . $this->controller
                             . '&task=documentListing&facet='
-                            . $componentQuery
+                            . $componentQuery,
                         );
                     ?>
                     <?php if ($componentCount > 0) : ?>
@@ -178,7 +178,7 @@ $sort = Request::getString('filter_order', 'id');
                                 . '&controller=' . $this->controller
                                 . '&task=activateIndex'
                                 . '&id=' . $component->get('id')
-                                . '&' . Session::getFormToken() . '=1'
+                                . '&' . Session::getFormToken() . '=1',
                             );
                         ?>
                         <a class="button unpublishtask"

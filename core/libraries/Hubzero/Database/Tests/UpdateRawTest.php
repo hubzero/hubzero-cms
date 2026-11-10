@@ -75,7 +75,7 @@ class UpdateRawTest extends AbstractDriverTestCase
         $this->assertEquals(
             'bar bar baz',
             $result->content,
-            "Raw expression should execute REPLACE function, changing 'foo bar baz' to 'bar bar baz'"
+            "Raw expression should execute REPLACE function, changing 'foo bar baz' to 'bar bar baz'",
         );
 
         // Cleanup
@@ -98,7 +98,7 @@ class UpdateRawTest extends AbstractDriverTestCase
         $query->update('update_raw_test')
               ->set([
                   'content' => new Raw("REPLACE(content, 'baz', 'qux')"),
-                  'counter' => new Raw('counter + 10')
+                  'counter' => new Raw('counter + 10'),
               ])
               ->whereEquals('id', 2);
 
@@ -114,12 +114,12 @@ class UpdateRawTest extends AbstractDriverTestCase
         $this->assertEquals(
             'hello world qux',
             $result->content,
-            "First Raw expression should execute REPLACE function"
+            "First Raw expression should execute REPLACE function",
         );
         $this->assertEquals(
             30,
             $result->counter,
-            "Second Raw expression should increment counter from 20 to 30"
+            "Second Raw expression should increment counter from 20 to 30",
         );
 
         // Cleanup
@@ -142,7 +142,7 @@ class UpdateRawTest extends AbstractDriverTestCase
         $query->update('update_raw_test')
               ->set([
                   'content' => 'literal string',  // Bound parameter
-                  'counter' => new Raw('counter + 5')  // Raw SQL expression
+                  'counter' => new Raw('counter + 5'),  // Raw SQL expression
               ])
               ->whereEquals('id', 1);
 
@@ -158,12 +158,12 @@ class UpdateRawTest extends AbstractDriverTestCase
         $this->assertEquals(
             'literal string',
             $result->content,
-            "Bound value should be treated as literal string"
+            "Bound value should be treated as literal string",
         );
         $this->assertEquals(
             15,
             $result->counter,
-            "Raw expression should increment counter from 10 to 15"
+            "Raw expression should increment counter from 10 to 15",
         );
 
         // Cleanup

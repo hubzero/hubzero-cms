@@ -69,7 +69,7 @@ class Publications extends Plugin
     public function onMembersContributionsAreas()
     {
         $areas = [
-            'publications' => Lang::txt('PLG_MEMBERS_PUBLICATIONS')
+            'publications' => Lang::txt('PLG_MEMBERS_PUBLICATIONS'),
         ];
 
         return $areas;
@@ -139,7 +139,7 @@ class Publications extends Plugin
             'notauthorrole' => 'submitter',
             'sortby'        => $sort,
             'usergroups'    => [],
-            'published'     => \Components\Publications\Models\Orm\Version::STATE_PUBLISHED
+            'published'     => \Components\Publications\Models\Orm\Version::STATE_PUBLISHED,
         ];
 
         if ($filters['sortby'] == 'date') {
@@ -361,8 +361,8 @@ class Publications extends Plugin
             [
             'base_path' => Component::path('com_publications') . '/site',
             'name'      => 'browse',
-            'layout'    => 'item'
-            ]
+            'layout'    => 'item',
+            ],
         );
         $view->set('line', $row)
             ->set('option', 'com_publications')

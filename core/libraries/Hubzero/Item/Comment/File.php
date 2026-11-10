@@ -52,7 +52,7 @@ class File extends Relational
      */
     protected $rules = [
         'comment_id' => 'positive|nonzero',
-        'filename'   => 'notempty'
+        'filename'   => 'notempty',
     ];
 
     /**
@@ -61,7 +61,7 @@ class File extends Relational
      * @var  array
      **/
     public $always = [
-        'filename'
+        'filename',
     ];
 
     /**
@@ -183,7 +183,7 @@ class File extends Relational
 
         $filename = $this->uniqueFilename([
             'filename'   => $name,
-            'comment_id' => $this->get('comment_id')
+            'comment_id' => $this->get('comment_id'),
         ]);
 
         $destination .= DS . $filename;

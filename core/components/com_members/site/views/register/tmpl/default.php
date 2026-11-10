@@ -113,7 +113,7 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                     $display = $pparams->get('display_name', ucfirst($p->name));
                     $authenticators[] = [
                         'name'    => $p->name,
-                        'display' => $display
+                        'display' => $display,
                     ];
                 }
             }

@@ -70,11 +70,11 @@ class Membership_Auditor extends BaseAuditor
                         $this->setResponseStatus('error');
                         $this->setResponseNotice(
                             'You already have an active subscription to this item. '
-                            . 'Subscription extension is not available at this time.'
+                            . 'Subscription extension is not available at this time.',
                         );
                         $this->setResponseError(
                             ': you already have an active subscription. '
-                            . 'Subscription extension is not available at this time.'
+                            . 'Subscription extension is not available at this time.',
                         );
                     }
                 }

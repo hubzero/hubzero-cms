@@ -82,7 +82,7 @@ class Pagedown extends Plugin
             'Markdown.Converter.js',
             'Markdown.Sanitizer.js',
             'Markdown.Editor.js',
-            'editorForm.php?INPUT_ID=' . self::INPUT_ID
+            'editorForm.php?INPUT_ID=' . self::INPUT_ID,
         ];
 
         $scriptPaths = $this->_buildAssetPaths($scriptNames, self::JS_DIRECTORY);
@@ -151,7 +151,7 @@ class Pagedown extends Plugin
         $id = null,
         $asset = null,
         $author = null,
-        $params = []
+        $params = [],
     ) {
         $id = empty($id) ? $name : $id;
         $columns = $columns ? $columns : 35;

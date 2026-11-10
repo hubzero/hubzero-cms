@@ -29,7 +29,7 @@ class Content extends Handler
      **/
     protected static $info = [
         'action_message' => 'As textual content',
-        'responds_to'    => ['text']
+        'responds_to'    => ['text'],
     ];
 
     /**
@@ -82,7 +82,7 @@ class Content extends Handler
         if ($progress = Request::getInt('progress_factors', false)) {
             $progressFactors = [
                 'asset_id' => $asset->get('id'),
-                'section_id' => Request::getInt('section_id', 0)
+                'section_id' => Request::getInt('section_id', 0),
             ];
             $asset->set('progress_factors', $progressFactors);
             $asset->store();
@@ -117,7 +117,7 @@ class Content extends Handler
             'asset_subtype'  => $asset->get('subtype'),
             'asset_url'      => $url,
             'asset_state'    => $asset->get('state'),
-            'scope_id'       => $this->assoc['scope_id']
+            'scope_id'       => $this->assoc['scope_id'],
         ];
 
         $return_info = [
@@ -129,7 +129,7 @@ class Content extends Handler
             'course_id'      => $asset->get('course_id'),
             'offering_alias' => $offering_alias,
             'scope_id'       => $this->assoc['scope_id'],
-            'files'          => [$files]
+            'files'          => [$files],
         ];
 
         // Return info
@@ -188,7 +188,7 @@ class Content extends Handler
         if ($progress = Request::getInt('progress_factors', false)) {
             $progressFactors = [
                 'asset_id' => $asset->get('id'),
-                'section_id' => Request::getInt('section_id', 0)
+                'section_id' => Request::getInt('section_id', 0),
             ];
             $asset->set('progress_factors', $progressFactors);
         } elseif (Request::getInt('edit_progress_factors', false)) {
@@ -248,7 +248,7 @@ class Content extends Handler
             'course_id'      => $asset->get('course_id'),
             'offering_alias' => $offering_alias,
             'scope_id'       => $scope_id,
-            'files'          => [$files]
+            'files'          => [$files],
         ];
 
         // Return info

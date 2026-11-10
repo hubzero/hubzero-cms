@@ -45,7 +45,7 @@ $this->css()
                     <?php echo Lang::txt(
                         'COM_MEMBERS_PASSWORD_IF_FORGOTTEN_RESET',
                         Route::url('index.php?option=com_users&view=login&task=logout&return=' .
-                        base64_encode('/users/reset'))
+                        base64_encode('/users/reset')),
                     ); ?>
                 </p>
             </div-->

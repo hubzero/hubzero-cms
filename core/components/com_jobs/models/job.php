@@ -113,14 +113,14 @@ class Job extends Model
                         'pagename' => 'jobs',
                         'pageid'   => $this->get('code'),
                         'filepath' => '',
-                        'domain'   => ''
+                        'domain'   => '',
                     ];
 
                     $content = stripslashes($this->get('description'));
                     $this->importPlugin('content')->trigger('onContentPrepare', [
                         $this->_context,
                         &$this,
-                        &$config
+                        &$config,
                     ]);
 
                     $this->set('description.parsed', $this->get('description'));

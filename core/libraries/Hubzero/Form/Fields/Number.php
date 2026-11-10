@@ -42,7 +42,7 @@ class Number extends Field
             'class'        => ($this->element['class'] ? (string) $this->element['class'] : null),
             'readonly'     => ((string) $this->element['readonly'] == 'true' ? 'readonly' : null),
             'disabled'     => ((string) $this->element['disabled'] == 'true' ? 'disabled' : null),
-            'onchange'     => ($this->element['onchange']  ? (string) $this->element['onchange'] : null)
+            'onchange'     => ($this->element['onchange']  ? (string) $this->element['onchange'] : null),
         ];
 
         $attr = [];

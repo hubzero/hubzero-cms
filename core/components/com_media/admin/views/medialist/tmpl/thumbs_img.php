@@ -39,24 +39,24 @@ $token = Session::getFormToken();
 $href = Route::url(
     'index.php?option=' . $this->option
     . '&task=download&' . $token . '=1'
-    . '&file=' . urlencode($this->currentImg['path'])
+    . '&file=' . urlencode($this->currentImg['path']),
 );
 
 // Image alt text
 $fileSize = \Components\Media\Admin\Helpers\MediaHelper::parseSize(
-    $this->currentImg['size']
+    $this->currentImg['size'],
 );
 $imgAlt = Lang::txt(
     'COM_MEDIA_IMAGE_TITLE',
     $this->currentImg['name'],
-    $fileSize
+    $fileSize,
 );
 
 // Before display event
 $params = new Hubzero\Config\Registry();
 Event::trigger(
     'onContentBeforeDisplay',
-    ['com_media.file', &$this->_tmp_img, &$params]
+    ['com_media.file', &$this->_tmp_img, &$params],
 );
 
 $imgUrl = COM_MEDIA_BASEURL . $this->currentImg['path'];
@@ -91,7 +91,7 @@ $escapedName = $this->escape($this->currentImg['name']);
                                         'index.php?option=' . $this->option
                                         . '&controller=medialist&task=info' . $t
                                         . '&' . $token . '=1'
-                                        . '&file=' . urlencode($this->currentImg['path'])
+                                        . '&file=' . urlencode($this->currentImg['path']),
                                     );
                                     $infoLabel = Lang::txt('COM_MEDIA_FILE_INFO');
                                     ?>
@@ -117,7 +117,7 @@ $escapedName = $this->escape($this->currentImg['name']);
                                         'index.php?option=' . $this->option
                                         . '&controller=medialist&task=path' . $t
                                         . '&' . $token . '=1'
-                                        . '&file=' . urlencode($this->currentImg['path'])
+                                        . '&file=' . urlencode($this->currentImg['path']),
                                     );
                                     $linkLabel = Lang::txt('COM_MEDIA_FILE_LINK');
                                     ?>
@@ -137,7 +137,7 @@ $escapedName = $this->escape($this->currentImg['name']);
                                         'index.php?option=' . $this->option
                                         . '&task=delete' . $t
                                         . '&' . $token . '=1'
-                                        . '&rm=' . urlencode($this->currentImg['path'])
+                                        . '&rm=' . urlencode($this->currentImg['path']),
                                     );
                                     $deleteLabel = Lang::txt('JACTION_DELETE');
                                     ?>
@@ -155,5 +155,5 @@ $escapedName = $this->escape($this->currentImg['name']);
 <?php
 Event::trigger(
     'onContentAfterDisplay',
-    ['com_media.file', &$this->_tmp_img, &$params]
+    ['com_media.file', &$this->_tmp_img, &$params],
 );

@@ -187,7 +187,7 @@ class Router extends Base
                         'editcalendar',
                         'deletecalendar',
                         'refreshcalendar',
-                        'subscribe'
+                        'subscribe',
                     ];
                     if (in_array($vars['action'], $calendarActions)) {
                         $vars['calendar_id'] = $segments[3];

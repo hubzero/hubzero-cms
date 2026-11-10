@@ -88,7 +88,7 @@ Html::behavior('tooltip');
                 echo $this->pagination(
                     $this->total,
                     $this->filters['start'],
-                    $this->filters['limit']
+                    $this->filters['limit'],
                 );
                 ?></td>
             </tr>
@@ -152,11 +152,11 @@ Html::behavior('tooltip');
                             . '&controller=' . $this->controller
                             . '&task=edit&id=' . $row->get('id')
                             . '&page_id=' . $this->filters['page_id']
-                            . '&' . Session::getFormToken() . '=1'
+                            . '&' . Session::getFormToken() . '=1',
                         );
                         $ctextTrunc = \Hubzero\Utility\Str::truncate(
                             $this->escape(stripslashes($row->get('ctext'))),
-                            90
+                            90,
                         );
                         ?>
                         <a href="<?php echo $editComUrl; ?>">
@@ -179,7 +179,7 @@ Html::behavior('tooltip');
                         . '&task=anonymous&state=' . $state2
                         . '&id=' . $row->get('id')
                         . '&pageid=' . $this->filters['page_id']
-                        . '&' . Session::getFormToken() . '=1'
+                        . '&' . Session::getFormToken() . '=1',
                     );
                     ?>
                     <a class="state <?php echo $cls2; ?>" href="<?php echo $anonUrl; ?>">
@@ -194,7 +194,7 @@ Html::behavior('tooltip');
                         . '&task=' . $state1
                         . '&id=' . $row->get('id')
                         . '&pageid=' . $this->filters['page_id']
-                        . '&' . Session::getFormToken() . '=1'
+                        . '&' . Session::getFormToken() . '=1',
                     );
                     ?>
                     <a class="state <?php echo $cls1; ?>" href="<?php echo $stateUrl; ?>">

@@ -30,7 +30,7 @@ class Audio extends Plugin
      */
     public static $extensions = [
         'mp3',
-        'wav'
+        'wav',
     ];
 
     /**

@@ -43,7 +43,7 @@ class Role extends Relational
      */
     protected $rules = [
         'gidNumber' => 'positive|nonzero',
-        'name'      => 'notempty'
+        'name'      => 'notempty',
     ];
 
     /**

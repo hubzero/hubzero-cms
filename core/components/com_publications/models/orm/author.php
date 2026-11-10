@@ -28,7 +28,7 @@ class Author extends Relational
      * @var  array
      */
     protected $rules = [
-        'publication_version_id' => 'positive|nonzero'
+        'publication_version_id' => 'positive|nonzero',
     ];
 
     /**

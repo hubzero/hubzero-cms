@@ -70,7 +70,7 @@ class Sync extends \Hubzero\Base\Obj
             'message' => $this->get('message'),
             'error'   => $this->getError(),
             'output'  => $this->get('output'),
-            'auto'    => $this->get('auto')
+            'auto'    => $this->get('auto'),
         ];
         return $props;
     }
@@ -177,7 +177,7 @@ class Sync extends \Hubzero\Base\Obj
             'fromLocal'    => $fromLocal,
             'localDir'     => $localDir,
             'localRenames' => $localRenames,
-            'connections'  => $connections
+            'connections'  => $connections,
         ];
         $locals = $this->model->repo()->getChanges($params);
 
@@ -195,7 +195,7 @@ class Sync extends \Hubzero\Base\Obj
                 $lastSyncId,
                 $remotes,
                 $deletes,
-                $connections
+                $connections,
             );
         } else {
             // Via List feed
@@ -298,7 +298,7 @@ class Sync extends \Hubzero\Base\Obj
                             $projectOwner,
                             $local['remoteid'],
                             $local,
-                            $local['rParent']
+                            $local['rParent'],
                         );
 
                         $output .= '>> renamed ' . $local['rename'] . ' to ' . $filename . "\n";
@@ -324,7 +324,7 @@ class Sync extends \Hubzero\Base\Obj
                                 $projectOwner,
                                 $local['remoteid'],
                                 $local,
-                                $parentId
+                                $parentId,
                             );
 
                             $output .= '>> moved ' . $local['rename'] . ' to ' . $filename . ' (new parent id ' . $parentId . ')' . "\n";
@@ -355,7 +355,7 @@ class Sync extends \Hubzero\Base\Obj
                                 $service,
                                 $projectOwner,
                                 $local['remoteid'],
-                                false
+                                false,
                             );
 
                             // Delete from remote
@@ -377,7 +377,7 @@ class Sync extends \Hubzero\Base\Obj
                                 $this->model->get('id'),
                                 $service,
                                 $local['remoteid'],
-                                $filename
+                                $filename,
                             );
                         }
                     } else {
@@ -397,7 +397,7 @@ class Sync extends \Hubzero\Base\Obj
                                     $projectOwner,
                                     $local['remoteid'],
                                     $local,
-                                    $parentId
+                                    $parentId,
                                 );
 
                                 $output .= '++ sent update from local to remote: ' . $filename . "\n";
@@ -412,7 +412,7 @@ class Sync extends \Hubzero\Base\Obj
                                         basename($filename),
                                         $filename,
                                         $parentId,
-                                        $remoteFolders
+                                        $remoteFolders,
                                     );
 
                                     $output .= '++ created remote folder: ' . $filename . "\n";
@@ -423,7 +423,7 @@ class Sync extends \Hubzero\Base\Obj
                                         $service,
                                         $projectOwner,
                                         $local,
-                                        $parentId
+                                        $parentId,
                                     );
 
                                     $output .= '++ added new file to remote: ' . $filename . "\n";
@@ -450,7 +450,7 @@ class Sync extends \Hubzero\Base\Obj
                 $newSyncId,
                 $newRemotes,
                 $deletes,
-                $connections
+                $connections,
             );
         }
 
@@ -477,7 +477,7 @@ class Sync extends \Hubzero\Base\Obj
                         $projectOwner,
                         $nR,
                         $this->model->config(),
-                        $this->model->get('alias')
+                        $this->model->get('alias'),
                     );
                 }
 
@@ -552,7 +552,7 @@ class Sync extends \Hubzero\Base\Obj
                     // Set params
                     $params = [
                         'newDir' => $local_dir, //$this->_path . DS . $local_dir
-                        'author' => $author
+                        'author' => $author,
                     ];
                     $created = $this->model->repo()->makeDirectory($params);
                     if (!$created) {
@@ -570,7 +570,7 @@ class Sync extends \Hubzero\Base\Obj
                             'item'   => $filename,
                             'type'   => $remote['type'],
                             'author' => $author,
-                            'date'   => $cDate
+                            'date'   => $cDate,
                         ];
                         // Delete local file or directory
                         if ($deleted = $this->model->repo()->deleteItem($params)) {
@@ -590,7 +590,7 @@ class Sync extends \Hubzero\Base\Obj
                         $objRFile->deleteRecord(
                             $this->model->get('id'),
                             $service,
-                            $remote['remoteid']
+                            $remote['remoteid'],
                         );
                     }
                 } elseif ($remote['status'] == 'R' || $remote['status'] == 'W') {
@@ -606,7 +606,7 @@ class Sync extends \Hubzero\Base\Obj
                                 'to'     => $filename,
                                 'type'   => $remote['type'],
                                 'author' => $author,
-                                'date'   => $cDate
+                                'date'   => $cDate,
                             ];
                             if ($updated = $this->model->repo()->rename($params)) {
                                 $output .= '>> renamed item locally: ' . $filename . "\n";
@@ -618,7 +618,7 @@ class Sync extends \Hubzero\Base\Obj
                             $params = [
                                 'item'      => $remote['rename'],
                                 'targetDir' => $target,
-                                'type'      => $remote['type']
+                                'type'      => $remote['type'],
                             ];
                             if ($updated = $this->model->repo()->moveItem($params)) {
                                 $output .= '>> moved item locally: ' . $filename . "\n";
@@ -651,14 +651,14 @@ class Sync extends \Hubzero\Base\Obj
                                         $service,
                                         $projectOwner,
                                         $remote['url'],
-                                        $this->_path . DS . $remote['local_path']
+                                        $this->_path . DS . $remote['local_path'],
                                     )
                                 ) {
                                     // Checkin into repo
                                     $this->model->repo()->call('checkin', [
                                         'file'   => $this->model->repo()->getMetadata($filename, 'file', []),
                                         'author' => $author,
-                                        'date'   => $cDate
+                                        'date'   => $cDate,
                                         ]);
 
                                     $output .= ' ! versions differ: remote md5 ' . $remote['md5'] . ', local md5' . $md5Checksum . "\n";
@@ -680,7 +680,7 @@ class Sync extends \Hubzero\Base\Obj
                             // Set params
                             $params = [
                                 'newDir' => $this->_path . DS . $filename,
-                                'author' => $author
+                                'author' => $author,
                             ];
 
                             if ($created = $this->model->repo()->makeDirectory($params)) {
@@ -709,14 +709,14 @@ class Sync extends \Hubzero\Base\Obj
                                     $service,
                                     $projectOwner,
                                     ($remote['url'] ? $remote['url'] : $remote['remoteid']),
-                                    $this->_path . DS . $remote['local_path']
+                                    $this->_path . DS . $remote['local_path'],
                                 )
                             ) {
                                 // Checkin into repo
                                 $this->model->repo()->call('checkin', [
                                     'file'   => $this->model->repo()->getMetadata($filename, 'file', []),
                                     'author' => $author,
-                                    'date'   => $cDate
+                                    'date'   => $cDate,
                                     ]);
 
                                 $output .= '++ added new file to local: ' . $filename . "\n";
@@ -741,7 +741,7 @@ class Sync extends \Hubzero\Base\Obj
                         $remote['remoteid'],
                         $filename,
                         $match,
-                        $remote
+                        $remote,
                     );
 
                     $lastLocalChange = date('c', time() + 1);
@@ -754,7 +754,7 @@ class Sync extends \Hubzero\Base\Obj
                             $projectOwner,
                             $remote,
                             $this->model->config(),
-                            $this->model->get('alias')
+                            $this->model->get('alias'),
                         );
                     }
                 }

@@ -144,7 +144,7 @@ class Helper
             $database->setQuery(
                 "UPDATE `#__tool_statusviews` SET viewed=" . $database->quote($when)
                 . ", elapsed=" . $database->quote($elapsed) . " WHERE ticketid="
-                . $database->quote($ticketid) . " AND uid=" . $database->quote(User::get('id'))
+                . $database->quote($ticketid) . " AND uid=" . $database->quote(User::get('id')),
             );
             if (!$database->query()) {
                 return $database->getErrorMsg();
@@ -153,7 +153,7 @@ class Helper
             $database->setQuery(
                 "INSERT INTO `#__tool_statusviews` (uid, ticketid, viewed, elapsed) VALUES ("
                 . User::get('id') . ", " . $database->quote($ticketid) . ", "
-                . $database->quote($when) . ", " . $database->quote(500000) . ")"
+                . $database->quote($when) . ", " . $database->quote(500000) . ")",
             );
             if (!$database->query()) {
                 return $database->getErrorMsg();

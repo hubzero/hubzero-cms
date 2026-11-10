@@ -437,11 +437,11 @@ class DatabaseManagerTest extends TestCase
 
         $this->assertEquals(
             BackendRegistry::canonicalDriverClassFor('percona'),
-            $availability['percona']['class']
+            $availability['percona']['class'],
         );
         $this->assertEquals(
             BackendRegistry::canonicalDriverClassFor('mariadb'),
-            $availability['mariadb']['class']
+            $availability['mariadb']['class'],
         );
     }
 
@@ -477,7 +477,7 @@ class DatabaseManagerTest extends TestCase
         $resolved = BackendRegistry::resolveSyntaxClassFor('ibm');
         $this->assertEquals(
             BackendRegistry::resolveSyntaxClassFor('db2'),
-            $resolved
+            $resolved,
         );
     }
 
@@ -489,7 +489,7 @@ class DatabaseManagerTest extends TestCase
 
         $this->assertEquals(
             '\\Hubzero\\Database\\Drivers\\Ase\\AseDriver',
-            $canonical
+            $canonical,
         );
         $this->assertTrue(class_exists($canonical));
         $this->assertEquals($canonical, $resolved);
@@ -503,7 +503,7 @@ class DatabaseManagerTest extends TestCase
 
         $this->assertEquals(
             '\\Hubzero\\Database\\Drivers\\Ase\\AseSyntax',
-            $canonical
+            $canonical,
         );
         $this->assertTrue(class_exists($canonical));
         $this->assertEquals($canonical, $resolved);
@@ -517,7 +517,7 @@ class DatabaseManagerTest extends TestCase
 
         $this->assertEquals(
             '\\Hubzero\\Database\\Drivers\\Mariadb\\MariadbDriver',
-            $canonical
+            $canonical,
         );
         $this->assertTrue(class_exists($canonical));
         $this->assertEquals($canonical, $resolved);
@@ -531,7 +531,7 @@ class DatabaseManagerTest extends TestCase
 
         $this->assertEquals(
             '\\Hubzero\\Database\\Drivers\\Mariadb\\MariadbSyntax',
-            $canonical
+            $canonical,
         );
         $this->assertTrue(class_exists($canonical));
         $this->assertEquals($canonical, $resolved);
@@ -608,7 +608,7 @@ class DatabaseManagerTest extends TestCase
             [
                 '\\Hubzero\\Database\\Drivers\\CustomBackend\\CustomBackendSyntax',
             ],
-            $candidates
+            $candidates,
         );
     }
 
@@ -621,7 +621,7 @@ class DatabaseManagerTest extends TestCase
             [
                 '\\Hubzero\\Database\\Drivers\\Db2\\Db2Syntax',
             ],
-            $candidates
+            $candidates,
         );
     }
 
@@ -634,7 +634,7 @@ class DatabaseManagerTest extends TestCase
             [
                 '\\Hubzero\\Database\\Drivers\\CustomBackend\\CustomBackendDriver',
             ],
-            $candidates
+            $candidates,
         );
     }
 
@@ -665,7 +665,7 @@ class DatabaseManagerTest extends TestCase
         if (!class_exists('\\Hubzero\\Database\\Drivers\\ConventionDriver\\ConventionDriverDriver')) {
             class_alias(
                 ConventionDriver::class,
-                '\\Hubzero\\Database\\Drivers\\ConventionDriver\\ConventionDriverDriver'
+                '\\Hubzero\\Database\\Drivers\\ConventionDriver\\ConventionDriverDriver',
             );
         }
 
@@ -684,7 +684,7 @@ class DatabaseManagerTest extends TestCase
         if (!class_exists('\\Hubzero\\Database\\Drivers\\Fallback\\FallbackDriver')) {
             class_alias(
                 ConventionPriorityDriver::class,
-                '\\Hubzero\\Database\\Drivers\\Fallback\\FallbackDriver'
+                '\\Hubzero\\Database\\Drivers\\Fallback\\FallbackDriver',
             );
         }
 

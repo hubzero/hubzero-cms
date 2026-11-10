@@ -95,7 +95,7 @@ $expirationPastDue = \Hubzero\User\Group\Membership::supported()
         <?php else : ?>
             <?php echo Lang::txt(
                 'COM_GROUPS_MEMBERSHIP_REAPER_OK',
-                Date::of($lastRun->timestamp)->toLocal(Lang::txt('DATE_FORMAT_HZ1') . ' g:ia')
+                Date::of($lastRun->timestamp)->toLocal(Lang::txt('DATE_FORMAT_HZ1') . ' g:ia'),
             ); ?>
         <?php endif; ?>
         <?php if ($pastDue > 0) : ?>
@@ -164,7 +164,7 @@ $expirationPastDue = \Hubzero\User\Group\Membership::supported()
                 echo $this->pagination(
                     $this->total,
                     $this->filters['start'],
-                    $this->filters['limit']
+                    $this->filters['limit'],
                 );
                 ?></td>
             </tr>
@@ -244,7 +244,7 @@ $expirationPastDue = \Hubzero\User\Group\Membership::supported()
                             <span class="membership-term<?php echo (strtotime($rowExpires . ' UTC') <= time() + (30 * 86400)) ? ' term-expires-soon' : ''; ?>">
                                 <?php echo Lang::txt(
                                     'COM_GROUPS_MEMBER_TERM_ENDS',
-                                    Date::of($rowExpires)->toLocal(Lang::txt('DATE_FORMAT_HZ1'))
+                                    Date::of($rowExpires)->toLocal(Lang::txt('DATE_FORMAT_HZ1')),
                                 ); ?>
                             </span>
                         <?php endif; ?>

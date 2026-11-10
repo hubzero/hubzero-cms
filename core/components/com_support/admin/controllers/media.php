@@ -133,7 +133,7 @@ class Media extends AdminController
             if (Filesystem::delete($file)) {
                 echo json_encode([
                     'success' => false,
-                    'error'   => Lang::txt('ATTACHMENT: File rejected because the anti-virus scan failed.')
+                    'error'   => Lang::txt('ATTACHMENT: File rejected because the anti-virus scan failed.'),
                 ]);
                 return;
             }
@@ -146,19 +146,19 @@ class Media extends AdminController
             'ticket'      => $ticket,
             'comment_id'  => $comment,
             'filename'    => $filename . '.' . $ext,
-            'description' => Request::getString('description', '')
+            'description' => Request::getString('description', ''),
         ]);
         if (!$asset->save()) {
             echo json_encode([
                 'success' => false,
-                'error'   => $asset->getError()
+                'error'   => $asset->getError(),
             ]);
             return;
         }
 
         $view = new View([
             'name'   => 'media',
-            'layout' => '_asset'
+            'layout' => '_asset',
         ]);
         $view->set('option', $this->_option);
         $view->set('controller', $this->_controller);
@@ -173,7 +173,7 @@ class Media extends AdminController
             'ticket'     => $ticket,
             'comment_id' => $comment,
             // Entities have to be encoded or IE 8 goes nuts
-            'html'       => str_replace('>', '&gt;', $view->loadTemplate())
+            'html'       => str_replace('>', '&gt;', $view->loadTemplate()),
         ]);
     }
 
@@ -224,7 +224,7 @@ class Media extends AdminController
 
         if ($file['size'] > $sizeLimit) {
             $this->setError(
-                Lang::txt('File is too large. Max file upload size is %s', Number::formatBytes($sizeLimit))
+                Lang::txt('File is too large. Max file upload size is %s', Number::formatBytes($sizeLimit)),
             );
             return $this->displayTask();
         }
@@ -275,7 +275,7 @@ class Media extends AdminController
                 'ticket'      => $ticket,
                 'comment_id'  => $comment,
                 'filename'    => $filename,
-                'description' => Request::getString('description', '')
+                'description' => Request::getString('description', ''),
             ]);
 
             if (!$asset->save()) {
@@ -330,7 +330,7 @@ class Media extends AdminController
             if (!$model->destroy()) {
                 echo json_encode([
                     'success' => false,
-                    'error'   => $model->getError()
+                    'error'   => $model->getError(),
                 ]);
                 return;
             }
@@ -338,7 +338,7 @@ class Media extends AdminController
 
         echo json_encode([
             'success' => true,
-            'asset'   => $id
+            'asset'   => $id,
         ]);
     }
 

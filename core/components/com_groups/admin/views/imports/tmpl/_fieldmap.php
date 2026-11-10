@@ -65,7 +65,7 @@ if ($this->import->get('id')) { ?>
                                 'members',
                                 'managers',
                                 //'projects',
-                                'tags'
+                                'tags',
                             ];
                             ?>
                             <optgroup label="<?php echo Lang::txt('COM_GROUPS_IMPORT_FIELDS_DETAILS'); ?>">

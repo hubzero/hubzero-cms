@@ -268,7 +268,7 @@ class Migration20160510121901ComMembers extends Base
                         $hispUpdate,
                         $hispEdit,
                     ],
-                    [15, 'editor', 'bio', 'Biography', null, null, 15, 1, 0, 0, 0, 0, 1]
+                    [15, 'editor', 'bio', 'Biography', null, null, 15, 1, 0, 0, 0, 0, 1],
                 ])
                 ->execute();
         }
@@ -294,7 +294,7 @@ class Migration20160510121901ComMembers extends Base
                 ->values([
                     [null, 8, 'male', 'Male', 1, 0],
                     [null, 8, 'female', 'Female', 2, 0],
-                    [null, 8, 'refused', 'Do not with to reveal', 3, 0]
+                    [null, 8, 'refused', 'Do not with to reveal', 3, 0],
                 ])
                 ->execute();
 
@@ -308,7 +308,7 @@ class Migration20160510121901ComMembers extends Base
                     [null, 9, 'black', 'Black or African American', 3, 0],
                     [null, 9, 'hawaiian', 'Native Hawaiian or Other Pacific Islander', 4, 0],
                     [null, 9, 'white', 'White', 5, 0],
-                    [null, 9, 'refused', 'Do not wish to reveal', 6, 0]
+                    [null, 9, 'refused', 'Do not wish to reveal', 6, 0],
                 ])
                 ->execute();
 
@@ -321,7 +321,7 @@ class Migration20160510121901ComMembers extends Base
                     [null, 14, 'mexican', 'Mexican American or Chicano', 2, 0],
                     [null, 14, 'puertorican', 'Puerto Rican', 3, 0],
                     [null, 14, 'no', 'No (not Hispanic or Latino)', 4, 0],
-                    [null, 14, 'refused', 'Do not wish to reveal', 5, 0]
+                    [null, 14, 'refused', 'Do not wish to reveal', 5, 0],
                 ])
                 ->execute();
 
@@ -336,7 +336,7 @@ class Migration20160510121901ComMembers extends Base
                     [null, 10, 'learning', 'Learning / Cognitive Disability', 4, 0],
                     [null, 10, 'vocal', 'Vocal / Speech Disability', 5, 0],
                     [null, 10, 'no', 'No (none)', 6, 0],
-                    [null, 10, 'refused', 'Do not wish to reveal', 7, 0]
+                    [null, 10, 'refused', 'Do not wish to reveal', 7, 0],
                 ])
                 ->execute();
 
@@ -358,7 +358,7 @@ class Migration20160510121901ComMembers extends Base
                             $organization->organization,
                             $organization->organization,
                             ($i + 1),
-                            0
+                            0,
                         ];
                     }
 
@@ -390,7 +390,7 @@ class Migration20160510121901ComMembers extends Base
                             $type->type,
                             $type->title,
                             ($i + 1),
-                            0
+                            0,
                         ];
                     }
 
@@ -422,7 +422,7 @@ class Migration20160510121901ComMembers extends Base
                             $reason->reason,
                             $reason->reason,
                             ($i + 1),
-                            0
+                            0,
                         ];
                     }
 
@@ -509,7 +509,7 @@ class Migration20160510121901ComMembers extends Base
                         $values[] = [
                             null,
                             $type->name,
-                            $type->label
+                            $type->label,
                         ];
                     }
 

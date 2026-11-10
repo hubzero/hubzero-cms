@@ -37,7 +37,7 @@ class Users extends Module
 			AND `activation`=1
 			AND `approved`=0
 			ORDER BY `registerDate` DESC
-			LIMIT " . $this->params->get('limit', 25)
+			LIMIT " . $this->params->get('limit', 25),
         );
         $this->unapproved = $database->loadObjectList();
 

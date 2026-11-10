@@ -28,7 +28,7 @@ class Router extends Base
 
         $createTasks = [
             'new', 'draft', 'start', 'retract', 'delete',
-            'discard', 'remove', 'reorder', 'access'
+            'discard', 'remove', 'reorder', 'access',
         ];
         if (!empty($query['task']) && in_array($query['task'], $createTasks)) {
             if (!empty($query['task'])) {
@@ -88,7 +88,7 @@ class Router extends Base
 
         $createTasks = [
             'new', 'draft', 'start', 'retract', 'delete',
-            'discard', 'remove', 'reorder', 'access'
+            'discard', 'remove', 'reorder', 'access',
         ];
 
         if (is_numeric($segments[0])) {

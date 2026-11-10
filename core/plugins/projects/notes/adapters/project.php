@@ -27,7 +27,7 @@ class Project extends Base
     protected $_segments = [
         'option' => 'com_projects',
         'alias' => '',
-        'active' => 'notes'
+        'active' => 'notes',
     ];
 
     /**
@@ -131,7 +131,7 @@ class Project extends Base
             'option' => $this->_segments['option'],
             'alias' => $this->_segments['alias'],
             'active' => $this->_segments['active'],
-            'action' => $task
+            'action' => $task,
         ];
     }
 

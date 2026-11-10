@@ -75,7 +75,7 @@ class Questionsv1r0 extends ApiController
             'search'     => Request::getString('search', ''),
             'state'      => Request::getInt('state', -1),
             'sort'       => Request::getWord('sort', 'created'),
-            'sort_Dir'   => strtoupper(Request::getWord('sortDir', 'DESC'))
+            'sort_Dir'   => strtoupper(Request::getWord('sortDir', 'DESC')),
         ];
 
         $records = Question::all();
@@ -227,7 +227,7 @@ class Questionsv1r0 extends ApiController
             // set here would pay out at acceptance without the bank hold the
             // site path places.
             'state'      => ($manager ? Request::getInt('state', 0, 'post') : 0),
-            'reward'     => ($manager ? Request::getInt('reward', 0, 'post') : 0)
+            'reward'     => ($manager ? Request::getInt('reward', 0, 'post') : 0),
         ];
 
         $row = new Question();
@@ -390,7 +390,7 @@ class Questionsv1r0 extends ApiController
             'created'    => ($manager ? Request::getString('created', $row->get('created')) : $row->get('created')),
             'created_by' => $row->get('created_by'),
             'state'      => ($manager ? Request::getInt('state', $row->get('state')) : $row->get('state')),
-            'reward'     => ($manager ? Request::getInt('reward', $row->get('reward')) : $row->get('reward'))
+            'reward'     => ($manager ? Request::getInt('reward', $row->get('reward')) : $row->get('reward')),
         ];
 
         if (!$row->set($fields)) {

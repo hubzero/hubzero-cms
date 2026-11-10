@@ -35,20 +35,20 @@ class Migrations extends AdminController
             'folder' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.folder',
                 'folder',
-                ''
+                '',
             )),
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limitstart',
                 'limitstart',
                 0,
-                'int'
-            )
+                'int',
+            ),
         ];
 
         $breadcrumb = '';
@@ -74,7 +74,7 @@ class Migrations extends AdminController
                 foreach ($files as $entry) {
                     $row = [
                         'entry'  => $entry,
-                        'status' => $status
+                        'status' => $status,
                     ];
                     $rows[] = $row;
                 }

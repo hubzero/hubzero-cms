@@ -66,7 +66,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      * @var  array
      */
     protected $rules = [
-        'title' => 'notempty'
+        'title' => 'notempty',
     ];
 
     /**
@@ -77,7 +77,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     public $initiate = [
         'created',
         'created_by',
-        'footertext'
+        'footertext',
     ];
 
     /**
@@ -90,7 +90,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
         'modified',
         'modified_by',
         'fulltxt',
-        'introtext'
+        'introtext',
     ];
 
     /**
@@ -1692,13 +1692,13 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
                     'description' => $description,
                     'access_level' => $tag->admin == 0 ? 'public' : 'private',
                     'type' => 'resource-tag',
-                    'badge_b' => $label == 'badge' ? true : false
+                    'badge_b' => $label == 'badge' ? true : false,
                 ];
             }
         } else {
             $obj->tags[] = [
                 'id' => '',
-                'title' => ''
+                'title' => '',
             ];
         }
 

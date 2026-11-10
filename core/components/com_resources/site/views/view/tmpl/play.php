@@ -138,7 +138,7 @@ if (preg_match("/$UrlPtn/", $this->activechild->path)) {
             $key = App::hash(@$_SERVER['HTTP_USER_AGENT']);
             $crypter = new \Hubzero\Encryption\Encrypter(
                 new \Hubzero\Encryption\Cipher\Simple(),
-                new \Hubzero\Encryption\Key('simple', $key, $key)
+                new \Hubzero\Encryption\Key('simple', $key, $key),
             );
             $token = base64_encode($crypter->encrypt($session_id));
         }

@@ -17,7 +17,7 @@ defined('_HZEXEC_') or die();
 $formAction = Route::url(
     'index.php?option=' . $this->option
     . '&gid=' . $this->group->cn
-    . '&active=blog&task=delete&entry=' . $this->entry->id
+    . '&active=blog&task=delete&entry=' . $this->entry->id,
 );
 ?>
 <?php if ($this->getError()) { ?>
@@ -32,7 +32,7 @@ $formAction = Route::url(
             $newEntryUrl = Route::url(
                 'index.php?option=' . $this->option
                 . '&gid=' . $this->group->cn
-                . '&active=blog&task=new'
+                . '&active=blog&task=new',
             );
             ?>
             <p>
@@ -75,7 +75,7 @@ $formAction = Route::url(
                 . '&gid=' . $this->group->cn
                 . '&active=blog&scope=' . $publishYear
                 . '/' . $publishMonth
-                . '/' . $this->entry->alias
+                . '/' . $this->entry->alias,
             );
             ?>
             <a href="<?php echo $cancelUrl; ?>">

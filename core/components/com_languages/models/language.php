@@ -58,7 +58,7 @@ class Language extends Relational
      * @var  array
      */
     protected $rules = [
-        'lang_code' => 'notempty'
+        'lang_code' => 'notempty',
     ];
 
     /**
@@ -67,7 +67,7 @@ class Language extends Relational
      * @var  array
      */
     public $initiate = [
-        'ordering'
+        'ordering',
     ];
 
     /**

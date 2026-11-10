@@ -106,11 +106,11 @@ class SequenceExpressionTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testSupportsSequencesReturnsTrue(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $this->assertTrue(
             $driver->supportsSequences(),
-            "$dbName should support sequences"
+            "$dbName should support sequences",
         );
     }
 
@@ -121,20 +121,20 @@ class SequenceExpressionTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testCreateAndDropSequence(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $driver->createSequence(self::$seqDefault);
 
         $this->assertTrue(
             $driver->sequenceExists(self::$seqDefault),
-            "$dbName: Sequence should exist after creation"
+            "$dbName: Sequence should exist after creation",
         );
 
         $driver->dropSequence(self::$seqDefault);
 
         $this->assertFalse(
             $driver->sequenceExists(self::$seqDefault),
-            "$dbName: Sequence should not exist after drop"
+            "$dbName: Sequence should not exist after drop",
         );
     }
 
@@ -145,7 +145,7 @@ class SequenceExpressionTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testNextSequenceValueReturnsIncrementingValues(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $driver->createSequence(self::$seqDefault);
 
@@ -165,7 +165,7 @@ class SequenceExpressionTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testSequenceStartValue(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $driver->createSequence(self::$seqStart, 100);
 
@@ -174,7 +174,7 @@ class SequenceExpressionTest extends AbstractDriverTestCase
         $this->assertSame(
             100,
             $val,
-            "$dbName: First value should be 100"
+            "$dbName: First value should be 100",
         );
     }
 
@@ -185,7 +185,7 @@ class SequenceExpressionTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testCurrentSequenceValue(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $driver->createSequence(self::$seqDefault);
 
@@ -197,7 +197,7 @@ class SequenceExpressionTest extends AbstractDriverTestCase
         $this->assertSame(
             2,
             $current,
-            "$dbName: Current value should be 2 after two increments"
+            "$dbName: Current value should be 2 after two increments",
         );
     }
 
@@ -211,7 +211,7 @@ class SequenceExpressionTest extends AbstractDriverTestCase
 
         $this->assertSame(
             Expression::TYPE_FUNCTION,
-            $expr->getType()
+            $expr->getType(),
         );
         $this->assertSame('NEXTVAL', $expr->getFunction());
         $this->assertSame(['my_seq'], $expr->getArguments());
@@ -227,7 +227,7 @@ class SequenceExpressionTest extends AbstractDriverTestCase
 
         $this->assertSame(
             Expression::TYPE_FUNCTION,
-            $expr->getType()
+            $expr->getType(),
         );
         $this->assertSame('CURRVAL', $expr->getFunction());
         $this->assertSame(['my_seq'], $expr->getArguments());
@@ -240,7 +240,7 @@ class SequenceExpressionTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testNextValInInsert(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $driver->createSequence(self::$seqInsert, 500);
 
@@ -251,7 +251,7 @@ class SequenceExpressionTest extends AbstractDriverTestCase
         $this->assertInstanceOf(
             \Hubzero\Database\Value\Raw::class,
             $nextVal,
-            "$dbName: nextVal() should return a Raw value"
+            "$dbName: nextVal() should return a Raw value",
         );
     }
 
@@ -262,7 +262,7 @@ class SequenceExpressionTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testGetSequencesListsCreatedSequences(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         $driver->createSequence(self::$seqDefault);
 
@@ -278,7 +278,7 @@ class SequenceExpressionTest extends AbstractDriverTestCase
         $this->assertContains(
             self::$seqDefault,
             $names,
-            "$dbName: getSequences() should list the created sequence"
+            "$dbName: getSequences() should list the created sequence",
         );
     }
 
@@ -289,7 +289,7 @@ class SequenceExpressionTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testEmulationTableCreatedAutomatically(
         string $dbName,
-        Driver $driver
+        Driver $driver,
     ): void {
         if (!$driver->usesSequenceEmulation()) {
             $this->assertTrue(true, "$dbName: native sequences, no emulation table");
@@ -300,7 +300,7 @@ class SequenceExpressionTest extends AbstractDriverTestCase
 
         $this->assertTrue(
             $driver->tableExists('_sequences'),
-            "$dbName: _sequences table should exist after createSequence()"
+            "$dbName: _sequences table should exist after createSequence()",
         );
     }
 }

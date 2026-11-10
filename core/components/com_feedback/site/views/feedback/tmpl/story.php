@@ -39,7 +39,7 @@ $this->css()
         <?php
         $formAction = Route::url(
             'index.php?option=' . $this->option
-            . '&controller=' . $this->controller . '&task=story'
+            . '&controller=' . $this->controller . '&task=story',
         );
         ?>
         <form
@@ -95,7 +95,7 @@ $this->css()
                         $uploadAction = Route::url(
                             'index.php?option=' . $this->option
                             . '&controller=' . $this->controller
-                            . '&task=uploadimage&no_html=1'
+                            . '&task=uploadimage&no_html=1',
                         );
                         ?>
                         <div
@@ -143,7 +143,7 @@ $this->css()
                     echo Lang::txt(
                         'COM_FEEDBACK_STORY_AUTHORIZE_QUOTE',
                         $sitename,
-                        $sitename
+                        $sitename,
                     );
                     ?>
                 </label>

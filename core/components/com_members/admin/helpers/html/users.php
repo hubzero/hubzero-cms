@@ -87,7 +87,7 @@ class HtmlUsers
 
         $title = Lang::txts('COM_MEMBERS_N_USER_NOTES', $count);
         $url = Route::url(
-            'index.php?option=com_members&controller=notes&tmpl=component&layout=modal&u_id=' . (int) $userId
+            'index.php?option=com_members&controller=notes&tmpl=component&layout=modal&u_id=' . (int) $userId,
         );
         $notes = Lang::txt('COM_MEMBERS_NOTES');
 

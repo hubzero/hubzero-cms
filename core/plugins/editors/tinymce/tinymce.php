@@ -112,7 +112,7 @@ class Tinymce extends Plugin
                     . $content_css_custom)
                 ) {
                     Notify::warning(
-                        sprintf(Lang::txt('PLG_TINY_ERR_CUSTOMCSSFILENOTPRESENT'), $content_css_custom)
+                        sprintf(Lang::txt('PLG_TINY_ERR_CUSTOMCSSFILENOTPRESENT'), $content_css_custom),
                     );
                 }
             }
@@ -663,7 +663,7 @@ class Tinymce extends Plugin
         $buttons = true,
         $id = null,
         $asset = null,
-        $author = null
+        $author = null,
     ) {
         if (empty($id)) {
             $id = $name;

@@ -47,7 +47,7 @@ class Response extends Relational
      * @var  array
      */
     protected $rules = [
-        'answer'  => 'notempty'
+        'answer'  => 'notempty',
     ];
 
     /**
@@ -57,7 +57,7 @@ class Response extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**
@@ -66,7 +66,7 @@ class Response extends Relational
      * @var array
      */
     protected $parsed = [
-        'answer'
+        'answer',
     ];
 
     /**
@@ -432,7 +432,7 @@ class Response extends Relational
             $results = Event::trigger('content.onContentBeforeSave', [
                 'com_answers.response.answer',
                 &$this,
-                $this->isNew()
+                $this->isNew(),
             ]);
 
             foreach ($results as $result) {

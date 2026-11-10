@@ -32,7 +32,7 @@ class DatabaseServiceProvider extends ServiceProvider
                 'user'     => \Config::get('user'),
                 'password' => \Config::get('password'),
                 'database' => \Config::get('db'),
-                'prefix'   => \Config::get('dbprefix')
+                'prefix'   => \Config::get('dbprefix'),
             ];
 
             return Driver::getInstance($options);

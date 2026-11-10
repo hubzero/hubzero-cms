@@ -24,7 +24,7 @@ defined('_HZEXEC_') or die();
         . strtolower(Lang::txt('COM_PROJECTS_PROJECT')) . ' '
         . strtolower(Lang::txt('PLG_PROJECTS_NOTES'));
     $newNoteUrl = Route::url(
-        $this->model->link('notes') . '&action=new'
+        $this->model->link('notes') . '&action=new',
     );
     ?>
     <h4>
@@ -49,10 +49,10 @@ defined('_HZEXEC_') or die();
                     . $note->pagename;
                 $noteUrl = Route::url(
                     $this->model->link('notes')
-                    . '&pagename=' . $pagePath
+                    . '&pagename=' . $pagePath,
                 );
                 $noteTitle = $this->escape(
-                    \Hubzero\Utility\Str::truncate($note->title, 35)
+                    \Hubzero\Utility\Str::truncate($note->title, 35),
                 );
                 ?>
                 <li>

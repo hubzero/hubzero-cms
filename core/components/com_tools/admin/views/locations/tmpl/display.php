@@ -16,7 +16,7 @@ defined('_HZEXEC_') or die();
 
 Toolbar::title(
     Lang::txt('COM_TOOLS') . ': ' . Lang::txt('COM_TOOLS_ZONES') . ': ' . Lang::txt('COM_TOOLS_LOCATIONS'),
-    'tools'
+    'tools',
 );
 Toolbar::spacer();
 Toolbar::addNew();
@@ -30,35 +30,35 @@ $sortZone = Html::grid(
     'COM_TOOLS_COL_ZONE',
     'zone',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 $sortIpFrom = Html::grid(
     'sort',
     'COM_TOOLS_COL_IP_FROM',
     'ipFROM',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 $sortIpTo = Html::grid(
     'sort',
     'COM_TOOLS_COL_IP_TO',
     'ipTO',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 $sortContinent = Html::grid(
     'sort',
     'COM_TOOLS_COL_CONTINENT',
     'continent',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 $sortCountry = Html::grid(
     'sort',
     'COM_TOOLS_COL_COUNTRY',
     'countrySHORT',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 ?>
 <form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
@@ -90,7 +90,7 @@ $sortCountry = Html::grid(
                     echo $this->pagination(
                         $this->total,
                         $this->filters['start'],
-                        $this->filters['limit']
+                        $this->filters['limit'],
                     );
                     ?>
                 </td>
@@ -105,7 +105,7 @@ if ($this->rows) {
         $editUrl = Route::url(
             'index.php?option=' . $this->option
             . '&controller=' . $this->controller
-            . '&task=edit&id=' . $row->get('id')
+            . '&task=edit&id=' . $row->get('id'),
         );
         ?>
             <tr>

@@ -48,7 +48,7 @@ $this->css('pipeline.css')
             Lang::txt('COM_TOOLS_UPLOADED'),
             Lang::txt('COM_TOOLS_INSTALLED'),
             Lang::txt('COM_TOOLS_APPROVED'),
-            Lang::txt('COM_TOOLS_PUBLISHED')
+            Lang::txt('COM_TOOLS_PUBLISHED'),
         ]; // regular state list
 
         if ($state == Lang::txt('COM_TOOLS_RETIRED')) {

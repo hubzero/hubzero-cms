@@ -549,7 +549,7 @@ class Group extends Obj
                     $this->gidNumber,
                     $dropped,
                     Group\Membership::REASON_MANUAL,
-                    (int) \User::get('id') ?: null
+                    (int) \User::get('id') ?: null,
                 );
             }
 
@@ -1215,7 +1215,7 @@ class Group extends Obj
             "SELECT 1 FROM `#__xgroups` AS g"
             . " JOIN `#__xgroups_members` AS m ON m.gidNumber = g.gidNumber"
             . " WHERE g.cn = " . $db->quote((string) $cn) . " AND m.uidNumber = " . (int) $uid
-            . " LIMIT 1"
+            . " LIMIT 1",
         );
 
         return (bool) $db->loadResult();
@@ -1478,13 +1478,13 @@ class Group extends Obj
                     'pageid'   => 0, //$this->get('gidNumber'),
                     'filepath' => Component::params('com_groups')->get('uploadpath', '/site/groups') . DS . $this->get('gidNumber') . DS . 'uploads',
                     'domain'   => $this->get('cn'),
-                    'camelcase' => 0
+                    'camelcase' => 0,
                 ];
 
                 Event::trigger('content.onContentPrepare', [
                     'com_groups.group.' . $type . '_desc',
                     &$this,
-                    &$config
+                    &$config,
                 ]);
                 $content = $this->get($type . '_desc');
 

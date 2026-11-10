@@ -105,7 +105,7 @@ $subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
                             'index.php?option=' . $this->option
                             . '&task=media&alias='
                             . $this->model->get('alias')
-                            . '&media=Compiled:' . $this->image
+                            . '&media=Compiled:' . $this->image,
                         );
                         ?>
                         <img alt="" src="<?php echo $imgSrc; ?>" />

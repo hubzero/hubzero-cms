@@ -66,7 +66,7 @@ class Token
             'task'   => 'unsubscribe',
             'e'      => $email,
             'm'      => (int) $mailingId,
-            't'      => self::make($mailingId, $email)
+            't'      => self::make($mailingId, $email),
         ]);
 
         return self::siteBase() . '/index.php?' . $query;

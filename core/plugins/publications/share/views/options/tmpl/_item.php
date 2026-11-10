@@ -15,7 +15,7 @@ $shareUrl = Route::url(
     'index.php?option=' . $this->option
     . '&id=' . $this->publication->id
     . '&active=share&v=' . $this->publication->version_number
-    . '&sharewith=' . strtolower($this->name)
+    . '&sharewith=' . strtolower($this->name),
 );
 $shareTitle = Lang::txt('PLG_PUBLICATION_SHARE_ON', ucfirst($this->name));
 $shareClass = 'share_' . strtolower($this->name);

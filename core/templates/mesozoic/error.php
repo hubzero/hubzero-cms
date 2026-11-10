@@ -16,7 +16,7 @@ $cls = [
     'no-js',
     $browser->name(),
     $browser->name() . $browser->major(),
-    $this->direction
+    $this->direction,
 ];
 
 $code = (is_numeric($this->error->getCode()) && $this->error->getCode() > 100 ? $this->error->getCode() : 500);
@@ -97,18 +97,18 @@ Lang::load('tpl_' . $this->template, __DIR__);
                                                 <?php
                                                 $userId = User::get('id');
                                                 $profileUrl = Route::url(
-                                                    'index.php?option=com_members&id=' . $userId
+                                                    'index.php?option=com_members&id=' . $userId,
                                                 );
                                                 $dashboardUrl = Route::url(
                                                     'index.php?option=com_members&id=' . $userId
-                                                    . '&active=dashboard'
+                                                    . '&active=dashboard',
                                                 );
                                                 $profileEditUrl = Route::url(
                                                     'index.php?option=com_members&id=' . $userId
-                                                    . '&active=profile'
+                                                    . '&active=profile',
                                                 );
                                                 $logoutUrl = Route::url(
-                                                    'index.php?option=com_users&view=logout'
+                                                    'index.php?option=com_users&view=logout',
                                                 );
                                                 $userName = stripslashes(User::get('name'));
                                                 $userLogin = stripslashes(User::get('username'));

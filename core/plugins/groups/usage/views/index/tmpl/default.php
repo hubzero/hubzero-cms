@@ -20,7 +20,7 @@ $logger     = \Components\Groups\Models\Log\Archive::getInstance();
 $group_edits = $logger->logs(
     'list',
     ['gidNumber' => $this->group->get('gidNumber'), 'action' => 'group_edited'],
-    true
+    true,
 )->count();
 $membership_requests = $logger->logs('list', ['gidNumber' => $this->group->get('gidNumber'), 'action' =>
 'membership_requested'], true)->count();
@@ -51,7 +51,7 @@ $demotions = $logger->logs('list', ['gidNumber' => $this->group->get('gidNumber'
                 $usageUrl = Route::url(
                     'index.php?option=com_groups&cn='
                     . $this->group->get('cn')
-                    . '&active=usage'
+                    . '&active=usage',
                 );
                 ?>
                 <form name="page_selector"

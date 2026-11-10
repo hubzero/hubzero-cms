@@ -30,7 +30,7 @@ Html::behavior('modal');
 
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 $searchVal = $this->escape($this->filters['search']);
 $searchPlaceholder = Lang::txt('COM_PROJECTS_FILTER_SEARCH_DESC');
@@ -154,13 +154,13 @@ $searchPlaceholder = Lang::txt('COM_PROJECTS_FILTER_SEARCH_DESC');
         <?php
         if ($this->filters['project']) {
             $projectsUrl = Route::url(
-                'index.php?option=' . $this->option
+                'index.php?option=' . $this->option,
             );
             $projectAlias = $this->escape(
-                stripslashes($this->project->get('alias'))
+                stripslashes($this->project->get('alias')),
             );
             $projectTitle = $this->escape(
-                stripslashes($this->project->get('title'))
+                stripslashes($this->project->get('title')),
             );
             ?>
             <tr>
@@ -193,7 +193,7 @@ $searchPlaceholder = Lang::txt('COM_PROJECTS_FILTER_SEARCH_DESC');
                         'COM_PROJECTS_ACTIVITY_ID',
                         'id',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     );
                     ?></th>
                 <th scope="col" class="priority-4"><?php
@@ -202,7 +202,7 @@ $searchPlaceholder = Lang::txt('COM_PROJECTS_FILTER_SEARCH_DESC');
                         'COM_PROJECTS_ACTIVITY_CREATED',
                         'created',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     );
                     ?></th>
                 <th scope="col" class="priority-3"><?php
@@ -211,7 +211,7 @@ $searchPlaceholder = Lang::txt('COM_PROJECTS_FILTER_SEARCH_DESC');
                         'COM_PROJECTS_ACTIVITY_CREATED_BY',
                         'created_by',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     );
                     ?></th>
                 <th scope="col" class="priority-3"><?php
@@ -220,7 +220,7 @@ $searchPlaceholder = Lang::txt('COM_PROJECTS_FILTER_SEARCH_DESC');
                         'COM_PROJECTS_ACTIVITY_ACTION',
                         'action',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     );
                     ?></th>
                 <th scope="col"><?php
@@ -229,7 +229,7 @@ $searchPlaceholder = Lang::txt('COM_PROJECTS_FILTER_SEARCH_DESC');
                         'COM_PROJECTS_ACTIVITY_DESCRIPTION',
                         'description',
                         @$this->filters['sort_Dir'],
-                        @$this->filters['sort']
+                        @$this->filters['sort'],
                     );
                     ?></th>
                 <th scope="col" class="priority-2"><?php
@@ -277,42 +277,42 @@ $searchPlaceholder = Lang::txt('COM_PROJECTS_FILTER_SEARCH_DESC');
             $editUrl = Route::url(
                 'index.php?option=' . $this->option
                 . '&controller=' . $this->controller
-                . '&task=edit&id=' . $row->get('id')
+                . '&task=edit&id=' . $row->get('id'),
             );
             $desc = $this->escape(
                 Hubzero\Utility\Str::truncate(
                     strip_tags($row->log->get('description')),
-                    100
-                )
+                    100,
+                ),
             );
             $projectEditUrl = Route::url(
                 'index.php?option=' . $this->option
                 . '&controller=projects&task=edit&id='
-                . $row->get('scope_id')
+                . $row->get('scope_id'),
             );
             $stateUrl = Route::url(
                 'index.php?option=' . $this->option
                 . '&controller=' . $this->controller
                 . '&task=' . $task
                 . '&id=' . $row->get('id')
-                . '&' . Session::getFormToken() . '=1'
+                . '&' . Session::getFormToken() . '=1',
             );
             $stateTitle = Lang::txt('COM_FORUM_SET_TO', $task);
             $unstarUrl = Route::url(
                 'index.php?option=' . $this->option
                 . '&controller=' . $this->controller
                 . '&task=unstar&id=' . $row->get('id')
-                . '&' . Session::getFormToken() . '=1'
+                . '&' . Session::getFormToken() . '=1',
             );
             $starUrl = Route::url(
                 'index.php?option=' . $this->option
                 . '&controller=' . $this->controller
                 . '&task=star&id=' . $row->get('id')
-                . '&' . Session::getFormToken() . '=1'
+                . '&' . Session::getFormToken() . '=1',
             );
             $canEditState = User::authorise(
                 'core.edit.state',
-                $this->option . '.component'
+                $this->option . '.component',
             );
             ?>
             <tr class="<?php echo "row$k"; ?>">
@@ -342,13 +342,13 @@ $searchPlaceholder = Lang::txt('COM_PROJECTS_FILTER_SEARCH_DESC');
                 <td class="priority-3">
                     <?php
                     $creator = User::getInstance(
-                        $row->log->get('created_by')
+                        $row->log->get('created_by'),
                     );
                     echo $this->escape(stripslashes(
                         $creator->get(
                             'name',
-                            Lang::txt('COM_PROJECTS_UNKNOWN')
-                        )
+                            Lang::txt('COM_PROJECTS_UNKNOWN'),
+                        ),
                     ));
                     ?>
                 </td>
@@ -368,7 +368,7 @@ $searchPlaceholder = Lang::txt('COM_PROJECTS_FILTER_SEARCH_DESC');
                     <a href="<?php echo $projectEditUrl; ?>">
                         <?php
                         $model = new \Components\Projects\Models\Project(
-                            $row->get('scope_id')
+                            $row->get('scope_id'),
                         );
                         echo $this->escape($model->get('alias')); ?>
                     </a>

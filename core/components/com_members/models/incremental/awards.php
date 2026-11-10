@@ -67,7 +67,7 @@ class Awards
         do {
             $columns = [
                 'opted_out', 'name', 'orgtype', 'organization', 'countryresident',
-                'countryorigin', 'gender', 'url', 'reason', 'race', 'phone', 'picture', 'disability'
+                'countryorigin', 'gender', 'url', 'reason', 'race', 'phone', 'picture', 'disability',
             ];
 
             foreach ($columns as $key => $val) {
@@ -132,7 +132,7 @@ class Awards
             'reason'          => 'Reason',
             'race'            => 'Race',
             'phone'           => 'Phone',
-            'disability'      => 'Disability'
+            'disability'      => 'Disability',
         ];
         $alreadyComplete = 0;
         $eligible = [];
@@ -190,7 +190,7 @@ class Awards
             'prior'     => $prior,
             'new'       => $alreadyComplete,
             'eligible'  => $eligible,
-            'opted_out' => $optedOut
+            'opted_out' => $optedOut,
         ];
     }
 }

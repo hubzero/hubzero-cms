@@ -47,7 +47,7 @@ class Metadata
     protected static $nameIdSources = [
         'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress' => 'email',
         'urn:oasis:names:tc:SAML:2.0:nameid-format:persistent'   => 'id',
-        'urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified'  => 'username'
+        'urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified'  => 'username',
     ];
 
     /**
@@ -149,7 +149,7 @@ class Metadata
         // about (an SP may publish SSO-only metadata and still have a
         // registered SLO endpoint or certificate)
         $fields = [
-            'entity_id' => $entity->getAttribute('entityID')
+            'entity_id' => $entity->getAttribute('entityID'),
         ];
 
         $acsUrl = '';
@@ -198,7 +198,7 @@ class Metadata
 
             $rank = [
                 strtolower($acs->getAttribute('isDefault')) == 'true' ? 0 : 1,
-                (int) $acs->getAttribute('index')
+                (int) $acs->getAttribute('index'),
             ];
 
             if ($best === null || $rank < $best) {

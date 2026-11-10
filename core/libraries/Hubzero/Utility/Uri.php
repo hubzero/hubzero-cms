@@ -175,12 +175,12 @@ class Uri
                 $_SERVER['REQUEST_URI'] = str_replace(
                     ["'", '"', '<', '>'],
                     ['%27','%22','%3C','%3E'],
-                    $_SERVER['REQUEST_URI']
+                    $_SERVER['REQUEST_URI'],
                 );
                 $theURI = str_replace(
                     ["'", '"', '<', '>'],
                     ['%27','%22','%3C','%3E'],
-                    $theURI
+                    $theURI,
                 );
             } else {
                 // We were given a URI

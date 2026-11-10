@@ -44,12 +44,12 @@ class RateLimiter
         $this->config  = array_merge([
             'short' => [
                 'period' => 1, // 1 minute
-                'limit'  => 120 // 120 requests
+                'limit'  => 120, // 120 requests
             ],
             'long' => [
                 'period' => 1440, // 1 day (in minutes)
-                'limit'  => 10000 // 10,000 requests
-            ]
+                'limit'  => 10000, // 10,000 requests
+            ],
         ], $config);
     }
 
@@ -129,7 +129,7 @@ class RateLimiter
             $countLong,
             $expiresShort,
             $expiresLong,
-            $created
+            $created,
         );
     }
 

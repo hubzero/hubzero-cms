@@ -82,7 +82,7 @@ class Offering extends Table
 
         return parent::load([
             'alias'     => trim($oid),
-            'course_id' => intval($course_id)
+            'course_id' => intval($course_id),
         ]);
     }
 

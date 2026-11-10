@@ -254,7 +254,7 @@ namespace Hubzero\Component\Tests {
             array $headers,
             string $method,
             string $uri,
-            string $version = 'v1'
+            string $version = 'v1',
         ): TestableInertiaFlowService {
             if (is_a('\\App', InertiaFlowAppStub::class, true)) {
                 InertiaFlowAppStub::reset();
@@ -326,7 +326,7 @@ namespace Hubzero\Component\Tests {
                 ['X-Inertia' => 'true', 'X-Inertia-Version' => 'old'],
                 'GET',
                 '/component/render',
-                'new'
+                'new',
             );
             $controller = new InertiaFlowController();
 

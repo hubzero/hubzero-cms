@@ -97,7 +97,7 @@ class Resources extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         if (Pathway::count() <= 1 && $this->_task) {
@@ -106,7 +106,7 @@ class Resources extends SiteController
                     if ($this->_task_title) {
                         Pathway::append(
                             $this->_task_title,
-                            'index.php?option=' . $this->_option . '&task=' . $this->_task
+                            'index.php?option=' . $this->_option . '&task=' . $this->_task,
                         );
                     }
                     break;
@@ -114,14 +114,14 @@ class Resources extends SiteController
                     if ($this->_task_title) {
                         Pathway::append(
                             $this->_task_title,
-                            'index.php?option=' . $this->_option . '&type=' . $this->type
+                            'index.php?option=' . $this->_option . '&type=' . $this->type,
                         );
                     }
                     break;
                 default:
                     Pathway::append(
                         Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
-                        'index.php?option=' . $this->_option . '&task=' . $this->_task
+                        'index.php?option=' . $this->_option . '&task=' . $this->_task,
                     );
                     break;
             }
@@ -205,7 +205,7 @@ class Resources extends SiteController
             'search' => Request::getString('search', ''),
             'tag'    => trim(Request::getString('tag', '', 'request', 'none', 2)),
             'tag_ignored' => [],
-            'access' => [0, 3]
+            'access' => [0, 3],
         ];
         if (!in_array($filters['sortby'], ['date', 'date_published', 'date_created', 'date_modified', 'title', 'rating', 'ranking', 'random'])) {
             App::abort(404, Lang::txt('Invalid sort value of "%s" used.', $filters['sortby']));
@@ -575,7 +575,7 @@ class Resources extends SiteController
                     $bits['type'],
                     $bits['sortby'],
                     $bits['tag2'],
-                    $bits['filter']
+                    $bits['filter'],
                 );
 
                 $bits['type'] = Type::oneOrNew($bits['type']);
@@ -745,7 +745,7 @@ class Resources extends SiteController
         $resid = $firstChild->get('id');
 
         App::redirect(
-            Route::url('index.php?option=com_resources&id=' . $presentation . '&task=watch&resid=' . $resid . '&tmpl=component')
+            Route::url('index.php?option=com_resources&id=' . $presentation . '&task=watch&resid=' . $resid . '&tmpl=component'),
         );
     }
 
@@ -906,7 +906,7 @@ class Resources extends SiteController
                 App::redirect(
                     Route::url('index.php?option=com_users&view=login&return=' . $return, false),
                     Lang::txt('COM_RESOURCES_ALERTLOGIN_REQUIRED'),
-                    'warning'
+                    'warning',
                 );
             }
 
@@ -955,7 +955,7 @@ class Resources extends SiteController
                 // Instantiate a new view
                 $this->view = new \Hubzero\Component\View([
                     'name'   => 'view',
-                    'layout' => 'watch_error'
+                    'layout' => 'watch_error',
                 ]);
                 $this->view->errors = $errors;
                 $this->view->display();
@@ -964,7 +964,7 @@ class Resources extends SiteController
                 // Instantiate a new view
                 $this->view = new \Hubzero\Component\View([
                     'name'   => 'view',
-                    'layout' => 'watch'
+                    'layout' => 'watch',
                 ]);
                 $this->view->set('option', $this->_option);
                 $this->view->config         = $this->config;
@@ -1019,7 +1019,7 @@ class Resources extends SiteController
                 App::redirect(
                     Route::url('index.php?option=com_users&view=login&return=' . $return, false),
                     Lang::txt('COM_RESOURCES_ALERTLOGIN_REQUIRED'),
-                    'warning'
+                    'warning',
                 );
             }
 
@@ -1075,17 +1075,17 @@ class Resources extends SiteController
             // Set breadcrumbs
             Pathway::append(
                 stripslashes($model->type->type),
-                Route::url('index.php?option=' . $this->_option . '&type=' . $model->type->alias)
+                Route::url('index.php?option=' . $this->_option . '&type=' . $model->type->alias),
             );
 
             Pathway::append(
                 stripslashes($model->title),
-                Route::url($model->link())
+                Route::url($model->link()),
             );
 
             Pathway::append(
                 Lang::txt('COM_RESOURCES_VIEW_PRESENTATION'),
-                Route::url($model->link() . '&task=view&resid=' . $child)
+                Route::url($model->link() . '&task=view&resid=' . $child),
             );
 
             // Write title
@@ -1095,7 +1095,7 @@ class Resources extends SiteController
         // Instantiate a new view
         $this->view = new \Hubzero\Component\View([
             'name'   => 'view',
-            'layout' => 'video'
+            'layout' => 'video',
         ]);
         $this->view->set('option', $this->_option);
         $this->view->config   = $this->config;
@@ -1260,7 +1260,7 @@ class Resources extends SiteController
         // Ensure we have an ID or alias to work with
         if (!$id && !$alias) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option)
+                Route::url('index.php?option=' . $this->_option),
             );
             return;
         }
@@ -1292,7 +1292,7 @@ class Resources extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
                 Lang::txt('COM_RESOURCES_ALERTLOGIN_REQUIRED'),
-                'warning'
+                'warning',
             );
         }
 
@@ -1321,30 +1321,30 @@ class Resources extends SiteController
 
                 Pathway::append(
                     'Groups',
-                    Route::url('index.php?option=com_groups')
+                    Route::url('index.php?option=com_groups'),
                 );
                 Pathway::append(
                     stripslashes($group->get('description')),
-                    Route::url('index.php?option=com_groups&cn=' . $group->get('cn'))
+                    Route::url('index.php?option=com_groups&cn=' . $group->get('cn')),
                 );
                 Pathway::append(
                     'Resources',
-                    Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=resources')
+                    Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=resources'),
                 );
                 Pathway::append(
                     stripslashes($this->model->type->get('type')),
-                    Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=resources&area=' . $this->model->type->get('alias'))
+                    Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=resources&area=' . $this->model->type->get('alias')),
                 );
             } else {
                 Pathway::append(
                     stripslashes($this->model->type->get('type')),
-                    Route::url('index.php?option=' . $this->_option . '&type=' . $this->model->type->get('alias'))
+                    Route::url('index.php?option=' . $this->_option . '&type=' . $this->model->type->get('alias')),
                 );
             }
         } else {
             Pathway::append(
                 stripslashes($this->model->type->get('type')),
-                Route::url('index.php?option=' . $this->_option . '&type=' . $this->model->type->get('alias'))
+                Route::url('index.php?option=' . $this->_option . '&type=' . $this->model->type->get('alias')),
             );
         }
 
@@ -1377,7 +1377,7 @@ class Resources extends SiteController
 
         // Trigger the functions that return the areas we'll be using
         $cats = Event::trigger('resources.onResourcesAreas', [
-                $this->model
+                $this->model,
             ]);
 
         // We need to do this here because we need some stats info to pass to the body
@@ -1434,7 +1434,7 @@ class Resources extends SiteController
             $view = new \Hubzero\Component\View([
                 'base_path' => $this->_base_path,
                 'name'      => 'view',
-                'layout'    => 'play'
+                'layout'    => 'play',
             ]);
             $view->set('option', $this->_option);
             $view->config      = $this->config;
@@ -1449,12 +1449,12 @@ class Resources extends SiteController
             $body = $view->loadTemplate();
 
             $cats[] = [
-                'play' => Lang::txt('COM_RESOURCES_PLAY')
+                'play' => Lang::txt('COM_RESOURCES_PLAY'),
             ];
             $sections[] = [
                 'html'     => $body,
                 'metadata' => '',
-                'area'     => 'play'
+                'area'     => 'play',
             ];
             $tab = 'play';
         } elseif ($this->_task == 'watch') {
@@ -1476,7 +1476,7 @@ class Resources extends SiteController
                 // Instantiate a new view
                 $this->view = new \Hubzero\Component\View([
                     'name'   => 'view',
-                    'layout' => 'watch_error'
+                    'layout' => 'watch_error',
                 ]);
                 $this->view->set('controller', $this->_controller);
                 $this->view->set('task', $this->_task);
@@ -1487,7 +1487,7 @@ class Resources extends SiteController
                 $view = new \Hubzero\Component\View([
                     'base_path' => $this->_base_path,
                     'name'      => 'view',
-                    'layout'    => 'watch'
+                    'layout'    => 'watch',
                 ]);
                 $view->set('config', $this->config);
                 //$view->tconfig        = $tconfig;
@@ -1509,12 +1509,12 @@ class Resources extends SiteController
             }
 
             $cats[] = [
-                'watch' => Lang::txt('Watch Presentation')
+                'watch' => Lang::txt('Watch Presentation'),
             ];
             $sections[] = [
                 'html'     => $body,
                 'metadata' => '',
-                'area'     => 'watch'
+                'area'     => 'watch',
             ];
             $tab = 'watch';
         }
@@ -1531,7 +1531,7 @@ class Resources extends SiteController
 
         Pathway::append(
             stripslashes($this->model->title),
-            Route::url($this->model->link())
+            Route::url($this->model->link()),
         );
 
         $type_alias = $this->model->type->get('alias');
@@ -1592,7 +1592,7 @@ class Resources extends SiteController
         // Ensure we have an ID or alias to work with
         if (!$id && !$alias) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option)
+                Route::url('index.php?option=' . $this->_option),
             );
         }
 
@@ -2117,7 +2117,7 @@ class Resources extends SiteController
             $key = App::hash(@$_SERVER['HTTP_USER_AGENT']);
             $crypter = new \Hubzero\Encryption\Encrypter(
                 new \Hubzero\Encryption\Cipher\Simple(),
-                new \Hubzero\Encryption\Key('simple', $key, $key)
+                new \Hubzero\Encryption\Key('simple', $key, $key),
             );
             $session_id = $crypter->decrypt($token);
 
@@ -2155,7 +2155,7 @@ class Resources extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
                 Lang::txt('COM_RESOURCES_ALERTLOGIN_REQUIRED'),
-                'warning'
+                'warning',
             );
         }
 
@@ -2170,7 +2170,7 @@ class Resources extends SiteController
                 App::redirect(
                     Route::url('index.php?option=com_users&view=login&return=' . $return, false),
                     Lang::txt('COM_RESOURCES_ALERTLOGIN_REQUIRED'),
-                    'warning'
+                    'warning',
                 );
             }
             if ($this->checkGroupAccess($resource, $user)) {
@@ -2573,7 +2573,7 @@ class Resources extends SiteController
             'Content-Disposition:' . $cont_dis . ';'
             . ' filename="' . $f . '";'
             . ' modification-date="' . $mod_date . '";'
-            . ' size=' . $fsize . ';'
+            . ' size=' . $fsize . ';',
         ); //RFC2183
         header("Content-Type: " . $mime); // MIME type
         header("Content-Length: " . $fsize);

@@ -144,7 +144,7 @@ class Repository extends Registry
 
         if ($targetGroup === null) {
             throw new \InvalidArgumentException(
-                "Config key '$path' not found in any group. Use dot-notation (e.g. 'group.$path')."
+                "Config key '$path' not found in any group. Use dot-notation (e.g. 'group.$path').",
             );
         }
 

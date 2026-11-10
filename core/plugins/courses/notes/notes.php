@@ -94,7 +94,7 @@ class Notes extends Plugin
 
             $this->view->filters = [
                 'section_id' => $offering->section()->get('id'),
-                'search'     => Request::getString('search', '')
+                'search'     => Request::getString('search', ''),
             ];
 
             $result = null;

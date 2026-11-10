@@ -178,7 +178,7 @@ class Router extends Base
                 'doajaxupload',
                 'ajaxuploadsave',
                 'getfileatts',
-                'promo-opt-out'
+                'promo-opt-out',
             ];
             if (in_array($segments[1], $userTasks)) {
                 $vars['task'] = $segments[1];
@@ -188,7 +188,7 @@ class Router extends Base
                     'ajaxupload',
                     'doajaxupload',
                     'ajaxuploadsave',
-                    'getfileatts'
+                    'getfileatts',
                 ];
                 if (in_array($segments[1], $mediaTasks)) {
                     $vars['controller'] = 'media';

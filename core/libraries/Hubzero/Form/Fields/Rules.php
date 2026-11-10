@@ -59,7 +59,7 @@ class Rules extends Field
                 $actions[] = (object) [
                     'name' => (string) $el['name'],
                     'title' => (string) $el['title'],
-                    'description' => (string) $el['description']
+                    'description' => (string) $el['description'],
                 ];
             }
         }
@@ -176,7 +176,7 @@ class Rules extends Field
                         $lang->txt(
                             'JLIB_RULES_SELECT_ALLOW_DENY_GROUP',
                             $lang->txt($action->title),
-                            trim($group->text)
+                            trim($group->text),
                         ) .
                         '">';
                 $inheritedRule = Access::checkGroup($group->value, $action->name, $assetId);

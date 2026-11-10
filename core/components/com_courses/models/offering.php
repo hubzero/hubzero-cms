@@ -465,7 +465,7 @@ class Offering extends Base
                     $user_id,
                     $this->get('course_id'),
                     $this->get('id'),
-                    $this->section()->get('id')
+                    $this->section()->get('id'),
                 );
             }
         }
@@ -577,7 +577,7 @@ class Offering extends Base
                 $user_id,
                 $this->get('course_id'),
                 $this->get('id'),
-                $this->section()->get('id')
+                $this->section()->get('id'),
             );
         }
 
@@ -677,7 +677,7 @@ class Offering extends Base
                 $user_id,
                 $this->get('course_id'),
                 $this->get('id'),
-                $this->section()->get('id')
+                $this->section()->get('id'),
             );
         }
 
@@ -915,7 +915,7 @@ class Offering extends Base
         $defaultFilters = [
             'offering_id' => (int) $this->get('id'),
             'section_id' => (int) $this->section()->get('id'),
-            'state' => 1
+            'state' => 1,
         ];
         $filters = array_merge($defaultFilters, $filters);
 
@@ -1010,7 +1010,7 @@ class Offering extends Base
                 $user_id,
                 $this->get('course_id'),
                 $this->get('id'),
-                $this->section()->get('id')
+                $this->section()->get('id'),
             );
             $model->set('user_id', $user_id);
             $model->set('course_id', $this->get('course_id'));
@@ -1275,7 +1275,7 @@ class Offering extends Base
                         $findParams = [
                             'scope_id' => $o_id,
                             'scope' => 'offering',
-                            'asset_id' => $oldAssetId
+                            'asset_id' => $oldAssetId,
                         ];
                         foreach ($tbl->find($findParams) as $aa) {
                             $tbl->bind($aa);
@@ -1328,7 +1328,7 @@ class Offering extends Base
                 $course = Course::getInstance($this->get('course_id'));
 
                 $data = $this->trigger('onCourseEnrollLink', [
-                    $course, $this, $this->section()
+                    $course, $this, $this->section(),
                 ]);
                 if ($data && count($data) > 0) {
                     $link = implode('', $data);

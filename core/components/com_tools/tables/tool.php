@@ -560,7 +560,7 @@ class Tool extends Table
             'params'        => isset($version[0]->params) ? $version[0]->params : '',
             'repohost'      => $params->get('repohost'),
             'github'        => $params->get('github'),
-            'publishType'   => $pubType
+            'publishType'   => $pubType,
         ];
 
         if (is_null($status['repohost'])) {

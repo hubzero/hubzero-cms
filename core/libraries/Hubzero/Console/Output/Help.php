@@ -50,8 +50,8 @@ class Help extends Output
             ->addParagraph(
                 $text,
                 [
-                    'indentation' => 2
-                ]
+                    'indentation' => 2,
+                ],
             )
             ->addSpacer();
 
@@ -90,7 +90,7 @@ class Help extends Output
 
                     $list[] = [
                         'name'        => $task->name,
-                        'description' => $description
+                        'description' => $description,
                     ];
 
                     $max    = ($max > strlen($task->name)) ? $max : strlen($task->name);
@@ -101,7 +101,7 @@ class Help extends Output
                 foreach ($list as $item) {
                     $this->addString($item['name'], [
                         'color'       => 'blue',
-                        'indentation' => 2
+                        'indentation' => 2,
                     ]);
 
                     $this->addString(str_repeat(' ', ($max - strlen($item['name']))) . '   ');
@@ -110,7 +110,7 @@ class Help extends Output
             } else {
                 $this->addLine('There are no tasks available for this command', [
                     'color'       => 'red',
-                    'indentation' => 2
+                    'indentation' => 2,
                 ]);
             }
         }
@@ -142,16 +142,16 @@ class Help extends Output
             $argument . (($required) ? ' (*required)' : ''),
             [
                 'color'       => (($required) ? 'red' : 'blue'),
-                'indentation' => 2
-            ]
+                'indentation' => 2,
+            ],
         );
 
         if (isset($details)) {
             $this->addParagraph(
                 $details,
                 [
-                    'indentation' => 4
-                ]
+                    'indentation' => 4,
+                ],
             );
 
             if (!isset($example)) {
@@ -163,8 +163,8 @@ class Help extends Output
                 $example,
                 [
                     'color'       => 'green',
-                    'indentation' => 4
-                ]
+                    'indentation' => 4,
+                ],
             )
             ->addSpacer();
         }
@@ -183,8 +183,8 @@ class Help extends Output
             $text . ":",
             [
                 'color'       => 'yellow',
-                'indentation' => 0
-            ]
+                'indentation' => 0,
+            ],
         );
 
         return $this;

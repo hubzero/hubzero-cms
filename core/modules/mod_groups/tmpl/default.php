@@ -21,7 +21,7 @@ $this->css();
                     <?php
                     $visibleUrl = Route::url(
                         'index.php?option=com_groups&controller=manage&type='
-                        . $this->type . '&discoverability=0&policy='
+                        . $this->type . '&discoverability=0&policy=',
                     );
                     ?>
                     <a href="<?php echo $visibleUrl; ?>"
@@ -35,7 +35,7 @@ $this->css();
                     <?php
                     $hiddenUrl = Route::url(
                         'index.php?option=com_groups&controller=manage&type='
-                        . $this->type . '&discoverability=1&policy='
+                        . $this->type . '&discoverability=1&policy=',
                     );
                     ?>
                     <a href="<?php echo $hiddenUrl; ?>"
@@ -56,7 +56,7 @@ $this->css();
                     <?php
                     $closedUrl = Route::url(
                         'index.php?option=com_groups&controller=manage&type='
-                        . $this->type . '&discoverability=&policy=closed&approved='
+                        . $this->type . '&discoverability=&policy=closed&approved=',
                     );
                     ?>
                     <a href="<?php echo $closedUrl; ?>"
@@ -70,7 +70,7 @@ $this->css();
                     <?php
                     $inviteUrl = Route::url(
                         'index.php?option=com_groups&controller=manage&type='
-                        . $this->type . '&discoverability=&policy=invite&approved='
+                        . $this->type . '&discoverability=&policy=invite&approved=',
                     );
                     ?>
                     <a href="<?php echo $inviteUrl; ?>"
@@ -85,7 +85,7 @@ $this->css();
                     $restrictedUrl = Route::url(
                         'index.php?option=com_groups&controller=manage&type='
                         . $this->type
-                        . '&discoverability=&policy=restricted&approved='
+                        . '&discoverability=&policy=restricted&approved=',
                     );
                     ?>
                     <a href="<?php echo $restrictedUrl; ?>"
@@ -99,7 +99,7 @@ $this->css();
                     <?php
                     $openUrl = Route::url(
                         'index.php?option=com_groups&controller=manage&type='
-                        . $this->type . '&discoverability=&policy=open&approved='
+                        . $this->type . '&discoverability=&policy=open&approved=',
                     );
                     ?>
                     <a href="<?php echo $openUrl; ?>"
@@ -120,7 +120,7 @@ $this->css();
                     <?php
                     $approvedUrl = Route::url(
                         'index.php?option=com_groups&controller=manage&type='
-                        . $this->type . '&approved=1&discoverability=&policy='
+                        . $this->type . '&approved=1&discoverability=&policy=',
                     );
                     ?>
                     <a href="<?php echo $approvedUrl; ?>"
@@ -134,7 +134,7 @@ $this->css();
                     <?php
                     $pendingUrl = Route::url(
                         'index.php?option=com_groups&controller=manage&type='
-                        . $this->type . '&approved=0&discoverability=&policy='
+                        . $this->type . '&approved=0&discoverability=&policy=',
                     );
                     ?>
                     <a href="<?php echo $pendingUrl; ?>"
@@ -149,7 +149,7 @@ $this->css();
                     $newUrl = Route::url(
                         'index.php?option=com_groups&controller=manage&type='
                         . $this->type
-                        . '&created=pastday&discoverability=&policy=&approved='
+                        . '&created=pastday&discoverability=&policy=&approved=',
                     );
                     ?>
                     <a href="<?php echo $newUrl; ?>"

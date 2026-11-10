@@ -24,8 +24,8 @@ class Migration20190221000000ComCategories extends Base
         '#__categories' => [
             'created_time',
             'modified_time',
-            'checked_out_time'
-        ]
+            'checked_out_time',
+        ],
     ];
 
     /**

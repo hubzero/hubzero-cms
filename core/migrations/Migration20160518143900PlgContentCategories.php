@@ -28,7 +28,7 @@ class Migration20160518143900PlgContentCategories extends Base
                 ->update('#__extensions')
                 ->set([
                     'name'    => 'plg_content_categories',
-                    'element' => 'categories'
+                    'element' => 'categories',
                 ])
                 ->where('folder', '=', 'content')
                 ->where('element', '=', 'joomla')
@@ -48,7 +48,7 @@ class Migration20160518143900PlgContentCategories extends Base
                 ->update('#__extensions')
                 ->set([
                     'name'    => 'plg_content_joomla',
-                    'element' => 'joomla'
+                    'element' => 'joomla',
                 ])
                 ->where('folder', '=', 'content')
                 ->where('element', '=', 'categories')

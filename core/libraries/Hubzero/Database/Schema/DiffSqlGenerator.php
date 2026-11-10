@@ -929,7 +929,7 @@ class DiffSqlGenerator
             $fk->getForeignTable(),
             $foreignColumn,
             $onDelete,
-            $onUpdate
+            $onUpdate,
         );
     }
 

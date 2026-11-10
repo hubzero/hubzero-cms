@@ -37,7 +37,7 @@ $base = $this->member->link() . '&active=' . $this->name;
                     <span>
                         <?php echo Lang::txt(
                             'PLG_MEMBERS_COLLECTIONS_HEADER_NUM_COLLECTIONS',
-                            $this->collections
+                            $this->collections,
                         ); ?>
                     </span>
                 </a>
@@ -57,7 +57,7 @@ $base = $this->member->link() . '&active=' . $this->name;
                     <span>
                         <?php echo Lang::txt(
                             'PLG_MEMBERS_COLLECTIONS_HEADER_NUM_FOLLOWERS',
-                            $this->followers
+                            $this->followers,
                         ); ?>
                     </span>
                 </a>
@@ -70,7 +70,7 @@ $base = $this->member->link() . '&active=' . $this->name;
                     <span>
                         <?php echo Lang::txt(
                             'PLG_MEMBERS_COLLECTIONS_HEADER_NUM_FOLLOWNG',
-                            $this->following
+                            $this->following,
                         ); ?>
                     </span>
                 </a>

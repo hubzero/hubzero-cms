@@ -53,31 +53,31 @@ class Pages extends AdminController
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
-                ''
+                '',
             )),
             'active' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.active',
                 'active',
-                '-1'
+                '-1',
             ),
             // Filters for returning results
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limitstart',
                 'limitstart',
                 0,
-                'int'
+                'int',
             ),
             'offering' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.offering',
                 'offering',
-                0
-            )
+                0,
+            ),
         ];
 
         $this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->filters['offering']);
@@ -85,14 +85,14 @@ class Pages extends AdminController
             $this->view->filters['course']    = Request::getState(
                 $this->_option . '.' . $this->_controller . '.course',
                 'course',
-                $this->view->offering->get('course_id')
+                $this->view->offering->get('course_id'),
             );
         } else {
             $using = 'course';
             $this->view->filters['course']    = Request::getState(
                 $this->_option . '.' . $this->_controller . '.course',
                 'course',
-                0
+                0,
             );
         }
 
@@ -200,7 +200,7 @@ class Pages extends AdminController
             . '&offering=' . $fields['offering_id'];
         App::redirect(
             Route::url($url, false),
-            Lang::txt('COM_COURSES_ITEM_SAVED')
+            Lang::txt('COM_COURSES_ITEM_SAVED'),
         );
     }
 
@@ -230,7 +230,7 @@ class Pages extends AdminController
             App::redirect(
                 $rtrn,
                 Lang::txt('COM_COURSES_ERROR_NO_ENTRIES_SELECTED'),
-                'error'
+                'error',
             );
             return;
         }
@@ -251,7 +251,7 @@ class Pages extends AdminController
         if ($i) {
             App::redirect(
                 $rtrn,
-                Lang::txt('COM_COURSES_ITEMS_REMOVED', $i)
+                Lang::txt('COM_COURSES_ITEMS_REMOVED', $i),
             );
             return;
         }
@@ -259,7 +259,7 @@ class Pages extends AdminController
         App::redirect(
             $rtrn,
             $this->getError(),
-            'error'
+            'error',
         );
     }
 
@@ -275,7 +275,7 @@ class Pages extends AdminController
             . '&course=' . Request::getInt('course', 0)
             . '&offering=' . Request::getInt('offering', 0);
         App::redirect(
-            Route::url($url, false)
+            Route::url($url, false),
         );
     }
 
@@ -412,7 +412,7 @@ class Pages extends AdminController
             'success'   => true,
             'file'      => $filename . '.' . $ext,
             'directory' => str_replace(PATH_APP, '', $path),
-            'id'        => $listdir
+            'id'        => $listdir,
         ]);
     }
 
@@ -488,7 +488,7 @@ class Pages extends AdminController
             if ($file['size'] > $sizeLimit) {
                 $msg = Lang::txt(
                     'COM_COURSES_ERROR_UPLOADING_FILE_TOO_BIG',
-                    \Hubzero\Utility\Number::formatBytes($sizeLimit)
+                    \Hubzero\Utility\Number::formatBytes($sizeLimit),
                 );
                 $this->setError($msg);
                 return $this->displayTask();
@@ -659,7 +659,7 @@ class Pages extends AdminController
             'onchange="goUpDir()" ',
             'value',
             'text',
-            $this->view->subdir
+            $this->view->subdir,
         );
 
         $this->view->config  = $this->config;
@@ -836,7 +836,7 @@ class Pages extends AdminController
             App::redirect(
                 $url,
                 implode('<br />', $this->getErrors()),
-                'error'
+                'error',
             );
         } else {
             // Output messsage and redirect
@@ -845,7 +845,7 @@ class Pages extends AdminController
                 : Lang::txt('COM_COURSES_ITEMS_UNPUBLISHED', $num);
             App::redirect(
                 $url,
-                $msg
+                $msg,
             );
         }
     }

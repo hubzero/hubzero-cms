@@ -224,7 +224,7 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             $operator,
             $value,
             $logical,
-            $depth
+            $depth,
         );
     }
 
@@ -245,7 +245,7 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             $value,
             $path,
             $logical,
-            $depth
+            $depth,
         );
     }
 
@@ -268,7 +268,7 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             $value,
             $path,
             $logical,
-            $depth
+            $depth,
         );
     }
 
@@ -292,7 +292,7 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             $value,
             $logical,
             $depth,
-            $function
+            $function,
         );
     }
 
@@ -378,7 +378,7 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                         $joinSql,
                         $whereSql,
                         $groupSql,
-                        $havingSql
+                        $havingSql,
                     );
 
                     $allBindings = array_merge($allBindings, $this->getBindings());
@@ -779,7 +779,7 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
     {
         return $this->normalizeShowColumnsMetadata(
             (array) $data,
-            (bool) $typeOnly
+            (bool) $typeOnly,
         );
     }
 
@@ -926,7 +926,7 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
         $derivedTableSql = sprintf(
             'SELECT DISTINCT %s FROM %s',
             $this->connection->wrap($correlation['inner_column']),
-            $this->connection->wrap($correlation['inner_table'])
+            $this->connection->wrap($correlation['inner_table']),
         );
 
         // Extract non-correlation WHERE conditions to include in derived table
@@ -940,7 +940,7 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             preg_quote($correlation['inner_table'], '/'),
             preg_quote($correlation['inner_column'], '/'),
             preg_quote($correlation['outer_table'], '/'),
-            preg_quote($correlation['outer_column'], '/')
+            preg_quote($correlation['outer_column'], '/'),
         );
         $whereClause = preg_replace($correlationPattern1, '', $whereClause);
 
@@ -949,7 +949,7 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             preg_quote($correlation['outer_table'], '/'),
             preg_quote($correlation['outer_column'], '/'),
             preg_quote($correlation['inner_table'], '/'),
-            preg_quote($correlation['inner_column'], '/')
+            preg_quote($correlation['inner_column'], '/'),
         );
         $whereClause = preg_replace($correlationPattern2, '', $whereClause);
 
@@ -1112,7 +1112,7 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             $this->bind(
                 is_string($this->upsertValues[$column])
                     ? trim($this->upsertValues[$column])
-                    : $this->upsertValues[$column]
+                    : $this->upsertValues[$column],
             );
         }
 
@@ -1124,7 +1124,7 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             $this->bind(
                 is_string($this->upsertValues[$col])
                     ? trim($this->upsertValues[$col])
-                    : $this->upsertValues[$col]
+                    : $this->upsertValues[$col],
             );
             $updates[] = "$quotedCol = ?";
         }
@@ -1134,7 +1134,7 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             $this->connection->quoteName($this->upsertTable),
             implode(', ', $quotedColumns),
             implode(', ', $placeholders),
-            implode(', ', $updates)
+            implode(', ', $updates),
         );
     }
 
@@ -1240,7 +1240,7 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
 
                 if ($ignoreMode) {
                     $result .= $this->buildNoopDuplicateUpdateClause(
-                        !empty($this->insertColumns) ? $this->insertColumns[0] : 'id'
+                        !empty($this->insertColumns) ? $this->insertColumns[0] : 'id',
                     );
                 }
 

@@ -23,7 +23,7 @@ $link = $base . '/' . trim($sef, '/');
 $message  = Lang::txt(
     'PLG_CRON_ACTIVITY_EMAIL_MEMBERS_EXPLANATION',
     $link,
-    $this->member->get('name') . ' (' . $this->member->get('username') . ')'
+    $this->member->get('name') . ' (' . $this->member->get('username') . ')',
 );
 
 foreach ($this->rows as $row) {
@@ -35,7 +35,7 @@ foreach ($this->rows as $row) {
             // numeric entity to its UTF-8 character with the supported function.
             return mb_decode_numericentity($m[1], [0x0, 0x10FFFF, 0, 0x10FFFF], 'UTF-8');
         },
-        $output
+        $output,
     );
 
     $name = Lang::txt('JANONYMOUS');

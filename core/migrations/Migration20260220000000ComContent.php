@@ -43,7 +43,7 @@ class Migration20260220000000ComContent extends Base
         $updated = preg_replace(
             '/<fieldset>(\s*)<label\s+for="rsearchword">/',
             '<fieldset>$1<legend class="sr-only">Search resources</legend>$1<label for="rsearchword">',
-            $row->introtext
+            $row->introtext,
         );
 
         if ($updated !== $row->introtext) {
@@ -73,7 +73,7 @@ class Migration20260220000000ComContent extends Base
         $updated = preg_replace(
             '/<legend class="sr-only">Search resources<\/legend>\s*/',
             '',
-            $row->introtext
+            $row->introtext,
         );
 
         if ($updated !== $row->introtext) {

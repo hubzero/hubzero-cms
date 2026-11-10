@@ -19,7 +19,7 @@ $this->css();
 // Build the HTML
 $html  = '';
 $draftUrl = Route::url(
-    'index.php?option=com_resources&task=draft'
+    'index.php?option=com_resources&task=draft',
 );
 $html .= "\t\t" . '<ul class="module-nav"><li>'
     . '<a class="icon-plus" href="' . $draftUrl . '">'
@@ -32,7 +32,7 @@ if ($this->show_tools && $tools) {
 
     $pipelineUrl = Route::url(
         'index.php?option=com_tools'
-        . '&controller=pipeline&task=pipeline'
+        . '&controller=pipeline&task=pipeline',
     );
     $html .= '<a href="' . $pipelineUrl . '">'
         . Lang::txt('MOD_MYCONTRIBUTIONS_TOOLS') . ' ';
@@ -54,14 +54,14 @@ if ($this->show_tools && $tools) {
                 || $toolState == 'created'
             )
                 ? ' ' . Lang::txt(
-                    'MOD_MYCONTRIBUTIONS_ACTION_REQUIRED'
+                    'MOD_MYCONTRIBUTIONS_ACTION_REQUIRED',
                 )
                 : '';
 
             $statusUrl = Route::url(
                 'index.php?option=com_tools'
                 . '&controller=pipeline&task=status&app='
-                . $tools[$i]->toolname
+                . $tools[$i]->toolname,
             );
             $html .= '<li class="' . $class . '">' . "\n";
             $html .= '<a href="' . $statusUrl . '">'
@@ -70,7 +70,7 @@ if ($this->show_tools && $tools) {
             $statusTitle = Lang::txt(
                 'MOD_MYCONTRIBUTIONS_TOOL_STATUS',
                 $toolState,
-                $urgency
+                $urgency,
             );
             $html .= '<span class="under">'
                 . Lang::txt('MOD_MYCONTRIBUTIONS_STATUS')
@@ -89,14 +89,14 @@ if ($this->show_tools && $tools) {
                 if ($this->show_questions) {
                     $qUrl = Route::url(
                         'index.php?option=com_resources&id='
-                        . $tools[$i]->rid . '&active=answers'
+                        . $tools[$i]->rid . '&active=answers',
                     );
                     $qKey = 'MOD_MYCONTRIBUTIONS_NUM_QUESTION'
                         . ($tools[$i]->q > 1 ? 'S' : '');
                     $qTitle = Lang::txt(
                         $qKey,
                         $tools[$i]->q,
-                        $tools[$i]->q_new
+                        $tools[$i]->q_new,
                     );
                     $html .= '<span class="item_q">';
                     $html .= '<a href="' . $qUrl
@@ -110,14 +110,14 @@ if ($this->show_tools && $tools) {
                 if ($this->show_wishes) {
                     $wUrl = Route::url(
                         'index.php?option=com_resources&id='
-                        . $tools[$i]->rid . '&active=wishlist'
+                        . $tools[$i]->rid . '&active=wishlist',
                     );
                     $wKey = 'MOD_MYCONTRIBUTIONS_NUM_WISH'
                         . ($tools[$i]->w > 1 ? 'S' : '');
                     $wTitle = Lang::txt(
                         $wKey,
                         $tools[$i]->w,
-                        $tools[$i]->w_new
+                        $tools[$i]->w_new,
                     );
                     $html .= '<span class="item_w">';
                     $html .= '<a href="' . $wUrl
@@ -129,14 +129,14 @@ if ($this->show_tools && $tools) {
                     $sUrl = Route::url(
                         'index.php?option=com_support'
                         . '&task=tickets&find=group:'
-                        . $tools[$i]->devgroup
+                        . $tools[$i]->devgroup,
                     );
                     $sKey = 'MOD_MYCONTRIBUTIONS_NUM_TICKET'
                         . ($tools[$i]->s > 1 ? 'S' : '');
                     $sTitle = Lang::txt(
                         $sKey,
                         $tools[$i]->s,
-                        $tools[$i]->s_new
+                        $tools[$i]->s_new,
                     );
                     $html .= '<span class="item_s">';
                     $html .= '<a href="' . $sUrl
@@ -154,7 +154,7 @@ if ($this->show_tools && $tools) {
 
     $contribUrl = Route::url(
         'index.php?option=com_members&id='
-        . User::get('id') . '&active=contributions'
+        . User::get('id') . '&active=contributions',
     );
     $html .= '<h4><a href="' . $contribUrl . '">'
         . Lang::txt('MOD_MYCONTRIBUTIONS_OTHERS_IN_PROGRESS');
@@ -190,14 +190,14 @@ if (!$contributions) {
 
             // Get author login
             $author_login = Lang::txt(
-                'MOD_MYCONTRIBUTIONS_UNKNOWN'
+                'MOD_MYCONTRIBUTIONS_UNKNOWN',
             );
             $author = Components\Members\Models\Member::oneOrNew(
-                $contributions[$i]->created_by
+                $contributions[$i]->created_by,
             );
             if ($author->get('id')) {
                 $author_login = stripslashes(
-                    $author->get('name')
+                    $author->get('name'),
                 );
                 if (in_array($author->get('access'), User::getAuthorisedViewLevels())) {
                     $author_login = '<a href="'
@@ -209,11 +209,11 @@ if (!$contributions) {
             $itemUrl = Route::url(
                 'index.php?option=com_resources'
                 . '&task=draft&step=1&id='
-                . $contributions[$i]->id
+                . $contributions[$i]->id,
             );
             $itemTitle = \Hubzero\Utility\Str::truncate(
                 stripslashes($contributions[$i]->title),
-                40
+                40,
             );
             $html .= "\t" . '<li class="'
                 . $class . '">' . "\n";
@@ -225,7 +225,7 @@ if (!$contributions) {
                 . '<br />'
                 . Lang::txt(
                     'MOD_MYCONTRIBUTIONS_SUBMITTED_BY',
-                    $author_login
+                    $author_login,
                 )
                 . '</span>' . "\n";
             $html .= "\t" . '</li>' . "\n";

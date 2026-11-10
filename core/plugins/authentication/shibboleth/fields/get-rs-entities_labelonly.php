@@ -66,7 +66,7 @@ foreach (
     $rv[] = [
         'entity_id' => $id,
         'label'     => $title,
-        'host'      => $host
+        'host'      => $host,
 //              'logo'      => $logo
     ];
 }

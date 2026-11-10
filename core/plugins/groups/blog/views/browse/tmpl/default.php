@@ -19,7 +19,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 $first = $this->archive->entries([
         'state'    => 1,
         'scope'    => $this->filters['scope'],
-        'scope_id' => $this->filters['scope_id']
+        'scope_id' => $this->filters['scope_id'],
     ])
     ->order('publish_up', 'asc')
     ->limit(1)
@@ -104,7 +104,7 @@ $isEmpty = $noFilters && !$rows->count();
                             <?php
                             $searchTxt = Lang::txt(
                                 'PLG_GROUPS_BLOG_SEARCH_FOR',
-                                $this->escape($this->filters['search'])
+                                $this->escape($this->filters['search']),
                             );
                             echo $searchTxt;
                             ?>
@@ -209,7 +209,7 @@ $isEmpty = $noFilters && !$rows->count();
                                                 $comments = $row->comments()
                                                     ->whereIn('state', [
                                                         Components\Blog\Models\Comment::STATE_PUBLISHED,
-                                                        Components\Blog\Models\Comment::STATE_FLAGGED
+                                                        Components\Blog\Models\Comment::STATE_FLAGGED,
                                                     ])
                                                     ->count();
                                                 echo Lang::txts('PLG_GROUPS_BLOG_NUM_COMMENTS', $comments); ?>
@@ -263,13 +263,13 @@ $isEmpty = $noFilters && !$rows->count();
                                         <p>
                                             <?php echo \Hubzero\Utility\Str::truncate(
                                                 strip_tags($row->content),
-                                                $introLen
+                                                $introLen,
                                             ); ?>
                                         </p>
                                     <?php } else { ?>
                                         <?php echo \Hubzero\Utility\Str::truncate(
                                             $row->content,
-                                            $introLen
+                                            $introLen,
                                         ); ?>
                                     <?php } ?>
                                 </div>
@@ -333,7 +333,7 @@ $isEmpty = $noFilters && !$rows->count();
                                                     'PLG_GROUPS_BLOG_SEPTEMBER',
                                                     'PLG_GROUPS_BLOG_OCTOBER',
                                                     'PLG_GROUPS_BLOG_NOVEMBER',
-                                                    'PLG_GROUPS_BLOG_DECEMBER'
+                                                    'PLG_GROUPS_BLOG_DECEMBER',
                                                 ];
                                                 if ($i == $now) {
                                                     $months = date("m");
@@ -349,7 +349,7 @@ $isEmpty = $noFilters && !$rows->count();
                                                     $activeClass = ' class="active"';
                                                 }
                                                 $monthUrl = Route::url(
-                                                    $base . '&scope=' . $i . '/' . sprintf("%02d", $monthNum)
+                                                    $base . '&scope=' . $i . '/' . sprintf("%02d", $monthNum),
                                                 );
                                                 ?>
                                                 <li>
@@ -373,7 +373,7 @@ $isEmpty = $noFilters && !$rows->count();
                     <?php
                     $popular = $this->archive->entries([
                             'state'  => $this->filters['state'],
-                            'access' => $this->filters['access']
+                            'access' => $this->filters['access'],
                         ])
                         ->order('hits', 'desc')
                         ->limit(5)

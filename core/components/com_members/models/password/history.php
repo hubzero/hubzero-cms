@@ -43,7 +43,7 @@ class History extends Relational
      */
     protected $rules = [
         'user_id'  => 'notempty',
-        'passhash' => 'notempty'
+        'passhash' => 'notempty',
     ];
 
     /**
@@ -53,7 +53,7 @@ class History extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**

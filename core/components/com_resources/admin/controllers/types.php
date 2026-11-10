@@ -51,19 +51,19 @@ class Types extends AdminController
             'sort' => Request::getState(
                 $this->_option . '.types.sort',
                 'filter_order',
-                'type'
+                'type',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.types.sortdir',
                 'filter_order_Dir',
-                'ASC'
+                'ASC',
             ),
             'category' => Request::getState(
                 $this->_option . '.types.category',
                 'category',
                 27,
-                'int'
-            )
+                'int',
+            ),
         ];
 
         // Get the categories
@@ -385,7 +385,7 @@ class Types extends AdminController
         $field->type        = Request::getString('type', '');
         $field->options     = [
             $option,
-            $option
+            $option,
         ];
 
         $elements = new \Components\Resources\Models\Elements();

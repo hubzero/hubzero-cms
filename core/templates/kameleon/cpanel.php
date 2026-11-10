@@ -24,10 +24,10 @@ Html::behavior('framework', true);
 
 // Load base styles
 $this->addStyleSheet(
-    $this->baseurl . '/templates/' . $this->template . '/css/index.css?v=' . filemtime(__DIR__ . '/css/index.css')
+    $this->baseurl . '/templates/' . $this->template . '/css/index.css?v=' . filemtime(__DIR__ . '/css/index.css'),
 );
 $this->addStyleSheet(
-    $this->baseurl . '/templates/' . $this->template . '/css/cpanel.css?v=' . filemtime(__DIR__ . '/css/cpanel.css')
+    $this->baseurl . '/templates/' . $this->template . '/css/cpanel.css?v=' . filemtime(__DIR__ . '/css/cpanel.css'),
 );
 
 // Load theme
@@ -46,7 +46,7 @@ $cls = [
     $theme,
     $htheme,
     $browser->name(),
-    $browser->name() . $browser->major()
+    $browser->name() . $browser->major(),
 ];
 ?>
 <!DOCTYPE html>
@@ -156,7 +156,7 @@ $cls = [
                         'TPL_KAMELEON_COPYRIGHT',
                         Request::root(),
                         Config::get('sitename'),
-                        date("Y")
+                        date("Y"),
                     ); ?>
                 </p>
                 <p class="promotion">

@@ -96,10 +96,10 @@ if ($this->page->exists() && !$this->page->access('modify')) {
     <?php } ?>
         <?php
         $macrosImageUrl = Route::url(
-            'index.php?option=com_wiki&pagename=Help:WikiMacros#image'
+            'index.php?option=com_wiki&pagename=Help:WikiMacros#image',
         );
         $macrosFileUrl = Route::url(
-            'index.php?option=com_wiki&pagename=Help:WikiMacros#file'
+            'index.php?option=com_wiki&pagename=Help:WikiMacros#file',
         );
         $baseUrl = rtrim(Request::base(true), '/');
         $dropInstructions = Lang::txt('COM_WIKI_CLICK_OR_DROP_FILE');
@@ -167,13 +167,13 @@ if ($this->page->exists() && !$this->page->access('modify')) {
                 $this->revision->get('pagetext'),
                 '',
                 '35',
-                '20'
+                '20',
             );
             ?>
         </label>
         <?php
         $wikiFormattingUrl = Route::url(
-            'index.php?option=com_wiki&pagename=Help:WikiFormatting'
+            'index.php?option=com_wiki&pagename=Help:WikiFormatting',
         );
         ?>
         <p class="ta-right hint">

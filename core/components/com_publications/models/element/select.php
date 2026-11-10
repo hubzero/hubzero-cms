@@ -58,7 +58,7 @@ class Select extends Base
             'value',
             'text',
             $value,
-            $fieldId
+            $fieldId,
         );
         return '<span class="field-wrap">' . $selectHtml . '</span>';
     }

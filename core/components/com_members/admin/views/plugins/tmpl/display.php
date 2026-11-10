@@ -59,7 +59,7 @@ $saveOrder = $listOrder == 'ordering';
                     'value',
                     'text',
                     $this->filters['state'],
-                    true
+                    true,
                 );?>
             </select>
 
@@ -71,7 +71,7 @@ $saveOrder = $listOrder == 'ordering';
                     Html::access('assetgroups'),
                     'value',
                     'text',
-                    $this->filters['access']
+                    $this->filters['access'],
                 );
                 ?>
                 <?php echo $val; ?>
@@ -148,7 +148,7 @@ $saveOrder = $listOrder == 'ordering';
                                 $item->editor,
                                 $item->checked_out_time,
                                 '',
-                                $canCheckin
+                                $canCheckin,
                             ); ?>
                         <?php endif; ?>
                         <?php if ($canEdit) : ?>
@@ -156,7 +156,7 @@ $saveOrder = $listOrder == 'ordering';
                             $editUrl = Route::url(
                                 'index.php?option=com_plugins&task=edit&id='
                                 . (int) $item->extension_id
-                                . '&' . Session::getFormToken() . '=1'
+                                . '&' . Session::getFormToken() . '=1',
                             );
                             ?>
                             <a href="<?php echo $editUrl; ?>">
@@ -182,7 +182,7 @@ $saveOrder = $listOrder == 'ordering';
                                         (@$folders[$i + 1] == $item->folder),
                                         'orderdown',
                                         'JLIB_HTML_MOVE_DOWN',
-                                        $ordering
+                                        $ordering,
                                     );
                                     ?>
                                     <span><?php echo $val; ?></span>
@@ -196,7 +196,7 @@ $saveOrder = $listOrder == 'ordering';
                                         (@$folders[$i + 1] == $item->folder),
                                         'orderup',
                                         'JLIB_HTML_MOVE_DOWN',
-                                        $ordering
+                                        $ordering,
                                     );
                                     ?>
                                     <span><?php echo $val; ?></span>
@@ -222,7 +222,7 @@ $saveOrder = $listOrder == 'ordering';
                                 . '&controller='
                                 . $this->controller
                                 . '&task=manage&plugin='
-                                . $item->element
+                                . $item->element,
                             );
                             ?>
                             <a href="<?php echo $href; ?>">

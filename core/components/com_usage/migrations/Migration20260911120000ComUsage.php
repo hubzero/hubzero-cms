@@ -86,7 +86,7 @@ class Migration20260911120000ComUsage extends Base
             $this->log(
                 'com_usage metrics database answers neither at ' . self::SHIPPED . ' nor at ' . $host
                 . '; leaving its settings as they are.',
-                'warning'
+                'warning',
             );
             return;
         }
@@ -95,7 +95,7 @@ class Migration20260911120000ComUsage extends Base
 
         $this->log(
             'com_usage now reaches its metrics database at ' . $host
-            . ', as the site does, rather than over a socket.'
+            . ', as the site does, rather than over a socket.',
         );
     }
 

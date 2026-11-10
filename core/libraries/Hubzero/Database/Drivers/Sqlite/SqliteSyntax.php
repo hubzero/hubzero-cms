@@ -159,7 +159,7 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 $joinSql,
                 $whereSql,
                 $groupSql,
-                $havingSql
+                $havingSql,
             );
 
             $allBindings = array_merge($allBindings, $this->getBindings());
@@ -254,7 +254,7 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
 
         if (count($branch['from']) !== 1 || isset($branch['from'][0]['raw'])) {
             throw new UnsupportedSyntaxException(
-                'SQLite FULL OUTER JOIN emulation requires a single table in FROM.'
+                'SQLite FULL OUTER JOIN emulation requires a single table in FROM.',
             );
         }
 
@@ -262,7 +262,7 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
         $fromAlias = $branch['from'][0]['as'] ?? null;
         if (!$fromTable) {
             throw new UnsupportedSyntaxException(
-                'SQLite FULL OUTER JOIN emulation requires a simple FROM table.'
+                'SQLite FULL OUTER JOIN emulation requires a simple FROM table.',
             );
         }
 
@@ -270,7 +270,7 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
         [$joinTable, $joinAlias] = $this->parseTableAlias($join['table']);
         if (!$joinTable) {
             throw new UnsupportedSyntaxException(
-                'SQLite FULL OUTER JOIN emulation requires a simple JOIN table.'
+                'SQLite FULL OUTER JOIN emulation requires a simple JOIN table.',
             );
         }
 
@@ -365,7 +365,7 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                     throw new UnsupportedSyntaxException(
                         'Unable to reorder FULL JOIN emulation for SQLite. ' .
                         'A JOIN references tables to its right. ' .
-                        'Rewrite the query with explicit UNIONs or reorder joins.'
+                        'Rewrite the query with explicit UNIONs or reorder joins.',
                     );
                 }
 
@@ -523,7 +523,7 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             if (count($this->from) !== 1 || isset($this->from[0]['raw'])) {
                 throw new UnsupportedSyntaxException(
                     'SQLite RIGHT JOIN emulation requires a single table in FROM.',
-                    500
+                    500,
                 );
             }
 
@@ -532,7 +532,7 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             if (!$fromTable) {
                 throw new UnsupportedSyntaxException(
                     'SQLite RIGHT JOIN emulation requires a simple FROM table.',
-                    500
+                    500,
                 );
             }
 
@@ -583,7 +583,7 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             throw new UnsupportedSyntaxException(
                 'RIGHT and FULL OUTER JOINs are not supported by SQLite. ' .
                 'Consider rewriting as a LEFT JOIN with reversed table order.',
-                500
+                500,
             );
         }
 
@@ -624,7 +624,7 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                     'raw_type'  => $field->type,
                     'allownull' => !$field->notnull,
                     'default'   => $this->normalizeDefault($field->dflt_value),
-                    'pk'        => (bool) $field->pk
+                    'pk'        => (bool) $field->pk,
                 ];
             }
         }
@@ -780,7 +780,7 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             'raw'      => $raw,
             'bindings' => [$value],
             'logical'  => $logical,
-            'depth'    => $depth
+            'depth'    => $depth,
         ];
     }
 
@@ -824,7 +824,7 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             'raw'      => $raw,
             'bindings' => [$bindValue],
             'logical'  => $logical,
-            'depth'    => $depth
+            'depth'    => $depth,
         ];
     }
 
@@ -859,7 +859,7 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             'raw'      => $raw,
             'bindings' => [(int) $value],
             'logical'  => $logical,
-            'depth'    => $depth
+            'depth'    => $depth,
         ];
     }
 
@@ -912,7 +912,7 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             'raw'      => $raw,
             'bindings' => [$value],
             'logical'  => $logical,
-            'depth'    => $depth
+            'depth'    => $depth,
         ];
     }
 
@@ -936,7 +936,7 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
         return [
             'DELETE FROM ' . $quotedTable,
             // Reset auto-increment counter (if table has one)
-            "DELETE FROM sqlite_sequence WHERE name = " . $this->connection->quote($table)
+            "DELETE FROM sqlite_sequence WHERE name = " . $this->connection->quote($table),
         ];
     }
 
@@ -963,7 +963,7 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             $this->bind(
                 is_string($this->upsertValues[$column])
                     ? trim($this->upsertValues[$column])
-                    : $this->upsertValues[$column]
+                    : $this->upsertValues[$column],
             );
         }
 
@@ -975,7 +975,7 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
 
         $quotedConflict = array_map(
             fn($col) => $this->connection->quoteName($col),
-            $conflictColumns
+            $conflictColumns,
         );
 
         $updates = [];
@@ -991,7 +991,7 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             implode(', ', $quotedColumns),
             implode(', ', $placeholders),
             implode(', ', $quotedConflict),
-            implode(', ', $updates)
+            implode(', ', $updates),
         );
     }
 
@@ -1013,7 +1013,7 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
         $columns = array_keys($this->upsertManyRows[0]);
         $quotedColumns = array_map(
             fn($col) => $this->connection->quoteName($col),
-            $columns
+            $columns,
         );
 
         $valueSets = [];
@@ -1023,7 +1023,7 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 $placeholders[] = '?';
                 $value = $row[$column] ?? null;
                 $this->bind(
-                    is_string($value) ? trim($value) : $value
+                    is_string($value) ? trim($value) : $value,
                 );
             }
             $valueSets[] = '(' . implode(', ', $placeholders) . ')';
@@ -1035,7 +1035,7 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
 
         $quotedConflict = array_map(
             fn($col) => $this->connection->quoteName($col),
-            $conflictColumns
+            $conflictColumns,
         );
 
         $updates = [];
@@ -1051,7 +1051,7 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             implode(', ', $quotedColumns),
             implode(', ', $valueSets),
             implode(', ', $quotedConflict),
-            implode(', ', $updates)
+            implode(', ', $updates),
         );
     }
 
@@ -1240,7 +1240,7 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             $ignore,
             $this->connection->quoteName($this->insertManyTable),
             implode(', ', $quotedColumns),
-            implode(', ', $valueSets)
+            implode(', ', $valueSets),
         );
     }
 }

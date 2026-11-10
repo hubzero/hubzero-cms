@@ -43,7 +43,7 @@ class Action extends Relational
      */
     protected $rules = [
         'action'    => 'notempty',
-        'mailingid' => 'positive|nonzero'
+        'mailingid' => 'positive|nonzero',
     ];
 
     /**

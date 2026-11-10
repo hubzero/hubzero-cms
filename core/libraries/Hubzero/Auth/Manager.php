@@ -66,7 +66,7 @@ class Manager
 
             $denied_states = [
                 Status::EXPIRED,
-                Status::DENIED
+                Status::DENIED,
             ];
 
             foreach ($authorisations as $authorisation) {
@@ -111,7 +111,7 @@ class Manager
                     $privateKey = $this->app->hash(@$_SERVER['HTTP_USER_AGENT']);
                     $crypt = new \Hubzero\Encryption\Encrypter(
                         new \Hubzero\Encryption\Cipher\Simple(),
-                        new \Hubzero\Encryption\Key('simple', $privateKey, $privateKey)
+                        new \Hubzero\Encryption\Key('simple', $privateKey, $privateKey),
                     );
                     $rcookie = $crypt->encrypt(json_encode($credentials));
                     $lifetime = time() + 365 * 24 * 60 * 60;

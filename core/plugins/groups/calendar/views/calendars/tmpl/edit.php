@@ -24,7 +24,7 @@ defined('_HZEXEC_') or die();
         $backUrl = Route::url(
             'index.php?option=' . $this->option
             . '&cn=' . $this->group->cn
-            . '&active=calendar&action=calendars'
+            . '&active=calendar&action=calendars',
         );
         ?>
         <a class="icon-prev btn back" title=""
@@ -38,7 +38,7 @@ defined('_HZEXEC_') or die();
 $formAction = Route::url(
     'index.php?option=' . $this->option
     . '&cn=' . $this->group->cn
-    . '&active=calendar&action=savecalendar'
+    . '&active=calendar&action=savecalendar',
 );
 ?>
 <form action="<?php echo $formAction; ?>"
@@ -66,7 +66,7 @@ $formAction = Route::url(
             $urlHint = Lang::txt(
                 'This is used to fetch remote calendar'
                 . ' events from other services such as'
-                . ' a Google Calendar.'
+                . ' a Google Calendar.',
             );
             ?>
             <span class="hint"><?php echo $urlHint; ?></span>

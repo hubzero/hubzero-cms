@@ -39,13 +39,13 @@ class Members extends Plugin
             [
                 'name'   => 'onPointRoyalties',
                 'label'  => Lang::txt('PLG_CRON_MEMBERS_POINT_ROYALTIES'),
-                'params' => ''
+                'params' => '',
             ],
             [
                 'name'   => 'expireInactiveAccounts',
                 'label'  => Lang::txt('PLG_CRON_MEMBERS_EXPIRE_INACTIVE'),
-                'params' => 'expireinactive'
-            ]
+                'params' => 'expireinactive',
+            ],
         ];
 
         return $obj;
@@ -105,7 +105,7 @@ class Members extends Plugin
                         'market_value' => $accumulated,
                         'category'     => 'answers',
                         'action'       => $action,
-                        'log'          => $this->_message
+                        'log'          => $this->_message,
                     ]);
 
                     if (!$MH->save()) {
@@ -150,7 +150,7 @@ class Members extends Plugin
                     'market_value' => $accumulated,
                     'category'     => 'reviews',
                     'action'       => $action,
-                    'log'          => $rmsg
+                    'log'          => $rmsg,
                 ]);
 
                 if (!$MH->save()) {
@@ -187,7 +187,7 @@ class Members extends Plugin
                     'market_value' => $accumulated,
                     'category'     => 'resources',
                     'action'       => $action,
-                    'log'          => $resmsg
+                    'log'          => $resmsg,
                 ]);
 
                 if (!$MH->save()) {

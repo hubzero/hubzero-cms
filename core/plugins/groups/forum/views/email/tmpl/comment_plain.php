@@ -55,7 +55,7 @@ $output = preg_replace_callback(
         // numeric entity to its UTF-8 character with the supported function.
         return mb_decode_numericentity($m[1], [0x0, 0x10FFFF, 0, 0x10FFFF], 'UTF-8');
     },
-    $output
+    $output,
 );
 
 $message .= $output;

@@ -44,7 +44,7 @@ class Confirm extends Button
         $text = '',
         $task = '',
         $list = true,
-        $hideMenu = false
+        $hideMenu = false,
     ) {
         $text   = Lang::txt($text);
         $msg    = Lang::txt($msg, true);

@@ -33,8 +33,8 @@ $canEdit = $this->item->params->get('access-edit');
                 \Components\Content\Site\Helpers\Route::getArticleRoute(
                     $this->item->slug,
                     $this->item->catid,
-                    $this->item->language
-                )
+                    $this->item->language,
+                ),
             );
             ?>
             <a href="<?php echo $articleUrl; ?>">
@@ -92,8 +92,8 @@ $canEdit = $this->item->params->get('access-edit');
             $title = $this->escape($this->item->parent_title);
             $catUrl = Route::url(
                 \Components\Content\Site\Helpers\Route::getCategoryRoute(
-                    $this->item->parent_slug
-                )
+                    $this->item->parent_slug,
+                ),
             );
             $url = '<a href="' . $catUrl . '">' . $title . '</a>';
             ?>
@@ -110,8 +110,8 @@ $canEdit = $this->item->params->get('access-edit');
             $title = $this->escape($this->item->category_title);
             $catUrl = Route::url(
                 \Components\Content\Site\Helpers\Route::getCategoryRoute(
-                    $this->item->catslug
-                )
+                    $this->item->catslug,
+                ),
             );
             $url = '<a href="' . $catUrl . '">' . $title . '</a>';
             ?>
@@ -154,7 +154,7 @@ $canEdit = $this->item->params->get('access-edit');
                 <?php
                 $contactUrl = Route::url(
                     'index.php?option=com_contact&view=contact&id='
-                    . $this->item->contactid
+                    . $this->item->contactid,
                 );
                 $authorLink = '<a href="' . $contactUrl . '">'
                     . $author . '</a>';
@@ -204,7 +204,7 @@ $canEdit = $this->item->params->get('access-edit');
     $articleRoute = \Components\Content\Site\Helpers\Route::getArticleRoute(
         $this->item->slug,
         $this->item->catid,
-        $this->item->language
+        $this->item->language,
     );
     if ($params->get('access-view')) :
         $link = Route::url($articleRoute);
@@ -213,7 +213,7 @@ $canEdit = $this->item->params->get('access-edit');
         $active = $menu->getActive();
         $itemId = $active->id;
         $link1 = Route::url(
-            'index.php?option=com_users&view=login&Itemid=' . $itemId
+            'index.php?option=com_users&view=login&Itemid=' . $itemId,
         );
         $returnURL = Route::url($articleRoute);
         $link = new Hubzero\Utility\Uri($link1);

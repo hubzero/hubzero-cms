@@ -131,7 +131,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
                                     $cite,
                                     $this->filters['search'],
                                     false,
-                                    $this->config
+                                    $this->config,
                                 );
                                 ?>
 
@@ -147,7 +147,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
                                         $cite,
                                         $this->database,
                                         $this->config,
-                                        $this->openurl
+                                        $this->openurl,
                                     );
                                     ?>
 

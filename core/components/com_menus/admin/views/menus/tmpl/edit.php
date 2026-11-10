@@ -59,7 +59,7 @@ $this->js();
 $formAction = Route::url(
     'index.php?option=' . $this->option
     . '&controller=' . $this->controller
-    . '&task=edit&cid=' . (int) $this->item->get('id')
+    . '&task=edit&cid=' . (int) $this->item->get('id'),
 );
 $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
 ?>

@@ -85,7 +85,7 @@ class Relationships extends AdminController
         $nodes[] = [
             'id'      => $rv['id'],
             'tag'     => $rv['tag'],
-            'raw_tag' => $rv['raw_tag']
+            'raw_tag' => $rv['raw_tag'],
         ];
         if (!$rv['new']) {
             $this->database->setQuery(
@@ -95,7 +95,7 @@ class Relationships extends AdminController
 				WHERE to1.tagid = ' . $rv['id'] . ' AND t.id != ' . $rv['id'] . ' AND to1.label IS NULL
 				GROUP BY t.id, t.tag, t.raw_tag
 				ORDER BY count DESC
-				LIMIT 20'
+				LIMIT 20',
             );
             $t_idx = 0;
             $idx_map = [$rv['id'] => $t_idx];
@@ -114,7 +114,7 @@ class Relationships extends AdminController
                 $links[] = [
                     'source' => $idx + 1,
                     'target' => 0,
-                    'value'  => $row['count']
+                    'value'  => $row['count'],
                 ];
                 $follow[$idx + 1] = $row['id'];
             }
@@ -127,7 +127,7 @@ class Relationships extends AdminController
 					WHERE to1.tagid = ' . $tag_id . ' AND t.id != ' . $tag_id . ' AND to1.label IS NULL
 					GROUP BY t.id, t.tag, t.raw_tag
 					ORDER BY count DESC
-					LIMIT 10'
+					LIMIT 10',
                 );
                 foreach ($this->database->loadAssocList() as $inner_idx => $row) {
                     $max_weight = max($max_weight, $row['count']);
@@ -144,7 +144,7 @@ class Relationships extends AdminController
                     $links[] = [
                         'source' => $idx,
                         'target' => $target_idx,
-                        'value'  => $row['count']
+                        'value'  => $row['count'],
                     ];
                 }
 
@@ -181,7 +181,7 @@ class Relationships extends AdminController
         $nodes = [[
             'id'      => $rv['id'],
             'tag'     => $rv['tag'],
-            'raw_tag' => $rv['raw_tag']
+            'raw_tag' => $rv['raw_tag'],
         ]];
         $tagIdMap = [$rv['id'] => 0];
         $byDepth = [[$tag]];
@@ -203,7 +203,7 @@ class Relationships extends AdminController
 
                 $this->database->setQuery(
                     $tag['type'] == 'child' ? $children :
-                    ($tag['type'] == 'parent' ? $parents : "$parents UNION $children")
+                    ($tag['type'] == 'parent' ? $parents : "$parents UNION $children"),
                 );
 
                 foreach ($this->database->loadAssocList() as $subTag) {
@@ -227,7 +227,7 @@ class Relationships extends AdminController
 
                     $links[] = [
                         'source' => $tagIdMap[$tag['id']],
-                        'target' => $tagIdMap[$subTag['id']]
+                        'target' => $tagIdMap[$subTag['id']],
                     ];
                 }
             }
@@ -295,19 +295,19 @@ class Relationships extends AdminController
                 [
                 'labels'   => [
                     'INSERT INTO `#__tags_object` (tbl, label, tagid, objectid) VALUES (\'tags\', \'label\', %d, %d)',
-                    'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'label\' AND tagid = %d AND objectid = %d'
+                    'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'label\' AND tagid = %d AND objectid = %d',
                 ],
                 'labeled'  => [
                     'INSERT INTO `#__tags_object` (tbl, label, objectid, tagid) VALUES (\'tags\', \'label\', %d, %d)',
-                    'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'label\' AND objectid = %d AND tagid = %d'
+                    'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'label\' AND objectid = %d AND tagid = %d',
                 ],
                 'parents'  => [
                     'INSERT INTO `#__tags_object` (tbl, label, objectid, tagid) VALUES (\'tags\', \'parent\', %d, %d)',
-                    'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'parent\' AND objectid = %d AND tagid = %d'
+                    'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'parent\' AND objectid = %d AND tagid = %d',
                 ],
                 'children' => [
                     'INSERT INTO `#__tags_object` (tbl, label, tagid, objectid) VALUES (\'tags\', \'parent\', %d, %d)',
-                    'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'parent\' AND tagid = %d AND objectid = %d'
+                    'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'parent\' AND tagid = %d AND objectid = %d',
                 ]] as $type => $sql
             ) {
                 $ex = array_flip(array_map($normalize, $tag[$type]));
@@ -445,7 +445,7 @@ class Relationships extends AdminController
         $this->database->setQuery(
             is_int($tag_str)
                 ? 'SELECT DISTINCT t.id, tag, raw_tag, description, COUNT(to1.id) AS count FROM `#__tags` t LEFT JOIN `#__tags_object` to1 ON to1.tagid = t.id WHERE t.id = ' . $tag_str . ' GROUP BY t.id, tag, raw_tag, description'
-                : 'SELECT DISTINCT t.id, tag, raw_tag, description, COUNT(to1.id) AS count FROM `#__tags` t LEFT JOIN `#__tags_object` to1 ON to1.tagid = t.id WHERE tag = ' . $this->database->quote($tag_str) . ' OR raw_tag = ' . $this->database->quote($tag_str) . ' GROUP BY t.id, tag, raw_tag, description'
+                : 'SELECT DISTINCT t.id, tag, raw_tag, description, COUNT(to1.id) AS count FROM `#__tags` t LEFT JOIN `#__tags_object` to1 ON to1.tagid = t.id WHERE tag = ' . $this->database->quote($tag_str) . ' OR raw_tag = ' . $this->database->quote($tag_str) . ' GROUP BY t.id, tag, raw_tag, description',
         );
         if (($tag = $this->database->loadAssoc())) {
             $rv = [
@@ -454,7 +454,7 @@ class Relationships extends AdminController
                 'count' => $tag['count'],
                 'raw_tag' => $tag['raw_tag'],
                 'description' => $tag['description'],
-                'new' => false
+                'new' => false,
             ];
             if (!$detailed) {
                 return $rv;
@@ -464,7 +464,7 @@ class Relationships extends AdminController
                 'SELECT DISTINCT t.raw_tag
 				FROM `#__tags_object` to1
 				INNER JOIN `#__tags` t ON t.id = to1.tagid
-				WHERE to1.tbl = \'tags\' AND to1.label = \'label\' AND to1.objectid = ' . $tag['id']
+				WHERE to1.tbl = \'tags\' AND to1.label = \'label\' AND to1.objectid = ' . $tag['id'],
             );
             $rv['labeled'] = $this->database->loadColumn();
 
@@ -472,7 +472,7 @@ class Relationships extends AdminController
                 'SELECT DISTINCT t.raw_tag
 				FROM `#__tags_object` to1
 				INNER JOIN `#__tags` t ON t.id = to1.objectid
-				WHERE to1.tbl = \'tags\' AND to1.label = \'label\' AND to1.tagid = ' . $tag['id']
+				WHERE to1.tbl = \'tags\' AND to1.label = \'label\' AND to1.tagid = ' . $tag['id'],
             );
             $rv['labels'] = $this->database->loadColumn();
 
@@ -480,7 +480,7 @@ class Relationships extends AdminController
                 'SELECT DISTINCT t.raw_tag
 				FROM `#__tags_object` to1
 				INNER JOIN `#__tags` t ON t.id = to1.tagid
-				WHERE to1.tbl = \'tags\' AND to1.label = \'parent\' AND to1.objectid = ' . $tag['id']
+				WHERE to1.tbl = \'tags\' AND to1.label = \'parent\' AND to1.objectid = ' . $tag['id'],
             );
             $rv['parents'] = $this->database->loadColumn();
 
@@ -488,7 +488,7 @@ class Relationships extends AdminController
                 'SELECT DISTINCT t.raw_tag
 				FROM `#__tags_object` to1
 				INNER JOIN `#__tags` t ON t.id = to1.objectid
-				WHERE to1.tbl = \'tags\' AND to1.label = \'parent\' AND to1.tagid = ' . $tag['id']
+				WHERE to1.tbl = \'tags\' AND to1.label = \'parent\' AND to1.tagid = ' . $tag['id'],
             );
             $rv['children'] = $this->database->loadColumn();
             $rv['description'] = stripslashes($rv['description']);
@@ -515,7 +515,7 @@ class Relationships extends AdminController
             'labeled'     => [],
             'labels'      => [],
             'parents'     => [],
-            'children'    => []
+            'children'    => [],
         ];
     }
 }

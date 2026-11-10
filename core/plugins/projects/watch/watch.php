@@ -52,7 +52,7 @@ class Watch extends Plugin
             'name' => 'watch',
             'title' => 'Watch',
             'submenu' => null,
-            'show' => false
+            'show' => false,
         ];
 
         return $area;
@@ -134,7 +134,7 @@ class Watch extends Plugin
             ->set('watched', \Hubzero\Item\Watch::isWatching(
                 $this->project->get('id'),
                 'project',
-                User::get('id')
+                User::get('id'),
             ));
 
         // Return the output
@@ -152,7 +152,7 @@ class Watch extends Plugin
         $watch = \Hubzero\Item\Watch::oneByScope(
             $this->project->get('id'),
             'project',
-            User::get('id')
+            User::get('id'),
         );
 
         $params = new \Hubzero\Config\Registry($watch->get('params', ''));
@@ -168,7 +168,7 @@ class Watch extends Plugin
             'files' => $params->get('files', $dflt),
             'publications' => $params->get('publications', $dflt),
             'todo' => $params->get('todo', $dflt),
-            'notes' => $params->get('notes', $dflt)
+            'notes' => $params->get('notes', $dflt),
         ];
 
         // Instantiate a view
@@ -192,7 +192,7 @@ class Watch extends Plugin
         // Login required
         if (User::isGuest() || !$this->project->exists()) {
             App::redirect(
-                Route::url($this->project->link())
+                Route::url($this->project->link()),
             );
         }
 
@@ -206,7 +206,7 @@ class Watch extends Plugin
             $this->project->get('id'),
             'project',
             User::get('id'),
-            $email
+            $email,
         );
 
         $watch->set('item_id', $this->project->get('id'));
@@ -221,7 +221,7 @@ class Watch extends Plugin
             'files' => 0,
             'publications' => 0,
             'todo' => 0,
-            'notes' => 0
+            'notes' => 0,
         ];
 
         $params = new \Hubzero\Config\Registry($watch->get('params', ''));
@@ -249,7 +249,7 @@ class Watch extends Plugin
         }
 
         App::redirect(
-            Route::url($this->project->link())
+            Route::url($this->project->link()),
         );
     }
 
@@ -393,7 +393,7 @@ class Watch extends Plugin
         $eview = new \Hubzero\Mail\View([
             'base_path' => Component::path('com_projects') . DS . 'site',
             'name' => 'emails',
-            'layout' => 'watch_plain'
+            'layout' => 'watch_plain',
         ]);
         $eview->activities = $activities;
         $eview->subject = $subject;

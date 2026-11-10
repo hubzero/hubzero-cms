@@ -51,7 +51,7 @@ class Html
             ' <a class="ext-link" href="%s"%s>%s</a>',
             $href,
             ' rel="external noreferrer"',
-            $name
+            $name,
         );
         return $l;
     }
@@ -129,7 +129,7 @@ class Html
             Lang::txt('EVENTS_CAL_LANG_WEDNESDAYSHORT'),
             Lang::txt('EVENTS_CAL_LANG_THURSDAYSHORT'),
             Lang::txt('EVENTS_CAL_LANG_FRIDAYSHORT'),
-            Lang::txt('EVENTS_CAL_LANG_SATURDAYSHORT')
+            Lang::txt('EVENTS_CAL_LANG_SATURDAYSHORT'),
         ];
         $daynamelist[] = \Html::select('option', '-1', '&nbsp;' . Lang::txt('EVENTS_CAL_LANG_BYDAYNUMBER') . '<br />', 'value', 'text');
         for ($a = 0; $a < 7; $a++) {
@@ -310,7 +310,7 @@ class Html
             '9' => 'Asia/Tokyo', '9.5' => 'Australia/Adelaide', '10' => 'Australia/Brisbane',
             '10.5' => 'Australia/Lord_Howe', '11' => 'Pacific/Kosrae', '11.5' => 'Pacific/Norfolk',
             '12' => 'Pacific/Auckland', '12.75' => 'Pacific/Chatham', '13' => 'Pacific/Tongatapu',
-            '14' => 'Pacific/Kiritimati'
+            '14' => 'Pacific/Kiritimati',
         ];
         if (isset($offsets[(string) $tzselected])) {
             $tzselected = $offsets[(string) $tzselected];
@@ -383,7 +383,7 @@ class Html
             "12"    => Lang::txt('EVENTS_TIME_UTC_12'),
             "12.75" => Lang::txt('EVENTS_TIME_UTC_1245'),
             "13"    => Lang::txt('EVENTS_TIME_UTC_13'),
-            "14"    => Lang::txt('EVENTS_TIME_UTC_14')
+            "14"    => Lang::txt('EVENTS_TIME_UTC_14'),
         ];
 
         if (array_key_exists($tz, $timezones)) {
@@ -408,7 +408,7 @@ class Html
             Lang::txt('EVENTS_CAL_LANG_WEDNESDAYSHORT'),
             Lang::txt('EVENTS_CAL_LANG_THURSDAYSHORT'),
             Lang::txt('EVENTS_CAL_LANG_FRIDAYSHORT'),
-            Lang::txt('EVENTS_CAL_LANG_SATURDAYSHORT')
+            Lang::txt('EVENTS_CAL_LANG_SATURDAYSHORT'),
         ];
         $tosend = '';
         if ($reccurweekdays == '') {
@@ -446,7 +446,7 @@ class Html
             Lang::txt('EVENTS_CAL_LANG_REP_WEEK') . ' 2',
             Lang::txt('EVENTS_CAL_LANG_REP_WEEK') . ' 3',
             Lang::txt('EVENTS_CAL_LANG_REP_WEEK') . ' 4',
-            Lang::txt('EVENTS_CAL_LANG_REP_WEEK') . ' 5'
+            Lang::txt('EVENTS_CAL_LANG_REP_WEEK') . ' 5',
         ];
         $tosend = '';
         $checked = '';

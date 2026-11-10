@@ -29,7 +29,7 @@ class Owner extends Relational
      */
     protected $rules = [
         'userid'   => 'positive|nonzero',
-        'wishlist' => 'positive|nonzero'
+        'wishlist' => 'positive|nonzero',
     ];
 
     /**

@@ -41,7 +41,7 @@ if ($canDo->get('core.delete')) {
 <?php
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 ?>
 <form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
@@ -78,7 +78,7 @@ $sort = @$this->filters['sort'];
                 echo $this->pagination(
                     $this->total,
                     $this->filters['start'],
-                    $this->filters['limit']
+                    $this->filters['limit'],
                 );
                 ?></td>
         </tr>
@@ -129,7 +129,7 @@ foreach ($this->rows as $row) {
                     $editUrl = Route::url(
                         'index.php?option=' . $this->option
                         . '&controller=' . $this->controller
-                        . '&task=edit&ogId=' . $row->ogId
+                        . '&task=edit&ogId=' . $row->ogId,
                     );
                     $editTitle = Lang::txt('COM_STOREFRONT_EDIT_CATEGORY');
                     ?>
@@ -147,7 +147,7 @@ foreach ($this->rows as $row) {
                         <?php
                         $optionsUrl = Route::url(
                             'index.php?option=' . $this->option
-                            . '&controller=options&task=display&ogId=' . $row->ogId
+                            . '&controller=options&task=display&ogId=' . $row->ogId,
                         );
                         ?>
                         <a href="<?php echo $optionsUrl; ?>" title="View Options">
@@ -164,7 +164,7 @@ foreach ($this->rows as $row) {
                         <?php
                         $addOptionUrl = Route::url(
                             'index.php?option=' . $this->option
-                            . '&controller=options&task=add&ogId=' . $row->ogId
+                            . '&controller=options&task=add&ogId=' . $row->ogId,
                         );
                         ?>
                         <a class="state add" href="<?php echo $addOptionUrl; ?>">
@@ -182,7 +182,7 @@ foreach ($this->rows as $row) {
                     $stateUrl = Route::url(
                         'index.php?option=' . $this->option
                         . '&controller=' . $this->controller
-                        . '&task=' . $task . '&id=' . $row->ogId
+                        . '&task=' . $task . '&id=' . $row->ogId,
                     );
                     $stateTitle = Lang::txt('COM_STOREFRONT_SET_TASK', $task);
                     ?>

@@ -36,7 +36,7 @@ class Migration20260921170000PlgContentFormathtml extends Base
     {
         $this->db->setQuery(
             "SELECT `extension_id`, `params` FROM `#__extensions`
-			  WHERE `type` = 'plugin' AND `folder` = 'content' AND `element` = 'formathtml'"
+			  WHERE `type` = 'plugin' AND `folder` = 'content' AND `element` = 'formathtml'",
         );
 
         $rows = $this->db->loadObjectList();
@@ -64,7 +64,7 @@ class Migration20260921170000PlgContentFormathtml extends Base
 
             $this->db->setQuery(
                 "UPDATE `#__extensions` SET `params` = " . $this->db->quote(json_encode($params)) .
-                " WHERE `extension_id` = " . (int) $row->extension_id
+                " WHERE `extension_id` = " . (int) $row->extension_id,
             );
             $this->db->query();
 

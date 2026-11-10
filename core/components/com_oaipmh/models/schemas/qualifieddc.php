@@ -64,7 +64,7 @@ class QualifiedDC extends DublinCore
             'qualified-dublin-core',
             'qualifieddublincore',
             'qualifiedddc',
-            __CLASS__
+            __CLASS__,
         ]);
     }
 
@@ -122,7 +122,7 @@ class QualifiedDC extends DublinCore
 
             $dcs = [
                 'title'   => [
-                    'alternative'
+                    'alternative',
                 ],
                 'creator' => null,
                 'subject' => null,
@@ -134,12 +134,12 @@ class QualifiedDC extends DublinCore
                     'modified',
                     'dateAccepted',
                     'dateCopyrighted',
-                    'dateSubmitted'
+                    'dateSubmitted',
                 ],
                 'identifier'  => null,
                 'description' => [
                     'tableOfContents',
-                    'abstract'
+                    'abstract',
                 ],
                 'type'        => null,
                 'publisher'   => null,
@@ -158,19 +158,19 @@ class QualifiedDC extends DublinCore
                     'references',
                     'isFormatof',
                     'hasFormat',
-                    'conformsTo'
+                    'conformsTo',
                 ],
                 'format'   => [
                     'medium',
-                    'extent'
+                    'extent',
                 ],
                 'coverage' => [
                     'spatial',
-                    'temporal'
+                    'temporal',
                 ],
                 'language' => null,
                 'source'   => null,
-                'extent' => null
+                'extent' => null,
             ];
 
             // Loop through DC elements

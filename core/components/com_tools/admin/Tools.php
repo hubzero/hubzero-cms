@@ -42,46 +42,46 @@ class Tools extends AbstractComponent
         Submenu::addEntry(
             Lang::txt('COM_TOOLS_PIPELINE'),
             Route::url('index.php?option=com_tools&controller=pipeline'),
-            $controllerName == 'pipeline'
+            $controllerName == 'pipeline',
         );
         Submenu::addEntry(
             Lang::txt('COM_TOOLS_HOSTS'),
             Route::url('index.php?option=com_tools&controller=hosts'),
-            $controllerName == 'hosts'
+            $controllerName == 'hosts',
         );
         Submenu::addEntry(
             Lang::txt('COM_TOOLS_HOST_TYPES'),
             Route::url('index.php?option=com_tools&controller=hosttypes'),
-            $controllerName == 'hosttypes'
+            $controllerName == 'hosttypes',
         );
         if (Component::params('com_tools')->get('zones')) {
             Submenu::addEntry(
                 Lang::txt('COM_TOOLS_ZONES'),
                 Route::url('index.php?option=com_tools&controller=zones'),
-                $controllerName == 'zones'
+                $controllerName == 'zones',
             );
         }
         Submenu::addEntry(
             Lang::txt('COM_TOOLS_SESSIONS'),
             Route::url('index.php?option=com_tools&controller=sessions'),
-            $controllerName == 'sessions'
+            $controllerName == 'sessions',
         );
         Submenu::addEntry(
             Lang::txt('COM_TOOLS_USER_PREFS'),
             Route::url('index.php?option=com_tools&controller=preferences'),
-            $controllerName == 'preferences'
+            $controllerName == 'preferences',
         );
         Submenu::addEntry(
             Lang::txt('COM_TOOLS_HANDLERS'),
             Route::url('index.php?option=com_tools&controller=handlers'),
-            $controllerName == 'handlers'
+            $controllerName == 'handlers',
         );
 
         if (Component::params('com_tools')->get('windows_key_id')) {
             Submenu::addEntry(
                 Lang::txt('COM_TOOLS_WINDOWS'),
                 Route::url('index.php?option=com_tools&controller=windows'),
-                $controllerName == 'windows'
+                $controllerName == 'windows',
             );
         }
 

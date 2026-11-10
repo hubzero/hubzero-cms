@@ -90,7 +90,7 @@ class Test extends Base implements CommandInterface
         $descriptorspec = [
             0 => ["pipe", "r"],
             1 => ["pipe", "w"],
-            2 => ["pipe", "w"]
+            2 => ["pipe", "w"],
         ];
 
         $process = proc_open($cmd, $descriptorspec, $pipes);
@@ -126,7 +126,7 @@ class Test extends Base implements CommandInterface
             ['core', PATH_CORE . DS . 'components'],
             ['app', PATH_APP . DS . 'components'],
             ['core', PATH_CORE . DS . 'modules'],
-            ['app', PATH_APP . DS . 'modules']
+            ['app', PATH_APP . DS . 'modules'],
         ];
 
         foreach ($nodes as $node) {
@@ -155,7 +155,7 @@ class Test extends Base implements CommandInterface
         // Plugins have one extra level of directories
         $nodes = [
             ['core', PATH_CORE . DS . 'plugins'],
-            ['app', PATH_APP . DS . 'plugins']
+            ['app', PATH_APP . DS . 'plugins'],
         ];
 
         foreach ($nodes as $node) {
@@ -206,7 +206,7 @@ class Test extends Base implements CommandInterface
             ->output
             ->addOverview(
                 'A custom PHPUnit testing wrapper. This helps with setting up the
-				environment and allowing for specialized options related to testing.'
+				environment and allowing for specialized options related to testing.',
             )
             ->addTasks($this)
             ->addArgument(
@@ -220,7 +220,7 @@ class Test extends Base implements CommandInterface
 				and ROOT/core respectively. Libraries are assumed to be in the core Hubzero
 				library folder.',
                 '',
-                true
+                true,
             );
     }
 }

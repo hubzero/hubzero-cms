@@ -74,7 +74,7 @@ $app['component'] = function ($app) {
 
 Hubzero\Facades\Facade::setApplication($app);
 Hubzero\Facades\Facade::createAliases(
-    require dirname(__DIR__) . '/bootstrap/Cli/aliases.php'
+    require dirname(__DIR__) . '/bootstrap/Cli/aliases.php',
 );
 
 // Plugin tests ship their own bootstrap that requires the plugin class file,

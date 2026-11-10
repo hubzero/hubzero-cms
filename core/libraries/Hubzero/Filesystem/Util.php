@@ -59,7 +59,7 @@ class Util
         if (
             PATH_ROOT != '' && strpos(
                 $path,
-                self::normalizePath(PATH_ROOT)
+                self::normalizePath(PATH_ROOT),
             ) !== 0 && strpos($path, self::normalizePath(PATH_CORE)) !== 0
         ) {
             // Don't translate
@@ -149,7 +149,7 @@ class Util
         $regex = [
             '#(\.){2,}#',
             '#[^A-Za-z0-9\.\_\- ]#',
-            '#^\.#'
+            '#^\.#',
         ];
 
         return preg_replace($regex, '', $normalized);

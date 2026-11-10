@@ -51,6 +51,6 @@ class Overrider extends Relational
     protected $rules = [
         'constant' => 'notempty',
         'string'   => 'notempty',
-        'file'     => 'notempty'
+        'file'     => 'notempty',
     ];
 }

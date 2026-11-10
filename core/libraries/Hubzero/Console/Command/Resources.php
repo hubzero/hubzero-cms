@@ -214,7 +214,7 @@ class Resources extends Base implements CommandInterface
         $xml = new \SimpleXMLElement(
             '<?xml version="1.0" encoding="utf-8"?><publications ' .
             'xsi:noNamespaceSchemaLocation="schema.xsd" ' .
-            'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"></publications>'
+            'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"></publications>',
         );
         $i = 0;
         foreach ($rows as $row) {
@@ -326,7 +326,7 @@ class Resources extends Base implements CommandInterface
         $this
             ->output
             ->addOverview(
-                'Resource component export commands.'
+                'Resource component export commands.',
             );
     }
 }

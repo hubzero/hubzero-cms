@@ -45,7 +45,7 @@ class Extension extends Relational
      * @var  array
      */
     protected $rules = [
-        'name' => 'notempty'
+        'name' => 'notempty',
     ];
 
     /**
@@ -231,12 +231,12 @@ class Extension extends Relational
         if (isset($appPath)) {
             $paths = [
                 'app'  => Filesystem::cleanPath(PATH_APP . $appPath),
-                'core' => Filesystem::cleanPath(PATH_CORE . $corePath)
+                'core' => Filesystem::cleanPath(PATH_CORE . $corePath),
             ];
         } else {
             $paths = [
                 'app'  => Filesystem::cleanPath(PATH_APP . $path),
-                'core' => Filesystem::cleanPath(PATH_CORE . $path)
+                'core' => Filesystem::cleanPath(PATH_CORE . $path),
             ];
         }
 

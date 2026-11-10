@@ -59,7 +59,7 @@ class Comment extends Relational
      * @var  array
      */
     protected $parsed = [
-        'content'
+        'content',
     ];
 
     /**
@@ -69,7 +69,7 @@ class Comment extends Relational
      */
     protected $rules = [
         'content'  => 'notempty',
-        'entry_id' => 'positive|nonzero'
+        'entry_id' => 'positive|nonzero',
     ];
 
     /**
@@ -79,7 +79,7 @@ class Comment extends Relational
      */
     public $initiate = [
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**
@@ -379,7 +379,7 @@ class Comment extends Relational
             $results = Event::trigger('content.onContentBeforeSave', [
                 'com_kb.comment.content',
                 &$this,
-                $this->isNew()
+                $this->isNew(),
             ]);
 
             foreach ($results as $result) {

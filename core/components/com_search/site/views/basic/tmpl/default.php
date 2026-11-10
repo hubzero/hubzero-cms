@@ -174,7 +174,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
                     $pagination = $this->pagination(
                         $this->total,
                         $this->results->get_offset(),
-                        $this->results->get_limit()
+                        $this->results->get_limit(),
                     );
                     $pagination->setAdditionalUrlParam('terms', $this->terms);
                     echo $pagination->render();

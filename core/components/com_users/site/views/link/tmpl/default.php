@@ -25,16 +25,16 @@ $urlRegister = Route::url('index.php?option=com_members&controller=register&task
 
 $innerLoginUrl = Route::url(
     'index.php?option=' . $this->option . '&view=login&authenticator=' . $this->hzad->authenticator,
-    false
+    false,
 );
 $innerReturnUrl = Route::url(
     'index.php?option=' . $this->option . '&view=login&reset=1&return=' .
     base64_encode($innerLoginUrl),
-    false
+    false,
 );
 $urlLogout = Route::url(
     'index.php?option=' . $this->option . '&view=logout&return=' .
-    base64_encode($innerReturnUrl)
+    base64_encode($innerReturnUrl),
 );
 ?>
 
@@ -63,7 +63,7 @@ $urlLogout = Route::url(
                 <?php
                 echo Lang::txt(
                     'Great! Did you want to link your %s account to that existing account or create a new account?',
-                    $this->display_name
+                    $this->display_name,
                 );
                 ?>
             </div>
@@ -81,7 +81,7 @@ $urlLogout = Route::url(
             <div class="prompt">
                 <?php
                 echo Lang::txt(
-                    'We can do that. Just login with that existing account now and we\'ll link them up!'
+                    'We can do that. Just login with that existing account now and we\'ll link them up!',
                 );
                 ?>
             </div>

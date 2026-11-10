@@ -54,7 +54,7 @@ class TokenProb extends Relational
      * @var  array
      */
     protected $rules = [
-        'token' => 'notempty'
+        'token' => 'notempty',
     ];
 
     /**
@@ -63,7 +63,7 @@ class TokenProb extends Relational
      * @var  array
      */
     public $initiate = [
-        'created'
+        'created',
     ];
 
     /**
@@ -72,7 +72,7 @@ class TokenProb extends Relational
      * @var  array
      **/
     public $always = [
-        'modified'
+        'modified',
     ];
 
     /**

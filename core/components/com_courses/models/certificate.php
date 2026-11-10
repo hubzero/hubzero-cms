@@ -72,7 +72,7 @@ class Certificate extends Base
 
             if (!($this->_tbl instanceof Table)) {
                 $errorMsg = Lang::txt(
-                    'Table class must be an instance of Hubzero\\Database\\Table.'
+                    'Table class must be an instance of Hubzero\\Database\\Table.',
                 );
                 $logMsg = __CLASS__ . '::' . __FUNCTION__ . '(); ' . $errorMsg;
                 $this->_logError($logMsg);
@@ -314,7 +314,7 @@ class Certificate extends Base
         $mm = 25.4;
         $size = [
             'width' => ($w * $mm),
-            'height' => ($h * $mm)
+            'height' => ($h * $mm),
         ];
 
         $pdf = new CertificatePdf(
@@ -323,7 +323,7 @@ class Certificate extends Base
             $size,
             true,
             'UTF-8',
-            false
+            false,
         );
         $pdf->img_file = $img;
 
@@ -412,7 +412,7 @@ class Certificate extends Base
             // Attempt to delete the file
             if (!Filesystem::deleteDirectory($path)) {
                 $msg = Lang::txt(
-                    'Unable to remove upload directory and files for certificate.'
+                    'Unable to remove upload directory and files for certificate.',
                 );
                 $this->setError($msg);
                 return false;

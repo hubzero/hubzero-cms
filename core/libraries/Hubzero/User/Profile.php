@@ -480,7 +480,7 @@ class Profile extends Obj
             'bio'          => 'bio',
             'url'          => 'url',
             'picture'      => 'picture',
-            'vip'          => 'principal_investigator'
+            'vip'          => 'principal_investigator',
         ];
 
         $db =  App::get('db');
@@ -1312,7 +1312,7 @@ class Profile extends Obj
         // Get user roles
         $roles = self::getGroupMemberRoles(
             \User::get('id'),
-            $group->get('gidNumber')
+            $group->get('gidNumber'),
         );
 
         // Check to see if any of our roles for user has permission for action
@@ -1342,7 +1342,7 @@ class Profile extends Obj
                 'invitees'   => [],
                 'members'    => [],
                 'managers'   => [],
-                'all'        => []
+                'all'        => [],
             ];
             $groups['all'] = Helper::getGroups($this->get('uidNumber'), 'all', 1);
 
@@ -1392,13 +1392,13 @@ class Profile extends Obj
                     'pageid'   => 0,
                     'filepath' => '',
                     'domain'   => '',
-                    'camelcase' => 0
+                    'camelcase' => 0,
                 ];
 
                 Event::trigger('content.onContentPrepare', [
                     'com_members.profile.bio',
                     &$this,
-                    &$config
+                    &$config,
                 ]);
                 $content = $this->get('bio');
 

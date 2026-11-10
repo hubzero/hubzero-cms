@@ -82,7 +82,7 @@ class Custom_extensions extends Relational
     protected $rules = [
         'name'    => 'notempty',
         'alias'  => 'notempty',
-        'type' => 'notempty'
+        'type' => 'notempty',
     ];
 
     /**
@@ -116,7 +116,7 @@ class Custom_extensions extends Relational
         'modified',
         'modified_by',
         'created',
-        'created_by'
+        'created_by',
     ];
 
     /**

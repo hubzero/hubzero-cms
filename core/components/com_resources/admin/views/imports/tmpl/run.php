@@ -33,7 +33,7 @@ $actionUrl = Route::url(
     . $this->option
     . '&controller='
     . $this->controller
-    . '&task=dorun'
+    . '&task=dorun',
 );
 ?>
 <form action="<?php echo $actionUrl; ?>" method="post" name="adminForm" id="adminForm">

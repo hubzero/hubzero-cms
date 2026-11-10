@@ -15,7 +15,7 @@ defined('_HZEXEC_') or die();
                 <?php
                 $ticketUrl = Route::url(
                     'index.php?option=com_support&controller=tickets&task=edit&id='
-                    . $result->ticket . ($result->id ? '#c' . $result->id : '')
+                    . $result->ticket . ($result->id ? '#c' . $result->id : ''),
                 );
                 $langKey = 'MOD_SUPPORTACTIVITY_'
                     . strtoupper($result->category);

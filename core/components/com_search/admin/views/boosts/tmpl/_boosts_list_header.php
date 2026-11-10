@@ -24,7 +24,7 @@ $sortDirection = $this->sortDirection;
                 Lang::txt('COM_SEARCH_COL_ID'),
                 'id',
                 $sortDirection,
-                $sortField
+                $sortField,
             ); ?>
         </th>
 
@@ -34,7 +34,7 @@ $sortDirection = $this->sortDirection;
                 Lang::txt('COM_SEARCH_COL_TYPE'),
                 'field_value',
                 $sortDirection,
-                $sortField
+                $sortField,
             ); ?>
         </th>
 
@@ -44,7 +44,7 @@ $sortDirection = $this->sortDirection;
                 Lang::txt('COM_SEARCH_COL_STRENGTH'),
                 'strength',
                 $sortDirection,
-                $sortField
+                $sortField,
             ); ?>
         </th>
     </tr>

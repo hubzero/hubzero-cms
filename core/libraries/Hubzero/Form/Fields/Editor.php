@@ -77,7 +77,7 @@ class Editor extends Field
             $buttons ? (is_array($buttons) ? array_merge($buttons, $hide) : $hide) : false,
             $this->id,
             $asset,
-            $this->form->getValue($authorField)
+            $this->form->getValue($authorField),
         );
     }
 

@@ -39,7 +39,7 @@ $member = $this->model->member();
                         . $this->option
                         . '&alias='
                         . $this->model->get('alias')
-                        . '&task=edit'
+                        . '&task=edit',
                     );
                     $langTxt2 = Lang::txt('COM_PROJECTS_EDIT_PROJECT');
                     ?>
@@ -51,7 +51,7 @@ $member = $this->model->member();
                         . $this->option
                         . '&alias='
                         . $this->model->get('alias')
-                        . '&task=edit&active=team'
+                        . '&task=edit&active=team',
                     );
                     $langTxt4 = Lang::txt('COM_PROJECTS_INVITE_PEOPLE');
                     ?>
@@ -65,7 +65,7 @@ $member = $this->model->member();
                         . $this->option
                         . '&alias='
                         . $this->model->get('alias')
-                        . '&preview=1'
+                        . '&preview=1',
                     );
                     $langTxt6 = Lang::txt('COM_PROJECTS_PREVIEW_PUBLIC_PROFILE');
                     ?>
@@ -79,7 +79,7 @@ $member = $this->model->member();
                         . $this->option
                         . '&alias='
                         . $this->model->get('alias')
-                        . '&active=team&action=quit'
+                        . '&active=team&action=quit',
                     );
                     $langTxt8 = Lang::txt('COM_PROJECTS_LEAVE_PROJECT');
                     ?>

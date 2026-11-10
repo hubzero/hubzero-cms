@@ -151,7 +151,7 @@ class Publications extends Plugin
 				ON c.id = p.category
 			WHERE
 				$whereClause
-				AND a.status = 1 AND $weight_authors"
+				AND a.status = 1 AND $weight_authors",
         );
         $assoc = $sql->to_associative();
 
@@ -194,7 +194,7 @@ class Publications extends Plugin
 						ON c.id = p.category
 					WHERE
 						$whereClause
-						AND p.id in (" . $tagIds . ")" . $addtlWhereSql
+						AND p.id in (" . $tagIds . ")" . $addtlWhereSql,
                 );
                 foreach ($sql->to_associative() as $row) {
                     $rows = $sql->to_associative();

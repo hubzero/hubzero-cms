@@ -71,7 +71,7 @@ class Menutype extends Select
 
         $menuUrl = Route::url(
             'index.php?option=com_menus&view=menutypes&tmpl=component&recordId=' . $recordId,
-            false
+            false,
         );
         Document::addScriptDeclaration("
 			jQuery(document).ready(function($){

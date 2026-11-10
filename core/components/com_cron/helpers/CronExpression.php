@@ -48,7 +48,7 @@ class CronExpression
         self::DAY,
         self::WEEKDAY,
         self::HOUR,
-        self::MINUTE
+        self::MINUTE,
     ];
 
     /**
@@ -75,7 +75,7 @@ class CronExpression
             '@monthly'  => '0 0 1 * *',
             '@weekly'   => '0 0 * * 0',
             '@daily'    => '0 0 * * *',
-            '@hourly'   => '0 * * * *'
+            '@hourly'   => '0 * * * *',
         ];
 
         if (isset($mappings[$expression])) {
@@ -110,7 +110,7 @@ class CronExpression
         $this->cronParts = explode(' ', $value);
         if (count($this->cronParts) < 5) {
             throw new InvalidArgumentException(
-                $value . ' is not a valid CRON expression'
+                $value . ' is not a valid CRON expression',
             );
         }
 
@@ -134,7 +134,7 @@ class CronExpression
     {
         if (!$this->fieldFactory->getField($position)->validate($value)) {
             throw new InvalidArgumentException(
-                'Invalid CRON field value ' . $value . ' as position ' . $position
+                'Invalid CRON field value ' . $value . ' as position ' . $position,
             );
         }
 

@@ -54,11 +54,11 @@ foreach ($this->unapprovedModules as $unapprovedModule) {
                             <?php
                             $pagesUrl = Route::url(
                                 'index.php?option=com_groups&gid='
-                                . $group->get('cn') . '&controller=pages'
+                                . $group->get('cn') . '&controller=pages',
                             );
                             $modulesUrl = Route::url(
                                 'index.php?option=com_groups&gid='
-                                . $group->get('cn') . '&controller=modules'
+                                . $group->get('cn') . '&controller=modules',
                             );
                             ?>
                             <a class="page" href="<?php echo $pagesUrl; ?>">

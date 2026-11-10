@@ -48,8 +48,8 @@ class Memcached extends None
                     [
                         'host'   => $conf->get('memcache_server_host', 'localhost'),
                         'port'   => $conf->get('memcache_server_port', 11211),
-                        'weight' => 1
-                    ]
+                        'weight' => 1,
+                    ],
                 ];
             }
 
@@ -88,7 +88,7 @@ class Memcached extends None
             $memcached->addServer(
                 $server['host'],
                 $server['port'],
-                $server['weight']
+                $server['weight'],
             );
         }
 

@@ -77,11 +77,11 @@ class Format extends AdminController
         if ($model->style == 'Hub Custom' || $model->isNew() === true) {
             $model->set([
                 'style'  => 'Hub Custom',
-                'format' => \Hubzero\Utility\Sanitize::clean($format['format'])
+                'format' => \Hubzero\Utility\Sanitize::clean($format['format']),
             ]);
         } else {
             $model->set([
-                'format' => \Hubzero\Utility\Sanitize::clean($format['format'])
+                'format' => \Hubzero\Utility\Sanitize::clean($format['format']),
             ]);
         }
 

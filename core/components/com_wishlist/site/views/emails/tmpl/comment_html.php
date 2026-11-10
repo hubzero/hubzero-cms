@@ -27,7 +27,7 @@ $this->css(
 		table#wish-comments>tbody>tr>td {
 			padding: 0 !important;
 		}
-	}'
+	}',
 );
 ?>
     <!-- Start Header -->
@@ -143,8 +143,8 @@ $this->css(
                                     } else {
                                         echo $this->escape(
                                             stripslashes(
-                                                $this->wish->proposer->get('name', Lang::txt('COM_WISHLIST_UNKNOWN'))
-                                            )
+                                                $this->wish->proposer->get('name', Lang::txt('COM_WISHLIST_UNKNOWN')),
+                                            ),
                                         );
                                     }
                                     ?>
@@ -199,7 +199,7 @@ $this->css(
                         echo Lang::txt(
                             '@%s on %s',
                             $this->comment->created('time'),
-                            $this->comment->created('date')
+                            $this->comment->created('date'),
                         );
                         ?>
                     </span>

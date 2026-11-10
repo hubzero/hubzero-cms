@@ -38,7 +38,7 @@ class Migration20150326183839ComTools extends Base
                 ->insert('#__tool_session_classes')
                 ->set([
                     'alias' => 'default',
-                    'jobs'  => 3
+                    'jobs'  => 3,
                 ])
                 ->execute();
         }

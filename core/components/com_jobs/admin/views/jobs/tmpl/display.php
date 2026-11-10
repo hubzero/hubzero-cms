@@ -41,7 +41,7 @@ Html::behavior('tooltip');
 
 $formAction = Route::url(
     'index.php?option=' . $this->option
-    . '&controller=' . $this->controller
+    . '&controller=' . $this->controller,
 );
 $searchPlaceholder = Lang::txt('COM_JOBS_SEARCH_PLACEHOLDER');
 ?>
@@ -84,7 +84,7 @@ $searchPlaceholder = Lang::txt('COM_JOBS_SEARCH_PLACEHOLDER');
                         'COM_JOBS_COL_TITLE',
                         'title',
                         @$this->filters['sortdir'],
-                        @$this->filters['sortby']
+                        @$this->filters['sortby'],
                     ); ?>
                 </th>
                 <th scope="col" class="priority-3">
@@ -93,7 +93,7 @@ $searchPlaceholder = Lang::txt('COM_JOBS_SEARCH_PLACEHOLDER');
                         'COM_JOBS_COL_COMPANY',
                         'location',
                         @$this->filters['sortdir'],
-                        @$this->filters['sortby']
+                        @$this->filters['sortby'],
                     ); ?>
                 </th>
                 <th scope="col">
@@ -102,7 +102,7 @@ $searchPlaceholder = Lang::txt('COM_JOBS_SEARCH_PLACEHOLDER');
                         'COM_JOBS_COL_STATUS',
                         'status',
                         @$this->filters['sortdir'],
-                        @$this->filters['sortby']
+                        @$this->filters['sortby'],
                     ); ?>
                 </th>
                 <th scope="col" class="priority-3">
@@ -111,7 +111,7 @@ $searchPlaceholder = Lang::txt('COM_JOBS_SEARCH_PLACEHOLDER');
                         'COM_JOBS_COL_OWNER',
                         'adminposting',
                         @$this->filters['sortdir'],
-                        @$this->filters['sortby']
+                        @$this->filters['sortby'],
                     ); ?>
                 </th>
                 <th scope="col" class="priority-4">
@@ -120,7 +120,7 @@ $searchPlaceholder = Lang::txt('COM_JOBS_SEARCH_PLACEHOLDER');
                         'COM_JOBS_COL_ADDED',
                         'added',
                         @$this->filters['sortdir'],
-                        @$this->filters['sortby']
+                        @$this->filters['sortby'],
                     ); ?>
                 </th>
                 <th scope="col" class="priority-4">
@@ -138,7 +138,7 @@ $searchPlaceholder = Lang::txt('COM_JOBS_SEARCH_PLACEHOLDER');
                 echo $this->pagination(
                     $this->total,
                     $this->filters['start'],
-                    $this->filters['limit']
+                    $this->filters['limit'],
                 );
                 ?></td>
             </tr>
@@ -165,7 +165,7 @@ $searchPlaceholder = Lang::txt('COM_JOBS_SEARCH_PLACEHOLDER');
 
             // Build some publishing info
             $addedDate = Date::of($row->added)->toLocal(
-                Lang::txt('DATE_FORMAT_HZ1')
+                Lang::txt('DATE_FORMAT_HZ1'),
             );
             $info  = Lang::txt('COM_JOBS_FIELD_CREATED') . ': ' . $addedDate . '<br />';
             $info .= Lang::txt('COM_JOBS_FIELD_CREATOR') . ': ' . $row->addedBy;
@@ -209,11 +209,11 @@ $searchPlaceholder = Lang::txt('COM_JOBS_SEARCH_PLACEHOLDER');
             $editUrl = Route::url(
                 'index.php?option=' . $this->option
                 . '&controller=' . $this->controller
-                . '&task=edit&id=' . $row->id
+                . '&task=edit&id=' . $row->id,
             );
             $publishInfo = Lang::txt('COM_JOBS_PUBLISH_INFO');
             $rowAddedDate = Date::of($row->added)->toLocal(
-                Lang::txt('DATE_FORMAT_HZ1')
+                Lang::txt('DATE_FORMAT_HZ1'),
             );
             $neverExpires = Lang::txt('COM_JOBS_NEVER_EXPIRES');
             ?>
@@ -265,7 +265,7 @@ $searchPlaceholder = Lang::txt('COM_JOBS_SEARCH_PLACEHOLDER');
                     <?php if ($row->expiredate && $row->expiredate != "0000-00-00 00:00:00") : ?>
                         <?php
                         $expireDateFormatted = Date::of($row->expiredate)->toLocal(
-                            Lang::txt('DATE_FORMAT_HZ1')
+                            Lang::txt('DATE_FORMAT_HZ1'),
                         );
                         ?>
                         <time datetime="<?php echo $row->expiredate; ?>">

@@ -41,7 +41,7 @@ $activeVersion = Request::getString('version', reset($versions));
             <li>
                 <?php
                 $homeUrl = Route::url(
-                    'index.php?option=com_developer&controller=api&version=' . $activeVersion
+                    'index.php?option=com_developer&controller=api&version=' . $activeVersion,
                 );
                 ?>
                 <a class="btn icon-cog" href="<?php echo $homeUrl; ?>">

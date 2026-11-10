@@ -137,18 +137,18 @@ class ServiceProviderTest extends Basic
 		// Configured and readable
 		$this->assertEquals(
 			['staff'],
-			ServiceProvider::blank()->set('allowed_groups', '["staff"]')->allowedGroups()
+			ServiceProvider::blank()->set('allowed_groups', '["staff"]')->allowedGroups(),
 		);
 
 		// Configured but unreadable — an empty list matches nobody, so a
 		// corrupted restriction denies rather than opening the SP up
 		$this->assertEquals(
 			[],
-			ServiceProvider::blank()->set('allowed_groups', 'not json')->allowedGroups()
+			ServiceProvider::blank()->set('allowed_groups', 'not json')->allowedGroups(),
 		);
 		$this->assertEquals(
 			[],
-			ServiceProvider::blank()->set('allowed_groups', '["  "]')->allowedGroups()
+			ServiceProvider::blank()->set('allowed_groups', '["  "]')->allowedGroups(),
 		);
 	}
 

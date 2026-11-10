@@ -78,11 +78,11 @@ if (User::isGuest()) {
                     $tplUrl = Route::url($this->page->link('new') . '&tplate=' . $tplate);
                     if (User::isGuest()) {
                         $tplReturn = base64_encode(
-                            Route::url($this->page->link('new') . '&tplate=' . $tplate, false, true)
+                            Route::url($this->page->link('new') . '&tplate=' . $tplate, false, true),
                         );
                         $tplUrl = Route::url(
                             'index.php?option=com_users&view=login&return=' . $tplReturn,
-                            false
+                            false,
                         );
                     }
                     ?><li>

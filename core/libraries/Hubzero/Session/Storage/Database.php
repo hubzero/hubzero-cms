@@ -121,7 +121,7 @@ class Database extends Store
                     ->set([
                         'data' => $data,
                         'time' => (int) time(),
-                        'ip'   => (string) Request::ip()
+                        'ip'   => (string) Request::ip(),
                     ])
                     ->whereEquals('session_id', $id);
 

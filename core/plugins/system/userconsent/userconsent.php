@@ -36,7 +36,7 @@ class Userconsent extends Plugin
                 $pages = [
                     'com_login',
                     'com_login.login',
-                    'com_users.login'
+                    'com_users.login',
                 ];
 
                 $granted = Session::get('user_consent', false);
@@ -47,7 +47,7 @@ class Userconsent extends Plugin
                 }
             } elseif (App::isAdmin()) {
                 $exceptions = [
-                    'com_login.grantconsent'
+                    'com_login.grantconsent',
                 ];
 
                 $granted = Session::get('user_consent', false);

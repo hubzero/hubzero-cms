@@ -30,7 +30,7 @@ class Migration20261013000000PlgCronGroups extends Base
         if ($this->db->tableExists('#__cron_jobs')) {
             $this->db->setQuery(
                 "UPDATE `#__cron_jobs` SET `next_run` = UTC_TIMESTAMP()
-				 WHERE `plugin` = 'groups' AND `state` = 1 AND `next_run` IS NULL;"
+				 WHERE `plugin` = 'groups' AND `state` = 1 AND `next_run` IS NULL;",
             );
             $this->db->query();
         }

@@ -188,16 +188,16 @@ class Stats extends Table
             'public'    => $tbl->getCount(['exclude' => $exclude, 'private' => '0'], true),
             'sponsored' => $tbl->getCount(
                 ['exclude' => $exclude, 'reviewer' => 'sponsored'],
-                true
+                true,
             ),
             'sensitive' => $tbl->getCount(
                 ['exclude' => $exclude, 'reviewer' => 'sensitive'],
-                true
+                true,
             ),
             'new'       => $tbl->getCount(
                 ['exclude' => $exclude, 'created' => date('Y-m', time()), 'all' => 1],
-                true
-            )
+                true,
+            ),
         ];
         $active = $stats['general']['active'] ? $stats['general']['active'] : 1;
         $total  = $stats['general']['total'] ? $stats['general']['total'] : 1;
@@ -238,7 +238,7 @@ class Stats extends Table
         $stats['activity'] = [
             'total'   => $total,
             'average' => $average,
-            'usage'   => $recentlyActive
+            'usage'   => $recentlyActive,
         ];
 
         // Get top projects
@@ -269,7 +269,7 @@ class Stats extends Table
             'total'      => $teamTotal,
             'average'    => $objO->getTeamStats($exclude, 'average'),
             'multi'      => $perc,
-            'multiusers' => $multiProjectUsers
+            'multiusers' => $multiProjectUsers,
         ];
 
         $stats['topTeamProjects'] = $objO->getTopTeamProjects($exclude, $limit, $publicOnly);
@@ -280,7 +280,7 @@ class Stats extends Table
             'usage'     => 0,
             'diskspace' => 0,
             'commits'   => 0,
-            'pubspace'  => 0
+            'pubspace'  => 0,
         ];
 
         // Collect files stats
@@ -304,7 +304,7 @@ class Stats extends Table
                 'average'   => $fAverage,
                 'usage'     => $perc,
                 'diskspace' => \Hubzero\Utility\Number::formatBytes($fDSpace),
-                'pubspace'  => \Hubzero\Utility\Number::formatBytes($pDSpace)
+                'pubspace'  => \Hubzero\Utility\Number::formatBytes($pDSpace),
             ];
         }
 
@@ -320,7 +320,7 @@ class Stats extends Table
                 'average'  => $objP->getPubStats($include, 'average'),
                 'usage'    => $perc,
                 'released' => $objP->getPubStats($include, 'released'),
-                'versions' => $objPV->getPubStats($include)
+                'versions' => $objPV->getPubStats($include),
             ];
         }
 

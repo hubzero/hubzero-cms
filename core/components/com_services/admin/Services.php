@@ -43,12 +43,12 @@ class Services extends AbstractComponent
         Submenu::addEntry(
             Lang::txt('COM_SERVICES_SERVICES'),
             Route::url('index.php?option=com_services&controller=services'),
-            $controllerName == 'services'
+            $controllerName == 'services',
         );
         Submenu::addEntry(
             Lang::txt('COM_SERVICES_SUBSCRIPTIONS'),
             Route::url('index.php?option=com_services&controller=subscriptions'),
-            $controllerName == 'subscriptions'
+            $controllerName == 'subscriptions',
         );
 
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);

@@ -66,7 +66,7 @@ foreach ($this->tags as $tag) {
             $this->base
             . '&filterby=' . $this->filters['filterby']
             . '&sortby=' . $this->filters['sortby']
-            . $append
+            . $append,
         );
         $tll[$tag->get('tag')] = '<li' . $class . '>'
             . '<a href="' . $tagUrl . '"'
@@ -88,7 +88,7 @@ foreach ($this->tags as $tag) {
             $this->base
             . '&filterby=' . $this->filters['filterby']
             . '&sortby=' . $this->filters['sortby']
-            . $append
+            . $append,
         );
         $tll[$tag->get('tag')]  = '<li' . $class . '>';
         $tll[$tag->get('tag')] .= '<a class="tag' . $link_class . '" href="' . $tagUrl . '">'

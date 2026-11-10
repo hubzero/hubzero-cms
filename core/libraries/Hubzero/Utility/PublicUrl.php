@@ -88,7 +88,7 @@ class PublicUrl
             'port'      => $port,
             'addresses' => $addresses,
             // An address literal has no name to re-point, and needs no pin
-            'pins'      => $literal ? [] : [self::pin($host, $port, $addresses)]
+            'pins'      => $literal ? [] : [self::pin($host, $port, $addresses)],
         ];
     }
 

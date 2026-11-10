@@ -43,7 +43,7 @@ class Option extends Relational
      */
     protected $rules = [
         'label'    => 'notempty',
-        'field_id' => 'positive|nonzero'
+        'field_id' => 'positive|nonzero',
     ];
 
     /**
@@ -52,7 +52,7 @@ class Option extends Relational
      * @var  array
      */
     public $initiate = [
-        'ordering'
+        'ordering',
     ];
 
     /**
@@ -62,7 +62,7 @@ class Option extends Relational
      */
     public $always = [
         'value',
-        'checked'
+        'checked',
     ];
 
     /**

@@ -106,7 +106,7 @@ class AdminUser
         $userData['name'] = self::promptInput(
             "Full name",
             $defaults['name'] ?? "Site Administrator",
-            $ansi
+            $ansi,
         );
         if ($userData['name'] === null) {
             return null;
@@ -125,7 +125,7 @@ class AdminUser
             $pdo,
             $prefix,
             $defaults['email'] ?? '',
-            $ansi
+            $ansi,
         );
         if ($userData['email'] === null) {
             return null;
@@ -293,7 +293,7 @@ class AdminUser
                 $dsn,
                 (string) ($config['user'] ?? ''),
                 (string) ($config['password'] ?? ''),
-                []
+                [],
             );
 
             return $connection->getNativeConnection();
@@ -325,7 +325,7 @@ class AdminUser
         if (in_array($requested, ['pgsql', 'sqlite', 'firebird', 'informix'], true)) {
             throw new \PDOException(
                 "CLI installer currently supports MySQL-family drivers only"
-                . " (mysql/mariadb/percona). Requested: {$requested}"
+                . " (mysql/mariadb/percona). Requested: {$requested}",
             );
         }
 
@@ -349,7 +349,7 @@ class AdminUser
                  INNER JOIN `{$prefix}user_usergroup_map` m ON u.id = m.user_id
                  WHERE m.group_id = :group_id
                  AND u.block = 0
-                 LIMIT 1"
+                 LIMIT 1",
             );
             $stmt->execute(['group_id' => self::SUPER_USERS_GROUP_ID]);
             $result = $stmt->fetch();
@@ -605,7 +605,7 @@ class AdminUser
             // Insert into users table
             $stmt = $pdo->prepare(
                 "INSERT INTO `{$prefix}users` (`" . implode('`, `', $columns) . "`)"
-                . ' VALUES (' . implode(', ', $placeholders) . ')'
+                . ' VALUES (' . implode(', ', $placeholders) . ')',
             );
             $stmt->execute($values);
 
@@ -616,7 +616,7 @@ class AdminUser
                 "INSERT INTO `{$prefix}users_password`
                  (user_id, passhash, shadowLastChange)
                  VALUES
-                 (:user_id, :passhash, :shadowLastChange)"
+                 (:user_id, :passhash, :shadowLastChange)",
             );
             $stmt->execute([
                 'user_id' => $userId,
@@ -629,7 +629,7 @@ class AdminUser
                 "INSERT INTO `{$prefix}user_usergroup_map`
                  (user_id, group_id)
                  VALUES
-                 (:user_id, :group_id)"
+                 (:user_id, :group_id)",
             );
             $stmt->execute([
                 'user_id' => $userId,
@@ -699,7 +699,7 @@ class AdminUser
 
         $stmt = $pdo->prepare(
             "INSERT INTO `{$prefix}xprofiles` (`" . implode('`, `', $names) . '`)'
-            . ' VALUES (' . implode(', ', $placeholders) . ')'
+            . ' VALUES (' . implode(', ', $placeholders) . ')',
         );
         $stmt->execute($values);
     }

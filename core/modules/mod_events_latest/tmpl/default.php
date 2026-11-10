@@ -31,7 +31,7 @@ if ($this->getError()) { ?>
                     <div class="event-title">
                         <?php
                         $eventUrl = Route::url(
-                            'index.php?option=com_events&task=details&id=' . $event->id
+                            'index.php?option=com_events&task=details&id=' . $event->id,
                         );
                         ?>
                         <a href="<?php echo $eventUrl; ?>">
@@ -52,7 +52,7 @@ if ($this->getError()) { ?>
         <?php
         $eventsUrl = Route::url(
             'index.php?option=com_events&year=' . Date::of('now')->format('Y')
-            . '&month=' . Date::of('now')->format('m')
+            . '&month=' . Date::of('now')->format('m'),
         );
         ?>
         <a href="<?php echo $eventsUrl; ?>">

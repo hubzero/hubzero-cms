@@ -68,7 +68,7 @@ class Usage extends Plugin
             'title' => Lang::txt('USAGE'),
             'default_access' => $this->params->get('plugin_access', 'members'),
             'display_menu_tab' => $this->params->get('display_tab', 1),
-            'icon' => 'f080'
+            'icon' => 'f080',
         ];
         return $area;
     }
@@ -94,7 +94,7 @@ class Usage extends Plugin
         // The output array we're returning
         $arr = [
             'html' => '',
-            'metadata' => []
+            'metadata' => [],
         ];
 
         //get this area details
@@ -130,7 +130,7 @@ class Usage extends Plugin
                 App::redirect(
                     Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
                     Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
-                    'warning'
+                    'warning',
                 );
                 return;
             }

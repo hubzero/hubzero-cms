@@ -45,7 +45,7 @@ class CertificatePdf extends \TCPDF
             '',
             false,
             false,
-            0
+            0,
         );
         // restore auto-page-break status
         $this->SetAutoPageBreak($auto_page_break, $bMargin);

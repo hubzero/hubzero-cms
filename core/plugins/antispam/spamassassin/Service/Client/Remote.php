@@ -67,7 +67,7 @@ class Remote
                 preg_match(
                     '/X-Spam-Status: (Yes|No)\, score=(\d+\.\d)required=(\d+\.\d)/',
                     $report->message,
-                    $matches
+                    $matches,
                 )
             ) {
                 if ($matches[1] == 'Yes') {
@@ -135,7 +135,7 @@ class Remote
         $result = json_decode($result);
         if (!isset($result->success) || !$result->success) {
             throw new Exception(
-                'Postmark Error: ' . (isset($result->message) && $result->message ? $result->message : 'unknown')
+                'Postmark Error: ' . (isset($result->message) && $result->message ? $result->message : 'unknown'),
             );
         }
 

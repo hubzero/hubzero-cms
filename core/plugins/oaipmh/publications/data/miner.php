@@ -49,7 +49,7 @@ class Miner extends Obj implements Provider
      */
     protected $provides = [
         'publications',
-        'publication'
+        'publication',
     ];
 
     /**
@@ -216,7 +216,7 @@ class Miner extends Obj implements Provider
             "SELECT pv.`publication_id`, pv.`version_number`
 			FROM `#__publication_versions` AS pv
 			WHERE pv.`doi`=" . $this->database->quote($identifier) . "
-			LIMIT 1"
+			LIMIT 1",
         );
         $doi = $this->database->loadObject();
         if ($doi && $doi->publication_id) {
@@ -247,7 +247,7 @@ class Miner extends Obj implements Provider
 			FROM `#__publication_versions` AS pv
 			INNER JOIN `#__publications` AS p ON p.id = pv.publication_id
 			INNER JOIN `#__publication_categories` AS rt ON rt.id = p.category
-			WHERE p.id = " . $this->database->quote($id) . ($revision ? " AND pv.version_number=" . $this->database->quote($revision) : "")
+			WHERE p.id = " . $this->database->quote($id) . ($revision ? " AND pv.version_number=" . $this->database->quote($revision) : ""),
         );
         $record = $this->database->loadObject();
         $record->version_id = $record->id;
@@ -267,7 +267,7 @@ class Miner extends Obj implements Provider
         if (file_exists($pubHelper)) {
             $pubIdQuoted = $this->database->quote($record->publication_id);
             $this->database->setQuery(
-                "SELECT master_type FROM `#__publications` WHERE id = " . $pubIdQuoted
+                "SELECT master_type FROM `#__publications` WHERE id = " . $pubIdQuoted,
             );
             $masterType = $this->database->loadResult();
 
@@ -334,7 +334,7 @@ class Miner extends Obj implements Provider
             "SELECT pv.created, pv.submitted, pv.published_up, pv.accepted
 			FROM `#__publication_versions` AS pv
 			WHERE pv.id = " . $this->database->quote($record->version_id) . "
-			ORDER BY pv.submitted DESC LIMIT 1"
+			ORDER BY pv.submitted DESC LIMIT 1",
         );
         $dates = $this->database->loadObject();
         $record->date = $dates->created;
@@ -352,7 +352,7 @@ class Miner extends Obj implements Provider
             "SELECT pa.name, pa.user_id
 			FROM `#__publication_authors` AS pa
 			WHERE (pa.role IS NULL OR pa.role != 'submitter') AND pa.status=1 AND pa.publication_version_id=" . $this->database->quote($record->version_id) . "
-			ORDER BY pa.ordering"
+			ORDER BY pa.ordering",
         );
         $creators = $this->database->loadObjectList();
         foreach ($creators as $creator) {
@@ -365,7 +365,7 @@ class Miner extends Obj implements Provider
             "SELECT DISTINCT t.raw_tag
 			FROM `#__tags` t, `#__tags_object` tos
 			WHERE t.id = tos.tagid AND tos.objectid=" . $this->database->quote($record->version_id) . " AND tos.tbl='publications' AND t.admin=0
-			ORDER BY t.raw_tag"
+			ORDER BY t.raw_tag",
         );
         $record->subject = $this->database->loadColumn();
 
@@ -376,7 +376,7 @@ class Miner extends Obj implements Provider
             "SELECT v.id, v.publication_id, v.version_number, v.doi
 			FROM `#__publication_versions` as v
 			WHERE v.state=1 AND v.publication_id = " . $this->database->quote($record->id) . "
-			ORDER BY v.version_number DESC"
+			ORDER BY v.version_number DESC",
         );
         $versions = $this->database->loadObjectList();
         foreach ($versions as $i => $v) {
@@ -386,7 +386,7 @@ class Miner extends Obj implements Provider
 
             $record->relation[] = [
                 'type'  => 'hasVersion',
-                'value' => $this->identifier($id, $v->doi, $v->version_number)
+                'value' => $this->identifier($id, $v->doi, $v->version_number),
             ];
         }
 
@@ -395,7 +395,7 @@ class Miner extends Obj implements Provider
 			FROM `#__citations` AS a
 			LEFT JOIN `#__citations_assoc` AS n ON n.`cid`=a.`id`
 			WHERE n.`tbl`='publication' AND n.`oid`=" . $this->database->quote($id) . " AND n.`type`='owner' AND a.`published`=1
-			ORDER BY `year` DESC"
+			ORDER BY `year` DESC",
         );
         $references = $this->database->loadObjectList();
         $citationHelper = Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
@@ -409,7 +409,7 @@ class Miner extends Obj implements Provider
 
                 $record->relation[] = [
                     'type'  => 'isReferencedBy',
-                    'value' => trim($cite)
+                    'value' => trim($cite),
                 ];
             }
         }
@@ -419,7 +419,7 @@ class Miner extends Obj implements Provider
 			FROM `#__citations` AS a
 			LEFT JOIN `#__citations_assoc` AS n ON n.`cid`=a.`id`
 			WHERE n.`tbl`='publication' AND n.`oid`=" . $this->database->quote($id) . " AND n.`type`!='owner' AND a.`published`=1
-			ORDER BY `year` DESC"
+			ORDER BY `year` DESC",
         );
         $references = $this->database->loadObjectList();
         if (count($references) && file_exists($citationHelper)) {
@@ -432,7 +432,7 @@ class Miner extends Obj implements Provider
 
                 $record->relation[] = [
                     'type'  => 'references',
-                    'value' => trim($cite)
+                    'value' => trim($cite),
                 ];
             }
         }

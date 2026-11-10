@@ -44,7 +44,7 @@ class Message extends Relational
      */
     protected $rules = [
         'title'   => 'notempty',
-        'message' => 'notempty'
+        'message' => 'notempty',
     ];
 
     /**

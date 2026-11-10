@@ -65,7 +65,7 @@ class Terms extends Base implements CommandInterface
             // Confirm clearing
             $confirm = $this->output->getResponse(
                 'Are you sure you want to clear Terms of Use for all users? ' .
-                'This will also require users to agree to new terms with next login? (yes/no)'
+                'This will also require users to agree to new terms with next login? (yes/no)',
             );
         }
 

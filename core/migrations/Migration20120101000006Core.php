@@ -59,7 +59,7 @@ class Migration20120101000006Core extends Base
             "activateSite"       => "1",
             "noconflictSite"     => "0",
             "activateAdmin"      => "0",
-            "noconflictAdmin"    => "0"
+            "noconflictAdmin"    => "0",
         ]);
         $this->addPluginEntry('authentication', 'hubzero');
         $this->addPluginEntry('authentication', 'facebook');
@@ -71,7 +71,7 @@ class Migration20120101000006Core extends Base
         $this->installModule('search', 'search', false, [
             'label' => 'Search',
             'width' => '20',
-            'text'  => 'Search'
+            'text'  => 'Search',
         ]);
 
         // Deletes
@@ -104,7 +104,7 @@ class Migration20120101000006Core extends Base
             ['/members/{{userid}}/', '/members/myaccount/'],
             ['/lostpassword', '/login/reset'],
             ['/lostusername', '/login/remind'],
-            ['"/report_problems/', '"/feedback/report_problems']
+            ['"/report_problems/', '"/feedback/report_problems'],
         ];
 
         foreach ($updates as $update) {
@@ -145,7 +145,7 @@ class Migration20120101000006Core extends Base
                     . "publicity or privacy rights.\r\n\r\n"
                     . "Notice — For any reuse or distribution, you must make clear to others the "
                         . "license terms of this "
-                    . "work. The best way to do this is with a link to this web page."
+                    . "work. The best way to do this is with a link to this web page.",
             ],
             [
                 'name' => 'cc30-by-nc-sa',
@@ -173,7 +173,7 @@ class Migration20120101000006Core extends Base
                     . "limitations;\r\n"
                     . "- The author\'s moral rights;\r\n"
                     . "- Rights other persons may have either in the work itself or in how the work is used, such as "
-                    . "publicity or privacy rights."
+                    . "publicity or privacy rights.",
             ],
              [
                 'name' => 'cc',
@@ -204,7 +204,7 @@ class Migration20120101000006Core extends Base
                     . "publicity or privacy rights.\r\n\r\n"
                     . "Notice — For any reuse or distribution, you must make clear to others the "
                         . "license terms of this "
-                    . "work. The best way to do this is with a link to this web page."
+                    . "work. The best way to do this is with a link to this web page.",
             ],
              [
                 'name' => 'cc30-by-nc-nd',
@@ -229,7 +229,7 @@ class Migration20120101000006Core extends Base
                     . "limitations;\r\n"
                     . "- The author\'s moral rights;\r\n"
                     . "- Rights other persons may have either in the work itself or in how the work is used, such as "
-                    . "publicity or privacy rights."
+                    . "publicity or privacy rights.",
             ],
              [
                 'name' => 'cc30-by',
@@ -254,7 +254,7 @@ class Migration20120101000006Core extends Base
                     . "limitations;\r\n"
                     . "- The author\'s moral rights;\r\n"
                     . "- Rights other persons may have either in the work itself or in how the work is used, such as "
-                    . "publicity or privacy rights."
+                    . "publicity or privacy rights.",
             ],
              [
                 'name' => 'cc30-by-sa',
@@ -282,7 +282,7 @@ class Migration20120101000006Core extends Base
                     . "limitations;\r\n"
                     . "- The author\'s moral rights;\r\n"
                     . "- Rights other persons may have either in the work itself or in how the work is used, such as "
-                    . "publicity or privacy rights."
+                    . "publicity or privacy rights.",
             ],
              [
                 'name' => 'cc30-by-nc',
@@ -307,8 +307,8 @@ class Migration20120101000006Core extends Base
                     . "limitations;\r\n"
                     . "- The author\'s moral rights;\r\n"
                     . "- Rights other persons may have either in the work itself or in how the work is used, such as "
-                    . "publicity or privacy rights."
-            ]
+                    . "publicity or privacy rights.",
+            ],
         ];
 
         foreach ($licenses as $license) {
@@ -330,7 +330,7 @@ class Migration20120101000006Core extends Base
                         'icon'      => null,
                         'url'       => $license['url'],
                         'agreement' => 0,
-                        'info'      => null
+                        'info'      => null,
                     ])
                     ->execute();
             }
@@ -345,7 +345,7 @@ class Migration20120101000006Core extends Base
             'mst' => -7,
             'mdt' => -6,
             'pst' => -8,
-            'pdt' => -7
+            'pdt' => -7,
         ];
 
         foreach ($timezones as $tz_name => $tz_offset) {

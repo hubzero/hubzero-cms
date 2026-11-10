@@ -22,7 +22,7 @@ class ExternalCallerHelper
 {
     public function callSetQuery(
         Driver $driver,
-        string $sql
+        string $sql,
     ): void {
         $driver->setQuery($sql);
     }

@@ -29,7 +29,7 @@ namespace Hubzero\Language\Tests {
         public static function make(
             string $lang = 'en-GB',
             bool $debug = false,
-            string $client = 'site'
+            string $client = 'site',
         ): self {
             // Bypass parent constructor entirely
             $ref = new \ReflectionClass(self::class);
@@ -74,7 +74,7 @@ namespace Hubzero\Language\Tests {
             $basePath = null,
             $lang = null,
             $reload = false,
-            $default = true
+            $default = true,
         ) {
             if (!$lang) {
                 $lang = $this->lang;
@@ -121,7 +121,7 @@ namespace Hubzero\Language\Tests {
             }
             $items = new \RecursiveIteratorIterator(
                 new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS),
-                \RecursiveIteratorIterator::CHILD_FIRST
+                \RecursiveIteratorIterator::CHILD_FIRST,
             );
             foreach ($items as $item) {
                 $item->isDir() ? rmdir($item->getPathname()) : unlink($item->getPathname());

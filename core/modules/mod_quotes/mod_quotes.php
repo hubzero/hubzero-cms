@@ -34,7 +34,7 @@ class Quotes extends Module
         $this->filters = [
             'limit'         => trim($this->params->get('maxquotes', '')),
             'id'            => Request::getInt('quoteid', 0),
-            'notable_quote' => 1
+            'notable_quote' => 1,
         ];
 
         // Get quotes

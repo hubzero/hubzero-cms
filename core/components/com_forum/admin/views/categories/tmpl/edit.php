@@ -34,7 +34,7 @@ Html::behavior('keepalive');
 $this->js();
 
 $formAction = Route::url(
-    'index.php?option=' . $this->option . '&controller=' . $this->controller
+    'index.php?option=' . $this->option . '&controller=' . $this->controller,
 );
 $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
 ?>
@@ -226,7 +226,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                             Html::access('assetgroups'),
                             'value',
                             'text',
-                            $this->row->get('access')
+                            $this->row->get('access'),
                         ); ?>
                     </select>
                 </div>

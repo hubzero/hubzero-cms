@@ -141,7 +141,7 @@ Toolbar::help('quotes');
                     $editUrl = Route::url(
                         'index.php?option=' . $this->option
                         . '&controller=' . $this->controller
-                        . '&task=edit&id=' . $row->get('id')
+                        . '&task=edit&id=' . $row->get('id'),
                     );
                     ?>
                     <?php if ($canDo->get('core.edit')) { ?>
@@ -160,7 +160,7 @@ Toolbar::help('quotes');
                 <td>
                     <?php
                     $truncatedQuote = $this->escape(
-                        \Hubzero\Utility\Str::truncate(strip_tags($row->get('quote')), 100)
+                        \Hubzero\Utility\Str::truncate(strip_tags($row->get('quote')), 100),
                     );
                     ?>
                     <?php if ($canDo->get('core.edit')) { ?>

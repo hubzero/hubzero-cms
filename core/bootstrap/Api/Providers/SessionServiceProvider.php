@@ -34,7 +34,7 @@ class SessionServiceProvider extends ServiceProvider
                 'cookie_path'   => $app['config']->get('cookie_path', '/'),
                 // Config time is in minutes so we need to do some
                 // math to get seconds.
-                'expire'        => ($app['config']->get('lifetime') ? $app['config']->get('lifetime') * 60 : 900)
+                'expire'        => ($app['config']->get('lifetime') ? $app['config']->get('lifetime') * 60 : 900),
             ];
 
             if ($app['config']->get('force_ssl') >= 1) {
@@ -96,7 +96,7 @@ class SessionServiceProvider extends ServiceProvider
                                 'session_id' => $this->app['session']->getId(),
                                 'client_id'  => (int) $this->app['client']->id,
                                 'time'       => (int) time(),
-                                'ip'         => $ip
+                                'ip'         => $ip,
                             ]);
 
                         $db->setQuery($query->toString());
@@ -110,7 +110,7 @@ class SessionServiceProvider extends ServiceProvider
                                 'time'       => (int) $this->app['session']->get('session.timer.start'),
                                 'userid'     => (int) $this->app['user']->get('id'),
                                 'username'   => $this->app['user']->get('username'),
-                                'ip'         => $ip
+                                'ip'         => $ip,
                             ]);
 
                         $db->setQuery($query->toString());

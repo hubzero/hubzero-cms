@@ -138,7 +138,7 @@ class Mark
             'label'  => $this->label(),
             'start'  => $this->started(),
             'end'    => $this->ended(),
-            'memory' => $this->memory()
+            'memory' => $this->memory(),
         ];
     }
 }

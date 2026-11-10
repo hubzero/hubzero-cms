@@ -80,7 +80,7 @@ class Plugin extends Relational
     protected $rules = [
         'folder'  => 'notempty',
         'element' => 'notempty',
-        'name'    => 'notempty'
+        'name'    => 'notempty',
     ];
 
     /**
@@ -90,7 +90,7 @@ class Plugin extends Relational
      **/
     public $always = [
         'modified',
-        'modified_by'
+        'modified_by',
     ];
 
     /**
@@ -148,7 +148,7 @@ class Plugin extends Relational
 
             $paths = [
                 'app'  => Filesystem::cleanPath(PATH_APP . $path),
-                'core' => Filesystem::cleanPath(PATH_CORE . $path)
+                'core' => Filesystem::cleanPath(PATH_CORE . $path),
             ];
 
             foreach ($paths as $p) {

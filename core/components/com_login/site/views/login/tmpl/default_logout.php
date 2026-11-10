@@ -63,7 +63,7 @@ if (!User::isGuest()) {
             <button type="submit" class="button"><?php echo Lang::txt('JLOGOUT'); ?></button>
             <?php
             $returnVal = base64_encode(
-                $this->params->get('logout_redirect_url', $this->form->getValue('return'))
+                $this->params->get('logout_redirect_url', $this->form->getValue('return')),
             );
             ?>
             <input type="hidden" name="return" value="<?php echo $returnVal; ?>" />

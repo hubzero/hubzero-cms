@@ -23,7 +23,7 @@ class BoostDocumentTypeMapTest extends Basic
         $formattedCitationType = 'Citations';
         $langMock = $this->mock([
             'class' => 'Lang',
-            'methods' => ['txt' => $formattedCitationType]
+            'methods' => ['txt' => $formattedCitationType],
         ]);
         $map = new Map(['lang' => $langMock]);
 

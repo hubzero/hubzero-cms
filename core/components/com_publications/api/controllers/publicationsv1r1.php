@@ -74,7 +74,7 @@ class Publicationsv1r1 extends ApiController
             'start'      => Request::getInt('start', 0),
             'sortby'     => Request::getWord('sort', 'title'),
             'sortdir'    => strtoupper(Request::getWord('sort_Dir', 'ASC')),
-            'author'     => User::get('id')
+            'author'     => User::get('id'),
         ];
 
         $response = new stdClass();

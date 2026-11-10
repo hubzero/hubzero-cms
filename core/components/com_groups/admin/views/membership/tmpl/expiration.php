@@ -43,7 +43,7 @@ $max = $this->maxDays > 0 ? Date::of('now')->modify('+' . $this->maxDays . ' day
                 if (!empty($this->current[$uid])) {
                     $label .= ' (' . Lang::txt(
                         'COM_GROUPS_MEMBER_TERM_ENDS',
-                        Date::of($this->current[$uid])->toLocal(Lang::txt('DATE_FORMAT_HZ1'))
+                        Date::of($this->current[$uid])->toLocal(Lang::txt('DATE_FORMAT_HZ1')),
                     ) . ')';
                 }
 

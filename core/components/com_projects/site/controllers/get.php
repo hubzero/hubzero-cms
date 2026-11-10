@@ -41,7 +41,7 @@ class Get extends SiteController
         $objSt = new Tables\Stamp($this->database);
         if (!$stamp || !$objSt->loadItem($stamp)) {
             App::redirect(
-                $route
+                $route,
             );
             return;
         }
@@ -49,7 +49,7 @@ class Get extends SiteController
         // Can only serve files or notes at the moment
         if (!in_array($objSt->type, ['files', 'notes', 'publications'])) {
             App::redirect(
-                $route
+                $route,
             );
             return;
         }
@@ -66,7 +66,7 @@ class Get extends SiteController
 
         // Redirect if nothing fetched
         App::redirect(
-            $route
+            $route,
         );
     }
 }

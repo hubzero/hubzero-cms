@@ -56,21 +56,21 @@ class Compiler extends Obj
     {
         $formats =  [
             'application' =>  [
-                'application/pdf'
+                'application/pdf',
             ],
             'images' =>  [
                 'image/jpeg',
                 'image/jpg',
                 'image/png',
                 'image/x-png',
-                'image/gif'
+                'image/gif',
             ],
             'text' =>  [
                 'text/plain',
                 'text/css',
                 'text/x-tex',
-                'text/html'
-            ]
+                'text/html',
+            ],
         ];
 
         return $formats;

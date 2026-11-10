@@ -69,7 +69,7 @@ class Activity extends Plugin
 
         $arr = [
             'html'     => '',
-            'metadata' => []
+            'metadata' => [],
         ];
 
         // Check if our area is in the array of areas we want to return results for
@@ -166,7 +166,7 @@ class Activity extends Plugin
             'scope'  => Request::getWord('scope'),
             'created_by' => Request::getWord('created_by'),
             'limit'  => Request::getInt('limit', Config::get('list_limit')),
-            'start'  => Request::getInt('start', 0)
+            'start'  => Request::getInt('start', 0),
         ];
 
         // Validate filters
@@ -308,7 +308,7 @@ class Activity extends Plugin
 
         // Redirect
         App::redirect(
-            Route::url($this->member->link() . '&active=activity', false)
+            Route::url($this->member->link() . '&active=activity', false),
         );
     }
 
@@ -443,7 +443,7 @@ class Activity extends Plugin
 
         // Redirect
         App::redirect(
-            Route::url($this->member->link() . '&active=activity', false)
+            Route::url($this->member->link() . '&active=activity', false),
         );
     }
 
@@ -468,7 +468,7 @@ class Activity extends Plugin
 
         $settings = \Hubzero\Activity\Digest::oneByScope(
             $this->member->get('id'),
-            'user'
+            'user',
         );
 
         $view = $this->view('settings', 'activity')
@@ -521,18 +521,18 @@ class Activity extends Plugin
                 'action'      => 'updated',
                 'scope'       => 'activity.settings',
                 'scope_id'    => $row->get('id'),
-                'description' => Lang::txt('PLG_MEMBERS_ACTIVITY_SETTINGS_UPDATED')
+                'description' => Lang::txt('PLG_MEMBERS_ACTIVITY_SETTINGS_UPDATED'),
             ],
             'recipients' => [
-                $this->member->get('id')
-            ]
-            ]
+                $this->member->get('id'),
+            ],
+            ],
         );
 
         // Redirect
         App::redirect(
             Route::url($this->member->link() . '&active=activity', false),
-            Lang::txt('PLG_MEMBERS_ACTIVITY_SETTINGS_SAVED')
+            Lang::txt('PLG_MEMBERS_ACTIVITY_SETTINGS_SAVED'),
         );
     }
 
@@ -545,7 +545,7 @@ class Activity extends Plugin
 
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . $return, false),
-            Lang::txt('MEMBERS_LOGIN_NOTICE')
+            Lang::txt('MEMBERS_LOGIN_NOTICE'),
         );
     }
 }

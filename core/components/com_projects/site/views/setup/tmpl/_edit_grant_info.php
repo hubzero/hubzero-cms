@@ -79,7 +79,7 @@ if (
                 <?php if ($approved) :  ?>
                     <?php
                     $grantTitleVal = htmlentities(html_entity_decode(
-                        $this->model->params->get('grant_title', 'N/A')
+                        $this->model->params->get('grant_title', 'N/A'),
                     ));
                     ?>
                     <span class="prominent"><?php echo $grantTitleVal; ?></span>
@@ -87,7 +87,7 @@ if (
                     <?php
                     $grantTitleInput = $this->model->params->get('grant_title');
                     $grantTitleInput = htmlentities(html_entity_decode(
-                        $grantTitleInput == null ? '' : $grantTitleInput
+                        $grantTitleInput == null ? '' : $grantTitleInput,
                     ));
                     ?>
                     <input
@@ -108,7 +108,7 @@ if (
                 <?php if ($approved) : ?>
                     <?php
                     $grantPiVal = htmlentities(html_entity_decode(
-                        $this->model->params->get('grant_PI', 'N/A')
+                        $this->model->params->get('grant_PI', 'N/A'),
                     ));
                     ?>
                     <span class="prominent"><?php echo $grantPiVal; ?></span>
@@ -116,7 +116,7 @@ if (
                     <?php
                     $grantPiInput = $this->model->params->get('grant_PI');
                     $grantPiInput = htmlentities(html_entity_decode(
-                        $grantPiInput == null ? '' : $grantPiInput
+                        $grantPiInput == null ? '' : $grantPiInput,
                     ));
                     ?>
                     <input
@@ -137,7 +137,7 @@ if (
                 <?php if ($approved) : ?>
                     <?php
                     $awardNumVal = htmlentities(html_entity_decode(
-                        $this->model->params->get('award_number', 'N/A')
+                        $this->model->params->get('award_number', 'N/A'),
                     ));
                     ?>
                     <span class="prominent"><?php echo $awardNumVal; ?></span>
@@ -145,7 +145,7 @@ if (
                     <?php
                     $awardNumInput = $this->model->params->get('award_number');
                     $awardNumInput = htmlentities(html_entity_decode(
-                        $awardNumInput == null ? '' : $awardNumInput
+                        $awardNumInput == null ? '' : $awardNumInput,
                     ));
                     ?>
                     <input
@@ -166,7 +166,7 @@ if (
                 <?php if ($approved) : ?>
                     <?php
                     $agencyVal = htmlentities(html_entity_decode(
-                        $this->model->params->get('grant_agency', 'N/A')
+                        $this->model->params->get('grant_agency', 'N/A'),
                     ));
                     ?>
                     <span class="prominent"><?php echo $agencyVal; ?></span>
@@ -174,7 +174,7 @@ if (
                     <?php
                     $agencyInput = $this->model->params->get('grant_agency');
                     $agencyInput = htmlentities(html_entity_decode(
-                        $agencyInput == null ? '' : $agencyInput
+                        $agencyInput == null ? '' : $agencyInput,
                     ));
                     ?>
                     <input
@@ -195,7 +195,7 @@ if (
                 <?php if ($approved) : ?>
                     <?php
                     $budgetVal = htmlentities(html_entity_decode(
-                        $this->model->params->get('grant_budget', 'N/A')
+                        $this->model->params->get('grant_budget', 'N/A'),
                     ));
                     ?>
                     <span class="prominent"><?php echo $budgetVal; ?></span>
@@ -203,7 +203,7 @@ if (
                     <?php
                     $budgetInput = $this->model->params->get('grant_budget');
                     $budgetInput = htmlentities(html_entity_decode(
-                        $budgetInput == null ? '' : $budgetInput
+                        $budgetInput == null ? '' : $budgetInput,
                     ));
                     ?>
                     <input

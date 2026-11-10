@@ -45,7 +45,7 @@ class Permissions
             'core.create',
             'core.edit',
             'core.edit.state',
-            'core.delete'
+            'core.delete',
         ];
 
         $user = User::getInstance();
@@ -88,7 +88,7 @@ class Permissions
         // Get user roles
         $roles = self::getGroupMemberRoles(
             User::get('id'),
-            $group->get('gidNumber')
+            $group->get('gidNumber'),
         );
 
         // Check to see if any of our roles for user has permission for action

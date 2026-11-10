@@ -67,7 +67,7 @@ if ($canDo->get('core.delete')) {
                     'COM_MEMBERS_COL_ID',
                     'id',
                     @$this->filters['sort_Dir'],
-                    @$this->filters['sort']
+                    @$this->filters['sort'],
                 );
                 ?>
                 <th scope="col" class="priority-4"><?php echo $val; ?></th>
@@ -77,7 +77,7 @@ if ($canDo->get('core.delete')) {
                     'COM_MEMBERS_COL_COMPONENT',
                     'component',
                     @$this->filters['sort_Dir'],
-                    @$this->filters['sort']
+                    @$this->filters['sort'],
                 );
                 ?>
                 <th scope="col" class="priority-2"><?php echo $val; ?></th>
@@ -87,7 +87,7 @@ if ($canDo->get('core.delete')) {
                     'COM_MEMBERS_COL_ACTION',
                     'action',
                     @$this->filters['sort_Dir'],
-                    @$this->filters['sort']
+                    @$this->filters['sort'],
                 );
                 ?>
                 <th scope="col"><?php echo $val; ?></th>
@@ -97,7 +97,7 @@ if ($canDo->get('core.delete')) {
                     'COM_MEMBERS_COL_TITLE',
                     'title',
                     @$this->filters['sort_Dir'],
-                    @$this->filters['sort']
+                    @$this->filters['sort'],
                 );
                 ?>
                 <th scope="col" class="priority-3"><?php echo $val; ?></th>
@@ -111,7 +111,7 @@ if ($canDo->get('core.delete')) {
                     echo $this->pagination(
                         $this->total,
                         $this->filters['start'],
-                        $this->filters['limit']
+                        $this->filters['limit'],
                     );
                     ?>
                 </td>
@@ -152,7 +152,7 @@ foreach ($this->rows as $row) {
                             . '&controller='
                             . $this->controller
                             . '&task=edit&id='
-                            . $row->id
+                            . $row->id,
                         );
                         ?>
                         <a href="<?php echo $href; ?>">

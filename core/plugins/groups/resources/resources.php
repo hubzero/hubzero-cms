@@ -92,7 +92,7 @@ class Resources extends Plugin
             'title'            => Lang::txt('PLG_GROUPS_RESOURCES'),
             'default_access'   => $this->params->get('plugin_access', 'members'),
             'display_menu_tab' => $this->params->get('display_tab', 1),
-            'icon'             => 'f02d'
+            'icon'             => 'f02d',
         ];
         return $area;
     }
@@ -119,7 +119,7 @@ class Resources extends Plugin
         // The output array we're returning
         $arr = [
             'html' => '',
-            'metadata' => []
+            'metadata' => [],
         ];
 
         //get this area details
@@ -156,7 +156,7 @@ class Resources extends Plugin
                 App::redirect(
                     Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
                     Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
-                    'warning'
+                    'warning',
                 );
                 return;
             }
@@ -223,7 +223,7 @@ class Resources extends Plugin
             $ls,
             $sort,
             $access,
-            $activeareas
+            $activeareas,
         );
         $totals = [$ts];
 
@@ -281,7 +281,7 @@ class Resources extends Plugin
             $sort,
             $access,
             $activeareas,
-            $sortdir
+            $sortdir,
         );
         $results = [$r];
 
@@ -307,7 +307,7 @@ class Resources extends Plugin
                     // Instantiate the controller and have it execute
                     $controllerPath = Component::path('com_resources') . DS . 'site';
                     $newtest = new \Components\Resources\Site\Controllers\Resources(
-                        ['base_path' => $controllerPath]
+                        ['base_path' => $controllerPath],
                     );
                     $newtest->execute();
 
@@ -446,7 +446,7 @@ class Resources extends Plugin
         }
 
         $areas = [
-            'resources' => $cats
+            'resources' => $cats,
         ];
         $this->_areas = $areas;
         return $areas;

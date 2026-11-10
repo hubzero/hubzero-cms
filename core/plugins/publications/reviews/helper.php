@@ -187,7 +187,7 @@ class Helper extends \Hubzero\Base\Obj
         // Redirect
         App::redirect(
             Route::url($publication->link('reviews')),
-            Lang::txt('PLG_PUBLICATIONS_REVIEWS_COMMENT_DELETED')
+            Lang::txt('PLG_PUBLICATIONS_REVIEWS_COMMENT_DELETED'),
         );
     }
 
@@ -243,7 +243,7 @@ class Helper extends \Hubzero\Base\Obj
                 'voter'       => User::get('id'),
                 'ip'          => $ip,
                 'voted'       => Date::toSql(),
-                'helpful'     => $vote
+                'helpful'     => $vote,
             ]);
 
             if (!$v->save()) {
@@ -263,8 +263,8 @@ class Helper extends \Hubzero\Base\Obj
                     'folder' => 'publications',
                     'element' => 'reviews',
                     'name'   => 'browse',
-                    'layout' => '_rateitem'
-                ]
+                    'layout' => '_rateitem',
+                ],
             );
             $view->option = $this->_option;
             $view->item   = new Models\Review($response[0]);
@@ -424,8 +424,8 @@ class Helper extends \Hubzero\Base\Obj
             [
                 'folder'  => 'publications',
                 'element' => 'reviews',
-                'name'    => 'emails'
-            ]
+                'name'    => 'emails',
+            ],
         );
         $eview->option      = $this->_option;
         $eview->juser       = User::getInstance();
@@ -446,7 +446,7 @@ class Helper extends \Hubzero\Base\Obj
                 $message,
                 $from,
                 $users,
-                $this->_option
+                $this->_option,
             ])
         ) {
             $this->setError(Lang::txt('PLG_PUBLICATIONS_REVIEWS_FAILED_TO_MESSAGE'));
@@ -514,7 +514,7 @@ class Helper extends \Hubzero\Base\Obj
 
         App::redirect(
             Route::url($publication->link('reviews')),
-            Lang::txt('PLG_PUBLICATIONS_REVIEWS_REVIEW_DELETED')
+            Lang::txt('PLG_PUBLICATIONS_REVIEWS_REVIEW_DELETED'),
         );
         return;
     }

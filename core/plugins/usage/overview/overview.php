@@ -33,7 +33,7 @@ class Overview extends Plugin
     public function onUsageAreas()
     {
         return [
-            'overview' => Lang::txt('PLG_USAGE_OVERVIEW')
+            'overview' => Lang::txt('PLG_USAGE_OVERVIEW'),
         ];
     }
 
@@ -173,28 +173,28 @@ class Overview extends Plugin
                     $residence[] = [
                         'column' => 'US',
                         'value'  => $row->value,
-                        'key'    => 'users-visits-res-us'
+                        'key'    => 'users-visits-res-us',
                     ];
                     break;
                 case 4:
                     $residence[] = [
                         'column' => 'Asia',
                         'value'  => $row->value,
-                        'key'    => 'users-visits-res-asia'
+                        'key'    => 'users-visits-res-asia',
                     ];
                     break;
                 case 5:
                     $residence[] = [
                         'column' => 'Europe',
                         'value'  => $row->value,
-                        'key'    => 'users-visits-res-europe'
+                        'key'    => 'users-visits-res-europe',
                     ];
                     break;
                 case 6:
                     $residence[] = [
                         'column' => 'Other',
                         'value'  => $row->value,
-                        'key'    => 'users-visits-res-other'
+                        'key'    => 'users-visits-res-other',
                     ];
                     break;
 
@@ -202,28 +202,28 @@ class Overview extends Plugin
                     $organization[] = [
                         'column' => 'Education',
                         'value'  => $row->value,
-                        'key'    => 'users-visits-org-education'
+                        'key'    => 'users-visits-org-education',
                     ];
                     break;
                 case 9:
                     $organization[] = [
                         'column' => 'Industry',
                         'value'  => $row->value,
-                        'key'    => 'users-visits-org-industry'
+                        'key'    => 'users-visits-org-industry',
                     ];
                     break;
                 case 10:
                     $organization[] = [
                         'column' => 'Government',
                         'value'  => $row->value,
-                        'key'    => 'users-visits-org-government'
+                        'key'    => 'users-visits-org-government',
                     ];
                     break;
                 case 11:
                     $organization[] = [
                         'column' => 'Other',
                         'value'  => $row->value,
-                        'key'    => 'users-visits-org-other'
+                        'key'    => 'users-visits-org-other',
                     ];
                     break;
                 break;
@@ -282,28 +282,28 @@ class Overview extends Plugin
                     $residence[] = [
                         'column' => 'US',
                         'value'  => $row->value,
-                        'key'    => 'users-downloads-res-us'
+                        'key'    => 'users-downloads-res-us',
                     ];
                     break;
                 case 4:
                     $residence[] = [
                         'column' => 'Asia',
                         'value'  => $row->value,
-                        'key'    => 'users-downloads-res-asia'
+                        'key'    => 'users-downloads-res-asia',
                     ];
                     break;
                 case 5:
                     $residence[] = [
                         'column' => 'Europe',
                         'value'  => $row->value,
-                        'key'    => 'users-downloads-res-europe'
+                        'key'    => 'users-downloads-res-europe',
                     ];
                     break;
                 case 6:
                     $residence[] = [
                         'column' => 'Other',
                         'value'  => $row->value,
-                        'key'    => 'users-downloads-res-other'
+                        'key'    => 'users-downloads-res-other',
                     ];
                     break;
 
@@ -311,28 +311,28 @@ class Overview extends Plugin
                     $organization[] = [
                         'column' => 'Education',
                         'value'  => $row->value,
-                        'key'    => 'users-downloads-org-education'
+                        'key'    => 'users-downloads-org-education',
                     ];
                     break;
                 case 9:
                     $organization[] = [
                         'column' => 'Industry',
                         'value'  => $row->value,
-                        'key'    => 'users-downloads-org-industry'
+                        'key'    => 'users-downloads-org-industry',
                     ];
                     break;
                 case 10:
                     $organization[] = [
                         'column' => 'Government',
                         'value'  => $row->value,
-                        'key'    => 'users-downloads-org-government'
+                        'key'    => 'users-downloads-org-government',
                     ];
                     break;
                 case 11:
                     $organization[] = [
                         'column' => 'Other',
                         'value'  => $row->value,
-                        'key'    => 'users-downloads-org-other'
+                        'key'    => 'users-downloads-org-other',
                     ];
                     break;
                 break;
@@ -362,7 +362,7 @@ class Overview extends Plugin
 			WHERE `period` = " . $db->quote($period) . "
 			AND `rowid`= " . $db->quote(1) . "
 			AND `datetime`=" . $db->quote($datetime) . "
-			ORDER BY `datetime` ASC"
+			ORDER BY `datetime` ASC",
         );
         $data->simulation_users = number_format($db->loadResult() ?? 0.0);
 
@@ -372,7 +372,7 @@ class Overview extends Plugin
 			WHERE `period` = " . $db->quote($period) . "
 			AND `rowid`= " . $db->quote(2) . "
 			AND `datetime`=" . $db->quote($datetime) . "
-			ORDER BY `datetime` ASC"
+			ORDER BY `datetime` ASC",
         );
         $data->simulation_jobs = number_format($db->loadResult() ?? 0.0);
 
@@ -382,7 +382,7 @@ class Overview extends Plugin
 			INNER JOIN `summary_simusage_vals` AS b
 			WHERE a.id=b.rowid AND b.period = " . $db->quote($period) . " AND b.datetime = "
             . $db->quote($datetime) . " AND a.id > 2
-			ORDER BY a.id"
+			ORDER BY a.id",
         );
         $data->simulation = $db->loadObjectList();
 

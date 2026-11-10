@@ -71,7 +71,7 @@ class Filelist extends Element
         return Builder\Select::genericlist(
             $options,
             $control_name . '[' . $name . ']',
-            ['id' => 'param' . $name, 'list.attr' => 'class="inputbox"', 'list.select' => $value]
+            ['id' => 'param' . $name, 'list.attr' => 'class="inputbox"', 'list.select' => $value],
         );
     }
 }

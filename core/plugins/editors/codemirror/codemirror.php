@@ -131,7 +131,7 @@ class Codemirror extends Plugin
         $id = null,
         $asset = null,
         $author = null,
-        $params = []
+        $params = [],
     ) {
         if (empty($id)) {
             $id = $name;
@@ -172,7 +172,7 @@ class Codemirror extends Plugin
 
                 case 'html':
                     $parserFile = [
-                        'parsexml.js', 'parsecss.js', 'tokenizejavascript.js', 'parsejavascript.js', 'parsehtmlmixed.js'
+                        'parsexml.js', 'parsecss.js', 'tokenizejavascript.js', 'parsejavascript.js', 'parsehtmlmixed.js',
                     ];
                     $styleSheet = ['xmlcolors.css', 'jscolors.css', 'csscolors.css'];
                     break;
@@ -180,7 +180,7 @@ class Codemirror extends Plugin
                 case 'php':
                     $parserFile = [
                         'parsexml.js', 'parsecss.js', 'tokenizejavascript.js', 'parsejavascript.js',
-                        'tokenizephp.js', 'parsephp.js', 'parsephphtmlmixed.js'
+                        'tokenizephp.js', 'parsephp.js', 'parsephphtmlmixed.js',
                     ];
                     $styleSheet = ['xmlcolors.css', 'jscolors.css', 'csscolors.css', 'phpcolors.css'];
                     break;

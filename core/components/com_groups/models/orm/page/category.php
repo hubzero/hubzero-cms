@@ -43,7 +43,7 @@ class Category extends Relational
      */
     protected $rules = [
         'gidNumber' => 'positive|nonzero',
-        'title'     => 'notempty'
+        'title'     => 'notempty',
     ];
 
     /**

@@ -215,7 +215,7 @@ $priceValue = $this->escape(stripslashes($this->row->getPrice()));
                                 <?php
                                 $ogAdminUrl = Route::url(
                                     'index.php?option=' . $this->option
-                                    . '&controller=options&task=display&id=' . $optionGroup->ogId
+                                    . '&controller=options&task=display&id=' . $optionGroup->ogId,
                                 );
                                 $editOgTitle = Lang::txt('Edit option group');
                                 ?>
@@ -429,7 +429,7 @@ $publishUpVal = ($publishUp && $publishUp != '0000-00-00 00:00:00')
                         'calendar',
                         'fields[publish_up]',
                         $publishUpVal,
-                        ['id' => 'field-publish_up']
+                        ['id' => 'field-publish_up'],
                     ); ?>
                 </div>
 
@@ -446,7 +446,7 @@ $publishDownVal = ($publishDown && $publishDown != '0000-00-00 00:00:00')
                         'calendar',
                         'fields[publish_down]',
                         $publishDownVal,
-                        ['id' => 'field-publish_down']
+                        ['id' => 'field-publish_down'],
                     ); ?>
                 </div>
             </fieldset>

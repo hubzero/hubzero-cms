@@ -22,19 +22,19 @@ class Migration20190305000000ComPublications extends Base
      **/
     public static $tables = [
         '#__publication_audience' => [
-            'created'
+            'created',
         ],
         '#__publication_curation_history' => [
-            'created'
+            'created',
         ],
         '#__publication_curation_versions' => [
-            'created'
+            'created',
         ],
         '#__publication_logs' => [
-            'modified'
+            'modified',
         ],
         '#__publication_ratings' => [
-            'created'
+            'created',
         ],
         '#__publication_versions' => [
             'created',
@@ -43,11 +43,11 @@ class Migration20190305000000ComPublications extends Base
             'modified',
             'accepted',
             'archived',
-            'submitted'
+            'submitted',
         ],
         '#__publications' => [
             'created',
-            'checked_out_time'
+            'checked_out_time',
         ],
         //'#__publication_stats' => array(
         //  'datetime'

@@ -180,7 +180,7 @@ if ($this->comment->isReported()) {
             $replies = $this->comment->replies()
                 ->whereIn('state', [
                     Components\Blog\Models\Comment::STATE_PUBLISHED,
-                    Components\Blog\Models\Comment::STATE_FLAGGED
+                    Components\Blog\Models\Comment::STATE_FLAGGED,
                 ])
                 ->ordered()
                 ->rows();

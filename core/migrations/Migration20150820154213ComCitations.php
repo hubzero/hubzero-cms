@@ -47,7 +47,7 @@ class Migration20150820154213ComCitations extends Base
                     . '<i>{BOOK TITLE}</i>, {EDITION}, {CHAPTER}, {SERIES}, {PUBLISHER}, {ADDRESS}, '
                     . '<b>{VOLUME}</b>, <b>{ISSUE/NUMBER}</b>: {PAGES}, {ORGANIZATION}, {INSTITUTION}, '
                     . '{SCHOOL}, {LOCATION}, {MONTH}, {ISBN/ISSN}, (DOI: {DOI}). '
-                    . "Cited by: <a href='{SECONDARY LINK}'>{SECONDARY COUNT}</a>"
+                    . "Cited by: <a href='{SECONDARY LINK}'>{SECONDARY COUNT}</a>",
             ]);
 
             $apaFormat->save();
@@ -61,7 +61,7 @@ class Migration20150820154213ComCitations extends Base
                 'format' => '{AUTHORS}, {EDITORS} ({YEAR}), {TITLE/CHAPTER}, <i>{JOURNAL}</i>, '
                     . '<i>{BOOK TITLE}</i>, {EDITION}, {CHAPTER}, {SERIES}, {PUBLISHER}, {ADDRESS}, '
                     . '<b>{VOLUME}</b>, <b>{ISSUE/NUMBER}</b>: {PAGES}, {ORGANIZATION}, {INSTITUTION}, '
-                    . '{SCHOOL}, {LOCATION}, {MONTH}, {ISBN/ISSN}, (DOI: {DOI})'
+                    . '{SCHOOL}, {LOCATION}, {MONTH}, {ISBN/ISSN}, (DOI: {DOI})',
             ]);
 
             $ieeeFormat->save();

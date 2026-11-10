@@ -38,7 +38,7 @@ class Link extends Relational
      */
     protected $rules = [
         'url' => 'notempty',
-        'citation_id' => 'positive|nonzero'
+        'citation_id' => 'positive|nonzero',
     ];
 
     /**

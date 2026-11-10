@@ -618,14 +618,14 @@ class Git extends Models\Adapter
             'rev'   => $rev1Parts[0],
             'hash'  => $rev1Parts[1],
             'fpath' => $rev1Parts[2],
-            'val'   => urlencode($rev1)
+            'val'   => urlencode($rev1),
         ];
 
         $rev2 = [
             'rev'   => $rev2Parts[0],
             'hash'  => $rev2Parts[1],
             'fpath' => $rev2Parts[2],
-            'val'   => urlencode($rev2)
+            'val'   => urlencode($rev2),
         ];
 
         // Get text blobs

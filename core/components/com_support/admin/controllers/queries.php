@@ -55,25 +55,25 @@ class Queries extends AdminController
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limitstart',
                 'limitstart',
                 0,
-                'int'
+                'int',
             ),
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
-                'id'
+                'id',
             ),
             'sort_Dir' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sortdir',
                 'filter_order_Dir',
-                'ASC'
+                'ASC',
             ),
-            'iscore' => [4, 2, 1]
+            'iscore' => [4, 2, 1],
         ];
 
         $query = Query::all();
@@ -507,7 +507,7 @@ class Queries extends AdminController
                             'iscore'   => $iscore,
                             'title'    => $fldr,
                             'ordering' => $i,
-                            'user_id'  => 0
+                            'user_id'  => 0,
                         ]);
 
                     $f->save();

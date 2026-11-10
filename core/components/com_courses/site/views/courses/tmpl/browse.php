@@ -216,7 +216,7 @@ $this->css('browse.css');
                 $pageNav = $this->pagination(
                     $this->total,
                     $this->filters['start'],
-                    $this->filters['limit']
+                    $this->filters['limit'],
                 );
                 $pageNav->setAdditionalUrlParam('index', $this->filters['index']);
                 $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
@@ -242,7 +242,7 @@ $this->css('browse.css');
                     // No scope_id: every course's tags, not those of course 0
                     'scope'    => 'courses',
                     'base'     => 'index.php?option=' . $this->option . '&task=browse',
-                    'filters'  => $this->filters
+                    'filters'  => $this->filters,
                 ]);
                 if ($tags) {
                     echo $tags;

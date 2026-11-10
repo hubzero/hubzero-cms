@@ -56,7 +56,7 @@ $this->css()
                     <?php
                     $loggedInTxt = Lang::txt(
                         'COM_NEWSLETTER_MAILINGLISTS_LOGGEDIN_AS',
-                        User::get('username')
+                        User::get('username'),
                     );
                     ?>
                     <ol>

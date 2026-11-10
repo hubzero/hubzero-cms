@@ -64,7 +64,7 @@ class Share extends Plugin
         $arr = [
             'area'     => $this->_name,
             'html'     => '',
-            'metadata' => ''
+            'metadata' => '',
         ];
 
         $sef = Route::url($model->link());
@@ -87,14 +87,14 @@ class Share extends Plugin
                         'details'     => [
                             'with'  => $sharewith,
                             'title' => $model->title,
-                            'url'   => $sef
-                        ]
+                            'url'   => $sef,
+                        ],
                     ],
                     'recipients' => [
                         ['resource', $model->id], // The resource itself
                         ['user', $model->created_by], // The creator
-                        ['user', User::get('id')] // The sharer
-                    ]
+                        ['user', User::get('id')], // The sharer
+                    ],
                 ]);
             }
 

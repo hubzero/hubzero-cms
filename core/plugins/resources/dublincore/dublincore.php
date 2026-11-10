@@ -84,7 +84,7 @@ class Dublincore extends Plugin
 
             Document::setMetaData(
                 'dcterms.creator',
-                $view->escape($name . ($contributor->org ? ', ' . $contributor->org : ''))
+                $view->escape($name . ($contributor->org ? ', ' . $contributor->org : '')),
             );
         }
     }

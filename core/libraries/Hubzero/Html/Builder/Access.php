@@ -72,8 +72,8 @@ class Access
             [
                 'list.attr' => $attribs,
                 'list.select' => $selected,
-                'id' => $id
-            ]
+                'id' => $id,
+            ],
         );
     }
 
@@ -224,7 +224,7 @@ class Access
         }
         $actions = \Hubzero\Access\Access::getActionsFromFile(
             $path,
-            "/access/section[@name='" . $section . "']/"
+            "/access/section[@name='" . $section . "']/",
         );
 
         if (empty($actions)) {
@@ -317,8 +317,8 @@ class Access
             [
                 'id' => isset($config['id']) ? $config['id'] : 'assetgroups_' . ++$count,
                 'list.attr' => (is_null($attribs) ? 'class="inputbox" size="3"' : $attribs),
-                'list.select' => (int) $selected
-            ]
+                'list.select' => (int) $selected,
+            ],
         );
     }
 }

@@ -87,7 +87,7 @@ $this->js();
                         50,
                         15,
                         'field-body',
-                        ['class' => 'minimal no-footer']
+                        ['class' => 'minimal no-footer'],
                     );
                     ?>
                     <?php echo $val; ?>
@@ -103,7 +103,7 @@ $this->js();
                             Html::category('options', 'com_members'),
                             'value',
                             'text',
-                            $this->row->get('category_id')
+                            $this->row->get('category_id'),
                         );
                         ?>
                         <?php echo $val; ?>
@@ -116,7 +116,7 @@ $this->js();
                     $val = \Components\Members\Helpers\Admin::getUserInput(
                         'fields[user_id]',
                         'fielduser_id',
-                        $this->row->get('user_id')
+                        $this->row->get('user_id'),
                     );
                     ?>
                     <?php echo $val; ?>
@@ -149,7 +149,7 @@ $this->js();
                         'calendar',
                         'fields[review_time]',
                         $reviewVal,
-                        ['id' => 'field-review_time']
+                        ['id' => 'field-review_time'],
                     );
                     ?>
                 </div>

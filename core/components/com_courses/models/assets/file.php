@@ -35,7 +35,7 @@ class File extends Handler
             'txt', 'pdf', 'jpg', 'jpeg', 'gif', 'png', 'ppt',
             'pptx', 'pps', 'ppsx', 'doc', 'docx', 'xls', 'xlsx',
             'gz', 'zip', 'tgz', 'tar', 'mp3', 'm', 'cpp', 'c', 'r', 'rmd',
-            'wm2d', 'slx', 'srt', 'ipynb', 'aedt', 'csv', 'xyz', 'prm', 'avi'
+            'wm2d', 'slx', 'srt', 'ipynb', 'aedt', 'csv', 'xyz', 'prm', 'avi',
         ],
     ];
 
@@ -161,7 +161,7 @@ class File extends Handler
 
         $url = Route::url(
             'index.php?option=com_courses&controller=offering&gid=' . $course->get('alias')
-            . '&offering=' . $offering_alias . '&asset=' . $assetObj->get('id')
+            . '&offering=' . $offering_alias . '&asset=' . $assetObj->get('id'),
         );
         $url = rtrim(str_replace('/api', '', Request::root()), '/') . '/' . ltrim($url, '/');
 
@@ -176,7 +176,7 @@ class File extends Handler
             'scope_id'       => $this->assoc['scope_id'],
             'asset_ext'      => $ext,
             'upload_path'    => $uploadDirectory,
-            'target_path'    => $target_path
+            'target_path'    => $target_path,
         ];
 
         // Return info

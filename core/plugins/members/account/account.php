@@ -89,7 +89,7 @@ class Account extends Plugin
 
         $arr = [
             'html' => '',
-            'metadata' => []
+            'metadata' => [],
         ];
 
         // Initialize a few things (needed for view and metadata)
@@ -295,7 +295,7 @@ class Account extends Plugin
             Notify::warning(Lang::txt('You must be logged in to access this area.'));
 
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->option . '&task=myaccount&active=account&action=sendtoken', false)), false)
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->option . '&task=myaccount&active=account&action=sendtoken', false)), false),
             );
             return;
         }
@@ -320,7 +320,7 @@ class Account extends Plugin
         Notify::warning(Lang::txt('Please check the email associated with this account (' . $this->member->get('email') . ') for your confirmation token!'));
 
         App::redirect(
-            Route::url($this->member->link() . '&active=account&task=confirmtoken', false)
+            Route::url($this->member->link() . '&active=account&task=confirmtoken', false),
         );
 
         return;
@@ -339,7 +339,7 @@ class Account extends Plugin
 
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' .
-                    base64_encode(Route::url('index.php?option=' . $this->option . '&task=myaccount&active=account&action=confirmtoken')), false)
+                    base64_encode(Route::url('index.php?option=' . $this->option . '&task=myaccount&active=account&action=confirmtoken')), false),
             );
             return;
         }
@@ -354,8 +354,8 @@ class Account extends Plugin
                 'folder'  => 'members',
                 'element' => 'account',
                 'name'    => 'setlocalpassword',
-                'layout'  => 'confirmtoken'
-            ]
+                'layout'  => 'confirmtoken',
+            ],
         );
         $view->option = $this->option;
         $view->id     = $this->user->get('id');
@@ -390,8 +390,8 @@ class Account extends Plugin
             $view->notifications = [
                 [
                     'type' => 'error',
-                    'message' => Lang::txt('You must be logged in to access this area.')
-                ]
+                    'message' => Lang::txt('You must be logged in to access this area.'),
+                ],
             ];
 
             return $view->loadTemplate();
@@ -432,7 +432,7 @@ class Account extends Plugin
         Notify::warning(Lang::txt('Please provide a new password'));
 
         App::redirect(
-            Route::url($this->member->link() . '&active=account&task=setlocalpass', false)
+            Route::url($this->member->link() . '&active=account&task=setlocalpass', false),
         );
 
         return;
@@ -451,7 +451,7 @@ class Account extends Plugin
 
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' .
-                    base64_encode(Route::url('index.php?option=' . $this->option . '&task=myaccount&active=account&action=setlocalpass')), false)
+                    base64_encode(Route::url('index.php?option=' . $this->option . '&task=myaccount&active=account&action=setlocalpass')), false),
             );
             return;
         }
@@ -465,7 +465,7 @@ class Account extends Plugin
             Notify::error(Lang::txt('You must first verify your email address by inputting the token.'));
 
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&id=' . $this->user->get('id') . '&active=account&task=sendtoken', false)
+                Route::url('index.php?option=' . $this->option . '&id=' . $this->user->get('id') . '&active=account&task=sendtoken', false),
             );
             return;
         }
@@ -481,8 +481,8 @@ class Account extends Plugin
                 'folder'  => 'members',
                 'element' => 'account',
                 'name'    => 'setlocalpassword',
-                'layout'  => 'setlocalpass'
-            ]
+                'layout'  => 'setlocalpass',
+            ],
         );
 
         // Add a few more variables to the view
@@ -570,8 +570,8 @@ class Account extends Plugin
             echo json_encode(
                 [
                     "success" => true,
-                    "redirect" => Route::url($this->member->link() . '&active=account')
-                ]
+                    "redirect" => Route::url($this->member->link() . '&active=account'),
+                ],
             );
             exit();
         } else {
@@ -579,7 +579,7 @@ class Account extends Plugin
             Notify::success(Lang::txt('Password reset successful'));
 
             App::redirect(
-                Route::url($this->member->link() . '&active=account', false)
+                Route::url($this->member->link() . '&active=account', false),
             );
         }
 
@@ -603,7 +603,7 @@ class Account extends Plugin
             Notify::warning(Lang::txt('PLG_MEMBERS_ACCOUNT_CANT_REMOVE_ONLY_ACCESS'));
 
             App::redirect(
-                Route::url($this->member->link() . '&active=account', false)
+                Route::url($this->member->link() . '&active=account', false),
             );
         }
 
@@ -629,7 +629,7 @@ class Account extends Plugin
         Notify::success(Lang::txt('PLG_MEMBERS_ACCOUNT_UNLINKED'));
 
         App::redirect(
-            Route::url($this->member->link() . '&active=account', false)
+            Route::url($this->member->link() . '&active=account', false),
         );
     }
 
@@ -664,7 +664,7 @@ class Account extends Plugin
             'warning'       => $hzup->shadowWarning,
             // New passwords get the hub's default lifetime, not this user's current one
             'max'           => \Component::params('com_members')->get('shadowMax', $hzup->shadowMax),
-            'message_style' => $message_style
+            'message_style' => $message_style,
         ];
     }
 
@@ -809,7 +809,7 @@ class Account extends Plugin
             'Refused to %s the SSH key of member %s: unsafe path under %s',
             $action,
             $this->member->get('username'),
-            $this->webdavHome()
+            $this->webdavHome(),
         ));
     }
 
@@ -875,7 +875,7 @@ class Account extends Plugin
         Notify::success(Lang::txt('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_SUCCESSFUL'));
 
         App::redirect(
-            Route::url($this->member->link() . '&active=account', false)
+            Route::url($this->member->link() . '&active=account', false),
         );
     }
 

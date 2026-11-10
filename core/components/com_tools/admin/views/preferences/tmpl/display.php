@@ -28,35 +28,35 @@ $sortUserId = Html::grid(
     'COM_TOOLS_USER_PREFS_USER_ID',
     'user_id',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 $sortUsername = Html::grid(
     'sort',
     'COM_TOOLS_USER_PREFS_USERNAME',
     'username',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 $sortName = Html::grid(
     'sort',
     'COM_TOOLS_USER_PREFS_NAME',
     'name',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 $sortClass = Html::grid(
     'sort',
     'COM_TOOLS_USER_PREFS_CLASS',
     'class_alias',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 $sortJobs = Html::grid(
     'sort',
     'COM_TOOLS_USER_PREFS_JOBS',
     'jobs',
     @$this->filters['sort_Dir'],
-    @$this->filters['sort']
+    @$this->filters['sort'],
 );
 ?>
 <form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
@@ -119,7 +119,7 @@ $sortJobs = Html::grid(
                     echo $this->pagination(
                         $this->total,
                         $this->filters['start'],
-                        $this->filters['limit']
+                        $this->filters['limit'],
                     );
                     ?>
                 </td>
@@ -133,7 +133,7 @@ $sortJobs = Html::grid(
             $editUrl = Route::url(
                 'index.php?option=' . $this->option
                 . '&controller=' . $this->controller
-                . '&task=edit&id=' . $row->id
+                . '&task=edit&id=' . $row->id,
             );
             ?>
             <tr class="<?php echo "row$k quota-row"; ?>">

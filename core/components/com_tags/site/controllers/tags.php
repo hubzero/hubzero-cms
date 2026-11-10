@@ -86,7 +86,7 @@ class Tags extends SiteController
         if (!$tagstring && !$addtag) {
             if (Request::getWord('task', '', 'get')) {
                 App::redirect(
-                    Route::url('index.php?option=' . $this->_option)
+                    Route::url('index.php?option=' . $this->_option),
                 );
             }
 
@@ -146,7 +146,7 @@ class Tags extends SiteController
         $this->view->filters = [
             'limit' => Request::getInt('limit', Config::get('list_limit')),
             'start' => Request::getInt('limitstart', 0),
-            'sort'  => Request::getCmd('sort', 'date')
+            'sort'  => Request::getCmd('sort', 'date'),
         ];
         if (!in_array($this->view->filters['sort'], ['date', 'title'])) {
             App::abort(404, Lang::txt('Invalid sort value of "%s".', $this->view->filters['sort']));
@@ -167,7 +167,7 @@ class Tags extends SiteController
                 $this->view->filters['limit'],
                 $this->view->filters['start'],
                 $this->view->filters['sort'],
-                $area
+                $area,
             ]);
 
             if (!$area) {
@@ -289,7 +289,7 @@ class Tags extends SiteController
     {
         $filters = [
             'start'  => 0,
-            'search' => trim(Request::getString('value', ''))
+            'search' => trim(Request::getString('value', '')),
         ];
 
         if (!User::authorise('core.manage')) {
@@ -315,7 +315,7 @@ class Tags extends SiteController
 
                 $item = [
                     'id'   => $row->get('tag'),
-                    'name' => $name
+                    'name' => $name,
                 ];
 
                 $tagLower = strtolower($row->get('tag'));
@@ -432,8 +432,8 @@ class Tags extends SiteController
                     $limit,
                     $limitstart,
                     $sort,
-                    ''
-                ]
+                    '',
+                ],
             );
             if ($sqls) {
                 $s = [];
@@ -488,8 +488,8 @@ class Tags extends SiteController
                     $limit,
                     $limitstart,
                     $sort,
-                    $area
-                ]
+                    $area,
+                ],
             );
 
             // Run through the array of arrays returned from plugins and find the one that returned results
@@ -590,32 +590,32 @@ class Tags extends SiteController
                 $this->_option . '.' . $this->_controller . '.limitstart',
                 'limitstart',
                 0,
-                'int'
+                'int',
             ),
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
                 Config::get('list_limit'),
-                'int'
+                'int',
             ),
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
                 '',
-                'string'
+                'string',
             )),
             'sort' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'sort',
                 'raw_tag',
-                'string'
+                'string',
             )),
             'sort_Dir' => strtolower(Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort_Dir',
                 'sortdir',
                 'asc',
-                'string'
-            ))
+                'string',
+            )),
         ];
 
         if (!in_array($filters['sort'], ['raw_tag', 'total'])) {
@@ -680,7 +680,7 @@ class Tags extends SiteController
             'start'    => Request::getInt('limitstart', 0),
             'sort'     => Request::getString('sort', ''),
             'sort_Dir' => Request::getString('sortdir', ''),
-            'search'   => urldecode(Request::getString('search', ''))
+            'search'   => urldecode(Request::getString('search', '')),
         ];
 
         // Set the pathway
@@ -710,7 +710,7 @@ class Tags extends SiteController
         }
 
         App::redirect(
-            Route::url($return, false)
+            Route::url($return, false),
         );
     }
 
@@ -879,13 +879,13 @@ class Tags extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option)),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         if ($this->_task && $this->_task != 'view' && $this->_task != 'display') {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
-                'index.php?option=' . $this->_option . '&task=' . $this->_task
+                'index.php?option=' . $this->_option . '&task=' . $this->_task,
             );
         }
         if (is_array($tags) && count($tags) > 0) {
@@ -898,7 +898,7 @@ class Tags extends SiteController
 
             Pathway::append(
                 implode(' + ', $t),
-                'index.php?option=' . $this->_option . '&tag=' . implode('+', $l)
+                'index.php?option=' . $this->_option . '&tag=' . implode('+', $l),
             );
         }
     }

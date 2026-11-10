@@ -65,7 +65,7 @@ class Register extends SiteController
             Notify::warning(Lang::txt('COM_MEMBERS_NOT_LOGGEDIN'));
 
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . 'task=' . $this->_task, false, true)), false)
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . 'task=' . $this->_task, false, true)), false),
             );
             //return App::abort(500, Lang::txt('COM_MEMBERS_REGISTER_ERROR_GUEST_SESSION_EDITING'));
         }
@@ -163,7 +163,7 @@ class Register extends SiteController
 
                 $eview = new \Hubzero\Component\View([
                     'name'   => 'emails',
-                    'layout' => 'update'
+                    'layout' => 'update',
                 ]);
                 $eview->set('option', $this->_option);
                 $eview->set('controller', $this->_controller);
@@ -191,7 +191,7 @@ class Register extends SiteController
 
             $eaview = new \Hubzero\Component\View([
                 'name'   => 'emails',
-                'layout' => 'adminupdate'
+                'layout' => 'adminupdate',
             ]);
             $eaview->set('option', $this->_option);
             $eaview->set('controller', $this->_controller);
@@ -225,7 +225,7 @@ class Register extends SiteController
 
                 $eview = new \Hubzero\Component\View([
                     'name'   => 'emails',
-                    'layout' => 'updateproxy'
+                    'layout' => 'updateproxy',
                 ]);
                 $eview->set('option', $this->_option);
                 $eview->set('controller', $this->_controller);
@@ -253,7 +253,7 @@ class Register extends SiteController
 
             $eaview = new \Hubzero\Component\View([
                 'name'   => 'emails',
-                'layout' => 'adminupdateproxy'
+                'layout' => 'adminupdateproxy',
             ]);
             $eaview->set('option', $this->_option);
             $eaview->set('controller', $this->_controller);
@@ -295,7 +295,7 @@ class Register extends SiteController
             Notify::warning(Lang::txt('COM_MEMBERS_NOT_LOGGEDIN'));
 
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . 'task=' . $this->_task, false, true)), false)
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . 'task=' . $this->_task, false, true)), false),
             );
             //return App::abort(500, Lang::txt('COM_MEMBERS_REGISTER_ERROR_SESSION_EXPIRED'));
         }
@@ -474,7 +474,7 @@ class Register extends SiteController
                     App::redirect(
                         Route::url('index.php?option=com_users&view=login&view=logout'),
                         Lang::txt('This account appears to already exist. Please try logging in again.'),
-                        'warning'
+                        'warning',
                     );
                     return;
                 }
@@ -606,7 +606,7 @@ class Register extends SiteController
                 $database->setQuery(
                     "UPDATE `#__session`
 					SET `username`=" . $database->quote($xprofile->get('username')) . "
-					WHERE `session_id`=" . $database->quote(Session::getId())
+					WHERE `session_id`=" . $database->quote(Session::getId()),
                 );
                 $database->query();
             }
@@ -642,7 +642,7 @@ class Register extends SiteController
 
                 $eaview = new \Hubzero\Component\View([
                     'name'   => 'emails',
-                    'layout' => 'adminupdate'
+                    'layout' => 'adminupdate',
                 ]);
                 $eaview->set('option', $this->_option);
                 $eaview->set('controller', $this->_controller);
@@ -668,7 +668,7 @@ class Register extends SiteController
                 }
 
                 App::redirect(
-                    $suri
+                    $suri,
                 );
                 return;
             } else {
@@ -700,7 +700,7 @@ class Register extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&task=myaccount'),
                 Lang::txt('COM_MEMBERS_REGISTER_ERROR_NONGUEST_SESSION_CREATION'),
-                'warning'
+                'warning',
             );
         }
 
@@ -1315,7 +1315,7 @@ class Register extends SiteController
 
         $eview = new \Hubzero\Mail\View([
             'name'   => 'emails',
-            'layout' => 'confirm'
+            'layout' => 'confirm',
         ]);
         $eview->option       = $this->_option;
         $eview->controller   = $this->_controller;
@@ -1362,7 +1362,7 @@ class Register extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
                 Lang::txt('COM_MEMBERS_REGISTER_ERROR_LOGIN_TO_UPDATE'),
-                'warning'
+                'warning',
             );
         }
 
@@ -1427,7 +1427,7 @@ class Register extends SiteController
 
                             $eview = new \Hubzero\Mail\View([
                                 'name'   => 'emails',
-                                'layout' => 'confirm'
+                                'layout' => 'confirm',
                             ]);
                             $eview->option     = $this->_option;
                             $eview->controller = $this->_controller;
@@ -1640,7 +1640,7 @@ class Register extends SiteController
                 App::redirect(
                     Route::url('index.php?option=com_users&view=login&return=' . $return, false),
                     Lang::txt('Please login in to confirm your email address.'),
-                    'warning'
+                    'warning',
                 );
             }
         }
@@ -1805,7 +1805,7 @@ class Register extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
                 Lang::txt('COM_MEMBERS_REGISTER_ERROR_LOGIN_TO_CONFIRM'),
-                'warning'
+                'warning',
             );
         }
 
@@ -1835,13 +1835,13 @@ class Register extends SiteController
         if (Pathway::count() <= 0) {
             Pathway::append(
                 Lang::txt('COM_MEMBERS_REGISTER'),
-                'index.php?option=' . $this->_option
+                'index.php?option=' . $this->_option,
             );
         }
         if ($this->_task) {
             Pathway::append(
                 Lang::txt('COM_MEMBERS_REGISTER_' . strtoupper($this->_task)),
-                'index.php?option=' . $this->_option . '&task=' . $this->_task
+                'index.php?option=' . $this->_option . '&task=' . $this->_task,
             );
         }
     }

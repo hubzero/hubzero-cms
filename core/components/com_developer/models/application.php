@@ -48,7 +48,7 @@ class Application extends Relational
     protected $rules = [
         'name'  => 'notempty',
         'description' => 'notempty',
-        'entry_id' => 'positive|nonzero'
+        'entry_id' => 'positive|nonzero',
     ];
 
     /**
@@ -61,7 +61,7 @@ class Application extends Relational
         'created_by',
         'grant_types',
         'client_id',
-        'client_secret'
+        'client_secret',
     ];
 
     /**

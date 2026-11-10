@@ -55,7 +55,7 @@ class Category extends Relational
      * @var  array
      */
     protected $rules = [
-        'alias' => 'notempty'
+        'alias' => 'notempty',
     ];
 
     /**

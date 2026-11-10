@@ -28,7 +28,7 @@ class Attachment extends Relational
      * @var  array
      */
     public $initiate = [
-        'created'
+        'created',
     ];
 
     /**
@@ -38,7 +38,7 @@ class Attachment extends Relational
      */
     protected $rules = [
         'mailing_id' => 'positive|nonzero',
-        'filename'   => 'notempty'
+        'filename'   => 'notempty',
     ];
 
     /**

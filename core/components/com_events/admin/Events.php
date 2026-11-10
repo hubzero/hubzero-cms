@@ -40,17 +40,17 @@ class Events extends AbstractComponent
         Submenu::addEntry(
             Lang::txt('COM_EVENTS'),
             Route::url('index.php?option=com_events&controller=events'),
-            $controllerName == 'events'
+            $controllerName == 'events',
         );
         Submenu::addEntry(
             Lang::txt('COM_EVENTS_CATEGORIES'),
             Route::url('index.php?option=com_categories&extension=com_events'),
-            $controllerName == 'categories'
+            $controllerName == 'categories',
         );
         Submenu::addEntry(
             Lang::txt('COM_EVENTS_CONFIGURATION'),
             Route::url('index.php?option=com_events&controller=configure'),
-            $controllerName == 'configure'
+            $controllerName == 'configure',
         );
 
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);

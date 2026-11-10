@@ -455,8 +455,8 @@ if (!$this->app->sess) {
         [
             $this->option,
             $this->toolname,
-            $this->app->sess
-        ]
+            $this->app->sess,
+        ],
     );
 
     if (count($output) > 0) {

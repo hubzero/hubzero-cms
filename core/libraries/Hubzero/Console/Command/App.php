@@ -39,7 +39,7 @@ class App extends Base implements CommandInterface
         $this
             ->output
             ->addOverview(
-                'Helper for the app directory'
+                'Helper for the app directory',
             )
             ->addTasks($this);
     }

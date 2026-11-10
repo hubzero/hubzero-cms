@@ -73,7 +73,7 @@ class ResultTest extends Basic
     {
         $messages = [
             'Message one',
-            'Message two'
+            'Message two',
         ];
 
         $result = new Result(true, $messages);

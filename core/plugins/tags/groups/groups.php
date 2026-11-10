@@ -44,7 +44,7 @@ class Groups extends Plugin
             'title'   => Lang::txt('PLG_TAGS_GROUPS'),
             'total'   => 0,
             'results' => null,
-            'sql'     => ''
+            'sql'     => '',
         ];
 
         if (empty($tags)) {

@@ -38,7 +38,7 @@ class Hubpresenter extends Obj
             $ext             = array_pop($parts);
             $new_media[]     = [
                 'source' => $source,
-                'type'   => $ext
+                'type'   => $ext,
             ];
         }
 
@@ -87,12 +87,12 @@ class Hubpresenter extends Obj
                 'type'  => $type,
                 'media' => $media,
                 'time'  => $time,
-                'slide' => $slide
+                'slide' => $slide,
             ];
         }
 
         $data = [
-            'presentation' => []
+            'presentation' => [],
         ];
         $data['presentation']['title']  = $new_title;
         $data['presentation']['type']   = $new_type;

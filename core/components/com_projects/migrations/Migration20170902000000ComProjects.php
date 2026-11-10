@@ -32,20 +32,20 @@ class Migration20170902000000ComProjects extends Base
                     [
                         'General',
                         'Individual or collaborative projects of general nature',
-                        $params
+                        $params,
                     ],
                     [
                         'Content publication',
                         'Projects created with the purpose to publish data as a resource ' .
                             'or a collection of related resources',
-                        $params
+                        $params,
                     ],
                     [
                         'Application development',
                         'Projects created with the purpose to develop and publish ' .
                             'a simulation tool or a code library',
-                        'apps_dev=1\npublications_public=1\nteam_public=1\nallow_invite=0'
-                    ]
+                        'apps_dev=1\npublications_public=1\nteam_public=1\nallow_invite=0',
+                    ],
                 ];
                 foreach ($types as $type) {
                     $query = "INSERT INTO `#__project_types` (`type`,`description`,`params`) "

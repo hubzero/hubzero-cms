@@ -22,7 +22,7 @@ if (!strstr($handlerBase, '{')) {
 $handlerBase = str_replace(
     ['{project}', '{file}'],
     [$this->model->get('alias'), $this->item->get('localPath')],
-    $handlerBase
+    $handlerBase,
 );
 
 $me = ($this->item->get('email') == User::get('email')

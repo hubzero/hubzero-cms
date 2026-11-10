@@ -117,7 +117,7 @@ class Loader extends Base
         // Handle template preview outlining.
         $action = new $controllerClass($this->app->get('response'), [
             'name'       => substr($option, 4),
-            'controller' => $controller
+            'controller' => $controller,
         ]);
         $action->execute();
 

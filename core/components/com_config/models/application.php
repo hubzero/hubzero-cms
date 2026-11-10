@@ -348,7 +348,7 @@ class Application extends Obj
         // Attempt to write the configuration files
         $writer = new \Hubzero\Config\FileWriter(
             'php',
-            PATH_APP . DS . 'config'
+            PATH_APP . DS . 'config',
         );
 
         $client = null;
