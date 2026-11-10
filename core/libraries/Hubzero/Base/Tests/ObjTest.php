@@ -120,6 +120,19 @@ class ObjTest extends Basic
     }
 
     /**
+     * An object's own protected and private state is not its data
+     *
+     * @return  void
+     **/
+    public function testGetPropertiesLeavesOutTheObjectsOwnState()
+    {
+        $obj = new StatefulObj(['added' => 'data']);
+
+        $this->assertSame(['title' => 'declared', 'added' => 'data'], $obj->getProperties());
+        $this->assertArrayHasKey('cache', $obj->getProperties(false));
+    }
+
+    /**
      * Test setting a property
      *
      * @return  void
