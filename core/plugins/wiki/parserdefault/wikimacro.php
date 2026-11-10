@@ -233,7 +233,7 @@ class WikiMacro
      */
     protected function setArguments($data)
     {
-        $this->arguments = (array) $data;
+        $this->_arguments = (array) $data;
 
         return $this;
     }
