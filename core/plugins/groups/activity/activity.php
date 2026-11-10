@@ -25,6 +25,8 @@ class Activity extends Plugin
 {
     protected $base;
     protected $group;
+    protected $canModerate = false;
+    protected $canStar = false;
 
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

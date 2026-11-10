@@ -31,14 +31,14 @@ class Error extends Base
      *
      * @var  string
      */
-    protected $baseurl = '';
+    public $baseurl = '';
 
     /**
      * Template name
      *
      * @var  string
      */
-    protected $template = '';
+    public $template = '';
 
     /**
      * Debug mode flag

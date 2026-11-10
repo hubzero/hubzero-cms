@@ -29,6 +29,13 @@ class Maps extends Plugin
     protected $autoloadLanguage = true;
 
     /**
+     * Connection to the usage database
+     *
+     * @var  object
+     */
+    protected $udb = null;
+
+    /**
      * Return the name of the area this plugin retrieves records for
      *
      * @return     array

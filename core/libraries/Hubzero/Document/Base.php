@@ -76,6 +76,20 @@ class Base extends Obj
     public $templatePath = null;
 
     /**
+     * Base URL of the site, for addresses of template files
+     *
+     * @var  string
+     */
+    public $baseurl = null;
+
+    /**
+     * Name of the template
+     *
+     * @var  string
+     */
+    public $template = null;
+
+    /**
      * Document generator
      *
      * @var  string
