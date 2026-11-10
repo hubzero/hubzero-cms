@@ -484,9 +484,7 @@ highest. So <code>api/controllers/entriesv1r0.php</code> defines
 <code>Components\Kb\Api\Controllers\Entriesv1r0</code> and answers <code>/api/kb/list</code>.</p>
 <p>Tasks are documented in their docblock, and the base <code>indexTask()</code> reads those
 docblocks back with reflection to publish the endpoint list:</p>
-<pre><code class="language-php">    /**
-     * List knowledge base articles
-     *
+<pre><code class="language-php">     *
      * Without a state, every caller gets what v1.0 always returned: published
      * articles in published categories. A Super User who passes one gets
      * articles in that state, from every category.
@@ -500,6 +498,8 @@ docblocks back with reflection to publish the endpoint list:</p>
      *      &quot;required&quot;:      false,
      *      &quot;default&quot;:       25
      * }
+     * @apiParameter {
+     *      &quot;name&quot;:          &quot;limitstart&quot;,
 </code></pre>
 <p>That means the docblock is the API documentation, not a comment about it. An
 endpoint with no docblock is an endpoint nobody discovers.</p>

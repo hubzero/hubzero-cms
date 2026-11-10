@@ -32,19 +32,19 @@ Endpoints under `/api/members`, from the `com_members` API controllers. Authenti
 
 Create a user profile
 
-API version 1.0, task `create` in [`profilesv1r0.php`](../../../core/components/com_members/api/controllers/profilesv1r0.php#L159).
+API version 1.0, task `create` in [`profilesv1r0.php`](../../../core/components/com_members/api/controllers/profilesv1r0.php#L157).
 
 ## POST /members (v1.1)
 
 Create a user profile
 
-API version 1.1, task `create` in [`profilesv1r1.php`](../../../core/components/com_members/api/controllers/profilesv1r1.php#L201).
+API version 1.1, task `create` in [`profilesv1r1.php`](../../../core/components/com_members/api/controllers/profilesv1r1.php#L199).
 
 ## GET /members/checkpass (v1.0)
 
 Check password
 
-API version 1.0, task `checkpass` in [`profilesv1r0.php`](../../../core/components/com_members/api/controllers/profilesv1r0.php#L446).
+API version 1.0, task `checkpass` in [`profilesv1r0.php`](../../../core/components/com_members/api/controllers/profilesv1r0.php#L444).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -54,7 +54,7 @@ API version 1.0, task `checkpass` in [`profilesv1r0.php`](../../../core/componen
 
 Check password
 
-API version 1.1, task `checkpass` in [`profilesv1r1.php`](../../../core/components/com_members/api/controllers/profilesv1r1.php#L563).
+API version 1.1, task `checkpass` in [`profilesv1r1.php`](../../../core/components/com_members/api/controllers/profilesv1r1.php#L561).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -64,7 +64,7 @@ API version 1.1, task `checkpass` in [`profilesv1r1.php`](../../../core/componen
 
 Retrieves option values for a profile field
 
-API version 1.0, task `fieldValues` in [`profilesv1r0.php`](../../../core/components/com_members/api/controllers/profilesv1r0.php#L579).
+API version 1.0, task `fieldValues` in [`profilesv1r0.php`](../../../core/components/com_members/api/controllers/profilesv1r0.php#L577).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -74,7 +74,7 @@ API version 1.0, task `fieldValues` in [`profilesv1r0.php`](../../../core/compon
 
 Retrieves option values for a profile field
 
-API version 1.1, task `fieldValues` in [`profilesv1r1.php`](../../../core/components/com_members/api/controllers/profilesv1r1.php#L694).
+API version 1.1, task `fieldValues` in [`profilesv1r1.php`](../../../core/components/com_members/api/controllers/profilesv1r1.php#L692).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -84,7 +84,7 @@ API version 1.1, task `fieldValues` in [`profilesv1r1.php`](../../../core/compon
 
 Display a list of members
 
-API version 1.0, task `list` in [`profilesv1r0.php`](../../../core/components/com_members/api/controllers/profilesv1r0.php#L32).
+API version 1.0, task `list` in [`profilesv1r0.php`](../../../core/components/com_members/api/controllers/profilesv1r0.php#L30).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -98,7 +98,7 @@ API version 1.0, task `list` in [`profilesv1r0.php`](../../../core/components/co
 
 Display a list of members
 
-API version 1.1, task `list` in [`profilesv1r1.php`](../../../core/components/com_members/api/controllers/profilesv1r1.php#L32).
+API version 1.1, task `list` in [`profilesv1r1.php`](../../../core/components/com_members/api/controllers/profilesv1r1.php#L30).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -112,19 +112,19 @@ API version 1.1, task `list` in [`profilesv1r1.php`](../../../core/components/co
 
 Get a list of oranizations used throughout member profiles
 
-API version 1.0, task `organizations` in [`profilesv1r0.php`](../../../core/components/com_members/api/controllers/profilesv1r0.php#L530).
+API version 1.0, task `organizations` in [`profilesv1r0.php`](../../../core/components/com_members/api/controllers/profilesv1r0.php#L528).
 
 ## GET /members/organizations (v1.1)
 
 Get a list of oranizations used throughout member profiles
 
-API version 1.1, task `organizations` in [`profilesv1r1.php`](../../../core/components/com_members/api/controllers/profilesv1r1.php#L645).
+API version 1.1, task `organizations` in [`profilesv1r1.php`](../../../core/components/com_members/api/controllers/profilesv1r1.php#L643).
 
 ## GET /members/{id} (v1.0)
 
 Get user profile info
 
-API version 1.0, task `read` in [`profilesv1r0.php`](../../../core/components/com_members/api/controllers/profilesv1r0.php#L287).
+API version 1.0, task `read` in [`profilesv1r0.php`](../../../core/components/com_members/api/controllers/profilesv1r0.php#L285).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -134,7 +134,7 @@ API version 1.0, task `read` in [`profilesv1r0.php`](../../../core/components/co
 
 Get user profile info
 
-API version 1.1, task `read` in [`profilesv1r1.php`](../../../core/components/com_members/api/controllers/profilesv1r1.php#L328).
+API version 1.1, task `read` in [`profilesv1r1.php`](../../../core/components/com_members/api/controllers/profilesv1r1.php#L326).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -144,7 +144,7 @@ API version 1.1, task `read` in [`profilesv1r1.php`](../../../core/components/co
 
 Get a member's accessgroups
 
-API version 1.1, task `accessgroups` in [`profilesv1r1.php`](../../../core/components/com_members/api/controllers/profilesv1r1.php#L452).
+API version 1.1, task `accessgroups` in [`profilesv1r1.php`](../../../core/components/com_members/api/controllers/profilesv1r1.php#L450).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -157,7 +157,7 @@ API version 1.1, task `accessgroups` in [`profilesv1r1.php`](../../../core/compo
 
 Get a member's groups
 
-API version 1.0, task `groups` in [`profilesv1r0.php`](../../../core/components/com_members/api/controllers/profilesv1r0.php#L399).
+API version 1.0, task `groups` in [`profilesv1r0.php`](../../../core/components/com_members/api/controllers/profilesv1r0.php#L397).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -167,7 +167,7 @@ API version 1.0, task `groups` in [`profilesv1r0.php`](../../../core/components/
 
 Get a member's groups
 
-API version 1.1, task `groups` in [`profilesv1r1.php`](../../../core/components/com_members/api/controllers/profilesv1r1.php#L519).
+API version 1.1, task `groups` in [`profilesv1r1.php`](../../../core/components/com_members/api/controllers/profilesv1r1.php#L517).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

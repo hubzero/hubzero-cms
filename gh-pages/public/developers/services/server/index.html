@@ -206,7 +206,7 @@ will not seek.</p>
             throw new RuntimeException(Lang::txt('An error occurred while trying to output the file'), 500);
         }
 
-        exit;
+        exit();
     }
 </code></pre>
 <p>That is the whole pattern: set the file, say how it should be presented,

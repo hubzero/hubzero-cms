@@ -25,7 +25,7 @@ Everything here is in the tree and you can read it:
 |---|---|
 | [`core/bin/muse`](../../../core/bin/muse) | The console. `muse install` bootstraps a hub from a checkout; `muse migration` applies schema changes. See the [Muse reference](../../reference/muse.md). |
 | [`core/bin/composer`](../../../core/bin/composer) | A bundled Composer, the PHP dependency manager. From the checkout root, run `php core/bin/composer install --working-dir=core`; it reads `core/composer.json` and creates `core/vendor/`. |
-| [`core/composer.json`](../../../core/composer.json) | The PHP dependencies. It requires PHP `^8.4`, and pins Composer's platform to `8.4.0`; the dev requirements are PHPUnit 11, PHP_CodeSniffer 3.13, PHPStan 2, `parallel-lint`, and Mockery. |
+| [`core/composer.json`](../../../core/composer.json) | The PHP dependencies. It requires PHP `^8.4`, and pins Composer's platform to `8.4.0`; the dev requirements are PHPUnit 11, PHP_CodeSniffer 4, PHPStan 2, `parallel-lint`, and Mockery. |
 | [`core/bin/php_tests.sh`](../../../core/bin/php_tests.sh) | Runs `phpcs --standard=PSR12` and `parallel-lint` over the files you name. |
 | [`core/bin/lint/`](../../../core/bin/lint) | `missing-facade-imports.php` and `undefined-language-keys.php`. |
 | [`docs/_tools/`](../../_tools) and `gh-pages/` | The documentation builder and the reference generators. |

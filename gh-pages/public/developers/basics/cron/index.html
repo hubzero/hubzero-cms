@@ -405,10 +405,7 @@ how the tick is delivered, is in
 hub's administrator to create one, ship a
 <a href="../../database/migrations/index.html">migration</a> that inserts the row — check for the
 job first so re-running the migration does not duplicate it:</p>
-<pre><code class="language-php">class Migration20260810000000PlgCronGroups extends Base
-{
-    /**
-     * event =&gt; (title, recurrence)
+<pre><code class="language-php">     * event =&gt; (title, recurrence)
      *
      * @var  array
      **/
@@ -440,6 +437,9 @@ job first so re-running the migration does not duplicate it:</p>
 
             if ($this-&gt;db-&gt;loadResult()) {
                 continue;
+            }
+
+            $query = &quot;INSERT INTO `#__cron_jobs` (`title`, `state`, `plugin`, `event`, `last_run`, `next_run`, `recurrence`, `created`, `created_by`, `modified`, `modified_by`, `active`, `ordering`, `params`)&quot;
 </code></pre>
 
         </div>

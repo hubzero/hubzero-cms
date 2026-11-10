@@ -240,15 +240,15 @@ $rendered = Cache::get('wiki.r' . $revision-&gt;get('id'));
 means two and a half <strong>days</strong>, not an hour.</p>
 <p>That is the shape of nearly every use in the tree — write with a TTL, read
 back, recompute on a miss:</p>
-<pre><code class="language-php">            if (!($rendered = Cache::get('wiki.r' . $revision-&gt;get('id')))) {
-                $rendered = $revision-&gt;content($this-&gt;page);
-
+<pre><code class="language-php">
                 Cache::put('wiki.r' . $revision-&gt;get('id'), $rendered, intval($this-&gt;book-&gt;config('cache_time', 15)));
             }
             $revision-&gt;set('pagehtml', $rendered);
         } else {
             $revision-&gt;set('pagehtml', $revision-&gt;content($this-&gt;page));
         }
+
+        //App::get('config')-&gt;get('debug') || App::get('config')-&gt;get('profile') ? App::get('profiler')-&gt;mark('afterWikiParse') : null;
 </code></pre>
 <table>
 <thead>

@@ -89,7 +89,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_support/helpers/notifier.php:75`](../../../core/components/com_support/helpers/notifier.php#L75) with `[$ticket, $comment]`
+- [`core/components/com_support/helpers/notifier.php:72`](../../../core/components/com_support/helpers/notifier.php#L72) with `[$ticket, $comment]`
 
 Listeners:
 
