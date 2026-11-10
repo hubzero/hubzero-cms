@@ -62,9 +62,9 @@ class DiffEngine
         $this->xchanged = $this->ychanged = [];
         $this->xv = $this->yv = [];
         $this->xind = $this->yind = [];
-        unset($this->seq);
-        unset($this->in_seq);
-        unset($this->lcs);
+        $this->seq = null;
+        $this->in_seq = null;
+        $this->lcs = null;
 
         // Skip leading common lines.
         for ($skip = 0; $skip < $n_from && $skip < $n_to; $skip++) {

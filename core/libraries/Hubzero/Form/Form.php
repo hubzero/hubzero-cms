@@ -709,11 +709,9 @@ class Form
      */
     public function reset($xml = false)
     {
-        unset($this->data);
         $this->data = new Registry();
 
         if ($xml) {
-            unset($this->xml);
             $this->xml = new SimpleXMLElement('<form></form>');
         }
 
