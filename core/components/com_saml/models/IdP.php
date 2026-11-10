@@ -276,9 +276,21 @@ class IdP
     }
 
     /**
+     * A binding factory whose bindings can build HTTP responses
+     *
+     * @return  \LightSaml\Binding\BindingFactory
+     */
+    public function bindingFactory()
+    {
+        $http = new \GuzzleHttp\Psr7\HttpFactory();
+
+        return new \LightSaml\Binding\BindingFactory(null, $http, $http);
+    }
+
+    /**
      * Reads a SAML message from the HTTP request and returns a messageContext.
      *
-     * @param   \Symfony\Component\HttpFoundation\Request  $request  The HTTP request.
+     * @param   \Psr\Http\Message\ServerRequestInterface  $request  The HTTP request.
      * @return  \LightSaml\Context\Profile\MessageContext
      */
     public function readSAMLRequest($request)
@@ -286,8 +298,7 @@ class IdP
         // We use the Binding Factory to construct a new SAML Binding based on the
         // request. HTTP-Redirect is the supported binding (DESIGN.md §13.2);
         // HTTP-POST is accepted because the factory provides it.
-        $bindingFactory = new \LightSaml\Binding\BindingFactory();
-        $binding = $bindingFactory->getBindingByRequest($request);
+        $binding = $this->bindingFactory()->getBindingByRequest($request);
 
         // We prepare a message context to receive our SAML Request message.
         $messageContext = new \LightSaml\Context\Profile\MessageContext();
@@ -626,7 +637,7 @@ class IdP
                     ->setBinding(\LightSaml\SamlConstants::BINDING_SAML2_HTTP_REDIRECT)
                     ->setLocation($this->getLogoutUrl())));
 
-        $serializationContext = new \LightSaml\Model\Context\SerializationContext();
+        $serializationContext = new \LightSaml\Context\Model\SerializationContext();
 
         $entityDescriptor->serialize($serializationContext->getDocument(), $serializationContext);
 

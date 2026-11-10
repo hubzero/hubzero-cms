@@ -108,7 +108,7 @@ class Idp extends SiteController
      * Anything untrusted is rejected with a plain 400 and a log line — an
      * untrusted issuer never receives signed XML (DESIGN.md §7.2).
      *
-     * @param   object  $request  \Symfony\Component\HttpFoundation\Request
+     * @param   object  $request  \Psr\Http\Message\ServerRequestInterface
      * @return  array   [AuthnRequest, ServiceProvider]
      */
     protected function validateAuthnRequest($request)
@@ -251,7 +251,7 @@ class Idp extends SiteController
         $this->restoreStashedRequest();
 
         // Receive the HTTP request and extract the SAMLRequest
-        $request = \Symfony\Component\HttpFoundation\Request::createFromGlobals();
+        $request = \GuzzleHttp\Psr7\ServerRequest::fromGlobals();
 
         // Everything about the request is checked before the user is asked to
         // do anything: nobody is sent through a login they were going to be
@@ -311,17 +311,13 @@ class Idp extends SiteController
         $this->log('login issued: ' . User::get('username') . ' -> ' . $issuer . ' (session ' . $samlSession->get('session_index') . ')');
 
         // Return it to the registered ACS via the HTTP-POST binding
-        $bindingFactory = new \LightSaml\Binding\BindingFactory();
-        $postBinding = $bindingFactory->create(\LightSaml\SamlConstants::BINDING_SAML2_HTTP_POST);
+        $postBinding = $this->idp->bindingFactory()->create(\LightSaml\SamlConstants::BINDING_SAML2_HTTP_POST);
 
         $outContext = new \LightSaml\Context\Profile\MessageContext();
-        $response->setRelayState($request->get('RelayState'));
+        $response->setRelayState($message->getRelayState());
         $outContext->setMessage($response);
 
-        // send(), not echo: the page carries a signed bearer assertion and
-        // needs the binding's Content-Type and no-store headers with it
-        $httpResponse = $postBinding->send($outContext);
-        $httpResponse->send();
+        $this->emit($postBinding->send($outContext));
 
         exit();
     }
@@ -337,7 +333,7 @@ class Idp extends SiteController
             App::abort(405);
         }
 
-        $request = \Symfony\Component\HttpFoundation\Request::createFromGlobals();
+        $request = \GuzzleHttp\Psr7\ServerRequest::fromGlobals();
 
         try {
             $messageContext = $this->idp->readSAMLRequest($request);
@@ -428,17 +424,42 @@ class Idp extends SiteController
         // Respond to the registered SLO endpoint via the HTTP-Redirect binding
         $response = $this->idp->createSAMLLogoutResponse($sp, $message->getID(), $status);
 
-        $bindingFactory = new \LightSaml\Binding\BindingFactory();
-        $redirectBinding = $bindingFactory->create(\LightSaml\SamlConstants::BINDING_SAML2_HTTP_REDIRECT);
+        $redirectBinding = $this->idp->bindingFactory()->create(\LightSaml\SamlConstants::BINDING_SAML2_HTTP_REDIRECT);
 
         $outContext = new \LightSaml\Context\Profile\MessageContext();
-        $response->setRelayState($request->get('RelayState'));
+        $response->setRelayState($message->getRelayState());
         $outContext->setMessage($response);
 
-        $httpResponse = $redirectBinding->send($outContext);
-        $httpResponse->send();
+        $this->emit($redirectBinding->send($outContext));
 
         exit();
+    }
+
+    /**
+     * Send a binding's HTTP response to the browser
+     *
+     * Neither page may be stored: the POST page carries a signed bearer
+     * assertion, and the redirect a signed logout response.
+     *
+     * @param   \Psr\Http\Message\ResponseInterface  $response
+     * @return  void
+     */
+    protected function emit($response)
+    {
+        $response = $response
+            ->withHeader('Cache-Control', 'no-store')
+            ->withHeader('Pragma', 'no-cache');
+
+        http_response_code($response->getStatusCode());
+
+        // The first value replaces whatever PHP or the session already set
+        foreach ($response->getHeaders() as $name => $values) {
+            foreach ($values as $i => $value) {
+                header($name . ': ' . $value, $i === 0);
+            }
+        }
+
+        echo $response->getBody();
     }
 
     /**

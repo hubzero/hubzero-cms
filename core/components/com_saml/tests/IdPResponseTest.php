@@ -120,7 +120,7 @@ class IdPResponseTest extends Basic
      */
     private function xpath($response)
     {
-        $context = new \LightSaml\Model\Context\SerializationContext();
+        $context = new \LightSaml\Context\Model\SerializationContext();
         $response->serialize($context->getDocument(), $context);
 
         $xpath = new \DOMXPath($context->getDocument());

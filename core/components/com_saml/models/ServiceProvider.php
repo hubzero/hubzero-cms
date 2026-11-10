@@ -159,6 +159,10 @@ class ServiceProvider extends Relational
     /**
      * The stored signing certificate as a LightSaml credential
      *
+     * Null when none is stored or it cannot be parsed, so a request is
+     * refused as unsigned rather than failing: the credential parses the
+     * certificate as soon as it is given one.
+     *
      * @return  \LightSaml\Credential\X509Certificate|null
      */
     public function certificate()
@@ -169,10 +173,17 @@ class ServiceProvider extends Relational
             return null;
         }
 
-        $certificate = new \LightSaml\Credential\X509Certificate();
-        $certificate->setData($data);
+        // Checked quietly first: OpenSSL warns about a certificate it cannot
+        // read, and an SP's bad upload is not the hub's error to log
+        if (!function_exists('openssl_x509_read') || @openssl_x509_read($this->certificatePem()) === false) {
+            return null;
+        }
 
-        return $certificate;
+        try {
+            return (new \LightSaml\Credential\X509Certificate())->setData($data);
+        } catch (\Throwable $e) {
+            return null;
+        }
     }
 
     /**
