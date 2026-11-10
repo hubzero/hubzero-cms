@@ -209,14 +209,14 @@ class Ldap
             return false;
         }
 
-        $query = "SELECT u.id AS uidNumber, u.username AS uid, u.name AS cn, " .
-                " p.gidNumber, u.homeDirectory, u.loginShell, " .
-                " pwd.passhash AS userPassword, pwd.shadowLastChange, pwd.shadowMin, pwd.shadowMax, pwd.shadowWarning, " .
-                " pwd.shadowInactive, pwd.shadowExpire, pwd.shadowFlag " .
-                " FROM #__users AS u " .
-                " LEFT JOIN #__users_password AS pwd ON u.id = pwd.user_id " .
-                " LEFT JOIN #__xprofiles AS p ON u.id = p.uidNumber " .
-                " WHERE u.id = " . $db->quote($user_id) . " LIMIT 1;";
+        $query = "SELECT u.id AS uidNumber, u.username AS uid, u.name AS cn, "
+            . " p.gidNumber, u.homeDirectory, u.loginShell, "
+            . " pwd.passhash AS userPassword, pwd.shadowLastChange, pwd.shadowMin, pwd.shadowMax, pwd.shadowWarning, "
+            . " pwd.shadowInactive, pwd.shadowExpire, pwd.shadowFlag "
+            . " FROM #__users AS u "
+            . " LEFT JOIN #__users_password AS pwd ON u.id = pwd.user_id "
+            . " LEFT JOIN #__xprofiles AS p ON u.id = p.uidNumber "
+            . " WHERE u.id = " . $db->quote($user_id) . " LIMIT 1;";
 
         $db->setQuery($query);
         $dbinfo = $db->loadAssoc();
