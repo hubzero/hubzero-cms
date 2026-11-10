@@ -25,7 +25,7 @@ class AssetAssociation extends Table
     public function __construct(&$db)
     {
         parent::__construct('#__courses_asset_associations', 'id', $db);
-        $this->_trackAssets = false;
+        $this->trackAssets = false;
     }
 
     /**
@@ -75,15 +75,15 @@ class AssetAssociation extends Table
             return false;
         }
 
-        $query = "SELECT * FROM $this->_tbl WHERE asset_id=" . $this->_db->quote(intval($asset_id))
-            . " AND scope_id=" . $this->_db->quote(intval($scope_id))
-            . " AND scope=" . $this->_db->quote($scope);
+        $query = "SELECT * FROM $this->tableName WHERE asset_id=" . $this->db->quote(intval($asset_id))
+            . " AND scope_id=" . $this->db->quote(intval($scope_id))
+            . " AND scope=" . $this->db->quote($scope);
 
-        $this->_db->setQuery($query);
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery($query);
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -96,10 +96,10 @@ class AssetAssociation extends Table
      */
     public function getHighestOrdering($scope_id, $scope)
     {
-        $sql = "SELECT ordering FROM $this->_tbl WHERE scope_id=" . $this->_db->quote(intval($scope_id))
-            . " AND scope=" . $this->_db->quote($scope) . " ORDER BY ordering DESC LIMIT 1";
-        $this->_db->setQuery($sql);
-        return $this->_db->loadResult();
+        $sql = "SELECT ordering FROM $this->tableName WHERE scope_id=" . $this->db->quote(intval($scope_id))
+            . " AND scope=" . $this->db->quote($scope) . " ORDER BY ordering DESC LIMIT 1";
+        $this->db->setQuery($sql);
+        return $this->db->loadResult();
     }
 
     /**
@@ -110,18 +110,18 @@ class AssetAssociation extends Table
      */
     private function buildQuery($filters = [])
     {
-        $query = " FROM $this->_tbl AS caa";
+        $query = " FROM $this->tableName AS caa";
 
         $where = [];
 
         if (isset($filters['asset_id'])) {
-            $where[] = "caa.asset_id=" . $this->_db->quote((int) $filters['asset_id']);
+            $where[] = "caa.asset_id=" . $this->db->quote((int) $filters['asset_id']);
         }
         if (isset($filters['scope_id'])) {
-            $where[] = "caa.scope_id=" . $this->_db->quote((int) $filters['scope_id']);
+            $where[] = "caa.scope_id=" . $this->db->quote((int) $filters['scope_id']);
         }
         if (isset($filters['scope'])) {
-            $where[] = "caa.scope=" . $this->_db->quote((string) $filters['scope']);
+            $where[] = "caa.scope=" . $this->db->quote((string) $filters['scope']);
         }
 
         if (count($where) > 0) {
@@ -142,8 +142,8 @@ class AssetAssociation extends Table
         $query  = "SELECT COUNT(*)";
         $query .= $this->buildQuery($filters);
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -161,7 +161,7 @@ class AssetAssociation extends Table
             $query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 }

@@ -41,12 +41,12 @@ class Publication extends Table
         if ($oid === null) {
             return false;
         }
-        $where = is_numeric($oid) ? 'id=' . $this->_db->quote($oid) : 'alias=' . $this->_db->quote($oid);
-        $this->_db->setQuery("SELECT * FROM $this->_tbl WHERE " . $where);
-        if ($result = $this->_db->loadAssoc()) {
+        $where = is_numeric($oid) ? 'id=' . $this->db->quote($oid) : 'alias=' . $this->db->quote($oid);
+        $this->db->setQuery("SELECT * FROM $this->tableName WHERE " . $where);
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -62,11 +62,11 @@ class Publication extends Table
         if ($oid === null) {
             return false;
         }
-        $this->_db->setQuery("SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->quote($oid));
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery("SELECT * FROM $this->tableName WHERE alias=" . $this->db->quote($oid));
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -110,7 +110,7 @@ class Publication extends Table
 
         $query  = " FROM
 					#__publication_versions V
-					LEFT JOIN $this->_tbl C ON V.publication_id = C.id
+					LEFT JOIN $this->tableName C ON V.publication_id = C.id
 					LEFT JOIN #__projects PP ON PP.id = C.project_id
 					LEFT JOIN #__publication_master_types MT ON MT.id = C.master_type
 					LEFT JOIN #__publication_categories AS t ON t.id = C.category
@@ -138,7 +138,7 @@ class Publication extends Table
 
             if (isset($filters['status']) && $filters['status'] != 'all') {
                 if (is_array($filters['status'])) {
-                    $squery = implode(',', array_map([$this->_db, 'quote'], $filters['status']));
+                    $squery = implode(',', array_map([$this->db, 'quote'], $filters['status']));
                     $query .= " AND (V.state IN (" . $squery . ")) ";
                 } else {
                     $query .= " AND V.state=" . intval($filters['status']);
@@ -191,7 +191,7 @@ class Publication extends Table
             if (is_numeric($filters['category'])) {
                 $query .= " AND C.category=" . $filters['category'] . " ";
             } else {
-                $query .= " AND t.url_alias=" . $this->_db->quote($filters['category']) . " ";
+                $query .= " AND t.url_alias=" . $this->db->quote($filters['category']) . " ";
             }
         }
         if (isset($filters['author']) && intval($filters['author'])) {
@@ -211,7 +211,7 @@ class Publication extends Table
             } elseif (is_numeric($filters['master_type'])) {
                 $query .= " AND (C.master_type=" . intval($filters['master_type']) . " ";
             } elseif (is_string($filters['master_type'])) {
-                $query .= " AND (MT.alias=" . $this->_db->quote($filters['master_type']) . " ";
+                $query .= " AND (MT.alias=" . $this->db->quote($filters['master_type']) . " ";
             } else {
                 $query .= " AND (1=1";
             }
@@ -226,10 +226,10 @@ class Publication extends Table
             $query .= " AND (V.published_down IS NULL OR V.published_down = '0000-00-00 00:00:00' OR V.published_down >= '" . $now . "') ";
         }
         if (isset($filters['startdate'])) {
-            $query .= "AND V.published_up > " . $this->_db->quote($filters['startdate']) . " ";
+            $query .= "AND V.published_up > " . $this->db->quote($filters['startdate']) . " ";
         }
         if (isset($filters['enddate'])) {
-            $query .= "AND V.published_up < " . $this->_db->quote($filters['enddate']) . " ";
+            $query .= "AND V.published_up < " . $this->db->quote($filters['enddate']) . " ";
         }
         if (isset($filters['search']) && $filters['search'] != '') {
             $componentParams = Component::params('com_publications');
@@ -242,7 +242,7 @@ class Publication extends Table
                 }
             }
             $text = implode(' ', $words);
-            $escapedtext = $this->_db->escape($text);
+            $escapedtext = $this->db->escape($text);
 
             $query .= " AND ((MATCH(V.title) AGAINST ('$escapedtext' IN BOOLEAN MODE)) OR"
             . " (MATCH(V.abstract,V.description) AGAINST ('$escapedtext' IN BOOLEAN MODE))) ";
@@ -262,7 +262,7 @@ class Publication extends Table
             $query .= " AND (V.access != 2)  ";
         }
         if (isset($filters['tag']) && $filters['tag'] != '') {
-            $tagging = new \Components\Publications\Helpers\Tags($this->_db);
+            $tagging = new \Components\Publications\Helpers\Tags($this->db);
             $tags = $tagging->_parse_tags($filters['tag']);
 
             $query .= "AND RTA.tbl='publications' ";
@@ -376,8 +376,8 @@ class Publication extends Table
         $sql  = "SELECT C.id ";
         $sql .= (isset($filters['tag']) && $filters['tag'] != '') ? ", TA.tag, COUNT(DISTINCT TA.tag) AS uniques " . $query : $query;
 
-        $this->_db->setQuery($sql);
-        return count((array) $this->_db->loadObjectList());
+        $this->db->setQuery($sql);
+        return count((array) $this->db->loadObjectList());
     }
 
     /**
@@ -411,8 +411,8 @@ class Publication extends Table
         $start = isset($filters['start']) ? (int) $filters['start'] : 0;
         $sql .= (isset($filters['limit']) && $filters['limit'] > 0) ? " LIMIT " . $start . ", " . (int) $filters['limit'] : "";
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -430,15 +430,15 @@ class Publication extends Table
 
         $query  = "SELECT ";
         $query .= $getid ? " pub.id " : " V.*, pub.* ";
-        $query .= " FROM #__publication_versions as V, $this->_tbl AS pub ";
+        $query .= " FROM #__publication_versions as V, $this->tableName AS pub ";
         $query .= " JOIN #__projects AS p ON pub.project_id=p.id ";
-        $query .= " WHERE V.publication_id=pub.id AND V.main=1 AND p.id=" . $this->_db->quote($pid) . " LIMIT 1 ";
+        $query .= " WHERE V.publication_id=pub.id AND V.main=1 AND p.id=" . $this->db->quote($pid) . " LIMIT 1 ";
 
-        $this->_db->setQuery($query);
+        $this->db->setQuery($query);
         if ($getid) {
-            return $this->_db->loadResult();
+            return $this->db->loadResult();
         } else {
-            $result = $this->_db->loadObjectList();
+            $result = $this->db->loadObjectList();
             return $result ? $result[0] : [];
         }
     }
@@ -481,7 +481,7 @@ class Publication extends Table
         $sql .= ",(SELECT vv.state FROM #__publication_versions as vv WHERE vv.publication_id=C.id AND vv.main=1 ORDER BY vv.created DESC LIMIT 1)
 				AS default_version_status ";
         $sql .= ",(SELECT COUNT(*) FROM #__publication_versions WHERE publication_id=C.id AND state!=3 ) AS versions ";
-        $sql .= " FROM #__publication_versions as V, #__projects AS PP, #__publication_master_types AS MT, $this->_tbl AS C ";
+        $sql .= " FROM #__publication_versions as V, #__projects AS PP, #__publication_master_types AS MT, $this->tableName AS C ";
         $sql .= " JOIN #__publication_categories AS t ON C.category=t.id ";
         $sql .= " WHERE V.publication_id=C.id AND MT.id=C.master_type AND PP.id=C.project_id ";
         if ($version == 'default' or $version == 'current' or $version == 'main') {
@@ -489,17 +489,17 @@ class Publication extends Table
         } elseif ($version == 'dev') {
             $sql .= " AND V.state=3 ";
         } elseif (intval($version)) {
-            $sql .= " AND V.version_number=" . $this->_db->quote($version);
+            $sql .= " AND V.version_number=" . $this->db->quote($version);
         } else {
             // Error in supplied version value
             $sql .= " AND 1=2 ";
         }
-        $sql .= $project_id ? " AND C.project_id=" . $this->_db->quote($project_id) : '';
-        $sql .= $pid ? " AND C.id=" . $this->_db->quote($pid) : " AND C.alias=" . $this->_db->quote($alias);
+        $sql .= $project_id ? " AND C.project_id=" . $this->db->quote($project_id) : '';
+        $sql .= $pid ? " AND C.id=" . $this->db->quote($pid) : " AND C.alias=" . $this->db->quote($alias);
         $sql .= " LIMIT 1";
 
-        $this->_db->setQuery($sql);
-        $result = $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        $result = $this->db->loadObjectList();
         return $result ? $result[0] : false;
     }
 
@@ -510,8 +510,8 @@ class Publication extends Table
      */
     public function calculateRating()
     {
-        $this->_db->setQuery("SELECT rating FROM `#__publication_ratings` WHERE publication_id=" . $this->_db->quote($this->id));
-        $ratings = $this->_db->loadObjectList();
+        $this->db->setQuery("SELECT rating FROM `#__publication_ratings` WHERE publication_id=" . $this->db->quote($this->id));
+        $ratings = $this->db->loadObjectList();
 
         $totalcount = count($ratings);
         $totalvalue = 0;
@@ -539,9 +539,9 @@ class Publication extends Table
      */
     public function updateRating()
     {
-        $this->_db->setQuery("UPDATE $this->_tbl SET rating=" . $this->_db->quote($this->rating) . ", times_rated=" . $this->_db->quote($this->times_rated) . " WHERE id=" . $this->_db->quote($this->id));
-        if (!$this->_db->query()) {
-            echo $this->_db->getErrorMsg();
+        $this->db->setQuery("UPDATE $this->tableName SET rating=" . $this->db->quote($this->rating) . ", times_rated=" . $this->db->quote($this->times_rated) . " WHERE id=" . $this->db->quote($this->id));
+        if (!$this->db->query()) {
+            echo $this->db->getErrorMsg();
             exit;
         }
     }
@@ -559,9 +559,9 @@ class Publication extends Table
         }
 
         // Delete ratings
-        $this->_db->setQuery("DELETE FROM `#__publication_ratings` WHERE publication_id=" . $this->_db->quote($id));
-        if (!$this->_db->query()) {
-            echo $this->_db->getErrorMsg();
+        $this->db->setQuery("DELETE FROM `#__publication_ratings` WHERE publication_id=" . $this->db->quote($id));
+        if (!$this->db->query()) {
+            echo $this->db->getErrorMsg();
             exit;
         }
     }
@@ -583,7 +583,7 @@ class Publication extends Table
         if ($get == 'usage') {
             $query  = " SELECT COUNT( DISTINCT p.id) as used ";
             $query .= " FROM #__projects as p ";
-            $query .= " JOIN $this->_tbl as pub ON p.id = pub.project_id  ";
+            $query .= " JOIN $this->tableName as pub ON p.id = pub.project_id  ";
             $query .= " WHERE p.state != 2 AND p.provisioned != 1";
             if (!empty($validProjects)) {
                 $query .= " AND p.id IN ( ";
@@ -596,13 +596,13 @@ class Publication extends Table
                 $query .= $tquery . ") ";
             }
             $query .= " GROUP BY p.id ";
-            $this->_db->setQuery($query);
-            $result = $this->_db->loadObjectList();
+            $this->db->setQuery($query);
+            $result = $this->db->loadObjectList();
             return count($result);
         }
 
         $query  = " SELECT COUNT(P.id) as pubs ";
-        $query .= " FROM $this->_tbl as P ";
+        $query .= " FROM $this->tableName as P ";
 
         if ($get == 'advanced' || $get == 'released') {
             $query .= " JOIN #__publication_versions as V ON V.publication_id = P.id  ";
@@ -633,12 +633,12 @@ class Publication extends Table
             $query .= " GROUP BY P.project_id ";
         }
 
-        $this->_db->setQuery($query);
+        $this->db->setQuery($query);
 
         if ($get == 'total' || $get == 'released' || $get == 'draft') {
-            return $this->_db->loadResult();
+            return $this->db->loadResult();
         } elseif ($get == 'average' || $get == 'advanced' || $get == 'released') {
-            $result = $this->_db->loadObjectList();
+            $result = $this->db->loadObjectList();
 
             if ($get == 'draft' || $get == 'released') {
                 return count($result);

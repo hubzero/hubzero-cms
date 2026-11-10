@@ -38,13 +38,13 @@ class Application extends Table
             return false;
         }
 
-        $sql  = "SELECT a.* FROM `$this->_tbl` AS a ";
+        $sql  = "SELECT a.* FROM `$this->tableName` AS a ";
         $sql .= "JOIN `#__jobs_seekers` as s ON s.uid=a.uid";
-        $sql .= " WHERE  a.jid=" . $this->_db->quote($jobid) . " AND s.active=1 ";
+        $sql .= " WHERE  a.jid=" . $this->db->quote($jobid) . " AND s.active=1 ";
         $sql .= " ORDER BY a.applied DESC";
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -61,17 +61,17 @@ class Application extends Table
             return false;
         }
 
-        $query  = "SELECT A.* FROM `$this->_tbl` as A ";
+        $query  = "SELECT A.* FROM `$this->tableName` as A ";
         $query .= $jid ? "" : " JOIN `#__jobs_openings` as J ON J.id=A.jid ";
-        $query .= " WHERE A.uid=" . $this->_db->quote($uid) . " ";
+        $query .= " WHERE A.uid=" . $this->db->quote($uid) . " ";
         if ($jid) {
-            $query .= "AND A.jid=" . $this->_db->quote($jid) . " ";
+            $query .= "AND A.jid=" . $this->db->quote($jid) . " ";
         } else {
-            $query .= "AND J.code=" . $this->_db->quote($jobcode) . " ";
+            $query .= "AND J.code=" . $this->db->quote($jobcode) . " ";
         }
         $query .= " LIMIT 1";
-        $this->_db->setQuery($query);
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery($query);
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         }
         return false;

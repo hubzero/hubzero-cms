@@ -67,8 +67,8 @@ class Event extends Table
         if (!$oid) {
             $oid = $this->id;
         }
-        $this->_db->setQuery("UPDATE $this->_tbl SET state=1 WHERE id=" . $this->_db->quote($oid));
-        $this->_db->query();
+        $this->db->setQuery("UPDATE $this->tableName SET state=1 WHERE id=" . $this->db->quote($oid));
+        $this->db->query();
     }
 
     /**
@@ -82,8 +82,8 @@ class Event extends Table
         if (!$oid) {
             $oid = $this->id;
         }
-        $this->_db->setQuery("UPDATE $this->_tbl SET state=0 WHERE id=" . $this->_db->quote($oid));
-        $this->_db->query();
+        $this->db->setQuery("UPDATE $this->tableName SET state=0 WHERE id=" . $this->db->quote($oid));
+        $this->db->query();
     }
 
     /**
@@ -93,8 +93,8 @@ class Event extends Table
      */
     public function getFirst()
     {
-        $this->_db->setQuery("SELECT publish_up FROM $this->_tbl ORDER BY publish_up ASC LIMIT 1");
-        return $this->_db->loadResult();
+        $this->db->setQuery("SELECT publish_up FROM $this->tableName ORDER BY publish_up ASC LIMIT 1");
+        return $this->db->loadResult();
     }
 
     /**
@@ -104,8 +104,8 @@ class Event extends Table
      */
     public function getLast()
     {
-        $this->_db->setQuery("SELECT publish_down FROM $this->_tbl ORDER BY publish_down DESC LIMIT 1");
-        return $this->_db->loadResult();
+        $this->db->setQuery("SELECT publish_down FROM $this->tableName ORDER BY publish_down DESC LIMIT 1");
+        return $this->db->loadResult();
     }
 
     /**
@@ -125,32 +125,32 @@ class Event extends Table
                 $select_date = $filters['select_date'];
                 $select_date_fin = $filters['select_date_fin'];
 
-                $sql = "SELECT $this->_tbl.*
-					FROM #__categories AS b, $this->_tbl
-					WHERE $this->_tbl.catid = b.id
+                $sql = "SELECT $this->tableName.*
+					FROM #__categories AS b, $this->tableName
+					WHERE $this->tableName.catid = b.id
 					AND (
 					(
-							(publish_up >= " . $this->_db->quote($select_date . '%') . " AND publish_up <= " . $this->_db->quote($select_date_fin . '%') . " AND publish_down IS NOT NULL AND publish_down != '0000-00-00 00:00:00')
-						OR (publish_down IS NOT NULL AND publish_down !='0000-00-00 00:00:00' AND publish_down >= " . $this->_db->quote($select_date . '%') . " AND publish_down <= " . $this->_db->quote($select_date_fin . '%') . ")
-						OR (publish_up >= " . $this->_db->quote($select_date . '%') . " AND publish_down IS NOT NULL AND publish_down !='0000-00-00 00:00:00' AND publish_down <= " . $this->_db->quote($select_date_fin . '%') . ")
-						OR (publish_up <= " . $this->_db->quote($select_date . '%') . " AND publish_down IS NOT NULL AND publish_down !='0000-00-00 00:00:00' AND publish_down >= " . $this->_db->quote($select_date_fin . '%') . ")
+							(publish_up >= " . $this->db->quote($select_date . '%') . " AND publish_up <= " . $this->db->quote($select_date_fin . '%') . " AND publish_down IS NOT NULL AND publish_down != '0000-00-00 00:00:00')
+						OR (publish_down IS NOT NULL AND publish_down !='0000-00-00 00:00:00' AND publish_down >= " . $this->db->quote($select_date . '%') . " AND publish_down <= " . $this->db->quote($select_date_fin . '%') . ")
+						OR (publish_up >= " . $this->db->quote($select_date . '%') . " AND publish_down IS NOT NULL AND publish_down !='0000-00-00 00:00:00' AND publish_down <= " . $this->db->quote($select_date_fin . '%') . ")
+						OR (publish_up <= " . $this->db->quote($select_date . '%') . " AND publish_down IS NOT NULL AND publish_down !='0000-00-00 00:00:00' AND publish_down >= " . $this->db->quote($select_date_fin . '%') . ")
 					)
-					AND $this->_tbl.state = '1'";
+					AND $this->tableName.state = '1'";
 
                 $sql .= ($filters['category'] != 0) ? " AND b.id=" . intval($filters['category']) . ")" : ")";
 
                 //did we pass in a scope filter
                 if (isset($filters['scope']) && $filters['scope'] != '') {
                     if ($filters['scope'] == 'event') {
-                        $sql .= " AND ({$this->_tbl}.scope IS NULL OR {$this->_tbl}.scope=" . $this->_db->quote($filters['scope']) . ")";
+                        $sql .= " AND ({$this->tableName}.scope IS NULL OR {$this->tableName}.scope=" . $this->db->quote($filters['scope']) . ")";
                     } else {
-                        $sql .= " AND {$this->_tbl}.scope=" . $this->_db->quote($filters['scope']);
+                        $sql .= " AND {$this->tableName}.scope=" . $this->db->quote($filters['scope']);
                     }
                 }
 
                 //did we pass in a scope id filter
                 if (isset($filters['scope_id']) && $filters['scope_id'] != '') {
-                    $sql .= " AND {$this->_tbl}.scope_id=" . $this->_db->quote($filters['scope_id']);
+                    $sql .= " AND {$this->tableName}.scope_id=" . $this->db->quote($filters['scope_id']);
                 }
 
                 $sql .= " ORDER BY publish_up ASC";
@@ -159,23 +159,23 @@ class Event extends Table
             case 'year':
                 $year = $filters['year'];
 
-                $sql = "SELECT $this->_tbl.* FROM #__categories AS b, $this->_tbl
-					WHERE $this->_tbl.catid = b.id
-					AND publish_up LIKE " . $this->_db->quote($year . '%') . " AND (publish_down >= " . $this->_db->quote($year . '%') . " OR publish_down = '0000-00-00 00:00:00' OR publish_down IS NULL)
-					AND $this->_tbl.state = '1'";
+                $sql = "SELECT $this->tableName.* FROM #__categories AS b, $this->tableName
+					WHERE $this->tableName.catid = b.id
+					AND publish_up LIKE " . $this->db->quote($year . '%') . " AND (publish_down >= " . $this->db->quote($year . '%') . " OR publish_down = '0000-00-00 00:00:00' OR publish_down IS NULL)
+					AND $this->tableName.state = '1'";
 
                 //did we pass in a scope filter
                 if (isset($filters['scope']) && $filters['scope'] != '') {
                     if ($filters['scope'] == 'event') {
-                        $sql .= " AND ({$this->_tbl}.scope IS NULL OR {$this->_tbl}.scope=" . $this->_db->quote($filters['scope']) . ")";
+                        $sql .= " AND ({$this->tableName}.scope IS NULL OR {$this->tableName}.scope=" . $this->db->quote($filters['scope']) . ")";
                     } else {
-                        $sql .= " AND {$this->_tbl}.scope=" . $this->_db->quote($filters['scope']);
+                        $sql .= " AND {$this->tableName}.scope=" . $this->db->quote($filters['scope']);
                     }
                 }
 
                 //did we pass in a scope id filter
                 if (isset($filters['scope_id']) && $filters['scope_id'] != '') {
-                    $sql .= " AND {$this->_tbl}.scope_id=" . $this->_db->quote($filters['scope_id']);
+                    $sql .= " AND {$this->tableName}.scope_id=" . $this->db->quote($filters['scope_id']);
                 }
 
                 $sql .= ($filters['category'] != 0) ? " AND b.id=" . intval($filters['category']) : "";
@@ -187,25 +187,25 @@ class Event extends Table
                 $startdate = $filters['startdate'];
                 $enddate = $filters['enddate'];
 
-                $sql = "SELECT * FROM $this->_tbl
-					WHERE ((publish_up >= " . $this->_db->quote($startdate . '%') . " AND publish_up <= " . $this->_db->quote($enddate . '%') . ")
-					OR (publish_down >= " . $this->_db->quote($startdate . '%') . " AND publish_down <= " . $this->_db->quote($enddate . '%') . ")
-					OR (publish_up >= " . $this->_db->quote($startdate . '%') . " AND publish_down <= " . $this->_db->quote($enddate . '%') . ")
-					OR (publish_down >= " . $this->_db->quote($enddate . '%') . " AND publish_up <= " . $this->_db->quote($startdate . '%') . "))
+                $sql = "SELECT * FROM $this->tableName
+					WHERE ((publish_up >= " . $this->db->quote($startdate . '%') . " AND publish_up <= " . $this->db->quote($enddate . '%') . ")
+					OR (publish_down >= " . $this->db->quote($startdate . '%') . " AND publish_down <= " . $this->db->quote($enddate . '%') . ")
+					OR (publish_up >= " . $this->db->quote($startdate . '%') . " AND publish_down <= " . $this->db->quote($enddate . '%') . ")
+					OR (publish_down >= " . $this->db->quote($enddate . '%') . " AND publish_up <= " . $this->db->quote($startdate . '%') . "))
 					AND state = '1'";
 
                 //did we pass in a scope filter
                 if (isset($filters['scope']) && $filters['scope'] != '') {
                     if ($filters['scope'] == 'event') {
-                        $sql .= " AND ({$this->_tbl}.scope IS NULL OR {$this->_tbl}.scope=" . $this->_db->quote($filters['scope']) . ")";
+                        $sql .= " AND ({$this->tableName}.scope IS NULL OR {$this->tableName}.scope=" . $this->db->quote($filters['scope']) . ")";
                     } else {
-                        $sql .= " AND {$this->_tbl}.scope=" . $this->_db->quote($filters['scope']);
+                        $sql .= " AND {$this->tableName}.scope=" . $this->db->quote($filters['scope']);
                     }
                 }
 
                 //did we pass in a scope id filter
                 if (isset($filters['scope_id']) && $filters['scope_id'] != '') {
-                    $sql .= " AND {$this->_tbl}.scope_id=" . $this->_db->quote($filters['scope_id']);
+                    $sql .= " AND {$this->tableName}.scope_id=" . $this->db->quote($filters['scope_id']);
                 }
 
                 $sql .= "ORDER BY publish_up ASC";
@@ -215,28 +215,28 @@ class Event extends Table
                 $select_date     = $filters['select_date'];
                 $select_date_fin = $filters['select_date_fin'];
 
-                $sql = "SELECT $this->_tbl.* FROM #__categories AS b, $this->_tbl
-					WHERE $this->_tbl.catid = b.id AND
-						((publish_up >= " . $this->_db->quote($select_date) . " AND publish_up <= " . $this->_db->quote($select_date_fin) . ") 
-						OR (publish_down >= " . $this->_db->quote($select_date) . " AND publish_down <= " . $this->_db->quote($select_date_fin) . ") 
-						OR (publish_up <= " . $this->_db->quote($select_date) . " AND publish_down >= " . $this->_db->quote($select_date_fin) . ") 
-						OR (publish_up >= " . $this->_db->quote($select_date) . " AND publish_down <= " . $this->_db->quote($select_date_fin) . "))";
+                $sql = "SELECT $this->tableName.* FROM #__categories AS b, $this->tableName
+					WHERE $this->tableName.catid = b.id AND
+						((publish_up >= " . $this->db->quote($select_date) . " AND publish_up <= " . $this->db->quote($select_date_fin) . ") 
+						OR (publish_down >= " . $this->db->quote($select_date) . " AND publish_down <= " . $this->db->quote($select_date_fin) . ") 
+						OR (publish_up <= " . $this->db->quote($select_date) . " AND publish_down >= " . $this->db->quote($select_date_fin) . ") 
+						OR (publish_up >= " . $this->db->quote($select_date) . " AND publish_down <= " . $this->db->quote($select_date_fin) . "))";
 
                 $sql .= ($filters['category'] != 0) ? " AND b.id=" . $filters['category'] : "";
-                $sql .= " AND $this->_tbl.state = '1'";
+                $sql .= " AND $this->tableName.state = '1'";
 
                 //did we pass in a scope filter
                 if (isset($filters['scope']) && $filters['scope'] != '') {
                     if ($filters['scope'] == 'event') {
-                        $sql .= " AND ({$this->_tbl}.scope IS NULL OR {$this->_tbl}.scope=" . $this->_db->quote($filters['scope']) . ")";
+                        $sql .= " AND ({$this->tableName}.scope IS NULL OR {$this->tableName}.scope=" . $this->db->quote($filters['scope']) . ")";
                     } else {
-                        $sql .= " AND {$this->_tbl}.scope=" . $this->_db->quote($filters['scope']);
+                        $sql .= " AND {$this->tableName}.scope=" . $this->db->quote($filters['scope']);
                     }
                 }
 
                 //did we pass in a scope id filter
                 if (isset($filters['scope_id']) && $filters['scope_id'] != '') {
-                    $sql .= " AND {$this->_tbl}.scope_id=" . $this->_db->quote($filters['scope_id']);
+                    $sql .= " AND {$this->tableName}.scope_id=" . $this->db->quote($filters['scope_id']);
                 }
 
                 $sql .= " ORDER BY publish_up ASC";
@@ -251,8 +251,8 @@ class Event extends Table
             }
         }
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -263,24 +263,24 @@ class Event extends Table
      */
     public function getCount($filters = [])
     {
-        $query = "SELECT count(*) FROM $this->_tbl AS a";
+        $query = "SELECT count(*) FROM $this->tableName AS a";
         $where = [];
         if ($filters['catid'] > 0) {
             $where[] = "a.catid='" . intval($filters['catid']) . "'";
         }
         if ($filters['search']) {
-            $where[] = "LOWER(a.title) LIKE " . $this->_db->quote('%' . $filters['search'] . '%');
+            $where[] = "LOWER(a.title) LIKE " . $this->db->quote('%' . $filters['search'] . '%');
         }
 
         //did we pass in a scope id filter
         if (isset($filters['scope_id']) && $filters['scope_id'] != '' && $filters['scope_id'] != 0) {
-            $where[] = "a.scope=" . $this->_db->quote('group');
-            $where[] = "a.scope_id=" . $this->_db->quote($filters['scope_id']);
+            $where[] = "a.scope=" . $this->db->quote('group');
+            $where[] = "a.scope_id=" . $this->db->quote($filters['scope_id']);
         }
 
         $query .= (count($where)) ? " WHERE " . implode(' AND ', $where) : "";
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -292,7 +292,7 @@ class Event extends Table
     public function getRecords($filters = [])
     {
         $query = "SELECT a.*, cc.title AS category, u.name AS editor, 'Public' as groupname
-			FROM `$this->_tbl` AS a
+			FROM `$this->tableName` AS a
 			LEFT JOIN `#__users` AS u ON u.id = a.checked_out
 			LEFT JOIN `#__categories` AS cc ON a.catid=cc.id";
 
@@ -301,13 +301,13 @@ class Event extends Table
             $where[] = "a.catid='" . intval($filters['catid']) . "'";
         }
         if ($filters['search']) {
-            $where[] = "LOWER(a.title) LIKE " . $this->_db->quote('%' . $filters['search'] . '%');
+            $where[] = "LOWER(a.title) LIKE " . $this->db->quote('%' . $filters['search'] . '%');
         }
 
         //did we pass in a scope id filter
         if (isset($filters['scope_id']) && $filters['scope_id'] != '' && $filters['scope_id'] != 0) {
-            $where[] = "a.scope=" . $this->_db->quote('group');
-            $where[] = "a.scope_id=" . $this->_db->quote($filters['scope_id']);
+            $where[] = "a.scope=" . $this->db->quote('group');
+            $where[] = "a.scope_id=" . $this->db->quote($filters['scope_id']);
         }
 
         $query .= (count($where)) ? " WHERE " . implode(' AND ', $where) : "";
@@ -325,8 +325,8 @@ class Event extends Table
             }
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -337,11 +337,11 @@ class Event extends Table
      */
     public function find($filters = [])
     {
-        $sql  = "SELECT * FROM {$this->_tbl}";
+        $sql  = "SELECT * FROM {$this->tableName}";
         $sql .= $this->buildQuery($filters);
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -352,11 +352,11 @@ class Event extends Table
      */
     public function count($filters = [])
     {
-        $sql  = "SELECT COUNT(*) FROM {$this->_tbl}";
+        $sql  = "SELECT COUNT(*) FROM {$this->tableName}";
         $sql .= $this->buildQuery($filters);
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadResult();
+        $this->db->setQuery($sql);
+        return $this->db->loadResult();
     }
 
     /**
@@ -373,12 +373,12 @@ class Event extends Table
 
         // scope
         if (isset($filters['scope'])) {
-            $where[] = "scope=" . $this->_db->quote($filters['scope']);
+            $where[] = "scope=" . $this->db->quote($filters['scope']);
         }
 
         // scope_id
         if (isset($filters['scope_id'])) {
-            $where[] = "scope_id=" . $this->_db->quote($filters['scope_id']);
+            $where[] = "scope_id=" . $this->db->quote($filters['scope_id']);
         }
 
         // calendar_id
@@ -386,7 +386,7 @@ class Event extends Table
             if ($filters['calendar_id'] == '0') {
                 $where[] = "(calendar_id IS NULL OR calendar_id=0)";
             } else {
-                $where[] = "calendar_id=" . $this->_db->quote($filters['calendar_id']);
+                $where[] = "calendar_id=" . $this->db->quote($filters['calendar_id']);
             }
         }
 
@@ -402,10 +402,10 @@ class Event extends Table
 
         // publish up/down
         if (isset($filters['publish_up']) && isset($filters['publish_down'])) {
-            $q  = "(publish_up >=" . $this->_db->quote($filters['publish_up']) . " AND publish_up <= " . $this->_db->quote($filters['publish_down']);
-            $q .= " OR (publish_down IS NOT NULL AND publish_down != '0000-00-00 00:00:00' AND publish_down >=" . $this->_db->quote($filters['publish_up']) . " AND publish_down <=" . $this->_db->quote($filters['publish_down']) . ")";
-            $q .= " OR (publish_up IS NOT NULL AND publish_down IS NOT NULL AND publish_up <= " . $this->_db->quote($filters['publish_up']) . " AND publish_down >=" . $this->_db->quote($filters['publish_down']) . ")";
-            $q .= " OR (publish_up IS NOT NULL AND publish_down IS NOT NULL AND publish_up <= " . $this->_db->quote($filters['publish_up']) . " AND publish_down = '0000-00-00 00:00:00'))";
+            $q  = "(publish_up >=" . $this->db->quote($filters['publish_up']) . " AND publish_up <= " . $this->db->quote($filters['publish_down']);
+            $q .= " OR (publish_down IS NOT NULL AND publish_down != '0000-00-00 00:00:00' AND publish_down >=" . $this->db->quote($filters['publish_up']) . " AND publish_down <=" . $this->db->quote($filters['publish_down']) . ")";
+            $q .= " OR (publish_up IS NOT NULL AND publish_down IS NOT NULL AND publish_up <= " . $this->db->quote($filters['publish_up']) . " AND publish_down >=" . $this->db->quote($filters['publish_down']) . ")";
+            $q .= " OR (publish_up IS NOT NULL AND publish_down IS NOT NULL AND publish_up <= " . $this->db->quote($filters['publish_up']) . " AND publish_down = '0000-00-00 00:00:00'))";
             $where[] = $q;
         }
 

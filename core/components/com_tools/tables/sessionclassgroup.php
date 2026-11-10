@@ -58,7 +58,7 @@ class SessionClassGroup extends Table
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildQuery($filters = [])
     {
-        $query = "FROM $this->_tbl AS qcg";
+        $query = "FROM $this->tableName AS qcg";
 
         $where = [];
 
@@ -103,8 +103,8 @@ class SessionClassGroup extends Table
             case 'count':
                 $query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
 
-                $this->_db->setQuery($query);
-                return $this->_db->loadResult();
+                $this->db->setQuery($query);
+                return $this->db->loadResult();
                 break;
 
             case 'one':
@@ -155,8 +155,8 @@ class SessionClassGroup extends Table
                     $query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
                 }
 
-                $this->_db->setQuery($query);
-                return $this->_db->loadObjectList();
+                $this->db->setQuery($query);
+                return $this->db->loadObjectList();
                 break;
         }
     }
@@ -176,9 +176,9 @@ class SessionClassGroup extends Table
             return false;
         }
 
-        $this->_db->setQuery("DELETE FROM `$this->_tbl` WHERE `class_id`=" . $this->_db->quote($class_id));
-        if (!$this->_db->query()) {
-            $this->setError($this->_db->getErrorMsg());
+        $this->db->setQuery("DELETE FROM `$this->tableName` WHERE `class_id`=" . $this->db->quote($class_id));
+        if (!$this->db->query()) {
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
 
@@ -200,9 +200,9 @@ class SessionClassGroup extends Table
             return false;
         }
 
-        $this->_db->setQuery("DELETE FROM `$this->_tbl` WHERE `group_id`=" . $this->_db->quote($group_id));
-        if (!$this->_db->query()) {
-            $this->setError($this->_db->getErrorMsg());
+        $this->db->setQuery("DELETE FROM `$this->tableName` WHERE `group_id`=" . $this->db->quote($group_id));
+        if (!$this->db->query()) {
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
 

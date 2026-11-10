@@ -34,8 +34,8 @@ class Repo extends Table
      */
     public function getRepos($projectid)
     {
-        $this->_db->setQuery("SELECT * FROM $this->_tbl WHERE project_id=" . $this->_db->quote($projectid));
-        return $this->_db->loadObjectList();
+        $this->db->setQuery("SELECT * FROM $this->tableName WHERE project_id=" . $this->db->quote($projectid));
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -51,15 +51,15 @@ class Repo extends Table
             return false;
         }
 
-        $query  = "SELECT * FROM $this->_tbl "
-            . "WHERE project_id=" . $this->_db->quote($projectid)
-            . " AND name=" . $this->_db->quote($name) . " LIMIT 1";
+        $query  = "SELECT * FROM $this->tableName "
+            . "WHERE project_id=" . $this->db->quote($projectid)
+            . " AND name=" . $this->db->quote($name) . " LIMIT 1";
 
-        $this->_db->setQuery($query);
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery($query);
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }

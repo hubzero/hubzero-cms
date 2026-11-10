@@ -49,11 +49,11 @@ class Calendar extends Table
      */
     public function find($filters = [])
     {
-        $sql  = "SELECT * FROM {$this->_tbl}";
+        $sql  = "SELECT * FROM {$this->tableName}";
         $sql .= $this->buildQuery($filters);
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -64,11 +64,11 @@ class Calendar extends Table
      */
     public function count($filters = [])
     {
-        $sql  = "SELECT COUNT(*) FROM {$this->_tbl}";
+        $sql  = "SELECT COUNT(*) FROM {$this->tableName}";
         $sql .= $this->buildQuery($filters);
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadResult();
+        $this->db->setQuery($sql);
+        return $this->db->loadResult();
     }
 
     /**
@@ -85,17 +85,17 @@ class Calendar extends Table
 
         // scope
         if (isset($filters['scope'])) {
-            $where[] = "scope=" . $this->_db->quote($filters['scope']);
+            $where[] = "scope=" . $this->db->quote($filters['scope']);
         }
 
         // scope_id
         if (isset($filters['scope_id'])) {
-            $where[] = "scope_id=" . $this->_db->quote($filters['scope_id']);
+            $where[] = "scope_id=" . $this->db->quote($filters['scope_id']);
         }
 
         // readonly
         if (isset($filters['readonly'])) {
-            $where[] = "readonly=" . $this->_db->quote($filters['readonly']);
+            $where[] = "readonly=" . $this->db->quote($filters['readonly']);
         }
 
         // published

@@ -25,6 +25,6 @@ class AssetUnity extends Table
     {
         parent::__construct('#__courses_asset_unity', 'id', $db);
 
-        $this->_trackAssets = false;
+        $this->trackAssets = false;
     }
 }

@@ -63,15 +63,15 @@ class Page extends Table
      */
     public function find($filters = [])
     {
-        $sql  = "SELECT * FROM {$this->_tbl}";
+        $sql  = "SELECT * FROM {$this->tableName}";
         $sql .= $this->buildQuery($filters);
 
-        $this->_db->setQuery($sql);
+        $this->db->setQuery($sql);
 
         if (isset($filters['returnas']) && $filters['returnas'] == 'array') {
-            return $this->_db->loadAssocList();
+            return $this->db->loadAssocList();
         } else {
-            return $this->_db->loadObjectList();
+            return $this->db->loadObjectList();
         }
     }
 
@@ -83,11 +83,11 @@ class Page extends Table
      */
     public function count($filters = [])
     {
-        $sql  = "SELECT COUNT(*) FROM {$this->_tbl}";
+        $sql  = "SELECT COUNT(*) FROM {$this->tableName}";
         $sql .= $this->buildQuery($filters);
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadResult();
+        $this->db->setQuery($sql);
+        return $this->db->loadResult();
     }
 
     /**
@@ -104,7 +104,7 @@ class Page extends Table
 
         // published
         if (isset($filters['gidNumber'])) {
-            $where[] = "gidNumber=" . $this->_db->quote($filters['gidNumber']);
+            $where[] = "gidNumber=" . $this->db->quote($filters['gidNumber']);
         }
 
         // published
@@ -114,27 +114,27 @@ class Page extends Table
 
         // category
         if (isset($filters['category'])) {
-            $where[] = "category=" . $this->_db->quote($filters['category']);
+            $where[] = "category=" . $this->db->quote($filters['category']);
         }
 
         // home
         if (isset($filters['home'])) {
-            $where[] = "home=" . $this->_db->quote($filters['home']);
+            $where[] = "home=" . $this->db->quote($filters['home']);
         }
 
         // parent
         if (isset($filters['depth'])) {
-            $where[] = "depth=" . $this->_db->quote($filters['depth']);
+            $where[] = "depth=" . $this->db->quote($filters['depth']);
         }
 
         // left
         if (isset($filters['left'])) {
-            $where[] = "lft > " . $this->_db->quote($filters['left']);
+            $where[] = "lft > " . $this->db->quote($filters['left']);
         }
 
         // right
         if (isset($filters['right'])) {
-            $where[] = "rgt < " . $this->_db->quote($filters['right']);
+            $where[] = "rgt < " . $this->db->quote($filters['right']);
         }
 
         // if we have and conditions

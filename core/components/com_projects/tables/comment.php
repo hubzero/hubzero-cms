@@ -40,13 +40,13 @@ class Comment extends Table
             return false;
         }
 
-        $query = "SELECT * FROM $this->_tbl WHERE itemid=" . $this->_db->quote($itemid)
-            . " AND created_by=" . $this->_db->quote($user_id) . " LIMIT 1";
-        $this->_db->setQuery($query);
-        if ($result = $this->_db->loadAssoc()) {
+        $query = "SELECT * FROM $this->tableName WHERE itemid=" . $this->db->quote($itemid)
+            . " AND created_by=" . $this->db->quote($user_id) . " LIMIT 1";
+        $this->db->setQuery($query);
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -63,11 +63,11 @@ class Comment extends Table
             return false;
         }
 
-        $this->_db->setQuery("SELECT * FROM $this->_tbl WHERE id=" . $this->_db->quote($commentid) . " LIMIT 1");
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery("SELECT * FROM $this->tableName WHERE id=" . $this->db->quote($commentid) . " LIMIT 1");
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -93,26 +93,26 @@ class Comment extends Table
 
         $query = "SELECT c.*, x.name as author ";
         if ($lastvisit && $activityid) {
-            $query .= ", (SELECT count(*) from $this->_tbl as cc WHERE cc.parent_activity = c.parent_activity"
-                . " AND cc.created > " . $this->_db->quote($lastvisit) . ") as newcount ";
+            $query .= ", (SELECT count(*) from $this->tableName as cc WHERE cc.parent_activity = c.parent_activity"
+                . " AND cc.created > " . $this->db->quote($lastvisit) . ") as newcount ";
         }
-        $query .= " FROM $this->_tbl as c";
+        $query .= " FROM $this->tableName as c";
         $query .= " JOIN #__xprofiles as x ON x.uidNumber=c.created_by ";
         if ($parent_activity) {
-            $query .= " WHERE c.parent_activity=" . $this->_db->quote($parent_activity);
+            $query .= " WHERE c.parent_activity=" . $this->db->quote($parent_activity);
         } else {
             if ($activityid) {
-                $query .= " WHERE c.activityid=" . $this->_db->quote($activityid);
+                $query .= " WHERE c.activityid=" . $this->db->quote($activityid);
             } else {
-                $query .= " WHERE c.itemid=" . $this->_db->quote($itemid)
-                    . " AND c.tbl=" . $this->_db->quote($tbl);
+                $query .= " WHERE c.itemid=" . $this->db->quote($itemid)
+                    . " AND c.tbl=" . $this->db->quote($tbl);
             }
         }
         $query .= " AND c.state != 2 ";
         $query .= " ORDER BY c.created ASC";
 
-        $this->_db->setQuery($query);
-        $result = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $result = $this->db->loadObjectList();
         return $activityid && $result ? $result[0] : $result;
     }
 
@@ -128,14 +128,14 @@ class Comment extends Table
      */
     public function checkDuplicate($uid = 0, $tbl = null, $itemid = 0, $parent_activity = 0, $comment = null)
     {
-        $query = "SELECT id FROM $this->_tbl WHERE created_by="
-                . $this->_db->quote($uid) . " AND itemid="
-                . $this->_db->quote($itemid) . " AND tbl="
-                . $this->_db->quote($tbl) . " AND parent_activity="
-                . $this->_db->quote($parent_activity) . " AND comment="
-                . $this->_db->quote($comment) . " AND state!=2 ";
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $query = "SELECT id FROM $this->tableName WHERE created_by="
+                . $this->db->quote($uid) . " AND itemid="
+                . $this->db->quote($itemid) . " AND tbl="
+                . $this->db->quote($tbl) . " AND parent_activity="
+                . $this->db->quote($parent_activity) . " AND comment="
+                . $this->db->quote($comment) . " AND state!=2 ";
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -155,10 +155,10 @@ class Comment extends Table
         }
         $activities = [];
 
-        $query = "SELECT activityid as aid FROM $this->_tbl WHERE itemid=" . $this->_db->quote($itemid)
-            . " AND tbl=" . $this->_db->quote($tbl);
-        $this->_db->setQuery($query);
-        $result = $this->_db->loadObjectList();
+        $query = "SELECT activityid as aid FROM $this->tableName WHERE itemid=" . $this->db->quote($itemid)
+            . " AND tbl=" . $this->db->quote($tbl);
+        $this->db->setQuery($query);
+        $result = $this->db->loadObjectList();
         if ($result) {
             foreach ($result as $r) {
                 $activities[] = $r->aid;
@@ -215,10 +215,10 @@ class Comment extends Table
             return false;
         }
 
-        $query = "UPDATE $this->_tbl SET activityid =" . $this->_db->quote($activityid)
-            . " WHERE id =" . $this->_db->quote($id);
-        $this->_db->setQuery($query);
-        $this->_db->query();
+        $query = "UPDATE $this->tableName SET activityid =" . $this->db->quote($activityid)
+            . " WHERE id =" . $this->db->quote($id);
+        $this->db->setQuery($query);
+        $this->db->query();
     }
 
     /**
@@ -238,13 +238,13 @@ class Comment extends Table
             return false;
         }
 
-        $query  = ($permanent) ? "DELETE FROM $this->_tbl " : "UPDATE $this->_tbl SET state = 2 ";
-        $query .= " WHERE itemid=" . $this->_db->quote($itemid) . " AND tbl=" . $this->_db->quote($tbl);
+        $query  = ($permanent) ? "DELETE FROM $this->tableName " : "UPDATE $this->tableName SET state = 2 ";
+        $query .= " WHERE itemid=" . $this->db->quote($itemid) . " AND tbl=" . $this->db->quote($tbl);
 
-        $this->_db->setQuery($query);
+        $this->db->setQuery($query);
 
-        if (!$this->_db->query()) {
-            $this->setError($this->_db->getErrorMsg());
+        if (!$this->db->query()) {
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;
@@ -266,12 +266,12 @@ class Comment extends Table
             return false;
         }
 
-        $query  = ($permanent) ? "DELETE FROM $this->_tbl " : "UPDATE $this->_tbl SET state = 2 ";
-        $query .= " WHERE id=" . $this->_db->quote($cid);
+        $query  = ($permanent) ? "DELETE FROM $this->tableName " : "UPDATE $this->tableName SET state = 2 ";
+        $query .= " WHERE id=" . $this->db->quote($cid);
 
-        $this->_db->setQuery($query);
-        if (!$this->_db->query()) {
-            $this->setError($this->_db->getErrorMsg());
+        $this->db->setQuery($query);
+        if (!$this->db->query()) {
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;
@@ -294,13 +294,13 @@ class Comment extends Table
         }
 
         $query  = ($permanent)
-            ? "DELETE c FROM $this->_tbl as c INNER JOIN `#__project_activity` as a ON a.id=c.activityid "
-            : "UPDATE $this->_tbl as c INNER JOIN `#__project_activity` as a ON a.id=c.activityid  SET c.state = 2 ";
-        $query .= " WHERE a.projectid=" . $this->_db->quote($projectid);
+            ? "DELETE c FROM $this->tableName as c INNER JOIN `#__project_activity` as a ON a.id=c.activityid "
+            : "UPDATE $this->tableName as c INNER JOIN `#__project_activity` as a ON a.id=c.activityid  SET c.state = 2 ";
+        $query .= " WHERE a.projectid=" . $this->db->quote($projectid);
 
-        $this->_db->setQuery($query);
-        if (!$this->_db->query()) {
-            $this->setError($this->_db->getErrorMsg());
+        $this->db->setQuery($query);
+        if (!$this->db->query()) {
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;

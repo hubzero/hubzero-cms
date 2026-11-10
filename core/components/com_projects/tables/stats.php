@@ -42,17 +42,17 @@ class Stats extends Table
             return false;
         }
 
-        $query  = "SELECT * FROM $this->_tbl WHERE 1=1 ";
-        $query .= $year ? " AND year=" . $this->_db->quote($year) : '';
-        $query .= $month ? " AND month=" . $this->_db->quote($month) : '';
-        $query .= $week ? " AND week=" . $this->_db->quote($week) : '';
+        $query  = "SELECT * FROM $this->tableName WHERE 1=1 ";
+        $query .= $year ? " AND year=" . $this->db->quote($year) : '';
+        $query .= $month ? " AND month=" . $this->db->quote($month) : '';
+        $query .= $week ? " AND week=" . $this->db->quote($week) : '';
         $query .= " ORDER BY processed DESC LIMIT 1";
 
-        $this->_db->setQuery($query);
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery($query);
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -71,14 +71,14 @@ class Stats extends Table
             return false;
         }
 
-        $query  = "SELECT * FROM $this->_tbl WHERE 1=1 ";
-        $query .= $year ? " AND year=" . $this->_db->quote($year) : '';
-        $query .= $month ? " AND month=" . $this->_db->quote($month) : '';
-        $query .= $week ? " AND week=" . $this->_db->quote($week) : '';
+        $query  = "SELECT * FROM $this->tableName WHERE 1=1 ";
+        $query .= $year ? " AND year=" . $this->db->quote($year) : '';
+        $query .= $month ? " AND month=" . $this->db->quote($month) : '';
+        $query .= $week ? " AND week=" . $this->db->quote($week) : '';
         $query .= " ORDER BY processed DESC LIMIT 1";
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -92,9 +92,9 @@ class Stats extends Table
     {
         $stats = [];
 
-        $obj  = new Project($this->_db);
-        $objO = new Owner($this->_db);
-        $objP = new \Components\Publications\Tables\Publication($this->_db);
+        $obj  = new Project($this->db);
+        $objO = new Owner($this->db);
+        $objP = new \Components\Publications\Tables\Publication($this->db);
 
         $testProjects    = $obj->getProjectsByTag('test', true, 'id');
         $validProjectIds = $obj->getProjectsByTag('test', false, 'id');
@@ -257,7 +257,7 @@ class Stats extends Table
             ->rows();
 
         // Collect team stats
-        $objO = new Owner($this->_db);
+        $objO = new Owner($this->db);
         $multiTeam         = $objO->getTeamStats($exclude, 'multi');
         $activeTeam        = $objO->getTeamStats($exclude, 'registered');
         $invitedTeam       = $objO->getTeamStats($exclude, 'invited');
@@ -310,8 +310,8 @@ class Stats extends Table
 
         // Collect publication stats
         if ($publishing) {
-            $objP  = new \Components\Publications\Tables\Publication($this->_db);
-            $objPV = new \Components\Publications\Tables\Version($this->_db);
+            $objP  = new \Components\Publications\Tables\Publication($this->db);
+            $objPV = new \Components\Publications\Tables\Version($this->db);
             $prPub = $objP->getPubStats($include, 'usage');
             $perc  = round(($prPub * 100) / $total) . '%';
 

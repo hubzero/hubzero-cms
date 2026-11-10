@@ -59,11 +59,11 @@ class Curation extends Table
             return false;
         }
 
-        $query = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid);
+        $query = "SELECT * FROM $this->tableName WHERE publication_version_id=" . $this->db->quote($vid);
         $query .= " ORDER BY step ASC, element ASC ";
-        $this->_db->setQuery($query);
+        $this->db->setQuery($query);
 
-        return $this->_db->loadObjectList();
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -79,14 +79,14 @@ class Curation extends Table
             return false;
         }
 
-        $query = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid);
-        $query .= " AND publication_version_id=" . $this->_db->quote($vid);
-        $query .= " AND block=" . $this->_db->quote($block);
-        $query .= " AND step=" . $this->_db->quote($step);
-        $query .= $element ? " AND element=" . $this->_db->quote($element) : " AND (element IS null OR element=0)";
+        $query = "SELECT * FROM $this->tableName WHERE publication_id=" . $this->db->quote($pid);
+        $query .= " AND publication_version_id=" . $this->db->quote($vid);
+        $query .= " AND block=" . $this->db->quote($block);
+        $query .= " AND step=" . $this->db->quote($step);
+        $query .= $element ? " AND element=" . $this->db->quote($element) : " AND (element IS null OR element=0)";
         $query .= " ORDER BY id DESC LIMIT 1";
-        $this->_db->setQuery($query);
-        $results = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $results = $this->db->loadObjectList();
         return $results ? $results[0] : null;
     }
 
@@ -103,18 +103,18 @@ class Curation extends Table
             return false;
         }
 
-        $query = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid);
-        $query .= " AND publication_version_id=" . $this->_db->quote($vid);
-        $query .= " AND block=" . $this->_db->quote($block);
-        $query .= " AND step=" . $this->_db->quote($step);
-        $query .= $element ? " AND element=" . $this->_db->quote($element) : " AND (element IS null OR element=0)";
+        $query = "SELECT * FROM $this->tableName WHERE publication_id=" . $this->db->quote($pid);
+        $query .= " AND publication_version_id=" . $this->db->quote($vid);
+        $query .= " AND block=" . $this->db->quote($block);
+        $query .= " AND step=" . $this->db->quote($step);
+        $query .= $element ? " AND element=" . $this->db->quote($element) : " AND (element IS null OR element=0)";
         $query .= " ORDER BY id DESC LIMIT 1";
-        $this->_db->setQuery($query);
+        $this->db->setQuery($query);
 
-        if ($result = $this->_db->loadAssoc()) {
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }

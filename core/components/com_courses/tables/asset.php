@@ -91,11 +91,11 @@ class Asset extends Table
      */
     private function buildQuery($filters = [])
     {
-        $query  = " FROM $this->_tbl AS ca";
+        $query  = " FROM $this->tableName AS ca";
         $query .= " LEFT JOIN #__courses_offering_section_dates AS sd ON sd.scope='asset' AND sd.scope_id=ca.id";
 
         if (isset($filters['section_id'])) {
-            $query .= " AND sd.section_id=" . $this->_db->quote((int) $filters['section_id']);
+            $query .= " AND sd.section_id=" . $this->db->quote((int) $filters['section_id']);
         }
 
         $query .= " LEFT JOIN #__courses_asset_associations AS caa ON caa.asset_id = ca.id";
@@ -109,46 +109,46 @@ class Asset extends Table
             $query .= " INNER JOIN `#__courses_progress_factors` AS cpf ON ca.id = cpf.asset_id";
 
             if (isset($filters['section_id'])) {
-                $query .= " AND cpf.section_id = " . $this->_db->quote($filters['section_id']);
+                $query .= " AND cpf.section_id = " . $this->db->quote($filters['section_id']);
             }
         }
 
         $where = [];
 
         if (!empty($filters['asset_id'])) {
-            $where[] = "ca.id=" . $this->_db->quote((int) $filters['asset_id']);
+            $where[] = "ca.id=" . $this->db->quote((int) $filters['asset_id']);
         }
         // A scope id of 0 must match no assets rather than dropping the clause
         if (isset($filters['asset_scope_id'])) {
-            $where[] = "cag.id=" . $this->_db->quote((int) $filters['asset_scope_id']);
+            $where[] = "cag.id=" . $this->db->quote((int) $filters['asset_scope_id']);
         }
         if (!empty($filters['asset_scope'])) {
-            $where[] = "caa.scope=" . $this->_db->quote((string) $filters['asset_scope']);
+            $where[] = "caa.scope=" . $this->db->quote((string) $filters['asset_scope']);
         }
         if (isset($filters['state']) && $filters['state'] >= 0) {
-            $where[] = "ca.state=" . $this->_db->quote($filters['state']);
+            $where[] = "ca.state=" . $this->db->quote($filters['state']);
         }
         if (!empty($filters['course_id'])) {
-            $where[] = "ca.course_id=" . $this->_db->quote((int) $filters['course_id']);
+            $where[] = "ca.course_id=" . $this->db->quote((int) $filters['course_id']);
         }
         if (!empty($filters['asset_type'])) {
-            $where[] = "ca.type=" . $this->_db->quote((string) $filters['asset_type']);
+            $where[] = "ca.type=" . $this->db->quote((string) $filters['asset_type']);
         }
         if (!empty($filters['asset_subtype'])) {
-            $where[] = "ca.subtype=" . $this->_db->quote((string) $filters['asset_subtype']);
+            $where[] = "ca.subtype=" . $this->db->quote((string) $filters['asset_subtype']);
         }
         if (!empty($filters['unit_id'])) {
-            $where[] = "cag.unit_id=" . $this->_db->quote((int) $filters['unit_id']);
+            $where[] = "cag.unit_id=" . $this->db->quote((int) $filters['unit_id']);
         }
         if (!empty($filters['offering_id'])) {
-            $where[] = "cu.offering_id=" . $this->_db->quote((int) $filters['offering_id']);
+            $where[] = "cu.offering_id=" . $this->db->quote((int) $filters['offering_id']);
         }
         if (!empty($filters['graded'])) {
             $where[] = "ca.graded=1";
         }
         if (isset($filters['search']) && $filters['search']) {
-            $where[] = "(LOWER(ca.url) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
-					OR LOWER(ca.title) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . ")";
+            $where[] = "(LOWER(ca.url) LIKE " . $this->db->quote('%' . strtolower($filters['search']) . '%') . "
+					OR LOWER(ca.title) LIKE " . $this->db->quote('%' . strtolower($filters['search']) . '%') . ")";
         }
 
         if (count($where) > 0) {
@@ -172,8 +172,8 @@ class Asset extends Table
         $query  = "SELECT COUNT(DISTINCT ca.id)";
         $query .= $this->buildQuery($filters['w']);
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -200,8 +200,8 @@ class Asset extends Table
             $query .= " LIMIT " . (int) (isset($filters['start']) ? $filters['start'] : 0) . "," . (int) $filters['limit'];
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -218,7 +218,7 @@ class Asset extends Table
         $scope_id = (int) $scope_id;
 
         $query  = "SELECT DISTINCT ca.*";
-        $query .= " FROM {$this->_tbl} AS ca";
+        $query .= " FROM {$this->tableName} AS ca";
         $query .= " LEFT JOIN `#__courses_asset_associations` AS caa ON caa.asset_id = ca.id";
         $query .= " LEFT JOIN `#__courses_{$scope}s` AS scope ON caa.scope_id = scope.id";
         $query .= " WHERE caa.scope = '{$scope}'";
@@ -227,13 +227,13 @@ class Asset extends Table
         $where = [];
 
         if (isset($filters['state']) && $filters['state'] >= 0) {
-            $where[] = "ca.state=" . $this->_db->quote($filters['state']);
+            $where[] = "ca.state=" . $this->db->quote($filters['state']);
         }
         if (!empty($filters['asset_type'])) {
-            $where[] = "ca.type=" . $this->_db->quote((string) $filters['asset_type']);
+            $where[] = "ca.type=" . $this->db->quote((string) $filters['asset_type']);
         }
         if (!empty($filters['asset_subtype'])) {
-            $where[] = "ca.subtype=" . $this->_db->quote((string) $filters['asset_subtype']);
+            $where[] = "ca.subtype=" . $this->db->quote((string) $filters['asset_subtype']);
         }
         if (!empty($filters['graded'])) {
             $where[] = "ca.graded=1";
@@ -242,8 +242,8 @@ class Asset extends Table
             $query .= " AND " . implode(" AND ", $where);
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -258,12 +258,12 @@ class Asset extends Table
         }
 
         $query  = "SELECT caa.id";
-        $query .= " FROM $this->_tbl AS ca";
+        $query .= " FROM $this->tableName AS ca";
         $query .= " LEFT JOIN #__courses_asset_associations AS caa ON caa.asset_id = ca.id";
-        $query .= " WHERE ca.id = " . $this->_db->quote((int) $this->id);
+        $query .= " WHERE ca.id = " . $this->db->quote((int) $this->id);
 
-        $this->_db->setQuery($query);
-        $result = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $result = $this->db->loadObjectList();
 
         return ($result) ? false : true;
     }

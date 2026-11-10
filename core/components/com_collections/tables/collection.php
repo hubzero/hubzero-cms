@@ -76,19 +76,19 @@ class Collection extends Table
             return true;
         }
 
-        $query = "SELECT * FROM $this->_tbl WHERE state!=2 AND alias=" . $this->_db->quote(trim($oid));
+        $query = "SELECT * FROM $this->tableName WHERE state!=2 AND alias=" . $this->db->quote(trim($oid));
         if ($object_id !== null) {
-            $query .= " AND object_id=" . $this->_db->quote(intval($object_id));
+            $query .= " AND object_id=" . $this->db->quote(intval($object_id));
         }
         if ($object_type !== null) {
-            $query .= " AND object_type=" . $this->_db->quote(strtolower(trim($object_type)));
+            $query .= " AND object_type=" . $this->db->quote(strtolower(trim($object_type)));
         }
 
-        $this->_db->setQuery($query);
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery($query);
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -190,7 +190,7 @@ class Collection extends Table
         $this->access    = intval($this->access);
         $this->state     = intval($this->state);
 
-        $tbl = new self($this->_db);
+        $tbl = new self($this->db);
         $tbl->load($this->alias, $this->object_id, $this->object_type);
 
         if (!$this->id) {
@@ -225,66 +225,66 @@ class Collection extends Table
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildQuery($filters = [])
     {
-        $query  = " FROM $this->_tbl AS b";
+        $query  = " FROM $this->tableName AS b";
         $query .= " INNER JOIN `#__collections_items` AS im ON im.type="
-            . $this->_db->quote('collection') . " AND im.object_id=b.id";
+            . $this->db->quote('collection') . " AND im.object_id=b.id";
         $query .= " LEFT JOIN `#__collections_following` AS f ON f.following_type="
-            . $this->_db->quote('collection') . " AND f.following_id=b.id";
+            . $this->db->quote('collection') . " AND f.following_id=b.id";
         if (isset($filters['user_id']) && $filters['user_id']) {
             $query .= " AND f.follower_type='member' AND f.follower_id="
-                . $this->_db->quote($filters['user_id']);
+                . $this->db->quote($filters['user_id']);
         }
         if (isset($filters['object_type']) && $filters['object_type'] == 'group') {
             $query .= " LEFT JOIN `#__xgroups` AS g ON g.gidNumber=b.object_id AND b.object_type="
-                . $this->_db->quote('group');
+                . $this->db->quote('group');
         }
 
         $where = [];
 
         if (isset($filters['item_id']) && $filters['item_id']) {
             $query .= " INNER JOIN #__collections_posts AS p ON p.collection_id=b.id";
-            $where[] = "p.item_id=" . $this->_db->quote($filters['item_id']);
+            $where[] = "p.item_id=" . $this->db->quote($filters['item_id']);
             if (isset($filters['collection_id'])) {
                 if (is_array($filters['collection_id'])) {
                     $filters['collection_id'] = array_map('intval', $filters['collection_id']);
                     $where[] = "b.id NOT IN (" . implode(',', $filters['collection_id']) . ")";
                 } elseif ($filters['collection_id'] > 0) {
-                    $where[] = "b.id != " . $this->_db->quote(intval($filters['collection_id']));
+                    $where[] = "b.id != " . $this->db->quote(intval($filters['collection_id']));
                 }
             }
         }
 
         if (isset($filters['state']) && $filters['state'] >= 0) {
-            $where[] = "b.state=" . $this->_db->quote(intval($filters['state']));
+            $where[] = "b.state=" . $this->db->quote(intval($filters['state']));
         }
         if (isset($filters['access'])) {
             if (is_array($filters['access'])) {
                 $filters['access'] = array_map('intval', $filters['access']);
                 $where[] = "b.access IN (" . implode(',', $filters['access']) . ")";
             } elseif ($filters['access'] >= 0) {
-                $where[] = "b.access=" . $this->_db->quote(intval($filters['access']));
+                $where[] = "b.access=" . $this->db->quote(intval($filters['access']));
             }
         }
         if (isset($filters['is_default']) && $filters['is_default'] >= 0) {
-            $where[] = "b.is_default=" . $this->_db->quote(intval($filters['is_default']));
+            $where[] = "b.is_default=" . $this->db->quote(intval($filters['is_default']));
         }
 
         if (isset($filters['object_id']) && $filters['object_id']) {
-            $where[] = "b.object_id=" . $this->_db->quote(intval($filters['object_id']));
+            $where[] = "b.object_id=" . $this->db->quote(intval($filters['object_id']));
         }
         if (isset($filters['object_type']) && $filters['object_type']) {
-            $where[] = "b.object_type=" . $this->_db->quote($filters['object_type']);
+            $where[] = "b.object_type=" . $this->db->quote($filters['object_type']);
         }
 
         if (isset($filters['created']) && $filters['created']) {
-            $where[] = "b.created=" . $this->_db->quote($filters['created']);
+            $where[] = "b.created=" . $this->db->quote($filters['created']);
         }
         if (isset($filters['created_by']) && $filters['created_by']) {
-            $where[] = "b.created_by=" . $this->_db->quote(intval($filters['created_by']));
+            $where[] = "b.created_by=" . $this->db->quote(intval($filters['created_by']));
         }
 
         if (isset($filters['search']) && $filters['search'] != '') {
-            $where[] = "(LOWER(b.title) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . ")";
+            $where[] = "(LOWER(b.title) LIKE " . $this->db->quote('%' . strtolower($filters['search']) . '%') . ")";
         }
 
         if (count($where) > 0) {
@@ -310,8 +310,8 @@ class Collection extends Table
             case 'count':
                 $query = "SELECT COUNT(DISTINCT b.id) " . $this->_buildQuery($filters);
 
-                $this->_db->setQuery($query);
-                return $this->_db->loadResult();
+                $this->db->setQuery($query);
+                return $this->db->loadResult();
                 break;
 
             case 'one':
@@ -352,7 +352,7 @@ class Collection extends Table
                         $filters['access'] = array_map('intval', $filters['access']);
                         $access = "AND i.access IN (" . implode(',', $filters['access']) . ")";
                     } elseif ($filters['access'] >= 0) {
-                        $access = "AND i.access=" . $this->_db->quote(intval($filters['access']));
+                        $access = "AND i.access=" . $this->db->quote(intval($filters['access']));
                     }
                 }
 
@@ -380,8 +380,8 @@ class Collection extends Table
                     $query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
                 }
 
-                $this->_db->setQuery($query);
-                return $this->_db->loadObjectList();
+                $this->db->setQuery($query);
+                return $this->db->loadObjectList();
                 break;
         }
     }

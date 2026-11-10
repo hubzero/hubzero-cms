@@ -72,11 +72,11 @@ class Post extends Table
             $this->created_by = User::get('id');
 
             if (array_key_exists('ordering', $this->getFields()) && !$this->ordering) {
-                $query = "SELECT MAX(ordering)+1 FROM $this->_tbl "
-                    . "WHERE collection_id=" . $this->_db->quote($this->collection_id);
-                $this->_db->setQuery($query);
+                $query = "SELECT MAX(ordering)+1 FROM $this->tableName "
+                    . "WHERE collection_id=" . $this->db->quote($this->collection_id);
+                $this->db->setQuery($query);
 
-                $this->ordering = $this->_db->loadResult();
+                $this->ordering = $this->db->loadResult();
                 $this->ordering = ($this->ordering ?: 1);
             }
         }
@@ -100,8 +100,8 @@ class Post extends Table
             case 'count':
                 $query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
 
-                $this->_db->setQuery($query);
-                return $this->_db->loadResult();
+                $this->db->setQuery($query);
+                return $this->db->loadResult();
                 break;
 
             case 'one':
@@ -172,8 +172,8 @@ class Post extends Table
                     $query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
                 }
 
-                $this->_db->setQuery($query);
-                return $this->_db->loadObjectList();
+                $this->db->setQuery($query);
+                return $this->db->loadObjectList();
                 break;
         }
     }
@@ -187,14 +187,14 @@ class Post extends Table
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildQuery($filters = [])
     {
-        $query  = " FROM $this->_tbl AS p";
+        $query  = " FROM $this->tableName AS p";
         $query .= " INNER JOIN #__collections AS c ON c.id=p.collection_id";
         $query .= " INNER JOIN #__collections_items AS i ON p.item_id=i.id";
         $query .= " LEFT JOIN #__users AS u ON p.created_by=u.id";
 
         if (isset($filters['user_id']) && $filters['user_id']) {
             $query .= " LEFT JOIN #__collections_votes AS v ON v.item_id=p.item_id "
-                . "AND v.user_id=" . $this->_db->quote($filters['user_id']);
+                . "AND v.user_id=" . $this->db->quote($filters['user_id']);
         }
 
         $where = [];
@@ -204,20 +204,20 @@ class Post extends Table
                 $filters['collection_id'] = array_map('intval', $filters['collection_id']);
                 $where[] = "p.collection_id IN (" . implode(',', $filters['collection_id']) . ")";
             } else {
-                $where[] = "p.collection_id=" . $this->_db->quote($filters['collection_id']);
+                $where[] = "p.collection_id=" . $this->db->quote($filters['collection_id']);
             }
         }
         if (isset($filters['object_id']) && $filters['object_id']) {
-            $where[] = "c.object_id=" . $this->_db->quote($filters['object_id']);
+            $where[] = "c.object_id=" . $this->db->quote($filters['object_id']);
         }
         if (isset($filters['object_type']) && $filters['object_type']) {
-            $where[] = "c.object_type=" . $this->_db->quote($filters['object_type']);
+            $where[] = "c.object_type=" . $this->db->quote($filters['object_type']);
         }
         if (isset($filters['created_by']) && $filters['created_by']) {
-            $where[] = "p.created_by=" . $this->_db->quote($filters['created_by']);
+            $where[] = "p.created_by=" . $this->db->quote($filters['created_by']);
         }
         if (isset($filters['item_id']) && $filters['item_id']) {
-            $where[] = "p.item_id=" . $this->_db->quote($filters['item_id']);
+            $where[] = "p.item_id=" . $this->db->quote($filters['item_id']);
         }
         if (isset($filters['state'])) {
             if (is_array($filters['state'])) {
@@ -225,8 +225,8 @@ class Post extends Table
                 $where[] = "i.state IN (" . implode(',', $filters['state']) . ")";
                 $where[] = "c.state IN (" . implode(',', $filters['state']) . ")";
             } elseif ($filters['state'] >= 0) {
-                $where[] = "i.state=" . $this->_db->quote($filters['state']);
-                $where[] = "c.state=" . $this->_db->quote($filters['state']);
+                $where[] = "i.state=" . $this->db->quote($filters['state']);
+                $where[] = "c.state=" . $this->db->quote($filters['state']);
             }
         }
         if (isset($filters['access'])) {
@@ -235,18 +235,18 @@ class Post extends Table
                 $where[] = "i.access IN (" . implode(',', $filters['access']) . ")";
                 $where[] = "c.access IN (" . implode(',', $filters['access']) . ")";
             } elseif ($filters['access'] >= 0) {
-                $where[] = "i.access=" . $this->_db->quote($filters['access']);
-                $where[] = "c.access=" . $this->_db->quote($filters['access']);
+                $where[] = "i.access=" . $this->db->quote($filters['access']);
+                $where[] = "c.access=" . $this->db->quote($filters['access']);
             }
         }
         if (isset($filters['original'])) {
-            $where[] = "p.original=" . $this->_db->quote($filters['original']);
+            $where[] = "p.original=" . $this->db->quote($filters['original']);
         }
         if (isset($filters['search']) && $filters['search'] != '') {
             $searchTerm = '%' . strtolower($filters['search']) . '%';
-            $where[] = "(LOWER(i.title) LIKE " . $this->_db->quote($searchTerm) . " "
-                . "OR LOWER(i.description) LIKE " . $this->_db->quote($searchTerm) . " "
-                . "OR LOWER(p.description) LIKE " . $this->_db->quote($searchTerm) . ")";
+            $where[] = "(LOWER(i.title) LIKE " . $this->db->quote($searchTerm) . " "
+                . "OR LOWER(i.description) LIKE " . $this->db->quote($searchTerm) . " "
+                . "OR LOWER(p.description) LIKE " . $this->db->quote($searchTerm) . ")";
         }
 
         if (count($where) > 0) {

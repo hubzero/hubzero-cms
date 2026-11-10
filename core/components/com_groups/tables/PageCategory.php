@@ -57,11 +57,11 @@ class PageCategory extends Table
      */
     public function find($filters = [])
     {
-        $sql = "SELECT * FROM {$this->_tbl}";
+        $sql = "SELECT * FROM {$this->tableName}";
         $sql .= $this->buildQuery($filters);
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -72,11 +72,11 @@ class PageCategory extends Table
      */
     public function count($filters = [])
     {
-        $sql = "SELECT COUNT(*) FROM {$this->_tbl}";
+        $sql = "SELECT COUNT(*) FROM {$this->tableName}";
         $sql .= $this->buildQuery($filters);
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -93,7 +93,7 @@ class PageCategory extends Table
 
         // check for gidNumber
         if (isset($filters['gidNumber'])) {
-            $where[] = 'gidNumber=' . $this->_db->quote($filters['gidNumber']);
+            $where[] = 'gidNumber=' . $this->db->quote($filters['gidNumber']);
         }
 
         // did we have any conditions
@@ -124,8 +124,8 @@ class PageCategory extends Table
             return $categories;
         }
 
-        $sql = "SELECT * FROM {$this->_tbl} WHERE gidNumber=" . $this->_db->quote($group->get('gidNumber'));
-        $this->_db->setQuery($sql);
-        return $this->_db->loadObjectList();
+        $sql = "SELECT * FROM {$this->tableName} WHERE gidNumber=" . $this->db->quote($group->get('gidNumber'));
+        $this->db->setQuery($sql);
+        return $this->db->loadObjectList();
     }
 }

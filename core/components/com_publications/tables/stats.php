@@ -59,18 +59,18 @@ class Stats extends Table
         }
 
         $sql = "SELECT *
-				FROM $this->_tbl
-				WHERE period =" . $this->_db->quote($period) . "
-				AND publication_id =" . $this->_db->quote($publication_id);
-        $sql .= $dthis ? " AND datetime=" . $this->_db->quote($dthis . '-00 00:00:00') : '';
+				FROM $this->tableName
+				WHERE period =" . $this->db->quote($period) . "
+				AND publication_id =" . $this->db->quote($publication_id);
+        $sql .= $dthis ? " AND datetime=" . $this->db->quote($dthis . '-00 00:00:00') : '';
         $sql .= " ORDER BY datetime DESC LIMIT 1";
 
-        $this->_db->setQuery($sql);
+        $this->db->setQuery($sql);
 
-        if ($result = $this->_db->loadAssoc()) {
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }

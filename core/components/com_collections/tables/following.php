@@ -69,7 +69,7 @@ class Following extends Table
      */
     public function check()
     {
-        $this->_errors = [];
+        $this->errors = [];
 
         $this->follower_id = intval($this->follower_id);
         if (!$this->follower_id) {
@@ -106,21 +106,21 @@ class Following extends Table
      */
     private function buildQuery($filters = [])
     {
-        $query  = " FROM $this->_tbl AS f";
+        $query  = " FROM $this->tableName AS f";
 
         $where = [];
 
         if (isset($filters['following_id']) && $filters['following_id']) {
-            $where[] = "f.following_id=" . $this->_db->quote($filters['following_id']);
+            $where[] = "f.following_id=" . $this->db->quote($filters['following_id']);
         }
         if (isset($filters['following_type']) && $filters['following_type']) {
-            $where[] = "f.following_type=" . $this->_db->quote($filters['following_type']);
+            $where[] = "f.following_type=" . $this->db->quote($filters['following_type']);
         }
         if (isset($filters['follower_id']) && $filters['follower_id']) {
-            $where[] = "f.follower_id=" . $this->_db->quote($filters['follower_id']);
+            $where[] = "f.follower_id=" . $this->db->quote($filters['follower_id']);
         }
         if (isset($filters['follower_type']) && $filters['follower_type']) {
-            $where[] = "f.follower_type=" . $this->_db->quote($filters['follower_type']);
+            $where[] = "f.follower_type=" . $this->db->quote($filters['follower_type']);
         }
 
         if (count($where) > 0) {
@@ -142,8 +142,8 @@ class Following extends Table
 
         $query = "SELECT COUNT(*) " . $this->buildQuery($filters);
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -173,7 +173,7 @@ class Following extends Table
             $query .= ' LIMIT ' . (isset($filters['start']) ? intval($filters['start']) : 0) . ',' . intval($filters['limit']);
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 }

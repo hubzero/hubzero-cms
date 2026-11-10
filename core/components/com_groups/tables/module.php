@@ -63,11 +63,11 @@ class Module extends Table
      */
     public function find($filters = [])
     {
-        $sql  = "SELECT * FROM {$this->_tbl}";
+        $sql  = "SELECT * FROM {$this->tableName}";
         $sql .= $this->buildQuery($filters);
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -78,11 +78,11 @@ class Module extends Table
      */
     public function count($filters = [])
     {
-        $sql  = "SELECT COUNT(*) FROM {$this->_tbl}";
+        $sql  = "SELECT COUNT(*) FROM {$this->tableName}";
         $sql .= $this->buildQuery($filters);
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadResult();
+        $this->db->setQuery($sql);
+        return $this->db->loadResult();
     }
 
     /**
@@ -99,17 +99,17 @@ class Module extends Table
 
         // published
         if (isset($filters['gidNumber'])) {
-            $where[] = "gidNumber=" . $this->_db->quote($filters['gidNumber']);
+            $where[] = "gidNumber=" . $this->db->quote($filters['gidNumber']);
         }
 
         // title
         if (isset($filters['title'])) {
-            $where[] = "title=" . $this->_db->quote($filters['title']);
+            $where[] = "title=" . $this->db->quote($filters['title']);
         }
 
         // position
         if (isset($filters['position'])) {
-            $where[] = "position=" . $this->_db->quote($filters['position']);
+            $where[] = "position=" . $this->db->quote($filters['position']);
         }
 
         // state

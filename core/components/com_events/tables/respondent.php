@@ -159,7 +159,7 @@ class Respondent extends Table
                     break;
                 case 'search':
                     if (!empty($val)) {
-                        $this->filters[] = "concat(first_name, ' ', last_name) LIKE " . $this->_db->quote($val . '%');
+                        $this->filters[] = "concat(first_name, ' ', last_name) LIKE " . $this->db->quote($val . '%');
                         $this->search_terms = htmlentities($val);
                     }
                     break;
@@ -179,11 +179,11 @@ class Respondent extends Table
      */
     public function fetch($bounded = true)
     {
-        $this->_db->setQuery(
-            'SELECT ' . ($bounded ? '*' : 'COUNT(*)') . " FROM $this->_tbl WHERE " . $this->filters . $this->order
+        $this->db->setQuery(
+            'SELECT ' . ($bounded ? '*' : 'COUNT(*)') . " FROM $this->tableName WHERE " . $this->filters . $this->order
                 . ($bounded && $this->limit != 0 ? ' LIMIT ' . $this->offset . ', ' . $this->limit : ''),
         );
-        return $bounded ? $this->_db->loadObjectList() : $this->_db->loadResult();
+        return $bounded ? $this->db->loadObjectList() : $this->db->loadResult();
     }
 
     /**
@@ -217,8 +217,8 @@ class Respondent extends Table
         if ($event_id === null) {
             return false;
         }
-        $this->_db->setQuery("DELETE FROM $this->_tbl WHERE event_id=" . $this->_db->quote(intval($event_id)));
-        return $this->_db->query();
+        $this->db->setQuery("DELETE FROM $this->tableName WHERE event_id=" . $this->db->quote(intval($event_id)));
+        return $this->db->query();
     }
 
     /**

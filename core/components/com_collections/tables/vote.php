@@ -75,20 +75,20 @@ class Vote extends Table
      */
     public function getLikes($filters = [])
     {
-        $query = "SELECT COUNT(*) FROM $this->_tbl AS v
+        $query = "SELECT COUNT(*) FROM $this->tableName AS v
 				INNER JOIN `#__collections_posts` AS s ON s.item_id=v.item_id";
 
         $where = [];
 
         if (isset($filters['user_id']) && $filters['user_id']) {
-            $where[] = "v.user_id=" . $this->_db->quote(intval($filters['user_id']));
+            $where[] = "v.user_id=" . $this->db->quote(intval($filters['user_id']));
         }
         if (isset($filters['collection_id']) && $filters['collection_id']) {
             if (is_array($filters['collection_id'])) {
                 $filters['collection_id'] = array_map('intval', $filters['collection_id']);
                 $where[] = "s.collection_id IN (" . implode(',', $filters['collection_id']) . ")";
             } else {
-                $where[] = "s.collection_id=" . $this->_db->quote(intval($filters['collection_id']));
+                $where[] = "s.collection_id=" . $this->db->quote(intval($filters['collection_id']));
             }
         }
         if (count($where) > 0) {
@@ -96,8 +96,8 @@ class Vote extends Table
             $query .= implode(" AND ", $where);
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -108,20 +108,20 @@ class Vote extends Table
      */
     public function getDislikes($filters = [])
     {
-        $query = "SELECT COUNT(*) FROM $this->_tbl AS v
+        $query = "SELECT COUNT(*) FROM $this->tableName AS v
 				INNER JOIN `#__collections_posts` AS s ON s.item_id=v.item_id";
 
         $where = [];
 
         if (isset($filters['user_id']) && $filters['user_id']) {
-            $where[] = "v.user_id=" . $this->_db->quote(intval($filters['user_id']));
+            $where[] = "v.user_id=" . $this->db->quote(intval($filters['user_id']));
         }
         if (isset($filters['collection_id']) && $filters['collection_id']) {
             if (is_array($filters['collection_id'])) {
                 $filters['collection_id'] = array_map('intval', $filters['collection_id']);
                 $where[] = "s.collection_id IN (" . implode(',', $filters['collection_id']) . ")";
             } else {
-                $where[] = "s.collection_id=" . $this->_db->quote(intval($filters['collection_id']));
+                $where[] = "s.collection_id=" . $this->db->quote(intval($filters['collection_id']));
             }
         }
         if (count($where) > 0) {
@@ -129,7 +129,7 @@ class Vote extends Table
             $query .= implode(" AND ", $where);
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 }

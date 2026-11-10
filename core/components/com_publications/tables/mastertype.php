@@ -45,8 +45,8 @@ class MasterType extends Table
         // the new-type form posts an empty ordering box; strict SQL refuses ''
         // for the integer column, so put a new type at the end
         if (trim((string) $this->ordering) === '') {
-            $this->_db->setQuery("SELECT MAX(ordering) FROM $this->_tbl");
-            $this->ordering = (int) $this->_db->loadResult() + 1;
+            $this->db->setQuery("SELECT MAX(ordering) FROM $this->tableName");
+            $this->ordering = (int) $this->db->loadResult() + 1;
         }
         return true;
     }
@@ -64,8 +64,8 @@ class MasterType extends Table
         }
         $field = is_numeric($id) ? 'id' : 'alias';
 
-        $this->_db->setQuery("SELECT * FROM $this->_tbl WHERE $field=" . $this->_db->quote($id) . " LIMIT 1");
-        $result = $this->_db->loadObjectList();
+        $this->db->setQuery("SELECT * FROM $this->tableName WHERE $field=" . $this->db->quote($id) . " LIMIT 1");
+        $result = $this->db->loadObjectList();
         return $result ? $result[0] : false;
     }
 
@@ -80,8 +80,8 @@ class MasterType extends Table
         if (!$alias) {
             return false;
         }
-        $this->_db->setQuery("SELECT id FROM $this->_tbl WHERE alias=" . $this->_db->quote($alias) . " LIMIT 1");
-        return $this->_db->loadResult();
+        $this->db->setQuery("SELECT id FROM $this->tableName WHERE alias=" . $this->db->quote($alias) . " LIMIT 1");
+        return $this->db->loadResult();
     }
 
     /**
@@ -95,8 +95,8 @@ class MasterType extends Table
         if (!$id) {
             return false;
         }
-        $this->_db->setQuery("SELECT alias FROM $this->_tbl WHERE id=" . $this->_db->quote($id) . " LIMIT 1");
-        return $this->_db->loadResult();
+        $this->db->setQuery("SELECT alias FROM $this->tableName WHERE id=" . $this->db->quote($id) . " LIMIT 1");
+        return $this->db->loadResult();
     }
 
     /**
@@ -108,11 +108,11 @@ class MasterType extends Table
     {
         $groups = [];
 
-        $query = "SELECT curatorgroup FROM $this->_tbl WHERE contributable=1
+        $query = "SELECT curatorgroup FROM $this->tableName WHERE contributable=1
 				  AND curatorgroup !=0 AND curatorgroup IS NOT null";
 
-        $this->_db->setQuery($query);
-        $results = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $results = $this->db->loadObjectList();
 
         if ($results) {
             foreach ($results as $result) {
@@ -141,9 +141,9 @@ class MasterType extends Table
         }
         if ($authorized == 'admin' || $authorized == 'curator') {
             // Access to all types
-            $query = "SELECT id FROM $this->_tbl WHERE contributable=1";
+            $query = "SELECT id FROM $this->tableName WHERE contributable=1";
         } else {
-            $query = "SELECT id FROM $this->_tbl WHERE contributable=1
+            $query = "SELECT id FROM $this->tableName WHERE contributable=1
 					  AND curatorgroup !=0 AND curatorgroup IS NOT null ";
 
             $tquery = '';
@@ -154,8 +154,8 @@ class MasterType extends Table
             $query .= " AND (curatorgroup IN (" . $tquery . ")) ";
         }
 
-        $this->_db->setQuery($query);
-        $results = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $results = $this->db->loadObjectList();
 
         if ($results) {
             foreach ($results as $result) {
@@ -180,7 +180,7 @@ class MasterType extends Table
      */
     public function getTypes($select = '*', $contributable = 0, $supporting = 0, $orderby = 'id', $config = '')
     {
-        $query  = "SELECT $select FROM $this->_tbl ";
+        $query  = "SELECT $select FROM $this->tableName ";
         if ($contributable) {
             $query .= "WHERE contributable=1 ";
         } elseif ($supporting) {
@@ -189,8 +189,8 @@ class MasterType extends Table
 
         $query .= "ORDER BY " . $orderby;
 
-        $this->_db->setQuery($query);
-        $results = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $results = $this->db->loadObjectList();
         if ($select == 'alias') {
             $types = [];
             if ($results) {
@@ -227,8 +227,8 @@ class MasterType extends Table
             $query .= ' LIMIT ' . (int) $filters['start'] . ',' . (int) $filters['limit'];
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -243,8 +243,8 @@ class MasterType extends Table
 
         $query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -256,7 +256,7 @@ class MasterType extends Table
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildQuery($filters = [])
     {
-        $query  = "FROM $this->_tbl AS c";
+        $query  = "FROM $this->tableName AS c";
 
         $where = [];
 
@@ -283,10 +283,10 @@ class MasterType extends Table
             return false;
         }
 
-        $p = new \Components\Publications\Tables\Publication($this->_db);
+        $p = new \Components\Publications\Tables\Publication($this->db);
 
-        $this->_db->setQuery("SELECT count(*) FROM $p->_tbl WHERE master_type=" . $this->_db->quote($id));
-        return $this->_db->loadResult();
+        $this->db->setQuery("SELECT count(*) FROM $p->tableName WHERE master_type=" . $this->db->quote($id));
+        return $this->db->loadResult();
     }
 
     /**
@@ -301,11 +301,11 @@ class MasterType extends Table
             return false;
         }
 
-        $this->_db->setQuery("SELECT * FROM $this->_tbl WHERE ordering=" . $this->_db->quote($ordering) . " LIMIT 1");
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery("SELECT * FROM $this->tableName WHERE ordering=" . $this->db->quote($ordering) . " LIMIT 1");
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -321,7 +321,7 @@ class MasterType extends Table
         $newOrder = $this->ordering + $dir;
 
         // Load record in prev position
-        $old = new self($this->_db);
+        $old = new self($this->db);
 
         if ($old->loadByOrder($newOrder)) {
             $old->ordering  = $this->ordering;

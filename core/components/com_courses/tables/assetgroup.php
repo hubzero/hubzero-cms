@@ -82,9 +82,9 @@ class AssetGroup extends Table
      */
     public function getHighestOrder($unit_id, $parent = 0)
     {
-        $sql = "SELECT ordering from $this->_tbl WHERE `unit_id`=" . $this->_db->quote(intval($unit_id)) . " AND `parent`=" . $this->_db->quote(intval($parent)) . " ORDER BY ordering DESC LIMIT 1";
-        $this->_db->setQuery($sql);
-        return $this->_db->loadResult();
+        $sql = "SELECT ordering from $this->tableName WHERE `unit_id`=" . $this->db->quote(intval($unit_id)) . " AND `parent`=" . $this->db->quote(intval($parent)) . " ORDER BY ordering DESC LIMIT 1";
+        $this->db->setQuery($sql);
+        return $this->db->loadResult();
     }
 
     /**
@@ -95,10 +95,10 @@ class AssetGroup extends Table
      */
     private function buildQuery($filters = [])
     {
-        $query  = " FROM $this->_tbl AS cag";
+        $query  = " FROM $this->tableName AS cag";
         $query .= " LEFT JOIN #__courses_offering_section_dates AS sd ON sd.scope='asset_group' AND sd.scope_id=cag.id";
         if (isset($filters['section_id']) && $filters['section_id']) {
-            $query .= " AND sd.section_id=" . $this->_db->quote($filters['section_id']);
+            $query .= " AND sd.section_id=" . $this->db->quote($filters['section_id']);
         }
         $query .= " LEFT JOIN #__courses_units AS cu ON cu.id = cag.unit_id";
 
@@ -106,20 +106,20 @@ class AssetGroup extends Table
 
         // A unit_id of 0 must match no groups rather than dropping the clause
         if (isset($filters['unit_id'])) {
-            $where[] = "cag.unit_id=" . $this->_db->quote($filters['unit_id']);
+            $where[] = "cag.unit_id=" . $this->db->quote($filters['unit_id']);
         }
         if (isset($filters['parent'])) {
-            $where[] = "cag.parent=" . $this->_db->quote($filters['parent']);
+            $where[] = "cag.parent=" . $this->db->quote($filters['parent']);
         }
         if (isset($filters['alias']) && $filters['alias']) {
-            $where[] = "cag.alias=" . $this->_db->quote($filters['alias']);
+            $where[] = "cag.alias=" . $this->db->quote($filters['alias']);
         }
         if (isset($filters['state']) && $filters['state'] >= 0) {
-            $where[] = "cag.state=" . $this->_db->quote($filters['state']);
+            $where[] = "cag.state=" . $this->db->quote($filters['state']);
         }
         if (isset($filters['search']) && $filters['search']) {
-            $where[] = "(LOWER(cag.alias) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
-					OR LOWER(cag.title) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . ")";
+            $where[] = "(LOWER(cag.alias) LIKE " . $this->db->quote('%' . strtolower($filters['search']) . '%') . "
+					OR LOWER(cag.title) LIKE " . $this->db->quote('%' . strtolower($filters['search']) . '%') . ")";
         }
 
         if (count($where) > 0) {
@@ -140,8 +140,8 @@ class AssetGroup extends Table
         $query  = "SELECT COUNT(cag.id)";
         $query .= $this->buildQuery($filters['w']);
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -174,8 +174,8 @@ class AssetGroup extends Table
 
         $query .= " ORDER BY cag.ordering";
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -185,12 +185,12 @@ class AssetGroup extends Table
      */
     private function makeAliasUnique()
     {
-        $sql = "SELECT alias from $this->_tbl WHERE `unit_id`=" . $this->_db->quote(intval($this->unit_id));
+        $sql = "SELECT alias from $this->tableName WHERE `unit_id`=" . $this->db->quote(intval($this->unit_id));
         if ($this->id) {
-            $sql .= " AND `id`!=" . $this->_db->quote(intval($this->id));
+            $sql .= " AND `id`!=" . $this->db->quote(intval($this->id));
         }
-        $this->_db->setQuery($sql);
-        $result = $this->_db->loadColumn();
+        $this->db->setQuery($sql);
+        $result = $this->db->loadColumn();
 
         $original_alias = $this->alias;
 

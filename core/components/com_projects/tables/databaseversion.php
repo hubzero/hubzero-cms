@@ -38,10 +38,10 @@ class DatabaseVersion extends Table
             return false;
         }
 
-        $query = "SELECT MAX(version) as version FROM $this->_tbl
-					WHERE database_name=" . $this->_db->quote($dbname);
+        $query = "SELECT MAX(version) as version FROM $this->tableName
+					WHERE database_name=" . $this->db->quote($dbname);
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 }

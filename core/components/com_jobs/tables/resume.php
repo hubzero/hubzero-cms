@@ -56,9 +56,9 @@ class Resume extends Table
     public function loadResume($name = null)
     {
         if ($name !== null) {
-            $this->_tbl_key = 'uid';
+            $this->tableKey = 'uid';
         }
-        $k = $this->_tbl_key;
+        $k = $this->tableKey;
         if ($name !== null) {
             $this->$k = $name;
         }
@@ -67,10 +67,10 @@ class Resume extends Table
             return false;
         }
 
-        $query = "SELECT * FROM `$this->_tbl` WHERE $this->_tbl_key="
-            . $this->_db->quote($name) . " AND main='1' LIMIT 1";
-        $this->_db->setQuery($query);
-        if ($result = $this->_db->loadAssoc()) {
+        $query = "SELECT * FROM `$this->tableName` WHERE $this->tableKey="
+            . $this->db->quote($name) . " AND main='1' LIMIT 1";
+        $this->db->setQuery($query);
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         }
         return false;
@@ -92,10 +92,10 @@ class Resume extends Table
             return false;
         }
 
-        $query  = "DELETE FROM `$this->_tbl` WHERE id=" . $this->_db->quote($id);
-        $this->_db->setQuery($query);
-        if (!$this->_db->query()) {
-            $this->setError($this->_db->getErrorMsg());
+        $query  = "DELETE FROM `$this->tableName` WHERE id=" . $this->db->quote($id);
+        $this->db->setQuery($query);
+        if (!$this->db->query()) {
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;
@@ -111,23 +111,23 @@ class Resume extends Table
      */
     public function getResumeFiles($pile = 'all', $uid = 0, $admin = 0)
     {
-        $query  = "SELECT DISTINCT r.uid, r.filename FROM `$this->_tbl` AS r ";
+        $query  = "SELECT DISTINCT r.uid, r.filename FROM `$this->tableName` AS r ";
         $query .= "JOIN `#__jobs_seekers` AS s ON s.uid=r.uid ";
         if ($pile == 'shortlisted' && $uid) {
-            $query .= " JOIN `#__jobs_shortlist` AS W ON W.seeker=s.uid AND W.emp=" . $this->_db->quote($uid)
-                . " AND s.uid != " . $this->_db->quote($uid) . " AND s.uid=r.uid AND W.category='resume' ";
+            $query .= " JOIN `#__jobs_shortlist` AS W ON W.seeker=s.uid AND W.emp=" . $this->db->quote($uid)
+                . " AND s.uid != " . $this->db->quote($uid) . " AND s.uid=r.uid AND W.category='resume' ";
         }
         $uid = $admin ? 1 : $uid;
         if ($pile == 'applied' && $uid) {
-            $query .= " LEFT JOIN `#__jobs_openings` AS J ON J.employerid=" . $this->_db->quote($uid)
+            $query .= " LEFT JOIN `#__jobs_openings` AS J ON J.employerid=" . $this->db->quote($uid)
                 . " JOIN #__jobs_applications AS A ON A.jid=J.id AND A.uid=s.uid AND A.status=1 ";
         }
         $query .= "WHERE s.active=1 AND r.main=1 ";
 
         $files = [];
 
-        $this->_db->setQuery($query);
-        $result = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $result = $this->db->loadObjectList();
 
         if ($result) {
             foreach ($result as $r) {

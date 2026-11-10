@@ -36,12 +36,12 @@ class AudienceLevel extends Table
      */
     public function getLevels($numlevels = 4, $levels = [], $return_array = 1)
     {
-        $sql  = "SELECT label, title, description FROM $this->_tbl ";
+        $sql  = "SELECT label, title, description FROM $this->tableName ";
         $sql .= $numlevels == 4 ? " WHERE label != 'level5' " : "";
         $sql .= " ORDER BY label ASC";
 
-        $this->_db->setQuery($sql);
-        $result = $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        $result = $this->db->loadObjectList();
         if ($result) {
             foreach ($result as $r) {
                 $levels[$r->label] = $r->title;

@@ -35,9 +35,9 @@ class Group extends Table
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _getAssetName()
+    protected function getAssetName()
     {
-        $k = $this->_tbl_key;
+        $k = $this->tableKey;
         return 'com_groups.group.' . (int) $this->$k;
     }
 
@@ -47,7 +47,7 @@ class Group extends Table
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _getAssetTitle()
+    protected function getAssetTitle()
     {
         return $this->title;
     }
@@ -60,7 +60,7 @@ class Group extends Table
      * @return  integer  The id of the asset's parent
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _getAssetParentId($table = null, $id = null)
+    protected function getAssetParentId($table = null, $id = null)
     {
         // Initialise variables.
         $assetId = null;
@@ -84,7 +84,7 @@ class Group extends Table
         if ($assetId) {
             return $assetId;
         } else {
-            return parent::_getAssetParentId($table, $id);
+            return parent::getAssetParentId($table, $id);
         }
     }
 
@@ -146,12 +146,12 @@ class Group extends Table
             return parent::load($oid);
         }
 
-        $sql  = "SELECT * FROM $this->_tbl WHERE cn=" . $this->_db->quote($oid) . " LIMIT 1";
-        $this->_db->setQuery($sql);
-        if ($result = $this->_db->loadAssoc()) {
+        $sql  = "SELECT * FROM $this->tableName WHERE cn=" . $this->db->quote($oid) . " LIMIT 1";
+        $this->db->setQuery($sql);
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -186,16 +186,16 @@ class Group extends Table
 				(" . $this->groupTable('manager', 'n', $filters) . ")
 			) AS v";
 
-            $where[] = "v.`role`=" . $this->_db->quote($filters['status']);
+            $where[] = "v.`role`=" . $this->db->quote($filters['status']);
         }
 
         if (isset($filters['search']) && $filters['search']) {
             if (is_numeric($filters['search'])) {
-                $where[] = "v.`uidNumber`=" . $this->_db->quote(intval($filters['search']));
+                $where[] = "v.`uidNumber`=" . $this->db->quote(intval($filters['search']));
             } else {
-                $where[] = "(LOWER(v.name) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
-						OR LOWER(v.username) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
-						OR LOWER(v.email) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . ")";
+                $where[] = "(LOWER(v.name) LIKE " . $this->db->quote('%' . strtolower($filters['search']) . '%') . "
+						OR LOWER(v.username) LIKE " . $this->db->quote('%' . strtolower($filters['search']) . '%') . "
+						OR LOWER(v.email) LIKE " . $this->db->quote('%' . strtolower($filters['search']) . '%') . ")";
             }
         }
 
@@ -220,7 +220,7 @@ class Group extends Table
 					FROM `#__xgroups_{$role}s` AS {$tbl} JOIN `#__users` AS u ON {$tbl}.uidNumber=u.id";
 
         if (isset($filters['gidNumber'])) {
-            $query .= " AND {$tbl}.`gidNumber`=" . $this->_db->quote(intval($filters['gidNumber']));
+            $query .= " AND {$tbl}.`gidNumber`=" . $this->db->quote(intval($filters['gidNumber']));
         }
 
         return $query;
@@ -237,8 +237,8 @@ class Group extends Table
         $query  = "SELECT COUNT(DISTINCT v.username) ";
         $query .= $this->buildMembersQuery($filters);
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -265,8 +265,8 @@ class Group extends Table
             $query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
         }
 
-        $this->_db->setQuery($query);
-        $values = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $values = $this->db->loadObjectList();
         if ($values) {
             foreach ($values as $value) {
                 if (!isset($results[$value->uidNumber])) {
@@ -291,8 +291,8 @@ class Group extends Table
     public function getName($id)
     {
         $query = "SELECT cn FROM `#__xgroups` WHERE gidNumber = " . (int) $id . ";";
-        $this->_db->setQuery($query);
+        $this->db->setQuery($query);
 
-        return $this->_db->loadResult();
+        return $this->db->loadResult();
     }
 }

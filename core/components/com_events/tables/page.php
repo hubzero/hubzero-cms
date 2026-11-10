@@ -57,14 +57,14 @@ class Page extends Table
         if ($event_id === null) {
             return false;
         }
-        $this->_db->setQuery(
-            "SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->quote($alias)
-                . " AND event_id=" . $this->_db->quote(intval($event_id)),
+        $this->db->setQuery(
+            "SELECT * FROM $this->tableName WHERE alias=" . $this->db->quote($alias)
+                . " AND event_id=" . $this->db->quote(intval($event_id)),
         );
-        if ($result = $this->_db->loadAssoc()) {
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -80,14 +80,14 @@ class Page extends Table
         if ($event_id === null) {
             return false;
         }
-        $this->_db->setQuery(
-            "SELECT * FROM $this->_tbl WHERE event_id=" . $this->_db->quote(intval($event_id))
+        $this->db->setQuery(
+            "SELECT * FROM $this->tableName WHERE event_id=" . $this->db->quote(intval($event_id))
                 . " ORDER BY ordering ASC LIMIT 1",
         );
-        if ($result = $this->_db->loadAssoc()) {
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -103,11 +103,11 @@ class Page extends Table
         if ($event_id === null) {
             return false;
         }
-        $this->_db->setQuery(
-            "SELECT title, alias, id FROM $this->_tbl WHERE event_id="
-                . $this->_db->quote(intval($event_id)) . " ORDER BY ordering ASC",
+        $this->db->setQuery(
+            "SELECT title, alias, id FROM $this->tableName WHERE event_id="
+                . $this->db->quote(intval($event_id)) . " ORDER BY ordering ASC",
         );
-        return $this->_db->loadObjectList();
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -121,9 +121,9 @@ class Page extends Table
         if ($event_id === null) {
             return false;
         }
-        $this->_db->setQuery("DELETE FROM $this->_tbl WHERE event_id=" . intval($event_id));
-        if (!$this->_db->query()) {
-            $this->setError($this->_db->getErrorMsg());
+        $this->db->setQuery("DELETE FROM $this->tableName WHERE event_id=" . intval($event_id));
+        if (!$this->db->query()) {
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;
@@ -140,23 +140,23 @@ class Page extends Table
         switch ($move) {
             case 'orderup':
             case 'orderuppage':
-                $sql = "SELECT * FROM $this->_tbl WHERE event_id=" . intval($this->event_id)
+                $sql = "SELECT * FROM $this->tableName WHERE event_id=" . intval($this->event_id)
                     . " AND ordering < " . intval($this->ordering)
                     . " ORDER BY ordering DESC LIMIT 1";
                 break;
 
             case 'orderdown':
             case 'orderdownpage':
-                $sql = "SELECT * FROM $this->_tbl WHERE event_id=" . intval($this->event_id)
+                $sql = "SELECT * FROM $this->tableName WHERE event_id=" . intval($this->event_id)
                     . " AND ordering > " . intval($this->ordering)
                     . " ORDER BY ordering LIMIT 1";
                 break;
         }
-        $this->_db->setQuery($sql);
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery($sql);
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -174,9 +174,9 @@ class Page extends Table
         } else {
             $query = "SELECT count(*)";
         }
-        $query .= " FROM $this->_tbl AS t";
+        $query .= " FROM $this->tableName AS t";
         if (isset($filters['event_id']) && $filters['event_id'] != '') {
-            $query .= " WHERE t.event_id=" . $this->_db->quote(intval($filters['event_id']));
+            $query .= " WHERE t.event_id=" . $this->db->quote(intval($filters['event_id']));
         }
         if (isset($filters['search']) && $filters['search'] != '') {
             if (isset($filters['event_id']) && $filters['event_id'] != '') {
@@ -184,7 +184,7 @@ class Page extends Table
             } else {
                 $query .= " WHERE ";
             }
-            $query .= "LOWER(t.title) LIKE " . $this->_db->quote('%' . $filters['search'] . '%');
+            $query .= "LOWER(t.title) LIKE " . $this->db->quote('%' . $filters['search'] . '%');
         }
         if (isset($filters['limit']) && $filters['limit'] != 0) {
             $query .= " ORDER BY t.ordering ASC LIMIT " . intval($filters['start']) . "," . intval($filters['limit']);
@@ -203,8 +203,8 @@ class Page extends Table
     {
         $filters['limit'] = 0;
 
-        $this->_db->setQuery($this->buildQuery($filters));
-        return $this->_db->loadResult();
+        $this->db->setQuery($this->buildQuery($filters));
+        return $this->db->loadResult();
     }
 
     /**
@@ -215,7 +215,7 @@ class Page extends Table
      */
     public function getRecords($filters = [])
     {
-        $this->_db->setQuery($this->buildQuery($filters));
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($this->buildQuery($filters));
+        return $this->db->loadObjectList();
     }
 }

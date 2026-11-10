@@ -77,14 +77,14 @@ class Log extends Table
             return null;
         }
 
-        $query = "SELECT * FROM $this->_tbl WHERE `scope_id`=" . $this->_db->quote($scope_id)
-            . " AND `scope`=" . $this->_db->quote($scope) . " ORDER BY `timestamp` DESC";
+        $query = "SELECT * FROM $this->tableName WHERE `scope_id`=" . $this->db->quote($scope_id)
+            . " AND `scope`=" . $this->db->quote($scope) . " ORDER BY `timestamp` DESC";
         if ($limit) {
             $query .= " LIMIT " . (int) $limit;
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -109,19 +109,19 @@ class Log extends Table
             return null;
         }
 
-        $query = "SELECT * FROM $this->_tbl WHERE `scope_id`=" . $this->_db->quote($scope_id)
-            . " AND `scope`=" . $this->_db->quote($scope) . " ";
+        $query = "SELECT * FROM $this->tableName WHERE `scope_id`=" . $this->db->quote($scope_id)
+            . " AND `scope`=" . $this->db->quote($scope) . " ";
         if ($which == 'first') {
             $query .= "ORDER BY `timestamp` ASC LIMIT 1";
         } else {
             $query .= "ORDER BY `timestamp` DESC LIMIT 1";
         }
 
-        $this->_db->setQuery($query);
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery($query);
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -147,12 +147,12 @@ class Log extends Table
             return null;
         }
 
-        $this->_db->setQuery(
-            "DELETE FROM $this->_tbl WHERE `scope_id`=" . $this->_db->quote($scope_id)
-            . " AND `scope`=" . $this->_db->quote($scope),
+        $this->db->setQuery(
+            "DELETE FROM $this->tableName WHERE `scope_id`=" . $this->db->quote($scope_id)
+            . " AND `scope`=" . $this->db->quote($scope),
         );
-        if (!$this->_db->query()) {
-            $this->setError($this->_db->getErrorMsg());
+        if (!$this->db->query()) {
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;
@@ -180,13 +180,13 @@ class Log extends Table
             return null;
         }
 
-        $query = "SELECT COUNT(*) FROM $this->_tbl WHERE `scope_id`=" . $this->_db->quote($scope_id)
-            . " AND `scope`=" . $this->_db->quote($scope);
+        $query = "SELECT COUNT(*) FROM $this->tableName WHERE `scope_id`=" . $this->db->quote($scope_id)
+            . " AND `scope`=" . $this->db->quote($scope);
         if ($action) {
-            $query .= " AND action=" . $this->_db->quote($action);
+            $query .= " AND action=" . $this->db->quote($action);
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 }

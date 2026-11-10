@@ -62,14 +62,14 @@ class Stats extends Table
             return false;
         }
 
-        $query  = "SELECT * FROM `$this->_tbl` WHERE itemid=" . $this->_db->quote($itemid);
-        $query .= " AND category=" . $this->_db->quote($category) . " ORDER BY ";
+        $query  = "SELECT * FROM `$this->tableName` WHERE itemid=" . $this->db->quote($itemid);
+        $query .= " AND category=" . $this->db->quote($category) . " ORDER BY ";
         $query .= $type == 'shared' ? "lastshared" : "lastviewed";
         $query .= " DESC LIMIT 1";
 
-        $this->_db->setQuery($query);
+        $this->db->setQuery($query);
 
-        if ($result = $this->_db->loadAssoc()) {
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         }
         return false;
@@ -103,7 +103,7 @@ class Stats extends Table
         ];
 
         // get total resumes in the pool
-        $row = new Seeker($this->_db);
+        $row = new Seeker($this->db);
         $filters = [
             'filterby' => 'all',
             'sortby' => '',
@@ -156,18 +156,18 @@ class Stats extends Table
         } else {
             $query .= " MAX(p.total_shared) AS times ";
         }
-        $query .= " FROM `$this->_tbl` WHERE itemid=" . $this->_db->quote($itemid);
-        $query .= " AND category=" . $this->_db->quote($category) . " AND ";
+        $query .= " FROM `$this->tableName` WHERE itemid=" . $this->db->quote($itemid);
+        $query .= " AND category=" . $this->db->quote($category) . " AND ";
 
         switch ($when) {
             case 'thisweek':
-                $query .= " lastviewed > " . $this->_db->quote($lastweek) . " ";
+                $query .= " lastviewed > " . $this->db->quote($lastweek) . " ";
                 break;
             case 'thismonth':
-                $query .= " lastviewed > " . $this->_db->quote($lastmonth) . " ";
+                $query .= " lastviewed > " . $this->db->quote($lastmonth) . " ";
                 break;
             case 'today':
-                $query .= " lastviewed > " . $this->_db->quote($today) . " ";
+                $query .= " lastviewed > " . $this->db->quote($today) . " ";
                 break;
             default:
                 $query .= " 1=1 ";
@@ -177,8 +177,8 @@ class Stats extends Table
         $query .= "ORDER BY times DESC ";
         $query .= "LIMIT 1";
 
-        $this->_db->setQuery($query);
-        $result =  $this->_db->loadResult();
+        $this->db->setQuery($query);
+        $result =  $this->db->loadResult();
 
         $result = $result ? $result : 0;
         return $result;
@@ -246,8 +246,8 @@ class Stats extends Table
     public function cleanup()
     {
         $lastmonth = Date::of(time() - (30 * 24 * 60 * 60))->toSql();
-        $this->_db->setQuery("DELETE FROM `$this->_tbl` WHERE lastviewed < " . $this->_db->quote($lastmonth));
-        $this->_db->query();
+        $this->db->setQuery("DELETE FROM `$this->tableName` WHERE lastviewed < " . $this->db->quote($lastmonth));
+        $this->db->query();
     }
 
     /**
@@ -263,10 +263,10 @@ class Stats extends Table
             $this->setError(Lang::txt('Missing argument'));
             return false;
         }
-        $query = "DELETE FROM `$this->_tbl` WHERE itemid =" . $this->_db->quote($itemid);
-        $query .= " AND category =" . $this->_db->quote($category);
-        $this->_db->setQuery($query);
-        $this->_db->query();
+        $query = "DELETE FROM `$this->tableName` WHERE itemid =" . $this->db->quote($itemid);
+        $query .= " AND category =" . $this->db->quote($category);
+        $this->db->setQuery($query);
+        $this->db->query();
         return false;
     }
 }

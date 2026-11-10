@@ -41,11 +41,11 @@ class Stamp extends Table
         }
         $now = Date::toSql();
 
-        $query  = "SELECT * FROM $this->_tbl WHERE stamp=" . $this->_db->quote($stamp);
+        $query  = "SELECT * FROM $this->tableName WHERE stamp=" . $this->db->quote($stamp);
         $query .= " LIMIT 1";
 
-        $this->_db->setQuery($query);
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery($query);
+        if ($result = $this->db->loadAssoc()) {
             $this->bind($result);
             if ($this->expires && $this->expires != '0000-00-00 00:00:00' &&  $this->expires < $now) {
                 // Clean up expired value
@@ -55,7 +55,7 @@ class Stamp extends Table
                 return $this;
             }
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -73,12 +73,12 @@ class Stamp extends Table
             return false;
         }
 
-        $query  = "SELECT * FROM $this->_tbl WHERE projectid=" . $this->_db->quote($projectid);
-        $query .= " AND type=" . $this->_db->quote($type)
+        $query  = "SELECT * FROM $this->tableName WHERE projectid=" . $this->db->quote($projectid);
+        $query .= " AND type=" . $this->db->quote($type)
                 . " AND listed=1 ORDER BY created DESC";
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -95,15 +95,15 @@ class Stamp extends Table
             return false;
         }
 
-        $query  = "SELECT * FROM $this->_tbl WHERE projectid=" . $this->_db->quote($projectid);
-        $query .= " AND reference=" . $this->_db->quote($reference)
-                . " AND type= " . $this->_db->quote($type) . " LIMIT 1";
+        $query  = "SELECT * FROM $this->tableName WHERE projectid=" . $this->db->quote($projectid);
+        $query .= " AND reference=" . $this->db->quote($reference)
+                . " AND type= " . $this->db->quote($type) . " LIMIT 1";
 
-        $this->_db->setQuery($query);
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery($query);
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -126,7 +126,7 @@ class Stamp extends Table
 
         $now = Date::toSql();
 
-        $obj = new self($this->_db);
+        $obj = new self($this->db);
         $obj->checkStamp($projectid, $reference, $type);
 
         // Load record
@@ -157,14 +157,14 @@ class Stamp extends Table
 
         $stamp = \Components\Projects\Helpers\Html::generateCode(20, 20, 0, 1, 1);
 
-        $query = "INSERT INTO $this->_tbl "
+        $query = "INSERT INTO $this->tableName "
             . "(stamp, projectid, listed, type, reference, expires, created, created_by) "
             . "VALUES ('$stamp', '$projectid', '$listed', '$type', "
             . "'$reference', '$expires' , '$created', '$created_by')";
 
-        $this->_db->setQuery($query);
-        if (!$this->_db->query()) {
-            $this->setError($this->_db->getErrorMsg());
+        $this->db->setQuery($query);
+        if (!$this->db->query()) {
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
 

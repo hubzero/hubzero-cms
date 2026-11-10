@@ -39,10 +39,10 @@ class Collaborator extends Table
             return false;
         }
 
-        $query  = "SELECT * FROM $this->_tbl WHERE name=" . $this->_db->quote($name);
-        $this->_db->setQuery($query);
+        $query  = "SELECT * FROM $this->tableName WHERE name=" . $this->db->quote($name);
+        $this->db->setQuery($query);
 
-        return $this->_db->loadObject();
+        return $this->db->loadObject();
     }
 
     /**
@@ -63,20 +63,20 @@ class Collaborator extends Table
         $record = $this->getCollaboratorByName($name);
 
         if (empty($record)) {
-            $query = "INSERT INTO $this->_tbl (id, name, orcid, access_token, acquisition_date) VALUES ("
-                . $this->_db->quote($name) . ","
-                . $this->_db->quote($orcid) . ","
-                . $this->_db->quote($accessToken) . ","
-                . $this->_db->quote(date('Y-m-d H:i:s')) . ")";
+            $query = "INSERT INTO $this->tableName (id, name, orcid, access_token, acquisition_date) VALUES ("
+                . $this->db->quote($name) . ","
+                . $this->db->quote($orcid) . ","
+                . $this->db->quote($accessToken) . ","
+                . $this->db->quote(date('Y-m-d H:i:s')) . ")";
         } else {
             if (empty($record->orcid) && empty($record->access_token)) {
-                $query = "UPDATE $this->_tbl SET orcid=" . $this->_db->quote($orcid)
-                    . " AND access_token=" . $this->_db->quote($accessToken)
-                    . " WHERE name=" . $this->_db->quote($name);
+                $query = "UPDATE $this->tableName SET orcid=" . $this->db->quote($orcid)
+                    . " AND access_token=" . $this->db->quote($accessToken)
+                    . " WHERE name=" . $this->db->quote($name);
             }
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->query();
+        $this->db->setQuery($query);
+        return $this->db->query();
     }
 }

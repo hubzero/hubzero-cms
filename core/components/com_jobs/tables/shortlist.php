@@ -61,12 +61,12 @@ class Shortlist extends Table
             return false;
         }
 
-        $query = "SELECT * FROM `$this->_tbl` WHERE emp=" . $this->_db->quote($emp);
-        $query .= " AND seeker=" . $this->_db->quote($seeker);
-        $query .= " AND category=" . $this->_db->quote($category) . " LIMIT 1";
-        $this->_db->setQuery($query);
+        $query = "SELECT * FROM `$this->tableName` WHERE emp=" . $this->db->quote($emp);
+        $query .= " AND seeker=" . $this->db->quote($seeker);
+        $query .= " AND category=" . $this->db->quote($category) . " LIMIT 1";
+        $this->db->setQuery($query);
 
-        if ($result = $this->_db->loadAssoc()) {
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         }
         return false;

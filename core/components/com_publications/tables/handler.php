@@ -38,14 +38,14 @@ class Handler extends Table
             return false;
         }
 
-        $query = "SELECT * FROM $this->_tbl WHERE name=" . $this->_db->quote($name);
+        $query = "SELECT * FROM $this->tableName WHERE name=" . $this->db->quote($name);
         $query .= " LIMIT 1";
-        $this->_db->setQuery($query);
+        $this->db->setQuery($query);
 
-        if ($result = $this->_db->loadAssoc()) {
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -64,15 +64,15 @@ class Handler extends Table
         }
 
         $query  = "SELECT H.*, IFnull(A.id, 0) as assigned, IFnull(A.ordering, 0) as ordering,
-				A.params as assigned_params, A.status as active  FROM $this->_tbl as H ";
+				A.params as assigned_params, A.status as active  FROM $this->tableName as H ";
         $query .= "LEFT JOIN #__publication_handler_assoc as A ON H.id=A.handler_id ";
-        $query .= " AND A.publication_version_id=" . $this->_db->quote($vid)
-                . " AND A.element_id=" . $this->_db->quote($elementid);
+        $query .= " AND A.publication_version_id=" . $this->db->quote($vid)
+                . " AND A.element_id=" . $this->db->quote($elementid);
         $query .= " WHERE H.status = 1";
         $query .= " ORDER BY assigned DESC, A.ordering ASC";
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -89,11 +89,11 @@ class Handler extends Table
         }
 
         if (!$entry || !is_object($entry)) {
-            $query = "SELECT * FROM $this->_tbl WHERE name=" . $this->_db->quote($name);
+            $query = "SELECT * FROM $this->tableName WHERE name=" . $this->db->quote($name);
             $query .= " LIMIT 1";
 
-            $this->_db->setQuery($query);
-            $result = $this->_db->loadObjectList();
+            $this->db->setQuery($query);
+            $result = $this->db->loadObjectList();
             $entry = $result ? $result[0] : null;
         }
 

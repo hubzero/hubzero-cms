@@ -74,15 +74,15 @@ class Project extends Table
                     && $filters['which'] != 'all'
                     ? $filters['which'] : '';
 
-        $query  = " FROM $this->_tbl AS p ";
+        $query  = " FROM $this->tableName AS p ";
 
         if (isset($filters['timed']) && isset($filters['active'])) {
             $query .= " INNER JOIN #__activity_recipients AS pa
 						ON pa.scope='project' AND pa.scope_id=p.id AND pa.state != 2
-						AND pa.created >= " . $this->_db->quote($filters['timed']);
+						AND pa.created >= " . $this->db->quote($filters['timed']);
         }
 
-        $query .= " LEFT JOIN #__project_owners AS o ON o.projectid=p.id AND o.userid=" . $this->_db->quote($uid);
+        $query .= " LEFT JOIN #__project_owners AS o ON o.projectid=p.id AND o.userid=" . $this->db->quote($uid);
         $query .= " AND o.userid != 0 AND p.state!= 2 ";
         if ($getowner) {
             $query .=  ($admin ? ' LEFT' : '') . " JOIN #__users as x ON x.id=p.owned_by_user ";
@@ -95,12 +95,12 @@ class Project extends Table
             $query .= " OR p.params LIKE '%export_data=yes%' ";
             $query .= " OR p.params LIKE 'restricted_data=maybe%' ";
             $query .= " OR p.params LIKE '%followup=yes%') ";
-            $query .= " AND p.state != 2 AND p.setup_stage >= " . $this->_db->quote($setup_complete) . ") ";
+            $query .= " AND p.state != 2 AND p.setup_stage >= " . $this->db->quote($setup_complete) . ") ";
         } elseif ($reviewer == 'sponsored') {
             $query .= " WHERE (((p.params LIKE '%grant_title=%' AND p.params NOT LIKE '%grant_title=\\n%') ";
             $query .= " OR (p.params LIKE '%grant_agency=%' AND p.params NOT LIKE '%grant_agency=\\n%') ";
             $query .= " OR (p.params LIKE '%grant_budget=%' AND p.params NOT LIKE '%grant_budget=\\n%') ";
-            $query .= ") AND p.state=1 AND p.setup_stage >= " . $this->_db->quote($setup_complete) . ") ";
+            $query .= ") AND p.state=1 AND p.setup_stage >= " . $this->db->quote($setup_complete) . ") ";
         } elseif ($admin) {
             $query .= " WHERE 1=1 "; //p.provisioned = 0 ";
 
@@ -123,53 +123,53 @@ class Project extends Table
             if ($mine) {
                 if ($filterby == 'setting_up_in_progress') {
                     $query .= $uid
-                            ? " WHERE (o.userid=" . $this->_db->quote($uid) . " AND o.status!=2 AND p.state = 0
-								AND ((p.setup_stage >= " . $this->_db->quote($setup_complete) . ")
-								OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid) . "))) "
+                            ? " WHERE (o.userid=" . $this->db->quote($uid) . " AND o.status!=2 AND p.state = 0
+								AND ((p.setup_stage >= " . $this->db->quote($setup_complete) . ")
+								OR (o.role = 1 AND p.owned_by_user=" . $this->db->quote($uid) . "))) "
                             : " WHERE 1=2";
                 } elseif ($filterby == 'active') {
                     $query .= $uid
-                            ? " WHERE (o.userid=" . $this->_db->quote($uid) . " AND o.status!=2 AND p.state = 1
-								AND ((p.setup_stage >= " . $this->_db->quote($setup_complete) . ")
-								OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid) . "))) "
+                            ? " WHERE (o.userid=" . $this->db->quote($uid) . " AND o.status!=2 AND p.state = 1
+								AND ((p.setup_stage >= " . $this->db->quote($setup_complete) . ")
+								OR (o.role = 1 AND p.owned_by_user=" . $this->db->quote($uid) . "))) "
                             : " WHERE 1=2";
                 } elseif ($filterby == 'deleted') {
                     $query .= $uid
-                            ? " WHERE (o.userid=" . $this->_db->quote($uid) . " AND o.status!=2 AND p.state = 2
-								AND ((p.setup_stage >= " . $this->_db->quote($setup_complete) . ")
-								OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid) . "))) "
+                            ? " WHERE (o.userid=" . $this->db->quote($uid) . " AND o.status!=2 AND p.state = 2
+								AND ((p.setup_stage >= " . $this->db->quote($setup_complete) . ")
+								OR (o.role = 1 AND p.owned_by_user=" . $this->db->quote($uid) . "))) "
                             : " WHERE 1=2";
                 } elseif ($filterby == 'archived') {
                     $query .= $uid
-                            ? " WHERE (o.userid=" . $this->_db->quote($uid) . " AND o.status!=2 AND p.state = 3) "
+                            ? " WHERE (o.userid=" . $this->db->quote($uid) . " AND o.status!=2 AND p.state = 3) "
                             : " WHERE 1=2";
                 } elseif ($filterby == 'rejected') {
                     $query .= $uid
-                            ? " WHERE (o.userid=" . $this->_db->quote($uid) . " AND o.status!=2 AND p.state = 4
-								AND ((p.setup_stage >= " . $this->_db->quote($setup_complete) . ")
-								OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid) . "))) "
+                            ? " WHERE (o.userid=" . $this->db->quote($uid) . " AND o.status!=2 AND p.state = 4
+								AND ((p.setup_stage >= " . $this->db->quote($setup_complete) . ")
+								OR (o.role = 1 AND p.owned_by_user=" . $this->db->quote($uid) . "))) "
                             : " WHERE 1=2";
                 } elseif ($filterby == 'pending_approval') {
                     $query .= $uid
-                            ? " WHERE (o.userid=" . $this->_db->quote($uid) . " AND o.status!=2 AND p.state = 5
-								AND ((p.setup_stage >= " . $this->_db->quote($setup_complete) . ")
-								OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid) . "))) "
+                            ? " WHERE (o.userid=" . $this->db->quote($uid) . " AND o.status!=2 AND p.state = 5
+								AND ((p.setup_stage >= " . $this->db->quote($setup_complete) . ")
+								OR (o.role = 1 AND p.owned_by_user=" . $this->db->quote($uid) . "))) "
                             : " WHERE 1=2";
                 } else {
                     $query .= $uid
-                            ? " WHERE (o.userid=" . $this->_db->quote($uid) . " AND o.status!=2
-								AND ((p.state NOT IN (0, 1, 2, 3, 4, 5) AND p.setup_stage >= " . $this->_db->quote($setup_complete) . ")
-								OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid) . "))) "
+                            ? " WHERE (o.userid=" . $this->db->quote($uid) . " AND o.status!=2
+								AND ((p.state NOT IN (0, 1, 2, 3, 4, 5) AND p.setup_stage >= " . $this->db->quote($setup_complete) . ")
+								OR (o.role = 1 AND p.owned_by_user=" . $this->db->quote($uid) . "))) "
                             : " WHERE 1=2";
                 }
                 if (!empty($filters['editor'])) {
                     $query .= " AND o.role != 5 ";
                 }
                 if ($which == 'owned' && $uid) {
-                    $query .= " AND (p.owned_by_user =" . $this->_db->quote($uid) . " AND p.owned_by_group = 0) ";
+                    $query .= " AND (p.owned_by_user =" . $this->db->quote($uid) . " AND p.owned_by_group = 0) ";
                 }
                 if ($which == 'other' && $uid) {
-                    $query .= " AND (p.owned_by_user != " . $this->_db->quote($uid) . " OR p.owned_by_group != 0) ";
+                    $query .= " AND (p.owned_by_user != " . $this->db->quote($uid) . " OR p.owned_by_group != 0) ";
                 }
             } else {
                 $access = [];
@@ -199,18 +199,18 @@ class Project extends Table
 
                     $query .= $uid
                             ? " WHERE ((p.state = 1 " . $privacy . ")
-								OR (o.userid=" . $this->_db->quote($uid) . " AND o.status!=2 AND ((p.state = 1
-								AND p.setup_stage >= " . $this->_db->quote($setup_complete) . ")
-								OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid) . " AND p.state != 3)))) "
+								OR (o.userid=" . $this->db->quote($uid) . " AND o.status!=2 AND ((p.state = 1
+								AND p.setup_stage >= " . $this->db->quote($setup_complete) . ")
+								OR (o.role = 1 AND p.owned_by_user=" . $this->db->quote($uid) . " AND p.state != 3)))) "
                             : " WHERE p.state = 1 " . $privacy;
                 }
             }
         }
         if ($type) {
-            $query .= " AND p.type =" . $this->_db->quote($type);
+            $query .= " AND p.type =" . $this->db->quote($type);
         }
         if ($group) {
-            $query .= " AND p.owned_by_group =" . $this->_db->quote($group);
+            $query .= " AND p.owned_by_group =" . $this->db->quote($group);
         }
         if (isset($filters['show_prov'])) {
             $query .= $filters['show_prov'] == 1 ? " AND p.provisioned = 1 " : "";
@@ -241,7 +241,7 @@ class Project extends Table
         }
 
         if ($search) {
-            $query .= " AND (p.title LIKE " . $this->_db->quote('%' . $search . '%') . " OR p.alias LIKE " . $this->_db->quote('%' . $search . '%') . ") ";
+            $query .= " AND (p.title LIKE " . $this->db->quote('%' . $search . '%') . " OR p.alias LIKE " . $this->db->quote('%' . $search . '%') . ") ";
         }
 
         if (isset($filters['private']) && $filters['private'] >= 0) {
@@ -274,7 +274,7 @@ class Project extends Table
 
             $tquery = '';
             foreach ($filters['exclude'] as $ex) {
-                $tquery .= $this->_db->quote($ex) . ",";
+                $tquery .= $this->db->quote($ex) . ",";
             }
             $tquery = substr($tquery, 0, strlen($tquery) - 1);
             $query .= $tquery . ") ";
@@ -284,13 +284,13 @@ class Project extends Table
         if (!empty($filters['include'])) {
             $tquery = [];
             foreach ($filters['include'] as $ex) {
-                $tquery[] = $this->_db->quote($ex);
+                $tquery[] = $this->db->quote($ex);
             }
             $query .= " AND p.id IN (" . implode(',', $tquery) . ") ";
         }
 
         if (isset($filters['created'])) {
-            $query .= " AND p.created LIKE " . $this->_db->quote($filters['created'] . '%') . " ";
+            $query .= " AND p.created LIKE " . $this->db->quote($filters['created'] . '%') . " ";
         }
         if (isset($filters['setup']) && $filters['setup']) {
             $query .= " AND p.setup_stage < $setup_complete ";
@@ -379,8 +379,8 @@ class Project extends Table
         $query  = "SELECT count(DISTINCT p.id) ";
         $query .= $this->buildQuery($filters, $admin, $uid, $showall, $setup_complete);
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -435,8 +435,8 @@ class Project extends Table
             $query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -456,11 +456,11 @@ class Project extends Table
         $query .= "(SELECT COUNT(*) FROM #__tags_object AS RTA
 					JOIN #__tags AS TA ON RTA.tagid = TA.id
 					AND RTA.tbl='projects'
-					WHERE TA.tag=" . $this->_db->quote($tag) . " AND RTA.objectid=p.id) as count";
-        $query .= " FROM $this->_tbl AS p ";
+					WHERE TA.tag=" . $this->db->quote($tag) . " AND RTA.objectid=p.id) as count";
+        $query .= " FROM $this->tableName AS p ";
 
-        $this->_db->setQuery($query);
-        $result = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $result = $this->db->loadObjectList();
         if ($result) {
             foreach ($result as $r) {
                 if (($include == true && $r->count > 0) || ($include == false && $r->count == 0)) {
@@ -488,8 +488,8 @@ class Project extends Table
         $query .= ", (SELECT COUNT(*) FROM `#__activity_recipients` AS pa WHERE pa.scope='project' AND pa.scope_id=p.id
 					AND pa.created >= o.lastvisit AND o.lastvisit IS NOT NULL
 					AND o.id IS NOT NULL AND pa.state != 2) as newactivity ";
-        $query .= " FROM #__project_owners as po, $this->_tbl AS p";
-        $query .= " LEFT JOIN #__project_owners AS o ON o.projectid=p.id AND o.userid=" . $this->_db->quote($uid) . " AND o.userid != 0 AND p.state!= 2 ";
+        $query .= " FROM #__project_owners as po, $this->tableName AS p";
+        $query .= " LEFT JOIN #__project_owners AS o ON o.projectid=p.id AND o.userid=" . $this->db->quote($uid) . " AND o.userid != 0 AND p.state!= 2 ";
         $query .=  " JOIN #__users as x ON x.id=p.created_by_user ";
         $query .=  " LEFT JOIN #__xgroups as g ON g.gidNumber=p.owned_by_group ";
 
@@ -541,15 +541,15 @@ class Project extends Table
         }
 
         if (isset($filters['count']) && $filters['count'] == 1) {
-            $this->_db->setQuery($query);
-            return $this->_db->loadResult();
+            $this->db->setQuery($query);
+            return $this->db->loadResult();
         } elseif (isset($filters['limit']) && $filters['limit'] != 'all' && $filters['limit'] != 0) {
             $filters['start'] = isset($filters['start']) ? $filters['start'] : 0;
             $query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -566,15 +566,15 @@ class Project extends Table
 
         if ($uid) {
             $query  = "SELECT DISTINCT p.id ";
-            $query .= " FROM $this->_tbl AS p, #__project_owners as o ";
+            $query .= " FROM $this->tableName AS p, #__project_owners as o ";
             $query .= " WHERE p.id=o.projectid ";
             $query .= $active == 1
-                    ? "AND (p.state=1 OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid) . " AND p.state !=2)) "
+                    ? "AND (p.state=1 OR (o.role = 1 AND p.owned_by_user=" . $this->db->quote($uid) . " AND p.state !=2)) "
                     : "AND p.state !=2 ";
             $query .= $include_provisioned ? "" : " AND p.provisioned=0";
             $query .= " AND o.userid=" . (int) $uid;
-            $this->_db->setQuery($query);
-            $result = $this->_db->loadObjectList();
+            $this->db->setQuery($query);
+            $result = $this->db->loadObjectList();
             if ($result) {
                 foreach ($result as $r) {
                     $ids[] = $r->id;
@@ -611,10 +611,10 @@ class Project extends Table
             $query .= " AND p.provisioned=0";*/
 
             $query  = "SELECT DISTINCT p.id ";
-            $query .= " FROM #__project_owners as po, $this->_tbl AS p";
+            $query .= " FROM #__project_owners as po, $this->tableName AS p";
             $query .= " LEFT JOIN #__project_owners AS o ON o.projectid=p.id AND o.userid != 0 AND p.state!= 2 ";
             if ($uid) {
-                $query .= " AND o.userid=" . $this->_db->quote($uid);
+                $query .= " AND o.userid=" . $this->db->quote($uid);
             }
             $query .=  " JOIN #__users as x ON x.id=p.created_by_user ";
             $query .=  " LEFT JOIN #__xgroups as g ON g.gidNumber=p.owned_by_group ";
@@ -624,8 +624,8 @@ class Project extends Table
                 $query .=  " WHERE p.id=po.projectid AND p.state=3 AND po.status=1 AND po.groupid=" . (int) $groupid;
             }
 
-            $this->_db->setQuery($query);
-            $ids = $this->_db->loadColumn();
+            $this->db->setQuery($query);
+            $ids = $this->db->loadColumn();
         }
 
         return $ids;
@@ -643,20 +643,20 @@ class Project extends Table
         if (!empty($projects) && $uid != 0) {
             $tquery = [];
             foreach ($projects as $project) {
-                $tquery[] = $this->_db->quote($project);
+                $tquery[] = $this->db->quote($project);
             }
 
             $query = "SELECT COUNT(*)
 					FROM `#__activity_recipients` AS pa
-					INNER JOIN `#__project_owners` as o ON o.projectid=pa.scope_id AND o.userid=" . $this->_db->quote($uid) . "
+					INNER JOIN `#__project_owners` as o ON o.projectid=pa.scope_id AND o.userid=" . $this->db->quote($uid) . "
 					WHERE pa.created >= o.lastvisit AND o.lastvisit IS NOT NULL
 					AND pa.state !=2 AND pa.created >= o.added
 					AND pa.scope='project'
 					AND pa.scope_id IN (" . implode(',', $tquery) . ")";
 
-            $this->_db->setQuery($query);
+            $this->db->setQuery($query);
 
-            return $this->_db->loadResult();
+            return $this->db->loadResult();
         }
 
         return 0;
@@ -683,12 +683,12 @@ class Project extends Table
         $query .= " ,(SELECT t.type FROM #__project_types as t WHERE t.id=p.type) as projecttype ";
 
         if (intval($pubid) > 0) {
-            $query .= " FROM #__publications AS pu JOIN $this->_tbl AS p ON pu.project_id=p.id ";
+            $query .= " FROM #__publications AS pu JOIN $this->tableName AS p ON pu.project_id=p.id ";
         } else {
-            $query .= " FROM $this->_tbl AS p ";
+            $query .= " FROM $this->tableName AS p ";
         }
         $query .= " LEFT JOIN #__project_owners AS o ON o.projectid=p.id ";
-        $query .= " AND o.userid=" . $this->_db->quote($uid) . " AND p.state!= 2 AND o.userid != 0 AND o.status !=2";
+        $query .= " AND o.userid=" . $this->db->quote($uid) . " AND p.state!= 2 AND o.userid != 0 AND o.status !=2";
         $query .=  " JOIN #__users as u ON u.id=p.owned_by_user ";
         $query .= " WHERE ";
 
@@ -696,13 +696,13 @@ class Project extends Table
             $query .= " pu.id=" . (int) $pubid;
         } else {
             $query .= is_numeric($identifier)
-                ? " p.id=" . $this->_db->quote($identifier)
-                : " p.alias=" . $this->_db->quote($identifier);
+                ? " p.id=" . $this->db->quote($identifier)
+                : " p.alias=" . $this->db->quote($identifier);
         }
         $query .= " LIMIT 1";
 
-        $this->_db->setQuery($query);
-        $result = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $result = $this->db->loadObjectList();
         return $result ? $result[0] : null;
     }
 
@@ -716,11 +716,11 @@ class Project extends Table
      */
     public function selectWhere($select, $where, $limit = 0)
     {
-        $query  = "SELECT $select FROM $this->_tbl WHERE $where";
+        $query  = "SELECT $select FROM $this->tableName WHERE $where";
         $query .= $limit ? " LIMIT 1 " : "";
 
-        $this->_db->setQuery($query);
-        return $limit ? $this->_db->loadResult() : $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $limit ? $this->db->loadResult() : $this->db->loadObjectList();
     }
 
     /**
@@ -734,9 +734,9 @@ class Project extends Table
         if (!$id) {
             return false;
         }
-        $query = "SELECT alias FROM $this->_tbl WHERE id=" . $this->_db->quote($id);
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $query = "SELECT alias FROM $this->tableName WHERE id=" . $this->db->quote($id);
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -803,8 +803,8 @@ class Project extends Table
         }
         $name = is_numeric($identifier) ? 'id' : 'alias';
 
-        $this->_db->setQuery("SELECT * FROM $this->_tbl WHERE $name=" . $this->_db->quote($identifier) . " LIMIT 1");
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery("SELECT * FROM $this->tableName WHERE $name=" . $this->db->quote($identifier) . " LIMIT 1");
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         }
 
@@ -823,8 +823,8 @@ class Project extends Table
             return false;
         }
 
-        $this->_db->setQuery("SELECT p.* FROM `#__publications` AS pu JOIN $this->_tbl AS p ON pu.project_id=p.id WHERE pu.id=" . $this->_db->quote($pid) . " LIMIT 1");
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery("SELECT p.* FROM `#__publications` AS pu JOIN $this->tableName AS p ON pu.project_id=p.id WHERE pu.id=" . $this->db->quote($pid) . " LIMIT 1");
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         }
 
@@ -843,11 +843,11 @@ class Project extends Table
         if ($name === null) {
             return false;
         }
-        $query  =  "SELECT id FROM $this->_tbl WHERE alias=" . $this->_db->quote($name);
-        $query .= $pid ? " AND id!=" . $this->_db->quote($pid) : "";
+        $query  =  "SELECT id FROM $this->tableName WHERE alias=" . $this->db->quote($name);
+        $query .= $pid ? " AND id!=" . $this->db->quote($pid) : "";
         $query .= " LIMIT 1 ";
-        $this->_db->setQuery($query);
-        if ($this->_db->loadResult()) {
+        $this->db->setQuery($query);
+        if ($this->db->loadResult()) {
             return false;
         }
         return true;
@@ -865,10 +865,10 @@ class Project extends Table
         if ($projectid === null) {
             return false;
         }
-        $query  = "SELECT * FROM $this->_tbl WHERE id=" . $this->_db->quote($projectid) . " LIMIT 1";
-        $this->_db->setQuery($query);
+        $query  = "SELECT * FROM $this->tableName WHERE id=" . $this->db->quote($projectid) . " LIMIT 1";
+        $this->db->setQuery($query);
 
-        if ($result = $this->_db->loadAssoc()) {
+        if ($result = $this->db->loadAssoc()) {
             $this->bind($result);
             $this->setup_stage = $stage;
             if (!$this->store()) {

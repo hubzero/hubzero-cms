@@ -37,9 +37,9 @@ class Type extends Table
     {
         $types = [];
 
-        $query  = "SELECT id, category FROM `$this->_tbl` ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $sortby) ?: '1') . " " . (strtoupper((string) $sortdir) === 'DESC' ? 'DESC' : 'ASC') . " ";
-        $this->_db->setQuery($query);
-        $result = $this->_db->loadObjectList();
+        $query  = "SELECT id, category FROM `$this->tableName` ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $sortby) ?: '1') . " " . (strtoupper((string) $sortdir) === 'DESC' ? 'DESC' : 'ASC') . " ";
+        $this->db->setQuery($query);
+        $result = $this->db->loadObjectList();
         if ($result) {
             foreach ($result as $r) {
                 $types[$r->id] = $r->category;
@@ -65,8 +65,8 @@ class Type extends Table
             return $default;
         }
 
-        $query = "SELECT category FROM `$this->_tbl` WHERE id=" . $this->_db->quote($id);
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $query = "SELECT category FROM `$this->tableName` WHERE id=" . $this->db->quote($id);
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 }

@@ -69,12 +69,12 @@ class Zones extends Table
      */
     public function delete($oid = null)
     {
-        $k = $this->_tbl_key;
+        $k = $this->tableKey;
         if ($oid) {
             $this->$k = $oid;
         }
 
-        $location = new ZoneLocations($this->_db);
+        $location = new ZoneLocations($this->db);
         if (!$location->deleteByZone($oid)) {
             $this->setError($location->getError());
             return false;
@@ -94,13 +94,13 @@ class Zones extends Table
         $where = [];
 
         if (isset($filters['state']) && $filters['state'] != '') {
-            $where[] = "c.`state`=" . $this->_db->quote($filters['state']);
+            $where[] = "c.`state`=" . $this->db->quote($filters['state']);
         }
         if (isset($filters['master']) && $filters['master'] != '') {
-            $where[] = "c.`master`=" . $this->_db->quote($filters['master']);
+            $where[] = "c.`master`=" . $this->db->quote($filters['master']);
         }
         if (isset($filters['zone']) && $filters['zone'] != '') {
-            $where[] = "c.`zone`=" . $this->_db->quote($filters['zone']);
+            $where[] = "c.`zone`=" . $this->db->quote($filters['zone']);
         }
         if (isset($filters['id'])) {
             if (!is_array($filters['id'])) {
@@ -118,12 +118,12 @@ class Zones extends Table
 
         if (isset($filters['search']) && $filters['search'] != '') {
             $where[] = "(LOWER(c.`zone`) LIKE "
-                . $this->_db->quote('%' . strtolower($filters['search']) . '%')
+                . $this->db->quote('%' . strtolower($filters['search']) . '%')
                 . " OR LOWER(c.`master`) LIKE "
-                . $this->_db->quote('%' . strtolower($filters['search']) . '%') . ")";
+                . $this->db->quote('%' . strtolower($filters['search']) . '%') . ")";
         }
 
-        $query = "FROM $this->_tbl AS c";
+        $query = "FROM $this->tableName AS c";
         if (
             isset($filters['ip']) || isset($filters['ipFROM']) || isset($filters['ipTO'])
             || isset($filters['continent']) || isset($filters['countrySHORT'])
@@ -156,7 +156,7 @@ class Zones extends Table
                 }
 
                 foreach ($compare as $column => $op) {
-                    $where[] = "t.`" . $column . "` " . $op . " " . $this->_db->quote($ip);
+                    $where[] = "t.`" . $column . "` " . $op . " " . $this->db->quote($ip);
                 }
             }
             if (isset($filters['continent']) && $filters['continent']) {
@@ -164,18 +164,18 @@ class Zones extends Table
                     $filters['continent'] = [$filters['continent']];
                 }
                 foreach ($filters['continent'] as $k => $v) {
-                    $filters['continent'][$k] = $this->_db->quote(strtolower($v));
+                    $filters['continent'][$k] = $this->db->quote(strtolower($v));
                 }
                 $where[] = "LOWER(t.`continent`) IN (" . implode(',', $filters['continent']) . ")";
             }
             if (isset($filters['countrySHORT']) && $filters['countrySHORT'] != '') {
-                $where[] = "LOWER(t.`countrySHORT`)=" . $this->_db->quote(strtolower($filters['countrySHORT']));
+                $where[] = "LOWER(t.`countrySHORT`)=" . $this->db->quote(strtolower($filters['countrySHORT']));
             }
             if (isset($filters['ipREGION']) && $filters['ipREGION'] != '') {
-                $where[] = "LOWER(t.`ipREGION`)=" . $this->_db->quote(strtolower($filters['ipREGION']));
+                $where[] = "LOWER(t.`ipREGION`)=" . $this->db->quote(strtolower($filters['ipREGION']));
             }
             if (isset($filters['ipCITY']) && $filters['ipCITY'] != '') {
-                $where[] = "LOWER(t.`ipCITY`)=" . $this->_db->quote(strtolower($filters['ipCITY']));
+                $where[] = "LOWER(t.`ipCITY`)=" . $this->db->quote(strtolower($filters['ipCITY']));
             }
         }
         if (count($where) > 0) {
@@ -203,8 +203,8 @@ class Zones extends Table
                 // _buildQuery() groups by zone, so count the grouped rows
                 $query = "SELECT COUNT(*) FROM (SELECT c.id " . $this->buildQuery($filters) . ") AS z";
 
-                $this->_db->setQuery($query);
-                return $this->_db->loadResult();
+                $this->db->setQuery($query);
+                return $this->db->loadResult();
                 break;
 
             case 'all':
@@ -228,8 +228,8 @@ class Zones extends Table
                     $query .= ' LIMIT ' . (int) $filters['start'] . ',' . (int) $filters['limit'];
                 }
 
-                $this->_db->setQuery($query);
-                return $this->_db->loadObjectList();
+                $this->db->setQuery($query);
+                return $this->db->loadObjectList();
                 break;
         }
     }

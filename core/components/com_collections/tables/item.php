@@ -136,8 +136,8 @@ class Item extends Table
             case 'count':
                 $query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
 
-                $this->_db->setQuery($query);
-                return $this->_db->loadResult();
+                $this->db->setQuery($query);
+                return $this->db->loadResult();
                 break;
 
             case 'one':
@@ -202,8 +202,8 @@ class Item extends Table
                     $query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
                 }
 
-                $this->_db->setQuery($query);
-                return $this->_db->loadObjectList();
+                $this->db->setQuery($query);
+                return $this->db->loadObjectList();
                 break;
         }
     }
@@ -217,7 +217,7 @@ class Item extends Table
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildQuery($filters = [])
     {
-        $query  = " FROM $this->_tbl AS b";
+        $query  = " FROM $this->tableName AS b";
         $query .= " INNER JOIN #__collections_posts AS s ON s.item_id=b.id";
         if (!isset($filters['collection_id']) || !$filters['collection_id']) {
             $query .= " INNER JOIN #__collections AS d ON s.collection_id=d.id";
@@ -226,7 +226,7 @@ class Item extends Table
 
         if (isset($filters['user_id']) && $filters['user_id']) {
             $query .= " LEFT JOIN #__collections_votes AS v ON v.item_id=b.id "
-                . "AND v.user_id=" . $this->_db->quote($filters['user_id']);
+                . "AND v.user_id=" . $this->db->quote($filters['user_id']);
         }
 
         $where = [];
@@ -236,11 +236,11 @@ class Item extends Table
                 $filters['collection_id'] = array_map('intval', $filters['collection_id']);
                 $where[] = "s.collection_id IN (" . implode(',', $filters['collection_id']) . ")";
             } else {
-                $where[] = "s.collection_id=" . $this->_db->quote($filters['collection_id']);
+                $where[] = "s.collection_id=" . $this->db->quote($filters['collection_id']);
             }
         } else {
             if (isset($filters['created_by']) && $filters['created_by']) {
-                $where[] = "b.created_by=" . $this->_db->quote($filters['created_by']);
+                $where[] = "b.created_by=" . $this->db->quote($filters['created_by']);
             } elseif (!App::isAdmin()) {
                 $where[] = "d.access=0";
                 $where[] = "s.id = (SELECT MAX(s2.id) FROM #__collections_posts s2 "
@@ -256,14 +256,14 @@ class Item extends Table
                 $filters['state'] = array_map('intval', $filters['state']);
                 $where[] = "b.state IN (" . implode(',', $filters['state']) . ")";
             } elseif ($filters['state'] >= 0) {
-                $where[] = "b.state=" . $this->_db->quote(intval($filters['state']));
+                $where[] = "b.state=" . $this->db->quote(intval($filters['state']));
             }
         }
 
         if (isset($filters['search']) && $filters['search'] != '') {
             $searchTerm = '%' . strtolower($filters['search']) . '%';
-            $where[] = "(LOWER(b.title) LIKE " . $this->_db->quote($searchTerm)
-                . " OR LOWER(b.description) LIKE " . $this->_db->quote($searchTerm) . ")";
+            $where[] = "(LOWER(b.title) LIKE " . $this->db->quote($searchTerm)
+                . " OR LOWER(b.description) LIKE " . $this->db->quote($searchTerm) . ")";
         }
 
         if (count($where) > 0) {
@@ -313,18 +313,18 @@ class Item extends Table
 
         if (is_array($id)) {
             $query = "SELECT COUNT(*) FROM `#__collections_posts` AS s "
-                . "INNER JOIN `$this->_tbl` AS i ON s.item_id=i.id "
-                . "WHERE i.type=" . $this->_db->quote($id['object_type'])
-                . " AND i.object_id=" . $this->_db->quote($id['object_id'])
-                . " AND s.original=" . $this->_db->quote('0');
+                . "INNER JOIN `$this->tableName` AS i ON s.item_id=i.id "
+                . "WHERE i.type=" . $this->db->quote($id['object_type'])
+                . " AND i.object_id=" . $this->db->quote($id['object_id'])
+                . " AND s.original=" . $this->db->quote('0');
         } else {
             $query = "SELECT COUNT(*) FROM `#__collections_posts` AS s "
-                . "WHERE s.item_id=" . $this->_db->quote(intval($id))
-                . " AND s.original=" . $this->_db->quote('0');
+                . "WHERE s.item_id=" . $this->db->quote(intval($id))
+                . " AND s.original=" . $this->db->quote('0');
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -344,11 +344,11 @@ class Item extends Table
         }
 
         $query = "SELECT v.id FROM `#__collections_votes` AS v "
-            . "WHERE v.item_id=" . $this->_db->quote($id)
-            . " AND v.user_id=" . $this->_db->quote(User::get('id'));
+            . "WHERE v.item_id=" . $this->db->quote($id)
+            . " AND v.user_id=" . $this->db->quote(User::get('id'));
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -360,16 +360,16 @@ class Item extends Table
     public function getLikes($filters = [])
     {
         if (isset($filters['object_id'])) {
-            $query = "SELECT positive FROM `$this->_tbl` "
-                . "WHERE type=" . $this->_db->quote($filters['object_type'])
-                . " AND object_id=" . $this->_db->quote($filters['object_id']);
+            $query = "SELECT positive FROM `$this->tableName` "
+                . "WHERE type=" . $this->db->quote($filters['object_type'])
+                . " AND object_id=" . $this->db->quote($filters['object_id']);
         } else {
-            $query = "SELECT positive FROM `$this->_tbl` "
-                . "WHERE id=" . $this->_db->quote(intval($filters['id']));
+            $query = "SELECT positive FROM `$this->tableName` "
+                . "WHERE id=" . $this->db->quote(intval($filters['id']));
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -381,16 +381,16 @@ class Item extends Table
     public function getDislikes($filters = [])
     {
         if (isset($filters['object_id'])) {
-            $query = "SELECT negative FROM `$this->_tbl` "
-                . "WHERE type=" . $this->_db->quote($filters['object_type'])
-                . " AND object_id=" . $this->_db->quote($filters['object_id']);
+            $query = "SELECT negative FROM `$this->tableName` "
+                . "WHERE type=" . $this->db->quote($filters['object_type'])
+                . " AND object_id=" . $this->db->quote($filters['object_id']);
         } else {
-            $query = "SELECT negative FROM `$this->_tbl` "
-                . "WHERE id=" . $this->_db->quote(intval($filters['id']));
+            $query = "SELECT negative FROM `$this->tableName` "
+                . "WHERE id=" . $this->db->quote(intval($filters['id']));
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -417,7 +417,7 @@ class Item extends Table
             $query .= ' LIMIT ' . (isset($filters['start']) ? intval($filters['start']) : 0) . ',' . intval($filters['limit']);
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 }

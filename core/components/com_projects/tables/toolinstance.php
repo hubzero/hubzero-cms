@@ -59,13 +59,13 @@ class ToolInstance extends Table
             return false;
         }
 
-        $query  = "SELECT * FROM $this->_tbl AS v WHERE v.instance=" . $this->_db->quote($instance) . " LIMIT 1";
+        $query  = "SELECT * FROM $this->tableName AS v WHERE v.instance=" . $this->db->quote($instance) . " LIMIT 1";
 
-        $this->_db->setQuery($query);
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery($query);
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -82,10 +82,10 @@ class ToolInstance extends Table
             return false;
         }
 
-        $query  = "SELECT * FROM $this->_tbl AS v WHERE ";
+        $query  = "SELECT * FROM $this->tableName AS v WHERE ";
         $query .= is_numeric($parent)
-            ? "v.parent_id=" . $this->_db->quote($parent)
-            : "v.parent_name=" . $this->_db->quote($parent);
+            ? "v.parent_id=" . $this->db->quote($parent)
+            : "v.parent_name=" . $this->db->quote($parent);
         if ($version == 'dev') {
             $query .= " AND v.state=3 ";
         }
@@ -99,11 +99,11 @@ class ToolInstance extends Table
         }
         $query .= " LIMIT 1";
 
-        $this->_db->setQuery($query);
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery($query);
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -116,13 +116,13 @@ class ToolInstance extends Table
      */
     public function getAll($includedev = 1)
     {
-        $sql = "SELECT * FROM $this->_tbl";
+        $sql = "SELECT * FROM $this->tableName";
         if (!$includedev) {
             $sql .= " WHERE state!='3'";
         }
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -146,14 +146,14 @@ class ToolInstance extends Table
         }
 
         $query  = "SELECT v.* ";
-        $query .= "FROM $this->_tbl as v WHERE 1=1 AND ";
-        $query .= $parent_id ? "v.parent_id=" . $this->_db->quote($parent_id)
-            : "v.parent_name=" . $this->_db->quote($parent_name);
+        $query .= "FROM $this->tableName as v WHERE 1=1 AND ";
+        $query .= $parent_id ? "v.parent_id=" . $this->db->quote($parent_id)
+            : "v.parent_name=" . $this->db->quote($parent_name);
         $query .= $exclude_dev ? ' AND v.state != 3' : '';
         $query .= " ORDER BY v.revision DESC";
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -165,10 +165,10 @@ class ToolInstance extends Table
      */
     public function getDevInstanceProperty($parent_name, $property)
     {
-        $query  = "SELECT " . $this->_db->quote($property) . " FROM $this->_tbl
-			WHERE parent_name=" . $this->_db->quote($parent_name) . " AND state=3 LIMIT 1";
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $query  = "SELECT " . $this->db->quote($property) . " FROM $this->tableName
+			WHERE parent_name=" . $this->db->quote($parent_name) . " AND state=3 LIMIT 1";
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -184,10 +184,10 @@ class ToolInstance extends Table
             return false;
         }
 
-        $query = "UPDATE $this->_tbl SET parent_name =" . $this->_db->quote($newname)
-                . " WHERE parent_id =" . $this->_db->quote($parent_id);
-        $this->_db->setQuery($query);
-        if ($this->_db->query()) {
+        $query = "UPDATE $this->tableName SET parent_name =" . $this->db->quote($newname)
+                . " WHERE parent_id =" . $this->db->quote($parent_id);
+        $this->db->setQuery($query);
+        if ($this->db->query()) {
             return true;
         }
 

@@ -57,11 +57,11 @@ class Category extends Table
      */
     public function getCount($filters = [])
     {
-        $query  = "SELECT count(*) FROM $this->_tbl";
+        $query  = "SELECT count(*) FROM $this->tableName";
         $query .= isset($filters['state']) && $filters['state'] == 'all' ? '' : " WHERE state=1";
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -79,13 +79,13 @@ class Category extends Table
 						JOIN #__publication_versions as V ON V.publication_id = P.id
 						AND V.main=1 WHERE P.category = C.id AND V.state=1) AS itemCount ";
         }
-        $query .= " FROM $this->_tbl as C ";
+        $query .= " FROM $this->tableName as C ";
 
         if (isset($filters['state']) && $filters['state'] == 'all') {
             // don't limit by state
         } else {
             $query .= isset($filters['state']) && intval($filters['state']) > 0
-                    ? 'WHERE C.state=' . $this->_db->quote($filters['state']) : " WHERE C.state=1 ";
+                    ? 'WHERE C.state=' . $this->db->quote($filters['state']) : " WHERE C.state=1 ";
         }
 
         $orderby  = isset($filters['sort']) ? $filters['sort'] : "name";
@@ -111,8 +111,8 @@ class Category extends Table
             $query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -126,8 +126,8 @@ class Category extends Table
         if (!$alias) {
             return false;
         }
-        $this->_db->setQuery("SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->quote($alias) . " LIMIT 1");
-        $result = $this->_db->loadObjectList();
+        $this->db->setQuery("SELECT * FROM $this->tableName WHERE alias=" . $this->db->quote($alias) . " LIMIT 1");
+        $result = $this->db->loadObjectList();
         return $result ? $result[0] : false;
     }
 
@@ -142,8 +142,8 @@ class Category extends Table
         if (!$alias) {
             return false;
         }
-        $this->_db->setQuery("SELECT id FROM $this->_tbl WHERE alias=" . $this->_db->quote($alias) . " LIMIT 1");
-        return $this->_db->loadResult();
+        $this->db->setQuery("SELECT id FROM $this->tableName WHERE alias=" . $this->db->quote($alias) . " LIMIT 1");
+        return $this->db->loadResult();
     }
 
     /**
@@ -153,8 +153,8 @@ class Category extends Table
      */
     public function getContribCategories()
     {
-        $this->_db->setQuery("SELECT * FROM $this->_tbl WHERE contributable=1 ORDER BY name");
-        return $this->_db->loadObjectList();
+        $this->db->setQuery("SELECT * FROM $this->tableName WHERE contributable=1 ORDER BY name");
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -172,7 +172,7 @@ class Category extends Table
             return false;
         }
 
-        $this->_db->setQuery("SELECT count(*) FROM `#__publications` WHERE category=" . $this->_db->quote($id));
-        return $this->_db->loadResult();
+        $this->db->setQuery("SELECT count(*) FROM `#__publications` WHERE category=" . $this->db->quote($id));
+        return $this->db->loadResult();
     }
 }

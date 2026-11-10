@@ -57,12 +57,12 @@ class Tool extends Table
         }
         $name = is_numeric($identifier) ? 'id' : 'name';
 
-        $query = "SELECT * FROM $this->_tbl WHERE $name=" . $this->_db->quote($identifier);
-        $query .= intval($projectid) > 0 ? " AND project_id=" . $this->_db->quote($projectid) : "";
+        $query = "SELECT * FROM $this->tableName WHERE $name=" . $this->db->quote($identifier);
+        $query .= intval($projectid) > 0 ? " AND project_id=" . $this->db->quote($projectid) : "";
         $query .= " LIMIT 1";
 
-        $this->_db->setQuery($query);
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery($query);
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
             return false;
@@ -104,9 +104,9 @@ class Tool extends Table
         }
         if (isset($filters['search']) && $filters['search'] != '') {
             $search = $filters['search'];
-            $like   = $this->_db->quote('%' . $search . '%');
+            $like   = $this->db->quote('%' . $search . '%');
             if (intval($search)) {
-                $filter .= " AND f.id=" . $this->_db->quote($search) . " ";
+                $filter .= " AND f.id=" . $this->db->quote($search) . " ";
             } else {
                 $filter .= " AND ((LOWER(f.name) LIKE " . $like . ") OR (LOWER(f.title) LIKE " . $like . ")) ";
             }
@@ -155,7 +155,7 @@ class Tool extends Table
                 $sort .= $admin ? 'f.status, f.created' : 'f.status_changed DESC';
         }
 
-        $query  = "$this->_tbl as f "
+        $query  = "$this->tableName as f "
                 . "JOIN #__project_tool_instances AS v ON f.id=v.parent_id AND v.state=3 ";
         if (!$count) {
             $query .= "JOIN #__projects as p ON p.id=f.project_id ";
@@ -187,13 +187,13 @@ class Tool extends Table
      */
     public function checkUniqueName($name = null, $id = null)
     {
-        $sql = "SELECT count(*) FROM $this->_tbl WHERE name=" . $this->_db->quote($name);
+        $sql = "SELECT count(*) FROM $this->tableName WHERE name=" . $this->db->quote($name);
         if ($id) {
-            $sql .= " AND id !=" . $this->_db->quote($id);
+            $sql .= " AND id !=" . $this->db->quote($id);
         }
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadResult();
+        $this->db->setQuery($sql);
+        return $this->db->loadResult();
     }
 
     /**
@@ -208,8 +208,8 @@ class Tool extends Table
     {
         $sql = "SELECT count(*) FROM " . $this->buildQuery($filters, $admin);
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadResult();
+        $this->db->setQuery($sql);
+        return $this->db->loadResult();
     }
 
     /**
@@ -229,8 +229,8 @@ class Tool extends Table
             $sql .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
         }
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -260,9 +260,9 @@ class Tool extends Table
         $sql .= ', PA.publication_id, PA.publication_version_id,
 				PV.title as publication_title, PV.state as publication_version_status ';
 
-        $sql .= " FROM $this->_tbl as f "
+        $sql .= " FROM $this->tableName as f "
                 . "JOIN #__project_tool_instances AS v ON f.id=v.parent_id ";
-        $sql .= intval($instanceId) ? "AND v.id=" . $this->_db->quote($instanceId) : "AND v.state=3 ";
+        $sql .= intval($instanceId) ? "AND v.id=" . $this->db->quote($instanceId) : "AND v.state=3 ";
         $sql .= " JOIN #__project_tool_statuses AS s ON f.status=s.id ";
         $sql .= "JOIN #__projects as p ON p.id=f.project_id ";
         $sql .= "JOIN #__xprofiles as x ON x.uidNumber=f.created_by ";
@@ -276,11 +276,11 @@ class Tool extends Table
 				PA.object_id=f.id AND PA.object_instance=v.id ";
         $sql .= "LEFT JOIN #__publication_versions as PV ON PV.id=PA.publication_version_id AND PV.main=1 ";
 
-        $sql .= " WHERE $name=" . $this->_db->quote($identifier);
-        $sql .= intval($projectid) > 0 ? " AND f.project_id=" . $this->_db->quote($projectid) : "";
+        $sql .= " WHERE $name=" . $this->db->quote($identifier);
+        $sql .= intval($projectid) > 0 ? " AND f.project_id=" . $this->db->quote($projectid) : "";
 
-        $this->_db->setQuery($sql);
-        $result = $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        $result = $this->db->loadObjectList();
         return $result ? $result[0] : null;
     }
 
@@ -295,8 +295,8 @@ class Tool extends Table
         if ($name === null) {
             return false;
         }
-        $this->_db->setQuery("SELECT id FROM $this->_tbl WHERE name=" . $this->_db->quote($name) . " LIMIT 1");
-        return $this->_db->loadResult();
+        $this->db->setQuery("SELECT id FROM $this->tableName WHERE name=" . $this->db->quote($name) . " LIMIT 1");
+        return $this->db->loadResult();
     }
 
     /**
@@ -313,12 +313,12 @@ class Tool extends Table
             return false;
         }
         if ($status) {
-            $query = "UPDATE $this->_tbl SET ";
-            $query .= "status=" . $this->_db->quote($status) . ", status_changed='" . date('Y-m-d H:i:s', time()) . "'";
-            $query .= $by ? ", status_changed_by=" . $this->_db->quote($by) : "";
-            $query .= " WHERE id=" . $this->_db->quote($id);
-            $this->_db->setQuery($query);
-            if (!$this->_db->query()) {
+            $query = "UPDATE $this->tableName SET ";
+            $query .= "status=" . $this->db->quote($status) . ", status_changed='" . date('Y-m-d H:i:s', time()) . "'";
+            $query .= $by ? ", status_changed_by=" . $this->db->quote($by) : "";
+            $query .= " WHERE id=" . $this->db->quote($id);
+            $this->db->setQuery($query);
+            if (!$this->db->query()) {
                 return false;
             }
         }

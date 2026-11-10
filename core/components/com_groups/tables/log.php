@@ -50,11 +50,11 @@ class Log extends Table
      */
     public function find($filters = [])
     {
-        $sql  = "SELECT * FROM {$this->_tbl}";
+        $sql  = "SELECT * FROM {$this->tableName}";
         $sql .= $this->buildQuery($filters);
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -71,12 +71,12 @@ class Log extends Table
 
         // gidnumber
         if (isset($filters['gidNumber'])) {
-            $where[] = "gidNumber=" . $this->_db->quote($filters['gidNumber']);
+            $where[] = "gidNumber=" . $this->db->quote($filters['gidNumber']);
         }
 
         // action
         if (isset($filters['action'])) {
-            $where[] = "action=" . $this->_db->quote($filters['action']);
+            $where[] = "action=" . $this->db->quote($filters['action']);
         }
 
         // if we have and conditions

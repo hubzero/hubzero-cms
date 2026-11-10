@@ -47,17 +47,17 @@ class RemoteFile extends Table
 
         $query  = "SELECT local_path, local_dirpath, remote_id, synced, type,
 					remote_editing as converted, remote_parent, remote_format,
-					remote_modified, paired, original_path FROM $this->_tbl";
-        $query .= " WHERE projectid=" . $this->_db->quote($projectid);
-        $query .= " AND service=" . $this->_db->quote($service);
-        $query .= $local_dirpath ? " AND local_dirpath=" . $this->_db->quote($local_dirpath) : '';
+					remote_modified, paired, original_path FROM $this->tableName";
+        $query .= " WHERE projectid=" . $this->db->quote($projectid);
+        $query .= " AND service=" . $this->db->quote($service);
+        $query .= $local_dirpath ? " AND local_dirpath=" . $this->db->quote($local_dirpath) : '';
         if ($converted != 'na') {
             $converted = $converted == 1 ? 1 : 0;
-            $query .= " AND remote_editing = " . $this->_db->quote($converted);
+            $query .= " AND remote_editing = " . $this->db->quote($converted);
         }
 
-        $this->_db->setQuery($query);
-        $results = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $results = $this->db->loadObjectList();
 
         if ($results) {
             foreach ($results as $result) {
@@ -96,16 +96,16 @@ class RemoteFile extends Table
             return false;
         }
 
-        $query  = "SELECT COUNT(*) FROM $this->_tbl";
-        $query .= " WHERE projectid=" . $this->_db->quote($projectid);
-        $query .= $service ? " AND service=" . $this->_db->quote($service) : "";
+        $query  = "SELECT COUNT(*) FROM $this->tableName";
+        $query .= " WHERE projectid=" . $this->db->quote($projectid);
+        $query .= $service ? " AND service=" . $this->db->quote($service) : "";
         if ($converted != 'na') {
             $converted = $converted == 1 ? 1 : 0;
-            $query .= " AND remote_editing = " . $this->_db->quote($converted);
+            $query .= " AND remote_editing = " . $this->db->quote($converted);
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -123,16 +123,16 @@ class RemoteFile extends Table
             return false;
         }
 
-        $query  = "SELECT * FROM $this->_tbl";
+        $query  = "SELECT * FROM $this->tableName";
         $query .= ' WHERE projectid=' . (int) $projectid . '  ';
-        $query .= ' AND service=' . $this->_db->quote($service) . ' ';
+        $query .= ' AND service=' . $this->db->quote($service) . ' ';
         if ($remoteEdit) {
             $query .= " AND remote_editing=1 ";
         }
-        $query .= ' AND local_dirpath=' . $this->_db->quote($subdir) . ' ';
+        $query .= ' AND local_dirpath=' . $this->db->quote($subdir) . ' ';
 
-        $this->_db->setQuery($query);
-        $results = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $results = $this->db->loadObjectList();
 
         $files = [];
         if ($results) {
@@ -159,22 +159,22 @@ class RemoteFile extends Table
             return false;
         }
 
-        $query  = "SELECT * FROM $this->_tbl WHERE projectid =" . $this->_db->quote($projectid);
-        $query .= $service ? " AND service=" . $this->_db->quote($service) : '';
+        $query  = "SELECT * FROM $this->tableName WHERE projectid =" . $this->db->quote($projectid);
+        $query .= $service ? " AND service=" . $this->db->quote($service) : '';
 
         if ($id) {
-            $query .= " AND remote_id = " . $this->_db->quote($id);
+            $query .= " AND remote_id = " . $this->db->quote($id);
         } else {
-            $query .= " AND local_path =" . $this->_db->quote($local_path);
+            $query .= " AND local_path =" . $this->db->quote($local_path);
         }
 
         $query .= " ORDER BY modified DESC, created DESC LIMIT 1";
 
-        $this->_db->setQuery($query);
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery($query);
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -197,21 +197,21 @@ class RemoteFile extends Table
 					service, remote_modified as modified, remote_author as author,
 					remote_md5 as md5, synced, paired, type, original_path,
 					original_format, original_id
-					FROM $this->_tbl WHERE projectid = " . $this->_db->quote($projectid);
-        $query .= $service ? " AND service=" . $this->_db->quote($service) : '';
+					FROM $this->tableName WHERE projectid = " . $this->db->quote($projectid);
+        $query .= $service ? " AND service=" . $this->db->quote($service) : '';
         if ($id) {
-            $query .= " AND remote_id = " . $this->_db->quote($id);
+            $query .= " AND remote_id = " . $this->db->quote($id);
         } else {
-            $query .= " AND local_path = " . $this->_db->quote($local_path);
+            $query .= " AND local_path = " . $this->db->quote($local_path);
         }
         if ($converted != 'na') {
             $converted = $converted == 1 ? 1 : 0;
-            $query .= " AND remote_editing = " . $this->_db->quote($converted);
+            $query .= " AND remote_editing = " . $this->db->quote($converted);
         }
         $query .= " ORDER BY modified DESC, created DESC LIMIT 1";
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadAssoc();
+        $this->db->setQuery($query);
+        return $this->db->loadAssoc();
     }
 
     /**

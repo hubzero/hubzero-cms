@@ -56,15 +56,15 @@ class ToolLog extends Table
         $admin          = isset($filters['admin']) ? $filters['admin'] : 0;
 
         $query  = "SELECT L.*, x.name as actor_name, x.username as username, x.picture ";
-        $query .= "FROM $this->_tbl as L ";
+        $query .= "FROM $this->tableName as L ";
         $query .= "JOIN #__xprofiles as x ON x.uidNumber=L.actor ";
         $query .= "WHERE ";
         if ($instance_id) {
-            $query .= "L.instance_id=" . $this->_db->quote($instance_id);
+            $query .= "L.instance_id=" . $this->db->quote($instance_id);
         } elseif ($parent_name) {
-            $query .= "L.parent_name=" . $this->_db->quote($parent_name);
+            $query .= "L.parent_name=" . $this->db->quote($parent_name);
         } elseif ($parent_id) {
-            $query .= "L.parent_id=" . $this->_db->quote($parent_id);
+            $query .= "L.parent_id=" . $this->db->quote($parent_id);
         }
 
         $query .= $status_changed ? ' AND L.status_changed = 1' : '';
@@ -73,8 +73,8 @@ class ToolLog extends Table
             : ' AND (L.admin = 0 OR (L.admin = 1 AND access = 0 )) ';
         $query .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $sortby) ?: '1') . " " . (strtoupper((string) $sortdir) === 'ASC' ? 'ASC' : 'DESC');
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -99,22 +99,22 @@ class ToolLog extends Table
         }
 
         $query  = "SELECT L.*, x.name as actor_name, x.username as username ";
-        $query .= "FROM $this->_tbl as L ";
+        $query .= "FROM $this->tableName as L ";
         $query .= "JOIN #__xprofiles as x ON x.uidNumber=L.actor ";
         $query .= "WHERE ";
         if ($instance_id) {
-            $query .= "L.instance_id=" . $this->_db->quote($instance_id);
+            $query .= "L.instance_id=" . $this->db->quote($instance_id);
         } elseif ($parent_name) {
-            $query .= "L.parent_name=" . $this->_db->quote($parent_name);
+            $query .= "L.parent_name=" . $this->db->quote($parent_name);
         } elseif ($parent_id) {
-            $query .= "L.parent_id=" . $this->_db->quote($parent_id);
+            $query .= "L.parent_id=" . $this->db->quote($parent_id);
         }
 
         $query .= $status_changed ? ' AND L.status_changed = 1' : '';
         $query .= " ORDER BY L.recorded DESC LIMIT 1";
 
-        $this->_db->setQuery($query);
-        $result = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $result = $this->db->loadObjectList();
         return $result ? $result[0] : null;
     }
 
@@ -131,10 +131,10 @@ class ToolLog extends Table
             return false;
         }
 
-        $query = "UPDATE $this->_tbl SET parent_name =" . $this->_db->quote($newname)
-                . " WHERE parent_id =" . $this->_db->quote($parent_id);
-        $this->_db->setQuery($query);
-        if ($this->_db->query()) {
+        $query = "UPDATE $this->tableName SET parent_name =" . $this->db->quote($newname)
+                . " WHERE parent_id =" . $this->db->quote($parent_id);
+        $this->db->setQuery($query);
+        if ($this->db->query()) {
             return true;
         }
 
@@ -155,11 +155,11 @@ class ToolLog extends Table
         }
 
         $query  = "SELECT log ";
-        $query .= "FROM $this->_tbl ";
-        $query .= "WHERE parent_id=" . $this->_db->quote($toolid)
-            . " AND project_activity_id=" . $this->_db->quote($aid);
+        $query .= "FROM $this->tableName ";
+        $query .= "WHERE parent_id=" . $this->db->quote($toolid)
+            . " AND project_activity_id=" . $this->db->quote($aid);
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 }

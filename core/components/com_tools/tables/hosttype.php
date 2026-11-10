@@ -63,20 +63,20 @@ class Hosttype extends Table
      */
     public function store($insert = null, $updateNulls = false)
     {
-        $k = $this->_tbl_key;
+        $k = $this->tableKey;
 
         if ($insert) {
-            $ret = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
+            $ret = $this->db->insertObject($this->tableName, $this, $this->tableKey);
         } else {
             if ($this->$k) {
-                $ret = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, $updateNulls);
+                $ret = $this->db->updateObject($this->tableName, $this, $this->tableKey, $updateNulls);
             } else {
-                $ret = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
+                $ret = $this->db->insertObject($this->tableName, $this, $this->tableKey);
             }
         }
 
         if (!$ret) {
-            $this->setError(get_class($this) . '::store failed - ' . $this->_db->getErrorMsg());
+            $this->setError(get_class($this) . '::store failed - ' . $this->db->getErrorMsg());
             return false;
         } else {
             return true;
@@ -97,16 +97,16 @@ class Hosttype extends Table
         $where = '';
 
         // Create the base update statement.
-        $statement = 'UPDATE ' . $this->_db->quoteName($this->_tbl) . ' SET %s WHERE %s';
+        $statement = 'UPDATE ' . $this->db->quoteName($this->tableName) . ' SET %s WHERE %s';
 
         if (!$key) {
-            $key = $this->{$this->_tbl_key};
+            $key = $this->{$this->tableKey};
         }
 
-        $where = $this->_db->quoteName($this->_tbl_key) . '=' . $this->_db->quote($key);
+        $where = $this->db->quoteName($this->tableKey) . '=' . $this->db->quote($key);
 
         // Iterate over the object variables to build the query fields/value pairs.
-        foreach (get_object_vars($this) as $k => $v) {
+        foreach ($this->getProperties() as $k => $v) {
             // Only process scalars that are not internal fields.
             if (is_array($v) or is_object($v) or $k[0] == '_') {
                 continue;
@@ -123,11 +123,11 @@ class Hosttype extends Table
                 }
             } else {
                 // The field is not null so we prep it for update.
-                $val = $this->_db->quote($v);
+                $val = $this->db->quote($v);
             }
 
             // Add the field to be updated.
-            $fields[] = $this->_db->quoteName($k) . '=' . $val;
+            $fields[] = $this->db->quoteName($k) . '=' . $val;
         }
 
         // We don't have any fields to update.
@@ -136,8 +136,8 @@ class Hosttype extends Table
         }
 
         // Set the query and execute the update.
-        $this->_db->setQuery(sprintf($statement, implode(",", $fields), $where));
-        return $this->_db->execute();
+        $this->db->setQuery(sprintf($statement, implode(",", $fields), $where));
+        return $this->db->execute();
     }
 
     /**
@@ -150,19 +150,19 @@ class Hosttype extends Table
      */
     public function delete($oid = null)
     {
-        $k = $this->_tbl_key;
+        $k = $this->tableKey;
         if ($oid) {
             $this->$k = $oid;
         }
 
-        $query = 'DELETE FROM ' . $this->_db->quoteName($this->_tbl)
-                . ' WHERE ' . $this->_tbl_key . ' = ' . $this->_db->quote($this->$k);
-        $this->_db->setQuery($query);
+        $query = 'DELETE FROM ' . $this->db->quoteName($this->tableName)
+                . ' WHERE ' . $this->tableKey . ' = ' . $this->db->quote($this->$k);
+        $this->db->setQuery($query);
 
-        if ($this->_db->query()) {
+        if ($this->db->query()) {
             return true;
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -179,12 +179,12 @@ class Hosttype extends Table
 
         if (isset($filters['search']) && $filters['search'] != '') {
             $where[] = "(LOWER(c.name) LIKE "
-                . $this->_db->quote('%' . strtolower($filters['search']) . '%')
+                . $this->db->quote('%' . strtolower($filters['search']) . '%')
                 . " OR LOWER(c.description) LIKE "
-                . $this->_db->quote('%' . strtolower($filters['search']) . '%') . ")";
+                . $this->db->quote('%' . strtolower($filters['search']) . '%') . ")";
         }
 
-        $query = "FROM $this->_tbl AS c";
+        $query = "FROM $this->tableName AS c";
         if (count($where) > 0) {
             $query .= " WHERE ";
             $query .= implode(" AND ", $where);
@@ -205,8 +205,8 @@ class Hosttype extends Table
 
         $query = "SELECT COUNT(*) " . $this->buildQuery($filters);
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -234,7 +234,7 @@ class Hosttype extends Table
             $query .= ' LIMIT ' . $filters['start'] . ',' . $filters['limit'];
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 }

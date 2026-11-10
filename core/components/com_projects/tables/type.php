@@ -34,8 +34,8 @@ class Type extends Table
      */
     public function getParams($type = 1)
     {
-        $this->_db->setQuery("SELECT params FROM $this->_tbl WHERE id=" . (int) $type);
-        return $this->_db->loadResult();
+        $this->db->setQuery("SELECT params FROM $this->tableName WHERE id=" . (int) $type);
+        return $this->db->loadResult();
     }
 
     /**
@@ -45,8 +45,8 @@ class Type extends Table
      */
     public function getTypes()
     {
-        $this->_db->setQuery("SELECT * FROM $this->_tbl");
-        return $this->_db->loadObjectList();
+        $this->db->setQuery("SELECT * FROM $this->tableName");
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -57,8 +57,8 @@ class Type extends Table
      */
     public function getTypeTitle($id = 0)
     {
-        $this->_db->setQuery("SELECT type FROM $this->_tbl WHERE id=" . $this->_db->quote($id));
-        return $this->_db->loadResult();
+        $this->db->setQuery("SELECT type FROM $this->tableName WHERE id=" . $this->db->quote($id));
+        return $this->db->loadResult();
     }
 
     /**
@@ -69,7 +69,7 @@ class Type extends Table
      */
     public function getIdByTitle($type = '')
     {
-        $this->_db->setQuery("SELECT id FROM $this->_tbl WHERE type=" . $this->_db->quote($type));
-        return $this->_db->loadResult();
+        $this->db->setQuery("SELECT id FROM $this->tableName WHERE type=" . $this->db->quote($type));
+        return $this->db->loadResult();
     }
 }

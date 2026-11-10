@@ -53,16 +53,16 @@ class SessionClass extends Table
         if (!$this->id) {
             $query  = "SELECT id" . $this->buildQuery(['alias' => $this->alias]);
 
-            $this->_db->setQuery($query);
-            if ($this->_db->loadResult()) {
+            $this->db->setQuery($query);
+            if ($this->db->loadResult()) {
                 $this->setError(Lang::txt('COM_TOOLS_SESSIONS_CLASS_NON_UNIQUE_ALIAS'));
                 return false;
             }
 
             $query  = "SELECT id" . $this->buildQuery(['jobs' => $this->jobs]);
 
-            $this->_db->setQuery($query);
-            if ($this->_db->loadResult()) {
+            $this->db->setQuery($query);
+            if ($this->db->loadResult()) {
                 $this->setError(Lang::txt('COM_TOOLS_SESSIONS_CLASS_NON_UNIQUE_VALUE'));
                 return false;
             }
@@ -78,7 +78,7 @@ class SessionClass extends Table
      */
     public function createDefault()
     {
-        $tbl = new self($this->_db);
+        $tbl = new self($this->db);
         $tbl->alias = 'default';
         $tbl->jobs  = 3;
 
@@ -103,9 +103,9 @@ class SessionClass extends Table
     public function userCount()
     {
         $query = "SELECT COUNT(*) FROM `#__users_tool_preferences` "
-            . "WHERE `class_id`=" . $this->_db->quote($this->id);
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+            . "WHERE `class_id`=" . $this->db->quote($this->id);
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -116,16 +116,16 @@ class SessionClass extends Table
      */
     protected function buildQuery($filters = [])
     {
-        $query = " FROM $this->_tbl AS tsc";
+        $query = " FROM $this->tableName AS tsc";
 
         $where = [];
 
         if (isset($filters['alias']) && $filters['alias']) {
-            $where[] = "`alias`=" . $this->_db->quote($filters['alias']);
+            $where[] = "`alias`=" . $this->db->quote($filters['alias']);
         }
 
         if (isset($filters['jobs']) && $filters['jobs']) {
-            $where[] = "`jobs`=" . $this->_db->quote($filters['jobs']);
+            $where[] = "`jobs`=" . $this->db->quote($filters['jobs']);
         }
 
         if (count($where)) {
@@ -152,8 +152,8 @@ class SessionClass extends Table
             case 'count':
                 $query = "SELECT COUNT(*) " . $this->buildQuery($filters);
 
-                $this->_db->setQuery($query);
-                return $this->_db->loadResult();
+                $this->db->setQuery($query);
+                return $this->db->loadResult();
                 break;
 
             case 'one':
@@ -208,8 +208,8 @@ class SessionClass extends Table
                     $query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
                 }
 
-                $this->_db->setQuery($query);
-                return $this->_db->loadObjectList();
+                $this->db->setQuery($query);
+                return $this->db->loadObjectList();
                 break;
         }
     }
@@ -229,7 +229,7 @@ class SessionClass extends Table
         $groups = [];
 
         if ($id) {
-            $qcGroups = new SessionClassGroup($this->_db);
+            $qcGroups = new SessionClassGroup($this->db);
             foreach ($qcGroups->find('list', ['class_id' => $id]) as $group) {
                 $groups[] = $group->group_id;
             }
@@ -251,7 +251,7 @@ class SessionClass extends Table
         }
         $groups = array_map('intval', $groups);
 
-        $qcGroups = new SessionClassGroup($this->_db);
+        $qcGroups = new SessionClassGroup($this->db);
         $qcGroups->class_id = $this->id;
 
         // Clear old records

@@ -41,16 +41,16 @@ class CurationHistory extends Table
         $sortby  = isset($filters['sortby']) && $filters['sortby'] ? $filters['sortby'] : 'created';
         $sortdir = isset($filters['sortdir']) && strtoupper($filters['sortdir']) == 'DESC' ? 'DESC' : 'ASC';
 
-        $query = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid);
+        $query = "SELECT * FROM $this->tableName WHERE publication_version_id=" . $this->db->quote($vid);
 
         if (isset($filters['curator']) && $filters['curator'] == 1) {
             $query .= " AND curator=1";
         }
 
         $query .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $sortby) ?: '1') . " " . (strtoupper((string) $sortdir) === 'ASC' ? 'ASC' : 'DESC');
-        $this->_db->setQuery($query);
+        $this->db->setQuery($query);
 
-        return $this->_db->loadObjectList();
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -65,13 +65,13 @@ class CurationHistory extends Table
             return false;
         }
 
-        $query = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid);
+        $query = "SELECT * FROM $this->tableName WHERE publication_version_id=" . $this->db->quote($vid);
         $query .= ($curator == 1) ? " AND curator=1" : " AND curator=0";
 
         $query .= " ORDER BY id DESC LIMIT 1";
-        $this->_db->setQuery($query);
+        $this->db->setQuery($query);
 
-        $result = $this->_db->loadObjectList();
+        $result = $this->db->loadObjectList();
         return $result ? $result[0] : null;
     }
 }

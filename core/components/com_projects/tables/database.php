@@ -39,8 +39,8 @@ class Database extends Table
         }
         $name = is_numeric($identifier) ? 'id' : 'database_name';
 
-        $this->_db->setQuery("SELECT * FROM $this->_tbl WHERE $name=" . $this->_db->quote($identifier) . " LIMIT 1");
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery("SELECT * FROM $this->tableName WHERE $name=" . $this->db->quote($identifier) . " LIMIT 1");
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
             return false;
@@ -65,12 +65,12 @@ class Database extends Table
 
         $query  = "SELECT ";
         $query .= $count ? " COUNT(*) " : "*";
-        $query .= " FROM $this->_tbl ";
-        $query .= " WHERE project = " . $this->_db->quote($projectid);
+        $query .= " FROM $this->tableName ";
+        $query .= " WHERE project = " . $this->db->quote($projectid);
         $query .= $skipPublished ? " AND revision IS null" : "";
 
-        $this->_db->setQuery($query);
-        return $count ? $this->_db->loadResult() : $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $count ? $this->db->loadResult() : $this->db->loadObjectList();
     }
 
     /**
@@ -86,11 +86,11 @@ class Database extends Table
             return false;
         }
 
-        $query = "SELECT database_name, title FROM $this->_tbl WHERE id="
-            . $this->_db->quote($id) . " AND project=" . $this->_db->quote($projectid);
+        $query = "SELECT database_name, title FROM $this->tableName WHERE id="
+            . $this->db->quote($id) . " AND project=" . $this->db->quote($projectid);
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadAssoc();
+        $this->db->setQuery($query);
+        return $this->db->loadAssoc();
     }
 
     /**
@@ -108,11 +108,11 @@ class Database extends Table
         $query = "SELECT db.id, db.project, db.database_name, db.title, db.source_file,
 				db.source_dir, db.source_revision, db.description, db.data_definition,
 				db.revision, db.created, db.created_by, c.name
-				FROM $this->_tbl AS db LEFT JOIN `#__users` AS c ON (c.id=db.created_by)
-				WHERE project = " . $this->_db->quote($projectid) . " ORDER BY db.created DESC";
+				FROM $this->tableName AS db LEFT JOIN `#__users` AS c ON (c.id=db.created_by)
+				WHERE project = " . $this->db->quote($projectid) . " ORDER BY db.created DESC";
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadAssocList();
+        $this->db->setQuery($query);
+        return $this->db->loadAssocList();
     }
 
     /**
@@ -128,10 +128,10 @@ class Database extends Table
         }
 
         $query = "SELECT DISTINCT IF(source_dir != '', CONCAT(source_dir, '/', source_file), source_file) as file
-				  FROM $this->_tbl
-				  WHERE project = " . $this->_db->quote($projectid);
+				  FROM $this->tableName
+				  WHERE project = " . $this->db->quote($projectid);
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadColumn();
+        $this->db->setQuery($query);
+        return $this->db->loadColumn();
     }
 }

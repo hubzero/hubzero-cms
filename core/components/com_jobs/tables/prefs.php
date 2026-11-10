@@ -39,11 +39,11 @@ class Prefs extends Table
             return false;
         }
 
-        $query = "SELECT * FROM `$this->_tbl` WHERE uid=" . $this->_db->quote($uid);
-        $query .= " AND category=" . $this->_db->quote($category) . " LIMIT 1";
-        $this->_db->setQuery($query);
+        $query = "SELECT * FROM `$this->tableName` WHERE uid=" . $this->db->quote($uid);
+        $query .= " AND category=" . $this->db->quote($category) . " LIMIT 1";
+        $this->db->setQuery($query);
 
-        if ($result = $this->_db->loadAssoc()) {
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         }
         return false;

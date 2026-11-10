@@ -35,12 +35,12 @@ class CurationVersion extends Table
      */
     public function getLatest($type_id = '', $get = '*')
     {
-        $query = "SELECT $get FROM $this->_tbl WHERE type_id=" . $this->_db->quote($type_id);
+        $query = "SELECT $get FROM $this->tableName WHERE type_id=" . $this->db->quote($type_id);
         $query .= " ORDER BY id DESC LIMIT 1";
 
-        $this->_db->setQuery($query);
+        $this->db->setQuery($query);
 
-        $result = $this->_db->loadObjectList();
+        $result = $this->db->loadObjectList();
         return $result ? $result[0] : null;
     }
 
@@ -52,14 +52,14 @@ class CurationVersion extends Table
      */
     public function loadLatest($type_id = '')
     {
-        $query = "SELECT * FROM $this->_tbl WHERE type_id=" . $this->_db->quote($type_id);
+        $query = "SELECT * FROM $this->tableName WHERE type_id=" . $this->db->quote($type_id);
         $query .= " ORDER BY id DESC LIMIT 1";
-        $this->_db->setQuery($query);
+        $this->db->setQuery($query);
 
-        if ($result = $this->_db->loadAssoc()) {
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }

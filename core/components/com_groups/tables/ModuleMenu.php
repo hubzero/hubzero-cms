@@ -37,9 +37,9 @@ class ModuleMenu extends Table
             return;
         }
 
-        $sql = "SELECT * FROM {$this->_tbl} as m WHERE m.`moduleid`=" . $this->_db->quote($filters['moduleid']);
-        $this->_db->setQuery($sql);
-        return $this->_db->loadObjectList();
+        $sql = "SELECT * FROM {$this->tableName} as m WHERE m.`moduleid`=" . $this->db->quote($filters['moduleid']);
+        $this->db->setQuery($sql);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -54,7 +54,7 @@ class ModuleMenu extends Table
         // create array of values to insert
         $values = [];
         foreach ($pages as $pageid) {
-            $values[] = '(' . $this->_db->quote($moduleid) . ',' . $this->_db->quote($pageid) . ')';
+            $values[] = '(' . $this->db->quote($moduleid) . ',' . $this->db->quote($pageid) . ')';
         }
 
         // make sure we have at least one menu item
@@ -64,10 +64,10 @@ class ModuleMenu extends Table
         }
 
         // add menu items for each page
-        $sql = "INSERT INTO {$this->_tbl}(`moduleid`,`pageid`) VALUES " . implode(',', $values);
-        $this->_db->setQuery($sql);
-        if (!$this->_db->query()) {
-            $this->setError($this->_db->getError());
+        $sql = "INSERT INTO {$this->tableName}(`moduleid`,`pageid`) VALUES " . implode(',', $values);
+        $this->db->setQuery($sql);
+        if (!$this->db->query()) {
+            $this->setError($this->db->getError());
             return false;
         }
 
@@ -90,10 +90,10 @@ class ModuleMenu extends Table
         }
 
         // delete any menu items matching module id
-        $sql = "DELETE FROM {$this->_tbl} WHERE `moduleid`=" . $this->_db->quote($moduleid);
-        $this->_db->setQuery($sql);
-        if (!$this->_db->query()) {
-            $this->setError($this->_db->getError());
+        $sql = "DELETE FROM {$this->tableName} WHERE `moduleid`=" . $this->db->quote($moduleid);
+        $this->db->setQuery($sql);
+        if (!$this->db->query()) {
+            $this->setError($this->db->getError());
             return false;
         }
 

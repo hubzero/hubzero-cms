@@ -41,12 +41,12 @@ class Viewperm extends Table
         if ($sess === null) {
             return false;
         }
-        $query = "SELECT * FROM $this->_tbl WHERE sessnum=" . $this->_db->quote($sess);
+        $query = "SELECT * FROM $this->tableName WHERE sessnum=" . $this->db->quote($sess);
         if ($username) {
-            $query .=  " AND viewuser=" . $this->_db->quote($username);
+            $query .=  " AND viewuser=" . $this->db->quote($username);
         }
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -65,16 +65,16 @@ class Viewperm extends Table
         }
 
         $sql = "UPDATE `viewperm` SET "
-            . "`viewtoken`=" . $this->_db->quote($this->viewtoken) . ", "
-            . "`geometry`=" . $this->_db->quote($this->geometry) . ", "
-            . "`fwhost`=" . $this->_db->quote($this->fwhost) . ", "
-            . "`fwport`=" . $this->_db->quote($this->fwport) . ", "
-            . "`vncpass`=" . $this->_db->quote($this->vncpass) . ", "
-            . "`readonly`=" . $this->_db->quote($this->readonly)
-            . " WHERE `sessnum`=" . $this->_db->quote($this->sessnum)
-            . " AND `viewuser`=" . $this->_db->quote($this->viewuser);
-        $this->_db->setQuery($sql);
-        $this->_db->query();
+            . "`viewtoken`=" . $this->db->quote($this->viewtoken) . ", "
+            . "`geometry`=" . $this->db->quote($this->geometry) . ", "
+            . "`fwhost`=" . $this->db->quote($this->fwhost) . ", "
+            . "`fwport`=" . $this->db->quote($this->fwport) . ", "
+            . "`vncpass`=" . $this->db->quote($this->vncpass) . ", "
+            . "`readonly`=" . $this->db->quote($this->readonly)
+            . " WHERE `sessnum`=" . $this->db->quote($this->sessnum)
+            . " AND `viewuser`=" . $this->db->quote($this->viewuser);
+        $this->db->setQuery($sql);
+        $this->db->query();
     }
 
     /**
@@ -92,13 +92,13 @@ class Viewperm extends Table
         if ($sess === null) {
             return false;
         }
-        $query = "DELETE FROM $this->_tbl WHERE sessnum=" . $this->_db->quote($sess);
+        $query = "DELETE FROM $this->tableName WHERE sessnum=" . $this->db->quote($sess);
         if ($username) {
-            $query .=  " AND viewuser=" . $this->_db->quote($username);
+            $query .=  " AND viewuser=" . $this->db->quote($username);
         }
-        $this->_db->setQuery($query);
-        if (!$this->_db->query()) {
-            $this->setError(get_class($this) . '::delete failed - ' . $this->_db->getErrorMsg());
+        $this->db->setQuery($query);
+        if (!$this->db->query()) {
+            $this->setError(get_class($this) . '::delete failed - ' . $this->db->getErrorMsg());
             return false;
         }
         return true;
@@ -112,10 +112,10 @@ class Viewperm extends Table
      */
     public function update($updateNulls = false)
     {
-        $ret = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, $updateNulls);
+        $ret = $this->db->updateObject($this->tableName, $this, $this->tableKey, $updateNulls);
 
         if (!$ret) {
-            $this->setError(get_class($this) . '::update failed - ' . $this->_db->getErrorMsg());
+            $this->setError(get_class($this) . '::update failed - ' . $this->db->getErrorMsg());
             return false;
         }
         return true;
@@ -128,10 +128,10 @@ class Viewperm extends Table
      */
     public function insert()
     {
-        $ret = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
+        $ret = $this->db->insertObject($this->tableName, $this, $this->tableKey);
 
         if (!$ret) {
-            $this->setError(get_class($this) . '::insert failed - ' . $this->_db->getErrorMsg());
+            $this->setError(get_class($this) . '::insert failed - ' . $this->db->getErrorMsg());
             return false;
         }
         return true;

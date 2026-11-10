@@ -62,14 +62,14 @@ class Blog extends Table
         if ($projectid === null) {
             return false;
         }
-        $pc = new \Components\Projects\Tables\Comment($this->_db);
+        $pc = new \Components\Projects\Tables\Comment($this->db);
 
         $query = "SELECT m.*, (SELECT COUNT(*) FROM " . $pc->getTableName() . " AS c
 			WHERE c.itemid=m.id AND c.tbl='blog')
 			AS comments, u.name " . $this->buildQuery($projectid, $filters, $id);
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -86,13 +86,13 @@ class Blog extends Table
         if (!$projectid || !$uid) {
             return false;
         }
-        $query = "SELECT id FROM $this->_tbl WHERE posted_by="
-                . $this->_db->quote($uid) . " AND projectid="
-                . $this->_db->quote($projectid)
-                . " AND blogentry=" . $this->_db->quote($entry)
-                . " AND posted  LIKE " . $this->_db->quote($today . '%');
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $query = "SELECT id FROM $this->tableName WHERE posted_by="
+                . $this->db->quote($uid) . " AND projectid="
+                . $this->db->quote($projectid)
+                . " AND blogentry=" . $this->db->quote($entry)
+                . " AND posted  LIKE " . $this->db->quote($today . '%');
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -108,12 +108,12 @@ class Blog extends Table
         if (!$projectid) {
             return false;
         }
-        $query  = "FROM $this->_tbl AS m,
+        $query  = "FROM $this->tableName AS m,
 					#__users AS u
-					WHERE m.projectid=" . $this->_db->quote($projectid) . " AND m.posted_by=u.id ";
+					WHERE m.projectid=" . $this->db->quote($projectid) . " AND m.posted_by=u.id ";
 
         if ($id) {
-            $query .= " AND m.id=" . $this->_db->quote($id);
+            $query .= " AND m.id=" . $this->db->quote($id);
         } else {
             if (isset($filters['posted_by']) && $filters['posted_by'] != 0) {
                 $query .= " AND m.posted_by=" . intval($filters['posted_by']);
@@ -126,7 +126,7 @@ class Blog extends Table
             }
             if (isset($filters['search']) && $filters['search'] != '') {
                 $filters['search'] = strtolower(stripslashes($filters['search']));
-                $query .= " AND (LOWER(m.blogentry) LIKE " . $this->_db->quote('%' . $filters['search'] . '%') . ")";
+                $query .= " AND (LOWER(m.blogentry) LIKE " . $this->db->quote('%' . $filters['search'] . '%') . ")";
             }
         }
         $query .= " AND m.state != 2";
@@ -156,8 +156,8 @@ class Blog extends Table
         $filters['limit'] = 0;
         $query = "SELECT COUNT(*) " . $this->buildQuery($projectid, $filters);
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -176,12 +176,12 @@ class Blog extends Table
             return false;
         }
 
-        $query  = ($permanent) ? "DELETE FROM $this->_tbl " : "UPDATE $this->_tbl SET state = 2 ";
-        $query .= " WHERE id=" . $this->_db->quote($id);
+        $query  = ($permanent) ? "DELETE FROM $this->tableName " : "UPDATE $this->tableName SET state = 2 ";
+        $query .= " WHERE id=" . $this->db->quote($id);
 
-        $this->_db->setQuery($query);
-        if (!$this->_db->query()) {
-            $this->setError($this->_db->getErrorMsg());
+        $this->db->setQuery($query);
+        if (!$this->db->query()) {
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;
@@ -203,12 +203,12 @@ class Blog extends Table
             return false;
         }
 
-        $query  = ($permanent) ? "DELETE FROM $this->_tbl " : "UPDATE $this->_tbl SET state = 2 ";
+        $query  = ($permanent) ? "DELETE FROM $this->tableName " : "UPDATE $this->tableName SET state = 2 ";
         $query .= " WHERE projectid=" . intval($projectid);
 
-        $this->_db->setQuery($query);
-        if (!$this->_db->query()) {
-            $this->setError($this->_db->getErrorMsg());
+        $this->db->setQuery($query);
+        if (!$this->db->query()) {
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;

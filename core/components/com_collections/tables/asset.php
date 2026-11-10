@@ -66,12 +66,12 @@ class Asset extends Table
             $this->created_by = User::get('id');
             $this->state      = 1;
 
-            $query = "SELECT ordering FROM $this->_tbl "
-                . "WHERE item_id=" . $this->_db->quote($this->item_id)
+            $query = "SELECT ordering FROM $this->tableName "
+                . "WHERE item_id=" . $this->db->quote($this->item_id)
                 . " ORDER BY ordering DESC LIMIT 1";
-            $this->_db->setQuery($query);
+            $this->db->setQuery($query);
 
-            $this->ordering = (int) $this->_db->loadResult() + 1;
+            $this->ordering = (int) $this->db->loadResult() + 1;
         }
 
         return true;
@@ -114,8 +114,8 @@ class Asset extends Table
             case 'count':
                 $query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
 
-                $this->_db->setQuery($query);
-                return $this->_db->loadResult();
+                $this->db->setQuery($query);
+                return $this->db->loadResult();
                 break;
 
             case 'one':
@@ -167,8 +167,8 @@ class Asset extends Table
                     $query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
                 }
 
-                $this->_db->setQuery($query);
-                return $this->_db->loadObjectList();
+                $this->db->setQuery($query);
+                return $this->db->loadObjectList();
                 break;
         }
     }
@@ -182,7 +182,7 @@ class Asset extends Table
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildQuery($filters = [])
     {
-        $query  = " FROM $this->_tbl AS a";
+        $query  = " FROM $this->tableName AS a";
         $query .= " LEFT JOIN #__users AS u ON a.created_by=u.id";
 
         $where = [];
@@ -192,24 +192,24 @@ class Asset extends Table
                 $filters['item_id'] = array_map('intval', $filters['item_id']);
                 $where[] = "a.item_id IN (" . implode(',', $filters['item_id']) . ")";
             } else {
-                $where[] = "a.item_id=" . $this->_db->quote(intval($filters['item_id']));
+                $where[] = "a.item_id=" . $this->db->quote(intval($filters['item_id']));
             }
         }
         if (isset($filters['filename'])) {
-            $where[] = "a.filename=" . $this->_db->quote($filters['filename']);
+            $where[] = "a.filename=" . $this->db->quote($filters['filename']);
         }
         if (isset($filters['search']) && $filters['search'] != '') {
             $searchTerm = '%' . strtolower($filters['search']) . '%';
-            $where[] = "(LOWER(a.filename) LIKE " . $this->_db->quote($searchTerm)
-                . " OR LOWER(a.description) LIKE " . $this->_db->quote($searchTerm) . ")";
+            $where[] = "(LOWER(a.filename) LIKE " . $this->db->quote($searchTerm)
+                . " OR LOWER(a.description) LIKE " . $this->db->quote($searchTerm) . ")";
         }
         if (isset($filters['created_by'])) {
-            $where[] = "a.created_by=" . $this->_db->quote(intval($filters['created_by']));
+            $where[] = "a.created_by=" . $this->db->quote(intval($filters['created_by']));
         }
         if (!isset($filters['state'])) {
             $filters['state'] = 1;
         }
-        $where[] = "a.state=" . $this->_db->quote(intval($filters['state']));
+        $where[] = "a.state=" . $this->db->quote(intval($filters['state']));
 
         if (count($where) > 0) {
             $query .= " WHERE ";
@@ -304,7 +304,7 @@ class Asset extends Table
      */
     public function delete($oid = null)
     {
-        $k = $this->_tbl_key;
+        $k = $this->tableKey;
         if ($oid) {
             $this->$k = intval($oid);
         }

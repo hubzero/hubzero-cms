@@ -57,9 +57,9 @@ class TableInternalsTest extends TestCase
         $table->bind([
             'id'       => 5,
             'title'    => 'A thing',
-            '_tbl'     => '#__elsewhere',
-            '_tbl_key' => 'title',
-            '_db'      => null,
+            'tableName'  => '#__elsewhere',
+            'tableKey'   => 'title',
+            'db'         => null,
             'fieldCache' => [],
         ]);
 

@@ -71,14 +71,14 @@ class Author extends Table
             return false;
         }
 
-        $query  = "SELECT * FROM $this->_tbl WHERE publication_version_id="
-                . $this->_db->quote($vid) . " AND user_id=" . $this->_db->quote($uid);
+        $query  = "SELECT * FROM $this->tableName WHERE publication_version_id="
+                . $this->db->quote($vid) . " AND user_id=" . $this->db->quote($uid);
         $query .= " AND (role IS NULL OR role != 'submitter') LIMIT 1";
-        $this->_db->setQuery($query);
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery($query);
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -102,11 +102,11 @@ class Author extends Table
             return false;
         }
         $uids = "'" . implode("','", $uids) . "'";
-        $query  = "SELECT id FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid) . " AND id IN (" . $uids . ")";
+        $query  = "SELECT id FROM $this->tableName WHERE publication_version_id=" . $this->db->quote($vid) . " AND id IN (" . $uids . ")";
         $query .= " AND (role != 'submitter')";
         $query .= " ORDER BY ordering";
-        $this->_db->setQuery($query);
-        if ($result = $this->_db->loadAssocList()) {
+        $this->db->setQuery($query);
+        if ($result = $this->db->loadAssocList()) {
             return $result;
         } else {
             return false;
@@ -135,14 +135,14 @@ class Author extends Table
             return false;
         }
 
-        $query = "SELECT * FROM $this->_tbl WHERE publication_version_id="
-                . $this->_db->quote($vid) . " AND project_owner_id=" . $this->_db->quote($owner_id);
+        $query = "SELECT * FROM $this->tableName WHERE publication_version_id="
+                . $this->db->quote($vid) . " AND project_owner_id=" . $this->db->quote($owner_id);
         $query .= " AND (role IS NULL OR role != 'submitter') LIMIT 1";
-        $this->_db->setQuery($query);
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery($query);
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -174,14 +174,14 @@ class Author extends Table
         if ($get_uids == 2) {
             $query  = "SELECT A.project_owner_id";
         }
-        $query .= " FROM $this->_tbl as A ";
+        $query .= " FROM $this->tableName as A ";
 
         if (!$get_uids) {
             $query .= " JOIN #__project_owners as PO ON PO.id=A.project_owner_id ";
             $query .= " LEFT JOIN #__xprofiles as x ON x.uidNumber=PO.userid ";
         }
 
-        $query .= " WHERE A.publication_version_id=" . $this->_db->quote($vid);
+        $query .= " WHERE A.publication_version_id=" . $this->db->quote($vid);
         $query .= $active ? " AND A.status=1" : "";
 
         if ($incSubmitter == false) {
@@ -189,8 +189,8 @@ class Author extends Table
         }
 
         $query .= " ORDER BY A.ordering ASC ";
-        $this->_db->setQuery($query);
-        $results = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $results = $this->db->loadObjectList();
 
         if ($return_uid_array) {
             $uids = [];
@@ -236,13 +236,13 @@ class Author extends Table
         if ($get_uids == 2) {
             $query  = "SELECT A.project_owner_id";
         }
-        $query .= " FROM $this->_tbl as A ";
+        $query .= " FROM $this->tableName as A ";
 
         if (!$get_uids) {
             $query .= " JOIN #__project_owners as PO ON PO.id=A.project_owner_id ";
         }
 
-        $query .= " WHERE A.publication_version_id=" . $this->_db->quote($vid);
+        $query .= " WHERE A.publication_version_id=" . $this->db->quote($vid);
         $query .= $active ? " AND A.status=1" : "";
 
         if ($incSubmitter == false) {
@@ -250,8 +250,8 @@ class Author extends Table
         }
 
         $query .= " ORDER BY A.ordering ASC ";
-        $this->_db->setQuery($query);
-        $results = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $results = $this->db->loadObjectList();
 
         if (!$get_uids) {
             foreach ($results as $res) {
@@ -340,7 +340,7 @@ class Author extends Table
         $vidList = implode(',', $vids);
 
         $query  = "SELECT A.*, PO.invited_name, PO.invited_email ";
-        $query .= " FROM $this->_tbl as A ";
+        $query .= " FROM $this->tableName as A ";
         $query .= " JOIN #__project_owners as PO ON PO.id = A.project_owner_id ";
         $query .= " WHERE A.publication_version_id IN ($vidList) ";
         if ($active) {
@@ -351,8 +351,8 @@ class Author extends Table
         }
         $query .= " ORDER BY A.publication_version_id ASC, A.ordering ASC ";
 
-        $this->_db->setQuery($query);
-        $authors = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $authors = $this->db->loadObjectList();
         if (!$authors) {
             return [];
         }
@@ -455,10 +455,10 @@ class Author extends Table
             return false;
         }
 
-        $query = "SELECT * FROM $this->_tbl WHERE role='submitter' AND publication_version_id=" . $this->_db->quote($vid) . " LIMIT 1";
-        $this->_db->setQuery($query);
+        $query = "SELECT * FROM $this->tableName WHERE role='submitter' AND publication_version_id=" . $this->db->quote($vid) . " LIMIT 1";
+        $this->db->setQuery($query);
 
-        $result = $this->_db->loadObjectList();
+        $result = $this->db->loadObjectList();
         if ($result) {
             return $result[0];
         }
@@ -466,14 +466,14 @@ class Author extends Table
         $query  = "SELECT A.id as owner_id, x.uidNumber as user_id, ";
         $query .= " COALESCE(A.name , x.name) as name, x.username, x.orcid, COALESCE(A.organization , x.organization) as organization ";
         $query .= " FROM #__xprofiles as x  ";
-        $query .= " LEFT JOIN $this->_tbl as A ON x.uidNumber=A.user_id 
-		            AND A.publication_version_id=" . $this->_db->quote($vid);
+        $query .= " LEFT JOIN $this->tableName as A ON x.uidNumber=A.user_id 
+		            AND A.publication_version_id=" . $this->db->quote($vid);
         $query .= " AND A.status=1 AND A.role = 'submitter' ";
-        $query .= " WHERE (x.uidNumber=" . $this->_db->quote($by) . ")";
+        $query .= " WHERE (x.uidNumber=" . $this->db->quote($by) . ")";
         $query .= " LIMIT 1 ";
 
-        $this->_db->setQuery($query);
-        $result = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $result = $this->db->loadObjectList();
         return $result ? $result[0] : false;
     }
 
@@ -502,13 +502,13 @@ class Author extends Table
         }
 
         // Get project owner info
-        $objO = new \Components\Projects\Tables\Owner($this->_db);
+        $objO = new \Components\Projects\Tables\Owner($this->db);
         $owner_id = $objO->getOwnerId($projectid, $by);
 
         // Load submitter record if exists
-        $query = "SELECT * FROM $this->_tbl WHERE role='submitter' AND publication_version_id=" . $this->_db->quote($vid);
-        $this->_db->setQuery($query);
-        if ($result = $this->_db->loadAssoc()) {
+        $query = "SELECT * FROM $this->tableName WHERE role='submitter' AND publication_version_id=" . $this->db->quote($vid);
+        $this->db->setQuery($query);
+        if ($result = $this->db->loadAssoc()) {
             $this->bind($result);
             $this->modified    = Date::toSql();
             $this->modified_by = User::get('id');
@@ -559,15 +559,15 @@ class Author extends Table
         $query .= " COALESCE(A.firstName, x.givenName) firstName, ";
         $query .= " COALESCE(A.lastName, x.surname) lastName ";
         $query .= " FROM #__xprofiles as x  ";
-        $query .= " LEFT JOIN $this->_tbl as A ON x.uidNumber=A.user_id
-		            AND A.publication_version_id=" . $this->_db->quote($vid);
+        $query .= " LEFT JOIN $this->tableName as A ON x.uidNumber=A.user_id
+		            AND A.publication_version_id=" . $this->db->quote($vid);
         $query .= $active ? " AND A.status=1" : "";
-        $query .= " WHERE x.uidNumber=" . $this->_db->quote($uid);
+        $query .= " WHERE x.uidNumber=" . $this->db->quote($uid);
         $query .= " AND (A.role IS NULL OR A.role != 'submitter')  ";
         $query .= " LIMIT 1 ";
 
-        $this->_db->setQuery($query);
-        $result = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $result = $this->db->loadObjectList();
         return $result ? $result[0] : false;
     }
 
@@ -591,15 +591,15 @@ class Author extends Table
         }
         $query  = "SELECT  A.*, po.invited_email as invited_email, po.invited_name as invited_name ";
         $query .= " FROM #__project_owners as po  ";
-        $query .= " LEFT JOIN $this->_tbl as A ON po.id=A.project_owner_id
-		            AND A.publication_version_id=" . $this->_db->quote($vid);
+        $query .= " LEFT JOIN $this->tableName as A ON po.id=A.project_owner_id
+		            AND A.publication_version_id=" . $this->db->quote($vid);
         $query .= " AND po.status!=2 ";
-        $query .= " WHERE po.id=" . $this->_db->quote($owner_id);
+        $query .= " WHERE po.id=" . $this->db->quote($owner_id);
         $query .= " AND (A.role IS NULL OR A.role != 'submitter')  ";
         $query .= " LIMIT 1 ";
 
-        $this->_db->setQuery($query);
-        $result = $this->_db->loadObject();
+        $this->db->setQuery($query);
+        $result = $this->db->loadObject();
 
         if (!empty($result->user_id)) {
             $user = \Components\Members\Models\Member::oneOrNew($result->user_id);
@@ -642,14 +642,14 @@ class Author extends Table
         }
         $query  = "SELECT  A.*, po.invited_email, po.invited_name";
         $query .= " FROM #__project_owners as po  ";
-        $query .= " LEFT JOIN $this->_tbl as A ON po.id=A.project_owner_id";
+        $query .= " LEFT JOIN $this->tableName as A ON po.id=A.project_owner_id";
         $query .= " AND A.status=1 ";
-        $query .= " WHERE A.id=" . $this->_db->quote($id);
+        $query .= " WHERE A.id=" . $this->db->quote($id);
         $query .= " AND (A.role IS NULL OR A.role != 'submitter')  ";
         $query .= " LIMIT 1 ";
 
-        $this->_db->setQuery($query);
-        $result = $this->_db->loadObject();
+        $this->db->setQuery($query);
+        $result = $this->db->loadObject();
 
         if (!empty($result->user_id)) {
             $user = \Components\Members\Models\Member::oneOrNew($result->user_id);
@@ -691,10 +691,10 @@ class Author extends Table
             return false;
         }
 
-        $query = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid);
-        $this->_db->setQuery($query);
-        if (!$this->_db->query()) {
-            $this->setError($this->_db->getErrorMsg());
+        $query = "DELETE FROM $this->tableName WHERE publication_version_id=" . $this->db->quote($vid);
+        $this->db->setQuery($query);
+        if (!$this->db->query()) {
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;
@@ -723,16 +723,16 @@ class Author extends Table
             return false;
         }
         if ($delete == 1) {
-            $query  = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid) . " AND user_id=" . $this->_db->quote($uid);
+            $query  = "DELETE FROM $this->tableName WHERE publication_version_id=" . $this->db->quote($vid) . " AND user_id=" . $this->db->quote($uid);
             $query .= " AND (role IS NULL OR role != 'submitter')  ";
         } else {
-            $query  = "UPDATE $this->_tbl SET status=0 WHERE publication_version_id=" . $this->_db->quote($vid) . " AND user_id=" . $this->_db->quote($uid);
+            $query  = "UPDATE $this->tableName SET status=0 WHERE publication_version_id=" . $this->db->quote($vid) . " AND user_id=" . $this->db->quote($uid);
             $query .= " AND (role IS NULL OR role != 'submitter')  ";
         }
 
-        $this->_db->setQuery($query);
-        if (!$this->_db->query()) {
-            $this->setError($this->_db->getErrorMsg());
+        $this->db->setQuery($query);
+        if (!$this->db->query()) {
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;
@@ -761,16 +761,16 @@ class Author extends Table
             return false;
         }
         if ($delete == 1) {
-            $query  = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid) . " AND project_owner_id=" . $this->_db->quote($owner_id);
+            $query  = "DELETE FROM $this->tableName WHERE publication_version_id=" . $this->db->quote($vid) . " AND project_owner_id=" . $this->db->quote($owner_id);
             $query .= " AND (role IS NULL OR role != 'submitter')  ";
         } else {
-            $query  = "UPDATE $this->_tbl SET status=0 WHERE publication_version_id=" . $this->_db->quote($vid) . " AND project_owner_id=" . $this->_db->quote($owner_id);
+            $query  = "UPDATE $this->tableName SET status=0 WHERE publication_version_id=" . $this->db->quote($vid) . " AND project_owner_id=" . $this->db->quote($owner_id);
             $query .= " AND (role IS NULL OR role != 'submitter')  ";
         }
 
-        $this->_db->setQuery($query);
-        if (!$this->_db->query()) {
-            $this->setError($this->_db->getErrorMsg());
+        $this->db->setQuery($query);
+        if (!$this->db->query()) {
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;
@@ -783,25 +783,25 @@ class Author extends Table
      */
     public function createAssociation()
     {
-        $query = "INSERT INTO $this->_tbl (	publication_version_id, user_id, ordering,
+        $query = "INSERT INTO $this->tableName (	publication_version_id, user_id, ordering,
 				name, firstName, lastName, organization, credit, created,
 				created_by, status, project_owner_id)
-				VALUES(" . $this->_db->quote($this->publication_version_id) . ", "
-                . $this->_db->quote($this->user_id) . ", "
-                . $this->_db->quote($this->ordering) . ", "
-                . $this->_db->quote($this->name) . ", "
-                . $this->_db->quote($this->firstName) . ", "
-                . $this->_db->quote($this->lastName) . ", "
-                . $this->_db->quote($this->organization) . ", "
-                . $this->_db->quote($this->credit) . ", "
-                . $this->_db->quote(Date::toSql()) . ", "
-                . $this->_db->quote($this->created_by) . ", "
-                . $this->_db->quote($this->status) . ", "
-                . $this->_db->quote($this->project_owner_id) . ")";
+				VALUES(" . $this->db->quote($this->publication_version_id) . ", "
+                . $this->db->quote($this->user_id) . ", "
+                . $this->db->quote($this->ordering) . ", "
+                . $this->db->quote($this->name) . ", "
+                . $this->db->quote($this->firstName) . ", "
+                . $this->db->quote($this->lastName) . ", "
+                . $this->db->quote($this->organization) . ", "
+                . $this->db->quote($this->credit) . ", "
+                . $this->db->quote(Date::toSql()) . ", "
+                . $this->db->quote($this->created_by) . ", "
+                . $this->db->quote($this->status) . ", "
+                . $this->db->quote($this->project_owner_id) . ")";
 
-        $this->_db->setQuery($query);
-        if (!$this->_db->query()) {
-            $this->setError($this->_db->getErrorMsg());
+        $this->db->setQuery($query);
+        if (!$this->db->query()) {
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;
@@ -814,25 +814,25 @@ class Author extends Table
      */
     public function updateAssociationByOwner()
     {
-        $query = "UPDATE $this->_tbl
-					SET ordering=" . $this->_db->quote($this->ordering) . ",
-					name=" . $this->_db->quote($this->name) . ",
-					firstName=" . $this->_db->quote($this->firstName) . ",
-					lastName=" . $this->_db->quote($this->lastName) . ",
-					credit=" . $this->_db->quote($this->credit) . ",
-					modified=" . $this->_db->quote($this->modified) . ",
-					modified_by=" . $this->_db->quote($this->modified_by) . ",
-					role=" . $this->_db->quote($this->role) . ",
-					name=" . $this->_db->quote($this->name) . ",
-					status=" . $this->_db->quote($this->status) . ",
-					organization=" . $this->_db->quote($this->organization) . "
-					WHERE publication_version_id=" . $this->_db->quote($this->publication_version_id)
-                    . " AND project_owner_id=" . $this->_db->quote($this->project_owner_id)
+        $query = "UPDATE $this->tableName
+					SET ordering=" . $this->db->quote($this->ordering) . ",
+					name=" . $this->db->quote($this->name) . ",
+					firstName=" . $this->db->quote($this->firstName) . ",
+					lastName=" . $this->db->quote($this->lastName) . ",
+					credit=" . $this->db->quote($this->credit) . ",
+					modified=" . $this->db->quote($this->modified) . ",
+					modified_by=" . $this->db->quote($this->modified_by) . ",
+					role=" . $this->db->quote($this->role) . ",
+					name=" . $this->db->quote($this->name) . ",
+					status=" . $this->db->quote($this->status) . ",
+					organization=" . $this->db->quote($this->organization) . "
+					WHERE publication_version_id=" . $this->db->quote($this->publication_version_id)
+                    . " AND project_owner_id=" . $this->db->quote($this->project_owner_id)
                     . " AND (role IS NULL OR role != 'submitter')";
 
-        $this->_db->setQuery($query);
-        if (!$this->_db->query()) {
-            $this->setError($this->_db->getErrorMsg());
+        $this->db->setQuery($query);
+        if (!$this->db->query()) {
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;
@@ -854,10 +854,10 @@ class Author extends Table
 					x.name, x.organization, x.uidNumber, x.givenName, x.surname, x.orcid ";
         $query .= " FROM #__project_owners as PO  ";
         $query .= " LEFT JOIN #__xprofiles as x ON x.uidNumber=PO.userid ";
-        $query .= " WHERE PO.id=" . $this->_db->quote($owner_id) . " LIMIT 1";
+        $query .= " WHERE PO.id=" . $this->db->quote($owner_id) . " LIMIT 1";
 
-        $this->_db->setQuery($query);
-        $result = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $result = $this->db->loadObjectList();
         return $result ? $result[0] : false;
     }
 
@@ -875,8 +875,8 @@ class Author extends Table
         if (!$vid) {
             return false;
         }
-        $this->_db->setQuery("SELECT count(*) FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid) . " AND status=1 ");
-        return $this->_db->loadResult();
+        $this->db->setQuery("SELECT count(*) FROM $this->tableName WHERE publication_version_id=" . $this->db->quote($vid) . " AND status=1 ");
+        return $this->db->loadResult();
     }
 
     /**
@@ -893,10 +893,10 @@ class Author extends Table
         if (!$vid) {
             return false;
         }
-        $this->_db->setQuery("SELECT ordering FROM $this->_tbl
-			WHERE publication_version_id=" . $this->_db->quote($vid) . "
+        $this->db->setQuery("SELECT ordering FROM $this->tableName
+			WHERE publication_version_id=" . $this->db->quote($vid) . "
 			ORDER BY ordering DESC LIMIT 1");
-        return $this->_db->loadResult();
+        return $this->db->loadResult();
     }
 
     /**
@@ -909,18 +909,18 @@ class Author extends Table
     {
         switch ($move) {
             case 'orderup':
-                $sql = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($this->publication_version_id) . " AND ordering < " . $this->_db->quote($this->ordering) . " ORDER BY ordering DESC LIMIT 1";
+                $sql = "SELECT * FROM $this->tableName WHERE publication_version_id=" . $this->db->quote($this->publication_version_id) . " AND ordering < " . $this->db->quote($this->ordering) . " ORDER BY ordering DESC LIMIT 1";
                 break;
 
             case 'orderdown':
-                $sql = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($this->publication_version_id) . " AND ordering > " . $this->_db->quote($this->ordering) . " ORDER BY ordering LIMIT 1";
+                $sql = "SELECT * FROM $this->tableName WHERE publication_version_id=" . $this->db->quote($this->publication_version_id) . " AND ordering > " . $this->db->quote($this->ordering) . " ORDER BY ordering LIMIT 1";
                 break;
         }
-        $this->_db->setQuery($sql);
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery($sql);
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -935,9 +935,9 @@ class Author extends Table
      */
     public function saveORCIDPutCode($authorID, $putCode)
     {
-        $query = "SELECT * FROM $this->_tbl WHERE id=" . $this->_db->quote($authorID);
-        $this->_db->setQuery($query);
-        if ($result = $this->_db->loadAssoc()) {
+        $query = "SELECT * FROM $this->tableName WHERE id=" . $this->db->quote($authorID);
+        $this->db->setQuery($query);
+        if ($result = $this->db->loadAssoc()) {
             $this->bind($result);
         }
 

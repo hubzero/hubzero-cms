@@ -24,7 +24,7 @@ class ProgressFactors extends Table
     public function __construct(&$db)
     {
         parent::__construct('#__courses_progress_factors', 'id', $db);
-        $this->_trackAssets = false;
+        $this->trackAssets = false;
     }
 
     /**

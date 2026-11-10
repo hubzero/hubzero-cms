@@ -58,13 +58,13 @@ class Tool extends Table
             return false;
         }
 
-        $query = "SELECT * FROM $this->_tbl as t WHERE t.toolname=" . $this->_db->quote($toolname) . " LIMIT 1";
+        $query = "SELECT * FROM $this->tableName as t WHERE t.toolname=" . $this->db->quote($toolname) . " LIMIT 1";
 
-        $this->_db->setQuery($query);
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery($query);
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -83,7 +83,7 @@ class Tool extends Table
 
         switch ($filters['filterby']) {
             case 'mine':
-                $filter .= " AND f.registered_by=" . $this->_db->quote(User::get('username')) . " ";
+                $filter .= " AND f.registered_by=" . $this->db->quote(User::get('username')) . " ";
                 break;
             case 'published':
                 $filter .= " AND f.published='1' AND f.state!='9' ";
@@ -98,13 +98,13 @@ class Tool extends Table
         if (isset($filters['search']) && $filters['search'] != '') {
             $search = $filters['search'];
             if (is_numeric($search)) {
-                $filter .= " AND f.id=" . $this->_db->quote(intval($search)) . " ";
+                $filter .= " AND f.id=" . $this->db->quote(intval($search)) . " ";
             } else {
-                $filter .= " AND LOWER(f.toolname) LIKE " . $this->_db->quote('%' . $search . '%') . " ";
+                $filter .= " AND LOWER(f.toolname) LIKE " . $this->db->quote('%' . $search . '%') . " ";
             }
         }
         if (!$admin) {
-            $filter .= " AND m.uidNumber=" . $this->_db->quote(User::get('id')) . " ";
+            $filter .= " AND m.uidNumber=" . $this->db->quote(User::get('id')) . " ";
             $sortby = ($filters['sortby']) ? $filters['sortby'] : 'f.state, f.registered';
         } else {
             $sortby = ($filters['sortby']) ? $filters['sortby'] : 'f.state_changed DESC';
@@ -134,8 +134,8 @@ class Tool extends Table
     {
         $sql = "SELECT count(*) FROM " . $this->buildQuery($filters, $admin);
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadResult();
+        $this->db->setQuery($sql);
+        return $this->db->loadResult();
     }
 
     /**
@@ -155,8 +155,8 @@ class Tool extends Table
 				AND v.state=1
 				ORDER BY v.title, v.toolname, v.revision DESC";
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -175,8 +175,8 @@ class Tool extends Table
             $sql .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
         }
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -186,8 +186,8 @@ class Tool extends Table
      */
     public function getToolsOldScheme()
     {
-        $this->_db->setQuery("SELECT * FROM $this->_tbl");
-        return $this->_db->loadObjectList();
+        $this->db->setQuery("SELECT * FROM $this->tableName");
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -201,8 +201,8 @@ class Tool extends Table
         if ($toolid === null) {
             return false;
         }
-        $this->_db->setQuery("SELECT ticketid FROM `#__tool` WHERE id=" . $this->_db->quote($toolid));
-        return $this->_db->loadResult();
+        $this->db->setQuery("SELECT ticketid FROM `#__tool` WHERE id=" . $this->db->quote($toolid));
+        return $this->db->loadResult();
     }
 
     /**
@@ -218,9 +218,9 @@ class Tool extends Table
         }
         $query = "SELECT r.id FROM `#__tool` as t "
             . "LEFT JOIN `#__resources` as r ON r.alias = t.toolname "
-            . "WHERE t.id=" . $this->_db->quote($toolid);
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+            . "WHERE t.id=" . $this->db->quote($toolid);
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -238,17 +238,17 @@ class Tool extends Table
 
         $query = "SELECT v.instance FROM `#__tool_version` as v "
             . "JOIN `#__resources` as r ON r.alias = v.toolname "
-            . "WHERE r.id=" . $this->_db->quote($rid);
+            . "WHERE r.id=" . $this->db->quote($rid);
         if ($version == 'dev') {
             $query .= " AND v.state=3 LIMIT 1";
         } elseif ($version == 'current') {
             $query .= " AND v.state=1 ORDER BY revision DESC LIMIT 1";
         } else {
-            $query .= " AND v.version=" . $this->_db->quote($version) . " LIMIT 1";
+            $query .= " AND v.version=" . $this->db->quote($version) . " LIMIT 1";
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -264,9 +264,9 @@ class Tool extends Table
         }
         $query = "SELECT t.id FROM `#__tool` as t "
             . "JOIN `#__resources` as r ON r.alias = t.toolname "
-            . "WHERE r.id=" . $this->_db->quote($rid) . " LIMIT 1";
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+            . "WHERE r.id=" . $this->db->quote($rid) . " LIMIT 1";
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -282,9 +282,9 @@ class Tool extends Table
         }
         $query = "SELECT t.toolname FROM `#__tool` as t "
             . "JOIN `#__resources` as r ON r.alias = t.toolname "
-            . "WHERE r.id=" . $this->_db->quote($rid) . " LIMIT 1";
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+            . "WHERE r.id=" . $this->db->quote($rid) . " LIMIT 1";
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -298,8 +298,8 @@ class Tool extends Table
         if ($toolname === null) {
             return false;
         }
-        $this->_db->setQuery("SELECT id FROM `#__tool` WHERE toolname=" . $this->_db->quote($toolname) . " LIMIT 1");
-        return $this->_db->loadResult();
+        $this->db->setQuery("SELECT id FROM `#__tool` WHERE toolname=" . $this->db->quote($toolname) . " LIMIT 1");
+        return $this->db->loadResult();
     }
 
     /**
@@ -314,10 +314,10 @@ class Tool extends Table
         if ($toolid === null or $ticketid === null) {
             return false;
         }
-        $query = "UPDATE `#__tool` SET ticketid=" . $this->_db->quote($ticketid)
-            . " WHERE id=" . $this->_db->quote($toolid);
-        $this->_db->setQuery($query);
-        if ($this->_db->query()) {
+        $query = "UPDATE `#__tool` SET ticketid=" . $this->db->quote($ticketid)
+            . " WHERE id=" . $this->db->quote($toolid);
+        $this->db->setQuery($query);
+        if ($this->db->query()) {
             return true;
         } else {
             return false;
@@ -340,17 +340,17 @@ class Tool extends Table
         if ($newstate or $priority) {
             $query = "UPDATE `#__tool` SET ";
             if ($newstate) {
-                $query .= "state=" . $this->_db->quote($newstate) . ", state_changed='" . Date::toSql() . "'";
+                $query .= "state=" . $this->db->quote($newstate) . ", state_changed='" . Date::toSql() . "'";
             }
             if ($newstate && $priority) {
                 $query .= ", ";
             }
             if ($priority) {
-                $query .= "priority=" . $this->_db->quote($priority);
+                $query .= "priority=" . $this->db->quote($priority);
             }
-            $query .= " WHERE id=" . $this->_db->quote($toolid);
-            $this->_db->setQuery($query);
-            if (!$this->_db->query()) {
+            $query .= " WHERE id=" . $this->db->quote($toolid);
+            $this->db->setQuery($query);
+            if (!$this->db->query()) {
                 return false;
             }
         }
@@ -383,13 +383,13 @@ class Tool extends Table
         $query .= "JOIN #__tool_groups AS g ON t.id=g.toolid AND g.role=1 ";
         $query .= "LEFT JOIN #__xgroups AS xg ON g.cn=xg.cn ";
         if ($toolid) {
-            $query .= "WHERE t.id = " . $this->_db->quote($toolid);
+            $query .= "WHERE t.id = " . $this->db->quote($toolid);
         } elseif ($toolname) {
-            $query .= "WHERE t.toolname = " . $this->_db->quote($toolname);
+            $query .= "WHERE t.toolname = " . $this->db->quote($toolname);
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -402,10 +402,10 @@ class Tool extends Table
     {
         $query  = "SELECT g.cn FROM `#__tool_groups` AS g ";
         $query .= "JOIN `#__xgroups` AS xg ON g.cn=xg.cn ";
-        $query .= "WHERE g.toolid = " . $this->_db->quote($toolid) . " AND g.role=1 LIMIT 1";
+        $query .= "WHERE g.toolid = " . $this->db->quote($toolid) . " AND g.role=1 LIMIT 1";
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -439,10 +439,10 @@ class Tool extends Table
         // @FIXME cn should be unique, this was a workaround for a nanohub data bug
         $query  = "SELECT DISTINCT g.cn FROM `#__tool_groups` AS g ";
         $query .= "JOIN `#__xgroups` AS xg ON g.cn=xg.cn ";
-        $query .= "WHERE g.toolid = " . $this->_db->quote($toolid) . " AND g.role=0 ";
+        $query .= "WHERE g.toolid = " . $this->db->quote($toolid) . " AND g.role=0 ";
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -458,8 +458,8 @@ class Tool extends Table
     {
         $toolinfo = $this->getToolInfo(intval($toolid));
         if ($toolinfo) {
-            $objV = new Version($this->_db);
-            $objA = new Author($this->_db);
+            $objV = new Version($this->db);
+            $objA = new Author($this->db);
             $version = $objV->getVersionInfo(0, $version, $toolinfo[0]->toolname);
             $developers = $this->getToolDevelopers($toolid);
             $authors = $objA->getToolAuthors($version, $toolinfo[0]->rid, $toolinfo[0]->toolname);
@@ -484,7 +484,7 @@ class Tool extends Table
     public function buildToolStatus($toolinfo, $developers, $authors, $version, &$status, $option)
     {
         // Create a Version object
-        $objV = new Version($this->_db);
+        $objV = new Version($this->db);
 
         // Get the component parameters
         $this->config = Component::params($option);

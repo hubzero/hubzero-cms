@@ -65,14 +65,14 @@ class ZoneLocations extends Table
             $zone_id = $this->zone_id;
         }
 
-        $query = 'DELETE FROM ' . $this->_db->quoteName($this->_tbl)
-                . ' WHERE zone_id = ' . $this->_db->quote($zone_id);
-        $this->_db->setQuery($query);
+        $query = 'DELETE FROM ' . $this->db->quoteName($this->tableName)
+                . ' WHERE zone_id = ' . $this->db->quote($zone_id);
+        $this->db->setQuery($query);
 
-        if ($this->_db->query()) {
+        if ($this->db->query()) {
             return true;
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -88,10 +88,10 @@ class ZoneLocations extends Table
         $where = [];
 
         if (isset($filters['zone_id']) && $filters['zone_id'] != '') {
-            $where[] = "c.`zone_id`=" . $this->_db->quote($filters['zone_id']);
+            $where[] = "c.`zone_id`=" . $this->db->quote($filters['zone_id']);
         }
 
-        $query  = "FROM $this->_tbl AS c";
+        $query  = "FROM $this->tableName AS c";
         $query .= " JOIN zones AS t ON c.zone_id=t.id";
 
         if (count($where) > 0) {
@@ -117,8 +117,8 @@ class ZoneLocations extends Table
 
                 $query = "SELECT COUNT(*) " . $this->buildQuery($filters);
 
-                $this->_db->setQuery($query);
-                return $this->_db->loadResult();
+                $this->db->setQuery($query);
+                return $this->db->loadResult();
                 break;
 
             case 'all':
@@ -142,8 +142,8 @@ class ZoneLocations extends Table
                     $query .= ' LIMIT ' . (int) $filters['start'] . ',' . (int) $filters['limit'];
                 }
 
-                $this->_db->setQuery($query);
-                return $this->_db->loadObjectList();
+                $this->db->setQuery($query);
+                return $this->db->loadObjectList();
                 break;
         }
     }

@@ -58,39 +58,39 @@ class Host extends Table
      */
     public function store($insert = null, $kv = null, $updateNulls = false)
     {
-        $k = $this->_tbl_key;
+        $k = $this->tableKey;
 
         if ($insert) {
-            $ret = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
+            $ret = $this->db->insertObject($this->tableName, $this, $this->tableKey);
         } else {
             if ($this->$k) {
                 //$ret = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, $updateNulls);
-                $fmtsql = "UPDATE $this->_tbl SET %s WHERE %s";
+                $fmtsql = "UPDATE $this->tableName SET %s WHERE %s";
                 $tmp = [];
-                foreach (get_object_vars($this) as $ky => $v) {
+                foreach ($this->getProperties() as $ky => $v) {
                     if (is_array($v) or is_object($v) or $ky[0] == '_') { // internal or NA field
                         continue;
                     }
-                    if ($ky == $this->_tbl_key) { // PK not to be updated
-                        $where = $this->_tbl_key . '=' . ($kv ? $this->_db->quote($kv) : $this->_db->quote($v));
+                    if ($ky == $this->tableKey) { // PK not to be updated
+                        $where = $this->tableKey . '=' . ($kv ? $this->db->quote($kv) : $this->db->quote($v));
                         //continue;
                     }
                     if ($v === null) {
                         continue;
                     } else {
                         //$val = $this->_db->isQuoted($ky) ? $this->_db->quote($v) : (int) $v;
-                        $val = $this->_db->quote($v);
+                        $val = $this->db->quote($v);
                     }
-                    $tmp[] = $this->_db->quoteName($ky) . '=' . $val;
+                    $tmp[] = $this->db->quoteName($ky) . '=' . $val;
                 }
-                $this->_db->setQuery(sprintf($fmtsql, implode(',', $tmp), $where));
-                $ret = $this->_db->query();
+                $this->db->setQuery(sprintf($fmtsql, implode(',', $tmp), $where));
+                $ret = $this->db->query();
             } else {
-                $ret = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
+                $ret = $this->db->insertObject($this->tableName, $this, $this->tableKey);
             }
         }
         if (!$ret) {
-            $this->setError(get_class($this) . '::store failed - ' . $this->_db->getErrorMsg());
+            $this->setError(get_class($this) . '::store failed - ' . $this->db->getErrorMsg());
             return false;
         } else {
             return true;
@@ -105,19 +105,19 @@ class Host extends Table
      */
     public function delete($oid = null)
     {
-        $k = $this->_tbl_key;
+        $k = $this->tableKey;
         if ($oid) {
             $this->$k = $oid;
         }
 
-        $query = 'DELETE FROM ' . $this->_db->quoteName($this->_tbl)
-                . ' WHERE ' . $this->_tbl_key . ' = ' . $this->_db->quote($this->$k);
-        $this->_db->setQuery($query);
+        $query = 'DELETE FROM ' . $this->db->quoteName($this->tableName)
+                . ' WHERE ' . $this->tableKey . ' = ' . $this->db->quote($this->$k);
+        $this->db->setQuery($query);
 
-        if ($this->_db->query()) {
+        if ($this->db->query()) {
             return true;
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -133,26 +133,26 @@ class Host extends Table
         $where = [];
 
         if (isset($filters['status']) && $filters['status'] != '') {
-            $where[] = "c.`status`=" . $this->_db->quote($filters['status']);
+            $where[] = "c.`status`=" . $this->db->quote($filters['status']);
         }
         if (isset($filters['portbase']) && $filters['portbase'] != '') {
-            $where[] = "c.`portbase`=" . $this->_db->quote($filters['portbase']);
+            $where[] = "c.`portbase`=" . $this->db->quote($filters['portbase']);
         }
         if (isset($filters['uses']) && $filters['uses'] != '') {
-            $where[] = "c.`uses`=" . $this->_db->quote($filters['uses']);
+            $where[] = "c.`uses`=" . $this->db->quote($filters['uses']);
         }
         if (isset($filters['provisions']) && $filters['provisions'] != '') {
-            $where[] = "c.`provisions`=" . $this->_db->quote($filters['provisions']);
+            $where[] = "c.`provisions`=" . $this->db->quote($filters['provisions']);
         }
         if (isset($filters['search']) && $filters['search'] != '') {
-            $where[] = "(LOWER(c.hostname) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . ")";
+            $where[] = "(LOWER(c.hostname) LIKE " . $this->db->quote('%' . strtolower($filters['search']) . '%') . ")";
         }
 
-        $query = "FROM $this->_tbl AS c";
+        $query = "FROM $this->tableName AS c";
         $query .= " LEFT JOIN zones AS v ON v.id = c.zone_id";
         if (isset($filters['hosttype']) && $filters['hosttype']) {
             $query .= " JOIN hosttype AS t ON c.provisions & t.value != 0";
-            $where[] = "t.name = " . $this->_db->quote($filters['hosttype']);
+            $where[] = "t.name = " . $this->db->quote($filters['hosttype']);
         }
         if (count($where) > 0) {
             $query .= " WHERE ";
@@ -174,8 +174,8 @@ class Host extends Table
 
         $query = "SELECT COUNT(*) " . $this->buildQuery($filters);
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -203,7 +203,7 @@ class Host extends Table
             $query .= ' LIMIT ' . (int) $filters['start'] . ',' . (int) $filters['limit'];
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 }

@@ -43,17 +43,17 @@ class Role extends Table
         }
         $oid = trim($oid);
 
-        $query  = "SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->quote($oid);
+        $query  = "SELECT * FROM $this->tableName WHERE alias=" . $this->db->quote($oid);
         if (!is_null($offering_id)) {
-            $query .= " AND offering_id=" . $this->_db->quote(intval($offering_id));
+            $query .= " AND offering_id=" . $this->db->quote(intval($offering_id));
         }
         $query .= " LIMIT 1";
 
-        $this->_db->setQuery($query);
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery($query);
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -93,7 +93,7 @@ class Role extends Table
      */
     private function buildQuery($filters = [])
     {
-        $query = " FROM $this->_tbl AS r";
+        $query = " FROM $this->tableName AS r";
 
         $where = [];
         if (isset($filters['offering_id'])) {
@@ -107,13 +107,13 @@ class Role extends Table
         }
         if (isset($filters['alias']) && $filters['alias']) {
             if (substr($filters['alias'], 0, 1) == '!') {
-                $where[] = "r.`alias`!=" . $this->_db->quote(ltrim($filters['alias'], '!'));
+                $where[] = "r.`alias`!=" . $this->db->quote(ltrim($filters['alias'], '!'));
             } else {
-                $where[] = "r.`alias`=" . $this->_db->quote($filters['alias']);
+                $where[] = "r.`alias`=" . $this->db->quote($filters['alias']);
             }
         }
         if (isset($filters['search']) && $filters['search']) {
-            $where[] = "LOWER(r.`title`) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%');
+            $where[] = "LOWER(r.`title`) LIKE " . $this->db->quote('%' . strtolower($filters['search']) . '%');
         }
 
         if (count($where) > 0) {
@@ -134,8 +134,8 @@ class Role extends Table
         $query  = "SELECT COUNT(*) ";
         $query .= $this->buildQuery($filters);
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -169,7 +169,7 @@ class Role extends Table
             $query .= " LIMIT " . (int) (isset($filters['start']) ? $filters['start'] : 0) . "," . (int) $filters['limit'];
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 }

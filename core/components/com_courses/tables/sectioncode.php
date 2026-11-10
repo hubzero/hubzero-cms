@@ -103,7 +103,7 @@ class SectionCode extends Table
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildQuery($filters = [])
     {
-        $query  = " FROM $this->_tbl AS c";
+        $query  = " FROM $this->tableName AS c";
 
         $where = [];
 
@@ -115,13 +115,13 @@ class SectionCode extends Table
             }
         }
         if (isset($filters['section_id'])) {
-            $where[] = "c.section_id=" . $this->_db->quote($filters['section_id']);
+            $where[] = "c.section_id=" . $this->db->quote($filters['section_id']);
         }
         if (isset($filters['created_by'])) {
-            $where[] = "c.created_by=" . $this->_db->quote($filters['created_by']);
+            $where[] = "c.created_by=" . $this->db->quote($filters['created_by']);
         }
         if (isset($filters['search']) && $filters['search'] != '') {
-            $where[] = "(LOWER(c.code) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . ")";
+            $where[] = "(LOWER(c.code) LIKE " . $this->db->quote('%' . strtolower($filters['search']) . '%') . ")";
         }
 
         if (count($where) > 0) {
@@ -153,8 +153,8 @@ class SectionCode extends Table
 
         $query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -171,7 +171,7 @@ class SectionCode extends Table
             $query .= ' LIMIT ' . intval($filters['start']) . ',' . intval($filters['limit']);
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 }

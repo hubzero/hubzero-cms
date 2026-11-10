@@ -37,8 +37,8 @@ class Status extends Table
     {
         $sql = "SELECT sessnum,username,start,accesstime,appname,sessname FROM session ORDER BY sessnum DESC limit 1";
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadObject();
+        $this->db->setQuery($sql);
+        return $this->db->loadObject();
     }
 
     /**
@@ -50,8 +50,8 @@ class Status extends Table
     {
         $sql = "SELECT count(*) FROM session";
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadResult();
+        $this->db->setQuery($sql);
+        return $this->db->loadResult();
     }
 
     /**
@@ -63,8 +63,8 @@ class Status extends Table
     {
         $sql = "SELECT count(*) FROM display where status='used'";
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadResult();
+        $this->db->setQuery($sql);
+        return $this->db->loadResult();
     }
 
     /**
@@ -76,8 +76,8 @@ class Status extends Table
     {
         $sql = "SELECT count(*) FROM display where status='ready'";
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadResult();
+        $this->db->setQuery($sql);
+        return $this->db->loadResult();
     }
 
     /**
@@ -89,8 +89,8 @@ class Status extends Table
     {
         $sql = "SELECT count(*) FROM display where status='absent'";
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadResult();
+        $this->db->setQuery($sql);
+        return $this->db->loadResult();
     }
 
     /**
@@ -102,7 +102,7 @@ class Status extends Table
     {
         $sql = "SELECT count(*) FROM display where status='broken'";
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadResult();
+        $this->db->setQuery($sql);
+        return $this->db->loadResult();
     }
 }

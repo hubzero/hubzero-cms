@@ -24,7 +24,7 @@ class AssetViews extends Table
     public function __construct(&$db)
     {
         parent::__construct('#__courses_asset_views', 'id', $db);
-        $this->_trackAssets = false;
+        $this->trackAssets = false;
     }
 
     /**
@@ -56,7 +56,7 @@ class AssetViews extends Table
         if (isset($filters['progress_calculation']) && $filters['progress_calculation']) {
             $from[] = "INNER JOIN #__courses_progress_factors AS cpf ON ca.id = cpf.asset_id"
                     . ((isset($filters['section_id']) && $filters['section_id'])
-                        ? " AND cpf.section_id = " . $this->_db->quote($filters['section_id'])
+                        ? " AND cpf.section_id = " . $this->db->quote($filters['section_id'])
                         : '');
         }
 
@@ -74,11 +74,11 @@ class AssetViews extends Table
         }
 
         if (isset($filters['section_id']) && $filters['section_id']) {
-            $where[] = "cm.section_id = " . $this->_db->quote($filters['section_id']);
+            $where[] = "cm.section_id = " . $this->db->quote($filters['section_id']);
         }
 
         if (isset($filters['asset_type']) && $filters['asset_type']) {
-            $where[] = "ca.type = " . $this->_db->quote($filters['asset_type']);
+            $where[] = "ca.type = " . $this->db->quote($filters['asset_type']);
         }
 
         $query = "SELECT ";
@@ -93,7 +93,7 @@ class AssetViews extends Table
             $query .= "\nFROM ";
             $query .= implode("\n", $from);
         } else {
-            $query .= "\nFROM $this->_tbl AS cav";
+            $query .= "\nFROM $this->tableName AS cav";
         }
 
         if (count($where) > 0) {
@@ -119,7 +119,7 @@ class AssetViews extends Table
     {
         $query = $this->_buildQuery($filters);
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList($key);
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList($key);
     }
 }

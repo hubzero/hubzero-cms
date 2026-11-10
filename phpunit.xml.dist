@@ -22,6 +22,7 @@
             <file>core/components/com_cart/tests/AuditorClassTest.php</file>
             <file>core/components/com_search/tests/configHelperMacroTest.php</file>
             <file>core/components/com_storefront/tests/SubscriptionObjectTest.php</file>
+            <file>core/components/com_tools/tests/HostUpdateTest.php</file>
         </testsuite>
         <testsuite name="Plugins">
             <directory suffix="Test.php">core/plugins/</directory>

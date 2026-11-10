@@ -35,16 +35,16 @@ class MemberBadge extends Table
     public function loadByMemberId($id)
     {
         $query =   "SELECT *
-					FROM {$this->_tbl}
-					WHERE member_id = " . $this->_db->quote($id);
+					FROM {$this->tableName}
+					WHERE member_id = " . $this->db->quote($id);
 
-        $this->_db->setQuery($query);
+        $this->db->setQuery($query);
 
-        if ($result = $this->_db->loadAssoc()) {
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         }
 
-        $this->setError($this->_db->getErrorMsg());
+        $this->setError($this->db->getErrorMsg());
         return false;
     }
 }

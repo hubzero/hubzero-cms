@@ -32,9 +32,9 @@ class ToolStatus extends Table
      */
     public function getItems()
     {
-        $query  = "SELECT * FROM $this->_tbl ORDER BY id ";
+        $query  = "SELECT * FROM $this->tableName ORDER BY id ";
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 }

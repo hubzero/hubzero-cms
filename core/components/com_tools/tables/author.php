@@ -74,10 +74,10 @@ class Author extends Table
             . "JOIN `#__tool_groups` AS g ON f.id=g.toolid AND g.role=1 "
             . "JOIN `#__xgroups` AS xg ON g.cn=xg.cn "
             . "JOIN `#__xgroups_managers` AS m ON xg.gidNumber=m.gidNumber "
-            . "AND uidNumber=" . $this->_db->quote($uid);
+            . "AND uidNumber=" . $this->db->quote($uid);
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -90,10 +90,10 @@ class Author extends Table
     {
         $query  = "SELECT x.name FROM `#__users` x ";
         $query .= " JOIN `#__author_assoc` AS aa ON x.id=aa.authorid ";
-        $query .= "AND aa.subid= " . $this->_db->quote($rid) . " AND aa.subtable='resources' ";
+        $query .= "AND aa.subid= " . $this->db->quote($rid) . " AND aa.subtable='resources' ";
         $query .= " ORDER BY aa.ordering ASC LIMIT 1";
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -106,10 +106,10 @@ class Author extends Table
     {
         $query  = "SELECT x.name FROM `#__users` x ";
         $query .= " JOIN `#__author_assoc` AS aa ON x.id=aa.authorid ";
-        $query .= "AND aa.subid= " . $this->_db->quote($rid) . " AND aa.subtable='resources' ";
+        $query .= "AND aa.subid= " . $this->db->quote($rid) . " AND aa.subtable='resources' ";
         $query .= " ORDER BY aa.ordering ASC";
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -126,41 +126,41 @@ class Author extends Table
     {
         if ($version == 'dev' && $rid) {
             $query = "SELECT authorid as uidNumber, ordering FROM `#__author_assoc` "
-                . "WHERE subid= " . $this->_db->quote($rid)
+                . "WHERE subid= " . $this->db->quote($rid)
                 . " AND subtable='resources' ORDER BY ordering";
-            $this->_db->setQuery($query);
-            $authors = $this->_db->loadObjectList();
+            $this->db->setQuery($query);
+            $authors = $this->db->loadObjectList();
         } else {
             $query  = "SELECT DISTINCT a.uid as uidNumber, a.ordering ";
             $query .= "FROM `#__tool_authors` as a  ";
             if ($version == 'current' && $toolname) {
-                $objV = new Version($this->_db);
+                $objV = new Version($this->db);
                 $rev = $objV->getCurrentVersionProperty($toolname, 'revision');
                 if ($rev) {
                     $query .= "JOIN `#__tool_version` as v ON a.toolname=v.toolname "
                         . "AND a.revision=v.revision WHERE a.toolname="
-                        . $this->_db->quote($toolname) . " AND a.revision=" . $this->_db->quote($rev);
+                        . $this->db->quote($toolname) . " AND a.revision=" . $this->db->quote($rev);
                 } else {
                     $query .= "JOIN `#__tool_version` as v ON a.toolname=v.toolname "
                         . "AND a.revision=v.revision WHERE a.toolname="
-                        . $this->_db->quote($toolname) . " AND v.state=1 ORDER BY v.revision DESC";
+                        . $this->db->quote($toolname) . " AND v.state=1 ORDER BY v.revision DESC";
                 }
             } elseif (is_numeric($version)) {
-                $query .= "WHERE a.version_id=" . $this->_db->quote($version)
+                $query .= "WHERE a.version_id=" . $this->db->quote($version)
                     . " ORDER BY a.ordering";
             } elseif ($toolname && $revision) {
-                $query .= "WHERE a.toolname=" . $this->_db->quote($toolname)
-                    . " AND a.revision=" . $this->_db->quote($revision) . " ORDER BY a.ordering";
+                $query .= "WHERE a.toolname=" . $this->db->quote($toolname)
+                    . " AND a.revision=" . $this->db->quote($revision) . " ORDER BY a.ordering";
             } elseif (is_object($version)) {
-                $query .= "WHERE a.version_id=" . $this->_db->quote($version->id) . " ORDER BY a.ordering";
+                $query .= "WHERE a.version_id=" . $this->db->quote($version->id) . " ORDER BY a.ordering";
             } elseif (isset($version[0]) && is_object($version[0])) {
-                $query .= "WHERE a.version_id=" . $this->_db->quote($version[0]->id) . " ORDER BY a.ordering";
+                $query .= "WHERE a.version_id=" . $this->db->quote($version[0]->id) . " ORDER BY a.ordering";
             } else {
                 return null;
             }
 
-            $this->_db->setQuery($query);
-            $authors = $this->_db->loadObjectList();
+            $this->db->setQuery($query);
+            $authors = $this->db->loadObjectList();
         }
         return $authors;
     }
@@ -194,10 +194,10 @@ class Author extends Table
             if ($to_delete) {
                 foreach ($to_delete as $del) {
                     $query = "DELETE FROM `#__author_assoc` "
-                        . "WHERE authorid=" . $this->_db->quote($del)
-                        . " AND subid=" . $this->_db->quote($rid) . " AND subtable='resources'";
-                    $this->_db->setQuery($query);
-                    $this->_db->query();
+                        . "WHERE authorid=" . $this->db->quote($del)
+                        . " AND subid=" . $this->db->quote($rid) . " AND subtable='resources'";
+                    $this->db->setQuery($query);
+                    $this->db->query();
                 }
             }
         }
@@ -209,40 +209,40 @@ class Author extends Table
 
             if ($to_delete) {
                 foreach ($to_delete as $del) {
-                    $query = "DELETE FROM `#__author_assoc` WHERE authorid=" . $this->_db->quote($del)
-                        . " AND subid=" . $this->_db->quote($rid) . " AND subtable='resources'";
-                    $this->_db->setQuery($query);
-                    $this->_db->query();
+                    $query = "DELETE FROM `#__author_assoc` WHERE authorid=" . $this->db->quote($del)
+                        . " AND subid=" . $this->db->quote($rid) . " AND subtable='resources'";
+                    $this->db->setQuery($query);
+                    $this->db->query();
                 }
             }
 
             // Get the last child in the ordering
-            $this->_db->setQuery(
+            $this->db->setQuery(
                 "SELECT COALESCE(MAX(ordering), 0) FROM `#__author_assoc`"
-                . " WHERE subid=" . $this->_db->quote($rid) . " AND subtable='resources'",
+                . " WHERE subid=" . $this->db->quote($rid) . " AND subtable='resources'",
             );
-            $order = (int) $this->_db->loadResult() + 1;
+            $order = (int) $this->db->loadResult() + 1;
 
             foreach ($authors as $authid) {
                 // Check if they're already linked to this resource
-                $this->_db->setQuery(
+                $this->db->setQuery(
                     "SELECT authorid FROM `#__author_assoc`"
-                    . " WHERE authorid=" . $this->_db->quote($authid)
-                    . " AND subid=" . $this->_db->quote($rid)
+                    . " WHERE authorid=" . $this->db->quote($authid)
+                    . " AND subid=" . $this->db->quote($rid)
                     . " AND subtable='resources'",
                 );
-                if (!$this->_db->loadResult()) {
+                if (!$this->db->loadResult()) {
                     $xprofile = User::getInstance($authid);
 
-                    $this->_db->setQuery(
+                    $this->db->setQuery(
                         "INSERT INTO `#__author_assoc`"
                         . " (subtable, subid, authorid, ordering, name, organization)"
-                        . " VALUES ('resources', " . $this->_db->quote($rid) . ","
-                        . $this->_db->quote($authid) . "," . $this->_db->quote($order) . ","
-                        . $this->_db->quote($xprofile->get('name')) . ","
-                        . $this->_db->quote($xprofile->get('organization')) . ")",
+                        . " VALUES ('resources', " . $this->db->quote($rid) . ","
+                        . $this->db->quote($authid) . "," . $this->db->quote($order) . ","
+                        . $this->db->quote($xprofile->get('name')) . ","
+                        . $this->db->quote($xprofile->get('organization')) . ")",
                     );
-                    $this->_db->query();
+                    $this->db->query();
 
                     $order++;
                 }
@@ -257,11 +257,11 @@ class Author extends Table
 
                 // Check the author_assoc table first, as that's what gets updated when you edit the tool info
                 $query  = "SELECT name, organization FROM `#__author_assoc` ";
-                $query .= "WHERE subid= " . $this->_db->quote($rid);
-                $query .= " AND authorid=" . $this->_db->quote($authid);
+                $query .= "WHERE subid= " . $this->db->quote($rid);
+                $query .= " AND authorid=" . $this->db->quote($authid);
                 $query .= " AND subtable='resources'";
-                $this->_db->setQuery($query);
-                $author = $this->_db->loadObject();
+                $this->db->setQuery($query);
+                $author = $this->db->loadObject();
 
                 if ($author) {
                     $name         = $author->name;
@@ -271,13 +271,13 @@ class Author extends Table
                 if (!$name || !$organization) {
                     // Do we have name/org info in previous version?
                     $query  = "SELECT name, organization FROM `#__tool_authors` ";
-                    $query .= "WHERE toolname=" . $this->_db->quote($toolname)
-                        . " AND uid=" . $this->_db->quote($authid)
-                        . " AND revision < " . $this->_db->quote($revision);
+                    $query .= "WHERE toolname=" . $this->db->quote($toolname)
+                        . " AND uid=" . $this->db->quote($authid)
+                        . " AND revision < " . $this->db->quote($revision);
                     $query .= " AND name IS NOT NULL AND organization IS NOT NULL ";
                     $query .= " ORDER BY revision DESC LIMIT 1";
-                    $this->_db->setQuery($query);
-                    $info = $this->_db->loadObjectList();
+                    $this->db->setQuery($query);
+                    $info = $this->db->loadObjectList();
                     if ($info) {
                         $name         = $name ?: $info[0]->name;
                         $organization = $organization ?: $info[0]->organization;
@@ -292,14 +292,14 @@ class Author extends Table
                     }
                 }
 
-                $query = "INSERT INTO $this->_tbl "
+                $query = "INSERT INTO $this->tableName "
                     . "(toolname, revision, uid, ordering, version_id, name, organization) "
                     . "VALUES ('" . $toolname . "','" . $revision . "','" . $authid . "','"
                     . $i . "', '" . $version . "', '"
                     . addslashes($name == null ? '' : $name) . "', '"
                     . addslashes($organization == null ? '' : $organization) . "')";
-                $this->_db->setQuery($query);
-                if (!$this->_db->query()) {
+                $this->db->setQuery($query);
+                if (!$this->db->query()) {
                     return false;
                 }
                 $i++;

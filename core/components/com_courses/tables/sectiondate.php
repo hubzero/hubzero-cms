@@ -94,13 +94,13 @@ class SectionDate extends Table
             $this->created_by = User::get('id');
 
             // Make sure the record doesn't already exist
-            $query  = "SELECT id FROM $this->_tbl WHERE scope=" . $this->_db->quote($this->scope)
-                . " AND scope_id=" . $this->_db->quote($this->scope_id);
-            $query .= " AND section_id=" . $this->_db->quote($this->section_id);
+            $query  = "SELECT id FROM $this->tableName WHERE scope=" . $this->db->quote($this->scope)
+                . " AND scope_id=" . $this->db->quote($this->scope_id);
+            $query .= " AND section_id=" . $this->db->quote($this->section_id);
             $query .= " LIMIT 1";
 
-            $this->_db->setQuery($query);
-            if ($id = $this->_db->loadResult()) {
+            $this->db->setQuery($query);
+            if ($id = $this->db->loadResult()) {
                 $this->id = $id;
             }
         }
@@ -116,20 +116,20 @@ class SectionDate extends Table
      */
     private function buildQuery($filters = [])
     {
-        $query  = " FROM $this->_tbl AS sd";
+        $query  = " FROM $this->tableName AS sd";
 
         $where = [];
 
         if (isset($filters['section_id']) && $filters['section_id'] >= 0) {
-            $where[] = "sd.section_id=" . $this->_db->quote(intval($filters['section_id']));
+            $where[] = "sd.section_id=" . $this->db->quote(intval($filters['section_id']));
         }
 
         if (isset($filters['scope']) && $filters['scope']) {
-            $where[] = "sd.scope=" . $this->_db->quote($filters['scope']);
+            $where[] = "sd.scope=" . $this->db->quote($filters['scope']);
         }
 
         if (isset($filters['scope_id']) && $filters['scope_id'] > 0) {
-            $where[] = "sd.scope_id=" . $this->_db->quote(intval($filters['scope_id']));
+            $where[] = "sd.scope_id=" . $this->db->quote(intval($filters['scope_id']));
         }
 
         if (count($where) > 0) {
@@ -150,8 +150,8 @@ class SectionDate extends Table
         $query  = "SELECT COUNT(sd.id)";
         $query .= $this->buildQuery($filters);
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -181,8 +181,8 @@ class SectionDate extends Table
             $query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -193,11 +193,11 @@ class SectionDate extends Table
      */
     public function deleteBySection($section_id)
     {
-        $query  = "DELETE FROM $this->_tbl WHERE `section_id`=" . $this->_db->quote($section_id);
+        $query  = "DELETE FROM $this->tableName WHERE `section_id`=" . $this->db->quote($section_id);
 
-        $this->_db->setQuery($query);
-        if (!$this->_db->query()) {
-            $this->setError($this->_db->getErrorMsg());
+        $this->db->setQuery($query);
+        if (!$this->db->query()) {
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;

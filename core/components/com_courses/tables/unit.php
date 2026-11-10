@@ -46,16 +46,16 @@ class Unit extends Table
             return parent::load($oid);
         }
 
-        $sql  = "SELECT * FROM $this->_tbl WHERE `alias`=" . $this->_db->quote($oid);
+        $sql  = "SELECT * FROM $this->tableName WHERE `alias`=" . $this->db->quote($oid);
         if ($offering_id) {
-            $sql .= " AND `offering_id`=" . $this->_db->quote($offering_id);
+            $sql .= " AND `offering_id`=" . $this->db->quote($offering_id);
         }
         $sql .= " AND `state`!=2 LIMIT 1";
-        $this->_db->setQuery($sql);
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery($sql);
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -108,11 +108,11 @@ class Unit extends Table
      */
     private function buildQuery($filters = [])
     {
-        $query = " FROM $this->_tbl AS cu
+        $query = " FROM $this->tableName AS cu
 					LEFT JOIN #__courses_offering_section_dates AS sd ON sd.scope='unit' AND sd.scope_id=cu.id";
 
         if (isset($filters['section_id']) && $filters['section_id']) {
-            $query .= " AND sd.section_id=" . $this->_db->quote($filters['section_id']);
+            $query .= " AND sd.section_id=" . $this->db->quote($filters['section_id']);
         }
 
         $where = [];
@@ -120,14 +120,14 @@ class Unit extends Table
         // Note the deliberate lack of a truthiness test: an offering_id of 0
         // has to match no units, not every unit in the table.
         if (isset($filters['offering_id'])) {
-            $where[] = "cu.offering_id=" . $this->_db->quote($filters['offering_id']);
+            $where[] = "cu.offering_id=" . $this->db->quote($filters['offering_id']);
         }
         if (isset($filters['state']) && $filters['state'] >= 0) {
-            $where[] = "cu.state=" . $this->_db->quote($filters['state']);
+            $where[] = "cu.state=" . $this->db->quote($filters['state']);
         }
         if (isset($filters['search']) && $filters['search']) {
-            $where[] = "(LOWER(cu.alias) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
-					OR LOWER(cu.title) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . ")";
+            $where[] = "(LOWER(cu.alias) LIKE " . $this->db->quote('%' . strtolower($filters['search']) . '%') . "
+					OR LOWER(cu.title) LIKE " . $this->db->quote('%' . strtolower($filters['search']) . '%') . ")";
         }
 
         if (count($where) > 0) {
@@ -148,8 +148,8 @@ class Unit extends Table
         $query  = "SELECT COUNT(cu.id)";
         $query .= $this->buildQuery($filters);
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -169,8 +169,8 @@ class Unit extends Table
             $query .= " LIMIT " . (int) (isset($filters['start']) ? $filters['start'] : 0) . "," . (int) $filters['limit'];
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -181,9 +181,9 @@ class Unit extends Table
      */
     public function getHighestOrdering($offering_id)
     {
-        $sql = "SELECT MAX(ordering)+1 FROM $this->_tbl WHERE offering_id=" . $this->_db->quote(intval($offering_id));
-        $this->_db->setQuery($sql);
-        return $this->_db->loadResult();
+        $sql = "SELECT MAX(ordering)+1 FROM $this->tableName WHERE offering_id=" . $this->db->quote(intval($offering_id));
+        $this->db->setQuery($sql);
+        return $this->db->loadResult();
     }
 
     /**
@@ -193,9 +193,9 @@ class Unit extends Table
      */
     private function makeAliasUnique()
     {
-        $sql = "SELECT alias from $this->_tbl WHERE `offering_id`=" . $this->_db->quote(intval($this->offering_id)) . " AND `id`!=" . $this->_db->quote(intval($this->id));
-        $this->_db->setQuery($sql);
-        $result = $this->_db->loadColumn();
+        $sql = "SELECT alias from $this->tableName WHERE `offering_id`=" . $this->db->quote(intval($this->offering_id)) . " AND `id`!=" . $this->db->quote(intval($this->id));
+        $this->db->setQuery($sql);
+        $result = $this->db->loadColumn();
 
         $original_alias = $this->alias;
 

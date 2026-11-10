@@ -40,16 +40,16 @@ class ToolView extends Table
             return false;
         }
 
-        $query  = "SELECT * FROM $this->_tbl
-				   WHERE parent_id=" . $this->_db->quote($toolid) . "
-				   AND userid=" . $this->_db->quote($userid) . "
+        $query  = "SELECT * FROM $this->tableName
+				   WHERE parent_id=" . $this->db->quote($toolid) . "
+				   AND userid=" . $this->db->quote($userid) . "
 				   ORDER BY viewed DESC LIMIT 1";
 
-        $this->_db->setQuery($query);
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery($query);
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }

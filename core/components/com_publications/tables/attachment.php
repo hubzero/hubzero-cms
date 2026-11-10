@@ -84,14 +84,14 @@ class Attachment extends Table
             return false;
         }
 
-        $query  = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($versionid);
+        $query  = "SELECT * FROM $this->tableName WHERE publication_version_id=" . $this->db->quote($versionid);
         $query .= " AND params LIKE '%pubThumb=1%' LIMIT 1";
 
-        $this->_db->setQuery($query);
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery($query);
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -157,14 +157,14 @@ class Attachment extends Table
      */
     public function updateRecords($projectid, $field, $from, $to)
     {
-        $query = "UPDATE $this->_tbl AS A ";
+        $query = "UPDATE $this->tableName AS A ";
         $query .= "JOIN #__publications AS B ON B.id=A.publication_id ";
-        $query .= " SET A." . $field . "=" . $this->_db->quote($to);
-        $query .= " WHERE A." . $field . "=" . $this->_db->quote($from)
-                . " AND B.project_id=" . $this->_db->quote($projectid);
+        $query .= " SET A." . $field . "=" . $this->db->quote($to);
+        $query .= " WHERE A." . $field . "=" . $this->db->quote($from)
+                . " AND B.project_id=" . $this->db->quote($projectid);
 
-        $this->_db->setQuery($query);
-        if ($this->_db->query()) {
+        $this->db->setQuery($query);
+        if ($this->db->query()) {
             return true;
         }
         return false;
@@ -187,12 +187,12 @@ class Attachment extends Table
         }
 
         $query  = "SELECT a.*";
-        $query .= " FROM $this->_tbl AS a";
-        $query .= " WHERE a.publication_version_id=" . $this->_db->quote($versionid);
+        $query .= " FROM $this->tableName AS a";
+        $query .= " WHERE a.publication_version_id=" . $this->db->quote($versionid);
         $query .= " ORDER BY a.ordering ASC";
 
-        $this->_db->setQuery($query);
-        $results = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $results = $this->db->loadObjectList();
 
         if ($results) {
             $attachments = [
@@ -247,13 +247,13 @@ class Attachment extends Table
             return false;
         }
 
-        $query  = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid);
+        $query  = "SELECT * FROM $this->tableName WHERE publication_version_id=" . $this->db->quote($vid);
         foreach ($find as $property => $value) {
-            $query .= " AND " . $property . "=" . $this->_db->quote($value);
+            $query .= " AND " . $property . "=" . $this->db->quote($value);
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -290,7 +290,7 @@ class Attachment extends Table
             $query .= ", p.id as publication_id, p.project_id  ";
         }
 
-        $query .= "FROM $this->_tbl AS a ";
+        $query .= "FROM $this->tableName AS a ";
         if ($project || $type) {
             $query .= "JOIN #__publication_versions AS v ON v.id=a.publication_version_id ";
             $query .= "JOIN #__publications AS p ON p.id=v.publication_id ";
@@ -298,16 +298,16 @@ class Attachment extends Table
         $query .= "WHERE ";
         if ($aid) {
             $query .= " a.id='" . $aid . "' LIMIT 1 ";
-            $this->_db->setQuery($query);
-            return $this->_db->loadObjectList();
+            $this->db->setQuery($query);
+            return $this->db->loadObjectList();
         } else {
             $query .= intval($project)
-                ? " p.project_id=" . $this->_db->quote($project)
-                : " a.publication_version_id=" . $this->_db->quote($versionid);
+                ? " p.project_id=" . $this->db->quote($project)
+                : " a.publication_version_id=" . $this->db->quote($versionid);
         }
         if ($element) {
             if (intval($element)) {
-                $query .= " AND a.element_id=" . $this->_db->quote($element);
+                $query .= " AND a.element_id=" . $this->db->quote($element);
             } elseif (is_array($element)) {
                 // multiple elements, TBD
             }
@@ -316,18 +316,18 @@ class Attachment extends Table
             if (is_array($filters['role'])) {
                 $tquery = '';
                 foreach ($filters['role'] as $role) {
-                    $tquery .= $this->_db->quote($role) . ",";
+                    $tquery .= $this->db->quote($role) . ",";
                 }
                 $tquery = substr($tquery, 0, strlen($tquery) - 1);
                 $query .= " AND (a.role IN (" . $tquery . ")) ";
             } elseif ($filters['role'] == 4) {
                 $query .= " AND (a.role=0 OR a.role=2) ";
             } else {
-                $query .= " AND a.role=" . $this->_db->quote($filters['role']);
+                $query .= " AND a.role=" . $this->db->quote($filters['role']);
             }
         }
         if ($type) {
-            $query .= " AND a.type=" . $this->_db->quote($type);
+            $query .= " AND a.type=" . $this->db->quote($type);
         }
         if (isset($filters['order']) && $filters['order'] != '') {
             $query .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['order']) ?: '1');
@@ -338,8 +338,8 @@ class Attachment extends Table
             $query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
         }
 
-        $this->_db->setQuery($query);
-        return $count ? $this->_db->loadResult() : $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $count ? $this->db->loadResult() : $this->db->loadObjectList();
     }
 
     /**
@@ -354,11 +354,11 @@ class Attachment extends Table
             $versionid = $this->publication_version_id;
         }
 
-        $query = "SELECT COUNT(*) FROM $this->_tbl AS a"
-            . " WHERE a.publication_version_id = " . $this->_db->quote($versionid);
-        $this->_db->setQuery($query);
+        $query = "SELECT COUNT(*) FROM $this->tableName AS a"
+            . " WHERE a.publication_version_id = " . $this->db->quote($versionid);
+        $this->db->setQuery($query);
 
-        return $this->_db->loadResult();
+        return $this->db->loadResult();
     }
 
     /**
@@ -383,8 +383,8 @@ class Attachment extends Table
             return false;
         }
 
-        $query  = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid)
-                . " AND type=" . $this->_db->quote($type);
+        $query  = "DELETE FROM $this->tableName WHERE publication_version_id=" . $this->db->quote($vid)
+                . " AND type=" . $this->db->quote($type);
         $query .= " AND (element_id=0 OR element_id=" . intval($elementId) . ")";
 
         if ($role) {
@@ -392,12 +392,12 @@ class Attachment extends Table
         }
 
         foreach ($find as $property => $value) {
-            $query .= " AND " . $property . "=" . $this->_db->quote($value);
+            $query .= " AND " . $property . "=" . $this->db->quote($value);
         }
 
-        $this->_db->setQuery($query);
-        if (!$this->_db->query()) {
-            $this->setError($this->_db->getErrorMsg());
+        $this->db->setQuery($query);
+        if (!$this->db->query()) {
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;
@@ -425,8 +425,8 @@ class Attachment extends Table
             return false;
         }
 
-        $query  = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid)
-                . " AND type=" . $this->_db->quote($type);
+        $query  = "SELECT * FROM $this->tableName WHERE publication_version_id=" . $this->db->quote($vid)
+                . " AND type=" . $this->db->quote($type);
         $query .= " AND (element_id=0 OR element_id=" . intval($elementId) . ")";
 
         if ($role) {
@@ -434,16 +434,16 @@ class Attachment extends Table
         }
 
         foreach ($find as $property => $value) {
-            $query .= " AND " . $property . "=" . $this->_db->quote($value);
+            $query .= " AND " . $property . "=" . $this->db->quote($value);
         }
 
         $query .= " LIMIT 1";
 
-        $this->_db->setQuery($query);
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery($query);
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -468,21 +468,21 @@ class Attachment extends Table
             return false;
         }
 
-        $query  = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid)
-                . " AND type=" . $this->_db->quote($type);
+        $query  = "SELECT * FROM $this->tableName WHERE publication_version_id=" . $this->db->quote($vid)
+                . " AND type=" . $this->db->quote($type);
 
         // Get types helper
-        $attach = new \Components\Publications\Models\Attachments($this->_db);
+        $attach = new \Components\Publications\Models\Attachments($this->db);
         $prop = $attach->connector($type);
         $prop = $prop ? $prop : 'path';
 
-        $query .= " AND " . $prop . "=" . $this->_db->quote($identifier);
+        $query .= " AND " . $prop . "=" . $this->db->quote($identifier);
 
-        $this->_db->setQuery($query);
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery($query);
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -498,7 +498,7 @@ class Attachment extends Table
      */
     public function copyAttachment($att = null, $vid = null, $elementId = null, $uid = 0)
     {
-        $pAttach = new self($this->_db);
+        $pAttach = new self($this->db);
         $pAttach->publication_id         = $att->publication_id;
         $pAttach->title                  = $att->title;
         $pAttach->role                   = $att->role;
@@ -542,16 +542,16 @@ class Attachment extends Table
             return false;
         }
 
-        $attach = new \Components\Publications\Models\Attachments($this->_db);
+        $attach = new \Components\Publications\Models\Attachments($this->db);
         $prop = $attach->connector($type);
         $prop = $prop ? $prop : 'path';
 
-        $query  = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid);
-        $query .= " AND " . $prop . "=" . $this->_db->quote($identifier);
+        $query  = "DELETE FROM $this->tableName WHERE publication_version_id=" . $this->db->quote($vid);
+        $query .= " AND " . $prop . "=" . $this->db->quote($identifier);
 
-        $this->_db->setQuery($query);
-        if (!$this->_db->query()) {
-            $this->setError($this->_db->getErrorMsg());
+        $this->db->setQuery($query);
+        if (!$this->db->query()) {
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;
@@ -572,10 +572,10 @@ class Attachment extends Table
             return false;
         }
 
-        $query = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid);
-        $this->_db->setQuery($query);
-        if (!$this->_db->query()) {
-            $this->setError($this->_db->getErrorMsg());
+        $query = "DELETE FROM $this->tableName WHERE publication_version_id=" . $this->db->quote($vid);
+        $this->db->setQuery($query);
+        if (!$this->db->query()) {
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;
@@ -595,15 +595,15 @@ class Attachment extends Table
             return false;
         }
 
-        $query  = "SELECT A.*, V.version_label, V.version_number FROM $this->_tbl AS A ";
+        $query  = "SELECT A.*, V.version_label, V.version_number FROM $this->tableName AS A ";
         $query .= " JOIN #__publication_versions AS V ON A.publication_version_id = V.id ";
-        $query .= " WHERE A.publication_id = " . $this->_db->quote($pid)
-                . " AND A.publication_version_id !=" . $this->_db->quote($vid);
+        $query .= " WHERE A.publication_id = " . $this->db->quote($pid)
+                . " AND A.publication_version_id !=" . $this->db->quote($vid);
         $query .= " AND V.state!='3' AND V.main=1 AND A.role=1 ";
         $query .= " ORDER BY A.ordering";
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -628,16 +628,16 @@ class Attachment extends Table
             'version_label' => '',
         ];
 
-        $query  = "SELECT a.publication_id , v.title, v.version_number, v.version_label FROM $this->_tbl as a ";
+        $query  = "SELECT a.publication_id , v.title, v.version_number, v.version_label FROM $this->tableName as a ";
         $query .= "JOIN #__publication_versions AS v ON v.id=a.publication_version_id  ";
         $query .= "JOIN #__publications AS P ON P.id=v.publication_id  ";
-        $query .= " WHERE P.project_id=" . $this->_db->quote($projectid);
-        $query .= $hash ? " AND a.vcs_hash=" . $this->_db->quote($hash) : " AND a.path=" . $this->_db->quote($path);
+        $query .= " WHERE P.project_id=" . $this->db->quote($projectid);
+        $query .= $hash ? " AND a.vcs_hash=" . $this->db->quote($hash) : " AND a.path=" . $this->db->quote($path);
         $query .= $primary ? " AND a.role=1 " : "";
         $query .= " ORDER BY v.id DESC LIMIT 1";
 
-        $this->_db->setQuery($query);
-        $result = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $result = $this->db->loadObjectList();
 
         if ($result) {
             $pub['id']            = $result[0]->publication_id;
@@ -665,16 +665,16 @@ class Attachment extends Table
 
         $assoc = [];
 
-        $query  = "SELECT a.path, a.publication_id , v.title, v.version_number, v.version_label FROM $this->_tbl as a ";
+        $query  = "SELECT a.path, a.publication_id , v.title, v.version_number, v.version_label FROM $this->tableName as a ";
         $query .= "JOIN #__publication_versions AS v ON v.id=a.publication_version_id ";
         $query .= "JOIN #__publications AS P ON P.id=v.publication_id ";
-        $query .= " WHERE P.project_id=" . $this->_db->quote($projectid) . " AND a.type=" . $this->_db->quote($type);
+        $query .= " WHERE P.project_id=" . $this->db->quote($projectid) . " AND a.type=" . $this->db->quote($type);
         $query .= $primary ? " AND a.role=1 " : "";
         $query .= " GROUP BY a.path ";
         $query .= " ORDER BY v.id DESC ";
 
-        $this->_db->setQuery($query);
-        $result = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $result = $this->db->loadObjectList();
 
         if ($result) {
             foreach ($result as $r) {
@@ -741,27 +741,27 @@ class Attachment extends Table
      */
     public function getNeighbor($dir = 'down')
     {
-        $neighbor = new self($this->_db);
+        $neighbor = new self($this->db);
 
         switch ($dir) {
             case 'up':
-                $sql = "SELECT * FROM `$this->_tbl`"
-                    . " WHERE publication_id=" . $this->_db->quote($this->publication_id)
-                    . " AND publication_version_id=" . $this->_db->quote($this->publication_version_id)
-                    . " AND ordering < " . $this->_db->quote($this->ordering)
+                $sql = "SELECT * FROM `$this->tableName`"
+                    . " WHERE publication_id=" . $this->db->quote($this->publication_id)
+                    . " AND publication_version_id=" . $this->db->quote($this->publication_version_id)
+                    . " AND ordering < " . $this->db->quote($this->ordering)
                     . " ORDER BY ordering DESC LIMIT 1";
                 break;
 
             case 'down':
-                $sql = "SELECT * FROM `$this->_tbl`"
-                    . " WHERE publication_id=" . $this->_db->quote($this->publication_id)
-                    . " AND publication_version_id=" . $this->_db->quote($this->publication_version_id)
-                    . " AND ordering > " . $this->_db->quote($this->ordering)
+                $sql = "SELECT * FROM `$this->tableName`"
+                    . " WHERE publication_id=" . $this->db->quote($this->publication_id)
+                    . " AND publication_version_id=" . $this->db->quote($this->publication_version_id)
+                    . " AND ordering > " . $this->db->quote($this->ordering)
                     . " ORDER BY ordering LIMIT 1";
                 break;
         }
-        $this->_db->setQuery($sql);
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery($sql);
+        if ($result = $this->db->loadAssoc()) {
             $neighbor->bind($result);
         }
 
@@ -775,12 +775,12 @@ class Attachment extends Table
      */
     public function getLastOrder()
     {
-        $sql = "SELECT `ordering` FROM $this->_tbl"
-            . " WHERE publication_id=" . $this->_db->quote($this->publication_id)
-            . " AND publication_version_id=" . $this->_db->quote($this->publication_version_id)
+        $sql = "SELECT `ordering` FROM $this->tableName"
+            . " WHERE publication_id=" . $this->db->quote($this->publication_id)
+            . " AND publication_version_id=" . $this->db->quote($this->publication_version_id)
             . " ORDER BY ordering DESC LIMIT 1";
-        $this->_db->setQuery($sql);
-        return $this->_db->loadResult();
+        $this->db->setQuery($sql);
+        return $this->db->loadResult();
     }
 
     /**
@@ -790,20 +790,20 @@ class Attachment extends Table
      */
     public function rebuild()
     {
-        $sql = "SELECT id FROM `$this->_tbl`"
-            . " WHERE publication_id=" . $this->_db->quote($this->publication_id)
-            . " AND publication_version_id=" . $this->_db->quote($this->publication_version_id)
+        $sql = "SELECT id FROM `$this->tableName`"
+            . " WHERE publication_id=" . $this->db->quote($this->publication_id)
+            . " AND publication_version_id=" . $this->db->quote($this->publication_version_id)
             . " ORDER BY ordering ASC, id ASC";
 
-        $this->_db->setQuery($sql);
-        $rows = $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        $rows = $this->db->loadObjectList();
 
         if ($rows) {
             foreach ($rows as $i => $row) {
-                $sql = "UPDATE `$this->_tbl` SET `ordering`=" . ($i + 1) . " WHERE id=" . $this->_db->quote($row->id);
-                $this->_db->setQuery($sql);
-                if (!$this->_db->query()) {
-                    $this->setError($this->_db->getErrorMsg());
+                $sql = "UPDATE `$this->tableName` SET `ordering`=" . ($i + 1) . " WHERE id=" . $this->db->quote($row->id);
+                $this->db->setQuery($sql);
+                if (!$this->db->query()) {
+                    $this->setError($this->db->getErrorMsg());
                     return false;
                 }
             }
@@ -826,17 +826,17 @@ class Attachment extends Table
         }
 
         // Get publication version id of series
-        $query = "SELECT publication_version_id FROM `$this->_tbl` WHERE object_id=$versionId";
-        $this->_db->setQuery($query);
-        $publicationVersionIds = $this->_db->loadColumn();
+        $query = "SELECT publication_version_id FROM `$this->tableName` WHERE object_id=$versionId";
+        $this->db->setQuery($query);
+        $publicationVersionIds = $this->db->loadColumn();
 
         if (!empty($publicationVersionIds)) {
             $versionIdSqlArray = '(' . implode(',', $publicationVersionIds) . ')';
             $seriesQuery = "SELECT publication_id, title, abstract, version_number"
             . " FROM `#__publication_versions`"
             . " WHERE id in $versionIdSqlArray";
-            $this->_db->setQuery($seriesQuery);
-            $series = $this->_db->loadObjectList();
+            $this->db->setQuery($seriesQuery);
+            $series = $this->db->loadObjectList();
         } else {
             $series = [];
         }

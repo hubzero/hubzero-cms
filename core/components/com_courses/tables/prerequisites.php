@@ -34,10 +34,10 @@ class Prerequisites extends Table
      **/
     public function loadAllBySectionId($section_id)
     {
-        $query = "SELECT * FROM `{$this->_tbl}` WHERE `section_id` = '{$section_id}'";
+        $query = "SELECT * FROM `{$this->tableName}` WHERE `section_id` = '{$section_id}'";
 
-        $this->_db->setQuery($query);
-        $results = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $results = $this->db->loadObjectList();
 
         return $results;
     }
@@ -52,11 +52,11 @@ class Prerequisites extends Table
      **/
     public function loadAllByScope($scope, $scope_id, $section_id)
     {
-        $query = "SELECT * FROM `{$this->_tbl}` WHERE `item_scope` = '{$scope}' AND `item_id` = '{$scope_id}'"
+        $query = "SELECT * FROM `{$this->tableName}` WHERE `item_scope` = '{$scope}' AND `item_id` = '{$scope_id}'"
             . " AND `section_id` = '{$section_id}' ORDER BY `requisite_id` ASC";
 
-        $this->_db->setQuery($query);
-        $results = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $results = $this->db->loadObjectList();
 
         return $results;
     }

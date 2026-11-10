@@ -31,7 +31,7 @@ abstract class Table extends \stdClass
      * @public string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl = '';
+    protected $tableName = '';
 
     /**
      * Name of the primary key field in the table.
@@ -39,7 +39,7 @@ abstract class Table extends \stdClass
      * @public string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl_key = '';
+    protected $tableKey = '';
 
     /**
      * Database connector object.
@@ -47,7 +47,7 @@ abstract class Table extends \stdClass
      * @public object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_db;
+    protected $db;
 
     /**
      * Should rows be tracked as ACL assets?
@@ -55,7 +55,7 @@ abstract class Table extends \stdClass
      * @public boolean
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_trackAssets = false;
+    protected $trackAssets = false;
 
     /**
      * The rules associated with this record.
@@ -63,7 +63,7 @@ abstract class Table extends \stdClass
      * @public object  A Access Rules object.
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_rules;
+    protected $assetRules;
 
     /**
      * Indicator that the tables have been locked.
@@ -71,7 +71,7 @@ abstract class Table extends \stdClass
      * @public boolean
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_locked = false;
+    protected $tableLocked = false;
 
     /**
      * Cached table field descriptions
@@ -118,7 +118,7 @@ abstract class Table extends \stdClass
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_errors = [];
+    protected $errors = [];
 
     /**
      * Magic method to convert the object to a string gracefully.
@@ -238,11 +238,11 @@ abstract class Table extends \stdClass
     public function getError($i = null, $toString = true)
     {
         if ($i === null) {
-            $error = end($this->_errors);
-        } elseif (!array_key_exists($i, $this->_errors)) {
+            $error = end($this->errors);
+        } elseif (!array_key_exists($i, $this->errors)) {
             return false;
         } else {
-            $error = $this->_errors[$i];
+            $error = $this->errors[$i];
         }
 
         if ($error instanceof Exception && $toString) {
@@ -259,7 +259,7 @@ abstract class Table extends \stdClass
      */
     public function getErrors()
     {
-        return $this->_errors;
+        return $this->errors;
     }
 
     /**
@@ -272,9 +272,9 @@ abstract class Table extends \stdClass
     public function setError($error, $key = null)
     {
         if ($key !== null) {
-            $this->_errors[$key] = $error;
+            $this->errors[$key] = $error;
         } else {
-            array_push($this->_errors, $error);
+            array_push($this->errors, $error);
         }
         return $this;
     }
@@ -287,7 +287,7 @@ abstract class Table extends \stdClass
      */
     public function setErrors($errors)
     {
-        $this->_errors = $errors;
+        $this->errors = $errors;
         return $this;
     }
 
@@ -303,9 +303,9 @@ abstract class Table extends \stdClass
     public function __construct($table, $key, $db)
     {
         // Set internal variables.
-        $this->_tbl = $table;
-        $this->_tbl_key = $key;
-        $this->_db = $db;
+        $this->tableName = $table;
+        $this->tableKey = $key;
+        $this->db = $db;
 
         // Initialise the table properties.
         if ($fields = $this->getFields()) {
@@ -319,7 +319,7 @@ abstract class Table extends \stdClass
 
         // If we are tracking assets, make sure an access field exists and initially set the default.
         if (property_exists($this, 'asset_id')) {
-            $this->_trackAssets = true;
+            $this->trackAssets = true;
         }
 
         // If the access property exists, set the default.
@@ -337,11 +337,11 @@ abstract class Table extends \stdClass
     {
         if ($this->fieldCache === null) {
             // Lookup the fields for this table only once.
-            $name = $this->_tbl;
-            $fields = $this->_db->getTableColumns($name, false);
+            $name = $this->tableName;
+            $fields = $this->db->getTableColumns($name, false);
 
             if (empty($fields)) {
-                $e = new Exception('Columns not found for table ' . $this->_tbl);
+                $e = new Exception('Columns not found for table ' . $this->tableName);
                 $this->setError($e);
                 return false;
             }
@@ -442,10 +442,10 @@ abstract class Table extends \stdClass
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _getAssetName()
+    protected function getAssetName()
     {
-        $k = $this->_tbl_key;
-        return $this->_tbl . '.' . (int) $this->$k;
+        $k = $this->tableKey;
+        return $this->tableName . '.' . (int) $this->$k;
     }
 
     /**
@@ -458,9 +458,9 @@ abstract class Table extends \stdClass
      * @return  string  The string to use as the title in the asset table.
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _getAssetTitle()
+    protected function getAssetTitle()
     {
-        return $this->_getAssetName();
+        return $this->getAssetName();
     }
 
     /**
@@ -475,7 +475,7 @@ abstract class Table extends \stdClass
      * @return  integer
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _getAssetParentId($table = null, $id = null)
+    protected function getAssetParentId($table = null, $id = null)
     {
         // For simple cases, parent to the asset root.
         $rootId = \Hubzero\Access\Asset::getRootId();
@@ -493,7 +493,7 @@ abstract class Table extends \stdClass
      */
     public function getTableName()
     {
-        return $this->_tbl;
+        return $this->tableName;
     }
 
     /**
@@ -503,7 +503,7 @@ abstract class Table extends \stdClass
      */
     public function getKeyName()
     {
-        return $this->_tbl_key;
+        return $this->tableKey;
     }
 
     /**
@@ -513,7 +513,7 @@ abstract class Table extends \stdClass
      */
     public function getDbo()
     {
-        return $this->_db;
+        return $this->db;
     }
 
     /**
@@ -529,7 +529,7 @@ abstract class Table extends \stdClass
             return false;
         }
 
-        $this->_db = &$db;
+        $this->db = &$db;
 
         return true;
     }
@@ -543,9 +543,9 @@ abstract class Table extends \stdClass
     public function setRules($input)
     {
         if ($input instanceof \Hubzero\Access\Rules) {
-            $this->_rules = $input;
+            $this->assetRules = $input;
         } else {
-            $this->_rules = new \Hubzero\Access\Rules($input);
+            $this->assetRules = new \Hubzero\Access\Rules($input);
         }
     }
 
@@ -556,7 +556,7 @@ abstract class Table extends \stdClass
      */
     public function getRules()
     {
-        return $this->_rules;
+        return $this->assetRules;
     }
 
     /**
@@ -571,7 +571,7 @@ abstract class Table extends \stdClass
         // Get the default values for the class from the table.
         foreach ($this->getFields() as $k => $v) {
             // If the property is not the primary key or private, reset it.
-            if ($k != $this->_tbl_key && (strpos($k, '_') !== 0)) {
+            if ($k != $this->tableKey && (strpos($k, '_') !== 0)) {
                 $this->$k = $v->Default;
             }
         }
@@ -632,7 +632,7 @@ abstract class Table extends \stdClass
     {
         if (empty($keys)) {
             // If empty, use the value of the current key
-            $keyName = $this->_tbl_key;
+            $keyName = $this->tableKey;
             $keyValue = $this->$keyName;
 
             // If empty primary key there's is no need to load anything
@@ -643,7 +643,7 @@ abstract class Table extends \stdClass
             $keys = [$keyName => $keyValue];
         } elseif (!is_array($keys)) {
             // Load by primary key.
-            $keys = [$this->_tbl_key => $keys];
+            $keys = [$this->tableKey => $keys];
         }
 
         if ($reset) {
@@ -651,9 +651,9 @@ abstract class Table extends \stdClass
         }
 
         // Initialise the query.
-        $query = $this->_db->getQuery();
+        $query = $this->db->getQuery();
         $query->select('*');
-        $query->from($this->_tbl);
+        $query->from($this->tableName);
         $fields = array_keys($this->getProperties());
 
         foreach ($keys as $field => $value) {
@@ -667,10 +667,10 @@ abstract class Table extends \stdClass
             $query->whereEquals($field, $value);
         }
 
-        $this->_db->setQuery($query->toString());
+        $this->db->setQuery($query->toString());
 
         try {
-            $row = $this->_db->loadAssoc();
+            $row = $this->db->loadAssoc();
         } catch (Exception $e) {
             $je = new Exception($e->getMessage());
             $this->setError($je);
@@ -716,28 +716,28 @@ abstract class Table extends \stdClass
         $currentAssetId = null;
 
         // Initialise variables.
-        $k = $this->_tbl_key;
+        $k = $this->tableKey;
         if (!empty($this->asset_id)) {
             $currentAssetId = $this->asset_id;
         }
 
         // The asset id field is managed privately by this class.
-        if ($this->_trackAssets) {
+        if ($this->trackAssets) {
             unset($this->asset_id);
         }
 
         // If a primary key exists update the object, otherwise insert it.
         if ($this->$k) {
-            $stored = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, $updateNulls);
+            $stored = $this->db->updateObject($this->tableName, $this, $this->tableKey, $updateNulls);
         } else {
-            $stored = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
+            $stored = $this->db->insertObject($this->tableName, $this, $this->tableKey);
             Event::trigger($this->getTableName() . '_new', ['table' => $this]);
         }
 
         // If the store failed return false.
         if (!$stored) {
             $e = new Exception(
-                'Store failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg(),
+                'Store failed for ' . get_class($this) . ': ' . $this->db->getErrorMsg(),
             );
             $this->setError($e);
             return false;
@@ -746,21 +746,21 @@ abstract class Table extends \stdClass
         Event::trigger('system.onContentSave', [$this->getTableName(), $this]);
 
         // If the table is not set to track assets return true.
-        if (!$this->_trackAssets) {
+        if (!$this->trackAssets) {
             return true;
         }
 
-        if ($this->_locked) {
-            $this->_unlock();
+        if ($this->tableLocked) {
+            $this->unlock();
         }
 
         //
         // Asset Tracking
         //
 
-        $parentId = $this->_getAssetParentId();
-        $name = $this->_getAssetName();
-        $title = $this->_getAssetTitle();
+        $parentId = $this->getAssetParentId();
+        $name = $this->getAssetName();
+        $title = $this->getAssetTitle();
 
         $asset = \Hubzero\Access\Asset::oneByName($name);
 
@@ -783,8 +783,8 @@ abstract class Table extends \stdClass
         $asset->set('name', $name);
         $asset->set('title', $title);
 
-        if ($this->_rules instanceof \Hubzero\Access\Rules) {
-            $asset->set('rules', (string) $this->_rules);
+        if ($this->assetRules instanceof \Hubzero\Access\Rules) {
+            $asset->set('rules', (string) $this->assetRules);
         }
 
         if (!$asset->save()) {
@@ -797,17 +797,17 @@ abstract class Table extends \stdClass
             // Update the asset_id field in this table.
             $this->asset_id = (int) $asset->get('id');
 
-            $query = $this->_db->getQuery();
-            $query->update($this->_tbl);
+            $query = $this->db->getQuery();
+            $query->update($this->tableName);
             $query->set([
                 'asset_id' => (int) $this->asset_id,
             ]);
             $query->whereEquals($k, (int) $this->$k);
-            $this->_db->setQuery($query->toString());
+            $this->db->setQuery($query->toString());
 
-            if (!$this->_db->execute()) {
+            if (!$this->db->execute()) {
                 $e = new Exception(
-                    'Failed to update asset ID: ' . $this->_db->getErrorMsg(),
+                    'Failed to update asset ID: ' . $this->db->getErrorMsg(),
                 );
                 $this->setError($e);
                 return false;
@@ -856,9 +856,9 @@ abstract class Table extends \stdClass
         // If an ordering filter is set, attempt reorder the rows in the table based on the filter and value.
         if ($orderingFilter) {
             $filterValue = $this->$orderingFilter;
-            $this->reorder($orderingFilter ? $this->_db->quoteName($orderingFilter)
+            $this->reorder($orderingFilter ? $this->db->quoteName($orderingFilter)
                 . ' = '
-                . $this->_db->Quote($filterValue) : '');
+                . $this->db->Quote($filterValue) : '');
         }
 
         // Set the error to empty and return true.
@@ -876,7 +876,7 @@ abstract class Table extends \stdClass
     public function delete($pk = null)
     {
         // Initialise variables.
-        $k = $this->_tbl_key;
+        $k = $this->tableKey;
         $pk = (is_null($pk)) ? $this->$k : $pk;
 
         // If no primary key is given, return false.
@@ -887,10 +887,10 @@ abstract class Table extends \stdClass
         }
 
         // If tracking assets, remove the asset first.
-        if ($this->_trackAssets) {
+        if ($this->trackAssets) {
             // Get and the asset name.
             $this->$k = $pk;
-            $name = $this->_getAssetName();
+            $name = $this->getAssetName();
             $asset = self::getInstance('Asset');
 
             if ($asset->loadByName($name)) {
@@ -907,15 +907,15 @@ abstract class Table extends \stdClass
         }
 
         // Delete the row by primary key.
-        $query = $this->_db->getQuery();
-        $query->delete($this->_tbl);
-        $query->whereEquals($this->_tbl_key, $pk);
-        $this->_db->setQuery($query->toString());
+        $query = $this->db->getQuery();
+        $query->delete($this->tableName);
+        $query->whereEquals($this->tableKey, $pk);
+        $this->db->setQuery($query->toString());
 
         // Check for a database error.
-        if (!$this->_db->execute()) {
+        if (!$this->db->execute()) {
             $e = new Exception(
-                'Delete failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg(),
+                'Delete failed for ' . get_class($this) . ': ' . $this->db->getErrorMsg(),
             );
             $this->setError($e);
             return false;
@@ -945,7 +945,7 @@ abstract class Table extends \stdClass
         }
 
         // Initialise variables.
-        $k = $this->_tbl_key;
+        $k = $this->tableKey;
         $pk = (is_null($pk)) ? $this->$k : $pk;
 
         // If no primary key is given, return false.
@@ -959,18 +959,18 @@ abstract class Table extends \stdClass
         $time = date('Y-m-d H:i:s');
 
         // Check the row out by primary key.
-        $query = $this->_db->getQuery();
-        $query->update($this->_tbl);
+        $query = $this->db->getQuery();
+        $query->update($this->tableName);
         $query->set([
             'checked_out' => (int) $userId,
             'checked_out_time' => $time,
         ]);
-        $query->whereEquals($this->_tbl_key, $pk);
-        $this->_db->setQuery($query->toString());
+        $query->whereEquals($this->tableKey, $pk);
+        $this->db->setQuery($query->toString());
 
-        if (!$this->_db->execute()) {
+        if (!$this->db->execute()) {
             $e = new Exception(
-                'Checkout failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg(),
+                'Checkout failed for ' . get_class($this) . ': ' . $this->db->getErrorMsg(),
             );
             $this->setError($e);
             return false;
@@ -999,7 +999,7 @@ abstract class Table extends \stdClass
         }
 
         // Initialise variables.
-        $k = $this->_tbl_key;
+        $k = $this->tableKey;
         $pk = (is_null($pk)) ? $this->$k : $pk;
 
         // If no primary key is given, return false.
@@ -1021,19 +1021,19 @@ abstract class Table extends \stdClass
         }
 
         // Check the row in by primary key.
-        $query = $this->_db->getQuery();
-        $query->update($this->_tbl);
+        $query = $this->db->getQuery();
+        $query->update($this->tableName);
         $query->set([
             'checked_out' => $data['checked_out'],
             'checked_out_time' => $data['checked_out_time'],
         ]);
-        $query->whereEquals($this->_tbl_key, $pk);
-        $this->_db->setQuery($query->toString());
+        $query->whereEquals($this->tableKey, $pk);
+        $this->db->setQuery($query->toString());
 
         // Check for a database error.
-        if (!$this->_db->execute()) {
+        if (!$this->db->execute()) {
             $e = new Exception(
-                'Checkin failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg(),
+                'Checkin failed for ' . get_class($this) . ': ' . $this->db->getErrorMsg(),
             );
             $this->setError($e);
             return false;
@@ -1061,7 +1061,7 @@ abstract class Table extends \stdClass
         }
 
         // Initialise variables.
-        $k = $this->_tbl_key;
+        $k = $this->tableKey;
         $pk = (is_null($pk)) ? $this->$k : $pk;
 
         // If no primary key is given, return false.
@@ -1070,18 +1070,18 @@ abstract class Table extends \stdClass
         }
 
         // Check the row in by primary key.
-        $query = $this->_db->getQuery();
-        $query->update($this->_tbl);
+        $query = $this->db->getQuery();
+        $query->update($this->tableName);
         $query->set([
             'hits' => new \Hubzero\Database\Value\Raw('(hits + 1)'),
         ]);
-        $query->whereEquals($this->_tbl_key, $pk);
-        $this->_db->setQuery($query->toString());
+        $query->whereEquals($this->tableKey, $pk);
+        $this->db->setQuery($query->toString());
 
         // Check for a database error.
-        if (!$this->_db->execute()) {
+        if (!$this->db->execute()) {
             $e = new Exception(
-                'Hit update failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg(),
+                'Hit update failed for ' . get_class($this) . ': ' . $this->db->getErrorMsg(),
             );
             $this->setError($e);
             return false;
@@ -1164,21 +1164,21 @@ abstract class Table extends \stdClass
         }
 
         // Get the largest ordering value for a given where clause.
-        $query = $this->_db->getQuery();
+        $query = $this->db->getQuery();
         $query->select('MAX(ordering)');
-        $query->from($this->_tbl);
+        $query->from($this->tableName);
 
         if ($where) {
             $query->whereRaw($where);
         }
 
-        $this->_db->setQuery($query->toString());
-        $max = (int) $this->_db->loadResult();
+        $this->db->setQuery($query->toString());
+        $max = (int) $this->db->loadResult();
 
         // Check for a database error.
-        if ($this->_db->getErrorNum()) {
+        if ($this->db->getErrorNum()) {
             $e = new Exception(
-                'Failed to get next ordering for ' . get_class($this) . ': ' . $this->_db->getErrorMsg(),
+                'Failed to get next ordering for ' . get_class($this) . ': ' . $this->db->getErrorMsg(),
             );
             $this->setError($e);
 
@@ -1206,13 +1206,13 @@ abstract class Table extends \stdClass
         }
 
         // Initialise variables.
-        $k = $this->_tbl_key;
+        $k = $this->tableKey;
 
         // Get the primary keys and ordering values for the selection.
-        $query = $this->_db->getQuery();
-        $query->select($this->_tbl_key);
+        $query = $this->db->getQuery();
+        $query->select($this->tableKey);
         $query->select('ordering');
-        $query->from($this->_tbl);
+        $query->from($this->tableName);
         $query->where('ordering', '>=', '0');
         $query->order('ordering', 'asc');
 
@@ -1221,13 +1221,13 @@ abstract class Table extends \stdClass
             $query->whereRaw($where);
         }
 
-        $this->_db->setQuery($query->toString());
-        $rows = $this->_db->loadObjectList();
+        $this->db->setQuery($query->toString());
+        $rows = $this->db->loadObjectList();
 
         // Check for a database error.
-        if ($this->_db->getErrorNum()) {
+        if ($this->db->getErrorNum()) {
             $e = new Exception(
-                'Reorder failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg(),
+                'Reorder failed for ' . get_class($this) . ': ' . $this->db->getErrorMsg(),
             );
             $this->setError($e);
 
@@ -1241,19 +1241,19 @@ abstract class Table extends \stdClass
                 // Only update rows that are necessary.
                 if ($row->ordering != $i + 1) {
                     // Update the row ordering field.
-                    $query = $this->_db->getQuery();
-                    $query->update($this->_tbl);
+                    $query = $this->db->getQuery();
+                    $query->update($this->tableName);
                     $query->set([
                         'ordering' => ($i + 1),
                     ]);
-                    $query->whereEquals($this->_tbl_key, $row->$k);
-                    $this->_db->setQuery($query->toString());
+                    $query->whereEquals($this->tableKey, $row->$k);
+                    $this->db->setQuery($query->toString());
 
                     // Check for a database error.
-                    if (!$this->_db->execute()) {
+                    if (!$this->db->execute()) {
                         $e = new Exception(
                             'Reorder update row ' . $i . ' failed for '
-                            . get_class($this) . ': ' . $this->_db->getErrorMsg(),
+                            . get_class($this) . ': ' . $this->db->getErrorMsg(),
                         );
                         $this->setError($e);
 
@@ -1289,14 +1289,14 @@ abstract class Table extends \stdClass
         }
 
         // Initialise variables.
-        $k = $this->_tbl_key;
+        $k = $this->tableKey;
         $row = null;
-        $query = $this->_db->getQuery();
+        $query = $this->db->getQuery();
 
         // Select the primary key and ordering values from the table.
-        $query->select($this->_tbl_key);
+        $query->select($this->tableKey);
         $query->select('ordering');
-        $query->from($this->_tbl);
+        $query->from($this->tableName);
 
         // If the movement delta is negative move the row up.
         if ($delta < 0) {
@@ -1314,22 +1314,22 @@ abstract class Table extends \stdClass
         }
 
         // Select the first row with the criteria.
-        $this->_db->setQuery($query->toString(), 0, 1);
-        $row = $this->_db->loadObject();
+        $this->db->setQuery($query->toString(), 0, 1);
+        $row = $this->db->loadObject();
 
         // If a row is found, move the item.
         if (!empty($row)) {
             // Update the ordering field for this instance to the row's ordering value.
-            $query = $this->_db->getQuery();
-            $query->update($this->_tbl);
+            $query = $this->db->getQuery();
+            $query->update($this->tableName);
             $query->set(['ordering' => (int) $row->ordering]);
-            $query->whereEquals($this->_tbl_key, $this->$k);
-            $this->_db->setQuery($query->toString());
+            $query->whereEquals($this->tableKey, $this->$k);
+            $this->db->setQuery($query->toString());
 
             // Check for a database error.
-            if (!$this->_db->execute()) {
+            if (!$this->db->execute()) {
                 $e = new Exception(
-                    'Move failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg(),
+                    'Move failed for ' . get_class($this) . ': ' . $this->db->getErrorMsg(),
                 );
                 $this->setError($e);
 
@@ -1337,16 +1337,16 @@ abstract class Table extends \stdClass
             }
 
             // Update the ordering field for the row to this instance's ordering value.
-            $query = $this->_db->getQuery();
-            $query->update($this->_tbl);
+            $query = $this->db->getQuery();
+            $query->update($this->tableName);
             $query->set(['ordering' => (int) $this->ordering]);
-            $query->whereEquals($this->_tbl_key, $row->$k);
-            $this->_db->setQuery($query->toString());
+            $query->whereEquals($this->tableKey, $row->$k);
+            $this->db->setQuery($query->toString());
 
             // Check for a database error.
-            if (!$this->_db->execute()) {
+            if (!$this->db->execute()) {
                 $e = new Exception(
-                    'Move failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg(),
+                    'Move failed for ' . get_class($this) . ': ' . $this->db->getErrorMsg(),
                 );
                 $this->setError($e);
 
@@ -1357,16 +1357,16 @@ abstract class Table extends \stdClass
             $this->ordering = $row->ordering;
         } else {
             // Update the ordering field for this instance.
-            $query = $this->_db->getQuery();
-            $query->update($this->_tbl);
+            $query = $this->db->getQuery();
+            $query->update($this->tableName);
             $query->set(['ordering' => (int) $this->ordering]);
-            $query->whereEquals($this->_tbl_key, $this->$k);
-            $this->_db->setQuery($query->toString());
+            $query->whereEquals($this->tableKey, $this->$k);
+            $this->db->setQuery($query->toString());
 
             // Check for a database error.
-            if (!$this->_db->execute()) {
+            if (!$this->db->execute()) {
                 $e = new Exception(
-                    'Move failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg(),
+                    'Move failed for ' . get_class($this) . ': ' . $this->db->getErrorMsg(),
                 );
                 $this->setError($e);
 
@@ -1391,7 +1391,7 @@ abstract class Table extends \stdClass
     public function publish($pks = null, $state = 1, $userId = 0)
     {
         // Initialise variables.
-        $k = $this->_tbl_key;
+        $k = $this->tableKey;
 
         // Sanitize input.
         $pks = array_map('intval', $pks);
@@ -1412,8 +1412,8 @@ abstract class Table extends \stdClass
         }
 
         // Update the publishing state for rows with the given primary keys.
-        $query = $this->_db->getQuery();
-        $query->update($this->_tbl);
+        $query = $this->db->getQuery();
+        $query->update($this->tableName);
         $query->set(['published' => (int) $state]);
 
         // Determine if there is checkin support for the table.
@@ -1429,12 +1429,12 @@ abstract class Table extends \stdClass
         // Build the WHERE clause for the primary keys.
         $query->whereRaw($k . ' = ' . implode(' OR ' . $k . ' = ', $pks));
 
-        $this->_db->setQuery($query->toString());
+        $this->db->setQuery($query->toString());
 
         // Check for a database error.
-        if (!$this->_db->execute()) {
+        if (!$this->db->execute()) {
             $e = new Exception(
-                'Publish failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg(),
+                'Publish failed for ' . get_class($this) . ': ' . $this->db->getErrorMsg(),
             );
             $this->setError($e);
 
@@ -1442,7 +1442,7 @@ abstract class Table extends \stdClass
         }
 
         // If checkin is supported and all rows were adjusted, check them in.
-        if ($checkin && (count($pks) == $this->_db->getAffectedRows())) {
+        if ($checkin && (count($pks) == $this->db->getAffectedRows())) {
             // Checkin the rows.
             foreach ($pks as $pk) {
                 $this->checkin($pk);
@@ -1473,7 +1473,7 @@ abstract class Table extends \stdClass
     public function canDelete($pk = null, $joins = null)
     {
         // Initialise variables.
-        $k = $this->_tbl_key;
+        $k = $this->tableKey;
         $pk = (is_null($pk)) ? $this->$k : $pk;
 
         // If no primary key is given, return false.
@@ -1483,13 +1483,13 @@ abstract class Table extends \stdClass
 
         if (is_array($joins)) {
             // Get a query object.
-            $query = $this->_db->getQuery();
+            $query = $this->db->getQuery();
 
             // Setup the basic query.
-            $query->select($this->_tbl_key);
-            $query->from($this->_tbl);
-            $query->whereEquals($this->_tbl_key, $this->$k);
-            $query->group($this->_tbl_key);
+            $query->select($this->tableKey);
+            $query->from($this->tableName);
+            $query->whereEquals($this->tableKey, $this->$k);
+            $query->group($this->tableKey);
 
             // For each join add the select and join clauses to the query object.
             foreach ($joins as $table) {
@@ -1498,12 +1498,12 @@ abstract class Table extends \stdClass
             }
 
             // Get the row object from the query.
-            $this->_db->setQuery((string) $query->toString(), 0, 1);
-            $row = $this->_db->loadObject();
+            $this->db->setQuery((string) $query->toString(), 0, 1);
+            $row = $this->db->loadObject();
 
             // Check for a database error.
-            if ($this->_db->getErrorNum()) {
-                $this->setError($this->_db->getErrorMsg());
+            if ($this->db->getErrorNum()) {
+                $this->setError($this->db->getErrorMsg());
 
                 return false;
             }
@@ -1547,7 +1547,7 @@ abstract class Table extends \stdClass
         $map = $mapKeysToText ? ' mapkeystotext="true"' : '';
 
         // Open root node.
-        $xml[] = '<record table="' . $this->_tbl . '"' . $map . '>';
+        $xml[] = '<record table="' . $this->tableName . '"' . $map . '>';
 
         // Get the publicly accessible instance properties.
         foreach (self::publicVars($this) as $k => $v) {
@@ -1573,10 +1573,10 @@ abstract class Table extends \stdClass
      * @throws  Exception
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _lock()
+    protected function lock()
     {
-        $this->_db->lockTable($this->_tbl);
-        $this->_locked = true;
+        $this->db->lockTable($this->tableName);
+        $this->tableLocked = true;
 
         return true;
     }
@@ -1587,10 +1587,10 @@ abstract class Table extends \stdClass
      * @return  boolean  True on success.
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _unlock()
+    protected function unlock()
     {
-        $this->_db->unlockTables();
-        $this->_locked = false;
+        $this->db->unlockTables();
+        $this->tableLocked = false;
 
         return true;
     }

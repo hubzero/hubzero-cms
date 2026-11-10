@@ -39,13 +39,13 @@ class Reason extends Table
         if ($uid === null || $gid === null) {
             return false;
         }
-        $query = "SELECT * FROM $this->_tbl WHERE uidNumber=" . $this->_db->quote($uid)
-            . " AND gidNumber=" . $this->_db->quote($gid) . " LIMIT 1";
-        $this->_db->setQuery($query);
-        if ($result = $this->_db->loadAssoc()) {
+        $query = "SELECT * FROM $this->tableName WHERE uidNumber=" . $this->db->quote($uid)
+            . " AND gidNumber=" . $this->db->quote($gid) . " LIMIT 1";
+        $this->db->setQuery($query);
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -62,11 +62,11 @@ class Reason extends Table
         if ($uid === null || $gid === null) {
             return false;
         }
-        $query = "DELETE FROM $this->_tbl WHERE uidNumber=" . $this->_db->quote($uid)
-            . " AND gidNumber=" . $this->_db->quote($gid);
-        $this->_db->setQuery($query);
-        if (!$this->_db->query()) {
-            $this->setError($this->_db->getErrorMsg());
+        $query = "DELETE FROM $this->tableName WHERE uidNumber=" . $this->db->quote($uid)
+            . " AND gidNumber=" . $this->db->quote($gid);
+        $this->db->setQuery($query);
+        if (!$this->db->query()) {
+            $this->setError($this->db->getErrorMsg());
         }
         return true;
     }

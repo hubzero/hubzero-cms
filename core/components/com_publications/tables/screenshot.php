@@ -60,7 +60,7 @@ class Screenshot extends Table
             return false;
         }
 
-        $query = "SELECT * FROM $this->_tbl as s ";
+        $query = "SELECT * FROM $this->tableName as s ";
         if (!$versionid) {
             $query .= " JOIN #__publication_versions as V ON V.publication_id=s.publication_id WHERE ";
             if ($version == 'default' or $version == 'current' && $version == 'main') {
@@ -68,24 +68,24 @@ class Screenshot extends Table
             } elseif ($version == 'dev') {
                 $query .= " AND V.state=3 ";
             } elseif (intval($version)) {
-                $query .= " AND V.version_number=" . $this->_db->quote($version);
+                $query .= " AND V.version_number=" . $this->db->quote($version);
             } else {
                 // Error in supplied version value
                 $query .= " AND 1=2 ";
             }
-            $query .= " AND V.publication_id=" . $this->_db->quote($pid);
+            $query .= " AND V.publication_id=" . $this->db->quote($pid);
         } else {
-            $query .= " WHERE s.publication_version_id =" . $this->_db->quote($versionid);
+            $query .= " WHERE s.publication_version_id =" . $this->db->quote($versionid);
         }
-        $query .= " AND s.filename=" . $this->_db->quote($filename);
+        $query .= " AND s.filename=" . $this->db->quote($filename);
 
         $query .= " LIMIT 1";
 
-        $this->_db->setQuery($query);
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery($query);
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -108,7 +108,7 @@ class Screenshot extends Table
             return false;
         }
 
-        $query = "SELECT * FROM $this->_tbl as s ";
+        $query = "SELECT * FROM $this->tableName as s ";
         if (!$versionid) {
             $query .= " JOIN #__publication_versions as V ON V.publication_id=s.publication_id WHERE ";
             if ($version == 'default' or $version == 'current' && $version == 'main') {
@@ -116,21 +116,21 @@ class Screenshot extends Table
             } elseif ($version == 'dev') {
                 $query .= " AND V.state=3 ";
             } elseif (intval($version)) {
-                $query .= " AND V.version_number=" . $this->_db->quote($version);
+                $query .= " AND V.version_number=" . $this->db->quote($version);
             } else {
                 // Error in supplied version value
                 $query .= " AND 1=2 ";
             }
-            $query .= " AND V.publication_id=" . $this->_db->quote($pid);
+            $query .= " AND V.publication_id=" . $this->db->quote($pid);
         } else {
-            $query .= " WHERE s.publication_version_id =" . $this->_db->quote($versionid);
+            $query .= " WHERE s.publication_version_id =" . $this->db->quote($versionid);
         }
-        $query .= " AND s.filename=" . $this->_db->quote($filename);
+        $query .= " AND s.filename=" . $this->db->quote($filename);
 
         $query .= " LIMIT 1";
 
-        $this->_db->setQuery($query);
-        $result = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $result = $this->db->loadObjectList();
         return $result ? $result[0] : null;
     }
 
@@ -147,7 +147,7 @@ class Screenshot extends Table
         if ($versionid === null && $pid === null) {
             return false;
         }
-        $query = "SELECT s.ordering FROM $this->_tbl as s ";
+        $query = "SELECT s.ordering FROM $this->tableName as s ";
 
         if (!$versionid) {
             $query .= " JOIN #__publication_versions as V ON V.publication_id=s.publication_id WHERE ";
@@ -156,19 +156,19 @@ class Screenshot extends Table
             } elseif ($version == 'dev') {
                 $query .= " AND V.state=3 ";
             } elseif (intval($version)) {
-                $query .= " AND V.version_number=" . $this->_db->quote($version);
+                $query .= " AND V.version_number=" . $this->db->quote($version);
             } else {
                 // Error in supplied version value
                 $query .= " AND 1=2 ";
             }
-            $query .= " AND V.publication_id=" . $this->_db->quote($pid);
+            $query .= " AND V.publication_id=" . $this->db->quote($pid);
         } else {
-            $query .= " WHERE s.publication_version_id =" . $this->_db->quote($versionid);
+            $query .= " WHERE s.publication_version_id =" . $this->db->quote($versionid);
         }
         $query .= " ORDER BY s.ordering DESC LIMIT 1";
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -190,10 +190,10 @@ class Screenshot extends Table
             return false;
         }
         if (!$new) {
-            $this->_db->setQuery("UPDATE $this->_tbl SET ordering=" . $this->_db->quote($ordering) . "
-				WHERE filename=" . $this->_db->quote($filename) . " AND publication_id="
-                . $this->_db->quote($pid) . " AND publication_version_id=" . $this->_db->quote($versionid));
-            if ($this->_db->query()) {
+            $this->db->setQuery("UPDATE $this->tableName SET ordering=" . $this->db->quote($ordering) . "
+				WHERE filename=" . $this->db->quote($filename) . " AND publication_id="
+                . $this->db->quote($pid) . " AND publication_version_id=" . $this->db->quote($versionid));
+            if ($this->db->query()) {
                 $ret = true;
             } else {
                 $ret = false;
@@ -202,11 +202,11 @@ class Screenshot extends Table
             $this->ordering               = $ordering;
             $this->publication_id         = $pid;
             $this->publication_version_id = $versionid;
-            $this->filename               = $this->_db->quote($filename);
-            $ret = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
+            $this->filename               = $this->db->quote($filename);
+            $ret = $this->db->insertObject($this->tableName, $this, $this->tableKey);
         }
         if (!$ret) {
-            $this->setError(strtolower(get_class($this)) . '::store failed <br />' . $this->_db->getErrorMsg());
+            $this->setError(strtolower(get_class($this)) . '::store failed <br />' . $this->db->getErrorMsg());
             return false;
         } else {
             return true;
@@ -229,11 +229,11 @@ class Screenshot extends Table
             return false;
         }
 
-        $query = "DELETE FROM $this->_tbl ";
-        $query .= " WHERE publication_version_id=" . $this->_db->quote($versionid);
-        $query .= " AND filename=" . $this->_db->quote($filename);
-        $this->_db->setQuery($query);
-        $this->_db->query();
+        $query = "DELETE FROM $this->tableName ";
+        $query .= " WHERE publication_version_id=" . $this->db->quote($versionid);
+        $query .= " AND filename=" . $this->db->quote($filename);
+        $this->db->setQuery($query);
+        $this->db->query();
     }
 
     /**
@@ -248,11 +248,11 @@ class Screenshot extends Table
             return false;
         }
 
-        $query = "DELETE FROM $this->_tbl ";
-        $query .= " WHERE publication_version_id=" . $this->_db->quote($versionid);
-        $this->_db->setQuery($query);
-        if (!$this->_db->query()) {
-            $this->setError($this->_db->getErrorMsg());
+        $query = "DELETE FROM $this->tableName ";
+        $query .= " WHERE publication_version_id=" . $this->db->quote($versionid);
+        $this->db->setQuery($query);
+        if (!$this->db->query()) {
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;
@@ -296,7 +296,7 @@ class Screenshot extends Table
             return false;
         }
 
-        $query = "SELECT * FROM $this->_tbl as s ";
+        $query = "SELECT * FROM $this->tableName as s ";
 
         if (!$versionid) {
             $query .= " JOIN #__publication_versions as V ON V.publication_id=s.publication_id WHERE ";
@@ -305,19 +305,19 @@ class Screenshot extends Table
             } elseif ($version == 'dev') {
                 $query .= " AND V.state=3 ";
             } elseif (intval($version)) {
-                $query .= " AND V.version_number=" . $this->_db->quote($version);
+                $query .= " AND V.version_number=" . $this->db->quote($version);
             } else {
                 // Error in supplied version value
                 $query .= " AND 1=2 ";
             }
-            $query = " AND V.publication_id=" . $this->_db->quote($pid);
+            $query = " AND V.publication_id=" . $this->db->quote($pid);
         } else {
-            $query .= " WHERE s.publication_version_id=" . $this->_db->quote($versionid);
+            $query .= " WHERE s.publication_version_id=" . $this->db->quote($versionid);
         }
         $query .= " ORDER BY s.ordering ASC";
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -334,7 +334,7 @@ class Screenshot extends Table
             return false;
         }
 
-        $query = "SELECT s.filename FROM $this->_tbl as s ";
+        $query = "SELECT s.filename FROM $this->tableName as s ";
 
         if (!$versionid) {
             $query .= " JOIN #__publication_versions as V ON V.publication_id=s.publication_id WHERE ";
@@ -343,18 +343,18 @@ class Screenshot extends Table
             } elseif ($version == 'dev') {
                 $query .= " AND V.state=3 ";
             } elseif (intval($version)) {
-                $query .= " AND V.version_number=" . $this->_db->quote($version);
+                $query .= " AND V.version_number=" . $this->db->quote($version);
             } else {
                 // Error in supplied version value
                 $query .= " AND 1=2 ";
             }
-            $query = " AND V.publication_id=" . $this->_db->quote($pid);
+            $query = " AND V.publication_id=" . $this->db->quote($pid);
         } else {
-            $query .= " WHERE s.publication_version_id=" . $this->_db->quote($versionid);
+            $query .= " WHERE s.publication_version_id=" . $this->db->quote($versionid);
         }
         $query .= "ORDER BY s.ordering ASC";
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 }

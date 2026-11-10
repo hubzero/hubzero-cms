@@ -39,16 +39,16 @@ class Todo extends Table
             return false;
         }
 
-        $query = "SELECT * FROM $this->_tbl"
-            . " WHERE projectid=" . $this->_db->quote($projectid)
-            . " AND id=" . $this->_db->quote($id)
+        $query = "SELECT * FROM $this->tableName"
+            . " WHERE projectid=" . $this->db->quote($projectid)
+            . " AND id=" . $this->db->quote($id)
             . " LIMIT 1";
-        $this->_db->setQuery($query);
+        $this->db->setQuery($query);
 
-        if ($result = $this->_db->loadAssoc()) {
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -87,7 +87,7 @@ class Todo extends Table
             $query .= ", (SELECT COUNT(*) FROM #__project_comments as c "
                 . "WHERE c.itemid=p.id AND c.tbl='todo' AND c.state!=2) as comments ";
         }
-        $query .= "FROM $this->_tbl AS p  ";
+        $query .= "FROM $this->tableName AS p  ";
         if (!$count) {
             $query .= "JOIN #__users AS xp ON xp.id=p.created_by ";
             $query .= "LEFT JOIN #__users AS xpp ON xpp.id=p.assigned_to ";
@@ -95,18 +95,18 @@ class Todo extends Table
         }
 
         foreach ($projects as $k => $project) {
-            $projects[$k] = $this->_db->quote($project);
+            $projects[$k] = $this->db->quote($project);
         }
         $query .= " WHERE p.projectid IN (" . implode(',', $projects) . ") ";
 
         if ($id) {
-            $query .= " AND p.id = " . $this->_db->quote($id) . " ";
+            $query .= " AND p.id = " . $this->db->quote($id) . " ";
         } else {
-            $query .= $color ? " AND p.color=" . $this->_db->quote($color) : " ";
-            $query .= $assignedto ? " AND p.assigned_to=" . $this->_db->quote($assignedto) : " ";
-            $query .= " AND p.state=" . $this->_db->quote($state);
+            $query .= $color ? " AND p.color=" . $this->db->quote($color) : " ";
+            $query .= $assignedto ? " AND p.assigned_to=" . $this->db->quote($assignedto) : " ";
+            $query .= " AND p.state=" . $this->db->quote($state);
             if ($activityid) {
-                $query .= " AND p.activityid=" . $this->_db->quote($activityid);
+                $query .= " AND p.activityid=" . $this->db->quote($activityid);
             }
         }
 
@@ -148,8 +148,8 @@ class Todo extends Table
             }
         }
 
-        $this->_db->setQuery($query);
-        return $count ? $this->_db->loadResult() : $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $count ? $this->db->loadResult() : $this->db->loadObjectList();
     }
 
     /**
@@ -167,13 +167,13 @@ class Todo extends Table
 
         $query  = "SELECT ";
         $query .= isset($filters['count']) && $filters['count'] == 1 ? " COUNT(*) " : "DISTINCT todolist, color ";
-        $query .= "FROM $this->_tbl ";
-        $query .= "WHERE projectid =" . $this->_db->quote($projectid)
+        $query .= "FROM $this->tableName ";
+        $query .= "WHERE projectid =" . $this->db->quote($projectid)
             . " AND todolist IS NOT null AND color IS NOT null"
             . " AND todolist != '' AND color != '' ";
         $query .= "ORDER BY todolist";
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -189,10 +189,10 @@ class Todo extends Table
             return false;
         }
 
-        $query  = "SELECT todolist FROM $this->_tbl ";
-        $query .= "WHERE projectid =" . $this->_db->quote($projectid) . " AND color = " . $this->_db->quote($color);
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $query  = "SELECT todolist FROM $this->tableName ";
+        $query .= "WHERE projectid =" . $this->db->quote($projectid) . " AND color = " . $this->db->quote($color);
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -209,21 +209,21 @@ class Todo extends Table
         if ($projectid == null or $color == '') {
             return false;
         }
-        $projectidQuoted = $this->_db->quote($projectid);
-        $colorQuoted = $this->_db->quote($color);
+        $projectidQuoted = $this->db->quote($projectid);
+        $colorQuoted = $this->db->quote($color);
         if ($all) {
-            $query = "DELETE FROM $this->_tbl"
+            $query = "DELETE FROM $this->tableName"
                 . " WHERE projectid =" . $projectidQuoted
                 . " AND color = " . $colorQuoted;
         } else {
-            $query = "UPDATE $this->_tbl SET color = '', todolist = ''"
+            $query = "UPDATE $this->tableName SET color = '', todolist = ''"
                 . " WHERE projectid =" . $projectidQuoted
                 . " AND color =" . $colorQuoted;
         }
 
-        $this->_db->setQuery($query);
-        if (!$this->_db->query()) {
-            $this->setError($this->_db->getErrorMsg());
+        $this->db->setQuery($query);
+        if (!$this->db->query()) {
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;
@@ -241,10 +241,10 @@ class Todo extends Table
             return false;
         }
 
-        $query  = "SELECT priority FROM $this->_tbl ";
-        $query .= "WHERE projectid =" . $this->_db->quote($projectid) . " ORDER BY priority DESC LIMIT 1 ";
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $query  = "SELECT priority FROM $this->tableName ";
+        $query .= "WHERE projectid =" . $this->db->quote($projectid) . " ORDER BY priority DESC LIMIT 1 ";
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -261,14 +261,14 @@ class Todo extends Table
             return false;
         }
         if ($permanent) {
-            $query = "DELETE FROM $this->_tbl WHERE projectid=" . $this->_db->quote($projectid);
+            $query = "DELETE FROM $this->tableName WHERE projectid=" . $this->db->quote($projectid);
         } else {
-            $query = "UPDATE $this->_tbl SET state = 2 WHERE projectid =" . $this->_db->quote($projectid);
+            $query = "UPDATE $this->tableName SET state = 2 WHERE projectid =" . $this->db->quote($projectid);
         }
-        $query .= $todolist ? " AND color=" . $this->_db->quote($todolist) : "";
+        $query .= $todolist ? " AND color=" . $this->db->quote($todolist) : "";
 
-        $this->_db->setQuery($query);
-        $this->_db->query();
+        $this->db->setQuery($query);
+        $this->db->query();
     }
 
     /**
@@ -286,14 +286,14 @@ class Todo extends Table
         }
 
         if ($permanent) {
-            $query = "DELETE FROM $this->_tbl WHERE projectid=" . $this->_db->quote($projectid);
+            $query = "DELETE FROM $this->tableName WHERE projectid=" . $this->db->quote($projectid);
         } else {
-            $query = "UPDATE $this->_tbl SET state = 2 WHERE projectid =" . $this->_db->quote($projectid);
+            $query = "UPDATE $this->tableName SET state = 2 WHERE projectid =" . $this->db->quote($projectid);
         }
 
-        $query .= " AND id=" . $this->_db->quote($todoid);
-        $this->_db->setQuery($query);
-        $this->_db->query();
+        $query .= " AND id=" . $this->db->quote($todoid);
+        $this->db->setQuery($query);
+        $this->db->query();
         return true;
     }
 }

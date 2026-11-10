@@ -40,11 +40,11 @@ class Activity extends Table
         if ($id === null || !intval($id) || $projectid === null) {
             return false;
         }
-        $this->_db->setQuery("SELECT * FROM $this->_tbl WHERE id=" . intval($id) . " AND projectid=" . intval($projectid) . " LIMIT 1");
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery("SELECT * FROM $this->tableName WHERE id=" . intval($id) . " AND projectid=" . intval($projectid) . " LIMIT 1");
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -64,15 +64,15 @@ class Activity extends Table
             return false;
         }
 
-        $query = "SELECT * FROM $this->_tbl WHERE referenceid = '$refid'
-				AND projectid = " . $this->_db->quote($projectid) . " AND class = "
-                . $this->_db->quote($class) . " AND activity = "
-                . $this->_db->quote($activity) . " LIMIT 1";
-        $this->_db->setQuery($query);
-        if ($result = $this->_db->loadAssoc()) {
+        $query = "SELECT * FROM $this->tableName WHERE referenceid = '$refid'
+				AND projectid = " . $this->db->quote($projectid) . " AND class = "
+                . $this->db->quote($class) . " AND activity = "
+                . $this->db->quote($activity) . " LIMIT 1";
+        $this->db->setQuery($query);
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -108,12 +108,12 @@ class Activity extends Table
         } else {
             $query .= " DISTINCT a.*, x.name, x.username ";
         }
-        $query  .= " FROM $this->_tbl AS a ";
+        $query  .= " FROM $this->tableName AS a ";
         if (!$count) {
             $query  .= "JOIN #__xprofiles as x ON x.uidNumber=a.userid";
         }
         if ($projectid) {
-            $query  .= " WHERE a.projectid=" . $this->_db->quote($projectid);
+            $query  .= " WHERE a.projectid=" . $this->db->quote($projectid);
         } else {
             $query  .= " WHERE a.projectid IN (";
             $tquery = '';
@@ -124,7 +124,7 @@ class Activity extends Table
             $query .= $tquery . ") ";
         }
         if ($class) {
-            $query  .= " AND a.class=" . $this->_db->quote($class);
+            $query  .= " AND a.class=" . $this->db->quote($class);
         }
         if ($managers && $role == 1) {
             $query  .= " AND a.managers_only=1 ";
@@ -142,14 +142,14 @@ class Activity extends Table
                 $tquery = substr($tquery, 0, strlen($tquery) - 1);
                 $query .= $tquery . ") ";
             } elseif (intval($id)) {
-                $query  .= " AND a.id=" . $this->_db->quote($id);
+                $query  .= " AND a.id=" . $this->db->quote($id);
             }
         }
 
         $query  .= " AND a.state != 2 ";
 
         if (isset($filters['recorded']) && $filters['recorded']) {
-            $query  .= " AND a.recorded > " . $this->_db->quote($filters['recorded']);
+            $query  .= " AND a.recorded > " . $this->db->quote($filters['recorded']);
         }
 
         $query  .= " ORDER BY ";
@@ -162,8 +162,8 @@ class Activity extends Table
             }
         }
 
-        $this->_db->setQuery($query);
-        return $count ? $this->_db->loadResult() : $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $count ? $this->db->loadResult() : $this->db->loadObjectList();
     }
 
     /**
@@ -189,13 +189,13 @@ class Activity extends Table
 
         // Collapse some repeated activities by the same actor
         if ($referenceid || $class == 'project') {
-            $this->_db->setQuery("UPDATE $this->_tbl SET state = 2 WHERE class="
-                . $this->_db->quote($class) . " AND activity="
-                . $this->_db->quote($activity) . " AND userid="
-                . $this->_db->quote($by) . " AND projectid="
-                . $this->_db->quote($projectid) . " AND referenceid="
-                . $this->_db->quote($referenceid));
-            $this->_db->query();
+            $this->db->setQuery("UPDATE $this->tableName SET state = 2 WHERE class="
+                . $this->db->quote($class) . " AND activity="
+                . $this->db->quote($activity) . " AND userid="
+                . $this->db->quote($by) . " AND projectid="
+                . $this->db->quote($projectid) . " AND referenceid="
+                . $this->db->quote($referenceid));
+            $this->db->query();
         }
 
         $this->commentable   = $commentable;
@@ -238,12 +238,12 @@ class Activity extends Table
             return false;
         }
 
-        $query  = ($permanent) ? "DELETE FROM $this->_tbl " : "UPDATE $this->_tbl SET state = 2 ";
-        $query .= " WHERE projectid=" . $this->_db->quote($projectid) . " AND referenceid=" . $this->_db->quote($refid) . " AND class=" . $this->_db->quote($class);
+        $query  = ($permanent) ? "DELETE FROM $this->tableName " : "UPDATE $this->tableName SET state = 2 ";
+        $query .= " WHERE projectid=" . $this->db->quote($projectid) . " AND referenceid=" . $this->db->quote($refid) . " AND class=" . $this->db->quote($class);
 
-        $this->_db->setQuery($query);
-        if (!$this->_db->query()) {
-            $this->setError($this->_db->getErrorMsg());
+        $this->db->setQuery($query);
+        if (!$this->db->query()) {
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;
@@ -265,12 +265,12 @@ class Activity extends Table
             return false;
         }
 
-        $query  = ($permanent) ? "DELETE FROM $this->_tbl " : "UPDATE $this->_tbl SET state = 2 ";
+        $query  = ($permanent) ? "DELETE FROM $this->tableName " : "UPDATE $this->tableName SET state = 2 ";
         $query .= " WHERE id=" . (int) $aid;
 
-        $this->_db->setQuery($query);
-        if (!$this->_db->query()) {
-            $this->setError($this->_db->getErrorMsg());
+        $this->db->setQuery($query);
+        if (!$this->db->query()) {
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;
@@ -288,12 +288,12 @@ class Activity extends Table
         if (!$aid || intval($aid) == 0) {
             return false;
         }
-        $query  = "UPDATE $this->_tbl SET preview =" . $this->_db->quote($preview);
+        $query  = "UPDATE $this->tableName SET preview =" . $this->db->quote($preview);
         $query .= " WHERE id=" . (int) $aid;
 
-        $this->_db->setQuery($query);
-        if (!$this->_db->query()) {
-            $this->setError($this->_db->getErrorMsg());
+        $this->db->setQuery($query);
+        if (!$this->db->query()) {
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;
@@ -315,12 +315,12 @@ class Activity extends Table
             return false;
         }
 
-        $query  = ($permanent) ? "DELETE FROM $this->_tbl " : "UPDATE $this->_tbl SET state = 2 ";
+        $query  = ($permanent) ? "DELETE FROM $this->tableName " : "UPDATE $this->tableName SET state = 2 ";
         $query .= " WHERE projectid=" . (int) $projectid;
 
-        $this->_db->setQuery($query);
-        if (!$this->_db->query()) {
-            $this->setError($this->_db->getErrorMsg());
+        $this->db->setQuery($query);
+        if (!$this->db->query()) {
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;
@@ -340,14 +340,14 @@ class Activity extends Table
         }
 
         $query  = " SELECT COUNT(*) FROM `#__project_activity` AS X ";
-        $query .= " LEFT JOIN #__project_owners as o ON o.projectid=X.projectid AND o.userid=" . $this->_db->quote($uid);
+        $query .= " LEFT JOIN #__project_owners as o ON o.projectid=X.projectid AND o.userid=" . $this->db->quote($uid);
         $query .= " WHERE X.projectid=" . (int) $projectid . "
 					AND (X.recorded >= o.lastvisit AND o.lastvisit IS NOT null
 					AND X.state != 2 AND (X.managers_only = 0
 					OR (X.managers_only=1 AND o.role=1)))";
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -367,8 +367,8 @@ class Activity extends Table
         $query .= " WHERE X.projectid=" . (int) $projectid . "
 				    AND X.state != 2";
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -383,7 +383,7 @@ class Activity extends Table
     {
         $query  = " SELECT p.id, p.alias, p.title, p.picture, p.private, COUNT(PA.id) as activity ";
         $query .= " FROM #__projects AS p";
-        $query .= " JOIN $this->_tbl as PA ON PA.projectid = p.id WHERE PA.projectid = p.id ";
+        $query .= " JOIN $this->tableName as PA ON PA.projectid = p.id WHERE PA.projectid = p.id ";
 
         if ($publicOnly) {
             $query .= " AND p.private = 0 ";
@@ -404,8 +404,8 @@ class Activity extends Table
         $query .= " ORDER BY activity DESC ";
         $query .= " LIMIT 0," . intval($limit);
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -422,7 +422,7 @@ class Activity extends Table
         }
 
         $query  = " SELECT COUNT(*) as activity ";
-        $query .= " FROM $this->_tbl ";
+        $query .= " FROM $this->tableName ";
 
         if (!empty($validProjects)) {
             $query .= " WHERE projectid IN (";
@@ -439,12 +439,12 @@ class Activity extends Table
             $query .= " GROUP BY projectid ";
         }
 
-        $this->_db->setQuery($query);
+        $this->db->setQuery($query);
 
         if ($get == 'total') {
-            return $this->_db->loadResult();
+            return $this->db->loadResult();
         } elseif ($get == 'average') {
-            $result = $this->_db->loadObjectList();
+            $result = $this->db->loadObjectList();
 
             $c = 0;
             $d = 0;
@@ -471,12 +471,12 @@ class Activity extends Table
             return false;
         }
 
-        $query  = "SELECT IF(admin = 0, 2, 1) FROM $this->_tbl ";
-        $query .= "WHERE projectid=" . $this->_db->quote($projectid);
-        $query .= " AND activity=" . $this->_db->quote($check) . " AND state!=2 ";
+        $query  = "SELECT IF(admin = 0, 2, 1) FROM $this->tableName ";
+        $query .= "WHERE projectid=" . $this->db->quote($projectid);
+        $query .= " AND activity=" . $this->db->quote($check) . " AND state!=2 ";
         $query .= " ORDER BY recorded DESC LIMIT 1";
-        $this->_db->setQuery($query);
-        $result = $this->_db->loadResult();
+        $this->db->setQuery($query);
+        $result = $this->db->loadResult();
         if (!$result) {
             return false;
         } else {

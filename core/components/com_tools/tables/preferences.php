@@ -40,7 +40,7 @@ class Preferences extends Table
         }
 
         if (!$this->id) {
-            $test = new self($this->_db);
+            $test = new self($this->db);
             $test->loadByUser($this->user_id);
             if ($test->id) {
                 $this->setError(Lang::txt('User with ID of %s already has a record.', $this->user_id));
@@ -112,27 +112,27 @@ class Preferences extends Table
      */
     protected function buildQuery($filters = [])
     {
-        $query  = " FROM $this->_tbl AS uq";
+        $query  = " FROM $this->tableName AS uq";
         $query .= " LEFT JOIN `#__tool_session_classes` AS tsc ON uq.class_id = tsc.id";
         $query .= " LEFT JOIN `#__users` AS m ON uq.user_id = m.id";
 
         $where = [];
 
         if (isset($filters['class_id'])) {
-            $where[] = "`class_id` = " . $this->_db->quote($filters['class_id']);
+            $where[] = "`class_id` = " . $this->db->quote($filters['class_id']);
         }
         if (isset($filters['search']) && isset($filters['search_field'])) {
             // Only the two columns the search form offers
             if (!in_array($filters['search_field'], ['username', 'name'])) {
                 $filters['search_field'] = 'name';
             }
-            $where[] = $this->_db->quoteName($filters['search_field']) . ' LIKE ' . $this->_db->quote('%' . $filters['search'] . '%');
+            $where[] = $this->db->quoteName($filters['search_field']) . ' LIKE ' . $this->db->quote('%' . $filters['search'] . '%');
         }
         if (isset($filters['class_alias']) && is_string($filters['class_alias']) && strlen($filters['class_alias']) > 0) {
-            $where[] = 'tsc.alias = ' . $this->_db->quote($filters['class_alias']);
+            $where[] = 'tsc.alias = ' . $this->db->quote($filters['class_alias']);
         }
         if (isset($filters['jobs']) && $filters['jobs']) {
-            $where[] = "`jobs`=" . $this->_db->quote($filters['jobs']);
+            $where[] = "`jobs`=" . $this->db->quote($filters['jobs']);
         }
 
         if (count($where)) {
@@ -159,8 +159,8 @@ class Preferences extends Table
             case 'count':
                 $query = "SELECT COUNT(uq.id) " . $this->buildQuery($filters);
 
-                $this->_db->setQuery($query);
-                return $this->_db->loadResult();
+                $this->db->setQuery($query);
+                return $this->db->loadResult();
                 break;
 
             case 'one':
@@ -215,8 +215,8 @@ class Preferences extends Table
                     $query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
                 }
 
-                $this->_db->setQuery($query);
-                return $this->_db->loadObjectList();
+                $this->db->setQuery($query);
+                return $this->db->loadObjectList();
                 break;
         }
     }
@@ -230,7 +230,7 @@ class Preferences extends Table
     public function updateUsersByClassId($id)
     {
 
-        $class = new \Components\Tools\Tables\SessionClass($this->_db);
+        $class = new \Components\Tools\Tables\SessionClass($this->db);
         $class->load($id);
 
         if (!$class->id) {
@@ -241,7 +241,7 @@ class Preferences extends Table
 
         if ($records && count($records) > 0) {
             foreach ($records as $r) {
-                $quota = new self($this->_db);
+                $quota = new self($this->db);
                 $quota->load($r->id);
                 $quota->set('jobs', $class->jobs);
                 $quota->store();
@@ -260,7 +260,7 @@ class Preferences extends Table
     public function restoreDefaultClass($id)
     {
 
-        $class = new SessionClass($this->_db);
+        $class = new SessionClass($this->db);
         $class->load(['alias' => 'default']);
 
         if (!$class->id) {
@@ -271,7 +271,7 @@ class Preferences extends Table
 
         if ($records && count($records) > 0) {
             foreach ($records as $r) {
-                $quota = new self($this->_db);
+                $quota = new self($this->db);
                 $quota->load($r->id);
                 $quota->set('jobs', $class->jobs);
                 $quota->set('class_id', $class->id);

@@ -67,11 +67,11 @@ class PageVersion extends Table
      */
     public function find($filters = [])
     {
-        $sql = "SELECT * FROM {$this->_tbl}";
+        $sql = "SELECT * FROM {$this->tableName}";
         $sql .= $this->buildQuery($filters);
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -82,11 +82,11 @@ class PageVersion extends Table
      */
     public function count($filters = [])
     {
-        $sql = "SELECT COUNT(*) FROM {$this->_tbl}";
+        $sql = "SELECT COUNT(*) FROM {$this->tableName}";
         $sql .= $this->buildQuery($filters);
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadResult();
+        $this->db->setQuery($sql);
+        return $this->db->loadResult();
     }
 
     /**
@@ -101,11 +101,11 @@ class PageVersion extends Table
         $sql   = '';
 
         if (isset($filters['pageid']) && is_numeric($filters['pageid'])) {
-            $where[] = 'pageid=' . $this->_db->quote($filters['pageid']);
+            $where[] = 'pageid=' . $this->db->quote($filters['pageid']);
         }
 
         if (isset($filters['version']) && is_numeric($filters['version'])) {
-            $where[] = 'version=' . $this->_db->quote($filters['version']);
+            $where[] = 'version=' . $this->db->quote($filters['version']);
         }
 
         if (count($where) > 0) {

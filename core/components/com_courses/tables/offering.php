@@ -143,12 +143,12 @@ class Offering extends Table
      */
     private function makeAliasUnique()
     {
-        $sql = "SELECT alias from $this->_tbl WHERE `course_id`=" . $this->_db->quote(intval($this->course_id));
+        $sql = "SELECT alias from $this->tableName WHERE `course_id`=" . $this->db->quote(intval($this->course_id));
         if ($this->id) {
-            $sql .= " AND `id`!=" . $this->_db->quote(intval($this->id));
+            $sql .= " AND `id`!=" . $this->db->quote(intval($this->id));
         }
-        $this->_db->setQuery($sql);
-        $result = $this->_db->loadColumn();
+        $this->db->setQuery($sql);
+        $result = $this->db->loadColumn();
 
         $original_alias = $this->alias;
 
@@ -167,22 +167,22 @@ class Offering extends Table
      */
     private function buildQuery($filters = [])
     {
-        $query  = " FROM $this->_tbl AS ci";
+        $query  = " FROM $this->tableName AS ci";
         $query .= " INNER JOIN #__courses AS c ON c.id=ci.course_id";
 
         $where = [];
 
         if (isset($filters['course_alias']) && $filters['course_alias']) {
-            $where[] = "c.alias=" . $this->_db->quote($filters['course_alias']);
+            $where[] = "c.alias=" . $this->db->quote($filters['course_alias']);
         } elseif (isset($filters['course_id'])) { // && $filters['course_id'])
-            $where[] = "c.id=" . $this->_db->quote(intval($filters['course_id']));
+            $where[] = "c.id=" . $this->db->quote(intval($filters['course_id']));
         }
 
         if (isset($filters['available']) && $filters['available']) {
             $now = Date::toSql();
 
-            $where[] = "(ci.publish_up IS NULL OR ci.publish_up = '0000-00-00 00:00:00' OR ci.publish_up <= " . $this->_db->quote($now) . ")";
-            $where[] = "(ci.publish_down IS NULL OR ci.publish_down = '0000-00-00 00:00:00' OR ci.publish_down >= " . $this->_db->quote($now) . ")";
+            $where[] = "(ci.publish_up IS NULL OR ci.publish_up = '0000-00-00 00:00:00' OR ci.publish_up <= " . $this->db->quote($now) . ")";
+            $where[] = "(ci.publish_down IS NULL OR ci.publish_down = '0000-00-00 00:00:00' OR ci.publish_down >= " . $this->db->quote($now) . ")";
 
             $filters['state'] = 1;
         }
@@ -192,13 +192,13 @@ class Offering extends Table
                 $filters['state'] = array_map('intval', $filters['state']);
                 $where[] = "ci.state IN (" . implode(',', $filters['state']) . ")";
             } elseif ($filters['state'] >= 0) {
-                $where[] = "ci.state=" . $this->_db->quote(intval($filters['state']));
+                $where[] = "ci.state=" . $this->db->quote(intval($filters['state']));
             }
         }
 
         if (isset($filters['search']) && $filters['search']) {
-            $where[] = "(LOWER(ci.alias) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
-					OR LOWER(ci.title) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . ")";
+            $where[] = "(LOWER(ci.alias) LIKE " . $this->db->quote('%' . strtolower($filters['search']) . '%') . "
+					OR LOWER(ci.title) LIKE " . $this->db->quote('%' . strtolower($filters['search']) . '%') . ")";
         }
 
         if (count($where) > 0) {
@@ -220,8 +220,8 @@ class Offering extends Table
         $query  = "SELECT COUNT(ci.id)";
         $query .= $this->buildQuery($filters);
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -266,7 +266,7 @@ class Offering extends Table
             $query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 }

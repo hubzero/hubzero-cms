@@ -112,9 +112,9 @@ class Log extends Table
             $subnet = trim(implode('.', $bits)) . '.';
 
             $query = " SELECT COUNT(*) FROM $metrics_db.exclude_list WHERE type='ip' AND filter LIKE "
-                . $this->_db->quote($subnet . '%');
-            $this->_db->setQuery($query);
-            return (bool) $this->_db->loadResult();
+                . $this->db->quote($subnet . '%');
+            $this->db->setQuery($query);
+            return (bool) $this->db->loadResult();
         }
 
         // IPv6: an excluded address excludes its /64, the counterpart of the
@@ -141,16 +141,16 @@ class Log extends Table
 
         if ($metrics_db === false) {
             // Metrics db name
-            $this->_db->setQuery("SELECT DATABASE()");
-            $name = $this->_db->loadResult() . '_metrics';
+            $this->db->setQuery("SELECT DATABASE()");
+            $name = $this->db->loadResult() . '_metrics';
 
             // Do we have metrics db and necessary table?
             $query = "SELECT COUNT(*) FROM information_schema.tables
-					WHERE table_schema = " . $this->_db->quote($name) . "
+					WHERE table_schema = " . $this->db->quote($name) . "
 					AND table_name = 'exclude_list'";
-            $this->_db->setQuery($query);
+            $this->db->setQuery($query);
 
-            $metrics_db = $this->_db->loadResult() ? $name : null;
+            $metrics_db = $this->db->loadResult() ? $name : null;
         }
 
         return $metrics_db;
@@ -175,9 +175,9 @@ class Log extends Table
         if ($networks === null) {
             $networks = [];
 
-            $this->_db->setQuery("SELECT filter FROM $metrics_db.exclude_list WHERE type='ip' AND filter LIKE '%:%'");
+            $this->db->setQuery("SELECT filter FROM $metrics_db.exclude_list WHERE type='ip' AND filter LIKE '%:%'");
 
-            foreach ((array) $this->_db->loadColumn() as $filter) {
+            foreach ((array) $this->db->loadColumn() as $filter) {
                 $filter = trim((string) $filter);
 
                 if (strpos($filter, '/') === false) {
@@ -359,17 +359,17 @@ class Log extends Table
         $thisYearNum  = $yearNum ? $yearNum : Date::format('y');
         $thisMonthNum = $monthNum ? $monthNum : Date::format('m');
 
-        $query  = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid);
-        $query .= " AND publication_version_id=" . $this->_db->quote($vid);
-        $query .= " AND year= " . $this->_db->quote($thisYearNum) . "
-				    AND month=" . $this->_db->quote($thisMonthNum);
+        $query  = "SELECT * FROM $this->tableName WHERE publication_id=" . $this->db->quote($pid);
+        $query .= " AND publication_version_id=" . $this->db->quote($vid);
+        $query .= " AND year= " . $this->db->quote($thisYearNum) . "
+				    AND month=" . $this->db->quote($thisMonthNum);
         $query .= " ORDER BY modified DESC LIMIT 1";
 
-        $this->_db->setQuery($query);
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery($query);
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -392,14 +392,14 @@ class Log extends Table
         $thisYearNum  = $yearNum ? $yearNum : Date::format('y');
         $thisMonthNum = $monthNum ? $monthNum : Date::format('m');
 
-        $query  = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid);
-        $query .= " AND publication_version_id=" . $this->_db->quote($vid);
-        $query .= " AND year= " . $this->_db->quote($thisYearNum) . "
-				    AND month=" . $this->_db->quote($thisMonthNum);
+        $query  = "SELECT * FROM $this->tableName WHERE publication_id=" . $this->db->quote($pid);
+        $query .= " AND publication_version_id=" . $this->db->quote($vid);
+        $query .= " AND year= " . $this->db->quote($thisYearNum) . "
+				    AND month=" . $this->db->quote($thisMonthNum);
         $query .= "ORDER BY modified DESC LIMIT 1";
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadAssoc();
+        $this->db->setQuery($query);
+        return $this->db->loadAssoc();
     }
 
     /**
@@ -442,65 +442,65 @@ class Log extends Table
 			ORDER BY VV.published_up ASC limit 1) AS first_published ";
 
         if ($lastmonth) {
-            $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->_tbl as L
+            $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->tableName as L
                 WHERE L.publication_id=V.publication_id
                 AND year='$thisYearNum' AND month='$pastMonthNum') AS monthly_views ";
-            $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->_tbl as L
+            $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->tableName as L
                 WHERE L.publication_id=V.publication_id
                 AND year='$thisYearNum' AND month='$pastMonthNum') AS monthly_primary ";
-            $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->_tbl as L
+            $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->tableName as L
                 WHERE L.publication_id=V.publication_id
                 AND year='$thisYearNum' AND month='$pastMonthNum') AS monthly_support ";
-            $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->_tbl as L
+            $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->tableName as L
                 WHERE L.publication_id=V.publication_id) AS total_views ";
-            $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->_tbl as L
+            $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->tableName as L
                 WHERE L.publication_id=V.publication_id) AS total_primary ";
         } else {
-            $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->_tbl as L
+            $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->tableName as L
                 WHERE L.publication_id=V.publication_id
                 AND year='$thisYearNum' AND month='$thisMonthNum') AS thismonth_views ";
-            $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->_tbl as L
+            $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->tableName as L
                 WHERE L.publication_id=V.publication_id
                 AND year='$thisYearNum' AND month='$thisMonthNum') AS thismonth_primary ";
-            $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->_tbl as L
+            $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->tableName as L
                 WHERE L.publication_id=V.publication_id
                 AND year='$thisYearNum' AND month='$thisMonthNum') AS thismonth_support ";
 
-            $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->_tbl as L
+            $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->tableName as L
                 WHERE L.publication_id=V.publication_id
                 AND year='$pastYearNum' AND month='$pastMonthNum') AS lastmonth_views ";
-            $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->_tbl as L
+            $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->tableName as L
                 WHERE L.publication_id=V.publication_id
                 AND year='$pastYearNum' AND month='$pastMonthNum') AS lastmonth_primary ";
-            $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->_tbl as L
+            $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->tableName as L
                 WHERE L.publication_id=V.publication_id
                 AND year='$pastYearNum' AND month='$pastMonthNum') AS lastmonth_support ";
 
-            $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->_tbl as L
+            $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->tableName as L
                 WHERE L.publication_id=V.publication_id
                 AND year='$pastTwoYear' AND month='$pastTwoMonth') AS twomonth_views ";
-            $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->_tbl as L
+            $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->tableName as L
                 WHERE L.publication_id=V.publication_id
                 AND year='$pastTwoYear' AND month='$pastTwoMonth') AS twomonth_primary ";
-            $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->_tbl as L
+            $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->tableName as L
                 WHERE L.publication_id=V.publication_id
                 AND year='$pastTwoYear' AND month='$pastTwoMonth') AS twomonth_support ";
 
-            $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->_tbl as L
+            $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->tableName as L
                 WHERE L.publication_id=V.publication_id
                 AND year='$pastThreeYear' AND month='$pastThreeMonth') AS threemonth_views ";
-            $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->_tbl as L
+            $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->tableName as L
                 WHERE L.publication_id=V.publication_id
                 AND year='$pastThreeYear' AND month='$pastThreeMonth') AS threemonth_primary ";
-            $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->_tbl as L
+            $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->tableName as L
                 WHERE L.publication_id=V.publication_id
                 AND year='$pastThreeYear' AND month='$pastThreeMonth') AS threemonth_support ";
 
-            $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->_tbl as L
+            $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->tableName as L
                 WHERE L.publication_id=V.publication_id) AS total_views ";
-            $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->_tbl as L
+            $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->tableName as L
                 WHERE L.publication_id=V.publication_id) AS total_primary ";
-            $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->_tbl as L
+            $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->tableName as L
                 WHERE L.publication_id=V.publication_id) AS total_support ";
         }
 
@@ -510,7 +510,7 @@ class Log extends Table
             . "AND A.status=1 AND A.user_id='$uid' ";
 
         if ($lastmonth) {
-            $query .= " JOIN $this->_tbl as L ON L.publication_id = V.publication_id AND L.year='$thisYearNum'
+            $query .= " JOIN $this->tableName as L ON L.publication_id = V.publication_id AND L.year='$thisYearNum'
 						AND L.month='$pastMonthNum' AND L.page_views > 0  ";
         }
 
@@ -522,8 +522,8 @@ class Log extends Table
         $query .= $lastmonth ? " ORDER BY L.page_views DESC, V.id ASC " : "ORDER BY V.title ASC ";
         $query .= $limit ? "LIMIT " . $limit : '';
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -534,9 +534,9 @@ class Log extends Table
     public function getFirstLogDate()
     {
         // Get approximate time when logs started
-        $query = "SELECT modified FROM $this->_tbl ORDER BY id ASC LIMIT 1";
-        $this->_db->setQuery($query);
-        $first = $this->_db->loadResult();
+        $query = "SELECT modified FROM $this->tableName ORDER BY id ASC LIMIT 1";
+        $this->db->setQuery($query);
+        $first = $this->db->loadResult();
 
         if ($first) {
             return Date::of(strtotime($first))->format('Y-m-01 00:00:00');
@@ -556,17 +556,17 @@ class Log extends Table
         $query .= " COALESCE(SUM(L.primary_accesses) , 0) as all_total_primary, ";
         $query .= " COALESCE(SUM(L.support_accesses) , 0) as all_total_support ";
 
-        $query .= " FROM $this->_tbl as L ";
+        $query .= " FROM $this->tableName as L ";
 
         if ($type == 'author') {
             $query .= " JOIN #__publication_versions as V ON V.publication_id=L.publication_id ";
             $query .= " JOIN #__publication_authors as A ON A.publication_version_id = V.id "
-                . "AND A.user_id=" . $this->_db->quote($id);
+                . "AND A.user_id=" . $this->db->quote($id);
 
             $query .= " WHERE (A.role!='submitter' OR (A.role IS NULL)) AND ";
         } else {
             $query .= " JOIN #__publications as P ON P.id = L.publication_id "
-                . "AND P.project_id=" . $this->_db->quote($id);
+                . "AND P.project_id=" . $this->db->quote($id);
             $query .= " JOIN #__publication_versions as V ON V.publication_id=L.publication_id ";
 
             $query .= " WHERE ";
@@ -574,8 +574,8 @@ class Log extends Table
 
         $query .= " V.state=1 AND V.main=1 AND V.published_up < '" . Date::toSql() . "'";
 
-        $this->_db->setQuery($query);
-        $totals = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $totals = $this->db->loadObjectList();
         return $totals ? $totals[0] : null;
     }
 
@@ -610,11 +610,11 @@ class Log extends Table
 					V.version_label as version, V.doi";
 
         $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0)
-					FROM $this->_tbl as L
+					FROM $this->tableName as L
 					WHERE L.publication_id=V.publication_id " . $datequery . ") AS downloads ";
 
         $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0)
-					FROM $this->_tbl as L
+					FROM $this->tableName as L
 					WHERE L.publication_id=V.publication_id " . $datequery . ") AS views ";
 
         $query .= ", (SELECT COUNT(*)
@@ -622,7 +622,7 @@ class Log extends Table
 					JOIN #__citations_assoc as CA ON CA.cid=C.id
 					AND tbl='publication'
 					WHERE CA.oid=V.publication_id
-					AND C.created <= " . $this->_db->quote($citeTo) . ") AS citations ";
+					AND C.created <= " . $this->db->quote($citeTo) . ") AS citations ";
 
         $query .= "FROM ";
         if ($filter) {
@@ -649,7 +649,7 @@ class Log extends Table
         }
 
         if ($filter) {
-            $tagging = new \Components\Publications\Helpers\Tags($this->_db);
+            $tagging = new \Components\Publications\Helpers\Tags($this->db);
             $tags = $tagging->_parse_tags($filter);
 
             $query .= " AND RTA.objectid=C.id AND (TA.tag IN (";
@@ -664,8 +664,8 @@ class Log extends Table
         $query .= " GROUP BY V.publication_id ";
         $query .= " ORDER BY V.publication_id ASC ";
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -700,51 +700,51 @@ class Log extends Table
 					t.url_alias as cat_url, t.name as cat_name, t.alias as cat_alias,
 					S.users, S.downloads ";
 
-        $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->_tbl as L
+        $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->tableName as L
             WHERE L.publication_id=V.publication_id
             AND year='$thisYearNum' AND month='$thisMonthNum') AS thismonth_views ";
-        $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->_tbl as L
+        $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->tableName as L
             WHERE L.publication_id=V.publication_id
             AND year='$thisYearNum' AND month='$thisMonthNum') AS thismonth_primary ";
-        $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->_tbl as L
+        $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->tableName as L
             WHERE L.publication_id=V.publication_id
             AND year='$thisYearNum' AND month='$thisMonthNum') AS thismonth_support ";
 
-        $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->_tbl as L
+        $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->tableName as L
             WHERE L.publication_id=V.publication_id
             AND year='$pastYearNum' AND month='$pastMonthNum') AS lastmonth_views ";
-        $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->_tbl as L
+        $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->tableName as L
             WHERE L.publication_id=V.publication_id
             AND year='$pastYearNum' AND month='$pastMonthNum') AS lastmonth_primary ";
-        $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->_tbl as L
+        $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->tableName as L
             WHERE L.publication_id=V.publication_id
             AND year='$pastYearNum' AND month='$pastMonthNum') AS lastmonth_support ";
 
-        $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->_tbl as L
+        $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->tableName as L
             WHERE L.publication_id=V.publication_id
             AND year='$pastTwoYear' AND month='$pastTwoMonth') AS twomonth_views ";
-        $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->_tbl as L
+        $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->tableName as L
             WHERE L.publication_id=V.publication_id
             AND year='$pastTwoYear' AND month='$pastTwoMonth') AS twomonth_primary ";
-        $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->_tbl as L
+        $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->tableName as L
             WHERE L.publication_id=V.publication_id
             AND year='$pastTwoYear' AND month='$pastTwoMonth') AS twomonth_support ";
 
-        $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->_tbl as L
+        $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->tableName as L
             WHERE L.publication_id=V.publication_id
             AND year='$pastThreeYear' AND month='$pastThreeMonth') AS threemonth_views ";
-        $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->_tbl as L
+        $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->tableName as L
             WHERE L.publication_id=V.publication_id
             AND year='$pastThreeYear' AND month='$pastThreeMonth') AS threemonth_primary ";
-        $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->_tbl as L
+        $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->tableName as L
             WHERE L.publication_id=V.publication_id
             AND year='$pastThreeYear' AND month='$pastThreeMonth') AS threemonth_support ";
 
-        $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0)  FROM $this->_tbl as L
+        $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0)  FROM $this->tableName as L
 			WHERE L.publication_id=V.publication_id) AS total_views ";
-        $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->_tbl as L
+        $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->tableName as L
 			WHERE L.publication_id=V.publication_id) AS total_primary ";
-        $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->_tbl as L
+        $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->tableName as L
 			WHERE L.publication_id=V.publication_id) AS total_support ";
 
         $query .= ", (SELECT VV.published_up FROM #__publication_versions as VV
@@ -758,11 +758,11 @@ class Log extends Table
         $query .= " WHERE C.id=V.publication_id AND V.state=1 AND C.category = t.id
 					AND V.main=1 AND V.published_up < '" . Date::toSql() . "' AND C.project_id=$projectid";
 
-        $query .= $pubid ? " AND V.publication_id=" . $this->_db->quote($pubid) : "";
+        $query .= $pubid ? " AND V.publication_id=" . $this->db->quote($pubid) : "";
         $query .= " GROUP BY V.publication_id ";
         $query .= " ORDER BY S.users DESC, V.id ASC ";
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 }

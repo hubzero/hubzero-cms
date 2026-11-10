@@ -67,7 +67,7 @@ class Audience extends Table
             $sql .= ", L3.description as desc3, L4.description as desc4 ";
             $sql .= $numlevels == 5 ? ", L5.description as desc5  " : "";
         }
-        $sql .= " FROM $this->_tbl AS a ";
+        $sql .= " FROM $this->tableName AS a ";
 
         if ($getlabels) {
             $sql .= "\n JOIN #__publication_audience_levels AS L0 on L0.label='level0' ";
@@ -79,12 +79,12 @@ class Audience extends Table
                 $sql .= "\n JOIN #__publication_audience_levels AS L5 on L5.label='level5' ";
             }
         }
-        $sql .= " WHERE  a.publication_id=" . $this->_db->quote($pid);
-        $sql .= $versionid ? " AND  a.publication_version_id=" . $this->_db->quote($versionid) : "";
+        $sql .= " WHERE  a.publication_id=" . $this->db->quote($pid);
+        $sql .= $versionid ? " AND  a.publication_version_id=" . $this->db->quote($versionid) : "";
         $sql .= " LIMIT 1 ";
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -99,11 +99,11 @@ class Audience extends Table
             return false;
         }
 
-        $query = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($versionid);
-        $this->_db->setQuery($query);
+        $query = "DELETE FROM $this->tableName WHERE publication_version_id=" . $this->db->quote($versionid);
+        $this->db->setQuery($query);
 
-        if (!$this->_db->query()) {
-            $this->setError($this->_db->getErrorMsg());
+        if (!$this->db->query()) {
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;

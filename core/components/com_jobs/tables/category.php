@@ -39,9 +39,9 @@ class Category extends Table
         $cats = [];
 
         $query  = $getobject ? "SELECT * " : "SELECT id, category ";
-        $query .= "FROM `$this->_tbl` ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $sortby) ?: '1') . " " . (strtoupper((string) $sortdir) === 'DESC' ? 'DESC' : 'ASC') . "";
-        $this->_db->setQuery($query);
-        $result = $this->_db->loadObjectList();
+        $query .= "FROM `$this->tableName` ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $sortby) ?: '1') . " " . (strtoupper((string) $sortdir) === 'DESC' ? 'DESC' : 'ASC') . "";
+        $this->db->setQuery($query);
+        $result = $this->db->loadObjectList();
         if ($getobject) {
             return $result;
         }
@@ -71,9 +71,9 @@ class Category extends Table
             return $default;
         }
 
-        $query  = "SELECT category FROM `$this->_tbl` WHERE id=" . $this->_db->quote($id);
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $query  = "SELECT category FROM `$this->tableName` WHERE id=" . $this->db->quote($id);
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -89,11 +89,11 @@ class Category extends Table
             return false;
         }
 
-        $query  = "UPDATE `$this->_tbl` SET ordernum=" . $this->_db->quote($ordernum);
-        $query .= " WHERE id=" . $this->_db->quote($id);
-        $this->_db->setQuery($query);
-        if (!$this->_db->query()) {
-            $this->setError($this->_db->getErrorMsg());
+        $query  = "UPDATE `$this->tableName` SET ordernum=" . $this->db->quote($ordernum);
+        $query .= " WHERE id=" . $this->db->quote($id);
+        $this->db->setQuery($query);
+        if (!$this->db->query()) {
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;

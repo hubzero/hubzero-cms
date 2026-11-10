@@ -41,16 +41,16 @@ class Employer extends Table
         }
 
         $now = Date::toSql();
-        $query  = "SELECT e.id FROM `$this->_tbl` AS e  ";
+        $query  = "SELECT e.id FROM `$this->tableName` AS e  ";
         if (!$admin) {
             $query .= "JOIN `#__users_points_subscriptions` AS s ON s.id=e.subscriptionid AND s.uid=e.uid ";
-            $query .= "WHERE e.uid = " . $this->_db->quote($uid) . " AND s.status=1";
-            $query .= " AND s.expires > " . $this->_db->quote($now) . " ";
+            $query .= "WHERE e.uid = " . $this->db->quote($uid) . " AND s.status=1";
+            $query .= " AND s.expires > " . $this->db->quote($now) . " ";
         } else {
             $query .= "WHERE e.uid = 1";
         }
-        $this->_db->setQuery($query);
-        if ($this->_db->loadResult()) {
+        $this->db->setQuery($query);
+        if ($this->db->loadResult()) {
             return true;
         }
         return false;
@@ -68,8 +68,8 @@ class Employer extends Table
             return false;
         }
 
-        $this->_db->setQuery("SELECT * FROM `$this->_tbl` WHERE uid=" . $this->_db->quote($uid));
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery("SELECT * FROM `$this->tableName` WHERE uid=" . $this->db->quote($uid));
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         }
         return false;
@@ -88,17 +88,17 @@ class Employer extends Table
             return false;
         }
         $query  = "SELECT e.* ";
-        $query .= "FROM `$this->_tbl` AS e ";
+        $query .= "FROM `$this->tableName` AS e ";
         if ($subscriptionCode == 'admin') {
             $query .= "WHERE e.uid = 1";
         } elseif ($subscriptionCode) {
             $query .= "JOIN `#__users_points_subscriptions` AS s ON s.id=e.subscriptionid AND s.uid=e.uid ";
-            $query .= "WHERE s.code=" . $this->_db->quote($subscriptionCode);
+            $query .= "WHERE s.code=" . $this->db->quote($subscriptionCode);
         } elseif ($uid) {
-            $query .= "WHERE e.uid = " . $this->_db->quote($uid);
+            $query .= "WHERE e.uid = " . $this->db->quote($uid);
         }
-        $this->_db->setQuery($query);
-        $result = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $result = $this->db->loadObjectList();
         if ($result) {
             return $result[0];
         }

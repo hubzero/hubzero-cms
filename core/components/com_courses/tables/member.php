@@ -47,13 +47,13 @@ class Member extends Table
         }
 
         $query = "SELECT *
-				FROM $this->_tbl
+				FROM $this->tableName
 				WHERE ";
         if ($student !== null) {
-            $where[] = "`student`=" . $this->_db->quote((int) $student);
+            $where[] = "`student`=" . $this->db->quote((int) $student);
         }
-        $where[] = "`user_id`=" . $this->_db->quote((int) $uid);
-        $where[] = "`course_id`=" . $this->_db->quote((int) $cid);
+        $where[] = "`user_id`=" . $this->db->quote((int) $uid);
+        $where[] = "`course_id`=" . $this->db->quote((int) $cid);
         if ($oid !== null) {
             //$where[] = "`offering_id` IN (0, " . $this->_db->quote((int) $cid) . ")";
             $where[] = "`offering_id` IN (0," . (int) $oid . ")"; //$this->_db->quote((int) $oid);
@@ -64,11 +64,11 @@ class Member extends Table
         }
         $query .= implode(" AND ", $where) . " ORDER BY student ASC, section_id ASC, offering_id ASC LIMIT 1";
 
-        $this->_db->setQuery($query);
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery($query);
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -85,13 +85,13 @@ class Member extends Table
             return false;
         }
 
-        $query = "SELECT * FROM $this->_tbl WHERE `user_id`=" . $this->_db->quote((int) $uid) . " AND `section_id`=" . $this->_db->quote((int) $oid) . " LIMIT 1";
+        $query = "SELECT * FROM $this->tableName WHERE `user_id`=" . $this->db->quote((int) $uid) . " AND `section_id`=" . $this->db->quote((int) $oid) . " LIMIT 1";
 
-        $this->_db->setQuery($query);
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery($query);
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -119,13 +119,13 @@ class Member extends Table
             return false;
         }
 
-        $query = "SELECT * FROM $this->_tbl WHERE `user_id`=" . $this->_db->quote((int) $uid) . " AND `offering_id`=" . $this->_db->quote((int) $oid) . " LIMIT 1";
+        $query = "SELECT * FROM $this->tableName WHERE `user_id`=" . $this->db->quote((int) $uid) . " AND `offering_id`=" . $this->db->quote((int) $oid) . " LIMIT 1";
 
-        $this->_db->setQuery($query);
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery($query);
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -194,10 +194,10 @@ class Member extends Table
             return 0;
         }
 
-        $query = "SELECT COUNT(*) FROM $this->_tbl WHERE `token`=" . $this->_db->quote($token);
+        $query = "SELECT COUNT(*) FROM $this->tableName WHERE `token`=" . $this->db->quote($token);
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -237,20 +237,20 @@ class Member extends Table
      */
     private function buildQuery($filters = [])
     {
-        $query = " FROM $this->_tbl AS m
+        $query = " FROM $this->tableName AS m
 				JOIN #__users AS u ON u.id=m.user_id
 				LEFT JOIN #__courses_roles AS r ON r.id=m.role_id";
 
         $where = [];
         if (isset($filters['course_id']) && $filters['course_id']) {
-            $where[] = "m.`course_id`=" . $this->_db->quote(intval($filters['course_id']));
+            $where[] = "m.`course_id`=" . $this->db->quote(intval($filters['course_id']));
         }
         if (isset($filters['offering_id'])) {
             if (is_array($filters['offering_id']) && count($filters['offering_id']) > 0) {
                 $filters['offering_id'] = array_map('intval', $filters['offering_id']);
                 $where[] = "m.`offering_id` IN (" . implode(",", $filters['offering_id']) . ")";
             } else {
-                $where[] = "m.`offering_id`=" . $this->_db->quote(intval($filters['offering_id']));
+                $where[] = "m.`offering_id`=" . $this->db->quote(intval($filters['offering_id']));
             }
         }
         if (isset($filters['section_id'])) {
@@ -258,32 +258,32 @@ class Member extends Table
                 $filters['section_id'] = array_map('intval', $filters['section_id']);
                 $where[] = "m.`section_id` IN (" . implode(",", $filters['section_id']) . ")";
             } else {
-                $where[] = "m.`section_id`=" . $this->_db->quote(intval($filters['section_id']));
+                $where[] = "m.`section_id`=" . $this->db->quote(intval($filters['section_id']));
             }
         }
         if (isset($filters['user_id'])) {
-            $where[] = "m.`user_id`=" . $this->_db->quote(intval($filters['user_id']));
+            $where[] = "m.`user_id`=" . $this->db->quote(intval($filters['user_id']));
         }
         if (isset($filters['role_id'])) {
-            $where[] = "m.`role_id`=" . $this->_db->quote(intval($filters['role_id']));
+            $where[] = "m.`role_id`=" . $this->db->quote(intval($filters['role_id']));
         }
         if (isset($filters['role'])) {
             if (substr($filters['role'], 0, 1) == '!') {
-                $where[] = "r.`alias`!=" . $this->_db->quote(ltrim($filters['role'], '!'));
+                $where[] = "r.`alias`!=" . $this->db->quote(ltrim($filters['role'], '!'));
             } else {
-                $where[] = "r.`alias`=" . $this->_db->quote($filters['role']);
+                $where[] = "r.`alias`=" . $this->db->quote($filters['role']);
             }
         }
         if (isset($filters['search']) && $filters['search']) {
-            $q  = "(LOWER(u.name) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . " OR LOWER(u.username) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%');
+            $q  = "(LOWER(u.name) LIKE " . $this->db->quote('%' . strtolower($filters['search']) . '%') . " OR LOWER(u.username) LIKE " . $this->db->quote('%' . strtolower($filters['search']) . '%');
             if (is_numeric($filters['search'])) {
-                $q .= " OR u.id=" . $this->_db->quote($filters['search']);
+                $q .= " OR u.id=" . $this->db->quote($filters['search']);
             }
             $q .= ")";
             $where[] = $q;
         }
         if (isset($filters['student'])) {
-            $where[] = "m.`student`=" . $this->_db->quote(intval($filters['student']));
+            $where[] = "m.`student`=" . $this->db->quote(intval($filters['student']));
         }
 
         if (count($where) > 0) {
@@ -304,8 +304,8 @@ class Member extends Table
         $query  = "SELECT COUNT(*) ";
         $query .= $this->buildQuery($filters);
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -343,8 +343,8 @@ class Member extends Table
             $query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -355,11 +355,11 @@ class Member extends Table
      */
     public function deleteBySection($section_id)
     {
-        $query  = "DELETE FROM $this->_tbl WHERE `section_id`=" . $this->_db->quote($section_id);
+        $query  = "DELETE FROM $this->tableName WHERE `section_id`=" . $this->db->quote($section_id);
 
-        $this->_db->setQuery($query);
-        if (!$this->_db->query()) {
-            $this->setError($this->_db->getErrorMsg());
+        $this->db->setQuery($query);
+        if (!$this->db->query()) {
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;

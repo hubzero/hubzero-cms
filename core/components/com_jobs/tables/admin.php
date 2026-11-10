@@ -40,10 +40,10 @@ class Admin extends Table
         }
 
         $query  = "SELECT id ";
-        $query .= "FROM `$this->_tbl` ";
-        $query .= "WHERE uid = " . $this->_db->quote($uid) . " AND jid = " . $this->_db->quote($jid);
-        $this->_db->setQuery($query);
-        if ($this->_db->loadResult()) {
+        $query .= "FROM `$this->tableName` ";
+        $query .= "WHERE uid = " . $this->db->quote($uid) . " AND jid = " . $this->db->quote($jid);
+        $this->db->setQuery($query);
+        if ($this->db->loadResult()) {
             return true;
         }
         return false;
@@ -64,10 +64,10 @@ class Admin extends Table
         $admins = [];
 
         $query  = "SELECT uid ";
-        $query .= "FROM `$this->_tbl` ";
-        $query .= "WHERE jid = " . $this->_db->quote($jid);
-        $this->_db->setQuery($query);
-        $result = $this->_db->loadObjectList();
+        $query .= "FROM `$this->tableName` ";
+        $query .= "WHERE jid = " . $this->db->quote($jid);
+        $this->db->setQuery($query);
+        $result = $this->db->loadObjectList();
         if ($result) {
             foreach ($result as $r) {
                 $admins[] = $r->uid;

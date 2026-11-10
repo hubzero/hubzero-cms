@@ -39,14 +39,14 @@ class HandlerAssoc extends Table
             return false;
         }
 
-        $query  = "SELECT H.*, A.params as configs, A.status, A.ordering FROM $this->_tbl as A ";
+        $query  = "SELECT H.*, A.params as configs, A.status, A.ordering FROM $this->tableName as A ";
         $query .= " JOIN #__publication_handlers as H ON H.id=A.handler_id";
-        $query .= " WHERE A.publication_version_id=" . $this->_db->quote($vid);
-        $query .= " AND A.element_id=" . $this->_db->quote($elementid);
+        $query .= " WHERE A.publication_version_id=" . $this->db->quote($vid);
+        $query .= " AND A.element_id=" . $this->db->quote($elementid);
         $query .= " ORDER BY A.ordering ASC";
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -63,15 +63,15 @@ class HandlerAssoc extends Table
             return false;
         }
 
-        $query  = "SELECT H.*, A.params as configs, A.status, A.ordering FROM $this->_tbl as A ";
+        $query  = "SELECT H.*, A.params as configs, A.status, A.ordering FROM $this->tableName as A ";
         $query .= " JOIN #__publication_handlers as H ON H.id=A.handler_id";
-        $query .= " WHERE A.publication_version_id=" . $this->_db->quote($vid);
-        $query .= " AND A.element_id=" . $this->_db->quote($elementid);
-        $query .= " AND H.name=" . $this->_db->quote($handler);
+        $query .= " WHERE A.publication_version_id=" . $this->db->quote($vid);
+        $query .= " AND A.element_id=" . $this->db->quote($elementid);
+        $query .= " AND H.name=" . $this->db->quote($handler);
         $query .= " LIMIT 1";
 
-        $this->_db->setQuery($query);
-        $result = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $result = $this->db->loadObjectList();
         return $result ? $result[0] : null;
     }
 }

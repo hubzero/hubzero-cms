@@ -55,14 +55,14 @@ class Page extends Table
         $this->url = preg_replace("/[^a-zA-Z0-9\-_]/", '', $this->url);
 
         if (!$this->id) {
-            $sql = "SELECT id FROM $this->_tbl
-					WHERE course_id=" . $this->_db->quote($this->course_id) . "
-					AND offering_id=" . $this->_db->quote($this->offering_id) . "
-					AND section_id=" . $this->_db->quote($this->section_id) . "
-					AND url=" . $this->_db->quote($this->url) . "
+            $sql = "SELECT id FROM $this->tableName
+					WHERE course_id=" . $this->db->quote($this->course_id) . "
+					AND offering_id=" . $this->db->quote($this->offering_id) . "
+					AND section_id=" . $this->db->quote($this->section_id) . "
+					AND url=" . $this->db->quote($this->url) . "
 					LIMIT 1";
-            $this->_db->setQuery($sql);
-            if ($this->_db->loadResult()) {
+            $this->db->setQuery($sql);
+            if ($this->db->loadResult()) {
                 $this->setError(Lang::txt('A page with the alias "%s" already exist.', $this->url));
                 return false;
             }
@@ -83,11 +83,11 @@ class Page extends Table
      */
     private function buildQuery($filters = [])
     {
-        $query = " FROM $this->_tbl AS r";
+        $query = " FROM $this->tableName AS r";
 
         $where = [];
         if (isset($filters['course_id'])) {
-            $where[] = "r.`course_id`=" . $this->_db->quote($filters['course_id']);
+            $where[] = "r.`course_id`=" . $this->db->quote($filters['course_id']);
         }
         if (isset($filters['offering_id'])) {
             if (is_array($filters['offering_id'])) {
@@ -109,20 +109,20 @@ class Page extends Table
         }
         if (isset($filters['url']) && $filters['url']) {
             if (substr($filters['url'], 0, 1) == '!') {
-                $where[] = "r.`url`!=" . $this->_db->quote(ltrim($filters['url'], '!'));
+                $where[] = "r.`url`!=" . $this->db->quote(ltrim($filters['url'], '!'));
             } else {
-                $where[] = "r.`url`=" . $this->_db->quote($filters['url']);
+                $where[] = "r.`url`=" . $this->db->quote($filters['url']);
             }
         }
         if (isset($filters['search']) && $filters['search']) {
-            $where[] = "LOWER(r.`title`) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%');
+            $where[] = "LOWER(r.`title`) LIKE " . $this->db->quote('%' . strtolower($filters['search']) . '%');
         }
         if (isset($filters['active'])) {
             if (is_array($filters['active'])) {
                 $filters['active'] = array_map('intval', $filters['active']);
                 $where[] = "r.`active` IN (" . implode(',', $filters['active']) . ")";
             } elseif ($filters['active'] >= 0) {
-                $where[] = "r.`active`=" . $this->_db->quote(intval($filters['active']));
+                $where[] = "r.`active`=" . $this->db->quote(intval($filters['active']));
             }
         }
 
@@ -144,8 +144,8 @@ class Page extends Table
         $query  = "SELECT COUNT(DISTINCT r.`url`) ";
         $query .= $this->buildQuery($filters);
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -174,8 +174,8 @@ class Page extends Table
             $sql .= ' LIMIT ' . intval($filters['start']) . ',' . intval($filters['limit']);
         }
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -186,10 +186,10 @@ class Page extends Table
      */
     public function getHighestPageOrder($course_id, $offering_id)
     {
-        $sql = "SELECT ordering from $this->_tbl WHERE course_id=" . $this->_db->quote(intval($course_id))
-            . " AND offering_id=" . $this->_db->quote(intval($offering_id)) . " ORDER BY ordering DESC LIMIT 1";
-        $this->_db->setQuery($sql);
-        return $this->_db->loadResult();
+        $sql = "SELECT ordering from $this->tableName WHERE course_id=" . $this->db->quote(intval($course_id))
+            . " AND offering_id=" . $this->db->quote(intval($offering_id)) . " ORDER BY ordering DESC LIMIT 1";
+        $this->db->setQuery($sql);
+        return $this->db->loadResult();
     }
 
     /**
@@ -207,7 +207,7 @@ class Page extends Table
             $page_id = $this->page_id;
         }
 
-        $tbl = new PageHit($this->_db);
+        $tbl = new PageHit($this->db);
         if (!$tbl->recordHit($offering_id, $page_id)) {
             $this->setError($tbl->getError());
             return false;

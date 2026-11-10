@@ -37,9 +37,9 @@ class Course extends Table
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _getAssetName()
+    protected function getAssetName()
     {
-        $k = $this->_tbl_key;
+        $k = $this->tableKey;
         return 'com_courses.course.' . (int) $this->$k;
     }
 
@@ -49,7 +49,7 @@ class Course extends Table
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _getAssetTitle()
+    protected function getAssetTitle()
     {
         return $this->title;
     }
@@ -62,7 +62,7 @@ class Course extends Table
      * @return  integer  The id of the asset's parent
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _getAssetParentId($table = null, $id = null)
+    protected function getAssetParentId($table = null, $id = null)
     {
         // Initialise variables.
         $assetId = null;
@@ -86,7 +86,7 @@ class Course extends Table
         if ($assetId) {
             return $assetId;
         } else {
-            return parent::_getAssetParentId($table, $id);
+            return parent::getAssetParentId($table, $id);
         }
     }
 
@@ -141,12 +141,12 @@ class Course extends Table
      */
     private function makeAliasUnique()
     {
-        $sql = "SELECT alias FROM $this->_tbl";
+        $sql = "SELECT alias FROM $this->tableName";
         if ($this->id) {
-            $sql .= " WHERE `id`!=" . $this->_db->quote(intval($this->id));
+            $sql .= " WHERE `id`!=" . $this->db->quote(intval($this->id));
         }
-        $this->_db->setQuery($sql);
-        $result = $this->_db->loadColumn();
+        $this->db->setQuery($sql);
+        $result = $this->db->loadColumn();
 
         $original_alias = $this->alias;
 
@@ -192,9 +192,9 @@ class Course extends Table
         if (isset($filters['tag']) && $filters['tag'] != '') {
             $query  = " FROM #__tags_object AS rta";
             $query .= " INNER JOIN #__tags AS t ON rta.tagid = t.id AND rta.tbl='courses'";
-            $query .= " INNER JOIN $this->_tbl AS c ON rta.objectid=c.id";
+            $query .= " INNER JOIN $this->tableName AS c ON rta.objectid=c.id";
         } else {
-            $query  = " FROM $this->_tbl AS c";
+            $query  = " FROM $this->tableName AS c";
         }
 
         $where = [];
@@ -204,30 +204,30 @@ class Course extends Table
                 $filters['state'] = array_map('intval', $filters['state']);
                 $where[] = "c.state IN (" . implode(',', $filters['state']) . ")";
             } else {
-                $where[] = "c.state=" . $this->_db->quote($filters['state']);
+                $where[] = "c.state=" . $this->db->quote($filters['state']);
             }
         }
         if (isset($filters['created_by']) && $filters['created_by'] >= 0) {
-            $where[] = "c.created_by=" . $this->_db->quote($filters['created_by']);
+            $where[] = "c.created_by=" . $this->db->quote($filters['created_by']);
         }
         if (isset($filters['access']) && $filters['access'] >= 0) {
-            $where[] = "c.access=" . $this->_db->quote($filters['access']);
+            $where[] = "c.access=" . $this->db->quote($filters['access']);
         }
         if (isset($filters['alias']) && $filters['alias']) {
-            $where[] = "c.alias=" . $this->_db->quote($filters['alias']);
+            $where[] = "c.alias=" . $this->db->quote($filters['alias']);
         }
         if (isset($filters['group_id']) && $filters['group_id'] >= 0) {
-            $where[] = "c.group_id=" . $this->_db->quote($filters['group_id']);
+            $where[] = "c.group_id=" . $this->db->quote($filters['group_id']);
         }
 
         if (isset($filters['index']) && $filters['index'] != '') {
-            $where[] = "LOWER(LEFT(c.title, 1)) = " . $this->_db->quote(strtolower($filters['index']));
+            $where[] = "LOWER(LEFT(c.title, 1)) = " . $this->db->quote(strtolower($filters['index']));
         }
 
         if (isset($filters['search']) && $filters['search'] != '') {
-            $where[] = "(LOWER(c.title) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
-					OR LOWER(c.blurb) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
-					OR LOWER(c.alias) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . ")";
+            $where[] = "(LOWER(c.title) LIKE " . $this->db->quote('%' . strtolower($filters['search']) . '%') . "
+					OR LOWER(c.blurb) LIKE " . $this->db->quote('%' . strtolower($filters['search']) . '%') . "
+					OR LOWER(c.alias) LIKE " . $this->db->quote('%' . strtolower($filters['search']) . '%') . ")";
         }
 
         if (isset($filters['tag']) && $filters['tag'] != '') {
@@ -274,8 +274,8 @@ class Course extends Table
         $query .= (isset($filters['tag']) && $filters['tag'] != '') ? ", COUNT(DISTINCT t.tag) AS uniques " : " ";
         $query .= $this->_buildQuery($filters);
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -301,8 +301,8 @@ class Course extends Table
             $query .= ' LIMIT ' . intval($filters['start']) . ',' . intval($filters['limit']);
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -325,12 +325,12 @@ class Course extends Table
             . "s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, "
             . "s.alias AS section_alias, s.title AS section_title";
 
-        $joinClause = " FROM $this->_tbl AS c
+        $joinClause = " FROM $this->tableName AS c
 					JOIN #__courses_members AS m ON m.course_id=c.id
 					LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 					LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
 					LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
-					WHERE m.user_id=" . $this->_db->quote($uid);
+					WHERE m.user_id=" . $this->db->quote($uid);
 
         $query2 = $selectFields . $joinClause . " AND m.student=0 AND r.alias='manager'";
 
@@ -358,7 +358,7 @@ class Course extends Table
                 break;
 
             default:
-                $query = $selectFields . $joinClause . " AND r.alias=" . $this->_db->quote($type);
+                $query = $selectFields . $joinClause . " AND r.alias=" . $this->db->quote($type);
                 break;
         }
 
@@ -369,7 +369,7 @@ class Course extends Table
             $query .= ' LIMIT ' . intval($start) . ',' . intval($limit);
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 }

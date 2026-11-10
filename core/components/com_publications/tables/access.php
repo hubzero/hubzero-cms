@@ -64,10 +64,10 @@ class Access extends Table
             return false;
         }
 
-        $this->_db->setQuery("SELECT publication_version_id FROM $this->_tbl
-			WHERE publication_version_id=" . $this->_db->quote($vid) . "
-			AND group_id=" . $this->_db->quote($group_id));
-        return $this->_db->loadResult();
+        $this->db->setQuery("SELECT publication_version_id FROM $this->tableName
+			WHERE publication_version_id=" . $this->db->quote($vid) . "
+			AND group_id=" . $this->db->quote($group_id));
+        return $this->db->loadResult();
     }
 
     /**
@@ -88,30 +88,30 @@ class Access extends Table
             return false;
         }
 
-        $query  = "SELECT A.group_id, X.cn, X.description, X.published as regconfirmed FROM $this->_tbl as A ";
+        $query  = "SELECT A.group_id, X.cn, X.description, X.published as regconfirmed FROM $this->tableName as A ";
         $query .= " JOIN #__xgroups AS X ON X.gidNumber = A.group_id ";
         if ($vid) {
-            $query .= "WHERE A.publication_version_id=" . $this->_db->quote($vid);
+            $query .= "WHERE A.publication_version_id=" . $this->db->quote($vid);
         } else {
             $query .= " JOIN #__publication_versions AS V ON V.id=A.publication_version_id ";
-            $query .= " WHERE V.publication_id=" . $this->_db->quote($pid);
+            $query .= " WHERE V.publication_id=" . $this->db->quote($pid);
             if ($version == 'default' or $version == 'current' && $version == 'main') {
                 $query .= " AND V.main=1 ";
             } elseif ($version == 'dev') {
                 $query .= " AND V.state=3 ";
             } elseif (intval($version)) {
-                $query .= " AND V.version_number=" . $this->_db->quote($version);
+                $query .= " AND V.version_number=" . $this->db->quote($version);
             } else {
                 // Error in supplied version value
                 $query .= " AND 1=2 ";
             }
         }
         if ($sysgroup) {
-            $query .= " AND X.cn !=" . $this->_db->quote($sysgroup);
+            $query .= " AND X.cn !=" . $this->db->quote($sysgroup);
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -155,10 +155,10 @@ class Access extends Table
             if (!$gid or $this->existsEntry($vid, $gid)) {
                 continue;
             } else {
-                $query = "INSERT INTO $this->_tbl (publication_version_id,group_id)
-				          VALUES($this->_db->quote($vid), $this->_db->quote($gid))";
-                $this->_db->setQuery($query);
-                if ($this->_db->query()) {
+                $query = "INSERT INTO $this->tableName (publication_version_id,group_id)
+				          VALUES($this->db->quote($vid), $this->db->quote($gid))";
+                $this->db->setQuery($query);
+                if ($this->db->query()) {
                     $saved++;
                 }
             }
@@ -183,11 +183,11 @@ class Access extends Table
             return false;
         }
 
-        $query = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid);
-        $query .= $sysgroup ? " AND group_id !=" . $this->_db->quote($sysgroup) : "";
-        $this->_db->setQuery($query);
-        if (!$this->_db->query()) {
-            $this->setError($this->_db->getErrorMsg());
+        $query = "DELETE FROM $this->tableName WHERE publication_version_id=" . $this->db->quote($vid);
+        $query .= $sysgroup ? " AND group_id !=" . $this->db->quote($sysgroup) : "";
+        $this->db->setQuery($query);
+        if (!$this->db->query()) {
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
         return true;

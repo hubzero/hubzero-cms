@@ -61,9 +61,9 @@ class Group extends Table
      */
     public function save($cn, $toolid = '', $role = '')
     {
-        $query = "INSERT INTO $this->_tbl (cn, toolid, role) VALUES (" . $this->_db->quote($cn) . "," . $this->_db->quote($toolid) . "," . $this->_db->quote($role) . ")";
-        $this->_db->setQuery($query);
-        $this->_db->query();
+        $query = "INSERT INTO $this->tableName (cn, toolid, role) VALUES (" . $this->db->quote($cn) . "," . $this->db->quote($toolid) . "," . $this->db->quote($role) . ")";
+        $this->db->setQuery($query);
+        $this->db->query();
     }
 
     /**
@@ -86,7 +86,7 @@ class Group extends Table
 
         if (\Hubzero\User\Group::exists($devgroup)) {
             $group->read($devgroup);
-            $existing_members = \Components\Tools\Helpers\Utils::transform((new Tool($this->_db))->getToolDevelopers($toolid), 'uidNumber');
+            $existing_members = \Components\Tools\Helpers\Utils::transform((new Tool($this->db))->getToolDevelopers($toolid), 'uidNumber');
             $group->set('members', $existing_members);
             // The managers the group already has stay as they are. Making
             // every developer a manager would let any of them add members -
@@ -133,9 +133,9 @@ class Group extends Table
 
         if (count($to_delete) > 0 && $editversion != 'current') {
             foreach ($to_delete as $del) {
-                $query = "DELETE FROM $this->_tbl WHERE cn=" . $this->_db->quote($del) . " AND toolid=" . $this->_db->quote($toolid) . " AND role=0";
-                $this->_db->setQuery($query);
-                $this->_db->query();
+                $query = "DELETE FROM $this->tableName WHERE cn=" . $this->db->quote($del) . " AND toolid=" . $this->db->quote($toolid) . " AND role=0";
+                $this->db->setQuery($query);
+                $this->db->query();
             }
         }
 

@@ -44,11 +44,11 @@ class License extends Table
 
         $oid = trim($oid);
 
-        $this->_db->setQuery("SELECT * FROM $this->_tbl WHERE name=" . $this->_db->quote($oid));
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery("SELECT * FROM $this->tableName WHERE name=" . $this->db->quote($oid));
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -87,15 +87,15 @@ class License extends Table
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildQuery($filters = [])
     {
-        $query  = "FROM $this->_tbl AS c";
+        $query  = "FROM $this->tableName AS c";
 
         $where = [];
         if (isset($filters['state'])) {
-            $where[] = "c.state=" . $this->_db->quote($filters['state']);
+            $where[] = "c.state=" . $this->db->quote($filters['state']);
         }
         if (isset($filters['search']) && $filters['search'] != '') {
-            $where[] = "(LOWER(c.title) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
-				OR LOWER(c.`text`) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . ")";
+            $where[] = "(LOWER(c.title) LIKE " . $this->db->quote('%' . strtolower($filters['search']) . '%') . "
+				OR LOWER(c.`text`) LIKE " . $this->db->quote('%' . strtolower($filters['search']) . '%') . ")";
         }
 
         if (count($where) > 0) {
@@ -118,8 +118,8 @@ class License extends Table
 
         $query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -145,8 +145,8 @@ class License extends Table
             $query .= ' LIMIT ' . (int) $filters['start'] . ',' . (int) $filters['limit'];
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -159,12 +159,12 @@ class License extends Table
     {
         $sortby  = isset($filters['sortby']) && $filters['sortby'] != '' ? $filters['sortby'] : 'ordering';
 
-        $query  = "SELECT * FROM $this->_tbl ";
+        $query  = "SELECT * FROM $this->tableName ";
         $query .= " WHERE active=1 ";
         $query .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $sortby) ?: '1');
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -183,7 +183,7 @@ class License extends Table
         $include = isset($manifest->params->include) ? $manifest->params->include : [];
         $exclude = isset($manifest->params->exclude) ? $manifest->params->exclude : [];
 
-        $query = "SELECT * FROM $this->_tbl WHERE active=1 ";
+        $query = "SELECT * FROM $this->tableName WHERE active=1 ";
         if ($include && !empty($include)) {
             $query .= " AND (";
             $i = 0;
@@ -210,8 +210,8 @@ class License extends Table
 
         $query .= " ORDER BY ordering";
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -221,12 +221,12 @@ class License extends Table
      */
     public function getDefaultLicense()
     {
-        $query  = "SELECT * FROM $this->_tbl ";
+        $query  = "SELECT * FROM $this->tableName ";
         $query .= " WHERE main=1 ";
         $query .= " LIMIT 1";
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -240,12 +240,12 @@ class License extends Table
         if (!$id) {
             return false;
         }
-        $query  = "SELECT * FROM $this->_tbl ";
-        $query .= " WHERE id=" . $this->_db->quote($id);
+        $query  = "SELECT * FROM $this->tableName ";
+        $query .= " WHERE id=" . $this->db->quote($id);
         $query .= " LIMIT 1";
 
-        $this->_db->setQuery($query);
-        $result = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $result = $this->db->loadObjectList();
         return $result ? $result[0] : false;
     }
 
@@ -261,11 +261,11 @@ class License extends Table
             return false;
         }
 
-        $this->_db->setQuery("SELECT * FROM $this->_tbl WHERE ordering=" . $this->_db->quote($ordering) . " LIMIT 1");
-        if ($result = $this->_db->loadAssoc()) {
+        $this->db->setQuery("SELECT * FROM $this->tableName WHERE ordering=" . $this->db->quote($ordering) . " LIMIT 1");
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -281,7 +281,7 @@ class License extends Table
         $newOrder = $this->ordering + $dir;
 
         // Load record in prev position
-        $old = new self($this->_db);
+        $old = new self($this->db);
         if ($old->loadByOrder($newOrder)) {
             $old->ordering  = $this->ordering;
             $old->store();
@@ -304,12 +304,12 @@ class License extends Table
         if (!$name) {
             return false;
         }
-        $query  = "SELECT * FROM $this->_tbl ";
-        $query .= " WHERE name LIKE " . $this->_db->quote($name);
+        $query  = "SELECT * FROM $this->tableName ";
+        $query .= " WHERE name LIKE " . $this->db->quote($name);
         $query .= " LIMIT 1";
 
-        $this->_db->setQuery($query);
-        $result = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $result = $this->db->loadObjectList();
         return $result ? $result[0] : false;
     }
 
@@ -324,12 +324,12 @@ class License extends Table
         if (!$title) {
             return false;
         }
-        $query  = "SELECT * FROM $this->_tbl ";
-        $query .= " WHERE title LIKE " . $this->_db->quote($title);
+        $query  = "SELECT * FROM $this->tableName ";
+        $query .= " WHERE title LIKE " . $this->db->quote($title);
         $query .= " LIMIT 1";
 
-        $this->_db->setQuery($query);
-        $result = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $result = $this->db->loadObjectList();
         return $result ? $result[0] : false;
     }
 
@@ -345,12 +345,12 @@ class License extends Table
             return false;
         }
 
-        $query = "SELECT L.*, v.license_type, v.license_text FROM $this->_tbl AS L, `#__publication_versions` AS v ";
-        $query .= " WHERE v.id=" . $this->_db->quote($vid) . " AND v.license_type=L.id";
+        $query = "SELECT L.*, v.license_type, v.license_text FROM $this->tableName AS L, `#__publication_versions` AS v ";
+        $query .= " WHERE v.id=" . $this->db->quote($vid) . " AND v.license_type=L.id";
         $query .= " LIMIT 1";
 
-        $this->_db->setQuery($query);
-        $result = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $result = $this->db->loadObjectList();
         return $result ? $result[0] : false;
     }
 
@@ -362,10 +362,10 @@ class License extends Table
      */
     public function undefault($except = 0)
     {
-        $query  = "UPDATE $this->_tbl SET main=0 ";
-        $query .= $except ? " WHERE id != " . $this->_db->quote($except) : '';
-        $this->_db->setQuery($query);
-        if ($this->_db->query()) {
+        $query  = "UPDATE $this->tableName SET main=0 ";
+        $query .= $except ? " WHERE id != " . $this->db->quote($except) : '';
+        $this->db->setQuery($query);
+        if ($this->db->query()) {
             return true;
         }
         return false;

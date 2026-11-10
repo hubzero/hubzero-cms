@@ -42,25 +42,25 @@ class Version extends Table
             return false;
         }
 
-        $query  = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid);
+        $query  = "SELECT * FROM $this->tableName WHERE publication_id=" . $this->db->quote($pid);
         if ($version == 'default' or $version == 'current' or $version == 'main') {
             $query .= " AND main=1 ";
         } elseif ($version == 'dev') {
             $query .= " AND state=3 ";
         } elseif (is_numeric($version)) {
-            $query .= " AND version_number=" . $this->_db->quote($version);
+            $query .= " AND version_number=" . $this->db->quote($version);
         } else {
             // Error in supplied version value
             $query .= " AND 1=2 ";
         }
         $query .= " LIMIT 1";
 
-        $this->_db->setQuery($query);
+        $this->db->setQuery($query);
 
-        if ($result = $this->_db->loadAssoc()) {
+        if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
-            $this->setError($this->_db->getErrorMsg());
+            $this->setError($this->db->getErrorMsg());
             return false;
         }
     }
@@ -87,22 +87,22 @@ class Version extends Table
             return false;
         }
 
-        $query  = "UPDATE $this->_tbl SET $update = " . $this->_db->quote($new)
-            . " WHERE publication_id=" . $this->_db->quote($pid);
+        $query  = "UPDATE $this->tableName SET $update = " . $this->db->quote($new)
+            . " WHERE publication_id=" . $this->db->quote($pid);
         $query .= $where ? " AND " . $where : "";
         if ($version == 'default' or $version == 'current' or $version == 'main') {
             $query .= " AND main=1 ";
         } elseif ($version == 'dev') {
             $query .= " AND state=3 ";
         } elseif (is_numeric($version)) {
-            $query .= " AND version_number=" . $this->_db->quote($version);
+            $query .= " AND version_number=" . $this->db->quote($version);
         } else {
             // Error in supplied version value
             $query .= " AND 1=2 ";
         }
         $query .= "LIMIT 1";
-        $this->_db->setQuery($query);
-        $this->_db->query();
+        $this->db->setQuery($query);
+        $this->db->query();
     }
 
     /**
@@ -122,18 +122,18 @@ class Version extends Table
         }
         $labels = [];
 
-        $query  = "SELECT version_label FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid);
+        $query  = "SELECT version_label FROM $this->tableName WHERE publication_id=" . $this->db->quote($pid);
 
         if ($exclude == 'default' or $exclude == 'current' or $exclude == 'main') {
             $query .= " AND main!=1 ";
         } elseif ($exclude == 'dev') {
             $query .= " AND state!=3 ";
         } elseif (is_numeric($exclude)) {
-            $query .= " AND version_number!=" . $this->_db->quote($exclude);
+            $query .= " AND version_number!=" . $this->db->quote($exclude);
         }
 
-        $this->_db->setQuery($query);
-        $result = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $result = $this->db->loadObjectList();
 
         if ($result) {
             foreach ($result as $r) {
@@ -164,22 +164,22 @@ class Version extends Table
             return false;
         }
 
-        $query  = "SELECT $select FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid);
+        $query  = "SELECT $select FROM $this->tableName WHERE publication_id=" . $this->db->quote($pid);
 
         if ($version == 'default' or $version == 'current' or $version == 'main') {
             $query .= " AND main=1 ";
         } elseif ($version == 'dev') {
             $query .= " AND state=3 ";
         } elseif (is_numeric($version)) {
-            $query .= " AND version_number=" . $this->_db->quote($version);
+            $query .= " AND version_number=" . $this->db->quote($version);
         } else {
             // Error in supplied version value
             $query .= " AND 1=2 ";
         }
         $query .= " LIMIT 1";
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -204,15 +204,15 @@ class Version extends Table
 
         $query = "SELECT v.*, p.alias, p.ranking as parent_ranking, p.rating as parent_rating, ";
         $query .= " p.checked_out, p.checked_out_time, p.access as parent_access, p.project_id ";
-        $query .= " FROM $this->_tbl AS v ";
+        $query .= " FROM $this->tableName AS v ";
         $query .= " JOIN #__publications AS p ON p.id=v.publication_id ";
-        $query .= " WHERE publication_id=" . $this->_db->quote($pid);
+        $query .= " WHERE publication_id=" . $this->db->quote($pid);
         $query .= $withdev ? "" : " AND v.state!=3 ";
         $query .= $public ? " AND (v.state = 1 OR v.state = 0) AND v.access <= 1 " : "";
         $query .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $sortby) ?: '1');
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -231,17 +231,17 @@ class Version extends Table
             return true;
         }
         if ($version == 'dev') {
-            $query  = "SELECT id FROM $this->_tbl WHERE publication_id="
-                . $this->_db->quote($pid) . " AND state = 3 LIMIT 1 ";
-            $this->_db->setQuery($query);
-            $result = $this->_db->loadResult();
+            $query  = "SELECT id FROM $this->tableName WHERE publication_id="
+                . $this->db->quote($pid) . " AND state = 3 LIMIT 1 ";
+            $this->db->setQuery($query);
+            $result = $this->db->loadResult();
             return $result ? true : false;
         }
         if (is_numeric($version)) {
-            $query  = "SELECT id FROM $this->_tbl WHERE publication_id="
-                . $this->_db->quote($pid) . " AND version_number=" . $this->_db->quote($version) . " LIMIT 1 ";
-            $this->_db->setQuery($query);
-            $result = $this->_db->loadResult();
+            $query  = "SELECT id FROM $this->tableName WHERE publication_id="
+                . $this->db->quote($pid) . " AND version_number=" . $this->db->quote($version) . " LIMIT 1 ";
+            $this->db->setQuery($query);
+            $result = $this->db->loadResult();
             return $result ? true : false;
         }
 
@@ -259,9 +259,9 @@ class Version extends Table
         if ($vid === null) {
             return false;
         }
-        $query  = "SELECT publication_id FROM $this->_tbl WHERE id=" . $this->_db->quote($vid) . " LIMIT 1 ";
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $query  = "SELECT publication_id FROM $this->tableName WHERE id=" . $this->db->quote($vid) . " LIMIT 1 ";
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -275,10 +275,10 @@ class Version extends Table
         if ($pid === null) {
             return false;
         }
-        $query  = "SELECT id FROM $this->_tbl WHERE publication_id="
-            . $this->_db->quote($pid) . " AND main = 1 LIMIT 1 ";
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $query  = "SELECT id FROM $this->tableName WHERE publication_id="
+            . $this->db->quote($pid) . " AND main = 1 LIMIT 1 ";
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -292,10 +292,10 @@ class Version extends Table
         if ($pid === null) {
             return false;
         }
-        $query  = "SELECT version_number FROM $this->_tbl WHERE publication_id="
-            . $this->_db->quote($pid) . " AND state = 1 ORDER BY version_number DESC LIMIT 1 ";
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $query  = "SELECT version_number FROM $this->tableName WHERE publication_id="
+            . $this->db->quote($pid) . " AND state = 1 ORDER BY version_number DESC LIMIT 1 ";
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -309,10 +309,10 @@ class Version extends Table
         if ($pid === null) {
             return false;
         }
-        $query  = "SELECT COUNT(*) FROM $this->_tbl WHERE publication_id="
-            . $this->_db->quote($pid) . " AND state = 1 ";
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $query  = "SELECT COUNT(*) FROM $this->tableName WHERE publication_id="
+            . $this->db->quote($pid) . " AND state = 1 ";
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -326,9 +326,9 @@ class Version extends Table
         if ($pid === null) {
             return false;
         }
-        $query  = "SELECT COUNT(*) FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid);
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $query  = "SELECT COUNT(*) FROM $this->tableName WHERE publication_id=" . $this->db->quote($pid);
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -342,10 +342,10 @@ class Version extends Table
         if ($pid === null) {
             return false;
         }
-        $query  = "SELECT * FROM $this->_tbl WHERE publication_id="
-            . $this->_db->quote($pid) . " AND state = 1 ORDER BY version_number DESC LIMIT 1 ";
-        $this->_db->setQuery($query);
-        $result = $this->_db->loadObjectList();
+        $query  = "SELECT * FROM $this->tableName WHERE publication_id="
+            . $this->db->quote($pid) . " AND state = 1 ORDER BY version_number DESC LIMIT 1 ";
+        $this->db->setQuery($query);
+        $result = $this->db->loadObjectList();
         return $result ? $result[0] : false;
     }
 
@@ -362,10 +362,10 @@ class Version extends Table
             return false;
         }
         $prevVersion = --$version_number;
-        $query = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid)
-            . " AND version_number=" . $this->_db->quote($prevVersion) . " AND state = 1";
-        $this->_db->setQuery($query);
-        return $this->_db->loadObject();
+        $query = "SELECT * FROM $this->tableName WHERE publication_id=" . $this->db->quote($pid)
+            . " AND version_number=" . $this->db->quote($prevVersion) . " AND state = 1";
+        $this->db->setQuery($query);
+        return $this->db->loadObject();
     }
 
     /**
@@ -381,10 +381,10 @@ class Version extends Table
             return false;
         }
         $nextVersion = ++$version_number;
-        $query = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid)
-            . " AND version_number=" . $this->_db->quote($nextVersion) . " AND state = 1";
-        $this->_db->setQuery($query);
-        return $this->_db->loadObject();
+        $query = "SELECT * FROM $this->tableName WHERE publication_id=" . $this->db->quote($pid)
+            . " AND version_number=" . $this->db->quote($nextVersion) . " AND state = 1";
+        $this->db->setQuery($query);
+        return $this->db->loadObject();
     }
 
     /**
@@ -399,11 +399,11 @@ class Version extends Table
         if ($vid === null || !is_numeric($vid) || intval($vid) == 0) {
             return false;
         }
-        $query  = "UPDATE $this->_tbl SET main = 0 ";
+        $query  = "UPDATE $this->tableName SET main = 0 ";
         $query .= $unpublish ? ", state = 0 " : "";
-        $query .= "WHERE id=" . $this->_db->quote($vid) . " AND main = 1 LIMIT 1 ";
-        $this->_db->setQuery($query);
-        if ($this->_db->getError()) {
+        $query .= "WHERE id=" . $this->db->quote($vid) . " AND main = 1 LIMIT 1 ";
+        $this->db->setQuery($query);
+        if ($this->db->getError()) {
             return false;
         }
         return true;
@@ -422,13 +422,13 @@ class Version extends Table
             return false;
         }
         $query  = "SELECT COUNT(*)";
-        $query .= " FROM $this->_tbl AS v ";
+        $query .= " FROM $this->tableName AS v ";
         $query .= " JOIN #__publications AS p ON p.id=v.publication_id ";
-        $query .= " WHERE v.main=1 AND v.title LIKE " . $this->_db->quote($title . '%')
-            . " AND p.project_id = " . $this->_db->quote($projectid) . " AND v.state != 2";
+        $query .= " WHERE v.main=1 AND v.title LIKE " . $this->db->quote($title . '%')
+            . " AND p.project_id = " . $this->db->quote($projectid) . " AND v.state != 2";
 
-        $this->_db->setQuery($query);
-        $result = $this->_db->loadResult();
+        $this->db->setQuery($query);
+        $result = $this->db->loadResult();
         $result = $result ? ($result + 1) : 1;
 
         $title .= ' (' . $result . ')';
@@ -448,7 +448,7 @@ class Version extends Table
      */
     public function createNewVersion($dev, $state = 1, $secret = '', $version_number = 1, $main = 1)
     {
-        $new =  new self($this->_db);
+        $new =  new self($this->db);
         $new = $dev;
         $new->id = 0;
         $new->rating = '0.0';
@@ -482,22 +482,22 @@ class Version extends Table
 
         $query = "SELECT v.*, p.alias, p.ranking as parent_ranking, p.rating as parent_rating, ";
         $query .= " p.checked_out, p.checked_out_time, p.access as parent_access, p.project_id ";
-        $query .= " FROM $this->_tbl AS v ";
+        $query .= " FROM $this->tableName AS v ";
         $query .= " JOIN #__publications AS p ON p.id=v.publication_id ";
         if ($version == 'default' or $version == 'current' or $version == 'main') {
             $query .= " AND v.main=1 ";
         } elseif ($version == 'dev') {
             $query .= " AND v.state=3 ";
         } elseif (is_numeric($version)) {
-            $query .= " AND v.version_number=" . $this->_db->quote($version);
+            $query .= " AND v.version_number=" . $this->db->quote($version);
         } else {
             // Error in supplied version value
             $query .= " AND 1=2 ";
         }
         $query .= " LIMIT 1";
 
-        $this->_db->setQuery($query);
-        $result = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $result = $this->db->loadObjectList();
         return $result ? $result[0] : false;
     }
 
@@ -572,7 +572,7 @@ class Version extends Table
         }
 
         $query  = " SELECT COUNT(v.id) as versions ";
-        $query .= " FROM $this->_tbl as v ";
+        $query .= " FROM $this->tableName as v ";
         $query .= " JOIN #__publications as p ON p.id = v.publication_id ";
         $query .= " WHERE v.state != 2 ";
 
@@ -587,10 +587,10 @@ class Version extends Table
             $query .= $tquery . ") ";
         }
 
-        $this->_db->setQuery($query);
+        $this->db->setQuery($query);
 
         if ($get == 'total') {
-            return $this->_db->loadResult();
+            return $this->db->loadResult();
         }
     }
 
@@ -615,12 +615,12 @@ class Version extends Table
             $reason = $otherReason;
         }
 
-        $query = "UPDATE $this->_tbl SET unpublished_reason = " . $this->_db->quote($reason)
-            . " WHERE publication_id=" . $this->_db->quote($pid)
-            . " AND version_number=" . $this->_db->quote($verNumber);
+        $query = "UPDATE $this->tableName SET unpublished_reason = " . $this->db->quote($reason)
+            . " WHERE publication_id=" . $this->db->quote($pid)
+            . " AND version_number=" . $this->db->quote($verNumber);
 
-        $this->_db->setQuery($query);
-        $this->_db->query();
+        $this->db->setQuery($query);
+        $this->db->query();
     }
 
     /**
@@ -634,8 +634,8 @@ class Version extends Table
         if ($vid === null) {
             return false;
         }
-        $query = "SELECT * FROM $this->_tbl WHERE id=" . $this->_db->quote($vid) . " AND state = 1";
-        $this->_db->setQuery($query);
-        return $this->_db->loadObject();
+        $query = "SELECT * FROM $this->tableName WHERE id=" . $this->db->quote($vid) . " AND state = 1";
+        $this->db->setQuery($query);
+        return $this->db->loadObject();
     }
 }

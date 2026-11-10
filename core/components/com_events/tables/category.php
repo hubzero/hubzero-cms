@@ -53,8 +53,8 @@ class Category extends Table
         if ($oid == null) {
             $oid = $this->id;
         }
-        $this->_db->setQuery("UPDATE $this->_tbl SET count = count-1 WHERE id=" . $this->_db->quote($oid));
-        $this->_db->query();
+        $this->db->setQuery("UPDATE $this->tableName SET count = count-1 WHERE id=" . $this->db->quote($oid));
+        $this->db->query();
     }
 
     /**
@@ -70,8 +70,8 @@ class Category extends Table
         if (!$oid) {
             $oid = $this->id;
         }
-        $this->_db->setQuery("UPDATE $this->_tbl SET published=1 WHERE id=" . $this->_db->quote($oid));
-        $this->_db->query();
+        $this->db->setQuery("UPDATE $this->tableName SET published=1 WHERE id=" . $this->db->quote($oid));
+        $this->db->query();
     }
 
     /**
@@ -85,8 +85,8 @@ class Category extends Table
         if (!$oid) {
             $oid = $this->id;
         }
-        $this->_db->setQuery("UPDATE $this->_tbl SET published=0 WHERE id=" . $this->_db->quote($oid));
-        $this->_db->query();
+        $this->db->setQuery("UPDATE $this->tableName SET published=0 WHERE id=" . $this->db->quote($oid));
+        $this->db->query();
     }
 
     /**
@@ -100,7 +100,7 @@ class Category extends Table
         if (!$section) {
             $section = $this->section;
         }
-        $this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE extension=" . $this->_db->quote($section));
-        return $this->_db->loadResult();
+        $this->db->setQuery("SELECT COUNT(*) FROM $this->tableName WHERE extension=" . $this->db->quote($section));
+        return $this->db->loadResult();
     }
 }

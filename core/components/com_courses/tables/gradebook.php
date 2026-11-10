@@ -35,9 +35,9 @@ class GradeBook extends Table
      */
     public function loadByUserAndAssetId($member_id, $asset_id)
     {
-        $db = $this->_db;
+        $db = $this->db;
         $query  = 'SELECT *';
-        $query .= ' FROM ' . $this->_tbl;
+        $query .= ' FROM ' . $this->tableName;
         $query .= ' WHERE `scope` = "asset" AND `member_id` = ' . $db->quote($member_id)
             . ' AND `scope_id` = ' . $db->quote($asset_id);
         $db->setQuery($query);
@@ -59,7 +59,7 @@ class GradeBook extends Table
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildQuery($filters = [])
     {
-        $query  = " FROM $this->_tbl AS gb";
+        $query  = " FROM $this->tableName AS gb";
         $query .= " LEFT JOIN `#__courses_assets` ca ON gb.scope_id = ca.id";
 
         if (isset($filters['section_id']) && $filters['section_id']) {
@@ -96,10 +96,10 @@ class GradeBook extends Table
             $where[] = "gb.scope_id IN (" . implode(',', $filters['scope_id']) . ")";
         }
         if (isset($filters['course_id']) && $filters['course_id']) {
-            $where[] = "ca.course_id = " . $this->_db->quote($filters['course_id']);
+            $where[] = "ca.course_id = " . $this->db->quote($filters['course_id']);
         }
         if (isset($filters['section_id']) && $filters['section_id']) {
-            $where[] = "cm.section_id = " . $this->_db->quote($filters['section_id']);
+            $where[] = "cm.section_id = " . $this->db->quote($filters['section_id']);
         }
 
         if (count($where) > 0) {
@@ -120,8 +120,8 @@ class GradeBook extends Table
     {
         $query = "SELECT gb.*, ca.grade_weight" . $this->_buildQuery($filters);
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList($key);
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList($key);
     }
 
     /**
@@ -133,7 +133,7 @@ class GradeBook extends Table
     public function passing($filters = [], $key = null)
     {
         $query = "SELECT gb.member_id, score";
-        $query .= " FROM $this->_tbl AS gb";
+        $query .= " FROM $this->tableName AS gb";
         $query .= " LEFT JOIN `#__courses_members` cm ON cm.id = gb.member_id";
 
         $where = [];
@@ -169,8 +169,8 @@ class GradeBook extends Table
             $query .= implode(" AND ", $where);
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList($key);
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList($key);
     }
 
     /**
@@ -202,7 +202,7 @@ class GradeBook extends Table
         }
 
         // Get the assets
-        $asset  = new Asset($this->_db);
+        $asset  = new Asset($this->db);
         $assets = $asset->find([
             'w' => [
                 'course_id'   => $course->get('id'),
@@ -215,8 +215,8 @@ class GradeBook extends Table
         // Query for existing data
         $query = "SELECT * FROM `#__courses_grade_book` WHERE `member_id` IN ("
             . implode(',', $member_id) . ") AND `scope` IN ('asset')";
-        $this->_db->setQuery($query);
-        $results = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $results = $this->db->loadObjectList();
 
         $existing_grades = [];
         foreach ($results as $r) {
@@ -327,15 +327,15 @@ class GradeBook extends Table
                     . "(`member_id`, `score`, `scope`, `scope_id`, `score_recorded`) VALUES\n";
                 $query .= implode(",\n", $inserts);
 
-                $this->_db->setQuery($query);
-                $this->_db->query();
+                $this->db->setQuery($query);
+                $this->db->query();
             }
 
             if (count($updates) > 0) {
                 foreach ($updates as $update) {
                     $query = $update;
-                    $this->_db->setQuery($query);
-                    $this->_db->query();
+                    $this->db->setQuery($query);
+                    $this->db->query();
                 }
             }
 
@@ -343,8 +343,8 @@ class GradeBook extends Table
                 $query = "DELETE FROM `#__courses_grade_book` "
                     . "WHERE `scope` = 'asset' AND `scope_id` IN (" . implode(',', $deletes) . ")";
 
-                $this->_db->setQuery($query);
-                $this->_db->query();
+                $this->db->setQuery($query);
+                $this->db->query();
             }
         }
     }
@@ -371,8 +371,8 @@ class GradeBook extends Table
             // Query for existing data
             $query = "SELECT * FROM `#__courses_grade_book` WHERE `member_id` IN ("
                 . implode(',', $member_ids) . ") AND `scope` IN ('course', 'unit')";
-            $this->_db->setQuery($query);
-            $results = $this->_db->loadObjectList();
+            $this->db->setQuery($query);
+            $results = $this->db->loadObjectList();
 
             foreach ($results as $r) {
                 $key = $r->member_id . '.' . $r->scope . '.' . $r->scope_id;
@@ -405,7 +405,7 @@ class GradeBook extends Table
                         }
                     } else {
                         $inserts[] = "('{$member_id}', "
-                            . $this->_db->quote($unit['unit_weighted']) . ", 'unit', '{$unit_id}')";
+                            . $this->db->quote($unit['unit_weighted']) . ", 'unit', '{$unit_id}')";
                     }
                 } elseif (is_null($unit['unit_weighted'])) {
                     if (array_key_exists($member_id . '.unit.' . $unit_id, $existing_grades)) {
@@ -435,7 +435,7 @@ class GradeBook extends Table
                     }
                 } else {
                     $inserts[] = "('{$member_id}', "
-                        . $this->_db->quote($member['course_weighted']) . ", 'course', '{$course_id}')";
+                        . $this->db->quote($member['course_weighted']) . ", 'course', '{$course_id}')";
                 }
             } elseif (is_null($member['course_weighted'])) {
                 if (array_key_exists($member_id . '.course.' . $course_id, $existing_grades)) {
@@ -454,8 +454,8 @@ class GradeBook extends Table
         if (count($updates) > 0) {
             foreach ($updates as $update) {
                 $query = $update;
-                $this->_db->setQuery($query);
-                $this->_db->query();
+                $this->db->setQuery($query);
+                $this->db->query();
             }
         }
 
@@ -463,8 +463,8 @@ class GradeBook extends Table
             $query  = "INSERT INTO `#__courses_grade_book` (`member_id`, `score`, `scope`, `scope_id`) VALUES\n";
             $query .= implode(",\n", $inserts);
 
-            $this->_db->setQuery($query);
-            $this->_db->query();
+            $this->db->setQuery($query);
+            $this->db->query();
         }
     }
 
@@ -487,18 +487,18 @@ class GradeBook extends Table
 
         // Clear up course grades for given users
         $query  = "UPDATE `#__courses_grade_book` SET score = NULL";
-        $query .= " WHERE scope = 'course' AND scope_id = " . $this->_db->quote($course->get('id'));
+        $query .= " WHERE scope = 'course' AND scope_id = " . $this->db->quote($course->get('id'));
         $query .= " AND member_id IN (" . implode(',', $member_id) . ")";
-        $this->_db->setQuery($query);
-        $this->_db->query();
+        $this->db->setQuery($query);
+        $this->db->query();
 
         // Clean up units as well...
         foreach ($course->offering()->units() as $unit) {
             $query  = "UPDATE `#__courses_grade_book` SET score = NULL";
-            $query .= " WHERE scope = 'unit' AND scope_id = " . $this->_db->quote($unit->get('id'));
+            $query .= " WHERE scope = 'unit' AND scope_id = " . $this->db->quote($unit->get('id'));
             $query .= " AND member_id IN (" . implode(',', $member_id) . ")";
-            $this->_db->setQuery($query);
-            $this->_db->query();
+            $this->db->setQuery($query);
+            $this->db->query();
         }
     }
 
@@ -514,10 +514,10 @@ class GradeBook extends Table
             foreach ($data as $unit_id => $members) {
                 if (is_array($members) && count($members) > 0) {
                     $query  = "UPDATE `#__courses_grade_book` SET score = NULL";
-                    $query .= " WHERE scope = 'unit' AND scope_id = " . $this->_db->quote($unit_id);
+                    $query .= " WHERE scope = 'unit' AND scope_id = " . $this->db->quote($unit_id);
                     $query .= " AND member_id IN (" . implode(',', $members) . ")";
-                    $this->_db->setQuery($query);
-                    $this->_db->query();
+                    $this->db->setQuery($query);
+                    $this->db->query();
                 }
             }
         }
