@@ -20,14 +20,14 @@ class Parser
      *
      * @var  string
      */
-    private $_tokenPrefix = null;
+    private $tokenPrefix = null;
 
     /**
      * Configuration options
      *
      * @var  array
      */
-    private $_config = [
+    private $config = [
         'option'    => null,
         'scope'     => null,
         'pagename'  => null,
@@ -42,7 +42,7 @@ class Parser
      *
      * @var  array
      */
-    private $_data = [
+    private $data = [
         'input'  => null,
         'output' => null,
         'links'  => [],
@@ -53,7 +53,7 @@ class Parser
      *
      * @var  array
      */
-    private $_tokens = [
+    private $tokens = [
         'pre'    => [],
         'code'   => [],
         'macro'  => [],
@@ -64,7 +64,7 @@ class Parser
      *
      * @var  array
      */
-    private $_macroPaths = [];
+    private $macroPaths = [];
 
     /**
      * List of used macros
@@ -94,7 +94,7 @@ class Parser
         }
 
         // Set the unique token prefix
-        $this->_tokenPrefix = "\x07UNIQ";
+        $this->tokenPrefix = "\x07UNIQ";
     }
 
     /**
@@ -106,7 +106,7 @@ class Parser
      */
     public function set($property, $value = null)
     {
-        $this->_config[$property] = $value;
+        $this->config[$property] = $value;
         return $this;
     }
 
@@ -119,8 +119,8 @@ class Parser
      */
     public function get($property, $default = null)
     {
-        if (isset($this->_config[$property])) {
-            return $this->_config[$property];
+        if (isset($this->config[$property])) {
+            return $this->config[$property];
         }
         return $default;
     }
@@ -147,7 +147,7 @@ class Parser
                 $path = PATH_ROOT . $path;
             }
 
-            $this->_macroPaths[] = $path;
+            $this->macroPaths[] = $path;
         }
 
         return $this;
@@ -160,7 +160,7 @@ class Parser
      */
     public function getMacroPaths()
     {
-        return $this->_macroPaths;
+        return $this->macroPaths;
     }
 
     /**
@@ -170,7 +170,7 @@ class Parser
      */
     public function clearMacroPaths()
     {
-        $this->_macroPaths = [];
+        $this->macroPaths = [];
 
         return $this;
     }
@@ -182,7 +182,7 @@ class Parser
      */
     public function token()
     {
-        return $this->_tokenPrefix . $this->_randomString();
+        return $this->tokenPrefix . $this->randomString();
     }
 
     /**
@@ -192,7 +192,7 @@ class Parser
      */
     public function input()
     {
-        return $this->_data['input'];
+        return $this->data['input'];
     }
 
     /**
@@ -202,7 +202,7 @@ class Parser
      */
     public function output()
     {
-        return $this->_data['output'];
+        return $this->data['output'];
     }
 
     /**
@@ -210,7 +210,7 @@ class Parser
      *
      * @return  integer
      */
-    private function _randomString()
+    private function randomString()
     {
         return dechex(mt_rand(0, 0x7fffffff)) . dechex(mt_rand(0, 0x7fffffff));
     }
@@ -227,7 +227,7 @@ class Parser
     public function parse($text, $fullparse = true, $linestart = 0, $camelcase = 1)
     {
         // Store the raw input
-        $this->_data['input'] = $text;
+        $this->data['input'] = $text;
 
         // Remove any trailing whitespace
         $text = rtrim($text);
@@ -254,22 +254,22 @@ class Parser
 
         // Unstrip macro blocks BEFORE doing block levels or <p> tags will get messy
         //$text = preg_replace_callback('/MACRO' . $this->_token . '/i', array(&$this, 'restore_macros'), $text);
-        $text = preg_replace_callback('/<(macro) (.+?)>(.*)<\/(\1) \2>/si', [&$this, '_dataPull'], $text);
-        $this->_tokens['macro'] = [];
+        $text = preg_replace_callback('/<(macro) (.+?)>(.*)<\/(\1) \2>/si', [&$this, 'dataPull'], $text);
+        $this->tokens['macro'] = [];
 
         // Put back removed blocks <pre>, <code>, <a>, <math>
         $text = $this->unstrip($text);
 
         $text = $this->post($text);
 
-        $this->_data['output'] = $text;
+        $this->data['output'] = $text;
 
-        if (trim($this->_data['input']) && !trim($this->_data['output'])) {
-            $this->_data['output']  = '<p class="warning">Parsing error resulted in empty content. Displaying raw markup below.</p>';
-            $this->_data['output'] .= '<pre>' . htmlentities($this->_data['input'], ENT_COMPAT, 'UTF-8') . '</pre>';
+        if (trim($this->data['input']) && !trim($this->data['output'])) {
+            $this->data['output']  = '<p class="warning">Parsing error resulted in empty content. Displaying raw markup below.</p>';
+            $this->data['output'] .= '<pre>' . htmlentities($this->data['input'], ENT_COMPAT, 'UTF-8') . '</pre>';
         }
 
-        return $this->_data['output'];
+        return $this->data['output'];
     }
 
     /**
@@ -280,9 +280,9 @@ class Parser
      */
     private function strip($text)
     {
-        $text = preg_replace_callback('/<(pre)(.*?)>(.+?)<\/(pre)>/is', [&$this, '_dataPush'], $text ?: '');
+        $text = preg_replace_callback('/<(pre)(.*?)>(.+?)<\/(pre)>/is', [&$this, 'dataPush'], $text ?: '');
 
-        $text = preg_replace_callback('/<(code)(.*?)>(.+)<\/(code)>/iU', [&$this, '_dataPush'], $text ?: '');
+        $text = preg_replace_callback('/<(code)(.*?)>(.+)<\/(code)>/iU', [&$this, 'dataPush'], $text ?: '');
 
         return $text;
     }
@@ -294,7 +294,7 @@ class Parser
      * @param   array    $matches
      * @return  integer  Unique ID
      */
-    private function _dataPush($matches)
+    private function dataPush($matches)
     {
         $tag = $matches[1];
         $key = $this->token();
@@ -305,7 +305,7 @@ class Parser
             $val = $matches[3];
         }
 
-        $this->_tokens[$tag][$key] = $val;
+        $this->tokens[$tag][$key] = $val;
 
         return '<' . $tag . ' ' . $key . '></' . $tag . ' ' . $key . '>';
     }
@@ -317,13 +317,13 @@ class Parser
      * @param   string   $matches  Content to store
      * @return  integer  Unique ID
      */
-    private function _dataPull($matches)
+    private function dataPull($matches)
     {
         $tag = $matches[1];
         $key = $matches[2];
 
-        if (isset($this->_tokens[$tag]) && isset($this->_tokens[$tag][$key])) {
-            return $this->{'_restore' . ucfirst($tag)}($this->_tokens[$tag][$key]);
+        if (isset($this->tokens[$tag]) && isset($this->tokens[$tag][$key])) {
+            return $this->{'restore' . ucfirst($tag)}($this->tokens[$tag][$key]);
         }
         if ($tag == 'macro') {
             return '';
@@ -340,9 +340,9 @@ class Parser
      */
     private function unstrip($text, $html = true)
     {
-        foreach ($this->_tokens as $tag => $vals) {
-            $text = preg_replace_callback('/<(' . $tag . ') (.+?)><\/(\1) \2>/si', [&$this, '_dataPull'], $text);
-            $this->_tokens[$tag] = [];
+        foreach ($this->tokens as $tag => $vals) {
+            $text = preg_replace_callback('/<(' . $tag . ') (.+?)><\/(\1) \2>/si', [&$this, 'dataPull'], $text);
+            $this->tokens[$tag] = [];
         }
 
         return $text;
@@ -354,7 +354,7 @@ class Parser
      * @param   string  $txt
      * @return  string
      */
-    private function _restorePre($txt)
+    private function restorePre($txt)
     {
         return $txt;
     }
@@ -365,7 +365,7 @@ class Parser
      * @param   string  $txt
      * @return  string
      */
-    private function _restoreCode($txt)
+    private function restoreCode($txt)
     {
         return $txt;
     }
@@ -384,7 +384,7 @@ class Parser
         $this->addMacroPath(__DIR__ . DS . 'macros');
 
         // Get macros [[name(args)]]
-        return preg_replace_callback('/\[\[(?P<macroname>[\w.]+)(\]\]|\((?P<macroargs>.*)\)\]\])/U', [&$this, '_getMacro'], $text);
+        return preg_replace_callback('/\[\[(?P<macroname>[\w.]+)(\]\]|\((?P<macroargs>.*)\)\]\])/U', [&$this, 'getMacro'], $text);
     }
 
     /**
@@ -393,7 +393,7 @@ class Parser
      * @param   array  $matches  Result form [[Macro()]] pattern matching
      * @return  string
      */
-    private function _getMacro($matches)
+    private function getMacro($matches)
     {
         if (isset($matches[1]) && $matches[1] != '') {
             // Split macro by . (dot) char
@@ -475,14 +475,14 @@ class Parser
             // This is done to prevent any further wiki parsing of contents macro may return
             if (count($macro->linkLog) > 0) {
                 foreach ($macro->linkLog as $linkLog) {
-                    array_push($this->_data['links'], $linkLog);
+                    array_push($this->data['links'], $linkLog);
                 }
             }
 
-            return $this->_dataPush([
+            return $this->dataPush([
                 $matches[1],
                 'macro',
-                $this->_randomString(),
+                $this->randomString(),
                 $macro->render(),
             ]);
         }
@@ -496,7 +496,7 @@ class Parser
      * @param   string  $txt
      * @return  string
      */
-    private function _restoreMacro($txt)
+    private function restoreMacro($txt)
     {
         return $txt;
     }
