@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MultipleClasses -- Test file with helper stubs
-
 namespace Hubzero\Tests {
 
     use Hubzero\Htmx\HtmxService;
@@ -16,120 +14,6 @@ namespace Hubzero\Tests {
     use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
     use PHPUnit\Framework\Attributes\Test;
     use PHPUnit\Framework\TestCase;
-
-    class DebugSmokeRequestStub
-    {
-        private array $headers = [];
-        private string $method;
-        private array $query;
-        private array $server;
-
-        public function __construct(array $headers = [], string $method = 'GET', array $query = [], array $server = [])
-        {
-            foreach ($headers as $key => $value) {
-                $this->headers[strtolower((string) $key)] = (string) $value;
-            }
-            $this->method = strtoupper($method);
-            $this->query = $query;
-            $this->server = $server;
-        }
-
-        public function header(string $key, string $default = ''): string
-        {
-            return $this->headers[strtolower($key)] ?? $default;
-        }
-
-        public function getMethod(): string
-        {
-            return $this->method;
-        }
-
-        public function get(string $key, $default = null)
-        {
-            return $this->query[$key] ?? $default;
-        }
-
-        public function server(string $key, $default = null)
-        {
-            return $this->server[$key] ?? $default;
-        }
-    }
-
-    class DebugSmokeHeaderBagStub
-    {
-        public array $headers = [];
-
-        public function set(string $name, string $value): void
-        {
-            $this->headers[$name] = $value;
-        }
-
-        public function get(string $name, string $default = ''): string
-        {
-            return $this->headers[$name] ?? $default;
-        }
-    }
-
-    class DebugSmokeResponseStub
-    {
-        public DebugSmokeHeaderBagStub $headers;
-        public int $statusCode = 200;
-
-        public function __construct()
-        {
-            $this->headers = new DebugSmokeHeaderBagStub();
-        }
-
-        public function setStatusCode(int $statusCode): void
-        {
-            $this->statusCode = $statusCode;
-        }
-    }
-
-    class DebugSmokeConfigStub
-    {
-        private array $values;
-
-        public function __construct(array $values = [])
-        {
-            $this->values = $values;
-        }
-
-        public function get(string $key, $default = null)
-        {
-            return $this->values[$key] ?? $default;
-        }
-    }
-
-    class DebugSmokeAppStub
-    {
-        private static array $state = [];
-
-        public static function reset(): void
-        {
-            self::$state = [];
-        }
-
-        public static function get(string $key)
-        {
-            if (array_key_exists($key, self::$state)) {
-                return self::$state[$key];
-            }
-
-            // This stub is aliased over the global App for the whole run, not
-            // just this file, so fall through to the real container for keys it
-            // does not define. Returning null unconditionally would break every
-            // later test that resolves a service through the App facade.
-            $app = \Hubzero\Facades\Facade::getApplication();
-
-            return ($app && isset($app[$key])) ? $app[$key] : null;
-        }
-
-        public static function set(string $key, $value): void
-        {
-            self::$state[$key] = $value;
-        }
-    }
 
     if (!class_exists('\\App', false)) {
         class_alias(DebugSmokeAppStub::class, 'App');

@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MultipleClasses -- Test file with helper stubs
-
 namespace Hubzero\Tests {
 
     use Hubzero\Htmx\HtmxService;
@@ -16,105 +14,6 @@ namespace Hubzero\Tests {
     use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
     use PHPUnit\Framework\Attributes\Test;
     use PHPUnit\Framework\TestCase;
-
-    class DebugParityRequestStub
-    {
-        private array $headers = [];
-        private string $method = 'GET';
-        private array $server = [];
-        private array $query = [];
-
-        public function __construct(array $headers = [], array $query = [], array $server = [], string $method = 'GET')
-        {
-            foreach ($headers as $key => $value) {
-                $this->headers[strtolower((string) $key)] = (string) $value;
-            }
-            $this->query = $query;
-            $this->server = $server;
-            $this->method = strtoupper($method);
-        }
-
-        public function header(string $name, string $default = ''): string
-        {
-            return $this->headers[strtolower($name)] ?? $default;
-        }
-
-        public function get(string $name, $default = null)
-        {
-            return $this->query[$name] ?? $default;
-        }
-
-        public function server(string $name, $default = null)
-        {
-            return $this->server[$name] ?? $default;
-        }
-
-        public function getMethod(): string
-        {
-            return $this->method;
-        }
-    }
-
-    class DebugParityHeaderBagStub
-    {
-        public array $headers = [];
-
-        public function set(string $name, string $value): void
-        {
-            $this->headers[$name] = $value;
-        }
-
-        public function get(string $name, string $default = ''): string
-        {
-            return $this->headers[$name] ?? $default;
-        }
-    }
-
-    class DebugParityResponseStub
-    {
-        public DebugParityHeaderBagStub $headers;
-        public int $statusCode = 200;
-
-        public function __construct()
-        {
-            $this->headers = new DebugParityHeaderBagStub();
-        }
-
-        public function setStatusCode(int $status): void
-        {
-            $this->statusCode = $status;
-        }
-    }
-
-    class DebugParityAppStub
-    {
-        private static array $state = [];
-
-        public static function reset(): void
-        {
-            self::$state = [];
-        }
-
-        public static function get(string $key)
-        {
-            if (array_key_exists($key, self::$state)) {
-                return self::$state[$key];
-            }
-
-            // This stub is aliased over the global App for the whole run, not
-            // just this file, so fall through to the real container for keys it
-            // does not define. Returning null unconditionally would break every
-            // later test that resolves a service through the App facade.
-            $app = \Hubzero\Facades\Facade::getApplication();
-
-            return ($app && isset($app[$key])) ? $app[$key] : null;
-        }
-
-        public static function set(string $key, $value): void
-        {
-            self::$state[$key] = $value;
-        }
-    }
 
     if (!class_exists('\\App', false)) {
         class_alias(DebugParityAppStub::class, 'App');

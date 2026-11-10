@@ -56,7 +56,8 @@ $app['dispatcher'] = function () {
     return new Hubzero\Events\Dispatcher();
 };
 
-require_once __DIR__ . '/stubs.php';
+require_once __DIR__ . '/Stubs/DatabaseStub.php';
+require_once __DIR__ . '/Stubs/TranslatorStub.php';
 
 // See Hubzero\Test\Stubs\DatabaseStub for why queries throw but the datetime
 // format is answered for real.

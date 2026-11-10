@@ -10,6 +10,8 @@
  * guaranteeing a valid login-safe string.
  */
 
+namespace Plugins\Authentication\Orcid\Tests;
+
 use PHPUnit\Framework\TestCase;
 use Plugins\Authentication\Orcid\Orcid;
 

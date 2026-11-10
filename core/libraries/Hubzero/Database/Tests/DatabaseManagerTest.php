@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MultipleClasses -- Test file with helper stubs
-
 namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\TestCase;
@@ -17,22 +15,6 @@ use Hubzero\Database\BackendRegistry;
 use Hubzero\Database\Driver;
 use Hubzero\Database\Drivers\Mock\MockDriver;
 use Hubzero\Database\Drivers\Sqlite\SqliteDriver;
-
-class ConventionDriver extends MockDriver
-{
-    public static function test()
-    {
-        return true;
-    }
-}
-
-class ConventionPriorityDriver extends MockDriver
-{
-    public static function test()
-    {
-        return true;
-    }
-}
 
 /**
  * Tests for DatabaseManager

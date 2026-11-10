@@ -6,74 +6,24 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MultipleClasses -- Test file with helper stubs
-
-namespace Hubzero\Database {
-    if (!class_exists(__NAMESPACE__ . '\\Config', false)) {
-        class Config
-        {
-            public static array $values = [];
-
-            public static function get($key, $default = null)
-            {
-                return self::$values[$key] ?? $default;
-            }
-        }
-    }
-
-    if (!class_exists('\\Config', false)) {
-        class_alias(__NAMESPACE__ . '\\Config', 'Config');
-    }
-}
-
 namespace Hubzero\Database\Tests {
 
-    use Hubzero\Database\Config;
     use Hubzero\Database\DatabaseServiceProvider;
     use Hubzero\Database\Driver;
     use Hubzero\Database\Drivers\Mock\MockDriver;
     use PHPUnit\Framework\Attributes\Test;
     use PHPUnit\Framework\TestCase;
 
-    class TestContainer implements \ArrayAccess
-    {
-        private array $values = [];
-        private array $frozen = [];
-
-        public function offsetExists(mixed $offset): bool
-        {
-            return array_key_exists($offset, $this->values);
-        }
-
-        public function offsetGet(mixed $offset): mixed
-        {
-            $value = $this->values[$offset];
-            if ($value instanceof \Closure) {
-                if (!array_key_exists($offset, $this->frozen)) {
-                    $this->frozen[$offset] = $value($this);
-                }
-                return $this->frozen[$offset];
-            }
-
-            return $value;
-        }
-
-        public function offsetSet(mixed $offset, mixed $value): void
-        {
-            $this->values[$offset] = $value;
-        }
-
-        public function offsetUnset(mixed $offset): void
-        {
-            unset($this->values[$offset], $this->frozen[$offset]);
-        }
+    // The provider reads its settings through the global Config facade
+    if (!class_exists('\\Config', false)) {
+        class_alias(ConfigStub::class, 'Config');
     }
 
     class DatabaseServiceProviderTest extends TestCase
     {
         protected function setUp(): void
         {
-            Config::$values = [];
+            ConfigStub::$values = [];
 
             $property = new \ReflectionProperty(Driver::class, 'instances');
             $property->setAccessible(true);
@@ -94,7 +44,7 @@ namespace Hubzero\Database\Tests {
         #[Test]
         public function dbServiceBuildsDriverUsingDbtypeConfiguration(): void
         {
-            Config::$values = [
+            ConfigStub::$values = [
                 'dbtype' => 'mock',
                 'driver' => 'mysql',
                 'host' => '127.0.0.1',

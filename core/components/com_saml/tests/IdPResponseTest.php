@@ -12,67 +12,9 @@ use Hubzero\Test\Basic;
 use Components\Saml\Models\IdP;
 
 require_once dirname(__DIR__) . '/models/IdP.php';
-
-/**
- * Minimal stand-in for the component params registry
- */
-class StubParams
-{
-    private $data;
-
-    public function __construct($data)
-    {
-        $this->data = $data;
-    }
-
-    public function get($key, $default = null)
-    {
-        return array_key_exists($key, $this->data) ? $this->data[$key] : $default;
-    }
-}
-
-/**
- * Stand-in for a user record
- */
-class StubSamlUser
-{
-    private $data;
-
-    public function __construct($data)
-    {
-        $this->data = $data;
-    }
-
-    public function get($key, $default = '')
-    {
-        return array_key_exists($key, $this->data) ? $this->data[$key] : $default;
-    }
-}
-
-/**
- * Stand-in for a registered Service Provider
- */
-class StubSamlSp
-{
-    private $data;
-    private $map;
-
-    public function __construct($data, $map = null)
-    {
-        $this->data = $data;
-        $this->map  = $map;
-    }
-
-    public function get($key, $default = null)
-    {
-        return array_key_exists($key, $this->data) ? $this->data[$key] : $default;
-    }
-
-    public function attributeMap()
-    {
-        return $this->map;
-    }
-}
+require_once __DIR__ . '/StubParams.php';
+require_once __DIR__ . '/StubSamlUser.php';
+require_once __DIR__ . '/StubSamlSp.php';
 
 /**
  * SAML Response construction test

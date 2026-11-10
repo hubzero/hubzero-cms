@@ -11,6 +11,8 @@
  * This predicate identifies the placeholder state.
  */
 
+namespace Plugins\User\Hubzero\Tests;
+
 use PHPUnit\Framework\TestCase;
 use Plugins\User\Hubzero\Hubzero;
 

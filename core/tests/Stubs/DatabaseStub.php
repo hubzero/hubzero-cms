@@ -43,35 +43,3 @@ class DatabaseStub
         throw new ConnectionFailedException('No database connection in tests');
     }
 }
-
-/**
- * Stands in for the translator in the test container.
- *
- * Returns the key untranslated, which is what the tests that exercise language
- * keys assert against.
- */
-class TranslatorStub
-{
-    /**
-     * Return the key itself rather than a translation
-     *
-     * @param   string  $key
-     * @return  string
-     */
-    public function txt($key = '')
-    {
-        return $key;
-    }
-
-    /**
-     * Same for every other translator call
-     *
-     * @param   string  $name
-     * @param   array   $arguments
-     * @return  string
-     */
-    public function __call($name, $arguments)
-    {
-        return isset($arguments[0]) ? $arguments[0] : '';
-    }
-}
