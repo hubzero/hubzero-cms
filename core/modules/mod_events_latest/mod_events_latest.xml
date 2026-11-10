@@ -10,7 +10,6 @@
 	<files>
 		<filename module="mod_events_latest">mod_events_latest.php</filename>
 		<filename>index.html</filename>
-		<filename>helper.php</filename>
 		<filename>tmpl/index.html</filename>
 		<filename>tmpl/default.php</filename>
 		<filename>assets/css/mod_events_latest.css</filename>

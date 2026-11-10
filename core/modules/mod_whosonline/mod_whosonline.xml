@@ -16,7 +16,6 @@
 	<files>
 		<filename module="mod_whosonline">mod_whosonline.php</filename>
 		<folder>tmpl</folder>
-		<filename>helper.php</filename>
 		<filename>index.html</filename>
 		<filename>mod_whosonline.xml</filename>
 	</files>

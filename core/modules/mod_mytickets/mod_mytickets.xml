@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="module" version="1.5">
+<extension type="module" client="site" version="1.5">
 	<name>mod_mytickets</name>
 	<author>HUBzero</author>
 	<authorUrl>hubzero.org</authorUrl>
@@ -13,7 +13,6 @@
 		<filename>tmpl/index.html</filename>
 		<filename>tmpl/default.php</filename>
 		<filename>assets/css/mod_mytickets.css</filename>
-		<filename>helper.php</filename>
 	</files>
 	<config>
 		<fields name="params">

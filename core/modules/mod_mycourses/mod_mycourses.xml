@@ -10,7 +10,6 @@
 	<files>
 		<filename module="mod_mycourses">mod_mycourses.php</filename>
 		<filename>index.html</filename>
-		<filename>helper.php</filename>
 		<filename>tmpl/index.html</filename>
 		<filename>tmpl/default.php</filename>
 		<filename>assets/css/mod_mycourses.css</filename>

@@ -10,7 +10,6 @@
 	<files>
 		<filename module="mod_tools">mod_tools.php</filename>
 		<filename>assets/css/tools.css</filename>
-		<filename>helper.php</filename>
 		<filename>index.html</filename>
 		<filename>tmpl/default.php</filename>
 	</files>

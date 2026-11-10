@@ -12,7 +12,6 @@
 	<files>
 		<filename module="mod_random_image">mod_random_image.php</filename>
 		<folder>tmpl</folder>
-		<filename>helper.php</filename>
 		<filename>index.html</filename>
 		<filename>mod_random_image.xml</filename>
 	</files>

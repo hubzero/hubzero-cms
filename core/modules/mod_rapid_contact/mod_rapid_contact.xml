@@ -12,7 +12,6 @@
 		<filename>tmpl/default.php</filename>
 		<filename>tmpl/index.html</filename>
 		<filename>index.html</filename>
-		<filename>helper.php</filename>
 		<filename>assets/css/mod_rapid_contact.css</filename>
 	</files>
 	<config>

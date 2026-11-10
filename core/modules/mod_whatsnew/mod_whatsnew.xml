@@ -14,7 +14,6 @@
 		<filename>mod_whatsnew.xml</filename>
 		<filename>assets/css/mod_whatsnew.css</filename>
 		<filename>index.html</filename>
-		<filename>helper.php</filename>
 	</files>
 	<languages>
 		<language tag="en-GB">en-GB.mod_whatsnew.ini</language>

@@ -11,7 +11,6 @@
 		<filename module="mod_latestgroups">mod_latestgroups.php</filename>
 		<filename>mod_latestgroups.xml</filename>
 		<filename>index.html</filename>
-		<filename>helper.php</filename>
 		<filename>tmpl/index.html</filename>
 		<filename>tmpl/default.php</filename>
 	</files>

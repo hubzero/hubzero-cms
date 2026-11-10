@@ -13,7 +13,6 @@
 		<filename module="mod_supportactivity">mod_supportactivity.php</filename>
 		<filename>assets/css/mod_supportactivity.css</filename>
 		<filename>index.html</filename>
-		<filename>helper.php</filename>
 	</files>
 	<config>
 		<fields name="params">

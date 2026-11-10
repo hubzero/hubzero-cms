@@ -244,16 +244,12 @@ after the module, and it is not listed in its own <code>&lt;files&gt;</code> blo
 	&lt;files&gt;
 		&lt;filename module=&quot;mod_mygroups&quot;&gt;mod_mygroups.php&lt;/filename&gt;
 		&lt;filename&gt;index.html&lt;/filename&gt;
-		&lt;filename&gt;helper.php&lt;/filename&gt;
 		&lt;filename&gt;tmpl/index.html&lt;/filename&gt;
 		&lt;filename&gt;tmpl/default.php&lt;/filename&gt;
 		&lt;filename&gt;assets/css/mod_mygroups.css&lt;/filename&gt;
 	&lt;/files&gt;
+	&lt;config&gt;
 </code></pre>
-<p><code>mod_mygroups</code> still lists a <code>helper.php</code> that no longer exists, as do 66 of
-the core manifests: the class moved into the entry file and the manifests were
-not updated. Nothing in this release installs from <code>&lt;files&gt;</code>, so the stale
-line does no harm, but leave it out of yours.</p>
 <table>
 <thead>
 <tr>
@@ -301,8 +297,7 @@ line does no harm, but leave it out of yours.</p>
 <code>&lt;fieldset&gt;</code>s, which become the tabs of the Module Manager's edit form. Each
 <code>&lt;field&gt;</code> is one parameter, readable afterwards as
 <code>$this-&gt;params-&gt;get('name')</code>:</p>
-<pre><code class="language-xml">	&lt;config&gt;
-		&lt;fields name=&quot;params&quot;&gt;
+<pre><code class="language-xml">		&lt;fields name=&quot;params&quot;&gt;
 			&lt;fieldset name=&quot;basic&quot;&gt;
 				&lt;field name=&quot;moduleclass_sfx&quot; type=&quot;text&quot; default=&quot;&quot; label=&quot;MOD_MYGROUPS_PARAM_CLASS_LABEL&quot; description=&quot;MOD_MYGROUPS_PARAM_CLASS_DESC&quot; /&gt;
 				&lt;field name=&quot;limit&quot; type=&quot;text&quot; default=&quot;5&quot; label=&quot;MOD_MYGROUPS_PARAM_LIMIT_LABEL&quot; description=&quot;MOD_MYGROUPS_PARAM_LIMIT_DESC&quot; member_dashboard=&quot;1&quot; /&gt;
@@ -325,6 +320,7 @@ line does no harm, but leave it out of yours.</p>
 			&lt;/fieldset&gt;
 		&lt;/fields&gt;
 	&lt;/config&gt;
+	&lt;languages&gt;
 </code></pre>
 <p><code>mod_upcoming_bookings</code> needs two fields of its own and the conventional
 suffix:</p>

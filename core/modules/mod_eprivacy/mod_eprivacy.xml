@@ -14,7 +14,6 @@
 		<filename>assets/css/mod_eprivacy.css</filename>
 		<filename>assets/js/mod_eprivacy.js</filename>
 		<filename>index.html</filename>
-		<filename>helper.php</filename>
 	</files>
 	<config>
 		<fields name="params">

@@ -13,7 +13,6 @@
 		<filename module="mod_footer">mod_footer.php</filename>
 		<folder>tmpl</folder>
 		<filename>index.html</filename>
-		<filename>helper.php</filename>
 		<filename>mod_footer.xml</filename>
 	</files>
 	<languages>

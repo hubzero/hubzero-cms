@@ -72,11 +72,6 @@ after the module, and it is not listed in its own `<files>` block.
 
 <!--include: core/modules/mod_mygroups/mod_mygroups.xml:1-17-->
 
-`mod_mygroups` still lists a `helper.php` that no longer exists, as do 66 of
-the core manifests: the class moved into the entry file and the manifests were
-not updated. Nothing in this release installs from `<files>`, so the stale
-line does no harm, but leave it out of yours.
-
 | Element or attribute | Meaning |
 |---|---|
 | `type="module"` | Required; identifies the extension type. |

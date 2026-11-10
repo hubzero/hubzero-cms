@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="module" version="1.5.0">
+<extension type="module" client="site" version="1.5.0">
 	<name>mod_logjserrors</name>
 	<author>HUBzero</author>
 	<authorUrl>hubzero.org</authorUrl>

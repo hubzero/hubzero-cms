@@ -13,7 +13,6 @@
 		<filename module="mod_billboards">mod_billboards.php</filename>
 		<filename>assets/js/mod_billboards.js</filename>
 		<filename>assets/css/mod_billboards.css</filename>
-		<filename>helper.php</filename>
 		<filename>mod_billboards.xml</filename>
 		<filename>index.html</filename>
 		<filename>tmpl/index.html</filename>

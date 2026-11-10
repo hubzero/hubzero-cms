@@ -10,7 +10,6 @@
 	<files>
 		<filename module="mod_polltitle">mod_polltitle.php</filename>
 		<filename>index.html</filename>
-		<filename>helper.php</filename>
 		<filename>tmpl/default.php</filename>
 		<filename>tmpl/index.html</filename>
 	</files>
