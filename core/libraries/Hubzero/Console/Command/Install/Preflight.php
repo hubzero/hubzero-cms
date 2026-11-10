@@ -19,9 +19,12 @@ class Preflight
     /**
      * Minimum required PHP version
      *
+     * The same as Hubzero\System\Requirements::MIN_PHP_VERSION, repeated
+     * because this runs before the autoloader can reach that class.
+     *
      * @var string
      **/
-    private const MIN_PHP_VERSION = '8.2.0';
+    private const MIN_PHP_VERSION = '8.4.0';
 
     /**
      * Required PHP extensions

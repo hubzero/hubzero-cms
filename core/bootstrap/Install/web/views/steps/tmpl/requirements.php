@@ -42,9 +42,9 @@ $helpText = [
     ],
     'php_version' => [
         'title' => 'PHP Version',
-        'debian' => 'sudo apt update && sudo apt install php8.3',
+        'debian' => 'sudo apt update && sudo apt install php8.4',
         'rhel' => 'sudo dnf install php',
-        'mac' => 'brew install php@8.3',
+        'mac' => 'brew install php@8.4',
     ],
     'php_extensions' => [
         'title' => 'PHP Extensions',

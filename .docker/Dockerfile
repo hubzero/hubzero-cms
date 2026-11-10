@@ -1,6 +1,6 @@
-# The hub's development image: PHP 8.2 and the web server, with no code in
+# The hub's development image: PHP 8.4 and the web server, with no code in
 # it. compose.yaml mounts the checkout over /var/www/hub.
-FROM dunglas/frankenphp:1-php8.2-bookworm
+FROM dunglas/frankenphp:1-php8.4-bookworm
 
 # The extensions the hub needs that the image does not already have, Xdebug,
 # the tools Composer uses, and the MariaDB client muse dumps and loads with

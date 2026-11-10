@@ -22,7 +22,7 @@ class Requirements
     /**
      * Minimum required PHP version
      */
-    public const MIN_PHP_VERSION = '8.2.0';
+    public const MIN_PHP_VERSION = '8.4.0';
 
     /**
      * Required PHP extensions with descriptions

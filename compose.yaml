@@ -1,4 +1,4 @@
-# A hub to develop on: this checkout, served by FrankenPHP's PHP 8.2 at
+# A hub to develop on: this checkout, served by FrankenPHP's PHP 8.4 at
 # https://localhost:8443, with MariaDB and a mail catcher beside it.
 #
 #   docker compose up -d
