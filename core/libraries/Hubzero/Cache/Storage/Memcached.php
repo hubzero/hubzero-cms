@@ -46,8 +46,8 @@ class Memcached extends None
                 $config = \Hubzero\Facades\App::get('config');
                 $this->options['servers'] = [
                     [
-                        'host'   => $conf->get('memcache_server_host', 'localhost'),
-                        'port'   => $conf->get('memcache_server_port', 11211),
+                        'host'   => $config->get('memcache_server_host', 'localhost'),
+                        'port'   => $config->get('memcache_server_port', 11211),
                         'weight' => 1,
                     ],
                 ];

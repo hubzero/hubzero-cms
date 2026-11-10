@@ -50,9 +50,9 @@ class Memcache extends None
                 ) == false ? 0 : MEMCACHE_COMPRESSED;
                 $this->options['servers'] = [
                     [
-                        'host'    => $conf->get('memcache_server_host', 'localhost'),
-                        'port'    => $conf->get('memcache_server_port', 11211),
-                        'persist' => $conf->get('memcache_persist', true),
+                        'host'    => $config->get('memcache_server_host', 'localhost'),
+                        'port'    => $config->get('memcache_server_port', 11211),
+                        'persist' => $config->get('memcache_persist', true),
                     ],
                 ];
             }

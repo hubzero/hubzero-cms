@@ -72,9 +72,9 @@ class Memcache extends Store
             $config = \Hubzero\Facades\App::get('config');
             $options['servers'] = [
                 [
-                    'host'   => $conf->get('memcache_server_host', 'localhost'),
-                    'port'   => $conf->get('memcache_server_port', 11211),
-                    'weight' => $conf->get('memcache_persist', true),
+                    'host'   => $config->get('memcache_server_host', 'localhost'),
+                    'port'   => $config->get('memcache_server_port', 11211),
+                    'weight' => $config->get('memcache_persist', true),
                 ],
             ];
         }
