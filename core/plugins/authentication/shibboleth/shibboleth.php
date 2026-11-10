@@ -129,9 +129,9 @@ class Shibboleth extends Plugin
     private static function getHostByAddress($ip, $dns, $timeout = 2)
     {
         try {
-            $resolver = new \Net_DNS2_Resolver(['nameservers' => (array) $dns, 'timeout' => $timeout]);
+            $resolver = new \NetDNS2\Resolver(['nameservers' => (array) $dns, 'timeout' => $timeout]);
             $result   = $resolver->query($ip, 'PTR');
-        } catch (\Net_DNS2_Exception $e) {
+        } catch (\NetDNS2\Exception $e) {
             return $ip;
         }
 
@@ -141,7 +141,7 @@ class Shibboleth extends Plugin
             && count($result->answer) > 0
             && isset($result->answer[0]->ptrdname)
         ) {
-            return $result->answer[0]->ptrdname;
+            return (string) $result->answer[0]->ptrdname;
         }
 
         return $ip;
