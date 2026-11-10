@@ -44,7 +44,7 @@ class Migration20150729164314ComStorefront extends Base
             $query = $this->db
                 ->getQuery(true)
                 ->from('#__storefront_product_types')
-                ->where('ptName', '=', 'SoftwareDownload')
+                ->where('ptName', '=', 'Software Download')
                 ->where('ptModel', '=', 'software');
             $count = $query->count();
 
@@ -53,7 +53,7 @@ class Migration20150729164314ComStorefront extends Base
                     ->getQuery(true)
                     ->insert('#__storefront_product_types')
                     ->columns(['ptName', 'ptModel'])
-                    ->values(['SoftwareDownload', 'software'])
+                    ->values(['Software Download', 'software'])
                     ->execute();
             }
         }

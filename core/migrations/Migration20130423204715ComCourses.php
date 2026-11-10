@@ -20,7 +20,7 @@ class Migration20130423204715ComCourses extends Base
      **/
     public function up()
     {
-        if (!$this->db->getQuery(true)->select('id')->from('#__courses_roles')->doesntExist()) {
+        if ($this->db->getQuery(true)->select('id')->from('#__courses_roles')->doesntExist()) {
             $roles = [
                 ['offering_id' => 0, 'alias' => 'instructor', 'title' => 'Instructor', 'permissions' => ''],
                 ['offering_id' => 0, 'alias' => 'manager',    'title' => 'Manager',    'permissions' => ''],

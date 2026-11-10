@@ -41,10 +41,12 @@ class Migration20140814103014ComSupport extends Base
                 ->getQuery(true)
                 ->insert('#__support_statuses')
                 ->columns(['id', 'open', 'title', 'alias'])
-                ->values(1, 1, 'Open', 'open')
-                ->values(2, 1, 'Waiting response', 'waiting')
-                ->values(3, 1, 'Waiting review', 'waitingreview')
-                ->values(4, 1, 'Pending update', 'pendingupdate')
+                ->values([
+                    [1, 1, 'Open', 'open'],
+                    [2, 1, 'Waiting response', 'waiting'],
+                    [3, 1, 'Waiting review', 'waitingreview'],
+                    [4, 1, 'Pending update', 'pendingupdate'],
+                ])
                 ->execute();
 
             $resolutions = $this->db
@@ -69,8 +71,7 @@ class Migration20140814103014ComSupport extends Base
                 if (count($entries)) {
                     $this->db
                         ->getQuery(true)
-                        ->insertMany('#__support_statuses', $entries)
-                        ->execute();
+                        ->insertMany('#__support_statuses', $entries);
                 }
             }
 
