@@ -58,10 +58,10 @@ class Opensearch extends Base
         parent::__construct($options);
 
         // Set document type
-        $this->type = 'opensearch';
+        $this->_type = 'opensearch';
 
         // Set mime type
-        $this->mime = 'application/opensearchdescription+xml';
+        $this->_mime = 'application/opensearchdescription+xml';
 
         // Add the URL for self updating
         $update = new Url();

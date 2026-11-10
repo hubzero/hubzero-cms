@@ -36,10 +36,10 @@ class Json extends Base
         parent::__construct($options);
 
         // Set mime type
-        $this->mime = 'application/json';
+        $this->_mime = 'application/json';
 
         // Set document type
-        $this->type = 'json';
+        $this->_type = 'json';
     }
 
     /**
