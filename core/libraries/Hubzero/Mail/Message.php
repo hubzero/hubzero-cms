@@ -82,6 +82,77 @@ class Message extends \Symfony\Component\Mime\Email
     }
 
     /**
+     * The DSN of the transport the site configuration asks for
+     *
+     * mailer_dsn, when set, is used as it is; otherwise one is built from
+     * the mailer, SMTP host, port and credentials settings.
+     *
+     * @return  string
+     */
+    public static function transportDsn()
+    {
+        $dsn = Config::get('mailer_dsn', '');
+
+        if (!$dsn) {
+            $scheme = strtolower(trim(Config::get('mailer', 'sendmail')));
+            $host = strtolower(trim(Config::get('smtphost', 'localhost')));
+            $port = strtolower(trim(Config::get('smtpport', '0')));
+            // Credentials are case-sensitive (lowercasing them broke every
+            // mixed-case password), and go into the DSN URL-encoded so an @, :
+            // or / in them doesn't break it; the DSN parser decodes them
+            $username = trim(Config::get('smtpuser', ''));
+            $password = trim(Config::get('smtppass', ''));
+            switch ($scheme) {
+                case 'smtp':
+                    $dsn = "smtp://";
+
+                    if ($username || $password) {
+                        $dsn .= rawurlencode($username);
+
+                        if ($password) {
+                            $dsn .= ":" . rawurlencode($password);
+                        }
+
+                        $dsn .= "@";
+                    }
+
+                    $dsn .= $host;
+
+                    if ($port) {
+                        $dsn .= ":" . $port;
+                    }
+
+                    break;
+
+                case 'sendmail':
+                case 'mail':
+                case 'native':
+                    $dsn = "sendmail://default";
+                    break;
+
+                case 'mandrill+smtp':
+                    $dsn = "mandrill+smtp://";
+
+                    if ($username || $password) {
+                        $dsn .= rawurlencode($username);
+
+                        if ($password) {
+                            $dsn .= ":" . rawurlencode($password);
+                        }
+
+                        $dsn .= "@";
+                    }
+
+                    $dsn .= "default";
+
+                    break;
+            }
+        }
+
+        return $dsn;
+    }
+
+    /**
      * Send the message
      *
      * @return  object
@@ -94,63 +165,7 @@ class Message extends \Symfony\Component\Mime\Email
             // Use the registered custom HUBzero transport
             $transport = self::getTransporter($transport);
         } else {
-            $dsn = Config::get('mailer_dsn', '');
-
-            if (!$dsn) {
-                $scheme = strtolower(trim(Config::get('mailer', 'sendmail')));
-                $host = strtolower(trim(Config::get('smtphost', 'localhost')));
-                $port = strtolower(trim(Config::get('smtpport', '0')));
-                // Credentials are case-sensitive (lowercasing them broke every
-                // mixed-case password), and go into the DSN URL-encoded so an @, :
-                // or / in them doesn't break it; the DSN parser decodes them
-                $username = trim(Config::get('smtpuser', ''));
-                $password = trim(Config::get('smtppass', ''));
-                switch ($scheme) {
-                    case 'smtp':
-                        $dsn = "smtp://";
-
-                        if ($username || $password) {
-                            $dsn .= rawurlencode($username);
-
-                            if ($password) {
-                                $dsn .= ":" . rawurlencode($password);
-                            }
-
-                            $dsn .= "@";
-                        }
-
-                        $dsn .= $host;
-
-                        if ($port) {
-                            $dsn .= ":" . $port;
-                        }
-
-                        break;
-
-                    case 'sendmail':
-                    case 'mail':
-                    case 'native':
-                        $dsn = "sendmail://default";
-                        break;
-
-                    case 'mandrill+smtp':
-                        $dsn = "mandrill+smtp://";
-
-                        if ($username || $password) {
-                            $dsn .= rawurlencode($username);
-
-                            if ($password) {
-                                $dsn .= ":" . rawurlencode($password);
-                            }
-
-                            $dsn .= "@";
-                        }
-
-                        $dsn .= "default";
-
-                        break;
-                }
-            }
+            $dsn = self::transportDsn();
 
             $transport = \Symfony\Component\Mailer\Transport::fromDsn($dsn);
 
