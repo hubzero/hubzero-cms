@@ -82,12 +82,24 @@ $this->css();
 
 				if (is_file(PATH_ROOT . DS . $row['entry']))
 				{
-					if (!class_exists(substr($row['file'], 0, -4)))
+					$classname = substr($row['file'], 0, -4);
+					if (!class_exists($classname))
 					{
 						require_once PATH_ROOT . DS . $row['entry'];
 					}
-					$class = new ReflectionClass(substr($row['file'], 0, -4));
-					$desc  = trim(rtrim(ltrim($class->getDocComment(), "/**\n *"), '**/'));
+					// Migrations may be namespaced (the runner supports it), so
+					// fall back to the namespace the file declares
+					if (!class_exists($classname)
+					 && preg_match('/^\s*namespace\s+([\w\\\\]+)\s*;/m', file_get_contents(PATH_ROOT . DS . $row['entry']), $ns))
+					{
+						$classname = $ns[1] . '\\' . $classname;
+					}
+					$desc = '';
+					if (class_exists($classname))
+					{
+						$class = new ReflectionClass($classname);
+						$desc  = trim(rtrim(ltrim($class->getDocComment(), "/**\n *"), '**/'));
+					}
 				}
 				else
 				{
