@@ -45,24 +45,24 @@ class Application extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'name'  => 'notempty',
         'description' => 'notempty',
         'entry_id' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by',
         'grant_types',
         'client_id',
         'client_secret'
-    );
+    ];
 
     /**
      * Load entry by client_id
@@ -99,7 +99,7 @@ class Application extends Relational
             }
 
             // validate each one
-            $invalid = array();
+            $invalid = [];
             foreach ($uris as $uri) {
                 if (!Validate::url($uri)) {
                     $invalid[] = $uri;
@@ -225,7 +225,7 @@ class Application extends Relational
      */
     public function newClientSecret()
     {
-        $data = array();
+        $data = [];
 
         $this->set('client_id', $this->automaticClientId($data));
 

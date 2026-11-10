@@ -22,7 +22,7 @@ $queueTxt  = $this->queueSize < 0 ? Lang::txt('COM_MASSMAIL_DASH_QUEUE_UNREADABL
 // Optionally overlays a line (e.g. queue depth) scaled 0..$lineMax to full
 // height, so it reads as "fill vs. threshold" rather than a raw dual axis.
 $bars = function ($series, $everyN, $color, $lineVals = null, $lineMax = 0, $lineColor = '#dd6b20') {
-    $vals = array();
+    $vals = [];
     foreach ($series as $h) {
         $vals[] = $h['value'];
     }
@@ -58,7 +58,7 @@ $bars = function ($series, $everyN, $color, $lineVals = null, $lineMax = 0, $lin
         }
     }
     if (is_array($lineVals) && $lineMax > 0 && count($lineVals)) {
-        $pts = array();
+        $pts = [];
         foreach ($lineVals as $i => $v) {
             $x = $padL + $i * $slot + $slot / 2;
             $yy = $base - min(1, (float) $v / $lineMax) * $plotH;

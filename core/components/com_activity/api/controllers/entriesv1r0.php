@@ -86,13 +86,13 @@ class Entriesv1r0 extends ApiController
      */
     public function listTask()
     {
-        $filters = array(
+        $filters = [
             'scope'      => Request::getCmd('scope'),
             'scope_id'   => Request::getInt('scope_id', 0),
             'search'     => Request::getString('search', ''),
             'action'     => Request::getCmd('action'),
             'created_by' => Request::getInt('created_by', 0)
-        );
+        ];
 
         $model = Activity::all();
 
@@ -115,7 +115,7 @@ class Entriesv1r0 extends ApiController
             $model->whereEquals('created_by', $filters['created_by']);
         }
 
-        $response = array();
+        $response = [];
 
         $rows = $model
             ->ordered('sort', 'sort_Dir')
@@ -216,7 +216,7 @@ class Entriesv1r0 extends ApiController
     {
         $this->requiresAuthentication();
 
-        $fields = array(
+        $fields = [
             'scope'          => Request::getString('scope', '', 'post'),
             'scope_id'       => Request::getInt('scope_id', 0, 'post'),
             'action'         => Request::getString('action', null, 'post', 'none', 2),
@@ -236,7 +236,7 @@ class Entriesv1r0 extends ApiController
                 : User::get('id')),
             'anonymous'      => Request::getInt('anonymous', 0, 'post'),
             'parent'         => Request::getInt('parent', 0, 'post')
-        );
+        ];
 
         $row = Activity::blank();
 
@@ -270,10 +270,10 @@ class Entriesv1r0 extends ApiController
                 if (strstr($recipient, ':')) {
                     $parts = explode(':', $recipient);
 
-                    $recipient = array(
+                    $recipient = [
                         'scope'    => $parts[0],
                         'scope_id' => $parts[1]
-                    );
+                    ];
                 }
 
                 $recipients[$key] = $recipient;
@@ -286,22 +286,22 @@ class Entriesv1r0 extends ApiController
                 ->rows();
 
             foreach ($subscriptions as $subscription) {
-                $recipients[] = array(
+                $recipients[] = [
                     'scope'    => 'user',
                     'scope_id' => $subscription->user_id
-                );
+                ];
             }
 
-            $sent = array();
+            $sent = [];
 
             // Do we have any recipients?
             foreach ($recipients as $receiver) {
                 // Default to type 'user'
                 if (!is_array($receiver)) {
-                    $receiver = array(
+                    $receiver = [
                         'scope'    => 'user',
                         'scope_id' => $receiver
-                    );
+                    ];
                 }
 
                 // Make sure we have expected data
@@ -485,7 +485,7 @@ class Entriesv1r0 extends ApiController
             throw new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 403);
         }
 
-        $fields = array(
+        $fields = [
             'scope'          => Request::getString('scope', $row->get('scope')),
             'scope_id'       => Request::getInt('scope_id', $row->get('scope_id')),
             'action'         => Request::getString('action', $row->get('action')),
@@ -496,7 +496,7 @@ class Entriesv1r0 extends ApiController
             'created_by'     => $row->get('created_by'),
             'anonymous'      => Request::getInt('anonymous', $row->get('anonymous')),
             'parent'         => Request::getInt('parent', $row->get('parent'))
-        );
+        ];
 
         if (!$row->set($fields)) {
             throw new Exception(Lang::txt('COM_ACTIVITY_ERROR_BINDING_DATA'), 422);
@@ -520,10 +520,10 @@ class Entriesv1r0 extends ApiController
                 if (strstr($recipient, ':')) {
                     $parts = explode(':', $recipient);
 
-                    $recipient = array(
+                    $recipient = [
                         'scope'    => $parts[0],
                         'scope_id' => $parts[1]
-                    );
+                    ];
                 }
 
                 $recipients[$key] = $recipient;
@@ -536,22 +536,22 @@ class Entriesv1r0 extends ApiController
                 ->rows();
 
             foreach ($subscriptions as $subscription) {
-                $recipients[] = array(
+                $recipients[] = [
                     'scope'    => 'user',
                     'scope_id' => $subscription->user_id
-                );
+                ];
             }
 
-            $sent = array();
+            $sent = [];
 
             // Do we have any recipients?
             foreach ($recipients as $receiver) {
                 // Default to type 'user'
                 if (!is_array($receiver)) {
-                    $receiver = array(
+                    $receiver = [
                         'scope'    => 'user',
                         'scope_id' => $receiver
-                    );
+                    ];
                 }
 
                 // Make sure we have expected data
@@ -611,8 +611,8 @@ class Entriesv1r0 extends ApiController
     {
         $this->requiresAuthentication();
 
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         if (count($ids) <= 0) {
             throw new Exception(Lang::txt('COM_ACTIVITY_ERROR_MISSING_ID'), 500);

@@ -16,11 +16,11 @@ use Hubzero\Search\Searchable;
  */
 class UrlQueryHelper
 {
-    public static function buildQueryString($url, $values, $excludes = array())
+    public static function buildQueryString($url, $values, $excludes = [])
     {
         $queryString = '';
         if (is_string($excludes)) {
-            $excludes = array($excludes);
+            $excludes = [$excludes];
         }
         foreach ($values as $type => $fields) {
             if (in_array($type, $excludes)) {

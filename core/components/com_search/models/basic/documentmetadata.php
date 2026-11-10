@@ -18,7 +18,7 @@ abstract class DocumentMetadata
      *
      * @var array
      */
-    private static $stop_words = array(
+    private static $stop_words = [
         '1' => 1, '2' => 1, '3' => 1, '4' => 1, '5' => 1, '6' => 1, '7' => 1, '8' => 1, '9' => 1, '0' => 1,
         'a' => 1, 'about' => 1, 'above' => 1, 'across' => 1, 'after' => 1, 'again' => 1, 'against' => 1,
         'all' => 1, 'almost' => 1, 'alone' => 1, 'along' => 1, 'already' => 1, 'also' => 1, 'although' => 1,
@@ -81,7 +81,7 @@ abstract class DocumentMetadata
         'within' => 1, 'without' => 1, 'work' => 1, 'worked' => 1, 'working' => 1, 'works' => 1,
         'would' => 1, 'x' => 1, 'y' => 1, 'year' => 1, 'years' => 1, 'yet' => 1, 'you' => 1,
         'young' => 1, 'younger' => 1, 'youngest' => 1, 'your' => 1, 'yours' => 1, 'z' => 1
-    );
+    ];
 
     /**
      * Check if a word is a stop word

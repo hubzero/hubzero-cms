@@ -41,7 +41,7 @@ class Courses extends Plugin
      */
     public function &onMembersAreas($user, $member)
     {
-        $areas = array();
+        $areas = [];
 
         if ($user->get('id') == $member->get('id')) {
             $areas['courses'] = Lang::txt('PLG_MEMBERS_COURSES');
@@ -75,12 +75,12 @@ class Courses extends Plugin
             }
         }
 
-        $arr = array(
+        $arr = [
             'html' => '',
-            'metadata' => array(
+            'metadata' => [
                 'count' => 0
-            )
-        );
+            ]
+        ];
 
         $this->database = App::get('db');
         $this->member = $member;
@@ -107,7 +107,7 @@ class Courses extends Plugin
             $view->roles = $roles;
             $view->hasRoles = $hasRoles;
 
-            $view->filters = array();
+            $view->filters = [];
             $view->filters['limit'] = Request::getState(
                 $option . '.plugin.courses.limit',
                 'limit',
@@ -122,7 +122,7 @@ class Courses extends Plugin
             );
             $view->filters['task'] = strtolower(Request::getCmd('action', ''));
             $view->filters['sort'] = strtolower(Request::getWord('sort', 'enrolled'));
-            if (!in_array($view->filters['sort'], array('enrolled', 'title'))) {
+            if (!in_array($view->filters['sort'], ['enrolled', 'title'])) {
                 $view->filters['sort'] = 'enrolled';
             }
 
@@ -178,7 +178,7 @@ class Courses extends Plugin
      * @param  array  $filters
      * @return array   Return array of html
      */
-    private function getData($what = 'count', $who = null, $filters = array())
+    private function getData($what = 'count', $who = null, $filters = [])
     {
         if (!isset($filters['start'])) {
             $filters['start'] = 0;
@@ -367,9 +367,9 @@ class Courses extends Plugin
      */
     public function onMembersContributionsAreas()
     {
-        return array(
+        return [
             'courses' => Lang::txt('PLG_MEMBERS_COURSES')
-        );
+        ];
     }
 
     /**
@@ -413,21 +413,21 @@ class Courses extends Plugin
                 && !in_array($this->_name, $areas)
                 && !array_intersect($areas, array_keys($this->onMembersContributionsAreas()))
             ) {
-                return array();
+                return [];
             }
         }
 
         // Do we have a member ID?
         if ($member instanceof \Hubzero\User\User) {
             if (!$member->get('id')) {
-                return array();
+                return [];
             } else {
                 $uidNumber = $member->get('id');
                 $username = $member->get('username');
             }
         } else {
             if (!$member->uidNumber) {
-                return array();
+                return [];
             } else {
                 $uidNumber = $member->uidNumber;
                 $username = $member->username;

@@ -32,7 +32,7 @@ class Handlers extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_types = array();
+    protected $_types = [];
 
     /**
      * Directories, where handlers can be stored
@@ -40,7 +40,7 @@ class Handlers extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_path = array();
+    protected $_path = [];
 
     /**
      * Configs
@@ -112,22 +112,22 @@ class Handlers extends Obj
             $i = 0;
 
             // Header
-            $view = new \Hubzero\Component\View(array(
+            $view = new \Hubzero\Component\View([
                 'base_path' => Component::path('com_publications') . DS . 'site',
                 'name'      => 'handlers',
                 'layout'    => '_header',
-            ));
+            ]);
             $html = $view->loadTemplate();
 
             // Go through available handlers and find those that apply
             foreach ($all as $item) {
                 $handler  = $this->ini($item->name);
                 if ($relevant = self::isRelevant($handler, $attachments) || $item->assigned) {
-                    $hview = new \Hubzero\Component\View(array(
+                    $hview = new \Hubzero\Component\View([
                         'base_path' => Component::path('com_publications') . DS . 'site',
                         'name'      => 'handlers',
                         'layout'    => '_choice',
-                    ));
+                    ]);
                     $configs = $handler->get('_configs');
                     if (!$configs) {
                         $saved = $obj->getConfig($item->name, $item);
@@ -351,11 +351,11 @@ class Handlers extends Obj
             $configs = $handler->getConfig();
         }
 
-        $view = new \Hubzero\Component\View(array(
+        $view = new \Hubzero\Component\View([
             'base_path' => Component::path('com_publications') . DS . 'site',
             'name'   => 'handlers',
             'layout' => '_selected',
-        ));
+        ]);
         $view->handler  = $handler;
         $view->configs  = $configs;
         $view->assigned = $assigned;
@@ -416,7 +416,7 @@ class Handlers extends Obj
      * @param   array   $savedConfig
      * @return  array
      */
-    public function parseConfig($name, $configs = array(), $savedConfig = array())
+    public function parseConfig($name, $configs = [], $savedConfig = [])
     {
         // Get custom config from db
         if (!$savedConfig  || empty($savedConfig)) {

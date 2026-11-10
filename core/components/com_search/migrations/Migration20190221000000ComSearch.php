@@ -20,11 +20,11 @@ class Migration20190221000000ComSearch extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__search_blacklist' => array(
+    public static $tables = [
+        '#__search_blacklist' => [
             'created'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

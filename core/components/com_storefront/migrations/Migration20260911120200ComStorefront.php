@@ -73,7 +73,7 @@ class Migration20260911120200ComStorefront extends Base
     protected function deadStoreAliases($published)
     {
         if (!$this->db->tableExists('#__menu') || !$this->db->tableExists('#__extensions')) {
-            return array();
+            return [];
         }
 
         $this->db->setQuery(
@@ -83,7 +83,7 @@ class Migration20260911120200ComStorefront extends Base
 
         // The store works, or could. Leave the menu alone.
         if ($this->db->loadResult()) {
-            return array();
+            return [];
         }
 
         $this->db->setQuery(
@@ -91,7 +91,7 @@ class Migration20260911120200ComStorefront extends Base
             . " WHERE `type` = 'alias' AND `published` = " . (int) $published
         );
 
-        $ids = array();
+        $ids = [];
 
         foreach ((array) $this->db->loadObjectList() as $alias) {
             $params = json_decode((string) $alias->params, true);

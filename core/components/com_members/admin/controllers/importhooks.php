@@ -53,7 +53,7 @@ class ImportHooks extends AdminController
     public function displayTask()
     {
         // Get filters
-        $filters = array(
+        $filters = [
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
@@ -66,17 +66,17 @@ class ImportHooks extends AdminController
                 0,
                 'int'
             ),
-            'state'    => array(1),
+            'state'    => [1],
             'sort'     => 'name',
             'sort_Dir' => 'ASC',
             'type'     => 'members'
-        );
+        ];
 
         $model = Hook::all();
 
         if (isset($filters['state']) && $filters['state']) {
             if (!is_array($filters['state'])) {
-                $filters['state'] = array($filters['state']);
+                $filters['state'] = [$filters['state']];
             }
             $filters['state'] = array_map('intval', $filters['state']);
 
@@ -120,7 +120,7 @@ class ImportHooks extends AdminController
         // get the import object
         if (!($row instanceof Hook)) {
             // get request vars
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id)) {
                 $id = (isset($id[0]) ? $id[0] : 0);
             }
@@ -151,8 +151,8 @@ class ImportHooks extends AdminController
         Request::checkToken();
 
         // get request vars
-        $fields = Request::getArray('hook', array(), 'post');
-        $file   = Request::getArray('file', array(), 'FILES');
+        $fields = Request::getArray('hook', [], 'post');
+        $file   = Request::getArray('file', [], 'FILES');
 
         // The script name is only ever set from the upload below
         unset($fields['file']);
@@ -213,7 +213,7 @@ class ImportHooks extends AdminController
     public function rawTask()
     {
         // get request vars
-        $id = Request::getArray('id', array());
+        $id = Request::getArray('id', []);
         if (is_array($id)) {
             $id = (!empty($id)) ? $id[0] : null;
         }
@@ -249,8 +249,8 @@ class ImportHooks extends AdminController
         Request::checkToken();
 
         // get request vars
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // loop through all ids posted
         $i = 0;

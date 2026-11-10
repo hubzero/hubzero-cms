@@ -38,14 +38,14 @@ class Permissions
         $user = User::getInstance();
         $result = new Obj();
 
-        $actions = array(
+        $actions = [
                 'admin',
                 'manage',
                 'create',
                 'edit',
                 'edit.state',
                 'delete'
-        );
+        ];
 
         foreach ($actions as $action) {
             $result->set('core.' . $action, $user->authorise('core.' . $action, $assetName));

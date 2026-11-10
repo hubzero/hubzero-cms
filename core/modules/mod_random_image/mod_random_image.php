@@ -100,8 +100,8 @@ class RandomImage extends Module
     {
         $type   = $params->get('type', 'jpg');
 
-        $files  = array();
-        $images = array();
+        $files  = [];
+        $images = [];
 
         $dir = PATH_APP . DS . $folder;
 

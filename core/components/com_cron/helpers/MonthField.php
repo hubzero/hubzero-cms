@@ -18,7 +18,7 @@ class MonthField extends AbstractField
     public function isSatisfiedBy(DateTime $date, $value)
     {
         // Convert text month values to integers
-        $value = strtr($value, array(
+        $value = strtr($value, [
             'JAN' => 1,
             'FEB' => 2,
             'MAR' => 3,
@@ -31,7 +31,7 @@ class MonthField extends AbstractField
             'OCT' => 10,
             'NOV' => 11,
             'DEC' => 12
-        ));
+        ]);
 
         return $this->isSatisfied($date->format('m'), $value);
     }

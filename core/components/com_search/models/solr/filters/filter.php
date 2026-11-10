@@ -33,21 +33,21 @@ class Filter extends Relational
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'params',
         'modified',
         'modified_by'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * children

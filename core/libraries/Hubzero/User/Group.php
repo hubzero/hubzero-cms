@@ -147,42 +147,42 @@ class Group extends Obj
      *
      * @var  array
      */
-    private $members = array();
+    private $members = [];
 
     /**
      * List of managers
      *
      * @var  array
      */
-    private $managers = array();
+    private $managers = [];
 
     /**
      * List of applicants
      *
      * @var  array
      */
-    private $applicants = array();
+    private $applicants = [];
 
     /**
      * List of invitees
      *
      * @var  array
      */
-    private $invitees = array();
+    private $invitees = [];
 
     /**
      * Alternate table keys
      *
      * @var  array
      */
-    public static $_list_keys = array('members', 'managers', 'applicants', 'invitees');
+    public static $_list_keys = ['members', 'managers', 'applicants', 'invitees'];
 
     /**
      * List of updated keys
      *
      * @var  array
      */
-    private $_updatedkeys = array();
+    private $_updatedkeys = [];
 
     /**
      * Constructor
@@ -202,7 +202,7 @@ class Group extends Obj
     {
         $cvars = get_class_vars(__CLASS__);
 
-        $this->_updatedkeys = array();
+        $this->_updatedkeys = [];
 
         foreach ($cvars as $key => $value) {
             if ($key[0] != '_') {
@@ -211,12 +211,12 @@ class Group extends Obj
                 if (!in_array($key, self::$_list_keys)) {
                     $this->$key = null;
                 } else {
-                    $this->$key = array();
+                    $this->$key = [];
                 }
             }
         }
 
-        $this->_updatedkeys = array();
+        $this->_updatedkeys = [];
 
         return true;
     }
@@ -233,7 +233,7 @@ class Group extends Obj
 
         // Set instances array
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         // Do we have a matching instance?
@@ -326,7 +326,7 @@ class Group extends Obj
         }
 
         //trigger the onAfterStoreGroup event
-        Event::trigger('user.onAfterStoreGroup', array($this));
+        Event::trigger('user.onAfterStoreGroup', [$this]);
 
         return $this->gidNumber;
     }
@@ -391,7 +391,7 @@ class Group extends Obj
             $this->__get('managers');
         }
 
-        $this->_updatedkeys = array();
+        $this->_updatedkeys = [];
 
         return true;
     }
@@ -462,7 +462,7 @@ class Group extends Obj
             $affected = $db->getAffectedRows();
         }
 
-        $aNewUserGroupEnrollments = array();
+        $aNewUserGroupEnrollments = [];
 
         foreach (self::$_list_keys as $property) {
             if (!in_array($property, $this->_updatedkeys)) {
@@ -474,7 +474,7 @@ class Group extends Obj
             $list = $this->$property;
 
             if (!is_array($list)) {
-                $list = is_null($list) ? array() : array($list);
+                $list = is_null($list) ? [] : [$list];
             }
 
             $ulist = null;
@@ -498,7 +498,7 @@ class Group extends Obj
             $query = "SELECT uidNumber FROM `$aux_table` WHERE gidNumber=" . $db->quote($this->gidNumber);
             $db->setQuery($query);
 
-            $aExistingRows = $db->loadColumn() ?: array();
+            $aExistingRows = $db->loadColumn() ?: [];
 
             // @FIXME: I don't have a better solution yet. But the next refactoring of this class
             // should eliminate the ability to read the entire member table due to problems with
@@ -510,7 +510,7 @@ class Group extends Obj
             // there is no nice way to detect only *new* additions without this check. I don't want to
             // fire off an 'onUserGroupEnrollment' event for users unless they are really being enrolled. *drb*
 
-            if (in_array($property, array('members', 'managers'))) {
+            if (in_array($property, ['members', 'managers'])) {
                 // Deliberately diffed against the *members* table rather than
                 // $aExistingRows: a promoted user is written to both tables in
                 // this same loop (members first), so diffing managers against
@@ -520,7 +520,7 @@ class Group extends Obj
                 $db->setQuery($query);
 
                 // compile current list of members in this group
-                $aExistingUserMembership = $db->loadColumn() ?: array();
+                $aExistingUserMembership = $db->loadColumn() ?: [];
 
                 // see who is new, merge with previous additions so we have a complete list after we are done
                 $aNewUserGroupEnrollments = array_merge($aNewUserGroupEnrollments, array_diff($list, $aExistingUserMembership));
@@ -554,7 +554,7 @@ class Group extends Obj
             }
 
             if (count($list) > 0) {
-                if (in_array($property, array('members', 'managers', 'applicants', 'invitees'))) {
+                if (in_array($property, ['members', 'managers', 'applicants', 'invitees'])) {
                     // Not REPLACE: that deletes and re-inserts, which resets
                     // every other column on the row (membership expiration,
                     // and the surrogate id) on any unrelated roster change.
@@ -569,11 +569,11 @@ class Group extends Obj
             }
 
             if (count($list) == 0) {
-                if (in_array($property, array('members', 'managers', 'applicants', 'invitees'))) {
+                if (in_array($property, ['members', 'managers', 'applicants', 'invitees'])) {
                     $query = "DELETE FROM $aux_table WHERE gidNumber=" . $db->quote($this->gidNumber) . ";";
                 }
             } else {
-                if (in_array($property, array('members', 'managers', 'applicants', 'invitees'))) {
+                if (in_array($property, ['members', 'managers', 'applicants', 'invitees'])) {
                     $query = "DELETE m FROM `#__xgroups_$property` AS m WHERE " . " m.gidNumber=" .
                         $db->quote($this->gidNumber) . " AND m.uidNumber NOT IN (" . $ulist . ");";
                 }
@@ -594,11 +594,11 @@ class Group extends Obj
         // After SQL is done and has no errors, fire off onGroupUserEnrolledEvents
         // for every user added to this group
         foreach ($aNewUserGroupEnrollments as $userid) {
-            Event::trigger('groups.onGroupUserEnrollment', array($this->gidNumber, $userid));
+            Event::trigger('groups.onGroupUserEnrollment', [$this->gidNumber, $userid]);
         }
 
         if ($affected > 0) {
-            Event::trigger('user.onAfterStoreGroup', array($this));
+            Event::trigger('user.onAfterStoreGroup', [$this]);
         }
 
         return true;
@@ -651,7 +651,7 @@ class Group extends Obj
         $db->query();
 
         //trigger the onAfterStoreGroup event
-        Event::trigger('user.onAfterStoreGroup', array($this));
+        Event::trigger('user.onAfterStoreGroup', [$this]);
 
         return true;
     }
@@ -678,7 +678,7 @@ class Group extends Obj
                 $db = App::get('db');
 
                 if (is_object($db)) {
-                    $groups = array('applicants' => array(), 'invitees' => array(), 'members' => array(), 'managers' => array());
+                    $groups = ['applicants' => [], 'invitees' => [], 'members' => [], 'managers' => []];
 
                     foreach ($groups as $key => $data) {
                         $this->__set($key, $data);
@@ -740,9 +740,9 @@ class Group extends Obj
         }
 
         if (in_array($property, self::$_list_keys)) {
-            $value = array_diff((array) $value, array(''));
+            $value = array_diff((array) $value, ['']);
 
-            if (in_array($property, array('managers', 'members', 'applicants', 'invitees'))) {
+            if (in_array($property, ['managers', 'members', 'applicants', 'invitees'])) {
                 $value = $this->_userids($value);
             }
 
@@ -795,7 +795,7 @@ class Group extends Obj
             die();
         }
 
-        $this->_updatedkeys = array_diff($this->_updatedkeys, array($property));
+        $this->_updatedkeys = array_diff($this->_updatedkeys, [$property]);
 
         unset($this->$property);
     }
@@ -865,11 +865,11 @@ class Group extends Obj
             return false;
         }
 
-        $usernames = array();
-        $userids = array();
+        $usernames = [];
+        $userids = [];
 
         if (!is_array($users)) {
-            $users = array($users);
+            $users = [$users];
         }
 
         foreach ($users as $u) {
@@ -893,7 +893,7 @@ class Group extends Obj
         $result = $db->loadColumn();
 
         if (empty($result)) {
-            $result = array();
+            $result = [];
         }
 
         $result = array_merge($result, $userids);
@@ -908,7 +908,7 @@ class Group extends Obj
      * @param   array   $value
      * @return  void
      */
-    public function add($key = null, $value = array())
+    public function add($key = null, $value = [])
     {
         $users = $this->_userids($value);
 
@@ -922,7 +922,7 @@ class Group extends Obj
      * @param   array   $value
      * @return  void
      */
-    public function remove($key = null, $value = array())
+    public function remove($key = null, $value = [])
     {
         $users = $this->_userids($value);
 
@@ -1012,7 +1012,7 @@ class Group extends Obj
      * @param   array  $filters
      * @return  mixed
      */
-    public static function find($filters = array())
+    public static function find($filters = [])
     {
         $db = App::get('db');
 
@@ -1021,9 +1021,9 @@ class Group extends Obj
         // Type 2 - Project Group
         // Type 3 - Partner "Special" Group
         // Type 4 - Course group
-        $gTypes = array('all', 'system', 'hub', 'project', 'super', 'course', '0', '1', '2', '3', '4');
+        $gTypes = ['all', 'system', 'hub', 'project', 'super', 'course', '0', '1', '2', '3', '4'];
 
-        $types = !empty($filters['type']) ? $filters['type'] : array('all');
+        $types = !empty($filters['type']) ? $filters['type'] : ['all'];
 
         foreach ($types as $type) {
             if (!in_array($type, $gTypes)) {
@@ -1031,7 +1031,7 @@ class Group extends Obj
             }
         }
 
-        $where = array();
+        $where = [];
 
         if (!in_array('all', $types)) {
             $t = implode(",", $types);
@@ -1113,7 +1113,7 @@ class Group extends Obj
 
         // Only allow plain column identifiers (and the COUNT(*) aggregate) in the
         // select list; callers may pass this straight from request input.
-        $safeFields = array();
+        $safeFields = [];
         foreach ((array) $filters['fields'] as $f) {
             $f = trim($f);
             if ($f === 'COUNT(*)' || preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $f)) {
@@ -1178,7 +1178,7 @@ class Group extends Obj
      */
     public function is_member_of($table, $uid)
     {
-        if (!in_array($table, array('applicants', 'members', 'managers', 'invitees'))) {
+        if (!in_array($table, ['applicants', 'members', 'managers', 'invitees'])) {
             return false;
         }
 
@@ -1250,9 +1250,9 @@ class Group extends Obj
         }
 
         if ($member) {
-            $group->add('members', array((int) $uid));
+            $group->add('members', [(int) $uid]);
         } else {
-            $group->remove('members', array((int) $uid));
+            $group->remove('members', [(int) $uid]);
         }
 
         return (bool) $group->update();
@@ -1310,7 +1310,7 @@ class Group extends Obj
      */
     public function getEmails($tbl = 'managers')
     {
-        if (!in_array($tbl, array('applicants', 'members', 'managers', 'invitees'))) {
+        if (!in_array($tbl, ['applicants', 'members', 'managers', 'invitees'])) {
             return false;
         }
 
@@ -1338,7 +1338,7 @@ class Group extends Obj
      */
     public function search($tbl = '', $q = '')
     {
-        if (!in_array($tbl, array('applicants', 'members', 'managers', 'invitees'))) {
+        if (!in_array($tbl, ['applicants', 'members', 'managers', 'invitees'])) {
             return false;
         }
 
@@ -1464,14 +1464,14 @@ class Group extends Obj
      */
     public function getDescription($as = 'parsed', $shorten = 0, $type = 'public')
     {
-        $options = array();
+        $options = [];
 
         // get description before parsing
         $before = $this->get($type . '_desc');
 
         switch (strtolower($as)) {
             case 'parsed':
-                $config = array(
+                $config = [
                     'option'   => 'com_groups',
                     'scope'    => '', //$this->get('cn') . DS . 'wiki',
                     'pagename' => $this->get('cn'),
@@ -1479,16 +1479,16 @@ class Group extends Obj
                     'filepath' => Component::params('com_groups')->get('uploadpath', '/site/groups') . DS . $this->get('gidNumber') . DS . 'uploads',
                     'domain'   => $this->get('cn'),
                     'camelcase' => 0
-                );
+                ];
 
-                Event::trigger('content.onContentPrepare', array(
+                Event::trigger('content.onContentPrepare', [
                     'com_groups.group.' . $type . '_desc',
                     &$this,
                     &$config
-                ));
+                ]);
                 $content = $this->get($type . '_desc');
 
-                $options = array('html' => true);
+                $options = ['html' => true];
                 break;
 
             case 'clean':

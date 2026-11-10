@@ -119,7 +119,7 @@ class Migration20260810000000ComGroups extends Base
                 $this->db->query();
             }
 
-            foreach (array('expires_notified', 'expires_set_by', 'expires') as $field) {
+            foreach (['expires_notified', 'expires_set_by', 'expires'] as $field) {
                 if ($this->db->tableHasField('#__xgroups_members', $field)) {
                     $query = "ALTER TABLE `#__xgroups_members` DROP COLUMN `$field`";
                     $this->db->setQuery($query);

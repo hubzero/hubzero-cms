@@ -49,19 +49,19 @@ class Log extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'gidNumber' => 'positive|nonzero',
         'action'    => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'timestamp'
-    );
+    ];
 
     /**
      * Generates automatic owned by field value

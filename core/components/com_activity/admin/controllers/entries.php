@@ -62,7 +62,7 @@ class Entries extends AdminController
         $today = false;
         $total = 0;
 
-        $data = array();
+        $data = [];
         for ($k = $year, $n = $y; $k < $n; $k++) {
             if ($today) {
                 break;

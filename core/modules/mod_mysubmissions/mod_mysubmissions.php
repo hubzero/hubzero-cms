@@ -116,14 +116,14 @@ class Mysubmissions extends Module
             return false;
         }
 
-        $this->steps = array(
+        $this->steps = [
             'Type',
             'Compose',
             'Attach',
             'Authors',
             'Tags',
             'Review'
-        );
+        ];
 
         $this->rows = Entry::all()
             ->whereEquals('standalone', 1)

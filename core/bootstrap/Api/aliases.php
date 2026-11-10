@@ -7,7 +7,7 @@
  */
 
 // Create aliaes for runtime
-return array(
+return [
     // Core
     'App'        => 'Hubzero\Facades\App',
     'Config'     => 'Hubzero\Facades\Config',
@@ -24,4 +24,4 @@ return array(
     // API specific
     'Component'  => 'Hubzero\Facades\Component',
     'Session'    => 'Hubzero\Facades\Session',
-);
+];

@@ -22,7 +22,7 @@ class Div extends WikiMacro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['wiki'] = 'Allows content to be wrapped in a div tag. This macro must be used twice: '
             . 'Div(start) to indicate where to create the opening div tag and Div(end) to indicate '
             . 'where to close the resulting div tag. Attributes may be applied by separating '
@@ -54,13 +54,13 @@ class Div extends WikiMacro
         $div = '';
 
         if (trim($text) == 'start') {
-            $atts = array();
+            $atts = [];
             if (!empty($attribs) && count($attribs) > 0) {
                 foreach ($attribs as $a) {
                     $a = explode('=', $a);
                     $key = strtolower(trim($a[0]));
                     if (
-                        !in_array($key, array('class', 'id', 'style', 'title', 'lang', 'dir', 'align', 'width', 'height', 'role', 'name', 'tabindex'), true)
+                        !in_array($key, ['class', 'id', 'style', 'title', 'lang', 'dir', 'align', 'width', 'height', 'role', 'name', 'tabindex'], true)
                         && !preg_match('/^(data|aria)-[a-z0-9\-]+$/', $key)
                     ) {
                         continue;

@@ -65,7 +65,7 @@ class Nogit extends Models\Adapter
      * @param   array  $params
      * @return  array
      */
-    public function count($params = array())
+    public function count($params = [])
     {
         $cmd  = 'cd ' . escapeshellarg($this->path) . ' && ';
         $cmd .= 'find . \( -path "./.git" -or -name ".gitignore" \) -prune -o -type f -print | wc -l';
@@ -160,7 +160,7 @@ class Nogit extends Models\Adapter
     protected function _shouldSkipFile($file)
     {
         $fileName = $file->get('name');
-        $filesToSkip = array('.git', '.gitignore');
+        $filesToSkip = ['.git', '.gitignore'];
 
         return in_array($fileName, $filesToSkip);
     }
@@ -171,7 +171,7 @@ class Nogit extends Models\Adapter
      * @param   array  $params
      * @return  array
      */
-    public function content($params = array())
+    public function content($params = [])
     {
         $fileName = isset($params['fileName']) ? $params['fileName'] : null;
         $target   = isset($params['target']) ? $params['target'] : null;
@@ -185,7 +185,7 @@ class Nogit extends Models\Adapter
      * @param   array   $params
      * @return  boolean
      */
-    public function getLastRevision($params = array())
+    public function getLastRevision($params = [])
     {
         $file = isset($params['file']) ? $params['file'] : null;
 
@@ -205,7 +205,7 @@ class Nogit extends Models\Adapter
      * @return  array
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _list($items, $params, $folders = array())
+    protected function _list($items, $params, $folders = [])
     {
         $dirPath  = isset($params['subdir']) ? $params['subdir'] : null;
         $limit    = isset($params['limit']) ? $params['limit'] : 0;
@@ -220,12 +220,12 @@ class Nogit extends Models\Adapter
         }
         // No results, return early
         if (empty($items)) {
-            return array();
+            return [];
         }
 
         // Go through sorted list, get extended metadata and limit results
         $i = 1;
-        $results = array();
+        $results = [];
         foreach ($items as $file) {
             // First cut off at limit if set
             if ($limit && $i > $limit) {
@@ -245,7 +245,7 @@ class Nogit extends Models\Adapter
         if (!$folders) {
             return $results;
         } else {
-            return array($results, $folders);
+            return [$results, $folders];
         }
     }
 
@@ -255,7 +255,7 @@ class Nogit extends Models\Adapter
      * @param   array  $params
      * @return  array
      */
-    public function getChanges($params = array())
+    public function getChanges($params = [])
     {
         $localPath    = isset($params['localPath']) ? $params['localPath'] : null;
         $fromLocal    = isset($params['fromLocal']) ? $params['fromLocal'] : null;
@@ -272,7 +272,7 @@ class Nogit extends Models\Adapter
      * @param   array  $params
      * @return  bool
      */
-    public function move($params = array())
+    public function move($params = [])
     {
         $fromFile = isset($params['fromFile']) ? $params['fromFile'] : null;
         $toFile   = isset($params['toFile']) ? $params['toFile'] : null;
@@ -296,7 +296,7 @@ class Nogit extends Models\Adapter
      * @param   array  $params
      * @return  bool
      */
-    public function makeDirectory($params = array())
+    public function makeDirectory($params = [])
     {
         $file = isset($params['file']) ? $params['file'] : null;
 
@@ -319,7 +319,7 @@ class Nogit extends Models\Adapter
      * @param   array  $params
      * @return  bool
      */
-    public function deleteDirectory($params = array())
+    public function deleteDirectory($params = [])
     {
         $file   = isset($params['file']) ? $params['file'] : null;
         $author = isset($params['author']) ? $params['author'] : null;
@@ -345,7 +345,7 @@ class Nogit extends Models\Adapter
      * @param   array  $params
      * @return  bool
      */
-    public function deleteFile($params = array())
+    public function deleteFile($params = [])
     {
         $file     = isset($params['file']) ? $params['file'] : null;
         $author   = isset($params['author']) ? $params['author'] : null;
@@ -378,7 +378,7 @@ class Nogit extends Models\Adapter
         }
 
         if (!isset($this->_profileAssoc)) {
-            $this->_profileAssoc = array();
+            $this->_profileAssoc = [];
         }
 
         // Entry is in the master log?
@@ -427,7 +427,7 @@ class Nogit extends Models\Adapter
      * @param   array    $params
      * @return  integer
      */
-    public function getDiskUsage($params = array())
+    public function getDiskUsage($params = [])
     {
         $path    = isset($params['path']) ? $params['path'] : $this->path;
 
@@ -461,7 +461,7 @@ class Nogit extends Models\Adapter
      *
      * @return
      */
-    public function checkin($params = array())
+    public function checkin($params = [])
     {
         return true;
     }
@@ -471,7 +471,7 @@ class Nogit extends Models\Adapter
      *
      * @return
      */
-    public function optimize($params = array())
+    public function optimize($params = [])
     {
         return true;
     }
@@ -481,7 +481,7 @@ class Nogit extends Models\Adapter
      *
      * @return
      */
-    public function erase($params = array())
+    public function erase($params = [])
     {
         return true;
     }

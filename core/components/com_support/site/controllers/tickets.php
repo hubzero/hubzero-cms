@@ -74,7 +74,7 @@ class Tickets extends SiteController
         }
         if (Pathway::count() == 1  && $this->_task) {
             $task = $this->_task;
-            if (in_array($this->_task, array('ticket', 'new', 'display', 'save')) || $ticket === null) {
+            if (in_array($this->_task, ['ticket', 'new', 'display', 'save']) || $ticket === null) {
                 $task = 'tickets';
             }
             if ($task == 'update' && $ticket !== null) {
@@ -112,7 +112,7 @@ class Tickets extends SiteController
             if ($this->_task == 'new' || $this->_task == 'display' || $ticket === null) {
                 $this->_title .= ': ' . Lang::txt('COM_SUPPORT_TICKETS');
             }
-            if (in_array($this->_task, array('ticket', 'new', 'update', 'save')) && $ticket !== null) {
+            if (in_array($this->_task, ['ticket', 'new', 'update', 'save']) && $ticket !== null) {
                 if ($this->_task == 'update') {
                     $this->_title .= ': ' . Lang::txt('COM_SUPPORT_TiCKET');
                 } else {
@@ -167,8 +167,8 @@ class Tickets extends SiteController
         $month = $date->toLocal('m');
 
         $this->view->year = $year;
-        $this->view->opened = array();
-        $this->view->closed = array();
+        $this->view->opened = [];
+        $this->view->closed = [];
 
         $sql = "SELECT DISTINCT(g.`cn`), g.description
 				FROM `#__support_tickets` AS s
@@ -206,17 +206,17 @@ class Tickets extends SiteController
         $this->database->setQuery($query);
         $usrs = $this->database->loadObjectList();
 
-        $users = array();
+        $users = [];
         if ($usrs) {
             foreach ($usrs as $j => $user) {
                 if (!isset($user->total)) {
                     $user->total = 0;
                 }
                 if (!isset($user->tickets)) {
-                    $user->tickets = array();
+                    $user->tickets = [];
                 }
                 if (!isset($user->closed)) {
-                    $user->closed = array();
+                    $user->closed = [];
                 }
                 $users[$user->id] = $user;
             }
@@ -298,15 +298,15 @@ class Tickets extends SiteController
         $this->database->setQuery($sql);
         $openTickets = $this->database->loadObjectList();
 
-        $owners = array();
+        $owners = [];
 
-        $open = array();
+        $open = [];
         $this->view->opened['open'] = 0;
         $this->view->opened['new'] = 0;
         $this->view->opened['unassigned'] = 0;
         foreach ($openTickets as $o) {
             if (!isset($open[$o->year])) {
-                $open[$o->year] = array();
+                $open[$o->year] = [];
             }
             if (!isset($open[$o->year][$o->month])) {
                 $open[$o->year][$o->month] = 0;
@@ -354,7 +354,7 @@ class Tickets extends SiteController
 
         $this->view->opened['closed'] = 0;
         // First we need to loop through all the entries and remove some potential duplicates
-        $closedTickets = array();
+        $closedTickets = [];
         foreach ($clsd as $closed) {
             if (!isset($closedTickets[$closed->ticket])) {
                 $closedTickets[$closed->ticket] = $closed;
@@ -366,10 +366,10 @@ class Tickets extends SiteController
         }
         $this->view->closedTickets = $closedTickets;
         // Loop through info and divide into years/months
-        $closed = array();
+        $closed = [];
         foreach ($closedTickets as $o) {
             if (!isset($closed[$o->year])) {
-                $closed[$o->year] = array();
+                $closed[$o->year] = [];
             }
             if (!isset($closed[$o->year][$o->month])) {
                 $closed[$o->year][$o->month] = 0;
@@ -380,12 +380,12 @@ class Tickets extends SiteController
 
         // Group data by year and gather some info for each user
 
-        $this->view->closedmonths = array();
-        $this->view->openedmonths = array();
+        $this->view->closedmonths = [];
+        $this->view->openedmonths = [];
 
         for ($k = $startyear, $n = $endyear; $k < $n; $k++) {
-            $this->view->closedmonths[$k] = array();
-            $this->view->openedmonths[$k] = array();
+            $this->view->closedmonths[$k] = [];
+            $this->view->openedmonths[$k] = [];
             if ($k == $startyear && intval($startmonth) > 1) {
                 $i = intval($startmonth) - 1;
             } else {
@@ -402,7 +402,7 @@ class Tickets extends SiteController
 
                 foreach ($users as $j => $user) {
                     if (!isset($user->closed[$k])) {
-                        $user->closed[$k] = array();
+                        $user->closed[$k] = [];
                     }
 
                     /*if ($i <= "9"&preg_match("#(^[1-9]{1})#",$i))
@@ -430,7 +430,7 @@ class Tickets extends SiteController
                 }
 
                 if (!isset($users[$c->created_by]->closed[$y])) {
-                    $users[$c->created_by]->closed[$y] = array();
+                    $users[$c->created_by]->closed[$y] = [];
                 }
                 if (!isset($users[$c->created_by]->closed[$y][$m])) {
                     $users[$c->created_by]->closed[$y][$m] = 0;
@@ -442,7 +442,7 @@ class Tickets extends SiteController
         }
 
         // Sort users by number of tickets closed
-        $u = array();
+        $u = [];
         foreach ($users as $k => $user) {
             $user->assigned = 0;
             if (isset($owners[$user->id])) {
@@ -588,10 +588,10 @@ class Tickets extends SiteController
             ->rows()
             ->fieldsByKey('ticket_id');
 
-        $watch = array(
+        $watch = [
             'open'   => Ticket::all()->whereEquals('open', 1)->whereIn('id', $watching)->total(),
             'closed' => Ticket::all()->whereEquals('open', 0)->whereIn('id', $watching)->total()
-        );
+        ];
 
         $filters['search'] = $search;
 
@@ -711,7 +711,7 @@ class Tickets extends SiteController
         }
 
         // Output HTML
-        $lists = array();
+        $lists = [];
 
         if ($row->get('verified') && $this->acl->check('update', 'tickets') > 0) {
             if (trim($this->config->get('group', ''))) {
@@ -766,7 +766,7 @@ class Tickets extends SiteController
         $live_site = rtrim(Request::base(), '/');
 
         // Trigger any events that need to be called before session stop
-        Event::trigger('support.onPreTicketSubmission', array());
+        Event::trigger('support.onPreTicketSubmission', []);
 
         // Incoming
         $no_html  = Request::getInt('no_html', 0);
@@ -776,8 +776,8 @@ class Tickets extends SiteController
             // This really, REALLY shouldn't happen.
             App::abort(400, Lang::txt('COM_SUPPORT_ERROR_MISSING_DATA'));
         }
-        $reporter = Request::getArray('reporter', array(), 'post');
-        $problem  = Request::getArray('problem', array(), 'post');
+        $reporter = Request::getArray('reporter', [], 'post');
+        $problem  = Request::getArray('problem', [], 'post');
 
         foreach ($reporter as $key => $field) {
             if (is_array($field)) {
@@ -791,7 +791,7 @@ class Tickets extends SiteController
             }
         }
 
-        $reporter = array_map(array('\\Hubzero\\Utility\\Sanitize', 'stripAll'), $reporter);
+        $reporter = array_map(['\\Hubzero\\Utility\\Sanitize', 'stripAll'], $reporter);
 
         $reporter['name']  = trim($reporter['name']);
         $reporter['email'] = trim($reporter['email']);
@@ -810,7 +810,7 @@ class Tickets extends SiteController
 
         // Trigger any events that need to be called
         $customValidation = true;
-        $result = Event::trigger('support.onValidateTicketSubmission', array($reporter, $problem));
+        $result = Event::trigger('support.onValidateTicketSubmission', [$reporter, $problem]);
         $customValidation = (is_array($result) && !empty($result)) ? $result[0] : $customValidation;
 
         // Check for some required fields
@@ -982,10 +982,10 @@ class Tickets extends SiteController
             );
 
             // Plain text email
-            $eview = new \Hubzero\Mail\View(array(
+            $eview = new \Hubzero\Mail\View([
                 'name'   => 'emails',
                 'layout' => 'ticket_plain'
-            ));
+            ]);
             $eview->option     = $this->_option;
             $eview->controller = $this->_controller;
             $eview->ticket     = $row;
@@ -1029,7 +1029,7 @@ class Tickets extends SiteController
                 // Check for a valid address
                 if (Validate::email($def)) {
                     // Send e-mail
-                    $message->setTo(array($def));
+                    $message->setTo([$def]);
                     $message->send();
                 }
             }
@@ -1045,11 +1045,11 @@ class Tickets extends SiteController
                     'scope'       => 'support.ticket',
                     'scope_id'    => $row->get('id'),
                     'description' => Lang::txt('COM_SUPPORT_ACTIVITY_TICKET_CREATED', '<a href="' . Route::url($row->link()) . '">#' . htmlspecialchars((string) ($row->get('id') . ' - ' . $row->get('summary')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                    'details'     => array(
+                    'details'     => [
                         'id'      => $row->get('id'),
                         'summary' => $row->get('summary'),
                         'url'     => Route::url($row->link())
-                    )
+                    ]
                 ],
                 'recipients' => [
                     ['support.tickets', 1],
@@ -1088,12 +1088,12 @@ class Tickets extends SiteController
                 }
 
                 if ($row->get('owner')) {
-                    $rowc->addTo(array(
+                    $rowc->addTo([
                         'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_OWNER'),
                         'name'  => $row->assignee->get('name'),
                         'email' => $row->assignee->get('email'),
                         'id'    => $row->assignee->get('id')
-                    ));
+                    ]);
                 } elseif ($row->get('group_id')) {
                     $group = \Hubzero\User\Group::getInstance($row->get('group_id'));
 
@@ -1105,12 +1105,12 @@ class Tickets extends SiteController
                                 continue;
                             }
 
-                            $rowc->addTo(array(
+                            $rowc->addTo([
                                 'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_GROUPMANAGER'),
                                 'name'  => $manager->get('name'),
                                 'email' => $manager->get('email'),
                                 'id'    => $manager->get('id')
-                            ));
+                            ]);
                         }
                     }
                 }
@@ -1120,9 +1120,9 @@ class Tickets extends SiteController
                     $rowc->addTo($cc, Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC'));
                 }
 
-                $recipients = array(
+                $recipients = [
                     ['support.tickets', 1]
-                );
+                ];
 
                 // Check if the notify list has eny entries
                 if (count($rowc->to())) {
@@ -1140,19 +1140,19 @@ class Tickets extends SiteController
 
                     $subject = Lang::txt('COM_SUPPORT_EMAIL_SUBJECT_TICKET_COMMENT', $row->get('id'));
 
-                    $from = array(
+                    $from = [
                         'name'      => Lang::txt('COM_SUPPORT_EMAIL_FROM', Config::get('sitename')),
                         'email'     => Config::get('mailfrom'),
                         'multipart' => md5(date('U'))
-                    );
+                    ];
 
-                    $message = array();
+                    $message = [];
 
                     // Plain text email
-                    $eview = new \Hubzero\Mail\View(array(
+                    $eview = new \Hubzero\Mail\View([
                         'name'   => 'emails',
                         'layout' => 'comment_plain'
-                    ));
+                    ]);
                     $eview->option     = $this->_option;
                     $eview->controller = $this->_controller;
                     $eview->comment    = $rowc;
@@ -1180,7 +1180,7 @@ class Tickets extends SiteController
                         }
 
                         // Get the user's email address
-                        if (!Event::trigger('xmessage.onSendMessage', array('support_reply_submitted', $subject, $message, $from, array($to['id']), $this->_option))) {
+                        if (!Event::trigger('xmessage.onSendMessage', ['support_reply_submitted', $subject, $message, $from, [$to['id']], $this->_option])) {
                             $this->setError(Lang::txt('COM_SUPPORT_ERROR_FAILED_TO_MESSAGE', $to['name'] . '(' . $to['role'] . ')'));
                         }
                         $rowc->changelog()->notified(
@@ -1194,10 +1194,10 @@ class Tickets extends SiteController
                         if ($allowEmailResponses) {
                             $token = $encryptor->buildEmailToken(1, 1, -9999, $row->get('id'));
 
-                            $email = array(
+                            $email = [
                                 $to['email'],
                                 'htc-' . $token . strstr(Config::get('mailfrom'), '@')
-                            );
+                            ];
 
                             // In this case each item in email in an array, 1- To, 2:reply to address
                             Utilities::sendEmail($email[0], $subject, $message, $from, $email[1]);
@@ -1242,12 +1242,12 @@ class Tickets extends SiteController
                         'scope'       => 'support.ticket.comment',
                         'scope_id'    => $rowc->get('id'),
                         'description' => $desc,
-                        'details'     => array(
+                        'details'     => [
                             'id'      => $row->get('id'),
                             'summary' => $row->get('summary'),
                             'url'     => Route::url($row->link()),
                             'comment' => $rowc->get('id')
-                        )
+                        ]
                     ],
                     'recipients' => $recipients
                 ]);
@@ -1255,7 +1255,7 @@ class Tickets extends SiteController
         }
 
         // Trigger any events that need to be called
-        Event::trigger('support.onTicketSubmission', array($row));
+        Event::trigger('support.onTicketSubmission', [$row]);
 
         // Output Thank You message
         $this->view
@@ -1278,16 +1278,16 @@ class Tickets extends SiteController
         // Spammer IPs (banned): addresses or networks (192.0.2.0/24,
         // 2001:db8::/32), separated by commas or white space
         $ips = $this->config->get('blacklist');
-        $bl  = $ips ? preg_split('/[\s,]+/', trim($ips), -1, PREG_SPLIT_NO_EMPTY) : array();
+        $bl  = $ips ? preg_split('/[\s,]+/', trim($ips), -1, PREG_SPLIT_NO_EMPTY) : [];
 
         // Bad words
         $words    = $this->config->get('badwords');
-        $badwords = $words ? array_map('trim', explode(',', $words)) : array();
+        $badwords = $words ? array_map('trim', explode(',', $words)) : [];
 
         // Build an array of patterns to check against. A bad word is text, not
         // a pattern: 'c++' or 'http://spam.example' made an invalid pattern,
         // and every ticket check then failed with it.
-        $patterns = array('/\[url=(.*?)\](.*?)\[\/url\]/s', '/\[url=(.*?)\[\/url\]/s');
+        $patterns = ['/\[url=(.*?)\](.*?)\[\/url\]/s', '/\[url=(.*?)\[\/url\]/s'];
         foreach ($badwords as $badword) {
             if ($badword !== '') {
                 $patterns[] = '/(.*?)' . preg_quote($badword, '/') . '(.*?)/s';
@@ -1364,7 +1364,7 @@ class Tickets extends SiteController
             App::abort(403, Lang::txt('COM_SUPPORT_ERROR_NOT_AUTH'));
         }
 
-        $filters = array(
+        $filters = [
             // Paging
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
@@ -1391,7 +1391,7 @@ class Tickets extends SiteController
                 'search',
                 ''
             ))
-        );
+        ];
 
         if ($watch = Request::getWord('watch', '')) {
             // Already watching
@@ -1413,7 +1413,7 @@ class Tickets extends SiteController
             }
         }
 
-        $lists = array();
+        $lists = [];
 
         $lists['categories'] = Category::all()->rows();
 
@@ -1505,7 +1505,7 @@ class Tickets extends SiteController
         }
 
         $comment  = Request::getString('comment', '', 'post');
-        $incoming = Request::getArray('ticket', array(), 'post');
+        $incoming = Request::getArray('ticket', [], 'post');
         $incoming = array_map('trim', $incoming);
 
         if (isset($incoming['target_date'])) {
@@ -1533,7 +1533,7 @@ class Tickets extends SiteController
             if (!$old->isSubmitter()) {
                 App::abort(403, Lang::txt('COM_SUPPORT_ERROR_NOT_AUTH'));
             }
-            $incoming = array_intersect_key($incoming, array('status' => 1));
+            $incoming = array_intersect_key($incoming, ['status' => 1]);
         }
         unset($incoming['id'], $incoming['login'], $incoming['created'], $incoming['report'], $incoming['summary'], $incoming['email'], $incoming['name'], $incoming['ip'], $incoming['hostname'], $incoming['uas'], $incoming['referrer']);
 
@@ -1628,14 +1628,14 @@ class Tickets extends SiteController
         // otherwise, we're only recording a changelog
         // Listeners, e-mail, the record of who was told, and the activity log
         foreach (
-            Notifier::ticketUpdated($row, $rowc, $old, array(
+            Notifier::ticketUpdated($row, $rowc, $old, [
             'email_submitter' => Request::getInt('email_submitter', 0) == 1,
             'email_owner'     => Request::getInt('email_owner', 0) == 1,
             'email_terse'     => Request::getInt('email_terse', 0) == 1,
             'option'          => $this->_option,
             'controller'      => $this->_controller,
             'acl'             => $this->acl,
-            )) as $error
+            ]) as $error
         ) {
             $this->setError($error);
         }
@@ -1698,9 +1698,9 @@ class Tickets extends SiteController
         }
 
         // Log the activity
-        $recipients = array(
+        $recipients = [
             ['support.tickets', 1]
-        );
+        ];
 
         $creator = User::getInstance($ticket->get('login'));
         if ($creator && $creator->get('id')) {
@@ -1716,9 +1716,9 @@ class Tickets extends SiteController
                 'scope'       => 'support.ticket',
                 'scope_id'    => $id,
                 'description' => $description,
-                'details'     => array(
+                'details'     => [
                     'id'      => $id
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -1765,10 +1765,10 @@ class Tickets extends SiteController
     {
         // Only the documented fields above; the ticket's owner, group, state
         // and id are not the reporter's to set
-        $incoming = array_intersect_key($_POST, array_flip(array(
+        $incoming = array_intersect_key($_POST, array_flip([
             'login', 'severity', 'category', 'summary', 'report', 'email', 'name',
             'os', 'browser', 'ip', 'hostname', 'uas', 'referrer', 'cookies', 'section', 'tags'
-        )));
+        ]));
 
         // trim and addslashes all posted items
         $incoming = array_map(function ($v) {
@@ -2003,7 +2003,7 @@ class Tickets extends SiteController
         }
 
         // Incoming file
-        $file = Request::getArray('upload', array(), 'files');
+        $file = Request::getArray('upload', [], 'files');
         if (!isset($file['name']) || !$file['name']) {
             //$this->setError(Lang::txt('SUPPORT_NO_FILE'));
             return '';
@@ -2083,13 +2083,13 @@ class Tickets extends SiteController
                 $description = htmlspecialchars($description);
 
                 $row = Attachment::blank();
-                $row->set(array(
+                $row->set([
                     'id'          => 0,
                     'ticket'      => $listdir,
                     'comment_id'  => $comment_id,
                     'filename'    => $filename . '.' . $ext,
                     'description' => $description
-                ));
+                ]);
                 if (!$row->save()) {
                     $this->setError($row->getError());
                 }
@@ -2109,7 +2109,7 @@ class Tickets extends SiteController
     private function _getFilters()
     {
         // Query filters defaults
-        $filters = array(
+        $filters = [
             'search'     => '',
             'status'     => 'open',
             'type'       => 0,
@@ -2118,7 +2118,7 @@ class Tickets extends SiteController
             'severity'   => 'normal',
             'sort'       => trim(Request::getString('filter_order', 'created')),
             'sortdir'    => trim(Request::getString('filter_order_Dir', 'DESC'))
-        );
+        ];
 
         // Paging vars
         $filters['limit'] = Request::getInt('limit', Config::get('list_limit'));
@@ -2182,13 +2182,13 @@ class Tickets extends SiteController
                     }
                     break;
                 case 'status':
-                    $allowed = array('open', 'closed', 'all', 'new', 'waiting');
+                    $allowed = ['open', 'closed', 'all', 'new', 'waiting'];
                     if (!in_array($pieces[1], $allowed)) {
                         $pieces[1] = $filters[$pieces[0]];
                     }
                     break;
                 case 'type':
-                    $allowed = array('submitted' => 0, 'automatic' => 1, 'none' => 2, 'tool' => 3);
+                    $allowed = ['submitted' => 0, 'automatic' => 1, 'none' => 2, 'tool' => 3];
                     if (in_array($pieces[1], $allowed)) {
                         $pieces[1] = $allowed[$pieces[1]];
                     } else {
@@ -2206,7 +2206,7 @@ class Tickets extends SiteController
                     }
                     break;
                 case 'severity':
-                    $allowed = array('critical', 'major', 'normal', 'minor', 'trivial');
+                    $allowed = ['critical', 'major', 'normal', 'minor', 'trivial'];
                     if (!in_array($pieces[1], $allowed)) {
                         $pieces[1] = $filters[$pieces[0]];
                     }
@@ -2254,10 +2254,10 @@ class Tickets extends SiteController
             . " ORDER BY " . $order;
         $this->database->setQuery($query);
         if ($results = $this->database->loadObjectList()) {
-            $groups = array();
+            $groups = [];
             foreach ($results as $result) {
                 if (!isset($groups[$result->alias])) {
-                    $groups[$result->alias] = array();
+                    $groups[$result->alias] = [];
                 }
                 $groups[$result->alias][] = $result;
             }
@@ -2287,7 +2287,7 @@ class Tickets extends SiteController
      */
     private function _userSelectGroup($name, $active, $nouser = 0, $javascript = null, $group = '')
     {
-        $users = array();
+        $users = [];
 
         if (strstr($group, ',')) {
             $groups = explode(',', $group);

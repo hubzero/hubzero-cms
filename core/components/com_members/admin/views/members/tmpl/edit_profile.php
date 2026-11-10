@@ -22,7 +22,7 @@ $fields = \Components\Members\Models\Profile\Field::all()
     ->ordered()
     ->rows();
 
-$access = array();
+$access = [];
 foreach ($fields as $field) {
     $access[$field->get('name')] = $field->get('access');
 }
@@ -46,7 +46,7 @@ foreach ($profiles as $profile) {
 // Create a new form
 Hubzero\Form\Form::addFieldPath(Component::path('com_members') . DS . 'models' . DS . 'fields');
 
-$form = new Hubzero\Form\Form('profile', array('control' => 'profile'));
+$form = new Hubzero\Form\Form('profile', ['control' => 'profile']);
 $form->load($xml);
 $form->bind($data);
 

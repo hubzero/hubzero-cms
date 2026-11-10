@@ -22,7 +22,7 @@ class Auditor
      *
      * @var  array
      */
-    protected $tests = array();
+    protected $tests = [];
 
     /**
      * Holds list of detectors and what they reported
@@ -80,15 +80,15 @@ class Auditor
      */
     public function check($data)
     {
-        $results = array();
+        $results = [];
 
         $data = $this->prepareData($data);
 
         foreach ($data as $datum) {
-            $results[] = array(
+            $results[] = [
                 'data'  => $datum,
                 'tests' => $this->process($datum)
-            );
+            ];
         }
 
         if ($this->log) {
@@ -106,7 +106,7 @@ class Auditor
      */
     public function process(array $datum)
     {
-        $results = array();
+        $results = [];
 
         foreach ($this->tests as $key => $tester) {
             $result = $tester->examine($datum);
@@ -191,19 +191,19 @@ class Auditor
     public function getReport()
     {
         if (!isset($this->report)) {
-            $tests = array();
+            $tests = [];
 
             foreach ($this->getTests() as $key => $audit) {
                 if (!isset($tests[$key])) {
-                    $tests[$key] = array(
+                    $tests[$key] = [
                         'name'   => $audit->name(),
                         'total'  => 0,
-                        'totals' => array(
+                        'totals' => [
                             'skipped' => 0,
                             'passed'  => 0,
                             'failed'  => 0
-                        )
-                    );
+                        ]
+                    ];
                 }
 
                 $tests[$key]['totals']['skipped'] = Result::all()
@@ -245,7 +245,7 @@ class Auditor
     protected function prepareData($data)
     {
         if (is_string($data)) {
-            $data = array($data);
+            $data = [$data];
         }
 
         return $data;

@@ -21,12 +21,12 @@ class ObjTest extends Basic
      *
      * @var  array
      */
-    protected $data = array(
+    protected $data = [
         'one'   => 'for the money',
         'two'   => 'for the show',
         'three' => 'to get ready',
         'four'  => 'to go'
-    );
+    ];
 
     /**
      * Test __construct

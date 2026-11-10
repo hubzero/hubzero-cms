@@ -12,13 +12,13 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$assetTabs = array();
+$assetTabs = [];
 
 if ($this->publicView || !isset($this->tabs)) {
-    $this->tabs = array();
+    $this->tabs = [];
 }
 if ($this->active == 'edit') {
-    $this->tabs[] = array('name' => 'edit', 'title' => 'Edit', 'submenu' => '', 'show' => true);
+    $this->tabs[] = ['name' => 'edit', 'title' => 'Edit', 'submenu' => '', 'show' => true];
 }
 
 // Sort tabs so that asset tabs are together
@@ -29,7 +29,7 @@ foreach ($this->tabs as $tab) {
 }
 
 if (count($assetTabs) > 1) {
-    array_splice($this->tabs, 3, 0, array(0 => array('name' => 'assets', 'title' => 'Assets', 'show' => true)));
+    array_splice($this->tabs, 3, 0, [0 => ['name' => 'assets', 'title' => 'Assets', 'show' => true]]);
 }
 
 $counts = $this->model->get('counts');

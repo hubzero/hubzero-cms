@@ -101,7 +101,7 @@ if ($this->review->get('id')) {
                 }
                 ?>
                 <?php
-                echo $this->editor('review[comment]', $this->escape($this->review->get('comment')), 35, 10, 'review_comments', array('class' => 'minimal no-footer'));
+                echo $this->editor('review[comment]', $this->escape($this->review->get('comment')), 35, 10, 'review_comments', ['class' => 'minimal no-footer']);
                 ?>
             </label>
 

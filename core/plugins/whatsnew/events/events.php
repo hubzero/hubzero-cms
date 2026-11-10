@@ -36,9 +36,9 @@ class Events extends Plugin
      */
     public function onWhatsnewAreas()
     {
-        return array(
+        return [
             'events' => Lang::txt('PLG_WHATSNEW_EVENTS')
-        );
+        ];
     }
 
     /**
@@ -51,20 +51,20 @@ class Events extends Plugin
      * @param   array    $tagids      Array of tag IDs
      * @return  array
      */
-    public function onWhatsnew($period, $limit = 0, $limitstart = 0, $areas = null, $tagids = array())
+    public function onWhatsnew($period, $limit = 0, $limitstart = 0, $areas = null, $tagids = [])
     {
         if (is_array($areas) && $limit) {
             if (
                 !isset($areas[$this->_name])
                 && !in_array($this->_name, $areas)
             ) {
-                return array();
+                return [];
             }
         }
 
         // Do we have a search term?
         if (!is_object($period)) {
-            return array();
+            return [];
         }
 
         $database = App::get('db');

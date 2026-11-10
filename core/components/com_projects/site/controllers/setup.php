@@ -137,7 +137,7 @@ class Setup extends Base
         }
 
         // Determine setup steps
-        $setupSteps = array('describe', 'team', 'finalize');
+        $setupSteps = ['describe', 'team', 'finalize'];
         if ($this->_setupComplete < 3) {
             array_pop($setupSteps);
         }
@@ -217,7 +217,7 @@ class Setup extends Base
         }
 
         // Determine setup steps
-        $setupSteps = array('describe', 'team', 'finalize');
+        $setupSteps = ['describe', 'team', 'finalize'];
         if ($this->_setupComplete < 3) {
             array_pop($setupSteps);
         }
@@ -323,7 +323,7 @@ class Setup extends Base
             }
         }
 
-        Event::trigger('projects.onProjectAfterSave', array($this->model));
+        Event::trigger('projects.onProjectAfterSave', [$this->model]);
 
         // Don't go next in case of error
         if ($this->getError()) {
@@ -375,12 +375,12 @@ class Setup extends Base
 
             // Restricted data with specific questions
             if ($this->config->get('restricted_data', 0) == 1) {
-                $restrictions = array(
+                $restrictions = [
                     'hipaa_data'  => Request::getString('hipaa', 'no', 'post'),
                     'ferpa_data'  => Request::getString('ferpa', 'no', 'post'),
                     'export_data' => Request::getString('export', 'no', 'post'),
                     'irb_data'    => Request::getString('irb', 'no', 'post')
-                );
+                ];
 
                 // Save individual restrictions
                 foreach ($restrictions as $key => $value) {
@@ -517,7 +517,7 @@ class Setup extends Base
             $sdata_group    = $this->config->get('sdata_group', '');
             $project_admins = Helpers\Html::getGroupMembers($admingroup);
             $sdata_admins   = Helpers\Html::getGroupMembers($sdata_group);
-            $ginfo_admins   = array();
+            $ginfo_admins   = [];
 
             // Was grant information set?
             if (
@@ -555,7 +555,7 @@ class Setup extends Base
         }
 
         // Trigger project create event
-        Event::trigger('projects.onProjectCreate', array($this->model));
+        Event::trigger('projects.onProjectCreate', [$this->model]);
 
         // Set the session flag indicating the new submission
         Session::set('newsubmission.project', true);
@@ -660,7 +660,7 @@ class Setup extends Base
 
                 // Save custom description
                 if ($this->section == 'info_custom') {
-                    $newInfo = Request::getArray('description', array());
+                    $newInfo = Request::getArray('description', []);
 
                     $projectID = $this->model->get('id');
                     $project = ProjectORM::one($this->model->get('id'));
@@ -674,8 +674,8 @@ class Setup extends Base
                         $existingFields = Description::all()->whereEquals('project_id', $this->model->get('id'))
                             ->whereEquals('description_key', $kField->name)
                             ->rows();
-                        $kFieldValue = !empty($formFields[$kField->name]) ? $formFields[$kField->name] : array();
-                        $destroyKeyValues = array();
+                        $kFieldValue = !empty($formFields[$kField->name]) ? $formFields[$kField->name] : [];
+                        $destroyKeyValues = [];
                         if (is_array($kFieldValue)) {
                             $otherSelection = array_search('', $kFieldValue);
                             if ($otherSelection !== false) {
@@ -725,7 +725,7 @@ class Setup extends Base
                     // Group owners
                     $objO = $this->model->table('Owner');
                     if ($this->_gid) {
-                        $team = array(User::get('id'));
+                        $team = [User::get('id')];
                         if ($this->config->get('init_team', 0) == 1) {
                             $group = \Hubzero\User\Group::getInstance($this->_gid);
                             if ($group) {
@@ -749,7 +749,7 @@ class Setup extends Base
 
                 if (!$new) {
                     // Save params
-                    $incoming   = Request::getArray('params', array());
+                    $incoming   = Request::getArray('params', []);
 
                     // The public-exposure flags live in the same fieldset as the
                     // type/visibility writes guarded above -- params[files_public],
@@ -762,7 +762,7 @@ class Setup extends Base
                         && !$this->model->access('manager')
                         && !$this->model->access('owner')
                     ) {
-                        $incoming = array();
+                        $incoming = [];
                     }
 
                     if (!empty($incoming)) {
@@ -868,11 +868,11 @@ class Setup extends Base
                 }
 
                 // Save team
-                $content = Event::trigger('projects.onProject', array(
+                $content = Event::trigger('projects.onProject', [
                     $this->model,
                     'save',
-                    array('team')
-                ));
+                    ['team']
+                ]);
 
                 if (isset($content[0]) && $this->next == $this->section) {
                     if (isset($content[0]['msg']) && !empty($content[0]['msg'])) {
@@ -904,7 +904,7 @@ class Setup extends Base
                 }
 
                 // Save params
-                $incoming   = Request::getArray('params', array());
+                $incoming   = Request::getArray('params', []);
                 if (!empty($incoming)) {
                     foreach ($incoming as $key => $value) {
                         $this->model->saveParam($key, $value);
@@ -962,11 +962,11 @@ class Setup extends Base
     protected function _loadTeamEditor()
     {
         // Get plugin output
-        $content = Event::trigger('projects.onProject', array(
+        $content = Event::trigger('projects.onProject', [
             $this->model,
             $this->_task,
-            array('team')
-        ));
+            ['team']
+        ]);
 
         if (!isset($content[0])) {
             // Must never happen
@@ -1002,7 +1002,7 @@ class Setup extends Base
         }
 
         // Which section are we editing?
-        $sections = array('info', 'team');
+        $sections = ['info', 'team'];
         if ($this->config->get('edit_settings', 0) == 0) {
             array_pop($sections);
         }
@@ -1069,10 +1069,10 @@ class Setup extends Base
         $this->model->check($name, $id, $ajax);
 
         if ($ajax) {
-            echo json_encode(array(
+            echo json_encode([
                 'error'   => $this->model->getError(),
                 'message' => Lang::txt('COM_PROJECTS_VERIFY_PASSED')
-            ));
+            ]);
             return;
         }
 

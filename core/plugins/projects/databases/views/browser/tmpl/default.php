@@ -16,10 +16,10 @@ defined('_HZEXEC_') or die();
 
 // Get databases to choose from
 $objPD = new \Components\Projects\Tables\Database($this->database);
-$items = $objPD->getItems($this->model->get('id'), array());
+$items = $objPD->getItems($this->model->get('id'), []);
 
-$missing = array();
-$shown = array();
+$missing = [];
+$shown = [];
 
 // Attached item
 $selected = null;
@@ -58,7 +58,7 @@ if (count($items) > 0) { ?>
                 foreach ($this->attachments as $attachment) {
                     if (!in_array($attachment->object_name, $shown)) {
                         // Found missing
-                        $miss = array();
+                        $miss = [];
                         $miss['id'] = $attachment->object_name;
                         $miss['title'] = $attachment->title;
                         $missing[] = $miss;

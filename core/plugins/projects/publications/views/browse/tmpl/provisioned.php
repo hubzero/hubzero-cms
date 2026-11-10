@@ -106,7 +106,7 @@ $pubconfig = Component::params('com_publications');
                  ->set('pub', $this->pub)
                  ->display();
         } else {
-            $filters = array();
+            $filters = [];
 
             // Get user projects
             $filters['projects']  = $this->project->table()->getUserProjectIds(User::get('id'), 0, 1);

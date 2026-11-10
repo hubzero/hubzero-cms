@@ -25,7 +25,7 @@ class Json extends Base
      */
     public function getSupportedExtensions()
     {
-        return array('json');
+        return ['json'];
     }
 
     /**
@@ -48,11 +48,11 @@ class Json extends Base
         }
 
         if (json_last_error() !== JSON_ERROR_NONE) {
-            $error = array(
+            $error = [
                 'message' => $error_message,
                 'type'    => json_last_error(),
                 'file'    => $path,
-            );
+            ];
             throw new ParseException($error);
         }
 
@@ -89,7 +89,7 @@ class Json extends Base
      * @param   array   $options  Options used by the formatter.
      * @return  string  JSON formatted string.
      */
-    public function objectToString($object, $options = array())
+    public function objectToString($object, $options = [])
     {
         if (is_string($object)) {
             return $object;
@@ -111,14 +111,14 @@ class Json extends Base
      * @param   array   $options  Options used by the formatter.
      * @return  object  Data object.
      */
-    public function stringToObject($data, $options = array('processSections' => false))
+    public function stringToObject($data, $options = ['processSections' => false])
     {
         if (is_object($data)) {
             return $data;
         }
 
         if (is_bool($options)) {
-            $options = array('processSections' => $options);
+            $options = ['processSections' => $options];
         }
 
         $data = trim($data);

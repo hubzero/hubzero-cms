@@ -51,10 +51,10 @@ class Applicant extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'gidNumber' => 'positive|nonzero',
         'uidNumber' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Defines a belongs to one relationship between user and entry
@@ -120,7 +120,7 @@ class Applicant extends Relational
             Event::trigger($this->getTableName() . '_new', ['model' => $this]);
         }
 
-        Event::trigger('system.onContentSave', array($this->getTableName(), $this));
+        Event::trigger('system.onContentSave', [$this->getTableName(), $this]);
 
         return $result;
     }

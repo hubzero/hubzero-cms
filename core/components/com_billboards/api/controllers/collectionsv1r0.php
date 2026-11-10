@@ -49,7 +49,7 @@ class Collectionsv1r0 extends ApiController
         // Load up the entries
         $collections = Collection::start($limitstart)->limit($limit)->rows();
 
-        $this->send(array('collections' => $collections->toArray()));
+        $this->send(['collections' => $collections->toArray()]);
     }
 
     /**
@@ -101,12 +101,12 @@ class Collectionsv1r0 extends ApiController
         }
 
         // Get the collection and its billboards
-        $collection = array(
+        $collection = [
             'id'         => $collection->id,
             'name'       => $collection->name,
             'billboards' => $billboards->toArray()
-        );
+        ];
 
-        $this->send(array('collection' => $collection));
+        $this->send(['collection' => $collection]);
     }
 }

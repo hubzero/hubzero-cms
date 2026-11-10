@@ -44,24 +44,24 @@ class Latestdiscussions extends Module
         //based on param decide what to include
         switch ($this->params->get('forum', 'both')) {
             case 'site':
-                $posts = $forum->posts(array(
+                $posts = $forum->posts([
                         'scope'    => 'site',
                         'scope_id' => 0,
                         'state'    => Post::STATE_PUBLISHED,
                         'access'   => User::getAuthorisedViewLevels()
-                    ))
+                    ])
                     ->order('created', 'desc')
                     ->limit(100)
                     ->rows();
                 break;
 
             case 'group':
-                $posts = $forum->posts(array(
+                $posts = $forum->posts([
                         'scope'    => 'group',
                         'scope_id' => -1,
                         'state'    => Post::STATE_PUBLISHED,
                         'access'   => User::getAuthorisedViewLevels()
-                    ))
+                    ])
                     ->order('created', 'desc')
                     ->limit(100)
                     ->rows();
@@ -69,12 +69,12 @@ class Latestdiscussions extends Module
 
             case 'both':
             default:
-                $posts = $forum->posts(array(
-                        'scope'    => array('site', 'group'),
+                $posts = $forum->posts([
+                        'scope'    => ['site', 'group'],
                         'scope_id' => -1,
                         'state'    => Post::STATE_PUBLISHED,
                         'access'   => User::getAuthorisedViewLevels()
-                    ))
+                    ])
                     ->order('created', 'desc')
                     ->limit(100)
                     ->rows();
@@ -82,12 +82,12 @@ class Latestdiscussions extends Module
         }
 
         //make sure that the group for each forum post has the right privacy setting
-        $categories = array();
-        $ids = array();
-        $threads = array();
-        $t = array();
+        $categories = [];
+        $ids = [];
+        $threads = [];
+        $t = [];
 
-        $p = array();
+        $p = [];
 
         // Run through all the posts and collect some data
         foreach ($posts as $k => $post) {
@@ -130,12 +130,12 @@ class Latestdiscussions extends Module
 
         // Get any threads not found above
         if (count($t) > 0) {
-            $thrds = $forum->posts(array(
-                    'scope'    => array('site', 'group'),
+            $thrds = $forum->posts([
+                    'scope'    => ['site', 'group'],
                     'scope_id' => -1,
                     'state'    => Post::STATE_PUBLISHED,
                     'access'   => User::getAuthorisedViewLevels()
-                ))
+                ])
                 ->whereIn('id', $t)
                 ->order('created', 'desc')
                 ->limit(100)

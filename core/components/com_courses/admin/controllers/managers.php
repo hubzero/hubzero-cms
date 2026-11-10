@@ -47,7 +47,7 @@ class Managers extends AdminController
 
         $mbrs = explode(',', $m);
 
-        $users = array();
+        $users = [];
         foreach ($mbrs as $mbr) {
             // Retrieve user's account info
             $mbr = trim($mbr);
@@ -107,9 +107,9 @@ class Managers extends AdminController
 
         $managers = $course->managers();
 
-        $mbrs = Request::getArray('entries', array(0), 'post');
+        $mbrs = Request::getArray('entries', [0], 'post');
 
-        $users = array();
+        $users = [];
         foreach ($mbrs as $mbr) {
             if (!isset($mbr['select'])) {
                 continue;
@@ -161,7 +161,7 @@ class Managers extends AdminController
 
         $model = \Components\Courses\Models\Course::getInstance($id);
 
-        $entries = Request::getArray('entries', array(0), 'post');
+        $entries = Request::getArray('entries', [0], 'post');
 
         foreach ($entries as $key => $data) {
             // Retrieve user's account info

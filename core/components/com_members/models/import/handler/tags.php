@@ -23,7 +23,7 @@ class Tags extends Obj
      */
     public function sample()
     {
-        return array();
+        return [];
     }
 
     /**

@@ -143,7 +143,7 @@ class Usage
 
         $this->process($result);
 
-        return array($caption, $period);
+        return [$caption, $period];
     }
 
     /**

@@ -66,7 +66,7 @@ class Supergroup extends Plugin
 
                 // build function name
                 $parseRouteFunction = ucfirst($active) . 'ParseRoute';
-                $parseRouteFunction = str_replace(array('-', '.'), '', $parseRouteFunction);
+                $parseRouteFunction = str_replace(['-', '.'], '', $parseRouteFunction);
 
                 $name = '\\Components\\' . ucfirst($active) . '\\Site\\Router';
                 $alt  = '\\Components\\' . ucfirst($active) . '\\Router';
@@ -80,7 +80,7 @@ class Supergroup extends Plugin
 
                 // split route into segements
                 $segments = explode('/', $currentRoute);
-                $vars = array();
+                $vars = [];
 
                 if (class_exists($name)) {
                     $router = new $name();
@@ -182,7 +182,7 @@ class Supergroup extends Plugin
 
                     // build function name
                     $buildRouteFunction = ucfirst($active) . 'BuildRoute';
-                    $buildRouteFunction = str_replace(array('-', '.'), '', $buildRouteFunction);
+                    $buildRouteFunction = str_replace(['-', '.'], '', $buildRouteFunction);
 
                     $name = '\\Components\\' . ucfirst($active) . '\\Site\\Router';
                     $alt  = '\\Components\\' . ucfirst($active) . '\\Router';
@@ -192,7 +192,7 @@ class Supergroup extends Plugin
                     // get query string
                     $query = $uri->getQuery(true);
 
-                    $routeParts = array();
+                    $routeParts = [];
 
                     if (class_exists($name)) {
                         $router = new $name();

@@ -30,7 +30,7 @@ class Csv implements Adapter
      *
      * @var  array
      */
-    private $data = array();
+    private $data = [];
 
     /**
      * Integer to hold count
@@ -47,12 +47,12 @@ class Csv implements Adapter
      */
     public static function accepts($mime)
     {
-        return in_array($mime, array(
+        return in_array($mime, [
             'csv',
             'text/plain',
             'text/csv',
             'application/vnd.ms-excel'
-        ));
+        ]);
     }
 
     /**

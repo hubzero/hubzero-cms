@@ -798,7 +798,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             }
 
             // Call method and get type of response
-            $result = call_user_func_array(array($this->query, $name), $arguments);
+            $result = call_user_func_array([$this->query, $name], $arguments);
             $class  = __NAMESPACE__ . '\\Query';
             // We never want to return an instance of the query class, because
             // we want to be able to chain methods together that are on the model
@@ -858,7 +858,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             return;
         }
 
-        return call_user_func_array(array(new static(), $name), $arguments);
+        return call_user_func_array([new static(), $name], $arguments);
     }
 
     /**
@@ -2820,7 +2820,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      **/
     public function callHelper($name, $arguments)
     {
-        return call_user_func_array(array($this, 'helper' . ucfirst($name)), $arguments);
+        return call_user_func_array([$this, 'helper' . ucfirst($name)], $arguments);
     }
 
     /**
@@ -2843,7 +2843,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      **/
     public function callTransformer($name, $arguments = [])
     {
-        return call_user_func_array(array($this, 'transform' . ucfirst($this->snakeToCamel($name))), $arguments);
+        return call_user_func_array([$this, 'transform' . ucfirst($this->snakeToCamel($name))], $arguments);
     }
 
     /**
@@ -3332,7 +3332,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      **/
     private function clearAttributes()
     {
-        $this->attributes = array();
+        $this->attributes = [];
     }
 
     /**
@@ -4397,7 +4397,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 
             // Existing HubZero system event (only if Event facade is available)
             if (class_exists('Event')) {
-                Event::trigger('system.onContentSave', array($this->getTableName(), $this, $this->changes));
+                Event::trigger('system.onContentSave', [$this->getTableName(), $this, $this->changes]);
             }
 
             // Handle cascade saves and orphan removal (opt-in)
@@ -4870,7 +4870,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 
             // Existing HubZero system event (only if Event facade is available)
             if (class_exists('Event')) {
-                Event::trigger('system.onContentDestroy', array($this->getTableName(), $this));
+                Event::trigger('system.onContentDestroy', [$this->getTableName(), $this]);
             }
         }
 
@@ -7038,7 +7038,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         // See if the relationship already exists
         if (!$this->getRelationship($name)) {
             // Get the child rows/row and set them back on the model as a relationship for future use
-            $rows = call_user_func_array(array($this, $name), array())->rows();
+            $rows = call_user_func_array([$this, $name], [])->rows();
             $this->addRelationship($name, $rows);
         }
 

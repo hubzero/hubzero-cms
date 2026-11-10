@@ -109,7 +109,7 @@ class Acl extends AdminController
         }
 
 
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
 
         $removed = 0;
         foreach ($ids as $id) {
@@ -150,7 +150,7 @@ class Acl extends AdminController
 
 
         // Trim and addslashes all posted items
-        $aro = Request::getArray('aro', array(), 'post');
+        $aro = Request::getArray('aro', [], 'post');
         $aro = array_map('trim', $aro);
 
         // Initiate class and bind posted items to database fields
@@ -184,7 +184,7 @@ class Acl extends AdminController
         }
 
         // Trim and addslashes all posted items
-        $map = Request::getArray('map', array(), 'post');
+        $map = Request::getArray('map', [], 'post');
 
         foreach ($map as $k => $v) {
             // Initiate class and bind posted items to database fields

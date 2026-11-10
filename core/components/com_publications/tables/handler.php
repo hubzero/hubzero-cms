@@ -99,8 +99,8 @@ class Handler extends Table
 
         // Parse configs
         if ($entry) {
-            $output = array();
-            $output['params'] = array();
+            $output = [];
+            $output['params'] = [];
             foreach ($entry as $field => $value) {
                 if ($field == 'params') {
                     $params = json_decode($value, true);

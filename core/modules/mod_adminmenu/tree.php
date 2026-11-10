@@ -140,7 +140,7 @@ class Tree extends \Hubzero\Base\Obj
         // Build the CSS class suffix
         $class = '';
         $iconClass = '';
-        $classes = array();
+        $classes = [];
 
         if ($this->current->class) {
             $classes = explode(' ', trim($this->current->class));
@@ -228,7 +228,7 @@ class Tree extends \Hubzero\Base\Obj
 
         // Initialise the known classes array if it does not exist
         if (!is_array($classes)) {
-            $classes = array();
+            $classes = [];
         }
 
         // If we don't already know about the class... build it and mark it

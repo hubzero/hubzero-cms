@@ -128,11 +128,11 @@ class Statusesv2r1 extends ApiController
         $total = clone $rows;
 
         $sort = Request::getWord('sort', 'id');
-        if (!in_array($sort, array('id', 'open', 'title', 'alias'))) {
+        if (!in_array($sort, ['id', 'open', 'title', 'alias'])) {
             $sort = 'id';
         }
         $sort_dir = Request::getWord('sort_Dir', 'asc');
-        if (!in_array($sort_dir, array('asc', 'desc'))) {
+        if (!in_array($sort_dir, ['asc', 'desc'])) {
             $sort_dir = 'asc';
         }
 
@@ -143,7 +143,7 @@ class Statusesv2r1 extends ApiController
 
         $response = new stdClass();
         $response->total = $total->total();
-        $response->statuses = array();
+        $response->statuses = [];
         foreach ($rows as $row) {
             $response->statuses[] = $row->toArray();
         }
@@ -207,7 +207,7 @@ class Statusesv2r1 extends ApiController
         }
 
         // Trigger after save event
-        Event::trigger('onSupportAfterSaveStatus', array(&$row, $isNew));
+        Event::trigger('onSupportAfterSaveStatus', [&$row, $isNew]);
 
         $response = $row->toObject();
 
@@ -317,7 +317,7 @@ class Statusesv2r1 extends ApiController
         }
 
         // Trigger after save event
-        Event::trigger('onSupportAfterSaveStatus', array(&$row, $isNew));
+        Event::trigger('onSupportAfterSaveStatus', [&$row, $isNew]);
 
         $response = $row->toObject();
 
@@ -346,8 +346,8 @@ class Statusesv2r1 extends ApiController
             throw new Exception(Lang::txt('Not authorized'), 403);
         }
 
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         if (count($ids) <= 0) {
             throw new Exception(Lang::txt('No ID provided'), 500);
@@ -361,7 +361,7 @@ class Statusesv2r1 extends ApiController
             }
 
             // Trigger before delete event
-            Event::trigger('onSupportAfterDeleteStatus', array($id));
+            Event::trigger('onSupportAfterDeleteStatus', [$id]);
         }
 
         $this->send(null, 204);

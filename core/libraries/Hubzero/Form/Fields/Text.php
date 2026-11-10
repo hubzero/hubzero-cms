@@ -30,7 +30,7 @@ class Text extends Field
     protected function getInput()
     {
         // Initialize some field attributes.
-        $attributes = array(
+        $attributes = [
             'type'         => 'text',
             'value'        => htmlspecialchars($this->value == null ? '' : $this->value, ENT_COMPAT, 'UTF-8'),
             'name'         => $this->name,
@@ -42,9 +42,9 @@ class Text extends Field
             'readonly'     => ((string) $this->element['readonly'] == 'true'    ? 'readonly' : ''),
             'disabled'     => ((string) $this->element['disabled'] == 'true'    ? 'disabled' : ''),
             'onchange'     => ($this->element['onchange']  ? (string) $this->element['onchange'] : '')
-        );
+        ];
 
-        $attr = array();
+        $attr = [];
         foreach ($attributes as $key => $value) {
             if ($key != 'value' && !$value) {
                 continue;

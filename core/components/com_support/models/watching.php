@@ -52,10 +52,10 @@ class Watching extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'ticket_id' => 'positive|nonzero',
         'user_id'   => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Get user

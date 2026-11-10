@@ -90,7 +90,7 @@ class Questions extends SiteController
 
         // Incoming
         $questionID = Request::getInt('rid');
-        $comment = Request::getArray('comment', array(), 'post');
+        $comment = Request::getArray('comment', [], 'post');
 
         // clean input
         array_walk($comment, function (&$field, $key) {
@@ -160,21 +160,21 @@ class Questions extends SiteController
         $question = Question::oneOrFail($questionID);
 
         // Build the "from" info
-        $from = array(
+        $from = [
             'email'     => Config::get('mailfrom'),
             'name'      => Config::get('sitename') . ' ' . Lang::txt('COM_ANSWERS_ANSWERS'),
             'multipart' => md5(date('U'))
-        );
+        ];
 
         // Build the message subject
         $subject = Config::get('sitename') . ' ' . Lang::txt('COM_ANSWERS_ANSWERS') . ', ' . Lang::txt('COM_ANSWERS_QUESTION') . ' #' . $question->get('id') . ' ' . Lang::txt('COM_ANSWERS_RESPONSE');
-        $message = array();
+        $message = [];
 
         // Plain text message
-        $eview = new \Hubzero\Mail\View(array(
+        $eview = new \Hubzero\Mail\View([
             'name'   => 'emails',
             'layout' => 'response_plaintext'
-        ));
+        ]);
         $eview->option   = $this->_option;
         $eview->sitename = Config::get('sitename');
         $eview->question = $question;
@@ -192,7 +192,7 @@ class Questions extends SiteController
 
         // ---
 
-        $notify = array();
+        $notify = [];
         // Notify the original question creator
         $notify[] = $question->get('created_by');
         // Notify anyone the reply is to
@@ -209,7 +209,7 @@ class Questions extends SiteController
         // send the response, unless the author is also in the admin list.
         foreach ($notify as $authorid) {
             if (!in_array($authorid, $receivers) && $question->get('email')) {
-                if (!Event::trigger('xmessage.onSendMessage', array('answers_reply_comment', $subject, $message, $from, array($authorid), $this->_option))) {
+                if (!Event::trigger('xmessage.onSendMessage', ['answers_reply_comment', $subject, $message, $from, [$authorid], $this->_option])) {
                     $this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
                 }
             }
@@ -217,13 +217,13 @@ class Questions extends SiteController
 
         // admin emails
         if (!empty($receivers)) {
-            if (!Event::trigger('xmessage.onSendMessage', array('new_answer_admin', $subject, $message, $from, $receivers, $this->_option))) {
+            if (!Event::trigger('xmessage.onSendMessage', ['new_answer_admin', $subject, $message, $from, $receivers, $this->_option])) {
                 $this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
             }
         }
 
         // Log activity
-        $recipients = array($question->get('created_by'));
+        $recipients = [$question->get('created_by')];
         $recipients[] = $row->get('created_by');
         if ($row->get('parent')) {
             $recipients[] = $row->parent()->get('created_by');
@@ -240,10 +240,10 @@ class Questions extends SiteController
                 'scope_id'    => $row->get('id'),
                 'anonymous'   => $row->get('anonymous', 0),
                 'description' => Lang::txt('COM_ANSWERS_ACTIVITY_COMMENT_' . ($comment['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($question->link()) . '">' . htmlspecialchars((string) $question->get('subject'), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title' => $question->get('title'),
                     'url'   => $question->link()
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -376,7 +376,7 @@ class Questions extends SiteController
 
         if (!$this->getError()) {
             // Log activity
-            $recipients = array(User::get('id'));
+            $recipients = [User::get('id')];
 
             if ($row instanceof Question) {
                 $question = $row;
@@ -403,11 +403,11 @@ class Questions extends SiteController
                     'scope'       => $scope,
                     'scope_id'    => $id,
                     'description' => Lang::txt('COM_ANSWERS_ACTIVITY_VOTED_' . ($vote == 'yes' ? 'UP' : 'DOWN'), '<a href="' . Route::url($row->link()) . '">' . $txt . '</a>'),
-                    'details'     => array(
+                    'details'     => [
                         'title'       => $question->get('title'),
                         'question_id' => $question->get('id'),
                         'url'         => $question->link()
-                    )
+                    ]
                 ],
                 'recipients' => $recipients
             ]);
@@ -438,7 +438,7 @@ class Questions extends SiteController
     public function searchTask()
     {
         // Incoming
-        $filters = array(
+        $filters = [
             'limit'    => Request::getInt('limit', Config::get('list_limit')),
             'start'    => Request::getInt('limitstart', 0),
             'tag'      => Request::getString('tags', ''),
@@ -447,35 +447,35 @@ class Questions extends SiteController
             'sortby'   => Request::getWord('sortby', 'date'),
             'sort_Dir' => strtolower(Request::getWord('sortdir', 'desc')),
             'area'     => Request::getString('area', '')
-        );
+        ];
 
         // Validate inputs
         $filters['tag'] = ($filters['tag'] ? $filters['tag'] : Request::getString('tag', ''));
 
         if (
             $filters['filterby']
-            && !in_array($filters['filterby'], array('open', 'closed'))
+            && !in_array($filters['filterby'], ['open', 'closed'])
         ) {
             $filters['filterby'] = '';
         }
 
-        if (!in_array($filters['sortby'], array('date', 'votes', 'rewards'))) {
+        if (!in_array($filters['sortby'], ['date', 'votes', 'rewards'])) {
             $filters['sortby'] = 'date';
         }
 
-        if (!in_array($filters['sort_Dir'], array('desc', 'asc'))) {
+        if (!in_array($filters['sort_Dir'], ['desc', 'asc'])) {
             $filters['sort_Dir'] = 'desc';
         }
 
         if (
             $filters['area']
-            && !in_array($filters['area'], array('mine', 'assigned', 'interest'))
+            && !in_array($filters['area'], ['mine', 'assigned', 'interest'])
         ) {
             $filters['area'] = '';
         }
 
         // Give plugins a chance to manipulate the incoming filters
-        $results = Event::trigger('answers.onQuestionsPrepareFilters', array($filters));
+        $results = Event::trigger('answers.onQuestionsPrepareFilters', [$filters]);
         foreach ($results as $result) {
             if (!empty($result)) {
                 $filters = array_merge($filters, $result);
@@ -575,7 +575,7 @@ class Questions extends SiteController
             // Unset the new submission session flag
             Session::set('newsubmission.question');
 
-            Event::trigger('content.onAfterContentSubmission', array('Question'));
+            Event::trigger('content.onAfterContentSubmission', ['Question']);
         }
 
         $this->view
@@ -692,7 +692,7 @@ class Questions extends SiteController
         }
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
         $tags   = Request::getString('tags', '');
         // The ask form posts an empty reward when none is offered; the column
         // is an integer and strict SQL mode refuses ''
@@ -756,7 +756,7 @@ class Questions extends SiteController
         }
 
         $isNew = $row->isNew();
-        $result = Event::trigger('onQuestionBeforeSave', array(&$row, $isNew));
+        $result = Event::trigger('onQuestionBeforeSave', [&$row, $isNew]);
 
         if (in_array(false, $result, true)) {
             Notify::error($row->getError());
@@ -784,7 +784,7 @@ class Questions extends SiteController
         }
 
         // Trigger after save event
-        Event::trigger('onQuestionAfterSave', array(&$row, $isNew));
+        Event::trigger('onQuestionAfterSave', [&$row, $isNew]);
 
         // Hold the reward for this question if we're banking
         if ($fields['reward'] && $this->config->get('banking')) {
@@ -800,10 +800,10 @@ class Questions extends SiteController
         // Add the tags
         $row->tag($tags);
 
-        $recipients = array($row->get('created_by'));
+        $recipients = [$row->get('created_by')];
         $recipients = $this->recipients($recipients);
 
-        foreach (Event::trigger('answers.onQuestionNotify', array($row)) as $results) {
+        foreach (Event::trigger('answers.onQuestionNotify', [$row]) as $results) {
             $recipients = array_merge($recipients, $results);
         }
         $recipients = array_unique($recipients);
@@ -811,22 +811,22 @@ class Questions extends SiteController
         // Send the message
         if (!empty($recipients)) {
             // Send a message about the new question to authorized users (specified admins or related content authors)
-            $from = array(
+            $from = [
                 'email'     => Config::get('mailfrom'),
                 'name'      => Config::get('sitename') . ' ' . Lang::txt('COM_ANSWERS_ANSWERS'),
                 'multipart' => md5(date('U'))
-            );
+            ];
 
             // Build the message subject
             $subject = Lang::txt('COM_ANSWERS_ANSWERS') . ', ' . Lang::txt('new question about content you author or manage');
 
-            $message = array();
+            $message = [];
 
             // Plain text message
-            $eview = new \Hubzero\Mail\View(array(
+            $eview = new \Hubzero\Mail\View([
                 'name'   => 'emails',
                 'layout' => 'question_plaintext'
-            ));
+            ]);
             $eview->option   = $this->_option;
             $eview->sitename = Config::get('sitename');
             $eview->question = $row;
@@ -842,7 +842,7 @@ class Questions extends SiteController
             $message['multipart'] = $eview->loadTemplate();
             $message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
-            if (!Event::trigger('xmessage.onSendMessage', array('new_question_admin', $subject, $message, $from, $recipients, $this->_option))) {
+            if (!Event::trigger('xmessage.onSendMessage', ['new_question_admin', $subject, $message, $from, $recipients, $this->_option])) {
                 Notify::error(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
             }
         }
@@ -855,10 +855,10 @@ class Questions extends SiteController
                 'scope_id'    => $row->get('id'),
                 'anonymous'   => $row->get('anonymous', 0),
                 'description' => Lang::txt('COM_ANSWERS_ACTIVITY_QUESTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($row->link()) . '">' . htmlspecialchars((string) $row->get('subject'), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title' => $row->get('title'),
                     'url'   => $row->link()
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -998,7 +998,7 @@ class Questions extends SiteController
         }
 
         // Log activity
-        $recipients = array($question->get('created_by'));
+        $recipients = [$question->get('created_by')];
         $recipients = $this->recipients($recipients);
 
         Event::trigger('system.logActivity', [
@@ -1007,10 +1007,10 @@ class Questions extends SiteController
                 'scope'       => 'question',
                 'scope_id'    => $question->get('id'),
                 'description' => Lang::txt('COM_ANSWERS_ACTIVITY_QUESTION_DELETED', '<a href="' . Route::url($question->link()) . '">' . htmlspecialchars((string) $question->get('subject'), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title' => $question->get('title'),
                     'url'   => $question->link()
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -1053,7 +1053,7 @@ class Questions extends SiteController
         }
 
         // Incoming
-        $response = Request::getArray('response', array(), 'post');
+        $response = Request::getArray('response', [], 'post');
 
         // clean input
         array_walk($response, function (&$field, $key) {
@@ -1108,22 +1108,22 @@ class Questions extends SiteController
         $question = Question::oneOrFail($row->get('question_id'));
 
         // Build the "from" info
-        $from = array(
+        $from = [
             'email'     => Config::get('mailfrom'),
             'name'      => Config::get('sitename') . ' ' . Lang::txt('COM_ANSWERS_ANSWERS'),
             'multipart' => md5(date('U'))
-        );
+        ];
 
         // Build the message subject
         $subject = Config::get('sitename') . ' ' . Lang::txt('COM_ANSWERS_ANSWERS') . ', ' . Lang::txt('COM_ANSWERS_QUESTION') . ' #' . $question->get('id') . ' ' . Lang::txt('COM_ANSWERS_RESPONSE');
 
-        $message = array();
+        $message = [];
 
         // Plain text message
-        $eview = new \Hubzero\Mail\View(array(
+        $eview = new \Hubzero\Mail\View([
             'name'   => 'emails',
             'layout' => 'response_plaintext'
-        ));
+        ]);
         $eview->option   = $this->_option;
         $eview->sitename = Config::get('sitename');
         $eview->question = $question;
@@ -1156,20 +1156,20 @@ class Questions extends SiteController
                 $messageType = 'answers_reply_submitted';
             }
 
-            if (!Event::trigger('xmessage.onSendMessage', array($messageType , $subject, $message, $from, array($authorid), $this->_option))) {
+            if (!Event::trigger('xmessage.onSendMessage', [$messageType , $subject, $message, $from, [$authorid], $this->_option])) {
                 $this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
             }
         }
 
         // Send the answers admins message
         if (!empty($receivers)) {
-            if (!Event::trigger('xmessage.onSendMessage', array('new_answer_admin', $subject, $message, $from, $receivers, $this->_option))) {
+            if (!Event::trigger('xmessage.onSendMessage', ['new_answer_admin', $subject, $message, $from, $receivers, $this->_option])) {
                 $this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
             }
         }
 
         // Log activity
-        $recipients = array($row->get('created_by'));
+        $recipients = [$row->get('created_by')];
         if ($row->get('created_by') != $question->get('created_by')) {
             $recipients[] = $question->get('created_by');
         }
@@ -1181,11 +1181,11 @@ class Questions extends SiteController
                 'scope'       => 'question.answer',
                 'scope_id'    => $row->get('id'),
                 'description' => Lang::txt('COM_ANSWERS_ACTIVITY_ANSWER_SUBMITTED', '<a href="' . Route::url($question->link() . '#a' . $row->get('id')) . '">' . htmlspecialchars((string) $question->get('subject'), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title'       => $question->get('title'),
                     'question_id' => $question->get('id'),
                     'url'         => $question->link()
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -1235,7 +1235,7 @@ class Questions extends SiteController
         if (!$this->getError()) {
             $answer = Response::oneOrFail($rid);
 
-            $recipients = array($answer->get('created_by'));
+            $recipients = [$answer->get('created_by')];
             if ($answer->get('created_by') != $question->get('created_by')) {
                 $recipients[] = $question->get('created_by');
             }
@@ -1246,11 +1246,11 @@ class Questions extends SiteController
                     'scope'       => 'question.answer',
                     'scope_id'    => $rid,
                     'description' => Lang::txt('COM_ANSWERS_ACTIVITY_ANSWER_ACCEPTED', $rid, '<a href="' . Route::url($question->link() . '#a' . $rid) . '">' . htmlspecialchars((string) $question->get('subject'), ENT_QUOTES, 'UTF-8') . '</a>'),
-                    'details'     => array(
+                    'details'     => [
                         'title'       => $question->get('title'),
                         'question_id' => $question->get('id'),
                         'url'         => $question->link()
-                    )
+                    ]
                 ],
                 'recipients' => $recipients
             ]);
@@ -1336,7 +1336,7 @@ class Questions extends SiteController
      * @param   array  $recipients
      * @return  array
      */
-    protected function recipients($recipients = array())
+    protected function recipients($recipients = [])
     {
         $apu = explode(',', $this->config->get('notify_users', ''));
         $apu = array_map('trim', $apu);

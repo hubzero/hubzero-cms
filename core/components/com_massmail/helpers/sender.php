@@ -48,7 +48,7 @@ class Sender
         $params = \Component::params('com_massmail');
         $db     = \App::get('db');
 
-        $stats = array(
+        $stats = [
             'skipped_run' => false,
             'prepared'    => 0,
             'budget'      => 0,
@@ -56,7 +56,7 @@ class Sender
             'failed'      => 0,
             'queue'       => -1,
             'system_sent_last_hour' => -1
-        );
+        ];
 
         // One sender at a time.
         $db->setQuery("SELECT GET_LOCK(" . $db->quote(self::LOCK) . ", 1)");
@@ -291,11 +291,11 @@ class Sender
         $replyTo   = $mailing->get('reply_to');
 
         // Resolve attachment paths once.
-        $attachments = array();
+        $attachments = [];
         foreach ($mailing->attachments()->rows() as $att) {
             $path = $att->get('stored_path');
             if ($path && is_file($path)) {
-                $attachments[] = array('path' => $path, 'name' => $att->get('filename'));
+                $attachments[] = ['path' => $path, 'name' => $att->get('filename')];
             }
         }
 
@@ -336,7 +336,7 @@ class Sender
                     foreach ($attachments as $a) {
                         $message->addAttachment($a['path'], $a['name']);
                     }
-                    $message->setTo(array($r->get('email')));
+                    $message->setTo([$r->get('email')]);
 
                     $ok = (bool) $message->send();
                 }
@@ -381,7 +381,7 @@ class Sender
         );
         $db->execute();
 
-        return array('sent' => $sent, 'failed' => $failed);
+        return ['sent' => $sent, 'failed' => $failed];
     }
 
     /**

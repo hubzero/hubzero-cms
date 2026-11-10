@@ -23,7 +23,7 @@ class PdfForm
      *
      * @var array
      **/
-    private $errors = array();
+    private $errors = [];
 
     /**
      * File name (from which images are generated)
@@ -222,8 +222,8 @@ class PdfForm
             $version = $dbh->loadResult();
         }
 
-        $versions = array();
-        $dirs     = is_dir($base) ? scandir($base) : array();
+        $versions = [];
+        $dirs     = is_dir($base) ? scandir($base) : [];
         foreach ($dirs as $dir) {
             if (is_numeric($dir) && is_dir($base . DS . $dir) && $dir != '.' && $dir != '..') {
                 $versions[] = $dir;
@@ -252,7 +252,7 @@ class PdfForm
         }
 
         $dir    = opendir($base);
-        $images = array();
+        $images = [];
 
         while (($file = readdir($dir))) {
             if (preg_match('/^\d+[.]png$/', $file)) {
@@ -587,29 +587,29 @@ class PdfForm
             . 'ORDER BY page, question_id'
         );
 
-        $rv = array();
+        $rv = [];
 
         foreach ($dbh->loadAssocList() as $answer) {
             if (!isset($rv[$answer['page']])) {
-                $rv[$answer['page']] = array();
+                $rv[$answer['page']] = [];
             }
 
             if (!isset($rv[$answer['page']][$answer['question_id']])) {
-                $rv[$answer['page']][$answer['question_id']] = array(
+                $rv[$answer['page']][$answer['question_id']] = [
                     'left'    => $answer['q_left'],
                     'top'     => $answer['q_top'],
                     'height'  => $answer['height'],
                     'width'   => $answer['width'],
-                    'answers' => array()
-                );
+                    'answers' => []
+                ];
             }
 
-            $rv[$answer['page']][$answer['question_id']]['answers'][] = array(
+            $rv[$answer['page']][$answer['question_id']]['answers'][] = [
                 'left'    => $answer['a_left'],
                 'top'     => $answer['a_top'],
                 'correct' => (bool)$answer['correct'],
                 'id'      => $answer['answer_id']
-            );
+            ];
         }
 
         return $rv;
@@ -635,14 +635,14 @@ class PdfForm
             . 'WHERE form_id = ' . $fid . ' AND version = ' . $maxVersionSubquery
         );
 
-        $rv = array();
+        $rv = [];
         $complete = true;
 
         foreach ($dbh->loadAssocList() as $row) {
             if (isset($answers['question-' . $row['id']])) {
-                $rv[$row['id']] = array($answers['question-' . $row['id']], $row['answer_id']);
+                $rv[$row['id']] = [$answers['question-' . $row['id']], $row['answer_id']];
             } else {
-                $rv[$row['id']] = array(null, $row['answer_id']);
+                $rv[$row['id']] = [null, $row['answer_id']];
                 $complete = false;
             }
         }
@@ -651,7 +651,7 @@ class PdfForm
             $complete = true;
         }
 
-        return array($complete, $rv);
+        return [$complete, $rv];
     }
 
     /**
@@ -697,7 +697,7 @@ class PdfForm
         // Copy actual files
         if (is_dir($base)) {
             // Scan for versions
-            $versions = array();
+            $versions = [];
             $dirs     = scandir($base);
             foreach ($dirs as $dir) {
                 if (is_numeric($dir) && is_dir($base . DS . $dir) && $dir != '.' && $dir != '..') {

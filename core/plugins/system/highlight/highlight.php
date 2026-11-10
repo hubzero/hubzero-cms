@@ -59,7 +59,7 @@ class Highlight extends Plugin
         }
 
         // Clean the terms array
-        $cleanTerms = array();
+        $cleanTerms = [];
         foreach ($terms as $term) {
             $cleanTerms[] = htmlspecialchars(\Hubzero\Utility\Sanitize::clean($term));
         }

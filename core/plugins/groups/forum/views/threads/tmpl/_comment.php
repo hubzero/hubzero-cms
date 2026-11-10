@@ -122,7 +122,7 @@ if ($this->comment->isReported()) {
                         <div class="names">
                             <?php
                             $nameArray = preg_split("#/#", $userNameLikesArray);
-                            $links = array();
+                            $links = [];
 
                             foreach ($nameArray as $nameString) {
                                 // Records are "percentEncodedName#id": the name is encoded
@@ -260,7 +260,7 @@ if ($this->comment->isReported()) {
                                     <span class="label-text"><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_COMMENTS'); ?></span>
                                     <?php
                                         // Original Editor
-                                        echo $this->editor('fields[comment]', '', 35, 4, 'field_' . $this->comment->get('id') . '_comment', array('class' => 'minimal no-footer'));
+                                        echo $this->editor('fields[comment]', '', 35, 4, 'field_' . $this->comment->get('id') . '_comment', ['class' => 'minimal no-footer']);
                                     ?>
                                 </label>
                             </div>

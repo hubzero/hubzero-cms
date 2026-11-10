@@ -13,7 +13,7 @@ defined('_HZEXEC_') or die();
 
 $this->css();
 
-$rows = array();
+$rows = [];
 foreach ($this->unapprovedPages as $unapprovedPage) {
     $gidNumber = $unapprovedPage->get('gidNumber');
     if (!isset($rows[$gidNumber]['pages'])) {

@@ -93,13 +93,13 @@ $this->js();
 
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_STARTS_HINT'); ?>">
                     <label for="field-created"><?php echo Lang::txt('COM_COURSES_FIELD_STARTS'); ?>:</label><br />
-                    <?php echo Html::input('calendar', 'fields[created]', $this->row->get('created'), array('id' => 'field-created')); ?>
+                    <?php echo Html::input('calendar', 'fields[created]', $this->row->get('created'), ['id' => 'field-created']); ?>
                     <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_STARTS_HINT'); ?></span>
                 </div>
 
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_EXPIRES_HINT'); ?>">
                     <label for="field-expires"><?php echo Lang::txt('COM_COURSES_FIELD_EXPIRES'); ?>:</label><br />
-                    <?php echo Html::input('calendar', 'fields[expires]', $this->row->get('expires'), array('id' => 'field-expires')); ?>
+                    <?php echo Html::input('calendar', 'fields[expires]', $this->row->get('expires'), ['id' => 'field-expires']); ?>
                     <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_EXPIRES_HINT'); ?></span>
                 </div>
             </fieldset>

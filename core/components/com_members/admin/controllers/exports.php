@@ -66,9 +66,9 @@ class Exports extends AdminController
      */
     public function runTask()
     {
-        $skip = array('password', 'params', 'usertype');
-        $keys = array();
-        $tags = array();
+        $skip = ['password', 'params', 'usertype'];
+        $keys = [];
+        $tags = [];
 
         $members = Member::blank();
         $attribs = $members->getStructure()->getTableColumns($members->getTableName());
@@ -105,7 +105,7 @@ class Exports extends AdminController
             $keys[$attrib->get('name')] = $attrib->get('name');
         }
 
-        $results = Event::trigger('members.onExportMemberKeys', array($keys));
+        $results = Event::trigger('members.onExportMemberKeys', [$keys]);
         foreach ($results as $result) {
             if (!is_array($result)) {
                 continue;
@@ -124,7 +124,7 @@ class Exports extends AdminController
         fputcsv($file, $keys);
 
         // Get filters
-        $filters = array(
+        $filters = [
             'search'       => urldecode(Request::getString('search', '')),
             'sort'         => Request::getWord('filter_order', 'registerDate'),
             'sort_Dir'     => Request::getWord('filter_order_Dir', 'DESC'),
@@ -135,7 +135,7 @@ class Exports extends AdminController
             'approved'     => Request::getString('approved', '*'),
             'group_id'     => Request::getInt('group_id', 0),
             'range'        => Request::getString('range', '')
-        );
+        ];
 
         $a = $members->getTableName();
         $b = '#__user_usergroup_map';
@@ -257,7 +257,7 @@ class Exports extends AdminController
         foreach ($rows as $row) {
             $member = Member::blank()->set($row);
 
-            $tmp = array();
+            $tmp = [];
 
             foreach ($keys as $key => $label) {
                 if (substr($key, 0, 1) == '_') {
@@ -301,7 +301,7 @@ class Exports extends AdminController
                 $tmp[$key] = $val;
             }
 
-            $results = Event::trigger('members.onExportMemberData', array($member, $tmp));
+            $results = Event::trigger('members.onExportMemberData', [$member, $tmp]);
             foreach ($results as $result) {
                 if (!is_array($result)) {
                     continue;

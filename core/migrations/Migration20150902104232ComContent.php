@@ -33,10 +33,10 @@ class Migration20150902104232ComContent extends Base
             if ($row && $row->id) {
                 $old = $this->previous;
 
-                $olddespaced = str_replace(array('\r', '\n', '\t', "\n", "\r", "\t"), '', $old);
+                $olddespaced = str_replace(['\r', '\n', '\t', "\n", "\r", "\t"], '', $old);
                 $olddespaced = trim($olddespaced);
 
-                $despaced = str_replace(array('\r', '\n', '\t', "\n", "\r", "\t"), '', $row->introtext);
+                $despaced = str_replace(['\r', '\n', '\t', "\n", "\r", "\t"], '', $row->introtext);
                 $despaced = trim($despaced);
 
                 if ($row->introtext == $old || $despaced == $olddespaced) {
@@ -67,10 +67,10 @@ class Migration20150902104232ComContent extends Base
             if ($row && $row->id) {
                 $old = $this->updated;
 
-                $olddespaced = str_replace(array('\r', '\n', '\t', "\n", "\r", "\t"), '', $old);
+                $olddespaced = str_replace(['\r', '\n', '\t', "\n", "\r", "\t"], '', $old);
                 $olddespaced = trim($olddespaced);
 
-                $despaced = str_replace(array('\r', '\n', '\t', "\n", "\r", "\t"), '', $row->introtext);
+                $despaced = str_replace(['\r', '\n', '\t', "\n", "\r", "\t"], '', $row->introtext);
                 $despaced = trim($despaced);
 
                 if ($row->introtext == $old || $despaced == $olddespaced) {

@@ -32,13 +32,13 @@ class Forum extends Plugin
 
         $obj = new \stdClass();
         $obj->plugin = $this->_name;
-        $obj->events = array(
-            array(
+        $obj->events = [
+            [
                 'name'   => 'emailGroupForumDigest',
                 'label'  => Lang::txt('PLG_CRON_FORUM_EMAIL_GROUP_DIGEST'),
                 'params' => 'emailgroupdigest'
-            ),
-        );
+            ],
+        ];
 
         return $obj;
     }
@@ -177,11 +177,11 @@ class Forum extends Plugin
      **/
     private function sendEmail($user, $posts, $interval = 'daily')
     {
-        $eview = new \Hubzero\Mail\View(array(
+        $eview = new \Hubzero\Mail\View([
             'base_path' => Component::path('com_forum') . DS . 'site',
             'name'      => 'emails',
             'layout'    => 'digest_plain'
-        ));
+        ]);
         $eview->option    = 'com_forum';
         $eview->delimiter = '~!~!~!~!~!~!~!~!~!~!';
         $eview->posts     = $posts;

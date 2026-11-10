@@ -20,13 +20,13 @@ class Migration20190221000000ComModules extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__modules' => array(
+    public static $tables = [
+        '#__modules' => [
             'checked_out_time',
             'publish_up',
             'publish_down'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

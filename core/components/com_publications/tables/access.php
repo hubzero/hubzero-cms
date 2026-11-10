@@ -42,10 +42,10 @@ class Access extends Table
             return false;
         }
 
-        return parent::load(array(
+        return parent::load([
             'publication_version_id' => (int) $vid,
             'group_id'               => (int) $group_id
-        ));
+        ]);
     }
 
     /**
@@ -134,7 +134,7 @@ class Access extends Table
         // Clean up
         $this->deleteGroups($vid, $sysgroup);
 
-        $add = array();
+        $add = [];
         $saved = 0;
         if ($groups) {
             $add = explode(',', $groups);

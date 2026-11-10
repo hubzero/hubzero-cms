@@ -195,7 +195,7 @@ class Endnote extends Downloadable
         $endnote_import_plugin_params = \Hubzero\Plugin\Plugin::getParams('endnote', 'citation');
         $custom_tags = explode("\n", $endnote_import_plugin_params->get('custom_tags', ''));
 
-        $citation_endnote_tags = array();
+        $citation_endnote_tags = [];
         $citation_badges_key = "";
         foreach ($custom_tags as $ct) {
             $citation_endnote_tags[] = explode("-", trim($ct));

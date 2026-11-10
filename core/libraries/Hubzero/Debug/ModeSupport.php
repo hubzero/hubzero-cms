@@ -48,7 +48,7 @@ class ModeSupport
      */
     public static function renderHiddenInput(bool $enabled, string $name, string $value): string
     {
-        $params = self::preserveParam($enabled, array(), $name, $value);
+        $params = self::preserveParam($enabled, [], $name, $value);
         if (empty($params)) {
             return '';
         }

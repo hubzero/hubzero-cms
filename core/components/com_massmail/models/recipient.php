@@ -46,10 +46,10 @@ class Recipient extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'email'      => 'notempty',
         'mailing_id' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * The mailing this recipient belongs to

@@ -52,28 +52,28 @@ class Field extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'label' => 'notempty',
         'type'  => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'ordering',
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'name',
         'modified',
         'modified_by',
@@ -84,7 +84,7 @@ class Field extends Relational
         'disabled',
         'multiple',
         'parent_option'
-    );
+    ];
 
     /**
      * Generates automatic option_other field value
@@ -280,7 +280,7 @@ class Field extends Relational
             } else {
                 $values = $answersCollection;
                 if (!is_array($values)) {
-                    $values = array($values);
+                    $values = [$values];
                 }
                 $values[] = $answer->get('value');
                 $answersCollection = $values;
@@ -301,7 +301,7 @@ class Field extends Relational
         $formAnswers = !empty($answers[$fieldName]) ? $answers[$fieldName] : '';
 
         if (!is_array($formAnswers)) {
-            $formAnswers = array($formAnswers);
+            $formAnswers = [$formAnswers];
         }
 
         if ($this->get('option_other')) {
@@ -332,7 +332,7 @@ class Field extends Relational
 
         $groupAnswers = $this->getGroupAnswers($group_id);
         $formAnswers = $this->get('formAnswers');
-        $formAnswers = !is_array($formAnswers) ? array($formAnswers) : $formAnswers;
+        $formAnswers = !is_array($formAnswers) ? [$formAnswers] : $formAnswers;
 
         foreach ($groupAnswers as $answer) {
             $answerValue = $answer->get('value');
@@ -517,13 +517,13 @@ class Field extends Relational
      * @param   array   $data
      * @return  mixed
      */
-    public static function resolveDependencies($fields, $data = array())
+    public static function resolveDependencies($fields, $data = [])
     {
         if (empty($data)) {
             return $fields;
         }
 
-        $skip = array();
+        $skip = [];
 
         foreach ($fields as $field) {
             foreach ($field->options as $option) {
@@ -581,12 +581,12 @@ class Field extends Relational
      * @param   array   $data
      * @return  string
      */
-    public static function toXml($fields, $data = array())
+    public static function toXml($fields, $data = [])
     {
         $fields = self::resolveDependencies($fields, $data);
 
         // Convert to XML so we can use the Form processor
-        $xml   = array();
+        $xml   = [];
         $xml[] = '<?xml version="1.0" encoding="utf-8"?>';
         $xml[] = '<form>';
         $xml[] = '<fieldset name="basic">';

@@ -24,8 +24,8 @@ class Migration20130926143200Core extends Base
     {
         $schema = $this->db->schema();
 
-        $joomlas = array('atomic', 'bluestork', 'beez_20', 'hathor', 'beez5');
-        $templates = array();
+        $joomlas = ['atomic', 'bluestork', 'beez_20', 'hathor', 'beez5'];
+        $templates = [];
 
         if ($schema->tableExists('#__extensions')) {
             $result = $this->db->getQuery(true)
@@ -34,7 +34,7 @@ class Migration20130926143200Core extends Base
                 ->where('home', '=', 0)
                 ->loadObjectList();
 
-            $templates = array();
+            $templates = [];
             foreach ($result as $r) {
                 if (in_array($r->template, $joomlas)) {
                     $templates[] = $r->template;

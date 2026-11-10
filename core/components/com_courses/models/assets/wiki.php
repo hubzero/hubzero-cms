@@ -25,10 +25,10 @@ class Wiki extends Content
      *
      * @var array
      **/
-    protected static $info = array(
+    protected static $info = [
         'action_message' => 'A textual wiki page',
-        'responds_to'    => array('wiki')
-    );
+        'responds_to'    => ['wiki']
+    ];
 
     /**
      * Create method for this handler
@@ -42,7 +42,7 @@ class Wiki extends Content
         $this->asset['subtype'] = 'wiki';
 
         if (!Request::getString('title', false)) {
-            return array('error' => 'Please provide a title!');
+            return ['error' => 'Please provide a title!'];
         }
 
         if (!Request::getInt('id', false)) {
@@ -84,12 +84,12 @@ class Wiki extends Content
 
                 // Check to make sure we have a file and its not too big
                 if ($size == 0) {
-                    return array('error' => 'File is empty');
+                    return ['error' => 'File is empty'];
                 }
                 if ($size > $sizeLimit) {
                     $formatted = \Hubzero\Utility\Number::formatBytes($sizeLimit);
                     $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', $formatted);
-                    return array('error' => "File is too large. Max file upload size is $max");
+                    return ['error' => "File is too large. Max file upload size is $max"];
                 }
 
                 // Build the upload path if it doesn't exist
@@ -99,11 +99,11 @@ class Wiki extends Content
                 // Make sure upload directory exists and is writable
                 if (!is_dir($uploadDirectory)) {
                     if (!Filesystem::makeDirectory($uploadDirectory)) {
-                        return array('error' => 'Server error. Unable to create upload directory');
+                        return ['error' => 'Server error. Unable to create upload directory'];
                     }
                 }
                 if (!is_writable($uploadDirectory)) {
-                    return array('error' => 'Server error. Upload directory isn\'t writable');
+                    return ['error' => 'Server error. Upload directory isn\'t writable'];
                 }
 
                 // Get the final file path
@@ -115,11 +115,11 @@ class Wiki extends Content
                 // Scan for viruses
                 if (!Filesystem::isSafe($_FILES['files']['tmp_name'][$i])) {
                     // Scan failed, return an error
-                    return array('error' => 'File rejected because the anti-virus scan failed.');
+                    return ['error' => 'File rejected because the anti-virus scan failed.'];
                 }
 
                 if (!$move = move_uploaded_file($_FILES['files']['tmp_name'][$i], $target_path)) {
-                    return array('error' => 'Move file failed');
+                    return ['error' => 'Move file failed'];
                 }
             }
         }
@@ -136,7 +136,7 @@ class Wiki extends Content
      **/
     public function edit($asset)
     {
-        $options = array('scope' => 'wiki');
-        return array('type' => 'default', 'options' => $options);
+        $options = ['scope' => 'wiki'];
+        return ['type' => 'default', 'options' => $options];
     }
 }

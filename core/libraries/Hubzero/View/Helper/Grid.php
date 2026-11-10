@@ -29,6 +29,6 @@ class Grid extends AbstractHelper
 
         $method = array_shift($args);
 
-        return call_user_func_array(array('\\Hubzero\\Html\\Builder\\Grid', $method), $args);
+        return call_user_func_array(['\\Hubzero\\Html\\Builder\\Grid', $method], $args);
     }
 }

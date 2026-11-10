@@ -33,7 +33,7 @@ Toolbar::spacer();
 Toolbar::help('page');
 
 // include modal for raw version links
-Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen' => true));
+Html::behavior('modal', 'a.version', ['handler' => 'iframe', 'fullScreen' => true]);
 ?>
 
 <form action="<?php echo $base; ?>" method="post" name="adminForm" id="item-form">
@@ -112,11 +112,11 @@ Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen' =
                         echo 'disabled="disabled"';
                                                                 } ?>>
                         <?php
-                        $states = array(
+                        $states = [
                             1 => Lang::txt('COM_GROUPS_PAGES_STATE_PUBLISHED'),
                             0 => Lang::txt('COM_GROUPS_PAGES_STATE_UNPUBLISHED'),
                             2 => Lang::txt('COM_GROUPS_PAGES_STATE_DELETED')
-                        );
+                        ];
 
                         foreach ($states as $k => $v) {
                             $sel = ($this->page->get('state') == $k) ? 'selected="selected"' : '';
@@ -161,7 +161,7 @@ Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen' =
 
                 <div class="input-wrap">
                     <label for="field-content"><?php echo Lang::txt('COM_GROUPS_PAGES_CONTENT'); ?>:</span></label><br />
-                    <?php echo $this->editor('pageversion[content]', $this->escape(stripslashes($this->version->get('content'))), 50, 30, 'field-content', array('buttons' => false)); ?>
+                    <?php echo $this->editor('pageversion[content]', $this->escape(stripslashes($this->version->get('content'))), 50, 30, 'field-content', ['buttons' => false]); ?>
                     <input type="hidden" name="pageversion[version]" value="<?php echo $this->version->get('version'); ?>" />
                 </div>
             </fieldset>

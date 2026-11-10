@@ -162,7 +162,7 @@ class Migration20130924000001ComContent extends Base
                     continue;
                 }
 
-                $array = array();
+                $array = [];
                 $ar    = explode("\n", $attribs);
 
                 foreach ($ar as $a) {

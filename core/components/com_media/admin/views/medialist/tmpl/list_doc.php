@@ -87,7 +87,7 @@ $imgAlt = $this->escape(
 $params = new Hubzero\Config\Registry();
 Event::trigger(
     'onContentBeforeDisplay',
-    array('com_media.file', &$this->_tmp_doc, &$params)
+    ['com_media.file', &$this->_tmp_doc, &$params]
 );
 
 $escapedName = $this->escape($this->currentDoc['name']);
@@ -199,5 +199,5 @@ $docUrl = COM_MEDIA_BASEURL . $this->currentDoc['path'];
 <?php
 Event::trigger(
     'onContentAfterDisplay',
-    array('com_media.file', &$this->_tmp_doc, &$params)
+    ['com_media.file', &$this->_tmp_doc, &$params]
 );

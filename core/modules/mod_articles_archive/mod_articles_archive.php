@@ -63,7 +63,7 @@ class ArticlesArchive extends Module
 
         // Filter by language
         if (App::get('language.filter')) {
-            $query->whereIn('language', array(Lang::getTag(), '*'));
+            $query->whereIn('language', [Lang::getTag(), '*']);
         }
 
         $rows = (array) $query
@@ -75,7 +75,7 @@ class ArticlesArchive extends Module
         $itemid = (isset($item) && !empty($item->id) ) ? '&Itemid=' . $item->id : '';
 
         $i     = 0;
-        $lists = array();
+        $lists = [];
         foreach ($rows as $row) {
             $date = Date::of($row->created);
 

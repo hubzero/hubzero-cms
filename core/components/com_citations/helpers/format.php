@@ -36,7 +36,7 @@ class Format
      *
      * @var  array
      */
-    protected $_template_keys = array(
+    protected $_template_keys = [
         "type" => "{TYPE}",
         "cite" => "{CITE KEY}",
         "ref_type" => "{REF TYPE}",
@@ -74,14 +74,14 @@ class Format
         "search_string" => "{SECONDARY LINK}",
         "sec_cnt" => "{SECONDARY COUNT}",
         "version" => "{VERSION}"
-    );
+    ];
 
     /**
      * Values used by COINs
      *
      * @var  array
      */
-    protected $_coins_keys = array(
+    protected $_coins_keys = [
         'title'        => 'rft.atitle',
         'journaltitle' => 'rft.jtitle',
         'date_publish' => 'rft.date',
@@ -94,17 +94,17 @@ class Format
         'author'       => 'rft.au',
         'url'          => 'rft_id',
         'doi'          => 'rft_id=info:doi/'
-    );
+    ];
 
     /**
      * Default formats
      *
      * @var  array
      */
-    protected $_default_format = array(
+    protected $_default_format = [
         'apa'  => "{AUTHORS}, {EDITORS} ({YEAR}), {TITLE/CHAPTER}, <i>{JOURNAL}</i>, <i>{BOOK TITLE}</i>, {EDITION}, {CHAPTER}, {SERIES}, {PUBLISHER}, {ADDRESS}, <b>{VOLUME}</b>, <b>{ISSUE/NUMBER}</b>: {PAGES}, {ORGANIZATION}, {INSTITUTION}, {SCHOOL}, {LOCATION}, {MONTH}, {ISBN/ISSN}, (DOI: {DOI}). Cited by: <a href='{SECONDARY LINK}'>{SECONDARY COUNT}</a>",
         'ieee' => "{AUTHORS}, {EDITORS} ({YEAR}), {TITLE/CHAPTER}, <i>{JOURNAL}</i>, <i>{BOOK TITLE}</i>, {EDITION}, {CHAPTER}, {SERIES}, {PUBLISHER}, {ADDRESS}, <b>{VOLUME}</b>, <b>{ISSUE/NUMBER}</b>: {PAGES}, {ORGANIZATION}, {INSTITUTION}, {SCHOOL}, {LOCATION}, {MONTH}, {ISBN/ISSN}, (DOI: {DOI})"
-    );
+    ];
 
     /**
      * Function to set the formatters template to use
@@ -199,14 +199,14 @@ class Format
         }
 
         //var to hold COinS data
-        $coins_data = array(
+        $coins_data = [
             "ctx_ver=Z39.88-2004",
             "rft_val_fmt=info:ofi/fmt:kev:mtx:{$c_type}",
             "rfr_id=info:sid/{$hub_url}:{$hub_name}"
-        );
+        ];
 
         //array to hold replace vals
-        $replace_values = array();
+        $replace_values = [];
 
         //get the template
         if ($config->get('default_citation_format') != '') {
@@ -264,7 +264,7 @@ class Format
                 }
 
                 if ($k == 'author') {
-                    $a = array();
+                    $a = [];
 
                     $auth = html_entity_decode($citation->$k);
                     if (function_exists('mbstring')) {
@@ -387,7 +387,7 @@ class Format
         $cite = preg_replace($pattern, ' ', $cite);
 
         // Strip empty punctuation inside
-        $b = array(
+        $b = [
             "''" => '',
             '""' => '',
             '()' => '',
@@ -403,14 +403,14 @@ class Format
             '","' => '',
             'doi:.' => '',
             '(DOI:).' => ''
-        );
+        ];
 
         foreach ($b as $k => $i) {
             $cite = str_replace($k, $i, $cite);
         }
 
         // Strip empty punctuation from the start
-        $c = array(
+        $c = [
             "' ",
             '" ',
             '(',
@@ -421,7 +421,7 @@ class Format
             '! ',
             ': ',
             '; '
-        );
+        ];
 
         foreach ($c as $k) {
             if (substr($cite, 0, 2) == $k) {
@@ -436,8 +436,8 @@ class Format
         }
 
         // percent encode chars
-        $chars      = array('%', ' ', '/', ':', '"', '\'', '&amp;');
-        $replace    = array("%20", "%20", "%2F", "%3A", "%22", "%27", "%26");
+        $chars      = ['%', ' ', '/', ':', '"', '\'', '&amp;'];
+        $replace    = ["%20", "%20", "%2F", "%3A", "%22", "%27", "%26"];
         $coins_data = str_replace($chars, $replace, implode('&', $coins_data));
 
         $cite = preg_replace('/, :/', ':', $cite);
@@ -519,7 +519,7 @@ class Format
         $text  = $openurl['text'];
         $icon  = $openurl['icon'];
         $link  = $openurl['link'];
-        $query = array();
+        $query = [];
 
         // citation type
         $citation_type = Type::oneOrNew($citation->type);
@@ -633,7 +633,7 @@ class Format
             if (count($assocs) > 1) {
                 $html .= '<span>|</span> <span class="cited-resources">' . Lang::txt('COM_CITATIONS_RESOURCES_CITED') . ':</span> ';
                 $k = 0;
-                $rrs = array();
+                $rrs = [];
                 foreach ($assocs as $rid) {
                     if ($rid->tbl == 'resource') {
                         $database->setQuery("SELECT published FROM `#__resources` WHERE id=" . (int) $rid->oid);
@@ -685,8 +685,8 @@ class Format
     {
         $html = '';
         $cite->separateTagsAndBadges();
-        $badges = array();
-        $badges = $cite->get('badges', array());
+        $badges = [];
+        $badges = $cite->get('badges', []);
 
         if (count($badges) > 0) {
             if ($includeHtml) {
@@ -697,7 +697,7 @@ class Format
                 $html .= "</ul>";
                 return $html;
             } else {
-                $rawTags = array();
+                $rawTags = [];
                 foreach ($badges as $badge) {
                     if (empty($badge->get('raw_tag'))) {
                         continue;
@@ -707,7 +707,7 @@ class Format
                 return $rawTags;
             }
         } else {
-            $badges = array();
+            $badges = [];
         }
 
         return ($includeHtml) ? '' : $badges;
@@ -740,7 +740,7 @@ class Format
                 $html .= '</ul>';
                 return $html;
             } else {
-                $rawTags = array();
+                $rawTags = [];
                 foreach ($tags as $tag) {
                     if (empty($tag->get('raw_tag')) || ($tag->admin && !$isAdmin)) {
                         continue;
@@ -750,7 +750,7 @@ class Format
                 return $rawTags;
             }
         } else {
-            $tags = array();
+            $tags = [];
         }
 
         return ($includeHtml) ? '' : $tags;
@@ -832,7 +832,7 @@ class Format
         $html = "\t" . '<p>';
         if (self::keyExistsOrIsNotEmpty('author', $row)) {
             $auths = explode(';', $row->author);
-            $a = array();
+            $a = [];
             foreach ($auths as $auth) {
                 preg_match('/{{(.*?)}}/s', $auth, $matches);
                 if (isset($matches[0]) && $matches[0] != '') {

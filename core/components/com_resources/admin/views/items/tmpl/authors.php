@@ -13,7 +13,7 @@ defined('_HZEXEC_') or die();
 
 $this->js('authors.js');
 
-$authIDs = array();
+$authIDs = [];
 ?>
 <label for="authid"><?php echo Lang::txt('COM_RESOURCES_AUTHID'); ?></label>
 <input type="text" name="authid" id="authid" value="" />

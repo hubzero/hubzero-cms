@@ -20,21 +20,21 @@ class Migration20190221000000ComTags extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__tags' => array(
+    public static $tables = [
+        '#__tags' => [
             'created',
             'modified'
-        ),
-        '#__tags_log' => array(
+        ],
+        '#__tags_log' => [
             'timestamp'
-        ),
-        '#__tags_object' => array(
+        ],
+        '#__tags_object' => [
             'taggedon'
-        ),
-        '#__tags_substitute' => array(
+        ],
+        '#__tags_substitute' => [
             'created'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

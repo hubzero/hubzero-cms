@@ -33,7 +33,7 @@ class ComponentController extends \Hubzero\Component\SiteController
         $params = false;
 
         if (!is_array($varNames)) {
-            $varNames = array($varNames);
+            $varNames = [$varNames];
         }
 
         // check if there are more parameters than needed

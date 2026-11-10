@@ -27,19 +27,19 @@ class Attachment extends Relational
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created'
-    );
+    ];
 
     /**
      * Fields and their validation criteria
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'mailing_id' => 'positive|nonzero',
         'filename'   => 'notempty'
-    );
+    ];
 
     /**
      * The mailing this attachment belongs to

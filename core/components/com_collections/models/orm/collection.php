@@ -37,30 +37,30 @@ class Collection extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'title'       => 'notempty',
         'object_type' => 'notempty',
         'object_id'   => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      **/
-    public $always = array(
+    public $always = [
         'alias'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Sets up additional custom rules

@@ -20,29 +20,29 @@ class Migration20190307000000ComJobs extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__jobs_applications' => array(
+    public static $tables = [
+        '#__jobs_applications' => [
             'applied',
             'withdrawn'
-        ),
-        '#__jobs_employers' => array(
+        ],
+        '#__jobs_employers' => [
             'added'
-        ),
-        '#__jobs_openings' => array(
+        ],
+        '#__jobs_openings' => [
             'added',
             'edited',
             'closedate',
             'expiredate',
             'opendate',
             'startdate'
-        ),
-        '#__jobs_resumes' => array(
+        ],
+        '#__jobs_resumes' => [
             'created'
-        ),
-        '#__jobs_seekers' => array(
+        ],
+        '#__jobs_seekers' => [
             'updated'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

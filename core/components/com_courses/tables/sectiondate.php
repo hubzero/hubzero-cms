@@ -46,10 +46,10 @@ class SectionDate extends Table
             return parent::load($oid);
         }
 
-        $fields = array(
+        $fields = [
             'scope'    => trim($scope),
             'scope_id' => intval($oid)
-        );
+        ];
         if ($section_id !== null) {
             $fields['section_id'] = intval($section_id);
         }
@@ -83,7 +83,7 @@ class SectionDate extends Table
         }
 
         // Blank date boxes post ''; strict SQL refuses '' for a datetime, so store NULL
-        foreach (array('publish_up', 'publish_down') as $col) {
+        foreach (['publish_up', 'publish_down'] as $col) {
             if (isset($this->$col) && trim((string) $this->$col) === '') {
                 $this->$col = null;
             }
@@ -114,11 +114,11 @@ class SectionDate extends Table
      * @param   array   $filters
      * @return  string  SQL
      */
-    private function buildQuery($filters = array())
+    private function buildQuery($filters = [])
     {
         $query  = " FROM $this->_tbl AS sd";
 
-        $where = array();
+        $where = [];
 
         if (isset($filters['section_id']) && $filters['section_id'] >= 0) {
             $where[] = "sd.section_id=" . $this->_db->quote(intval($filters['section_id']));
@@ -145,7 +145,7 @@ class SectionDate extends Table
      * @param   array    $filters
      * @return  integer
      */
-    public function count($filters = array())
+    public function count($filters = [])
     {
         $query  = "SELECT COUNT(sd.id)";
         $query .= $this->buildQuery($filters);
@@ -160,7 +160,7 @@ class SectionDate extends Table
      * @param   array  $filters
      * @return  array
      */
-    public function find($filters = array())
+    public function find($filters = [])
     {
         $query  = "SELECT sd.*";
         $query .= $this->buildQuery($filters);
@@ -168,7 +168,7 @@ class SectionDate extends Table
         if (!isset($filters['sort']) || $filters['sort'] == '') {
             $filters['sort'] = 'sd.publish_up';
         }
-        if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC'))) {
+        if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), ['ASC', 'DESC'])) {
             $filters['sort_Dir'] = 'ASC';
         }
 

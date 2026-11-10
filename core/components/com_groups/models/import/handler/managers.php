@@ -24,10 +24,10 @@ class Managers extends Obj
      */
     public function sample()
     {
-        return array(
+        return [
             'header'  => 'managers',
             'content' => 'username or id;username or id;username or id'
-        );
+        ];
     }
 
     /**
@@ -93,7 +93,7 @@ class Managers extends Obj
         }
 
         // Add user to specified groups
-        $added = array();
+        $added = [];
         foreach ($record->managers as $gid) {
             $member = User::getInstance($gid);
 

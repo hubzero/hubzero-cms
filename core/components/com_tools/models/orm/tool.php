@@ -45,19 +45,19 @@ class Tool extends Relational
      *
      * @var array
      **/
-    protected $rules = array(
+    protected $rules = [
         'toolname' => 'notempty',
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'registered',
         'registered_by'
-    );
+    ];
 
     /**
      * Generates automatic owned by field value

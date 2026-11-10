@@ -17,13 +17,13 @@ if ($this->params->get('allowClose', 1)) {
     $this->js();
 }
 
-$rows = $this->offering->announcements(array(
+$rows = $this->offering->announcements([
     'limit' => $this->params->get('display_limit', 1),
     'published' => true
-));
+]);
 
 if ($rows->total() > 0) {
-    $announcements = array();
+    $announcements = [];
 
     foreach ($rows as $row) {
         if ($this->params->get('allowClose', 1)) {

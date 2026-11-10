@@ -49,7 +49,7 @@ class Status extends Model
             $this->_tbl = new Tables\ToolStatus($this->_db);
         }
         if (!isset($this->_statuses)) {
-            $this->_statuses = array();
+            $this->_statuses = [];
             $statuses = $this->_tbl->getItems();
             foreach ($statuses as $status) {
                 $this->_statuses[$status->id] = $status;
@@ -89,7 +89,7 @@ class Status extends Model
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         if (is_object($oid)) {

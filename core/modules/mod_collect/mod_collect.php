@@ -60,7 +60,7 @@ class Collect extends Module
     {
         Lang::load('com_collections', \Component::path('com_collections') . DS . 'site');
 
-        $collectible = Request::getArray('collectible', array(), 'post');
+        $collectible = Request::getArray('collectible', [], 'post');
 
         if (!$this->item->make()) {
             $this->setError($this->item->getError());
@@ -68,7 +68,7 @@ class Collect extends Module
 
         // No collection ID selected so show form
         if (empty($collectible)) {
-            if (!$this->model->collections(array('count' => true))) {
+            if (!$this->model->collections(['count' => true])) {
                 $collection = $this->model->collection();
                 $collection->setup(User::get('id'), 'member');
             }
@@ -93,18 +93,18 @@ class Collect extends Module
                 }
             }
 
-            $this->collections = array();
+            $this->collections = [];
             if ($this->item->get('id')) {
-                $posts = $this->model->posts(array(
+                $posts = $this->model->posts([
                     'collection_id' => $ids,
                     'item_id'       => $this->item->get('id'),
                     'limit'         => 25,
                     'start'         => 0,
-                    'access'        => array(0,1,4)
-                ));
+                    'access'        => [0,1,4]
+                ]);
 
                 if ($posts) {
-                    $found = array();
+                    $found = [];
                     foreach ($posts as $post) {
                         foreach ($this->myboards as $board) {
                             if (!in_array($board->id, $found) && $board->id == $post->collection_id) {

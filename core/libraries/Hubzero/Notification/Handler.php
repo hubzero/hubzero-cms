@@ -117,10 +117,10 @@ class Handler
 
         if (!$duplicate) {
             $this->storage->store(
-                array(
+                [
                     'message' => $message,
                     'type'    => $type
-                ),
+                ],
                 $domain
             );
         }

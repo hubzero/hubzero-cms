@@ -14,7 +14,7 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$isReviewer = (isset($this->filters['reviewer']) && in_array($this->filters['reviewer'], array('sponsored', 'sensitive')));
+$isReviewer = (isset($this->filters['reviewer']) && in_array($this->filters['reviewer'], ['sponsored', 'sensitive']));
 
 $src = Route::url($this->row->picture('master'));
 
@@ -62,13 +62,13 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
 
         <?php if ($canView) : ?>
             <?php if ($role) : ?>
-                <span class="<?php echo str_replace(array('(', ')'), '', $role); ?> project-membership-status">
+                <span class="<?php echo str_replace(['(', ')'], '', $role); ?> project-membership-status">
                     <?php echo $role; ?>
                 </span>
             <?php endif; ?>
         <?php else : ?>
             <?php if ($role) : ?>
-                <span class="<?php echo str_replace(array('(', ')'), '', $role); ?> project-membership-status">
+                <span class="<?php echo str_replace(['(', ')'], '', $role); ?> project-membership-status">
                     <?php echo $role; ?>
                 </span>
             <?php endif; ?>
@@ -244,7 +244,7 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
                         <table>
                             <caption><?php echo Lang::txt('COM_PROJECTS_SPS_INFO'); ?></caption>
                             <tbody>
-                                <?php foreach (array('title', 'PI', 'agency', 'budget') as $key) : ?>
+                                <?php foreach (['title', 'PI', 'agency', 'budget'] as $key) : ?>
                                     <tr>
                                         <th scope="row"><?php echo Lang::txt('COM_PROJECTS_GRANT_' . strtoupper($key)); ?></th>
                                         <td><?php echo $this->escape($params->get('grant_' . $key)); ?></td>
@@ -276,7 +276,7 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
         <?php endif; ?>
 
         <?php
-        $results = Event::trigger('projects.onProjectsBrowse', array($this->row));
+        $results = Event::trigger('projects.onProjectsBrowse', [$this->row]);
 
         if (!empty($results)) : ?>
             <div class="project-extras">

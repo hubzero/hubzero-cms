@@ -251,7 +251,7 @@ $this->js();
                         35,
                         20,
                         'commentcontent',
-                        array('class' => 'minimal no-footer')
+                        ['class' => 'minimal no-footer']
                     );
                     ?>
                     <label>

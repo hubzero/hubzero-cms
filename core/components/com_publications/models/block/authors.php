@@ -72,22 +72,22 @@ class Authors extends Base
         if ($viewname == 'curator') {
             // Output HTML
             $view = new \Hubzero\Component\View(
-                array(
+                [
                     'name'   => 'curation',
                     'layout' => 'block'
-                )
+                ]
             );
         } else {
             $name = $viewname == 'freeze' ? 'freeze' : 'draft';
 
             // Output HTML
             $view = new \Hubzero\Plugin\View(
-                array(
+                [
                     'folder'  => 'projects',
                     'element' => 'publications',
                     'name'    => $name,
                     'layout'  => 'wrapper'
-                )
+                ]
             );
         }
 
@@ -459,14 +459,14 @@ class Authors extends Base
             Lang::load('com_projects') || Lang::load('com_projects', Component::path('com_projects') . DS . 'site');
 
             // Plugin params
-            $plugin_params = array(
+            $plugin_params = [
                 $uid,
                 $email,
                 $code,
                 2,
                 $project,
                 'com_projects'
-            );
+            ];
 
             // Send invite
             $output = Event::trigger('projects.sendInviteEmail', $plugin_params);
@@ -615,14 +615,14 @@ class Authors extends Base
             $project = new \Components\Projects\Models\Project($pub->_project->get('id'));
 
             // Plugin params
-            $plugin_params = array(
+            $plugin_params = [
                 0,
                 $email,
                 $code,
                 2,
                 $project,
                 'com_projects'
-            );
+            ];
 
             // Send invite
             $output = Event::trigger('projects.sendInviteEmail', $plugin_params);
@@ -683,12 +683,12 @@ class Authors extends Base
 
         // Output HTML
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => $name,
                 'layout'  => 'authors'
-            )
+            ]
         );
 
         // Get authors
@@ -765,7 +765,7 @@ class Authors extends Base
 
         // Fall back
         if (!$manifest) {
-            $manifest = array(
+            $manifest = [
                 'name'         => 'authors',
                 'label'        => 'Authors',
                 'title'        => 'Publication Authors',
@@ -773,14 +773,14 @@ class Authors extends Base
                 'draftTagline' => 'Build the author list',
                 'about'        => '<p>Publication authors get selected from your current project team. Anyone you add as an author will also be added to your team as a project collaborator.</p>',
                 'adminTips'    => '',
-                'elements'     => array(),
-                'params'       => array(
+                'elements'     => [],
+                'params'       => [
                     'required'          => 1,
                     'published_editing' => 0,
                     'submitter'         => 1,
                     'group_owner'       => 0
-                )
-            );
+                ]
+            ];
 
             return json_decode(json_encode($manifest), false);
         }

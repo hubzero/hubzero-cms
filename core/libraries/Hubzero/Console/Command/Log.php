@@ -93,11 +93,11 @@ class Log extends Base implements CommandInterface
         $dateFormat = $this->mapDateFormat($dateFormat);
 
         // Set up pipes
-        $descs = array(
-            0 => array('pipe', 'r'),
-            1 => array('pipe', 'w'),
-            2 => array('pipe', 'w')
-        );
+        $descs = [
+            0 => ['pipe', 'r'],
+            1 => ['pipe', 'w'],
+            2 => ['pipe', 'w']
+        ];
 
         // Tail the given log
         $proc = proc_open("tail -f {$path}", $descs, $fp);
@@ -127,7 +127,7 @@ class Log extends Base implements CommandInterface
                 $class::parse(
                     $buffer,
                     $this->output,
-                    array('threshold' => $threshold, 'noBeep' => $noBeep, 'dateFormat' => $dateFormat)
+                    ['threshold' => $threshold, 'noBeep' => $noBeep, 'dateFormat' => $dateFormat]
                 );
                 // Add new prompt character
                 $this->printPrompt();
@@ -232,7 +232,7 @@ class Log extends Base implements CommandInterface
                                 $class::parse(
                                     $line,
                                     $this->output,
-                                    array('threshold' => $threshold, 'noBeep' => $noBeep, 'dateFormat' => $dateFormat)
+                                    ['threshold' => $threshold, 'noBeep' => $noBeep, 'dateFormat' => $dateFormat]
                                 );
                             }
                             break;
@@ -258,7 +258,7 @@ class Log extends Base implements CommandInterface
                     // Initialize vars
                     $string = trim($string);
                     $arg    = null;
-                    $parts  = array();
+                    $parts  = [];
 
                     // If a space is present, we'll assume some sort of command/arguments scenario
                     if (strpos($string, ' ')) {
@@ -311,7 +311,7 @@ class Log extends Base implements CommandInterface
                             } else {
                                 if ($threshold) {
                                     // Parse threshold array
-                                    $printable = array();
+                                    $printable = [];
                                     foreach ($threshold as $t) {
                                         $printable[] = $t['key'] . $t['operator'] . $t['value'];
                                     }
@@ -385,7 +385,7 @@ class Log extends Base implements CommandInterface
             $thresholds = (array)$thresholds;
         }
 
-        $threshold = array();
+        $threshold = [];
         foreach ($thresholds as $t) {
             preg_match('/([[:alpha:]]+)[\s]*([=|>|<])[\s]*([[:alnum:]\.]+)/', $t, $params);
 

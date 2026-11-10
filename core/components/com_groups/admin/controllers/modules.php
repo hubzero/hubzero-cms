@@ -77,22 +77,22 @@ class Modules extends AdminController
 
         // get modules archive
         $moduleArchive = Module\Archive::getInstance();
-        $this->view->modules = $moduleArchive->modules('list', array(
+        $this->view->modules = $moduleArchive->modules('list', [
             'gidNumber' => $this->group->get('gidNumber'),
-            'state'     => array(0,1,2),
+            'state'     => [0,1,2],
             'orderby'   => 'position ASC, ordering ASC'
-        ));
+        ]);
 
         // are we in the approvers
         $this->view->needsAttention = new \Hubzero\Base\ItemList();
         if (in_array(User::get('username'), $approvers)) {
             // get group pages
             $moduleArchive = Module\Archive::getInstance();
-            $this->view->needsAttention = $moduleArchive->modules('unapproved', array(
+            $this->view->needsAttention = $moduleArchive->modules('unapproved', [
                 'gidNumber' => $this->group->get('gidNumber'),
-                'state'     => array(0,1),
+                'state'     => [0,1],
                 'orderby'   => 'ordering'
-            ));
+            ]);
         }
 
         // pass group to view
@@ -125,7 +125,7 @@ class Modules extends AdminController
         Request::setVar('hidemainmenu', 1);
 
         // get request vars
-        $id = Request::getArray('id', array(0));
+        $id = Request::getArray('id', [0]);
         if (is_array($id) && !empty($id)) {
             $id = $id[0];
         }
@@ -135,20 +135,20 @@ class Modules extends AdminController
 
         // get a list of all pages for creating module menu
         $pageArchive = Page\Archive::getInstance();
-        $this->view->pages = $pageArchive->pages('list', array(
+        $this->view->pages = $pageArchive->pages('list', [
             'gidNumber' => $this->group->get('gidNumber'),
-            'state'     => array(0,1,2),
+            'state'     => [0,1,2],
             'orderby'   => 'lft'
-        ));
+        ]);
 
         // get a list of all pages for creating module menu
         $moduleArchive = Module\Archive::getInstance();
-        $this->view->order = $moduleArchive->modules('list', array(
+        $this->view->order = $moduleArchive->modules('list', [
             'gidNumber' => $this->group->get('gidNumber'),
             'position'  => $this->view->module->get('position'),
-            'state'     => array(0,1,2),
+            'state'     => [0,1,2],
             'orderby'   => 'ordering'
-        ));
+        ]);
 
         // are we passing a category object
         if ($this->module) {
@@ -184,8 +184,8 @@ class Modules extends AdminController
         }
 
         // get request vars
-        $module = Request::getArray('module', array(), 'post');
-        $menu   = Request::getArray('menu', array(), 'post');
+        $module = Request::getArray('module', [], 'post');
+        $menu   = Request::getArray('menu', [], 'post');
 
         // set gid number
         $module['gidNumber'] = $this->group->get('gidNumber');
@@ -272,11 +272,11 @@ class Modules extends AdminController
         }
 
         // log change
-        Log::log(array(
+        Log::log([
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'group_module_saved',
-            'comments'  => array('module' => $module, 'module_menu' => $menu)
-        ));
+            'comments'  => ['module' => $module, 'module_menu' => $menu]
+        ]);
 
         //inform user & redirect
         App::redirect(
@@ -301,7 +301,7 @@ class Modules extends AdminController
         }
 
         // get request vars
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
 
         // delete each module
         foreach ($ids as $moduleid) {
@@ -327,11 +327,11 @@ class Modules extends AdminController
         }
 
         // log change
-        Log::log(array(
+        Log::log([
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'group_modules_deleted',
             'comments'  => $ids
-        ));
+        ]);
 
         //inform user & redirect
         App::redirect(
@@ -414,11 +414,11 @@ class Modules extends AdminController
         if ($pageid == 0) {
             // get a list of all pages
             $pageArchive = Page\Archive::getInstance();
-            $pages = $pageArchive->pages('list', array(
+            $pages = $pageArchive->pages('list', [
                 'gidNumber' => $this->group->get('gidNumber'),
-                'state'     => array(1),
+                'state'     => [1],
                 'orderby'   => 'ordering'
-            ));
+            ]);
 
             // get first page
             $pageid = $pages->first()->get('id');
@@ -441,7 +441,7 @@ class Modules extends AdminController
 
         // are we allowed to display group modules
         if (!$this->group->isSuperGroup() && !$this->config->get('page_modules', 0)) {
-            $groupDocument->set('allowed_tags', array());
+            $groupDocument->set('allowed_tags', []);
         }
 
         // set group doc needed props
@@ -589,7 +589,7 @@ class Modules extends AdminController
         }
 
         //get request vars
-        $module = Request::getArray('module', array(), 'post');
+        $module = Request::getArray('module', [], 'post');
 
         // load page
         $groupModule = new Module((int) ($module['id'] ?? 0));
@@ -659,9 +659,9 @@ class Modules extends AdminController
 
             // do case insensitive search for any flags
             $issues->$lang           = new \stdClass();
-            $issues->$lang->severe   = ($severe != '') ? preg_grep("/$severe/i", $content) : array();
-            $issues->$lang->elevated = ($elevated != '') ? preg_grep("/$elevated/i", $content) : array();
-            $issues->$lang->minor    = ($minor != '') ? preg_grep("/$minor/i", $content) : array();
+            $issues->$lang->severe   = ($severe != '') ? preg_grep("/$severe/i", $content) : [];
+            $issues->$lang->elevated = ($elevated != '') ? preg_grep("/$elevated/i", $content) : [];
+            $issues->$lang->minor    = ($minor != '') ? preg_grep("/$minor/i", $content) : [];
 
             // add to issues count
             $issues->count += count($issues->$lang->severe) + count($issues->$lang->elevated) + count($issues->$lang->minor);
@@ -714,7 +714,7 @@ class Modules extends AdminController
         }
 
         //get request vars
-        $module = Request::getArray('module', array(), 'post');
+        $module = Request::getArray('module', [], 'post');
 
         // load module
         $groupModule = new Module((int) ($module['id'] ?? 0));
@@ -759,7 +759,7 @@ class Modules extends AdminController
         }
 
         // get request vars
-        $module = Request::getArray('module', array(), 'post');
+        $module = Request::getArray('module', [], 'post');
 
         // load page
         $groupModule = new Module((int) ($module['id'] ?? 0));
@@ -834,11 +834,11 @@ class Modules extends AdminController
         Helpers\Pages::sendApprovedNotification('module', $module);
 
         // log change
-        Log::log(array(
+        Log::log([
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'group_modules_approved',
-            'comments'  => array($module->get('id'))
-        ));
+            'comments'  => [$module->get('id')]
+        ]);
 
         // inform user and redirect
         App::redirect(

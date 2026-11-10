@@ -30,7 +30,7 @@ class Filesystem
      *
      * @public array
      */
-    protected $macros = array();
+    protected $macros = [];
 
     /**
      * Constructor.
@@ -378,8 +378,8 @@ class Filesystem
      * @param   array    $exclude  Array with names of files which should not be shown in the result.
      * @return  array
      */
-    public function listContents($path, $filter = '.', $recursive = false, $full = false, $exclude = array('.svn',
-        '.git', 'CVS', '.DS_Store', '__MACOSX'))
+    public function listContents($path, $filter = '.', $recursive = false, $full = false, $exclude = ['.svn',
+        '.git', 'CVS', '.DS_Store', '__MACOSX'])
     {
         $path = Util::normalizePath($path);
 
@@ -555,7 +555,7 @@ class Filesystem
             $macro = $this->macros[$method];
             $macro->setFilesystem($this);
 
-            return call_user_func_array(array($macro, 'handle'), $arguments);
+            return call_user_func_array([$macro, 'handle'], $arguments);
         }
 
         throw new \BadMethodCallException('Call to undefined method ' . __CLASS__ . '::' . $method);

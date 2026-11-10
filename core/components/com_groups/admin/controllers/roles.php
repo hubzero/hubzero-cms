@@ -51,7 +51,7 @@ class Roles extends AdminController
     public function displayTask()
     {
         // Incoming
-        $filters = array(
+        $filters = [
             'gid' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.gid',
                 'gid',
@@ -86,7 +86,7 @@ class Roles extends AdminController
                 0,
                 'int'
             )
-        );
+        ];
 
         // Ensure we have a group ID
         if (!$filters['gid']) {
@@ -130,7 +130,7 @@ class Roles extends AdminController
         // Load a tag object if one doesn't already exist
         if (!is_object($model)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id) && !empty($id)) {
                 $id = $id[0];
             }
@@ -161,12 +161,12 @@ class Roles extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         $row = Role::oneOrNew(intval($fields['id']))->set($fields);
 
         if (!isset($fields['permissions'])) {
-            $fields['permissions'] = array();
+            $fields['permissions'] = [];
         }
 
         $permissions = new \Hubzero\Config\Registry($fields['permissions']);
@@ -199,8 +199,8 @@ class Roles extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Make sure we have an ID
         if (empty($ids)) {
@@ -238,8 +238,8 @@ class Roles extends AdminController
     {
         Request::setVar('hidemainmenu', 1);
 
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
         $gid = Request::getString('gid', '');
         $roleid = Request::getInt('roleid', 0);
 
@@ -279,8 +279,8 @@ class Roles extends AdminController
     {
         Request::setVar('hidemainmenu', 1);
 
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
         $gid = Request::getString('gid', '');
 
         if (!$gid) {
@@ -316,8 +316,8 @@ class Roles extends AdminController
     {
         Request::setVar('hidemainmenu', 1);
 
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
         $gid = Request::getString('gid', '');
         $roleid = Request::getInt('roleid', 0);
 

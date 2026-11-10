@@ -75,15 +75,15 @@ class Entriesv1r0 extends ApiController
     public function listTask()
     {
         // Incoming
-        $filters = array(
+        $filters = [
             'type'   => Request::getString('type', ''),
             'sortby' => Request::getCmd('sortby', 'date'),
             'limit'  => Request::getInt('limit', Config::get('list_limit')),
             'start'  => Request::getInt('limitstart', 0),
             'search' => Request::getString('search', '')
-        );
+        ];
 
-        if (!in_array($filters['sortby'], array('date', 'date_published', 'date_created', 'date_modified', 'title', 'rating', 'ranking', 'random'))) {
+        if (!in_array($filters['sortby'], ['date', 'date_published', 'date_created', 'date_modified', 'title', 'rating', 'ranking', 'random'])) {
             App::abort(404, Lang::txt('Invalid sort value of "%s" used.', $filters['sortby']));
         }
 
@@ -141,7 +141,7 @@ class Entriesv1r0 extends ApiController
         // registered-level once authenticated. Component administrators keep
         // the unrestricted view they had.
         if (!User::authorise('core.admin', 'com_resources')) {
-            $access = array(0);   // public
+            $access = [0];   // public
 
             if (!User::isGuest()) {
                 $access[] = 1;    // registered
@@ -178,12 +178,12 @@ class Entriesv1r0 extends ApiController
 
         // encode results and return response
         $response = new stdClass();
-        $response->records = array();
+        $response->records = [];
         $response->total   = with(clone $query)->total();
 
         if ($response->total) {
             // Get major types
-            $types = array();
+            $types = [];
             foreach (Type::getMajorTypes()->toObject() as $type) {
                 unset($type->params);
                 unset($type->customFields);
@@ -285,7 +285,7 @@ class Entriesv1r0 extends ApiController
         $expression = Request::getString('expression', '');
         // Defensive: bound the input and strip TeX shell-escape primitives
         $expression = substr($expression, 0, 3000);
-        $expression = str_ireplace(array('\\write18', '\\input', '\\openin', '\\openout'), '', $expression);
+        $expression = str_ireplace(['\\write18', '\\input', '\\openin', '\\openout'], '', $expression);
 
         $dir = PATH_APP . DS . 'cache' . DS . 'ckeditor' . DS . 'hubzeroequation' . DS;
         $filename = uniqid('equation_');

@@ -54,10 +54,10 @@ class Articles extends SiteController
             ->set('archive', $this->archive)
             ->set('category', $this->allCategory())
             ->set('catid', 0)
-            ->set('filters', array(
+            ->set('filters', [
                 'sort'   => '',
                 'search' => ''
-            ))
+            ])
             ->setLayout('display')
             ->display();
     }
@@ -117,13 +117,13 @@ class Articles extends SiteController
         Request::setVar('start', Request::getInt('start', 0));
 
         // Get configuration
-        $this->view->filters = array(
+        $this->view->filters = [
             'sort'     => Request::getWord('sort', 'recent'),
             'category' => $category->get('id'),
             'search'   => Request::getString('search', '')
-        );
+        ];
 
-        if (!in_array($this->view->filters['sort'], array('recent', 'popularity'))) {
+        if (!in_array($this->view->filters['sort'], ['recent', 'popularity'])) {
             $this->view->filters['sort'] = 'recent';
         }
         if (!User::isGuest()) {
@@ -242,7 +242,7 @@ class Articles extends SiteController
             return $this->articleTask();
         }
 
-        if (!in_array($type, array('article', 'comment'))) {
+        if (!in_array($type, ['article', 'comment'])) {
             App::abort(404, Lang::txt('COM_KB_WRONG_VOTE_TYPE'));
         }
 
@@ -260,7 +260,7 @@ class Articles extends SiteController
                 // cast on a deleted comment, or on a comment belonging to an
                 // article the caller cannot see -- and the difference between a
                 // counted vote and a 404 tells them which hidden ids exist.
-                if (!in_array((int) $row->get('state'), array(Comment::STATE_PUBLISHED, Comment::STATE_FLAGGED), true)) {
+                if (!in_array((int) $row->get('state'), [Comment::STATE_PUBLISHED, Comment::STATE_FLAGGED], true)) {
                     throw new Exception(Lang::txt('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
                 }
 
@@ -315,7 +315,7 @@ class Articles extends SiteController
         Request::checkToken();
 
         // Incoming
-        $comment = Request::getArray('comment', array(), 'post');
+        $comment = Request::getArray('comment', [], 'post');
 
         // The editor posts HTML; keep only what is safe to echo
         if (isset($comment['content'])) {
@@ -347,7 +347,7 @@ class Articles extends SiteController
         // so without pinning these, an edit of one's own comment could
         // re-attribute it to another member, move it to another article, or
         // clear a state of 3 (reported as abusive) back to published.
-        $keep = array(
+        $keep = [
             'entry_id'   => $row->get('entry_id'),
             'parent'     => $row->get('parent'),
             'created'    => $row->get('created'),
@@ -355,7 +355,7 @@ class Articles extends SiteController
             'state'      => $row->get('state'),
             'helpful'    => $row->get('helpful'),
             'nothelpful' => $row->get('nothelpful')
-        );
+        ];
 
         $row->set($comment);
 
@@ -407,7 +407,7 @@ class Articles extends SiteController
         // Log the activity
         $article = Article::oneOrFail($row->get('entry_id'));
 
-        $recipients = array($row->get('created_by'));
+        $recipients = [$row->get('created_by')];
         if ($row->get('parent')) {
             $recipients[] = $row->parent()->get('created_by');
         }
@@ -419,11 +419,11 @@ class Articles extends SiteController
                 'scope_id'    => $row->get('id'),
                 'anonymous'   => $row->get('anonymous', 0),
                 'description' => Lang::txt('COM_KB_ACTIVITY_COMMENT_' . ($cid ? 'UPDATED' : 'CREATED'), $row->get('id'), '<a href="' . Route::url($article->link() . '#c' . $row->get('id')) . '">' . htmlspecialchars((string) ($article->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title'    => $article->get('title'),
                     'entry_id' => $article->get('id'),
                     'url'      => $article->link()
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -484,7 +484,7 @@ class Articles extends SiteController
         // recurses into those itself.
         $comments = $article->comments()
             ->whereEquals('parent', 0)
-            ->whereIn('state', array(Comment::STATE_PUBLISHED, Comment::STATE_FLAGGED))
+            ->whereIn('state', [Comment::STATE_PUBLISHED, Comment::STATE_FLAGGED])
             ->rows();
 
         $this->_feedItem($comments, Route::url($article->link()));
@@ -579,7 +579,7 @@ class Articles extends SiteController
 
             // replies() hands back a query builder, so this needs resolving too
             $replies = $comment->replies()
-                ->whereIn('state', array(Comment::STATE_PUBLISHED, Comment::STATE_FLAGGED))
+                ->whereIn('state', [Comment::STATE_PUBLISHED, Comment::STATE_FLAGGED])
                 ->rows();
 
             if ($replies->count()) {

@@ -41,14 +41,14 @@ class Offering extends Table
      * @param   array   $config  Config options
      * @return  object
      */
-    public static function getInstance($type, $prefix = 'Table', $config = array())
+    public static function getInstance($type, $prefix = 'Table', $config = [])
     {
         static $instances;
 
         $alias = $type;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         if (!isset($instances[$alias])) {
@@ -80,10 +80,10 @@ class Offering extends Table
             return parent::load($oid);
         }
 
-        return parent::load(array(
+        return parent::load([
             'alias'     => trim($oid),
             'course_id' => intval($course_id)
-        ));
+        ]);
     }
 
     /**
@@ -116,13 +116,13 @@ class Offering extends Table
         }
 
         // Blank date boxes post ''; strict SQL refuses '' for a datetime, so store NULL
-        foreach (array('publish_up', 'publish_down') as $col) {
+        foreach (['publish_up', 'publish_down'] as $col) {
             if (isset($this->$col) && trim((string) $this->$col) === '') {
                 $this->$col = null;
             }
         }
         // NOT NULL TEXT without a default: an unset value is left out of the INSERT
-        foreach (array('params') as $col) {
+        foreach (['params'] as $col) {
             if (!isset($this->$col)) {
                 $this->$col = '';
             }
@@ -165,12 +165,12 @@ class Offering extends Table
      * @param   array   $filters
      * @return  string  SQL
      */
-    private function _buildQuery($filters = array())
+    private function _buildQuery($filters = [])
     {
         $query  = " FROM $this->_tbl AS ci";
         $query .= " INNER JOIN #__courses AS c ON c.id=ci.course_id";
 
-        $where = array();
+        $where = [];
 
         if (isset($filters['course_alias']) && $filters['course_alias']) {
             $where[] = "c.alias=" . $this->_db->quote($filters['course_alias']);
@@ -215,7 +215,7 @@ class Offering extends Table
      * @param   array    $filters
      * @return  integer
      */
-    public function count($filters = array())
+    public function count($filters = [])
     {
         $query  = "SELECT COUNT(ci.id)";
         $query .= $this->_buildquery($filters);
@@ -230,7 +230,7 @@ class Offering extends Table
      * @param   array  $filters
      * @return  array
      */
-    public function find($filters = array())
+    public function find($filters = [])
     {
         $query  = "SELECT ci.*, c.alias AS course_alias";
         $query .= $this->_buildquery($filters);
@@ -246,7 +246,7 @@ class Offering extends Table
                 . "COALESCE(NULLIF(ci.publish_up, '0000-00-00 00:00:00'), ci.created) DESC";
         } else {
             // Whitelist sortable columns so $filters['sort'] never reaches SQL raw
-            $sortable = array('id', 'title', 'alias', 'state', 'publish_up', 'publish_down', 'created', 'ordering');
+            $sortable = ['id', 'title', 'alias', 'state', 'publish_up', 'publish_down', 'created', 'ordering'];
             $sort = (isset($filters['sort']) && in_array($filters['sort'], $sortable, true)) ? $filters['sort'] : 'created';
 
             $orderby = "ci." . $sort . " " . $sortDir;

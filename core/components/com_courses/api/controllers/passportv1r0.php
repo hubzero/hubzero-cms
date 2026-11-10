@@ -178,7 +178,7 @@ class Passportv1r0 extends base
         $permissions_path = $db->loadResult();
 
         // Get all groups the current user is a member of
-        $user_groups = array();
+        $user_groups = [];
         if (!empty($user)) {
             $user_groups = $user->groups('members');
         }

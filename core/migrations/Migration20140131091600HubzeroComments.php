@@ -29,14 +29,14 @@ class Migration20140131091600HubzeroComments extends Base
                 ->loadObjectList();
 
             if ($results && count($results) > 0) {
-                $parents = array();
+                $parents = [];
                 foreach ($results as $r) {
                     if (substr($r->category, -7) != 'comment') {
-                        $parents[$r->id] = array(
+                        $parents[$r->id] = [
                             'referenceid' => $r->referenceid,
                             'category'    => $r->category,
                             'id'          => 0
-                        );
+                        ];
                     }
                 }
 
@@ -46,7 +46,7 @@ class Migration20140131091600HubzeroComments extends Base
                     $record = new $cls($this->db);
 
                     if ($record instanceof \Hubzero\Database\Relational) {
-                        $data = array(
+                        $data = [
                             'content'    => $r->comment,
                             'created'    => $r->added,
                             'created_by' => $r->added_by,
@@ -55,7 +55,7 @@ class Migration20140131091600HubzeroComments extends Base
                             'notify'     => $r->email,
                             'item_id'    => $r->referenceid,
                             'item_type'  => $r->category
-                        );
+                        ];
 
                         if (substr($r->category, -7) == 'comment') {
                             if (isset($parents[$r->referenceid])) {
@@ -90,11 +90,11 @@ class Migration20140131091600HubzeroComments extends Base
                     }
 
                     if (substr($r->category, -7) != 'comment' && isset($parents[$r->id])) {
-                        $parents[$r->id] = array(
+                        $parents[$r->id] = [
                             'referenceid' => $r->referenceid,
                             'category'    => $r->category,
                             'id'          => $record->id
-                        );
+                        ];
                     }
                 }
             }

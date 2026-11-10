@@ -54,19 +54,19 @@ class Sql extends Element
         }
 
         if (!$options) {
-            $options = array();
+            $options = [];
         }
 
         return Builder\Select::genericlist(
             $options,
             $control_name . '[' . $name . ']',
-            array(
+            [
                 'id'          => $control_name . $name,
                 'list.attr'   => 'class="inputbox"',
                 'list.select' => $value,
                 'option.key'  => $key,
                 'option.text' => $val
-            )
+            ]
         );
     }
 }

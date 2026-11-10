@@ -38,10 +38,10 @@ class Post extends Table
      */
     public function loadByBoard($collection_id = null, $item_id = null)
     {
-        $fields = array(
+        $fields = [
             'collection_id' => (int) $collection_id,
             'item_id'       => (int) $item_id
-        );
+        ];
 
         return parent::load($fields);
     }
@@ -92,7 +92,7 @@ class Post extends Table
      * @param   array   $filters
      * @return  mixed
      */
-    public function find($what = '', $filters = array())
+    public function find($what = '', $filters = [])
     {
         $what = strtolower(trim($what));
 
@@ -185,7 +185,7 @@ class Post extends Table
      * @return  string  SQL
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildQuery($filters = array())
+    protected function _buildQuery($filters = [])
     {
         $query  = " FROM $this->_tbl AS p";
         $query .= " INNER JOIN #__collections AS c ON c.id=p.collection_id";
@@ -197,7 +197,7 @@ class Post extends Table
                 . "AND v.user_id=" . $this->_db->quote($filters['user_id']);
         }
 
-        $where = array();
+        $where = [];
 
         if (isset($filters['collection_id']) && $filters['collection_id']) {
             if (is_array($filters['collection_id'])) {
@@ -262,7 +262,7 @@ class Post extends Table
      * @param   array    $filters  Filters to construct query from
      * @return  integer
      */
-    public function getCount($filters = array())
+    public function getCount($filters = [])
     {
         return $this->find('count', $filters);
     }
@@ -273,7 +273,7 @@ class Post extends Table
      * @param   array  $filters  Filters to construct query from
      * @return  array
      */
-    public function getRecords($filters = array())
+    public function getRecords($filters = [])
     {
         return $this->find('list', $filters);
     }

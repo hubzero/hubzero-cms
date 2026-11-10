@@ -53,11 +53,11 @@ class Params extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'object_id' => 'positive|nonzero',
         'folder'    => 'notempty',
         'element'   => 'notempty'
-    );
+    ];
 
     /**
      * Load a record and binf to $this

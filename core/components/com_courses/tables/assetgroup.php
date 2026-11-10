@@ -93,7 +93,7 @@ class AssetGroup extends Table
      * @param  array $filters
      * @return $query database query
      */
-    private function _buildQuery($filters = array())
+    private function _buildQuery($filters = [])
     {
         $query  = " FROM $this->_tbl AS cag";
         $query .= " LEFT JOIN #__courses_offering_section_dates AS sd ON sd.scope='asset_group' AND sd.scope_id=cag.id";
@@ -102,7 +102,7 @@ class AssetGroup extends Table
         }
         $query .= " LEFT JOIN #__courses_units AS cu ON cu.id = cag.unit_id";
 
-        $where = array();
+        $where = [];
 
         // A unit_id of 0 must match no groups rather than dropping the clause
         if (isset($filters['unit_id'])) {
@@ -135,7 +135,7 @@ class AssetGroup extends Table
      * @param     array $filters Filters to build query from
      * @return    integer
      */
-    public function count($filters = array())
+    public function count($filters = [])
     {
         $query  = "SELECT COUNT(cag.id)";
         $query .= $this->_buildQuery($filters['w']);
@@ -150,7 +150,7 @@ class AssetGroup extends Table
      * @param     array $filters Filters to build query from
      * @return    array
      */
-    public function find($filters = array())
+    public function find($filters = [])
     {
         $query  = "SELECT cag.*, sd.publish_up, sd.publish_down, sd.section_id";
         $query .= $this->_buildQuery($filters['w']);

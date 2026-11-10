@@ -22,7 +22,7 @@ $metadata  = '<div class="share">' . "\n";
 $metadata .= "\t" . Lang::txt('PLG_RESOURCES_SHARE') . ': ';
 
 // Available options
-$sharing = array('facebook', 'twitter', 'google', 'pinterest', 'linkedin', 'delicious', 'reddit');
+$sharing = ['facebook', 'twitter', 'google', 'pinterest', 'linkedin', 'delicious', 'reddit'];
 
 foreach ($sharing as $shared) {
     if ($this->_params->get('share_' . $shared, 1)) {

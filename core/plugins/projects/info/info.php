@@ -37,14 +37,14 @@ class Info extends Plugin
      */
     public function &onProjectAreas($alias = null)
     {
-        $area = array(
+        $area = [
             'name' => $this->_name,
             'alias' => null,
             'title' => Lang::txt('PLG_PROJECTS_INFO'),
             'submenu' => null,
             'show' => true,
             'icon' => 'f05a'
-        );
+        ];
         return $area;
     }
 
@@ -60,10 +60,10 @@ class Info extends Plugin
     {
         $returnhtml = true;
 
-        $arr = array(
+        $arr = [
             'html' => '',
             'metadata' => ''
-        );
+        ];
 
         // Get this area details
         $this->_area = $this->onProjectAreas();
@@ -94,7 +94,7 @@ class Info extends Plugin
                 ->where('project_id', '=', $model->get('id'))
                 ->rows();
 
-            $info = array();
+            $info = [];
             foreach ($fields as $field) {
                 foreach ($projectDescription as $description) {
                     if ($description->description_key == $field->name) {
@@ -139,7 +139,7 @@ class Info extends Plugin
             ->where('project_id', '=', $model->get('id'))
             ->rows();
 
-        $info = array();
+        $info = [];
         foreach ($fields as $field) {
             foreach ($projectDescription as $description) {
                 if ($description->description_key == $field->name) {

@@ -197,11 +197,11 @@ class Languagefilter extends Plugin
 
             // attach build rules for language SEF
             //$router->attachBuildRule(array($this, 'buildRule'));
-            $router->rules('build')->append('languagefilter', array($this, 'buildRule'));
+            $router->rules('build')->append('languagefilter', [$this, 'buildRule']);
 
             // attach parse rules for language SEF
             //$router->attachParseRule(array($this, 'parseRule'));
-            $router->rules('parse')->insertAfter('prep', 'languagefilter', array($this, 'parseRule'));
+            $router->rules('parse')->insertAfter('prep', 'languagefilter', [$this, 'parseRule']);
 
             // Adding custom site name
             $languages = Lang::available('lang_code');
@@ -242,7 +242,7 @@ class Languagefilter extends Plugin
                     $test = true;
                     foreach ($uri->getQuery(true) as $key => $value) {
                         if (
-                            !in_array($key, array('format', 'Itemid', 'lang'))
+                            !in_array($key, ['format', 'Itemid', 'lang'])
                             && !(isset($vars[$key]) && $vars[$key] == $value)
                         ) {
                             $test = false;
@@ -293,7 +293,7 @@ class Languagefilter extends Plugin
      */
     public function parseRule($uri)
     {
-        $array = array();
+        $array = [];
         $lang_code = Request::getString(App::hash('language'), null, 'cookie');
 
         // No cookie - let's try to detect browser language or use site default
@@ -325,9 +325,9 @@ class Languagefilter extends Plugin
 
                         if (Config::get('sef_rewrite')) {
                             //App::redirect($uri->root() . $uri->toString(array('path', 'query', 'fragment')));
-                            App::redirect($uri->root() . ltrim($uri->toString(array('query', 'fragment')), '/'));
+                            App::redirect($uri->root() . ltrim($uri->toString(['query', 'fragment']), '/'));
                         } else {
-                            $path = $uri->toString(array('path', 'query', 'fragment'));
+                            $path = $uri->toString(['path', 'query', 'fragment']);
                             App::redirect($uri->root() . 'index.php' . ($path ? '/' . $path : ''));
                         }
                     }
@@ -340,9 +340,9 @@ class Languagefilter extends Plugin
                         $uri->setPath($sef . '/' . $path);
 
                         if (Config::get('sef_rewrite')) {
-                            App::redirect($uri->root() . $uri->toString(array('path', 'query', 'fragment')));
+                            App::redirect($uri->root() . $uri->toString(['path', 'query', 'fragment']));
                         } else {
-                            $path = $uri->toString(array('path', 'query', 'fragment'));
+                            $path = $uri->toString(['path', 'query', 'fragment']);
                             App::redirect($uri->root() . 'index.php' . ($path ? ('/' . $path) : ''));
                         }
                     } elseif (
@@ -355,9 +355,9 @@ class Languagefilter extends Plugin
                         $uri->setPath(implode('/', $parts));
 
                         if (Config::get('sef_rewrite')) {
-                            App::redirect($uri->root() . $uri->toString(array('path', 'query', 'fragment')));
+                            App::redirect($uri->root() . $uri->toString(['path', 'query', 'fragment']));
                         } else {
-                            $path = $uri->toString(array('path', 'query', 'fragment'));
+                            $path = $uri->toString(['path', 'query', 'fragment']);
                             App::redirect($uri->root() . 'index.php' . ($path ? ('/' . $path) : ''));
                         }
                     }
@@ -469,7 +469,7 @@ class Languagefilter extends Plugin
      * @param   array    $options  Array holding options (remember, autoregister, group)
      * @return  void
      */
-    public function onUserLogin($user, $options = array())
+    public function onUserLogin($user, $options = [])
     {
         $menu = App::get('menu');
 
@@ -559,7 +559,7 @@ class Languagefilter extends Plugin
                 // Associated menu items in other languages
                 if ($associations && $this->params->get('menu_associations')) {
                     $menu   = App::get('menu');
-                    $server = \Hubzero\Utility\Uri::getInstance()->toString(array('scheme', 'host', 'port'));
+                    $server = \Hubzero\Utility\Uri::getInstance()->toString(['scheme', 'host', 'port']);
 
                     foreach (Lang::available() as $language) {
                         if (isset($associations[$language->lang_code])) {
@@ -587,18 +587,18 @@ class Languagefilter extends Plugin
                                         $server . $relLink,
                                         'alternate',
                                         'rel',
-                                        array(
+                                        [
                                         'hreflang' => $language->lang_code
-                                        )
+                                        ]
                                     );
                                 } else {
                                     Document::addHeadLink(
                                         $server . $link,
                                         'alternate',
                                         'rel',
-                                        array(
+                                        [
                                         'hreflang' => $language->lang_code
-                                        )
+                                        ]
                                     );
                                 }
                             }
@@ -607,7 +607,7 @@ class Languagefilter extends Plugin
                 } elseif ($active->home) {
                 // Homepages in other languages
                     $menu   = App::get('menu');
-                    $server = \Hubzero\Utility\Uri::getInstance()->toString(array('scheme', 'host', 'port'));
+                    $server = \Hubzero\Utility\Uri::getInstance()->toString(['scheme', 'host', 'port']);
 
                     foreach (Lang::available() as $language) {
                         $item = $menu->getDefault($language->lang_code);
@@ -636,18 +636,18 @@ class Languagefilter extends Plugin
                                     $server . $relLink,
                                     'alternate',
                                     'rel',
-                                    array(
+                                    [
                                         'hreflang' => $language->lang_code
-                                    )
+                                    ]
                                 );
                             } else {
                                 Document::addHeadLink(
                                     $server . $link,
                                     'alternate',
                                     'rel',
-                                    array(
+                                    [
                                         'hreflang' => $language->lang_code
-                                    )
+                                    ]
                                 );
                             }
                         }

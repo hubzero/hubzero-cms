@@ -56,31 +56,31 @@ class ServiceProvider extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'entity_id' => 'notempty',
         'name'      => 'notempty',
         'acs_url'   => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Fields to be parsed automatically on each update
      *
      * @var  array
      */
-    public $renew = array(
+    public $renew = [
         'modified',
         'modified_by'
-    );
+    ];
 
     /**
      * Generates automatic modified field value
@@ -210,12 +210,12 @@ class ServiceProvider extends Relational
             return null;
         }
 
-        return array(
+        return [
             'subject'     => isset($parsed['subject']['CN']) ? $parsed['subject']['CN'] : $this->get('entity_id'),
             'issuer'      => isset($parsed['issuer']['CN']) ? $parsed['issuer']['CN'] : '',
             'valid_to'    => isset($parsed['validTo_time_t']) ? (int) $parsed['validTo_time_t'] : 0,
             'fingerprint' => function_exists('openssl_x509_fingerprint') ? @openssl_x509_fingerprint($pem, 'sha256') : ''
-        );
+        ];
     }
 
     /**
@@ -240,7 +240,7 @@ class ServiceProvider extends Relational
         // Falling back to the default set here would send an SP attributes
         // its registration says it should not get.
         if (!is_array($map)) {
-            return array();
+            return [];
         }
 
         return $map;
@@ -264,12 +264,12 @@ class ServiceProvider extends Relational
         // A restriction that cannot be read must not be treated as "no
         // restriction" — return an empty list, which matches nobody
         if (!is_array($groups)) {
-            return array();
+            return [];
         }
 
         $groups = array_values(array_filter(array_map('trim', $groups)));
 
-        return empty($groups) ? array() : $groups;
+        return empty($groups) ? [] : $groups;
     }
 
     /**
@@ -309,7 +309,7 @@ class ServiceProvider extends Relational
      *
      * @var  array
      */
-    protected $membership = array();
+    protected $membership = [];
 
     /**
      * userIsInGroup(), asked once per group and user
@@ -384,7 +384,7 @@ class ServiceProvider extends Relational
     public function releasedGroups($user, $policy = 'allowed')
     {
         if (!$user || !$user->get('id')) {
-            return array();
+            return [];
         }
 
         if ($policy == 'all') {
@@ -397,10 +397,10 @@ class ServiceProvider extends Relational
         // the full list here would quietly turn 'allowed' into 'all' the
         // moment an admin cleared the restriction.
         if (!$allowed) {
-            return array();
+            return [];
         }
 
-        $released = array();
+        $released = [];
 
         foreach ($allowed as $cn) {
             if ($this->isInGroup($cn, $user->get('id'))) {

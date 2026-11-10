@@ -35,7 +35,7 @@ $protocol = Request::isSecure() ? 'https://' : 'http://';
 if ($this->row->get('login')) {
     $submitter = $this->row->submitter;
     if ($submitter->get('id')) {
-        $gids = array();
+        $gids = [];
         foreach (User::getInstance($this->row->submitter->get('id'))->accessgroups() as $g) {
             $gids[] = $g->group_id;
         }
@@ -88,7 +88,7 @@ if ($sq->conditions)
     }
 }
 */
-$cc = array();
+$cc = [];
 ?>
 <header id="content-header">
     <h2><?php echo $this->title; ?></h2>
@@ -425,7 +425,7 @@ $cc = array();
                             <label for="tags">
                                 <?php echo Lang::txt('COM_SUPPORT_COMMENT_TAGS'); ?>:<br />
                                 <?php
-                                $tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->row->tags('string', null))));
+                                $tf = Event::trigger('hubzero.onGetMultiEntry', [['tags', 'tags', 'actags', '', $this->row->tags('string', null)]]);
 
                                 if (count($tf) > 0) {
                                     echo $tf[0];
@@ -448,7 +448,7 @@ $cc = array();
                                             }
                                         }
 
-                                        $gc = Event::trigger('hubzero.onGetSingleEntryWithSelect', array(array('groups', 'ticket[group_id]', 'acgroup', '', $group, '', 'ticketowner')));
+                                        $gc = Event::trigger('hubzero.onGetSingleEntryWithSelect', [['groups', 'ticket[group_id]', 'acgroup', '', $group, '', 'ticketowner']]);
                                         if (count($gc) > 0) {
                                             echo $gc[0];
                                         } else { ?>
@@ -565,7 +565,7 @@ $cc = array();
 
                 <?php if ($this->row->access('create', 'comments') || $this->row->access('create', 'private_comments')) { ?>
                     <?php
-                        $results = Event::trigger('support.onTicketComment', array($this->row));
+                        $results = Event::trigger('support.onTicketComment', [$this->row]);
                         echo implode("\n", $results);
                     ?>
                     <fieldset>
@@ -580,7 +580,7 @@ $cc = array();
                                     <select name="messages" id="messages" class="form-control" aria-label="<?php echo Lang::txt('COM_SUPPORT_COMMENT_MESSAGES'); ?>">
                                         <option value="mc"><?php echo Lang::txt('COM_SUPPORT_COMMENT_CUSTOM'); ?></option>
                                         <?php
-                                        $hi = array();
+                                        $hi = [];
                                         foreach ($this->lists['messages'] as $message) {
                                             ?>
                                             <option value="m<?php echo $message->id; ?>"><?php echo $this->escape(stripslashes($message->title)); ?></option>
@@ -682,7 +682,7 @@ $cc = array();
                         <div class="form-group">
                             <label for="acmembers">
                                 <?php echo Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC'); ?>: <?php
-                                $mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'cc', 'acmembers', '', implode(', ', $cc))));
+                                $mc = Event::trigger('hubzero.onGetMultiEntry', [['members', 'cc', 'acmembers', '', implode(', ', $cc)]]);
                                 if (count($mc) > 0) {
                                     echo '<span class="hint">' . Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS_AUTOCOMPLETE') . '</span>' . $mc[0];
                                 } else {

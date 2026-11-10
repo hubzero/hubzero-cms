@@ -6,7 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-return array(
+return [
     // Base Services
     'Bootstrap\Api\Providers\EventServiceProvider',
     'Bootstrap\Api\Providers\TranslationServiceProvider',
@@ -28,4 +28,4 @@ return array(
     'Hubzero\Api\Response\JsonpCallable',
     //'Hubzero\Api\Response\DateFormatter',
     //'Hubzero\Api\Response\ObjectExpander',
-);
+];

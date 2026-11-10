@@ -153,7 +153,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                         35,
                         10,
                         'field-description',
-                        array('class' => 'required minimal no-footer', 'buttons' => false)
+                        ['class' => 'required minimal no-footer', 'buttons' => false]
                     );
                     ?>
                 </div>

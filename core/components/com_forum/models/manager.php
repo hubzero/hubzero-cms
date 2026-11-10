@@ -27,7 +27,7 @@ class Manager extends Obj
      *
      * @var  array
      */
-    protected $cache = array();
+    protected $cache = [];
 
     /**
      * Constructor
@@ -54,7 +54,7 @@ class Manager extends Obj
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         $key = $scope . '_' . $scope_id;
@@ -74,26 +74,26 @@ class Manager extends Obj
     public function setup()
     {
         // Create a default section
-        $section = Section::blank()->set(array(
+        $section = Section::blank()->set([
             'title'    => Lang::txt('COM_FORUM_SECTION_DEFAULT'),
             'scope'    => $this->get('scope'),
             'scope_id' => $this->get('scope_id'),
             'state'    => 1
-        ));
+        ]);
         if (!$section->save()) {
             $this->setError($section->getError());
             return false;
         }
 
         // Create a default category
-        $category = Category::blank()->set(array(
+        $category = Category::blank()->set([
             'title'       => Lang::txt('COM_FORUM_CATEGORY_DEFAULT'),
             'description' => Lang::txt('COM_FORUM_CATEGORY_DEFAULT_DESCRIPTION'),
             'section_id'  => $section->get('id'),
             'scope'       => $this->get('scope'),
             'scope_id'    => $this->get('scope_id'),
             'state'       => 1
-        ));
+        ]);
         if (!$category->save()) {
             $this->setError($category->getError());
             return false;
@@ -108,7 +108,7 @@ class Manager extends Obj
      * @param   array    $filters  Filters to apply to data fetch
      * @return  object
      */
-    public function sections($filters = array())
+    public function sections($filters = [])
     {
         if (!isset($filters['scope'])) {
             $filters['scope'] = (string) $this->get('scope');
@@ -137,7 +137,7 @@ class Manager extends Obj
 
         if (isset($filters['access'])) {
             if (!is_array($filters['access'])) {
-                $filters['access'] = array($filters['access']);
+                $filters['access'] = [$filters['access']];
             }
 
             $model->whereIn('access', $filters['access']);
@@ -152,7 +152,7 @@ class Manager extends Obj
      * @param   array    $filters  Filters to apply to the query
      * @return  object
      */
-    public function categories($filters = array())
+    public function categories($filters = [])
     {
         if (!isset($filters['scope'])) {
             $filters['scope'] = (string) $this->get('scope');
@@ -177,7 +177,7 @@ class Manager extends Obj
 
         if (isset($filters['access'])) {
             if (!is_array($filters['access'])) {
-                $filters['access'] = array($filters['access']);
+                $filters['access'] = [$filters['access']];
             }
 
             $model->whereIn('access', $filters['access']);
@@ -192,7 +192,7 @@ class Manager extends Obj
      * @param   array    $filters  Filters to apply to the query
      * @return  object
      */
-    public function posts($filters = array())
+    public function posts($filters = [])
     {
         if (!isset($filters['scope'])) {
             $filters['scope'] = (string) $this->get('scope');
@@ -251,7 +251,7 @@ class Manager extends Obj
 
         if (isset($filters['access'])) {
             if (!is_array($filters['access'])) {
-                $filters['access'] = array($filters['access']);
+                $filters['access'] = [$filters['access']];
             }
 
             $model->whereIn('access', $filters['access']);
@@ -272,7 +272,7 @@ class Manager extends Obj
      * @param   array    $filters
      * @return  integer
      */
-    public function count($what = 'threads', $filters = array())
+    public function count($what = 'threads', $filters = [])
     {
         $key = 'stats.' . strtolower(trim($what));
 
@@ -397,7 +397,7 @@ class Manager extends Obj
         $results = $db->loadObjectList();
 
         if (!$results || !is_array($results)) {
-            $results = array();
+            $results = [];
         }
 
         $scope = $this->get('scope');

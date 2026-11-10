@@ -66,7 +66,7 @@ class Managers extends SiteController
 
         $mbrs = explode(',', $m);
 
-        $users = array();
+        $users = [];
         foreach ($mbrs as $mbr) {
             // Retrieve user's account info
             $mbr = trim($mbr);
@@ -124,9 +124,9 @@ class Managers extends SiteController
 
         $managers = $this->course->managers();
 
-        $mbrs = Request::getArray('entries', array(0), 'post');
+        $mbrs = Request::getArray('entries', [0], 'post');
 
-        $users = array();
+        $users = [];
         foreach ($mbrs as $mbr) {
             if (!isset($mbr['select'])) {
                 continue;
@@ -178,7 +178,7 @@ class Managers extends SiteController
 
         $model = Course::getInstance($id);
 
-        $entries = Request::getArray('entries', array(0), 'post');
+        $entries = Request::getArray('entries', [0], 'post');
 
         foreach ($entries as $key => $data) {
             // The default above is array(0), so with no `entries` parameter at all

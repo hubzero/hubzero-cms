@@ -66,12 +66,12 @@ class Wikiwyg extends Plugin
         $id = null,
         $asset = null,
         $author = null,
-        $params = array()
+        $params = []
     ) {
         if (empty($id)) {
             $id = $name;
         }
-        $id = str_replace(array('[', ']'), '_', $id);
+        $id = str_replace(['[', ']'], '_', $id);
 
         $col = $col ? (int) $col : 10;
         $row = $row ? (int) $row : 35;
@@ -85,10 +85,10 @@ class Wikiwyg extends Plugin
         }
 
         if (!isset($params['class'])) {
-            $params['class'] = array();
+            $params['class'] = [];
         }
         if (!is_array($params['class'])) {
-            $params['class'] = array($params['class']);
+            $params['class'] = [$params['class']];
         }
         if ($cls = $this->params->get('class')) {
             $params['class'][] = $cls;
@@ -96,7 +96,7 @@ class Wikiwyg extends Plugin
         $params['class'][] = 'wiki-toolbar-content';
         $params['class'] = implode(' ', $params['class']);
 
-        $atts = array();
+        $atts = [];
         foreach ($params as $key => $value) {
             $atts[] = $key . '="' . $value . '"';
         }

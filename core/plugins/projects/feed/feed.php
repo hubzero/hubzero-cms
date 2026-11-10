@@ -69,14 +69,14 @@ class Feed extends Plugin
      */
     public function &onProjectAreas($alias = null)
     {
-        $area = array(
+        $area = [
             'name'    => 'feed',
             'alias'   => null,
             'title'   => Lang::txt('PLG_PROJECTS_UPDATES'),
             'submenu' => null,
             'show'    => true,
             'icon'    => 'f053'
-        );
+        ];
         return $area;
     }
 
@@ -106,10 +106,10 @@ class Feed extends Plugin
     {
         $returnhtml = true;
 
-        $arr = array(
+        $arr = [
             'html'     => '',
             'metadata' => ''
-        );
+        ];
 
         // Get this area details
         $this->_area = $this->onProjectAreas();
@@ -220,11 +220,11 @@ class Feed extends Plugin
         $html = \Hubzero\Module\Helper::renderModules('projectpage');
 
         // Side blocks from other plugins?
-        $sections = Event::trigger('projects.onProjectMiniList', array($model));
+        $sections = Event::trigger('projects.onProjectMiniList', [$model]);
 
         if (!empty($sections)) {
             // Show subscription to feed (new)
-            $subscribe = Event::trigger('projects.onProjectMember', array($model));
+            $subscribe = Event::trigger('projects.onProjectMember', [$model]);
 
             $html .= !empty($subscribe[0]) ? $subscribe[0] : null;
             foreach ($sections as $section) {
@@ -286,19 +286,19 @@ class Feed extends Plugin
     {
         $limit = intval($this->params->get('limit', 25));
 
-        $filters = array(
+        $filters = [
             'role'  => ($this->model->member() ? $this->model->member()->role : 0),
             'limit' => Request::getInt('limit', $limit),
             'start' => Request::getInt('start', 0),
             'search' => Request::getString('search', '')
-        );
+        ];
 
         $recipient = \Hubzero\Activity\Recipient::all();
 
         $r = $recipient->getTableName();
         $l = \Hubzero\Activity\Log::blank()->getTableName();
 
-        $scopes = array('project');
+        $scopes = ['project'];
         $managers = $this->model->table('Owner')->getIds($this->model->get('id')); //team(array('role' => 1));
         if (in_array(User::get('id'), $managers)) {
             $scopes[] = 'project_managers';
@@ -356,13 +356,13 @@ class Feed extends Plugin
 
         // Incoming
         $managers  = Request::getInt('managers_only', 0);
-        $comment = array(
+        $comment = [
             'id'          => Request::getInt('activity', 0),
             'description' => trim(Request::getString('comment', '')),
             'scope'       => 'project.comment',
             'scope_id'    => $this->model->get('id'),
             'parent'      => Request::getInt('parent_activity', 0),
-        );
+        ];
         $isNew = true;
 
         // Text clean-up
@@ -397,7 +397,7 @@ class Feed extends Plugin
             // Record activity
             if ($row->get('id') && $isNew) {
                 // Record the activity
-                $recipients = array();
+                $recipients = [];
                 // Log to the project
                 $recipients[] = ['project', $this->model->get('id')];
                 // Log the activity to the creator
@@ -420,10 +420,10 @@ class Feed extends Plugin
                         ->rows();
 
                     foreach ($currentRecipients as $recipient) {
-                        $recipient->set(array(
+                        $recipient->set([
                             'created'  => Date::toSql(),
                             'viewed'   => null
-                        ));
+                        ]);
                         $recipient->save();
                     }
                 }
@@ -436,20 +436,20 @@ class Feed extends Plugin
                         'scope_id'    => $row->get('scope_id'),
                         'anonymous'   => $row->get('anonymous', 0),
                         'description' => $row->get('description'),
-                        'details'     => array(
+                        'details'     => [
                             'url'   => Route::url($this->model->link() . '&active=' . $this->_name . '#activity' . $row->get('id')),
                             'class' => ($row->get('parent') ? 'quote' : 'blog')
-                        )
+                        ]
                     ],
                     'recipients' => $recipients
                 ]);
 
-                Event::trigger('projects.onWatch', array(
+                Event::trigger('projects.onWatch', [
                     $this->model,
                     ($row->get('parent') ? 'quote' : 'blog'),
-                    array($row->get('id')),
+                    [$row->get('id')],
                     User::get('id')
-                ));
+                ]);
             }
         }
 
@@ -541,11 +541,11 @@ class Feed extends Plugin
     {
         $limit = intval($this->params->get('limit', 25));
 
-        $filters = array(
+        $filters = [
             'limit' => Request::getInt('limit', $limit),
             'start' => Request::getInt('start', 0),
             'created' => ''
-        );
+        ];
 
         if ($start = Request::getString('recorded')) {
             $filters['created'] = $start;
@@ -558,7 +558,7 @@ class Feed extends Plugin
         $r = $recipient->getTableName();
         $l = \Hubzero\Activity\Log::blank()->getTableName();
 
-        $scopes = array('project');
+        $scopes = ['project'];
         $managers = $this->model->table('Owner')->getIds($this->model->get('id')); //team(array('role' => 1));
         if (in_array(User::get('id'), $managers)) {
             $scopes[] = 'project_managers';
@@ -589,10 +589,10 @@ class Feed extends Plugin
         // @TODO: Move to API
         if (isset($filters['created']) && $filters['created']) {
             $data = new \stdClass();
-            $data->activities = array();
+            $data->activities = [];
 
             if (count($activities)) {
-                $shown = array();
+                $shown = [];
 
                 // Loop through activities
                 foreach ($activities as $a) {
@@ -602,7 +602,7 @@ class Feed extends Plugin
 
                     $shown[] = $a->get('id');
 
-                    $prep = array(
+                    $prep = [
                         'activity'   => $a->log->toObject(),
                         'eid'        => $a->log->get('id'),
                         //'etbl'       => $etbl,
@@ -613,13 +613,13 @@ class Feed extends Plugin
                         'class'      => $a->log->details->get('class', ($a->log->get('parent') ? 'quote' : '')),
                         //'preview'    => $preview,
                         'parent'     => $a->log->get('parent')
-                    );
+                    ];
 
                     $prep['body'] = $this->view('_activity', 'activity')
                         ->set('option', $this->_option)
                         ->set('model', $this->model)
                         ->set('activity', $a)
-                        ->set('online', array())
+                        ->set('online', [])
                         ->loadTemplate();
 
                     $data->activities[] = $prep;
@@ -684,17 +684,17 @@ class Feed extends Plugin
             ->set('uid', $uid)
             ->set('model', $model)
             ->set('limit', $limit)
-            ->set('activities', array())
+            ->set('activities', [])
             ->set('total', 0);
         if (empty($projects)) {
             return $view->loadTemplate();
         }
         // Only pull activity the user has explicit access to
         foreach ($projects as $project_id) {
-            $scopes = array('project');
+            $scopes = ['project'];
             $managers = $model->table('Owner')->getIds($project_id);
             if (!$managers) {
-                $managers = array();
+                $managers = [];
             }
             if (in_array(User::get('id'), $managers)) {
                 $scopes[] = 'project_managers';
@@ -748,7 +748,7 @@ class Feed extends Plugin
         $entry = \Hubzero\Utility\Sanitize::stripImages($entry);
 
         // Record the activity
-        $recipients = array();
+        $recipients = [];
         // Log to the project
         $recipients[] = ['project', $model->get('id')];
         // Log the activity to the creator
@@ -766,10 +766,10 @@ class Feed extends Plugin
                 'scope_id'    => $model->get('id'),
                 'anonymous'   => 0,
                 'description' => $entry,
-                'details'     => array(
+                'details'     => [
                     'url'   => Route::url($model->link() . '&active=feed'),
                     'class' => 'blog'
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -788,7 +788,7 @@ class Feed extends Plugin
     {
         foreach ($entry->recipients()->rows() as $recipient) {
             if (
-                in_array($recipient->get('scope'), array('project', 'project_managers'))
+                in_array($recipient->get('scope'), ['project', 'project_managers'])
                 && (int) $recipient->get('scope_id') === (int) $this->model->get('id')
             ) {
                 return true;

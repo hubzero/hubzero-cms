@@ -13,7 +13,7 @@ use Hubzero\Facades\User;
 defined('_HZEXEC_') or die();
 
 $base = $this->base;
-$preexistingSubscriptionIds = array();
+$preexistingSubscriptionIds = [];
 $currentUserId = User::get('id');
 ?>
 

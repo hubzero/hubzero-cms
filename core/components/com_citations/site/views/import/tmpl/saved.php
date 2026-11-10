@@ -128,7 +128,7 @@ if ($label == 'none') {
                             <?php endif; ?>
                             <td class="citation-container">
                                 <?php
-                                $formatted = $cite->formatted(array('format' => $this->defaultFormat));
+                                $formatted = $cite->formatted(['format' => $this->defaultFormat]);
                                 if ($cite->doi) {
                                     $formatted = str_replace(
                                         'doi:' . $cite->doi,

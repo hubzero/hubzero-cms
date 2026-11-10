@@ -24,7 +24,7 @@ class Archive
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         if (!isset($instances[$key])) {
@@ -42,7 +42,7 @@ class Archive
      * @param      boolean $boolean Clear cached data?
      * @return     mixed
      */
-    public function categories($filters = array())
+    public function categories($filters = [])
     {
         $counts = $this->articles()
             ->select('category')

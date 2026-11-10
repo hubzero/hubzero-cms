@@ -33,11 +33,11 @@ class DvConfig
 
         $params = Component::params('com_dataviewer');
 
-        $rowOptions = array(5, 10, 25, 50, 100);
-        static::$dv_conf['settings']['num_rows'] = array(
+        $rowOptions = [5, 10, 25, 50, 100];
+        static::$dv_conf['settings']['num_rows'] = [
             'labels' => $rowOptions,
             'values' => $rowOptions,
-        );
+        ];
         $displayLimit = $params->get('record_display_limit');
         static::$dv_conf['settings']['limit'] = $displayLimit == '' ? 10 : $displayLimit;
         static::$dv_conf['settings']['serverside'] = false;
@@ -49,7 +49,7 @@ class DvConfig
 
         static::$dv_conf['null_desc'] = $params->get('null_desc');
         static::$dv_conf['help_file_base_path'] = '';
-        static::$dv_conf['db'] = array();
+        static::$dv_conf['db'] = [];
 
 
         /* Access Control */

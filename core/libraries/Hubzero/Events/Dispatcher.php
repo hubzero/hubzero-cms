@@ -26,7 +26,7 @@ class Dispatcher implements DispatcherInterface
      *
      * @var  array
      */
-    protected $listeners = array();
+    protected $listeners = [];
 
     /**
      * An array of ListenersPriorityQueue indexed
@@ -34,14 +34,14 @@ class Dispatcher implements DispatcherInterface
      *
      * @var  array
      */
-    protected $loaders = array();
+    protected $loaders = [];
 
     /**
      * Names of the listener groups that have already been loaded.
      *
      * @var  array
      */
-    protected $loadedGroups = array();
+    protected $loadedGroups = [];
 
     /**
      * Count the number of registered event.
@@ -97,7 +97,7 @@ class Dispatcher implements DispatcherInterface
      *                                    and the corresponding listener priority as values.
      * @return  Dispatcher    This method is chainable.
      */
-    public function addListeners($listeners, array $events = array())
+    public function addListeners($listeners, array $events = [])
     {
         if (is_string($listeners)) {
             // A group is loaded at most once. The loaders build a fresh set of
@@ -110,7 +110,7 @@ class Dispatcher implements DispatcherInterface
 
             $this->loadedGroups[$listeners] = true;
 
-            $loaded = array();
+            $loaded = [];
             foreach ($this->getListenerLoaders() as $loader) {
                 $loaded += $loader->loadListeners($listeners);
             }
@@ -140,14 +140,14 @@ class Dispatcher implements DispatcherInterface
      * @return  Dispatcher  This method is chainable.
      * @throws  InvalidArgumentException
      */
-    public function addListener($listener, $events = array())
+    public function addListener($listener, $events = [])
     {
         if (!is_object($listener)) {
             throw new InvalidArgumentException('The given listener is not an object.');
         }
 
         if (is_string($events)) {
-            $events = array($events => Priority::NORMAL);
+            $events = [$events => Priority::NORMAL];
         }
 
         // We deal with a closure.
@@ -201,7 +201,7 @@ class Dispatcher implements DispatcherInterface
      * @param   array  $events
      * @throws  InvalidArgumentException
      */
-    public function listen($listener, $events = array())
+    public function listen($listener, $events = [])
     {
         return $this->addListener($listener, $events);
     }
@@ -249,7 +249,7 @@ class Dispatcher implements DispatcherInterface
             if (isset($this->listeners[$event])) {
                 return $this->listeners[$event]->getAll();
             }
-            return array();
+            return [];
         }
 
         return $this->listeners;
@@ -335,7 +335,7 @@ class Dispatcher implements DispatcherInterface
                 unset($this->listeners[$event]);
             }
         } else {
-            $this->listeners = array();
+            $this->listeners = [];
         }
 
         return $this;
@@ -360,7 +360,7 @@ class Dispatcher implements DispatcherInterface
      * @param   mixed  $event  The event object or name.
      * @return  array  The event after being passed through all listeners.
      */
-    public function trigger($event, $args = array())
+    public function trigger($event, $args = [])
     {
         if (!($event instanceof Event)) {
             if (isset($this->events[$event])) {
@@ -388,7 +388,7 @@ class Dispatcher implements DispatcherInterface
                 if ($listener instanceof Closure) {
                     $response = call_user_func($listener, $event);
                 } else {
-                    $response = call_user_func(array($listener, $event->getName()), $event);
+                    $response = call_user_func([$listener, $event->getName()], $event);
                 }
 
                 // Attach response

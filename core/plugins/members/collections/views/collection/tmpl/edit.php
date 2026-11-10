@@ -91,7 +91,7 @@ $this->css();
                     35,
                     5,
                     'field-description',
-                    array('class' => 'form-control minimal no-footer')
+                    ['class' => 'form-control minimal no-footer']
                 );
                 ?>
             </label>
@@ -103,7 +103,7 @@ $this->css();
                 <?php
 
                 $tags = ($this->entry->get('id') ? $this->entry->item()->tags('string') : '');
-                $tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $tags)));
+                $tf = Event::trigger('hubzero.onGetMultiEntry', [['tags', 'tags', 'actags', '', $tags]]);
                 $tf = implode('', $tf);
                 if ($tf) {
                     echo $tf;

@@ -70,7 +70,7 @@ class ArticlesPopular extends Module
         }
 
         // Category filter
-        $catid = $params->get('catid', array());
+        $catid = $params->get('catid', []);
         if (!empty($catid)) {
             $query->whereEquals('catid', $catid);
         }

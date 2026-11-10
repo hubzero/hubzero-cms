@@ -30,7 +30,7 @@ class Codes extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->filters = array(
+        $this->view->filters = [
             'section' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.section',
                 'section',
@@ -59,7 +59,7 @@ class Codes extends AdminController
                 0,
                 'int'
             )
-        );
+        ];
 
         $this->view->section = \Components\Courses\Models\Section::getInstance($this->view->filters['section']);
         if (!$this->view->section->exists()) {
@@ -112,7 +112,7 @@ class Codes extends AdminController
 
         if (!is_object($model)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
 
             // Get the single ID we're working with
             if (is_array($id)) {
@@ -152,7 +152,7 @@ class Codes extends AdminController
         Request::checkToken();
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         // Instantiate a Course object
         $model = new \Components\Courses\Models\Section\Code($fields['id']);
@@ -187,11 +187,11 @@ class Codes extends AdminController
         Request::checkToken();
 
         // Incoming
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
 
         // Get the single ID we're working with
         if (!is_array($ids)) {
-            $ids = array();
+            $ids = [];
         }
 
         $num = 0;
@@ -236,11 +236,11 @@ class Codes extends AdminController
         $section = Request::getInt('section', 0);
         $num = Request::getInt('num', 1);
 
-        $expires = Request::getArray('expires', array());
+        $expires = Request::getArray('expires', []);
         $expires = implode('-', $expires) . ' 12:00:00';
 
         if ($num > 0) {
-            $codes = array();
+            $codes = [];
             for ($i = 0; $i < $num; $i++) {
                 $model = new \Components\Courses\Models\Section\Code(0);
                 $model->set('code', $this->_generateCode());
@@ -323,7 +323,7 @@ class Codes extends AdminController
         }
 
         if (strpos($val, "\n") !== false || strpos($val, ',') !== false) {
-            return '"' . str_replace(array('\\', '"'), array('\\\\', '""'), $val) . '"';
+            return '"' . str_replace(['\\', '"'], ['\\\\', '""'], $val) . '"';
         }
 
         return $val;
@@ -337,7 +337,7 @@ class Codes extends AdminController
      */
     public function quoteCsvRow($vals)
     {
-        return implode(',', array_map(array($this, 'quoteCsv'), $vals)) . "\n";
+        return implode(',', array_map([$this, 'quoteCsv'], $vals)) . "\n";
     }
 
     /**
@@ -347,8 +347,8 @@ class Codes extends AdminController
      */
     public function exportTask()
     {
-        $fields  = array('id', 'code', 'created', 'expires', 'redeemed', 'redeemed by');
-        $rows    = array();
+        $fields  = ['id', 'code', 'created', 'expires', 'redeemed', 'redeemed by'];
+        $rows    = [];
         $section = Request::getInt('section', 0);
 
         if (!$section) {
@@ -361,8 +361,8 @@ class Codes extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (is_array($ids) ? $ids : array($ids));
+        $ids = Request::getArray('id', []);
+        $ids = (is_array($ids) ? $ids : [$ids]);
 
         // Do we have any IDs?
         if (empty($ids)) {
@@ -396,14 +396,14 @@ class Codes extends AdminController
                 continue;
             }
 
-            $row = array(
+            $row = [
                 $model->get('id'),
                 $model->get('code'),
                 $model->get('created'),
                 $model->get('expires'),
                 $model->get('redeemed'),
                 $model->get('redeemed_by'),
-            );
+            ];
 
             echo $this->quoteCsvRow($row);
         }

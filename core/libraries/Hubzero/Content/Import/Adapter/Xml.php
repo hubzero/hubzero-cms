@@ -31,7 +31,7 @@ class Xml implements Adapter
      *
      * @var  array
      */
-    private $data = array();
+    private $data = [];
 
     /**
      * Integer to hold count
@@ -81,7 +81,7 @@ class Xml implements Adapter
         $iterator = new Reader($import->getDataPath(), $this->key);
         $iterator->rewind();
 
-        $headers = array();
+        $headers = [];
 
         $row = $iterator->current();
         foreach ($row as $key => $val) {

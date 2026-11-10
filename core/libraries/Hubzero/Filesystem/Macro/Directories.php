@@ -34,10 +34,10 @@ class Directories extends Base
      * @param   array    $exclude  Array with names of files which should not be shown in the result.
      * @return  array
      */
-    public function handle($path, $filter = '.', $recursive = false, $full = false, $exclude = array('.svn', '.git',
-        'CVS', '.DS_Store', '__MACOSX'))
+    public function handle($path, $filter = '.', $recursive = false, $full = false, $exclude = ['.svn', '.git',
+        'CVS', '.DS_Store', '__MACOSX'])
     {
-        $result = array();
+        $result = [];
 
         $contents = $this->filesystem->listContents($path, $filter, $recursive, $full, $exclude);
 

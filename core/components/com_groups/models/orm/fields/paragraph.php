@@ -38,7 +38,7 @@ class Paragraph extends Field
         }
 
         // Initialize variables.
-        $html = array();
+        $html = [];
 
         // Start the radio field output.
         $html[] = '<p id="' . $this->id . '"' . $class . '>';

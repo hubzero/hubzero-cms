@@ -28,7 +28,7 @@ class Migration20150720105039PlgAntispam extends Base
         if ($schema->tableExists('#__extensions')) {
             // Move the existing plugin entries when possible to preserve params,
             // otherwise add the entry
-            foreach (array('akismet', 'mollom', 'spamassassin') as $plg) {
+            foreach (['akismet', 'mollom', 'spamassassin'] as $plg) {
                 $query = $this->db->getQuery(true)
                     ->select('extension_id')
                     ->from('#__extensions')
@@ -60,7 +60,7 @@ class Migration20150720105039PlgAntispam extends Base
         if ($schema->tableExists('#__extensions')) {
             // Move the existing plugin entries when possible to preserve params,
             // otherwise add the entry
-            foreach (array('akismet', 'mollom', 'spamassassin') as $plg) {
+            foreach (['akismet', 'mollom', 'spamassassin'] as $plg) {
                 $query = $this->db->getQuery(true)
                     ->select('extension_id')
                     ->from('#__extensions')

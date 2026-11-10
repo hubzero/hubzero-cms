@@ -44,7 +44,7 @@ class Questions extends Plugin
      */
     public function &onResourcesAreas($model)
     {
-        $areas = array();
+        $areas = [];
 
         if (isset($model->toolpublished) || isset($model->revision)) {
             if (
@@ -76,11 +76,11 @@ class Questions extends Plugin
      */
     public function onResources($model, $option, $areas, $rtrn = 'all')
     {
-        $arr = array(
+        $arr = [
             'area'     => $this->_name,
             'html'     => '',
             'metadata' => ''
-        );
+        ];
 
         // Check if our area is in the array of areas we want to return results for
         if (is_array($areas)) {
@@ -102,7 +102,7 @@ class Questions extends Plugin
         // Get a needed library
 
         // Get all the questions for this tool
-        $this->filters = array(
+        $this->filters = [
             'limit'    => Request::getInt('limit', 0),
             'start'    => Request::getInt('limitstart', 0),
             'tag'      => ($this->model->isTool() ? 'tool:' . $this->model->alias : 'resource:' . $this->model->id),
@@ -110,7 +110,7 @@ class Questions extends Plugin
             'filterby' => Request::getString('filterby', ''),
             'sortby'   => Request::getString('sortby', 'withinplugin'),
             'sort_Dir' => 'desc'
-        );
+        ];
 
         $this->count = $this->find()->count();
 
@@ -340,7 +340,7 @@ class Questions extends Plugin
         }
 
         // Initiate class and bind posted items to database fields
-        $fields = Request::getArray('question', array(), 'post');
+        $fields = Request::getArray('question', [], 'post');
 
         $__qid = isset($fields['id']) ? (int) $fields['id'] : 0;
         $row = \Components\Answers\Models\Question::oneOrNew($__qid);
@@ -393,7 +393,7 @@ class Questions extends Plugin
         $row->addTag($tag, User::get('id'), ($this->model->isTool() ? 0 : 1));
 
         // Build list of recipients
-        $receivers = array();
+        $receivers = [];
 
         // Get tool contributors (if question is about a tool)
         if ($this->model->isTool()) {
@@ -433,21 +433,21 @@ class Questions extends Plugin
         // Send the message
         if (!empty($receivers)) {
             // Send a message about the new question to authorized users (specified admins or related content authors)
-            $from = array(
+            $from = [
                 'email'     => Config::get('mailfrom'),
                 'name'      => Config::get('sitename') . ' ' . Lang::txt('COM_ANSWERS_ANSWERS'),
                 'multipart' => md5(date('U'))
-            );
+            ];
 
             // Build the message subject
             $subject = Lang::txt('COM_ANSWERS_ANSWERS') . ', ' . Lang::txt('new question about content you author or manage');
 
             // Build the message
-            $eview = new \Hubzero\Mail\View(array(
+            $eview = new \Hubzero\Mail\View([
                 'base_path' => Component::path('com_answers') . DS . 'site',
                 'name'      => 'emails',
                 'layout'    => 'question_plaintext'
-            ));
+            ]);
             $eview->option   = 'com_answers';
             $eview->sitename = Config::get('sitename');
             $eview->question = $row;
@@ -463,7 +463,7 @@ class Questions extends Plugin
             $message['multipart'] = $eview->loadTemplate();
             $message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
-            if (!Event::trigger('xmessage.onSendMessage', array('new_question_admin', $subject, $message, $from, $receivers, 'com_answers'))) {
+            if (!Event::trigger('xmessage.onSendMessage', ['new_question_admin', $subject, $message, $from, $receivers, 'com_answers'])) {
                 $this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
             }
         }
@@ -475,10 +475,10 @@ class Questions extends Plugin
                 'scope_id'    => $row->get('id'),
                 'anonymous'   => $row->get('anonymous', 0),
                 'description' => Lang::txt('PLG_RESOURCES_QUESTIONS_ACTIVITY_QUESTION_' . (isset($fields['id']) && $fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($row->link()) . '">' . htmlspecialchars((string) ($row->get('subject')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title' => $row->get('title'),
                     'url'   => $row->link()
-                )
+                ]
             ],
             'recipients' => $receivers
         ]);

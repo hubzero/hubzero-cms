@@ -43,7 +43,7 @@ class Upay extends Plugin
         $view = $this->view('default', 'payment')
             ->set('url', Route::url('index.php?option=com_cart&controller=checkout/confirm'));
 
-        $payment = array();
+        $payment = [];
         $payment['options'] = $view->loadTemplate();
         $payment['title'] = $this->params->get('title', 'UPay');
 
@@ -67,7 +67,7 @@ class Upay extends Plugin
         // Get transaction ID
         $tId = $postData['EXT_TRANS_ID'];
 
-        $response = array();
+        $response = [];
         $response['status'] = 'ok';
 
         if (!$tId) {
@@ -116,7 +116,7 @@ class Upay extends Plugin
             $response['msg'] = $message;
 
             $response['tInfo'] = $tInfo;
-            $response['payment'] = array('upay', false);
+            $response['payment'] = ['upay', false];
         }
 
         return $response;
@@ -151,7 +151,7 @@ class Upay extends Plugin
             ->set('siteDetails', $siteDetails)
             ->set('transactionDetails', $this->transactionDetails);
 
-        $payment = array();
+        $payment = [];
         $payment['status'] = 'ok';
         $payment['paymentInfo'] = 'UPay payment provider';
         $payment['response'] = $view->loadTemplate();
@@ -191,7 +191,7 @@ class Upay extends Plugin
         $this->options = new \stdClass();
         $this->options->transactionName = "$hubName online purchase";
 
-        $this->transactionDetails = array();
+        $this->transactionDetails = [];
         $this->transactionDetails['EXT_TRANS_ID'] = $transactionDetails->info->tId;
         $this->transactionDetails['EXT_TRANS_ID_LABEL'] = $this->options->transactionName;
         $this->transactionDetails['AMT'] = $transactionDetails->info->tiTotal;
@@ -218,7 +218,7 @@ class Upay extends Plugin
             return false;
         }
 
-        $response = array();
+        $response = [];
         $response['verificationVar'] = 'tId';
         return $response;
     }

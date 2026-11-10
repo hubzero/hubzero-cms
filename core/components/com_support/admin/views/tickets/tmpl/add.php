@@ -33,7 +33,7 @@ $this->css();
 
 $browser = new \Hubzero\Browser\Detector();
 
-$cc = array();
+$cc = [];
 ?>
 
 <?php
@@ -121,7 +121,7 @@ $formAction = Route::url(
                     <?php
                     $tf = Event::trigger(
                         'hubzero.onGetMultiEntry',
-                        array(array('tags', 'tags', 'actags', '', ''))
+                        [['tags', 'tags', 'actags', '', '']]
                     );
                     if (count($tf) > 0) {
                         echo $tf[0];
@@ -139,7 +139,7 @@ $formAction = Route::url(
                             <?php
                             $gc = Event::trigger(
                                 'hubzero.onGetSingleEntryWithSelect',
-                                array(array('groups', 'ticket[group_id]', 'acgroup', '', '', '', 'owner'))
+                                [['groups', 'ticket[group_id]', 'acgroup', '', '', '', 'owner']]
                             );
                             if (count($gc) > 0) {
                                 echo $gc[0];
@@ -243,7 +243,7 @@ $formAction = Route::url(
                     <?php
                     $mc = Event::trigger(
                         'hubzero.onGetMultiEntry',
-                        array(array('members', 'cc', 'acmembers', '', implode(', ', $cc)))
+                        [['members', 'cc', 'acmembers', '', implode(', ', $cc)]]
                     );
                     if (count($mc) > 0) {
                         echo $mc[0];

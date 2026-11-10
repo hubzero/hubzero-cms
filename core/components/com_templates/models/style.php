@@ -45,19 +45,19 @@ class Style extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'template' => 'notempty',
         'title'    => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'template'
-    );
+    ];
 
     /**
      * Generates automatic created field value
@@ -161,7 +161,7 @@ class Style extends Relational
         if ($this->get('home')) {
             $query = self::$connection->getQuery();
             $query->update($this->getTableName());
-            $query->set(array('home' => '0'));
+            $query->set(['home' => '0']);
             $query->whereEquals('client_id', (int)$this->get('client_id'));
             $query->whereEquals('home', 1);
             $query->where('id', '!=', (int)$this->get('id'));
@@ -257,10 +257,10 @@ class Style extends Relational
     {
         $path = '';
 
-        $paths = array(
+        $paths = [
             PATH_APP . DS . 'templates' . DS . $this->get('template'),
             PATH_CORE . DS . 'templates' . DS . $this->get('template')
-        );
+        ];
 
         foreach ($paths as $dir) {
             if (is_dir($dir)) {

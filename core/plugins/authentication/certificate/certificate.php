@@ -50,7 +50,7 @@ class Certificate extends Plugin
      */
     public function status()
     {
-        $status = array();
+        $status = [];
 
         if ($this->isAuthenticated()) {
             $status['username'] = isset($_SERVER['SSL_CLIENT_S_DN_CN']) ? $_SERVER['SSL_CLIENT_S_DN_CN'] : '';
@@ -179,11 +179,11 @@ class Certificate extends Plugin
             // If we have a real user, drop the authenticator cookie
             if (isset($user) && is_object($user)) {
                 // Set cookie with login preference info
-                $prefs = array(
+                $prefs = [
                     'user_id'       => $user->get('id'),
                     'user_img'      => $user->picture(0, false),
                     'authenticator' => 'certificate'
-                );
+                ];
 
                 $namespace = 'authenticator';
                 $lifetime  = time() + 365 * 24 * 60 * 60;
@@ -202,7 +202,7 @@ class Certificate extends Plugin
      * @param   array  $options  additional options
      * @return  void
      */
-    public function link($options = array())
+    public function link($options = [])
     {
         // Check for the required subject dn field
         if ($this->isAuthenticated()) {

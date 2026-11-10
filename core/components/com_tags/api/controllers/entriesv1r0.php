@@ -105,7 +105,7 @@ class Entriesv1r0 extends ApiController
     {
         $cloud = new Cloud();
 
-        $filters = array(
+        $filters = [
             'limit'      => Request::getInt('limit', 25),
             'start'      => Request::getInt('limitstart', 0),
             'search'     => Request::getString('search', ''),
@@ -114,7 +114,7 @@ class Entriesv1r0 extends ApiController
             'tagger_id'  => Request::getInt('tagger', 0),
             'sort'       => Request::getWord('sort', 'raw_tag'),
             'sort_Dir'   => strtoupper(Request::getWord('sortDir', 'ASC'))
-        );
+        ];
 
         // A scope named with no scope_id asks for the whole scope's tags; an
         // always-present 0 would pin the query to a non-existent object
@@ -122,10 +122,10 @@ class Entriesv1r0 extends ApiController
             unset($filters['scope_id']);
         }
         // Columns of the tags table (and the 'total' alias Cloud maps to objects)
-        if (!in_array($filters['sort'], array('raw_tag', 'tag', 'id', 'created', 'modified', 'objects', 'total'))) {
+        if (!in_array($filters['sort'], ['raw_tag', 'tag', 'id', 'created', 'modified', 'objects', 'total'])) {
             $filters['sort'] = 'raw_tag';
         }
-        if (!in_array($filters['sort_Dir'], array('ASC', 'DESC'))) {
+        if (!in_array($filters['sort_Dir'], ['ASC', 'DESC'])) {
             $filters['sort_Dir'] = 'ASC';
         }
         if ($filters['scope'] == 'members' || $filters['scope'] == 'member') {
@@ -133,7 +133,7 @@ class Entriesv1r0 extends ApiController
         }
 
         $response = new stdClass();
-        $response->tags  = array();
+        $response->tags  = [];
         $response->total = $cloud->tags('count', $filters);
         //$response->showing = ($filters['start'] + 1) . ' - ' . ($filters['start'] + $filters['limit']);
         $response->start = $filters['start'];
@@ -246,7 +246,7 @@ class Entriesv1r0 extends ApiController
 
             // Trigger before save event
             $isNew  = $record->isNew();
-            $result = Event::trigger('tags.onTagBeforeSave', array(&$record, $isNew));
+            $result = Event::trigger('tags.onTagBeforeSave', [&$record, $isNew]);
 
             if (in_array(false, $result, true)) {
                 throw new Exception($record->getError(), 500);
@@ -262,7 +262,7 @@ class Entriesv1r0 extends ApiController
             }
 
             // Trigger after save event
-            Event::trigger('tags.onTagAfterSave', array(&$record, $isNew));
+            Event::trigger('tags.onTagAfterSave', [&$record, $isNew]);
         }
 
         $this->send($record->toObject());
@@ -377,7 +377,7 @@ class Entriesv1r0 extends ApiController
 
         // Trigger before save event
         $isNew  = $record->isNew();
-        $result = Event::trigger('tags.onTagBeforeSave', array(&$record, $isNew));
+        $result = Event::trigger('tags.onTagBeforeSave', [&$record, $isNew]);
 
         if (in_array(false, $result, true)) {
             throw new Exception($record->getError(), 500);
@@ -397,7 +397,7 @@ class Entriesv1r0 extends ApiController
         }
 
         // Trigger after save event
-        Event::trigger('tags.onTagAfterSave', array(&$record, $isNew));
+        Event::trigger('tags.onTagAfterSave', [&$record, $isNew]);
 
         $this->send($record->toObject());
     }
@@ -435,7 +435,7 @@ class Entriesv1r0 extends ApiController
         }
 
         // Trigger before delete event
-        Event::trigger('tags.onTagDelete', array($id));
+        Event::trigger('tags.onTagDelete', [$id]);
 
         if (!$tag->destroy()) {
             throw new Exception(Lang::txt('Failed to delete tag.'), 500);

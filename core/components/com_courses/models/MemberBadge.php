@@ -80,7 +80,7 @@ class MemberBadge extends Base
     public static function loadByToken($token)
     {
         $obj = new MemberBadge();
-        $obj->_tbl->load(array('validation_token' => $token));
+        $obj->_tbl->load(['validation_token' => $token]);
 
         if (isset($obj->_tbl->id)) {
             return $obj;
@@ -101,7 +101,7 @@ class MemberBadge extends Base
             // Generate validation token
             $randomBytes = openssl_random_pseudo_bytes(21);
             $encoded = substr(base64_encode($randomBytes), 0, 20);
-            $token = str_replace(array('/', '+'), array('-', '-'), $encoded);
+            $token = str_replace(['/', '+'], ['-', '-'], $encoded);
             $this->set('validation_token', $token);
         }
 

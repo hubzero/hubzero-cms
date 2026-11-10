@@ -20,14 +20,14 @@ class Form
      */
     public static function timeDiff($secs)
     {
-        $seconds = array(1, 'second');
-        $minutes = array(60 * $seconds[0], 'minute');
-        $hours   = array(60 * $minutes[0], 'hour');
-        $days    = array(24 * $hours[0],   'day');
-        $weeks   = array(7  * $days[0],    'week');
-        $rv      = array();
+        $seconds = [1, 'second'];
+        $minutes = [60 * $seconds[0], 'minute'];
+        $hours   = [60 * $minutes[0], 'hour'];
+        $days    = [24 * $hours[0],   'day'];
+        $weeks   = [7  * $days[0],    'week'];
+        $rv      = [];
 
-        foreach (array($weeks, $days, $hours, $minutes, $seconds) as $step) {
+        foreach ([$weeks, $days, $hours, $minutes, $seconds] as $step) {
             list($sec, $unit) = $step;
             $times = floor($secs / $sec);
 
@@ -53,7 +53,7 @@ class Form
      */
     public static function toOrdinal($int)
     {
-        $ends = array('th','st','nd','rd','th','th','th','th','th','th');
+        $ends = ['th','st','nd','rd','th','th','th','th','th','th'];
 
         if (($int % 100) >= 11 && ($int % 100) <= 13) {
             $abbreviation = $int . 'th';

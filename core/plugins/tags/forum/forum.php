@@ -55,23 +55,23 @@ class Forum extends Plugin
      */
     public function onTagView($tags, $limit = 0, $limitstart = 0, $sort = '', $areas = null)
     {
-        $response = array(
+        $response = [
             'name'    => $this->_name,
             'title'   => Lang::txt('PLG_TAGS_FORUM'),
             'total'   => 0,
             'results' => null,
             'sql'     => ''
-        );
+        ];
 
         $database = App::get('db');
 
-        $ids = array();
+        $ids = [];
         foreach ($tags as $tag) {
             $ids[] = $tag->get('id');
         }
         $ids = implode(',', $ids);
 
-        $addtl_where = array();
+        $addtl_where = [];
 
         $gids = $this->getGroupIds((int)User::get('id', 0));
 
@@ -160,12 +160,12 @@ class Forum extends Plugin
         $row->parent   = $p[1];
         $row->comment  = $row->ftext;
 
-        $view = new \Hubzero\Plugin\View(array(
+        $view = new \Hubzero\Plugin\View([
             'folder'  => 'tags',
             'element' => 'forum',
             'name'    => 'result'
-        ));
-        $view->post = \Components\Forum\Models\Post::blank()->set(array(
+        ]);
+        $view->post = \Components\Forum\Models\Post::blank()->set([
             'id'         => $row->id,
             'title'      => $row->title,
             'alias'      => $row->alias,
@@ -179,7 +179,7 @@ class Forum extends Plugin
             'parent'     => $row->parent,
             'section'    => $row->data2,
             'category'   => $row->data1
-        ));
+        ]);
 
         return $view->loadTemplate();
     }

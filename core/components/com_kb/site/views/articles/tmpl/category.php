@@ -81,7 +81,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title'));
                 </nav>
 
                 <?php
-                $filters = array('state' => 1, 'access' => User::getAuthorisedViewLevels());
+                $filters = ['state' => 1, 'access' => User::getAuthorisedViewLevels()];
 
                 $categories = $this->archive->categories($filters);
 
@@ -112,7 +112,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title'));
                 // so a reader sees at a glance where the hits are. Browsing
                 // stays one list in the chosen order.
                 $grouped = ($search && !$this->category->get('id'));
-                $groups  = array();
+                $groups  = [];
 
                 foreach ($articles as $row) {
                     $category = $this->category;
@@ -132,7 +132,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title'));
                     $key = $grouped ? (int) $category->get('id') : 0;
 
                     if (!isset($groups[$key])) {
-                        $groups[$key] = array('category' => $category, 'rows' => array());
+                        $groups[$key] = ['category' => $category, 'rows' => []];
                     }
                     $groups[$key]['rows'][] = $row;
                 }

@@ -99,7 +99,7 @@ class Medialist extends AdminController
         }
 
         // Compile info
-        $data = array(
+        $data = [
             'type'          => ($file ? 'file' : 'folder'),
             'path'          => substr($path, strlen(COM_MEDIA_BASE)),
             'absolute_path' => $path,
@@ -109,7 +109,7 @@ class Medialist extends AdminController
             'size'          => 0,
             'width'         => 0,
             'height'        => 0
-        );
+        ];
 
         if ($data['type'] == 'file') {
             $data['size'] = filesize($file);

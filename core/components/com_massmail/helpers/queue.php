@@ -24,7 +24,7 @@ class Queue
      */
     public static function binary()
     {
-        foreach (array('/usr/sbin/postqueue', '/usr/bin/postqueue') as $candidate) {
+        foreach (['/usr/sbin/postqueue', '/usr/bin/postqueue'] as $candidate) {
             if (is_executable($candidate)) {
                 return $candidate;
             }
@@ -39,24 +39,24 @@ class Queue
      */
     public static function status()
     {
-        $out = array();
+        $out = [];
         $rc  = 0;
         @exec(escapeshellarg(self::binary()) . ' -p 2>/dev/null', $out, $rc);
 
         // If the command produced nothing and failed, we couldn't read the queue.
         if (empty($out) && $rc !== 0) {
-            return array('available' => false, 'size' => 0);
+            return ['available' => false, 'size' => 0];
         }
 
         $text = implode("\n", $out);
 
         if ($text === '' || stripos($text, 'Mail queue is empty') !== false) {
-            return array('available' => true, 'size' => 0);
+            return ['available' => true, 'size' => 0];
         }
 
         // Summary line, e.g. "-- 12 Kbytes in 3 Requests."
         if (preg_match('/(\d+)\s+Request/i', $text, $m)) {
-            return array('available' => true, 'size' => (int) $m[1]);
+            return ['available' => true, 'size' => (int) $m[1]];
         }
 
         // Fallback: count queue-id header lines.
@@ -66,7 +66,7 @@ class Queue
                 $count++;
             }
         }
-        return array('available' => true, 'size' => $count);
+        return ['available' => true, 'size' => $count];
     }
 
     /**
@@ -89,7 +89,7 @@ class Queue
      */
     public static function isRunning()
     {
-        $out = array();
+        $out = [];
         $rc  = 1;
         @exec("pgrep -f 'postfix/master' 2>/dev/null", $out, $rc);
         return ($rc === 0 && !empty($out));
@@ -102,15 +102,15 @@ class Queue
      */
     public static function config()
     {
-        $out = array();
+        $out = [];
         $rc  = 1;
         @exec('postconf -h mail_version 2>/dev/null', $out, $rc);
         if ($rc === 0 && !empty($out)) {
-            return array('configured' => true, 'version' => trim($out[0]));
+            return ['configured' => true, 'version' => trim($out[0])];
         }
         if (is_readable('/etc/postfix/main.cf')) {
-            return array('configured' => true, 'version' => '');
+            return ['configured' => true, 'version' => ''];
         }
-        return array('configured' => false, 'version' => '');
+        return ['configured' => false, 'version' => ''];
     }
 }

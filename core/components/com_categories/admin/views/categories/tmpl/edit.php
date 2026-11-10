@@ -171,7 +171,7 @@ $invalidMsg = $this->escape(
                     <?php endif; ?>
                 </tbody>
             </table>
-            <?php echo Html::sliders('start', 'categories-sliders-' . $this->item->id, array('useCookie' => 1)); ?>
+            <?php echo Html::sliders('start', 'categories-sliders-' . $this->item->id, ['useCookie' => 1]); ?>
                 <?php echo $this->loadTemplate('options'); ?>
 
                 <?php echo Html::sliders('panel', Lang::txt('JGLOBAL_FIELDSET_METADATA_OPTIONS'), 'meta-options'); ?>

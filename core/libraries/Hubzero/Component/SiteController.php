@@ -57,7 +57,7 @@ class SiteController extends Obj implements ControllerInterface
      *
      * @var  array
      */
-    protected $_data = array();
+    protected $_data = [];
 
     /**
      * The task the component is to perform
@@ -71,9 +71,9 @@ class SiteController extends Obj implements ControllerInterface
      *
      * @var  array
      */
-    protected $_taskMap = array(
+    protected $_taskMap = [
         '__default' => 'display'
-    );
+    ];
 
     /**
      * The name of the task to be executed
@@ -133,7 +133,7 @@ class SiteController extends Obj implements ControllerInterface
      * @param   array  $config  Optional configurations to be used
      * @return  void
      */
-    public function __construct($config = array())
+    public function __construct($config = [])
     {
         $this->_redirect    = null;
         $this->_message     = null;
@@ -304,11 +304,11 @@ class SiteController extends Obj implements ControllerInterface
         }
 
         // Instantiate a view with layout the same name as the task
-        $this->view = new View(array(
+        $this->view = new View([
             'base_path' => $this->_basePath,
             'name'      => $name,
             'layout'    => $layout
-        ));
+        ]);
 
         // Set some commonly used vars
         $this->view->set('option', $this->_option)
@@ -334,9 +334,9 @@ class SiteController extends Obj implements ControllerInterface
      */
     public function setView($name, $layout = null)
     {
-        $config = array(
+        $config = [
             'name' => $name
-        );
+        ];
         if ($layout) {
             $config['layout'] = $layout;
         }
@@ -582,7 +582,7 @@ class SiteController extends Obj implements ControllerInterface
      * @param   string  $mountId
      * @return  string
      */
-    protected function inertiaRootNode(string $component, array $props = array(), string $mountId = 'app'): string
+    protected function inertiaRootNode(string $component, array $props = [], string $mountId = 'app'): string
     {
         return Inertia::renderRootNode($component, $props, $mountId);
     }
@@ -670,7 +670,7 @@ class SiteController extends Obj implements ControllerInterface
      * @param   array  $options
      * @return  string
      */
-    protected function inertiaDebugPanel(array $snapshot = array(), array $options = array()): string
+    protected function inertiaDebugPanel(array $snapshot = [], array $options = []): string
     {
         return Inertia::renderDebugPanel($snapshot, $options);
     }
@@ -789,7 +789,7 @@ class SiteController extends Obj implements ControllerInterface
      * @param   array|mixed  $payload
      * @return  void
      */
-    protected function htmxTrigger(string $event, $payload = array()): void
+    protected function htmxTrigger(string $event, $payload = []): void
     {
         Htmx::trigger($event, $payload);
     }
@@ -801,7 +801,7 @@ class SiteController extends Obj implements ControllerInterface
      * @param   array|mixed  $payload
      * @return  void
      */
-    protected function htmxTriggerAfterSettle(string $event, $payload = array()): void
+    protected function htmxTriggerAfterSettle(string $event, $payload = []): void
     {
         Htmx::triggerAfterSettle($event, $payload);
     }
@@ -813,7 +813,7 @@ class SiteController extends Obj implements ControllerInterface
      * @param   array|mixed  $payload
      * @return  void
      */
-    protected function htmxTriggerAfterSwap(string $event, $payload = array()): void
+    protected function htmxTriggerAfterSwap(string $event, $payload = []): void
     {
         Htmx::triggerAfterSwap($event, $payload);
     }
@@ -836,7 +836,7 @@ class SiteController extends Obj implements ControllerInterface
      * @param   array   $options
      * @return  void
      */
-    protected function htmxLocation(string $url, array $options = array()): void
+    protected function htmxLocation(string $url, array $options = []): void
     {
         Htmx::location($url, $options);
     }
@@ -974,7 +974,7 @@ class SiteController extends Obj implements ControllerInterface
      * @param   array   $errors
      * @return  void
      */
-    protected function htmxValidation(string $html, array $errors = array()): void
+    protected function htmxValidation(string $html, array $errors = []): void
     {
         Htmx::validation($html, $errors);
     }
@@ -1107,7 +1107,7 @@ class SiteController extends Obj implements ControllerInterface
      * @param   array  $options
      * @return  string
      */
-    protected function htmxDebugPanel(array $snapshot = array(), array $options = array()): string
+    protected function htmxDebugPanel(array $snapshot = [], array $options = []): string
     {
         return Htmx::renderDebugPanel($snapshot, $options);
     }

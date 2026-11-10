@@ -23,7 +23,7 @@ class Router extends Base
      */
     public function build(&$query)
     {
-        $segments = array();
+        $segments = [];
 
         if (!empty($query['task'])) {
             if ($query['task'] != 'all') {
@@ -57,7 +57,7 @@ class Router extends Base
      */
     public function parse(&$segments)
     {
-        $vars = array();
+        $vars = [];
 
         // Count route segments
         $count = count($segments);

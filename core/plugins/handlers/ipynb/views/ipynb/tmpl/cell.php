@@ -59,7 +59,7 @@ if ($cell->cell_type == 'code') :
                 <div class="prompt output_prompt">Out[<?php echo (isset($cell->prompt_number)) ? $this->escape($cell->prompt_number) : ' '; ?>]:</div>
                 <div class="inner_cell <?php echo $cls; ?> output_execute_result">
                     <?php
-                    $out = array();
+                    $out = [];
                     foreach ($cell->outputs as $output) :
                         if ($output->output_type == 'pyout') :
                             ?>

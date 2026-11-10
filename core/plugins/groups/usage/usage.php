@@ -63,13 +63,13 @@ class Usage extends Plugin
      */
     public function &onGroupAreas()
     {
-        $area = array(
+        $area = [
             'name' => 'usage',
             'title' => Lang::txt('USAGE'),
             'default_access' => $this->params->get('plugin_access', 'members'),
             'display_menu_tab' => $this->params->get('display_tab', 1),
             'icon' => 'f080'
-        );
+        ];
         return $area;
     }
 
@@ -92,10 +92,10 @@ class Usage extends Plugin
         $active = 'usage';
 
         // The output array we're returning
-        $arr = array(
+        $arr = [
             'html' => '',
-            'metadata' => array()
-        );
+            'metadata' => []
+        ];
 
         //get this area details
         $this_area = $this->onGroupAreas();
@@ -277,7 +277,7 @@ class Usage extends Plugin
         $database->setQuery("SELECT id FROM `#__wiki_pages` AS p WHERE p.scope=" . $database->quote('group') . " AND p.scope_id=" . $database->quote($gid));
         $pageids = $database->loadObjectList();
         if ($pageids) {
-            $ids = array();
+            $ids = [];
             foreach ($pageids as $pageid) {
                 $ids[] = $pageid->id;
             }
@@ -303,7 +303,7 @@ class Usage extends Plugin
             return 0;
         }
 
-        $filters = array();
+        $filters = [];
         switch ($state) {
             case 'sticky':
                 $filters['sticky'] = 1;
@@ -337,10 +337,10 @@ class Usage extends Plugin
 
         // get group pages if any
         $pageArchive = \Components\Groups\Models\Page\Archive::getInstance();
-        $pages = $pageArchive->pages('list', array(
+        $pages = $pageArchive->pages('list', [
             'gidNumber' => $gid,
-            'state'     => array(0,1),
-        ));
+            'state'     => [0,1],
+        ]);
 
         return count($pages);
     }
@@ -366,14 +366,14 @@ class Usage extends Plugin
         $database->setQuery($query);
         $views = $database->loadAssocList();
         if (!$views) {
-            $views = array();
+            $views = [];
         }
 
         $s = strtotime($start);
         $e = strtotime($end);
         $diff = round(($e - $s) / 60 / 60 / 24);
 
-        $page_views = array();
+        $page_views = [];
 
         for ($i = 0; $i < $diff; $i++) {
             $count = 0;

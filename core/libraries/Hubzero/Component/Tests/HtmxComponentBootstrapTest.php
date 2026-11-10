@@ -194,11 +194,11 @@ namespace Hubzero\Component\Tests {
 
             protected function htmxSecurityConfig(): array
             {
-                return array(
+                return [
                 'allowEval' => true,
                 'allowScriptTags' => true,
                 'historyCacheSize' => 5
-                );
+                ];
             }
 
             protected function execute(): void

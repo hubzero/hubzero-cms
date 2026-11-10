@@ -54,7 +54,7 @@ defined('_HZEXEC_') or die();
             50,
             10,
             'eula',
-            array('buttons' => false)
+            ['buttons' => false]
         );
         ?>
     </div>

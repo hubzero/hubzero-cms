@@ -46,7 +46,7 @@ if (Plugin::isEnabled('projects', $this->row->alias)) {
 $params = new \Hubzero\Config\Registry($this->row->params);
 
 // Available panels and default config
-$panels = array(
+$panels = [
     'content'     => 2,
     'description' => 2,
     'authors'     => 2,
@@ -57,10 +57,10 @@ $panels = array(
     'license'     => 2,
     'citations'   => 1,
     'notes'       => 1
-);
+];
 
 // Sections that cannot be hidden, ever
-$required = array('content', 'description', 'authors');
+$required = ['content', 'description', 'authors'];
 
 ?>
 

@@ -98,7 +98,7 @@ class Polls extends SiteController
 
         $first_vote = '';
         $last_vote  = '';
-        $votes      = array();
+        $votes      = [];
 
         // Check if there is a poll corresponding to id and if poll is published
         if ($poll->get('id')) {
@@ -127,7 +127,7 @@ class Polls extends SiteController
             ->rows()
             ->raw();
 
-        $pList = array();
+        $pList = [];
         foreach ($ps as $k => $p) {
             $pList[$k] = $p;
             $url = 'index.php?option=com_poll&id=' . $p->get('id') . ':' . $p->get('alias');
@@ -139,7 +139,7 @@ class Polls extends SiteController
         // dropdown output
         $onchange = "if (this.options[selectedIndex].value != '') "
             . "{document.location.href=this.options[selectedIndex].value}";
-        $lists = array(
+        $lists = [
             'polls' => Html::select(
                 'genericlist',
                 $pList,
@@ -149,7 +149,7 @@ class Polls extends SiteController
                 'title',
                 Route::url('index.php?option=com_poll&id=' . $poll->get('id') . ':' . $poll->get('alias'))
             )
-        );
+        ];
 
         $graphwidth = 200;
         $barheight  = 4;

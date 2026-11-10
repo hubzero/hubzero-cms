@@ -30,7 +30,7 @@ class Mygroups extends Module
      * @param   string   $type  Membership type to return groups for
      * @return  array
      */
-    private function getGroups($uid, $type = 'all', $groups = array())
+    private function getGroups($uid, $type = 'all', $groups = [])
     {
         $db = \Hubzero\Facades\App::get('db');
 
@@ -133,7 +133,7 @@ class Mygroups extends Module
         // Get the module parameters
         $this->moduleclass = $this->params->get('moduleclass');
         $this->limit = intval($this->params->get('limit', 100));
-        $this->recentgroups = array();
+        $this->recentgroups = [];
 
         // Get the user's groups
         $this->allgroups = $this->getGroups(User::get('id'), 'all');

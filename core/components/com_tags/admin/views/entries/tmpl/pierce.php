@@ -57,9 +57,9 @@ Toolbar::cancel();
                     <?php
                     $tf = Event::trigger(
                         'hubzero.onGetMultiEntry',
-                        array(
-                            array('tags', 'newtag', 'newtag')
-                        )
+                        [
+                            ['tags', 'newtag', 'newtag']
+                        ]
                     );
                     if (count($tf)) {
                         echo implode("\n", $tf);

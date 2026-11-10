@@ -28,7 +28,7 @@ trait InteractsWithHtmxResponses
     {
         $headers = isset($response->headers->headers) && is_array($response->headers->headers)
             ? $response->headers->headers
-            : array();
+            : [];
 
         $this->assertArrayHasKey($header, $headers, 'Expected HTMX header missing: ' . $header);
 

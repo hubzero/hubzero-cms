@@ -29,7 +29,7 @@ class Apc extends None
      * @param   array  $options
      * @return  void
      */
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
         parent::__construct($options);
 
@@ -183,7 +183,7 @@ class Apc extends None
 
         $hash = $this->options['hash'];
 
-        $data = array();
+        $data = [];
 
         foreach ($keys as $key) {
             $name    = $key['info'];

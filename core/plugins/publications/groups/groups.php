@@ -32,7 +32,7 @@ class Groups extends Plugin
      */
     public function &onPublicationSubAreas($publication)
     {
-        $areas = array();
+        $areas = [];
 
         if ($publication->category()->_params->get('plg_groups', 1) == 1) {
             $areas['groups'] = Lang::txt('PLG_PUBLICATIONS_GROUPS');
@@ -51,10 +51,10 @@ class Groups extends Plugin
      */
     public function onPublicationSub($publication, $option, $miniview = 0)
     {
-        $arr = array(
+        $arr = [
             'html'     => '',
             'metadata' => ''
-        );
+        ];
 
         // Check if our area is in the array of areas we want to return results for
         if (!$publication->groupOwner()) {

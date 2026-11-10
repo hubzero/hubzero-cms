@@ -61,7 +61,7 @@ class Applications extends SiteController
             ->whereEquals('uidNumber', User::get('id'))
             ->rows();
 
-        $apps = array();
+        $apps = [];
         foreach ($memberships as $membership) {
             $apps[] = $membership->application_id;
         }
@@ -71,13 +71,13 @@ class Applications extends SiteController
             ->whereEquals('created_by', User::get('id'), 1)
             ->orWhereIn('id', $apps, 1)
             ->resetDepth()
-            ->whereIn('state', array(0, 1))
+            ->whereIn('state', [0, 1])
             ->rows();
 
         // get developers authorized apps
         $tokens = Accesstoken::all()
             ->whereEquals('uidNumber', User::get('id'))
-            ->whereIn('state', array(1))
+            ->whereIn('state', [1])
             ->paginated('limitstart', 'limit')
             ->rows();
 
@@ -238,7 +238,7 @@ class Applications extends SiteController
         Request::checkToken();
 
         // get request vars
-        $data = Request::getArray('application', array(), 'post');
+        $data = Request::getArray('application', [], 'post');
         $team = Request::getString('team', '', 'post');
         $id   = (int) (isset($data['id']) ? $data['id'] : 0);
 
@@ -266,7 +266,7 @@ class Applications extends SiteController
         // columns are generated or admin-managed and must not come from the
         // request (a hub_account app is the one every session token is issued
         // under).
-        $model = Application::oneOrNew($id)->set(array_intersect_key($data, array_flip(array('name', 'description', 'redirect_uri'))));
+        $model = Application::oneOrNew($id)->set(array_intersect_key($data, array_flip(['name', 'description', 'redirect_uri'])));
 
         // is the app available
         if ($model->isDeleted()) {
@@ -328,7 +328,7 @@ class Applications extends SiteController
         $team[] = User::get('id');
 
         // get current team
-        $found = array();
+        $found = [];
         foreach ($model->team()->rows() as $member) {
             $found[] = $member->get('uidNumber');
         }
@@ -624,7 +624,7 @@ class Applications extends SiteController
         $request->query['state'] = uniqid();
 
         // Config OAuth to give a token 100 years in the future (for now)
-        $server = new \Hubzero\Oauth\Server(new MysqlStorage(), array('access_lifetime' => 3153600000));
+        $server = new \Hubzero\Oauth\Server(new MysqlStorage(), ['access_lifetime' => 3153600000]);
 
         // Validate and handle the authorization request
         if (!$server->validateAuthorizeRequest($request, $response)) {
@@ -638,7 +638,7 @@ class Applications extends SiteController
         // Set up a new request and response for the access token
         $request = OAuth2\Request::createFromGlobals();
         $response = new OAuth2\Response();
-        $request->query = array();
+        $request->query = [];
         $request->server['REQUEST_METHOD'] = 'POST';
         $request->request['client_id'] = $application->get('client_id');
         $request->request['redirect_uri'] = $application->get('redirect_uri');
@@ -735,7 +735,7 @@ class Applications extends SiteController
             return false;
         }
 
-        $team = array();
+        $team = [];
         foreach ($app->team()->rows() as $member) {
             $team[] = (int) $member->get('uidNumber');
         }
@@ -755,7 +755,7 @@ class Applications extends SiteController
         if ($assetId != null) {
             $app = Application::oneOrNew($assetId);
 
-            $team = array();
+            $team = [];
             foreach ($app->team()->rows() as $member) {
                 $team[] = $member->get('uidNumber');
             }
@@ -811,7 +811,7 @@ class Applications extends SiteController
         // add task
         if (
             isset($this->_task)
-            && !in_array($this->_task, array('view', 'display', 'applications','granted'))
+            && !in_array($this->_task, ['view', 'display', 'applications','granted'])
         ) {
             // add "Applications"
             Pathway::append(

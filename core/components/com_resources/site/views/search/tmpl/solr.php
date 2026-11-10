@@ -14,7 +14,7 @@ use Hubzero\Facades\User;
 defined('_HZEXEC_') or die();
 
 $id = str_replace('resource-', '', $this->result['id']);
-$extras = Event::trigger('resources.onResourcesList', array($id));
+$extras = Event::trigger('resources.onResourcesList', [$id]);
 ?>
 
 <div class="result <?php echo isset($this->result['access_level']) ? $this->result['access_level'] : 'public'; ?>" id="<?php echo $this->result['id']; ?>">
@@ -62,10 +62,10 @@ $extras = Event::trigger('resources.onResourcesList', array($id));
                 $year = !empty($this->result['yearofpublication_s']) ? Date::of($this->result['yearofpublication_s'])->year : '';
                 $fullCitation .= !empty($year) ? ' (' . $year . '). ' : '. ';
                 $title = !empty($this->result['title']) ? $this->result['title'] : '';
-                $title = in_array(substr(trim($title), -1), array('.', '?', '!')) ? $title : $title . '.';
+                $title = in_array(substr(trim($title), -1), ['.', '?', '!']) ? $title : $title . '.';
                 $fullCitation .= $title . ' ';
                 $journalTitle = !empty($this->result['journaltitle_s']) ? $this->result['journaltitle_s'] : '';
-                $journalTitle = in_array(substr(trim($journalTitle), -1), array('.', '?', '!')) || empty($journalTitle) ? $journalTitle : $journalTitle . '.';
+                $journalTitle = in_array(substr(trim($journalTitle), -1), ['.', '?', '!']) || empty($journalTitle) ? $journalTitle : $journalTitle . '.';
                 $fullCitation .= '<em>' . $journalTitle . '</em> ';
                 $fullCitation .= !empty($this->result['volumeno_s']) ? '<em>' . $this->result['volumeno_s']  . '</em>' : '';
                 $issueNumber = '';

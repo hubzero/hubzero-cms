@@ -24,7 +24,7 @@ class Router extends Base
      */
     public function build(&$query)
     {
-        $segments = array();
+        $segments = [];
 
         if (isset($query['scope'])) {
             unset($query['scope']);
@@ -48,7 +48,7 @@ class Router extends Base
      */
     public function parse(&$segments)
     {
-        $vars = array();
+        $vars = [];
 
         if (empty($segments)) {
             return $vars;

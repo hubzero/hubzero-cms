@@ -56,7 +56,7 @@ class Groups extends Module
                 break;
         }
 
-        $queries = array(
+        $queries = [
             'visible'    => "approved=1 AND discoverability=0",
             'hidden'     => "approved=1 AND discoverability=1",
             'closed'     => "join_policy=3",
@@ -65,7 +65,7 @@ class Groups extends Module
             'open'       => "join_policy=0",
             'approved'   => "approved=1",
             'pending'    => "approved=0"
-        );
+        ];
 
         $database = App::get('db');
 

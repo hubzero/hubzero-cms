@@ -28,7 +28,7 @@ $menuTypes = \Components\Menus\Helpers\Menus::getMenuLinks();
             <div class="clr"></div>
 
             <div id="menu-assignment">
-                <?php echo Html::tabs('start', 'module-menu-assignment-tabs', array('useCookie' => 1));?>
+                <?php echo Html::tabs('start', 'module-menu-assignment-tabs', ['useCookie' => 1]);?>
                 <?php foreach ($menuTypes as &$type) :
                     $typeTitle = $type->title ? $type->title : $type->menutype;
                     echo Html::tabs(

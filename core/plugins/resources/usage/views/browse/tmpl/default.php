@@ -63,13 +63,13 @@ if (intval($this->params->get('cache', 1))) {
     $results = plgResourcesUsage::getOverview($this->resource->id, $prd);
 }
 
-$users = array();
-$interactive = array();
-$sessions = array();
-$runs = array();
+$users = [];
+$interactive = [];
+$sessions = [];
+$runs = [];
 
-$usersScaled = array();
-$runsScaled = array();
+$usersScaled = [];
+$runsScaled = [];
 
 $min = (date("Y") - 1) . '/' . date("m") . '/01';
 $to = $max = date("Y") . '/' . date("m") . '/01';
@@ -98,8 +98,8 @@ if ($results) {
     $current->datetime =  str_replace('-00 00:00:00', '-01', $current->datetime);
 }
 
-$sparklines = array();
-$bars = array();
+$sparklines = [];
+$bars = [];
 ?>
 <h3 id="plg-usage-header">
     <?php echo Lang::txt('PLG_RESOURCES_USAGE'); ?>
@@ -177,7 +177,7 @@ $bars = array();
                 <?php
                 if ($results) {
                     // Find the highest value
-                    $vals = array();
+                    $vals = [];
                     foreach ($results as $result) {
                         $vals[] = $result->users;
                     }
@@ -226,7 +226,7 @@ $bars = array();
                         </thead>
                         <tbody>
                         <?php
-                        $colors = array(
+                        $colors = [
                         $this->params->get('pie_chart_color1', '#7c7c7c'),
                         $this->params->get('pie_chart_color2', '#515151'),
                         $this->params->get('pie_chart_color3', '#d9d9d9'),
@@ -247,7 +247,7 @@ $bars = array();
                         $this->params->get('pie_chart_color8', '#828282'),
                         $this->params->get('pie_chart_color9', '#404040'),
                         $this->params->get('pie_chart_color10', '#3a3a3a'),
-                        );
+                        ];
 
                     //$datetime = str_replace('-00 00:00:00', '', $current->datetime);
                         $matches = explode('-', $current->datetime);
@@ -265,20 +265,20 @@ $bars = array();
                             $dataset = plgResourcesUsage::getTopValue($this->resource->id, 3, $tid, $datetime);
                         }
 
-                        $r = array();
+                        $r = [];
                         $total = 0;
                         $cls = 'even';
 
                         if ($dataset) {
                             $i = 0;
-                            $r = array();
+                            $r = [];
 
                             foreach ($dataset as $row) {
                                 $ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
 
                                 if (!isset($r[$ky])) {
                                     $i = 0;
-                                    $r[$ky] = array();
+                                    $r[$ky] = [];
                                 }
 
                                 if (!isset($colors[$i])) {
@@ -356,7 +356,7 @@ $bars = array();
                     <script type="text/javascript">
                         var orgData = {
                             <?php
-                            $z = array();
+                            $z = [];
                             foreach ($r as $k => $d) {
                                 $z[] = "\t'$k': [" . implode(',', $d) . "]" . "\n";
                             }
@@ -389,14 +389,14 @@ $bars = array();
                         $total = 0;
                         $i = 0;
                         if ($dataset) {
-                            $r = array();
-                            $names = array();
+                            $r = [];
+                            $names = [];
                             foreach ($dataset as $row) {
                                 $ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
 
                                 if (!isset($r[$ky])) {
                                     $i = 0;
-                                    $r[$ky] = array();
+                                    $r[$ky] = [];
                                 }
 
                                 if (!isset($colors[$i])) {
@@ -474,7 +474,7 @@ $bars = array();
                     <script type="text/javascript">
                         var countryData = {
                             <?php
-                            $z = array();
+                            $z = [];
                             foreach ($r as $k => $d) {
                                 $z[] = "\t'$k': [" . implode(',', $d) . "]" . "\n";
                             }
@@ -614,7 +614,7 @@ $bars = array();
                     <div id="runs-overview">
                     <?php
                         // Find the highest value
-                        $vals = array();
+                        $vals = [];
                     foreach ($results as $result) {
                         $vals[] = $result->jobs;
                     }
@@ -1114,7 +1114,7 @@ $bars = array();
     // Parse for <nb:field> tags
     $type = $this->resource->type;
 
-    $data = array();
+    $data = [];
     preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->resource->fulltxt, $matches, PREG_SET_ORDER);
 if (count($matches) > 0) {
     foreach ($matches as $match) {
@@ -1128,7 +1128,7 @@ if (count($matches) > 0) {
     $hasCustomFields = false;
 if (is_object($schema)) {
     if (!isset($schema->fields) || !is_array($schema->fields)) {
-        $schema->fields = array();
+        $schema->fields = [];
     }
     foreach ($schema->fields as $field) {
         if (isset($data[$field->name]) && $elements->display($field->type, $data[$field->name]) && isset($field->display) && $field->display == $tab) {

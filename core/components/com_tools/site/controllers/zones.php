@@ -50,7 +50,7 @@ class Zones extends SiteController
 
         $parts = explode('/', $path);
 
-        $result = array();
+        $result = [];
 
         foreach ($parts as $part) {
             if ($part === '' || $part == '.') {

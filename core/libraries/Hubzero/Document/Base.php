@@ -159,7 +159,7 @@ class Base extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_scripts = array();
+    public $_scripts = [];
 
     /**
      * Array of scripts placed in the header
@@ -167,7 +167,7 @@ class Base extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_script = array();
+    public $_script = [];
 
     /**
      * Array of linked style sheets
@@ -175,7 +175,7 @@ class Base extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_styleSheets = array();
+    public $_styleSheets = [];
 
     /**
      * Array of included style declarations
@@ -183,7 +183,7 @@ class Base extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_style = array();
+    public $_style = [];
 
     /**
      * Array of meta tags
@@ -191,7 +191,7 @@ class Base extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_metaTags = array();
+    public $_metaTags = [];
 
     /**
      * The rendering engine
@@ -224,7 +224,7 @@ class Base extends Obj
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         parent::__construct();
 
@@ -274,7 +274,7 @@ class Base extends Obj
      * @param   array   $options  Array of optional elements.
      * @return  object  Document instance of $this to allow chaining
      */
-    public function setBuffer($content, $options = array())
+    public function setBuffer($content, $options = [])
     {
         self::$_buffer = $content;
 
@@ -337,7 +337,7 @@ class Base extends Obj
                     $this->setMimeEncoding($content, false);
                 }
             } else {
-                $this->_metaTags['standard'][] = array('name' => $name, 'content' => $content);
+                $this->_metaTags['standard'][] = ['name' => $name, 'content' => $content];
             }
         }
 
@@ -372,7 +372,7 @@ class Base extends Obj
     public function addScriptDeclaration($content, $type = 'text/javascript')
     {
         if (!isset($this->_script[strtolower($type)])) {
-            $this->_script[strtolower($type)] = array($content);
+            $this->_script[strtolower($type)] = [$content];
         } else {
             $this->_script[strtolower($type)][] = chr(13) . $content;
         }
@@ -389,7 +389,7 @@ class Base extends Obj
      * @param   array   $attribs  Array of attributes
      * @return  object  Document instance of $this to allow chaining
      */
-    public function addStyleSheet($url, $type = 'text/css', $media = null, $attribs = array())
+    public function addStyleSheet($url, $type = 'text/css', $media = null, $attribs = [])
     {
         $this->_styleSheets[$url]['mime'] = $type;
         $this->_styleSheets[$url]['media'] = $media;
@@ -803,7 +803,7 @@ class Base extends Obj
      * @param   array   $params  The array of parameters
      * @return  object  Document instance of $this to allow chaining
      */
-    public function parse($params = array())
+    public function parse($params = [])
     {
         return $this;
     }
@@ -815,7 +815,7 @@ class Base extends Obj
      * @param   array    $params  Associative array of attributes
      * @return  void
      */
-    public function render($cache = false, $params = array())
+    public function render($cache = false, $params = [])
     {
         if ($mdate = $this->getModifiedDate()) {
             App::get('response')->headers->set('Last-Modified', $mdate /* gmdate('D, d M Y H:i:s', time() + 900) .

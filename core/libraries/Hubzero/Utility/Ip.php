@@ -86,7 +86,7 @@ class Ip
         static $networks = null;
 
         if ($networks === null) {
-            $networks = array_map(array(Network::class, 'parse'), array('10.0.0.0/8', '172.16.0.0/12', '192.168.0.0/16', 'fc00::/7'));
+            $networks = array_map([Network::class, 'parse'], ['10.0.0.0/8', '172.16.0.0/12', '192.168.0.0/16', 'fc00::/7']);
         }
 
         foreach ($networks as $network) {
@@ -246,7 +246,7 @@ class Ip
 
         while ($limbs) {
             $rem      = 0;
-            $quotient = array();
+            $quotient = [];
 
             foreach ($limbs as $limb) {
                 $cur = $rem * 65536 + $limb;
@@ -280,14 +280,14 @@ class Ip
         $host = trim(trim((string) $host), '[]');
 
         if ($host === '') {
-            return array();
+            return [];
         }
 
         if (filter_var($host, FILTER_VALIDATE_IP)) {
-            return array(self::normalize($host));
+            return [self::normalize($host)];
         }
 
-        $addresses = array();
+        $addresses = [];
 
         if (function_exists('dns_get_record')) {
             foreach ((array) @dns_get_record($host, DNS_A | DNS_AAAA) as $record) {
@@ -304,7 +304,7 @@ class Ip
             $addresses = (array) @gethostbynamel($host);
         }
 
-        return array_values(array_unique(array_filter(array_map(array(__CLASS__, 'normalize'), $addresses))));
+        return array_values(array_unique(array_filter(array_map([__CLASS__, 'normalize'], $addresses))));
     }
 
     /**
@@ -319,10 +319,10 @@ class Ip
      *
      * @var  array
      */
-    const NOT_PUBLIC = array(
+    const NOT_PUBLIC = [
         '::/96', '64:ff9b::/96', '64:ff9b:1::/48', '100::/64', '2001::/32', '2002::/16',
         '100.64.0.0/10', '192.0.0.0/24', '198.18.0.0/15', '224.0.0.0/4', 'ff00::/8', 'fec0::/10'
-    );
+    ];
 
     /**
      * Whether an address is one an outbound request may be sent to
@@ -347,7 +347,7 @@ class Ip
         }
 
         if ($networks === null) {
-            $networks = array_map(array(Network::class, 'parse'), self::NOT_PUBLIC);
+            $networks = array_map([Network::class, 'parse'], self::NOT_PUBLIC);
         }
 
         foreach ($networks as $network) {

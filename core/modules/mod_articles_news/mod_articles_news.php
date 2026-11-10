@@ -60,9 +60,9 @@ class ArticlesNews extends Module
         $authorised = User::getAuthorisedViewLevels();
 
         // Category filter
-        $catids = $params->get('catid', array());
+        $catids = $params->get('catid', []);
         if (!empty($catids)) {
-            $catids = is_array($catids) ? $catids : array($catids);
+            $catids = is_array($catids) ? $catids : [$catids];
             $query->whereIn('catid', $catids);
         }
 
@@ -101,10 +101,10 @@ class ArticlesNews extends Module
                 $item->introtext = preg_replace('/<img[^>]*>/', '', $item->introtext);
             }
 
-            $results = Event::trigger('onContentAfterDisplay', array('com_content.article', &$item, &$params, 1));
+            $results = Event::trigger('onContentAfterDisplay', ['com_content.article', &$item, &$params, 1]);
             $item->afterDisplayTitle = trim(implode("\n", $results));
 
-            $results = Event::trigger('onContentBeforeDisplay', array('com_content.article', &$item, &$params, 1));
+            $results = Event::trigger('onContentBeforeDisplay', ['com_content.article', &$item, &$params, 1]);
             $item->beforeDisplayContent = trim(implode("\n", $results));
         }
 

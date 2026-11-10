@@ -24,7 +24,7 @@ class Slider extends WikiMacro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['wiki'] = "Creates a slider with the images passed in.";
         $txt['html'] = '<p>Creates a slider with the images passed in. '
             . 'Enter uploaded image names seperated by commas.</p>' . "\n"
@@ -72,7 +72,7 @@ class Slider extends WikiMacro
         $slides = explode(',', $content);
 
         //array for checked slides
-        $final_slides = array();
+        $final_slides = [];
 
         //check each passed in slide
         foreach ($slides as $slide) {

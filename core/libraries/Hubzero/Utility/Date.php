@@ -57,7 +57,7 @@ class Date extends DateTime
      * @deprecated    12.1
      * @var  array
      */
-    protected static $offsets = array(
+    protected static $offsets = [
         '-12' => 'Etc/GMT-12', '-11' => 'Pacific/Midway', '-10' => 'Pacific/Honolulu', '-9.5' => 'Pacific/Marquesas',
         '-9' => 'US/Alaska', '-8' => 'US/Pacific', '-7' => 'US/Mountain', '-6' => 'US/Central', '-5' => 'US/Eastern',
             '-4.5' => 'America/Caracas',
@@ -73,7 +73,7 @@ class Date extends DateTime
         '10.5' => 'Australia/Lord_Howe', '11' => 'Pacific/Kosrae', '11.5' => 'Pacific/Norfolk',
             '12' => 'Pacific/Auckland',
         '12.75' => 'Pacific/Chatham', '13' => 'Pacific/Tongatapu', '14' => 'Pacific/Kiritimati'
-    );
+    ];
 
     /**
      * The DateTimeZone object for usage in rending dates as strings.
@@ -586,10 +586,10 @@ class Date extends DateTime
         $difference = $current_time - $timestamp;
 
         // Set the periods of time
-        $periods = array('second', 'minute', 'hour', 'day', 'week', 'month', 'year', 'decade');
+        $periods = ['second', 'minute', 'hour', 'day', 'week', 'month', 'year', 'decade'];
 
         // Set the number of seconds per period
-        $lengths = array(1, 60, 3600, 86400, 604800, 2630880, 31570560, 315705600);
+        $lengths = [1, 60, 3600, 86400, 604800, 2630880, 31570560, 315705600];
 
         // Determine which period we should use, based on the number of seconds lapsed.
         // If the difference divided by the seconds is more than 1, we use that. Eg 1 year / 1 decade = 0.1, so we

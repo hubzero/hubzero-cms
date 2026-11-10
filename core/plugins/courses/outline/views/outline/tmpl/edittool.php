@@ -21,7 +21,7 @@ $id = Request::getInt('asset_id', null);
 $asset = new \Components\Courses\Models\Asset($id);
 $asset->set('section_id', $this->course->offering()->section()->get('id'));
 $toolAsset = $asset->loadHandler();
-$assets = array();
+$assets = [];
 $projects = \Components\Projects\Models\Orm\Owner::all()
     ->join('#__projects', 'projectid', '#__projects.id')
     ->whereEquals('userid', User::get('id'))
@@ -34,11 +34,11 @@ $tool_path = $config->get('tool_path');
 <div class="tool-edit edit-form">
     <form action="<?php echo Request::base(true); ?>/api/courses/asset/new" method="POST" class="edit-form">
         <?php
-            $assetgroups = array();
+            $assetgroups = [];
         foreach ($this->course->offering()->units() as $unit) :
             foreach ($unit->assetgroups() as $agt) :
                 foreach ($agt->children() as $ag) :
-                    $assetgroups[] = array('id' => $ag->get('id'), 'title' => $ag->get('title'));
+                    $assetgroups[] = ['id' => $ag->get('id'), 'title' => $ag->get('title')];
                     if ($ag->assets()->total()) :
                         foreach ($ag->assets() as $a) :
                             if ($a->isPublished()) :
@@ -89,7 +89,7 @@ $tool_path = $config->get('tool_path');
             </div>
         </div>
         <div class="tool-files-available">
-            <?php $files = ($toolAsset && method_exists($toolAsset, 'files')) ? $toolAsset->files($asset) : array(); ?>
+            <?php $files = ($toolAsset && method_exists($toolAsset, 'files')) ? $toolAsset->files($asset) : []; ?>
             <?php if (!empty($files)) : ?>
                 <ul class="tool-files-list">
                     <?php foreach ($files as $file) : ?>

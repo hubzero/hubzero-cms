@@ -2367,7 +2367,7 @@ class FirebirdDriver extends BaseSqlDriver
         }
 
         $parts = (strpos($name, '.') !== false) ? explode('.', $name) : (array)$name;
-        $bits  = array();
+        $bits  = [];
 
         foreach ($parts as $part) {
             if ($part === '*') {

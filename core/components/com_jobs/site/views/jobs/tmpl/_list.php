@@ -105,10 +105,10 @@ $maxscore  = $this->filters['search'] && $this->jobs[0]->keywords > 0 ? $this->j
                 <?php
                 // A posting need not name a country, and "Northgate," is what
                 // joining an empty one on looked like
-                $where = array_filter(array(
+                $where = array_filter([
                     trim((string) $this->jobs[$i]->companyLocation),
                     trim((string) $this->jobs[$i]->companyLocationCountry)
-                ));
+                ]);
                 echo $this->escape(implode(', ', $where));
                 ?>
             </td>

@@ -38,7 +38,7 @@ class Reviews extends Plugin
      */
     public function &onPublicationAreas($model, $version = 'default', $extended = true)
     {
-        $areas = array();
+        $areas = [];
 
         if ($model->_category->_params->get('plg_reviews') && $extended && $model->access('view-all')) {
             $areas['reviews'] = Lang::txt('PLG_PUBLICATIONS_REVIEWS');
@@ -55,10 +55,10 @@ class Reviews extends Plugin
      */
     public function onPublicationRateItem($option)
     {
-        $arr = array(
+        $arr = [
             'html'    => '',
             'metadata' => ''
-        );
+        ];
 
         $h = new Helper();
         $h->option   = $option;
@@ -81,11 +81,11 @@ class Reviews extends Plugin
      */
     public function onPublication($model, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)
     {
-        $arr = array(
+        $arr = [
             'area'     => $this->_name,
             'html'     => '',
             'metadata' => ''
-        );
+        ];
 
         // Check if our area is in the array of areas we want to return results for
         if (is_array($areas)) {
@@ -136,7 +136,7 @@ class Reviews extends Plugin
 
             $reviews = $r->getRatings($model->get('id'));
             if (!$reviews) {
-                $reviews = array();
+                $reviews = [];
             }
 
             $infolink = '/kb/points/';

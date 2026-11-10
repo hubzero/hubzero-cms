@@ -59,7 +59,7 @@ $this->css('storage.css')
                     <?php
                     foreach ($this->folders as $fullpath => $name) {
                         $dir = DS . $name;
-                        $numFiles = count(Filesystem::files($fullpath, '.', false, true, array()));
+                        $numFiles = count(Filesystem::files($fullpath, '.', false, true, []));
 
                         if ($this->listdir == DS) {
                             $this->listdir = '';

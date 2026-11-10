@@ -46,7 +46,7 @@ class Router extends Base
      */
     public function build(&$query)
     {
-        $segments = array();
+        $segments = [];
 
         // get a menu item based on Itemid or currently active
         $menu     = App::get('menu');
@@ -143,7 +143,7 @@ class Router extends Base
 
             $path = array_reverse($category->getPath());
 
-            $array = array();
+            $array = [];
 
             foreach ($path as $id) {
                 if ((int)$id == (int)$mCatid) {
@@ -221,7 +221,7 @@ class Router extends Base
      */
     public function parse(&$segments)
     {
-        $vars = array();
+        $vars = [];
 
         //Get the active menu item.
         $menu   = App::get('menu');

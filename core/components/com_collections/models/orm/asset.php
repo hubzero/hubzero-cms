@@ -45,31 +45,31 @@ class Asset extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'filename' => 'notempty',
         'item_id'  => 'positive|nonzero',
         'type'     => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by',
         'ordering'
-    );
+    ];
 
     /**
      * Fields to be parsed
      *
      * @var  array
      */
-    protected $parsed = array(
+    protected $parsed = [
         'description'
-    );
+    ];
 
     /**
      * File size
@@ -114,7 +114,7 @@ class Asset extends Relational
      */
     public function automaticType($data)
     {
-        $allowed = array('file', 'link');
+        $allowed = ['file', 'link'];
 
         if (!isset($data['type']) || !$data['type'] || !in_array($data['type'], $allowed)) {
             $data['type'] = 'file';
@@ -193,7 +193,7 @@ class Asset extends Relational
         $ext = substr($this->get('filename'), $dot);
         $ext = strtolower($ext);
 
-        if (in_array($ext, array('jpg', 'jpe', 'jpeg', 'gif', 'png'))) {
+        if (in_array($ext, ['jpg', 'jpe', 'jpeg', 'gif', 'png'])) {
             return true;
         }
 
@@ -252,7 +252,7 @@ class Asset extends Relational
         $dir  = $this->filespace() . DS . $this->get('item_id') . DS;
         $file = ltrim($this->get('filename'), DS);
 
-        $suffix = array('thumb' => '_t', 'medium' => '_m');
+        $suffix = ['thumb' => '_t', 'medium' => '_m'];
         if (isset($suffix[$size]) && $this->isImage()) {
             $ext     = pathinfo($file, PATHINFO_EXTENSION);
             $variant = pathinfo($file, PATHINFO_FILENAME) . $suffix[$size] . ($ext !== '' ? '.' . $ext : '');
@@ -290,7 +290,7 @@ class Asset extends Relational
     public function dimensions()
     {
         if (is_null($this->dimensions)) {
-            $this->dimensions = array(0, 0);
+            $this->dimensions = [0, 0];
 
             if ($this->isImage() && $this->exists()) {
                 $this->dimensions = getimagesize($this->path());
@@ -381,7 +381,7 @@ class Asset extends Relational
             $ext  = Filesystem::extension($this->get('filename'));
             $path = $this->filespace() . DS . $this->get('item_id') . DS;
 
-            $files = array(
+            $files = [
                 // The file
                 'orign' => $path . $this->get('filename'),
                 // Medium sized (if an image)
@@ -391,7 +391,7 @@ class Asset extends Relational
                 // Thumbnail (if an image)
                 // A previously "trashed" file
                 //'trash' => $path . Filesystem::name($this->get('filename')) . uniqid('_d') . '.' . $ext;
-            );
+            ];
 
             foreach ($files as $file) {
                 if (file_exists($file)) {

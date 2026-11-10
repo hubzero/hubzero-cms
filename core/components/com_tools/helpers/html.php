@@ -63,7 +63,7 @@ class Html
         $difference = $current_time - $timestamp;
 
         // Set the periods of time
-        $periods = array(
+        $periods = [
             Lang::txt('COM_TOOLS_SECOND'),
             Lang::txt('COM_TOOLS_MINUTE'),
             Lang::txt('COM_TOOLS_HOUR'),
@@ -72,10 +72,10 @@ class Html
             Lang::txt('COM_TOOLS_MONTH'),
             Lang::txt('COM_TOOLS_YEAR'),
             Lang::txt('COM_TOOLS_DECADE')
-        );
+        ];
 
         // Set the number of seconds per period
-        $lengths = array(
+        $lengths = [
             1, // second
             60, // minute
             3600, // hour
@@ -84,7 +84,7 @@ class Html
             2630880, // month
             31570560, // year
             315705600  // decade
-        );
+        ];
 
         // Determine which period we should use, based on the number of seconds lapsed.
         // If the difference divided by the seconds is more than 1, we use that.
@@ -110,7 +110,7 @@ class Html
 
         // If required create a plural
         if ($number != 1) {
-            $periods = array(
+            $periods = [
                 Lang::txt('COM_TOOLS_SECONDS'),
                 Lang::txt('COM_TOOLS_MINUTES'),
                 Lang::txt('COM_TOOLS_HOURS'),
@@ -119,7 +119,7 @@ class Html
                 Lang::txt('COM_TOOLS_MONTHS'),
                 Lang::txt('COM_TOOLS_YEARS'),
                 Lang::txt('COM_TOOLS_DECADES')
-            );
+            ];
         }
 
         // Return text
@@ -577,12 +577,12 @@ class Html
      */
     public static function writeApproval($active_stage)
     {
-        $stages = array(
+        $stages = [
             Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_VERSION'),
             Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_LICENSE'),
             //Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_APPEND_NOTES'),
             Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_APPROVE')
-        );
+        ];
         $key = array_keys($stages, $active_stage);
 
         $html = "\t\t" . '<div class="clear"></div>' . "\n";

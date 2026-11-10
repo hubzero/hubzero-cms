@@ -75,7 +75,7 @@ class Git extends Models\Adapter
      * @param   array  $params
      * @return  array
      */
-    public function count($params = array())
+    public function count($params = [])
     {
         $cmd  = 'cd ' . escapeshellarg($this->_path) . ' && ';
         $cmd .= 'find . \( -path ./.git -o -name ".gitignore" \) -prune -o -type f -print | wc -l';
@@ -225,7 +225,7 @@ class Git extends Models\Adapter
      * @param   array  $params
      * @return  array
      */
-    public function content($params = array())
+    public function content($params = [])
     {
         $fileName = isset($params['fileName']) ? $params['fileName'] : null;
         $hash     = isset($params['hash']) ? $params['hash'] : null;
@@ -242,7 +242,7 @@ class Git extends Models\Adapter
      * @param   array  $folders
      * @return  array
      */
-    protected function _list($items, $params, $folders = array())
+    protected function _list($items, $params, $folders = [])
     {
         $dirPath  = isset($params['subdir']) ? $params['subdir'] : null;
         $limit    = isset($params['limit']) ? $params['limit'] : 0;
@@ -257,12 +257,12 @@ class Git extends Models\Adapter
         }
         // No results, return early
         if (empty($items)) {
-            return array();
+            return [];
         }
 
         // Go through sorted list, get extended metadata and limit results
         $i = 1;
-        $results = array();
+        $results = [];
         foreach ($items as $file) {
             // First cut off at limit if set
             if ($limit && $i > $limit) {
@@ -295,7 +295,7 @@ class Git extends Models\Adapter
         if (!isset($folders) || !$folders) {
             return $results;
         } else {
-            return array($results, $folders);
+            return [$results, $folders];
         }
     }
 
@@ -342,7 +342,7 @@ class Git extends Models\Adapter
      * @param   array  $params
      * @return  array
      */
-    public function getChanges($params = array())
+    public function getChanges($params = [])
     {
         $localPath    = isset($params['localPath']) ? $params['localPath'] : null;
         $fromLocal    = isset($params['fromLocal']) ? $params['fromLocal'] : null;
@@ -359,7 +359,7 @@ class Git extends Models\Adapter
      * @param   array   $params
      * @return  boolean
      */
-    public function getLastRevision($params = array())
+    public function getLastRevision($params = [])
     {
         $file = isset($params['file']) ? $params['file'] : null;
 
@@ -376,7 +376,7 @@ class Git extends Models\Adapter
      * @param   array  $params
      * @return  bool
      */
-    public function move($params = array())
+    public function move($params = [])
     {
         $fromFile = isset($params['fromFile']) ? $params['fromFile'] : null;
         $toFile   = isset($params['toFile']) ? $params['toFile'] : null;
@@ -401,7 +401,7 @@ class Git extends Models\Adapter
      * @param   array  $params
      * @return  bool
      */
-    public function makeDirectory($params = array())
+    public function makeDirectory($params = [])
     {
         $file = isset($params['file']) ? $params['file'] : null;
 
@@ -425,7 +425,7 @@ class Git extends Models\Adapter
      * @param   array  $params
      * @return  bool
      */
-    public function deleteDirectory($params = array())
+    public function deleteDirectory($params = [])
     {
         $file   = isset($params['file']) ? $params['file'] : null;
         $author = isset($params['author']) ? $params['author'] : null;
@@ -456,7 +456,7 @@ class Git extends Models\Adapter
      * @param   array  $params
      * @return  bool
      */
-    public function deleteFile($params = array())
+    public function deleteFile($params = [])
     {
         $file     = isset($params['file']) ? $params['file'] : null;
         $author   = isset($params['author']) ? $params['author'] : null;
@@ -488,7 +488,7 @@ class Git extends Models\Adapter
      * @param   array  $params
      * @return  bool
      */
-    public function checkin($params = array())
+    public function checkin($params = [])
     {
         $file      = isset($params['file']) ? $params['file'] : null;
         $new       = isset($params['replace']) && !$params['replace'] ? true : false;
@@ -522,7 +522,7 @@ class Git extends Models\Adapter
      * @param   array  $params
      * @return  bool
      */
-    public function discard($params = array())
+    public function discard($params = [])
     {
         $file = isset($params['file']) ? $params['file'] : null;
 
@@ -545,7 +545,7 @@ class Git extends Models\Adapter
      * @param   array  $params
      * @return  array
      */
-    public function restore($params = array())
+    public function restore($params = [])
     {
         $file   = isset($params['file']) ? $params['file'] : null;
         $hash   = isset($params['version']) ? $params['version'] : null;
@@ -585,7 +585,7 @@ class Git extends Models\Adapter
      * @param   array  $params
      * @return  array
      */
-    public function diff($params = array())
+    public function diff($params = [])
     {
         $file = isset($params['file']) ? $params['file'] : null;
         $rev1 = isset($params['rev1']) ? $params['rev1'] : null;
@@ -614,26 +614,26 @@ class Git extends Models\Adapter
             return false;
         }
 
-        $rev1 = array(
+        $rev1 = [
             'rev'   => $rev1Parts[0],
             'hash'  => $rev1Parts[1],
             'fpath' => $rev1Parts[2],
             'val'   => urlencode($rev1)
-        );
+        ];
 
-        $rev2 = array(
+        $rev2 = [
             'rev'   => $rev2Parts[0],
             'hash'  => $rev2Parts[1],
             'fpath' => $rev2Parts[2],
             'val'   => urlencode($rev2)
-        );
+        ];
 
         // Get text blobs
         $rev1['text'] = $this->_git->gitLog($rev1['fpath'], $rev1['hash'], 'blob');
         $rev2['text'] = $this->_git->gitLog($rev2['fpath'], $rev2['hash'], 'blob');
 
         $context = ($rev1['text'] == $rev2['text'] || $full) ? count($rev1['text']) : 10;
-        $options = array('context' => $context);
+        $options = ['context' => $context];
 
         // Run diff
         $objDiff = new \Diff($rev1['text'], $rev2['text'], $options);
@@ -680,7 +680,7 @@ class Git extends Models\Adapter
         }
 
         if (!isset($this->_profileAssoc)) {
-            $this->_profileAssoc = array();
+            $this->_profileAssoc = [];
         }
 
         // Entry is in the master log?
@@ -729,7 +729,7 @@ class Git extends Models\Adapter
      * @param   array    $params
      * @return  integer
      */
-    public function getDiskUsage($params = array())
+    public function getDiskUsage($params = [])
     {
         $working = isset($params['working']) ? $params['working'] : true;
         $git     = isset($params['history']) ? $params['history'] : true;
@@ -781,7 +781,7 @@ class Git extends Models\Adapter
      * @param   array  $params
      * @return  bool
      */
-    public function erase($params = array())
+    public function erase($params = [])
     {
         $path = isset($params['path']) ? $params['path'] : $this->_path;
 
@@ -804,7 +804,7 @@ class Git extends Models\Adapter
      * @param   array  $params
      * @return  bool
      */
-    public function optimize($params = array())
+    public function optimize($params = [])
     {
         $path = isset($params['path']) ? $params['path'] : $this->_path;
         $aggressive = isset($params['adv']) ? $params['adv'] : false;

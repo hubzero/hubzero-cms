@@ -51,20 +51,20 @@ class Media extends AdminController
      */
     public function displayTask()
     {
-        $filters = array();
+        $filters = [];
 
         $folder = Request::getString('folder', '');
         $session = App::get('session');
         $state = User::getState('folder');
         $folders = Filesystem::directoryTree(COM_MEDIA_BASE);
 
-        $fold = array(
+        $fold = [
             'id' => 0,
             'parent' => -1,
             'name' => '', //basename(COM_MEDIA_BASE),
             'fullname' => COM_MEDIA_BASE,
             'relname' => substr(COM_MEDIA_BASE, strlen(PATH_ROOT))
-        );
+        ];
 
         array_unshift($folders, $fold);
 
@@ -131,9 +131,9 @@ class Media extends AdminController
 
             if (!is_dir($path) && !is_file($path)) {
                 // Trigger the onContentBeforeSave event.
-                $object_file = new \Hubzero\Base\Obj(array('filepath' => $path));
+                $object_file = new \Hubzero\Base\Obj(['filepath' => $path]);
 
-                $result = Event::trigger('content.onContentBeforeSave', array('com_media.folder', &$object_file, true));
+                $result = Event::trigger('content.onContentBeforeSave', ['com_media.folder', &$object_file, true]);
 
                 if (in_array(false, $result, true)) {
                     // There are some errors in the plugins
@@ -148,7 +148,7 @@ class Media extends AdminController
                 Filesystem::write($path . '/index.html', $data);
 
                 // Trigger the onContentAfterSave event.
-                Event::trigger('content.onContentAfterSave', array('com_media.folder', &$object_file, true));
+                Event::trigger('content.onContentAfterSave', ['com_media.folder', &$object_file, true]);
 
                 Notify::success(Lang::txt('COM_MEDIA_CREATE_COMPLETE', substr($path, strlen(COM_MEDIA_BASE))));
             }
@@ -175,20 +175,20 @@ class Media extends AdminController
         if (strlen($folder) > 0) {
             if (!User::authorise('core.create', $this->_option)) {
                 // User is not authorised to delete
-                echo json_encode(array(
+                echo json_encode([
                     'success' => false,
                     'error' => Lang::txt('JLIB_APPLICATION_ERROR_CREATE_NOT_PERMITTED')
-                ));
+                ]);
                 return;
             }
 
             Request::setVar('folder', $parent);
 
             if (($folderCheck !== null) && ($folder !== $folderCheck)) {
-                echo json_encode(array(
+                echo json_encode([
                     'success' => false,
                     'error' => Lang::txt('COM_MEDIA_ERROR_UNABLE_TO_CREATE_FOLDER_WARNDIRNAME')
-                ));
+                ]);
                 return;
             }
 
@@ -196,18 +196,18 @@ class Media extends AdminController
 
             if (!is_dir($path) && !is_file($path)) {
                 // Trigger the onContentBeforeSave event.
-                $object_file = new \Hubzero\Base\Obj(array('filepath' => $path));
+                $object_file = new \Hubzero\Base\Obj(['filepath' => $path]);
 
-                $result = Event::trigger('content.onContentBeforeSave', array('com_media.folder', &$object_file, true));
+                $result = Event::trigger('content.onContentBeforeSave', ['com_media.folder', &$object_file, true]);
 
                 if (in_array(false, $result, true)) {
                     // There are some errors in the plugins
                     $errors = $object_file->getErrors();
                     $msg = Lang::txts('COM_MEDIA_ERROR_BEFORE_SAVE', count($errors), implode('<br />', $errors));
-                    echo json_encode(array(
+                    echo json_encode([
                         'success' => false,
                         'error' => $msg
-                    ));
+                    ]);
                     return;
                 }
 
@@ -216,16 +216,16 @@ class Media extends AdminController
                 Filesystem::write($path . '/index.html', $data);
 
                 // Trigger the onContentAfterSave event.
-                Event::trigger('content.onContentAfterSave', array('com_media.folder', &$object_file, true));
+                Event::trigger('content.onContentAfterSave', ['com_media.folder', &$object_file, true]);
             }
 
             Request::setVar('folder', ($parent) ? $parent . DS . $folder : $folder);
         }
 
-        echo json_encode(array(
+        echo json_encode([
             'success' => true,
             'directory' => COM_MEDIA_BASE . ($parent ? $parent . DS : '') . $folder
-        ));
+        ]);
     }
 
     /**
@@ -245,7 +245,7 @@ class Media extends AdminController
         $params = Component::params('com_media');
 
         // Get some data from the request
-        $files  = Request::getArray('Filedata', array(), 'files');
+        $files  = Request::getArray('Filedata', [], 'files');
         $this->folder = Request::getString('folder', '');
         $parent = Request::getString('parent', '');
         $return = Request::getString('return-url', '', 'post');
@@ -266,7 +266,7 @@ class Media extends AdminController
         // We want a numerically indexed array containing associative arrays
         // Cast each item as array in case the Filedata parameter was not sent as such
         $files = array_map(
-            array($this, 'reformatFilesArray'),
+            [$this, 'reformatFilesArray'],
             (array) $files['name'],
             (array) $files['type'],
             (array) $files['tmp_name'],
@@ -318,7 +318,7 @@ class Media extends AdminController
             $object_file = new \Hubzero\Base\Obj($file);
             $result = Event::trigger(
                 'content.onContentBeforeSave',
-                array('com_media.file', &$object_file, true)
+                ['com_media.file', &$object_file, true]
             );
             if (in_array(false, $result, true)) {
                 // There are some errors in the plugins
@@ -336,7 +336,7 @@ class Media extends AdminController
                 // Trigger the onContentAfterSave event.
                 Event::trigger(
                     'content.onContentAfterSave',
-                    array('com_media.file', &$object_file, true)
+                    ['com_media.file', &$object_file, true]
                 );
 
                 $relativePath = substr($file['filepath'], strlen(COM_MEDIA_BASE));
@@ -375,13 +375,13 @@ class Media extends AdminController
             $file = $_FILES['qqfile']['name'];
             $size = (int) $_FILES['qqfile']['size'];
         } else {
-            echo json_encode(array('error' => Lang::txt('File not found')));
+            echo json_encode(['error' => Lang::txt('File not found')]);
             return;
         }
 
         //check to make sure we have a file and its not too big
         if ($size == 0) {
-            echo json_encode(array('error' => Lang::txt('File is empty')));
+            echo json_encode(['error' => Lang::txt('File is empty')]);
             return;
         }
 
@@ -392,7 +392,7 @@ class Media extends AdminController
             || (($size > (int) (ini_get('memory_limit')) * 1024 * 1024) && ((int) (ini_get('memory_limit')) != -1))
         ) {
             $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', Number::formatBytes($sizeLimit));
-            echo json_encode(array('error' => Lang::txt('File is too large. Max file upload size is %s', $max)));
+            echo json_encode(['error' => Lang::txt('File is too large. Max file upload size is %s', $max)]);
             return;
         }
 
@@ -409,22 +409,22 @@ class Media extends AdminController
         $filename = Filesystem::name($filename) . '.' . $ext;
 
         $folder = Request::getString('folder', '');
-        $path = Filesystem::cleanPath(implode(DIRECTORY_SEPARATOR, array(COM_MEDIA_BASE, $folder, $filename)));
+        $path = Filesystem::cleanPath(implode(DIRECTORY_SEPARATOR, [COM_MEDIA_BASE, $folder, $filename]));
         $path = dirname($path);
 
         // Define upload directory and make sure its writable
         if (!is_dir($path)) {
             if (!Filesystem::makeDirectory($path)) {
-                echo json_encode(array('error' => Lang::txt('Error uploading. Unable to create path.')));
+                echo json_encode(['error' => Lang::txt('Error uploading. Unable to create path.')]);
                 return;
             }
         }
 
         if (!is_writable($path)) {
-            echo json_encode(array(
+            echo json_encode([
                 'success' => false,
                 'error' => Lang::txt('Server error. Upload directory isn\'t writable.')
-            ));
+            ]);
             return;
         }
 
@@ -433,10 +433,10 @@ class Media extends AdminController
         $allowed = array_values(array_filter(explode(',', $exts)));
 
         if (!in_array(strtolower($ext), $allowed)) {
-            echo json_encode(array(
+            echo json_encode([
                 'success' => false,
                 'error' => Lang::txt('COM_MEDIA_ERROR_INCORRECT_FILE_TYPE') . $ext
-            ));
+            ]);
             return;
         }
 
@@ -445,15 +445,15 @@ class Media extends AdminController
         $object_file = new \Hubzero\Base\Obj($file);
         $result = Event::trigger(
             'content.onContentBeforeSave',
-            array('com_media.file', &$object_file, true)
+            ['com_media.file', &$object_file, true]
         );
         if (in_array(false, $result, true)) {
             $errors = $object_file->getErrors();
             $msg = Lang::txts('COM_MEDIA_ERROR_BEFORE_SAVE', count($errors), implode('<br />', $errors));
-            echo json_encode(array(
+            echo json_encode([
                 'success' => false,
                 'error'   => $msg
-            ));
+            ]);
             return;
         }
 
@@ -475,22 +475,22 @@ class Media extends AdminController
 
         if (!Filesystem::isSafe($file)) {
             if (Filesystem::delete($file)) {
-                echo json_encode(array(
+                echo json_encode([
                     'success' => false,
                     'error'   => Lang::txt('ATTACHMENT: File rejected because the anti-virus scan failed.')
-                ));
+                ]);
                 return;
             }
         }
 
         // Trigger the onContentAfterSave event.
-        Event::trigger('content.onContentAfterSave', array('com_media.file', &$object_file, true));
+        Event::trigger('content.onContentAfterSave', ['com_media.file', &$object_file, true]);
 
-        echo json_encode(array(
+        echo json_encode([
             'success'    => true,
             'file'       => $filename,
             'directory'  => $folder,
-        ));
+        ]);
     }
 
     /**
@@ -508,9 +508,9 @@ class Media extends AdminController
 
         // Get some data from the request
         $tmpl   = Request::getCmd('tmpl');
-        $paths  = Request::getArray('rm', array(), '', 'array');
+        $paths  = Request::getArray('rm', [], '', 'array');
         $folder = Request::getString('folder', '');
-        $rm     = Request::getArray('rm', array());
+        $rm     = Request::getArray('rm', []);
 
         $redirect = 'index.php?option=com_media&folder=' . $folder;
         if ($tmpl == 'component') {
@@ -550,15 +550,15 @@ class Media extends AdminController
                 continue;
             }*/
 
-            $pathParts = array(COM_MEDIA_BASE, $folder, $path);
+            $pathParts = [COM_MEDIA_BASE, $folder, $path];
             $fullPath = Filesystem::cleanPath(implode(DIRECTORY_SEPARATOR, $pathParts));
-            $object_file = new \Hubzero\Base\Obj(array('filepath' => $fullPath));
+            $object_file = new \Hubzero\Base\Obj(['filepath' => $fullPath]);
             $relativePath = substr($fullPath, strlen(COM_MEDIA_BASE));
             if (is_file($fullPath)) {
                 // Trigger the onContentBeforeDelete event.
                 $result = Event::trigger(
                     'content.onContentBeforeDelete',
-                    array('com_media.file', &$object_file)
+                    ['com_media.file', &$object_file]
                 );
                 if (in_array(false, $result, true)) {
                     // There are some errors in the plugins
@@ -577,17 +577,17 @@ class Media extends AdminController
                 // Trigger the onContentAfterDelete event.
                 Event::trigger(
                     'content.onContentAfterDelete',
-                    array('com_media.file', &$object_file)
+                    ['com_media.file', &$object_file]
                 );
                 $this->setMessage(Lang::txt('COM_MEDIA_DELETE_COMPLETE', $relativePath));
             } elseif (is_dir($fullPath)) {
-                $exclude = array('.svn', 'CVS', '.DS_Store', '__MACOSX', 'index.html');
+                $exclude = ['.svn', 'CVS', '.DS_Store', '__MACOSX', 'index.html'];
                 $contents = Filesystem::files($fullPath, '.', true, false, $exclude);
                 if (empty($contents)) {
                     // Trigger the onContentBeforeDelete event.
                     $result = Event::trigger(
                         'content.onContentBeforeDelete',
-                        array('com_media.folder', &$object_file)
+                        ['com_media.folder', &$object_file]
                     );
                     if (in_array(false, $result, true)) {
                         // There are some errors in the plugins
@@ -606,7 +606,7 @@ class Media extends AdminController
                     // Trigger the onContentAfterDelete event.
                     Event::trigger(
                         'content.onContentAfterDelete',
-                        array('com_media.folder', &$object_file)
+                        ['com_media.folder', &$object_file]
                     );
                     $this->setMessage(Lang::txt('COM_MEDIA_DELETE_COMPLETE', $relativePath));
                 } else {
@@ -632,33 +632,33 @@ class Media extends AdminController
 
         // Get some data from the request
         $tmpl   = Request::getCmd('tmpl');
-        $paths  = Request::getArray('rm', array());
+        $paths  = Request::getArray('rm', []);
         $folder = Request::getString('folder', '');
-        $rm     = Request::getArray('rm', array());
+        $rm     = Request::getArray('rm', []);
 
         // Nothing to delete
         if (empty($rm)) {
-            echo json_encode(array(
+            echo json_encode([
                 'success' => false,
                 'error' => Lang::txt('No data provided')
-            ));
+            ]);
             return;
         }
 
         // Authorize the user
         if (!User::authorise('core.delete', $this->_option)) {
-            echo json_encode(array(
+            echo json_encode([
                 'success' => false,
                 'error' => Lang::txt('Not authorized')
-            ));
+            ]);
             return;
         }
 
-        $this->setErrors(array());
+        $this->setErrors([]);
 
         // Initialise variables.
         $ret = true;
-        $msg = array();
+        $msg = [];
         foreach ($rm as $path) {
             $path = urldecode($path);
 
@@ -675,16 +675,16 @@ class Media extends AdminController
                 continue;
             }*/
 
-            $pathParts = array(COM_MEDIA_BASE, $folder, $path);
+            $pathParts = [COM_MEDIA_BASE, $folder, $path];
             $fullPath = Filesystem::cleanPath(implode(DIRECTORY_SEPARATOR, $pathParts));
 
-            $object_file = new \Hubzero\Base\Obj(array('filepath' => $fullPath));
+            $object_file = new \Hubzero\Base\Obj(['filepath' => $fullPath]);
             $relativePath = substr($fullPath, strlen(COM_MEDIA_BASE));
             if (is_file($fullPath)) {
                 // Trigger the onContentBeforeDelete event.
                 $result = Event::trigger(
                     'content.onContentBeforeDelete',
-                    array('com_media.file', &$object_file)
+                    ['com_media.file', &$object_file]
                 );
                 if (in_array(false, $result, true)) {
                     // There are some errors in the plugins
@@ -703,17 +703,17 @@ class Media extends AdminController
                 // Trigger the onContentAfterDelete event.
                 Event::trigger(
                     'content.onContentAfterDelete',
-                    array('com_media.file', &$object_file)
+                    ['com_media.file', &$object_file]
                 );
                 $msg[] = Lang::txt('COM_MEDIA_DELETE_COMPLETE', $relativePath);
             } elseif (is_dir($fullPath)) {
-                $exclude = array('.svn', 'CVS', '.DS_Store', '__MACOSX', 'index.html');
+                $exclude = ['.svn', 'CVS', '.DS_Store', '__MACOSX', 'index.html'];
                 $contents = Filesystem::files($fullPath, '.', true, false, $exclude);
                 if (empty($contents)) {
                     // Trigger the onContentBeforeDelete event.
                     $result = Event::trigger(
                         'content.onContentBeforeDelete',
-                        array('com_media.folder', &$object_file)
+                        ['com_media.folder', &$object_file]
                     );
                     if (in_array(false, $result, true)) {
                         // There are some errors in the plugins
@@ -732,7 +732,7 @@ class Media extends AdminController
                     // Trigger the onContentAfterDelete event.
                     Event::trigger(
                         'content.onContentAfterDelete',
-                        array('com_media.folder', &$object_file)
+                        ['com_media.folder', &$object_file]
                     );
                     $msg[] = Lang::txt('COM_MEDIA_DELETE_COMPLETE', $relativePath);
                 } else {
@@ -746,10 +746,10 @@ class Media extends AdminController
             }
         }
 
-        $data = array(
+        $data = [
             'success' => true,
             'message' => $msg
-        );
+        ];
 
         if ($this->getError()) {
             $data['error'] = $this->getErrors();
@@ -804,16 +804,16 @@ class Media extends AdminController
     {
         $name = Filesystem::clean($name);
 
-        $pathParts = array(COM_MEDIA_BASE, $this->folder, $name);
+        $pathParts = [COM_MEDIA_BASE, $this->folder, $name];
         $filepath = Filesystem::cleanPath(implode(DIRECTORY_SEPARATOR, $pathParts));
 
-        return array(
+        return [
             'name'     => $name,
             'type'     => $type,
             'tmp_name' => $tmp_name,
             'error'    => $error,
             'size'     => $size,
             'filepath' => $filepath
-        );
+        ];
     }
 }

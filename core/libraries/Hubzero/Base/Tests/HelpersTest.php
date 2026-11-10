@@ -98,7 +98,7 @@ class HelpersTest extends Basic
 
         $this->assertInstanceOf('stdClass', $obj);
 
-        $obj = with(new \Hubzero\Base\Obj(array('foo' => 'bar')));
+        $obj = with(new \Hubzero\Base\Obj(['foo' => 'bar']));
 
         $this->assertInstanceOf('Hubzero\\Base\\Obj', $obj);
         $this->assertEquals($obj->get('foo'), 'bar');

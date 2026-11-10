@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
     /*
     |--------------------------------------------------------------------------
     | Database Driver
@@ -68,4 +68,4 @@ return array(
     |
     */
     'dbprefix' => 'jos_',
-);
+];

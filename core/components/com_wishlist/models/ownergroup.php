@@ -27,10 +27,10 @@ class Ownergroup extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'groupid'  => 'positive|nonzero',
         'wishlist' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Get the creator of this entry

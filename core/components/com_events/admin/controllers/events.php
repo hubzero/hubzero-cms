@@ -77,7 +77,7 @@ class Events extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->filters = array();
+        $this->view->filters = [];
         $this->view->filters['limit']    = Request::getState(
             $this->_option . '.' . $this->_controller . '.limit',
             'limit',
@@ -139,7 +139,7 @@ class Events extends AdminController
      */
     public function addpageTask()
     {
-        $ids = Request::getArray('id', array(0));
+        $ids = Request::getArray('id', [0]);
 
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=pages&task=add&id[]=' . $ids[0], false)
@@ -153,7 +153,7 @@ class Events extends AdminController
      */
     public function respondentsTask()
     {
-        $ids = Request::getArray('id', array(0));
+        $ids = Request::getArray('id', [0]);
 
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=respondents&id[]=' . $ids[0], false)
@@ -193,7 +193,7 @@ class Events extends AdminController
         }
 
         // Incoming
-        $id = Request::getArray('id', array(), 'request');
+        $id = Request::getArray('id', [], 'request');
         if (is_array($id)) {
             $id = (!empty($id)) ? $id[0] : 0;
         }
@@ -300,7 +300,7 @@ class Events extends AdminController
         }
         $end_time = $end_hrs . ':' . $end_mins;
 
-        $this->view->times = array();
+        $this->view->times = [];
         $this->view->times['start_publish'] = $start_publish;
         $this->view->times['start_time'] = $start_time;
         $this->view->times['start_pm'] = $start_pm;
@@ -390,7 +390,7 @@ class Events extends AdminController
         }
 
         // Blank calendar fields post ''; strict SQL mode rejects '' for a datetime, so store NULL
-        foreach (array('registerby', 'publish_down') as $datefield) {
+        foreach (['registerby', 'publish_down'] as $datefield) {
             if (isset($row->$datefield) && trim((string) $row->$datefield) === '') {
                 $row->$datefield = null;
             }
@@ -425,7 +425,7 @@ class Events extends AdminController
         $row->content = $this->_clean($row->content);
 
         // Get the custom fields defined in the events configuration
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
         $fields = array_map('trim', $fields);
         // Wrap up the content of the field and attach it to the event content
         $fs = $this->config->fields;
@@ -537,9 +537,9 @@ class Events extends AdminController
         Request::checkToken();
 
         // Incoming
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
         if (!is_array($ids)) {
-            $ids = array();
+            $ids = [];
         }
 
         // Make sure we have an ID
@@ -576,9 +576,9 @@ class Events extends AdminController
         Request::checkToken();
 
         // Incoming
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
         if (!is_array($ids)) {
-            $ids = array();
+            $ids = [];
         }
 
         // Make sure we have an ID
@@ -615,9 +615,9 @@ class Events extends AdminController
         Request::checkToken();
 
         // Incoming
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
         if (!is_array($ids)) {
-            $ids = array();
+            $ids = [];
         }
 
         // Make sure we have an ID
@@ -667,9 +667,9 @@ class Events extends AdminController
         Request::checkToken();
 
         // Incoming
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
         if (!is_array($ids)) {
-            $ids = array();
+            $ids = [];
         }
 
         // Make sure we have an ID
@@ -687,7 +687,7 @@ class Events extends AdminController
         $ep = new Page($this->database);
 
         // Instantiate a respondent object
-        $er = new Respondent(array());
+        $er = new Respondent([]);
 
         // Loop through the IDs and unpublish the event
         foreach ($ids as $id) {

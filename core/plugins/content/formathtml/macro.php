@@ -31,7 +31,7 @@ class Macro
      *
      * @var  array
      */
-    protected $_data  = array();
+    protected $_data  = [];
 
     /**
      * Database
@@ -73,14 +73,14 @@ class Macro
      *
      * @var  array
      */
-    public $linkLog = array();
+    public $linkLog = [];
 
     /**
      * Macro instances, keyed by class name
      *
      * @var  array
      */
-    protected static $instances = array();
+    protected static $instances = [];
 
     /**
      * Constructor
@@ -88,7 +88,7 @@ class Macro
      * @param   array  $config  Configuration options
      * @return  void
      */
-    public function __construct($config = array())
+    public function __construct($config = [])
     {
         $this->_db = App::get('db');
 
@@ -147,7 +147,7 @@ class Macro
      * @param   array  $config  Configuration parameters
      * @return  object
      */
-    public static function getInstance($config = array())
+    public static function getInstance($config = [])
     {
         // Keyed by class. A single shared slot combined with static::class
         // meant whichever macro asked first owned the instance for the whole
@@ -213,8 +213,8 @@ class Macro
     {
         if (!is_array($this->_arguments)) {
             $arguments = str_replace(
-                array('&nbsp;', '&quot;'),
-                array(' ', '"'),
+                ['&nbsp;', '&quot;'],
+                [' ', '"'],
                 (string)$this->args
             );
             $arguments = html_entity_decode($arguments);

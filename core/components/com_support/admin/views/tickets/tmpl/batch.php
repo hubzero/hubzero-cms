@@ -29,7 +29,7 @@ Html::behavior('tooltip');
 $this->css()
     ->js('tickets.js');
 
-$cc = array();
+$cc = [];
 ?>
 
 <?php
@@ -75,7 +75,7 @@ $formId = ($this->tmpl == 'component') ? 'component-form' : 'item-form';
                 <?php
                 $tf = Event::trigger(
                     'hubzero.onGetMultiEntry',
-                    array(array('tags', 'tags', 'actags', '', ''))
+                    [['tags', 'tags', 'actags', '', '']]
                 );
                 if (count($tf) > 0) {
                     echo $tf[0];
@@ -93,7 +93,7 @@ $formId = ($this->tmpl == 'component') ? 'component-form' : 'item-form';
                         <?php
                         $gc = Event::trigger(
                             'hubzero.onGetSingleEntryWithSelect',
-                            array(array('groups', 'fields[group]', 'acgroup', '', '', '', 'owner'))
+                            [['groups', 'fields[group]', 'acgroup', '', '', '', 'owner']]
                         );
                         if (count($gc) > 0) {
                             echo $gc[0];

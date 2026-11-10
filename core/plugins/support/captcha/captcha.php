@@ -45,132 +45,132 @@ class Captcha extends Plugin
      * Pseudo-randomized sequences for lists
      * @var array
      */
-    private $_sequence = array(
-        array(0, 2, 4, 1, 3),
-        array(1, 2, 0, 3, 4),
-        array(2, 0, 4, 1, 3),
-        array(3, 2, 1, 0, 4),
-        array(4, 1, 2, 3, 0),
-        array(3, 4, 2, 1, 0),
-        array(0, 3, 4, 2, 1),
-        array(2, 4, 1, 3, 0),
-        array(4, 2, 3, 0, 1),
-        array(2, 0, 3, 1, 4)
-    );
+    private $_sequence = [
+        [0, 2, 4, 1, 3],
+        [1, 2, 0, 3, 4],
+        [2, 0, 4, 1, 3],
+        [3, 2, 1, 0, 4],
+        [4, 1, 2, 3, 0],
+        [3, 4, 2, 1, 0],
+        [0, 3, 4, 2, 1],
+        [2, 4, 1, 3, 0],
+        [4, 2, 3, 0, 1],
+        [2, 0, 3, 1, 4]
+    ];
 
     /**
      * Text-based CAPTCHA questions
      * @var array
      */
-    private $_questions = array(
-        array(
+    private $_questions = [
+        [
             'type'     => 'math',
             'question' => 'PLG_SUPPORT_TEXTCAPTCHA_MATH',
             'answer'   => '@dynamic'
-        ),
-        array(
+        ],
+        [
             'type'     => 'list',
             'question' => 'PLG_SUPPORT_TEXTCAPTCHA_WHAT_DAY_AFTER_TUESDAY',
-            'options'  => array(
+            'options'  => [
                 'WEDNESDAY',
                 'MONDAY',
                 'THURSDAY',
                 'TUESDAY',
                 'FRIDAY'
-            ),
+            ],
             'answer'   => 'WEDNESDAY'
-        ),
-        array(
+        ],
+        [
             'type'     => 'text',
             'question' => 'PLG_SUPPORT_TEXTCAPTCHA_EYE_ANKLE_ARM',
             'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_EYE_ANKLE_ARM_ANSWER'
-        ),
-        array(
+        ],
+        [
             'type'     => 'list',
             'question' => 'PLG_SUPPORT_TEXTCAPTCHA_SUN_RISES',
-            'options'  => array(
+            'options'  => [
                 'PLG_SUPPORT_TEXTCAPTCHA_SUN_RISES_EAST',
                 'PLG_SUPPORT_TEXTCAPTCHA_SUN_RISES_NIGHT',
                 'PLG_SUPPORT_TEXTCAPTCHA_SUN_RISES_SOUTH',
                 'PLG_SUPPORT_TEXTCAPTCHA_SUN_RISES_WEST',
                 'PLG_SUPPORT_TEXTCAPTCHA_SUN_RISES_CHICKENS'
-            ),
+            ],
             'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_SUN_RISES_EAST'
-        ),
-        array(
+        ],
+        [
             'type'     => 'list',
             'question' => 'PLG_SUPPORT_TEXTCAPTCHA_PYRAMIDS',
-            'options'  => array(
+            'options'  => [
                 'PLG_SUPPORT_TEXTCAPTCHA_PYRAMIDS_EGYPT',
                 'PLG_SUPPORT_TEXTCAPTCHA_PYRAMIDS_ROCKS',
                 'PLG_SUPPORT_TEXTCAPTCHA_PYRAMIDS_JAPAN',
                 'PLG_SUPPORT_TEXTCAPTCHA_PYRAMIDS_NORTH_POLE',
                 'PLG_SUPPORT_TEXTCAPTCHA_PYRAMIDS_CANADA'
-            ),
+            ],
             'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_PYRAMIDS_EGYPT'
-        ),
-        array(
+        ],
+        [
             'type'     => 'list',
             'question' => 'PLG_SUPPORT_TEXTCAPTCHA_MOON',
-            'options'  => array(
+            'options'  => [
                 'PLG_SUPPORT_TEXTCAPTCHA_MOON_SKY',
                 'PLG_SUPPORT_TEXTCAPTCHA_MOON_AUTOMOBILES',
                 'PLG_SUPPORT_TEXTCAPTCHA_MOON_CLOSET',
                 'PLG_SUPPORT_TEXTCAPTCHA_MOON_MOVIES',
                 'PLG_SUPPORT_TEXTCAPTCHA_MOON_DRAWER'
-            ),
+            ],
             'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_MOON_SKY'
-        ),
-        array(
+        ],
+        [
             'type'     => 'text',
             'question' => 'PLG_SUPPORT_TEXTCAPTCHA_ICE',
             'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_ICE_ANSWER'
-        ),
-        array(
+        ],
+        [
             'type'     => 'text',
             'question' => 'PLG_SUPPORT_TEXTCAPTCHA_BODY_PART',
             'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_BODY_PART_ANSWER'
-        ),
-        array(
+        ],
+        [
             'type'     => 'list',
             'question' => 'PLG_SUPPORT_TEXTCAPTCHA_SHARKS',
-            'options'  => array(
+            'options'  => [
                 'PLG_SUPPORT_TEXTCAPTCHA_SHARKS_SEA',
                 'PLG_SUPPORT_TEXTCAPTCHA_SHARKS_APRICOTS',
                 'PLG_SUPPORT_TEXTCAPTCHA_SHARKS_GREENHOUSES',
                 'PLG_SUPPORT_TEXTCAPTCHA_SHARKS_BARRELS',
                 'PLG_SUPPORT_TEXTCAPTCHA_SHARKS_HOUSE'
-            ),
+            ],
             'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_SHARKS_SEA'
-        ),
-        array(
+        ],
+        [
             'type'     => 'text',
             'question' => 'PLG_SUPPORT_TEXTCAPTCHA_NIGHT',
             'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_NIGHT_ANSWER'
-        ),
-        array(
+        ],
+        [
             'type'     => 'text',
             'question' => 'PLG_SUPPORT_TEXTCAPTCHA_COLOR',
             'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_COLOR_ANSWER'
-        ),
-        array(
+        ],
+        [
             'type'     => 'text',
             'question' => 'PLG_SUPPORT_TEXTCAPTCHA_CAPITAL_OF_FRANCE',
             'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_CAPITAL_OF_FRANCE_ANSWER'
-        ),
-        array(
+        ],
+        [
             'type'     => 'list',
             'question' => 'PLG_SUPPORT_TEXTCAPTCHA_MICKEY',
-            'options'  => array(
+            'options'  => [
                 'PLG_SUPPORT_TEXTCAPTCHA_MICKEY_MOUSE',
                 'PLG_SUPPORT_TEXTCAPTCHA_MICKEY_TEAPOT',
                 'PLG_SUPPORT_TEXTCAPTCHA_MICKEY_SUITCASE',
                 'PLG_SUPPORT_TEXTCAPTCHA_MICKEY_PENGUIN',
                 'PLG_SUPPORT_TEXTCAPTCHA_MICKEY_CHICKEN'
-            ),
+            ],
             'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_MICKEY_MOUSE'
-        )
-    );
+        ]
+    ];
 
     /**
      * Constructor
@@ -248,7 +248,7 @@ class Captcha extends Plugin
             return true;
         }
 
-        $captcha = Request::getArray('captcha', array());
+        $captcha = Request::getArray('captcha', []);
         $task = Request::getCmd('task', '');
 
         if (!isset($captcha['instance']) || !isset($captcha['answer'])) {
@@ -295,7 +295,7 @@ class Captcha extends Plugin
         switch ($question['type']) {
             case 'math':
                 // Generate a CAPTCHA
-                $problem = array();
+                $problem = [];
                 $problem['operand1'] = rand(0, 10);
                 $problem['operand2'] = rand(0, 10);
                 $key = $problem['operand1'] + $problem['operand2'];
@@ -497,7 +497,7 @@ class Captcha extends Plugin
             imagealphablending($font, true);
             $fontfile_width = imagesx($font);
             $fontfile_height = imagesy($font) - 1;
-            $font_metrics = array();
+            $font_metrics = [];
             $symbol = 0;
             $reading_symbol = false;
 
@@ -506,7 +506,7 @@ class Captcha extends Plugin
                 $transparent = (imagecolorat($font, $i, 0) >> 24) == 127;
 
                 if (!$reading_symbol && !$transparent) {
-                    $font_metrics[$alphabet[$symbol]] = array('start' => $i);
+                    $font_metrics[$alphabet[$symbol]] = ['start' => $i];
                     $reading_symbol = true;
                     continue;
                 }
@@ -677,7 +677,7 @@ class Captcha extends Plugin
         $md5_hash = md5(rand(0, 999));
 
         // We don't need a 32 character long string so we trim it down to 5
-        $security_code = str_replace(array("0", "O", "o"), array("p"), substr($md5_hash, 15, 5));
+        $security_code = str_replace(["0", "O", "o"], ["p"], substr($md5_hash, 15, 5));
         $security_code = $this->_generateHash($security_code, date('j'));
 
         // Set the session to store the security code
@@ -722,7 +722,7 @@ class Captcha extends Plugin
     private function _hexToRgb($hex)
     {
         $hex = preg_replace("/#/", '', $hex);
-        $color = array();
+        $color = [];
 
         if (strlen($hex) == 3) {
             // a 3-digit colour doubles each digit (#abc -> #aabbcc)

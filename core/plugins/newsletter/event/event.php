@@ -40,7 +40,7 @@ class Event extends Plugin
     {
         $model = CalEvent::getLatest($num, $dateField, $sort)->rows()->toObject();
 
-        $objects = array();
+        $objects = [];
 
         foreach ($model as $m) {
             $object = new \stdClass();

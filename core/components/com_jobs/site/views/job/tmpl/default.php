@@ -173,7 +173,7 @@ defined('_HZEXEC_') or die();
                     </li>
                     <li>
                     <!-- show seeker info -->
-                    <?php $out = Event::trigger('members.showSeeker', array($job->applications[$i]->seeker, $this->emp, $this->admin, 'com_members', $list = 0));
+                    <?php $out = Event::trigger('members.showSeeker', [$job->applications[$i]->seeker, $this->emp, $this->admin, 'com_members', $list = 0]);
                     if (count($out) > 0) {
                         echo $out[0];
                     } ?>

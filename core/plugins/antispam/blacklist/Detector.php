@@ -37,7 +37,7 @@ class Detector implements DetectorInterface
      *
      * @var  array
      */
-    protected $blackLists = array();
+    protected $blackLists = [];
 
     /**
      * Model for retrieving list of words
@@ -59,7 +59,7 @@ class Detector implements DetectorInterface
      * @param   array  $options
      * @return  void
      */
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
         if (isset($options['blackLists'])) {
             $this->blackLists = $options['blackLists'];
@@ -86,7 +86,7 @@ class Detector implements DetectorInterface
     public function add($vars, $regex = false)
     {
         if (!is_array($vars)) {
-            $vars = array($vars);
+            $vars = [$vars];
         }
 
         foreach ($vars as $var) {
@@ -149,7 +149,7 @@ class Detector implements DetectorInterface
         $text = $data['text'];
 
         if (!$this->regex || $this->rebuild) {
-            $dbList = array();
+            $dbList = [];
 
             if ($storage = $this->getModel()) {
                 $rows = $storage->rows();

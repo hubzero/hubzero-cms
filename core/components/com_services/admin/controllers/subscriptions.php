@@ -45,7 +45,7 @@ class Subscriptions extends AdminController
      */
     public function displayTask()
     {
-        $filters = array(
+        $filters = [
             'status' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.status',
                 'filter_status',
@@ -62,10 +62,10 @@ class Subscriptions extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         // Only the columns the list sorts by
-        if (!in_array($filters['sort'], array('id', 'status', 'uid', 'added', 'updated', 'expires'), true)) {
+        if (!in_array($filters['sort'], ['id', 'status', 'uid', 'added', 'updated', 'expires'], true)) {
             $filters['sort'] = 'id';
         }
         $filters['sort_Dir'] = (strtoupper((string) $filters['sort_Dir']) == 'DESC') ? 'DESC' : 'ASC';
@@ -118,7 +118,7 @@ class Subscriptions extends AdminController
         Request::setVar('hidemainmenu', 1);
 
         if (!is_object($subscription)) {
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id)) {
                 $id = (!empty($id) ? intval($id[0]) : 0);
             }
@@ -269,10 +269,10 @@ class Subscriptions extends AdminController
 
         if ($email || $message) {
             // E-mail "from" info
-            $from = array(
+            $from = [
                 'email' => Config::get('mailfrom'),
                 'name'  => Config::get('sitename') . ' ' . Lang::txt('COM_SERVICES_SUBSCRIPTIONS')
-            );
+            ];
 
             // start email message
             $subject = Lang::txt('COM_SERVICES_EMAIL_SUBJECT', $subscription->code);
@@ -286,7 +286,7 @@ class Subscriptions extends AdminController
                 $emailbody .= $message;
             }
 
-            if (!Event::trigger('xmessage.onSendMessage', array('subscriptions_message', $subject, $emailbody, $from, array($subscription->uid), $this->_option))) {
+            if (!Event::trigger('xmessage.onSendMessage', ['subscriptions_message', $subject, $emailbody, $from, [$subscription->uid], $this->_option])) {
                 Notify::error(Lang::txt('COM_SERVICES_ERROR_FAILED_TO_MESSAGE'));
             }
         }

@@ -77,21 +77,21 @@ class Plugin extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'folder'  => 'notempty',
         'element' => 'notempty',
         'name'    => 'notempty'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      **/
-    public $always = array(
+    public $always = [
         'modified',
         'modified_by'
-    );
+    ];
 
     /**
      * Generates automatic modified field value
@@ -146,10 +146,10 @@ class Plugin extends Relational
             $element = $this->get('element');
             $path = DS . 'plugins' . DS . $this->get('folder') . DS . $element . DS . $element . '.xml';
 
-            $paths = array(
+            $paths = [
                 'app'  => Filesystem::cleanPath(PATH_APP . $path),
                 'core' => Filesystem::cleanPath(PATH_CORE . $path)
-            );
+            ];
 
             foreach ($paths as $p) {
                 if (file_exists($p)) {
@@ -221,13 +221,13 @@ class Plugin extends Relational
 
         Form::addFieldPath(__DIR__ . '/fields');
 
-        $form = new Form('plugin', array('control' => 'fields'));
+        $form = new Form('plugin', ['control' => 'fields']);
 
         if (!$form->loadFile($file, false, '//form')) {
             $this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
         }
 
-        $paths   = array();
+        $paths   = [];
         $paths[] = $this->path() . '/config/config.xml';
         $paths[] = $this->path() . '/' . $this->get('element') . '.xml';
 

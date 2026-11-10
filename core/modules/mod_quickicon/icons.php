@@ -24,7 +24,7 @@ class Icons
      */
     public static function buttons($buttons)
     {
-        $html = array();
+        $html = [];
         foreach ($buttons as $button) {
             $html[] = self::button($button);
         }

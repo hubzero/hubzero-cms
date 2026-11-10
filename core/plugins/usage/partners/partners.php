@@ -32,9 +32,9 @@ class Partners extends Plugin
      */
     public function onUsageAreas()
     {
-        return array(
+        return [
             'partners' => Lang::txt('PLG_USAGE_PARTNERS')
-        );
+        ];
     }
 
     /**

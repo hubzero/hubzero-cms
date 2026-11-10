@@ -89,7 +89,7 @@ class Stats extends Table
             return false;
         }
 
-        $stats = array(
+        $stats = [
             'total_resumes'    => 0,
             'shortlisted'      => 0,
             'applied'          => 0,
@@ -100,17 +100,17 @@ class Stats extends Table
             'viewed_thisweek'  => 0,
             'viewed_thismonth' => 0,
             'lastviewed'       => ''
-        );
+        ];
 
         // get total resumes in the pool
         $row = new Seeker($this->_db);
-        $filters = array(
+        $filters = [
             'filterby' => 'all',
             'sortby' => '',
             'search' => '',
             'category' => '',
             'type' => ''
-        );
+        ];
         $stats['total_resumes'] = $row->countSeekers($filters);
 
         // get stats for employer

@@ -115,7 +115,7 @@ class TraceableListener
         if ($this->listener instanceof Closure) {
             $response = call_user_func($this->listener, $event);
         } else {
-            $response = call_user_func(array($this->listener, $event->getName()), $event);
+            $response = call_user_func([$this->listener, $event->getName()], $event);
         }
 
         /*if ($e->isStarted())

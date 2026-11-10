@@ -24,7 +24,7 @@ Html::behavior('chart');
 
         $totals = '';
     if ($this->totals) {
-        $c = array();
+        $c = [];
         foreach ($this->totals as $year => $data) {
             foreach ($data as $k => $v) {
                 $c[] = '[new Date(' . $year . ',  ' . ($k - 1) . ', 1),' . $v . ']';

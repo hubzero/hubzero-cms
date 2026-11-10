@@ -30,7 +30,7 @@ class Types extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->filters = array(
+        $this->view->filters = [
             'limit' => Request::getState(
                 $this->_option . '.types.limit',
                 'limit',
@@ -58,7 +58,7 @@ class Types extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         $this->view->filters['state'] = 'all';
 
@@ -557,7 +557,7 @@ class Types extends AdminController
         $manifest = $objC->_manifest;
 
         // Get curation configs
-        $curation = Request::getArray('curation', array(), 'post');
+        $curation = Request::getArray('curation', [], 'post');
 
         // Collect modifications
         if (is_array($curation) && isset($curation['blocks'][$blockId])) {
@@ -574,7 +574,7 @@ class Types extends AdminController
                                     if (is_array($typeParam)) {
                                         $pval = trim($tpValue)
                                             ? explode(',', trim($tpValue))
-                                            : array();
+                                            : [];
                                     } else {
                                         $pval = trim($tpValue);
                                     }
@@ -585,7 +585,7 @@ class Types extends AdminController
                                 if (is_array($blockEl->$dataLabel->$bpName)) {
                                     $pval = trim($bpValue)
                                         ? explode(',', trim($bpValue))
-                                        : array();
+                                        : [];
                                     $blockEl->$dataLabel->$bpName = $pval;
                                 } else {
                                     $pval = trim($bpValue);
@@ -738,7 +738,7 @@ class Types extends AdminController
 
         if (!is_object($row)) {
             // Incoming (expecting an array)
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             $id = is_array($id) ? $id[0] : $id;
 
             // Load the object
@@ -800,7 +800,7 @@ class Types extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
         $fields = array_map('trim', $fields);
         $database = App::get('db');
 
@@ -839,7 +839,7 @@ class Types extends AdminController
             $manifest = $objC->_manifest;
 
             // Get curation configs
-            $curation = Request::getArray('curation', array());
+            $curation = Request::getArray('curation', []);
 
             // Collect modifications
             if (is_array($curation)) {
@@ -858,7 +858,7 @@ class Types extends AdminController
                                 foreach ($dataValue as $bpName => $bpValue) {
                                     // Determine value type
                                     if (is_array($manifest->blocks->$blockId->$dataLabel->$bpName)) {
-                                        $pval = trim($bpValue) ? explode(',', trim($bpValue)) : array();
+                                        $pval = trim($bpValue) ? explode(',', trim($bpValue)) : [];
                                     } else {
                                         $pval = trim($bpValue);
                                     }
@@ -878,7 +878,7 @@ class Types extends AdminController
             // Get parameters
             $params = Request::getArray('params', '', 'post');
             if (is_array($params)) {
-                $txt = array();
+                $txt = [];
                 foreach ($params as $k => $v) {
                     $txt[] = "$k=$v";
                 }
@@ -944,7 +944,7 @@ class Types extends AdminController
         Request::checkToken();
 
         // Incoming
-        $id = Request::getArray('id', array(0), '');
+        $id = Request::getArray('id', [0], '');
         $database = App::get('db');
 
         // Load row
@@ -970,8 +970,8 @@ class Types extends AdminController
         Request::checkToken();
 
         // Incoming (expecting an array)
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Ensure we have an ID to work with
         if (empty($ids)) {

@@ -35,12 +35,12 @@ class Usage extends Plugin
      */
     public function &onMembersAreas($user, $member)
     {
-        $areas = array(
+        $areas = [
             'usage' => Lang::txt('PLG_MEMBERS_USAGE'),
             'icon' => 'f080',
             'icon-class' => 'icon-bar-chart',
             'menu' => $this->params->get('display_tab', 1)
-        );
+        ];
         return $areas;
     }
 
@@ -57,10 +57,10 @@ class Usage extends Plugin
     {
         $returnhtml = true;
 
-        $arr = array(
+        $arr = [
             'html' => '',
-            'metadata' => array()
-        );
+            'metadata' => []
+        ];
 
         // Check if our area is in the array of areas we want to return results for
         if (is_array($areas)) {
@@ -101,7 +101,7 @@ class Usage extends Plugin
             $view->cluster_users = $cluster['users'];
             $view->cluster_schools = $cluster['schools'];
 
-            $access = array(0, 3);
+            $access = [0, 3];
 
             if (!User::isGuest()) {
                 $access[] = 1;
@@ -182,7 +182,7 @@ class Usage extends Plugin
         $database->setQuery($sql);
         $results = $database->loadObjectList();
 
-        $contribution = array();
+        $contribution = [];
         $contribution['contribs'] = '';
         $contribution['first'] = '';
         $contribution['last'] = '';
@@ -382,7 +382,7 @@ class Usage extends Plugin
 
         // Column identifier, not a value - constrain to the known stat columns.
 
-        if (!in_array($user_type, array('tool_users', 'andmore_users', 'total_users'), true)) {
+        if (!in_array($user_type, ['tool_users', 'andmore_users', 'total_users'], true)) {
             $user_type = 'total_users';
         }
 

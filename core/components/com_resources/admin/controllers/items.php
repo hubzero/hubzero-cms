@@ -74,7 +74,7 @@ class Items extends AdminController
     public function displayTask()
     {
         // Incoming
-        $filters = array(
+        $filters = [
             'limit' => Request::getState(
                 $this->_option . '.resources.limit',
                 'limit',
@@ -117,7 +117,7 @@ class Items extends AdminController
                 'license',
                 'all'
             )
-        );
+        ];
 
         $query = Entry::all()
             ->whereEquals('standalone', 1);
@@ -183,7 +183,7 @@ class Items extends AdminController
         );
 
         // Incoming
-        $filters = array(
+        $filters = [
             'parent_id' => $pid,
             'limit' => Request::getState(
                 $this->_option . '.children.limit',
@@ -217,7 +217,7 @@ class Items extends AdminController
                 'status',
                 'all'
             )
-        );
+        ];
 
         // Get parent info
         $parent = Entry::oneOrFail((int)$filters['parent_id']);
@@ -262,7 +262,7 @@ class Items extends AdminController
     public function orphansTask()
     {
         // Incoming
-        $filters = array(
+        $filters = [
             'parent_id' => -1,
             'search' => urldecode(Request::getState(
                 $this->_option . '.orphans.search',
@@ -284,7 +284,7 @@ class Items extends AdminController
                 'status',
                 'all'
             )
-        );
+        ];
 
         $associations = Association::all()
             ->select('child_id')
@@ -334,7 +334,7 @@ class Items extends AdminController
 
         // Incoming
         $id = Request::getInt('id', 0);
-        $rows = array();
+        $rows = [];
 
         // Do we have an ID to work with?
         if (!$id) {
@@ -362,7 +362,7 @@ class Items extends AdminController
     {
         // Incoming
         $pid  = Request::getInt('pid', 0);
-        $id   = Request::getArray('id', array(0));
+        $id   = Request::getArray('id', [0]);
         $step = Request::getInt('step', 1);
 
         if (!empty($id) && !$pid) {
@@ -472,11 +472,11 @@ class Items extends AdminController
 
         // Instantiate a Resources Assoc object
         $assoc = Association::blank()
-            ->set(array(
+            ->set([
                 'parent_id' => $pid,
                 'child_id'  => $id,
                 'grouping'  => 0
-            ));
+            ]);
 
         if (!$assoc->save()) {
             Notify::error($this->getError());
@@ -503,7 +503,7 @@ class Items extends AdminController
     public function removechildTask()
     {
         // Incoming
-        $ids = Request::getArray('id', array(0));
+        $ids = Request::getArray('id', [0]);
         $pid = Request::getInt('pid', 0);
 
         // Make sure we have a parent ID
@@ -574,7 +574,7 @@ class Items extends AdminController
         $this->css('resources.css');
 
         // Incoming resource ID
-        $id = Request::getArray('id', array(0));
+        $id = Request::getArray('id', [0]);
         if (is_array($id)) {
             $id = (!empty($id) ? $id[0] : 0);
         }
@@ -583,7 +583,7 @@ class Items extends AdminController
         $pid = Request::getInt('pid', 0);
 
         // Grab some filters for returning to place after editing
-        $return = array();
+        $return = [];
         $return['type']   = Request::getString('type', '');
         $return['sort']   = Request::getString('sort', '');
         $return['status'] = Request::getString('status', '');
@@ -654,19 +654,19 @@ class Items extends AdminController
             $lists['tags'] = '';
 
             // Get groups
-            $filters = array(
+            $filters = [
                 'authorized' => 'admin',
-                'fields'     => array('cn', 'description', 'published', 'gidNumber', 'type'),
-                'type'       => array(1, 3),
+                'fields'     => ['cn', 'description', 'published', 'gidNumber', 'type'],
+                'type'       => [1, 3],
                 'sortby'     => 'description'
-            );
+            ];
             $groups = \Hubzero\User\Group::find($filters);
 
             // Build <select> of groups
             $lists['groups'] = Html::selectGroup($groups, $row->group_owner->get('cn'));
 
             // Get all contributors linked to this resource
-            $authnames = array();
+            $authnames = [];
 
             if ($row->id) {
                 /*$sql = "SELECT n.id, a.authorid, a.name, n.givenName, n.middleName, n.surname, a.role, a.organization
@@ -694,10 +694,10 @@ class Items extends AdminController
             }
 
             // Build <select> of contributors
-            $authorslist = new \Hubzero\Component\View(array(
+            $authorslist = new \Hubzero\Component\View([
                 'name'   => $this->_controller,
                 'layout' => 'authors'
-            ));
+            ]);
             $authorslist->authnames = $authnames;
             $authorslist->attribs   = $row->attribs;
             $authorslist->set('option', $this->_option);
@@ -706,19 +706,19 @@ class Items extends AdminController
             $lists['authors'] = $authorslist->loadTemplate();
         }
 
-        $aclusers = new \Hubzero\Component\View(array(
+        $aclusers = new \Hubzero\Component\View([
             'name'   => $this->_controller,
             'layout' => 'aclusers'
-        ));
+        ]);
         $aclusers->aclusernames = $row->aclusers();
         $aclusers->option    = $this->_option;
 
         $lists['aclusers'] = $aclusers->loadTemplate();
 
-        $aclgroups = new \Hubzero\Component\View(array(
+        $aclgroups = new \Hubzero\Component\View([
             'name'   => $this->_controller,
             'layout' => 'aclgroups'
-        ));
+        ]);
         $aclgroups->aclgroupnames = $row->aclgroups();
         $aclgroups->option    = $this->_option;
 
@@ -754,7 +754,7 @@ class Items extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         // Initiate extended database class
         $row = Entry::oneOrNew(Request::getInt('id', 0, 'post'));
@@ -803,7 +803,7 @@ class Items extends AdminController
         }
 
         // Get parameters
-        $params = Request::getArray('params', array(), 'post');
+        $params = Request::getArray('params', [], 'post');
         if (is_array($params)) {
             $txt = new \Hubzero\Config\Registry('');
             foreach ($params as $k => $v) {
@@ -813,7 +813,7 @@ class Items extends AdminController
         }
 
         // Get attributes
-        $attribs = Request::getArray('attrib', array(), 'post');
+        $attribs = Request::getArray('attrib', [], 'post');
         if (is_array($attribs)) {
             $txta = new \Hubzero\Config\Registry('');
             foreach ($attribs as $k => $v) {
@@ -832,20 +832,20 @@ class Items extends AdminController
         }
 
         // Get custom areas, add wrappers, and compile into fulltxt
-        $nbtag = Request::getArray('nbtag', array(), 'post');
+        $nbtag = Request::getArray('nbtag', [], 'post');
         if (!empty($nbtag)) {
             $type = $row->type;
 
-            $elements = new \Components\Resources\Models\Elements(array(), $type->customFields);
+            $elements = new \Components\Resources\Models\Elements([], $type->customFields);
             $schema = $elements->getSchema();
 
-            $fields = array();
+            $fields = [];
             foreach ($schema->fields as $field) {
                 $fields[$field->name] = $field;
             }
 
             //$nbtag = $_POST['nbtag'];
-            $found = array();
+            $found = [];
             $fulltxt = $row->get('fulltxt');
             foreach ($nbtag as $tagname => $tagcontent) {
                 $f = '';
@@ -1037,10 +1037,10 @@ class Items extends AdminController
                 $this->_emailContributors($row);
 
                 // Log activity
-                $recipients = array(
+                $recipients = [
                     ['resource', $row->get('id')],
                     ['user', $row->get('created_by')]
-                );
+                ];
 
                 foreach ($row->authors()->where('authorid', '>', 0)->rows() as $author) {
                     $recipients[] = ['user', $author->get('authorid')];
@@ -1055,10 +1055,10 @@ class Items extends AdminController
                             'COM_RESOURCES_ACTIVITY_ENTRY_PUBLISHED',
                             '<a href="' . Route::url($row->link()) . '">' . $row->title . '</a>'
                         ),
-                        'details'     => array(
+                        'details'     => [
                             'title' => $row->title,
                             'url'   => Route::url($row->link())
-                        )
+                        ]
                     ],
                     'recipients' => $recipients
                 ]);
@@ -1080,7 +1080,7 @@ class Items extends AdminController
      */
     private function _emailContributors($row)
     {
-        $contributors = array();
+        $contributors = [];
 
         foreach ($row->authors()->where('authorid', '>', 0)->rows() as $author) {
             $contributors[] = $author->get('authorid');
@@ -1088,7 +1088,7 @@ class Items extends AdminController
 
         if (count($contributors) > 0) {
             // E-mail "from" info
-            $from = array();
+            $from = [];
             $from['email'] = Config::get('mailfrom');
             $from['name']  = Config::get('sitename') . ' ' . Lang::txt('COM_RESOURCES_SUBMISSIONS');
 
@@ -1107,7 +1107,7 @@ class Items extends AdminController
             $message .= $base . '/resources/' . $row->id;
 
             // Send message
-            if (!Event::trigger('xmessage.onSendMessage', array('resources_submission_approved', $subject, $message, $from, $contributors, $this->_option))) {
+            if (!Event::trigger('xmessage.onSendMessage', ['resources_submission_approved', $subject, $message, $from, $contributors, $this->_option])) {
                 $this->setError(Lang::txt('COM_RESOURCES_ERROR_FAILED_TO_MESSAGE_USERS'));
                 return false;
             }
@@ -1132,7 +1132,7 @@ class Items extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array(0));
+        $ids = Request::getArray('id', [0]);
 
         // Ensure we have some IDs to work with
         if (count($ids) < 1) {
@@ -1242,8 +1242,8 @@ class Items extends AdminController
 
         // Incoming
         $pid = Request::getInt('pid', 0);
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for a resource
         if (count($ids) < 1) {
@@ -1296,10 +1296,10 @@ class Items extends AdminController
                         $this->_emailContributors($resource);
 
                         // Log activity
-                        $recipients = array(
+                        $recipients = [
                             ['resource', $resource->id],
                             ['user', $resource->created_by]
-                        );
+                        ];
 
                         foreach ($resource->authors()->where('authorid', '>', 0)->rows() as $author) {
                             $recipients[] = ['user', $author->get('authorid')];
@@ -1314,10 +1314,10 @@ class Items extends AdminController
                                     'COM_RESOURCES_ACTIVITY_ENTRY_PUBLISHED',
                                     '<a href="' . Route::url($resource->link()) . '">' . $resource->title . '</a>'
                                 ),
-                                'details'     => array(
+                                'details'     => [
                                     'title' => $resource->title,
                                     'url'   => Route::url($resource->link())
-                                )
+                                ]
                             ],
                             'recipients' => $recipients
                         ]);
@@ -1488,7 +1488,7 @@ class Items extends AdminController
         Request::checkToken();
 
         // Incoming
-        $ids = Request::getArray('id', array(0));
+        $ids = Request::getArray('id', [0]);
 
         // Loop through the IDs
         foreach ($ids as $id) {
@@ -1516,7 +1516,7 @@ class Items extends AdminController
         Request::checkToken();
 
         // Incoming
-        $id  = Request::getArray('id', array());
+        $id  = Request::getArray('id', []);
         $id  = $id[0];
         $pid = Request::getInt('pid', 0);
 
@@ -1597,7 +1597,7 @@ class Items extends AdminController
         $result = $database->loadObjectList();
 
         if (!$result) {
-            $result = array();
+            $result = [];
         }
 
         if ($nouser) {
@@ -1738,7 +1738,7 @@ class Items extends AdminController
         $test   = Request::getString('test');
         $status = Request::getString('status', 'failed');
 
-        if (!in_array($status, array('skipped', 'passed', 'failed'))) {
+        if (!in_array($status, ['skipped', 'passed', 'failed'])) {
             $status = 'failed';
         }
 

@@ -41,29 +41,29 @@ class Option extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'label'    => 'notempty',
         'field_id' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'ordering'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'value',
         'checked'
-    );
+    ];
 
     /**
      * Generates automatic value field value

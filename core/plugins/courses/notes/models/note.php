@@ -41,22 +41,22 @@ class Note extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'scope'      => 'notempty',
         'scope_id'   => 'positive|nonzero',
         'section_id' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by',
         'state'
-    );
+    ];
 
     /**
      * Generates automatic state field value

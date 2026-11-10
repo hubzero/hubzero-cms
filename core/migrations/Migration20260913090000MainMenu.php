@@ -50,67 +50,67 @@ class Migration20260913090000MainMenu extends Base
      *
      * @var  array
      **/
-    protected $routes = array(
-        'resources'    => array('Resources', 'com_resources'),
-        'tools'        => array('Tools', 'com_tools'),
-        'publications' => array('Publications', 'com_publications'),
-        'citations'    => array('Citations', 'com_citations'),
-        'collections'  => array('Collections', 'com_collections'),
-        'tags'         => array('Tags', 'com_tags'),
-        'whatsnew'     => array('What\'s New', 'com_whatsnew'),
-        'groups'       => array('Groups', 'com_groups'),
-        'members'      => array('Members', 'com_members'),
-        'forum'        => array('Forum', 'com_forum'),
-        'answers'      => array('Questions &amp; Answers', 'com_answers'),
-        'blog'         => array('Blog', 'com_blog'),
-        'projects'     => array('Projects', 'com_projects'),
-        'courses'      => array('Courses', 'com_courses'),
-        'kb'           => array('Knowledge Base', 'com_kb'),
-        'wiki'         => array('Wiki', 'com_wiki'),
-        'events'       => array('Events', 'com_events'),
-        'support'      => array('Support', 'com_support'),
-        'feedback'     => array('Feedback', 'com_feedback'),
-        'wishlist'     => array('Wish List', 'com_wishlist'),
-        'newsletter'   => array('Newsletter', 'com_newsletter'),
-        'poll'         => array('Polls', 'com_poll'),
-        'jobs'         => array('Jobs', 'com_jobs'),
-        'usage'        => array('Usage', 'com_usage'),
-        'developer'    => array('Developers', 'com_developer'),
+    protected $routes = [
+        'resources'    => ['Resources', 'com_resources'],
+        'tools'        => ['Tools', 'com_tools'],
+        'publications' => ['Publications', 'com_publications'],
+        'citations'    => ['Citations', 'com_citations'],
+        'collections'  => ['Collections', 'com_collections'],
+        'tags'         => ['Tags', 'com_tags'],
+        'whatsnew'     => ['What\'s New', 'com_whatsnew'],
+        'groups'       => ['Groups', 'com_groups'],
+        'members'      => ['Members', 'com_members'],
+        'forum'        => ['Forum', 'com_forum'],
+        'answers'      => ['Questions &amp; Answers', 'com_answers'],
+        'blog'         => ['Blog', 'com_blog'],
+        'projects'     => ['Projects', 'com_projects'],
+        'courses'      => ['Courses', 'com_courses'],
+        'kb'           => ['Knowledge Base', 'com_kb'],
+        'wiki'         => ['Wiki', 'com_wiki'],
+        'events'       => ['Events', 'com_events'],
+        'support'      => ['Support', 'com_support'],
+        'feedback'     => ['Feedback', 'com_feedback'],
+        'wishlist'     => ['Wish List', 'com_wishlist'],
+        'newsletter'   => ['Newsletter', 'com_newsletter'],
+        'poll'         => ['Polls', 'com_poll'],
+        'jobs'         => ['Jobs', 'com_jobs'],
+        'usage'        => ['Usage', 'com_usage'],
+        'developer'    => ['Developers', 'com_developer'],
 
-    );
+    ];
 
     /**
      * The navigation: each group, and which routes hang under it.
      *
      * @var  array
      **/
-    protected $groups = array(
-        'discover' => array(
+    protected $groups = [
+        'discover' => [
             'title' => 'Discover',
-            'items' => array(
+            'items' => [
                 'resources', 'tools', 'publications', 'citations',
                 'collections', 'tags', 'whatsnew',
-            ),
-        ),
-        'community' => array(
+            ],
+        ],
+        'community' => [
             'title' => 'Community',
-            'items' => array(
+            'items' => [
                 'groups', 'members', 'forum', 'answers', 'blog', 'projects',
-            ),
-        ),
-        'learn' => array(
+            ],
+        ],
+        'learn' => [
             'title' => 'Learn',
-            'items' => array('courses', 'kb', 'wiki', 'events'),
-        ),
-        'support' => array(
+            'items' => ['courses', 'kb', 'wiki', 'events'],
+        ],
+        'support' => [
             'title' => 'Support',
-            'items' => array('support', 'feedback', 'wishlist'),
-        ),
-        'about' => array(
+            'items' => ['support', 'feedback', 'wishlist'],
+        ],
+        'about' => [
             'title' => 'About',
-            'items' => array('newsletter', 'poll', 'jobs', 'usage', 'developer'),
-        ),
-    );
+            'items' => ['newsletter', 'poll', 'jobs', 'usage', 'developer'],
+        ],
+    ];
 
     /**
      * Up
@@ -192,11 +192,11 @@ class Migration20260913090000MainMenu extends Base
 
         // 1 is Public, and it is Public by id because a hub may have renamed
         // the group but cannot renumber it.
-        $rules['core.access'] = array('1' => 1);
+        $rules['core.access'] = ['1' => 1];
 
         $this->db->getQuery(true)
             ->update('#__assets')
-            ->set(array('rules' => json_encode($rules)))
+            ->set(['rules' => json_encode($rules)])
             ->where('id', '=', (int)$asset->id)
             ->execute();
 
@@ -234,19 +234,19 @@ class Migration20260913090000MainMenu extends Base
             return;
         }
 
-        $wanted = array(
-            'mainmenu' => array(
+        $wanted = [
+            'mainmenu' => [
                 'Main Menu',
                 'display',
                 'The main menu for the site',
-            ),
-            'components' => array(
+            ],
+            'components' => [
                 'Components',
                 'component',
                 'One entry per component, so every component has an address and a page'
                 . ' of its own. Generated; not edited here.',
-            ),
-        );
+            ],
+        ];
 
         $typed = $this->db->tableHasField('#__menu_types', 'type');
 
@@ -263,11 +263,11 @@ class Migration20260913090000MainMenu extends Base
                 continue;
             }
 
-            $values = array(
+            $values = [
                 'menutype'    => $type,
                 'title'       => $title,
                 'description' => $description,
-            );
+            ];
 
             if ($typed) {
                 $values['type'] = $kind;
@@ -288,7 +288,7 @@ class Migration20260913090000MainMenu extends Base
      **/
     protected function addRoutes($root)
     {
-        $ids = array();
+        $ids = [];
         $ordering = 1;
 
         foreach ($this->routes as $alias => $route) {
@@ -301,7 +301,7 @@ class Migration20260913090000MainMenu extends Base
                 continue;
             }
 
-            $ids[$alias] = $this->addItem(array(
+            $ids[$alias] = $this->addItem([
                 'menutype'     => 'components',
                 'title'        => $route[0],
                 'alias'        => $alias,
@@ -312,7 +312,7 @@ class Migration20260913090000MainMenu extends Base
                 'level'        => 1,
                 'ordering'     => $ordering++,
                 'component_id' => $componentId,
-            ));
+            ]);
         }
 
         return $ids;
@@ -339,7 +339,7 @@ class Migration20260913090000MainMenu extends Base
             // one alias under one parent. A group's alias appears in no URL -
             // its children are aliases and route through their target - so the
             // prefix costs nothing.
-            $parent = $this->addItem(array(
+            $parent = $this->addItem([
                 'menutype'  => 'mainmenu',
                 'title'     => $group['title'],
                 'alias'     => 'nav-' . $alias,
@@ -349,7 +349,7 @@ class Migration20260913090000MainMenu extends Base
                 'parent_id' => $root,
                 'level'     => 1,
                 'ordering'  => $ordering++,
-            ));
+            ]);
 
             $under = 1;
 
@@ -358,7 +358,7 @@ class Migration20260913090000MainMenu extends Base
                     continue;
                 }
 
-                $this->addItem(array(
+                $this->addItem([
                     'menutype'  => 'mainmenu',
                     'title'     => $this->routes[$item][0],
                     'alias'     => $item,
@@ -368,8 +368,8 @@ class Migration20260913090000MainMenu extends Base
                     'parent_id' => $parent,
                     'level'     => 2,
                     'ordering'  => $under++,
-                    'params'    => json_encode(array('aliasoptions' => (string)$ids[$item])),
-                ));
+                    'params'    => json_encode(['aliasoptions' => (string)$ids[$item]]),
+                ]);
             }
         }
     }
@@ -382,7 +382,7 @@ class Migration20260913090000MainMenu extends Base
      **/
     protected function addItem($item)
     {
-        $row = array_merge(array(
+        $row = array_merge([
             'menutype'          => 'mainmenu',
             'note'              => '',
             'published'         => 1,
@@ -399,7 +399,7 @@ class Migration20260913090000MainMenu extends Base
             'home'              => 0,
             'language'          => '*',
             'client_id'         => 0,
-        ), $item);
+        ], $item);
 
         $this->db->getQuery(true)
             ->insert('#__menu')
@@ -455,7 +455,7 @@ class Migration20260913090000MainMenu extends Base
 
         $this->db->getQuery(true)
             ->update('#__menu')
-            ->set(array('lft' => (int)$left, 'rgt' => (int)$right))
+            ->set(['lft' => (int)$left, 'rgt' => (int)$right])
             ->where('id', '=', (int)$parent)
             ->execute();
 
@@ -475,7 +475,7 @@ class Migration20260913090000MainMenu extends Base
         // button that opens them rather than as a link. Its own label says the
         // opposite; the behaviour is what the templates are written against,
         // so it is the label that is wrong and not this.
-        $params = json_encode(array(
+        $params = json_encode([
             'menutype'        => 'mainmenu',
             'startLevel'      => '1',
             'endLevel'        => '0',
@@ -484,7 +484,7 @@ class Migration20260913090000MainMenu extends Base
             'toplevelLinks'   => '1',
             'layout'          => '',
             'cache'           => '0',
-        ));
+        ]);
 
         $id = $this->db->getQuery(true)
             ->select('id')
@@ -497,12 +497,12 @@ class Migration20260913090000MainMenu extends Base
         if ($id) {
             $this->db->getQuery(true)
                 ->update('#__modules')
-                ->set(array(
+                ->set([
                     'position'  => 'user3',
                     'published' => 1,
                     'showtitle' => 0,
                     'params'    => $params,
-                ))
+                ])
                 ->where('id', '=', (int)$id)
                 ->execute();
 
@@ -513,7 +513,7 @@ class Migration20260913090000MainMenu extends Base
         // that deleted it should still come out of this with a navigation.
         $this->db->getQuery(true)
             ->insert('#__modules')
-            ->values(array(
+            ->values([
                 'title'            => 'Main Menu',
                 'note'             => '',
                 'content'          => '',
@@ -530,17 +530,17 @@ class Migration20260913090000MainMenu extends Base
                 'params'           => $params,
                 'client_id'        => 0,
                 'language'         => '*',
-            ))
+            ])
             ->execute();
 
         // A module shows on the pages named here, and nought means all of
         // them. Without a row the module is published and drawn nowhere.
         $this->db->getQuery(true)
             ->insert('#__modules_menu')
-            ->values(array(
+            ->values([
                 'moduleid' => (int)$this->db->insertid(),
                 'menuid'   => 0,
-            ))
+            ])
             ->execute();
     }
 

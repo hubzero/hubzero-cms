@@ -34,9 +34,9 @@ class Migration20180627111315ComPublications extends Base
             $params = $this->db->loadResult();
             if ($params) {
                 $pubParams = new \Hubzero\Config\Registry($params);
-                $addParams = array(
+                $addParams = [
                     'sftppath' => '/site/publications/ftp'
-                );
+                ];
                 $pubParams->merge($addParams);
 
                 $query = "UPDATE `#__extensions` SET `params`="

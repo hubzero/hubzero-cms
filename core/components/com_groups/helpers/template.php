@@ -32,7 +32,7 @@ class Template extends Document
      *
      * @var  array
      */
-    public $allowed_tags = array(
+    public $allowed_tags = [
         'module',
         'modules',
         'toolbar',
@@ -41,7 +41,7 @@ class Template extends Document
         'googleanalytics',
         'stylesheet',
         'script'
-    );
+    ];
 
     /**
      * Override parse template to get document content
@@ -99,10 +99,10 @@ class Template extends Document
             $template = null;
 
             // build array of possible page templates to load
-            $possibleTemplates = array(
+            $possibleTemplates = [
                 $base . 'index.php',
                 $base . 'default.php'
-            );
+            ];
 
             // if we have an active page, add other template possibilities
             if ($this->page !== null) {

@@ -268,7 +268,7 @@ $contactPhoneValue = $this->escape(
                         50,
                         30,
                         'description',
-                        array('class' => 'required')
+                        ['class' => 'required']
                     );
                     ?>
                     <span class="hint"><?php echo $descHint; ?></span>

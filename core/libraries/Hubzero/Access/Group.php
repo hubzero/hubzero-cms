@@ -52,9 +52,9 @@ class Group extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'title' => 'notempty'
-    );
+    ];
 
     /**
      * Sets up additional custom rules
@@ -160,10 +160,10 @@ class Group extends Relational
         // the children of this node we also know the right value
         $query = $this->getQuery()
             ->update($this->getTableName())
-            ->set(array(
+            ->set([
                 'lft' => (int) $left,
                 'rgt' => (int) $right
-            ))
+            ])
             ->whereEquals('id', (int) $parent_id);
 
         // if there is an update failure, return false to break out of the recursion
@@ -209,7 +209,7 @@ class Group extends Relational
         }
 
         // Delete the dependencies
-        $ids = array();
+        $ids = [];
 
         foreach ($children as $child) {
             $ids[] = $child->get('id');
@@ -225,8 +225,8 @@ class Group extends Relational
         }
 
         // Delete the usergroup in view levels
-        $find    = array();
-        $replace = array();
+        $find    = [];
+        $replace = [];
         foreach ($ids as $id) {
             $find[] = "[$id,";
             $find[] = ",$id,";

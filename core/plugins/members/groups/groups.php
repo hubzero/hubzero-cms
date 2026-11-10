@@ -38,7 +38,7 @@ class Groups extends Plugin
     public function &onMembersAreas($user, $member)
     {
         // default areas returned to nothing
-        $areas = array();
+        $areas = [];
 
         // if this is the logged in user show them
         if ($user->get('id') == $member->get('id')) {
@@ -75,15 +75,15 @@ class Groups extends Plugin
             }
         }
 
-        $arr = array(
+        $arr = [
             'html' => '',
-            'metadata' => array()
-        );
+            'metadata' => []
+        ];
 
-        $applicants = array();
-        $invitees = array();
-        $members = array();
-        $managers = array();
+        $applicants = [];
+        $invitees = [];
+        $members = [];
+        $managers = [];
 
         // Look for any invites by email
         $emails = \Hubzero\User\Group\InviteEmail::all()
@@ -135,7 +135,7 @@ class Groups extends Plugin
 
         $groups = array_merge($applicants, $invitees);
 
-        $managerids = array();
+        $managerids = [];
         foreach ($managers as $manager) {
             $groups[$manager->description] = $manager;
             $managerids[] = $manager->cn;
@@ -159,8 +159,8 @@ class Groups extends Plugin
             $filter = strtolower(Request::getWord('filter', '', 'get'));
             $state = strtolower(Request::getWord('state', 'active', 'get'));
 
-            if (in_array($state, array('active', 'archived'))) {
-                $g = array();
+            if (in_array($state, ['active', 'archived'])) {
+                $g = [];
 
                 switch ($state) {
                     case 'archived':
@@ -185,8 +185,8 @@ class Groups extends Plugin
                 $total = count($groups);
             }
 
-            if (in_array($filter, array('invitees', 'applicants', 'members', 'managers'))) {
-                $g = array();
+            if (in_array($filter, ['invitees', 'applicants', 'members', 'managers'])) {
+                $g = [];
 
                 switch ($filter) {
                     case 'invitees':

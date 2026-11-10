@@ -26,7 +26,7 @@ class Router extends Base
      */
     public function build(&$query)
     {
-        $segments = array();
+        $segments = [];
 
         if (!empty($query['controller'])) {
             $segments[] = $query['controller'];
@@ -80,10 +80,10 @@ class Router extends Base
      */
     public function parse(&$segments)
     {
-        $vars = array();
+        $vars = [];
 
         // Valid tasks not requiring id
-        $tasks = array('browse', 'start', 'submit', 'edit', 'publication', 'fork', 'compare');
+        $tasks = ['browse', 'start', 'submit', 'edit', 'publication', 'fork', 'compare'];
 
         if (empty($segments[0])) {
             return $vars;

@@ -66,7 +66,7 @@ class Tags extends \Hubzero\Base\Obj
      * @param      array  $config Optional configurations
      * @return     void
      */
-    public function __construct($db, $config = array())
+    public function __construct($db, $config = [])
     {
         $this->_db  = $db;
         $this->_tbl = 'publications';
@@ -138,7 +138,7 @@ class Tags extends \Hubzero\Base\Obj
     {
         $sql = "SELECT DISTINCT t.* FROM $this->_tag_tbl AS t, $this->_obj_tbl AS rt WHERE ";
 
-        $where = array();
+        $where = [];
         $where[] = "rt.objectid=$id";
         $where[] = "rt.tbl='$this->_tbl'";
         $where[] = "rt.tagid=t.id";
@@ -192,7 +192,7 @@ class Tags extends \Hubzero\Base\Obj
 
         $ids = '';
         if ($objs) {
-            $s = array();
+            $s = [];
             foreach ($objs as $obj) {
                 $s[] = $obj->objectid;
             }
@@ -226,13 +226,13 @@ class Tags extends \Hubzero\Base\Obj
         $this->_db->setQuery($sql);
         $results = $this->_db->loadObjectList();
 
-        $rows = array();
+        $rows = [];
         if ($results) {
             foreach ($results as $result) {
                 if (!isset($rows[$result->id])) {
                     $rows[$result->id] = $result;
                     $rows[$result->id]->ucount++;
-                    $rows[$result->id]->rids = array($result->rid);
+                    $rows[$result->id]->rids = [$result->rid];
                 } else {
                     if (!in_array($result->rid, $rows[$result->id]->rids)) {
                         $rows[$result->id]->ucount++;
@@ -408,7 +408,7 @@ class Tags extends \Hubzero\Base\Obj
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps, PSR2.Methods.MethodDeclaration.Underscore
     public function _parse_tags($tag_string, $keep = 0)
     {
-        $newwords = array();
+        $newwords = [];
 
         if (is_string($tag_string)) {
             // If the tag string is empty, return the empty set.
@@ -449,7 +449,7 @@ class Tags extends \Hubzero\Base\Obj
      */
     public function getUsersGroups($groups)
     {
-        $arr = array();
+        $arr = [];
         if (!empty($groups)) {
             foreach ($groups as $group) {
                 if ($group->regconfirmed) {
@@ -478,7 +478,7 @@ class Tags extends \Hubzero\Base\Obj
         $category = 0,
         $sortby = 'title',
         $tag2 = '',
-        $filterby = array()
+        $filterby = []
     ) {
         $now  = Date::toSql();
 
@@ -616,7 +616,7 @@ class Tags extends \Hubzero\Base\Obj
     public function getTagUsage($tag, $rtrn = 'id')
     {
         if (!$tag) {
-            return array();
+            return [];
         }
 
         $query = "SELECT r.$rtrn
@@ -654,7 +654,7 @@ class Tags extends \Hubzero\Base\Obj
      *
      * @return     object
      */
-    public function getPickedTags($tags = array())
+    public function getPickedTags($tags = [])
     {
         if (empty($tags)) {
             return $tags;
@@ -715,7 +715,7 @@ class Tags extends \Hubzero\Base\Obj
     public function getSuggestedTags(
         $pubtitle = '',
         $typealias = '',
-        $attached_tags = array(),
+        $attached_tags = [],
         $limit = 10,
         $tcount = 2
     ) {
@@ -728,7 +728,7 @@ class Tags extends \Hubzero\Base\Obj
                 $k++;
             }
         }
-        $keywords = array();
+        $keywords = [];
         if ($pubtitle) {
             $words = explode(' ', $pubtitle);
             foreach ($words as $word) {
@@ -818,7 +818,7 @@ class Tags extends \Hubzero\Base\Obj
             $bunch = $this->_parse_tags($tag);
         }
 
-        $tags = array();
+        $tags = [];
         if ($remove) {
             foreach ($bunch as $t) {
                 if ($remove == $t) {
@@ -846,7 +846,7 @@ class Tags extends \Hubzero\Base\Obj
         $html = '';
 
         if ($tags && count($tags) > 0) {
-            $lst = array();
+            $lst = [];
             if (is_string($tagstring)) {
                 $lst = $this->_parse_tags($tagstring);
             } else {
@@ -857,7 +857,7 @@ class Tags extends \Hubzero\Base\Obj
             $max_font_size = 1.8;
 
             if ($showsizes) {
-                $retarr = array();
+                $retarr = [];
                 foreach ($tags as $tag) {
                     $retarr[$tag->raw_tag] = $tag->count;
                 }
@@ -876,7 +876,7 @@ class Tags extends \Hubzero\Base\Obj
 
             // build HTML
             $html .= '<ol class="tags">' . "\n";
-            $tll = array();
+            $tll = [];
             foreach ($tags as $tag) {
                 $class = '';
                 switch ($tag->admin) {
@@ -895,7 +895,7 @@ class Tags extends \Hubzero\Base\Obj
                         $lsst[] = $tag->tag;
                     }
                 } else {
-                    $lsst = array($tag->tag);
+                    $lsst = [$tag->tag];
                 }
 
                 $tag->raw_tag = stripslashes($tag->raw_tag);

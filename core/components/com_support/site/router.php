@@ -23,7 +23,7 @@ class Router extends Base
      */
     public function build(&$query)
     {
-        $segments = array();
+        $segments = [];
 
         if (!empty($query['controller']) && $query['controller'] == 'media') {
             $segments[] = $query['controller'];
@@ -107,7 +107,7 @@ class Router extends Base
      */
     public function parse(&$segments)
     {
-        $vars = array();
+        $vars = [];
 
         $count = count($segments);
 

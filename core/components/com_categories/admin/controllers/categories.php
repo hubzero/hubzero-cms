@@ -72,22 +72,22 @@ class Categories extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $ids = Request::getArray('cid', array());
+        $ids = Request::getArray('cid', []);
         if (empty($ids)) {
             Notify::warning(Lang::txt('COM_CATEGORIES_NO_ITEM_SELECTED'));
             return $this->cancelTask();
         }
-        $batchOptions = Request::getArray('batch', array());
+        $batchOptions = Request::getArray('batch', []);
         if (empty($batchOptions['category_id'])) {
             Notify::warning(Lang::txt('COM_CATEGORIES_BATCH_NO_CATEGORY_SELECTED'));
             return $this->cancelTask();
         }
         $action = $batchOptions['move_copy'] == 'm' ? 'moved' : 'copied';
 
-        $params = array(
+        $params = [
             'access' => isset($batchOptions['assetgroup_id']) ? $batchOptions['assetgroup_id'] : null,
             'language' => isset($batchOptions['language_id']) ? $batchOptions['language_id'] : null
-        );
+        ];
 
         $categories = Category::all()->whereIn('id', $ids);
         foreach ($categories as $category) {
@@ -105,7 +105,7 @@ class Categories extends AdminController
      */
     public function displayTask()
     {
-        $filters = array(
+        $filters = [
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . 'search',
                 'filter_search',
@@ -143,12 +143,12 @@ class Categories extends AdminController
                 $this->_option . '.' . $this->_controller . '.extension',
                 'extension'
             )
-        );
-        $filterableFields = array(
+        ];
+        $filterableFields = [
             'category_id' => 'catid',
             'access'      => 'access',
             'extension'   => 'extension'
-        );
+        ];
         $categories = Category::all()
             ->select('`#__categories`.*')
             ->select('`#__languages`.`title`', 'language_title')
@@ -160,7 +160,7 @@ class Categories extends AdminController
             }
         }
 
-        $searchableFields = array('title', 'description');
+        $searchableFields = ['title', 'description'];
         if (!empty($filters['search'])) {
             $firstSearch = array_shift($searchableFields);
             $categories->whereLike($firstSearch, $filters['search'], 1);
@@ -183,15 +183,15 @@ class Categories extends AdminController
         }
 
         // Only the columns the list headings offer
-        if (!in_array($filters['sort'], array('lft', 'title', 'published', 'access', 'language', 'id'), true)) {
+        if (!in_array($filters['sort'], ['lft', 'title', 'published', 'access', 'language', 'id'], true)) {
             $filters['sort'] = 'lft';
         }
         $filters['sort_Dir'] = (strtoupper((string) $filters['sort_Dir']) == 'DESC' ? 'DESC' : 'ASC');
 
         $categories->order($filters['sort'], $filters['sort_Dir']);
         $items = $categories->paginated('limitstart', 'limit');
-        $itemsArray = array();
-        $ordering = array();
+        $itemsArray = [];
+        $ordering = [];
 
         $levels = Category::all()
             ->whereEquals('extension', $filters['extension'])
@@ -200,7 +200,7 @@ class Categories extends AdminController
             ->order('level', 'asc')
             ->rows();
 
-        $fLevels = array();
+        $fLevels = [];
         foreach ($levels as $level) {
             $level = $level->get('level');
             $fLevels[$level] = $level;
@@ -301,7 +301,7 @@ class Categories extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $items      = Request::getArray('fields', array());
+        $items      = Request::getArray('fields', []);
         $extension  = Request::getCmd('extension');
         $categoryId = Request::getInt('id');
 
@@ -406,24 +406,24 @@ class Categories extends AdminController
     {
         Request::checkToken();
 
-        $states = array(
-            'publish' => array(
+        $states = [
+            'publish' => [
                 'value' => '1',
                 'lang' => 'COM_CATEGORIES_N_ITEMS_PUBLISHED'
-            ),
-            'unpublish' => array(
+            ],
+            'unpublish' => [
                 'value' => '0',
                 'lang' => 'COM_CATEGORIES_N_ITEMS_UNPUBLISHED'
-            ),
-            'archive' => array(
+            ],
+            'archive' => [
                 'value' => '2',
                 'lang' => 'COM_CATEGORIES_N_ITEMS_ARCHIVED'
-            ),
-            'trash' => array(
+            ],
+            'trash' => [
                 'value' => '-2',
                 'lang' => 'COM_CATEGORIES_N_ITEMS_TRASHED'
-            )
-        );
+            ]
+        ];
         if (!isset($states[$this->_task])) {
             return $this->cancelTask();
         }
@@ -583,7 +583,7 @@ class Categories extends AdminController
     {
         Request::checkToken();
 
-        $ordering  = Request::getArray('order', array());
+        $ordering  = Request::getArray('order', []);
         $extension = Request::getState($this->_option . '.' . $this->_controller . '.extension', 'extension');
 
         // The ordering inputs are offered on core.edit.state for the extension

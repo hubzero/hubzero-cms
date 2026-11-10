@@ -18,16 +18,16 @@ defined('_HZEXEC_') or die();
 $this->css();
 
 // Add the "all" category
-$all = array(
+$all = [
     'category' => '',
     'title'    => Lang::txt('COM_WHATSNEW_ALL_CATEGORIES'),
     'total'    => $this->total
-);
+];
 
 array_unshift($this->cats, $all);
 
 // An array for storing all the links we make
-$links = array();
+$links = [];
 
 // Loop through each category
 foreach ($this->cats as $cat) {
@@ -53,7 +53,7 @@ foreach ($this->cats as $cat) {
         // Are there sub-categories?
         if (isset($cat['_sub']) && is_array($cat['_sub'])) {
             // An array for storing the HTML we make
-            $k = array();
+            $k = [];
 
             // Loop through each sub-category
             foreach ($cat['_sub'] as $subcat) {
@@ -154,7 +154,7 @@ foreach ($this->cats as $cat) {
                     $catName = ucfirst($this->cats[$ci]['category']);
                     $obj = 'Plugins\\Whatsnew\\' . $catName . '\\' . $catName;
                     if (method_exists($obj, 'documents')) {
-                        $html .= call_user_func(array($obj, 'documents'));
+                        $html .= call_user_func([$obj, 'documents']);
                     }
 
                     $act = ($this->active) ? $this->active : $this->cats[$ci]['category'];
@@ -179,7 +179,7 @@ foreach ($this->cats as $cat) {
                     $catName = ucfirst($this->cats[$ci]['category']);
                     $obj = 'Plugins\\Whatsnew\\' . $catName . '\\' . $catName;
                     if (method_exists($obj, 'before')) {
-                        $html .= call_user_func(array($obj,'before'), $this->period);
+                        $html .= call_user_func([$obj,'before'], $this->period);
                     }
 
                     $html .= '<ol class="entries">' . "\n";
@@ -196,7 +196,7 @@ foreach ($this->cats as $cat) {
                         if (function_exists($func)) {
                             $html .= $func($row, $this->period);
                         } elseif (method_exists($obj, 'out')) {
-                            $html .= call_user_func(array($obj,'out'), $row, $this->period);
+                            $html .= call_user_func([$obj,'out'], $row, $this->period);
                         } else {
                             if (strstr($row->href, 'index.php')) {
                                 $row->href = Route::url($row->href);
@@ -262,7 +262,7 @@ foreach ($this->cats as $cat) {
                     $catName = ucfirst($this->cats[$ci]['category']);
                     $obj = 'Plugins\\Whatsnew\\' . $catName . '\\' . $catName;
                     if (method_exists($obj, 'after')) {
-                        $html .= call_user_func(array($obj,'after'), $this->period);
+                        $html .= call_user_func([$obj,'after'], $this->period);
                     }
 
                     $html .= '</div><!-- / #' . $divid . ' -->' . "\n";

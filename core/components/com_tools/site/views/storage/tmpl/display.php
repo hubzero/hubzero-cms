@@ -38,7 +38,7 @@ $free = isset($this->freeBytes) ? (float) $this->freeBytes : 0;
 // percentage. Uses the hub's GB convention (1 GB = 1024000000 B) -- the unit
 // quotas are provisioned in (e.g. softspace 20480000000 = 20 GB) -- rather than
 // GiB, which is why plain formatBytes() showed "19 GB" for a 20 GB quota.
-$units = array(array(1024000000, 'GB'), array(1024000, 'MB'), array(1024, 'KB'), array(1, 'B'));
+$units = [[1024000000, 'GB'], [1024000, 'MB'], [1024, 'KB'], [1, 'B']];
 $unitDiv = 1;
 $unitLbl = 'B';
 foreach ($units as $u) {
@@ -201,7 +201,7 @@ $purgeUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $t
                 </noscript>
             </div>
 
-            <script type="application/json" id="storage-strings"><?php echo json_encode(array(
+            <script type="application/json" id="storage-strings"><?php echo json_encode([
                 'home'          => Lang::txt('COM_TOOLS_STORAGE_HOME_CRUMB'),
                 'delete'        => Lang::txt('COM_TOOLS_STORAGE_DELETE'),
                 'empty'         => Lang::txt('COM_TOOLS_STORAGE_BROWSER_EMPTY'),
@@ -217,7 +217,7 @@ $purgeUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $t
                 'quota'         => Lang::txt('COM_TOOLS_STORAGE_QUOTA_EXCEEDED'),
                 'uploadFailed'  => Lang::txt('COM_TOOLS_STORAGE_UPLOAD_FAILED'),
                 'parent'        => Lang::txt('COM_TOOLS_STORAGE_PARENT')
-            )); ?></script>
+            ]); ?></script>
         </div>
     </div><!-- / #storage-manager -->
 </section><!-- / .main section -->

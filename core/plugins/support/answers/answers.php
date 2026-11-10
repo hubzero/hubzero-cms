@@ -37,7 +37,7 @@ class Answers extends Plugin
      */
     private function canHandle($category)
     {
-        if (in_array($category, array('answer', 'question', 'answercomment'))) {
+        if (in_array($category, ['answer', 'question', 'answercomment'])) {
             return true;
         }
         return false;
@@ -295,7 +295,7 @@ class Answers extends Plugin
                 if ($banking) {
                     $reward = $this->getReward($parentid);
                 }
-                $responders = array();
+                $responders = [];
                 // (the reward notice below tested a flag nothing ever set; it stays off)
                 $email = false;
 
@@ -333,10 +333,10 @@ class Answers extends Plugin
                                     $admin_email = Config::get('mailfrom');
                                     $sub  = Lang::txt('PLG_SUPPORT_ANSWERS_SUBJECT', Config::get('sitename'), $referenceid);
                                     $from = Lang::txt('PLG_SUPPORT_ANSWERS_TITLE', Config::get('sitename'));
-                                    $hub  = array(
+                                    $hub  = [
                                         'email' => $admin_email,
                                         'name'  => $from
-                                    );
+                                    ];
 
                                     $mes  = Lang::txt('PLG_SUPPORT_ANSWERS_BODY') . "\r\n";
                                     $mes .= '----------------------------' . "\r\n\r\n";

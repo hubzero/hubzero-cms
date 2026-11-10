@@ -57,7 +57,7 @@ if ($this->children) {
 
     $k = 0;
     $i = 0;
-    $files = array(13,15,26,33,35,38);
+    $files = [13,15,26,33,35,38];
     $n = count($this->children);
 
     if ($this->allowupload) {

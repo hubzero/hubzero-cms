@@ -42,12 +42,12 @@ class Profile extends Plugin
      */
     public function &onMembersAreas($user, $member)
     {
-        $areas = array(
+        $areas = [
             'profile' => Lang::txt('PLG_MEMBERS_PROFILE'),
             'icon' => 'f007',
             'icon-class' => 'icon-user',
             'menu' => $this->params->get('display_tab', 1)
-        );
+        ];
         return $areas;
     }
 
@@ -75,10 +75,10 @@ class Profile extends Plugin
             }
         }
 
-        $arr = array(
+        $arr = [
             'html' => '',
             'metadata' => ''
-        );
+        ];
 
         // Build the final HTML
         if ($returnhtml) {
@@ -157,13 +157,13 @@ class Profile extends Plugin
             // @TODO  Move this to central validation model (e.g., registraiton)?
 
             // Compile profile data
-            $profile = array();
+            $profile = [];
             foreach ($fields as $field) {
                 $profile[$field->get('name')] = $this->member->get($field->get('name'));
             }
 
             // Validate profile fields
-            $form = new \Hubzero\Form\Form('profile', array('control' => 'profile'));
+            $form = new \Hubzero\Form\Form('profile', ['control' => 'profile']);
             $form->load(
                 \Components\Members\Models\Profile\Field::toXml($fields, 'edit', $profile)
             );
@@ -210,12 +210,12 @@ class Profile extends Plugin
      */
     public function getProfileCompleteness($fields, $profile)
     {
-        $data = array();
+        $data = [];
         foreach ($fields as $field) {
             $data[$field->get('name')] = $profile->get($field->get('name'));
         }
 
-        $skip = array();
+        $skip = [];
 
         foreach ($fields as $field) {
             foreach ($field->options as $option) {
@@ -335,7 +335,7 @@ class Profile extends Plugin
         Request::checkToken();
 
         // get request vars
-        $data = Request::getArray('address', array());
+        $data = Request::getArray('address', []);
         $data['uidNumber'] = User::get('id');
 
         // set up objects

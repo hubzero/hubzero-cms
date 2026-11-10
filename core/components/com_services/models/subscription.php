@@ -49,19 +49,19 @@ class Subscription extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'uid'       => 'positive|nonzero',
         'serviceid' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'added'
-    );
+    ];
 
     /**
      * Generates automatic added field value
@@ -145,7 +145,7 @@ class Subscription extends Relational
     {
         $current_time = time();
 
-        $limits    = array();
+        $limits    = [];
         $starttime = $this->get('added');
         $lastunit  = 0;
         $today     = Date::of(time() - (24 * 60 * 60))->toSql();

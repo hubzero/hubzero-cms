@@ -40,9 +40,9 @@ class Calendar extends Relational
      *
      * @var array
      **/
-    protected $rules = array(
+    protected $rules = [
         'title' => 'notempty'
-    );
+    ];
 
     /**
      * Defines a one to many relationship between calendar and events
@@ -69,7 +69,7 @@ class Calendar extends Relational
         $calendarIds = array_map("intval", explode(',', $calendarIds));
 
         // array to hold events
-        $events = array();
+        $events = [];
 
         // loop through and get each calendar
         foreach ($calendarIds as $k => $calendarId) {
@@ -85,7 +85,7 @@ class Calendar extends Relational
             $rawEvents = $eventsCalendar->events()
                 ->whereEquals('scope', $scope)
                 ->whereEquals('scope_id', $scope_id)
-                ->whereIn('state', array(1))
+                ->whereIn('state', [1])
                 ->rows();
 
             // merge with full events list

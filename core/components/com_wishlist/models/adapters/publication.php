@@ -23,9 +23,9 @@ class Publication extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_segments = array(
+    protected $_segments = [
         'option' => 'com_wishlist',
-    );
+    ];
 
     /**
      * Scope name

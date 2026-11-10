@@ -41,19 +41,19 @@ class Recent extends Relational
      *
      * @var  array
      **/
-    protected $rules = array(
+    protected $rules = [
         'uid'  => 'positive|nonzero',
         'tool' => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created'
-    );
+    ];
 
     /**
      * Get relationship to user
@@ -105,10 +105,10 @@ class Recent extends Relational
         // Check if we've reached 5 recent tools or not
         if ($records->count() < 5) {
             // Still under 5, so insert a new record
-            $recent = self::blank()->set(array(
+            $recent = self::blank()->set([
                 'uid'  => $uid,
                 'tool' => $tool
-            ));
+            ]);
 
             if (!$recent->save()) {
                 return false;

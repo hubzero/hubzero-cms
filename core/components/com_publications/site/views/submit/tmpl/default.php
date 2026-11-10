@@ -47,11 +47,11 @@ $this->css()
 
 <?php
     // Display status message
-    $view = new \Hubzero\Component\View(array(
+    $view = new \Hubzero\Component\View([
         'base_path' => Component::path('com_projects') . DS . 'site',
         'name'      => 'projects',
         'layout'    => '_statusmsg',
-    ));
+    ]);
     $view->error = $this->getError();
     $view->msg   = $this->msg;
     echo $view->loadTemplate();

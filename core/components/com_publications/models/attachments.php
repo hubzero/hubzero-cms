@@ -30,14 +30,14 @@ class Attachments extends Obj
      *
      * @var  array
      */
-    protected $_types = array();
+    protected $_types = [];
 
     /**
      * Directories, where attachment types can be stored
      *
      * @var  array
      */
-    protected $_path = array();
+    protected $_path = [];
 
     /**
      * Constructor
@@ -414,9 +414,9 @@ class Attachments extends Obj
      * @param   boolean  $includeUnattached
      * @return  object
      */
-    public function getElementAttachments($elementId = 0, $attachments = array(), $type = '', $role = '', $includeUnattached = true)
+    public function getElementAttachments($elementId = 0, $attachments = [], $type = '', $role = '', $includeUnattached = true)
     {
-        $collect = array();
+        $collect = [];
 
         if (!$attachments || !$elementId) {
             return $attachments;

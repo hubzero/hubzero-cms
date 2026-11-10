@@ -14,7 +14,7 @@ use Hubzero\Facades\Session;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$ids = array();
+$ids = [];
 foreach ($this->rows as $row) {
     $ids[] = $row->id;
 }

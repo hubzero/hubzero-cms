@@ -55,7 +55,7 @@ abstract class Modules
     public static function getStateOptions()
     {
         // Build the filter options.
-        $options = array();
+        $options = [];
         $options[] = Html::select('option', '1', Lang::txt('JPUBLISHED'));
         $options[] = Html::select('option', '0', Lang::txt('JUNPUBLISHED'));
         $options[] = Html::select('option', '-2', Lang::txt('JTRASHED'));
@@ -71,7 +71,7 @@ abstract class Modules
     public static function getClientOptions()
     {
         // Build the filter options.
-        $options = array();
+        $options = [];
         $options[] = Html::select('option', '0', Lang::txt('JSITE'));
         $options[] = Html::select('option', '1', Lang::txt('JADMINISTRATOR'));
 
@@ -95,7 +95,7 @@ abstract class Modules
 
         $db->setQuery($query->toString());
         $positions = $db->loadColumn();
-        $positions = (is_array($positions)) ? $positions : array();
+        $positions = (is_array($positions)) ? $positions : [];
 
         if ($error = $db->getErrorMsg()) {
             App::abort(500, $error);
@@ -108,7 +108,7 @@ abstract class Modules
             ->rows();*/
 
         // Build the list
-        $options = array();
+        $options = [];
         foreach ($positions as $position) {
             if (!$position) {
                 $options[] = Html::select('option', 'none', ':: ' . Lang::txt('JNONE') . ' ::');
@@ -200,7 +200,7 @@ abstract class Modules
      */
     public static function getAssignmentOptions($clientId)
     {
-        $options = array();
+        $options = [];
         $options[] = Html::select('option', '0', 'COM_MODULES_OPTION_MENU_ALL');
         $options[] = Html::select('option', '-', 'COM_MODULES_OPTION_MENU_NONE');
 
@@ -235,7 +235,7 @@ abstract class Modules
      */
     public static function types()
     {
-        $options = array();
+        $options = [];
         $options[] = Html::select('option', 'user', 'COM_MODULES_OPTION_POSITION_USER_DEFINED');
         $options[] = Html::select('option', 'template', 'COM_MODULES_OPTION_POSITION_TEMPLATE_DEFINED');
         return $options;
@@ -248,7 +248,7 @@ abstract class Modules
      */
     public static function templateStates()
     {
-        $options = array();
+        $options = [];
         $options[] = Html::select('option', '1', 'JENABLED');
         $options[] = Html::select('option', '0', 'JDISABLED');
         return $options;
@@ -265,8 +265,8 @@ abstract class Modules
      */
     public static function state($value, $i, $enabled = true, $checkbox = 'cb')
     {
-        $states = array(
-            1 => array(
+        $states = [
+            1 => [
                 'unpublish',
                 'COM_MODULES_EXTENSION_PUBLISHED_ENABLED',
                 'COM_MODULES_HTML_UNPUBLISH_ENABLED',
@@ -274,8 +274,8 @@ abstract class Modules
                 true,
                 'publish',
                 'publish'
-            ),
-            0 => array(
+            ],
+            0 => [
                 'publish',
                 'COM_MODULES_EXTENSION_UNPUBLISHED_ENABLED',
                 'COM_MODULES_HTML_PUBLISH_ENABLED',
@@ -283,8 +283,8 @@ abstract class Modules
                 true,
                 'unpublish',
                 'unpublish'
-            ),
-            -1 => array(
+            ],
+            -1 => [
                 'unpublish',
                 'COM_MODULES_EXTENSION_PUBLISHED_DISABLED',
                 'COM_MODULES_HTML_UNPUBLISH_DISABLED',
@@ -292,8 +292,8 @@ abstract class Modules
                 true,
                 'warning',
                 'warning'
-            ),
-            -2 => array(
+            ],
+            -2 => [
                 'publish',
                 'COM_MODULES_EXTENSION_UNPUBLISHED_DISABLED',
                 'COM_MODULES_HTML_PUBLISH_DISABLED',
@@ -301,8 +301,8 @@ abstract class Modules
                 true,
                 'unpublish',
                 'unpublish'
-            ),
-        );
+            ],
+        ];
 
         return Html::grid('state', $states, $value, $i, '', $enabled, true, $checkbox);
     }
@@ -316,13 +316,13 @@ abstract class Modules
     public static function positions($clientId)
     {
         // Create the copy/move options.
-        $options = array(
+        $options = [
             Html::select('option', 'c', Lang::txt('JLIB_HTML_BATCH_COPY')),
             Html::select('option', 'm', Lang::txt('JLIB_HTML_BATCH_MOVE'))
-        );
+        ];
 
         // Create the batch selector to change select the category by which to move or copy.
-        $lines = array(
+        $lines = [
             '<label id="batch-choose-action-lbl" for="batch-choose-action">',
                 Lang::txt('COM_MODULES_BATCH_POSITION_LABEL'),
             '</label>',
@@ -335,7 +335,7 @@ abstract class Modules
                 '</select>',
                 Html::select('radiolist', $options, 'batch[move_copy]', '', 'value', 'text', 'm'),
             '</fieldset>'
-        );
+        ];
 
         return implode("\n", $lines);
     }

@@ -182,8 +182,8 @@ class Ldap extends AdminController
         $response->processed = 0;
         $response->total     = 0;
         $response->start     = ($start + $limit);
-        $response->success   = array();
-        $response->errors    = array();
+        $response->success   = [];
+        $response->errors    = [];
 
         $db = App::get('db');
         $query = $db->getQuery()

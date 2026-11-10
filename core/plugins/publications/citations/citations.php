@@ -37,11 +37,11 @@ class Citations extends Plugin
     public function &onPublicationAreas($publication, $version = 'default', $extended = true)
     {
         if ($publication->_category->_params->get('plg_citations')) {
-            $areas = array(
+            $areas = [
                 'citations' => Lang::txt('PLG_PUBLICATION_CITATIONS')
-            );
+            ];
         } else {
-            $areas = array();
+            $areas = [];
         }
         return $areas;
     }
@@ -59,10 +59,10 @@ class Citations extends Plugin
      */
     public function onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)
     {
-        $arr = array(
+        $arr = [
             'html'     => '',
             'metadata' => ''
-        );
+        ];
 
         // Check if our area is in the array of areas we want to return results for
         if (is_array($areas)) {
@@ -84,7 +84,7 @@ class Citations extends Plugin
             ->whereEquals('oid', $publication->version->id)
             ->including('citation')
             ->rows();
-        $citations = array();
+        $citations = [];
         foreach ($c as $assoc) {
             $citations[] = $assoc->citation;
         }

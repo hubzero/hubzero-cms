@@ -52,11 +52,11 @@ class Mywishes extends Module
         $this->rows = $database->loadObjectList();
         if ($database->getErrorNum()) {
             $this->setError($database->stderr());
-            $this->rows = array();
+            $this->rows = [];
         }
 
-        $rows1 = array();
-        $rows2 = array();
+        $rows1 = [];
+        $rows2 = [];
 
         if ($this->rows) {
             foreach ($this->rows as $row) {

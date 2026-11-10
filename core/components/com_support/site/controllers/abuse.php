@@ -100,11 +100,11 @@ class Abuse extends SiteController
         }
 
         // Get the search result totals
-        $results = Event::trigger('support.getReportedItem', array(
+        $results = Event::trigger('support.getReportedItem', [
             $refid,
             $cat,
             $parentid
-        ));
+        ]);
 
         // Check the results returned for a reported item
         $report = null;
@@ -160,7 +160,7 @@ class Abuse extends SiteController
         $incoming = array_map('trim', $_POST);
 
         // Initiate class and bind posted items to database fields
-        $row = Report::blank()->set(array(
+        $row = Report::blank()->set([
             'report'      => (isset($incoming['report']) ? $incoming['report'] : ''),
             'category'    => (isset($incoming['category']) ? $incoming['category'] : ''),
             'referenceid' => (isset($incoming['referenceid']) ? $incoming['referenceid'] : 0),
@@ -168,7 +168,7 @@ class Abuse extends SiteController
             // `note` is TEXT NOT NULL with no default; under strict SQL a new
             // report without it failed with a 500 (the reviewer fills it later)
             'note'        => ''
-        ));
+        ]);
 
         $row->set('report', Sanitize::clean($row->get('report')));
         $row->set('report', nl2br($row->get('report')));
@@ -179,12 +179,12 @@ class Abuse extends SiteController
         // Store new content
         if (!$row->save()) {
             if ($no_html) {
-                echo json_encode(array(
+                echo json_encode([
                     'success'  => false,
                     'message'  => $row->getError(),
                     'id'       => $refid,
                     'category' => $cat
-                ));
+                ]);
                 return;
             }
             Request::setVar('id', $refid);
@@ -194,10 +194,10 @@ class Abuse extends SiteController
         }
 
         // Get the search result totals
-        $results = Event::trigger('support.onReportItem', array(
+        $results = Event::trigger('support.onReportItem', [
             $refid,
             $cat
-        ));
+        ]);
 
         // Send notification email
         if ($this->config->get('abuse_notify', 1)) {
@@ -207,11 +207,11 @@ class Abuse extends SiteController
             $reported->author = 0;
 
             // Get the search result totals
-            $results = Event::trigger('support.getReportedItem', array(
+            $results = Event::trigger('support.getReportedItem', [
                 $refid,
                 $cat,
                 0
-            ));
+            ]);
 
             // Check the results returned for a reported item
             if ($results) {
@@ -239,10 +239,10 @@ class Abuse extends SiteController
                     ->addHeader('X-Component-Object', 'abuse_item_report');
 
             // Plain text email
-            $eview = new \Hubzero\Mail\View(array(
+            $eview = new \Hubzero\Mail\View([
                 'name'   => 'emails',
                 'layout' => 'abuse_plain'
-            ));
+            ]);
             $eview->option     = $this->_option;
             $eview->controller = $this->_controller;
             $eview->report     = $row;
@@ -286,13 +286,13 @@ class Abuse extends SiteController
         }
 
         if ($no_html) {
-            echo json_encode(array(
+            echo json_encode([
                 'success'   => true,
                 'report_id' => $row->get('id'),
                 'message'   => Lang::txt('COM_SUPPORT_REPORT_NUMBER_REFERENCE', $row->id),
                 'id'        => $refid,
                 'category'  => $cat
-            ));
+            ]);
             return;
         }
 

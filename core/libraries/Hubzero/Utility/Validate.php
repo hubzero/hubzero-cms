@@ -22,9 +22,9 @@ class Validate
      *
      * @var  array
      */
-    protected static $_pattern = array(
+    protected static $_pattern = [
         'hostname' => '(?:[_a-z0-9][-_a-z0-9]*\.)*(?:[a-z0-9][-a-z0-9]{0,62})\.(?:(?:[a-z]{2}\.)?[a-z]{2,})'
-    );
+    ];
 
     /**
      * Checks that a string contains something other than whitespace
@@ -121,7 +121,7 @@ class Validate
      */
     public static function boolean($check)
     {
-        $booleanList = array(0, 1, '0', '1', true, false);
+        $booleanList = [0, 1, '0', '1', true, false];
         return in_array($check, $booleanList, true);
     }
 
@@ -340,8 +340,8 @@ class Validate
      */
     public static function reserved($type, $val)
     {
-        static $reserved = array(
-            'username'  => array(
+        static $reserved = [
+            'username'  => [
                 'adm',
                 'alfred',
                 'apache',
@@ -405,8 +405,8 @@ class Validate
                 'www',
                 'www-data',
                 'xfs',
-            ),
-            'group' => array(
+            ],
+            'group' => [
                 'abrt',
                 'adm',
                 'apache',
@@ -518,8 +518,8 @@ class Validate
                 'wheel',
                 'www-data',
                 'zookeeper',
-            )
-        );
+            ]
+        ];
 
         $type = strtolower(trim($type));
 
@@ -706,7 +706,7 @@ class Validate
             throw new InvalidArgumentException(sprintf('Method %s does not exist on %s unable to complete validation.', $method, $className), E_USER_WARNING);
         }
         $check = (array)$check;
-        return call_user_func_array(array($className, $method), $check);
+        return call_user_func_array([$className, $method], $check);
     }
 
     /**
@@ -739,13 +739,13 @@ class Validate
      */
     protected static function _defaults($params)
     {
-        $defaults = array(
+        $defaults = [
             'check'   => null,
             'regex'   => null,
             'country' => null,
             'deep'    => false,
             'type'    => null
-        );
+        ];
         $params = array_merge($defaults, $params);
         if ($params['country'] !== null) {
             $params['country'] = mb_strtolower($params['country']);

@@ -70,13 +70,13 @@ class Bundle extends Base implements CommandInterface
         }
 
         $builder = new BundleBuilder();
-        $result  = $builder->build($versionId, array(
+        $result  = $builder->build($versionId, [
             'force' => $force,
             'level' => ($level === false ? null : (int) $level),
             'log'   => function ($m) {
                 $this->output->addLine($m);
             },
-        ));
+        ]);
 
         if ($queued && $entry) {
             if ($result['ok']) {
@@ -124,17 +124,17 @@ class Bundle extends Base implements CommandInterface
      **/
     public function list()
     {
-        $rows = array(array('Version', 'Status', 'Attempts', 'Size', 'Built', 'Last error'));
+        $rows = [['Version', 'Status', 'Attempts', 'Size', 'Built', 'Last error']];
 
         foreach (BundleQueue::all()->order('queued_at', 'desc')->rows() as $row) {
-            $rows[] = array(
+            $rows[] = [
                 $row->get('publication_version_id'),
                 $row->get('status'),
                 $row->get('attempts') . '/' . $row->get('max_attempts'),
                 $row->get('bundle_size') ? number_format($row->get('bundle_size')) : '-',
                 $row->get('built_at') ?: '-',
                 \Hubzero\Utility\Str::truncate((string) $row->get('last_error'), 40),
-            );
+            ];
         }
 
         $this->output->addTable($rows, true);
@@ -162,7 +162,7 @@ class Bundle extends Base implements CommandInterface
             return;
         }
 
-        foreach (array('status', 'attempts', 'max_attempts', 'source_hash', 'bundle_file', 'bundle_size', 'queued_at', 'last_attempt_at', 'built_at', 'last_error') as $k) {
+        foreach (['status', 'attempts', 'max_attempts', 'source_hash', 'bundle_file', 'bundle_size', 'queued_at', 'last_attempt_at', 'built_at', 'last_error'] as $k) {
             $this->output->addLine(sprintf('%-16s %s', $k . ':', $row->get($k)));
         }
     }
@@ -220,7 +220,7 @@ class Bundle extends Base implements CommandInterface
         }
 
         if ($version) {
-            $ids = array($version);
+            $ids = [$version];
         } else if ($pub) {
             $db->setQuery("SELECT `id` FROM `#__publication_versions` WHERE `publication_id` = " . $pub . " ORDER BY `id`");
             $ids = $db->loadColumn();
@@ -235,7 +235,7 @@ class Bundle extends Base implements CommandInterface
         }
 
         $builder = new BundleBuilder();
-        $rows    = array(array('Pub/Ver', 'DOI', 'Primary', 'Inner', 'Outer', 'Queue', 'Issues'));
+        $rows    = [['Pub/Ver', 'DOI', 'Primary', 'Inner', 'Outer', 'Queue', 'Issues']];
         $audited = 0;
         $okc     = 0;
         $probc   = 0;
@@ -288,7 +288,7 @@ class Bundle extends Base implements CommandInterface
                 ? (round($a['outer_size'] / 1048576) . 'MB' . ($a['outer_has_bundle'] === false ? ' !nodata' : ''))
                 : 'MISSING';
 
-            $rows[] = array(
+            $rows[] = [
                 $a['publication_id'] . '/' . $vid,
                 \Hubzero\Utility\Str::truncate((string) $a['doi'], 22),
                 $a['primary_count'],
@@ -296,7 +296,7 @@ class Bundle extends Base implements CommandInterface
                 $outer,
                 $qstatus,
                 $ok ? 'ok' : implode(', ', $issues),
-            );
+            ];
         }
 
         if (count($rows) > 1) {

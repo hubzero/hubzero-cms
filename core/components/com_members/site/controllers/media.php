@@ -84,7 +84,7 @@ class Media extends SiteController
         Request::checkToken(['get', 'post']);
 
         // Allowed extensions for uplaod
-        $allowedExtensions = array('png', 'jpe', 'jpeg', 'jpg', 'gif', 'jp2', 'jpx');
+        $allowedExtensions = ['png', 'jpe', 'jpeg', 'jpg', 'gif', 'jp2', 'jpx'];
 
         // Get media config
         $mediaConfig = Component::params('com_media');
@@ -120,25 +120,25 @@ class Media extends SiteController
 
         if (!is_dir($uploadDirectory)) {
             if (!Filesystem::makeDirectory($uploadDirectory)) {
-                echo json_encode(array('error' => 'Server error. Unable to create upload directory.'));
+                echo json_encode(['error' => 'Server error. Unable to create upload directory.']);
                 return;
             }
         }
 
         if (!is_writable($uploadDirectory)) {
-            echo json_encode(array('error' => "Server error. Upload directory isn't writable."));
+            echo json_encode(['error' => "Server error. Upload directory isn't writable."]);
             return;
         }
 
         // Check to make sure we have a file and its not too big
         if ($size == 0) {
-            echo json_encode(array('error' => 'File is empty'));
+            echo json_encode(['error' => 'File is empty']);
             return;
         }
 
         if ($size > $sizeLimit) {
             $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
-            echo json_encode(array('error' => 'File is too large. Max file upload size is ' . $max));
+            echo json_encode(['error' => 'File is too large. Max file upload size is ' . $max]);
             return;
         }
 
@@ -148,7 +148,7 @@ class Media extends SiteController
         $ext      = $pathinfo['extension'];
         if ($allowedExtensions && !in_array(strtolower($ext), $allowedExtensions)) {
             $these = implode(', ', $allowedExtensions);
-            echo json_encode(array('error' => 'File has an invalid extension, it should be one of ' . $these . '.'));
+            echo json_encode(['error' => 'File has an invalid extension, it should be one of ' . $these . '.']);
             return;
         }
 
@@ -185,7 +185,7 @@ class Media extends SiteController
             $hi->setImageType(IMAGETYPE_PNG);
             $hi->save($final_file);
         } else {
-            echo json_encode(array('error' => $hi->getError()));
+            echo json_encode(['error' => $hi->getError()]);
             return;
         }
 
@@ -195,18 +195,18 @@ class Media extends SiteController
             $hi->resize(50, false, true, true);
             $hi->save($final_thumb);
         } else {
-            echo json_encode(array('error' => $hi->getError()));
+            echo json_encode(['error' => $hi->getError()]);
             return;
         }
 
         // remove orig
         unlink($file);
 
-        echo json_encode(array(
+        echo json_encode([
             'success'   => true,
             'file'      => str_replace($uploadDirectory, '', $final_file),
             'directory' => str_replace(PATH_ROOT, '', $uploadDirectory)
-        ));
+        ]);
     }
 
     /**
@@ -221,25 +221,25 @@ class Media extends SiteController
         //get the user id
         $id = Request::getInt('id', 0);
         if (!$id) {
-            echo json_encode(array('error' => 'Missing required user ID.'));
+            echo json_encode(['error' => 'Missing required user ID.']);
         }
 
         //load the user profile
         $this->_requireSelfOrAdmin($id);
         $profile = Member::oneOrFail($id);
         if (!$profile->get('id')) {
-            echo json_encode(array('error' => 'Unable to locate user profile.'));
+            echo json_encode(['error' => 'Unable to locate user profile.']);
         }
 
         //update the user pic
-        $p = Request::getArray('profile', array());
+        $p = Request::getArray('profile', []);
         $profile->set('picture', $p['picture']);
 
         //save
         if ($profile->save()) {
-            echo json_encode(array('success' => true));
+            echo json_encode(['success' => true]);
         } else {
-            echo json_encode(array('error' => 'An error occurred while trying to save you profile picture.'));
+            echo json_encode(['error' => 'An error occurred while trying to save you profile picture.']);
         }
     }
 
@@ -283,7 +283,7 @@ class Media extends SiteController
         $size = filesize(PATH_ROOT . $dir . $file);
         list($width, $height) = getimagesize(PATH_ROOT . $dir . $file);
 
-        $result = array();
+        $result = [];
         $result['src']    = $dir . $file;
         $result['name']   = $file;
         $result['size']   = \Hubzero\Utility\Number::formatBytes($size);
@@ -320,7 +320,7 @@ class Media extends SiteController
         $this->_requireSelfOrAdmin($id);
 
         // Incoming file
-        $file = Request::getArray('upload', array(), 'files');
+        $file = Request::getArray('upload', [], 'files');
         if (empty($file) || !$file['name']) {
             $this->setError(Lang::txt('MEMBERS_NO_FILE'));
             return $this->displayTask('', $id);
@@ -355,7 +355,7 @@ class Media extends SiteController
         $ext = Filesystem::extension($file['name']);
 
         // Check that the file type is allowed
-        $allowed = array('png', 'jpe', 'jpeg', 'jpg', 'gif', 'jp2', 'jpx');
+        $allowed = ['png', 'jpe', 'jpeg', 'jpg', 'gif', 'jp2', 'jpx'];
 
         if (!empty($allowed) && !in_array(strtolower($ext), $allowed)) {
             $this->setError(Lang::txt('COM_MEMBERS_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
@@ -453,10 +453,10 @@ class Media extends SiteController
         }
 
         // Build the file path
-        $files = array(
+        $files = [
             'profile.png',
             'thumb.png'
-        );
+        ];
 
         $dir  = \Hubzero\Utility\Str::pad($id);
         $path = PATH_APP . DS . $this->filespace() . DS . $dir;
@@ -602,7 +602,7 @@ class Media extends SiteController
         // tasks in this controller were contained; this one serves a file.
         // Keep any subdirectory the caller legitimately addresses by cleaning
         // each segment rather than flattening the whole path.
-        $parts = array();
+        $parts = [];
         foreach (preg_split('#[\\\\/]+#', (string) $file) as $seg) {
             if ($seg === '' || $seg === '.' || $seg === '..') {
                 continue;

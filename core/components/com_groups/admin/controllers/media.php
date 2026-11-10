@@ -60,7 +60,7 @@ class Media extends AdminController
     protected function _containRelativePath($rel)
     {
         $rel = preg_replace('#\p{C}+#u', '', (string) $rel);
-        $out = array();
+        $out = [];
         foreach (explode('/', str_replace('\\', '/', $rel)) as $seg) {
             if ($seg === '' || $seg === '.' || $seg === '..') {
                 continue;
@@ -152,7 +152,7 @@ class Media extends AdminController
             }
             // Directory created
         } else {
-            $file = Request::getArray('upload', array(), 'files');
+            $file = Request::getArray('upload', [], 'files');
 
             // Get media config
             $mediaConfig = Component::params('com_media');
@@ -321,7 +321,7 @@ class Media extends AdminController
 
         $dirs = $this->recursiveListDir($this->path);
 
-        $folders   = array();
+        $folders   = [];
         $folders[] = Html::select('option', '/');
         if ($dirs) {
             foreach ($dirs as $d) {
@@ -370,8 +370,8 @@ class Media extends AdminController
         $path = $this->path . ($dir ? DS . trim($dir, DS) : '');
         $path = Util::normalizePath($path);
 
-        $folders = array();
-        $docs    = array();
+        $folders = [];
+        $docs    = [];
 
         if (is_dir($path)) {
             // Loop through all files and separate them into arrays of images, folders, and other
@@ -426,8 +426,8 @@ class Media extends AdminController
      */
     private function recursiveListDir($base)
     {
-        static $filelist = array();
-        static $dirlist  = array();
+        static $filelist = [];
+        static $dirlist  = [];
 
         if (is_dir($base)) {
             $dh = opendir($base);

@@ -92,7 +92,7 @@ class DetectorTest extends Basic
      **/
     public function testIsRobot()
     {
-        $uas = array(
+        $uas = [
             'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0); 360Spider' => true,
             'Mozilla/5.0 (compatible; alexa site audit/1.0; http://www.alexa.com/help/webmasters; )' => true,
             'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10 _1) AppleWebKit/600.2.5 (KHTML, 
@@ -106,7 +106,7 @@ class DetectorTest extends Basic
             'Mozilla/5 (X11; Linux x86_64) AppleWebKit/537.4 (KHTML like Gecko) Arch Linux Firefox/23.0 Xfce' => false,
             'Mozilla/5.0 (X11; CrOS x86_64 4731.101.0) AppleWebKit/537.36 (KHTML, 
                 like Gecko) Chrome/31.0.1650.67 Safari/537.36' => false
-        );
+        ];
 
         foreach ($uas as $userAgentString => $isRobot) {
             $browser = new Detector($userAgentString);
@@ -126,7 +126,7 @@ class DetectorTest extends Basic
      */
     private static function map()
     {
-        $collection = array();
+        $collection = [];
 
         $xml = new SimpleXmlElement(file_get_contents(__DIR__ .
             DIRECTORY_SEPARATOR .
@@ -145,7 +145,7 @@ class DetectorTest extends Basic
                 $userAgentString->osVersion      = (string)$string[3];
                 $userAgentString->device         = (string)$string[4];
                 $userAgentString->deviceVersion  = (string)$string[5];
-                $userAgentString->string         = str_replace(array(PHP_EOL, '  '), ' ', (string)$string[6]);
+                $userAgentString->string         = str_replace([PHP_EOL, '  '], ' ', (string)$string[6]);
 
                 $collection[] = $userAgentString;
             }

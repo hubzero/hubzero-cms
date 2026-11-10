@@ -45,7 +45,7 @@ class Pipeline extends AdminController
      */
     public function displayTask()
     {
-        $filters = array(
+        $filters = [
             // Get filters
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
@@ -87,7 +87,7 @@ class Pipeline extends AdminController
                 0,
                 'int'
             )
-        );
+        ];
 
         $filters['sortby'] = $filters['sort'] . ' ' . $filters['sort_Dir'];
 
@@ -149,7 +149,7 @@ class Pipeline extends AdminController
         Request::checkToken();
 
         // Incoming instance ID
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         // Do we have an ID?
         if (!$fields['id']) {
@@ -221,8 +221,8 @@ class Pipeline extends AdminController
         $limit = Request::getInt('limit', 2);
 
         // Store output
-        $created = array();
-        $failed = array();
+        $created = [];
+        $failed = [];
 
         $database = App::get('db');
 
@@ -283,7 +283,7 @@ class Pipeline extends AdminController
                 }
 
                 // Collect metadata
-                $metadata = array();
+                $metadata = [];
                 $metadata['targetURL'] = $live_site . '/resources/' . $row->rid . '/?rev=' . $row->local_revision;
                 $metadata['title']     = htmlspecialchars($title);
                 $metadata['pubYear']   = $pubyear;

@@ -26,7 +26,7 @@ class Wishlist extends Plugin
      */
     private function canHandle($category)
     {
-        if (in_array($category, array('wish', 'wishcomment'))) {
+        if (in_array($category, ['wish', 'wishcomment'])) {
             return true;
         }
         return false;

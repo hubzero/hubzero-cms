@@ -132,18 +132,18 @@ class Migration20130924000002Core extends Base
 
             if (count($components) > 0) {
                 // Build default ruleset
-                $defaulRules = array(
-                    "core.admin"      => array(
+                $defaulRules = [
+                    "core.admin"      => [
                         "7" => 1
-                        ),
-                    "core.manage"     => array(
+                        ],
+                    "core.manage"     => [
                         "6" => 1
-                        ),
-                    "core.create"     => array(),
-                    "core.delete"     => array(),
-                    "core.edit"       => array(),
-                    "core.edit.state" => array()
-                    );
+                        ],
+                    "core.create"     => [],
+                    "core.delete"     => [],
+                    "core.edit"       => [],
+                    "core.edit.state" => []
+                    ];
 
                 foreach ($components as $com) {
                     // Make sure it isn't already in there
@@ -310,26 +310,26 @@ class Migration20130924000002Core extends Base
             }
 
             // Rule set for super admins only
-            $rules = array(
-                "core.admin"      => array(
+            $rules = [
+                "core.admin"      => [
                     "7" => 1
-                    ),
-                "core.manage"     => array(
+                    ],
+                "core.manage"     => [
                     "7" => 1
-                    ),
-                "core.create"     => array(
+                    ],
+                "core.create"     => [
                     "7" => 1
-                    ),
-                "core.delete"     => array(
+                    ],
+                "core.delete"     => [
                     "7" => 1
-                    ),
-                "core.edit"       => array(
+                    ],
+                "core.edit"       => [
                     "7" => 1
-                    ),
-                "core.edit.state" => array(
+                    ],
+                "core.edit.state" => [
                     "7" => 1
-                    )
-                );
+                    ]
+                ];
             $this->db->getQuery(true)
                 ->update('#__assets')
                 ->set(['rules' => json_encode($rules)])

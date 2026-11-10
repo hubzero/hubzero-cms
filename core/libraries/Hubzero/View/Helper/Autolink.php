@@ -30,7 +30,7 @@ class Autolink extends AbstractHelper
 
         // Parse for link syntax
         // e.g. [mylink My Link] => <a href="mylink">My Link</a>
-        $char_regexes = array(
+        $char_regexes = [
             // URL pattern
             'url'   => "(?<=[^=\"\'\[])\!?" .  // Make sure it's not preceeded by quotes and brackets
                 //"(https?:|mailto:|ftp:|gopher:|news:|file:)" .  // protocol
@@ -46,10 +46,10 @@ REGEX
             'email' => "([\s]*)" .  // whitespace
                 "([\._a-zA-Z0-9-\+]+@" .  // characters leading up to @
                 "(?:[0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6})"  // everything after @
-        );
+        ];
 
         foreach ($char_regexes as $func => $regex) {
-            $text = preg_replace_callback("/$regex/i", array(&$this, 'link' . ucfirst($func)), $text);
+            $text = preg_replace_callback("/$regex/i", [&$this, 'link' . ucfirst($func)], $text);
         }
 
         return $text;

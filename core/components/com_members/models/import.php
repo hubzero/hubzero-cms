@@ -32,27 +32,27 @@ class Import extends Base
      *
      * @var  array
      */
-    private $fieldMap = array(
-        'surname' => array(
+    private $fieldMap = [
+        'surname' => [
             'lname',
             'lastname',
             'surname',
-        ),
-        'givenName' => array(
+        ],
+        'givenName' => [
             'fname',
             'firstname',
             'givenname',
-        ),
-        'middleName' => array(
+        ],
+        'middleName' => [
             'mname',
             'middlename',
             'midname',
-        ),
-        'name' => array(
+        ],
+        'name' => [
             'name',
             'fullname',
-        ),
-        'id' => array(
+        ],
+        'id' => [
             'id',
             'uid',
             'userid',
@@ -61,35 +61,35 @@ class Import extends Base
             'midnumber',
             'memberid',
             'profileid',
-        ),
-        'email' => array(
+        ],
+        'email' => [
             'mail',
             'email',
             'electronicmail',
             'emailaddress',
-        ),
-        'username' => array(
+        ],
+        'username' => [
             'username',
             'uname',
             'login',
             'userlogin',
-        ),
-        'access' => array(
+        ],
+        'access' => [
             'public',
             'publicprofile',
             'access',
             'visibility',
             'permissions',
-        ),
-        'block' => array(
+        ],
+        'block' => [
             'block',
             'blocked',
-        ),
-        'approved' => array(
+        ],
+        'approved' => [
             'approve',
             'approved',
-        ),
-        'interests' => array(
+        ],
+        'interests' => [
             'tags',
             'interests',
             'tag',
@@ -97,8 +97,8 @@ class Import extends Base
             'likes',
             'keyword',
             'keywords',
-        ),
-        'note' => array(
+        ],
+        'note' => [
             'note',
             'notes',
             'adminnote',
@@ -115,34 +115,34 @@ class Import extends Base
             'accountcomments',
             'administratorcomment',
             'administratorcomment',
-        ),
-        'jobsAllowed' => array(
+        ],
+        'jobsAllowed' => [
             'jobsallowed',
             'jobquota',
             'joballowance',
             'jobs',
             'quota',
-        ),
-        'homeDirectory' => array(
+        ],
+        'homeDirectory' => [
             'home',
             'homedirectory',
             'homepath',
             'homefolder',
             'homedir',
-        ),
-        'loginShell' => array(
+        ],
+        'loginShell' => [
             'loginshell'
-        ),
-        'ftpShell' => array(
+        ],
+        'ftpShell' => [
             'ftpshell'
-        ),
-        'usageAgreement' => array(
+        ],
+        'usageAgreement' => [
             'usageagreement',
             'termsofservice',
             'tos',
             'agreement',
-        ),
-        'password' => array(
+        ],
+        'password' => [
             'userpassword',
             'password',
             'pass',
@@ -150,8 +150,8 @@ class Import extends Base
             'passwd',
             'passwrd',
             'memberpassword',
-        ),
-        'sendEmail' => array(
+        ],
+        'sendEmail' => [
             'mailpreferenceoption',
             'mailpreference',
             'recievemail',
@@ -161,14 +161,14 @@ class Import extends Base
             'mailupdates',
             'emailupdates',
             'sendemail',
-        ),
-        'activation' => array(
+        ],
+        'activation' => [
             'emailconfirmed',
             'confirmedemail',
             'validemail',
             'emailconfirm',
             'activation',
-        ),
+        ],
         /* @deprecated
         'countryresident' => array(
             'countryresident',
@@ -267,26 +267,26 @@ class Import extends Base
             'veryimportantperson',
             'veryimportant',
         ),*/
-        'locked' => array(
+        'locked' => [
             'locked',
             'lock',
             'padlock',
             'restrict',
             'restricted',
-        ),
-        'registerIP' => array(
+        ],
+        'registerIP' => [
             'regip',
             'registrationip',
             'registeredip',
             'registerip',
-        ),
-        'registerHost' => array(
+        ],
+        'registerHost' => [
             'reghost',
             'registrationhost',
             'registeredhost',
             'registerhost',
-        ),
-        'registerDate' => array(
+        ],
+        'registerDate' => [
             'registerdate',
             'registrationdate',
             'registereddate',
@@ -295,8 +295,8 @@ class Import extends Base
             'created',
             'createddate',
             'createdate',
-        ),
-        'modifiedDate' => array(
+        ],
+        'modifiedDate' => [
             'modifieddate',
             'modified',
             'changed',
@@ -309,8 +309,8 @@ class Import extends Base
             'lastchanged',
             'lastupdate',
             'lastupdated',
-        ),
-        'groups' => array(
+        ],
+        'groups' => [
             'group',
             'groups',
             'gid',
@@ -322,8 +322,8 @@ class Import extends Base
             'group_aliases',
             'group_cn',
             'group_membership',
-        ),
-        'projects' => array(
+        ],
+        'projects' => [
             'project',
             'projects',
             'pid',
@@ -333,8 +333,8 @@ class Import extends Base
             'project_alias',
             'project_aliases',
             'project_membership',
-        ),
-    );
+        ],
+    ];
 
     /**
      * Store changes to this database entry
@@ -356,10 +356,10 @@ class Import extends Base
      * @param   string  $mode     Operation mode (update|patch)
      * @return  object
      */
-    public function getRecord($raw, $options = array(), $mode = 'UPDATE')
+    public function getRecord($raw, $options = [], $mode = 'UPDATE')
     {
         $record = new stdClass();
-        $record->_unused = array();
+        $record->_unused = [];
 
         if (is_array($raw)) {
             foreach ($raw as $key => $val) {
@@ -406,7 +406,7 @@ class Import extends Base
     public function fields($name = null)
     {
         if (!$this->fields) {
-            $this->fields = array();
+            $this->fields = [];
 
             if ($fields = $this->get('fields')) {
                 $this->fields = json_decode($fields, true);
@@ -459,16 +459,16 @@ class Import extends Base
      */
     public function autoDetectFields(array $headers)
     {
-        $mapping = array();
+        $mapping = [];
 
         foreach ($headers as $header) {
             $norm = $this->normalize($header);
 
-            $map = array(
+            $map = [
                 'label' => $header,
                 'name'  => $norm,
                 'field' => ''
-            );
+            ];
 
             foreach ($this->fieldMap() as $column => $aliases) {
                 if (in_array($norm, $aliases)) {
@@ -500,11 +500,11 @@ class Import extends Base
                     continue;
                 }
 
-                $this->fieldMap[$field->get('name')] = array(
+                $this->fieldMap[$field->get('name')] = [
                     $field->get('name'),
                     strtolower($field->get('name')),
                     preg_replace('/[^a-zA-Z0-9]/', '', $field->get('name'))
-                );
+                ];
             }
         }
 

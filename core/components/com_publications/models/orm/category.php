@@ -28,11 +28,11 @@ class Category extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'name'      => 'notempty',
         'alias'     => 'notempty',
         'url_alias' => 'notempty'
-    );
+    ];
 
     /**
      * Configuration registry

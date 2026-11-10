@@ -46,7 +46,7 @@ class Reader implements Iterator
      *
      * @var  array
      */
-    private $sheet = array();
+    private $sheet = [];
 
     /**
      * Current row position
@@ -61,7 +61,7 @@ class Reader implements Iterator
      *
      * @var  array
      */
-    private $headers = array();
+    private $headers = [];
 
     /**
      * Constructor

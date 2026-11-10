@@ -25,7 +25,7 @@ $base_link = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&tas
 
 // get module menus
 $menus = $this->module->menu('list');
-$activeMenu = (!$this->module->get('id')) ? array(0) : array();
+$activeMenu = (!$this->module->get('id')) ? [0] : [];
 foreach ($menus as $menu) {
     $activeMenu[] = $menu->get('pageid');
 }
@@ -84,7 +84,7 @@ foreach ($menus as $menu) {
                         }
 
                             //build config
-                            $config = array(
+                            $config = [
                                 'startupMode'                 => $startupMode,
                                 'sourceViewButton'            => $showSourceBtn,
                                 'contentCss'                  => $this->stylesheets,
@@ -93,12 +93,12 @@ foreach ($menus as $menu) {
                                 'fileBrowserImageBrowseUrl'   => Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=filebrowser&tmpl=component'),
                                 'allowPhpTags'                => $allowPhp,
                                 'allowScriptTags'             => $allowScripts
-                            );
+                            ];
 
                             // if super group add to templates
                             if ($this->group->isSuperGroup()) {
                                 $config['templates_replace'] = false;
-                                $config['templates_files']   = array('pagelayouts' => substr(PATH_APP, strlen(PATH_ROOT)) . '/site/groups/' . $this->group->get('gidNumber') . '/template/assets/js/pagelayouts.js');
+                                $config['templates_files']   = ['pagelayouts' => substr(PATH_APP, strlen(PATH_ROOT)) . '/site/groups/' . $this->group->get('gidNumber') . '/template/assets/js/pagelayouts.js'];
                             }
 
                             // display editor

@@ -47,7 +47,7 @@ class Archive extends Model
      * @param      boolean $boolean Clear cached data?
      * @return     mixed
      */
-    public function categories($rtrn = 'list', $filters = array(), $clear = false)
+    public function categories($rtrn = 'list', $filters = [], $clear = false)
     {
         switch (strtolower($rtrn)) {
             case 'count':

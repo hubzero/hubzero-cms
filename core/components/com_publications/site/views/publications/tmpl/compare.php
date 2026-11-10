@@ -96,7 +96,7 @@ $this->css('compare.css');
         $lattachments = $this->lft->attachments()->order('element_id', 'asc')->order('ordering', 'asc')->rows();
         $rattachments = $this->rgt->attachments()->order('element_id', 'asc')->order('ordering', 'asc')->rows();
 
-        $attachments = array();
+        $attachments = [];
 
         if ($lattachments->count() && $rattachments->count()) {
             $l = 0;

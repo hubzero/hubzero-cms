@@ -153,6 +153,6 @@ class Media
             $d->close();
         }
 
-        return array($total_file, $total_dir);
+        return [$total_file, $total_dir];
     }
 }

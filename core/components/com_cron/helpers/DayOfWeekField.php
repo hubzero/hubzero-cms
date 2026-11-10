@@ -33,7 +33,7 @@ class DayOfWeekField extends AbstractField
         }
 
         // Convert text day of the week values to integers
-        $value = strtr($value, array(
+        $value = strtr($value, [
             'SUN' => 0,
             'MON' => 1,
             'TUE' => 2,
@@ -41,7 +41,7 @@ class DayOfWeekField extends AbstractField
             'THU' => 4,
             'FRI' => 5,
             'SAT' => 6
-        ));
+        ]);
 
         $currentYear = $date->format('Y');
         $currentMonth = $date->format('m');

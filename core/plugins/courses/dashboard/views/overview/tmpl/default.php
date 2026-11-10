@@ -54,7 +54,7 @@ $base = $this->offering->link();
                     <tbody>
                         <?php
                         $enrolledCount = $this->offering->members(
-                            array('count' => true, 'student' => 1)
+                            ['count' => true, 'student' => 1]
                         );
                         $enrolledText = Lang::txt(
                             'PLG_COURSES_DASHBOARD_ENROLLED',
@@ -165,5 +165,5 @@ $base = $this->offering->link();
 </div>
 
 <?php
-$after = Event::trigger('courses.onCourseDashboard', array($this->course, $this->offering));
+$after = Event::trigger('courses.onCourseDashboard', [$this->course, $this->offering]);
 echo implode("\n", $after);

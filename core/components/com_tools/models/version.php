@@ -203,49 +203,49 @@ class Version
      *
      * @var array
      */
-    private $alias = array();          // alias [array]     #__tool_aliases
+    private $alias = [];          // alias [array]     #__tool_aliases
 
     /**
      * Description for 'middleware'
      *
      * @var array
      */
-    private $middleware = array();    // middleware [array] #__tool_middleware
+    private $middleware = [];    // middleware [array] #__tool_middleware
 
     /**
      * Description for 'hostreq'
      *
      * @var array
      */
-    private $hostreq = array();      // vncHostReq [array]  #__tool_hostreq
+    private $hostreq = [];      // vncHostReq [array]  #__tool_hostreq
 
     /**
      * Description for 'author'
      *
      * @var array
      */
-    private $author = array();        // author [array]     #__tool_authors
+    private $author = [];        // author [array]     #__tool_authors
 
     /**
      * Description for 'member'
      *
      * @var array
      */
-    private $member = array();        // member [array]     #__tool_groups
+    private $member = [];        // member [array]     #__tool_groups
 
     /**
      * Description for 'owner'
      *
      * @var array
      */
-    private $owner = array();          // owner [array]     #__tool_groups
+    private $owner = [];          // owner [array]     #__tool_groups
 
     /**
      * Description for '_list_keys'
      *
      * @var array
      */
-    private $_list_keys = array('alias', 'middleware', 'hostreq', 'author', 'member', 'owner');
+    private $_list_keys = ['alias', 'middleware', 'hostreq', 'author', 'member', 'owner'];
 
     /**
      * Description for '_updateAll'
@@ -259,7 +259,7 @@ class Version
      *
      * @var array
      */
-    public static $_propertyattrmap = array(
+    public static $_propertyattrmap = [
         'title' => 'cn',
         'description' => 'description',
         'version' => 'version',
@@ -285,14 +285,14 @@ class Version
         'author' => 'author',
         'middleware' => 'middleware',
         'params' => 'params'
-    );
+    ];
 
     /**
      * Description for '_updatedkeys'
      *
      * @var array
      */
-    private $_updatedkeys = array();
+    private $_updatedkeys = [];
 
     /**
      * Constructor
@@ -314,7 +314,7 @@ class Version
     {
         $cvars = get_class_vars(__CLASS__);
 
-        $this->_updatedkeys = array();
+        $this->_updatedkeys = [];
 
         foreach ($cvars as $key => $value) {
             if ($key[0] != '_') {
@@ -323,13 +323,13 @@ class Version
                 if (!in_array($key, $this->_list_keys)) {
                     $this->$key = null;
                 } else {
-                    $this->$key = array();
+                    $this->$key = [];
                 }
             }
         }
 
         $this->_updateAll = false;
-        $this->_updatedkeys = array();
+        $this->_updatedkeys = [];
     }
 
     /**
@@ -392,7 +392,7 @@ class Version
      */
     public function toArray()
     {
-        $result = array();
+        $result = [];
 
         if (true) {
             foreach (self::$_propertyattrmap as $key => $value) {
@@ -585,7 +585,7 @@ class Version
             $this->__get('owner');
         }
 
-        $this->_updatedkeys = array();
+        $this->_updatedkeys = [];
 
         return true;
     }
@@ -710,7 +710,7 @@ class Version
             $list = $this->__get($property);
 
             if (!is_null($list) && !is_array($list)) {
-                $list = array($list);
+                $list = [$list];
             }
 
             if (is_array($list) && count($list) > 0) {
@@ -950,7 +950,7 @@ class Version
                 $db = App::get('db');
 
                 if (is_object($db)) {
-                    if (in_array($property, array('alias', 'middleware', 'hostreq'))) {
+                    if (in_array($property, ['alias', 'middleware', 'hostreq'])) {
                         $aux_table = "#__tool_version_" . $property;
 
                         $query = "SELECT $property FROM $aux_table AS aux WHERE " .
@@ -974,8 +974,8 @@ class Version
                     $result = $db->loadColumn();
 
                     if ($result !== false) {
-                        $this->$property = (isset($result[0])) ? $result : array();
-                        $this->_updatedkeys = array_diff($this->_updatedkeys, array($property));
+                        $this->$property = (isset($result[0])) ? $result : [];
+                        $this->_updatedkeys = array_diff($this->_updatedkeys, [$property]);
                     }
                 }
             }
@@ -1016,10 +1016,10 @@ class Version
         if ($property == 'owner' || $property == 'member') {
             $this->$property = array_map(
                 "strtolower",
-                array_values(array_unique(array_diff((array) $value, array(''))))
+                array_values(array_unique(array_diff((array) $value, [''])))
             );
         } else if (in_array($property, $this->_list_keys)) {
-            $this->$property = array_values(array_unique(array_diff((array) $value, array(''))));
+            $this->$property = array_values(array_unique(array_diff((array) $value, [''])));
         } else {
             $this->$property = $value;
         }
@@ -1070,7 +1070,7 @@ class Version
             die();
         }
 
-        $this->_updatedkeys = array_diff($this->_updatedkeys, array($property));
+        $this->_updatedkeys = array_diff($this->_updatedkeys, [$property]);
 
         unset($this->$property);
     }
@@ -1141,7 +1141,7 @@ class Version
      * @param     array $value Parameter description (if any) ...
      * @return   void
      */
-    public function add($key = null, $value = array())
+    public function add($key = null, $value = [])
     {
         $this->__set($key, array_merge($this->__get($key), (array) $value));
     }
@@ -1155,7 +1155,7 @@ class Version
      * @param     array $value Parameter description (if any) ...
      * @return   void
      */
-    public function remove($key = null, $value = array())
+    public function remove($key = null, $value = [])
     {
         $this->__set($key, array_diff($this->__get($key), (array) $value));
     }
@@ -1204,7 +1204,7 @@ class Version
         } else if ($version && $toolname) {
             if (is_array($toolname)) {
                 $query .= "LEFT JOIN #__tool_version AS v2 ON v2.revision < v.revision AND v2.toolname=v.toolname ";
-                $query .= "WHERE v.toolname IN (" . implode(',', array_map(array($db, 'quote'), $toolname)) . ") ";
+                $query .= "WHERE v.toolname IN (" . implode(',', array_map([$db, 'quote'], $toolname)) . ") ";
             } else {
                 $query .= "WHERE v.toolname=" . $db->quote($toolname) . " ";
             }

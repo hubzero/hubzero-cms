@@ -41,7 +41,7 @@ if ($params->get('supportedtag') && isset($this->supported)) {
     }
 }
 
-$extras = Event::trigger('resources.onResourcesList', array($this->line));
+$extras = Event::trigger('resources.onResourcesList', [$this->line]);
 ?>
 
 <li class="<?php echo $cls; ?>">
@@ -105,7 +105,7 @@ $extras = Event::trigger('resources.onResourcesList', array($this->line));
 
     <p class="details">
         <?php
-        $info = array();
+        $info = [];
 
         if ($params->get('show_type')) {
             $info[] = '<strong class="type">' . stripslashes($this->line->type->get('type')) . '</strong>';

@@ -39,7 +39,7 @@ class Migration20160824181200ComWiki extends Base
                     continue;
                 }
 
-                $path = array();
+                $path = [];
                 $start = false;
                 $p = explode('/', $row->path);
                 foreach ($p as $s) {

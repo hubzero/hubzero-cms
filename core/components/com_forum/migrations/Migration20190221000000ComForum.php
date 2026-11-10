@@ -20,21 +20,21 @@ class Migration20190221000000ComForum extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__forum_categories' => array(
+    public static $tables = [
+        '#__forum_categories' => [
             'created',
             'modified'
-        ),
-        '#__forum_posts' => array(
+        ],
+        '#__forum_posts' => [
             'created',
             'modified',
             'last_activity'
-        ),
-        '#__forum_sections' => array(
+        ],
+        '#__forum_sections' => [
             'created',
             'modified'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

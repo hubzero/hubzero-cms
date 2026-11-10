@@ -31,7 +31,7 @@ class Languages extends Base
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_codes = array(
+    protected $_codes = [
         "aa" => "Afar",
         "ab" => "Abkhazian",
         "ae" => "Avestan",
@@ -216,7 +216,7 @@ class Languages extends Base
         "za" => "Zhuang",
         "zh" => "Chinese",
         "zu" => "Zulu"
-    );
+    ];
 
     /**
      * Return any options this element may have
@@ -235,7 +235,7 @@ class Languages extends Base
             $value = $language[0];
         }
 
-        $languages = array();
+        $languages = [];
         foreach ($this->_codes as $code => $lang) {
             $languages[] = Html::select('option', $code, $lang);
         }

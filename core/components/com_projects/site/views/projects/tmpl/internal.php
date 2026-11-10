@@ -47,7 +47,7 @@ if ($layout == 'extended') {
 // Get notifications
 $notification = Event::trigger(
     'projects.onProjectNotification',
-    array( $this->model, $this->active )
+    [ $this->model, $this->active ]
 );
 $notification   = $notification && !empty($notification)
     ? $notification[0] : null;
@@ -55,7 +55,7 @@ $notification   = $notification && !empty($notification)
 // Get side content
 $sideContent = Event::trigger(
     'projects.onProjectExtras',
-    array( $this->model, $this->active )
+    [ $this->model, $this->active ]
 );
 $sideContent    = $sideContent && !empty($sideContent)
     ? $sideContent[0] : null;

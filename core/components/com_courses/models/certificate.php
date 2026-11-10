@@ -80,7 +80,7 @@ class Certificate extends Base
             }
 
             if ($course_id) {
-                $this->_tbl->load(array('course_id' => $course_id));
+                $this->_tbl->load(['course_id' => $course_id]);
             } elseif (is_numeric($oid) || is_string($oid)) {
                 // Make sure $oid isn't empty
                 // This saves a database call
@@ -104,7 +104,7 @@ class Certificate extends Base
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         if (!isset($instances[$oid . $course_id])) {
@@ -202,7 +202,7 @@ class Certificate extends Base
 
         $base   = $this->path('system');
         $dir    = opendir($base);
-        $images = array();
+        $images = [];
 
         while ($file = readdir($dir)) {
             if (preg_match('/^\d+[.]png$/', $file)) {
@@ -280,7 +280,7 @@ class Certificate extends Base
                 $this->_properties = new \stdClass();
                 $this->_properties->width    = 900;
                 $this->_properties->height   = 694;
-                $this->_properties->elements = array();
+                $this->_properties->elements = [];
             }
         }
         return $this->_properties;
@@ -312,10 +312,10 @@ class Certificate extends Base
         $w = ($width / 300);
         $h = ($height / 300);
         $mm = 25.4;
-        $size = array(
+        $size = [
             'width' => ($w * $mm),
             'height' => ($h * $mm)
-        );
+        ];
 
         $pdf = new CertificatePdf(
             PDF_PAGE_ORIENTATION,
@@ -327,7 +327,7 @@ class Certificate extends Base
         );
         $pdf->img_file = $img;
 
-        $pdf->AddPage('L', array($size['height'], $size['width']));
+        $pdf->AddPage('L', [$size['height'], $size['width']]);
 
         $pdf->SetFillColor(0, 0, 0);
 

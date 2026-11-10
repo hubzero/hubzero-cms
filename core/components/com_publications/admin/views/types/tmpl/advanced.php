@@ -32,7 +32,7 @@ $manifest  = $this->curation->_manifest;
 $curParams = $manifest->params;
 $blocks    = $manifest->blocks;
 
-$blockSelection = array('active' => array());
+$blockSelection = ['active' => []];
 ?>
 
 <?php

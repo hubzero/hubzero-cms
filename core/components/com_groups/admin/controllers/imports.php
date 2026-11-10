@@ -58,7 +58,7 @@ class Imports extends AdminController
     public function displayTask()
     {
         // Get filters
-        $filters = array(
+        $filters = [
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
@@ -71,7 +71,7 @@ class Imports extends AdminController
                 0,
                 'int'
             ),
-            'state'    => array(1),
+            'state'    => [1],
             'sort'       => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
@@ -83,13 +83,13 @@ class Imports extends AdminController
                 'DESC'
             ),
             'type'     => 'groups'
-        );
+        ];
 
         $model = Import::all();
 
         if (isset($filters['state']) && $filters['state']) {
             if (!is_array($filters['state'])) {
-                $filters['state'] = array($filters['state']);
+                $filters['state'] = [$filters['state']];
             }
             $filters['state'] = array_map('intval', $filters['state']);
 
@@ -134,7 +134,7 @@ class Imports extends AdminController
         // get the import object
         if (!($import instanceof Import)) {
             // get request vars
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id)) {
                 $id = (isset($id[0]) ? $id[0] : 0);
             }
@@ -146,7 +146,7 @@ class Imports extends AdminController
         $params = new Registry($import->get('params'));
 
         // get all files in import filespace
-        $files = array();
+        $files = [];
 
         if ($import->get('id')) {
             if ($this->createImportFilespace($import)) {
@@ -156,7 +156,7 @@ class Imports extends AdminController
 
         // get all import hooks
         $hooks = Hook::all()
-            ->whereIn('state', array(1))
+            ->whereIn('state', [1])
             ->rows();
 
         // Set any errors
@@ -196,11 +196,11 @@ class Imports extends AdminController
         Session::checkToken();
 
         // Get request vars
-        $import = Request::getArray('import', array());
-        $hooks  = Request::getArray('hooks', array());
-        $params = Request::getArray('params', array());
-        $fields = Request::getArray('mapping', array());
-        $file   = Request::getArray('file', array(), 'FILES');
+        $import = Request::getArray('import', []);
+        $hooks  = Request::getArray('hooks', []);
+        $params = Request::getArray('params', []);
+        $fields = Request::getArray('mapping', []);
+        $file   = Request::getArray('file', [], 'FILES');
 
         // Create import model object
         $model = Import::oneOrNew(isset($import['id']) ? $import['id'] : 0);
@@ -300,8 +300,8 @@ class Imports extends AdminController
         Session::checkToken();
 
         // get request vars
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // loop through all ids posted
         $i = 0;
@@ -349,7 +349,7 @@ class Imports extends AdminController
     public function runTask($dryRun = 0)
     {
         // Get request vars
-        $id = Request::getArray('id', array(0));
+        $id = Request::getArray('id', [0]);
         $id = (is_array($id) ? $id[0] : $id);
 
 
@@ -396,11 +396,11 @@ class Imports extends AdminController
 
         // Run process task on importer
         // passed the import model, array or callbacks, and test mode flag
-        $resourceData = $importImporter->process($import, array(
+        $resourceData = $importImporter->process($import, [
             'postparse'   => $this->getHooks('postparse', $import),
             'postmap'     => $this->getHooks('postmap', $import),
             'postconvert' => $this->getHooks('postconvert', $import)
-        ), $dryRun);
+        ], $dryRun);
 
         // Calculate execution time
         $end  = microtime(true);
@@ -408,20 +408,20 @@ class Imports extends AdminController
 
         // Outputted with html entities to allow browser json formatter
         if (Request::getInt('format', 0) == 1) {
-            echo htmlentities(json_encode(array(
+            echo htmlentities(json_encode([
                 'import'  => 'success',
                 'time'    => $time,
                 'records' => $resourceData
-            )));
+            ]));
             exit();
         }
 
         // Return results to user
-        echo json_encode(array(
+        echo json_encode([
             'import'  => 'success',
             'time'    => $time,
             'records' => $resourceData
-        ));
+        ]);
         exit();
     }
 
@@ -445,10 +445,10 @@ class Imports extends AdminController
             ->row();
 
         // build array of data to return
-        $data = array(
+        $data = [
             'processed' => $run->get('processed', 0),
             'total'     => $run->get('count', 0)
-        );
+        ];
 
         // return progress update
         echo json_encode($data);
@@ -465,7 +465,7 @@ class Imports extends AdminController
     private function getHooks($event, $import)
     {
         // Array to hold callbacks
-        $callbacks = array();
+        $callbacks = [];
 
         // Get hooks on import
         $hooks = json_decode($import->get('hooks'));
@@ -538,7 +538,7 @@ class Imports extends AdminController
         }
 
         if (strpos($val, "\n") !== false || strpos($val, ',') !== false) {
-            return '"' . str_replace(array('\\', '"'), array('\\\\', '""'), $val) . '"';
+            return '"' . str_replace(['\\', '"'], ['\\\\', '""'], $val) . '"';
         }
 
         return $val;
@@ -552,7 +552,7 @@ class Imports extends AdminController
      */
     public function quoteCsvRow($vals)
     {
-        return implode(',', array_map(array($this, 'quoteCsv'), $vals)) . "\n";
+        return implode(',', array_map([$this, 'quoteCsv'], $vals)) . "\n";
     }
 
     /**
@@ -562,10 +562,10 @@ class Imports extends AdminController
      */
     public function sampleTask()
     {
-        $skip = array('params', 'type', 'logo');
+        $skip = ['params', 'type', 'logo'];
 
-        $fields = array();
-        $row    = array();
+        $fields = [];
+        $row    = [];
 
         $model = Group::blank();
         $attribs = $model->getStructure()->getTableColumns($model->getTableName());
@@ -578,7 +578,7 @@ class Imports extends AdminController
             $example = 'Example';
             $desc = preg_replace('/\(.*\)/', '', $desc);
 
-            if (in_array($desc, array('int', 'tinyint', 'float'))) {
+            if (in_array($desc, ['int', 'tinyint', 'float'])) {
                 $example = '1';
             }
 
@@ -602,7 +602,7 @@ class Imports extends AdminController
             }
 
             $example = 'Example';
-            $multiValueTypes = array(
+            $multiValueTypes = [
                 'tags',
                 'select',
                 'dropdown',
@@ -611,7 +611,7 @@ class Imports extends AdminController
                 'radios',
                 'checkbox',
                 'checkboxes'
-            );
+            ];
             if ($field->options->count() || in_array($field->get('type'), $multiValueTypes)) {
                 $example = 'example;example;example';
             }

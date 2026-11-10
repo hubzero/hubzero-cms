@@ -34,18 +34,18 @@ class AssetViews extends Table
      * @return     string SQL
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildQuery($filters = array())
+    protected function _buildQuery($filters = [])
     {
-        $select = array();
-        $from   = array();
-        $where  = array();
-        $group  = array();
+        $select = [];
+        $from   = [];
+        $where  = [];
+        $group  = [];
 
         $select[] = "ca.id as asset_id";
         $select[] = "cm.id as member_id";
         $select[] = "cu.id as unit_id";
 
-        $from = array();
+        $from = [];
         $from[] = "#__courses_assets AS ca";
         $from[] = "INNER JOIN #__courses_asset_associations AS caa ON ca.id = caa.asset_id";
         $from[] = "INNER JOIN #__courses_asset_groups AS cag ON caa.scope_id = cag.id AND caa.scope = 'asset_group'";
@@ -115,7 +115,7 @@ class AssetViews extends Table
      * @param      array $filters Filters to construct query from
      * @return     array
      */
-    public function find($filters = array(), $key = null)
+    public function find($filters = [], $key = null)
     {
         $query = $this->_buildQuery($filters);
 

@@ -45,9 +45,9 @@ class Sponsors extends Plugin
      */
     public function &onResourcesSubAreas($resource)
     {
-        $areas = array(
+        $areas = [
             'sponsors' => Lang::txt('PLG_RESOURCES_SPONSORS')
-        );
+        ];
         return $areas;
     }
 
@@ -61,11 +61,11 @@ class Sponsors extends Plugin
      */
     public function onResourcesSub($resource, $option, $miniview = 0)
     {
-        $arr = array(
+        $arr = [
             'area'     => $this->_name,
             'html'     => '',
             'metadata' => ''
-        );
+        ];
 
         $records = \Plugins\Resources\Sponsors\Models\Sponsor::all()
             ->whereEquals('state', 1)
@@ -76,7 +76,7 @@ class Sponsors extends Plugin
         }
 
         $data = '';
-        $sponsors = array();
+        $sponsors = [];
         foreach ($records as $record) {
             $sponsors[$record->alias] = $record;
         }
@@ -153,7 +153,7 @@ class Sponsors extends Plugin
     public function defaultTask()
     {
         // Incoming
-        $filters = array(
+        $filters = [
             'limit'    => Request::getState(
                 $this->_option . '.plugins.sponsors.limit',
                 'limit',
@@ -176,7 +176,7 @@ class Sponsors extends Plugin
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         $model = \Plugins\Resources\Sponsors\Models\Sponsor::all();
 
@@ -247,7 +247,7 @@ class Sponsors extends Plugin
         Request::checkToken();
 
         // Initiate extended database class
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
         $fields = array_map('trim', $fields);
 
         $row = \Plugins\Resources\Sponsors\Models\Sponsor::oneOrNew($fields['id'])->set($fields);
@@ -289,7 +289,7 @@ class Sponsors extends Plugin
         Request::checkToken();
 
         // Incoming (expecting an array)
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
 
         // Ensure we have an ID to work with
         if (empty($ids)) {
@@ -358,7 +358,7 @@ class Sponsors extends Plugin
         Request::checkToken(['get', 'post']);
 
         // Incoming
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
 
         // Check for an ID
         if (count($ids) < 1) {

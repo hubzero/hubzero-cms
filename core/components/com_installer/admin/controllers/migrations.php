@@ -31,7 +31,7 @@ class Migrations extends AdminController
     public function displayTask()
     {
         // Paging
-        $filters = array(
+        $filters = [
             'folder' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.folder',
                 'folder',
@@ -49,7 +49,7 @@ class Migrations extends AdminController
                 0,
                 'int'
             )
-        );
+        ];
 
         $breadcrumb = '';
         if ($filters['folder']) {
@@ -63,7 +63,7 @@ class Migrations extends AdminController
             }
         }
 
-        $rows  = array();
+        $rows  = [];
         $total = 0;
 
         $migrations = json_decode(Cli::migration(true, true, null, 'up', $filters['folder']));
@@ -72,10 +72,10 @@ class Migrations extends AdminController
             foreach ($migrations as $status => $files) {
                 $files = array_reverse($files);
                 foreach ($files as $entry) {
-                    $row = array(
+                    $row = [
                         'entry'  => $entry,
                         'status' => $status
-                    );
+                    ];
                     $rows[] = $row;
                 }
             }
@@ -135,7 +135,7 @@ class Migrations extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $migrations = Request::getArray('migration', array());
+        $migrations = Request::getArray('migration', []);
 
         // Migrations are listed newest to oldest
         // When running UP, we need to make sure everything is run oldest to newest
@@ -166,7 +166,7 @@ class Migrations extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $migrations = Request::getArray('migration', array());
+        $migrations = Request::getArray('migration', []);
 
         foreach ($migrations as $migration) {
             $response = Cli::migration(false, true, $migration, 'down');

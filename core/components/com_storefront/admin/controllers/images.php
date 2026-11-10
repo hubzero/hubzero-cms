@@ -33,7 +33,7 @@ class Images extends AdminController
         // Ensure we have an ID to work with
         $id = Request::getInt('id', 0);
         if (!$id) {
-            echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_NO_ID')));
+            echo json_encode(['error' => Lang::txt('COM_STOREFRONT_ERROR_NO_ID')]);
             return;
         }
 
@@ -42,12 +42,12 @@ class Images extends AdminController
         $path = $this->_path($type, $id);
 
         if (!$path) {
-            echo json_encode(array('error' => $this->getError()));
+            echo json_encode(['error' => $this->getError()]);
             return;
         }
 
         // allowed extensions for uplaod
-        $allowedExtensions = array('png','jpeg','jpg','gif');
+        $allowedExtensions = ['png','jpeg','jpg','gif'];
 
         // max upload size
         $sizeLimit = $this->config->get('maxAllowed', 40000000);
@@ -62,30 +62,30 @@ class Images extends AdminController
             $file = $_FILES['qqfile']['name'];
             $size = (int) $_FILES['qqfile']['size'];
         } else {
-            echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_NO_FILE_FOUND')));
+            echo json_encode(['error' => Lang::txt('COM_STOREFRONT_ERROR_NO_FILE_FOUND')]);
             return;
         }
 
         if (!is_dir($path)) {
             if (!Filesystem::makeDirectory($path)) {
-                echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH')));
+                echo json_encode(['error' => Lang::txt('COM_STOREFRONT_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH')]);
                 return;
             }
         }
 
         if (!is_writable($path)) {
-            echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_UPLOAD_DIRECTORY_IS_NOT_WRITABLE')));
+            echo json_encode(['error' => Lang::txt('COM_STOREFRONT_ERROR_UPLOAD_DIRECTORY_IS_NOT_WRITABLE')]);
             return;
         }
 
         //check to make sure we have a file and its not too big
         if ($size == 0) {
-            echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_EMPTY_FILE')));
+            echo json_encode(['error' => Lang::txt('COM_STOREFRONT_ERROR_EMPTY_FILE')]);
             return;
         }
         if ($size > $sizeLimit) {
             $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
-            echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_FILE_TOO_LARGE', $max)));
+            echo json_encode(['error' => Lang::txt('COM_STOREFRONT_ERROR_FILE_TOO_LARGE', $max)]);
             return;
         }
 
@@ -100,7 +100,7 @@ class Images extends AdminController
 
         $ext = isset($pathinfo['extension']) ? $pathinfo['extension'] : '';
         if (!in_array(strtolower($ext), $allowedExtensions)) {
-            echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_UNKNOWN_FILE_TYPE')));
+            echo json_encode(['error' => Lang::txt('COM_STOREFRONT_ERROR_UNKNOWN_FILE_TYPE')]);
             return;
         }
 
@@ -125,7 +125,7 @@ class Images extends AdminController
         if (!Filesystem::isSafe($file)) {
             Filesystem::delete($file);
 
-            echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_FILE_UNSAFE')));
+            echo json_encode(['error' => Lang::txt('COM_STOREFRONT_ERROR_FILE_UNSAFE')]);
             return;
         }
 
@@ -134,7 +134,7 @@ class Images extends AdminController
             // Remove old image
             if (file_exists($path . DS . $curfile)) {
                 if (!Filesystem::delete($path . DS . $curfile)) {
-                    echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_UNABLE_TO_DELETE_FILE')));
+                    echo json_encode(['error' => Lang::txt('COM_STOREFRONT_ERROR_UNABLE_TO_DELETE_FILE')]);
                     return;
                 }
             }
@@ -155,13 +155,13 @@ class Images extends AdminController
                 break;
 
             default:
-                echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_INVALID_TYPE')));
+                echo json_encode(['error' => Lang::txt('COM_STOREFRONT_ERROR_INVALID_TYPE')]);
                 return;
             break;
         }
 
         if (!$object->save()) {
-            echo json_encode(array('error' => 'Error updating the object'));
+            echo json_encode(['error' => 'Error updating the object']);
             return;
         }
 
@@ -171,7 +171,7 @@ class Images extends AdminController
         list($width, $height, $type, $attr) = getimagesize($file);
 
         //echo result
-        echo json_encode(array(
+        echo json_encode([
             'success'   => true,
             'file'      => $filename . '.' . $ext,
             'directory' => str_replace(PATH_ROOT, '', $path),
@@ -180,7 +180,7 @@ class Images extends AdminController
             'size'      => \Hubzero\Utility\Number::formatBytes($this_size),
             'width'     => $width,
             'height'    => $height
-        ));
+        ]);
     }
 
     /**
@@ -215,7 +215,7 @@ class Images extends AdminController
         }
 
         // Incoming file
-        $file = Request::getArray('upload', array(), 'files');
+        $file = Request::getArray('upload', [], 'files');
         if (!$file['name']) {
             $this->setError(Lang::txt('COM_STOREFRONT_NO_FILE'));
             $this->_backToEdit($id);
@@ -237,7 +237,7 @@ class Images extends AdminController
 
         // Same image types the AJAX uploader accepts
         $ext = strtolower(Filesystem::extension($file['name']));
-        if (!in_array($ext, array('png', 'jpeg', 'jpg', 'gif'))) {
+        if (!in_array($ext, ['png', 'jpeg', 'jpg', 'gif'])) {
             $this->setError(Lang::txt('COM_STOREFRONT_ERROR_UNKNOWN_FILE_TYPE'));
             $this->_backToEdit($id);
             return;
@@ -276,7 +276,7 @@ class Images extends AdminController
                     break;
 
                 default:
-                    echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_INVALID_TYPE')));
+                    echo json_encode(['error' => Lang::txt('COM_STOREFRONT_ERROR_INVALID_TYPE')]);
                     return;
                     break;
             }
@@ -298,12 +298,12 @@ class Images extends AdminController
     public function ajaxRemoveTask()
     {
         // Check for request forgeries
-        Request::checkToken(array('get', 'post'));
+        Request::checkToken(['get', 'post']);
 
         // Ensure we have an ID to work with
         $id = Request::getInt('id', 0);
         if (!$id) {
-            echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_NO_ID')));
+            echo json_encode(['error' => Lang::txt('COM_STOREFRONT_ERROR_NO_ID')]);
             return;
         }
 
@@ -323,18 +323,18 @@ class Images extends AdminController
                 break;
 
             default:
-                echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_INVALID_TYPE')));
+                echo json_encode(['error' => Lang::txt('COM_STOREFRONT_ERROR_INVALID_TYPE')]);
                 return;
             break;
         }
 
         if (!$object->save()) {
-            echo json_encode(array('error' => 'Error saving object'));
+            echo json_encode(['error' => 'Error saving object']);
             return;
         }
 
         //echo result
-        echo json_encode(array(
+        echo json_encode([
             'success'   => true,
             'file'      => '',
             //'directory' => str_replace(PATH_ROOT, '', $path),
@@ -342,7 +342,7 @@ class Images extends AdminController
             'size'      => 0,
             'width'     => 0,
             'height'    => 0
-        ));
+        ]);
     }
 
     /**

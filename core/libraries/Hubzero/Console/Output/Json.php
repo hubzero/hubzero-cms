@@ -41,7 +41,7 @@ class Json extends Output
             echo json_encode($this->response);
 
             // Reset response
-            $this->response = array();
+            $this->response = [];
         }
     }
 

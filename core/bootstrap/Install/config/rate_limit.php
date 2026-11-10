@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
     /*
     |--------------------------------------------------------------------------
     | Ratelimit: Short
@@ -15,10 +15,10 @@ return array(
     |    per period (time in minutes).
     |
     */
-    'short' => array(
+    'short' => [
         'period' => '5',
         'limit' => '500'
-    ),
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -34,8 +34,8 @@ return array(
     |    per period (time in minutes).
     |
     */
-    'long' => array(
+    'long' => [
         'period' => '1440',
         'limit' => '10000'
-    ),
-);
+    ],
+];

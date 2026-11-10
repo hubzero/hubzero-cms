@@ -33,14 +33,14 @@ if ($theme == 'custom') {
 $htheme = $this->params->get('header', 'light');
 $browser = new \Hubzero\Browser\Detector();
 
-$cls = array(
+$cls = [
     'nojs',
     $this->direction,
     $theme,
     $htheme,
     $browser->name(),
     $browser->name() . $browser->major()
-);
+];
 ?>
 <!DOCTYPE html>
 <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>"
@@ -84,7 +84,7 @@ $cls = array(
                     $logoutLink = '';
                 endif;
 
-                $output = array();
+                $output = [];
                 $logoutText = Lang::txt('TPL_KAMELEON_LOG_OUT');
                 if ($hideLinks) {
                     $output[] = '<li class="disabled" data-title="' . $logoutText . '">'

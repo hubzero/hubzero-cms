@@ -38,7 +38,7 @@ class Router extends Base
         static $reset;
 
         // Initialise variables.
-        $segments = array();
+        $segments = [];
 
         // Get the relevant menu items if not loaded.
         if (empty($items)) {
@@ -201,7 +201,7 @@ class Router extends Base
     public function parse(&$segments)
     {
         // Initialise variables.
-        $vars = array();
+        $vars = [];
 
         // Only run routine if there are segments to parse.
         if (count($segments) < 1) {

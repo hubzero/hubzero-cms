@@ -97,7 +97,7 @@ class Simple implements Cipher
      * @param   array   $options  Key generation options.
      * @return  object
      */
-    public function generateKey(array $options = array())
+    public function generateKey(array $options = [])
     {
         // Create the new encryption key[/pair] object.
         $key = new Key('simple');
@@ -215,7 +215,7 @@ class Simple implements Cipher
      */
     private function _hexToIntArray($hex)
     {
-        $array = array();
+        $array = [];
 
         $j = (int) strlen($hex) / 2;
 

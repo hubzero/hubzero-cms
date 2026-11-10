@@ -31,7 +31,7 @@ class BlockElements extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_elements = array();
+    protected $_elements = [];
 
     /**
      * Directories, where block elements can be stored
@@ -39,7 +39,7 @@ class BlockElements extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_path = array();
+    protected $_path = [];
 
     /**
      * Constructor
@@ -123,7 +123,7 @@ class BlockElements extends Obj
         $lastIncomplete = 0;
         $total          = 0;
         $showElement    = 1;
-        $collector      = array();
+        $collector      = [];
         $i              = 1;
 
         foreach ($elements as $elId => $el) {
@@ -163,7 +163,7 @@ class BlockElements extends Obj
             $showElement = isset($elements->$nextElement) ? $nextElement : $collector[$lastComplete];
         }
 
-        return array('showElement' => $showElement, 'total' => $total);
+        return ['showElement' => $showElement, 'total' => $total];
     }
 
     /**

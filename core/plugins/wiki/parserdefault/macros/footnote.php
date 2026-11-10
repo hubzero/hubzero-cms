@@ -23,7 +23,7 @@ class FootNote extends WikiMacro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['wiki'] = "Add a footnote, or explicitly display collected footnotes when no args are given. Useful for citations.
 
 Examples:
@@ -53,8 +53,8 @@ Examples:
 
         if (!is_object($wm)) {
             $wm = new \stdClass();
-            $wm->footnotes = array();
-            $wm->footnotes_stubs = array();
+            $wm->footnotes = [];
+            $wm->footnotes_stubs = [];
             $wm->footnotes_count = 0;
         }
 
@@ -89,16 +89,16 @@ Examples:
             $footnote = new \stdClass();
             $footnote->content = $note;
             $footnote->id      = 'fnref-' . $i;
-            $footnote->refs    = array(
+            $footnote->refs    = [
                 'fndef-' . $i
-            );
+            ];
 
             $wm->footnotes_stubs[] = $stub;
             $wm->footnotes[] = $footnote;
 
             return '<sup id="fndef-' . $i . '" class="tex2jax_ignore"><a href="#fnref-' . $i . '" aria-label="Footnote ' . $i . '">&#91;' . $i . '&#93;</a></sup>';
         } else {
-            $letters = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
+            $letters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
 
             $html  = '<ol class="footnotes">';
             foreach ($wm->footnotes as $i => $footnote) {

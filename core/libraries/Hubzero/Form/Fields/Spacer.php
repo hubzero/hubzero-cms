@@ -43,7 +43,7 @@ class Spacer extends Field
      */
     protected function getLabel()
     {
-        $html = array();
+        $html = [];
         $class = $this->element['class'] ? (string) $this->element['class'] : '';
 
         $html[] = '<span class="spacer">';

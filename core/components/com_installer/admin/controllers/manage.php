@@ -59,7 +59,7 @@ class Manage extends AdminController
             'int'
         );
 
-        $filters = array(
+        $filters = [
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'filter_search',
@@ -99,7 +99,7 @@ class Manage extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         $entries = Extension::all();
 
@@ -147,7 +147,7 @@ class Manage extends AdminController
 
             $lang = App::get('language');
 
-            $result = array();
+            $result = [];
             foreach ($rows as $i => $item) {
                 // a plain substring match: the search text is not a pattern,
                 // and a skipped row must not be re-added below
@@ -195,7 +195,7 @@ class Manage extends AdminController
         $form->loadFile(dirname(__DIR__) . '/models/forms/manage.xml', false, '//form');
 
         // Check the session for previously entered form data.
-        $data = User::getState($this->_option . '.data', array());
+        $data = User::getState($this->_option . '.data', []);
 
         // Bind the form data if present.
         if (!empty($data)) {
@@ -238,8 +238,8 @@ class Manage extends AdminController
         }
 
         // Initialise variables.
-        $ids    = Request::getArray('cid', array());
-        $values = array('publish' => 1, 'unpublish' => 0);
+        $ids    = Request::getArray('cid', []);
+        $values = ['publish' => 1, 'unpublish' => 0];
         $task   = $this->getTask();
         $value  = \Hubzero\Utility\Arr::getValue($values, $task, 0, 'int');
 
@@ -295,8 +295,8 @@ class Manage extends AdminController
             App::abort(403, Lang::txt('JERROR_CORE_DELETE_NOT_PERMITTED'));
         }
 
-        $ids  = Request::getArray('cid', array());
-        \Hubzero\Utility\Arr::toInteger($ids, array());
+        $ids  = Request::getArray('cid', []);
+        \Hubzero\Utility\Arr::toInteger($ids, []);
 
         $success = 0;
 
@@ -337,8 +337,8 @@ class Manage extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $ids = Request::getArray('cid', array());
-        \Hubzero\Utility\Arr::toInteger($ids, array());
+        $ids = Request::getArray('cid', []);
+        \Hubzero\Utility\Arr::toInteger($ids, []);
 
         foreach ($ids as $id) {
             $model = Extension::oneOrFail($id);

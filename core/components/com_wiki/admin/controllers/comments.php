@@ -49,7 +49,7 @@ class Comments extends AdminController
      */
     public function displayTask()
     {
-        $filters = array(
+        $filters = [
             'page_id' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.page_id',
                 'page_id',
@@ -85,7 +85,7 @@ class Comments extends AdminController
                 0,
                 'int'
             )
-        );
+        ];
 
         $page = Page::oneOrNew($filters['page_id']);
 
@@ -104,21 +104,21 @@ class Comments extends AdminController
             ->rows();
 
         $levellimit = ($filters['limit'] == 0) ? 500 : $filters['limit'];
-        $list       = array();
-        $children   = array();
+        $list       = [];
+        $children   = [];
 
         if ($rows) {
             // First pass - collect children
             foreach ($rows as $k) {
                 $pt = $k->get('parent');
                 // isset, not @: the error handler still logs a suppressed missing key
-                $list = isset($children[$pt]) ? $children[$pt] : array();
+                $list = isset($children[$pt]) ? $children[$pt] : [];
                 array_push($list, $k);
                 $children[$pt] = $list;
             }
 
             // Second pass - get an indent list of the items
-            $list = $this->treeRecurse(0, '', array(), $children, max(0, $levellimit - 1));
+            $list = $this->treeRecurse(0, '', [], $children, max(0, $levellimit - 1));
         }
 
         // Output the HTML
@@ -164,7 +164,7 @@ class Comments extends AdminController
 
                 $list[$id] = $v;
                 $list[$id]->set('treename', "$indent$txt");
-                $list[$id]->set('children', count($children[$id] ?? array()));
+                $list[$id]->set('children', count($children[$id] ?? []));
                 $list = $this->treeRecurse($id, $indent . $spacer, $list, $children, $maxlevel, $level + 1, $type);
             }
         }
@@ -189,7 +189,7 @@ class Comments extends AdminController
 
         if (!is_object($row)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id) && !empty($id)) {
                 $id = $id[0];
             }
@@ -230,7 +230,7 @@ class Comments extends AdminController
         }
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
         $fields = array_map('trim', $fields);
 
         // Initiate extended database class
@@ -238,7 +238,7 @@ class Comments extends AdminController
 
         // Trigger before save event
         $isNew  = $row->isNew();
-        $result = Event::trigger('wiki.onWikiAfterBeforeComment', array(&$row, $isNew));
+        $result = Event::trigger('wiki.onWikiAfterBeforeComment', [&$row, $isNew]);
 
         if (in_array(false, $result, true)) {
             Notify::error($row->getError());
@@ -252,7 +252,7 @@ class Comments extends AdminController
         }
 
         // Trigger after save event
-        Event::trigger('wiki.onWikiAfterSaveComment', array(&$row, $isNew));
+        Event::trigger('wiki.onWikiAfterSaveComment', [&$row, $isNew]);
 
         Notify::success(Lang::txt('COM_WIKI_COMMENT_SAVED'));
 
@@ -281,8 +281,8 @@ class Comments extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $removed = 0;
 
@@ -298,7 +298,7 @@ class Comments extends AdminController
                 }
 
                 // Trigger after delete event
-                Event::trigger('wiki.onWikiAfterDeleteComment', array($id));
+                Event::trigger('wiki.onWikiAfterDeleteComment', [$id]);
 
                 $removed++;
             }
@@ -329,8 +329,8 @@ class Comments extends AdminController
         $state = $this->getTask() == 'unpublish' ? Comment::STATE_UNPUBLISHED : Comment::STATE_PUBLISHED;
 
         // Incoming
-        $ids    = Request::getArray('id', array());
-        $ids    = (!is_array($ids) ? array($ids) : $ids);
+        $ids    = Request::getArray('id', []);
+        $ids    = (!is_array($ids) ? [$ids] : $ids);
         $pageid = Request::getInt('page_id', 0);
 
         // Check for an ID

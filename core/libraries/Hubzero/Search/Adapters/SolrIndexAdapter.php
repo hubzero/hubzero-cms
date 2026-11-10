@@ -53,16 +53,16 @@ class SolrIndexAdapter implements IndexInterface
         $this->logPath = $config->get('solr_log_path');
 
         // Build the Solr config object
-        $solrConfig = array( 'endpoint' =>
-            array( $core =>
-                array(  'host' => $host,
+        $solrConfig = [ 'endpoint' =>
+            [ $core =>
+                [  'host' => $host,
                     'port' => $port,
                     'path' => $path,
                     'context' => $context,
                     'core' => $core
-                )
-            )
-        );
+                ]
+            ]
+        ];
 
         // Create the client
         $adapter = new Solarium\Core\Client\Adapter\Curl();
@@ -84,10 +84,10 @@ class SolrIndexAdapter implements IndexInterface
     {
         if (file_exists($this->logPath)) {
             $log = Filesystem::read($this->logPath);
-            $levels = array();
+            $levels = [];
             $this->logs = explode("\n", $log);
         } else {
-            return array();
+            return [];
         }
 
         return $this->logs;
@@ -103,7 +103,7 @@ class SolrIndexAdapter implements IndexInterface
     {
         $query = $this->connection->createSelect();
         $query->setQuery('*:*');
-        $query->setFields(array('timestamp'));
+        $query->setFields(['timestamp']);
         $query->addSort('timestamp', 'DESC');
         $query->setRows(1);
         $query->setStart(0);

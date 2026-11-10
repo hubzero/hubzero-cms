@@ -153,7 +153,7 @@ if (!$this->comment->get('item_id')) {
                             <label for="comment_<?php echo $formSuffix; ?>_content">
                                 <span class="label-text"><?php echo Lang::txt('COM_ANSWERS_ENTER_COMMENTS'); ?></span>
                                 <?php
-                                echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $formSuffix . '_content', array('class' => 'form-control minimal no-footer'));
+                                echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $formSuffix . '_content', ['class' => 'form-control minimal no-footer']);
                                 ?>
                             </label>
                         </div>

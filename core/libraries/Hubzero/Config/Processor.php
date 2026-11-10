@@ -22,7 +22,7 @@ abstract class Processor
      *
      * @var  array
      */
-    protected static $instances = array();
+    protected static $instances = [];
 
     /**
      * Returns a reference to a Processor object, only creating it
@@ -94,7 +94,7 @@ abstract class Processor
      */
     public function getSupportedExtensions()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -105,7 +105,7 @@ abstract class Processor
      */
     public function parse($path)
     {
-        return array();
+        return [];
     }
 
     /**
@@ -134,15 +134,15 @@ abstract class Processor
     protected function assertReadable($path)
     {
         if (!is_file($path)) {
-            throw new ParseException(array('message' => 'Config file not found: ' . $path));
+            throw new ParseException(['message' => 'Config file not found: ' . $path]);
         }
 
         $handle = @fopen($path, 'r');
 
         if ($handle === false) {
-            throw new ParseException(array(
+            throw new ParseException([
                 'message' => 'Config file is not readable by the current user: ' . $path
-            ));
+            ]);
         }
 
         fclose($handle);

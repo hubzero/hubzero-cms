@@ -33,28 +33,28 @@ class Groups extends Plugin
 
         $obj = new \stdClass();
         $obj->plugin = $this->_name;
-        $obj->events = array(
-            array(
+        $obj->events = [
+            [
                 'name'   => 'cleanGroupFolders',
                 'label'  => Lang::txt('PLG_CRON_GROUPS_REMOVE_ABANDONED_ASSETS'),
                 'params' => ''
-            ),
-            array(
+            ],
+            [
                 'name'   => 'sendGroupAnnouncements',
                 'label'  => Lang::txt('PLG_CRON_GROUPS_SEND_ANNOUNCEMENTS'),
                 'params' => ''
-            ),
-            array(
+            ],
+            [
                 'name'   => 'expireGroupMemberships',
                 'label'  => Lang::txt('PLG_CRON_GROUPS_EXPIRE_MEMBERSHIPS'),
                 'params' => ''
-            ),
-            array(
+            ],
+            [
                 'name'   => 'notifyExpiringMemberships',
                 'label'  => Lang::txt('PLG_CRON_GROUPS_NOTIFY_EXPIRING_MEMBERSHIPS'),
                 'params' => ''
-            )
-        );
+            ]
+        ];
 
         return $obj;
     }

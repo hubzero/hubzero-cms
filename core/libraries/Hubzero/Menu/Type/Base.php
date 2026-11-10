@@ -24,7 +24,7 @@ class Base extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_items = array();
+    protected $_items = [];
 
     /**
      * Identifier of the default menu item
@@ -32,7 +32,7 @@ class Base extends Obj
      * @var  integer
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_default = array();
+    protected $_default = [];
 
     /**
      * Identifier of the active menu item
@@ -75,7 +75,7 @@ class Base extends Obj
      *
      * @var  array
      */
-    protected static $instances = array();
+    protected static $instances = [];
 
     /**
      * Class constructor
@@ -84,7 +84,7 @@ class Base extends Obj
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         parent::__construct($options);
 
@@ -226,7 +226,7 @@ class Base extends Obj
      */
     public function getItems($attributes, $values, $firstonly = false)
     {
-        $items      = array();
+        $items      = [];
         $attributes = (array) $attributes;
         $values     = (array) $values;
 
@@ -300,7 +300,7 @@ class Base extends Obj
         $menu = $this->getItem($id);
 
         if ($menu) {
-            return in_array((int) $menu->access, $this->get('access', array(0)));
+            return in_array((int) $menu->access, $this->get('access', [0]));
         }
 
         return true;

@@ -34,12 +34,12 @@ class Mediatracking extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'session_id'  => 'notempty',
         'ip_address'  => 'notempty',
         'object_id'   => 'positive|nonzero',
         'object_type' => 'notempty'
-    );
+    ];
 
     /**
      * Get tracking info for a specific user/object combination

@@ -43,7 +43,7 @@ class Results extends SiteController
     {
         // Set some common variables
         $thisyear = date("Y");
-        $months = array(
+        $months = [
             '01' => 'Jan',
             '02' => 'Feb',
             '03' => 'Mar',
@@ -56,7 +56,7 @@ class Results extends SiteController
             '10' => 'Oct',
             '11' => 'Nov',
             '12' => 'Dec'
-        );
+        ];
         $monthsReverse = array_reverse($months, true);
 
         // Incoming
@@ -97,14 +97,14 @@ class Results extends SiteController
         }
 
         // Get the sections
-        $this->view->sections = Event::trigger('usage.onUsageDisplay', array(
+        $this->view->sections = Event::trigger('usage.onUsageDisplay', [
                 $this->_option,
                 $this->_task,
                 $udb,
                 $months,
                 $monthsReverse,
                 $enddate
-            ));
+            ]);
 
         // Build the page title
         $this->view->title  = Lang::txt(strtoupper($this->_option));

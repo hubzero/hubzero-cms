@@ -48,7 +48,7 @@ class ModeDsl
 
         // Curators
         $curator = '';
-        $curator_groups = array();
+        $curator_groups = [];
 
         if (!$version) {
             $sql = 'SELECT data_definition FROM `#__project_databases` WHERE `database_name` = ' . $db->quote($name);
@@ -175,19 +175,19 @@ class ModeDsl
         $id = Request::getString('id', false);
 
         if ($id) {
-            $dd['where'][] = array('field' => $dd['pk'], 'value' => $id);
+            $dd['where'][] = ['field' => $dd['pk'], 'value' => $id];
             $dd['single'] = true;
         }
 
         $custom_field =  Request::getString('custom_field', false);
         if ($custom_field) {
             $custom_field = explode('|', $custom_field);
-            $dd['where'][] = array('field' => $custom_field[0], 'value' => $custom_field[1]);
+            $dd['where'][] = ['field' => $custom_field[0], 'value' => $custom_field[1]];
             $dd['single'] = true;
         }
 
         // Data for Custom Views
-        $custom_view = Request::getArray('custom_view', array());
+        $custom_view = Request::getArray('custom_view', []);
         if (count($custom_view) > 0 && isset($dd['cols']) && is_array($dd['cols'])) {
             unset($dd['customizer']);
 
@@ -207,7 +207,7 @@ class ModeDsl
             // lib/db.php:659 that would have made the injected UNION invalid.
             $group_by = Request::getString('group_by', '');
             if ($group_by !== '') {
-                $group_cols = array();
+                $group_cols = [];
                 foreach (explode(',', $group_by) as $gb_col) {
                     $gb_col = trim($gb_col);
                     $rollup = '';
@@ -226,7 +226,7 @@ class ModeDsl
 
             // Ordering
             $order_cols = $dd['cols'];
-            $dd['cols'] = array();
+            $dd['cols'] = [];
             foreach ($custom_view as $cv_col) {
                 // Only real columns of this dataview. An unknown key yields a null
                 // conf, and Lib\Db then uses the key itself both as the column

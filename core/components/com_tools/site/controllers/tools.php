@@ -164,11 +164,11 @@ class Tools extends SiteController
     {
         $file = 'forge.png';
 
-        $paths = array(
+        $paths = [
             App::get('template')->path . DS . 'images' . DS . $file,
             dirname(__DIR__) . DS . 'assets' . DS . 'img' . DS . $file,
             dirname(__DIR__) . DS . 'images' . DS . $file
-        );
+        ];
 
         // Run through each path until we find one that works
         $image = null;
@@ -204,11 +204,11 @@ class Tools extends SiteController
         // Only a bare filename is valid here; strip any path components
         $css = basename($css);
 
-        $paths = array(
+        $paths = [
             App::get('template')->path . DS . 'css' . DS . $css,
             dirname(__DIR__) . DS . 'assets' . DS . 'css' . DS . $css,
             dirname(__DIR__) . DS . 'css' . DS . $css
-        );
+        ];
 
         // Run through each path until we find one that works
         $file = null;

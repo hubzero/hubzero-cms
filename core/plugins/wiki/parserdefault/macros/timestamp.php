@@ -29,7 +29,7 @@ class Timestamp extends WikiMacro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['wiki'] = 'Displays a time-stamp in the following format: YYYY-MM-DD HH:MM:SS';
         $txt['html'] = '<p>Displays a time-stamp in the following format: YYYY-MM-DD HH:MM:SS</p>';
         return $txt['html'];

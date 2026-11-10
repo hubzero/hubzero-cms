@@ -20,16 +20,16 @@ class Migration20190221000000ComCron extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__cron_jobs' => array(
+    public static $tables = [
+        '#__cron_jobs' => [
             'created',
             'modified',
             'last_run',
             'next_run',
             'publish_up',
             'publish_down'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

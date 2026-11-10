@@ -34,7 +34,7 @@ class Usage extends Plugin
      */
     public function &onResourcesAreas($model)
     {
-        $areas = array();
+        $areas = [];
 
         if ($model->type->params->get('plg_' . $this->_name) && $model->isTool()) {
             // Only show tab for tools
@@ -55,11 +55,11 @@ class Usage extends Plugin
      */
     public function onResources($model, $option, $areas, $rtrn = 'all')
     {
-        $arr = array(
+        $arr = [
             'area'     => $this->_name,
             'html'     => '',
             'metadata' => ''
-        );
+        ];
         $statsUpdating = false;
 
         // Check if our area is in the array of areas we want to return results for
@@ -133,7 +133,7 @@ class Usage extends Plugin
                 return;
             }
 
-            $types = array();
+            $types = [];
 
             $field = \Components\Members\Models\Profile\Field::all()
                 ->whereEquals('name', 'orgtype')
@@ -292,7 +292,7 @@ class Usage extends Plugin
         $database = App::get('db');
 
         if (!$id || !$tid) {
-            return array();
+            return [];
         }
 
         $sql = "SELECT v.*, t.datetime, t.`processed_on`
@@ -339,13 +339,13 @@ class Usage extends Plugin
     {
         $results = $this->getOverview($id, $period);
 
-        $users = array();
+        $users = [];
         // $interactive = array();
         // $sessions = array();
-        $runs = array();
+        $runs = [];
 
         $data = new \stdClass();
-        $data->points = array();
+        $data->points = [];
         //$data->runs = array();
 
         foreach ($results as $result) {
@@ -382,12 +382,12 @@ class Usage extends Plugin
     {
         $results = $this->getOverview($id, $period);
 
-        $columns = array(
+        $columns = [
             'datetime', 'period', 'users', 'sessions', 'simulations', 'jobs',
             'avg_wall', 'tot_wall', 'avg_cpu', 'tot_cpu',
             'avg_view', 'tot_view', 'avg_wait', 'tot_wait',
             'avg_cpus', 'tot_cpus', 'processed_on'
-        );
+        ];
 
         ob_clean();
 
@@ -398,7 +398,7 @@ class Usage extends Plugin
         fputcsv($out, $columns);
 
         foreach ($results as $row) {
-            $line = array();
+            $line = [];
             foreach ($columns as $col) {
                 $val = isset($row->$col) ? $row->$col : '';
                 // Normalize the 'YYYY-MM-00 00:00:00' period stamp to 'YYYY-MM'
@@ -426,7 +426,7 @@ class Usage extends Plugin
     {
         $period = Request::getInt('period', 14);
 
-        $colors = array(
+        $colors = [
             $this->params->get('pie_chart_color1', '#7c7c7c'),
             $this->params->get('pie_chart_color2', '#515151'),
             $this->params->get('pie_chart_color3', '#d9d9d9'),
@@ -447,7 +447,7 @@ class Usage extends Plugin
             $this->params->get('pie_chart_color8', '#828282'),
             $this->params->get('pie_chart_color9', '#404040'),
             $this->params->get('pie_chart_color10', '#3a3a3a'),
-        );
+        ];
 
         $json = new \stdClass();
 
@@ -456,7 +456,7 @@ class Usage extends Plugin
         $tid = $this->getTid($id, $datetime, $period);
 
         $orgs = $this->getTopValue($id, 3, $tid, $datetime, $period);
-        $r = array();
+        $r = [];
         if ($orgs) {
             $i = 0;
             foreach ($orgs as $row) {
@@ -466,7 +466,7 @@ class Usage extends Plugin
                 }
                 if (!isset($r[$ky])) {
                     $i = 0;
-                    $r[$ky] = array();
+                    $r[$ky] = [];
                 }
 
                 if (!isset($colors[$i])) {
@@ -486,9 +486,9 @@ class Usage extends Plugin
         $json->orgs = $r;
 
         $countries = $this->getTopValue($id, 1, $tid, $datetime, $period);
-        $r = array();
+        $r = [];
         if ($countries) {
-            $names = array();
+            $names = [];
             foreach ($countries as $row) {
                 $names[] = $row->name;
             }
@@ -504,7 +504,7 @@ class Usage extends Plugin
 
                 if (!isset($r[$ky])) {
                     $i = 0;
-                    $r[$ky] = array();
+                    $r[$ky] = [];
                 }
 
                 if (!isset($colors[$i])) {
@@ -524,7 +524,7 @@ class Usage extends Plugin
         $json->countries = $r;
 
         $domains = $this->getTopValue($id, 2, $tid, $datetime, $period);
-        $r = array();
+        $r = [];
         if ($domains) {
             $i = 0;
             foreach ($domains as $row) {
@@ -534,7 +534,7 @@ class Usage extends Plugin
                 }
                 if (!isset($r[$ky])) {
                     $i = 0;
-                    $r[$ky] = array();
+                    $r[$ky] = [];
                 }
 
                 if (!isset($colors[$i])) {

@@ -6,7 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-return array(
+return [
     // Base Services
     'Bootstrap\Install\Providers\WizardServiceProvider'
-);
+];

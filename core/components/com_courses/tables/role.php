@@ -91,11 +91,11 @@ class Role extends Table
      * @param  array $filters
      * @return $query database query
      */
-    private function buildQuery($filters = array())
+    private function buildQuery($filters = [])
     {
         $query = " FROM $this->_tbl AS r";
 
-        $where = array();
+        $where = [];
         if (isset($filters['offering_id'])) {
             if (is_array($filters['offering_id'])) {
                 $filters['offering_id'] = array_map('intval', $filters['offering_id']);
@@ -129,7 +129,7 @@ class Role extends Table
      * @param  array $filters
      * @return object Return course units
      */
-    public function count($filters = array())
+    public function count($filters = [])
     {
         $query  = "SELECT COUNT(*) ";
         $query .= $this->buildQuery($filters);
@@ -144,7 +144,7 @@ class Role extends Table
      * @param  array $filters
      * @return object Return course units
      */
-    public function find($filters = array())
+    public function find($filters = [])
     {
         $query  = "SELECT r.*, (SELECT COUNT(m.user_id) FROM #__courses_members AS m WHERE m.role_id=r.id";
         if (isset($filters['offering_id'])) {
@@ -160,7 +160,7 @@ class Role extends Table
         $query .= $this->buildQuery($filters);
 
         if (isset($filters['sort']) && $filters['sort']) {
-            if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC'))) {
+            if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), ['ASC', 'DESC'])) {
                 $filters['sort_Dir'] = 'ASC';
             }
             $query .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1') . " " . (strtoupper((string) $filters['sort_Dir']) === 'ASC' ? 'ASC' : 'DESC');

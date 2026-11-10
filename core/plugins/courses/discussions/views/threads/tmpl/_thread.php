@@ -18,7 +18,7 @@ defined('_HZEXEC_') or die();
 $this->active = (isset($this->active) ? $this->active : '');
 
 if (!isset($this->instructors) || !is_array($this->instructors)) {
-    $this->instructors = array();
+    $this->instructors = [];
     $inst = $this->course->instructors();
     if (count($inst) > 0) {
         foreach ($inst as $i) {

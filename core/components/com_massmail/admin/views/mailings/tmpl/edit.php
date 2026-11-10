@@ -36,7 +36,7 @@ $pendingN = max(0, $total - $sentN - $failedN);
 $pct     = $total > 0 ? round(($sentN + $failedN) / $total * 100) : 0;
 
 // Fields flagged by a failed "Send" so they can be highlighted here.
-$invalid    = isset($this->invalid) ? (array) $this->invalid : array();
+$invalid    = isset($this->invalid) ? (array) $this->invalid : [];
 $badSubject = in_array('subject', $invalid);
 $badBody    = in_array('body', $invalid);
 $badRcpt    = in_array('recipients', $invalid);
@@ -66,18 +66,18 @@ $gChips = Recipients::describeGroups($spec['groups']);
 $uChips = Recipients::describeUsers($spec['users']);
 $emails = array_values(array_filter(array_map('trim', (array) $spec['emails']), 'strlen'));
 
-$toChips = array();
+$toChips = [];
 if (!empty($spec['all'])) {
-    $toChips[] = array('kind' => 'all', 'token' => '1', 'label' => Lang::txt('COM_MASSMAIL_EVERYONE'));
+    $toChips[] = ['kind' => 'all', 'token' => '1', 'label' => Lang::txt('COM_MASSMAIL_EVERYONE')];
 }
 foreach ($gChips as $g) {
-    $toChips[] = array('kind' => 'group', 'token' => $g['token'], 'label' => $g['label']);
+    $toChips[] = ['kind' => 'group', 'token' => $g['token'], 'label' => $g['label']];
 }
 foreach ($uChips as $u) {
-    $toChips[] = array('kind' => 'user',  'token' => $u['token'], 'label' => $u['label']);
+    $toChips[] = ['kind' => 'user',  'token' => $u['token'], 'label' => $u['label']];
 }
 foreach ($emails as $em) {
-    $toChips[] = array('kind' => 'email', 'token' => $em, 'label' => $em);
+    $toChips[] = ['kind' => 'email', 'token' => $em, 'label' => $em];
 }
 
 $hidAll    = !empty($spec['all']) ? '1' : '0';
@@ -89,30 +89,30 @@ $hidUsers  = implode(',', array_map(function ($u) {
 }, $uChips));
 $hidEmails = implode(',', $emails);
 
-$chipIcon = array('all' => '★', 'group' => '👥', 'user' => '👤', 'email' => '✉');
+$chipIcon = ['all' => '★', 'group' => '👥', 'user' => '👤', 'email' => '✉'];
 
 // Live audience preview
 $preview = Recipients::previewCount($spec, $ignore ? true : false);
 
 // Recipient state + labels handed to the compose JS via data attributes.
-$rcptState = array(
+$rcptState = [
     'all'    => !empty($spec['all']),
     'groups' => array_map(function ($g) {
-        return array('token' => (string) $g['token'], 'label' => $g['label']);
+        return ['token' => (string) $g['token'], 'label' => $g['label']];
     }, $gChips),
     'users'  => array_map(function ($u) {
-        return array('token' => (string) $u['token'], 'label' => $u['label']);
+        return ['token' => (string) $u['token'], 'label' => $u['label']];
     }, $uChips),
     'emails' => array_values($emails),
-);
-$composeLang = array(
+];
+$composeLang = [
     'everyone' => Lang::txt('COM_MASSMAIL_EVERYONE'),
     'none'     => Lang::txt('COM_MASSMAIL_NO_RECIPIENTS_YET'),
     'edit'     => Lang::txt('COM_MASSMAIL_EDIT_RECIPIENTS'),
     'add'      => Lang::txt('COM_MASSMAIL_ADD_RECIPIENTS'),
     'optout'   => Lang::txt('COM_MASSMAIL_OPTOUT_PILL'),
     'attach'   => Lang::txt('COM_MASSMAIL_ADD_ATTACHMENT'),
-);
+];
 
 // Small inline icons for the action buttons (decorative; the text carries the meaning).
 $icSend  = '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" fill="currentColor"><path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/></svg>';
@@ -209,9 +209,9 @@ $this->js('edit.js', 'com_massmail');
                             'field-body',
                             null,
                             null,
-                            array(
-                                'toolbar' => array('bold', 'italic', 'link', 'bulletedList', 'numberedList', '|', 'undo', 'redo')
-                            )
+                            [
+                                'toolbar' => ['bold', 'italic', 'link', 'bulletedList', 'numberedList', '|', 'undo', 'redo']
+                            ]
                         );
                         ?>
                         <input type="file" name="attachment[]" id="field-attachment" multiple="multiple" hidden />
@@ -347,13 +347,13 @@ $this->js('edit.js', 'com_massmail');
                         <?php if ($status == constant($Mailing . '::STATUS_HELD') && $canDo->get('core.release')) { ?>
                             <button type="submit" form="mm-action" class="btn btn-success" formaction="<?php echo Route::url($base . '&task=release&id=' . $this->row->get('id')); ?>"><?php echo $icSend . Lang::txt('COM_MASSMAIL_RELEASE'); ?></button>
                         <?php } ?>
-                        <?php if (in_array($status, array(constant($Mailing . '::STATUS_SENDING'), constant($Mailing . '::STATUS_PREPARING'))) && $canDo->get('core.edit.state')) { ?>
+                        <?php if (in_array($status, [constant($Mailing . '::STATUS_SENDING'), constant($Mailing . '::STATUS_PREPARING')]) && $canDo->get('core.edit.state')) { ?>
                             <button type="submit" form="mm-action" class="btn" formaction="<?php echo Route::url($base . '&task=pause&id=' . $this->row->get('id')); ?>"><?php echo $icPause . Lang::txt('COM_MASSMAIL_PAUSE'); ?></button>
                         <?php } ?>
                         <?php if ($status == constant($Mailing . '::STATUS_PAUSED') && $canDo->get('core.edit.state')) { ?>
                             <button type="submit" form="mm-action" class="btn" formaction="<?php echo Route::url($base . '&task=resume&id=' . $this->row->get('id')); ?>"><?php echo $icPlay . Lang::txt('COM_MASSMAIL_RESUME'); ?></button>
                         <?php } ?>
-                        <?php if (in_array($status, array(constant($Mailing . '::STATUS_SENDING'), constant($Mailing . '::STATUS_PREPARING'), constant($Mailing . '::STATUS_PAUSED'), constant($Mailing . '::STATUS_PENDING_APPROVAL'), constant($Mailing . '::STATUS_HELD'), constant($Mailing . '::STATUS_SCHEDULED'))) && $canDo->get('core.edit.state')) { ?>
+                        <?php if (in_array($status, [constant($Mailing . '::STATUS_SENDING'), constant($Mailing . '::STATUS_PREPARING'), constant($Mailing . '::STATUS_PAUSED'), constant($Mailing . '::STATUS_PENDING_APPROVAL'), constant($Mailing . '::STATUS_HELD'), constant($Mailing . '::STATUS_SCHEDULED')]) && $canDo->get('core.edit.state')) { ?>
                             <button type="submit" form="mm-action" class="btn btn-danger mm-confirm" data-confirm="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_CANCEL')); ?>" formaction="<?php echo Route::url($base . '&task=stop&id=' . $this->row->get('id')); ?>"><?php echo $icX . Lang::txt('COM_MASSMAIL_CANCEL_MAILING'); ?></button>
                         <?php } ?>
                         <?php // Permanent delete -- only for mailings that never started sending
@@ -401,7 +401,7 @@ $this->js('edit.js', 'com_massmail');
                         </label>
                     </div>
                     <div class="mm-schedule-field"<?php echo $isScheduled ? '' : ' hidden'; ?>>
-                        <?php echo Html::input('calendar', 'scheduled_at', $scheduledLocal, array('id' => 'field-schedule', 'format' => 'Y-m-d H:i:s')); ?>
+                        <?php echo Html::input('calendar', 'scheduled_at', $scheduledLocal, ['id' => 'field-schedule', 'format' => 'Y-m-d H:i:s']); ?>
                     </div>
 
                 </div>

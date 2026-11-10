@@ -32,7 +32,7 @@ class Orders extends AdminController
     public function displayTask()
     {
         // Get filters
-        $this->view->filters = array(
+        $this->view->filters = [
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
@@ -84,7 +84,7 @@ class Orders extends AdminController
                 'report-to',
                 gmdate('m/d/Y')
             )
-        );
+        ];
 
         // Get record count
         $this->view->filters['count'] = true;
@@ -96,7 +96,7 @@ class Orders extends AdminController
         $this->view->rows = Cart::getAllTransactions($this->view->filters);
 
         if (!$this->view->rows) {
-            $this->view->rows = array();
+            $this->view->rows = [];
         }
 
         // update with total and items ordered
@@ -277,17 +277,17 @@ class Orders extends AdminController
         $id = Request::getInt('id', '');
 
         // get the transaction items' QTYs
-        $tiQty = Request::getArray('tiQty', array());
+        $tiQty = Request::getArray('tiQty', []);
 
         // get the transaction items' prices
-        $tiPrice = Request::getArray('tiPrice', array());
+        $tiPrice = Request::getArray('tiPrice', []);
 
         // get the transaction items' checkoutNotes
-        $tiCheckoutNotes = Request::getArray('checkoutNotes', array());
+        $tiCheckoutNotes = Request::getArray('checkoutNotes', []);
 
         // get the transaction notes
         $tiNotes = Request::getString('tiNotes', '');
-        $transactionInfo = array('tiNotes' => $tiNotes);
+        $transactionInfo = ['tiNotes' => $tiNotes];
 
         // get the payment details
         $tiPaymentDetails = Request::getString('tiPaymentDetails', '');
@@ -371,7 +371,7 @@ class Orders extends AdminController
         }
 
         // Get filters
-        $this->view->filters = array(
+        $this->view->filters = [
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . $this->_task . '.search',
                 'search',
@@ -429,7 +429,7 @@ class Orders extends AdminController
                 0,
                 'int'
             )
-        );
+        ];
 
         if ($this->view->filters['order']) {
             $this->view->filters['report-from'] = '';
@@ -461,7 +461,7 @@ class Orders extends AdminController
     public function downloadTask()
     {
         // Get filters
-        $filters = array(
+        $filters = [
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
@@ -500,14 +500,14 @@ class Orders extends AdminController
                 0,
                 'int'
             )
-        );
+        ];
 
         // request array to be returned
         $filters['returnFormat'] = 'array';
         $filters['userInfo'] = true;
         $rowsRaw = Cart::getAllTransactions($filters);
 
-        $rows = array();
+        $rows = [];
 
         foreach ($rowsRaw as $row) {
             // Get the notes, both SKU-specific and other
@@ -518,15 +518,15 @@ class Orders extends AdminController
             $transactionInfo = Cart::getTransactionInfo($row['tId']);
             $transactionInfoItems = unserialize($transactionInfo->tiItems);
 
-            $notes = array();
+            $notes = [];
             foreach ($transactionItems as $sId => $item) {
                 $meta = $item['transactionInfo']->tiMeta;
                 if (!empty($meta->checkoutNotes)) {
-                    $notes[] = array(
+                    $notes[] = [
                         //'label' => $item['info']->pName . ', ' . $item['info']->sSku,
                         'label' => $transactionInfoItems[$sId]['info']->pName
                             . ', ' . $transactionInfoItems[$sId]['info']->sSku,
-                        'notes' => $meta->checkoutNotes);
+                        'notes' => $meta->checkoutNotes];
                 }
             }
 
@@ -536,9 +536,9 @@ class Orders extends AdminController
             }
 
             if ($transactionInfo->tiNotes) {
-                $notes[] = array(
+                $notes[] = [
                     'label' => $genericNotesLabel,
-                    'notes' => $transactionInfo->tiNotes);
+                    'notes' => $transactionInfo->tiNotes];
             }
 
             $notesValue = '';
@@ -557,7 +557,7 @@ class Orders extends AdminController
                 }
             };
 
-            $rows[] = array($row['tId'], $row['tLastUpdated'], $row['name'], $row['uidNumber'], $notesValue);
+            $rows[] = [$row['tId'], $row['tLastUpdated'], $row['name'], $row['uidNumber'], $notesValue];
         }
 
         $dateFrom = gmdate('dMY', strtotime($filters['report-from']));
@@ -573,7 +573,7 @@ class Orders extends AdminController
         header("Expires: 0"); // Proxies
 
         $output = fopen("php://output", "w");
-        $row = array('Order ID', 'Order Placed', 'Purchased By', 'Purchased By (userId)', 'Order Notes');
+        $row = ['Order ID', 'Order Placed', 'Purchased By', 'Purchased By (userId)', 'Order Notes'];
         fputcsv($output, $row);
         foreach ($rows as $row) {
             fputcsv($output, $row);
@@ -590,7 +590,7 @@ class Orders extends AdminController
     public function downloadOrdersTask()
     {
         // Get filters
-        $filters = array(
+        $filters = [
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . 'items.search',
                 'search',
@@ -623,7 +623,7 @@ class Orders extends AdminController
                 0,
                 'int'
             )
-        );
+        ];
 
         // Get orders, request array to be returned
         $orders = OrdersHelper::getItemsOrdered('list', $filters);
@@ -634,14 +634,14 @@ class Orders extends AdminController
         }
         $rowsRaw = $orders;
 
-        $rows = array();
+        $rows = [];
 
         foreach ($rowsRaw as $row) {
             $itemInfo = $row->itemInfo['info'];
-            $rows[] = array(
+            $rows[] = [
                 $row->sId, $itemInfo->pName . ', ' . $itemInfo->sSku, $row->tiQty,
                 $row->tiPrice, $row->tId, $row->tLastUpdated, $row->name, $row->uidNumber
-            );
+            ];
         }
 
         $dateFrom = gmdate('dMY', strtotime($filters['report-from']));
@@ -657,10 +657,10 @@ class Orders extends AdminController
         header("Expires: 0"); // Proxies
 
         $output = fopen("php://output", "w");
-        $row = array(
+        $row = [
             'SKU ID', 'Product', 'QTY', 'Price', 'Order ID',
             'Order Placed', 'Purchased By', 'Purchased By (userId)'
-        );
+        ];
         fputcsv($output, $row);
         foreach ($rows as $row) {
             fputcsv($output, $row);

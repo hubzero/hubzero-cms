@@ -24,8 +24,8 @@ class ObjectExpander extends Middleware
      *
      * @var  array
      */
-    private $acceptedKeys = array(
-        'profile' => array(
+    private $acceptedKeys = [
+        'profile' => [
             'action_by',
             'actor_id',
             'addedBy',
@@ -67,13 +67,13 @@ class ObjectExpander extends Middleware
             'user_id_to',
             'user_id_from',
             'voter'
-        ),
-        'group' => array(
+        ],
+        'group' => [
             'groupid',
             'group_id',
             'gidNumber'
-        )
-    );
+        ]
+    ];
 
     /**
      * Handle request in HTTP stack

@@ -26,7 +26,7 @@ Pathway::append(
     $this->page->link()
 );
 
-$filters = array('state' => array(0, 1));
+$filters = ['state' => [0, 1]];
 
 $pages = $this->book->pages($filters);
 

@@ -69,10 +69,10 @@ $this->css('certificates.css')
         data-width="<?php echo $this->certificate->properties()->width; ?>"
         data-height="<?php echo $this->certificate->properties()->height; ?>">
         <?php
-            $layout = array(
+            $layout = [
                 'width'  => $this->certificate->properties()->width,
                 'height' => $this->certificate->properties()->height
-            );
+            ];
 
             $this->certificate->eachPage(function ($src, $idx) use ($layout) {
                 echo '<img

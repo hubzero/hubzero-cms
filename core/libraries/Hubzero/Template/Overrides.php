@@ -36,7 +36,7 @@ class Overrides
      */
     public static function roots()
     {
-        $roots = array();
+        $roots = [];
 
         if ($path = self::superGroupTemplatePath()) {
             $roots[] = $path;

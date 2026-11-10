@@ -53,7 +53,7 @@ class Comments extends AdminController
     public function displayTask()
     {
         // Get filters
-        $filters = array(
+        $filters = [
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
@@ -91,7 +91,7 @@ class Comments extends AdminController
             ),
             'item_type' => 'wish',
             'parent'    => 0
-        );
+        ];
 
         $wish = Wish::oneOrNew($filters['wish']);
 
@@ -113,7 +113,7 @@ class Comments extends AdminController
             ->paginated('limitstart', 'limit')
             ->rows();
 
-        $comments = array();
+        $comments = [];
         if (count($comments1) > 0) {
             $pre    = '<span class="treenode">&#8970;</span>&nbsp;';
             $spacer = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -177,7 +177,7 @@ class Comments extends AdminController
 
         if (!is_object($row)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
 
             if (is_array($id) && !empty($id)) {
                 $id = $id[0];
@@ -220,7 +220,7 @@ class Comments extends AdminController
         }
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
         $fields = array_map('trim', $fields);
 
         // Initiate extended database class
@@ -230,7 +230,7 @@ class Comments extends AdminController
 
         // Trigger before save event
         $isNew  = $row->isNew();
-        $result = Event::trigger('wishlist.onWishlistBeforeSaveComment', array(&$row, $isNew));
+        $result = Event::trigger('wishlist.onWishlistBeforeSaveComment', [&$row, $isNew]);
 
         if (in_array(false, $result, true)) {
             Notify::error($row->getError());
@@ -244,7 +244,7 @@ class Comments extends AdminController
         }
 
         // Trigger after save event
-        Event::trigger('wishlist.onWishlistAfterSaveComment', array(&$row, $isNew));
+        Event::trigger('wishlist.onWishlistAfterSaveComment', [&$row, $isNew]);
 
         Notify::success(Lang::txt('COM_WISHLIST_COMMENT_SAVED'));
 
@@ -274,8 +274,8 @@ class Comments extends AdminController
 
         // Incoming
         $wish = Request::getInt('wish', 0);
-        $ids  = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids  = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Loop through each ID
         $removed = 0;
@@ -288,7 +288,7 @@ class Comments extends AdminController
             }
 
             // Trigger after delete event
-            Event::trigger('wishlist.onWishlistAfterDeleteComment', array($id));
+            Event::trigger('wishlist.onWishlistAfterDeleteComment', [$id]);
 
             $removed++;
         }
@@ -319,8 +319,8 @@ class Comments extends AdminController
 
         // Incoming
         $wish = Request::getInt('wish', 0);
-        $ids  = Request::getArray('id', array());
-        $ids  = (!is_array($ids) ? array($ids) : $ids);
+        $ids  = Request::getArray('id', []);
+        $ids  = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for an ID
         if (count($ids) < 1) {
@@ -382,8 +382,8 @@ class Comments extends AdminController
 
         // Incoming
         $wish = Request::getInt('wish', 0);
-        $ids  = Request::getArray('id', array());
-        $ids  = (!is_array($ids) ? array($ids) : $ids);
+        $ids  = Request::getArray('id', []);
+        $ids  = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for an ID
         if (count($ids) < 1) {

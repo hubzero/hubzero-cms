@@ -23,11 +23,11 @@ class Zone extends Relational
      *
      * @var  array
      **/
-    protected $rules = array(
+    protected $rules = [
         'zone'   => 'notempty',
         'master' => 'notempty',
         'state'  => 'notempty'
-    );
+    ];
 
     /**
      * Sets up additional custom rules
@@ -39,7 +39,7 @@ class Zone extends Relational
         $this->addRule('state', function ($data) {
             $data['state'] = strtolower($data['state']);
 
-            return (in_array($data['state'], array('up', 'down')) ? false : Lang::txt('Invalid state provided.'));
+            return (in_array($data['state'], ['up', 'down']) ? false : Lang::txt('Invalid state provided.'));
         });
     }
 

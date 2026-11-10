@@ -20,11 +20,11 @@ class Migration20190307114147ComResources extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__resource_taxonomy_audience' => array(
+    public static $tables = [
+        '#__resource_taxonomy_audience' => [
             'added'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

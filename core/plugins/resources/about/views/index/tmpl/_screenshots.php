@@ -13,7 +13,7 @@ use Hubzero\Facades\Lang;
 defined('_HZEXEC_') or die();
 
 $upath = (isset($this->upath) ? $this->upath : '');
-$sinfo = (isset($this->sinfo) ? $this->sinfo : array());
+$sinfo = (isset($this->sinfo) ? $this->sinfo : []);
 $versionid = (isset($this->versionid) ? $this->versionid : 0);
 $path = \Components\Resources\Helpers\Html::build_path($this->created, $this->id, '');
 $url = \Components\Resources\Helpers\Html::build_url($this->id, '');
@@ -33,10 +33,10 @@ if (is_dir(PATH_APP . $upath . $path)) {
     $d = dir(PATH_APP . $upath . $path);
 }
 
-$images = array();
-$tns = array();
-$all = array();
-$ordering = array();
+$images = [];
+$tns = [];
+$all = [];
+$ordering = [];
 $html = '';
 
 if ($d) {
@@ -63,7 +63,7 @@ if ($d) {
 $b = 0;
 if ($images) {
     foreach ($images as $ima) {
-        $new = array();
+        $new = [];
         $new['img'] = $ima;
         $new['type'] = explode('.', $new['img']);
 

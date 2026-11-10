@@ -190,7 +190,7 @@ class Coupon
      */
     public function setObjectType($objectType = 'product')
     {
-        $allowedObjectsTypes = array('order', 'sku', 'product', 'shipping');
+        $allowedObjectsTypes = ['order', 'sku', 'product', 'shipping'];
 
         if (!in_array($objectType, $allowedObjectsTypes)) {
             throw new \Exception(Lang::txt('Bad coupon object.'));
@@ -216,7 +216,7 @@ class Coupon
      */
     public function setAction($action, $actionValue)
     {
-        $allowedActions = array('discount');
+        $allowedActions = ['discount'];
 
         if (!in_array($action, $allowedActions)) {
             throw new \Exception(Lang::txt('Bad coupon action.'));

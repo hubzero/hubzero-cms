@@ -27,7 +27,7 @@ $timeWithOffset = $date->toLocal('U');
 
 $to_day = date("Y-m-d", $timeWithOffset);
 
-$day_name = array(
+$day_name = [
     Lang::txt('EVENTS_CAL_LANG_SUNDAYSHORT'),
     Lang::txt('EVENTS_CAL_LANG_MONDAYSHORT'),
     Lang::txt('EVENTS_CAL_LANG_TUESDAYSHORT'),
@@ -35,7 +35,7 @@ $day_name = array(
     Lang::txt('EVENTS_CAL_LANG_THURSDAYSHORT'),
     Lang::txt('EVENTS_CAL_LANG_FRIDAYSHORT'),
     Lang::txt('EVENTS_CAL_LANG_SATURDAYSHORT')
-);
+];
 
 $time  = mktime(0, 0, 0, intval($this->month), 1, intval($this->year));
 $ptime = mktime(0, 0, 0, ($this->month - 1), 1, intval($this->year));
@@ -119,7 +119,7 @@ $lastDayOfMonth = date("t", mktime(0, 0, 0, $cal_month, 1, $cal_year));
 
 // Pre-bucket events by their OWN local date. Times are stored in UTC; convert
 // each event to its time zone so it lands on the day it occurs locally.
-$eventDays  = array();
+$eventDays  = [];
 $rangeStart = date('Y-m-d H:i:s', mktime(0, 0, 0, $cal_month, 1, $cal_year) - 86400);
 $rangeEnd   = date('Y-m-d H:i:s', mktime(23, 59, 59, $cal_month, $lastDayOfMonth, $cal_year) + 86400);
 $database->setQuery(

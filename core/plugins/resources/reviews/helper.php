@@ -100,7 +100,7 @@ class Helper extends \Hubzero\Base\Obj
         $id = Request::getInt('id', 0);
 
         // Trim and addslashes all posted items
-        $comment = Request::getArray('comment', array(), 'post');
+        $comment = Request::getArray('comment', [], 'post');
 
         if (!$id) {
             // Cannot proceed
@@ -256,12 +256,12 @@ class Helper extends \Hubzero\Base\Obj
             $rev->set('nothelpful', $rev->votes()->whereEquals('vote', -1)->total());
 
             $view = new \Hubzero\Plugin\View(
-                array(
+                [
                     'folder'  => 'resources',
                     'element' => 'reviews',
                     'name'    => 'browse',
                     'layout'  => '_rateitem'
-                )
+                ]
             );
             $view->option = $this->_option;
             $view->item = $rev;
@@ -343,7 +343,7 @@ class Helper extends \Hubzero\Base\Obj
         Request::checkToken();
 
         // Incoming
-        $data = Request::getArray('review', array(), 'post');
+        $data = Request::getArray('review', [], 'post');
 
         // Bind the form data to our object
         $__rid = isset($data['id']) ? (int) $data['id'] : 0;
@@ -408,11 +408,11 @@ class Helper extends \Hubzero\Base\Obj
 
         // Message
         $eview = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'resources',
                 'element' => 'reviews',
                 'name'    => 'emails'
-            )
+            ]
         );
         $eview->option   = $this->_option;
         $eview->user     = User::getInstance();
@@ -421,16 +421,16 @@ class Helper extends \Hubzero\Base\Obj
         $message = $eview->loadTemplate();
 
         // Build the "from" data for the e-mail
-        $from = array(
+        $from = [
             'name'  => Config::get('sitename') . ' ' . Lang::txt('PLG_RESOURCES_REVIEWS_CONTRIBUTIONS'),
             'email' => Config::get('mailfrom')
-        );
+        ];
 
         // Send message
         if (
             !Event::trigger(
                 'xmessage.onSendMessage',
-                array('resources_new_comment', $subject, $message, $from, $users, $this->_option)
+                ['resources_new_comment', $subject, $message, $from, $users, $this->_option]
             )
         ) {
             $this->setError(Lang::txt('PLG_RESOURCES_REVIEWS_FAILED_TO_MESSAGE'));

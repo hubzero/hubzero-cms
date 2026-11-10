@@ -34,23 +34,23 @@ class Resources extends Plugin
         $obj = new \stdClass();
         $obj->plugin = 'resources';
 
-        $obj->events = array(
-            array(
+        $obj->events = [
+            [
                 'name'   => 'issueResourceMasterDoi',
                 'label'  => Lang::txt('PLG_CRON_RESOURCES_MASTER_DOI'),
                 'params' => ''
-            ),
-            array(
+            ],
+            [
                 'name'   => 'auditResourceData',
                 'label'  => Lang::txt('PLG_CRON_RESOURCES_AUDIT'),
                 'params' => 'audit'
-            ),
-            array(
+            ],
+            [
                 'name'   => 'emailMemberResources',
                 'label'  => Lang::txt('PLG_CRON_RESOURCES_EMAIL_MEMBER_DIGEST'),
                 'params' => 'digest'
-            )
-        );
+            ]
+        ];
 
         return $obj;
     }
@@ -112,7 +112,7 @@ class Resources extends Plugin
                     ? gmdate('Y', strtotime($row->released))
                     : gmdate('Y');
             $doiService->set('pubYear', $pubYear);
-            $doiService->mapUser($row->created_by, array(), 'creator');
+            $doiService->mapUser($row->created_by, [], 'creator');
             $doiService->set('resourceType', 'Software');
             $doiService->set('title', htmlspecialchars(stripslashes($row->title)));
             $doiService->set('url', $doiService->_configs->livesite . '/resources/' . $row->toolname . '/main');
@@ -265,7 +265,7 @@ class Resources extends Plugin
                     ->deselect()
                     ->select('DISTINCT ' . $r . '.*')
                     ->whereEquals($r . '.published', \Components\Resources\Models\Entry::STATE_PUBLISHED)
-                    ->whereIn($r . '.access', array(0, 1))
+                    ->whereIn($r . '.access', [0, 1])
                     ->whereEquals($r . '.standalone', 1);
 
                 $query->whereEquals($r . '.publish_up', '0000-00-00 00:00:00', 1)
@@ -321,8 +321,8 @@ class Resources extends Plugin
                                 'scope'       => 'member.resources',
                                 'scope_id'    => $user,
                                 'description' => Lang::txt('PLG_CRON_RESOURCES_EMAILED_DIGEST'),
-                                'details'     => array(
-                                )
+                                'details'     => [
+                                ]
                             ],
                             'recipients' => [
                                 //$user
@@ -353,11 +353,11 @@ class Resources extends Plugin
             return false;
         }
 
-        $eview = new \Hubzero\Mail\View(array(
+        $eview = new \Hubzero\Mail\View([
             'base_path' => __DIR__,
             'name'      => 'emails',
             'layout'    => 'digest_plain'
-        ));
+        ]);
         $eview->member = $user;
         $eview->rows   = $posts;
 

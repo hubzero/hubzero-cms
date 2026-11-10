@@ -28,7 +28,7 @@ class Head extends Renderer
      * @param   string  $content  The script
      * @return  string  The output of the script
      */
-    public function render($head, $params = array(), $content = null)
+    public function render($head, $params = [], $content = null)
     {
         ob_start();
         echo $this->fetchHead($this->doc);
@@ -53,7 +53,7 @@ class Head extends Renderer
         $lnEnd  = $document->_getLineEnd();
         $tab    = $document->_getTab();
         $tagEnd = ' />';
-        $buffer = array();
+        $buffer = [];
 
         // Generate base tag (need to happen first)
         $base = $document->getBase();

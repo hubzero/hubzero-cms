@@ -57,7 +57,7 @@ class Overrides extends AdminController
     {
         $default = $this->config->get('site', 'en-GB') . '0';
 
-        $filters = array(
+        $filters = [
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'filter_search',
@@ -92,7 +92,7 @@ class Overrides extends AdminController
                 0,
                 'int'
             )
-        );
+        ];
 
         $old_language_client = User::getState('com_languages.overrides.filter.language_client', '');
         $language_client     = $filters['language_client'];
@@ -159,10 +159,10 @@ class Overrides extends AdminController
 
             $client = \Hubzero\Base\ClientManager::client($client_id);
 
-            $model = new Override(array(
+            $model = new Override([
                 'client'   => $client->name,
                 'language' => $language
-            ));
+            ]);
 
             $row = $model->one(Request::getString('id'));
         }
@@ -192,13 +192,13 @@ class Overrides extends AdminController
         }
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
         $fields = array_map('trim', $fields);
 
-        $model = new Override(array(
+        $model = new Override([
             'client'   => $fields['client'],
             'language' => $fields['language']
-        ));
+        ]);
 
         if (!isset($fields['id'])) {
             $fields['id'] = $fields['key'];
@@ -240,7 +240,7 @@ class Overrides extends AdminController
         Request::checkToken();
 
         // Get items to dlete from the request
-        $cid = Request::getArray('cid', array(), '', 'array');
+        $cid = Request::getArray('cid', [], '', 'array');
 
         if (!is_array($cid) || count($cid) < 1) {
             Notify::warning(Lang::txt($this->text_prefix . '_NO_ITEM_SELECTED'));
@@ -251,10 +251,10 @@ class Overrides extends AdminController
             $client = \Hubzero\Base\ClientManager::client($client_id);
 
             // Get the model
-            $model = new Override(array(
+            $model = new Override([
                 'client'   => $client->name,
                 'language' => $language
-            ));
+            ]);
 
             // Remove the items
             if ($model->delete($cid)) {
@@ -290,9 +290,9 @@ class Overrides extends AdminController
             $client   = User::getState('com_languages.overrides.filter.client', 0) ? 'administrator' : 'site';
             $language = User::getState('com_languages.overrides.filter.language', 'en-GB');
 
-            $files = array();
+            $files = [];
 
-            foreach (array(PATH_CORE, PATH_APP) as $base) {
+            foreach ([PATH_CORE, PATH_APP] as $base) {
                 if ($base == PATH_CORE) {
                     $path = $base . '/bootstrap/' . ucfirst($client) . '/language/' . $language;
                 } else {
@@ -323,11 +323,11 @@ class Overrides extends AdminController
 
                 if ($strings && count($strings)) {
                     foreach ($strings as $key => $string) {
-                        $entry = Overrider::blank()->set(array(
+                        $entry = Overrider::blank()->set([
                             'constant' => $key,
                             'string'   => $string,
                             'file'     => $file
-                        ));
+                        ]);
 
                         if (!$entry->save()) {
                             $this->setError($entry->getError());
@@ -356,7 +356,7 @@ class Overrides extends AdminController
      */
     public function searchTask()
     {
-        $results = array();
+        $results = [];
 
         $limitstart = Request::getInt('more');
         $searchstring = Request::getString('searchstring');

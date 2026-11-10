@@ -46,7 +46,7 @@ class Assets extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->filters = array(
+        $this->view->filters = [
             'tmpl' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.tmpl',
                 'tmpl',
@@ -82,7 +82,7 @@ class Assets extends AdminController
                 0,
                 'int'
             )
-        );
+        ];
 
         $tbl = new Tables\Asset($this->database);
         // print_r($this->view->filters);
@@ -95,13 +95,13 @@ class Assets extends AdminController
             unset($where['asset_scope_id']);
         }
 
-        $rows = $tbl->find(array(
+        $rows = $tbl->find([
             'w' => $where
-        ));
+        ]);
 
         // print_r($rows);
 
-        $r = array();
+        $r = [];
         if ($rows) {
             foreach ($rows as $row) {
                 $r[$row->id] = $row;
@@ -109,10 +109,10 @@ class Assets extends AdminController
         }
         $this->view->rows = $r;
 
-        $assets = $tbl->find(array(
-            'w' => array('course_id' => $this->view->filters['course_id'])
-        ));
-        $a = array();
+        $assets = $tbl->find([
+            'w' => ['course_id' => $this->view->filters['course_id']]
+        ]);
+        $a = [];
         if ($assets) {
             foreach ($assets as $row) {
                 $a[$row->id] = $row;
@@ -197,7 +197,7 @@ class Assets extends AdminController
 
         $model = new \Components\Courses\Models\Asset($asset_id);
         // Is this asset linked anywhere else?
-        if ($model->parents(array('count' => true)) <= 0) {
+        if ($model->parents(['count' => true]) <= 0) {
             // No -- Asset no longer used. Delete it.
             if (!$model->delete()) {
                 $this->setError($model->delete());
@@ -222,7 +222,7 @@ class Assets extends AdminController
 
         if (!is_object($model)) {
             // Incoming
-            $ids = Request::getArray('id', array());
+            $ids = Request::getArray('id', []);
 
             // Get the single ID we're working with
             if (is_array($ids)) {
@@ -265,7 +265,7 @@ class Assets extends AdminController
         Request::checkToken();
 
         // load the request vars
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
         $tmpl   = Request::getString('tmpl', '');
 
         // instatiate course page object for saving
@@ -408,7 +408,7 @@ class Assets extends AdminController
         $move = $this->_task == 'orderup' ? -1 : 1;
 
         // Incoming
-        $id = Request::getArray('id', array());
+        $id = Request::getArray('id', []);
         $id = $id[0];
 
         $tmpl      = Request::getString('tmpl', '');

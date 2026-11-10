@@ -18,12 +18,12 @@ class Inflector
      *
      * @var  array
      */
-    protected static $uncountable_words = array(
+    protected static $uncountable_words = [
         'equipment', 'information', 'rice', 'money',
         'species', 'series', 'fish', 'meta', 'metadata',
         'buffalo', 'elk', 'rhinoceros', 'salmon',
         'bison', 'headquarters', 'moose'
-    );
+    ];
 
     /**
      * Plural inflector rules.
@@ -34,7 +34,7 @@ class Inflector
      *
      * @var  array
      */
-    protected static $plural_rules = array(
+    protected static $plural_rules = [
         '/^(ox)$/i'                 => '\1\2en',     // ox
         '/([m|l])ouse$/i'           => '\1ice',      // mouse, louse
         '/(matr|vert|ind)ix|ex$/i'  => '\1ices',     // matrix, vertex, index
@@ -54,14 +54,14 @@ class Inflector
         '/(ax|cris|test)is$/i'      => '\1es',       // axis, crisis
         '/s$/'                      => 's',          // no change (compatibility)
         '/$/'                       => 's',
-    );
+    ];
 
     /**
      * Singular inflector rules.
      *
      * @var  array
      */
-    protected static $singular_rules = array(
+    protected static $singular_rules = [
         '/(virus)es$/i'          => '\1',
         '/(matr)ices$/i'         => '\1ix',
         '/(vert|ind)ices$/i'     => '\1ex',
@@ -90,7 +90,7 @@ class Inflector
         '/(c)hildren$/i'         => '\1\2hild',
         '/(n)ews$/i'             => '\1\2ews',
         '/([^us])s$/i'           => '\1',
-    );
+    ];
 
     /**
      * Gets the plural version of the given word

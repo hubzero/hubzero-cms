@@ -86,7 +86,7 @@ class Pagebreak extends Plugin
         }
 
         // Find all instances of plugin and put in $matches.
-        $matches = array();
+        $matches = [];
         preg_match_all($regex, $row->text, $matches, PREG_SET_ORDER);
 
         if (($showall && $this->params->get('showall', 1))) {
@@ -338,8 +338,8 @@ class Pagebreak extends Plugin
     protected static function parseAttributes($string)
     {
         // Initialise variables.
-        $attr = array();
-        $retarray = array();
+        $attr = [];
+        $retarray = [];
 
         // Let's grab all the key/value pairs using a regular expression
         preg_match_all('/([\w:-]+)[\s]?=[\s]?"([^"]*)"/i', $string, $attr);

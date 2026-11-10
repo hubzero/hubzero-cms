@@ -28,7 +28,7 @@ class Module extends Renderer
      * @param   string  $content  If present, module information from the buffer will be used
      * @return  string  The output of the script
      */
-    public function render($module, $attribs = array(), $content = null)
+    public function render($module, $attribs = [], $content = null)
     {
         if (!is_object($module)) {
             $title = isset($attribs['title']) ? $attribs['title'] : null;

@@ -28,7 +28,7 @@ class Utility
      */
     public static function validateOrgType($org)
     {
-        $orgtypes = array('university','precollege','nationallab','industry','government','military','unemployed');
+        $orgtypes = ['university','precollege','nationallab','industry','government','military','unemployed'];
 
         if (in_array($org, $orgtypes)) {
             return true;
@@ -192,11 +192,11 @@ class Utility
 
         $subject  = Config::get('sitename') . ' ' . Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
 
-        $eview = new \Hubzero\Mail\View(array(
+        $eview = new \Hubzero\Mail\View([
             'name'   => 'emails',
             'layout' => 'create',
             'base_path' => Component::path('members') . '/site'
-        ));
+        ]);
         $eview->option        = 'com_members';//$this->_option; //com_members
         $eview->controller    = 'register'; //$this->_controller; //register
         $eview->sitename      = Config::get('sitename');

@@ -56,12 +56,12 @@ class Arr
             }
         } else {
             if ($default === null) {
-                $array = array();
+                $array = [];
             } elseif (is_array($default)) {
                 self::toInteger($default, null);
                 $array = $default;
             } else {
-                $array = array((int) $default);
+                $array = [(int) $default];
             }
         }
     }
@@ -102,7 +102,7 @@ class Arr
      */
     public static function toString($array = null, $inner_glue = '=', $outer_glue = ' ', $keepOuterKey = false)
     {
-        $output = array();
+        $output = [];
 
         if (is_array($array)) {
             foreach ($array as $key => $item) {
@@ -132,7 +132,7 @@ class Arr
     public static function fromObject($item, $recurse = true, $regex = null)
     {
         if (is_object($item)) {
-            $result = array();
+            $result = [];
             foreach (get_object_vars($item) as $k => $v) {
                 if (!$regex || preg_match($regex, $k)) {
                     if ($recurse) {
@@ -143,7 +143,7 @@ class Arr
                 }
             }
         } elseif (is_array($item)) {
-            $result = array();
+            $result = [];
             foreach ($item as $k => $v) {
                 $result[$k] = self::fromObject($v, $recurse, $regex);
             }
@@ -162,7 +162,7 @@ class Arr
      */
     public static function getColumn(&$array, $index)
     {
-        $result = array();
+        $result = [];
 
         if (is_array($array)) {
             $n = count($array);
@@ -229,7 +229,7 @@ class Arr
 
             case 'ARRAY':
                 if (!is_array($result)) {
-                    $result = array($result);
+                    $result = [$result];
                 }
                 break;
 
@@ -277,8 +277,8 @@ class Arr
      */
     public static function pivot($source, $key = null)
     {
-        $result = array();
-        $counter = array();
+        $result = [];
+        $counter = [];
 
         foreach ($source as $index => $value) {
             // Determine the name of the pivot key, and its value.
@@ -311,10 +311,10 @@ class Arr
                 $counter[$resultKey] = 1;
             } elseif ($counter[$resultKey] == 1) {
                 // If there is a second time, we convert the value into an array.
-                $result[$resultKey] = array(
+                $result[$resultKey] = [
                     $result[$resultKey],
                     $resultValue,
-                );
+                ];
                 $counter[$resultKey]++;
             } else {
                 // After the second time, no need to track any more. Just append to the existing array.
@@ -340,7 +340,7 @@ class Arr
     public static function sortObjects(&$a, $k, $direction = 1, $caseSensitive = true, $locale = false)
     {
         if (!is_array($locale) or !is_array($locale[0])) {
-            $locale = array($locale);
+            $locale = [$locale];
         }
 
         self::$sortCase      = (array) $caseSensitive;
@@ -475,7 +475,7 @@ class Arr
      */
     public static function meMatey($data)
     {
-        $pirate = array(
+        $pirate = [
             'Ahoy',
             'Arrr!',
             'Bilge Rat!',
@@ -487,7 +487,7 @@ class Arr
             'Walk the plank',
             'X Marks the spot',
             'Yo-ho-ho'
-        );
+        ];
 
         $nqs = count($pirate);
 

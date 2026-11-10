@@ -22,7 +22,7 @@ class Behavior
      *
      * @var  array
      */
-    protected static $loaded = array();
+    protected static $loaded = [];
 
     /**
      * Method to load the MooTools framework into the document head
@@ -110,7 +110,7 @@ class Behavior
 
             // Reset the scripts data
             // We need a fresh array to reorganize things
-            $data['scripts'] = array();
+            $data['scripts'] = [];
 
             // We can't reset the script data with $document->setHeadData($data); and then
             // use $document->addScript() because Document will ignore the empty array we
@@ -124,11 +124,11 @@ class Behavior
             foreach ($scripts as $key => $foo) {
                 // Found the spot?
                 if ($i == $index) {
-                    $data['scripts'][$url] = array(
+                    $data['scripts'][$url] = [
                         'mime'  => $type,
                         'defer' => $defer,
                         'async' => $async
-                    );
+                    ];
                     $pushed = true;
                 }
                 $data['scripts'][$key] = $foo;
@@ -139,11 +139,11 @@ class Behavior
             // We didn't find out spot?
             // Append to the end
             if (!$pushed) {
-                $data['scripts'][$url] = array(
+                $data['scripts'][$url] = [
                     'mime'  => $type,
                     'defer' => $defer,
                     'async' => $async
-                );
+                ];
             }
 
             $document->setHeadData($data);
@@ -317,7 +317,7 @@ class Behavior
             $debug = App::get('config')->get('debug');
         }
 
-        if (in_array($version, array('','2','2.0','2.0.*','2.0.x','2.0.4'))) {
+        if (in_array($version, ['','2','2.0','2.0.*','2.0.x','2.0.4'])) {
             if ($debug) {
                 Asset::script('assets/htmx/2.0.4/htmx.js', true, true, false, true, true, true, false);
             } else {
@@ -350,7 +350,7 @@ class Behavior
             $debug = App::get('config')->get('debug');
         }
 
-        if (in_array($version, array('','3','3.0','3.14.*','3.14.x','3.14.8'))) {
+        if (in_array($version, ['','3','3.0','3.14.*','3.14.x','3.14.8'])) {
             if ($debug) {
                 Asset::script('assets/alpine/3.14.8/cdn.js', true, true, false, true, true, true, false);
             } else {
@@ -381,12 +381,12 @@ class Behavior
             $debug = App::get('config')->get('debug');
         }
 
-        if (in_array($version, array('','5','5.3','5.3.*','5.3.x','5.3.3'))) {
+        if (in_array($version, ['','5','5.3','5.3.*','5.3.x','5.3.3'])) {
             if ($debug) {
                 Asset::script('assets/bootstrap/5.3.3/bootstrap.js', true, true, false, true, true, true, false);
-                Asset::stylesheet('assets/bootstrap/5.3.3/bootstrap.css', array(), true);
+                Asset::stylesheet('assets/bootstrap/5.3.3/bootstrap.css', [], true);
             } else {
-                Asset::stylesheet('assets/bootstrap/5.3.3/bootstrap.min.css', array(), true);
+                Asset::stylesheet('assets/bootstrap/5.3.3/bootstrap.min.css', [], true);
                 Asset::script('assets/bootstrap/5.3.3/bootstrap.min.js', true, true, false, true, true, true, false);
             }
         } else {
@@ -495,9 +495,9 @@ class Behavior
      *                               hovered element.
      * @return  void
      */
-    public static function tooltip($selector = '.hasTip', $params = array())
+    public static function tooltip($selector = '.hasTip', $params = [])
     {
-        $sig = md5(serialize(array($selector, $params)));
+        $sig = md5(serialize([$selector, $params]));
 
         if (isset(self::$loaded[__METHOD__][$sig])) {
             return;
@@ -569,7 +569,7 @@ class Behavior
      *                            - onHide
      * @return  void
      */
-    public static function modal($selector = 'a.modal', $params = array())
+    public static function modal($selector = 'a.modal', $params = [])
     {
         if (!isset(self::$loaded[__METHOD__])) {
             self::framework();
@@ -577,7 +577,7 @@ class Behavior
             Asset::script('assets/jquery.fancybox.js', true, true);
         }
 
-        $sig = md5(serialize(array($selector, $params)));
+        $sig = md5(serialize([$selector, $params]));
         if (isset(self::$loaded[__METHOD__][$sig])) {
             return;
         }
@@ -605,7 +605,7 @@ class Behavior
         );*/
 
         if (!empty($params) || App::isAdmin()) {
-            $opt = array('arrows' => false);
+            $opt = ['arrows' => false];
             $opt['ajax']       = (isset($params['ajaxOptions']) && (is_array($params['ajaxOptions']))) ? $params['ajaxOptions'] : null;
             $opt['type']       = (isset($params['handler'])) ? $params['handler'] : 'iframe';
             $opt['modal']      = (isset($params['closable'])) ? (bool) $params['closable'] : null;
@@ -704,7 +704,7 @@ class Behavior
      * @param   array   $root    The root node
      * @return  void
      */
-    public static function tree($id, $params = array(), $root = array())
+    public static function tree($id, $params = [], $root = [])
     {
         self::framework();
 
@@ -774,8 +774,8 @@ class Behavior
             App::get('document')->addScriptDeclaration($translation);
         }*/
 
-        Asset::stylesheet('assets/jquery.datepicker.css', array('media' => 'all'), true);
-        Asset::stylesheet('assets/jquery.timepicker.css', array('media' => 'all'), true);
+        Asset::stylesheet('assets/jquery.datepicker.css', ['media' => 'all'], true);
+        Asset::stylesheet('assets/jquery.timepicker.css', ['media' => 'all'], true);
 
         self::framework(true);
 
@@ -797,7 +797,7 @@ class Behavior
 
         self::framework(true);
 
-        Asset::stylesheet('assets/jquery.colpick.css', array('media' => 'all'), true);
+        Asset::stylesheet('assets/jquery.colpick.css', ['media' => 'all'], true);
         Asset::script('assets/jquery.colpick.js', false, true);
 
         App::get('document')
@@ -874,7 +874,7 @@ class Behavior
      */
     public static function highlighter(array $terms, $start = 'highlighter-start', $end = 'highlighter-end', $className = 'highlight', $tag = 'span')
     {
-        $sig = md5(serialize(array($terms, $start, $end)));
+        $sig = md5(serialize([$terms, $start, $end]));
         if (isset(self::$loaded[__METHOD__][$sig])) {
             return;
         }
@@ -943,7 +943,7 @@ class Behavior
      * @param   array   $array  The array to convert to JavaScript object notation
      * @return  string  JavaScript object notation representation of the array
      */
-    protected static function getJSObject($array = array())
+    protected static function getJSObject($array = [])
     {
         // Initialise variables.
         $object = '{';
@@ -1066,7 +1066,7 @@ Calendar._TT["ABOUT_TIME"] = "\n\n" +
         self::alpinejs();
         Asset::script('assets/hubzero-debug-timeline.js', true, true, false, true, true, true, false);
         Asset::script('assets/hubzero-debug-panel.js', true, true, false, true, true, true, false);
-        Asset::stylesheet('assets/hubzero-debug-panel.css', array('media' => 'all'), true);
+        Asset::stylesheet('assets/hubzero-debug-panel.css', ['media' => 'all'], true);
 
         self::$loaded[__METHOD__] = true;
     }
@@ -1089,7 +1089,7 @@ Calendar._TT["ABOUT_TIME"] = "\n\n" +
         self::alpinejs($alpineVersion, $debug);
         Asset::script('assets/htmx/hubzero-bootstrap.js', true, true, false, true, true, true, false);
         Asset::script('assets/hubzero-debug-panel.js', true, true, false, true, true, true, false);
-        Asset::stylesheet('assets/hubzero-debug-panel.css', array('media' => 'all'), true);
+        Asset::stylesheet('assets/hubzero-debug-panel.css', ['media' => 'all'], true);
 
         self::$loaded[__METHOD__] = true;
     }

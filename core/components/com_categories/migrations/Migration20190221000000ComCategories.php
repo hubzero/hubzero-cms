@@ -20,13 +20,13 @@ class Migration20190221000000ComCategories extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__categories' => array(
+    public static $tables = [
+        '#__categories' => [
             'created_time',
             'modified_time',
             'checked_out_time'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

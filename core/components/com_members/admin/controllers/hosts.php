@@ -62,7 +62,7 @@ class Hosts extends AdminController
             $this->setError(Lang::txt('Failed to add host "%s"', $host));
         }
 
-        Event::trigger('user.onAfterStoreProfile', array($profile));
+        Event::trigger('user.onAfterStoreProfile', [$profile]);
 
         // Push through to the hosts view
         $this->displayTask($profile);
@@ -108,7 +108,7 @@ class Hosts extends AdminController
             $this->setError(Lang::txt('MEMBERS_NO_HOST'));
         }
 
-        Event::trigger('user.onAfterStoreProfile', array($profile));
+        Event::trigger('user.onAfterStoreProfile', [$profile]);
 
         // Push through to the hosts view
         $this->displayTask($profile);

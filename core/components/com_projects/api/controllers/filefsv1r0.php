@@ -117,10 +117,10 @@ class Filefsv1r0 extends ApiController
         // case-sensitive against a case-insensitive dispatch, so a read-only
         // member -- or, on an open project, anyone -- could write or delete.
         $task      = strtolower(Request::getCmd('task', 'list'));
-        $readTasks = array('list', 'files', 'get', 'download', 'getmetadata', 'connections');
+        $readTasks = ['list', 'files', 'get', 'download', 'getmetadata', 'connections'];
 
         //tasks specific to adapters
-        $connectionTasks = array('upload', 'chunkedupload', 'download', 'getmetadata', 'setmetadata');
+        $connectionTasks = ['upload', 'chunkedupload', 'download', 'getmetadata', 'setmetadata'];
 
         // Check authorization
         if (
@@ -185,7 +185,7 @@ class Filefsv1r0 extends ApiController
     public function listTask()
     {
         $response = new stdClass();
-        $files = $this->model->repo()->filelist(array(
+        $files = $this->model->repo()->filelist([
             'subdir'           => Request::getString('subdir', ''),
             'filter'           => Request::getString('filter', ''),
             'limit'            => Request::getInt('limit', 0),
@@ -194,7 +194,7 @@ class Filefsv1r0 extends ApiController
             'showFullMetadata' => true,
             'getParents'       => true,
             'getChildren'      => true
-        ));
+        ]);
 
         $response->results = $this->_parseResults($files);
 
@@ -239,7 +239,7 @@ class Filefsv1r0 extends ApiController
     public function getTask()
     {
         // Incoming
-        $files = Request::getArray('asset', array());
+        $files = Request::getArray('asset', []);
 
         if (empty($files)) {
             throw new Exception(Lang::txt('No asset path given'), 404);
@@ -247,13 +247,13 @@ class Filefsv1r0 extends ApiController
 
         $response = new stdClass();
 
-        $files = $this->model->repo()->filelist(array(
+        $files = $this->model->repo()->filelist([
             'subdir'           => Request::getString('subdir', '', 'post'),
             'files'            => $files,
             'showFullMetadata' => true,
             'getParents'       => true,
             'getChildren'      => true
-        ));
+        ]);
         $response->results = $this->_parseResults($files);
 
         $this->send($response);
@@ -299,10 +299,10 @@ class Filefsv1r0 extends ApiController
 
 
         // Set params
-        $params = array(
+        $params = [
             'subdir' => Request::getString('subdir', '', 'post'),
             'newDir' => urldecode($directory)
-        );
+        ];
 
         if ($this->model->repo()->makeDirectory($params)) {
             $response->success = 1;
@@ -373,11 +373,11 @@ class Filefsv1r0 extends ApiController
                 continue;
             }
 
-            $params = array(
+            $params = [
                 'type'   => $type,
                 'item'   => $item,
                 'subdir' => Request::getString('subdir', '', 'post')
-            );
+            ];
 
             if ($this->model->repo()->deleteItem($params)) {
                 $deleted++;
@@ -455,12 +455,12 @@ class Filefsv1r0 extends ApiController
                 continue;
             }
 
-            $params = array(
+            $params = [
                 'type'            => $type,
                 'item'            => $item,
                 'targetDir'       => $target,
                 'createTargetDir' => true // allow new directories
-            );
+            ];
 
             if ($this->model->repo()->moveItem($params)) {
                 $moved++;
@@ -527,12 +527,12 @@ class Filefsv1r0 extends ApiController
         $response = new stdClass();
         $response->success = 0;
 
-        $params = array(
+        $params = [
             'subdir'  => Request::getString('subdir', ''),
             'from'    => Request::getString('from', ''),
             'to'      => Request::getString('to', ''),
             'type'    => Request::getString('type', 'file')
-        );
+        ];
 
         if ($this->model->repo()->rename($params)) {
             $response->success = 1;
@@ -596,12 +596,12 @@ class Filefsv1r0 extends ApiController
         }
 
         // Set params
-        $params = array(
+        $params = [
             'subdir'     => $this->subdir,
             'expand'     => Request::getInt('expand_zip', 0),
             'ajaxUpload' => 1,
             'path'       => $this->repo->get('path')
-        );
+        ];
 
         // Upload file
         $results = $this->repo->insert($params);
@@ -653,7 +653,7 @@ class Filefsv1r0 extends ApiController
         $hash   = Request::getString('hash', '');
         $this->repo = new \Components\Projects\Models\Repo($this->model, "local");
         // Metadata collector
-        $collector = array();
+        $collector = [];
 
         // Combine file and folder data
         $items = $this->_sortIncoming();
@@ -666,10 +666,10 @@ class Filefsv1r0 extends ApiController
         }
 
         // Params for repo call
-        $params = array(
+        $params = [
             'subdir'            => $this->subdir,
             'remoteConnections' => []
-        );
+        ];
 
         // Collect items
         if (!$items) {
@@ -701,11 +701,11 @@ class Filefsv1r0 extends ApiController
         if ($render == 'preview') {
             // Output HTML
             $view = new \Hubzero\Plugin\View(
-                array(
+                [
                     'folder'  => 'projects',
                     'element' => 'files',
                     'name'    => 'preview'
-                )
+                ]
             );
 
             $view->file = isset($collector[0]) ? $collector[0] : null;
@@ -771,7 +771,7 @@ class Filefsv1r0 extends ApiController
                 $downloadPath = sys_get_temp_dir() . DS . $tempPath;
 
                 // Get file content
-                $params = array('fileName' => $file->get('localPath'), 'hash' => $hash, 'target' => $downloadPath);
+                $params = ['fileName' => $file->get('localPath'), 'hash' => $hash, 'target' => $downloadPath];
                 $this->repo->getFileContent($params);
             } else {
                 // Viewing current file
@@ -811,7 +811,7 @@ class Filefsv1r0 extends ApiController
             } else {
                 // Clean up the /tmp directory from zip files (download multiple files)
                 $temp_path = sys_get_temp_dir();
-                $matches = array();
+                $matches = [];
                 preg_match('/^(\\/tmp.*?\\.zip)/is', $downloadPath, $matches);
                 if (!empty($matches)) {
                     Filesystem::delete($downloadPath);
@@ -875,17 +875,17 @@ class Filefsv1r0 extends ApiController
         // Insert file
         $response = new stdClass();
         $response->results     = $this->model->repo()->insert(
-            array(
+            [
                 'dataPath'    => $dataPath,
                 'allowReplace' => $this->_task == 'insert' ? false : true,
                 'update'      => $this->_task == 'insert' ? false : true,
                 'subdir'      => Request::getString('subdir', '')
-            )
+            ]
         );
 
         // Parse results
         if (!empty($response->results)) {
-            $parsedResults = array();
+            $parsedResults = [];
             $names = null;
             foreach ($response->results as $updateType => $files) {
                 foreach ($files as $file) {
@@ -901,10 +901,10 @@ class Filefsv1r0 extends ApiController
             if (!empty($parsedResults)) {
                 $updateType = $this->_task == 'insert' ? 'uploaded' : 'updated';
                 // Plugin params
-                $plugin_params = array(
+                $plugin_params = [
                     $this->model,
-                    array($updateType => $names)
-                );
+                    [$updateType => $names]
+                ];
 
                 Event::trigger('projects.onAfterUpdate', $plugin_params);
             }
@@ -966,10 +966,10 @@ class Filefsv1r0 extends ApiController
         $response = new stdClass();
         $response->success = 0;
 
-        $files = Request::getArray('asset', array());
-        $fields   = Request::getArray('fields', array());
+        $files = Request::getArray('asset', []);
+        $fields   = Request::getArray('fields', []);
 
-        $response->metadata = array();
+        $response->metadata = [];
 
         if (is_array($files)) {
             foreach ($files as $file) {
@@ -1047,8 +1047,8 @@ class Filefsv1r0 extends ApiController
         $response = new stdClass();
         $response->success = 0;
 
-        $files = Request::getArray('asset', array());
-        $metadata = Request::getArray('metadata', array());
+        $files = Request::getArray('asset', []);
+        $metadata = Request::getArray('metadata', []);
 
         if (is_array($files)) {
             if (is_array($metadata)) {
@@ -1095,7 +1095,7 @@ class Filefsv1r0 extends ApiController
     {
         // Get array of file metadata
         if (!empty($files)) {
-            $results = array();
+            $results = [];
             foreach ($files as $result) {
                 // Access file metadata
                 $results[] = $this->connectionAdapter()->getMetadata($result->getPath());
@@ -1103,7 +1103,7 @@ class Filefsv1r0 extends ApiController
             return $results;
         }
 
-        return array();
+        return [];
     }
 
     /**
@@ -1116,7 +1116,7 @@ class Filefsv1r0 extends ApiController
     {
         // Get array of file metadata
         if (!empty($files)) {
-            $results = array();
+            $results = [];
             foreach ($files as $result) {
                 // Access private _data container
                 $results[] = $result->getData();
@@ -1124,7 +1124,7 @@ class Filefsv1r0 extends ApiController
             return $results;
         }
 
-        return array();
+        return [];
     }
 
     /**
@@ -1136,7 +1136,7 @@ class Filefsv1r0 extends ApiController
      */
     protected function _filter($source, $filter)
     {
-        $result = array();
+        $result = [];
         foreach ($source as $key => $value) {
             if (in_array($key, $filter)) {
                 $result[$key] = $value;
@@ -1207,7 +1207,7 @@ class Filefsv1r0 extends ApiController
             return false;
         }
 
-        return array('path' => $tarpath, 'name' => $tarname);
+        return ['path' => $tarpath, 'name' => $tarname];
     }
 
     /**
@@ -1262,28 +1262,28 @@ class Filefsv1r0 extends ApiController
     protected function _sortIncoming()
     {
         // Incoming
-        $checked = Request::getArray('asset', array());
-        $folders = Request::getArray('folder', array());
+        $checked = Request::getArray('asset', []);
+        $folders = Request::getArray('folder', []);
 
-        $combined = array();
+        $combined = [];
         if (!empty($checked) && is_array($checked)) {
             foreach ($checked as $ch) {
                 if (trim($ch) != '') {
-                    $combined[] = array('file' => urldecode($ch));
+                    $combined[] = ['file' => urldecode($ch)];
                 }
             }
         } elseif ($file = Request::getString('asset', '')) {
-            $combined[] = array('file' => urldecode($file));
+            $combined[] = ['file' => urldecode($file)];
         }
 
         if (!empty($folders) && is_array($folders)) {
             foreach ($folders as $f) {
                 if (trim($f) != '') {
-                    $combined[] = array('folder' => urldecode($f));
+                    $combined[] = ['folder' => urldecode($f)];
                 }
             }
         } elseif ($folder = Request::getString('folder', '')) {
-            $combined[] = array('folder' => urldecode($folder));
+            $combined[] = ['folder' => urldecode($folder)];
         }
 
         return $combined;
@@ -1297,7 +1297,7 @@ class Filefsv1r0 extends ApiController
      */
     protected function _packMetadata($metadata)
     {
-        $packedMetadata = array();
+        $packedMetadata = [];
         if (!empty($metadata) && is_array($metadata)) {
             foreach ($metadata as $key => $avu) {
                 if (trim($avu['units']) != '') {

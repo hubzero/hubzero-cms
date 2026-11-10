@@ -153,7 +153,7 @@ class Comment extends Table
         if (!$itemid) {
             return false;
         }
-        $activities = array();
+        $activities = [];
 
         $query = "SELECT activityid as aid FROM $this->_tbl WHERE itemid=" . $this->_db->quote($itemid)
             . " AND tbl=" . $this->_db->quote($tbl);

@@ -216,7 +216,7 @@ class ProfilerTest extends Basic
 
         $instance->mark('foo');
 
-        $data = array();
+        $data = [];
         for ($i = 0; $i < 900; $i++) {
             $jnk = new \stdClass();
             $jnk->bar = array_fill(0, 100, str_repeat('bar', 10));

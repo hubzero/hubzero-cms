@@ -39,7 +39,7 @@ class InstallSqlTest extends Basic
      *
      * @var  array
      */
-    protected static $read = array();
+    protected static $read = [];
 
     /**
      * The schema, and what a hub ends up holding
@@ -94,10 +94,10 @@ class InstallSqlTest extends Basic
      */
     public static function installs()
     {
-        return array(
-            'with sample data' => array(true),
-            'without sample data' => array(false),
-        );
+        return [
+            'with sample data' => [true],
+            'without sample data' => [false],
+        ];
     }
 
     /**
@@ -117,14 +117,14 @@ class InstallSqlTest extends Basic
     {
         $hub     = $this->hub($sample);
         $checked = 0;
-        $clashes = array();
+        $clashes = [];
 
         foreach ($hub->tables() as $table) {
             foreach ($hub->uniques($table) as $key) {
-                $seen = array();
+                $seen = [];
 
                 foreach ($hub->rows($table) as $row) {
-                    $values = array();
+                    $values = [];
 
                     foreach ($key as $column) {
                         if (!array_key_exists($column, $row)) {
@@ -153,7 +153,7 @@ class InstallSqlTest extends Basic
             }
         }
 
-        $this->assertSame(array(), $clashes, implode("
+        $this->assertSame([], $clashes, implode("
 ", $clashes));
         $this->assertGreaterThan(0, $checked, 'no unique key was checked at all');
     }
@@ -250,7 +250,7 @@ class InstallSqlTest extends Basic
     #[DataProvider('installs')]
     public function testTheDefaultTemplateExists($sample)
     {
-        $home = $this->hub($sample)->where('template_styles', array('client_id' => 0, 'home' => 1));
+        $home = $this->hub($sample)->where('template_styles', ['client_id' => 0, 'home' => 1]);
 
         $this->assertCount(1, $home, 'a hub should open on exactly one template');
 
@@ -276,7 +276,7 @@ class InstallSqlTest extends Basic
     #[DataProvider('installs')]
     public function testOneMenuItemIsHome($sample)
     {
-        $home = $this->hub($sample)->where('menu', array('client_id' => 0, 'home' => 1));
+        $home = $this->hub($sample)->where('menu', ['client_id' => 0, 'home' => 1]);
 
         $this->assertCount(
             1,
@@ -298,7 +298,7 @@ class InstallSqlTest extends Basic
     #[DataProvider('installs')]
     public function testNoPageIsStillATemplate($sample)
     {
-        $unfinished = array(
+        $unfinished = [
             'Edit this page',
             'MyInstitution',
             'MyState',
@@ -311,12 +311,12 @@ class InstallSqlTest extends Basic
             '{Telephone}',
             '1234 Street',
             '555-555-5555',
-        );
+        ];
 
         $articles = $this->hub($sample)->rows('content');
 
         if (!$sample) {
-            $this->assertSame(array(), $articles, 'a hub without sample data ships no articles');
+            $this->assertSame([], $articles, 'a hub without sample data ships no articles');
             return;
         }
 
@@ -351,7 +351,7 @@ class InstallSqlTest extends Basic
         $articles = $this->hub($sample)->rows('content');
 
         if (!$sample) {
-            $this->assertSame(array(), $articles, 'a hub without sample data ships no articles');
+            $this->assertSame([], $articles, 'a hub without sample data ships no articles');
             return;
         }
 

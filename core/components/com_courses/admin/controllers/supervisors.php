@@ -45,17 +45,17 @@ class Supervisors extends AdminController
             $model->section($section);
         }
 
-        $managers = $model->managers(array(
+        $managers = $model->managers([
             'student'     => 0,
-            'section_id'  => array(0, $section),
-            'offering_id' => array(0, $id)
-        ));
+            'section_id'  => [0, $section],
+            'offering_id' => [0, $id]
+        ]);
 
         // Incoming host
         $m = Request::getString('usernames', '', 'post');
         $mbrs = explode(',', $m);
 
-        $users = array();
+        $users = [];
         foreach ($mbrs as $mbr) {
             // Retrieve user's account info
             $mbr = trim($mbr);
@@ -113,7 +113,7 @@ class Supervisors extends AdminController
             $model->section($section);
         }
 
-        $mbrs = Request::getArray('entries', array(0), 'post');
+        $mbrs = Request::getArray('entries', [0], 'post');
 
         foreach ($mbrs as $mbr) {
             if (!isset($mbr['select'])) {
@@ -154,7 +154,7 @@ class Supervisors extends AdminController
             $model->section($section);
         }
 
-        $entries = Request::getArray('entries', array(0), 'post');
+        $entries = Request::getArray('entries', [0], 'post');
 
         foreach ($entries as $key => $data) {
             // Retrieve user's account info

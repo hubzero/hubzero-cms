@@ -41,20 +41,20 @@ class Version extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'pageid'  => 'positive|nonzero',
         'content' => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Get parent page

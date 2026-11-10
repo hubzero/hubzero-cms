@@ -79,7 +79,7 @@ class Externalhref extends Plugin
 
         $mode   = $this->params->get('mode');
         $target = $this->params->get('target');
-        $classes = array();
+        $classes = [];
 
         if ($cls = $this->params->get('classes')) {
             $classes = explode(',', preg_replace('/\s*/', '', $cls));
@@ -89,21 +89,21 @@ class Externalhref extends Plugin
         // Commented out: preg_replace_callback for nofollow
         // Pattern: /<a\s[^>]*href\s*=\s*(?:[\"\']??)(http[^\\1 >]*?)\\1[^>]*>(.*)<\/a>/uiUs
 
-        $tags = array(
+        $tags = [
             'a'    => '/<a\s+([^>]*)>/i',
             'area' => '/<area\s+([^>]*)>/i'
-        );
+        ];
         foreach ($tags as $tag => $pattern) {
-            $links = array();
+            $links = [];
             preg_match_all($pattern, $content, $links, PREG_SET_ORDER);
 
             foreach ($links as $link) {
                 // Get attributes
                 $pattern = "/([a-zA-Z_-]+)(\s*=\s*(?:\".*?\"|'.*?'|[^'\">\s]+))?/i";
-                $attribs = array();
+                $attribs = [];
                 preg_match_all($pattern, $link[1], $attribs, PREG_SET_ORDER);
 
-                $list = array();
+                $list = [];
                 foreach ($attribs as $attrib) {
                     if (!isset($attrib[2])) {
                         // something wrong, may be js in email cloaking plugin
@@ -136,7 +136,7 @@ class Externalhref extends Plugin
                     $linkClasses = preg_split('/\s+/', $list['class']);
                     $linkClasses = array_map('strtolower', $linkClasses);
                 } else {
-                    $linkClasses = array();
+                    $linkClasses = [];
                 }
 
                 if (array_intersect($linkClasses, $classes)) {
@@ -195,7 +195,7 @@ class Externalhref extends Plugin
         static $rel;
 
         if (!$rel) {
-            $rel = array('external');
+            $rel = ['external'];
             if ($this->params->get('nofollow', 1)) {
                 $rel[] = 'nofollow';
             }

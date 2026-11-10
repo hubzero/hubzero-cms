@@ -39,7 +39,7 @@ abstract class Base extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_segments = array();
+    protected $_segments = [];
 
     /**
      * Scope name
@@ -77,7 +77,7 @@ abstract class Base extends Obj
      */
     public function owners()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -87,7 +87,7 @@ abstract class Base extends Obj
      */
     public function groups()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -149,7 +149,7 @@ abstract class Base extends Obj
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _build(array $segments)
     {
-        $bits = array();
+        $bits = [];
         foreach ($segments as $key => $param) {
             if ($param) {
                 $bits[] = $key . '=' . $param;

@@ -299,7 +299,7 @@ $filterClient = Lang::txt('JGLOBAL_FILTER_CLIENT');
                                 'image',
                                 $langImg,
                                 $item->language_title,
-                                array('title' => $unsetTitle),
+                                ['title' => $unsetTitle],
                                 true
                             ); ?>
                         </a>
@@ -310,7 +310,7 @@ $filterClient = Lang::txt('JGLOBAL_FILTER_CLIENT');
                             'image',
                             $langImg,
                             $item->language_title,
-                            array('title' => $item->language_title),
+                            ['title' => $item->language_title],
                             true
                         ); ?>
                     <?php endif;?>

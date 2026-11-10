@@ -56,7 +56,7 @@ $imgAlt = Lang::txt(
 $params = new Hubzero\Config\Registry();
 Event::trigger(
     'onContentBeforeDisplay',
-    array('com_media.file', &$this->_tmp_img, &$params)
+    ['com_media.file', &$this->_tmp_img, &$params]
 );
 
 $imgUrl = COM_MEDIA_BASEURL . $this->currentImg['path'];
@@ -155,5 +155,5 @@ $escapedName = $this->escape($this->currentImg['name']);
 <?php
 Event::trigger(
     'onContentAfterDisplay',
-    array('com_media.file', &$this->_tmp_img, &$params)
+    ['com_media.file', &$this->_tmp_img, &$params]
 );

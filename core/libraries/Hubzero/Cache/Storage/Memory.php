@@ -18,7 +18,7 @@ class Memory extends None
      *
      * @var  array
      */
-    protected $data = array();
+    protected $data = [];
 
     /**
      * Create a new file cache store instance.
@@ -26,7 +26,7 @@ class Memory extends None
      * @param   array  $options
      * @return  void
      */
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
         parent::__construct($options);
     }
@@ -68,11 +68,11 @@ class Memory extends None
      */
     public function put($key, $value, $minutes)
     {
-        $this->data[$this->id($key)] = array(
+        $this->data[$this->id($key)] = [
             'time'  => time(),
             'value' => $value,
             'ttl'   => $this->expiration($minutes)
-        );
+        ];
 
         return true;
     }

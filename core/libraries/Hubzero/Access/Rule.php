@@ -18,7 +18,7 @@ class Rule
      *
      * @var  array
      */
-    protected $data = array();
+    protected $data = [];
 
     /**
      * Constructor.
@@ -108,7 +108,7 @@ class Rule
         // Check that the inputs are valid.
         if (!empty($identities)) {
             if (!is_array($identities)) {
-                $identities = array($identities);
+                $identities = [$identities];
             }
 
             foreach ($identities as $identity) {

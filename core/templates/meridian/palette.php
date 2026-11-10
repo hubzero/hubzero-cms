@@ -56,11 +56,11 @@ class Palette
             return;
         }
 
-        $this->rgb = array(
+        $this->rgb = [
             hexdec(substr($hex, 0, 2)),
             hexdec(substr($hex, 2, 2)),
             hexdec(substr($hex, 4, 2))
-        );
+        ];
     }
 
     /**
@@ -81,7 +81,7 @@ class Palette
      */
     protected static function luminance($rgb)
     {
-        $parts = array(0.2126, 0.7152, 0.0722);
+        $parts = [0.2126, 0.7152, 0.0722];
         $total = 0.0;
 
         foreach ($rgb as $i => $channel) {
@@ -118,7 +118,7 @@ class Palette
      */
     protected static function mix($a, $b, $amount)
     {
-        $out = array();
+        $out = [];
 
         foreach ($a as $i => $channel) {
             $out[$i] = (int) round($channel + ($b[$i] - $channel) * $amount);
@@ -145,7 +145,7 @@ class Palette
      */
     protected static function darkenTo($rgb, $ground, $want)
     {
-        $black = array(0, 0, 0);
+        $black = [0, 0, 0];
 
         for ($step = 0; $step <= 100; $step++) {
             $out = self::mix($rgb, $black, $step / 100);
@@ -177,11 +177,11 @@ class Palette
     public function properties()
     {
         if (!$this->isValid()) {
-            return array();
+            return [];
         }
 
-        $white = array(255, 255, 255);
-        $ink   = array(31, 35, 40);
+        $white = [255, 255, 255];
+        $ink   = [31, 35, 40];
 
         // The band across the head of a component is a wash of the accent, and
         // the accent's own hover colour lands on it.
@@ -193,7 +193,7 @@ class Palette
         // be repeated here because LESS cannot hand a value to PHP. Either can
         // be the darker one depending on the hue, so clear both; clearing the
         // darker of them clears plain white as well.
-        $surface = array(0xF6, 0xF8, 0xFA);
+        $surface = [0xF6, 0xF8, 0xFA];
 
         $onWash    = self::darkenTo($this->rgb, $wash, 4.5);
         $onSurface = self::darkenTo($this->rgb, $surface, 4.5);
@@ -225,7 +225,7 @@ class Palette
             }
         }
 
-        return array(
+        return [
             '--hub-accent'       => self::hex($accent),
             '--hub-accent-dark'  => self::hex($dark),
             '--hub-accent-light' => self::hex($light),
@@ -235,6 +235,6 @@ class Palette
             '--hub-footer-ink'   => self::hex($over),
             '--hub-footer-text'  => self::hex($muted),
             '--hub-footer-link'  => self::hex(self::mix($muted, $over, 0.5))
-        );
+        ];
     }
 }

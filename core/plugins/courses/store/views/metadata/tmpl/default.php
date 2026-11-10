@@ -13,7 +13,7 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$offerings = $this->course->offerings(array('available' => true, 'sort' => 'publish_up'));
+$offerings = $this->course->offerings(['available' => true, 'sort' => 'publish_up']);
 if ($offerings) {
     $offering = $offerings->fetch('first');
 } else {

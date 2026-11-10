@@ -20,7 +20,7 @@ class Rules
      *
      * @var  array
      */
-    protected $data = array();
+    protected $data = [];
 
     /**
      * Constructor.
@@ -164,7 +164,7 @@ class Rules
      */
     public function __toString()
     {
-        $temp = array();
+        $temp = [];
 
         foreach ($this->data as $name => $rule) {
             // Convert the action to JSON, then back into an array otherwise

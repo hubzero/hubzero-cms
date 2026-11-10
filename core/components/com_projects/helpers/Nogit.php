@@ -107,7 +107,7 @@ class Nogit extends Obj
             return false;
         }
 
-        $result = array();
+        $result = [];
 
         // exec call
         exec($call, $result);
@@ -138,7 +138,7 @@ class Nogit extends Obj
      * @param   string  $return
      * @return  mixed
      */
-    public function parseLog($out = array(), $return = 'date')
+    public function parseLog($out = [], $return = 'date')
     {
         return '';
     }
@@ -152,7 +152,7 @@ class Nogit extends Obj
     public function getFiles($subdir = '', $recursive = false)
     {
         $files = $this->adapter->listContents($subdir, $recursive);
-        $out = array();
+        $out = [];
         foreach ($files as $file) {
             $out[] = $file->getPath();
         }
@@ -168,7 +168,7 @@ class Nogit extends Obj
     public function getDirectories($subdir = '', $recursive = false)
     {
         $files = $this->adapter->listContents($subdir, $recursive);
-        $out = array();
+        $out = [];
         foreach ($files as $file) {
             if ($file->isDir()) {
                 $out[] = $file->getPath();
@@ -190,7 +190,7 @@ class Nogit extends Obj
     public function getChanges($localPath, $synced, $localDir, &$localRenames, $connections)
     {
         //Stub for compatibility
-        return array();
+        return [];
     }
 
     /**
@@ -222,7 +222,7 @@ class Nogit extends Obj
      * @param   int      $max    Max number of lines
      * @return  string
      */
-    public static function filterASCII($out = array(), $diff = false, $color = false, $max = 200)
+    public static function filterASCII($out = [], $diff = false, $color = false, $max = 200)
     {
         $text = '';
         $o = 1;
@@ -340,7 +340,7 @@ class Nogit extends Obj
      */
     public function getLocalFileHistory($file = '', $rev = '', $since = '')
     {
-        return array();
+        return [];
     }
 
     /**

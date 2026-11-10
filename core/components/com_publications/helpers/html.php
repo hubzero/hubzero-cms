@@ -106,11 +106,11 @@ class Html
      */
     public static function showContributors($contributors = '', $showorgs = false, $showaslist = false, $incSubmitter = false, $format = false)
     {
-        $view = new \Hubzero\Component\View(array(
+        $view = new \Hubzero\Component\View([
             'base_path' => dirname(__DIR__) . DS . 'site',
             'name'      => 'view',
             'layout'    => '_contributors'
-        ));
+        ]);
         $view->contributors  = $contributors;
         $view->showorgs      = $showorgs;
         $view->showaslist    = $showaslist;
@@ -130,11 +130,11 @@ class Html
         if ($publication == null) {
             return false;
         }
-        $view = new \Hubzero\Component\View(array(
+        $view = new \Hubzero\Component\View([
             'base_path' => dirname(__DIR__) . DS . 'site',
             'name'      => 'view',
             'layout'    => '_supportingdocs',
-        ));
+        ]);
         $view->publication  = $publication;
         return $view->loadTemplate();
     }
@@ -146,7 +146,7 @@ class Html
      * @param   integer  $sel     Selected level
      * @return  string   HTML
      */
-    public static function skillLevelCircle($levels = array(), $sel = 0)
+    public static function skillLevelCircle($levels = [], $sel = 0)
     {
         $html = '';
 
@@ -316,7 +316,7 @@ class Html
             // Instead, it removes all quote marks, resulting in invalid HTML.
             // So, we try a little more specific approach.
             //$formatted = str_replace('"', '', $formatted);
-            $formatted = str_replace(array('<b>"', '"</b>'), array('<b>', '</b>'), $formatted);
+            $formatted = str_replace(['<b>"', '"</b>'], ['<b>', '</b>'], $formatted);
 
             if ($cite->doi && $cite->url) {
                 $formatted = str_replace('doi:' . $cite->doi, '<a href="' . htmlspecialchars((string) $cite->url, ENT_COMPAT, 'UTF-8') . '" rel="external">doi:' . htmlspecialchars((string) $cite->doi, ENT_COMPAT, 'UTF-8') . '</a>', $formatted);
@@ -792,13 +792,13 @@ class Html
      * @param   string   $ftpDoc    Download guide doc
      * @return  string
      */
-    public static function primaryButton($class, $href, $msg, $xtra = '', $title = '', $action = '', $disabled = false, $pop = '', $options = array(), $showDoc = false, $ftpDoc = '')
+    public static function primaryButton($class, $href, $msg, $xtra = '', $title = '', $action = '', $disabled = false, $pop = '', $options = [], $showDoc = false, $ftpDoc = '')
     {
-        $view = new \Hubzero\Component\View(array(
+        $view = new \Hubzero\Component\View([
             'base_path' => dirname(__DIR__) . DS . 'site',
             'name'      => 'view',
             'layout'    => '_primary'
-        ));
+        ]);
         $view->set('option', 'com_publications');
         $view->set('disabled', $disabled);
         $view->set('class', $class);
@@ -827,12 +827,12 @@ class Html
     public static function drawStatusBar($item, $step = null, $showSubSteps = false, $review = 0)
     {
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => 'edit',
                 'layout'  => 'statusbar'
-            )
+            ]
         );
         $view->set('row', $item->row);
         $view->set('version', $item->version);
@@ -909,16 +909,16 @@ class Html
     public static function encode_html($str, $quotes = 1)
     {
         $str = stripslashes($str);
-        $a = array(
+        $a = [
             '&' => '&#38;',
             '<' => '&#60;',
             '>' => '&#62;',
-        );
+        ];
         if ($quotes) {
-            $a = $a + array(
+            $a = $a + [
                 "'" => '&#39;',
                 '"' => '&#34;',
-            );
+            ];
         }
 
         return strtr($str, $a);
@@ -1012,7 +1012,7 @@ class Html
      * @param   array    $rows  Publications objet array
      * @return  integer
      */
-    public static function getDiskUsage($rows = array(), $simple = false)
+    public static function getDiskUsage($rows = [], $simple = false)
     {
         $used = 0;
 
@@ -1079,7 +1079,7 @@ class Html
      * @param   boolean  $hubMessage
      * @return  boolean
      */
-    public static function notify($publication, $addressees = array(), $subject = null, $message = null, $hubMessage = false)
+    public static function notify($publication, $addressees = [], $subject = null, $message = null, $hubMessage = false)
     {
         if (!$subject || !$message || empty($addressees)) {
             return false;
@@ -1095,7 +1095,7 @@ class Html
         $address = $params->get('curatorreplyto');
 
         // Set up email config
-        $from = array();
+        $from = [];
         $from['name']  = Config::get('sitename') . ' ' . Lang::txt('COM_PUBLICATIONS');
 
         if (!isset($address) || $address == '') {
@@ -1108,17 +1108,17 @@ class Html
         $from['multipart'] = md5(date('U'));
 
         // Get message body
-        $eview = new \Hubzero\Mail\View(array(
+        $eview = new \Hubzero\Mail\View([
             'base_path' => dirname(__DIR__) . DS . 'site',
             'name'      => 'emails',
             'layout'    => '_plain'
-        ));
+        ]);
 
         $eview->publication = $publication;
         $eview->message     = $message;
         $eview->subject     = $subject;
 
-        $body = array();
+        $body = [];
         $body['plaintext'] = $eview->loadTemplate(false);
         $body['plaintext'] = str_replace("\n", "\r\n", $body['plaintext']);
 
@@ -1134,14 +1134,14 @@ class Html
         if ($hubMessage) {
             Event::trigger(
                 'xmessage.onSendMessage',
-                array(
+                [
                     'publication_status_changed',
                     $subject,
                     $body,
                     $from,
                     $addressees,
                     'com_publications'
-                )
+                ]
             );
         } else {
             // Send email

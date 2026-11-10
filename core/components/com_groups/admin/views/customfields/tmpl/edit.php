@@ -23,7 +23,7 @@ Toolbar::cancel();
 Toolbar::divider();
 Toolbar::help('form');
 
-$elements = array();
+$elements = [];
 
 foreach ($this->fields as $field) {
     $element = new stdClass();
@@ -73,7 +73,7 @@ foreach ($this->fields as $field) {
     $options = $field->options()->ordered()->rows();
 
     if ($options->count()) {
-        $element->values = array();
+        $element->values = [];
         foreach ($options as $option) {
             $opt = new stdClass();
             $opt->field_id = (int)$option->get('id');

@@ -37,7 +37,7 @@ class Menutype extends Select
     protected function getInput()
     {
         // Initialise variables.
-        $html     = array();
+        $html     = [];
         $recordId = (int) $this->form->getValue('id');
         $size     = ($v = $this->element['size']) ? ' size="' . $v . '"' : '';
         $class    = ($v = $this->element['class']) ? ' class="' . $v . '"' : 'class="text_area"';

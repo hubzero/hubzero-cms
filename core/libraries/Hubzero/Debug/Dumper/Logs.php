@@ -74,7 +74,7 @@ class Logs extends AbstractRenderer
     protected function _deflate($arr)
     {
         $output = 'Array( ' . "\n";
-        $a = array();
+        $a = [];
         foreach ($arr as $key => $val) {
             if (is_array($val)) {
                 $a[] = "\t" .

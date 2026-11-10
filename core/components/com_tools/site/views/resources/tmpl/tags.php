@@ -43,7 +43,7 @@ $showwarning = ($this->version == 'current' or !$this->status['published']) ? 0 
             <?php
             $tf = Event::trigger(
                 'hubzero.onGetMultiEntry',
-                array(array('tags', 'tags', 'actags', '', $this->tags))
+                [['tags', 'tags', 'actags', '', $this->tags]]
             );
 
             if (count($tf) > 0) {

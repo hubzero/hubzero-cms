@@ -22,14 +22,14 @@ class Builder
      *
      * @var  array
      */
-    protected static $paths = array();
+    protected static $paths = [];
 
     /**
      * An array to hold method references
      *
      * @var  array
      */
-    protected static $registry = array();
+    protected static $registry = [];
 
     /**
      * Class loader method
@@ -58,7 +58,7 @@ class Builder
             }
 
             $callable = null;
-            $candidates = array($func);
+            $candidates = [$func];
 
             if (is_string($func) && strpos($func, '.') !== false) {
                 $candidates[] = str_replace('.', '', $func);
@@ -66,7 +66,7 @@ class Builder
             }
 
             foreach ($candidates as $candidate) {
-                $candidateCallable = array($cls, $candidate);
+                $candidateCallable = [$cls, $candidate];
                 if (is_callable($candidateCallable)) {
                     $callable = $candidateCallable;
                     break;
@@ -81,7 +81,7 @@ class Builder
 
                 if (is_string($alt) && $alt !== $cls && class_exists($alt)) {
                     foreach ($candidates as $candidate) {
-                        $candidateCallable = array($alt, $candidate);
+                        $candidateCallable = [$alt, $candidate];
                         if (is_callable($candidateCallable)) {
                             $callable = $candidateCallable;
                             break;

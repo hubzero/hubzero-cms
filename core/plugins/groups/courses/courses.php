@@ -61,13 +61,13 @@ class Courses extends Plugin
      */
     public function &onGroupAreas()
     {
-        $area = array(
+        $area = [
             'name'             => $this->_name,
             'title'            => Lang::txt('PLG_GROUPS_COURSES'),
             'default_access'   => $this->params->get('plugin_access', 'anyone'),
             'display_menu_tab' => $this->params->get('display_tab', 1),
             'icon'             => 'f09c'
-        );
+        ];
         return $area;
     }
 
@@ -91,11 +91,11 @@ class Courses extends Plugin
         $active_real = 'discussion';
 
         // The output array we're returning
-        $arr = array(
+        $arr = [
             'html' => '',
-            'metadata' => array(),
+            'metadata' => [],
             'name' => $active
-        );
+        ];
 
         //get this area details
         $this_area = $this->onGroupAreas();
@@ -109,11 +109,11 @@ class Courses extends Plugin
 
         $model = \Components\Courses\Models\Courses::getInstance();
 
-        $filters = array(
+        $filters = [
             'group'    => $group->get('cn'),
             'group_id' => $group->get('gidNumber'),
             'count'    => true
-        );
+        ];
 
         $arr['metadata']['count'] = $model->courses($filters);
 
@@ -145,7 +145,7 @@ class Courses extends Plugin
             $filters['index'] = '';
             $filters['tag'] = '';
 
-            if (!in_array($filters['sortby'], array('alias', 'title', 'popularity'))) {
+            if (!in_array($filters['sortby'], ['alias', 'title', 'popularity'])) {
                 $filters['sortby'] = 'title';
             }
             switch ($filters['sortby']) {

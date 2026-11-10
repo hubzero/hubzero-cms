@@ -20,7 +20,7 @@ class Mimetypes
      *
      * @var  array
      */
-    private $mimeTypes = array(
+    private $mimeTypes = [
         '3dm'       => 'x-world/x-3dmf',
         '3dmf'      => 'x-world/x-3dmf',
         'a'         => 'application/octet-stream',
@@ -732,7 +732,7 @@ class Mimetypes
         'potx'      => 'application/vnd.openxmlformats-officedocument.presentationml.template',
         'xltx'      => 'application/vnd.openxmlformats-officedocument.spreadsheetml.template',
         'dmg'       => 'application/x-apple-diskimage'
-    );
+    ];
 
     /**
      * Retrieve the corresponding MIME type, if one exists
@@ -751,7 +751,7 @@ class Mimetypes
             // If MIME type doesn't exist, then try (as a last resort) to use the (deprecated) mime_content_type
             // function
             // If all else fails, just return application/octet-stream
-            if ($fast || !function_exists('finfo_open') || in_array($extension, array('docx', 'pptx', 'xlsx'))) {
+            if ($fast || !function_exists('finfo_open') || in_array($extension, ['docx', 'pptx', 'xlsx'])) {
                 if (array_key_exists($extension, $this->mimeTypes)) {
                     return $this->mimeTypes[$extension];
                 } else {

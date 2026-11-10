@@ -100,7 +100,7 @@ class Oauth extends SiteController
         $is_authorized = ($request->request('authorize')) ? true : false;
 
         // rewrite POST params to GET for oauth server
-        foreach (array('client_id', 'response_type', 'redirect_uri', 'state') as $param) {
+        foreach (['client_id', 'response_type', 'redirect_uri', 'state'] as $param) {
             $request->query[$param] = $request->request($param);
         }
 

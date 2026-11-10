@@ -48,12 +48,12 @@ class Watch extends Plugin
      */
     public function &onProjectAreas($alias = null)
     {
-        $area = array(
+        $area = [
             'name' => 'watch',
             'title' => 'Watch',
             'submenu' => null,
             'show' => false
-        );
+        ];
 
         return $area;
     }
@@ -112,7 +112,7 @@ class Watch extends Plugin
                 break;
 
             case 'manage':
-                return array('html' => $this->manage());
+                return ['html' => $this->manage()];
                 break;
 
             default:
@@ -162,14 +162,14 @@ class Watch extends Plugin
             $dflt = 1;
         }
 
-        $cats = array(
+        $cats = [
             'blog' => $params->get('blog', $dflt),
             'team' => $params->get('team', $dflt),
             'files' => $params->get('files', $dflt),
             'publications' => $params->get('publications', $dflt),
             'todo' => $params->get('todo', $dflt),
             'notes' => $params->get('notes', $dflt)
-        );
+        ];
 
         // Instantiate a view
         $view = $this->view('default', 'manage')
@@ -198,7 +198,7 @@ class Watch extends Plugin
 
         // Incoming
         $email = User::get('email');
-        $categories = Request::getArray('category', array());
+        $categories = Request::getArray('category', []);
         $frequency = Request::getWord('frequency', 'immediate');
 
         // Save subscription
@@ -214,7 +214,7 @@ class Watch extends Plugin
         $watch->set('created_by', User::get('id'));
         $watch->set('state', empty($categories) ? 2 : 1);
 
-        $cats = array(
+        $cats = [
             'blog' => 0,
             'quote' => 0,
             'team' => 0,
@@ -222,7 +222,7 @@ class Watch extends Plugin
             'publications' => 0,
             'todo' => 0,
             'notes' => 0
-        );
+        ];
 
         $params = new \Hubzero\Config\Registry($watch->get('params', ''));
 
@@ -262,7 +262,7 @@ class Watch extends Plugin
      * @param   integer  $actor       Uid of team member posting the activity (to exclude from subscribers)
      * @return  array
      */
-    public function onWatch($project, $area = '', $activities = array(), $actor = 0)
+    public function onWatch($project, $area = '', $activities = [], $actor = 0)
     {
         $this->project = $project;
 
@@ -277,7 +277,7 @@ class Watch extends Plugin
                 ->select($r . '.*')
                 ->including('log')
                 ->join($l, $l . '.id', $r . '.log_id')
-                ->whereIn($r . '.scope', array('project'))
+                ->whereIn($r . '.scope', ['project'])
                 ->whereEquals($r . '.scope_id', $project->get('id'))
                 ->whereEquals($r . '.state', \Hubzero\Activity\Recipient::STATE_PUBLISHED);
             //->whereEquals($l . '.parent', 0);
@@ -340,7 +340,7 @@ class Watch extends Plugin
 
         // Do we have subscribers?
         if ($subscribers->count() > 0) {
-            $processed = array();
+            $processed = [];
 
             foreach ($subscribers as $subscriber) {
                 if ($actor && $subscriber->created_by == $actor) {
@@ -390,11 +390,11 @@ class Watch extends Plugin
             return false;
         }
 
-        $eview = new \Hubzero\Mail\View(array(
+        $eview = new \Hubzero\Mail\View([
             'base_path' => Component::path('com_projects') . DS . 'site',
             'name' => 'emails',
             'layout' => 'watch_plain'
-        ));
+        ]);
         $eview->activities = $activities;
         $eview->subject = $subject;
         $eview->project = $project;

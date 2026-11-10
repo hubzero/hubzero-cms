@@ -45,7 +45,7 @@ class DefaultHandler extends Plugin
     public function onImport($file, $scope = null, $scope_id = null)
     {
         // Array of acceptable file types
-        $acceptable = array('txt');
+        $acceptable = ['txt'];
         // Get the file extension
         $extension = $file->getClientOriginalExtension();
 
@@ -60,15 +60,15 @@ class DefaultHandler extends Plugin
         // Check to see if this is endnote content
         if (preg_match('/%A|%0|%T/', $raw_contents)) {
             // Make new file to pass to dispatcher
-            $new_file = array(
+            $new_file = [
                 'name'     => $file->getClientOriginalName() . '.enw',
                 'type'     => $file->getType(),
                 'tmp_name' => $file->getName(),
                 'error'    => $file->getError(),
                 'size'     => $file->getClientSize()
-            );
+            ];
 
-            $return = Event::trigger('citation.onImport', array($new_file), $scope, $scope_id);
+            $return = Event::trigger('citation.onImport', [$new_file], $scope, $scope_id);
             return $return[0];
         }
     }

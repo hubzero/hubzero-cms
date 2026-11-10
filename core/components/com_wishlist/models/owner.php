@@ -27,10 +27,10 @@ class Owner extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'userid'   => 'positive|nonzero',
         'wishlist' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Get the creator of this entry

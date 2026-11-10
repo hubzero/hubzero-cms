@@ -27,7 +27,7 @@ if (User::isGuest()) { ?>
     $steps = $this->steps;
 
     if ($this->rows->count()) {
-        $stepchecks = array();
+        $stepchecks = [];
         $laststep = (count($steps) - 1);
 
         foreach ($this->rows as $row) {

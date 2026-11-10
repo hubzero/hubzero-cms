@@ -54,21 +54,21 @@ class Accesstoken extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'access_token'   => 'notempty',
         'application_id' => 'positive|nonzero',
         'uidNumber'      => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'expires'
-    );
+    ];
 
     /**
      * Load code details by token

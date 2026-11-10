@@ -46,10 +46,10 @@ class Recommendation extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'fromID' => 'positive|nonzero',
         'toID'   => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Retrieves records

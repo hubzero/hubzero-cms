@@ -192,10 +192,10 @@ class Attachment extends Obj
         }
 
         // Make sure there are no filename conflicts
-        $filename = $this->uniqueFilename(array(
+        $filename = $this->uniqueFilename([
             'filename' => $name,
             'subdir'   => $this->get('subdir')
-        ));
+        ]);
 
         $destination .= DS . $filename;
 
@@ -279,7 +279,7 @@ class Attachment extends Obj
     public function dimensions()
     {
         if (!$this->dimensions) {
-            $this->dimensions = array(0, 0);
+            $this->dimensions = [0, 0];
 
             if ($this->isImage() && file_exists($this->path())) {
                 $this->dimensions = getimagesize($this->path());
@@ -320,11 +320,11 @@ class Attachment extends Obj
      */
     public function toArray()
     {
-        return array(
+        return [
             'filename'    => $this->get('filename'),
             'path'        => $this->uploadDir,
             'description' => $this->get('description'),
             'subdir'      => $this->get('subdir')
-        );
+        ];
     }
 }

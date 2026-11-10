@@ -103,7 +103,7 @@ defined('_HZEXEC_') or die();
                     $expires .= $this->subscription->pendingunits > 0 && $this->subscription->status == 1  ? '<p class="no">' . Lang::txt('COM_JOBS_SUBSCRIPTION_EXTEND_REQUEST_PENDING') . '</p>' : '';
                 }
 
-                $units_select = array();
+                $units_select = [];
                 $numunits = $currentService->maxunits / $currentService->unitsize;
                 $unitsize = $currentService->unitsize;
 

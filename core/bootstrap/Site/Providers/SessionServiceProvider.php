@@ -28,14 +28,14 @@ class SessionServiceProvider extends ServiceProvider
         $this->app['session'] = function ($app) {
             $handler = $app['config']->get('session_handler', 'none');
 
-            $options = array(
+            $options = [
                 'name'          => md5($app['config']->get('secret') . 'site'),
                 'cookie_domain' => $app['config']->get('cookie_domain', ''),
                 'cookie_path'   => $app['config']->get('cookie_path', '/'),
                 // Config time is in minutes so we need to do some
                 // math to get seconds.
                 'expire'        => ($app['config']->get('lifetime') ? $app['config']->get('lifetime') * 60 : 900)
-            );
+            ];
 
             if ($app['config']->get('force_ssl') == 2) {
                 $options['force_ssl'] = true;
@@ -92,18 +92,18 @@ class SessionServiceProvider extends ServiceProvider
                     if ($this->app['session']->isNew()) {
                         $query = $db->getQuery()
                             ->insert('#__session')
-                            ->values(array(
+                            ->values([
                                 'session_id' => $this->app['session']->getId(),
                                 'client_id'  => (int) $this->app['client']->id,
                                 'time'       => (int) time(),
                                 'ip'         => $ip
-                            ));
+                            ]);
 
                         $db->setQuery($query->toString());
                     } else {
                         $query = $db->getQuery()
                             ->insert('#__session')
-                            ->values(array(
+                            ->values([
                                 'session_id' => $this->app['session']->getId(),
                                 'client_id'  => (int) $this->app['client']->id,
                                 'guest'      => (int) $this->app['user']->get('guest'),
@@ -111,7 +111,7 @@ class SessionServiceProvider extends ServiceProvider
                                 'userid'     => (int) $this->app['user']->get('id'),
                                 'username'   => $this->app['user']->get('username'),
                                 'ip'         => $ip
-                            ));
+                            ]);
 
                         $db->setQuery($query->toString());
                     }

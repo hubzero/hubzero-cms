@@ -43,38 +43,38 @@ class Category extends Nested
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'title'    => 'notempty',
         'content'  => 'notempty',
         'scope'    => 'notempty'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'params',
         'metadata',
         'modified_user_id',
         'asset_id',
         'modified_time',
         'path'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created_time',
         'created_user_id',
         // without this a category saved with no alias is stored with an empty
         // alias and path (automaticAlias() existed but was never registered)
         'alias'
-    );
+    ];
 
     /**
      * Asset rules
@@ -247,12 +247,12 @@ class Category extends Nested
      */
     public function transformPublished()
     {
-        $states = array(
+        $states = [
             '0' => 'Unpublished',
             '1' => 'Published',
             '2' => 'Archived',
             '-2' => 'Trashed'
-        );
+        ];
         $stateNum = $this->get('published', 0);
         return $states[$stateNum];
     }
@@ -336,7 +336,7 @@ class Category extends Nested
 
         Form::addFieldPath(__DIR__ . '/fields');
 
-        $form = new Form('categories', array('control' => 'fields'));
+        $form = new Form('categories', ['control' => 'fields']);
 
         if (!$form->loadFile($file, false, '//form')) {
             $this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
@@ -396,9 +396,9 @@ class Category extends Nested
         // Update the path field for the node.
         $query = $db->getQuery()
             ->update($this->getTableName())
-            ->set(array(
+            ->set([
                 'path' => $path
-            ))
+            ])
             ->whereEquals('id', (int) $this->get('id'));
         $db->setQuery($query->toString());
 
@@ -459,12 +459,12 @@ class Category extends Nested
         // the children of this node we also know the right value.
         $query = $this->getQuery()
             ->update($this->getTableName())
-            ->set(array(
+            ->set([
                 'lft'   => (int) $leftId,
                 'rgt'   => (int) $rightId,
                 'level' => (int) $level,
                 'path'  => $path
-            ))
+            ])
             ->whereEquals('id', (int) $parentId);
 
         // If there is an update failure, return false to break out of the recursion.
@@ -502,7 +502,7 @@ class Category extends Nested
                 continue;
             }
 
-            $existingLftIds = array();
+            $existingLftIds = [];
             foreach ($existingOrderedRows as $row) {
                 $pkValue = $row->get('id');
                 $existingLftIds[$pkValue] = $row->lft;
@@ -592,7 +592,7 @@ class Category extends Nested
      * @param   array    $params
      * @return  boolean
      */
-    public function moveOrCopyWithChildren($parentId, $method = 'c', $params = array())
+    public function moveOrCopyWithChildren($parentId, $method = 'c', $params = [])
     {
         $children = $this->getChildren();
 

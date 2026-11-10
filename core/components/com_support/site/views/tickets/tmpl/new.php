@@ -162,7 +162,7 @@ endif;
                     <label for="tags">
                         <?php echo Lang::txt('COM_SUPPORT_COMMENT_TAGS'); ?>:<br />
                         <?php
-                        $tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', '')));
+                        $tf = Event::trigger('hubzero.onGetMultiEntry', [['tags', 'tags', 'actags', '', '']]);
 
                         if (count($tf) > 0) :
                             echo $tf[0];
@@ -178,7 +178,7 @@ endif;
                             <label for="acgroup">
                                 <?php echo Lang::txt('COM_SUPPORT_COMMENT_GROUP'); ?>:
                                 <?php
-                                $gc = Event::trigger('hubzero.onGetSingleEntryWithSelect', array(array('groups', 'problem[group_id]', 'acgroup', '', $this->escape($group), '', 'ticketowner')));
+                                $gc = Event::trigger('hubzero.onGetSingleEntryWithSelect', [['groups', 'problem[group_id]', 'acgroup', '', $this->escape($group), '', 'ticketowner']]);
                                 if (count($gc) > 0) :
                                     echo $gc[0];
                                 else : ?>
@@ -265,7 +265,7 @@ endif;
                     <label for="acmembers">
                         <?php echo Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC'); ?>:
                         <?php
-                        $mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'cc', 'acmembers', '', '')));
+                        $mc = Event::trigger('hubzero.onGetMultiEntry', [['members', 'cc', 'acmembers', '', '']]);
                         if (count($mc) > 0) :
                             echo '<span class="hint">' . Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS_AUTOCOMPLETE') . '</span>' . $mc[0];
                         else : ?>

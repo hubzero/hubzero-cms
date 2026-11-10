@@ -262,7 +262,7 @@ class SafePath
             return false;
         }
 
-        $components = array();
+        $components = [];
 
         // A backslash separates paths on Windows but is a perfectly ordinary
         // character in a POSIX file name, so only treat it as a separator where it

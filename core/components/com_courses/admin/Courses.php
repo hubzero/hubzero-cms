@@ -41,7 +41,7 @@ class Courses extends AbstractComponent
         Submenu::addEntry(
             Lang::txt('COM_COURSES_COURSES'),
             Route::url('index.php?option=com_courses&controller=courses'),
-            (!in_array($controllerName, array('students', 'roles', 'pages')))
+            (!in_array($controllerName, ['students', 'roles', 'pages']))
         );
         Submenu::addEntry(
             Lang::txt('COM_COURSES_PAGES'),

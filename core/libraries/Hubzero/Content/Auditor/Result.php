@@ -41,20 +41,20 @@ class Result extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'scope'    => 'notempty',
         'scope_id' => 'positive|nonzero',
         'test_id'  => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      **/
-    public $always = array(
+    public $always = [
         'processed'
-    );
+    ];
 
     /**
      * Set processed timestamp

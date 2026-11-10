@@ -29,7 +29,7 @@ class Detector implements DetectorInterface
      * @param   array  $options
      * @return  void
      */
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
         $this->message = '';
 
@@ -63,7 +63,7 @@ class Detector implements DetectorInterface
         }
 
         // Spammer like to include variants of the name Babaji in the spam
-        $baba = array("/(^|\s)baba(\s|$)/","/(^|\s)ji(\s|$)/","/(^|\s)b.{0,3}a.{0,3}b.{0,3}a.{0,4}j.{0,3}i(\s|$)/");
+        $baba = ["/(^|\s)baba(\s|$)/","/(^|\s)ji(\s|$)/","/(^|\s)b.{0,3}a.{0,3}b.{0,3}a.{0,4}j.{0,3}i(\s|$)/"];
 
         foreach ($baba as $b) {
             if (
@@ -92,14 +92,14 @@ class Detector implements DetectorInterface
         }
 
         // Spammer likes to include various obfuscated texts
-        $plainKeywords = array(
+        $plainKeywords = [
             "ßåßå", "Vå§hïkåråñ", "Lðvê", "§þê¢ïålï§†", "þrðßlêm", "Mµ†hkårñï", "jï", "Pℝℴℬℒℰℳ)","mðhïñï", "vå§hïkåråñ",
             "vå§hïKÄRÄñ", "mårrïågê", "§ðlµ", "†ïðñ§", "Äll", "vððÐðð", "ßLåÇk", "MåGïÇ",
             "Haryana", "Ambala"
-        );
-        $regexKeywords = array(
+        ];
+        $regexKeywords = [
             '/Black\-{0,1}Magic/i'
-        );
+        ];
 
         foreach ($plainKeywords as $k) {
             if (strpos($context, $k) !== false) {

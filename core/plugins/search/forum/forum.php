@@ -43,7 +43,7 @@ class Forum extends Plugin
         $terms = $request->get_term_ar();
         $weight = "match(f.title, f.comment) against ('" . join(' ', $terms['stemmed']) . "')";
 
-        $addtl_where = array();
+        $addtl_where = [];
         foreach ($terms['mandatory'] as $mand) {
             $addtl_where[] = "(f.title LIKE '%$mand%' OR f.comment LIKE '%$mand%')";
         }
@@ -67,7 +67,7 @@ class Forum extends Plugin
         }
 
         // fml
-        $groupAuth = array();
+        $groupAuth = [];
         if ($authz->is_super_admin()) {
             $groupAuth[] = '1';
         } else {
@@ -195,9 +195,9 @@ class Forum extends Plugin
 				AND parent=0;";
                 $rows = $db->setQuery($sql)->query()->loadObjectList();
 
-                $titles = array();
-                $authors = array();
-                $tags = array();
+                $titles = [];
+                $authors = [];
+                $tags = [];
                 $content = '';
                 foreach ($rows as $row) {
                     array_push($titles, $row->title);
@@ -298,7 +298,7 @@ class Forum extends Plugin
                 $record->hubtype = $type;
                 $record->title = $titles;
                 $record->description = $description;
-                $record->author = array($author);
+                $record->author = [$author];
                 $record->tags = $tags;
                 $record->path = $path;
                 $record->access_level = $access_level;

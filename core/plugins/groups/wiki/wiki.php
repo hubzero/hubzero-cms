@@ -60,13 +60,13 @@ class Wiki extends Plugin
      */
     public function &onGroupAreas()
     {
-        $area = array(
+        $area = [
             'name' => 'wiki',
             'title' => Lang::txt('PLG_GROUPS_WIKI'),
             'default_access' => $this->params->get('plugin_access', 'members'),
             'display_menu_tab' => $this->params->get('display_tab', 1),
             'icon' => 'f072'
-        );
+        ];
         return $area;
     }
 
@@ -89,10 +89,10 @@ class Wiki extends Plugin
         $active = 'wiki';
 
         // The output array we're returning
-        $arr = array(
+        $arr = [
             'html'     => '',
-            'metadata' => array()
-        );
+            'metadata' => []
+        ];
 
         //get this area details
         $this_area = $this->onGroupAreas();
@@ -187,13 +187,13 @@ class Wiki extends Plugin
 
                     // Empty string means "use the site default"
                     $mode = Request::getWord('automatic_toc', '');
-                    $params->set('automatic_toc', in_array($mode, array('inline', 'sidebar', 'off'), true) ? $mode : '');
+                    $params->set('automatic_toc', in_array($mode, ['inline', 'sidebar', 'off'], true) ? $mode : '');
 
                     $threshold = Request::getString('toc_threshold', '');
                     $params->set('toc_threshold', ($threshold !== '' && ctype_digit($threshold)) ? (int) $threshold : '');
 
                     $crumbs = Request::getString('wiki_crumbs', '');
-                    $params->set('wiki_crumbs', in_array($crumbs, array('0', '1'), true) ? (int) $crumbs : '');
+                    $params->set('wiki_crumbs', in_array($crumbs, ['0', '1'], true) ? (int) $crumbs : '');
 
                     $group->set('params', $params->toString());
                     $group->update();
@@ -273,12 +273,12 @@ class Wiki extends Plugin
             $controllerName = '\\Components\\Wiki\\Site\\Controllers\\' . ucfirst($controllerName);
 
             // Instantiate controller
-            $controller = new $controllerName(array(
+            $controller = new $controllerName([
                 'base_path' => Component::path('com_wiki') . DS . 'site',
                 'scope'     => 'group',
                 'scope_id'  => $group->get('gidNumber'),
                 'sub'       => !($group->isSuperGroup())
-            ));
+            ]);
 
             // Catch any echoed content with ob
             ob_start();

@@ -25,7 +25,7 @@ $this->publication->authors();
 $this->publication->attachments();
 $this->publication->license();
 
-$data = array();
+$data = [];
 preg_match_all(
     "#<nb:(.*?)>(.*?)</nb:(.*?)>#s",
     $this->publication->metadata == null ? '' : $this->publication->metadata,
@@ -147,7 +147,7 @@ if ($listAll) {
 if ($this->publication->params->get('show_metadata')) {
     if (!isset($schema->fields) || !is_array($schema->fields)) {
         $schema = new stdClass();
-        $schema->fields = array();
+        $schema->fields = [];
     }
     foreach ($schema->fields as $field) {
         if (isset($data[$field->name])) {

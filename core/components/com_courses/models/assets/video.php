@@ -23,10 +23,10 @@ class Video extends File
      *
      * @var array
      **/
-    protected static $info = array(
+    protected static $info = [
         'action_message' => 'As an HTML5/HUBpresenter Video',
-        'responds_to'    => array('zip', 'mp4', 'mov', 'm4v', 'json'),
-    );
+        'responds_to'    => ['zip', 'mp4', 'mov', 'm4v', 'json'],
+    ];
 
     /**
      * Create method for this handler
@@ -46,7 +46,7 @@ class Video extends File
 
         // Check for errors in response
         if (array_key_exists('error', $return_info)) {
-            return array('error' => $return_info['error']);
+            return ['error' => $return_info['error']];
         } else {
             $asset = $return_info['assets'];
 
@@ -72,7 +72,7 @@ class Video extends File
                     // Set permissions
                     Filesystem::setPermissions($asset['upload_path'], '0664', '0775');
                 } else {
-                    return array('error' => 'Unzip failed. Ensure that it is installed.');
+                    return ['error' => 'Unzip failed. Ensure that it is installed.'];
                 }
             }
         }

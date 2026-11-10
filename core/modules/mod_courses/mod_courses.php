@@ -36,12 +36,12 @@ class Courses extends Module
 
         $database = App::get('db');
 
-        $queries = array(
+        $queries = [
             'unpublished'   => 0,
             'published'     => 1,
             'archived'      => 2,
             'draft'         => 3
-        );
+        ];
 
         foreach ($queries as $key => $state) {
             $database->setQuery("SELECT COUNT(*) FROM `#__courses` WHERE state=$state");
@@ -57,10 +57,10 @@ class Courses extends Module
         $endYear  = Date::of('now')->format('Y');
         $endMonth = Date::of('now')->format('m');
 
-        $totals = array();
+        $totals = [];
         for ($y = $startYear; $y <= $endYear; $y++) {
             if (!isset($totals[$y])) {
-                $totals[$y] = array();
+                $totals[$y] = [];
             }
 
             for ($m = 1; $m <= 12; $m++) {

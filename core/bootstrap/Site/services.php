@@ -6,7 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-return array(
+return [
     // Base Services
     'Bootstrap\Site\Providers\RateLimitServiceProvider',
     'Bootstrap\Site\Providers\EventServiceProvider',
@@ -34,4 +34,4 @@ return array(
     'Bootstrap\Site\Providers\MailerServiceProvider',
     'Bootstrap\Site\Providers\MenuServiceProvider',
     'Bootstrap\Site\Providers\FeedServiceProvider',
-);
+];

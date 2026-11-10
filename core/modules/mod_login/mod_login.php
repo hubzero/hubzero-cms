@@ -110,7 +110,7 @@ class Login extends Module
         if ($rtrn = $uri->getUriVar('return')) {
             if (preg_match('/[^A-Za-z0-9\+\/\=]/', $rtrn)) {
                 // This isn't a base64 string and most likely is someone trying to do something nasty (XSS)
-                $uri->setUriVar('return', base64_encode($uri->toString(array('path'))));
+                $uri->setUriVar('return', base64_encode($uri->toString(['path'])));
             }
         }
         $freturn = base64_encode($uri->toString());
@@ -146,13 +146,13 @@ class Login extends Module
         // Don't include the 'hubzero' plugin, or the $auth plugin as described above
         $multiAuth      = false;
         $plugins        = Plugin::byType('authentication');
-        $authenticators = array();
+        $authenticators = [];
 
         foreach ($plugins as $p) {
             if ($p->name != 'hubzero' && $p->name != $auth) {
                 $pparams = new Registry($p->params);
                 $display = $pparams->get('display_name', ucfirst($p->name));
-                $authenticators[$p->name] = array('name' => $p->name, 'display' => $display);
+                $authenticators[$p->name] = ['name' => $p->name, 'display' => $display];
                 $multiAuth = true;
             } elseif ($p->name == 'hubzero') {
                 $pparams = new Registry($p->params);

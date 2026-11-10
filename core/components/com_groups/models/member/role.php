@@ -41,10 +41,10 @@ class Role extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'roleid'    => 'positive|nonzero',
         'uidNumber' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Get associated role

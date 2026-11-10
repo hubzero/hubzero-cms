@@ -27,9 +27,9 @@ $note = new \Components\Projects\Models\Note($masterscope, $group, $this->model-
 $items = $note->getNotes();
 
 // Sort notes to display hierarchy by scope
-$notes = array();
-$order = array();
-$thirdlevel = array();
+$notes = [];
+$order = [];
+$thirdlevel = [];
 
 if ($items) {
     foreach ($items as $note) {
@@ -39,7 +39,7 @@ if ($items) {
         $parent = $level > 1 ? array_shift($remaining) : '';
 
         if ($level == 1) {
-            $notes[$note->pagename] = array( $level => array($note));
+            $notes[$note->pagename] = [ $level => [$note]];
         } elseif ($level == 2) {
             $notes[$parent][$level][] = $note;
         } elseif ($level >= 3) {
@@ -49,8 +49,8 @@ if ($items) {
     }
 }
 
-$missing = array();
-$shown = array();
+$missing = [];
+$shown = [];
 
 // Attached item
 $selected = null;
@@ -124,7 +124,7 @@ $route = $this->model->isProvisioned()
                 foreach ($this->attachments as $attachment) {
                     if (!in_array($attachment->object_id, $shown)) {
                         // Found missing
-                        $miss = array();
+                        $miss = [];
                         $miss['id'] = $attachment->object_id;
                         $miss['title'] = $attachment->title;
                         $missing[] = $miss;

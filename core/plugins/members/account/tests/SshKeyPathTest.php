@@ -205,7 +205,7 @@ class SshKeyPathTest extends Basic
 			return;
 		}
 
-		foreach (array_diff(scandir($path), array('.', '..')) as $item)
+		foreach (array_diff(scandir($path), ['.', '..']) as $item)
 		{
 			$this->remove($path . DS . $item);
 		}
@@ -315,7 +315,7 @@ class SshKeyPathTest extends Basic
 	 */
 	public function testRejectsUnsafeUsernames()
 	{
-		foreach (array('..', '.', '../victim', 'member' . DS . '..' . DS . 'victim', '', '.hidden') as $username)
+		foreach (['..', '.', '../victim', 'member' . DS . '..' . DS . 'victim', '', '.hidden'] as $username)
 		{
 			$error = null;
 
@@ -407,7 +407,7 @@ class SshKeyPathTest extends Basic
 		$this->assertTrue($this->plugin->writeAuthorizedKeys($auth, $content));
 		$this->assertEquals($content, file_get_contents($auth));
 		$this->assertEquals(0600, fileperms($auth) & 0777);
-		$this->assertEquals(array(), glob($ssh . DS . '.authorized_keys.*'));
+		$this->assertEquals([], glob($ssh . DS . '.authorized_keys.*'));
 	}
 
 	/**

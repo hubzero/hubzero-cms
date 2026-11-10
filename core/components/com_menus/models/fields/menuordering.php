@@ -33,7 +33,7 @@ class MenuOrdering extends Select
     protected function getOptions()
     {
         // Initialize variables.
-        $options = array();
+        $options = [];
 
         // Get the parent
         $parent_id = $this->form->getValue('parent_id', 0);
@@ -71,9 +71,9 @@ class MenuOrdering extends Select
         }
 
         $options = array_merge(
-            array(array('value' => '-1', 'text' => Lang::txt('COM_MENUS_ITEM_FIELD_ORDERING_VALUE_FIRST'))),
+            [['value' => '-1', 'text' => Lang::txt('COM_MENUS_ITEM_FIELD_ORDERING_VALUE_FIRST')]],
             $options,
-            array(array('value' => '-2', 'text' => Lang::txt('COM_MENUS_ITEM_FIELD_ORDERING_VALUE_LAST')))
+            [['value' => '-2', 'text' => Lang::txt('COM_MENUS_ITEM_FIELD_ORDERING_VALUE_LAST')]]
         );
 
         // Merge any additional options in the XML definition.

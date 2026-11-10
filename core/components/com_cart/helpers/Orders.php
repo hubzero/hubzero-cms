@@ -23,7 +23,7 @@ class Orders
      * @param   array   $filters  Filters to apply to data retrieval
      * @return  mixed
      */
-    public static function getItemsOrdered($rtrn = 'list', $filters = array())
+    public static function getItemsOrdered($rtrn = 'list', $filters = [])
     {
         if (!isset($filters['sort'])) {
             $filters['sort'] = 'tId';
@@ -54,7 +54,7 @@ class Orders
             $filters['sort'] = 'pName';
         }
 
-        $where = array("t.tStatus = 'completed'");
+        $where = ["t.tStatus = 'completed'"];
 
         if (isset($filters['order']) && $filters['order']) {
             $where[] = "ti.`tId` = " . $db->quote($filters['order']);

@@ -65,7 +65,7 @@ abstract class OauthClient extends Plugin
      * @param   array  $options
      * @return  void
      */
-    abstract public function link($options = array());
+    abstract public function link($options = []);
 
     /**
      * Builds the redirect URI based on the current URI and a few other assumptions

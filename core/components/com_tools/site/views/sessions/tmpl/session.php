@@ -49,7 +49,7 @@ if ($declared) {
 $embedUrl = (isset($this->output->embed_url) && $this->output->embed_url) ? $this->output->embed_url : '';
 
 // We actually need to do this first so we know what viewer is the active one.
-$output  = $embedUrl ? array() : Event::trigger('tools.onToolSessionView', array($this->app, $this->output, $readOnly));
+$output  = $embedUrl ? [] : Event::trigger('tools.onToolSessionView', [$this->app, $this->output, $readOnly]);
 $plugins = Event::trigger('tools.onToolSessionIdentify');
 
 $this->css('tools.css')
@@ -69,7 +69,7 @@ if (!$this->app->sess) {
         </p>
     <?php endif; ?>
 
-    <?php echo implode("\n", Event::trigger('tools.onToolSessionViewBefore', array($this->app, $this->output, $readOnly))); ?>
+    <?php echo implode("\n", Event::trigger('tools.onToolSessionViewBefore', [$this->app, $this->output, $readOnly])); ?>
 
     <div id="app-wrap" style="width: <?php echo $this->output->width; ?>px;">
         <div id="app-header">
@@ -244,7 +244,7 @@ if (!$this->app->sess) {
                                 <select name="zone" id="field-zone">
                                     <option value=""><?php echo Lang::txt('COM_TOOLS_SELECT'); ?></option>
                                     <?php
-                                    foreach ($this->middleware->zones('list', array('state' => 'up', 'id' => $this->middleware->get('allowed'))) as $zone) {
+                                    foreach ($this->middleware->zones('list', ['state' => 'up', 'id' => $this->middleware->get('allowed')]) as $zone) {
                                         if ($zone->get('id') == $this->zone->get('id')) {
                                             continue;
                                         }
@@ -294,7 +294,7 @@ if (!$this->app->sess) {
         <?php endif; ?>
     </div><!-- #app-wrap -->
 
-    <?php echo implode("\n", Event::trigger('tools.onToolSessionViewAfter', array($this->app, $this->output, $readOnly))); ?>
+    <?php echo implode("\n", Event::trigger('tools.onToolSessionViewAfter', [$this->app, $this->output, $readOnly])); ?>
 
     <?php
     // Are we on an iPad?
@@ -332,7 +332,7 @@ if (!$this->app->sess) {
                     <label for="field-username">
                         <?php echo Lang::txt('COM_TOOLS_SHARE_SESSION_WITH'); ?>
                         <?php
-                        $mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'username', 'acmembers')));
+                        $mc = Event::trigger('hubzero.onGetMultiEntry', [['members', 'username', 'acmembers']]);
                         if (count($mc) > 0) {
                             echo '<span class="hint">' . Lang::txt('COM_TOOLS_SHARE_SESSION_HINT_AUTOCOMPLETE') . '</span>' . $mc[0];
                         } else { ?>
@@ -452,11 +452,11 @@ if (!$this->app->sess) {
     <?php
     $output = Event::trigger(
         'mw.onSessionView',
-        array(
+        [
             $this->option,
             $this->toolname,
             $this->app->sess
-        )
+        ]
     );
 
     if (count($output) > 0) {

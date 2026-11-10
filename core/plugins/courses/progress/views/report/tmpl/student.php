@@ -28,40 +28,40 @@ $student = $this->member;
 
 $gradePolicy = new \Components\Courses\Models\GradePolicies($this->course->offering()->section()->get('grade_policy_id'), $this->course->offering()->section()->get('id'));
 
-$details = array();
+$details = [];
 $details['quizzes_total']       = 0;
 $details['homeworks_total']     = 0;
 $details['exams_total']         = 0;
 $details['quizzes_taken']       = 0;
 $details['homeworks_submitted'] = 0;
 $details['exams_taken']         = 0;
-$details['forms']               = array();
+$details['forms']               = [];
 
 // Get the assets
 $asset  = new \Components\Courses\Tables\Asset(App::get('db'));
 $assets = $asset->find(
-    array(
-        'w' => array(
+    [
+        'w' => [
             'course_id'   => $this->course->get('id'),
             'section_id'  => $this->course->offering()->section()->get('id'),
             'offering_id' => $this->course->offering()->get('id'),
             'graded'      => true,
             'state'       => 1,
             'asset_scope' => 'asset_group'
-        )
-    )
+        ]
+    ]
 );
 
 // Get gradebook auxiliary assets
 $auxiliary = $asset->findByScope(
     'offering',
     $this->course->offering()->get('id'),
-    array(
+    [
         'asset_type'    => 'gradebook',
         'asset_subtype' => 'auxiliary',
         'graded'        => true,
         'state'         => 1
-    )
+    ]
 );
 
 $assets = array_merge($assets, $auxiliary);
@@ -96,9 +96,9 @@ foreach ($assets as $asset) {
         }
 
         if (isset($asset->unit_id) && $asset->unit_id) {
-            $details['forms'][$unit->get('id')][] = array('title' => $title, 'score' => $score, 'date' => $date, 'url' => $url);
+            $details['forms'][$unit->get('id')][] = ['title' => $title, 'score' => $score, 'date' => $date, 'url' => $url];
         } else {
-            $details['aux'][] = array('title' => $asset->title, 'score' => $score, 'date' => $date);
+            $details['aux'][] = ['title' => $asset->title, 'score' => $score, 'date' => $date];
         }
 
         $isValidForm = false;
@@ -110,7 +110,7 @@ foreach ($assets as $asset) {
         switch ($dep->getState()) {
             // Form isn't available yet
             case 'pending':
-                $details['forms'][$unit->get('id')][] = array('title' => $title, 'score' => 'Not yet open', 'date' => 'N/A', 'url' => $url);
+                $details['forms'][$unit->get('id')][] = ['title' => $title, 'score' => 'Not yet open', 'date' => 'N/A', 'url' => $url];
                 break;
 
             // Form availability has expired
@@ -136,7 +136,7 @@ foreach ($assets as $asset) {
                 // They have completed this form, therefore set increment_count_taken equal to true
                 $increment_count_taken = true;
 
-                $details['forms'][$unit->get('id')][] = array('title' => $title, 'score' => $score, 'date' => $date, 'url' => $url);
+                $details['forms'][$unit->get('id')][] = ['title' => $title, 'score' => $score, 'date' => $date, 'url' => $url];
                 break;
 
             // Form is still active
@@ -177,7 +177,7 @@ foreach ($assets as $asset) {
                     }
                 }
 
-                $details['forms'][$unit->get('id')][] = array('title' => $title, 'score' => $score, 'date' => $date, 'url' => $url);
+                $details['forms'][$unit->get('id')][] = ['title' => $title, 'score' => $score, 'date' => $date, 'url' => $url];
                 break;
         }
     }

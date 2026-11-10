@@ -15,7 +15,7 @@ class FieldFactory
     /**
      * @var array Cache of instantiated fields
      */
-    private $fields = array();
+    private $fields = [];
 
     /**
      * Get an instance of a field object for a cron expression position

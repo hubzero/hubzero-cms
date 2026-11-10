@@ -37,7 +37,7 @@ class ToolSessionToken implements GrantTypeInterface, ClientAssertionTypeInterfa
      *
      * @var  array
      */
-    private $userInfo = array();
+    private $userInfo = [];
 
     /**
      * Define identifier for this type of grant
@@ -56,7 +56,7 @@ class ToolSessionToken implements GrantTypeInterface, ClientAssertionTypeInterfa
      * @param   array   $config   Config array
      * @return  void
      */
-    public function __construct(ToolSessionTokenInterface $storage, $config = array())
+    public function __construct(ToolSessionTokenInterface $storage, $config = [])
     {
         $this->storage = $storage;
     }

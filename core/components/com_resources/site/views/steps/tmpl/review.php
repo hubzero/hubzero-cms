@@ -71,7 +71,7 @@ $this->css('create.css')
                 <select name="license" id="license">
                     <option value=""><?php echo Lang::txt('COM_CONTRIBUTE_SELECT_LICENSE'); ?></option>
                 <?php
-                $l = array();
+                $l = [];
                 $c = false;
                 $preview = Lang::txt('COM_CONTRIBUTE_LICENSE_PREVIEW');
                 foreach ($this->licenses as $license) {
@@ -170,7 +170,7 @@ $this->css('create.css')
                 <select name="license" id="license">
                     <option value=""><?php echo Lang::txt('COM_CONTRIBUTE_SELECT_LICENSE'); ?></option>
             <?php
-                $l = array();
+                $l = [];
                 $c = false;
                 $preview = Lang::txt('COM_CONTRIBUTE_LICENSE_PREVIEW');
             foreach ($this->licenses as $license) {

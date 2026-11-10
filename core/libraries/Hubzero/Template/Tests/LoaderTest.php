@@ -472,7 +472,7 @@ class LoaderTest extends TestCase
 
         foreach ($dataset->table as $table) {
             $name = (string) $table['name'];
-            $columns = array();
+            $columns = [];
             foreach ($table->column as $column) {
                 $columns[] = (string) $column;
             }
@@ -486,7 +486,7 @@ class LoaderTest extends TestCase
             );
 
             foreach ($table->row as $row) {
-                $values = array();
+                $values = [];
                 foreach ($row->value as $value) {
                     $values[] = (string) $value;
                 }

@@ -61,11 +61,11 @@ class Gitlab
         $this->active = $config->get('super_gitlab', 0);
         $this->url    = rtrim($config->get('super_gitlab_url', ''), DS);
         $this->token  = $config->get('super_gitlab_key', '');
-        $this->options = array(
+        $this->options = [
             'verify' => false,
-            'headers' => array('PRIVATE-TOKEN' => $this->token),
+            'headers' => ['PRIVATE-TOKEN' => $this->token],
             'http_errors' => false
-        );
+        ];
         $this->client = new \GuzzleHttp\Client();
     }
 
@@ -144,7 +144,7 @@ class Gitlab
      * @param   array  $params  Group params
      * @return  array
      */
-    public function createGroup($params = array())
+    public function createGroup($params = [])
     {
         return $this->request('POST', 'groups', $params);
     }
@@ -181,7 +181,7 @@ class Gitlab
      * @param   array  $params  Project params
      * @return  array
      */
-    public function createProject($params = array())
+    public function createProject($params = [])
     {
         return $this->request('POST', 'projects', $params);
     }
@@ -192,11 +192,11 @@ class Gitlab
      * @param  array  $params [description]
      * @return [type]         [description]
      */
-    public function protectBranch($params = array())
+    public function protectBranch($params = [])
     {
         $resource = 'projects' . DS . $params['id'] . DS . 'repository' . DS
             . 'branches' . DS . $params['branch'] . DS . 'protect';
-        return $this->request('PUT', $resource, array());
+        return $this->request('PUT', $resource, []);
     }
 
     /**
@@ -224,11 +224,11 @@ class Gitlab
      * @return [type]           [description]
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private function _postRequest($resource, $params = array())
+    private function _postRequest($resource, $params = [])
     {
         // init post request
 
-        $requestOptions = array_merge(array('query' => $params), $this->options);
+        $requestOptions = array_merge(['query' => $params], $this->options);
         $response = $this->client->request('POST', $this->url . DS . $resource, $requestOptions);
 
         return json_decode($response->getBody(), true);
@@ -242,9 +242,9 @@ class Gitlab
      * @return [type]           [description]
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _putRequest($resource, $params = array())
+    public function _putRequest($resource, $params = [])
     {
-        $requestOptions = array_merge(array('form_params' => $params), $this->options);
+        $requestOptions = array_merge(['form_params' => $params], $this->options);
 
         // init post request
         $response = $this->client->request('PUT', $this->url . DS . $resource, $requestOptions);
@@ -252,10 +252,10 @@ class Gitlab
         return json_decode($response->getBody(), true);
     }
 
-    public function request($method, $resource, $params = array())
+    public function request($method, $resource, $params = [])
     {
         $method = '_' . strtolower($method) . 'Request';
-        $response = call_user_func(array(__CLASS__, $method), ...array($resource, $params));
+        $response = call_user_func([__CLASS__, $method], ...[$resource, $params]);
         if (array_key_exists('message', $response)) {
             switch ($response['message']) {
                 case '401 Unauthorized':

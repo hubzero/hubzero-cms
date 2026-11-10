@@ -20,7 +20,7 @@ $hex2rgb = function ($hex) {
         $g = hexdec(substr($hex, 2, 2));
         $b = hexdec(substr($hex, 4, 2));
     }
-    $rgb = array($r, $g, $b);
+    $rgb = [$r, $g, $b];
 
     return implode(',', $rgb);
 };
@@ -239,7 +239,7 @@ switch ($bground) {
     case 'bokeh':
         $opacity = $opacity ?: '0.7';
         // Define bokeh radial gradient stops
-        $bokehGrads = array(
+        $bokehGrads = [
             'rgba(150, 150, 150, 0.2) 36px, rgba(150, 150, 150, 0.3) 38px, transparent 40px',
             'rgba(203, 203, 203, 0.2) 16px, rgba(203, 203, 203, 0.3) 17px, transparent 20px',
             'rgba(203, 203, 203, 0.2) 16px, rgba(203, 203, 203, 0.3) 17px, transparent 20px',
@@ -254,9 +254,9 @@ switch ($bground) {
             'rgba(209, 209, 209, 0.2) 16px, rgba(209, 209, 209, 0.3) 17px, transparent 20px',
             'rgba(209, 209, 209, 0.2) 26px, rgba(209, 209, 209, 0.3) 27px, transparent 30px',
             'rgba(209, 209, 209, 0.2) 36px, rgba(209, 209, 209, 0.3) 37px, transparent 40px'
-        );
+        ];
         // Build webkit-gradient version (legacy)
-        $wkGradLegacy = array(
+        $wkGradLegacy = [
             '-webkit-gradient(radial, 50% 50%, 36, 50% 50%, 40,' .
                 'from(rgba(150, 150, 150, 0.2)), color-stop(0.3, rgba(150, 150, 150, 0.3)), to(transparent))',
             '-webkit-gradient(radial, 50% 50%, 16, 50% 50%, 20, ' .
@@ -285,11 +285,11 @@ switch ($bground) {
                 'from(rgba(209, 209, 209, 0.1)), color-stop(0.2, rgba(209, 209, 209, 0.2)), to(transparent))',
             '-webkit-gradient(radial, 50% 50%, 36, 50% 50%, 40, ' .
                 'from(rgba(209, 209, 209, 0.2)), color-stop(0.2, rgba(209, 209, 209, 0.3)), to(transparent))'
-        );
-        $wkRadial = array();
-        $mozRadial = array();
-        $oRadial = array();
-        $stdRadial = array();
+        ];
+        $wkRadial = [];
+        $mozRadial = [];
+        $oRadial = [];
+        $stdRadial = [];
         foreach ($bokehGrads as $g) {
             $wkRadial[] = '-webkit-radial-gradient(circle contain, ' . $g . ')';
             $mozRadial[] = '-moz-radial-gradient(circle contain, ' . $g . ')';
@@ -360,19 +360,19 @@ $styles .= '
 	}
 ';
 
-$patterns = array(
+$patterns = [
     '!/\*[^*]*\*+([^/][^*]*\*+)*/!',  /* remove comments */
     '/[\n\r \t]/',                    /* remove tabs, spaces, newlines, etc. */
     '/ +/'                           /* collapse multiple spaces to a single space */
     // '/ ?([,:;{}]) ?/' - remove space around , : ; { }
     // [!] IE 7 doesn't like this and won't process the stylesheet
-);
-$replacements = array(
+];
+$replacements = [
     '',
     ' ',
     ' '/*,
     '$1'*/
-);
+];
 $styles = preg_replace($patterns, $replacements, $styles);
 
 /*$hash = md5($color1 . $bground . $color2);

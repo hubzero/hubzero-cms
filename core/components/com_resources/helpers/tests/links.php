@@ -61,11 +61,11 @@ class Links implements Test
      * @param   array   $options
      * @return  object
      */
-    public function examine(array $data, array $options = array())
+    public function examine(array $data, array $options = [])
     {
         $path   = '';
         $status = 0;
-        $meta   = array();
+        $meta   = [];
 
         if (isset($data['path']) && $data['path']) {
             $path = ltrim($data['path'], '/');

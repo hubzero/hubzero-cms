@@ -15,12 +15,12 @@ Html::behavior('framework', true);
 
 // Get browser info to set some classes
 $browser = new \Hubzero\Browser\Detector();
-$cls = array(
+$cls = [
     'no-js',
     $browser->name(),
     $browser->name() . $browser->major(),
     $this->direction
-);
+];
 ?>
 <!DOCTYPE html>
 <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>"

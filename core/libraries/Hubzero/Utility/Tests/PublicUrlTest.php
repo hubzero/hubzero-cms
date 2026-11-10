@@ -24,7 +24,7 @@ class PublicUrlTest extends Basic
 	 */
 	public function testInternalAddressesAreRefused()
 	{
-		foreach (array(
+		foreach ([
 			'http://127.0.0.1/',
 			'http://[::1]/',
 			'http://[::ffff:127.0.0.1]/',
@@ -34,7 +34,7 @@ class PublicUrlTest extends Basic
 			'http://10.0.0.1/',
 			'http://100.100.100.200/',
 			'http://[fd00::1]/',
-		) as $url)
+		] as $url)
 		{
 			$this->assertFalse(PublicUrl::check($url), $url);
 		}
@@ -47,12 +47,12 @@ class PublicUrlTest extends Basic
 	 */
 	public function testConfusableUrlsAreRefused()
 	{
-		foreach (array(
+		foreach ([
 			'http://127.0.0.1:80\\@1.1.1.1/',
 			'http://1.1.1.1@127.0.0.1/',
 			'http://user:pass@1.1.1.1/',
 			'http://1.1.1.1\\x/',
-		) as $url)
+		] as $url)
 		{
 			$this->assertFalse(PublicUrl::check($url), $url);
 		}
@@ -67,8 +67,8 @@ class PublicUrlTest extends Basic
 	{
 		$this->assertFalse(PublicUrl::check('ftp://1.1.1.1/'));
 		$this->assertFalse(PublicUrl::check('file:///etc/passwd'));
-		$this->assertFalse(PublicUrl::check('http://1.1.1.1/', array('https')));
-		$this->assertNotFalse(PublicUrl::check('https://1.1.1.1/', array('https')));
+		$this->assertFalse(PublicUrl::check('http://1.1.1.1/', ['https']));
+		$this->assertNotFalse(PublicUrl::check('https://1.1.1.1/', ['https']));
 	}
 
 	/**
@@ -81,12 +81,12 @@ class PublicUrlTest extends Basic
 	{
 		$target = PublicUrl::check('https://1.1.1.1/a/b?c=d#frag');
 		$this->assertEquals('https://1.1.1.1/a/b?c=d', $target['url']);
-		$this->assertEquals(array('1.1.1.1'), $target['addresses']);
-		$this->assertEquals(array(), $target['pins']);
+		$this->assertEquals(['1.1.1.1'], $target['addresses']);
+		$this->assertEquals([], $target['pins']);
 		$this->assertEquals(443, $target['port']);
 
 		$target = PublicUrl::check('http://[2606:4700:4700::1111]:8080');
 		$this->assertEquals('http://[2606:4700:4700::1111]:8080/', $target['url']);
-		$this->assertEquals(array('2606:4700:4700::1111'), $target['addresses']);
+		$this->assertEquals(['2606:4700:4700::1111'], $target['addresses']);
 	}
 }

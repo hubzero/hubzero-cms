@@ -68,20 +68,20 @@ class Product extends \Hubzero\Component\SiteController
         // A flag whether the item is available for purchase (for any reason, used by the auditors)
         $productAvailable = true;
 
-        $pageMessages = array();
+        $pageMessages = [];
 
         // Get the cart
         $cart = new CurrentCart();
 
         // POST add to cart request
         $addToCartRequest = Request::getBool('addToCart', false, 'post');
-        $options = Request::getArray('og', array(), 'post');
+        $options = Request::getArray('og', [], 'post');
         $qty = Request::getInt('qty', 1, 'post');
         $qty = max(1, $qty);
 
         if ($addToCartRequest) {
             // Initialize errors array
-            $errors = array();
+            $errors = [];
 
             // Check if passed options/productID map to a SKU
             try {
@@ -89,7 +89,7 @@ class Product extends \Hubzero\Component\SiteController
                 $cart->add($sku, $qty);
             } catch (\Exception $e) {
                 $errors[] = $e->getMessage();
-                $pageMessages[] = array($e->getMessage(), 'error');
+                $pageMessages[] = [$e->getMessage(), 'error'];
             }
 
             if (!empty($errors)) {
@@ -115,7 +115,7 @@ class Product extends \Hubzero\Component\SiteController
                 // Product is not available for purchase
                 $productAvailable = false;
                 foreach ($auditorResponse->notices as $notice) {
-                    $pageMessages[] = array($notice, 'warning');
+                    $pageMessages[] = [$notice, 'warning'];
                 }
             }
         }
@@ -132,7 +132,7 @@ class Product extends \Hubzero\Component\SiteController
         }
 
         // Find a price range for the product
-        $priceRange = array('high' => 0, 'low' => false);
+        $priceRange = ['high' => 0, 'low' => false];
 
         /*
             Find if there is a need to display a product quantity dropdown on the initial view load. It will be only displayed for single SKU that allows multiple items.

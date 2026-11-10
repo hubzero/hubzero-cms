@@ -24,7 +24,7 @@ class PHP extends Base
      * @param   array   $params  Parameters used by the formatter
      * @return  string  Config class formatted string
      */
-    public function objectToString($object, $params = array())
+    public function objectToString($object, $params = [])
     {
         // Build the object variables string
         $vars = '';
@@ -55,7 +55,7 @@ class PHP extends Base
      * @param   array   $options  Options used by the formatter.
      * @return  object   Data object.
      */
-    public function stringToObject($data, $options = array())
+    public function stringToObject($data, $options = [])
     {
         return true;
     }

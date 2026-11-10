@@ -20,47 +20,47 @@ class Migration20190221000000ComProjects extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__project_activity' => array(
+    public static $tables = [
+        '#__project_activity' => [
             'recorded'
-        ),
-        '#__project_comments' => array(
+        ],
+        '#__project_comments' => [
             'created'
-        ),
-        '#__project_logs' => array(
+        ],
+        '#__project_logs' => [
             'time'
-        ),
-        '#__project_microblog' => array(
+        ],
+        '#__project_microblog' => [
             'posted'
-        ),
-        '#__project_owners' => array(
+        ],
+        '#__project_owners' => [
             'added'
-        ),
-        '#__project_repos' => array(
+        ],
+        '#__project_repos' => [
             'created'
-        ),
-        '#__project_stats' => array(
+        ],
+        '#__project_stats' => [
             'processed'
-        ),
-        '#__project_todo' => array(
+        ],
+        '#__project_todo' => [
             'created'
-        ),
-        '#__project_tool_instances' => array(
+        ],
+        '#__project_tool_instances' => [
             'created'
-        ),
-        '#__project_tool_logs' => array(
+        ],
+        '#__project_tool_logs' => [
             'recorded'
-        ),
-        '#__project_tool_views' => array(
+        ],
+        '#__project_tool_views' => [
             'viewed'
-        ),
-        '#__project_tools' => array(
+        ],
+        '#__project_tools' => [
             'created'
-        ),
-        '#__projects' => array(
+        ],
+        '#__projects' => [
             'created'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

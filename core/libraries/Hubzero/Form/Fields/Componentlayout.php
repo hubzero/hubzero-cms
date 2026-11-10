@@ -109,7 +109,7 @@ class Componentlayout extends Field
                 throw new Exception($db->getErrorMsg(), 500);
             }
 
-            $paths = array(PATH_APP, PATH_CORE);
+            $paths = [PATH_APP, PATH_CORE];
 
             $filesystem = App::get('filesystem');
 
@@ -123,10 +123,10 @@ class Componentlayout extends Field
             $component_path = Util::normalizePath($path . '/components/' . $extn . '/views/' . $view . '/tmpl');
 
             // Prepare array of component layouts
-            $component_layouts = array();
+            $component_layouts = [];
 
             // Prepare the grouped list
-            $groups = array();
+            $groups = [];
 
             // Add a Use Global option if useglobal="true" in XML file
             if ($this->element['useglobal'] == 'true') {
@@ -141,10 +141,10 @@ class Componentlayout extends Field
                 ($component_layouts = $filesystem->files($component_path, '^[^_]*\.xml$', false, true))
             ) {
                 // Create the group for the component
-                $groups['_'] = array();
+                $groups['_'] = [];
                 $groups['_']['id'] = $this->id . '__';
                 $groups['_']['text'] = $lang->txt('JOPTION_FROM_COMPONENT');
-                $groups['_']['items'] = array();
+                $groups['_']['items'] = [];
 
                 foreach ($component_layouts as $i => $file) {
                     // Attempt to load the XML file.
@@ -216,10 +216,10 @@ class Componentlayout extends Field
                         }
                         if (count($files)) {
                             // Create the group for the template
-                            $groups[$template->name] = array();
+                            $groups[$template->name] = [];
                             $groups[$template->name]['id'] = $this->id . '_' . $template->element;
                             $groups[$template->name]['text'] = $lang->txt('JOPTION_FROM_TEMPLATE', $template->name);
-                            $groups[$template->name]['items'] = array();
+                            $groups[$template->name]['items'] = [];
 
                             foreach ($files as $file) {
                                 // Add an option to the template group
@@ -247,21 +247,21 @@ class Componentlayout extends Field
             $attr = $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
 
             // Prepare HTML code
-            $html = array();
+            $html = [];
 
             // Compute the current selected values
-            $selected = array($this->value);
+            $selected = [$this->value];
 
             // Add a grouped list
             $html[] = Dropdown::groupedlist(
                 $groups,
                 $this->name,
-                array(
+                [
                     'id' => $this->id,
                     'group.id' => 'id',
                     'list.attr' => $attr,
                     'list.select' => $selected
-                )
+                ]
             );
 
             return implode($html);

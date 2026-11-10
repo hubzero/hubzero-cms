@@ -76,7 +76,7 @@ class Courses extends Obj
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         if (!isset($instances[$oid])) {
@@ -122,7 +122,7 @@ class Courses extends Obj
      * @param      boolean $clear   Clear cached results?
      * @return     mixed
      */
-    public function courses($filters = array(), $clear = false)
+    public function courses($filters = [], $clear = false)
     {
         if (isset($filters['count']) && $filters['count']) {
             return $this->_tbl->getCount($filters);
@@ -134,7 +134,7 @@ class Courses extends Obj
                     $results[$key] = new Course($result);
                 }
             } else {
-                $results = array();
+                $results = [];
             }
 
             $this->_courses = new Iterator($results);
@@ -157,7 +157,7 @@ class Courses extends Obj
                 $results[$key] = new Course($result);
             }
         } else {
-            $results = array();
+            $results = [];
         }
 
         $courses = new Iterator($results);
@@ -172,7 +172,7 @@ class Courses extends Obj
      * @param      array $filters Filters to build query from
      * @return     mixed
      */
-    public function tags($what = 'cloud', $filters = array(), $clear = false)
+    public function tags($what = 'cloud', $filters = [], $clear = false)
     {
         $ct = new Tags();
 

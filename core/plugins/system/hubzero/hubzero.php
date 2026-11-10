@@ -30,7 +30,7 @@ class Hubzero extends Plugin
         $session = App::get('session');
 
         if ($session->isNew()) {
-            $tracker = array();
+            $tracker = [];
 
             // Transfer tracking cookie data to session
             $hash = App::hash(App::get('client')->name . ':tracker');
@@ -59,7 +59,7 @@ class Hubzero extends Plugin
             }
 
             if (!is_array($tracker)) {
-                $tracker = array();
+                $tracker = [];
             }
 
             if (empty($tracker['user_id'])) {
@@ -103,7 +103,7 @@ class Hubzero extends Plugin
                 ->info($username . ' ' . (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '') . ' detect');
 
             // set new tracking cookie with current data
-            $tracker = array();
+            $tracker = [];
             $tracker['user_id']  = $session->get('tracker.user_id');
             $tracker['username'] = $session->get('tracker.username');
             $tracker['sid']      = $session->get('tracker.sid');
@@ -153,7 +153,7 @@ class Hubzero extends Plugin
         if (is_array($post_username)) {
             // Flatten recursively: a nested username[] would make implode() emit
             // an "Array to string conversion" warning, which this tree escalates
-            $parts = array();
+            $parts = [];
             array_walk_recursive($post_username, function ($value) use (&$parts) {
                 $parts[] = is_scalar($value) ? (string) $value : '';
             });

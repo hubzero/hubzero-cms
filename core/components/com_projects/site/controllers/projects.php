@@ -60,28 +60,28 @@ class Projects extends Base
      */
     public function autocompleteTask()
     {
-        $filters = array(
+        $filters = [
             'limit'    => 20,
             'start'    => 0,
             'admin'    => 0,
             'search'   => trim(Request::getString('value', '')),
             'getowner' => 1
-        );
+        ];
 
         // Get records
         $rows = $this->model->entries('list', $filters, false);
 
         // Output search results in JSON format
-        $json = array();
+        $json = [];
         if (count($rows) > 0) {
             foreach ($rows as $row) {
                 $title = str_replace("\n", '', stripslashes(trim($row->get('title'))));
                 $title = str_replace("\r", '', $title);
 
-                $item = array(
+                $item = [
                     'id'   => $row->get('alias'),
                     'name' => $title
-                );
+                ];
 
                 // Push exact matches to the front
                 if ($row->get('alias') == $filters['search']) {
@@ -130,7 +130,7 @@ class Projects extends Base
 
                 if ($member->save()) {
                     $managers = \Components\Projects\Models\Orm\Owner::getProjectManagers($this->model->get('id'));
-                    $emails = array();
+                    $emails = [];
                     foreach ($managers as $manager) {
                         $emails[] = $manager->user->email;
                     }
@@ -173,7 +173,7 @@ class Projects extends Base
         }
 
         // Filters
-        $filters = array();
+        $filters = [];
         $filters['mine']    = 1;
         $filters['updates'] = 1;
         $filters['sortby']  = 'myprojects';
@@ -258,7 +258,7 @@ class Projects extends Base
             return;
         }
         if ($reviewer && !$this->model->reviewerAccess($reviewer)) {
-            $this->view = new \Hubzero\Component\View(array('name' => 'error', 'layout' => 'default'));
+            $this->view = new \Hubzero\Component\View(['name' => 'error', 'layout' => 'default']);
             $this->view->error  = Lang::txt('COM_PROJECTS_REVIEWER_RESTRICTED_ACCESS');
             $this->view->title = $reviewer == 'sponsored'
                          ? Lang::txt('COM_PROJECTS_REVIEWER_SPS')
@@ -268,7 +268,7 @@ class Projects extends Base
         }
 
         // Incoming
-        $filters = array();
+        $filters = [];
         $filters['limit'] = Request::getInt(
             'limit',
             intval(Config::get('list_limit', 25)),
@@ -285,17 +285,17 @@ class Projects extends Base
             $filters['active'] = true;
         }
 
-        if (!in_array($filters['sortby'], array('title', 'id', 'myprojects', 'owner', 'created', 'type', 'role', 'privacy', 'status', 'grant_status'))) {
+        if (!in_array($filters['sortby'], ['title', 'id', 'myprojects', 'owner', 'created', 'type', 'role', 'privacy', 'status', 'grant_status'])) {
             $filters['sortby'] = 'title';
         }
 
-        if (!in_array($filters['sortdir'], array('DESC', 'ASC'))) {
+        if (!in_array($filters['sortdir'], ['DESC', 'ASC'])) {
             $filters['sortdir'] = 'ASC';
         }
 
-        if ($reviewer == 'sponsored' && !in_array($filters['filterby'], array('all', 'open', 'public', 'archived', 'pending'))) {
+        if ($reviewer == 'sponsored' && !in_array($filters['filterby'], ['all', 'open', 'public', 'archived', 'pending'])) {
             $filters['filterby'] = 'all';
-        } elseif ($reviewer == 'sensitive' && !in_array($filters['filterby'], array('setting_up_in_progress', 'active', 'archived', 'deleted', 'rejected', 'pending'))) {
+        } elseif ($reviewer == 'sensitive' && !in_array($filters['filterby'], ['setting_up_in_progress', 'active', 'archived', 'deleted', 'rejected', 'pending'])) {
             $filters['filterby'] = '';
         }
         // We're filtering by a specific state
@@ -366,7 +366,7 @@ class Projects extends Base
             // Options for project creator
             if ($this->model->access('owner')) {
                 $view = new \Hubzero\Component\View(
-                    array('name' => 'changeowner', 'layout' => 'default')
+                    ['name' => 'changeowner', 'layout' => 'default']
                 );
                 $view->project = $this->model;
                 $view->set('task', $this->_task);
@@ -548,7 +548,7 @@ class Projects extends Base
         $this->view->setLayout($layout);
 
         // Get available plugins
-        $plugins = Event::trigger('projects.onProjectAreas', array($this->model->get('alias')));
+        $plugins = Event::trigger('projects.onProjectAreas', [$this->model->get('alias')]);
 
         // Get tabbed plugins
         $this->view->tabs = Helpers\Html::getTabs($plugins);
@@ -580,11 +580,11 @@ class Projects extends Base
             }
 
             // Plugin params
-            $plugin_params = array(
+            $plugin_params = [
                 $this->model,
                 $action,
-                array($plugin)
-            );
+                [$plugin]
+            ];
 
             // Get plugin content
             $sections = Event::trigger('projects.onProject', $plugin_params);
@@ -606,7 +606,7 @@ class Projects extends Base
             }
 
             // Get item counts
-            $counts = Event::trigger('projects.onProjectCount', array($this->model));
+            $counts = Event::trigger('projects.onProjectCount', [$this->model]);
             $this->model->set('counts', Helpers\Html::getCountArray($counts));
         }
 
@@ -628,7 +628,7 @@ class Projects extends Base
         $this->view->set('msg', $this->_getNotifications('success'));
 
         /// Info block moved to info plugin
-        $this->view->set('info', array());
+        $this->view->set('info', []);
 
 
         if ($layout == 'invited') {
@@ -645,7 +645,7 @@ class Projects extends Base
         if (Session::get('newsubmission.project')) {
             // Unset the new submission session flag
             Session::set('newsubmission.project');
-            Event::trigger('content.onAfterContentSubmission', array('Project'));
+            Event::trigger('content.onAfterContentSubmission', ['Project']);
         }
 
         $this->view->display();
@@ -872,7 +872,7 @@ class Projects extends Base
         // delete, repopulated on reinstate. sysGroup() stores the group, which fires
         // user.onAfterStoreGroup -> the ldap plugin -> the LDAP posixGroup, so SFTP
         // (projfs) access is revoked on delete and restored on reinstate (ticket 2802).
-        if (in_array($this->_task, array('delete', 'reinstate'), true)) {
+        if (in_array($this->_task, ['delete', 'reinstate'], true)) {
             $this->model->_tblOwner->sysGroup(
                 $this->model->get('alias'),
                 $this->config->get('group_prefix', 'pr-')

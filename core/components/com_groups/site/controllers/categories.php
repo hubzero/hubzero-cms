@@ -102,7 +102,7 @@ class Categories extends Base
         $this->_buildPathway();
 
         // get view notifications
-        $notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
+        $notifications = ($this->getNotifications()) ? $this->getNotifications() : [];
 
         //display layout
         $this->view
@@ -124,7 +124,7 @@ class Categories extends Base
         Request::checkToken();
 
         // get request vars
-        $category = Request::getArray('category', array(), 'post');
+        $category = Request::getArray('category', [], 'post');
 
         // add group id to category
         $category['gidNumber'] = $this->group->get('gidNumber');
@@ -163,10 +163,10 @@ class Categories extends Base
         $url = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages#categories');
 
         // Log activity
-        $recipients = array(
+        $recipients = [
             ['group', $this->group->get('gidNumber')],
             ['user', User::get('id')]
-        );
+        ];
         foreach ($this->group->get('managers') as $recipient) {
             $recipients[] = ['user', $recipient];
         }
@@ -181,11 +181,11 @@ class Categories extends Base
                     $this->category->get('title'),
                     '<a href="' . $url . '">' . htmlspecialchars((string) $this->group->get('description'), ENT_QUOTES, 'UTF-8') . '</a>'
                 ),
-                'details'     => array(
+                'details'     => [
                     'title'     => $this->category->get('title'),
                     'url'       => $url,
                     'gidNumber' => $this->group->get('gidNumber')
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -226,10 +226,10 @@ class Categories extends Base
         }
 
         // Log activity
-        $recipients = array(
+        $recipients = [
             ['group', $this->group->get('gidNumber')],
             ['user', User::get('id')]
-        );
+        ];
         foreach ($this->group->get('managers') as $recipient) {
             $recipients[] = ['user', $recipient];
         }
@@ -244,11 +244,11 @@ class Categories extends Base
                     $category->get('title'),
                     '<a href="' . $url . '">' . htmlspecialchars((string) $this->group->get('description'), ENT_QUOTES, 'UTF-8') . '</a>'
                 ),
-                'details'     => array(
+                'details'     => [
                     'title'     => $category->get('title'),
                     'url'       => $url,
                     'gidNumber' => $this->group->get('gidNumber')
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);

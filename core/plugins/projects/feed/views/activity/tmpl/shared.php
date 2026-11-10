@@ -23,14 +23,14 @@ $this->js();
 $li = '';
 
 if (count($this->activities) > 0) {
-    $projects = array();
+    $projects = [];
     $i = 1;
     ?>
     <div id="latest_activity" class="infofeed">
         <div class="activity-items" id="activity-feed">
             <?php
             // get all sessions
-            $online = array();
+            $online = [];
 
             // Loop through activities
             foreach ($this->activities as $activity) {

@@ -146,9 +146,9 @@ class Flavor extends Base implements CommandInterface
             return;
         }
 
-        $matches = array();
+        $matches = [];
         $nearest = null;
-        $notes   = array();
+        $notes   = [];
 
         foreach ($this->flavors($this->finder()) as $flavor) {
             $found = $applier->check($flavor);
@@ -157,7 +157,7 @@ class Flavor extends Base implements CommandInterface
                 $matches[] = $flavor->name();
                 $notes     = array_merge($notes, $applier->notes());
             } elseif ($nearest === null || count($found) < count($nearest[1])) {
-                $nearest = array($flavor->name(), $found, $applier->notes());
+                $nearest = [$flavor->name(), $found, $applier->notes()];
             }
         }
 

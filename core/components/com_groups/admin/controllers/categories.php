@@ -58,7 +58,7 @@ class Categories extends AdminController
      */
     public function displayTask()
     {
-        $filters = array(
+        $filters = [
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
@@ -75,7 +75,7 @@ class Categories extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         // Get records
         $entries = Category::all()
@@ -112,7 +112,7 @@ class Categories extends AdminController
 
         if (!is_object($row)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id) && !empty($id)) {
                 $id = $id[0];
             }
@@ -152,7 +152,7 @@ class Categories extends AdminController
         }
 
         // Get request vars
-        $fields = Request::getArray('category', array(), 'post');
+        $fields = Request::getArray('category', [], 'post');
 
         // Add group id to category
         $fields['gidNumber'] = $this->group->get('gidNumber');
@@ -170,15 +170,15 @@ class Categories extends AdminController
         $action = (isset($fields['id']) && $fields['id'])
             ? 'group_pagecategory_updated'
             : 'group_pagecategory_created';
-        Log::log(array(
+        Log::log([
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => $action,
-            'comments'  => array(
+            'comments'  => [
                 'id'    => $row->get('id'),
                 'title' => $row->get('title'),
                 'color' => $row->get('color')
-            )
-        ));
+            ]
+        ]);
 
         // Notify user
         Notify::success(Lang::txt('COM_GROUPS_PAGES_CATEGORY_SAVED'));
@@ -207,8 +207,8 @@ class Categories extends AdminController
         }
 
         // Get request vars
-        $ids = Request::getArray('id', array());
-        $deleted = array();
+        $ids = Request::getArray('id', []);
+        $deleted = [];
 
         // Delete each category
         foreach ($ids as $categoryid) {
@@ -234,11 +234,11 @@ class Categories extends AdminController
             Notify::success(Lang::txt('COM_GROUPS_PAGES_CATEGORY_DELETE_SUCCESS'));
 
             // Log change
-            Log::log(array(
+            Log::log([
                 'gidNumber' => $this->group->get('gidNumber'),
                 'action'    => 'group_pagecategory_deleted',
                 'comments'  => $deleted
-            ));
+            ]);
         }
 
         $this->cancelTask();

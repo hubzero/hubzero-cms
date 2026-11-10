@@ -29,8 +29,8 @@ class Migration20131209221353ComUsers extends Base
 
         if ($results && count($results) > 0) {
             foreach ($results as $r) {
-                $look_for     = array('/user/remind', '/user/reset');
-                $replace_with = array('/users/remind', '/users/reset');
+                $look_for     = ['/user/remind', '/user/reset'];
+                $replace_with = ['/users/remind', '/users/reset'];
                 $new_content  = str_replace($look_for, $replace_with, $r->content);
 
                 if ($new_content != $r->content) {

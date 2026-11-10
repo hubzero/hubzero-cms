@@ -36,19 +36,19 @@ class Hubpresenter extends Obj
             $source          = array_pop($old_media_parts);
             $parts           = explode('.', $source);
             $ext             = array_pop($parts);
-            $new_media[]     = array(
+            $new_media[]     = [
                 'source' => $source,
                 'type'   => $ext
-            );
+            ];
         }
 
         // Set the title
         $new_title = (string)$manifest->webtitle;
 
         // Set the type
-        $new_type = (in_array($ext, array('webm','mp4','ogv'))) ? 'Video' : 'Audio';
+        $new_type = (in_array($ext, ['webm','mp4','ogv'])) ? 'Video' : 'Audio';
 
-        $new_slides = array();
+        $new_slides = [];
         for ($i = 0; $i < count($manifest->event); $i++) {
             $title = (string)$manifest->event[$i]->title;
             $type  = (string)$manifest->event[$i]->type;
@@ -59,7 +59,7 @@ class Hubpresenter extends Obj
             if (strtolower($type) == 'video') {
                 $orig_media = $media;
 
-                $media = array();
+                $media = [];
 
                 $media[0]['source'] = $orig_media;
                 $media[0]['type']   = Filesystem::extension($orig_media);
@@ -82,18 +82,18 @@ class Hubpresenter extends Obj
                 }
             }
 
-            $new_slides[] = array(
+            $new_slides[] = [
                 'title' => $title,
                 'type'  => $type,
                 'media' => $media,
                 'time'  => $time,
                 'slide' => $slide
-            );
+            ];
         }
 
-        $data = array(
-            'presentation' => array()
-        );
+        $data = [
+            'presentation' => []
+        ];
         $data['presentation']['title']  = $new_title;
         $data['presentation']['type']   = $new_type;
         $data['presentation']['media']  = $new_media;

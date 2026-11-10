@@ -70,7 +70,7 @@ class Breadcrumbs extends Module
         $count = count($items);
 
         // Don't use $items here as it references Pathway properties directly
-        $crumbs = array();
+        $crumbs = [];
         for ($i = 0; $i < $count; $i++) {
             $crumbs[$i] = new stdClass();
             $crumbs[$i]->name = stripslashes(htmlspecialchars($items[$i]->name, ENT_COMPAT, 'UTF-8'));
@@ -107,8 +107,8 @@ class Breadcrumbs extends Module
     protected function findGroupCrumb($items, $group)
     {
         // The group crumb is linked by whichever cn the request used
-        $links = array();
-        foreach (array($group->get('cn'), Request::getString('cn', '')) as $cn) {
+        $links = [];
+        foreach ([$group->get('cn'), Request::getString('cn', '')] as $cn) {
             $links[] = strtolower('index.php?option=com_groups&cn=' . $cn);
         }
 

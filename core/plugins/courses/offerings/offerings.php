@@ -36,7 +36,7 @@ class Offerings extends Plugin
     public function onCourseView($course, $active = null)
     {
         // Check that there are any offerings to show
-        if ($course->offerings(array('state' => 1, 'sort_Dir' => 'ASC'), true)->total() <= 0) {
+        if ($course->offerings(['state' => 1, 'sort_Dir' => 'ASC'], true)->total() <= 0) {
             return null;
         }
 

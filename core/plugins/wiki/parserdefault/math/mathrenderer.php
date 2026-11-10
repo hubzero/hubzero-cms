@@ -28,7 +28,7 @@ class MathRenderer
      *
      * @var  array
      */
-    protected $params = array();
+    protected $params = [];
 
     /**
      * Component configuration
@@ -100,7 +100,7 @@ class MathRenderer
      * @param      array  $params Parameters (not used?)
      * @return     void
      */
-    public function __construct($tex, $params = array())
+    public function __construct($tex, $params = [])
     {
         $this->tex    = $tex;
         $this->params = $params;
@@ -483,7 +483,7 @@ class MathRenderer
      * @param      array  $params Parameters (not used?)
      * @return     string
      */
-    public static function renderMath($tex, $params = array())
+    public static function renderMath($tex, $params = [])
     {
         $math = new self($tex, $params);
         return $math->render();

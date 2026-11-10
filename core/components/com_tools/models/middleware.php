@@ -30,13 +30,13 @@ class Middleware extends Obj
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_cache = array(
+    private $_cache = [
         'zones.count' => null,
         'zones.list'  => null,
         'zones.one'   => null,
         'session'     => null,
         'tool'        => null
-    );
+    ];
 
     /**
      * Registry
@@ -126,14 +126,14 @@ class Middleware extends Obj
      * @param      array  $allowed List of zone IDs to check against
      * @return     object
      */
-    public function zoning($ip = null, $allowed = array())
+    public function zoning($ip = null, $allowed = [])
     {
         if (!$ip) {
             return new Zone();
         }
 
         // Find by IP
-        $zones = $this->zones('list', array('state' => 'up', 'id' => $allowed, 'ip' => $ip), true);
+        $zones = $this->zones('list', ['state' => 'up', 'id' => $allowed, 'ip' => $ip], true);
         if ($zones->total() > 0) {
             foreach ($zones as $zone) {
                 return $zone;
@@ -150,7 +150,7 @@ class Middleware extends Obj
             return new Zone();
         }
 
-        $zones = $this->zones('list', array('state' => 'up', 'id' => $allowed, 'countrySHORT' => $country), true);
+        $zones = $this->zones('list', ['state' => 'up', 'id' => $allowed, 'countrySHORT' => $country], true);
         if ($zones->total() > 0) {
             foreach ($zones as $zone) {
                 return $zone;
@@ -163,7 +163,7 @@ class Middleware extends Obj
             return new Zone();
         }
 
-        $zones = $this->zones('list', array('state' => 'up', 'id' => $allowed, 'continent' => $continent), true);
+        $zones = $this->zones('list', ['state' => 'up', 'id' => $allowed, 'continent' => $continent], true);
         if ($zones->total() > 0) {
             foreach ($zones as $zone) {
                 return $zone;
@@ -180,7 +180,7 @@ class Middleware extends Obj
      * @param      array  $filters Filters to apply to query
      * @return     mixed Returns an integer or array depending upon format chosen
      */
-    public function zones($rtrn = 'list', $filters = array(), $clear = false)
+    public function zones($rtrn = 'list', $filters = [], $clear = false)
     {
         $tbl = new \Components\Tools\Tables\Zones($this->_db);
 
@@ -201,7 +201,7 @@ class Middleware extends Obj
                             $results[$key] = new Zone($result);
                         }
                     } else {
-                        $results = array();
+                        $results = [];
                     }
                     $this->_cache['zones.list'] = new ItemList($results);
                 }

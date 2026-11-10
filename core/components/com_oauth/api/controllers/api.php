@@ -183,11 +183,11 @@ class Api extends ApiController
         }
 
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            $this->view = new \Hubzero\Component\View(array(
+            $this->view = new \Hubzero\Component\View([
                 'base_path' => dirname(dirname(__DIR__)) . '/site',
                 'name'      => 'authorize',
                 'layout'    => 'authorize'
-            ));
+            ]);
 
 
             $this->view->oauth_token = $oauth_token;

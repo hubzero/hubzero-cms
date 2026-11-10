@@ -61,7 +61,7 @@ class Plugins extends AdminController
      */
     public function displayTask()
     {
-        $filters = array(
+        $filters = [
             'folder' => 'resources',
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
@@ -96,7 +96,7 @@ class Plugins extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         $query = Plugin::all()
             ->where('state', '>=', 0);
@@ -126,7 +126,7 @@ class Plugins extends AdminController
         if (is_numeric($filters['state'])) {
             $query->whereEquals($p . '.enabled', (int) $filters['state']);
         } elseif ($filters['state'] === '') {
-            $query->whereIn($p . '.enabled', array(0, 1));
+            $query->whereIn($p . '.enabled', [0, 1]);
         }
 
         // Filter by folder.
@@ -189,11 +189,11 @@ class Plugins extends AdminController
         // Show related content
         $out = Event::trigger(
             'resources.onManage',
-            array(
+            [
                 $this->_option,
                 $this->_controller,
                 Request::getString('action', 'default')
-            )
+            ]
         );
 
         $html = '';
@@ -222,14 +222,14 @@ class Plugins extends AdminController
         Request::checkToken(['post', 'get']);
 
         // Get items to publish from the request.
-        $cid   = Request::getArray('id', array());
-        $data  = array(
+        $cid   = Request::getArray('id', []);
+        $data  = [
             'publish'   => 1,
             'unpublish' => 0,
             'archive'   => 2,
             'trash'     => -2,
             'report'    => -3
-        );
+        ];
         $task  = $this->getTask();
         $value = Arr::getValue($data, $task, 0, 'int');
 
@@ -322,8 +322,8 @@ class Plugins extends AdminController
         // Check for request forgeries
         Request::checkToken(['post', 'get']);
 
-        $pks   = Request::getArray('id', array(0), 'post');
-        $order = Request::getArray('order', array(0), 'post');
+        $pks   = Request::getArray('id', [0], 'post');
+        $order = Request::getArray('order', [0], 'post');
 
         // Sanitize the input
         Arr::toInteger($pks);

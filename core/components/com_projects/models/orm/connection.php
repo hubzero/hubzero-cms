@@ -31,10 +31,10 @@ class Connection extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'project_id'  => 'positive|nonzero',
         'provider_id' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Defines a belongs to one relationship between connections and connection providers

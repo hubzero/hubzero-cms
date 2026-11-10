@@ -32,9 +32,9 @@ class Groups extends Plugin
      */
     public function &onResourcesSubAreas($resource)
     {
-        $areas = array(
+        $areas = [
             'groups' => Lang::txt('PLG_RESOURCES_GROUPS')
-        );
+        ];
         return $areas;
     }
 
@@ -48,11 +48,11 @@ class Groups extends Plugin
      */
     public function onResourcesSub($resource, $option, $miniview = 0)
     {
-        $arr = array(
+        $arr = [
             'area'     => $this->_name,
             'html'     => '',
             'metadata' => ''
-        );
+        ];
 
         if (!$resource->get('group_owner') || substr($resource->get('group_owner'), 0, strlen('app-')) == 'app-') {
                 $group = false;
@@ -60,7 +60,7 @@ class Groups extends Plugin
                 $group = \Hubzero\User\Group::getInstance($resource->get('group_owner'));
         }
 
-                $aclgroups = array();
+                $aclgroups = [];
 
         foreach ($resource->groups as $g) {
                 $aclgroup = \Hubzero\User\Group::getInstance($g);
@@ -74,7 +74,7 @@ class Groups extends Plugin
             }
         }
 
-        if ($aclgroups == array() && $group == false) {
+        if ($aclgroups == [] && $group == false) {
             return $arr;
         }
 

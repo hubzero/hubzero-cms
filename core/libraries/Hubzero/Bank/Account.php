@@ -52,9 +52,9 @@ class Account extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'uid' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Load a record by user ID

@@ -42,7 +42,7 @@ trait UsesHtmxComponent
      */
     protected function htmxState(): array
     {
-        return array();
+        return [];
     }
 
     /**
@@ -54,11 +54,11 @@ trait UsesHtmxComponent
      */
     protected function htmxSecurityConfig(): array
     {
-        return array(
+        return [
             'allowEval'       => false,
             'allowScriptTags' => false,
             'historyCacheSize' => 20
-        );
+        ];
     }
 
     /**
@@ -75,10 +75,10 @@ trait UsesHtmxComponent
         }
 
         if (!isset($state['htmx']) || !is_array($state['htmx'])) {
-            $state['htmx'] = array();
+            $state['htmx'] = [];
         }
         if (!isset($state['htmx']['security']) || !is_array($state['htmx']['security'])) {
-            $state['htmx']['security'] = array();
+            $state['htmx']['security'] = [];
         }
 
         $state['htmx']['security'] = array_merge($state['htmx']['security'], $security);

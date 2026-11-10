@@ -72,7 +72,7 @@ class Bibtex extends Plugin
 
         // Fix authors
         for ($i = 0; $i < count($citations); $i++) {
-            $authors = array();
+            $authors = [];
             $auths   = isset($citations[$i]['author']) ? $citations[$i]['author'] : '';
             if ($auths != '') {
                 foreach ($auths as $a) {
@@ -87,7 +87,7 @@ class Bibtex extends Plugin
         }
 
         // Array to hold final citataions
-        $final = array();
+        $final = [];
 
         // Check for duplicates
         for ($i = 0; $i < count($citations); $i++) {
@@ -141,7 +141,7 @@ class Bibtex extends Plugin
             $existingCitations->whereEquals('scope_id', $scope_id);
         }
 
-        $matchingKeys = array('isbn', 'title', 'doi');
+        $matchingKeys = ['isbn', 'title', 'doi'];
         $searchParams = array_intersect_key($citation, array_flip($matchingKeys));
         $searchParams = array_filter($searchParams);
         if (!empty($searchParams)) {

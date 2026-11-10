@@ -57,19 +57,19 @@ class Menu extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'title'    => 'notempty',
         'menutype' => 'notempty'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      **/
-    public $always = array(
+    public $always = [
         'menutype'
-    );
+    ];
 
     /**
      * Sets up additional custom rules
@@ -346,7 +346,7 @@ class Menu extends Relational
 
         Form::addFieldPath(__DIR__ . '/fields');
 
-        $form = new Form('menu', array('control' => 'fields'));
+        $form = new Form('menu', ['control' => 'fields']);
 
         if (!$form->loadFile($file, false, '//form')) {
             $this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
@@ -360,7 +360,7 @@ class Menu extends Relational
         // something a menu module may render, and its menutype is the name the
         // generated entries are filed under.
         if ($this->get('type') == 'component') {
-            foreach (array('menutype', 'type') as $field) {
+            foreach (['menutype', 'type'] as $field) {
                 $form->setFieldAttribute($field, 'disabled', 'true');
                 $form->setFieldAttribute($field, 'filter', 'unset');
             }
@@ -412,14 +412,14 @@ class Menu extends Relational
 
         $modules = $db->loadObjectList();
 
-        $result = array();
+        $result = [];
 
         foreach ($modules as &$module) {
             $params = new \Hubzero\Config\Registry($module->params);
 
             $menuType = $params->get('menutype');
             if (!isset($result[$menuType])) {
-                $result[$menuType] = array();
+                $result[$menuType] = [];
             }
             $result[$menuType][] = &$module;
         }

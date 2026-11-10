@@ -113,7 +113,7 @@ class Entry extends Model
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         if (is_object($oid)) {
@@ -322,7 +322,7 @@ class Entry extends Model
      * @param   boolean  $clear    Clear cached data?
      * @return  mixed
      */
-    public function comments($rtrn = 'list', $filters = array(), $clear = false)
+    public function comments($rtrn = 'list', $filters = [], $clear = false)
     {
         $tbl = new \Components\Projects\Tables\Comment($this->_db);
 
@@ -354,7 +354,7 @@ class Entry extends Model
                             $results[$key]->set('path', '');
                         }
                     } else {
-                        $results = array();
+                        $results = [];
                     }
                     $this->comments = new \Hubzero\Base\ItemList($results);
                 }

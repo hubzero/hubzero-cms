@@ -215,7 +215,7 @@ $this->thread->set('category', $this->category->get('alias'));
                 <label for="field_comment">
                     <?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?>
                     <?php
-                    echo $this->editor('fields[comment]', '', 35, 15, 'field_comment', array('class' => 'minimal no-footer'));
+                    echo $this->editor('fields[comment]', '', 35, 15, 'field_comment', ['class' => 'minimal no-footer']);
                     ?>
                 </label>
 

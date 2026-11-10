@@ -94,7 +94,7 @@ class Likesv1r0 extends ApiController
         $db = App::get('db');
 
         $db->prepare("SELECT COUNT(*) FROM `#__forum_posts_like` WHERE postId = ? AND userId = ?");
-        $db->bind(array($postId, $userId));
+        $db->bind([$postId, $userId]);
         if ($db->loadResult()) {
             $this->send(true);
             return;
@@ -103,7 +103,7 @@ class Likesv1r0 extends ApiController
         $insertQuery = "INSERT INTO `#__forum_posts_like` (`threadId`, `postId`, `userId`, `created`)
 		  VALUES (?,?,?,?)";
 
-        $insertVars = array($threadId, $postId, $userId, $created);
+        $insertVars = [$threadId, $postId, $userId, $created];
         $db->prepare($insertQuery);
         $db->bind($insertVars);
         $insertResult = $db->execute();
@@ -124,7 +124,7 @@ class Likesv1r0 extends ApiController
         $db = App::get('db');
 
         $deleteQuery = "DELETE FROM `#__forum_posts_like` WHERE threadId = ? AND postId = ? AND userId = ?";
-        $deleteVars = array($threadId, $postId, $userId);
+        $deleteVars = [$threadId, $postId, $userId];
         $db->prepare($deleteQuery);
         $db->bind($deleteVars);
         $deleteResult = $db->execute();

@@ -33,7 +33,7 @@ class Group extends Field
     protected function getInput()
     {
         $onchange = $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
-        $options = array();
+        $options = [];
 
         foreach ($this->element->children() as $option) {
             $optVal = (string) $option->attributes()->value;

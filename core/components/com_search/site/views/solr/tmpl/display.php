@@ -63,9 +63,9 @@ endif;
         if ($tagSearchEnabled) {
             $tags_list = Event::trigger(
                 'hubzero.onGetMultiEntry',
-                array(
-                    array('tags', 'tags', 'actags', '', $this->tags)
-                )
+                [
+                    ['tags', 'tags', 'actags', '', $this->tags]
+                ]
             );
 
             if (count($tags_list) > 0) {

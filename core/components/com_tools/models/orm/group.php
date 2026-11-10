@@ -38,8 +38,8 @@ class Group extends Relational
      *
      * @var  array
      **/
-    protected $rules = array(
+    protected $rules = [
         'toolid' => 'positive|nonzero',
         'cn'     => 'notempty'
-    );
+    ];
 }

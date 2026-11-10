@@ -38,7 +38,7 @@ if (isset($manifest) && is_file($manifest)) {
     } else {
         $type = (isset($manifest->presentation->slides)) ? 'hubpresenter' : 'html5';
     }
-} elseif (in_array(substr($this->model->get('url'), -3), array('mov', 'mp4', 'm4v', 'ogg', 'ogv', 'webm'))) {
+} elseif (in_array(substr($this->model->get('url'), -3), ['mov', 'mp4', 'm4v', 'ogg', 'ogv', 'webm'])) {
     $type = 'standalone';
 } else {
     $type = 'none';
@@ -56,7 +56,7 @@ if ($type == 'hubpresenter') {
     if (is_dir($media_dir)) {
         // Get all files matching  /.mp4|.webs|.ogv|.m4v|.mp3/
         $media = Filesystem::files($media_dir, '.mp4|.webm|.ogv|.m4v|.mp3', false, false);
-        $ext = array();
+        $ext = [];
         foreach ($media as $m) {
             $pieces = explode('.', $m);
             $ext[]  = array_pop($pieces);
@@ -72,7 +72,7 @@ if ($type == 'hubpresenter') {
         $slides = Filesystem::files($slide_path, '', false, false);
 
         // Array to hold slides with video clips
-        $slide_video = array();
+        $slide_video = [];
 
         // Build array for checking slide video formats
         foreach ($slides as $s) {
@@ -80,7 +80,7 @@ if ($type == 'hubpresenter') {
             $ext = array_pop($parts);
             $name = implode('.', $parts);
 
-            if (in_array($ext, array('mp4', 'm4v', 'webm', 'ogv'))) {
+            if (in_array($ext, ['mp4', 'm4v', 'webm', 'ogv'])) {
                 $slide_video[$name][$ext] = $name . '.' . $ext;
             }
         }
@@ -108,10 +108,10 @@ if ($type == 'hubpresenter') {
     $presentation = $presentation->presentation;
 
     // get subs from json file
-    $subs = (isset($presentation->subtitles)) ? $presentation->subtitles : array();
+    $subs = (isset($presentation->subtitles)) ? $presentation->subtitles : [];
 
     // make sure source is full path to assets folder
-    $subFiles = array();
+    $subFiles = [];
     foreach ($subs as $k => $subtitle) {
         if (!strpos($subtitle->source, DS)) {
             $subtitle->source = $content_folder . DS . $subtitle->source;
@@ -121,7 +121,7 @@ if ($type == 'hubpresenter') {
     }
 
     // get local subs
-    $local_subs = array();
+    $local_subs = [];
     if (is_dir($content_folder)) {
         $local_subs = Filesystem::files(PATH_ROOT . DS . $content_folder, '.srt|.SRT', true, false);
     }
@@ -229,8 +229,8 @@ if ($type == 'hubpresenter' || $type == 'html5') {
         // and no `subtitles`, which fataled the page three lines after $base was
         // repaired. The hubpresenter branch of this same file already guards
         // `subtitles` the same way.
-        $__media = isset($presentation->media) ? (array) $presentation->media : array();
-        $__subs  = isset($presentation->subtitles) ? (array) $presentation->subtitles : array();
+        $__media = isset($presentation->media) ? (array) $presentation->media : [];
+        $__subs  = isset($presentation->subtitles) ? (array) $presentation->subtitles : [];
     ?>
     <div id="video-container">
         <?php if (count($__media) > 0) : ?>
@@ -276,14 +276,14 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                         $source = $video->source;
 
                         //is this the mp4 (need for flash)
-                    if (in_array($video->type, array('mp4','m4v'))) {
+                    if (in_array($video->type, ['mp4','m4v'])) {
                         $mp4 = $video->source;
                     }
 
                         //if were playing local files
                     if (substr($video->source, 0, 4) != 'http') {
                         $source = $base . $source;
-                        if (in_array($video->type, array('mp4','m4v'))) {
+                        if (in_array($video->type, ['mp4','m4v'])) {
                             $mp4 = $base . $mp4;
                         }
                     }
@@ -506,7 +506,7 @@ if ($type == 'hubpresenter' || $type == 'html5') {
         // property or ->media[0] on an empty list is a fatal, which this hub
         // serves as a 500. Guard them the way the html5 branch above does.
         $__ptype  = isset($presentation->type) ? strtolower((string) $presentation->type) : '';
-        $__pmedia = isset($presentation->media) ? array_values((array) $presentation->media) : array();
+        $__pmedia = isset($presentation->media) ? array_values((array) $presentation->media) : [];
     ?>
     <?php $presentationFormat = (isset($presentation->format) && strtoupper($presentation->format) == 'HD') ? 'presentation-hd' : ''; ?>
     <div id="presenter-container">

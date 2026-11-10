@@ -88,7 +88,7 @@ class Serials
 
         // Mark serials as used
         $serialIds = '0';
-        $serialNumbers = array();
+        $serialNumbers = [];
         foreach ($serials as $serial) {
             $serialNumbers[] = $serial->srNumber;
             $serialIds .= ',' . $serial->srId;

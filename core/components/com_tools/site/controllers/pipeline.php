@@ -75,7 +75,7 @@ class Pipeline extends SiteController
         Document::setTitle($this->view->title);
 
         // Filters
-        $this->view->filters = array();
+        $this->view->filters = [];
         $this->view->filters['filterby'] = trim(Request::getString('filterby', 'all'));
         $this->view->filters['search'] = trim(urldecode(Request::getString('search', '')));
         if (!$this->config->get('access-admin-component')) {
@@ -275,7 +275,7 @@ class Pipeline extends SiteController
         $hztv_dev = $hzt->getRevision('development');
         $hztv_current = $hzt->getRevision('current');
 
-        $this->view->status = array(
+        $this->view->status = [
             'toolid'          => $hzt->id,
             'published'       => $hzt->published,
             'version'         => $hztv_dev->version,
@@ -285,7 +285,7 @@ class Pipeline extends SiteController
             'resourceid'      => \Components\Tools\Models\Tool::getResourceId($this->_toolid),
             'currentrevision' => (is_object($hztv_current) ? $hztv_current->revision : ''),
             'currentversion'  => (is_object($hztv_current) ? $hztv_current->version : '')
-        );
+        ];
 
         if (Pathway::count() <= 0) {
             Pathway::append(
@@ -442,10 +442,10 @@ class Pipeline extends SiteController
 
         // get license
         if (!isset($this->view->license_choice)) {
-            $this->view->license_choice = array(
+            $this->view->license_choice = [
                 'text'     => $status['license'],
                 'template' => 'c1'
-            );
+            ];
         }
 
         if (!isset($this->view->code)) {
@@ -525,7 +525,7 @@ class Pipeline extends SiteController
 
         // Replace the default values
         $license = Request::getString('license', '');
-        $matches = Request::getArray('matches', array(), 'post');
+        $matches = Request::getArray('matches', [], 'post');
 
         if (!empty($matches) && count($matches) > 0) {
             foreach ($matches as $key => $match) {
@@ -535,11 +535,11 @@ class Pipeline extends SiteController
             }
         }
 
-        $this->license_choice = array(
+        $this->license_choice = [
             'text'      => $license,
             'template'  => Request::getString('templates', 'c1'),
             'authorize' => Request::getInt('authorize', 0)
-        );
+        ];
 
         $hztv->codeaccess = Request::getString('t_code', '@OPEN');
         $action = Request::getWord('action', 'dev');
@@ -645,17 +645,17 @@ class Pipeline extends SiteController
         // set defaults
         list($vncGeometryX, $vncGeometryY) = preg_split('/[x]/', $this->config->get('default_vnc'));
 
-        $this->view->defaults = array(
+        $this->view->defaults = [
             'toolname'     => '',
             'title'        => '',
             'version'      => '1.0',
             'description'  => '',
             'exec'         => '@OPEN',
-            'membergroups' => array(),
+            'membergroups' => [],
             'published'    => '',
             'code'         => '@OPEN',
             'wiki'         => '@OPEN',
-            'developers'   => array(User::get('id')),
+            'developers'   => [User::get('id')],
             'vncGeometryX' => $vncGeometryX,
             'vncGeometryY' => $vncGeometryY,
             'team'         => User::get('username'),
@@ -663,7 +663,7 @@ class Pipeline extends SiteController
             'repohost'     => $this->config->get('github', 1) ? "gitExternal" : "svnLocal",
             'github'       => '',
             'publishType'  => 'standard'
-        );
+        ];
 
         // Set the page title
         $this->view->title = Lang::txt(strtoupper($this->_option)) . ': ' .  Lang::txt('COM_TOOLS_TASK_REGISTER_TOOL');
@@ -790,33 +790,33 @@ class Pipeline extends SiteController
         }
 
         if ($codeaccess == '@OPEN') {
-            $hztrac->add_user_permission(0, array(
+            $hztrac->add_user_permission(0, [
                 'BROWSER_VIEW',
                 'LOG_VIEW',
                 'FILE_VIEW'
-            ));
+            ]);
         } elseif ($codeaccess == '@DEV') {
-            $hztrac->remove_user_permission(0, array(
+            $hztrac->remove_user_permission(0, [
                 'BROWSER_VIEW',
                 'LOG_VIEW',
                 'FILE_VIEW'
-            ));
+            ]);
         }
 
         if ($wikiaccess == '@OPEN') {
-            $hztrac->add_user_permission(0, array(
+            $hztrac->add_user_permission(0, [
                 'WIKI_VIEW',
                 'MILESTONE_VIEW',
                 'ROADMAP_VIEW',
                 'SEARCH_VIEW'
-            ));
+            ]);
         } elseif ($wikiaccess == '@DEV') {
-            $hztrac->remove_user_permission(0, array(
+            $hztrac->remove_user_permission(0, [
                 'WIKI_VIEW',
                 'MILESTONE_VIEW',
                 'ROADMAP_VIEW',
                 'SEARCH_VIEW'
-            ));
+            ]);
         }
 
         return true;
@@ -834,7 +834,7 @@ class Pipeline extends SiteController
         // and had never checked it.
         Request::checkToken();
 
-        $exportmap  = array(
+        $exportmap  = [
             '@OPEN'   => null,
             '@GROUP'  => null,
             '@US'     => 'us',
@@ -843,10 +843,10 @@ class Pipeline extends SiteController
             '@pu'     => 'pu',
             '@D1'     => 'd1',
             '@d1'     => 'd1'
-        );
+        ];
 
         // set vars
-        $tool = Request::getArray('tool', array(), 'post');
+        $tool = Request::getArray('tool', [], 'post');
         $tool = array_map(function ($v) {
             return is_scalar($v) ? trim((string) $v) : '';
         }, $tool);
@@ -866,7 +866,7 @@ class Pipeline extends SiteController
         $comment        = Request::getString('comment', '');
         $editversion    = Request::getString('editversion', 'dev', 'post');
         //$toolname     = strtolower($tool['toolname']);
-        $oldstatus      = array();
+        $oldstatus      = [];
 
         // Create a Tool Version object
         $objV = new \Components\Tools\Tables\Version($this->database);
@@ -1057,7 +1057,7 @@ class Pipeline extends SiteController
         $hzg->set('members', $tool['developers']);
 
         $hztrac = \Hubzero\Trac\Project::find_or_create('app:' . $tool['toolname']);
-        $hztrac->add_group_permission('apps', array(
+        $hztrac->add_group_permission('apps', [
             'WIKI_ADMIN',
             'MILESTONE_ADMIN',
             'BROWSER_VIEW',
@@ -1067,8 +1067,8 @@ class Pipeline extends SiteController
             'ROADMAP_VIEW',
             'TIMELINE_VIEW',
             'SEARCH_VIEW'
-        ));
-        $hztrac->add_group_permission($hzg->cn, array(
+        ]);
+        $hztrac->add_group_permission($hzg->cn, [
             'WIKI_ADMIN',
             'MILESTONE_ADMIN',
             'BROWSER_VIEW',
@@ -1078,11 +1078,11 @@ class Pipeline extends SiteController
             'ROADMAP_VIEW',
             'TIMELINE_VIEW',
             'SEARCH_VIEW'
-        ));
+        ]);
 
         $hztv->set('owner', $hzg->cn);
         $hztv->add('owner', 'apps');
-        $oldgroups = array();
+        $oldgroups = [];
         if ($id) {
             foreach (\Components\Tools\Models\Tool::getToolGroups($id) as $g) {
                 $oldgroups[] = $g->cn;
@@ -1101,14 +1101,14 @@ class Pipeline extends SiteController
             $hztv->update(); // Make sure tool exists in database or gensvn won't configure apachce access to it
 
             // Run add repo
-            $this->_addRepo($output, array(
+            $this->_addRepo($output, [
                 'toolname'    => $tool['toolname'],
                 'title'       => $tool['title'],
                 'description' => $tool['description'],
                 'repohost'    => (isset($tool['repohost']) ? $tool['repohost'] : ''),
                 'github'      => $tool['github'],
                 'publishType' => $tool['publishType']
-            ));
+            ]);
             if ($output['class'] != 'error') {
                 $hzt->state = 2;
                 $hzt->update();
@@ -1187,7 +1187,7 @@ class Pipeline extends SiteController
      * @return  boolean  False if errors, True on success
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _addRepo(&$output, $toolinfo = array())
+    protected function _addRepo(&$output, $toolinfo = [])
     {
         if (!$this->_toolid) {
             return false;
@@ -1286,7 +1286,7 @@ class Pipeline extends SiteController
             $newstate = \Components\Tools\Helpers\Html::getStatusNum($newstate);
         }
 
-        $oldstatus = ($hztv) ? $hztv->toArray() : array();
+        $oldstatus = ($hztv) ? $hztv->toArray() : [];
         $oldstatus['toolstate'] = $hzt->state;
 
         if (\Components\Tools\Models\Tool::validateVersion($newversion, $error, $hzt->id)) {
@@ -1399,7 +1399,7 @@ class Pipeline extends SiteController
         $hzt = \Components\Tools\Models\Tool::getInstance($this->_toolid);
         $hztv = $hzt->getRevision($editversion);
 
-        $oldstatus = ($hztv) ? $hztv->toArray() : array();
+        $oldstatus = ($hztv) ? $hztv->toArray() : [];
         $oldstatus['toolstate'] = $hzt->state;
 
         if ($newstate && !intval($newstate)) {
@@ -1468,7 +1468,7 @@ class Pipeline extends SiteController
         $hzt = \Components\Tools\Models\Tool::getInstance($this->_toolid);
         $hztv = $hzt->getRevision($editversion);
 
-        $oldstatus = ($hztv) ? $hztv->toArray() : array();
+        $oldstatus = ($hztv) ? $hztv->toArray() : [];
         $oldstatus['toolstate'] = $hzt->state;
 
         if ($newstate && !intval($newstate)) {
@@ -1625,7 +1625,7 @@ class Pipeline extends SiteController
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _email($toolid, $summary, $comment, $access, $action, $toolinfo = array())
+    protected function _email($toolid, $summary, $comment, $access, $action, $toolinfo = [])
     {
         $headline = '';
 
@@ -1641,7 +1641,7 @@ class Pipeline extends SiteController
         $team = \Components\Tools\Helpers\Utils::transform($status['developers'], 'uidNumber');
 
         // Get admins
-        $admins = array();
+        $admins = [];
         if ($this->config->get('access-admin-component')) {
             $admins[] = User::get('username');
         }
@@ -1665,7 +1665,7 @@ class Pipeline extends SiteController
         $inteam = (in_array(User::get('id'), $team)) ? 1 : 0;
 
         // collector for those who need to get notified
-        $users = array();
+        $users = [];
 
         switch ($action) {
             case 1:
@@ -1713,10 +1713,10 @@ class Pipeline extends SiteController
         $subject = Lang::txt(strtoupper($this->_option)) . ', ' . Lang::txt('COM_TOOLS_TOOL')
             . ' ' . $status['toolname'] . '(#' . $toolid . '): ' . $headline;
         $from    = Config::get('sitename') . ' ' . Lang::txt('COM_TOOLS_CONTRIBTOOL');
-        $hub     = array(
+        $hub     = [
             'email' => Config::get('mailfrom'),
             'name'  => $from
-        );
+        ];
 
         $live_site = rtrim(Request::base(), '/');
 
@@ -1743,7 +1743,7 @@ class Pipeline extends SiteController
         if ($summary or $comment) {
             $triggered = Event::trigger(
                 'xmessage.onSendMessage',
-                array($action, $subject, $message, $hub, $users, $this->_option)
+                [$action, $subject, $message, $hub, $users, $this->_option]
             );
             if (!$triggered) {
                 Notify::error(Lang::txt('COM_TOOLS_FAILED_TO_MESSAGE'));
@@ -1955,12 +1955,12 @@ class Pipeline extends SiteController
         }
 
         // Log activity
-        $recipients = array();
-        $recipients[] = array('user', User::get('id'));
+        $recipients = [];
+        $recipients[] = ['user', User::get('id')];
 
         $hzt = new \Components\Tools\Tables\Tool($this->database);
         foreach ($hzt->getToolDevelopers($toolid) as $developer) {
-            $recipients[] = array('user', $developer->uidNumber);
+            $recipients[] = ['user', $developer->uidNumber];
         }
 
         $hzt->load($toolid);
@@ -2006,7 +2006,7 @@ class Pipeline extends SiteController
         $access = 0,
         $email = 0,
         $action = 1,
-        $toolinfo = array()
+        $toolinfo = []
     ) {
         $obj = new \Components\Tools\Tables\Tool($this->database);
 
@@ -2159,12 +2159,12 @@ class Pipeline extends SiteController
         }
 
         // Log activity
-        $recipients = array();
-        $recipients[] = array('user', User::get('id'));
+        $recipients = [];
+        $recipients[] = ['user', User::get('id')];
 
         $hzt = new \Components\Tools\Tables\Tool($this->database);
         foreach ($hzt->getToolDevelopers($toolid) as $developer) {
-            $recipients[] = array('user', $developer->uidNumber);
+            $recipients[] = ['user', $developer->uidNumber];
         }
 
         $hzt->load($toolid);

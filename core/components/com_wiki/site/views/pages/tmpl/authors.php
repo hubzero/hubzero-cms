@@ -16,7 +16,7 @@ defined('_HZEXEC_') or die();
 if ($this->page->param('mode', 'wiki') == 'knol' && !$this->page->param('hide_authors', 0)) {
     $author = $this->escape(stripslashes($this->page->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN'))));
 
-    $auths = array();
+    $auths = [];
     $creatorLevels = User::getAuthorisedViewLevels();
     $creatorAccess = $this->page->creator->get('access');
     $creatorLink = '<a href="' . Route::url($this->page->creator->link()) . '">' . $author . '</a>';

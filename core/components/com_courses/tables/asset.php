@@ -89,7 +89,7 @@ class Asset extends Table
      * @param  array $filters
      * @return $query database query
      */
-    private function _buildQuery($filters = array())
+    private function _buildQuery($filters = [])
     {
         $query  = " FROM $this->_tbl AS ca";
         $query .= " LEFT JOIN #__courses_offering_section_dates AS sd ON sd.scope='asset' AND sd.scope_id=ca.id";
@@ -113,7 +113,7 @@ class Asset extends Table
             }
         }
 
-        $where = array();
+        $where = [];
 
         if (!empty($filters['asset_id'])) {
             $where[] = "ca.id=" . $this->_db->quote((int) $filters['asset_id']);
@@ -164,10 +164,10 @@ class Asset extends Table
      * @param  array $filters
      * @return object Return course units
      */
-    public function count($filters = array())
+    public function count($filters = [])
     {
         if (!isset($filters['w'])) {
-            $filters['w'] = array();
+            $filters['w'] = [];
         }
         $query  = "SELECT COUNT(DISTINCT ca.id)";
         $query .= $this->_buildQuery($filters['w']);
@@ -182,10 +182,10 @@ class Asset extends Table
      * @param  array $filters
      * @return object Return course units
      */
-    public function find($filters = array())
+    public function find($filters = [])
     {
         if (!isset($filters['w'])) {
-            $filters['w'] = array();
+            $filters['w'] = [];
         }
         $query  = "SELECT DISTINCT ca.*, caa.ordering, sd.publish_up, sd.publish_down, sd.section_id, cag.unit_id";
         $query .= $this->_buildQuery($filters['w']);
@@ -212,7 +212,7 @@ class Asset extends Table
      * @param  array  $filters
      * @return object Return course assets
      */
-    public function findByScope($scope, $scope_id, $filters = array())
+    public function findByScope($scope, $scope_id, $filters = [])
     {
         $scope    = preg_replace('/[^a-z_]/', '', strtolower((string) $scope));
         $scope_id = (int) $scope_id;
@@ -224,7 +224,7 @@ class Asset extends Table
         $query .= " WHERE caa.scope = '{$scope}'";
         $query .= " AND caa.scope_id = '{$scope_id}'";
 
-        $where = array();
+        $where = [];
 
         if (isset($filters['state']) && $filters['state'] >= 0) {
             $where[] = "ca.state=" . $this->_db->quote($filters['state']);

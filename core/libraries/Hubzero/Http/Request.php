@@ -30,12 +30,12 @@ class Request extends BaseRequest
      *
      * @var  array
      */
-    public static $filters = array(
+    public static $filters = [
         'int'   => '/-?[0-9]+/',
         'float' => '/-?[0-9]+(\.[0-9]+)?/',
         'cmd'   => '/[^A-Z0-9_\.-]/i',
         'word'  => '/[^A-Z_]/i'
-    );
+    ];
 
     /**
      * Set a variable in one of the request variables.
@@ -289,7 +289,7 @@ class Request extends BaseRequest
      * @param   string  $hash     Where the var should come from (POST, GET, FILES, COOKIE, METHOD)
      * @return  array   Request variable
      */
-    public function getArray($key = null, $default = array(), $hash = 'input')
+    public function getArray($key = null, $default = [], $hash = 'input')
     {
         return (array) $this->getVar($key, $default, $hash, 'array');
     }
@@ -302,7 +302,7 @@ class Request extends BaseRequest
      * @param   string  $hash     Where the var should come from (POST, GET, FILES, COOKIE, METHOD)
      * @return  array   Request variable
      */
-    public function getSimpleArray($key = null, $default = array(), $hash = 'input')
+    public function getSimpleArray($key = null, $default = [], $hash = 'input')
     {
         $result = (array) $this->getVar($key, $default, $hash, 'array');
 
@@ -364,7 +364,7 @@ class Request extends BaseRequest
     {
         $root = rtrim(($pathonly ? '' : $this->getSchemeAndHttpHost()) . $this->getBasePath(), '/');
         $root = explode('/', $root);
-        if (in_array(end($root), array('administrator', 'api'))) {
+        if (in_array(end($root), ['administrator', 'api'])) {
             array_pop($root);
         }
 
@@ -683,8 +683,8 @@ class Request extends BaseRequest
             return '';
         }
 
-        $parts = array();
-        $order = array();
+        $parts = [];
+        $order = [];
 
         foreach (explode('&', $qs) as $param) {
             if ('' === $param || '=' === $param[0]) {
@@ -835,7 +835,7 @@ class Request extends BaseRequest
     {
         $name = $name ?: Honeypot::getName();
 
-        if ($honey = self::getVar($name, array(), 'post')) {
+        if ($honey = self::getVar($name, [], 'post')) {
             if (!Honeypot::isValid($honey['p'], $honey['t'], $delay)) {
                 if (App::has('log')) {
                     $fallback = 'option=' . $this->getCmd('option') . '&controller=' . $this->getCmd('controller') . '&task=' . $this->getCmd('task');

@@ -99,7 +99,7 @@ $showTags   = $config->get('citation_show_tags', 'yes');
 $showBadges = $config->get('citation_show_badges', 'yes');
 
 //get internal associations
-$associationLinks = array();
+$associationLinks = [];
 foreach ($citation->resources()->whereEquals('#_citations_assoc.tbl', 'resource')->rows() as $a) {
     $associationLinks[] = '<a href="' . Route::url($a->link()) . '">' . $a->title . '</a>';
 }
@@ -121,7 +121,7 @@ $area = Request::getString('area', 'about');
             <?php if ($citation->author) : ?>
                 <span><?php echo Lang::txt('COM_CITATIONS_BY'); ?>:</span>
                 <?php
-                    $a = array();
+                    $a = [];
                     $authors = array_map('trim', explode(';', $citation->author));
                 foreach ($authors as $author) {
                     preg_match('/{{(.*?)}}/s', $author, $matches);
@@ -214,12 +214,12 @@ $area = Request::getString('area', 'about');
 
     <ul class="sub-menu">
         <?php
-            $menu = array(
+            $menu = [
                 'about' => Lang::txt('COM_CITATIONS_ABOUT'),
                 'resources' => Lang::txt('COM_CITATIONS_CITED'),
                 'reviews' => Lang::txt('COM_CITATIONS_REVIEWS'),
                 'find' => Lang::txt('COM_CITATIONS_FINDTHISTEXT')
-            );
+            ];
             ?>
 
         <?php foreach ($menu as $k => $v) : ?>
@@ -541,12 +541,12 @@ $area = Request::getString('area', 'about');
     <section class="main section citation-section" id="reviews">
         <h3><?php echo Lang::txt('COM_CITATIONS_REVIEWS'); ?></h3>
         <?php
-            $params = array(
+            $params = [
                 $citation,
                 $this->option,
                 Route::url('index.php?option=' . $this->option . '&task=view&id=' . $citation->id . '&area=reviews'),
-                array('png','jpg','gif','tiff','pdf')
-            );
+                ['png','jpg','gif','tiff','pdf']
+            ];
             $comments = Event::trigger('hubzero.onAfterDisplayContent', $params);
             echo $comments[0];
             ?>
@@ -654,12 +654,12 @@ if (function_exists('mbstring')) {
 }
 
     //coins data
-    $coinsData = array(
+    $coinsData = [
         "ctx_ver=Z39.88-2004",
         "rft_val_fmt=info:ofi/fmt:kev:mtx:{$coinsType}",
         "rfr_id=info:sid/{$hubUrl}:{$hubName}",
         "rft.atitle={$title}"
-    );
+    ];
 
     //add doi to coins
     if ($citation->doi) {
@@ -705,8 +705,8 @@ if (function_exists('mbstring')) {
     }
 
     //replace chars
-    $chars = array(' ', '/', ':', '"', '&amp;');
-    $replace = array("%20", "%2F", "%3A", "%22", "%26");
+    $chars = [' ', '/', ':', '"', '&amp;'];
+    $replace = ["%20", "%2F", "%3A", "%22", "%26"];
     $coinsData = str_replace($chars, $replace, implode('&', $coinsData));
 
     //echo coins tag to doc

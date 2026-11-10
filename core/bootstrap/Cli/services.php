@@ -6,7 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-return array(
+return [
     // Base Services
     'Bootstrap\Cli\Providers\EventServiceProvider',
     'Bootstrap\Cli\Providers\TranslationServiceProvider',
@@ -23,4 +23,4 @@ return array(
     'Hubzero\Console\OutputServiceProvider',
     'Hubzero\Console\DispatcherServiceProvider',
     'Hubzero\Console\ComponentServiceProvider',
-);
+];

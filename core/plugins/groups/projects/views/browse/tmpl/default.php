@@ -92,7 +92,7 @@ $view = $this->view('submenu', 'partials')
 
         <!-- Placeholder for Group Dashboard -->
         <?php
-        $dashboards = Event::trigger('groups.onGroupClassroomprojects', array($this->group));
+        $dashboards = Event::trigger('groups.onGroupClassroomprojects', [$this->group]);
         foreach ($dashboards as $dashboard) {
             echo $dashboard;
         }

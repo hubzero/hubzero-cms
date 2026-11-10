@@ -17,7 +17,7 @@ defined('_HZEXEC_') or die();
 $this->css()
      ->js();
 
-$results = array();
+$results = [];
 
 $entries = \Plugins\Courses\Notes\Models\Note::all()
     ->whereEquals('section_id', $this->offering->section()->get('id'))
@@ -33,7 +33,7 @@ if ($notes->count()) {
     foreach ($notes as $note) {
         $ky = $note->get('scope_id');
         if (!isset($results[$ky])) {
-            $results[$ky] = array();
+            $results[$ky] = [];
         }
         $results[$ky][] = $note;
     }
@@ -70,8 +70,8 @@ $base = $this->offering->link();
         <?php
         // Pre-load lectures and their unit display order, then sort by unit
         // ordering (not unit id) and lecture ordering within the unit.
-        $lectures  = array();
-        $unitOrder = array();
+        $lectures  = [];
+        $unitOrder = [];
         foreach ($results as $id => $notes) {
             $lectures[$id]  = new \Components\Courses\Models\Assetgroup($id);
             $unitOrder[$id] = (int) \Components\Courses\Models\Unit::getInstance($lectures[$id]->get('unit_id'))->get('ordering', 0);
@@ -152,12 +152,12 @@ $base = $this->offering->link();
     </div>
 <?php else : ?>
     <?php
-    $view = new \Hubzero\Plugin\View(array(
+    $view = new \Hubzero\Plugin\View([
         'folder'  => 'courses',
         'element' => 'outline',
         'name'    => 'shared',
         'layout'  => '_not_enrolled'
-    ));
+    ]);
 
     $view->set('course', $this->course)
          ->set('option', $this->option)

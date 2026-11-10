@@ -134,11 +134,11 @@ class Mark
      */
     public function toArray()
     {
-        return array(
+        return [
             'label'  => $this->label(),
             'start'  => $this->started(),
             'end'    => $this->ended(),
             'memory' => $this->memory()
-        );
+        ];
     }
 }

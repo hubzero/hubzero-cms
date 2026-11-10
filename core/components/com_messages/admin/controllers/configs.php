@@ -75,9 +75,9 @@ class Configs extends AdminController
         }
 
         $db = App::get('db');
-        $fields = Request::getArray('fields', array(), 'post', 'none', 2);
+        $fields = Request::getArray('fields', [], 'post', 'none', 2);
 
-        $tuples = array();
+        $tuples = [];
         foreach ($fields as $k => $v) {
             $tuples[] =  '(' . $userId . ', ' . $db->quote($k) . ', ' . $db->quote($v) . ')';
         }

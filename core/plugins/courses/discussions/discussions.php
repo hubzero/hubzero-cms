@@ -101,13 +101,13 @@ class Discussions extends Plugin
      */
     public function onCourseAreas()
     {
-        $area = array(
+        $area = [
             'name' => $this->_name,
             'title' => Lang::txt('PLG_COURSES_' . strtoupper($this->_name)),
             'default_access' => $this->params->get('plugin_access', 'members'),
             'display_menu_tab' => true,
             'icon' => 'f086'
-        );
+        ];
         return $area;
     }
 
@@ -499,7 +499,7 @@ class Discussions extends Plugin
         $posts = Post::all()
             ->whereEquals('scope', 'course')
             ->whereEquals('scope_id', $offering->get('id'))
-            ->whereIn('state', array(1, 3))
+            ->whereIn('state', [1, 3])
             ->whereEquals('parent', 0);
 
         if ($this->params->get('discussions_threads', 'all') != 'all') {
@@ -522,12 +522,12 @@ class Discussions extends Plugin
     public function onCourseAfterLecture($course, $unit, $lecture)
     {
         if (!$course->offering()->section()->access('view')) {
-            $view = new \Hubzero\Plugin\View(array(
+            $view = new \Hubzero\Plugin\View([
                 'folder'  => 'courses',
                 'element' => 'outline',
                 'name'    => 'shared',
                 'layout'  => '_not_enrolled'
-            ));
+            ]);
             $view->set('course', $course)
                 ->set('option', 'com_courses')
                 ->set('message', Lang::txt('You must be enrolled to utilize the discussion feature.'));
@@ -554,12 +554,12 @@ class Discussions extends Plugin
         $this->_authorize('thread');
 
         // Incoming
-        $filters = array(
+        $filters = [
             'limit'     => Request::getInt('limit', 500),
             'start'     => Request::getInt('limitstart', 0),
             'section'   => Request::getString('section', ''),
             'category'  => Request::getString('category', ''),
-            'state'     => array(1, 3),
+            'state'     => [1, 3],
             'access'    => User::getAuthorisedViewLevels(),
             'scope'     => 'course',
             'scope_id'  => $course->offering()->get('id'),
@@ -568,7 +568,7 @@ class Discussions extends Plugin
             'sort_Dir'  => 'DESC',
             'sort'      => 'c.created',
             'object_id' => $lecture->get('id')
-        );
+        ];
         if ($this->params->get('discussions_threads', 'all') != 'all') {
             $filters['scope_sub_id'] = $course->offering()->section()->get('id');
         }
@@ -799,7 +799,7 @@ class Discussions extends Plugin
     protected function _instructors()
     {
         if (!isset($this->_instructors) || !is_array($this->_instructors)) {
-            $this->_instructors = array();
+            $this->_instructors = [];
 
             $inst = $this->course->instructors();
             if (count($inst) > 0) {
@@ -819,7 +819,7 @@ class Discussions extends Plugin
      * @param   array   $filters  Filters to apply
      * @return  object
      */
-    protected function _thread($post, $filters = array())
+    protected function _thread($post, $filters = [])
     {
         $thread = new \stdClass();
         $thread->lastchange = '0000-00-00 00:00:00';
@@ -889,7 +889,7 @@ class Discussions extends Plugin
      * @param   array   $filters  Filters to apply
      * @return  object
      */
-    protected function _threadsSearch($post, $filters = array())
+    protected function _threadsSearch($post, $filters = [])
     {
         $threads = new \stdClass();
         $threads->lastchange = '0000-00-00 00:00:00';
@@ -901,7 +901,7 @@ class Discussions extends Plugin
         // If we have a search term
         if (isset($filters['search']) && $filters['search']) {
             // Find all posts with that terms
-            $ids = array();
+            $ids = [];
 
             if ($results = $post->find($filters)) {
                 foreach ($results as $result) {
@@ -952,12 +952,12 @@ class Discussions extends Plugin
      * @param   array   $filters  Filters to apply
      * @return  object
      */
-    protected function _threads($post, $filters = array())
+    protected function _threads($post, $filters = [])
     {
         $threads = new \stdClass();
         $threads->lastchange = '0000-00-00 00:00:00';
         $threads->lastid     = 0;
-        $threads->posts      = array();
+        $threads->posts      = [];
         $threads->html       = null;
         $threads->total      = 0;
 
@@ -980,7 +980,7 @@ class Discussions extends Plugin
             ->order('created', 'asc') // Needs to be reverse order that items are prepended with AJAX
             ->rows();
 
-        $results = array();
+        $results = [];
 
         if ($rows->count()) {
             foreach ($rows as $key => $row) {
@@ -1025,7 +1025,7 @@ class Discussions extends Plugin
      * @param   array   $filters  Filters to apply
      * @return  object|array
      */
-    protected function _posts($post, $filters = array())
+    protected function _posts($post, $filters = [])
     {
         $thread = new \stdClass();
         $thread->lastchange = '0000-00-00 00:00:00';
@@ -1051,7 +1051,7 @@ class Discussions extends Plugin
 
         if ($results->count()) {
             //$results = $post->toTree($results);
-            $res = array();
+            $res = [];
             $i = 0;
             foreach ($results as $row) {
                 $thread->lastchange = ($row->get('created') > $thread->lastchange)
@@ -1184,7 +1184,7 @@ class Discussions extends Plugin
     public function panel()
     {
         // Incoming
-        $filters = array(
+        $filters = [
             'authorized' => 1,
             'scope'      => 'course',
             'scope_id'   => $this->offering->get('id'),
@@ -1195,7 +1195,7 @@ class Discussions extends Plugin
             'limit'      => Request::getInt('limit', 500),
             'start'      => Request::getInt('limitstart', 0),
             'access'     => User::getAuthorisedViewLevels()
-        );
+        ];
         if ($this->params->get('discussions_threads', 'all') != 'all') {
             $filters['scope_sub_id'] = $this->offering->section()->get('id');
         }
@@ -1341,7 +1341,7 @@ class Discussions extends Plugin
         $stats->posts      = 0;
 
         // Collect all categories
-        $categories = array();
+        $categories = [];
         $results = Category::all()
             ->whereEquals('scope', $filters['scope'])
             ->whereEquals('scope_id', $filters['scope_id'])
@@ -1352,23 +1352,23 @@ class Discussions extends Plugin
         if ($results->count()) {
             foreach ($results as $category) {
                 if (!isset($categories[$category->get('section_id')])) {
-                    $categories[$category->get('section_id')] = array();
+                    $categories[$category->get('section_id')] = [];
                 }
                 $categories[$category->get('section_id')][] = $category;
             }
         }
 
         // Loop through all sections and distribute categories
-        $sections = array();
+        $sections = [];
         foreach ($sects as $key => $section) {
             $section->set('threads', 0);
-            $section->set('categories', isset($categories[$section->get('id')]) ? $categories[$section->get('id')] : array());
+            $section->set('categories', isset($categories[$section->get('id')]) ? $categories[$section->get('id')] : []);
 
             if (
                 (!$section->get('categories') || !count($section->get('categories')))
                 && $section->get('object_id')
             ) {
-                $section->set('categories', array());
+                $section->set('categories', []);
             }
 
             $stats->categories += count($section->get('categories'));
@@ -1405,7 +1405,7 @@ class Discussions extends Plugin
             $sections[] = $section;
         }
 
-        $filters['state'] = array(Post::STATE_PUBLISHED, 3);
+        $filters['state'] = [Post::STATE_PUBLISHED, 3];
 
         $post = Post::blank()
             ->set('scope', $filters['scope'])
@@ -1444,7 +1444,7 @@ class Discussions extends Plugin
     public function onCourseDashboard($course, $offering)
     {
         // Incoming
-        $filters = array(
+        $filters = [
             'authorized'   => 1,
             'scope'        => 'course',
             'scope_id'     => $offering->get('id'),
@@ -1454,7 +1454,7 @@ class Discussions extends Plugin
             'state'        => Section::STATE_PUBLISHED,
             'limit'        => Request::getInt('limit', 500),
             'start'        => Request::getInt('limitstart', 0)
-        );
+        ];
 
         $post = Post::blank();
         $post->set('scope', $filters['scope']);
@@ -1473,7 +1473,7 @@ class Discussions extends Plugin
         $stats->threads    = 0;
         $stats->posts      = 0;
 
-        $sections = array();
+        $sections = [];
         foreach ($sects as $section) {
             $categories = $section->categories()
                 ->whereEquals('state', $filters['state'])
@@ -1543,13 +1543,13 @@ class Discussions extends Plugin
         $this->_authorize('category');
 
         // Filters
-        $filters = array(
+        $filters = [
             'scope'    => $this->forum->get('scope'),
             'scope_id' => $this->forum->get('scope_id'),
             'state'    => Section::STATE_PUBLISHED,
             'search'   => Request::getString('q', ''),
             'access'   => User::getAuthorisedViewLevels()
-        );
+        ];
 
         $edit = Request::getString('section', '');
 
@@ -1586,7 +1586,7 @@ class Discussions extends Plugin
         }
 
         // Incoming posted data
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
         $fields = array_map('trim', $fields);
 
         // Instantiate a new table row and bind the incoming data
@@ -1636,17 +1636,17 @@ class Discussions extends Plugin
                 'scope'       => 'forum.section',
                 'scope_id'    => $section->get('id'),
                 'description' => Lang::txt('PLG_COURSES_DISCUSSIONS_ACTIVITY_SECTION_' . ($__sid ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($this->base) . '">' . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title' => $section->get('title'),
                     'url'   => Route::url($this->base)
-                )
+                ]
             ],
-            'recipients' => array(
+            'recipients' => [
                 ['course', $this->offering->get('id')],
                 ['forum.' . $this->forum->get('scope'), $this->forum->get('scope_id')],
                 ['forum.section', $section->get('id')],
                 ['user', $section->get('created_by')]
-            )
+            ]
         ]);
 
         // Set the redirect
@@ -1716,17 +1716,17 @@ class Discussions extends Plugin
                 'scope'       => 'forum.section',
                 'scope_id'    => $section->get('id'),
                 'description' => Lang::txt('PLG_COURSES_DISCUSSIONS_ACTIVITY_SECTION_DELETED', '<a href="' . Route::url($this->base) . '">' . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title' => $section->get('title'),
                     'url'   => Route::url($this->base)
-                )
+                ]
             ],
-            'recipients' => array(
+            'recipients' => [
                 ['course', $this->offering->get('id')],
                 ['forum.' . $this->forum->get('scope'), $this->forum->get('scope_id')],
                 ['forum.section', $section->get('id')],
                 ['user', $section->get('created_by')]
-            )
+            ]
         ]);
 
         // Redirect to main listing
@@ -1747,7 +1747,7 @@ class Discussions extends Plugin
         }
 
         /// Incoming
-        $filters = array(
+        $filters = [
             'section'    => Request::getString('section', ''),
             'category'   => Request::getCmd('category', ''),
             'search'     => Request::getString('q', ''),
@@ -1756,7 +1756,7 @@ class Discussions extends Plugin
             'state'      => Category::STATE_PUBLISHED,
             'parent'     => 0,
             'access'     => User::getAuthorisedViewLevels()
-        );
+        ];
 
         $filters['sortby'] = Request::getWord('sortby', 'activity');
         switch ($filters['sortby']) {
@@ -1903,7 +1903,7 @@ class Discussions extends Plugin
             return $this->panel();
         }
 
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
         $fields = array_map('trim', $fields);
 
         // Instantiate a category
@@ -1968,7 +1968,7 @@ class Discussions extends Plugin
 
         // Forge an alias from the title
         if ($category->get('alias') == '') {
-            $alias = $category->automaticAlias(array('title' => $category->get('title')));
+            $alias = $category->automaticAlias(['title' => $category->get('title')]);
             $category->set('alias', $alias);
         }
 
@@ -1995,17 +1995,17 @@ class Discussions extends Plugin
                 'scope'       => 'forum.category',
                 'scope_id'    => $category->get('id'),
                 'description' => Lang::txt('PLG_COURSES_DISCUSSIONS_ACTIVITY_CATEGORY_' . ($__cid ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($this->base) . '">' . htmlspecialchars((string) ($category->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title' => $category->get('title'),
                     'url'   => Route::url($this->base)
-                )
+                ]
             ],
-            'recipients' => array(
+            'recipients' => [
                 ['course', $this->offering->get('id')],
                 ['forum.' . $this->forum->get('scope'), $this->forum->get('scope_id')],
                 ['forum.section', $category->get('section_id')],
                 ['user', $category->get('created_by')]
-            )
+            ]
         ]);
 
         // Set the redirect
@@ -2076,17 +2076,17 @@ class Discussions extends Plugin
                 'scope'       => 'forum.category',
                 'scope_id'    => $category->get('id'),
                 'description' => Lang::txt('PLG_COURSES_DISCUSSIONS_ACTIVITY_CATEGORY_DELETED', '<a href="' . Route::url($this->base) . '">' . htmlspecialchars((string) ($category->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title' => $category->get('title'),
                     'url'   => Route::url($this->base)
-                )
+                ]
             ],
-            'recipients' => array(
+            'recipients' => [
                 ['course', $this->offering->get('id')],
                 ['forum.' . $this->forum->get('scope'), $this->forum->get('scope_id')],
                 ['forum.section', $category->get('section_id')],
                 ['user', $category->get('created_by')]
-            )
+            ]
         ]);
 
         // Redirect to main listing
@@ -2109,7 +2109,7 @@ class Discussions extends Plugin
         }
 
         // Incoming
-        $filters = array(
+        $filters = [
             'limit'    => Request::getInt('limit', 25),
             'start'    => Request::getInt('limitstart', 0),
             'section'  => Request::getString('section', $this->offering->get('alias')),
@@ -2119,7 +2119,7 @@ class Discussions extends Plugin
             'scope_id' => $this->forum->get('scope_id'),
             'state'    => Post::STATE_PUBLISHED,
             'access'   => User::getAuthorisedViewLevels()
-        );
+        ];
 
         // Section
         $section = Section::all()
@@ -2166,7 +2166,7 @@ class Discussions extends Plugin
             return;
         }
 
-        $filters['state'] = array(Post::STATE_PUBLISHED, 3);
+        $filters['state'] = [Post::STATE_PUBLISHED, 3];
 
         // Get authorization
         $this->_authorize('category', $category->get('id'));
@@ -2234,7 +2234,7 @@ class Discussions extends Plugin
 
                 $list[$id] = $v;
                 $list[$id]->set('treename', "$indent$txt");
-                $list[$id]->set('children', count($children[$id] ?? array()));
+                $list[$id]->set('children', count($children[$id] ?? []));
 
                 $list = $this->_treeRecurse($id, $indent . $spacer, $list, $children, $maxlevel, $level + 1, $type);
             }
@@ -2296,10 +2296,10 @@ class Discussions extends Plugin
             ->set('offering', $this->offering)
             ->set('config', $this->params)
             ->set('forum', $this->forum)
-            ->set('sections', $this->forum->sections(array(
+            ->set('sections', $this->forum->sections([
                 'state'  => Section::STATE_PUBLISHED,
                 'access' => User::getAuthorisedViewLevels()
-            ))->rows())
+            ])->rows())
             ->set('section', $section)
             ->set('category', $category)
             ->set('post', $post)
@@ -2327,7 +2327,7 @@ class Discussions extends Plugin
         // Incoming
         $section = Request::getString('section', '');
         $no_html = Request::getInt('no_html', 0);
-        $fields  = Request::getArray('fields', array(), 'post');
+        $fields  = Request::getArray('fields', [], 'post');
         $fields  = array_map('trim', $fields);
 
         // Check permissions
@@ -2798,16 +2798,16 @@ class Discussions extends Plugin
                 'scope'       => 'forum.section',
                 'scope_id'    => $section->get('id'),
                 'description' => Lang::txt('PLG_COURSES_DISCUSSIONS_ACTIVITY_SECTION_REORDERED', '<a href="' . Route::url($this->base) . '">' . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title' => $section->get('title'),
                     'url'   => Route::url($this->base)
-                )
+                ]
             ],
-            'recipients' => array(
+            'recipients' => [
                 ['course', $this->offering->get('id')],
                 ['forum.course', $this->offering->get('id')],
                 ['forum.section', $section->get('id')]
-            )
+            ]
         ]);
 
         // Redirect to main lsiting
@@ -2830,7 +2830,7 @@ class Discussions extends Plugin
 
         $log = Lang::txt('PLG_COURSES_FORUM') . ': ';
 
-        $sections = array();
+        $sections = [];
         foreach ($course->offerings() as $offering) {
             if (!$offering->exists()) {
                 continue;

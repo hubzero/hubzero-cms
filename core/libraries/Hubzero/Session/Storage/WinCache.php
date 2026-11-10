@@ -32,7 +32,7 @@ class WinCache extends Store
      * @param   array  $options  Optional parameters.
      * @return  void
      */
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         if (!self::isAvailable()) {
             throw new Exception(Lang::txt('JLIB_SESSION_WINCACHE_EXTENSION_NOT_AVAILABLE'));

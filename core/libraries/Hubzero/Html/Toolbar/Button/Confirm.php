@@ -53,7 +53,7 @@ class Confirm extends Button
 
         $cls = 'toolbar toolbar-confirm';
 
-        $attr   = array();
+        $attr   = [];
         $attr[] = 'data-title="' . $text . '"';
         $attr[] = 'data-task="' . $task . '"';
         $attr[] = 'data-confirm="' . $msg . '"';

@@ -60,7 +60,7 @@ class Storagev1r0 extends ApiController
 
         $free = ($soft > $used) ? ($soft - $used) : 0;
 
-        $this->send(array(
+        $this->send([
             'used'      => $used,
             'soft'      => $soft,
             'hard'      => $hard,
@@ -69,7 +69,7 @@ class Storagev1r0 extends ApiController
             'used_gb'   => round($used / 1024000000, 2),
             'soft_gb'   => round($soft / 1024000000, 2),
             'free_gb'   => round($free / 1024000000, 2)
-        ));
+        ]);
     }
 
     /**
@@ -98,8 +98,8 @@ class Storagev1r0 extends ApiController
             throw new Exception(Lang::txt('Invalid path.'), 400);
         }
 
-        $folders = array();
-        $files   = array();
+        $folders = [];
+        $files   = [];
 
         if (is_dir($path)) {
             $it = new \DirectoryIterator($path);
@@ -111,23 +111,23 @@ class Storagev1r0 extends ApiController
 
                 if ($f->isDir()) {
                     $rel = ($dir !== '') ? trim($dir, '/') . '/' . $name : $name;
-                    $folders[$name] = array(
+                    $folders[$name] = [
                         'name'      => $name,
                         'dir'       => $rel,
                         // Mirrors the site view: the storage roots are protected
-                        'deletable' => !in_array(strtolower($name), array('data', 'sessions'))
-                    );
+                        'deletable' => !in_array(strtolower($name), ['data', 'sessions'])
+                    ];
                 } else if ($f->isFile()) {
                     $ln = strtolower($name);
                     if ($ln === 'cvs' || $ln === '.svn') {
                         continue;
                     }
                     $size = @filesize($f->getPathname());
-                    $files[$name] = array(
+                    $files[$name] = [
                         'name'   => $name,
                         'size'   => (int) $size,
                         'size_h' => \Hubzero\Utility\Number::formatBytes((float) $size)
-                    );
+                    ];
                 }
             }
             ksort($folders);
@@ -135,7 +135,7 @@ class Storagev1r0 extends ApiController
         }
 
         // Breadcrumb of the current directory
-        $crumbs = array();
+        $crumbs = [];
         $acc    = '';
         if ($dir !== '') {
             foreach (explode('/', trim($dir, '/')) as $seg) {
@@ -143,16 +143,16 @@ class Storagev1r0 extends ApiController
                     continue;
                 }
                 $acc = ($acc === '') ? $seg : $acc . '/' . $seg;
-                $crumbs[] = array('name' => $seg, 'dir' => $acc);
+                $crumbs[] = ['name' => $seg, 'dir' => $acc];
             }
         }
 
-        $this->send(array(
+        $this->send([
             'dir'        => trim($dir, '/'),
             'breadcrumb' => $crumbs,
             'folders'    => array_values($folders),
             'files'      => array_values($files)
-        ));
+        ]);
     }
 
     /**
@@ -214,7 +214,7 @@ class Storagev1r0 extends ApiController
         }
 
         if ($type === 'folder') {
-            if (in_array(strtolower(basename($name)), array('data', 'sessions'))) {
+            if (in_array(strtolower(basename($name)), ['data', 'sessions'])) {
                 throw new Exception(Lang::txt('This folder cannot be deleted.'), 403);
             }
             if (!is_dir($target) && !is_link($target)) {
@@ -232,7 +232,7 @@ class Storagev1r0 extends ApiController
             }
         }
 
-        $this->send(array('ok' => true, 'deleted' => $name, 'type' => $type));
+        $this->send(['ok' => true, 'deleted' => $name, 'type' => $type]);
     }
 
     /**
@@ -271,7 +271,7 @@ class Storagev1r0 extends ApiController
             throw new Exception(Lang::txt('Unable to create the folder.'), 500);
         }
 
-        $this->send(array('ok' => true, 'name' => $name));
+        $this->send(['ok' => true, 'name' => $name]);
     }
 
     /**
@@ -298,7 +298,7 @@ class Storagev1r0 extends ApiController
             throw new Exception(Lang::txt('A valid name is required.'), 400);
         }
         // The storage roots are not renamable, same as they are not deletable.
-        if (in_array(strtolower(basename($name)), array('data', 'sessions'))) {
+        if (in_array(strtolower(basename($name)), ['data', 'sessions'])) {
             throw new Exception(Lang::txt('This item cannot be renamed.'), 403);
         }
 
@@ -322,7 +322,7 @@ class Storagev1r0 extends ApiController
             throw new Exception(Lang::txt('Unable to rename the item.'), 500);
         }
 
-        $this->send(array('ok' => true, 'name' => $newname));
+        $this->send(['ok' => true, 'name' => $newname]);
     }
 
     /**
@@ -372,8 +372,8 @@ class Storagev1r0 extends ApiController
             throw new Exception(Lang::txt('This upload would exceed your storage quota.'), 413);
         }
 
-        $saved  = array();
-        $failed = array();
+        $saved  = [];
+        $failed = [];
 
         for ($i = 0; $i < count($names); $i++) {
             if (!isset($errs[$i]) || $errs[$i] !== UPLOAD_ERR_OK) {
@@ -398,7 +398,7 @@ class Storagev1r0 extends ApiController
             throw new Exception(Lang::txt('The upload failed.'), 500);
         }
 
-        $this->send(array('ok' => true, 'saved' => $saved, 'failed' => $failed));
+        $this->send(['ok' => true, 'saved' => $saved, 'failed' => $failed]);
     }
 
     /**

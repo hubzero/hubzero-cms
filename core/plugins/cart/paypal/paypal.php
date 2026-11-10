@@ -36,7 +36,7 @@ class Paypal extends Plugin
             ->set('user', $user)
             ->set('cart', $cart);
 
-        $payment = array();
+        $payment = [];
         $payment['options'] = $view->loadTemplate();
         $payment['title'] = $this->params->get('title', 'PayPal');
         $payment['description'] = $this->params->get('description', 'Checkout with PayPal');

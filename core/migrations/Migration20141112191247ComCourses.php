@@ -36,7 +36,7 @@ class Migration20141112191247ComCourses extends Base
             ->loadObjectList();
 
         if ($deployments && count($deployments) > 0) {
-            $this->callback('progress', 'init', array('Running ' . __CLASS__ . '.php:'));
+            $this->callback('progress', 'init', ['Running ' . __CLASS__ . '.php:']);
             $total = count($deployments);
             $i     = 1;
 
@@ -94,7 +94,7 @@ class Migration20141112191247ComCourses extends Base
                 }
 
                 $progress = round($i / $total * 100);
-                $this->callback('progress', 'setProgress', array($progress));
+                $this->callback('progress', 'setProgress', [$progress]);
                 $i++;
             }
 

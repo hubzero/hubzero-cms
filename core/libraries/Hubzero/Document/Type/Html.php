@@ -27,7 +27,7 @@ class Html extends Base
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_links = array();
+    public $_links = [];
 
     /**
      * Array of custom tags
@@ -35,7 +35,7 @@ class Html extends Base
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_custom = array();
+    public $_custom = [];
 
     /**
      * Name of the template
@@ -80,7 +80,7 @@ class Html extends Base
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_template_tags = array();
+    protected $_template_tags = [];
 
     /**
      * Integer with caching setting
@@ -97,7 +97,7 @@ class Html extends Base
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         parent::__construct($options);
 
@@ -115,7 +115,7 @@ class Html extends Base
      */
     public function getHeadData()
     {
-        $data = array();
+        $data = [];
         $data['title']       = $this->title;
         $data['description'] = $this->description;
         $data['link']        = $this->link;
@@ -239,7 +239,7 @@ class Html extends Base
      * @param   array   $attribs   Associative array of remaining attributes.
      * @return  object  instance of $this to allow chaining
      */
-    public function addHeadLink($href, $relation, $relType = 'rel', $attribs = array())
+    public function addHeadLink($href, $relation, $relType = 'rel', $attribs = [])
     {
         $this->_links[$href]['relation'] = $relation;
         $this->_links[$href]['relType'] = $relType;
@@ -263,7 +263,7 @@ class Html extends Base
     public function addFavicon($href, $type = 'image/vnd.microsoft.icon', $relation = 'shortcut icon')
     {
         $href = str_replace('\\', '/', $href);
-        $this->addHeadLink($href, $relation, 'rel', array('type' => $type));
+        $this->addHeadLink($href, $relation, 'rel', ['type' => $type]);
 
         return $this;
     }
@@ -289,7 +289,7 @@ class Html extends Base
      * @param   array   $attribs  Associative array of remaining attributes.
      * @return  The output of the renderer
      */
-    public function getBuffer($type = null, $name = null, $attribs = array())
+    public function getBuffer($type = null, $name = null, $attribs = [])
     {
         // If no type is specified, return the whole buffer
         if ($type === null) {
@@ -320,13 +320,13 @@ class Html extends Base
      * @param   array   $options  Array of optional elements.
      * @return  object  instance of $this to allow chaining
      */
-    public function setBuffer($content, $options = array())
+    public function setBuffer($content, $options = [])
     {
         $args = func_get_args();
 
         // The following code is just for backward compatibility.
         if (!is_array($args[1]) && func_num_args() > 1) {
-            $options = array();
+            $options = [];
             $options['type'] = $args[1];
             $options['name'] = (isset($args[2])) ? $args[2] : null;
         }
@@ -342,7 +342,7 @@ class Html extends Base
      * @param   array   $params  Parameters for fetching the template
      * @return  object  instance of $this to allow chaining
      */
-    public function parse($params = array())
+    public function parse($params = [])
     {
         return $this->_fetchTemplate($params)->_parseTemplate();
     }
@@ -354,7 +354,7 @@ class Html extends Base
      * @param   array    $params   Associative array of attributes
      * @return  object   The rendered data
      */
-    public function render($caching = false, $params = array())
+    public function render($caching = false, $params = [])
     {
         $this->_caching = $caching;
 
@@ -380,9 +380,9 @@ class Html extends Base
     {
         $url = rtrim(\Request::root(true), '/') . '/core/assets/css/actions.css?v=' . filemtime(PATH_CORE . '/assets/css/actions.css');
 
-        $this->_styleSheets = array(
-            $url => array('mime' => 'text/css', 'media' => null, 'attribs' => array())
-        ) + $this->_styleSheets;
+        $this->_styleSheets = [
+            $url => ['mime' => 'text/css', 'media' => null, 'attribs' => []]
+        ] + $this->_styleSheets;
 
         return $this;
     }
@@ -516,10 +516,10 @@ class Html extends Base
         }
 
         // Try to find a favicon by checking the template and root folder
-        $dirs = array(
+        $dirs = [
             $directory . DS,
             PATH_ROOT . DS
-        );
+        ];
 
         foreach ($dirs as $dir) {
             $icon = $dir . 'favicon.ico';
@@ -543,7 +543,7 @@ class Html extends Base
      * @return  object  instance of $this to allow chaining
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _fetchTemplate($params = array())
+    protected function _fetchTemplate($params = [])
     {
         // Check
         $directory = isset($params['directory']) ? $params['directory'] : PATH_CORE . '/templates';
@@ -605,25 +605,25 @@ class Html extends Base
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _parseTemplate()
     {
-        $matches = array();
+        $matches = [];
 
         if (preg_match_all('#<jdoc:include\ type="([^"]+)" (.*)\/>#iU', $this->_template, $matches)) {
-            $template_tags_first = array();
-            $template_tags_last  = array();
+            $template_tags_first = [];
+            $template_tags_last  = [];
 
             // Step through the jdocs in reverse order.
             for ($i = count($matches[0]) - 1; $i >= 0; $i--) {
                 $type = $matches[1][$i];
-                $attribs = empty($matches[2][$i]) ? array() : $this->parseAttributes($matches[2][$i]);
+                $attribs = empty($matches[2][$i]) ? [] : $this->parseAttributes($matches[2][$i]);
                 $name = isset($attribs['name']) ? $attribs['name'] : null;
 
                 // Separate buffers to be executed first and last
                 if ($type == 'module' || $type == 'modules') {
-                    $template_tags_first[$matches[0][$i]] = array('type' => $type,
-                        'name' => $name, 'attribs' => $attribs);
+                    $template_tags_first[$matches[0][$i]] = ['type' => $type,
+                        'name' => $name, 'attribs' => $attribs];
                 } else {
-                    $template_tags_last[$matches[0][$i]]  = array('type' => $type,
-                        'name' => $name, 'attribs' => $attribs);
+                    $template_tags_last[$matches[0][$i]]  = ['type' => $type,
+                        'name' => $name, 'attribs' => $attribs];
                 }
             }
             // Reverse the last array so the jdocs are in forward order.
@@ -644,8 +644,8 @@ class Html extends Base
     private function parseAttributes($string)
     {
         // Initialise variables.
-        $attr = array();
-        $ret  = array();
+        $attr = [];
+        $ret  = [];
 
         // Let's grab all the key/value pairs using a regular expression
         preg_match_all('/([\w:-]+)[\s]?=[\s]?"([^"]*)"/i', $string, $attr);
@@ -668,8 +668,8 @@ class Html extends Base
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _renderTemplate()
     {
-        $replace = array();
-        $with    = array();
+        $replace = [];
+        $with    = [];
 
         foreach ($this->_template_tags as $jdoc => $args) {
             $replace[] = $jdoc;

@@ -63,14 +63,14 @@ class Log extends Model
      */
     protected static function logDefaults()
     {
-        return array(
+        return [
             'gidNumber' => null,
             'timestamp' => Date::toSql(),
             'userid'    => User::get('id'),
             'action'    => '',
             'comments'  => '',
             'actorid'   => User::get('id')
-        );
+        ];
     }
 
     /**
@@ -88,7 +88,7 @@ class Log extends Model
 
         // if we passed in a string lets normalize to array
         if (is_string($details['comments'])) {
-            $details['comments'] = array('message' => $details['comments']);
+            $details['comments'] = ['message' => $details['comments']];
         }
 
         // json encode comments

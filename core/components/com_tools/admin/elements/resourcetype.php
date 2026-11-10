@@ -36,7 +36,7 @@ class Resourcetype extends Element
 
         $types = \Components\Resources\Models\Type::getMajorTypes();
 
-        $html = array();
+        $html = [];
         $html[] = '<select name="' . $control_name . '[' . $name . ']" id="' . $control_name . $name . '">';
         $html[] = '<option value="0"' . ($value === 0 || $value === '0' ? ' selected="selected"' : '') . '>Select type</option>';
 

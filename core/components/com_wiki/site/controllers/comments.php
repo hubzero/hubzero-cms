@@ -52,7 +52,7 @@ class Comments extends SiteController
      * @param   array  $config  Optional configurations
      * @return  void
      */
-    public function __construct($config = array())
+    public function __construct($config = [])
     {
         $this->_base_path = dirname(__DIR__);
 
@@ -100,7 +100,7 @@ class Comments extends SiteController
 
         $this->page = $this->book->page();
 
-        if (in_array($this->page->getNamespace(), array('image', 'file'))) {
+        if (in_array($this->page->getNamespace(), ['image', 'file'])) {
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=media&scope=' . $this->page->get('scope') . '&pagename=' . $this->page->get('pagename') . '&task=download')
             );
@@ -266,7 +266,7 @@ class Comments extends SiteController
         // Check for request forgeries
         Request::checkToken();
 
-        $fields = Request::getArray('comment', array(), 'post');
+        $fields = Request::getArray('comment', [], 'post');
 
         // Bind the form data to our object
         // The form always posts this, but a crafted request need not, and reading
@@ -356,11 +356,11 @@ class Comments extends SiteController
         }
 
         // Log activity
-        $recipients = array(
+        $recipients = [
             ['wiki.site', 1],
             ['user', $this->page->get('created_by')],
             ['user', $comment->get('created_by')]
-        );
+        ];
 
         if ($comment->get('parent')) {
             $parent = Comment::oneOrFail($comment->get('parent'));
@@ -378,12 +378,12 @@ class Comments extends SiteController
                 'scope_id'    => $this->page->get('id'),
                 'anonymous'   => $comment->get('anonymous', 0),
                 'description' => Lang::txt('COM_WIKI_ACTIVITY_COMMENT_' . ($__cid ? 'UPDATED' : 'CREATED'), $comment->get('id'), '<a href="' . Route::url($this->page->link('comments')) . '">' . htmlspecialchars((string) ($this->page->title), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title'    => $this->page->title,
                     'url'      => Route::url($this->page->link('comments')),
                     'name'     => $this->page->get('pagename'),
                     'comment'  => $comment->get('id')
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -426,11 +426,11 @@ class Comments extends SiteController
                 }
 
                 // Log activity
-                $recipients = array(
+                $recipients = [
                     ['wiki.site', 1],
                     ['user', $this->page->get('created_by')],
                     ['user', $comment->get('created_by')]
-                );
+                ];
                 if ($this->page->get('scope') != 'site') {
                     $recipients[]  = [$this->page->get('scope'), $this->page->get('scope_id')];
                     $recipients[0] = ['wiki.' . $this->page->get('scope'), $this->page->get('scope_id')];
@@ -442,12 +442,12 @@ class Comments extends SiteController
                         'scope'       => 'wiki.comment',
                         'scope_id'    => $this->page->get('id'),
                         'description' => Lang::txt('COM_WIKI_ACTIVITY_COMMENT_DELETED', $comment->get('id'), '<a href="' . Route::url($this->page->link('comments')) . '">' . htmlspecialchars((string) ($this->page->title), ENT_QUOTES, 'UTF-8') . '</a>'),
-                        'details'     => array(
+                        'details'     => [
                             'title'    => $this->page->title,
                             'url'      => Route::url($this->page->link('comments')),
                             'name'     => $this->page->get('pagename'),
                             'comment'  => $comment->get('id')
-                        )
+                        ]
                     ],
                     'recipients' => $recipients
                 ]);

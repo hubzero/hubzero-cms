@@ -58,7 +58,7 @@ class Mysessions extends Module
             $hours_left   = floor(($remaining - $days_left * 60 * 60 * 24) / 60 / 60);
             $minutes_left = floor(($remaining - $days_left * 60 * 60 * 24 - $hours_left * 60 * 60) / 60);
 
-            $left = array($days_left, $hours_left, $minutes_left);
+            $left = [$days_left, $hours_left, $minutes_left];
 
             $tl  = '';
             $tl .= ($days_left > 0)    ? $days_left . ' days, '    : '';
@@ -112,7 +112,7 @@ class Mysessions extends Module
 
         // Get sessions
         $session = new \Components\Tools\Tables\Session($mwdb);
-        $this->sessions = $session->getRecords(User::get('username'), '', false) ?: array();
+        $this->sessions = $session->getRecords(User::get('username'), '', false) ?: [];
 
         // Output module
         require $this->getLayoutPath();

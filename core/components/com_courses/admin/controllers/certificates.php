@@ -77,7 +77,7 @@ class Certificates extends AdminController
         Request::checkToken();
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         // Instantiate a Course object
         $model = Certificate::getInstance($fields['id'], $fields['course_id']);
@@ -148,7 +148,7 @@ class Certificates extends AdminController
 
         if (!is_object($model)) {
             // Incoming
-            $id = Request::getArray('id', array());
+            $id = Request::getArray('id', []);
 
             // Get the single ID we're working with
             if (is_array($id)) {

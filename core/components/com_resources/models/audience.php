@@ -58,19 +58,19 @@ class Audience extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'rid' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'added',
         'added_by'
-    );
+    ];
 
     /**
      * Generates automatic added field value

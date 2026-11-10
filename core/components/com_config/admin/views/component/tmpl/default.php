@@ -76,7 +76,7 @@ if (document.body && document.body.id === 'component-body') {
     </fieldset>
 
     <?php
-    echo Html::tabs('start', 'config-tabs-' . $this->component->option . '_configuration', array('useCookie' => 1));
+    echo Html::tabs('start', 'config-tabs-' . $this->component->option . '_configuration', ['useCookie' => 1]);
 
     if ($this->form) :
         $fieldSets = $this->form->getFieldsets();

@@ -21,11 +21,11 @@ class Migration20190305000000VoteLog extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__vote_log' => array(
+    public static $tables = [
+        '#__vote_log' => [
             'voted'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

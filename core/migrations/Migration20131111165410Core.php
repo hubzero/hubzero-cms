@@ -23,11 +23,11 @@ class Migration20131111165410Core extends Base
     {
         $schema = $this->db->schema();
 
-        $init_params = array(
+        $init_params = [
             "period"     => "14",
             "chart_path" => "/site/stats/chart_resources/",
             "map_path"   => "/site/stats/resource_maps/"
-        );
+        ];
 
         if ($schema->tableExists('#__extensions')) {
             $query = $this->db->getQuery(true)
@@ -46,7 +46,7 @@ class Migration20131111165410Core extends Base
                 ->where('element', '=', 'usage');
             $result = $query->value('params');
 
-            $params = array();
+            $params = [];
 
             if (!empty($result)) {
                 $ar = explode("\n", $result);
@@ -63,7 +63,7 @@ class Migration20131111165410Core extends Base
             }
         }
 
-        $found = array();
+        $found = [];
 
         if (!empty($params) && count($params) > 0) {
             foreach ($params as $k => $v) {

@@ -25,10 +25,10 @@ class Objct extends Content
      *
      * @var array
      **/
-    protected static $info = array(
+    protected static $info = [
         'action_message' => 'As a HTML embed object',
-        'responds_to'    => array('object')
-    );
+        'responds_to'    => ['object']
+    ];
 
     /**
      * Create method for this handler
@@ -59,7 +59,7 @@ class Objct extends Content
         ) {
             $this->asset['title'] = 'New Kaltura video';
         } else {
-            return array('error' => 'Content did not match the pre-defined filter for an object');
+            return ['error' => 'Content did not match the pre-defined filter for an object'];
         }
 
         $this->asset['type']    = (!empty($this->asset['type'])) ? $this->asset['type'] : 'video';

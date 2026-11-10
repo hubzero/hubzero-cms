@@ -34,7 +34,7 @@ class Supportingdocs extends Plugin
      */
     public function &onResourcesAreas($model, $archive = 0)
     {
-        $areas = array();
+        $areas = [];
 
         if ($model->isTool()) {
             $children = $model->children()
@@ -74,11 +74,11 @@ class Supportingdocs extends Plugin
      */
     public function onResources($model, $option, $areas, $rtrn = 'all')
     {
-        $arr = array(
+        $arr = [
             'area'     => $this->_name,
             'html'     => '',
             'metadata' => ''
-        );
+        ];
 
         // Check if our area is in the array of areas we want to return results for
         if (is_array($areas)) {

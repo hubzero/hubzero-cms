@@ -106,15 +106,15 @@ class Remote
      */
     public function check($message)
     {
-        $curl_headers = array(
+        $curl_headers = [
             'Accept: application/json',
             'Content-Type: application/json',
-        );
+        ];
 
-        $json = array(
+        $json = [
             'options' => ($this->verbose ? 'long' : 'short'),
             'email' => $message,
-        );
+        ];
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->server);

@@ -66,7 +66,7 @@ foreach ($this->calendars as $calendar) {
             </label>
 
             <?php
-            $cals = array(0);
+            $cals = [0];
             $swatchBase = Request::base(true)
                 . '/core/plugins/groups/calendar'
                 . '/assets/img/swatch-';

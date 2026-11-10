@@ -59,7 +59,7 @@ class Cookie implements MessageStore
     public function retrieve($domain)
     {
         if (!($messages = Monster::eat($this->key($domain)))) {
-            $messages = array();
+            $messages = [];
         }
 
         if (count($messages)) {
@@ -77,7 +77,7 @@ class Cookie implements MessageStore
      */
     public function clear($domain)
     {
-        Monster::bake($this->key($domain), $this->expires(0), array());
+        Monster::bake($this->key($domain), $this->expires(0), []);
     }
 
     /**

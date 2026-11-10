@@ -23,7 +23,7 @@ class RandomPage extends WikiMacro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['wiki'] = 'Generates a link to a random page.';
         $txt['html'] = '<p>Generates a link to a random page.</p>';
         return $txt['html'];

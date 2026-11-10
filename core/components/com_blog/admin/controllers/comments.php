@@ -48,7 +48,7 @@ class Comments extends AdminController
      */
     public function displayTask()
     {
-        $filters = array(
+        $filters = [
             'entry_id' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.entry_id',
                 'entry_id',
@@ -84,7 +84,7 @@ class Comments extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         $entry = Entry::oneOrNew($filters['entry_id']);
 
@@ -100,10 +100,10 @@ class Comments extends AdminController
 
         // ordered() treats a dotted value as relationship.field and calls the
         // relationship by name, so the column is confined to this table
-        if (!in_array($filters['sort'], array('id', 'created', 'created_by', 'state', 'entry_id', 'parent'), true)) {
+        if (!in_array($filters['sort'], ['id', 'created', 'created_by', 'state', 'entry_id', 'parent'], true)) {
             $filters['sort'] = 'created';
         }
-        if (!in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC'), true)) {
+        if (!in_array(strtoupper($filters['sort_Dir']), ['ASC', 'DESC'], true)) {
             $filters['sort_Dir'] = 'ASC';
         }
         Request::setVar('filter_order', $filters['sort'], 'get');
@@ -114,21 +114,21 @@ class Comments extends AdminController
             ->rows();
 
         $levellimit = ($filters['limit'] == 0) ? 500 : $filters['limit'];
-        $list       = array();
-        $children   = array();
+        $list       = [];
+        $children   = [];
 
         if ($rows) {
             // First pass - collect children
             foreach ($rows as $k) {
                 $pt = $k->get('parent');
                 // isset, not @: the error handler still logs a suppressed missing key
-                $list = isset($children[$pt]) ? $children[$pt] : array();
+                $list = isset($children[$pt]) ? $children[$pt] : [];
                 array_push($list, $k);
                 $children[$pt] = $list;
             }
 
             // Second pass - get an indent list of the items
-            $list = $this->treeRecurse(0, '', array(), $children, max(0, $levellimit - 1));
+            $list = $this->treeRecurse(0, '', [], $children, max(0, $levellimit - 1));
         }
 
         // Output the HTML
@@ -175,7 +175,7 @@ class Comments extends AdminController
 
                 $list[$id] = $v;
                 $list[$id]->set('treename', "$indent$txt");
-                $list[$id]->set('children', count($children[$id] ?? array()));
+                $list[$id]->set('children', count($children[$id] ?? []));
                 $list = $this->treeRecurse($id, $indent . $spacer, $list, $children, $maxlevel, $level + 1, $type);
             }
         }
@@ -200,7 +200,7 @@ class Comments extends AdminController
 
         if (!is_object($row)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id) && !empty($id)) {
                 $id = $id[0];
             }
@@ -241,14 +241,14 @@ class Comments extends AdminController
         }
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post', 'none', 2);
+        $fields = Request::getArray('fields', [], 'post', 'none', 2);
 
         // Initiate extended database class
         $row = Comment::oneOrNew($fields['id'])->set($fields);
 
         // Trigger before save event
         $isNew  = $row->isNew();
-        $result = Event::trigger('onBlogCommentBeforeSave', array(&$row, $isNew));
+        $result = Event::trigger('onBlogCommentBeforeSave', [&$row, $isNew]);
 
         if (in_array(false, $result, true)) {
             Notify::error($row->getError());
@@ -262,7 +262,7 @@ class Comments extends AdminController
         }
 
         // Trigger after save event
-        Event::trigger('onBlogCommentAfterSave', array(&$row, $isNew));
+        Event::trigger('onBlogCommentAfterSave', [&$row, $isNew]);
 
         // Notify of success
         Notify::success(Lang::txt('COM_BLOG_COMMENT_SAVED'));
@@ -292,8 +292,8 @@ class Comments extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $removed = 0;
 
@@ -307,7 +307,7 @@ class Comments extends AdminController
             }
 
             // Trigger before delete event
-            Event::trigger('onBlogCommentAfterDelete', array($id));
+            Event::trigger('onBlogCommentAfterDelete', [$id]);
 
             $removed++;
         }

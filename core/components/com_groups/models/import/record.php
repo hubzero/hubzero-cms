@@ -31,14 +31,14 @@ class Record extends \Hubzero\Content\Import\Model\Record
      *
      * @var  array
      */
-    private $_description = array();
+    private $_description = [];
 
     /**
      * Handlers instances container
      *
      * @var  array
      */
-    protected static $handlers = array();
+    protected static $handlers = [];
 
     /**
      *  Constructor
@@ -48,7 +48,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
      * @param   string  $mode     Operation mode (update|patch)
      * @return  void
      */
-    public function __construct($raw, $options = array(), $mode = 'UPDATE')
+    public function __construct($raw, $options = [], $mode = 'UPDATE')
     {
         // store our incoming data
         $this->raw      = $raw;
@@ -56,15 +56,15 @@ class Record extends \Hubzero\Content\Import\Model\Record
         $this->_mode    = strtoupper($mode);
 
         // Core objects
-        $this->_description = array();
+        $this->_description = [];
 
         // Create objects
         $this->record = new stdClass();
         $this->record->entry = Group::blank();
 
         // Messages
-        $this->record->errors  = array();
-        $this->record->notices = array();
+        $this->record->errors  = [];
+        $this->record->notices = [];
 
         // bind data
         $this->bind();
@@ -104,7 +104,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
             return $this;
         }
 
-        $keys = array();
+        $keys = [];
         if ($this->_mode == 'PATCH') {
             foreach ($this->_description as $k => $p) {
                 if (!$p) {
@@ -277,7 +277,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
             if (isset($columns[$key])) {
                 $this->record->entry->set($key, $val);
-                if (in_array($key, array('public_desc', 'private_desc'))) {
+                if (in_array($key, ['public_desc', 'private_desc'])) {
                     $this->_description[$key] = $val;
                 }
             } else {
@@ -426,7 +426,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
         // create home page
         if ($isNew) {
             // create page
-            $page = new Page(array(
+            $page = new Page([
                 'gidNumber' => $this->record->entry->get('gidNumber'),
                 'parent'    => 0,
                 'lft'       => 1,
@@ -437,18 +437,18 @@ class Record extends \Hubzero\Content\Import\Model\Record
                 'state'     => 1,
                 'privacy'   => 'default',
                 'home'      => 1
-            ));
+            ]);
             $page->store(false);
 
             // create page version
-            $version = new Page\Version(array(
+            $version = new Page\Version([
                 'pageid'     => $page->get('id'),
                 'version'    => 1,
                 'content'    => "<!-- {FORMAT:HTML} -->\n<p>[[Group.DefaultHomePage()]]</p>",
                 'created'    => Date::of('now')->toSql(),
                 'created_by' => User::get('id'),
                 'approved'   => 1
-            ));
+            ]);
             $version->store(false);
         }
     }
@@ -477,7 +477,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
                 array_push($this->record->notices, $error);
             }
 
-            $handler->setErrors(array());
+            $handler->setErrors([]);
         }
     }
 
@@ -495,7 +495,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
                 array_push($this->record->errors, $error);
             }
 
-            $handler->setErrors(array());
+            $handler->setErrors([]);
         }
     }
 

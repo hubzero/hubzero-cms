@@ -23,8 +23,8 @@ class FileLoaderTest extends TestCase
      **/
     public function testLoad()
     {
-        $expected = array(
-            'app' => array(
+        $expected = [
+            'app' => [
                 'application_env' => 'development',
                 'editor' => 'ckeditor',
                 'list_limit' => '25',
@@ -37,16 +37,16 @@ class FileLoaderTest extends TestCase
                 'sef_groups' => '0',
                 'feed_limit' => '10',
                 'feed_email' => 'author'
-            ),
-            'seo' => array(
+            ],
+            'seo' => [
                 'sef' => '1',
                 'sef_groups' => '0',
                 'sef_rewrite' => '1',
                 'sef_suffix' => '0',
                 'unicodeslugs' => '0',
                 'sitename_pagetitles' => '0'
-            )
-        );
+            ]
+        ];
 
         $basePath = __DIR__ . '/Files';
 
@@ -61,13 +61,13 @@ class FileLoaderTest extends TestCase
         $expected['app']['application_env'] = 'production';
         $expected['app']['editor'] = 'none';
         $expected['app']['debug'] = '0';
-        $expected['session'] = array(
+        $expected['session'] = [
             'cookie_domain' => '',
             'cookie_path' => '',
             'cookiesubdomains' => '0',
             'lifetime' => '45',
             'session_handler' => 'database'
-        );
+        ];
 
         $data = $loader->load('api');
 
@@ -81,7 +81,7 @@ class FileLoaderTest extends TestCase
         $this->assertEquals($expected, $data);
 
         // Test with a bad path
-        $expected = array();
+        $expected = [];
         $badPath = __DIR__ . '/Foo';
 
         $loader = new FileLoader($badPath, $badPath);

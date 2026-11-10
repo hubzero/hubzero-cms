@@ -51,7 +51,7 @@ class Htmx extends Base implements CommandInterface
         }
 
         $strict = (bool) $this->arguments->getOpt('strict', false);
-        $warnings = array();
+        $warnings = [];
 
         $files = $this->findTemplateFiles($path);
         foreach ($files as $file) {
@@ -104,7 +104,7 @@ class Htmx extends Base implements CommandInterface
      */
     protected function findTemplateFiles(string $root): array
     {
-        $files = array();
+        $files = [];
         $iter = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator($root, \FilesystemIterator::SKIP_DOTS)
         );
@@ -115,7 +115,7 @@ class Htmx extends Base implements CommandInterface
             }
 
             $ext = strtolower((string) $info->getExtension());
-            if (!in_array($ext, array('php', 'html', 'htm'), true)) {
+            if (!in_array($ext, ['php', 'html', 'htm'], true)) {
                 continue;
             }
 
@@ -134,7 +134,7 @@ class Htmx extends Base implements CommandInterface
      */
     protected function lintFile(string $file, string $contents): array
     {
-        $warnings = array();
+        $warnings = [];
         $lower = strtolower($contents);
 
         if (
@@ -144,24 +144,24 @@ class Htmx extends Base implements CommandInterface
             || strpos($lower, '<body') !== false
             )
         ) {
-            $warnings[] = array(
+            $warnings[] = [
                 'file' => $file,
                 'line' => 1,
                 'message' => 'Fragment-like template appears to contain full document wrappers.'
-            );
+            ];
         }
 
         if (preg_match_all('/\bid=["\']([^"\']+)["\']/i', $contents, $idMatches, PREG_OFFSET_CAPTURE)) {
-            $seen = array();
+            $seen = [];
             foreach ($idMatches[1] as $match) {
                 $id = (string) $match[0];
                 $offset = (int) $match[1];
                 if (isset($seen[$id])) {
-                    $warnings[] = array(
+                    $warnings[] = [
                         'file' => $file,
                         'line' => $this->lineNumberFromOffset($contents, $offset),
                         'message' => 'Duplicate id attribute "' . $id . '".'
-                    );
+                    ];
                     continue;
                 }
 
@@ -174,17 +174,17 @@ class Htmx extends Base implements CommandInterface
                 $target = trim((string) $match[0]);
                 $offset = (int) $match[1];
                 if ($target === '' || $target === '#') {
-                    $warnings[] = array(
+                    $warnings[] = [
                         'file' => $file,
                         'line' => $this->lineNumberFromOffset($contents, $offset),
                         'message' => 'hx-target appears empty/invalid.'
-                    );
+                    ];
                 }
             }
         }
 
         if (preg_match_all('/\bhx-swap=["\']([^"\']+)["\']/i', $contents, $swapMatches, PREG_OFFSET_CAPTURE)) {
-            $allowed = array(
+            $allowed = [
                 'innerhtml',
                 'outerhtml',
                 'beforebegin',
@@ -193,17 +193,17 @@ class Htmx extends Base implements CommandInterface
                 'afterend',
                 'delete',
                 'none'
-            );
+            ];
             foreach ($swapMatches[1] as $match) {
                 $swap = trim((string) $match[0]);
                 $offset = (int) $match[1];
                 $token = strtolower((string) strtok($swap, ' '));
                 if (!in_array($token, $allowed, true)) {
-                    $warnings[] = array(
+                    $warnings[] = [
                         'file' => $file,
                         'line' => $this->lineNumberFromOffset($contents, $offset),
                         'message' => 'Unrecognized hx-swap value "' . $swap . '".'
-                    );
+                    ];
                 }
             }
         }
@@ -224,12 +224,12 @@ class Htmx extends Base implements CommandInterface
                     preg_match('/(^|[?&])option=com_[^&]+(&|$)/i', $url)
                     && preg_match('/(^|[?&])task=[^&]+(&|$)/i', $url)
                 ) {
-                    $warnings[] = array(
+                    $warnings[] = [
                         'file' => $file,
                         'line' => $this->lineNumberFromOffset($contents, $offset),
                         'message' => 'Hardcoded component/task route in hx-* attribute;'
                             . ' prefer Htmx::actionUrl(...).'
-                    );
+                    ];
                 }
             }
         }
@@ -244,7 +244,7 @@ class Htmx extends Base implements CommandInterface
     protected function looksLikeFragmentFile(string $file): bool
     {
         $name = strtolower(basename($file));
-        if (in_array($name, array('fragment.php', 'list.php', 'partial.php'), true)) {
+        if (in_array($name, ['fragment.php', 'list.php', 'partial.php'], true)) {
             return true;
         }
 

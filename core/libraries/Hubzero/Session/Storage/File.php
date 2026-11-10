@@ -41,7 +41,7 @@ class File extends Store
      * @param   array  $options  Optional parameters.
      * @return  void
      */
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         if (!isset($options['session_path'])) {
             $options['session_path'] = PATH_APP . DS . 'sessions';
@@ -153,11 +153,11 @@ class File extends Store
      * @param   array  $filters
      * @return  array
      */
-    public function all($filters = array())
+    public function all($filters = [])
     {
         $files = $this->files->listContents($this->path);
 
-        $sessions = array();
+        $sessions = [];
 
         foreach ($files as $file) {
             if (!$file->isFile()) {

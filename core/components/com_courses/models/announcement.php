@@ -57,7 +57,7 @@ class Announcement extends Base
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         if (!isset($instances[$oid])) {
@@ -103,25 +103,25 @@ class Announcement extends Base
     public function content($as = 'parsed', $shorten = 0)
     {
         $as = strtolower($as);
-        $options = array();
+        $options = [];
 
         switch ($as) {
             case 'parsed':
                 $content = $this->get('content_parsed', null);
                 if ($content === null) {
-                    $config = array(
+                    $config = [
                         'option'   => 'com_courses',
                         'scope'    => 'courses',
                         'pagename' => $this->get('id'),
                         'pageid'   => 0,
                         'filepath' => '',
                         'domain'   => ''
-                    );
+                    ];
 
                     $content = $this->get('content');
                     $this->importPlugin('content')->trigger(
                         'onContentPrepare',
-                        array($this->_context, &$this, &$config)
+                        [$this->_context, &$this, &$config]
                     );
 
                     $this->set('content_parsed', $this->get('content'));

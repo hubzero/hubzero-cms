@@ -48,7 +48,7 @@ class Hooks extends Base implements CommandInterface
         $this->arguments->deleteOpt(4);
 
         // Set the new hooks argument
-        $this->arguments->setOpt('hooks', array($trigger => array($hook)));
+        $this->arguments->setOpt('hooks', [$trigger => [$hook]]);
 
         // Redirect back to the basic configuration set method
         App::get('client')->call('configuration', 'set', $this->arguments, $this->output);

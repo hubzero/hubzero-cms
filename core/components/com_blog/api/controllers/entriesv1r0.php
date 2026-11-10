@@ -51,7 +51,7 @@ class Entriesv1r0 extends ApiController
         $uid = (int) User::get('id');
 
         if (User::authorise('core.manage', 'com_blog')) {
-            return array($scope, (int) $scopeId, (int) $createdBy);
+            return [$scope, (int) $scopeId, (int) $createdBy];
         }
 
         $scope   = strtolower((string) $scope);
@@ -64,7 +64,7 @@ class Entriesv1r0 extends ApiController
                 throw new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 403);
             }
 
-            return array('group', $scopeId, $uid);
+            return ['group', $scopeId, $uid];
         }
 
         // The site blog takes the same authors the site editor admits
@@ -73,11 +73,11 @@ class Entriesv1r0 extends ApiController
                 throw new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 403);
             }
 
-            return array('site', 0, $uid);
+            return ['site', 0, $uid];
         }
 
         // Anything else is this member's own blog
-        return array('member', $uid, $uid);
+        return ['member', $uid, $uid];
     }
 
     /**
@@ -142,26 +142,26 @@ class Entriesv1r0 extends ApiController
     {
         $model = new Archive('site');
 
-        $filters = array(
+        $filters = [
             'scope'      => Request::getString('scope', 'site'),
             'scope_id'   => Request::getInt('scope_id', 0),
             'search'     => Request::getString('search', ''),
             'authorized' => false,
             'state'      => 1,
             'access'     => User::getAuthorisedViewLevels()
-        );
+        ];
 
         // ordered() treats a dotted sort as relationship.field and calls the
         // relationship by name, so the field is confined to the documented list
-        if (!in_array(Request::getCmd('sort', 'created'), array('created', 'title', 'alias', 'id', 'publish_up', 'publish_down', 'state'), true)) {
+        if (!in_array(Request::getCmd('sort', 'created'), ['created', 'title', 'alias', 'id', 'publish_up', 'publish_down', 'state'], true)) {
             Request::setVar('sort', 'created', 'get');
         }
-        if (!in_array(strtolower(Request::getCmd('sort_Dir', 'desc')), array('asc', 'desc'), true)) {
+        if (!in_array(strtolower(Request::getCmd('sort_Dir', 'desc')), ['asc', 'desc'], true)) {
             Request::setVar('sort_Dir', 'desc', 'get');
         }
 
         $response = new stdClass();
-        $response->posts = array();
+        $response->posts = [];
         $response->total = $model->entries($filters)->count();
 
         if ($response->total) {
@@ -182,7 +182,7 @@ class Entriesv1r0 extends ApiController
                 $obj->scope     = $entry->get('scope');
                 $obj->author    = $entry->creator->get('name');
                 $obj->url       = str_replace('/api', '', $base . '/' . ltrim(Route::url($entry->link()), DS));
-                $obj->comments  = $entry->comments()->whereIn('state', array(1, 3))->count();
+                $obj->comments  = $entry->comments()->whereIn('state', [1, 3])->count();
 
                 $response->posts[] = $obj;
             }
@@ -301,7 +301,7 @@ class Entriesv1r0 extends ApiController
             Request::getInt('created_by', User::get('id'), 'post')
         );
 
-        $fields = array(
+        $fields = [
             'scope'          => $scope,
             'scope_id'       => $scopeId,
             'title'          => Request::getString('title', null, 'post', 'none', 2),
@@ -314,7 +314,7 @@ class Entriesv1r0 extends ApiController
             'allow_comments' => Request::getInt('allow_comments', 0, 'post'),
             'publish_up'     => Request::getString('publish_up', with(new Date('now'))->toSql(), 'post'),
             'publish_down'   => Request::getString('publish_down', null, 'post'),
-        );
+        ];
 
         $row = new Entry();
 
@@ -324,7 +324,7 @@ class Entriesv1r0 extends ApiController
 
         // Trigger before save event
         $isNew  = $row->isNew();
-        $result = Event::trigger('onBlogBeforeSave', array(&$row, $isNew));
+        $result = Event::trigger('onBlogBeforeSave', [&$row, $isNew]);
 
         if (in_array(false, $result, true)) {
             throw new Exception($row->getError(), 500);
@@ -343,7 +343,7 @@ class Entriesv1r0 extends ApiController
         }
 
         // Trigger after save event
-        Event::trigger('onBlogAfterSave', array(&$row, $isNew));
+        Event::trigger('onBlogAfterSave', [&$row, $isNew]);
 
         $row->set('tags', $tags);
         $row->set('created', with(new Date($row->get('created')))->format('Y-m-d\TH:i:s\Z'));
@@ -362,10 +362,10 @@ class Entriesv1r0 extends ApiController
                 'scope'       => 'blog.entry',
                 'scope_id'    => $row->get('id'),
                 'description' => Lang::txt('COM_BLOG_ACTIVITY_ENTRY_CREATED', '<a href="' . $url . '">' . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title' => $row->get('title'),
                     'url'   => $url
-                )
+                ]
             ],
             'recipients' => [
                 $row->get('created_by')
@@ -572,7 +572,7 @@ class Entriesv1r0 extends ApiController
             );
         }
 
-        $fields = array(
+        $fields = [
             'scope'          => $scope,
             'scope_id'       => $scopeId,
             'title'          => Request::getString('title', $row->get('title')),
@@ -586,7 +586,7 @@ class Entriesv1r0 extends ApiController
             'publish_up'     => Request::getString('publish_up', $row->get('publish_up')),
             'publish_down'   => Request::getString('publish_down', $row->get('publish_down')),
             'hits'           => Request::getInt('hits', $row->get('hits'))
-        );
+        ];
 
         if (!$row->set($fields)) {
             throw new Exception(Lang::txt('COM_BLOG_ERROR_BINDING_DATA'), 422);
@@ -594,7 +594,7 @@ class Entriesv1r0 extends ApiController
 
         // Trigger before save event
         $isNew  = $row->isNew();
-        $result = Event::trigger('onBlogBeforeSave', array(&$row, $isNew));
+        $result = Event::trigger('onBlogBeforeSave', [&$row, $isNew]);
 
         if (in_array(false, $result, true)) {
             throw new Exception($row->getError(), 500);
@@ -613,7 +613,7 @@ class Entriesv1r0 extends ApiController
         }
 
         // Trigger after save event
-        Event::trigger('onBlogAfterSave', array(&$row, $isNew));
+        Event::trigger('onBlogAfterSave', [&$row, $isNew]);
 
         $row->set('created', with(new Date($row->get('created')))->format('Y-m-d\TH:i:s\Z'));
         $row->set('publish_up', with(new Date($row->get('publish_up')))->format('Y-m-d\TH:i:s\Z'));
@@ -631,10 +631,10 @@ class Entriesv1r0 extends ApiController
                 'scope'       => 'blog.entry',
                 'scope_id'    => $row->get('id'),
                 'description' => Lang::txt('COM_BLOG_ACTIVITY_ENTRY_UPDATED', '<a href="' . $url . '">' . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title' => $row->get('title'),
                     'url'   => $url
-                )
+                ]
             ],
             'recipients' => [
                 $row->get('created_by')
@@ -662,8 +662,8 @@ class Entriesv1r0 extends ApiController
     {
         $this->requiresAuthentication();
 
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         if (count($ids) <= 0) {
             throw new Exception(Lang::txt('COM_BLOG_ERROR_MISSING_ID'), 500);
@@ -689,7 +689,7 @@ class Entriesv1r0 extends ApiController
             }
 
             // Trigger before delete event
-            Event::trigger('onBlogAfterDelete', array($id));
+            Event::trigger('onBlogAfterDelete', [$id]);
 
             // Log activity
             $base = rtrim(Request::base(), '/');
@@ -701,10 +701,10 @@ class Entriesv1r0 extends ApiController
                     'scope'       => 'blog.entry',
                     'scope_id'    => $id,
                     'description' => Lang::txt('COM_BLOG_ACTIVITY_ENTRY_DELETED', '<a href="' . $url . '">' . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                    'details'     => array(
+                    'details'     => [
                         'title' => $row->get('title'),
                         'url'   => $url
-                    )
+                    ]
                 ],
                 'recipients' => [
                     $row->get('created_by')

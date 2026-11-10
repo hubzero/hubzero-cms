@@ -42,37 +42,37 @@ class Page extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'title'   => 'notempty',
         'content' => 'notempty'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'url'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'ordering'
-    );
+    ];
 
     /**
      * Fields to be parsed
      *
      * @var array
      */
-    protected $parsed = array(
+    protected $parsed = [
         'description'
-    );
+    ];
 
     /**
      * Registry
@@ -173,14 +173,14 @@ class Page extends Relational
         $property = "_{$field}Parsed";
 
         if (!isset($this->$property)) {
-            $params = array(
+            $params = [
                 'option'   => 'com_courses',
                 'scope'    => '',
                 'pagename' => $this->get('url'),
                 'pageid'   => 0,
                 'filepath' => '',
                 'domain'   => ''
-            );
+            ];
 
             $this->$property = Html::content('prepare', $this->get($field, ''), $params);
         }

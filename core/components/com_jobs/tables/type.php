@@ -35,7 +35,7 @@ class Type extends Table
      */
     public function getTypes($sortby = 'id', $sortdir = 'ASC')
     {
-        $types = array();
+        $types = [];
 
         $query  = "SELECT id, category FROM `$this->_tbl` ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $sortby) ?: '1') . " " . (strtoupper((string) $sortdir) === 'DESC' ? 'DESC' : 'ASC') . " ";
         $this->_db->setQuery($query);

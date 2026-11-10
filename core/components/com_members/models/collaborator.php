@@ -27,18 +27,18 @@ class Collaborator extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'id' => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'id'
-    );
+    ];
 
     /**
      * Generates automatic id field value

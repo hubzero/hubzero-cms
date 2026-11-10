@@ -43,31 +43,31 @@ class Vote extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'item_id'   => 'positive|nonzero',
         'item_type' => 'notempty',
         'vote'      => 'notempty'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'vote',
         'item_type'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Runs extra setup code when creating a new model

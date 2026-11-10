@@ -70,7 +70,7 @@ class Mozify extends Obj
      * @param   array  $config  Array of config values
      * @return  void
      */
-    public function __construct($config = array())
+    public function __construct($config = [])
     {
         //we must have image url to do anything
         if (isset($config['imageUrl']) && $config['imageUrl'] != '') {

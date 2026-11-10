@@ -20,11 +20,11 @@ class Migration20190221000000ComFeedback extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__feedback' => array(
+    public static $tables = [
+        '#__feedback' => [
             'date'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

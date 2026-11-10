@@ -30,18 +30,18 @@ class Massmail extends Plugin
 
         $obj = new \stdClass();
         $obj->plugin = $this->_name;
-        $obj->events = array(
-            array(
+        $obj->events = [
+            [
                 'name'   => 'processMassmailQueue',
                 'label'  => Lang::txt('PLG_CRON_MASSMAIL_PROCESS_QUEUE'),
                 'params' => ''
-            ),
-            array(
+            ],
+            [
                 'name'   => 'collectPostfixVolume',
                 'label'  => Lang::txt('PLG_CRON_MASSMAIL_COLLECT'),
                 'params' => ''
-            )
-        );
+            ]
+        ];
 
         return $obj;
     }

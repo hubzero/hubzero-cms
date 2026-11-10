@@ -29,7 +29,7 @@ class Span extends Macro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['wiki'] = 'Wraps text or other elements inside a `<span>` tag.';
         $txt['html'] = '<p>Wraps text or other elements inside a <code>&lt;span&gt;</code> tag.</p>';
         return $txt['html'];
@@ -51,7 +51,7 @@ class Span extends Macro
         $attribs = explode(',', $et);
         $text = array_shift($attribs);
 
-        $atts = array();
+        $atts = [];
         if (!empty($attribs) && count($attribs) > 0) {
             foreach ($attribs as $a) {
                 $a = preg_split('/=/', $a);

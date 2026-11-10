@@ -18,7 +18,7 @@ $this->js();
 
 $base = $this->offering->link() . '&active=discussions';
 
-$instructors = array();
+$instructors = [];
 
 $inst = $this->course->instructors();
 if (count($inst) > 0) {
@@ -29,12 +29,12 @@ if (count($inst) > 0) {
 ?>
 <?php if (!$this->course->offering()->section()->access('view')) : ?>
     <?php
-        $view = new \Hubzero\Plugin\View(array(
+        $view = new \Hubzero\Plugin\View([
             'folder'  => 'courses',
             'element' => 'outline',
             'name'    => 'shared',
             'layout'  => '_not_enrolled'
-        ));
+        ]);
 
         $view->set('course', $this->course)
              ->set('option', $this->option)
@@ -129,7 +129,7 @@ if (count($inst) > 0) {
                     </div><!-- / .category -->
                     <?php if (count($this->sections) > 0) { ?>
                         <?php
-                            $threads = array();
+                            $threads = [];
 
                             $posts = \Components\Forum\Models\Post::all()
                                 ->whereEquals('scope', $this->filters['scope'])
@@ -148,7 +148,7 @@ if (count($inst) > 0) {
                         if ($results->count()) {
                             foreach ($results as $thread) {
                                 if (!isset($threads[$thread->get('category_id')])) {
-                                    $threads[$thread->get('category_id')] = array();
+                                    $threads[$thread->get('category_id')] = [];
                                 }
                                 $threads[$thread->get('category_id')][] = $thread;
                             }
@@ -253,7 +253,7 @@ if (count($inst) > 0) {
                             <label for="field_comment">
                                 <span class="label-text"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?></span>
                                 <?php
-                                echo $this->editor('fields[comment]', '', 35, 5, 'field_comment', array('class' => 'minimal no-footer'));
+                                echo $this->editor('fields[comment]', '', 35, 5, 'field_comment', ['class' => 'minimal no-footer']);
                                 ?>
                             </label>
 

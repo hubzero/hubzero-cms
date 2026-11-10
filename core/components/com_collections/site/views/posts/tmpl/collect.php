@@ -118,7 +118,7 @@ $formAction = Route::url(
                 35,
                 5,
                 'field_description',
-                array('class' => 'minimal no-footer')
+                ['class' => 'minimal no-footer']
             );
             ?>
         </label>

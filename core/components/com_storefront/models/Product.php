@@ -174,7 +174,7 @@ class Product
         $id = (int)$this->getId();
 
         if (!$id) {
-            return array();
+            return [];
         }
 
         $type = ($type == 'include' ? 0 : 1);
@@ -184,7 +184,7 @@ class Product
         $sql .= " WHERE `pId`=" . $db->quote($id) . " AND `exclude`=" . $db->quote($type);
         $db->setQuery($sql);
 
-        $accessgroups = array();
+        $accessgroups = [];
         foreach ($db->loadObjectList() as $row) {
             $accessgroups[] = $row->agId;
         }
@@ -199,10 +199,10 @@ class Product
      * @param   string  $type
      * @return  boolean
      */
-    public function setAccessGroups($groups = array(), $type = 'include')
+    public function setAccessGroups($groups = [], $type = 'include')
     {
         if (!is_array($groups)) {
-            $groups = array($groups);
+            $groups = [$groups];
         }
 
         $id = (int)$this->getId();
@@ -277,7 +277,7 @@ class Product
                 $collections = $db->loadColumn();
                 $this->setCollections($collections);
             } else {
-                return array();
+                return [];
             }
         }
         return $this->data->collections;
@@ -325,7 +325,7 @@ class Product
                 $db->execute();
 
                 $skuIds = $db->loadColumn();
-                $skus = array();
+                $skus = [];
 
                 // Find out product type to instantiate the correct object
                 // software
@@ -341,7 +341,7 @@ class Product
                 }
                 $this->setSkus($skus, false);
             } else {
-                return array();
+                return [];
             }
         }
         return $this->skus;
@@ -358,7 +358,7 @@ class Product
     {
         // Delete all skus that are not part of the new SKUs
         if ($deleteOld) {
-            $newSkuIds = array();
+            $newSkuIds = [];
             foreach ($skus as $sku) {
                 $newSkuIds[] = $sku->getId();
                 $sku->setProductId($this->getId());
@@ -387,7 +387,7 @@ class Product
             throw new \Exception(Lang::txt('Bad SKU. Unable to add.'));
         }
 
-        $this->setSkus(array($sku));
+        $this->setSkus([$sku]);
     }
 
     /**
@@ -570,7 +570,7 @@ class Product
                 $images = $db->loadObjectList();
                 $this->setImages($images);
             } else {
-                return array();
+                return [];
             }
         }
         return $this->data->images;
@@ -611,7 +611,7 @@ class Product
     {
         $image = new \stdClass();
         $image->imgName = $img;
-        $this->setImages(array($image));
+        $this->setImages([$image]);
         return true;
     }
 
@@ -832,7 +832,7 @@ class Product
                 $res = $db->loadColumn();
                 $this->setOptionGroups($res);
             } else {
-                return array();
+                return [];
             }
         }
         return $this->data->optionGroups;
@@ -953,7 +953,7 @@ class Product
         // ### Do collections
         $collections = $this->getCollections();
 
-        $affectedCollectionIds = array();
+        $affectedCollectionIds = [];
         if (!empty($collections)) {
             foreach ($collections as $cId) {
                 $sql = "SET @collectionId := 0";

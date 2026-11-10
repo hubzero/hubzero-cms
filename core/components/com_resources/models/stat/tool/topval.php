@@ -43,9 +43,9 @@ class Topval extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'name' => 'notempty'
-    );
+    ];
 
     /**
      * Defines a one to one relationship between entry and Top

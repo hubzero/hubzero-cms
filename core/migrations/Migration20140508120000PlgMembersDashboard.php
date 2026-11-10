@@ -32,12 +32,12 @@ class Migration20140508120000PlgMembersDashboard extends Base
                 ->first();
             $params = json_decode($dashboardPlugin->params);
 
-            $newDefaults = array();
+            $newDefaults = [];
             if (isset($params->defaults)) {
                 $oldDefaultCols = array_map("trim", explode(';', $params->defaults));
 
                 foreach ($oldDefaultCols as $col => $oldCol) {
-                    $newDefault  = array();
+                    $newDefault  = [];
                     $oldDefaults = array_map('trim', explode(',', $oldCol));
 
                     foreach ($oldDefaults as $row => $pref) {
@@ -90,13 +90,13 @@ class Migration20140508120000PlgMembersDashboard extends Base
                 ->group('uid')
                 ->loadObjectList();
 
-            $newpreferences = array();
+            $newpreferences = [];
             foreach ($preferences as $preference) {
-                $newPrefCols = array();
+                $newPrefCols = [];
                 $oldPrefCols = array_map("trim", explode(';', $preference->prefs));
 
                 foreach ($oldPrefCols as $col => $oldCol) {
-                    $newPref = array();
+                    $newPref = [];
                     $oldPrefs = array_map('trim', explode(',', $oldCol));
 
                     foreach ($oldPrefs as $row => $pref) {
@@ -110,11 +110,11 @@ class Migration20140508120000PlgMembersDashboard extends Base
                     }
                 }
 
-                $newpreferences[] = array(
+                $newpreferences[] = [
                     'uid'      => $preference->uid,
                     'prefs'    => $newPrefCols,
                     'modified' => $preference->modified
-                );
+                ];
             }
 
             // if we have some prefs to move over

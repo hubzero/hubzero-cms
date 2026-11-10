@@ -130,7 +130,7 @@ class Ckeditor extends Plugin
      * @param   array    $params  Associative array of editor parameters.
      * @return  string
      */
-    public function onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = array())
+    public function onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = [])
     {
         // Make sure we have an id too
         if (empty($id)) {
@@ -141,12 +141,12 @@ class Ckeditor extends Plugin
         $row = $row ?: 10;
 
         if (!isset($params['class'])) {
-            $params['class'] = array();
+            $params['class'] = [];
         }
         if (!is_array($params['class'])) {
             //$params['class'] = array($params['class']);
             $cls = $params['class'];
-            $params['class'] = array();
+            $params['class'] = [];
             foreach ($this->_split(' ', $cls) as $piece) {
                 $params['class'][] = $piece;
             }
@@ -199,7 +199,7 @@ class Ckeditor extends Plugin
 
         $params['class'] = implode(' ', $params['class']);
 
-        $atts = array();
+        $atts = [];
         foreach ($params as $key => $value) {
             // Configuration, not markup. 'limits' is read by the CKEditor 5
             // plugin and meaningless here, but every parameter this loop does
@@ -277,7 +277,7 @@ class Ckeditor extends Plugin
      */
     private function _split($delimiter, $input)
     {
-        $even = array();
+        $even = [];
 
         if (is_array($input)) {
             foreach ($input as $el) {
@@ -298,7 +298,7 @@ class Ckeditor extends Plugin
      * @param   array   $params
      * @return  object  stdClass
      */
-    private function _buildConfig($params = array())
+    private function _buildConfig($params = [])
     {
         static $template;
 
@@ -320,18 +320,18 @@ class Ckeditor extends Plugin
         $config->resize_enabled                = true;
         $config->emailProtection               = '';
         $config->iframe_attributes             = new \stdClass();
-        $config->protectedSource               = array('/<group:include([^>]*)\\/>/g', '/{xhub:([^}]*)}/gi', '/<map[^>]*>(.|\n)*<\/map>/ig', '/<area([^>]*)\/?>/ig');
+        $config->protectedSource               = ['/<group:include([^>]*)\\/>/g', '/{xhub:([^}]*)}/gi', '/<map[^>]*>(.|\n)*<\/map>/ig', '/<area([^>]*)\/?>/ig'];
         $config->extraAllowedContent           = 'img(*)[*]; style(*)[*]; mark(*)[*]; span(*)[*]; map(*)[*]; area(*)[*]; *(*)[*]{*}';
-        $config->specialChars                  = array('!', '&quot;', '#', '$', '%', '&amp;', "'", '(', ')', '*', '+', '-', '.', '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', ';', '&lt;', '=', '&gt;', '?', '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '[', ']', '^', '_', '`', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}', '~', "&euro;", "&lsquo;", "&rsquo;", "&ldquo;", "&rdquo;", "&ndash;", "&mdash;", "&iexcl;", "&cent;", "&pound;", "&curren;", "&yen;", "&brvbar;", "&sect;", "&uml;", "&copy;", "&ordf;", "&laquo;", "&not;", "&reg;", "&macr;", "&deg;", "&sup2;", "&sup3;", "&acute;", "&micro;", "&para;", "&middot;", "&cedil;", "&sup1;", "&ordm;", "&raquo;", "&frac14;", "&frac12;", "&frac34;", "&iquest;", "&Agrave;", "&Aacute;", "&Acirc;", "&Atilde;", "&Auml;", "&Aring;", "&AElig;", "&Ccedil;", "&Egrave;", "&Eacute;", "&Ecirc;", "&Euml;", "&Igrave;", "&Iacute;", "&Icirc;", "&Iuml;", "&ETH;", "&Ntilde;", "&Ograve;", "&Oacute;", "&Ocirc;", "&Otilde;", "&Ouml;", "&times;", "&Oslash;", "&Ugrave;", "&Uacute;", "&Ucirc;", "&Uuml;", "&Yacute;", "&THORN;", "&szlig;", "&agrave;", "&aacute;", "&acirc;", "&atilde;", "&auml;", "&aring;", "&aelig;", "&ccedil;", "&egrave;", "&eacute;", "&ecirc;", "&euml;", "&igrave;", "&iacute;", "&icirc;", "&iuml;", "&eth;", "&ntilde;", "&ograve;", "&oacute;", "&ocirc;", "&otilde;", "&ouml;", "&divide;", "&oslash;", "&ugrave;", "&uacute;", "&ucirc;", "&uuml;", "&yacute;", "&thorn;", "&yuml;", "&OElig;", "&oelig;", "&#372;", "&#374", "&#373", "&#375;", "&sbquo;", "&#8219;", "&bdquo;", "&hellip;", "&trade;", "&#9658;", "&bull;", "&rarr;", "&rArr;", "&hArr;", "&diams;", "&asymp;", "&Omega;");
+        $config->specialChars                  = ['!', '&quot;', '#', '$', '%', '&amp;', "'", '(', ')', '*', '+', '-', '.', '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', ';', '&lt;', '=', '&gt;', '?', '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '[', ']', '^', '_', '`', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}', '~', "&euro;", "&lsquo;", "&rsquo;", "&ldquo;", "&rdquo;", "&ndash;", "&mdash;", "&iexcl;", "&cent;", "&pound;", "&curren;", "&yen;", "&brvbar;", "&sect;", "&uml;", "&copy;", "&ordf;", "&laquo;", "&not;", "&reg;", "&macr;", "&deg;", "&sup2;", "&sup3;", "&acute;", "&micro;", "&para;", "&middot;", "&cedil;", "&sup1;", "&ordm;", "&raquo;", "&frac14;", "&frac12;", "&frac34;", "&iquest;", "&Agrave;", "&Aacute;", "&Acirc;", "&Atilde;", "&Auml;", "&Aring;", "&AElig;", "&Ccedil;", "&Egrave;", "&Eacute;", "&Ecirc;", "&Euml;", "&Igrave;", "&Iacute;", "&Icirc;", "&Iuml;", "&ETH;", "&Ntilde;", "&Ograve;", "&Oacute;", "&Ocirc;", "&Otilde;", "&Ouml;", "&times;", "&Oslash;", "&Ugrave;", "&Uacute;", "&Ucirc;", "&Uuml;", "&Yacute;", "&THORN;", "&szlig;", "&agrave;", "&aacute;", "&acirc;", "&atilde;", "&auml;", "&aring;", "&aelig;", "&ccedil;", "&egrave;", "&eacute;", "&ecirc;", "&euml;", "&igrave;", "&iacute;", "&icirc;", "&iuml;", "&eth;", "&ntilde;", "&ograve;", "&oacute;", "&ocirc;", "&otilde;", "&ouml;", "&divide;", "&oslash;", "&ugrave;", "&uacute;", "&ucirc;", "&uuml;", "&yacute;", "&thorn;", "&yuml;", "&OElig;", "&oelig;", "&#372;", "&#374", "&#373", "&#375;", "&sbquo;", "&#8219;", "&bdquo;", "&hellip;", "&trade;", "&#9658;", "&bull;", "&rarr;", "&rArr;", "&hArr;", "&diams;", "&asymp;", "&Omega;"];
         $config->disableNativeSpellChecker     = false;
         $config->scayt_autoStartup             = false;
         $config->scayt_contextCommands         = 'all';
         $config->scayt_maxSuggestions          = 5;
         $config->scayt_moreSuggestions         = 'off';
         $config->bodyClass                     = 'ckeditor-body';
-        $config->contentsCss                   = array();
-        $config->templates                     = array('hubzero');
-        $config->templates_files               = array('/core/plugins/editors/ckeditor/assets/templates/hub.js');
+        $config->contentsCss                   = [];
+        $config->templates                     = ['hubzero'];
+        $config->templates_files               = ['/core/plugins/editors/ckeditor/assets/templates/hub.js'];
         $config->templates_replaceContent      = false;
         $config->filebrowserBrowseUrl          = '';
         $config->filebrowserImageBrowseUrl     = '';
@@ -339,16 +339,16 @@ class Ckeditor extends Plugin
         $config->filebrowserUploadUrl          = '';
         $config->filebrowserWindowWidth        = 400;
         $config->filebrowserWindowHeight       = 600;
-        $config->toolbar                       = array(
-            array('Find', 'Replace', '-', 'Scayt', 'Maximize', 'ShowBlocks'),
-            array('Image','Table','HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe', 'HubzeroEquation', 'HubzeroGrid', 'Templates'),
-            array('Link', 'Unlink', 'Anchor'),
+        $config->toolbar                       = [
+            ['Find', 'Replace', '-', 'Scayt', 'Maximize', 'ShowBlocks'],
+            ['Image','Table','HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe', 'HubzeroEquation', 'HubzeroGrid', 'Templates'],
+            ['Link', 'Unlink', 'Anchor'],
             '/',
-            array('Format', 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'),
-            array('NumberedList', 'BulletedList', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock')
-        );
+            ['Format', 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'],
+            ['NumberedList', 'BulletedList', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']
+        ];
 
-        $tlbr = array();
+        $tlbr = [];
         if ($this->params->get('colorButton')) {
             $config->extraPlugins .= ',colorbutton';
             $tlbr[] = 'TextColor';
@@ -362,15 +362,15 @@ class Ckeditor extends Plugin
             $config->toolbar[] = $tlbr;
         }
 
-        $config->toolbar[] = array('HubzeroMacro');
+        $config->toolbar[] = ['HubzeroMacro'];
 
         // If minimal toolbar
         if (in_array('minimal', $this->params->get('class'))) {
-            $config->toolbar                   = array(
-                array('Link', 'Unlink', 'Anchor'),
-                array('Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'),
-                array('NumberedList', 'BulletedList')
-            );
+            $config->toolbar                   = [
+                ['Link', 'Unlink', 'Anchor'],
+                ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'],
+                ['NumberedList', 'BulletedList']
+            ];
             $config->toolbarCanCollapse = false;
 
             // [QUBES][#561] SPW: always show resize, even in minimal mode
@@ -381,12 +381,12 @@ class Ckeditor extends Plugin
         // Image plugin if in minimal mode
         if (in_array('minimal', $this->params->get('class')) && in_array('images', $this->params->get('class'))) {
             // push after links section
-            $config->toolbar = array_merge(array_splice($config->toolbar, 0, 1), array(array('Image')), $config->toolbar);
+            $config->toolbar = array_merge(array_splice($config->toolbar, 0, 1), [['Image']], $config->toolbar);
         }
 
         // Macros popup
         if (in_array('macros', $this->params->get('class'))) {
-            $config->toolbar[] = array('HubzeroMacro');
+            $config->toolbar[] = ['HubzeroMacro'];
         }
 
         // If no footer
@@ -431,7 +431,7 @@ class Ckeditor extends Plugin
         $config->codemirror->autoCloseBrackets      = false;
 
         // Startup mode
-        if (in_array($this->params->get('startupMode'), array('wysiwyg','source'))) {
+        if (in_array($this->params->get('startupMode'), ['wysiwyg','source'])) {
             $config->startupMode = $this->params->get('startupMode');
         }
 
@@ -515,8 +515,8 @@ class Ckeditor extends Plugin
                 if (file_exists(PATH_ROOT . $template)) {
                     // Do we want to replace original ones
                     if ($this->params->get('templates_replace')) {
-                        $config->templates = array();
-                        $config->templates_files = array();
+                        $config->templates = [];
+                        $config->templates_files = [];
                     }
 
                     array_push($config->templates, $name);

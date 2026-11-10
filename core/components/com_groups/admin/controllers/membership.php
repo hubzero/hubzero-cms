@@ -50,13 +50,13 @@ class Membership extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->filters = array(
+        $this->view->filters = [
             'gid' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.gid',
                 'gid',
                 ''
             )
-        );
+        ];
 
         // Ensure we have a group ID
         if (!$this->view->filters['gid']) {
@@ -148,7 +148,7 @@ class Membership extends AdminController
         $this->view->expiration_supported = \Hubzero\User\Group\Membership::supported();
         $this->view->expirations = $this->view->expiration_supported
             ? \Hubzero\User\Group\Membership::termsFor($group->get('gidNumber'))
-            : array();
+            : [];
 
         $this->view->filters['term'] = trim(Request::getState(
             $this->_option . '.' . $this->_controller . '.term',
@@ -233,7 +233,7 @@ class Membership extends AdminController
         $this->group->read($gid);
 
         // Set a flag for emailing any changes made
-        $users = array();
+        $users = [];
 
         $tbl = Request::getString('tbl', '', 'post');
 
@@ -293,11 +293,11 @@ class Membership extends AdminController
         $this->group->update();
 
         // log
-        Log::log(array(
+        Log::log([
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'group_members_added',
             'comments'  => $users
-        ));
+        ]);
 
         if (!Request::getInt('no_html', 0)) {
             App::redirect(
@@ -321,12 +321,12 @@ class Membership extends AdminController
         $this->view->group = new Group();
         $this->view->group->read($gid);
 
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
         $ids = array_values(array_filter(array_map('intval', (array) $ids)));
 
         $this->view->users   = $ids;
         $this->view->maxDays = (int) Component::params('com_groups')->get('membership_max_term_days', 0);
-        $this->view->current = array();
+        $this->view->current = [];
 
         foreach ($ids as $uid) {
             $this->view->current[$uid] = \Hubzero\User\Group\Membership::expiresFor(
@@ -368,7 +368,7 @@ class Membership extends AdminController
             return;
         }
 
-        $ids     = Request::getArray('id', array());
+        $ids     = Request::getArray('id', []);
         $ids     = array_values(array_filter(array_map('intval', (array) $ids)));
         $mode    = Request::getWord('mode', 'set');
         $expires = trim(Request::getString('expires', ''));
@@ -379,7 +379,7 @@ class Membership extends AdminController
         }
 
         $done   = 0;
-        $errors = array();
+        $errors = [];
 
         foreach ($ids as $uid) {
             try {
@@ -396,11 +396,11 @@ class Membership extends AdminController
         }
 
         if ($done) {
-            Log::log(array(
+            Log::log([
                 'gidNumber' => $this->group->get('gidNumber'),
                 'action'    => ($mode == 'clear' ? 'group_member_term_cleared' : 'group_member_term_set'),
                 'comments'  => $ids
-            ));
+            ]);
         }
 
         App::redirect(
@@ -431,14 +431,14 @@ class Membership extends AdminController
         $this->group->read($gid);
 
         // Set a flag for emailing any changes made
-        $users = array();
+        $users = [];
 
         // Get all normal members (non-managers) of this group
         $members = $this->group->get('members');
 
         // Incoming array of users to promote
-        $mbrs = Request::getArray('id', array());
-        $mbrs = (!is_array($mbrs) ? array($mbrs) : $mbrs);
+        $mbrs = Request::getArray('id', []);
+        $mbrs = (!is_array($mbrs) ? [$mbrs] : $mbrs);
 
         foreach ($mbrs as $mbr) {
             // Retrieve user's account info
@@ -475,11 +475,11 @@ class Membership extends AdminController
         $this->group->update();
 
         // log
-        Log::log(array(
+        Log::log([
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'group_members_approved',
             'comments'  => $users
-        ));
+        ]);
 
         if (!Request::getInt('no_html', 0)) {
             App::redirect(
@@ -505,14 +505,14 @@ class Membership extends AdminController
         $this->group = new Group();
         $this->group->read($gid);
 
-        $users = array();
+        $users = [];
 
         // Get all managers of this group
         $managers = $this->group->get('managers');
 
         // Incoming array of users to promote
-        $mbrs = Request::getArray('id', array());
-        $mbrs = (!is_array($mbrs) ? array($mbrs) : $mbrs);
+        $mbrs = Request::getArray('id', []);
+        $mbrs = (!is_array($mbrs) ? [$mbrs] : $mbrs);
 
         foreach ($mbrs as $mbr) {
             // Retrieve user's account info
@@ -541,11 +541,11 @@ class Membership extends AdminController
         // Save changes
         $this->group->update();
 
-        Log::log(array(
+        Log::log([
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'group_members_promoted',
             'comments'  => $users
-        ));
+        ]);
 
         if (!Request::getInt('no_html', 0)) {
             App::redirect(
@@ -587,11 +587,11 @@ class Membership extends AdminController
             return;
         }
 
-        $users = array();
+        $users = [];
 
         // Incoming array of users to demote
-        $mbrs = Request::getArray('id', array());
-        $mbrs = (!is_array($mbrs) ? array($mbrs) : $mbrs);
+        $mbrs = Request::getArray('id', []);
+        $mbrs = (!is_array($mbrs) ? [$mbrs] : $mbrs);
 
         foreach ($mbrs as $mbr) {
             // Retrieve user's account info
@@ -621,11 +621,11 @@ class Membership extends AdminController
         $this->group->update();
 
         // log
-        Log::log(array(
+        Log::log([
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'group_members_demoted',
             'comments'  => $users
-        ));
+        ]);
 
         if (!Request::getInt('no_html', 0)) {
             App::redirect(
@@ -658,12 +658,12 @@ class Membership extends AdminController
         // Get all the group's managers
         $members = $this->group->get('members');
 
-        $users_mem = array();
-        $users_man = array();
+        $users_mem = [];
+        $users_man = [];
 
         // Incoming array of users to demote
-        $mbrs = Request::getArray('id', array());
-        $mbrs = (!is_array($mbrs) ? array($mbrs) : $mbrs);
+        $mbrs = Request::getArray('id', []);
+        $mbrs = (!is_array($mbrs) ? [$mbrs] : $mbrs);
 
         foreach ($mbrs as $mbr) {
             // Retrieve user's account info
@@ -704,11 +704,11 @@ class Membership extends AdminController
         $this->group->update();
 
         // log
-        Log::log(array(
+        Log::log([
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'group_members_deleted',
             'comments'  => $users_mem
-        ));
+        ]);
 
         if (!Request::getInt('no_html', 0)) {
             App::redirect(
@@ -737,15 +737,15 @@ class Membership extends AdminController
 
         $authorized = $this->authorized;
 
-        $users = array();
-        $useremails = array();
+        $users = [];
+        $useremails = [];
 
         // Get all the group's invitees
         $invitees = $this->group->get('invitees');
 
         // Incoming array of users to demote
-        $mbrs = Request::getArray('id', array());
-        $mbrs = (!is_array($mbrs) ? array($mbrs) : $mbrs);
+        $mbrs = Request::getArray('id', []);
+        $mbrs = (!is_array($mbrs) ? [$mbrs] : $mbrs);
 
         foreach ($mbrs as $mbr) {
             //check to see if we are uninviting email
@@ -780,11 +780,11 @@ class Membership extends AdminController
         $this->group->update();
 
         // log
-        Log::log(array(
+        Log::log([
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'group_members_uninvited',
             'comments'  => array_merge($users, $useremails)
-        ));
+        ]);
 
         if (!Request::getInt('no_html', 0)) {
             App::redirect(
@@ -811,11 +811,11 @@ class Membership extends AdminController
         $this->group->read($gid);
 
         // An array for the users we're going to deny
-        $users = array();
+        $users = [];
 
         // Incoming array of users to demote
-        $mbrs = Request::getArray('id', array());
-        $mbrs = (!is_array($mbrs) ? array($mbrs) : $mbrs);
+        $mbrs = Request::getArray('id', []);
+        $mbrs = (!is_array($mbrs) ? [$mbrs] : $mbrs);
 
         foreach ($mbrs as $mbr) {
             // Retrieve user's account info
@@ -841,11 +841,11 @@ class Membership extends AdminController
         $this->group->update();
 
         // log
-        Log::log(array(
+        Log::log([
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'group_members_denied',
             'comments'  => $users
-        ));
+        ]);
 
         if (!Request::getInt('no_html', 0)) {
             App::redirect(

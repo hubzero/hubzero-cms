@@ -184,7 +184,7 @@ $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . 
                 <?php
             endforeach;
             $fill_new = !isset($added_new_focus_area);
-            $type_ids = $fill_new && isset($_POST['types-new']) ? array_flip($_POST['types-new']) : array();
+            $type_ids = $fill_new && isset($_POST['types-new']) ? array_flip($_POST['types-new']) : [];
             ?>
             </div><!-- / #fas -->
             <p>

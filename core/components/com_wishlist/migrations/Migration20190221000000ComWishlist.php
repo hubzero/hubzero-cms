@@ -20,20 +20,20 @@ class Migration20190221000000ComWishlist extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__wishlist' => array(
+    public static $tables = [
+        '#__wishlist' => [
             'created'
-        ),
-        '#__wishlist_item' => array(
+        ],
+        '#__wishlist_item' => [
             'proposed',
             'granted',
             'due'
-        ),
-        '#__wishlist_vote' => array(
+        ],
+        '#__wishlist_vote' => [
             'voted',
             'due'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

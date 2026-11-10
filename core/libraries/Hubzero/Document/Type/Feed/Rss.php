@@ -126,7 +126,7 @@ class Rss extends Renderer
         }
         if ($data->category) {
             if (!is_array($data->category)) {
-                $data->category = array($data->category);
+                $data->category = [$data->category];
             }
 
             foreach ($data->category as $category) {
@@ -217,7 +217,7 @@ class Rss extends Renderer
             }
             if ($data->items[$i]->category) {
                 if (!is_array($data->items[$i]->category)) {
-                    $data->items[$i]->category = array($data->items[$i]->category);
+                    $data->items[$i]->category = [$data->items[$i]->category];
                 }
 
                 foreach ($data->items[$i]->category as $category) {

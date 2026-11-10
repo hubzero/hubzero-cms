@@ -49,7 +49,7 @@ class Registration extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        $settings = Request::getArray('settings', array(), 'post');
+        $settings = Request::getArray('settings', [], 'post');
 
         if (!is_array($settings) || empty($settings)) {
             Notify::error(Lang::txt('COM_MEMBERS_REGISTRATION_ERROR_MISSING_DATA'));
@@ -57,7 +57,7 @@ class Registration extends AdminController
             return $this->cancelTask();
         }
 
-        $arr = array();
+        $arr = [];
 
         $database = App::get('db');
         $database->setQuery(

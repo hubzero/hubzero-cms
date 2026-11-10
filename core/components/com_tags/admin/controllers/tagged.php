@@ -43,7 +43,7 @@ class Tagged extends AdminController
     public function displayTask()
     {
         // Incoming
-        $filters = array(
+        $filters = [
             'tagid'   => Request::getInt('tag', 0),
             'tbl'     => Request::getState(
                 $this->_option . '.' . $this->_controller . '.tbl',
@@ -60,7 +60,7 @@ class Tagged extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         $modelt = Objct::all()
             ->select('DISTINCT(tbl)');
@@ -113,7 +113,7 @@ class Tagged extends AdminController
         // Load a tag object if one doesn't already exist
         if (!is_object($row)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id) && !empty($id)) {
                 $id = $id[0];
             }
@@ -145,7 +145,7 @@ class Tagged extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         $row = Objct::oneOrNew(intval($fields['id']))->set($fields);
 
@@ -179,8 +179,8 @@ class Tagged extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Make sure we have an ID
         if (empty($ids)) {

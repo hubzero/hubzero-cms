@@ -20,8 +20,8 @@ if (!strstr($handlerBase, '{')) {
     $handlerBase .= '/{project}/files/{file}';
 }
 $handlerBase = str_replace(
-    array('{project}', '{file}'),
-    array($this->model->get('alias'), $this->item->get('localPath')),
+    ['{project}', '{file}'],
+    [$this->model->get('alias'), $this->item->get('localPath')],
     $handlerBase
 );
 

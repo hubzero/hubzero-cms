@@ -29,7 +29,7 @@ abstract class Base extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_segments = array();
+    protected $_segments = [];
 
     /**
      * Scope ID
@@ -78,7 +78,7 @@ abstract class Base extends Obj
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _build(array $segments)
     {
-        $bits = array();
+        $bits = [];
         foreach ($segments as $key => $param) {
             $bits[] = $key . '=' . $param;
         }
@@ -93,9 +93,9 @@ abstract class Base extends Obj
      */
     public function routing($task = 'save')
     {
-        return array(
+        return [
             'task' => $task
-        );
+        ];
     }
 
     /**

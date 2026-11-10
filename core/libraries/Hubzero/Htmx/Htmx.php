@@ -125,7 +125,7 @@ class Htmx
      * @param   array|mixed  $payload
      * @return  void
      */
-    public static function trigger(string $event, $payload = array()): void
+    public static function trigger(string $event, $payload = []): void
     {
         self::service()->trigger($event, $payload);
     }
@@ -135,7 +135,7 @@ class Htmx
      * @param   array|mixed  $payload
      * @return  void
      */
-    public static function triggerAfterSettle(string $event, $payload = array()): void
+    public static function triggerAfterSettle(string $event, $payload = []): void
     {
         self::service()->triggerAfterSettle($event, $payload);
     }
@@ -145,7 +145,7 @@ class Htmx
      * @param   array|mixed  $payload
      * @return  void
      */
-    public static function triggerAfterSwap(string $event, $payload = array()): void
+    public static function triggerAfterSwap(string $event, $payload = []): void
     {
         self::service()->triggerAfterSwap($event, $payload);
     }
@@ -164,7 +164,7 @@ class Htmx
      * @param   array   $options
      * @return  void
      */
-    public static function location(string $url, array $options = array()): void
+    public static function location(string $url, array $options = []): void
     {
         self::service()->location($url, $options);
     }
@@ -251,7 +251,7 @@ class Htmx
      * @param   array   $params
      * @return  string
      */
-    public static function url(string $url, array $params = array()): string
+    public static function url(string $url, array $params = []): string
     {
         return self::service()->url($url, $params);
     }
@@ -262,7 +262,7 @@ class Htmx
      * @param   array   $params
      * @return  string
      */
-    public static function actionUrl(string $component, string $task, array $params = array()): string
+    public static function actionUrl(string $component, string $task, array $params = []): string
     {
         return self::service()->actionUrl($component, $task, $params);
     }
@@ -297,7 +297,7 @@ class Htmx
      * @param   array   $errors
      * @return  void
      */
-    public static function validation(string $html, array $errors = array()): void
+    public static function validation(string $html, array $errors = []): void
     {
         self::service()->validation($html, $errors);
     }
@@ -328,7 +328,7 @@ class Htmx
      * @param   array  $options
      * @return  string
      */
-    public static function renderDebugPanel(array $snapshot = array(), array $options = array()): string
+    public static function renderDebugPanel(array $snapshot = [], array $options = []): string
     {
         return self::service()->renderDebugPanel($snapshot, $options);
     }

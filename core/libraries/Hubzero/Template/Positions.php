@@ -34,7 +34,7 @@ class Positions
      *
      * @var  array
      */
-    protected static $cache = array();
+    protected static $cache = [];
 
     /**
      * The positions a template declares, in the order it declares them
@@ -64,14 +64,14 @@ class Positions
         if (!Style::exists($template)) {
             // Covers the empty name and anything trying to leave the
             // templates directory, both of which have no declarations.
-            return array();
+            return [];
         }
 
         if (isset(self::$cache[$template])) {
             return self::$cache[$template];
         }
 
-        self::$cache[$template] = array();
+        self::$cache[$template] = [];
 
         if (!($path = self::file($template))) {
             return self::$cache[$template];
@@ -132,7 +132,7 @@ class Positions
             return '';
         }
 
-        foreach (array('PATH_APP', 'PATH_CORE') as $constant) {
+        foreach (['PATH_APP', 'PATH_CORE'] as $constant) {
             if (!defined($constant)) {
                 continue;
             }
@@ -157,6 +157,6 @@ class Positions
      */
     public static function forget()
     {
-        self::$cache = array();
+        self::$cache = [];
     }
 }

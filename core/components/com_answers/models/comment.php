@@ -74,11 +74,11 @@ class Comment extends ItemComment
         $valid = parent::validate();
 
         if ($valid) {
-            $results = Event::trigger('content.onContentBeforeSave', array(
+            $results = Event::trigger('content.onContentBeforeSave', [
                 'com_answers.comment.content',
                 &$this,
                 $this->isNew()
-            ));
+            ]);
 
             foreach ($results as $result) {
                 if ($result === false) {

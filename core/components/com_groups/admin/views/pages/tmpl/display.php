@@ -39,7 +39,7 @@ Toolbar::help('pages');
 $this->css();
 
 // include modal for raw version links
-Html::behavior('modal', 'a.version, a.preview', array('handler' => 'iframe', 'fullScreen' => true));
+Html::behavior('modal', 'a.version, a.preview', ['handler' => 'iframe', 'fullScreen' => true]);
 ?>
 
 <?php
@@ -154,7 +154,7 @@ Html::behavior('modal', 'a.version, a.preview', array('handler' => 'iframe', 'fu
                     </a><br />
                     <?php
                         // add /groups/{{group_cname}}
-                        $segments = array('groups', $this->group->get('cn'));
+                        $segments = ['groups', $this->group->get('cn')];
 
                         // get parent aliases
                         $parents  = $page->getRecursiveParents($page);

@@ -94,7 +94,7 @@ class Routes extends Base implements CommandInterface
 
             App::get('db')->getQuery()
                 ->update('#__menu')
-                ->set(array('published' => 1))
+                ->set(['published' => 1])
                 ->whereEquals('id', $row['id'])
                 ->execute();
 
@@ -135,8 +135,8 @@ class Routes extends Base implements CommandInterface
     {
         $db = App::get('db');
 
-        $components = array();
-        $installed  = array();
+        $components = [];
+        $installed  = [];
 
         $rows = $db->getQuery(true)
             ->select('extension_id')
@@ -171,7 +171,7 @@ class Routes extends Base implements CommandInterface
             }
         }
 
-        $routed = array();
+        $routed = [];
 
         $entries = $db->getQuery(true)
             ->select('alias')
@@ -190,9 +190,9 @@ class Routes extends Base implements CommandInterface
                 : 'com_' . $alias;
         }
 
-        $missing = array();
+        $missing = [];
 
-        $asleep = array();
+        $asleep = [];
 
         foreach ($components as $element => $id) {
             // Anything already reachable under that name counts, whichever menu
@@ -228,7 +228,7 @@ class Routes extends Base implements CommandInterface
             }
         }
 
-        $orphaned = array();
+        $orphaned = [];
 
         foreach ($routed as $alias => $element) {
             if (isset($components[$element])) {
@@ -246,13 +246,13 @@ class Routes extends Base implements CommandInterface
             $orphaned[$alias] = $element;
         }
 
-        return array(
+        return [
             'components' => $components,
             'missing'    => $missing,
             'orphaned'   => $orphaned,
             'asleep'     => $asleep,
             'shared'     => $this->shared($db),
-        );
+        ];
     }
 
     /**
@@ -374,17 +374,17 @@ class Routes extends Base implements CommandInterface
                 ->join('#__menu_types AS t', 't.menutype', 'm.menutype', 'left');
         }
 
-        $found = array();
+        $found = [];
 
         foreach ($query->fetch() as $row) {
             $kind = $ranked ? (is_object($row) ? $row->kind : $row['kind']) : 'display';
 
-            $found[] = array(
+            $found[] = [
                 'id'        => (int) (is_object($row) ? $row->id : $row['id']),
                 'menutype'  => is_object($row) ? $row->menutype : $row['menutype'],
                 'published' => (int) (is_object($row) ? $row->published : $row['published']),
                 'generated' => ($kind == 'component'),
-            );
+            ];
         }
 
         return $found;
@@ -424,21 +424,21 @@ class Routes extends Base implements CommandInterface
                 ->join('#__menu_types AS t', 't.menutype', 'm.menutype', 'left');
         }
 
-        $byPath = array();
+        $byPath = [];
 
         foreach ($query->fetch() as $row) {
             $path = is_object($row) ? $row->path : $row['path'];
             $kind = $ranked ? (is_object($row) ? $row->kind : $row['kind']) : 'display';
 
-            $byPath[$path][] = array(
+            $byPath[$path][] = [
                 'id'       => (int) (is_object($row) ? $row->id : $row['id']),
                 'menutype' => is_object($row) ? $row->menutype : $row['menutype'],
                 'kind'     => $kind ? $kind : 'display',
                 'rank'     => $this->rank($kind),
-            );
+            ];
         }
 
-        $shared = array();
+        $shared = [];
 
         foreach ($byPath as $path => $items) {
             if (count($items) < 2) {

@@ -43,31 +43,31 @@ class Query extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'title'      => 'notempty',
         'conditions' => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'sort',
         'sort_dir'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by',
         'ordering'
-    );
+    ];
 
     /**
      * Generates automatic ordering field value
@@ -115,7 +115,7 @@ class Query extends Relational
         if (!isset($data['sort_dir']) || !$data['sort_dir']) {
             $data['sort_dir'] = 'desc';
         }
-        if (!in_array($data['sort_dir'], array('desc', 'asc'))) {
+        if (!in_array($data['sort_dir'], ['desc', 'asc'])) {
             $data['sort_dir'] = 'desc';
         }
         return $data['sort_dir'];
@@ -240,10 +240,10 @@ class Query extends Relational
 
         // A stored condition may omit either list
         if (!isset($condition->expressions) || !is_array($condition->expressions)) {
-            $condition->expressions = array();
+            $condition->expressions = [];
         }
         if (!isset($condition->nestedexpressions) || !is_array($condition->nestedexpressions)) {
-            $condition->nestedexpressions = array();
+            $condition->nestedexpressions = [];
         }
 
         $db = App::get('db');
@@ -252,10 +252,10 @@ class Query extends Relational
         $op = (strtoupper(trim((string) $condition->operator)) === 'OR') ? ' OR ' : ' AND ';
 
         $having = '';
-        $e = array();
+        $e = [];
 
-        $tags = array();
-        $nottags = array();
+        $tags = [];
+        $nottags = [];
         for ($i = 0; $i < count($condition->expressions); $i++) {
             $expr = $condition->expressions[$i];
             $selfBuilt = false; // true only for value lists this method builds itself
@@ -315,11 +315,11 @@ class Query extends Relational
 
             // Only allow known operator templates; drop anything else so a
             // crafted condition cannot inject SQL through the operator.
-            $allowedOps = array(
+            $allowedOps = [
                 '=', '!=', '<', '>', '<=', '>=',
                 'LIKE \'%$1%\'', 'LIKE \'$1%\'', 'LIKE \'%$1\'',
                 'NOT LIKE \'%$1%\'', 'NOT LIKE \'$1%\'', 'NOT LIKE \'%$1\'',
-            );
+            ];
             if (!in_array($expr->opval, $allowedOps, true)) {
                 // Fail closed. Dropping the term was the wrong move: these
                 // conditions are also how a non-agent is scoped to their own
@@ -374,7 +374,7 @@ class Query extends Relational
                     $xgroups = \Hubzero\User\Helper::getGroups($user->get('id'), 'members');
                     $expr->val = '';
                     if ($xgroups) {
-                        $g = array();
+                        $g = [];
                         foreach ($xgroups as $xgroup) {
                             $g[] = (int) $xgroup->gidNumber;
                         }
@@ -447,14 +447,14 @@ class Query extends Relational
             }
         }
 
-        $n = array();
+        $n = [];
         $nlen = count($condition->nestedexpressions);
         for ($k = 0; $k < $nlen; $k++) {
             $nestexpr = $condition->nestedexpressions[$k];
             $n[] = $this->toSql($nestexpr);
         }
 
-        $q = array();
+        $q = [];
         if (count($e) > 0) {
             $q[] = implode($op, $e);
         }
@@ -479,8 +479,8 @@ class Query extends Relational
         switch (strtolower(trim($type))) {
             case 'common':
                 $method = 'allCommon';
-                $data = array(
-                    array(
+                $data = [
+                    [
                         'title'      => 'Open tickets',
                         'conditions' => '{"operator":"AND","expressions":[{"fldval":"open","flddisp":"Open/Closed","opval":"=","opdisp":"is","val":"1"},{"fldval":"type","flddisp":"Type","opval":"=","opdisp":"is","val":"0"}],"nestedexpressions":[]}',
                         'query'      => '',
@@ -489,8 +489,8 @@ class Query extends Relational
                         'sort_dir'   => 'desc',
                         'iscore'     => 2,
                         'folder_id'  => $folder_id
-                    ),
-                    array(
+                    ],
+                    [
                         'title'      => 'New tickets',
                         'conditions' => '{"operator":"AND","expressions":[{"fldval":"open","flddisp":"Open/Closed","opval":"=","opdisp":"is","val":"1"},{"fldval":"type","flddisp":"Type","opval":"=","opdisp":"is","val":"0"},{"fldval":"status","flddisp":"Status","opval":"=","opdisp":"is","val":"0"}],"nestedexpressions":[]}',
                         'query'      => '',
@@ -499,8 +499,8 @@ class Query extends Relational
                         'sort_dir'   => 'desc',
                         'iscore'     => 2,
                         'folder_id'  => $folder_id
-                    ),
-                    array(
+                    ],
+                    [
                         'title'      => 'Unassigned',
                         'conditions' => '{"operator":"AND","expressions":[{"fldval":"open","flddisp":"Open/Closed","opval":"=","opdisp":"is","val":"1"},{"fldval":"type","flddisp":"Type","opval":"=","opdisp":"is","val":"0"}],"nestedexpressions":[{"operator":"OR","expressions":[{"fldval":"owner","flddisp":"Owner","opval":"=","opdisp":"is","val":""},{"fldval":"owner","flddisp":"Owner","opval":"=","opdisp":"is","val":"NULL"}],"nestedexpressions":[]}]}',
                         'query'      => '',
@@ -509,8 +509,8 @@ class Query extends Relational
                         'sort_dir'   => 'desc',
                         'iscore'     => 2,
                         'folder_id'  => $folder_id
-                    ),
-                    array(
+                    ],
+                    [
                         'title'      => 'Closed tickets',
                         'conditions' => '{"operator":"AND","expressions":[{"fldval":"open","flddisp":"Open/Closed","opval":"=","opdisp":"is","val":"0"},{"fldval":"type","flddisp":"Type","opval":"=","opdisp":"is","val":"0"}],"nestedexpressions":[]}',
                         'query'      => '',
@@ -519,8 +519,8 @@ class Query extends Relational
                         'sort_dir'   => 'desc',
                         'iscore'     => 2,
                         'folder_id'  => $folder_id
-                    ),
-                    array(
+                    ],
+                    [
                         'title'      => 'All tickets',
                         'conditions' => '{"operator":"AND","expressions":[{"fldval":"type","flddisp":"Type","opval":"=","opdisp":"is","val":"0"}],"nestedexpressions":[]}',
                         'query'      => '',
@@ -529,14 +529,14 @@ class Query extends Relational
                         'sort_dir'   => 'desc',
                         'iscore'     => 2,
                         'folder_id'  => $folder_id
-                    )
-                );
+                    ]
+                ];
                 break;
 
             case 'commonnotacl':
                 $method = 'allCommonNotInACL';
-                $data = array(
-                    array(
+                $data = [
+                    [
                         'title'      => 'Open tickets',
                         'conditions' => '{"operator":"AND","expressions":[{"fldval":"open","flddisp":"Open/Closed","opval":"=","opdisp":"is","val":"1"},{"fldval":"type","flddisp":"Type","opval":"=","opdisp":"is","val":"0"}],"nestedexpressions":[{"operator":"OR","expressions":[{"fldval":"group","flddisp":"Group","opval":"=","opdisp":"is","val":"*"},{"fldval":"owner","flddisp":"Owner","opval":"=","opdisp":"is","val":"$me"},{"fldval":"login","flddisp":"Submitter","opval":"=","opdisp":"is","val":"$me"}],"nestedexpressions":[]}]}',
                         'query'      => '',
@@ -545,8 +545,8 @@ class Query extends Relational
                         'sort_dir'   => 'desc',
                         'iscore'     => 4,
                         'folder_id'  => $folder_id
-                    ),
-                    array(
+                    ],
+                    [
                         'title'      => 'New tickets',
                         'conditions' => '{"operator":"AND","expressions":[{"fldval":"open","flddisp":"Open/Closed","opval":"=","opdisp":"is","val":"1"},{"fldval":"type","flddisp":"Type","opval":"=","opdisp":"is","val":"0"},{"fldval":"status","flddisp":"Status","opval":"=","opdisp":"is","val":"0"}],"nestedexpressions":[{"operator":"OR","expressions":[{"fldval":"group","flddisp":"Group","opval":"=","opdisp":"is","val":"*"},{"fldval":"owner","flddisp":"Owner","opval":"=","opdisp":"is","val":"$me"},{"fldval":"login","flddisp":"Submitter","opval":"=","opdisp":"is","val":"$me"}],"nestedexpressions":[]}]}',
                         'query'      => '',
@@ -555,8 +555,8 @@ class Query extends Relational
                         'sort_dir'   => 'desc',
                         'iscore'     => 4,
                         'folder_id'  => $folder_id
-                    ),
-                    array(
+                    ],
+                    [
                         'title'      => 'Unassigned',
                         'conditions' => '{"operator":"AND","expressions":[{"fldval":"open","flddisp":"Open/Closed","opval":"=","opdisp":"is","val":"1"},{"fldval":"type","flddisp":"Type","opval":"=","opdisp":"is","val":"0"}],"nestedexpressions":[{"operator":"OR","expressions":[{"fldval":"group","flddisp":"Group","opval":"=","opdisp":"is","val":"*"},{"fldval":"login","flddisp":"Submitter","opval":"=","opdisp":"is","val":"$me"}],"nestedexpressions":[]},{"operator":"OR","expressions":[{"fldval":"owner","flddisp":"Owner","opval":"=","opdisp":"is","val":""},{"fldval":"owner","flddisp":"Owner","opval":"=","opdisp":"is","val":"NULL"}],"nestedexpressions":[]}]}',
                         'query'      => '',
@@ -565,8 +565,8 @@ class Query extends Relational
                         'sort_dir'   => 'desc',
                         'iscore'     => 4,
                         'folder_id'  => $folder_id
-                    ),
-                    array(
+                    ],
+                    [
                         'title'      => 'Closed tickets',
                         'conditions' => '{"operator":"AND","expressions":[{"fldval":"open","flddisp":"Open/Closed","opval":"=","opdisp":"is","val":"0"},{"fldval":"type","flddisp":"Type","opval":"=","opdisp":"is","val":"0"}],"nestedexpressions":[{"operator":"OR","expressions":[{"fldval":"group","flddisp":"Group","opval":"=","opdisp":"is","val":"*"},{"fldval":"owner","flddisp":"Owner","opval":"=","opdisp":"is","val":"$me"},{"fldval":"login","flddisp":"Submitter","opval":"=","opdisp":"is","val":"$me"}],"nestedexpressions":[]}]}',
                         'query'      => '',
@@ -575,14 +575,14 @@ class Query extends Relational
                         'sort_dir'   => 'desc',
                         'iscore'     => 4,
                         'folder_id'  => $folder_id
-                    )
-                );
+                    ]
+                ];
                 break;
 
             case 'mine':
                 $method = 'allMine';
-                $data = array(
-                    array(
+                $data = [
+                    [
                         'title'      => 'Reported by me',
                         'conditions' => '{"operator":"AND","expressions":[{"fldval":"open","flddisp":"Open/Closed","opval":"=","opdisp":"is","val":"1"},{"fldval":"type","flddisp":"Type","opval":"=","opdisp":"is","val":"0"}],"nestedexpressions":[{"operator":"OR","expressions":[{"fldval":"login","flddisp":"Submitter","opval":"=","opdisp":"is","val":"$me"}],"nestedexpressions":[]}]}',
                         'query'      => '',
@@ -591,8 +591,8 @@ class Query extends Relational
                         'sort_dir'   => 'desc',
                         'iscore'     => 1,
                         'folder_id'  => $folder_id
-                    ),
-                    array(
+                    ],
+                    [
                         'title'      => 'Assigned to me',
                         'conditions' => '{"operator":"AND","expressions":[{"fldval":"open","flddisp":"Open/Closed","opval":"=","opdisp":"is","val":"1"},{"fldval":"type","flddisp":"Type","opval":"=","opdisp":"is","val":"0"}],"nestedexpressions":[{"operator":"OR","expressions":[{"fldval":"owner","flddisp":"Owner","opval":"=","opdisp":"is","val":"$me"}],"nestedexpressions":[]}]}',
                         'query'      => '',
@@ -601,8 +601,8 @@ class Query extends Relational
                         'sort_dir'   => 'desc',
                         'iscore'     => 1,
                         'folder_id'  => $folder_id
-                    ),
-                    array(
+                    ],
+                    [
                         'title'      => 'Assigned to me (closed)',
                         'conditions' => '{"operator":"AND","expressions":[{"fldval":"open","flddisp":"Open/Closed","opval":"=","opdisp":"is","val":"0"},{"fldval":"type","flddisp":"Type","opval":"=","opdisp":"is","val":"0"}],"nestedexpressions":[{"operator":"OR","expressions":[{"fldval":"owner","flddisp":"Owner","opval":"=","opdisp":"is","val":"$me"},{"fldval":"login","flddisp":"Submitter","opval":"=","opdisp":"is","val":"$me"}],"nestedexpressions":[]}]}',
                         'query'      => '',
@@ -611,8 +611,8 @@ class Query extends Relational
                         'sort_dir'   => 'desc',
                         'iscore'     => 1,
                         'folder_id'  => $folder_id
-                    )
-                );
+                    ]
+                ];
                 break;
 
             default:

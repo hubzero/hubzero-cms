@@ -47,7 +47,7 @@ class Categories extends AdminController
     public function displayTask()
     {
         // Incoming
-        $filters = array(
+        $filters = [
             'limit' => Request::getState(
                 $this->_option . '.categories.limit',
                 'limit',
@@ -75,7 +75,7 @@ class Categories extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         $filters['state'] = 'all';
 
@@ -119,7 +119,7 @@ class Categories extends AdminController
 
         if (!is_object($row)) {
             // Incoming (expecting an array)
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             $id = is_array($id) ? $id[0] : $id;
 
             // Load the object
@@ -156,16 +156,16 @@ class Categories extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $prop = Request::getArray('prop', array(), 'post');
+        $prop = Request::getArray('prop', [], 'post');
 
         // Initiate extended database class
         $row = Category::oneOrNew($prop['id'])->set($prop);
 
         // Get the custom fields
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
         if (is_array($fields)) {
             $elements = new stdClass();
-            $elements->fields = array();
+            $elements->fields = [];
 
             foreach ($fields as $val) {
                 if ($val['title']) {
@@ -186,12 +186,12 @@ class Categories extends AdminController
                     }
                     $element->required = (isset($val['required'])) ? $val['required'] : '0';
                     foreach ($val as $key => $v) {
-                        if (!in_array($key, array('default', 'type', 'title', 'name', 'required', 'options'))) {
+                        if (!in_array($key, ['default', 'type', 'title', 'name', 'required', 'options'])) {
                             $element->$key = $v;
                         }
                     }
                     if (isset($val['options'])) {
-                        $element->options = array();
+                        $element->options = [];
                         foreach ($val['options'] as $option) {
                             if (trim($option['label'])) {
                                 $opt = new stdClass();
@@ -210,7 +210,7 @@ class Categories extends AdminController
         }
 
         // Get parameters
-        $params = Request::getArray('params', array(), 'post');
+        $params = Request::getArray('params', [], 'post');
 
         $p = $row->params;
 
@@ -253,7 +253,7 @@ class Categories extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array(0));
+        $ids = Request::getArray('id', [0]);
 
         $success = 0;
 
@@ -300,10 +300,10 @@ class Categories extends AdminController
         $field->name        = $field->label;
         $field->default     = '';
         $field->type        = Request::getString('type', '');
-        $field->options     = array(
+        $field->options     = [
             $option,
             $option
-        );
+        ];
 
         $elements = new Elements();
         echo $elements->getElementOptions($field->name, $field, $ctrl);
@@ -324,8 +324,8 @@ class Categories extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Do we have any IDs?
         $success = 0;

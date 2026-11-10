@@ -31,7 +31,7 @@ class Migration20170512150115ComTime extends Base
         $this->deletePluginEntry('time', 'summary');
         $this->deletePluginEntry('time', 'weeklybar');
 
-        $tables = array(
+        $tables = [
             '#__time_auth_token',
             '#__time_funding_allocations',
             '#__time_funding_sources',
@@ -42,7 +42,7 @@ class Migration20170512150115ComTime extends Base
             '#__time_proxies',
             '#__time_records',
             '#__time_tasks'
-        );
+        ];
 
         foreach ($tables as $table) {
             $schema->dropTable($table);

@@ -27,20 +27,20 @@ class Rating extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'rating' => 'positive|nonzero',
         'publication_id' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by',
-    );
+    ];
 
     /**
      * Establish relationship to parent publication

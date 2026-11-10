@@ -55,7 +55,7 @@ class Plugins
     public static function stateOptions()
     {
         // Build the active state filter options.
-        $options = array();
+        $options = [];
         $options[] = Html::select('option', '1', 'JENABLED');
         $options[] = Html::select('option', '0', 'JDISABLED');
 

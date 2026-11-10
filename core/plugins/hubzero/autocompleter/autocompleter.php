@@ -42,7 +42,7 @@ class Autocompleter extends Plugin
     {
         // Ensure we have an array
         if (!is_array($atts)) {
-            $atts = array();
+            $atts = [];
         }
 
         //var to hold scripts
@@ -138,9 +138,9 @@ class Autocompleter extends Plugin
     public function onGetMultiEntry($atts)
     {
         if (!is_array($atts)) {
-            $atts = array();
+            $atts = [];
         }
-        $params   = array();
+        $params   = [];
         $params[] = (isset($atts[0])) ? $atts[0] : 'tags';
         $params[] = (isset($atts[1])) ? $atts[1] : 'tags';
         $params[] = (isset($atts[2])) ? $atts[2] : 'act';
@@ -163,9 +163,9 @@ class Autocompleter extends Plugin
     public function onGetSingleEntry($atts)
     {
         if (!is_array($atts)) {
-            $atts = array();
+            $atts = [];
         }
-        $params   = array();
+        $params   = [];
         $params[] = (isset($atts[0])) ? $atts[0] : 'tags';
         $params[] = (isset($atts[1])) ? $atts[1] : 'tags';
         $params[] = (isset($atts[2])) ? $atts[2] : 'act';
@@ -188,9 +188,9 @@ class Autocompleter extends Plugin
     public function onGetSingleEntryWithSelect($atts)
     {
         if (!is_array($atts)) {
-            $atts = array();
+            $atts = [];
         }
-        $params   = array();
+        $params   = [];
         $params[] = (isset($atts[0])) ? $atts[0] : 'groups';
         $params[] = (isset($atts[1])) ? $atts[1] : 'groups';
         $params[] = (isset($atts[2])) ? $atts[2] : 'acg';

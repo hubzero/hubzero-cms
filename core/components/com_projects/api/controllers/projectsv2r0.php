@@ -90,7 +90,7 @@ class Projectsv2r0 extends ApiController
         $verbose = Request::getInt('verbose', 0);
 
         // Set filters
-        $filters = array(
+        $filters = [
             'limit'      => Request::getInt('limit', 20),
             'start'      => Request::getInt('start', 0),
             'sortby'     => Request::getWord('sort', 'title'),
@@ -98,7 +98,7 @@ class Projectsv2r0 extends ApiController
             'getowner'   => 1,
             'updates'    => 1,
             'mine'       => 1
-        );
+        ];
 
         $admin = false;
         if (User::authorise('core.admin', 'com_projects')) {
@@ -116,7 +116,7 @@ class Projectsv2r0 extends ApiController
         }
 
         $response = new stdClass();
-        $response->projects = array();
+        $response->projects = [];
 
         $total = clone $query;
         $response->total = $total->deselect()->select('*', null, true)->row()->get('COUNT(*)');
@@ -376,7 +376,7 @@ class Projectsv2r0 extends ApiController
 
         $row = Project::blank();
 
-        $fields = array(
+        $fields = [
             'title'           => Request::getString('title', '', 'post'),
             'alias'           => Request::getString('alias', '', 'post'),
             'about'           => Request::getString('about', '', 'post'),
@@ -389,7 +389,7 @@ class Projectsv2r0 extends ApiController
             'private'         => Request::getInt('private', $row->config('privacy', 1), 'post'),
             //'access'          => Request::getInt('access', $row->config('access', 5), 'post'),
             'owned_by_group'  => Request::getInt('owned_by_group', 0, 'post')
-        );
+        ];
 
         $fields['access'] = Project::PRIVACY_PUBLIC;
         if ($fields['private']) {
@@ -460,12 +460,12 @@ class Projectsv2r0 extends ApiController
 
         // Restricted data with specific questions
         if ($row->config('restricted_data', 0) == 1) {
-            $restrictions = array(
+            $restrictions = [
                 'hipaa_data'  => Request::getString('hipaa', 'no', 'post'),
                 'ferpa_data'  => Request::getString('ferpa', 'no', 'post'),
                 'export_data' => Request::getString('export', 'no', 'post'),
                 'irb_data'    => Request::getString('irb', 'no', 'post')
-            );
+            ];
 
             // Save individual restrictions
             foreach ($restrictions as $key => $value) {
@@ -542,7 +542,7 @@ class Projectsv2r0 extends ApiController
 
         // Trigger before save event
         $isNew  = true;
-        $result = Event::trigger('projects.onProjectBeforeSave', array(&$row, $isNew));
+        $result = Event::trigger('projects.onProjectBeforeSave', [&$row, $isNew]);
 
         if (in_array(false, $result, true)) {
             throw new Exception($row->getError(), 500);
@@ -557,10 +557,10 @@ class Projectsv2r0 extends ApiController
         }
 
         // Trigger after save event
-        Event::trigger('projects.onProjectAfterSave', array(&$row, $isNew));
+        Event::trigger('projects.onProjectAfterSave', [&$row, $isNew]);
 
         // Save owners for new projects
-        $team = array(User::get('id'));
+        $team = [User::get('id')];
 
         if ($row->get('owned_by_group')) {
             if ($row->config('init_team') == 1 && $row->get('sync_group')) {
@@ -573,13 +573,13 @@ class Projectsv2r0 extends ApiController
             }
         }
 
-        $o = array(
+        $o = [
             'projectid' => $row->get('id'),
             'groupid'   => $row->get('owned_by_group'),
             'status'    => 1,
             'role'      => 1,
             'native'    => 1
-        );
+        ];
 
         foreach ($team as $user_id) {
             $owner = Owner::oneByProjectAndUser($row->get('id'), $user_id);
@@ -631,7 +631,7 @@ class Projectsv2r0 extends ApiController
         ]);
 
         // Trigger project create event
-        Event::trigger('projects.onProjectCreate', array($row));
+        Event::trigger('projects.onProjectCreate', [$row]);
 
         $this->send($row->toObject());
     }
@@ -876,12 +876,12 @@ class Projectsv2r0 extends ApiController
         $isManager = ($row->access('owner') || $row->access('manager'));
         $oldGroup  = (int) $row->get('owned_by_group');
 
-        $fields = array(
+        $fields = [
             'title'          => Request::getString('title', $row->get('title')),
             'about'          => Request::getString('about', $row->get('about')),
             'type'           => 1,
             'provisioned'    => 0
-        );
+        ];
         if ($isManager) {
             $fields['alias']          = Request::getString('alias', $row->get('alias'));
             $fields['owned_by_user']  = Request::getInt('owned_by_user', $row->get('owned_by_user'));
@@ -952,12 +952,12 @@ class Projectsv2r0 extends ApiController
 
         // Restricted data with specific questions
         if ($row->config('restricted_data', 0) == 1) {
-            $restrictions = array(
+            $restrictions = [
                 'hipaa_data'  => Request::getString('hipaa', $row->params->get('hipaa_data')),
                 'ferpa_data'  => Request::getString('ferpa', $row->params->get('ferpa_data')),
                 'export_data' => Request::getString('export', $row->params->get('export_data')),
                 'irb_data'    => Request::getString('irb', $row->params->get('irb_data'))
-            );
+            ];
 
             // Save individual restrictions
             foreach ($restrictions as $key => $value) {
@@ -1042,7 +1042,7 @@ class Projectsv2r0 extends ApiController
 
         // Trigger before save event
         $isNew  = false;
-        $result = Event::trigger('projects.onProjectBeforeSave', array(&$row, $isNew));
+        $result = Event::trigger('projects.onProjectBeforeSave', [&$row, $isNew]);
 
         if (in_array(false, $result, true)) {
             throw new Exception($row->getError(), 500);
@@ -1053,7 +1053,7 @@ class Projectsv2r0 extends ApiController
         }
 
         // Trigger after save event
-        Event::trigger('projects.onProjectAfterSave', array(&$row, $isNew));
+        Event::trigger('projects.onProjectAfterSave', [&$row, $isNew]);
 
         // Save owners for synced groups (in case the sync setting changed)
         if ($row->get('owned_by_group') && $row->get('sync_group')) {
@@ -1073,14 +1073,14 @@ class Projectsv2r0 extends ApiController
                         continue;
                     }
 
-                    $owner->set(array(
+                    $owner->set([
                         'projectid' => $row->get('id'),
                         'groupid'   => $row->get('owned_by_group'),
                         'status'    => 1,
                         'role'      => 1,
                         'native'    => 1,
                         'userid'    => $user_id
-                    ));
+                    ]);
 
                     if (!$owner->save()) {
                         throw new Exception(Lang::txt('COM_PROJECTS_ERROR_SAVING_AUTHORS') . ': ' . $owner->getError());
@@ -1110,10 +1110,10 @@ class Projectsv2r0 extends ApiController
                 'scope'       => 'project',
                 'scope_id'    => $row->get('id'),
                 'description' => Lang::txt('COM_PROJECTS_ACTIVITY_ENTRY_UPDATED', '<a href="' . $url . '">' . htmlspecialchars((string) $row->get('title'), ENT_QUOTES, 'UTF-8') . ' (' . $row->get('alias') . ')</a>'),
-                'details'     => array(
+                'details'     => [
                     'title' => $row->get('title'),
                     'url'   => $url
-                )
+                ]
             ],
             'recipients' => [
                 $row->get('created_by_user'),
@@ -1142,8 +1142,8 @@ class Projectsv2r0 extends ApiController
     {
         $this->requiresAuthentication();
 
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         if (count($ids) <= 0) {
             throw new Exception(Lang::txt('COM_PROJECTS_ERROR_MISSING_ID'), 500);
@@ -1171,7 +1171,7 @@ class Projectsv2r0 extends ApiController
             }
 
             // Trigger before delete event
-            Event::trigger('onProjectAfterDelete', array($id));
+            Event::trigger('onProjectAfterDelete', [$id]);
 
             // Log activity
             $base = rtrim(Request::base(), '/');

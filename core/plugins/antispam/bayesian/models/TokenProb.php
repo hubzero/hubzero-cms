@@ -53,27 +53,27 @@ class TokenProb extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'token' => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      **/
-    public $always = array(
+    public $always = [
         'modified'
-    );
+    ];
 
     /**
      * Generates automatic modified field value

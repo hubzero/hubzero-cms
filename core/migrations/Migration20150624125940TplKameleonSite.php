@@ -28,10 +28,10 @@ class Migration20150624125940TplKameleonSite extends Base
      **/
     public function down()
     {
-        $styles = array(
+        $styles = [
             'header' => 'dark',
             'theme'  => 'salmon'
-        );
+        ];
 
         $this->addTemplateEntry('kameleon', 'kameleon (site)', 0, 1, 0, $styles);
     }

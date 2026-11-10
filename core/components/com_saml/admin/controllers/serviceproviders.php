@@ -45,7 +45,7 @@ class Serviceproviders extends AdminController
      */
     public function displayTask()
     {
-        $filters = array(
+        $filters = [
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
@@ -67,7 +67,7 @@ class Serviceproviders extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         $records = ServiceProvider::all();
 
@@ -110,7 +110,7 @@ class Serviceproviders extends AdminController
         Request::setVar('hidemainmenu', 1);
 
         if (!is_object($row)) {
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id) && !empty($id)) {
                 $id = $id[0];
             }
@@ -134,7 +134,7 @@ class Serviceproviders extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         // Editing an existing registration needs core.edit — core.create
         // alone must not be able to repoint an SP's ACS at somewhere else
@@ -146,7 +146,7 @@ class Serviceproviders extends AdminController
 
         // Only bind columns the form owns — notably not `state`, which is
         // gated on core.edit.state and applied separately below
-        $fields = array_intersect_key($fields, array_flip(array(
+        $fields = array_intersect_key($fields, array_flip([
             'id',
             'name',
             'entity_id',
@@ -160,7 +160,7 @@ class Serviceproviders extends AdminController
             'nameid_source',
             'attribute_map',
             'metadata_url'
-        )));
+        ]));
 
         $row = ServiceProvider::oneOrNew(isset($fields['id']) ? $fields['id'] : 0);
 
@@ -180,7 +180,7 @@ class Serviceproviders extends AdminController
 
         $row->set('allowed_groups', $groups ? json_encode($groups) : null);
 
-        $state = Request::getArray('fields', array(), 'post');
+        $state = Request::getArray('fields', [], 'post');
         $state = isset($state['state']) ? (int) $state['state'] : null;
 
         if ($state !== null && $state != (int) $row->get('state', ServiceProvider::STATE_ENABLED)) {
@@ -197,7 +197,7 @@ class Serviceproviders extends AdminController
         // credentials, and metadata carries the ACS URL and signing cert we
         // go on to trust — nothing here verifies a signature over it, so the
         // transport is what protects it.
-        foreach (array('acs_url', 'slo_url', 'metadata_url') as $field) {
+        foreach (['acs_url', 'slo_url', 'metadata_url'] as $field) {
             $url = trim((string) $row->get($field, ''));
             $row->set($field, $url);
 
@@ -325,8 +325,8 @@ class Serviceproviders extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $i = 0;
 
@@ -369,8 +369,8 @@ class Serviceproviders extends AdminController
 
         $state = $this->getTask() == 'publish' ? ServiceProvider::STATE_ENABLED : ServiceProvider::STATE_DISABLED;
 
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         if (count($ids) < 1) {
             Notify::warning(Lang::txt('COM_SAML_SELECT_ITEM'));

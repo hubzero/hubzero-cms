@@ -53,7 +53,7 @@ class Notices extends Module
         $hours_left   = floor(($difference - $days_left * 60 * 60 * 24) / 60 / 60);
         $minutes_left = floor(($difference - $days_left * 60 * 60 * 24 - $hours_left * 60 * 60) / 60);
 
-        $left = array($days_left, $hours_left, $minutes_left);
+        $left = [$days_left, $hours_left, $minutes_left];
         return $left;
     }
 
@@ -80,7 +80,7 @@ class Notices extends Module
      */
     private function convert($stime)
     {
-        $t = array();
+        $t = [];
         $t['year']   = date('Y', $stime);
         $t['month']  = date('M', $stime);
         $t['day']    = date('jS', $stime);

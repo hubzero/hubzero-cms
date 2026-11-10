@@ -41,29 +41,29 @@ class Assetgroup extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'title' => 'notempty'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'alias'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by',
         'ordering'
-    );
+    ];
 
     /**
      * Generates automatic owned by field value

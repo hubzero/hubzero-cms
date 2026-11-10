@@ -82,7 +82,7 @@ $this->js();
 
                 <?php
                 if ($this->types) {
-                    $types = array();
+                    $types = [];
                     foreach ($this->row->types()->rows() as $t) {
                         $types[] = $t->get('id');
                     }

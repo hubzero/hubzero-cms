@@ -42,10 +42,10 @@ Document::setTitle(Lang::txt('COM_BLOG') . ': ' . stripslashes($this->row->get('
 $this->css()
      ->js();
 
-$first = $this->archive->entries(array(
+$first = $this->archive->entries([
         'state'      => $this->filters['state'],
         'authorized' => $this->filters['authorized']
-    ))
+    ])
     ->order('publish_up', 'asc')
     ->limit(1)
     ->row();
@@ -107,10 +107,10 @@ $first = $this->archive->entries(array(
                     </dd>
                 <?php if ($this->row->get('allow_comments')) {
                     $comments = $this->row->comments()
-                        ->whereIn('state', array(
+                        ->whereIn('state', [
                             Components\Blog\Models\Comment::STATE_PUBLISHED,
                             Components\Blog\Models\Comment::STATE_FLAGGED
-                        ))
+                        ])
                         ->total();
                     ?>
                     <dd class="comments">
@@ -214,7 +214,7 @@ $first = $this->archive->entries(array(
                             <?php if ($i == $entry_year) { ?>
                                 <ol>
                                     <?php
-                                    $months = array(
+                                    $months = [
                                         '01' => Lang::txt('COM_BLOG_JANUARY'),
                                         '02' => Lang::txt('COM_BLOG_FEBRUARY'),
                                         '03' => Lang::txt('COM_BLOG_MARCH'),
@@ -227,7 +227,7 @@ $first = $this->archive->entries(array(
                                         '10' => Lang::txt('COM_BLOG_OCTOBER'),
                                         '11' => Lang::txt('COM_BLOG_NOVEMBER'),
                                         '12' => Lang::txt('COM_BLOG_DECEMBER')
-                                    );
+                                    ];
                                     foreach ($months as $key => $month) {
                                         if (intval($key) <= $entry_month) {
                                             ?>
@@ -289,10 +289,10 @@ $first = $this->archive->entries(array(
 
         <?php
         $comments = $this->row->comments()
-            ->whereIn('state', array(
+            ->whereIn('state', [
                 Components\Blog\Models\Comment::STATE_PUBLISHED,
                 Components\Blog\Models\Comment::STATE_FLAGGED
-            ))
+            ])
             ->whereEquals('parent', 0)
             ->ordered()
             ->rows();
@@ -327,10 +327,10 @@ $first = $this->archive->entries(array(
                     <?php
                     $replyto = $this->row->comments()
                         ->whereEquals('id', Request::getInt('reply', 0))
-                        ->whereIn('state', array(
+                        ->whereIn('state', [
                             Components\Blog\Models\Comment::STATE_PUBLISHED,
                             Components\Blog\Models\Comment::STATE_FLAGGED
-                        ))
+                        ])
                         ->row();
 
                     if (!User::isGuest()) {
@@ -364,7 +364,7 @@ $first = $this->archive->entries(array(
                         <label for="commentcontent">
                             Your <?php echo ($replyto->get('id')) ? 'reply' : 'comments'; ?>:
                             <?php
-                                echo $this->editor('comment[content]', '', 40, 15, 'commentcontent', array('class' => 'minimal no-footer'));
+                                echo $this->editor('comment[content]', '', 40, 15, 'commentcontent', ['class' => 'minimal no-footer']);
                             ?>
                         </label>
                     <?php } else { ?>

@@ -33,7 +33,7 @@ class Ticketstate extends Field
         $name = $this->name;
         $id = $this->id;
 
-        $html = array();
+        $html = [];
 
         $html[] = '<select name="' . $name . '" id="' . $id . '">';
 

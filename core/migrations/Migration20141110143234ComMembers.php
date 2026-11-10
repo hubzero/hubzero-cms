@@ -29,7 +29,7 @@ class Migration20141110143234ComMembers extends Base
                 ->count();
 
             if (!$count) {
-                $types = array(
+                $types = [
                     'universityundergraduate' => 'University / College Undergraduate',
                     'universitygraduate'      => 'University / College Graduate Student',
                     'universityfaculty'       => 'University / College Faculty',
@@ -41,7 +41,7 @@ class Migration20141110143234ComMembers extends Base
                     'government'              => 'Government Agency',
                     'military'                => 'Military',
                     'unemployed'              => 'Retired / Unemployed'
-                );
+                ];
 
                 foreach ($types as $alias => $title) {
                     $this->db->getQuery(true)

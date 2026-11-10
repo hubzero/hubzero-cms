@@ -61,7 +61,7 @@ if (PHP_VERSION_ID < 80216 && strpos($_SERVER['PATH_INFO'], '%') !== false) {
     $_SERVER['PHP_SELF'] = str_replace(rawurldecode($_SERVER['PATH_INFO']), '', $_SERVER['PHP_SELF']);
 }
 
-Hubzero\Base\ClassLoader::addDirectories(array( PATH_APP,   PATH_CORE));
+Hubzero\Base\ClassLoader::addDirectories([ PATH_APP,   PATH_CORE]);
 Hubzero\Base\ClassLoader::register();
 
 /**

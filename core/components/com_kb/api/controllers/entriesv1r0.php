@@ -67,14 +67,14 @@ class Entriesv1r0 extends ApiController
      *
      * @var  array
      */
-    const ARTICLE_FIELDS = array('title', 'alias', 'fulltxt', 'category', 'state', 'access', 'created', 'created_by');
+    const ARTICLE_FIELDS = ['title', 'alias', 'fulltxt', 'category', 'state', 'access', 'created', 'created_by'];
 
     /**
      * Request variables a JSON body may not set: they come from the route
      *
      * @var  array
      */
-    const ROUTE_FIELDS = array('option', 'controller', 'task', 'id', 'version', 'format', 'no_html', 'tmpl');
+    const ROUTE_FIELDS = ['option', 'controller', 'task', 'id', 'version', 'format', 'no_html', 'tmpl'];
 
     /**
      * Load the component's strings and the request body
@@ -161,14 +161,14 @@ class Entriesv1r0 extends ApiController
     {
         $state = User::authorise('core.admin') ? strtolower(Request::getString('state', '')) : '';
 
-        if (!in_array($state, array('', '0', '1', '2', 'all'), true)) {
+        if (!in_array($state, ['', '0', '1', '2', 'all'], true)) {
             throw new Exception(Lang::txt('COM_KB_ERROR_INVALID_STATE'), 400);
         }
 
         $categories = $this->categories($state !== '');
 
         $query = Article::all()
-            ->whereIn('category', array_keys($categories) ?: array(0));
+            ->whereIn('category', array_keys($categories) ?: [0]);
 
         if ($state !== '') {
             if ($state != 'all') {
@@ -202,16 +202,16 @@ class Entriesv1r0 extends ApiController
 
         // ordered() treats a dotted sort as relationship.field, so the
         // field is confined to the documented list
-        if (!in_array(Request::getCmd('sort', 'title'), array('title', 'created', 'modified', 'id', 'hits'), true)) {
+        if (!in_array(Request::getCmd('sort', 'title'), ['title', 'created', 'modified', 'id', 'hits'], true)) {
             Request::setVar('sort', 'title', 'get');
         }
 
-        if (!in_array(strtolower(Request::getCmd('sort_Dir', 'asc')), array('asc', 'desc'), true)) {
+        if (!in_array(strtolower(Request::getCmd('sort_Dir', 'asc')), ['asc', 'desc'], true)) {
             Request::setVar('sort_Dir', 'asc', 'get');
         }
 
         $response = new stdClass();
-        $response->articles = array();
+        $response->articles = [];
         $response->total    = $query->copy()->total();
 
         if ($response->total) {
@@ -351,7 +351,7 @@ class Entriesv1r0 extends ApiController
 
         $article = Article::blank();
 
-        $article->set(array(
+        $article->set([
             'title'      => Request::getString('title', ''),
             'fulltxt'    => Request::getString('fulltxt', ''),
             'category'   => Request::getInt('category', 0),
@@ -360,7 +360,7 @@ class Entriesv1r0 extends ApiController
             'access'     => Request::getInt('access', Article::ACCESS_PUBLIC),
             'created'    => Request::getString('created', ''),
             'created_by' => Request::getInt('created_by', User::get('id'))
-        ));
+        ]);
 
         $this->storeArticle($article);
 
@@ -449,7 +449,7 @@ class Entriesv1r0 extends ApiController
                 continue;
             }
 
-            $article->set($field, in_array($field, array('category', 'state', 'access', 'created_by'))
+            $article->set($field, in_array($field, ['category', 'state', 'access', 'created_by'])
                 ? Request::getInt($field, 0)
                 : Request::getString($field, ''));
         }
@@ -616,7 +616,7 @@ class Entriesv1r0 extends ApiController
         }
 
         $response = new stdClass();
-        $response->categories = array();
+        $response->categories = [];
         $response->total      = $query->copy()->total();
 
         if ($response->total) {
@@ -680,7 +680,7 @@ class Entriesv1r0 extends ApiController
         // and never matches the com_kb.category.N the ACL checks ask for
         $node->setNameSpace(self::EXTENSION);
 
-        $node->set(array(
+        $node->set([
             'extension'   => self::EXTENSION,
             'title'       => Request::getString('title', ''),
             'alias'       => Request::getString('alias', ''),
@@ -693,7 +693,7 @@ class Entriesv1r0 extends ApiController
             'metadata'    => '{}',
             'metadesc'    => '',
             'metakey'     => ''
-        ));
+        ]);
 
         // The root of the category tree, which every extension's top-level
         // categories hang from
@@ -733,7 +733,7 @@ class Entriesv1r0 extends ApiController
 
         $node->setNameSpace(self::EXTENSION);
 
-        foreach (array('title', 'alias', 'description', 'note') as $field) {
+        foreach (['title', 'alias', 'description', 'note'] as $field) {
             if ($this->has($field)) {
                 $node->set($field, Request::getString($field, ''));
             }
@@ -746,7 +746,7 @@ class Entriesv1r0 extends ApiController
             $node->set('alias', $node->automaticAlias($node->toArray()));
         }
 
-        foreach (array('published', 'access') as $field) {
+        foreach (['published', 'access'] as $field) {
             if ($this->has($field)) {
                 $node->set($field, Request::getInt($field, 0));
             }
@@ -810,7 +810,7 @@ class Entriesv1r0 extends ApiController
         // Nested::destroy() recurses into descendants itself, but closes the
         // gap they leave once per level and again for the stale copies it
         // holds, which skews lft/rgt for everything after the subtree
-        $nodes = array();
+        $nodes = [];
 
         foreach ($node->getDescendants() as $descendant) {
             $nodes[] = $descendant;
@@ -822,7 +822,7 @@ class Entriesv1r0 extends ApiController
 
         $nodes[] = $node;
 
-        $ids = array();
+        $ids = [];
 
         foreach ($nodes as $row) {
             $ids[] = (int) $row->get('id');
@@ -1064,7 +1064,7 @@ class Entriesv1r0 extends ApiController
      */
     private function assertArticleFields($article)
     {
-        if (!in_array((int) $article->get('state'), array(Article::STATE_UNPUBLISHED, Article::STATE_PUBLISHED, Article::STATE_DELETED), true)) {
+        if (!in_array((int) $article->get('state'), [Article::STATE_UNPUBLISHED, Article::STATE_PUBLISHED, Article::STATE_DELETED], true)) {
             throw new Exception(Lang::txt('COM_KB_ERROR_INVALID_STATE'), 422);
         }
 
@@ -1110,7 +1110,7 @@ class Entriesv1r0 extends ApiController
      */
     private function categories($unpublished = false)
     {
-        $categories = array();
+        $categories = [];
 
         $query = Category::all();
 

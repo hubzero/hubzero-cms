@@ -38,7 +38,7 @@ class Wishlist extends Plugin
      */
     public function &onResourcesAreas($model)
     {
-        $areas = array();
+        $areas = [];
 
         if ($model->type->params->get('plg_' . $this->_name) && $model->access('view-all')) {
             $areas['wishlist'] = Lang::txt('PLG_RESOURCES_WISHLIST');
@@ -58,11 +58,11 @@ class Wishlist extends Plugin
      */
     public function onResources($model, $option, $areas, $rtrn = 'all')
     {
-        $arr = array(
+        $arr = [
             'area'     => $this->_name,
             'html'     => '',
             'metadata' => ''
-        );
+        ];
 
         // Check if our area is in the array of areas we want to return results for
         if (!$model->type->params->get('plg_' . $this->_name)) {
@@ -175,7 +175,7 @@ class Wishlist extends Plugin
                         break;
                     case 'accepted':
                         $entries
-                            ->whereIn('status', array(0, 6))
+                            ->whereIn('status', [0, 6])
                             ->whereEquals('accepted', 1);
                         break;
                     case 'pending':

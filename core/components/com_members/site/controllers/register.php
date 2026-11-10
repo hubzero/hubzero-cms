@@ -161,10 +161,10 @@ class Register extends SiteController
             if ($updateEmail) {
                 $subject  = Config::get('sitename') . ' ' . Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
 
-                $eview = new \Hubzero\Component\View(array(
+                $eview = new \Hubzero\Component\View([
                     'name'   => 'emails',
                     'layout' => 'update'
-                ));
+                ]);
                 $eview->set('option', $this->_option);
                 $eview->set('controller', $this->_controller);
                 $eview->sitename   = Config::get('sitename');
@@ -189,10 +189,10 @@ class Register extends SiteController
             // Notify administration
             $subject = Config::get('sitename') . ' ' . Lang::txt('COM_MEMBERS_REGISTER_EMAIL_ACCOUNT_UPDATE');
 
-            $eaview = new \Hubzero\Component\View(array(
+            $eaview = new \Hubzero\Component\View([
                 'name'   => 'emails',
                 'layout' => 'adminupdate'
-            ));
+            ]);
             $eaview->set('option', $this->_option);
             $eaview->set('controller', $this->_controller);
             $eaview->sitename   = Config::get('sitename');
@@ -223,10 +223,10 @@ class Register extends SiteController
                 // @TODO consolidate
                 $subject  = Config::get('sitename') . ' ' . Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
 
-                $eview = new \Hubzero\Component\View(array(
+                $eview = new \Hubzero\Component\View([
                     'name'   => 'emails',
                     'layout' => 'updateproxy'
-                ));
+                ]);
                 $eview->set('option', $this->_option);
                 $eview->set('controller', $this->_controller);
                 $eview->sitename   = Config::get('sitename');
@@ -251,10 +251,10 @@ class Register extends SiteController
             // Notify administration
             $subject = Config::get('sitename') . ' ' . Lang::txt('COM_MEMBERS_REGISTER_EMAIL_ACCOUNT_UPDATE');
 
-            $eaview = new \Hubzero\Component\View(array(
+            $eaview = new \Hubzero\Component\View([
                 'name'   => 'emails',
                 'layout' => 'adminupdateproxy'
-            ));
+            ]);
             $eaview->set('option', $this->_option);
             $eaview->set('controller', $this->_controller);
             $eaview->sitename   = Config::get('sitename');
@@ -309,9 +309,9 @@ class Register extends SiteController
         // one, so we can fire the admin new-account notification that was
         // deferred by plg_user_hubzero at auto-create time.
         Plugin::import('user', 'hubzero');
-        $wasPlaceholder = \Plugins\User\Hubzero\Hubzero::isThirdPartyPlaceholder(array(
+        $wasPlaceholder = \Plugins\User\Hubzero\Hubzero::isThirdPartyPlaceholder([
             'username' => (string) User::get('username'),
-        ));
+        ]);
 
         // Set the pathway
         $this->_buildPathway();
@@ -339,7 +339,7 @@ class Register extends SiteController
             $xregistration->loadPost();
 
             // Incoming profile edits
-            $profile = Request::getArray('profile', array(), 'post');
+            $profile = Request::getArray('profile', [], 'post');
 
             // Compile profile data
             foreach ($profile as $key => $data) {
@@ -434,7 +434,7 @@ class Register extends SiteController
 
         // Validate profile fields
         if ($fields->count()) {
-            $form = new \Hubzero\Form\Form('profile', array('control' => 'profile'));
+            $form = new \Hubzero\Form\Form('profile', ['control' => 'profile']);
             $form->load(\Components\Members\Models\Profile\Field::toXml($fields, 'create', $profile));
             $form->bind(new \Hubzero\Config\Registry($profile));
 
@@ -510,7 +510,7 @@ class Register extends SiteController
                 $xprofile->set('homeDirectory', $hubHomeDir . DS . $xregistration->get('login'));
             }
 
-            $keys = array('email', 'name', 'surname', 'givenName', 'middleName', 'usageAgreement', 'sendEmail', 'password');
+            $keys = ['email', 'name', 'surname', 'givenName', 'middleName', 'usageAgreement', 'sendEmail', 'password'];
             foreach ($keys as $key) {
                 if ($xregistration->get($key) !== null) {
                     $xprofile->set($key, $xregistration->get($key));
@@ -519,7 +519,7 @@ class Register extends SiteController
             $xprofile->set('username', $xregistration->get('login'));
 
             if ($xprofile->save()) {
-                $access = array();
+                $access = [];
                 foreach ($fields as $field) {
                     $access[$field->get('name')] = $field->get('access');
                 }
@@ -619,16 +619,16 @@ class Register extends SiteController
             // create time plg_user_hubzero deferred it so the email would
             // carry the user's real chosen values rather than the placeholder.
             if (
-                $wasPlaceholder && !\Plugins\User\Hubzero\Hubzero::isThirdPartyPlaceholder(array(
+                $wasPlaceholder && !\Plugins\User\Hubzero\Hubzero::isThirdPartyPlaceholder([
                 'username' => (string) $xprofile->get('username'),
-                ))
+                ])
             ) {
-                \Plugins\User\Hubzero\Hubzero::sendAdminNewUserNotification(array(
+                \Plugins\User\Hubzero\Hubzero::sendAdminNewUserNotification([
                     'id'       => $xprofile->get('id'),
                     'name'     => $xprofile->get('name'),
                     'email'    => $xprofile->get('email'),
                     'username' => $xprofile->get('username'),
-                ));
+                ]);
             }
 
             // Notify the user
@@ -640,10 +640,10 @@ class Register extends SiteController
             if ($method == 'POST') {
                 $subject = Config::get('sitename') . ' ' . Lang::txt('COM_MEMBERS_REGISTER_EMAIL_ACCOUNT_UPDATE');
 
-                $eaview = new \Hubzero\Component\View(array(
+                $eaview = new \Hubzero\Component\View([
                     'name'   => 'emails',
                     'layout' => 'adminupdate'
-                ));
+                ]);
                 $eaview->set('option', $this->_option);
                 $eaview->set('controller', $this->_controller);
                 $eaview->sitename   = Config::get('sitename');
@@ -735,7 +735,7 @@ class Register extends SiteController
             $result = $xregistration->check('create');
 
             // Incoming profile edits
-            $profile = Request::getArray('profile', array(), 'post');
+            $profile = Request::getArray('profile', [], 'post');
 
             // Querying the organization id on ror.org
             // If RoR Api is turned off because of failed API or if key doesn't exist, don't retrieve list from Api.
@@ -772,7 +772,7 @@ class Register extends SiteController
 
             // Validate profile fields
             if ($fields->count()) {
-                $form = new \Hubzero\Form\Form('profile', array('control' => 'profile'));
+                $form = new \Hubzero\Form\Form('profile', ['control' => 'profile']);
                 $form->load(\Components\Members\Models\Profile\Field::toXml($fields, 'create', $profile));
                 $form->bind(new \Hubzero\Config\Registry($profile));
 
@@ -825,7 +825,7 @@ class Register extends SiteController
 
                 // Set some initial user values
                 $user->set('id', 0);
-                $user->set('accessgroups', array($newUsertype));
+                $user->set('accessgroups', [$newUsertype]);
                 $user->set('registerDate', Date::toSql());
 
                 // Check user activation setting
@@ -878,7 +878,7 @@ class Register extends SiteController
                         $hzal->update();
                     }
 
-                    $access = array();
+                    $access = [];
                     foreach ($fields as $field) {
                         $access[$field->get('name')] = $field->get('access');
                     }
@@ -1005,7 +1005,7 @@ class Register extends SiteController
             ->whereEquals('enabled', 1)
             ->rows();
 
-        $password_rules = array();
+        $password_rules = [];
 
         foreach ($rules as $rule) {
             if (!empty($rule['description'])) {
@@ -1208,8 +1208,8 @@ class Register extends SiteController
 
             // Light per-session throttle: at most 3 sends per 10 minutes.
             $now    = time();
-            $recent = array();
-            foreach ((array) Session::get('members.resend.times', array()) as $t) {
+            $recent = [];
+            foreach ((array) Session::get('members.resend.times', []) as $t) {
                 if (($now - $t) < 600) {
                     $recent[] = $t;
                 }
@@ -1313,10 +1313,10 @@ class Register extends SiteController
 
         $subject = Config::get('sitename') . ' ' . Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
 
-        $eview = new \Hubzero\Mail\View(array(
+        $eview = new \Hubzero\Mail\View([
             'name'   => 'emails',
             'layout' => 'confirm'
-        ));
+        ]);
         $eview->option       = $this->_option;
         $eview->controller   = $this->_controller;
         $eview->sitename     = Config::get('sitename');
@@ -1344,7 +1344,7 @@ class Register extends SiteController
 
         $sent = $msg->send();
 
-        Event::trigger('onUserAfterConfirmResend', array($profile->toArray()));
+        Event::trigger('onUserAfterConfirmResend', [$profile->toArray()]);
 
         return $sent;
     }
@@ -1425,10 +1425,10 @@ class Register extends SiteController
                         if (!$this->getError()) {
                             $subject  = Config::get('sitename') . ' ' . Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
 
-                            $eview = new \Hubzero\Mail\View(array(
+                            $eview = new \Hubzero\Mail\View([
                                 'name'   => 'emails',
                                 'layout' => 'confirm'
-                            ));
+                            ]);
                             $eview->option     = $this->_option;
                             $eview->controller = $this->_controller;
                             $eview->sitename   = Config::get('sitename');
@@ -1463,7 +1463,7 @@ class Register extends SiteController
                             // Show the success form
                             $success = true;
 
-                            Event::trigger('onUserAfterChangeEmail', array($xprofile->toArray()));
+                            Event::trigger('onUserAfterChangeEmail', [$xprofile->toArray()]);
                         }
                     }
                 }
@@ -1571,7 +1571,7 @@ class Register extends SiteController
                     if (!$pending->save()) {
                         $this->setError(Lang::txt('COM_MEMBERS_REGISTER_ERROR_CONFIRMING'));
                     } else {
-                        Event::trigger('onUserAfterConfirmEmail', array($pending->toArray()));
+                        Event::trigger('onUserAfterConfirmEmail', [$pending->toArray()]);
                     }
 
                     // Nothing left for the system/unconfirmed plugin to finish
@@ -1659,7 +1659,7 @@ class Register extends SiteController
         if (!$xprofile->get('id')) {
             $current = User::oneOrNew($user->get('id'));
 
-            if (!in_array((int) $current->get('activation'), array(1, 3), true)) {
+            if (!in_array((int) $current->get('activation'), [1, 3], true)) {
                 $this->setError(Lang::txt('COM_MEMBERS_REGISTER_ERROR_INVALID_CONFIRMATION'));
             }
 
@@ -1730,7 +1730,7 @@ class Register extends SiteController
                 Session::set('userchangedemail', 0);
             }
 
-            Event::trigger('onUserAfterConfirmEmail', array($xprofile->toArray()));
+            Event::trigger('onUserAfterConfirmEmail', [$xprofile->toArray()]);
 
             // Fall back to a pre-registration action stored in a cookie, then to
             // the account page. The cookie value is validated as internal too.

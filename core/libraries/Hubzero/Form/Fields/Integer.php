@@ -31,7 +31,7 @@ class Integer extends Select
     protected function getOptions()
     {
         // Initialize variables.
-        $options = array();
+        $options = [];
 
         // Initialize some field attributes.
         $first = (int) $this->element['first'];

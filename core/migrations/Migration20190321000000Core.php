@@ -21,14 +21,14 @@ class Migration20190321000000Core extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__extensions' => array(
+    public static $tables = [
+        '#__extensions' => [
             'checked_out_time'
-        ),
-        '#__menu' => array(
+        ],
+        '#__menu' => [
             'checked_out_time'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

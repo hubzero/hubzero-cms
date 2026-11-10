@@ -28,7 +28,7 @@ class Dumper
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_messages = array();
+    protected $_messages = [];
 
     /**
      * Map of characters to be replaced through strtr
@@ -36,13 +36,13 @@ class Dumper
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_nameReplacements = array(
+    protected $_nameReplacements = [
         '-'  => '',
         '_'  => '',
         ' '  => '',
         '\\' => '',
         '/'  => ''
-    );
+    ];
 
     /**
      * Constructor
@@ -140,10 +140,10 @@ class Dumper
     public function addVar($var)
     {
         $varc = (is_object($var) ? clone $var : $var);
-        $this->_messages[] = array(
+        $this->_messages[] = [
             'var'  => $varc,
             'time' => microtime(true)
-        );
+        ];
 
         return $this;
     }
@@ -175,7 +175,7 @@ class Dumper
      */
     public function clear()
     {
-        $this->_messages = array();
+        $this->_messages = [];
     }
 
     /**
@@ -187,10 +187,10 @@ class Dumper
     {
         $messages = $this->messages();
 
-        return array(
+        return [
             'count'    => count($messages),
             'messages' => $messages
-        );
+        ];
     }
 
     /**

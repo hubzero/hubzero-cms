@@ -48,11 +48,11 @@ class Coins extends Plugin
                 return;
         }
 
-        $arr = array(
+        $arr = [
             'area'     => '',
             'html'     => '',
             'metadata' => $this->coins($model)
-        );
+        ];
 
         return $arr;
     }
@@ -82,7 +82,7 @@ class Coins extends Plugin
 
         $genre = 'article';
 
-        $assocs = (array)$this->params->get('type', array());
+        $assocs = (array)$this->params->get('type', []);
 
         foreach ($assocs as $assoc) {
             if ($assoc->resource == $model->get('type')) {
@@ -93,17 +93,17 @@ class Coins extends Plugin
 
         $fields = $model->fields();
 
-        $title = array(
+        $title = [
             'ctx_ver=Z39.88-2004',
             'rft.genre=' . $genre,
             'rft.date=' . Date::of($model->date)->toLocal('Y')
-        );
+        ];
 
-        $items = array(
+        $items = [
             'issn'  => 'issn',
             'eissn' => 'issn',
             'isbn'  => 'isbn'
-        );
+        ];
 
         switch ($genre) {
             case 'book':
@@ -196,7 +196,7 @@ class Coins extends Plugin
         }
 
         if (!empty($authors)) {
-            $auths = array();
+            $auths = [];
 
             foreach ($authors as $author) {
                 if (!$author->surname || !$author->givenName) {

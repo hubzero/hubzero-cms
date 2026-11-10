@@ -156,7 +156,7 @@ class Incomplete extends Plugin
                 // component. The $originalOption guard keeps this from firing on
                 // the redirect target itself (which is com_users/com_members),
                 // so it can't loop.
-                if ($target && !in_array($originalOption, array('com_users', 'com_members'))) {
+                if ($target && !in_array($originalOption, ['com_users', 'com_members'])) {
                     $menu = App::get('menu');
 
                     if (

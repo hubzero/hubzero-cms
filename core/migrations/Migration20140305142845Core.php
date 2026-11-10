@@ -60,7 +60,7 @@ class Migration20140305142845Core extends Base
 
         $updates = $this->getMigrationTargets();
 
-        $this->callback('progress', 'init', array('Running ' . __CLASS__ . '.php:'));
+        $this->callback('progress', 'init', ['Running ' . __CLASS__ . '.php:']);
 
         $total = count($updates);
         $i     = 1;
@@ -69,7 +69,7 @@ class Migration20140305142845Core extends Base
             $this->convertTableColumn($update[0], $update[1], $tz);
 
             $progress = round($i / $total * 100);
-            $this->callback('progress', 'setProgress', array($progress));
+            $this->callback('progress', 'setProgress', [$progress]);
             $i++;
         }
 

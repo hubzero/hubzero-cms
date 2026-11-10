@@ -31,8 +31,8 @@ class Migration20151001185523ComKb extends Base
                     ->from('#__faq_categories');
                 $categories = $query->loadObjectList();
 
-                $sub = array();
-                $par = array();
+                $sub = [];
+                $par = [];
 
                 foreach ($categories as $category) {
                     if ($category->section) {
@@ -188,8 +188,8 @@ class Migration20151001185523ComKb extends Base
                 ->where('extension', '=', 'com_kb');
             $categories = $query->loadObjectList();
 
-            $sub = array();
-            $par = array();
+            $sub = [];
+            $par = [];
 
             foreach ($categories as $category) {
                 if ($category->parent_id) {
@@ -256,7 +256,7 @@ class Migration20151001185523ComKb extends Base
         $tbl->set('metadata', '');
         $tbl->set('params', '');
 
-        $tbl->assetRules = new \Hubzero\Access\Rules(array());
+        $tbl->assetRules = new \Hubzero\Access\Rules([]);
         $tbl->setNameSpace('com_kb');
 
         $tbl->save();

@@ -71,7 +71,7 @@ class Download
      * @param   array   $filters  Filters to apply to data retrieval
      * @return  mixed
      */
-    public static function getDownloads($rtrn = 'list', $filters = array())
+    public static function getDownloads($rtrn = 'list', $filters = [])
     {
         if (!isset($filters['sort'])) {
             $filters['sort'] = 'title';
@@ -115,7 +115,7 @@ class Download
         }
 
         if (isset($filters['search']) && $filters['search']) {
-            $where   = array();
+            $where   = [];
             $where[] = "p.`pName` LIKE " . $db->quote('%' . $filters['search'] . '%');
             $where[] = "s.`sSku` LIKE " . $db->quote('%' . $filters['search'] . '%');
             $where[] = "x.`name` LIKE " . $db->quote('%' . $filters['search'] . '%');
@@ -190,7 +190,7 @@ class Download
 
                 // if the download record has no metadata yet, add it
                 if (!isset($res[$dId]->meta)) {
-                    $res[$dId]->meta = array();
+                    $res[$dId]->meta = [];
                 }
                 $res[$dId]->meta[$meta['mtKey']] = $meta;
             }
@@ -207,7 +207,7 @@ class Download
      * @param   array   $filters  Filters to apply to data retrieval
      * @return  mixed
      */
-    public static function getDownloadsSku($rtrn = 'list', $filters = array())
+    public static function getDownloadsSku($rtrn = 'list', $filters = [])
     {
         if (!isset($filters['sort'])) {
             $filters['sort'] = 'product';
@@ -241,7 +241,7 @@ class Download
         }
 
         if (isset($filters['search']) && $filters['search']) {
-            $where   = array();
+            $where   = [];
             $where[] = "p.`pName` LIKE " . $db->quote('%' . $filters['search'] . '%');
             $where[] = "p.`pDescription` LIKE " . $db->quote('%' . $filters['search'] . '%');
             $where[] = "s.`sSku` LIKE " . $db->quote('%' . $filters['search'] . '%');

@@ -130,7 +130,7 @@ class Util
      */
     public static function normalizeDirectory($path)
     {
-        $regex = array('#[^A-Za-z0-9:_\\\/-]#');
+        $regex = ['#[^A-Za-z0-9:_\\\/-]#'];
 
         return preg_replace($regex, '', $path);
     }
@@ -146,11 +146,11 @@ class Util
         // Remove any trailing dots, as those aren't ever valid file names.
         $normalized = rtrim($file, '.');
 
-        $regex = array(
+        $regex = [
             '#(\.){2,}#',
             '#[^A-Za-z0-9\.\_\- ]#',
             '#^\.#'
-        );
+        ];
 
         return preg_replace($regex, '', $normalized);
     }

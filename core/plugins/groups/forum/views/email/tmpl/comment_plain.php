@@ -53,7 +53,7 @@ $output = preg_replace_callback(
     function ($m) {
         // mb_convert_encoding(..., 'HTML-ENTITIES') is deprecated; decode the
         // numeric entity to its UTF-8 character with the supported function.
-        return mb_decode_numericentity($m[1], array(0x0, 0x10FFFF, 0, 0x10FFFF), 'UTF-8');
+        return mb_decode_numericentity($m[1], [0x0, 0x10FFFF, 0, 0x10FFFF], 'UTF-8');
     },
     $output
 );
@@ -61,7 +61,7 @@ $output = preg_replace_callback(
 $message .= $output;
 
 $attachments = $this->post->attachments()
-    ->whereIn('state', array(Components\Forum\Models\Post::STATE_PUBLISHED))
+    ->whereIn('state', [Components\Forum\Models\Post::STATE_PUBLISHED])
     ->rows();
 if ($attachments->count() > 0) {
     $message .= "\n\n";

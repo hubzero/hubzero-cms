@@ -59,21 +59,21 @@ class Objct extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'tbl'      => 'notempty',
         'tagid'    => 'positive|nonzero',
         'objectid' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'taggedon',
         'taggerid'
-    );
+    ];
 
     /**
      * Generates automatic taggedon field value
@@ -185,7 +185,7 @@ class Objct extends Relational
             ->whereEquals('tagid', $oldtagid)
             ->rows();
 
-        $entries = array();
+        $entries = [];
 
         foreach ($items as $item) {
             // Find if there is already a database row with the same object and tag. Delete the item then.
@@ -255,7 +255,7 @@ class Objct extends Relational
             ->rows();
 
         if ($rows) {
-            $entries = array();
+            $entries = [];
 
             foreach ($rows as $row) {
                 $row->set('id', null);

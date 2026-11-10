@@ -37,7 +37,7 @@ class Supportingdocs extends Plugin
      */
     public function &onPublicationAreas($publication, $version = 'default', $extended = true)
     {
-        $areas = array();
+        $areas = [];
 
         if ($publication->_category->_params->get('plg_supportingdocs')) {
             $areas['supportingdocs'] = Lang::txt('PLG_PUBLICATION_SUPPORTINGDOCS');
@@ -67,10 +67,10 @@ class Supportingdocs extends Plugin
         $extended = true,
         $authorized = true
     ) {
-        $arr = array(
+        $arr = [
             'html'     => '',
             'metadata' => ''
-        );
+        ];
 
         // Check if our area is in the array of areas we want to return results for
         if (is_array($areas)) {
@@ -97,10 +97,10 @@ class Supportingdocs extends Plugin
             $pContent = new \Components\Publications\Tables\Attachment($database);
             $docs = $pContent->getAttachments(
                 $publication->version_id,
-                array(
-                    'role'  => array(1, 0, 2),
+                [
+                    'role'  => [1, 0, 2],
                     'order' => 'a.role DESC, a.ordering ASC'
-                )
+                ]
             );
 
             // Build publication path

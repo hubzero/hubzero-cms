@@ -78,7 +78,7 @@ $assignment = $this->item->disableCaching()->purgeCache()->menuAssignment();
 
             <div id="menu-assignment">
 
-            <?php echo Html::tabs('start', 'module-menu-assignment-tabs', array('useCookie' => 1));?>
+            <?php echo Html::tabs('start', 'module-menu-assignment-tabs', ['useCookie' => 1]);?>
 
             <?php foreach ($menuTypes as &$type) :
                 echo Html::tabs('panel', $type->title ? $type->title : $type->menutype, $type->menutype . '-details');

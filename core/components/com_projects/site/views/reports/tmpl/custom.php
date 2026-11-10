@@ -20,7 +20,7 @@ $this->css('reports')
     ->js('reports');
 
 // Incoming
-$data   = Request::getArray('data', array(), 'post');
+$data   = Request::getArray('data', [], 'post');
 $from   = Request::getString('fromdate', Date::of('-1 month')->toLocal('Y-m'));
 $to     = Request::getString('todate', Date::of('now')->toLocal('Y-m'));
 $filter = Request::getString('searchterm', '');
@@ -94,7 +94,7 @@ $filter = Request::getString('searchterm', '');
                             <?php
                             $tf = Event::trigger(
                                 'hubzero.onGetMultiEntry',
-                                array(array('tags', 'searchterm', 'searchterm', '', $filter))
+                                [['tags', 'searchterm', 'searchterm', '', $filter]]
                             );
                             $tf = implode('', $tf);
 

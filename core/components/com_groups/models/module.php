@@ -70,7 +70,7 @@ class Module extends Model
      * @param     boolean $clear   Fetch an updated list
      * @return    object  \Hubzero\Base\ItemList
      */
-    public function menu($rtrn = 'list', $filters = array(), $clear = false)
+    public function menu($rtrn = 'list', $filters = [], $clear = false)
     {
         $tbl = new Tables\ModuleMenu($this->_db);
 
@@ -89,7 +89,7 @@ class Module extends Model
                             $results[$key] = new Module\Menu($result);
                         }
                     } else {
-                        $results = array();
+                        $results = [];
                     }
                     $this->_menu_items = new ItemList($results);
                 }
@@ -104,7 +104,7 @@ class Module extends Model
      * @param   array   $modulesMenu
      * @return  boolean
      */
-    public function buildMenu($modulesMenu = array())
+    public function buildMenu($modulesMenu = [])
     {
         // create module menu object
         $tbl = new Tables\ModuleMenu($this->_db);
@@ -117,8 +117,8 @@ class Module extends Model
 
         // get module id and array of pages
         $moduleid = $this->get('id');
-        $assigned = (isset($modulesMenu['assigned'])) ? $modulesMenu['assigned'] : array();
-        $pages    = ($modulesMenu['assignment'] == '0') ? array(0) : $assigned;
+        $assigned = (isset($modulesMenu['assigned'])) ? $modulesMenu['assigned'] : [];
+        $pages    = ($modulesMenu['assignment'] == '0') ? [0] : $assigned;
 
         // create new menus
         if (!$tbl->createMenus($moduleid, $pages)) {
@@ -245,7 +245,7 @@ class Module extends Model
     public function content($as = 'parsed', $shorten = 0)
     {
         $as = strtolower($as);
-        $options = array();
+        $options = [];
 
         switch ($as) {
             case 'parsed':
@@ -258,7 +258,7 @@ class Module extends Model
                     $basePath = Component::params('com_groups')->get('uploadpath');
 
                     // build config
-                    $config = array(
+                    $config = [
                         'option'         => Request::getCmd('option', 'com_groups'),
                         'scope'          => '',
                         'pagename'       => $group->get('cn'),
@@ -266,14 +266,14 @@ class Module extends Model
                         'filepath'       => $basePath . DS . $group->get('gidNumber') . DS . 'uploads',
                         'domain'         => $group->get('cn'),
                         'alt_macro_path' => PATH_APP . $basePath . DS . $group->get('gidNumber') . DS . 'macros'
-                    );
+                    ];
 
                     $content = stripslashes($this->get('content'));
-                    $this->importPlugin('content')->trigger('onContentPrepare', array(
+                    $this->importPlugin('content')->trigger('onContentPrepare', [
                         $this->_context,
                         &$this,
                         &$config
-                    ));
+                    ]);
 
                     $this->set('content_parsed', $this->get('content'));
                     $this->set('content', $content);
@@ -311,12 +311,12 @@ class Module extends Model
     public static function purify($content, $trustedContent = false)
     {
         // array to hold options
-        $options = array();
+        $options = [];
 
         //create array of custom filters
-        $filters = array(
+        $filters = [
             new \Components\Groups\Helpers\Filters\GroupInclude()
-        );
+        ];
 
         // is this trusted content
         if ($trustedContent) {

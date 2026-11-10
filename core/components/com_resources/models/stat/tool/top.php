@@ -52,7 +52,7 @@ class Top extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'name' => 'notempty'
-    );
+    ];
 }

@@ -31,9 +31,9 @@ class MembershipTest extends Basic
      */
     public function testWarningDaysAreOrderedLargestFirst()
     {
-        $this->assertEquals(array(30, 7, 1), Membership::parseWarningDays('30,7,1'));
-        $this->assertEquals(array(30, 7, 1), Membership::parseWarningDays('1,30,7'));
-        $this->assertEquals(array(30, 7, 1), Membership::parseWarningDays(' 1 , 30 , 7 '));
+        $this->assertEquals([30, 7, 1], Membership::parseWarningDays('30,7,1'));
+        $this->assertEquals([30, 7, 1], Membership::parseWarningDays('1,30,7'));
+        $this->assertEquals([30, 7, 1], Membership::parseWarningDays(' 1 , 30 , 7 '));
     }
 
     /**
@@ -43,8 +43,8 @@ class MembershipTest extends Basic
      */
     public function testWarningDaysAreDeduplicated()
     {
-        $this->assertEquals(array(7), Membership::parseWarningDays('7,7,7'));
-        $this->assertEquals(array(30, 7), Membership::parseWarningDays('30,7,30'));
+        $this->assertEquals([7], Membership::parseWarningDays('7,7,7'));
+        $this->assertEquals([30, 7], Membership::parseWarningDays('30,7,30'));
     }
 
     /**
@@ -54,9 +54,9 @@ class MembershipTest extends Basic
      */
     public function testWarningDaysDropsNonPositiveValues()
     {
-        $this->assertEquals(array(5), Membership::parseWarningDays('0,5,-3'));
-        $this->assertEquals(array(), Membership::parseWarningDays('0'));
-        $this->assertEquals(array(), Membership::parseWarningDays('-1,-2'));
+        $this->assertEquals([5], Membership::parseWarningDays('0,5,-3'));
+        $this->assertEquals([], Membership::parseWarningDays('0'));
+        $this->assertEquals([], Membership::parseWarningDays('-1,-2'));
     }
 
     /**
@@ -67,10 +67,10 @@ class MembershipTest extends Basic
      */
     public function testWarningDaysIgnoresNonNumericEntries()
     {
-        $this->assertEquals(array(7), Membership::parseWarningDays('abc,7,'));
-        $this->assertEquals(array(), Membership::parseWarningDays('abc'));
-        $this->assertEquals(array(), Membership::parseWarningDays(''));
-        $this->assertEquals(array(14), Membership::parseWarningDays('14,7 days'));
+        $this->assertEquals([7], Membership::parseWarningDays('abc,7,'));
+        $this->assertEquals([], Membership::parseWarningDays('abc'));
+        $this->assertEquals([], Membership::parseWarningDays(''));
+        $this->assertEquals([14], Membership::parseWarningDays('14,7 days'));
     }
 
     /**
@@ -143,8 +143,8 @@ class MembershipTest extends Basic
 
         // the history column is varchar(32)
         foreach (
-            array(Membership::REASON_EXPIRED, Membership::REASON_MANUAL,
-            Membership::REASON_GROUP, Membership::REASON_USER) as $reason
+            [Membership::REASON_EXPIRED, Membership::REASON_MANUAL,
+            Membership::REASON_GROUP, Membership::REASON_USER] as $reason
         ) {
             $this->assertLessThanOrEqual(32, strlen($reason));
         }

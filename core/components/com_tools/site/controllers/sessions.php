@@ -361,7 +361,7 @@ class Sessions extends SiteController
 
         $parts = explode('/', $path);
 
-        $result = array();
+        $result = [];
 
         foreach ($parts as $part) {
             if ($part === '' || $part == '.') {
@@ -414,7 +414,7 @@ class Sessions extends SiteController
 
             $line = trim(strtok($params, $separator));
 
-            $verified_params = array();
+            $verified_params = [];
 
             while ($line !== false) {
                 $re = "/\s*(directory|file|int)\s*(?:\:|\(\s*(.*?)\s*\)\s*:)\s*(.*?)\s*$/";
@@ -610,7 +610,7 @@ class Sessions extends SiteController
         $preferences->loadByUser(User::get('id'));
         if (!$preferences || !$preferences->id) {
             $scls = new \Components\Tools\Tables\SessionClass($this->database);
-            $default = $scls->find('one', array('alias' => 'default'));
+            $default = $scls->find('one', ['alias' => 'default']);
             $preferences->user_id  = User::get('id');
             $preferences->class_id = $default->id;
             $preferences->jobs     = ($default->jobs ? $default->jobs : 3);
@@ -661,7 +661,7 @@ class Sessions extends SiteController
         Plugin::import('mw', $app->toolname);
 
         // Trigger any events that need to be called before session invoke
-        Event::trigger('mw.onBeforeSessionInvoke', array($app->toolname, $app->version));
+        Event::trigger('mw.onBeforeSessionInvoke', [$app->toolname, $app->version]);
 
         $toolparams = '';
 
@@ -705,7 +705,7 @@ class Sessions extends SiteController
         $app->sess = !empty($output->session) ? $output->session : '';
 
         // Trigger any events that need to be called after session invoke
-        Event::trigger('mw.onAfterSessionInvoke', array($app->toolname, $app->version));
+        Event::trigger('mw.onAfterSessionInvoke', [$app->toolname, $app->version]);
 
         // Get a count of the number of sessions of this specific tool
         $appcount = $ms->getCount(User::get('username'), $app->name);
@@ -735,14 +735,14 @@ class Sessions extends SiteController
                 'scope'       => 'tool.session',
                 'scope_id'    => $app->sess,
                 'description' => Lang::txt('COM_TOOLS_ACTIVITY_SESSION_CREATED', $app->sess, '<a href="' . Route::url($url) . '">' . htmlspecialchars((string) ($app->caption), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'tool'    => $app->name,
                     'url'     => $url
-                )
+                ]
             ],
-            'recipients' => array(
+            'recipients' => [
                 ['user', User::get('id')]
-            )
+            ]
         ]);
         App::redirect(
             Route::url($url, false)
@@ -857,7 +857,7 @@ class Sessions extends SiteController
         $readonly = Request::getString('readonly', '');
         $no_html  = Request::getInt('no_html', 0);
 
-        $users = array();
+        $users = [];
         if (strstr($username, ',')) {
             $users = explode(',', $username);
             $users = array_map('trim', $users);
@@ -915,7 +915,7 @@ class Sessions extends SiteController
             return;
         }
 
-        $ids = array();
+        $ids = [];
         foreach ($users as $user) {
             // Check for invalid characters
             if (!preg_match("#^[0-9a-zA-Z]+[_0-9a-zA-Z]*$#i", $user)) {
@@ -978,9 +978,9 @@ class Sessions extends SiteController
                 'scope'       => 'tool.session',
                 'scope_id'    => $sess,
                 'description' => Lang::txt('COM_TOOLS_ACTIVITY_SESSION_SHARED', $sess),
-                'details'     => array(
+                'details'     => [
                     'tool'    => $row->appname
-                )
+                ]
             ],
             'recipients' => $ids
         ]);
@@ -1040,11 +1040,11 @@ class Sessions extends SiteController
                 'scope'       => 'tool.session',
                 'scope_id'    => $sess,
                 'description' => Lang::txt('COM_TOOLS_ACTIVITY_SESSION_UNSHARED', $sess),
-                'details'     => array(
+                'details'     => [
                     'tool'    => $app
-                )
+                ]
             ],
-            'recipients' => array($u->get('id'))
+            'recipients' => [$u->get('id')]
         ]);
 
         if ($user == User::get('username')) {
@@ -1180,7 +1180,7 @@ class Sessions extends SiteController
         Plugin::import('mw', $app->name);
 
         // Trigger any events that need to be called before session start
-        Event::trigger('mw.onBeforeSessionStart', array($toolname, $tv->revision));
+        Event::trigger('mw.onBeforeSessionStart', [$toolname, $tv->revision]);
 
         // Call the view command
         $status = Utils::middleware($command, $output);
@@ -1243,13 +1243,13 @@ class Sessions extends SiteController
             $output->$key = strval($value);
         }
 
-        $boolean_keys = array('debug','show_local_cursor','show_controls','view_only','trust_all_vnc_certs', 'view_only', 'wsproxy_encrypt');
+        $boolean_keys = ['debug','show_local_cursor','show_controls','view_only','trust_all_vnc_certs', 'view_only', 'wsproxy_encrypt'];
 
         foreach ($boolean_keys as $key) {
             if (isset($output->$key)) {
                 $value = strtolower($output->$key);
 
-                if (in_array($value, array('1', 'y', 'on', 'yes', 't', 'true'))) {
+                if (in_array($value, ['1', 'y', 'on', 'yes', 't', 'true'])) {
                     $output->$key = 'Yes';
                 } else {
                     $output->$key = 'No';
@@ -1327,7 +1327,7 @@ class Sessions extends SiteController
         }
 
         if (empty($output->class)) {
-            $cls = array();
+            $cls = [];
             if ($app->params->get('noResize', 0)) {
                 $cls[] = 'no-resize';
             }
@@ -1352,7 +1352,7 @@ class Sessions extends SiteController
         }
 
         // Trigger any events that need to be called after session start
-        Event::trigger('mw.onAfterSessionStart', array($toolname, $tv->revision));
+        Event::trigger('mw.onAfterSessionStart', [$toolname, $tv->revision]);
 
         // Set the layout
         $sublayout = strtolower(Request::getWord('layout', ''));
@@ -1435,7 +1435,7 @@ class Sessions extends SiteController
     {
         $site = strtolower(trim(Request::getString('HTTP_SEC_FETCH_SITE', '', 'server')));
 
-        return in_array($site, array('same-origin', 'same-site'), true);
+        return in_array($site, ['same-origin', 'same-site'], true);
     }
 
     /**
@@ -1503,7 +1503,7 @@ class Sessions extends SiteController
         Plugin::import('mw', $ms->appname);
 
         // Trigger any events that need to be called before session stop
-        Event::trigger('mw.onBeforeSessionStop', array($ms->appname));
+        Event::trigger('mw.onBeforeSessionStop', [$ms->appname]);
 
         // Stop the session
         $status = Utils::middleware("stop $sess", $output);
@@ -1516,7 +1516,7 @@ class Sessions extends SiteController
         }
 
         // Trigger any events that need to be called after session stop
-        Event::trigger('mw.onAfterSessionStop', array($ms->appname));
+        Event::trigger('mw.onAfterSessionStop', [$ms->appname]);
 
         // Log activity
         Event::trigger('system.logActivity', [
@@ -1525,13 +1525,13 @@ class Sessions extends SiteController
                 'scope'       => 'tool.session',
                 'scope_id'    => $sess,
                 'description' => Lang::txt('COM_TOOLS_ACTIVITY_SESSION_DELETED', $sess),
-                'details'     => array(
+                'details'     => [
                     'tool'    => $ms->appname
-                )
+                ]
             ],
-            'recipients' => array(
+            'recipients' => [
                 ['user', User::get('id')]
-            )
+            ]
         ]);
 
         // Take us back to the main page...

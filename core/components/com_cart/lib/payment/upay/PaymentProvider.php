@@ -60,7 +60,7 @@ class PaymentProvider
      */
     public function setTransactionDetails($transactionDetails)
     {
-        $this->transactionDetails = array();
+        $this->transactionDetails = [];
         $this->transactionDetails['EXT_TRANS_ID'] = $transactionDetails->info->tId;
         $this->transactionDetails['EXT_TRANS_ID_LABEL'] = $this->options->transactionName;
         $this->transactionDetails['AMT'] = $transactionDetails->info->tiTotal;

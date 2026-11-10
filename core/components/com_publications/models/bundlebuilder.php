@@ -38,7 +38,7 @@ class BundleBuilder
      *
      * @var  array
      */
-    protected $incExcludedCache = array();
+    protected $incExcludedCache = [];
 
     /**
      * Extensions whose contents are already compressed — zip(1) stores these
@@ -48,14 +48,14 @@ class BundleBuilder
      */
     public static function compressedExtList()
     {
-        return array(
+        return [
             'zip', 'gz', 'bz2', 'xz', 'tgz', '7z', 'rar', 'lz4', 'zst',
             'jpg', 'jpeg', 'png', 'gif', 'webp', 'heic', 'heif',
             'mp4', 'm4v', 'mov', 'mkv', 'avi', 'wmv', 'webm', 'flv',
             'mp3', 'm4a', 'aac', 'ogg', 'opus', 'flac',
             'docx', 'xlsx', 'pptx', 'odt', 'ods', 'odp', 'epub',
             'pdf',
-        );
+        ];
     }
 
     /**
@@ -76,7 +76,7 @@ class BundleBuilder
      * @param   array     $opts  force(bool), level(int|null), log(callable|null)
      * @return  array     ok, file, size, source_hash, inner, error
      */
-    public function build($versionId, $opts = array())
+    public function build($versionId, $opts = [])
     {
         $log = (isset($opts['log']) && is_callable($opts['log'])) ? $opts['log'] : function ($m) {
         };
@@ -90,8 +90,8 @@ class BundleBuilder
         // the run — which would also leave the queue row wedged in 'building'.
         $db = App::get('db');
         if (
-            is_object($db) && is_callable(array($db, 'connected')) && !$db->connected()
-            && is_callable(array($db, 'reconnect'))
+            is_object($db) && is_callable([$db, 'connected']) && !$db->connected()
+            && is_callable([$db, 'reconnect'])
         ) {
             $log('DB connection dropped during build; reconnecting.');
             $db->reconnect();
@@ -122,7 +122,7 @@ class BundleBuilder
      * @param   array     $opts  force(bool), level(int|null), log(callable|null)
      * @return  array     ok, file, size, source_hash, inner, error
      */
-    protected function buildInternal($versionId, $opts = array())
+    protected function buildInternal($versionId, $opts = [])
     {
         $versionId = (int) $versionId;
         $force     = !empty($opts['force']);
@@ -131,7 +131,7 @@ class BundleBuilder
         };
 
         $fail = function ($msg) {
-            return array('ok' => false, 'error' => $msg, 'file' => null, 'size' => null, 'source_hash' => null, 'inner' => null);
+            return ['ok' => false, 'error' => $msg, 'file' => null, 'size' => null, 'source_hash' => null, 'inner' => null];
         };
 
         $version = $this->versionRow($versionId);
@@ -209,10 +209,10 @@ class BundleBuilder
 
         if (is_file($outerPath) && !$force) {
             // Nothing to do unless forced; report the existing artifact.
-            return array(
+            return [
                 'ok' => true, 'file' => $outerPath, 'size' => filesize($outerPath),
                 'source_hash' => $sourceHash, 'inner' => null, 'error' => null
-            );
+            ];
         }
 
         // The served outer also carries the publish-time metadata: hubREADME.txt/
@@ -234,10 +234,10 @@ class BundleBuilder
                 return $fail($res['error']);
             }
 
-            return array(
+            return [
                 'ok' => true, 'file' => $outerPath, 'size' => filesize($outerPath),
                 'source_hash' => $sourceHash, 'inner' => null, 'error' => null
-            );
+            ];
         }
 
         // --- nested: inner bundle (system zip) ---------------------------
@@ -271,14 +271,14 @@ class BundleBuilder
             @unlink($bundleDir . DS . 'bundle.zip');
         }
 
-        return array(
+        return [
             'ok' => true,
             'file' => $outerPath,
             'size' => filesize($outerPath),
             'source_hash' => $sourceHash,
             'inner' => $innerPath,
             'error' => null,
-        );
+        ];
     }
 
     /**
@@ -424,7 +424,7 @@ class BundleBuilder
     {
         $doi = isset($version['doi']) ? trim((string) $version['doi']) : '';
         if ($doi !== '') {
-            return str_replace(array('.', '/'), '_', $doi) . '.zip';
+            return str_replace(['.', '/'], '_', $doi) . '.zip';
         }
 
         return 'Publication_' . (int) $version['publication_id']
@@ -440,7 +440,7 @@ class BundleBuilder
      */
     public function sourceHash($files)
     {
-        $parts = array();
+        $parts = [];
         foreach ($files as $abs => $name) {
             $parts[] = $name . ':' . @filesize($abs) . ':' . @filemtime($abs);
         }
@@ -515,12 +515,12 @@ class BundleBuilder
     {
         $versionId = (int) $versionId;
 
-        $r = array(
+        $r = [
             'version_id' => $versionId, 'publication_id' => null, 'doi' => null,
             'primary_count' => 0, 'outer_exists' => false, 'outer_size' => 0,
             'inner_exists' => false, 'inner_entries' => null, 'outer_has_bundle' => null,
-            'source_hash' => '', 'issues' => array(), 'ok' => true,
-        );
+            'source_hash' => '', 'issues' => [], 'ok' => true,
+        ];
 
         $version = $this->versionRow($versionId);
         if (!$version) {
@@ -553,7 +553,7 @@ class BundleBuilder
         $r['primary_count']  = count($files);
         $r['source_hash']    = $r['primary_count'] ? $this->sourceHash($files) : '';
         $r['source_bytes']   = 0;
-        $srcSizes            = array();
+        $srcSizes            = [];
         foreach ($files as $abs => $name) {
             $sz = (int) @filesize($abs);
             $srcSizes[$abs]     = $sz;
@@ -569,13 +569,13 @@ class BundleBuilder
         if ($r['inner_exists']) {
             $zip = new ZipArchive();
             if ($zip->open($inner) === true) {
-                $innerMap = array();
+                $innerMap = [];
                 for ($i = 0; $i < $zip->numFiles; $i++) {
                     $s = $zip->statIndex($i);
                     if ($s === false || substr($s['name'], -1) === '/') {
                         continue;
                     }
-                    $innerMap[$s['name']] = array('size' => (int) $s['size'], 'crc' => $s['crc']);
+                    $innerMap[$s['name']] = ['size' => (int) $s['size'], 'crc' => $s['crc']];
                 }
                 $r['inner_entries'] = count($innerMap);
                 $zip->close();
@@ -592,7 +592,7 @@ class BundleBuilder
         if ($r['outer_exists']) {
             $zip = new ZipArchive();
             if ($zip->open($outer) === true) {
-                $outerData = array();
+                $outerData = [];
                 for ($i = 0; $i < $zip->numFiles; $i++) {
                     $s = $zip->statIndex($i);
                     if ($s === false) {
@@ -603,11 +603,11 @@ class BundleBuilder
                         $rel === '' || substr($rel, -1) === '/'
                         || strpos($rel, 'gallery/') === 0
                         || substr($rel, -5) === '.hash'
-                        || in_array($rel, array('hubREADME.txt', 'LICENSE.txt'), true)
+                        || in_array($rel, ['hubREADME.txt', 'LICENSE.txt'], true)
                     ) {
                         continue;
                     }
-                    $outerData[$rel] = array('size' => (int) $s['size'], 'crc' => $s['crc']);
+                    $outerData[$rel] = ['size' => (int) $s['size'], 'crc' => $s['crc']];
                 }
                 $r['outer_has_bundle'] = !empty($outerData);
                 $zip->close();
@@ -637,7 +637,7 @@ class BundleBuilder
             $usedInner = ($innerMap !== null);
 
             if ($carrier !== null) { // else *_unreadable already fired
-                $byBase = array();
+                $byBase = [];
                 foreach ($carrier as $n => $m) {
                     $byBase[basename($n)][] = $m;
                 }
@@ -762,7 +762,7 @@ class BundleBuilder
         $dataAtts = $this->dataAttachments($versionId);
 
         // Full outer entry map: rel (minus "<name>/") => array(size, crc).
-        $entries = array();
+        $entries = [];
         if ($r['outer_exists']) {
             $zip = new ZipArchive();
             if ($zip->open($outer) !== true) {
@@ -774,12 +774,12 @@ class BundleBuilder
                 if ($s === false || substr($s['name'], -1) === '/') {
                     continue;
                 }
-                $entries[$this->stripWrapper((string) $s['name'], $name)] = array('size' => (int) $s['size'], 'crc' => $s['crc']);
+                $entries[$this->stripWrapper((string) $s['name'], $name)] = ['size' => (int) $s['size'], 'crc' => $s['crc']];
             }
             $zip->close();
         }
 
-        $byBase = array();
+        $byBase = [];
         foreach ($entries as $n => $m) {
             $byBase[basename($n)][] = $m;
         }
@@ -802,8 +802,8 @@ class BundleBuilder
 
         // Expected payload (rel-without-prefix => abs on disk) and the matching
         // source signature for staleness (same inputs the build hashes).
-        $expected = array();
-        $sigMap   = array();
+        $expected = [];
+        $sigMap   = [];
 
         if ($dataAtts) {
             foreach ($this->attachmentFiles($versionId, $content) as $abs => $rel) {
@@ -899,7 +899,7 @@ class BundleBuilder
         );
         $curation = (string) $db->loadResult();
 
-        $excluded = array();
+        $excluded = [];
         // Fast out: the flag isn't mentioned at all (the norm on PURR today).
         if ($curation !== '' && stripos($curation, 'includeInPackage') !== false) {
             $man = json_decode($curation, true);
@@ -1067,7 +1067,7 @@ class BundleBuilder
         );
         $rows = $db->loadObjectList();
 
-        $files = array();
+        $files = [];
         foreach ((array) $rows as $row) {
             // Files of an element marked includeInPackage=0 are excluded from
             // the package by the original packager — drop them here too.
@@ -1112,7 +1112,7 @@ class BundleBuilder
         $base   = basename($rel);
         $suffix = $this->fileSuffix($params);
 
-        $cands = array($rel);                                            // dirHierarchy=1
+        $cands = [$rel];                                            // dirHierarchy=1
         if ($suffix !== '') {
             $cands[] = $this->injectBeforeExt($rel, ' (' . $suffix . ')');   // dirHierarchy=1 + suffix
             $cands[] = $this->injectBeforeExt($base, ' (' . $suffix . ')');  // dirHierarchy=2 + suffix
@@ -1200,7 +1200,7 @@ class BundleBuilder
         }
 
         $primaryRel = array_flip(array_values($primary));
-        $attBase    = array();
+        $attBase    = [];
         foreach ($allFiles as $rel) {
             $attBase[basename($rel)] = true;
         }
@@ -1250,7 +1250,7 @@ class BundleBuilder
             return null;
         }
 
-        $cands = array();
+        $cands = [];
         for ($i = 0; $i < $zip->numFiles; $i++) {
             $rel = preg_replace('#^[^/]+/#', '', (string) $zip->getNameIndex($i)); // strip "<dir>/"
             if (substr($rel, -4) === '.zip' && strpos($rel, '/') === false) {
@@ -1293,13 +1293,13 @@ class BundleBuilder
             return null;
         }
 
-        $members = array();
+        $members = [];
         for ($i = 0; $i < $zip->numFiles; $i++) {
             $s = $zip->statIndex($i);
             if ($s === false || substr($s['name'], -1) === '/') {
                 continue;
             }
-            $members[$s['name']] = array('size' => (int) $s['size'], 'crc' => $s['crc']);
+            $members[$s['name']] = ['size' => (int) $s['size'], 'crc' => $s['crc']];
         }
         $zip->close();
 
@@ -1316,7 +1316,7 @@ class BundleBuilder
     {
         $doi = isset($version['doi']) ? trim((string) $version['doi']) : '';
         if ($doi !== '') {
-            return str_replace(array('.', '/'), '_', $doi);
+            return str_replace(['.', '/'], '_', $doi);
         }
 
         return 'Publication_' . (int) $version['publication_id'];
@@ -1356,7 +1356,7 @@ class BundleBuilder
     protected function buildInner($files, $innerPath, $level, $content)
     {
         if (!$this->systemZipAvailable()) {
-            return array('ok' => false, 'error' => 'The system "zip" binary is not available.');
+            return ['ok' => false, 'error' => 'The system "zip" binary is not available.'];
         }
 
         // Preflight: the inner is at most the sum of the primary files; bail
@@ -1370,8 +1370,8 @@ class BundleBuilder
             $need += filesize($innerPath);
         }
         if (!$this->hasFreeSpace(dirname($innerPath), $need)) {
-            return array('ok' => false, 'error' => 'Insufficient free space to build ' . basename($innerPath)
-                . ' (need ~' . number_format($need) . ' bytes).');
+            return ['ok' => false, 'error' => 'Insufficient free space to build ' . basename($innerPath)
+                . ' (need ~' . number_format($need) . ' bytes).'];
         }
 
         $tmp = $innerPath . '.build.' . getmypid();
@@ -1380,21 +1380,21 @@ class BundleBuilder
         // Run from the content dir and feed the relative names on stdin (-@) so
         // paths are preserved (no -j), arbitrary names can't be misread as
         // options, and there is no ARG_MAX ceiling on large datasets.
-        $cmd = array('zip', '-' . max(0, min(9, (int) $level)), '-X', '-q',
-            '-n', '.' . implode(':.', self::compressedExtList()), $tmp, '-@');
+        $cmd = ['zip', '-' . max(0, min(9, (int) $level)), '-X', '-q',
+            '-n', '.' . implode(':.', self::compressedExtList()), $tmp, '-@'];
 
         $rc = $this->runQuiet($cmd, $content, implode("\n", array_values($files)) . "\n");
 
         if ($rc !== 0 || !is_file($tmp)) {
             @unlink($tmp);
-            return array('ok' => false, 'error' => 'zip exited with status ' . $rc);
+            return ['ok' => false, 'error' => 'zip exited with status ' . $rc];
         }
 
         // Verify before replacing the live inner: every primary file must be
         // present and the central directory intact (catches a truncated build).
         if (!$this->verifyZip($tmp, count($files))) {
             @unlink($tmp);
-            return array('ok' => false, 'error' => 'Built inner bundle failed verification (incomplete); kept the existing ' . basename($innerPath) . '.');
+            return ['ok' => false, 'error' => 'Built inner bundle failed verification (incomplete); kept the existing ' . basename($innerPath) . '.'];
         }
 
         @chgrp($tmp, 'access-content');
@@ -1402,10 +1402,10 @@ class BundleBuilder
 
         if (!rename($tmp, $innerPath)) {
             @unlink($tmp);
-            return array('ok' => false, 'error' => 'Could not move ' . $tmp . ' into place.');
+            return ['ok' => false, 'error' => 'Could not move ' . $tmp . ' into place.'];
         }
 
-        return array('ok' => true, 'error' => null);
+        return ['ok' => true, 'error' => null];
     }
 
     /**
@@ -1428,7 +1428,7 @@ class BundleBuilder
      * @param   array   $metadata    abs => array(kind, entry)  (readme/license/gallery)
      * @return  array   ok, error
      */
-    protected function buildOuter($innerPath, $outerPath, $name, $supporting = array(), $metadata = array())
+    protected function buildOuter($innerPath, $outerPath, $name, $supporting = [], $metadata = [])
     {
         $entry = $name . '/' . basename($innerPath);
         $tmp   = $outerPath . '.build.' . getmypid();
@@ -1439,15 +1439,15 @@ class BundleBuilder
         $zip = new ZipArchive();
         if ($exists) {
             if (!copy($outerPath, $tmp)) {
-                return array('ok' => false, 'error' => 'Could not copy ' . $outerPath);
+                return ['ok' => false, 'error' => 'Could not copy ' . $outerPath];
             }
             if ($zip->open($tmp) !== true) {
                 @unlink($tmp);
-                return array('ok' => false, 'error' => 'Could not open ' . $tmp . ' for update.');
+                return ['ok' => false, 'error' => 'Could not open ' . $tmp . ' for update.'];
             }
         } else if ($zip->open($tmp, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
             @unlink($tmp);
-            return array('ok' => false, 'error' => 'Could not create ' . $tmp . '.');
+            return ['ok' => false, 'error' => 'Could not create ' . $tmp . '.'];
         }
 
         if ($zip->locateName($entry) !== false) {
@@ -1464,7 +1464,7 @@ class BundleBuilder
         if (!$zip->addFile($innerPath, $entry)) {
             $zip->close();
             @unlink($tmp);
-            return array('ok' => false, 'error' => 'Could not add ' . $entry . ' to the bundle.');
+            return ['ok' => false, 'error' => 'Could not add ' . $entry . ' to the bundle.'];
         }
         $zip->setCompressionName($entry, ZipArchive::CM_STORE);
 
@@ -1476,13 +1476,13 @@ class BundleBuilder
 
         if (!$zip->close()) {
             @unlink($tmp);
-            return array('ok' => false, 'error' => 'Failed to write ' . $tmp);
+            return ['ok' => false, 'error' => 'Failed to write ' . $tmp];
         }
 
         // Verify intact before it replaces the live outer.
         if (!$this->verifyZip($tmp, 1)) {
             @unlink($tmp);
-            return array('ok' => false, 'error' => 'Built archive failed verification; kept the existing ' . basename($outerPath) . '.');
+            return ['ok' => false, 'error' => 'Built archive failed verification; kept the existing ' . basename($outerPath) . '.'];
         }
 
         @chgrp($tmp, 'access-content');
@@ -1490,10 +1490,10 @@ class BundleBuilder
 
         if (!rename($tmp, $outerPath)) {
             @unlink($tmp);
-            return array('ok' => false, 'error' => 'Could not move ' . $tmp . ' into place.');
+            return ['ok' => false, 'error' => 'Could not move ' . $tmp . ' into place.'];
         }
 
-        return array('ok' => true, 'error' => null);
+        return ['ok' => true, 'error' => null];
     }
 
     /**
@@ -1515,7 +1515,7 @@ class BundleBuilder
      * @param   array   $metadata  abs => array(kind, entry)  (readme/license/gallery)
      * @return  array   ok, error
      */
-    protected function buildOuterFlat($files, $outerPath, $name, $preserveExtra = false, $metadata = array())
+    protected function buildOuterFlat($files, $outerPath, $name, $preserveExtra = false, $metadata = [])
     {
         $tmp = $outerPath . '.build.' . getmypid();
         @unlink($tmp);
@@ -1525,22 +1525,22 @@ class BundleBuilder
         $zip = new ZipArchive();
         if ($exists) {
             if (!copy($outerPath, $tmp)) {
-                return array('ok' => false, 'error' => 'Could not copy ' . $outerPath);
+                return ['ok' => false, 'error' => 'Could not copy ' . $outerPath];
             }
             if ($zip->open($tmp) !== true) {
                 @unlink($tmp);
-                return array('ok' => false, 'error' => 'Could not open ' . $tmp . ' for update.');
+                return ['ok' => false, 'error' => 'Could not open ' . $tmp . ' for update.'];
             }
         } else if ($zip->open($tmp, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
             @unlink($tmp);
-            return array('ok' => false, 'error' => 'Could not create ' . $tmp . '.');
+            return ['ok' => false, 'error' => 'Could not create ' . $tmp . '.'];
         }
 
         // Record where each existing data entry sits (its path relative to the
         // "<name>/" prefix), so a rebuilt file is placed back at the SAME path —
         // preserving any bundleDirectory/subdir prefix the original used rather
         // than defaulting to <name>/<rel>.
-        $existing = array();
+        $existing = [];
         for ($i = 0; $i < $zip->numFiles; $i++) {
             $entry = (string) $zip->getNameIndex($i);
             $rel   = preg_replace('#^[^/]+/#', '', $entry);
@@ -1557,7 +1557,7 @@ class BundleBuilder
         // file attachments below, rather than risk dropping that content.
         // Gallery/README/LICENSE/hash metadata is always kept.
         if (!$preserveExtra) {
-            $drop = array();
+            $drop = [];
             for ($i = 0; $i < $zip->numFiles; $i++) {
                 $entry = (string) $zip->getNameIndex($i);
                 $rel   = preg_replace('#^[^/]+/#', '', $entry);
@@ -1585,7 +1585,7 @@ class BundleBuilder
             if (!$zip->addFile($abs, $entry)) {
                 $zip->close();
                 @unlink($tmp);
-                return array('ok' => false, 'error' => 'Could not add ' . $entry);
+                return ['ok' => false, 'error' => 'Could not add ' . $entry];
             }
             $ext = strtolower(pathinfo($rel, PATHINFO_EXTENSION));
             if (in_array($ext, self::compressedExtList(), true)) {
@@ -1600,13 +1600,13 @@ class BundleBuilder
 
         if (!$zip->close()) {
             @unlink($tmp);
-            return array('ok' => false, 'error' => 'Failed to write ' . $tmp);
+            return ['ok' => false, 'error' => 'Failed to write ' . $tmp];
         }
 
         // Verify intact before it replaces the live outer.
         if (!$this->verifyZip($tmp, 1)) {
             @unlink($tmp);
-            return array('ok' => false, 'error' => 'Built archive failed verification; kept the existing ' . basename($outerPath) . '.');
+            return ['ok' => false, 'error' => 'Built archive failed verification; kept the existing ' . basename($outerPath) . '.'];
         }
 
         @chgrp($tmp, 'access-content');
@@ -1614,10 +1614,10 @@ class BundleBuilder
 
         if (!rename($tmp, $outerPath)) {
             @unlink($tmp);
-            return array('ok' => false, 'error' => 'Could not move ' . $tmp . ' into place.');
+            return ['ok' => false, 'error' => 'Could not move ' . $tmp . ' into place.'];
         }
 
-        return array('ok' => true, 'error' => null);
+        return ['ok' => true, 'error' => null];
     }
 
     /**
@@ -1756,7 +1756,7 @@ class BundleBuilder
      */
     protected function outerMetadata($versionId, $version, $base, $name)
     {
-        $meta = array();
+        $meta = [];
 
         // README — always REGENERATE the archival readme so a stale copy left in
         // the base dir (e.g. a draft-era stub from before the version was
@@ -1772,7 +1772,7 @@ class BundleBuilder
             @chmod($base . DS . 'hubREADME.txt', 0664);
             $readme = 'hubREADME.txt';
         } else {
-            foreach (array('hubREADME.txt', 'README.txt') as $rn) {
+            foreach (['hubREADME.txt', 'README.txt'] as $rn) {
                 if (is_file($base . DS . $rn)) {
                     $readme = $rn;
                     break;
@@ -1787,19 +1787,19 @@ class BundleBuilder
             // archival readme README.txt too made one silently overwrite the other
             // (the v1770 collision). hubREADME.txt never collides with it, so a
             // rebuild keeps BOTH the archival readme and the author's README.txt.
-            $meta[$base . DS . $readme] = array('readme', $name . '/hubREADME.txt');
+            $meta[$base . DS . $readme] = ['readme', $name . '/hubREADME.txt'];
         }
 
         // LICENSE.txt — on disk if present; else regenerate only when the version
         // carries custom license text (the only case package() writes one).
         if (is_file($base . DS . 'LICENSE.txt')) {
-            $meta[$base . DS . 'LICENSE.txt'] = array('license', $name . '/LICENSE.txt');
+            $meta[$base . DS . 'LICENSE.txt'] = ['license', $name . '/LICENSE.txt'];
         } else {
             $licText = isset($version['license_text']) ? trim((string) $version['license_text']) : '';
             if ($licText !== '' && @file_put_contents($base . DS . 'LICENSE.txt', $licText) !== false) {
                 @chgrp($base . DS . 'LICENSE.txt', 'access-content');
                 @chmod($base . DS . 'LICENSE.txt', 0664);
-                $meta[$base . DS . 'LICENSE.txt'] = array('license', $name . '/LICENSE.txt');
+                $meta[$base . DS . 'LICENSE.txt'] = ['license', $name . '/LICENSE.txt'];
             }
         }
 
@@ -1809,7 +1809,7 @@ class BundleBuilder
         // bundle. Matching the registered attachments includes exactly the images
         // the packager would.
         foreach ($this->galleryFiles($versionId, $base, $name) as $abs => $entry) {
-            $meta[$abs] = array('gallery', $entry);
+            $meta[$abs] = ['gallery', $entry];
         }
 
         return $meta;
@@ -1830,7 +1830,7 @@ class BundleBuilder
     {
         $galDir = $base . DS . 'gallery';
         if (!is_dir($galDir)) {
-            return array();
+            return [];
         }
 
         $db = App::get('db');
@@ -1841,7 +1841,7 @@ class BundleBuilder
         );
         $rows = $db->loadObjectList();
 
-        $out = array();
+        $out = [];
         foreach ((array) $rows as $row) {
             $rel = str_replace('./', '', ltrim(str_replace('\\', '/', (string) $row->path), '/'));
             if ($rel === '') {
@@ -1966,9 +1966,9 @@ class BundleBuilder
 			 ORDER BY `role`, `ordering`, `id`"
         );
 
-        $byRole = array();
+        $byRole = [];
         foreach ((array) $db->loadObjectList() as $a) {
-            $byRole[(int) $a->role][] = array('path' => (string) $a->path, 'desc' => (string) $a->attribs);
+            $byRole[(int) $a->role][] = ['path' => (string) $a->path, 'desc' => (string) $a->attribs];
         }
 
         $out = '';
@@ -2018,7 +2018,7 @@ class BundleBuilder
         );
         $man = json_decode((string) $db->loadResult(), true);
 
-        $byRole = array();
+        $byRole = [];
         if (is_array($man) && !empty($man['blocks']) && is_array($man['blocks'])) {
             foreach ($man['blocks'] as $blk) {
                 if (empty($blk['elements']) || !is_array($blk['elements'])) {
@@ -2040,14 +2040,14 @@ class BundleBuilder
                     if (isset($byRole[$role])) {
                         continue;
                     }
-                    $tp = isset($params['typeParams']) ? $params['typeParams'] : array();
+                    $tp = isset($params['typeParams']) ? $params['typeParams'] : [];
                     if (is_string($tp)) {
                         $tp = json_decode($tp, true);
                     }
-                    $byRole[$role] = array(
+                    $byRole[$role] = [
                         'label'    => isset($el['label']) ? (string) $el['label'] : '',
                         'multiZip' => (is_array($tp) && isset($tp['multiZip'])) ? (int) $tp['multiZip'] : 1,
-                    );
+                    ];
                 }
             }
         }
@@ -2089,7 +2089,7 @@ class BundleBuilder
 			 ORDER BY A.`ordering` ASC"
         );
 
-        $out = array();
+        $out = [];
         foreach ((array) $db->loadObjectList() as $a) {
             $name = ($a->name !== null && $a->name !== '') ? $a->name : (string) $a->p_name;
 
@@ -2101,7 +2101,7 @@ class BundleBuilder
                 $org = (string) $a->p_organization;
             }
 
-            $out[] = array('name' => (string) $name, 'org' => trim((string) $org));
+            $out[] = ['name' => (string) $name, 'org' => trim((string) $org)];
         }
 
         return $out;
@@ -2159,7 +2159,7 @@ class BundleBuilder
      */
     protected function databaseDataFiles($dataDir)
     {
-        $out = array();
+        $out = [];
         if (!is_dir($dataDir)) {
             return $out;
         }
@@ -2213,7 +2213,7 @@ class BundleBuilder
     protected function buildDatabase($versionId, $version, $base, $content, $force, $level, $log)
     {
         $fail = function ($msg) {
-            return array('ok' => false, 'error' => $msg, 'file' => null, 'size' => null, 'source_hash' => null, 'inner' => null);
+            return ['ok' => false, 'error' => $msg, 'file' => null, 'size' => null, 'source_hash' => null, 'inner' => null];
         };
 
         $name      = $this->bundleName($version);
@@ -2232,19 +2232,19 @@ class BundleBuilder
         $sourceHash = $this->sourceHash($sigMap);
 
         if (is_file($outerPath) && !$force) {
-            return array(
+            return [
                 'ok' => true, 'file' => $outerPath, 'size' => filesize($outerPath),
                 'source_hash' => $sourceHash, 'inner' => null, 'error' => null
-            );
+            ];
         }
 
         // Entry list as [abs, entry] pairs — a file can appear twice (a CSV is
         // placed at the root AND, via the data-dir scan, under data/).
-        $entries = array();
+        $entries = [];
 
         // role>=2 supporting files (in the content dir) sit flat at <name>/<rel>.
         foreach ($supporting as $abs => $rel) {
-            $entries[] = array($abs, $name . '/' . $rel);
+            $entries[] = [$abs, $name . '/' . $rel];
         }
 
         // Generate each datastore CSV into the data dir (where the packager
@@ -2263,13 +2263,13 @@ class BundleBuilder
             }
             @chgrp($csvAbs, 'access-content');
             @chmod($csvAbs, 0664);
-            $entries[] = array($csvAbs, $name . '/' . $csvName);
+            $entries[] = [$csvAbs, $name . '/' . $csvName];
         }
 
         // The whole data dir (now including the freshly written CSVs), minus the
         // excluded files, under <name>/data/.
         foreach ($this->databaseDataFiles($dataDir) as $abs => $rel) {
-            $entries[] = array($abs, $name . '/data/' . $rel);
+            $entries[] = [$abs, $name . '/data/' . $rel];
         }
 
         $metadata = $this->outerMetadata($versionId, $version, $base, $name);
@@ -2286,10 +2286,10 @@ class BundleBuilder
             return $fail($res['error']);
         }
 
-        return array(
+        return [
             'ok' => true, 'file' => $outerPath, 'size' => filesize($outerPath),
             'source_hash' => $sourceHash, 'inner' => null, 'error' => null
-        );
+        ];
     }
 
     /**
@@ -2314,7 +2314,7 @@ class BundleBuilder
         $zip = new ZipArchive();
         if ($zip->open($tmp, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
             @unlink($tmp);
-            return array('ok' => false, 'error' => 'Could not create ' . $tmp . '.');
+            return ['ok' => false, 'error' => 'Could not create ' . $tmp . '.'];
         }
 
         foreach ($entries as $pair) {
@@ -2329,7 +2329,7 @@ class BundleBuilder
             if (!$zip->addFile($abs, $entry)) {
                 $zip->close();
                 @unlink($tmp);
-                return array('ok' => false, 'error' => 'Could not add ' . $entry);
+                return ['ok' => false, 'error' => 'Could not add ' . $entry];
             }
             $ext = strtolower(pathinfo($entry, PATHINFO_EXTENSION));
             if (in_array($ext, self::compressedExtList(), true)) {
@@ -2341,13 +2341,13 @@ class BundleBuilder
 
         if (!$zip->close()) {
             @unlink($tmp);
-            return array('ok' => false, 'error' => 'Failed to write ' . $tmp);
+            return ['ok' => false, 'error' => 'Failed to write ' . $tmp];
         }
 
         // Verify intact before it replaces the live outer.
         if (!$this->verifyZip($tmp, 1)) {
             @unlink($tmp);
-            return array('ok' => false, 'error' => 'Built archive failed verification; kept the existing ' . basename($outerPath) . '.');
+            return ['ok' => false, 'error' => 'Built archive failed verification; kept the existing ' . basename($outerPath) . '.'];
         }
 
         @chgrp($tmp, 'access-content');
@@ -2355,10 +2355,10 @@ class BundleBuilder
 
         if (!rename($tmp, $outerPath)) {
             @unlink($tmp);
-            return array('ok' => false, 'error' => 'Could not move ' . $tmp . ' into place.');
+            return ['ok' => false, 'error' => 'Could not move ' . $tmp . ' into place.'];
         }
 
-        return array('ok' => true, 'error' => null);
+        return ['ok' => true, 'error' => null];
     }
 
     /**
@@ -2387,7 +2387,7 @@ class BundleBuilder
         // Data entries + metadata as one (abs, entry) list.
         $all = $entries;
         foreach ($metadata as $abs => $info) {
-            $all[] = array($abs, $info[1]);
+            $all[] = [$abs, $info[1]];
         }
 
         // Preflight: the archive is at most the sum of its sources, and the live
@@ -2401,8 +2401,8 @@ class BundleBuilder
             $need += filesize($outerPath);
         }
         if (!$this->hasFreeSpace(dirname($outerPath), $need)) {
-            return array('ok' => false, 'error' => 'Insufficient free space to build ' . basename($outerPath)
-                . ' (need ~' . number_format($need) . ' bytes).');
+            return ['ok' => false, 'error' => 'Insufficient free space to build ' . basename($outerPath)
+                . ' (need ~' . number_format($need) . ' bytes).'];
         }
 
         // Stage a symlink tree mirroring the entry layout. Every staged directory
@@ -2413,10 +2413,10 @@ class BundleBuilder
         $stage = $outerPath . '.stage.' . getmypid();
         $this->removeStage($stage);
         if (!@mkdir($stage, 0775, true)) {
-            return array('ok' => false, 'error' => 'Could not create staging dir ' . $stage);
+            return ['ok' => false, 'error' => 'Could not create staging dir ' . $stage];
         }
 
-        $seen = array();
+        $seen = [];
         foreach ($all as $pair) {
             list($abs, $entry) = $pair;
 
@@ -2432,13 +2432,13 @@ class BundleBuilder
             $dir  = dirname($link);
             if ((!is_dir($dir) && !@mkdir($dir, 0775, true)) || !@symlink($abs, $link)) {
                 $this->removeStage($stage);
-                return array('ok' => false, 'error' => 'Could not stage ' . $entry);
+                return ['ok' => false, 'error' => 'Could not stage ' . $entry];
             }
         }
 
         if (empty($seen)) {
             $this->removeStage($stage);
-            return array('ok' => false, 'error' => 'Nothing to bundle for ' . basename($outerPath));
+            return ['ok' => false, 'error' => 'Nothing to bundle for ' . basename($outerPath)];
         }
 
         $tmp = $outerPath . '.build.' . getmypid();
@@ -2447,15 +2447,15 @@ class BundleBuilder
         // -D: no directory entries (the packager adds none). No -y, so file
         // symlinks are dereferenced and their content stored. -n: store
         // already-compressed extensions instead of wasting CPU deflating them.
-        $cmd = array('zip', '-' . max(0, min(9, (int) $level)), '-X', '-D', '-q', '-r',
-            '-n', '.' . implode(':.', self::compressedExtList()), $tmp, $name);
+        $cmd = ['zip', '-' . max(0, min(9, (int) $level)), '-X', '-D', '-q', '-r',
+            '-n', '.' . implode(':.', self::compressedExtList()), $tmp, $name];
         $rc = $this->runQuiet($cmd, $stage);
 
         $this->removeStage($stage);
 
         if ($rc !== 0 || !is_file($tmp)) {
             @unlink($tmp);
-            return array('ok' => false, 'error' => 'zip exited with status ' . $rc);
+            return ['ok' => false, 'error' => 'zip exited with status ' . $rc];
         }
 
         // Verify the built archive is sound (all staged entries present, central
@@ -2463,7 +2463,7 @@ class BundleBuilder
         // out-of-space build is discarded with the served outer left untouched.
         if (!$this->verifyZip($tmp, count($seen))) {
             @unlink($tmp);
-            return array('ok' => false, 'error' => 'Built archive failed verification (incomplete); kept the existing ' . basename($outerPath) . '.');
+            return ['ok' => false, 'error' => 'Built archive failed verification (incomplete); kept the existing ' . basename($outerPath) . '.'];
         }
 
         @chgrp($tmp, 'access-content');
@@ -2471,10 +2471,10 @@ class BundleBuilder
 
         if (!rename($tmp, $outerPath)) {
             @unlink($tmp);
-            return array('ok' => false, 'error' => 'Could not move ' . $tmp . ' into place.');
+            return ['ok' => false, 'error' => 'Could not move ' . $tmp . ' into place.'];
         }
 
-        return array('ok' => true, 'error' => null);
+        return ['ok' => true, 'error' => null];
     }
 
     /**
@@ -2545,7 +2545,7 @@ class BundleBuilder
     protected function buildMetadataOnly($versionId, $version, $base, $content, $force, $level, $log)
     {
         $fail = function ($msg) {
-            return array('ok' => false, 'error' => $msg, 'file' => null, 'size' => null, 'source_hash' => null, 'inner' => null);
+            return ['ok' => false, 'error' => $msg, 'file' => null, 'size' => null, 'source_hash' => null, 'inner' => null];
         };
 
         $name      = $this->bundleName($version);
@@ -2563,15 +2563,15 @@ class BundleBuilder
         $sourceHash = $sigMap ? $this->sourceHash($sigMap) : $this->sourceHash($gallery);
 
         if (is_file($outerPath) && !$force) {
-            return array(
+            return [
                 'ok' => true, 'file' => $outerPath, 'size' => filesize($outerPath),
                 'source_hash' => $sourceHash, 'inner' => null, 'error' => null
-            );
+            ];
         }
 
-        $entries = array();
+        $entries = [];
         foreach ($supporting as $abs => $rel) {
-            $entries[] = array($abs, $name . '/' . $rel);
+            $entries[] = [$abs, $name . '/' . $rel];
         }
 
         $metadata = $this->outerMetadata($versionId, $version, $base, $name);
@@ -2588,10 +2588,10 @@ class BundleBuilder
             return $fail($res['error']);
         }
 
-        return array(
+        return [
             'ok' => true, 'file' => $outerPath, 'size' => filesize($outerPath),
             'source_hash' => $sourceHash, 'inner' => null, 'error' => null
-        );
+        ];
     }
 
     /**
@@ -2651,7 +2651,7 @@ class BundleBuilder
      */
     protected function systemZipAvailable()
     {
-        $out = array();
+        $out = [];
         $rc = 1;
         @exec('command -v zip 2>/dev/null', $out, $rc);
 
@@ -2671,11 +2671,11 @@ class BundleBuilder
     {
         $line = implode(' ', array_map('escapeshellarg', $cmd));
 
-        $proc = proc_open($line, array(
-            0 => ($stdin === null ? array('file', '/dev/null', 'r') : array('pipe', 'r')),
-            1 => array('file', '/dev/null', 'w'),
-            2 => array('pipe', 'w'),
-        ), $pipes, $cwd);
+        $proc = proc_open($line, [
+            0 => ($stdin === null ? ['file', '/dev/null', 'r'] : ['pipe', 'r']),
+            1 => ['file', '/dev/null', 'w'],
+            2 => ['pipe', 'w'],
+        ], $pipes, $cwd);
 
         if (!is_resource($proc)) {
             return 1;

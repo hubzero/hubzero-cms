@@ -61,7 +61,7 @@ class Extras extends Base
 
         // Fall back
         if (!$manifest) {
-            $manifest = array(
+            $manifest = [
                 'name'          => 'extras',
                 'label'         => 'Extras',
                 'title'         => 'Publication Gallery and Supporting Docs',
@@ -69,67 +69,67 @@ class Extras extends Base
                 'draftTagline'  => 'Add images/supporting docs:',
                 'about'         => '',
                 'adminTips'     => '',
-                'elements'      => array(
-                    2 => array (
+                'elements'      => [
+                    2 =>  [
                         'name'      => 'dataselector',
                         'type'      => 'attachment',
                         'label'     => 'Image Gallery',
                         'about'     => '<p>Select image file(s) from the project repository</p>',
                         'aboutProv' => '<p>Attach image file(s) for publication gallery</p>',
                         'adminTips' => '',
-                        'params'    => array (
+                        'params'    =>  [
                             'type'          => 'file',
                             'title'         => '',
                             'required'      => 0,
                             'min'           => 0,
                             'max'           => 50,
                             'role'          => 3,
-                            'typeParams'    => array(
-                                'allowed_ext'       => array('gif', 'jpg', 'jpeg', 'png', 'bmp'),
-                                'required_ext'      => array(),
+                            'typeParams'    => [
+                                'allowed_ext'       => ['gif', 'jpg', 'jpeg', 'png', 'bmp'],
+                                'required_ext'      => [],
                                 'handler'           => 'imageviewer',
                                 'handlers'          => null,
                                 'directory'         => 'gallery',
                                 'reuse'             => 1,
                                 'dirHierarchy'      => 0,
                                 'multiZip'          => 0
-                            )
-                        )
-                    ),
-                    3 => array (
+                            ]
+                        ]
+                    ],
+                    3 =>  [
                         'name'      => 'dataselector',
                         'type'      => 'attachment',
                         'label'     => 'Supporting Docs',
                         'about'     => '<p>And supporting materials related to publication</p>',
                         'aboutProv' => '<p>Attach a file or a number of files</p>',
                         'adminTips' => '',
-                        'params'    => array (
+                        'params'    =>  [
                             'type'          => 'file',
                             'title'         => '',
                             'required'      => 0,
                             'min'           => 0,
                             'max'           => 500,
                             'role'          => 2,
-                            'typeParams'    => array(
-                                'allowed_ext'       => array(),
-                                'required_ext'      => array(),
+                            'typeParams'    => [
+                                'allowed_ext'       => [],
+                                'required_ext'      => [],
                                 'handler'           => null,
                                 'handlers'          => null,
                                 'directory'         => '',
                                 'reuse'             => 1,
                                 'dirHierarchy'      => 1,
                                 'multiZip'          => 0
-                            )
-                        )
-                    )
-                ),
-                'params'    => array(
+                            ]
+                        ]
+                    ]
+                ],
+                'params'    => [
                     'required'          => 0,
                     'published_editing' => 1,
                     'collapse_elements' => 0,
                     'verify_types'      => 1
-                )
-            );
+                ]
+            ];
 
             return json_decode(json_encode($manifest), false);
         }

@@ -22,28 +22,28 @@ class MemoryTest extends Basic
      *
      * @var  array
      */
-    private $data = array(
-        array(
+    private $data = [
+        [
             'message' => 'This is an info message.',
             'type'    => 'info',
             'domain'  => 'test'
-        ),
-        array(
+        ],
+        [
             'message' => 'This is a success message!',
             'type'    => 'success',
             'domain'  => 'test'
-        ),
-        array(
+        ],
+        [
             'message' => 'This is a warning message!',
             'type'    => 'warning',
             'domain'  => 'test'
-        ),
-        array(
+        ],
+        [
             'message' => 'This is an error message.',
             'type'    => 'error',
             'domain'  => 'test'
-        )
-    );
+        ]
+    ];
 
     /**
      * Test that the constructor provides an empty message bag
@@ -164,11 +164,11 @@ class MemoryTest extends Basic
         $method = $reflection->getMethod('key');
         $method->setAccessible(true);
 
-        $result = $method->invokeArgs($memory, array('one'));
+        $result = $method->invokeArgs($memory, ['one']);
 
         $this->assertEquals('one.application.queue', $result, 'Key should be of pattern {domain}.application.queue');
 
-        $result = $method->invokeArgs($memory, array(''));
+        $result = $method->invokeArgs($memory, ['']);
 
         $this->assertEquals('application.queue', $result, 'Key should just be application.queue');
     }

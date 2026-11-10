@@ -24,7 +24,7 @@ class Xml extends Base
      */
     public function getSupportedExtensions()
     {
-        return array('xml');
+        return ['xml'];
     }
 
     /**
@@ -45,13 +45,13 @@ class Xml extends Base
         if ($xml === false) {
             $errors      = libxml_get_errors();
             $latestError = array_pop($errors);
-            $error       = array(
+            $error       = [
                 'message' => $latestError->message,
                 'type'    => $latestError->level,
                 'code'    => $latestError->code,
                 'file'    => $latestError->file,
                 'line'    => $latestError->line,
-            );
+            ];
             throw new ParseException($error);
         }
 
@@ -88,7 +88,7 @@ class Xml extends Base
      * @param   array   $options  Options used by the formatter.
      * @return  string  XML formatted string.
      */
-    public function objectToString($object, $options = array())
+    public function objectToString($object, $options = [])
     {
         if (is_string($object)) {
             return $object;
@@ -114,7 +114,7 @@ class Xml extends Base
      * @param   array   $options  Options used by the formatter.
      * @return  object  Data object.
      */
-    public function stringToObject($data, $options = array())
+    public function stringToObject($data, $options = [])
     {
         if (is_object($data)) {
             return $data;
@@ -156,7 +156,7 @@ class Xml extends Base
                 return (float) $value;
                 break;
             case 'array':
-                $value = array();
+                $value = [];
                 foreach ($node->children() as $child) {
                     $value[(string) $child['name']] = $this->getValueFromNode($child);
                 }

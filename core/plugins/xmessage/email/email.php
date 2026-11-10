@@ -107,7 +107,7 @@ class Email extends Plugin
         if (is_array($m)) {
             if (isset($m['attachments'])) {
                 if (!is_array($m['attachments'])) {
-                    $m['attachments'] = array($m['attachments']);
+                    $m['attachments'] = [$m['attachments']];
                 }
                 foreach ($m['attachments'] as $path) {
                     if (preg_match("/\.(bmp|gif|jpg|jpe|jpeg|png)$/i", $path)) {

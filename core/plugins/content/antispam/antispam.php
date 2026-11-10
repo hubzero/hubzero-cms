@@ -91,7 +91,7 @@ class Antispam extends Plugin
         }
 
         // Check content
-        $data = array(
+        $data = [
             'name'       => User::get('name'),
             'email'      => User::get('email'),
             'username'   => User::get('username'),
@@ -99,7 +99,7 @@ class Antispam extends Plugin
             'ip'         => Request::ip(),
             'user_agent' => Request::getString('HTTP_USER_AGENT', null, 'server'),
             'text'       => $content
-        );
+        ];
 
         $result = $service->check($data);
 
@@ -114,10 +114,10 @@ class Antispam extends Plugin
         if ($result->isSpam()) {
             // Learn from it?
             if ($this->params->get('learn_spam', 1)) {
-                Event::trigger('antispam.onAntispamTrain', array(
+                Event::trigger('antispam.onAntispamTrain', [
                     $content,
                     true
-                ));
+                ]);
             }
 
             // If a message was set...
@@ -138,10 +138,10 @@ class Antispam extends Plugin
         // Content was not spam.
         // Learn from it?
         if ($this->params->get('learn_ham', 0)) {
-            Event::trigger('antispam.onAntispamTrain', array(
+            Event::trigger('antispam.onAntispamTrain', [
                 $content,
                 false
-            ));
+            ]);
         }
     }
 
@@ -182,14 +182,14 @@ class Antispam extends Plugin
         $from = Request::getVar('REQUEST_URI', $fallback, 'server');
         $from = $from ?: $fallback;
 
-        $info = array(
+        $info = [
             ($isSpam ? 'spam' : 'ham'),
             $data['ip'],
             $data['id'],
             $data['username'],
             md5($data['text']),
             $from
-        );
+        ];
 
         App::get('log')
             ->logger('spam')

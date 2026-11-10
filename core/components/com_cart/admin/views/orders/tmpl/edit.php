@@ -174,17 +174,17 @@ $this->css()
 
         <?php
         // Check the notes, both SKU-specific and other
-        $notes = array();
+        $notes = [];
         foreach ($this->items as $sId => $item) {
             $meta = $item['transactionInfo']->tiMeta;
 
             if (!empty($meta->checkoutNotes)) {
-                $notes[] = array(
+                $notes[] = [
                     'object' => 'transactionItem',
                     'objectId' => $item['info']->sId,
                     'label' => '<strong>' . $this->tInfo->tiItems[$sId]['info']->pName . ', ' . $this->tInfo->tiItems[$sId]['info']->sSku . '</strong>',
                     'notes' => $meta->checkoutNotes
-                );
+                ];
             }
         }
 
@@ -194,12 +194,12 @@ $this->css()
         }
 
         if ($this->tInfo->tiNotes) {
-            $notes[] = array(
+            $notes[] = [
                 'object' => 'transaction',
                 'objectId' => $this->tInfo->tId,
                 'label' => $genericNotesLabel,
                 'notes' => $this->tInfo->tiNotes
-            );
+            ];
         }
 
         if (!empty($notes)) {

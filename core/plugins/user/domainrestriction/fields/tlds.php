@@ -38,27 +38,27 @@ class Tlds extends Field
         Document::addScript(Request::root(true) . '/core/plugins/user/domainrestriction/assets/js/tlds.js');
         Document::addScript(Request::root(true) . '/core/plugins/user/domainrestriction/assets/js/base64.js');
 
-        $strings = array();
-        foreach (array('ADD','EDIT','REMOVE','INVALID','DUPLICATE') as $string) {
+        $strings = [];
+        foreach (['ADD','EDIT','REMOVE','INVALID','DUPLICATE'] as $string) {
             $strings[$string] = Lang::txt('PLG_USER_DOMAINRESTRICTION_' . $string);
         }
 
         $value = base64_decode($this->value) ? trim(base64_decode($this->value))
             : json_encode(explode("\n", trim(str_replace('*', '', $this->value))));
 
-        $script = array("jQuery(document).ready(function ($) {");
+        $script = ["jQuery(document).ready(function ($) {"];
         $script[] = "var " . $this->id . '_tldsobject = TLDs.initialize({';
-        $script[] = implode(',', array(
+        $script[] = implode(',', [
             "id:\"" . $this->id . "\"",
             "tlds:" . $value,
             "strings:" . json_encode($strings)
-        ));
+        ]);
         $script[] = "})";
         $script[] = '});';
 
         Document::addScriptDeclaration(implode('', $script) . "\n");
 
-        $html = array();
+        $html = [];
         $html[] = '<div class="input-modal">';
         $html[] = '<span class="input-cell">';
         $html[] = '<input type="text" id="' . $this->id . '-tld" />';

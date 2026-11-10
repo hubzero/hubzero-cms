@@ -43,21 +43,21 @@ class Hit extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'gidNumber' => 'positive|nonzero',
         'pageid'    => 'positive|nonzero',
         'userid'    => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'date',
         'ip'
-    );
+    ];
 
     /**
      * Generates automatic Date field value

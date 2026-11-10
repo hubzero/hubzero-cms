@@ -21,7 +21,7 @@ class None extends Store
      * @param   array  $options  Optional parameters.
      * @return  void
      */
-    public function register($options = array())
+    public function register($options = [])
     {
         // Let php handle the session storage
     }

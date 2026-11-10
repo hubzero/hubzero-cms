@@ -162,7 +162,7 @@ $this->js();
 
                             $xml = Components\Groups\Models\Orm\Field::toXml($this->customFields);
 
-                            $formInfo = array('control' => 'customfields');
+                            $formInfo = ['control' => 'customfields'];
 
                             $form = new Hubzero\Form\Form('application', $formInfo);
                             $form->load($xml);
@@ -188,7 +188,7 @@ $this->js();
                                     $fieldNameAttr = $formInfo['control'] . '[' . $fieldName . ']';
                                     $fieldIdAttr   = $formInfo['control'] . '_' . $fieldName;
 
-                                    echo $this->editor($fieldNameAttr, $this->escape($fieldValue), 35, 8, $fieldIdAttr, array('class' => 'minimal no-footer images macros'));
+                                    echo $this->editor($fieldNameAttr, $this->escape($fieldValue), 35, 8, $fieldIdAttr, ['class' => 'minimal no-footer images macros']);
                                 } else {
                                     echo $formfield->input;
                                 }
@@ -309,7 +309,7 @@ $this->js();
                             </fieldset>
                             <div class="input-wrap">
                                 <label for="restrict_msg"><?php echo Lang::txt('COM_GROUPS_EDIT_CREDENTIALS'); ?>:</label><br />
-                                <?php echo $this->editor('group[restrict_msg]', $this->escape(stripslashes($this->group->restrict_msg ? $this->group->restrict_msg : '')), 40, 10, 'restrict_msg', array('class' => 'minimal')); ?>
+                                <?php echo $this->editor('group[restrict_msg]', $this->escape(stripslashes($this->group->restrict_msg ? $this->group->restrict_msg : '')), 40, 10, 'restrict_msg', ['class' => 'minimal']); ?>
                             </div>
                         </fieldset>
                         <fieldset class="adminform">

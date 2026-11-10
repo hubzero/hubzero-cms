@@ -72,22 +72,22 @@ class Tags extends Base
         if ($viewname == 'curator') {
             // Output HTML
             $view = new \Hubzero\Component\View(
-                array(
+                [
                     'name'   => 'curation',
                     'layout' => 'block'
-                )
+                ]
             );
         } else {
             $name = $viewname == 'freeze' ? 'freeze' : 'draft';
 
             // Output HTML
             $view = new \Hubzero\Plugin\View(
-                array(
+                [
                     'folder'  => 'projects',
                     'element' => 'publications',
                     'name'    => $name,
                     'layout'  => 'wrapper'
-                )
+                ]
             );
         }
 
@@ -117,12 +117,12 @@ class Tags extends Base
 
         // Output HTML
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => $name,
                 'layout'  => 'tags'
-            )
+            ]
         );
 
         $view->pub      = $pub;
@@ -223,7 +223,7 @@ class Tags extends Base
 
         // Fall back
         if (!$manifest) {
-            $manifest = array(
+            $manifest = [
                 'name'         => 'tags',
                 'label'        => 'Tags',
                 'title'        => 'Publication Tags',
@@ -232,12 +232,12 @@ class Tags extends Base
                 'about'        => 'Tags help users find your publication. Before adding your own tags, '
                     . 'try finding good matches in existing tag library.',
                 'adminTips'    => '',
-                'elements'     => array(),
-                'params'       => array(
+                'elements'     => [],
+                'params'       => [
                     'required' => 1,
                     'published_editing' => 0
-                )
-            );
+                ]
+            ];
 
             return json_decode(json_encode($manifest), false);
         }

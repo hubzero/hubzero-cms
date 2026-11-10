@@ -61,7 +61,7 @@ class Admin extends Table
             return false;
         }
 
-        $admins = array();
+        $admins = [];
 
         $query  = "SELECT uid ";
         $query .= "FROM `$this->_tbl` ";

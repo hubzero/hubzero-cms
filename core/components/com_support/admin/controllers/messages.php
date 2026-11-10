@@ -44,7 +44,7 @@ class Messages extends AdminController
     public function displayTask()
     {
         // Get paging variables
-        $filters = array(
+        $filters = [
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
@@ -55,7 +55,7 @@ class Messages extends AdminController
                 'filter_order_Dir',
                 'DESC'
             )
-        );
+        ];
 
         // Fetch results
         $rows = Message::all()
@@ -88,7 +88,7 @@ class Messages extends AdminController
 
         if (!is_object($row)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id)) {
                 $id = (!empty($id) ? $id[0] : 0);
             }
@@ -122,7 +122,7 @@ class Messages extends AdminController
         }
 
         // Trim and addslashes all posted items
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
         $fields = array_map('trim', $fields);
 
         // Initiate class and bind posted items to database fields
@@ -159,8 +159,8 @@ class Messages extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for an ID
         if (count($ids) < 1) {

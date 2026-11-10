@@ -49,16 +49,16 @@ class Todo extends Plugin
     public function &onMembersAreas($user, $member)
     {
         // default areas returned to nothing
-        $areas = array();
+        $areas = [];
 
         // if this is the logged in user show them
         if ($user->get('id') == $member->get('id')) {
-            $areas = array(
+            $areas = [
                 'todo' => Lang::txt('PLG_MEMBERS_TODO'),
                 'icon' => 'f08d',
                 'icon-class' => 'icon-pushpin',
                 'menu' => $this->params->get('display_tab', 1)
-            );
+            ];
         }
         return $areas;
     }
@@ -86,10 +86,10 @@ class Todo extends Plugin
             }
         }
 
-        $arr = array(
+        $arr = [
             'html' => '',
-            'metadata' => array()
-        );
+            'metadata' => []
+        ];
 
         // Include models
 
@@ -101,7 +101,7 @@ class Todo extends Plugin
         $this->projects = $this->model->table()->getUserProjectIds($member->get('id'));
 
         // Build filters
-        $this->filters = array(
+        $this->filters = [
             'projects' => $this->projects,
             'limit' => $this->params->get('limit', 50),
             'start' => 0,
@@ -110,7 +110,7 @@ class Todo extends Plugin
             'sortdir' => Request::getWord('sortdir', 'ASC'),
             'assignedto' => Request::getInt('mine', 0) ? $member->get('id') : 0,
             'state' => Request::getInt('state', 0)
-        );
+        ];
 
         if ($returnhtml) {
             $this->user = $user;
@@ -191,12 +191,12 @@ class Todo extends Plugin
         $view->member = $this->member;
         $view->config = $this->params;
 
-        $filters = array(
+        $filters = [
             'mine' => 1,
             'active' => 1,
             'editor' => 1,
             'sortby' => 'title'
-        );
+        ];
         $view->projects = $this->model->entries('list', $filters);
 
         if ($this->getError()) {

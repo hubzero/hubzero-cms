@@ -55,19 +55,19 @@ class Rule extends Relational
      *
      * @public array
      */
-    protected $rules = array(
+    protected $rules = [
         'description' => 'notempty',
         'rule'        => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @public array
      */
-    public $initiate = array(
+    public $initiate = [
         'ordering'
-    );
+    ];
 
     /**
      * Generates automatic ordering field value
@@ -166,8 +166,8 @@ class Rule extends Relational
      */
     public static function defaultContent($restore = 0)
     {
-        $defaults = array(
-            array(
+        $defaults = [
+            [
                 'class'       => 'alpha',
                 'description' => 'Must contain at least 1 letter',
                 'enabled'     => '0',
@@ -176,8 +176,8 @@ class Rule extends Relational
                 'ordering'    => '1',
                 'rule'        => 'minClassCharacters',
                 'value'       => '1'
-            ),
-            array(
+            ],
+            [
                 'class'       => 'nonalpha',
                 'description' => 'Must contain at least 1 number or punctuation mark',
                 'enabled'     => '0',
@@ -186,8 +186,8 @@ class Rule extends Relational
                 'ordering'    => '2',
                 'rule'        => 'minClassCharacters',
                 'value'       => '1'
-            ),
-            array(
+            ],
+            [
                 'class'       => '',
                 'description' => 'Must be at least 8 characters long',
                 'enabled'     => '0',
@@ -196,8 +196,8 @@ class Rule extends Relational
                 'ordering'    => '3',
                 'rule'        => 'minPasswordLength',
                 'value'       => '8'
-            ),
-            array(
+            ],
+            [
                 'class'       => '',
                 'description' => 'Must be no longer than 16 characters',
                 'enabled'     => '0',
@@ -206,8 +206,8 @@ class Rule extends Relational
                 'ordering'    => '4',
                 'rule'        => 'maxPasswordLength',
                 'value'       => '16'
-            ),
-            array(
+            ],
+            [
                 'class'       => '',
                 'description' => 'Must contain more than 4 unique characters',
                 'enabled'     => '0',
@@ -216,8 +216,8 @@ class Rule extends Relational
                 'ordering'    => '5',
                 'rule'        => 'minUniqueCharacters',
                 'value'       => '5'
-            ),
-            array(
+            ],
+            [
                 'class'       => '',
                 'description' => 'Must not contain easily guessed words',
                 'enabled'     => '0',
@@ -226,8 +226,8 @@ class Rule extends Relational
                 'ordering'    => '6',
                 'rule'        => 'notBlacklisted',
                 'value'       => ''
-            ),
-            array(
+            ],
+            [
                 'class'       => '',
                 'description' => 'Must not contain your name or parts of your name',
                 'enabled'     => '0',
@@ -236,8 +236,8 @@ class Rule extends Relational
                 'ordering'    => '7',
                 'rule'        => 'notNameBased',
                 'value'       => ''
-            ),
-            array(
+            ],
+            [
                 'class'       => '',
                 'description' => 'Must not contain your username',
                 'enabled'     => '0',
@@ -246,8 +246,8 @@ class Rule extends Relational
                 'ordering'    => '8',
                 'rule'        => 'notUsernameBased',
                 'value'       => ''
-            ),
-            array(
+            ],
+            [
                 'class'       => '',
                 'description' => 'Must be different than the previous password (re-use of the same password will not be 
                     allowed for one (1) year)',
@@ -258,8 +258,8 @@ class Rule extends Relational
                 'ordering'    => '9',
                 'rule'        => 'notReused',
                 'value'       => '365'
-            ),
-            array(
+            ],
+            [
                 'class'       => '',
                 'description' => 'Must be changed at least every 120 days',
                 'enabled'     => '0',
@@ -268,8 +268,8 @@ class Rule extends Relational
                 'ordering'    => '10',
                 'rule'        => 'notStale',
                 'value'       => '120'
-            )
-        );
+            ]
+        ];
 
         if ($restore) {
             // Delete current password rules for manual restore
@@ -302,7 +302,7 @@ class Rule extends Relational
      */
     public static function analyze($password)
     {
-        $stats = array();
+        $stats = [];
 
         $len = strlen($password);
 
@@ -310,8 +310,8 @@ class Rule extends Relational
         $stats['uniqueCharacters'] = 0;
         $stats['uniqueClasses']    = 0;
 
-        $classes   = array();
-        $histogram = array();
+        $classes   = [];
+        $histogram = [];
 
         for ($i = 0; $i < $len; $i++) {
             $c = $password[$i];
@@ -353,10 +353,10 @@ class Rule extends Relational
     public static function verify($password, $rules, $user, $name = null, $isNew = true)
     {
         if (empty($rules)) {
-            return array();
+            return [];
         }
 
-        $fail = array();
+        $fail = [];
 
         $stats = self::analyze($password);
 
@@ -495,7 +495,7 @@ class Rule extends Relational
         }
 
         if (empty($fail)) {
-            $fail = array();
+            $fail = [];
         }
 
         return $fail;
@@ -550,7 +550,7 @@ class Rule extends Relational
         $names = explode(" ", $name == null ? '' : $name);
 
         $count = count($names);
-        $words = array();
+        $words = [];
 
         $fullname = self::normalize($name);
 

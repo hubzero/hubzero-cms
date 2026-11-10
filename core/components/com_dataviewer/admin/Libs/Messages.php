@@ -13,14 +13,14 @@ class Messages
     public static function init()
     {
         if (!isset($_SESSION['databases']['notifications'])) {
-            $_SESSION['databases']['notifications'] = array();
+            $_SESSION['databases']['notifications'] = [];
         }
     }
 
     public static function dbMsg($msg, $type = 'error')
     {
         self::init();
-        $_SESSION['databases']['notifications'][] = array('message' => $msg, 'type' => $type);
+        $_SESSION['databases']['notifications'][] = ['message' => $msg, 'type' => $type];
     }
 
     public static function dbShowMsg()
@@ -30,6 +30,6 @@ class Messages
             print "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
         }
 
-        $_SESSION['databases']['notifications'] = array();
+        $_SESSION['databases']['notifications'] = [];
     }
 }

@@ -59,9 +59,9 @@ class SaveParams extends Macro
 
             $query = $this->db->getQuery()
                 ->update('#__extensions')
-                ->set(array(
+                ->set([
                     'params' => $params
-                ))
+                ])
                 ->whereEquals('extension_id', $id)
                 ->toString();
             $this->db->setQuery($query);

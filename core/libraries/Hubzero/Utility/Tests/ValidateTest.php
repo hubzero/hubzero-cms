@@ -24,15 +24,15 @@ class ValidateTest extends Basic
      **/
     public function testBoolean()
     {
-        $tests = array(
-            array(0, true),
-            array(1, true),
-            array('foo', false),
-            array('1', true),
-            array('0', true),
-            array('true', false),
-            array(3543, false),
-        );
+        $tests = [
+            [0, true],
+            [1, true],
+            ['foo', false],
+            ['1', true],
+            ['0', true],
+            ['true', false],
+            [3543, false],
+        ];
 
         foreach ($tests as $test) {
             $this->assertEquals(Validate::boolean($test[0]), $test[1]);
@@ -49,32 +49,32 @@ class ValidateTest extends Basic
      **/
     public function testBetween()
     {
-        $tests = array(
-            array(
+        $tests = [
+            [
                 'str' => 'Donec id elit non mi porta gravida at eget metus.',
                 'min' => 3,
                 'max' => 100,
                 'val' => true
-            ),
-            array(
+            ],
+            [
                 'str' => 'Vehicula Sit Dolor',
                 'min' => 1,
                 'max' => 7,
                 'val' => false
-            ),
-            array(
+            ],
+            [
                 'str' => '123456789',
                 'min' => 0,
                 'max' => 10,
                 'val' => true
-            ),
-            array(
+            ],
+            [
                 'str' => 'dolo',
                 'min' => 5,
                 'max' => 8,
                 'val' => false
-            ),
-        );
+            ],
+        ];
 
         foreach ($tests as $test) {
             $this->assertEquals(Validate::between($test['str'], $test['min'], $test['max']), $test['val']);
@@ -88,23 +88,23 @@ class ValidateTest extends Basic
      **/
     public function testNumeric()
     {
-        $tests = array(
-            array("42", true),
-            array(1337, true),
-            array(0x539, true),
-            array(02471, true),
-            array(0b10100111001, true),
-            array(1337e0, true),
-            array("not numeric", false),
-            array("9.1", true),
-            array(null, false),
-        );
+        $tests = [
+            ["42", true],
+            [1337, true],
+            [0x539, true],
+            [02471, true],
+            [0b10100111001, true],
+            [1337e0, true],
+            ["not numeric", false],
+            ["9.1", true],
+            [null, false],
+        ];
 
         foreach ($tests as $test) {
             $this->assertEquals(Validate::numeric($test[0]), $test[1]);
         }
 
-        $this->assertFalse(Validate::numeric(array()));
+        $this->assertFalse(Validate::numeric([]));
     }
 
     /**
@@ -114,24 +114,24 @@ class ValidateTest extends Basic
      **/
     public function testInteger()
     {
-        $tests = array(
-            array("42", true),
-            array('+51', true),
-            array(-16, true),
-            array(1337, true),
-            array(0x539, true),
-            array(02471, true),
-            array(1337e0, true),
-            array("not numeric", false),
-            array("9.1", false),
-            array(null, false),
-        );
+        $tests = [
+            ["42", true],
+            ['+51', true],
+            [-16, true],
+            [1337, true],
+            [0x539, true],
+            [02471, true],
+            [1337e0, true],
+            ["not numeric", false],
+            ["9.1", false],
+            [null, false],
+        ];
 
         foreach ($tests as $test) {
             $this->assertEquals(Validate::integer($test[0]), $test[1]);
         }
 
-        $this->assertFalse(Validate::integer(array()));
+        $this->assertFalse(Validate::integer([]));
     }
 
     /**
@@ -141,25 +141,25 @@ class ValidateTest extends Basic
      **/
     public function testPositiveInteger()
     {
-        $tests = array(
-            array(0, false),
-            array("42", true),
-            array('+51', true),
-            array(-16, false),
-            array(1337, true),
-            array(0x539, true),
-            array(02471, true),
-            array(1337e0, true),
-            array("not numeric", false),
-            array("9.1", false),
-            array(null, false),
-        );
+        $tests = [
+            [0, false],
+            ["42", true],
+            ['+51', true],
+            [-16, false],
+            [1337, true],
+            [0x539, true],
+            [02471, true],
+            [1337e0, true],
+            ["not numeric", false],
+            ["9.1", false],
+            [null, false],
+        ];
 
         foreach ($tests as $test) {
             $this->assertEquals(Validate::positiveInteger($test[0]), $test[1]);
         }
 
-        $this->assertFalse(Validate::positiveInteger(array()));
+        $this->assertFalse(Validate::positiveInteger([]));
     }
 
     /**
@@ -169,7 +169,7 @@ class ValidateTest extends Basic
      **/
     public function testNonPositiveInteger()
     {
-        $tests = array(
+        $tests = [
             0 => true,
             "42" => false,
             '+51' => false,
@@ -178,13 +178,13 @@ class ValidateTest extends Basic
             "not numeric" => false,
             "9.1" => false,
             null => false
-        );
+        ];
 
         foreach ($tests as $value => $result) {
             $this->assertEquals(Validate::nonPositiveInteger($value), $result);
         }
 
-        $this->assertFalse(Validate::nonPositiveInteger(array()));
+        $this->assertFalse(Validate::nonPositiveInteger([]));
     }
 
     /**
@@ -194,7 +194,7 @@ class ValidateTest extends Basic
      **/
     public function testNonNegativeInteger()
     {
-        $tests = array(
+        $tests = [
             0 => true,
             "42" => true,
             '+51' => true,
@@ -203,13 +203,13 @@ class ValidateTest extends Basic
             "not numeric" => false,
             "9.1" => false,
             null => false
-        );
+        ];
 
         foreach ($tests as $value => $result) {
             $this->assertEquals(Validate::nonNegativeInteger($value), $result);
         }
 
-        $this->assertFalse(Validate::nonNegativeInteger(array()));
+        $this->assertFalse(Validate::nonNegativeInteger([]));
     }
 
     /**
@@ -219,7 +219,7 @@ class ValidateTest extends Basic
      **/
     public function testNegativeInteger()
     {
-        $tests = array(
+        $tests = [
             0 => false,
             "42" => false,
             '+51' => false,
@@ -228,13 +228,13 @@ class ValidateTest extends Basic
             "not numeric" => false,
             "9.1" => false,
             null => false
-        );
+        ];
 
         foreach ($tests as $value => $result) {
             $this->assertEquals(Validate::negativeInteger($value), $result);
         }
 
-        $this->assertFalse(Validate::negativeInteger(array()));
+        $this->assertFalse(Validate::negativeInteger([]));
     }
 
     /**
@@ -244,7 +244,7 @@ class ValidateTest extends Basic
      **/
     public function testOrcid()
     {
-        $tests = array(
+        $tests = [
             '0000-0000-0000-0000' => true,
             '123-45635-7891-0112' => false,
             '123A-45B6-7CD1-E190' => false,
@@ -254,7 +254,7 @@ class ValidateTest extends Basic
             '1234-4567' => false,
             '1234' => false,
             'A123-4567-8910-1112' => false
-        );
+        ];
 
         foreach ($tests as $value => $result) {
             $this->assertEquals(Validate::orcid($value), $result);
@@ -289,7 +289,7 @@ class ValidateTest extends Basic
         $value = 'fsdd';
         $this->assertEquals(Validate::notEmpty($value), true);
 
-        $value = array('check' => 'fsdd');
+        $value = ['check' => 'fsdd'];
         $this->assertEquals(Validate::notEmpty($value), true);
     }
 
@@ -300,7 +300,7 @@ class ValidateTest extends Basic
      **/
     public function testGroup()
     {
-        $tests = array(
+        $tests = [
             'testname' => true,
             '91test' => true,
             '91_test' => true,
@@ -310,15 +310,15 @@ class ValidateTest extends Basic
             'TESTNAME' => false,
             'test-name' => false,
             'bin' => false
-        );
+        ];
 
         foreach ($tests as $value => $result) {
             $this->assertEquals(Validate::group($value), $result);
         }
 
-        $tests = array(
+        $tests = [
             'test-name' => true
-        );
+        ];
 
         foreach ($tests as $value => $result) {
             $this->assertEquals(Validate::group($value, true), $result);
@@ -332,7 +332,7 @@ class ValidateTest extends Basic
      **/
     public function testUsername()
     {
-        $tests = array(
+        $tests = [
             'testname' => true,
             '91test' => true,
             '91_test' => true,
@@ -345,7 +345,7 @@ class ValidateTest extends Basic
             'TESTNAME' => false,
             'test-name' => false,
             'bin' => false
-        );
+        ];
 
         foreach ($tests as $value => $result) {
             $this->assertEquals(Validate::username($value), $result);
@@ -360,25 +360,25 @@ class ValidateTest extends Basic
      **/
     public function testPosixUsername()
     {
-        $tests = array(
-            array('milanfar', true),
-            array('John.Smith', true),
-            array('a_b-c', true),
-            array('user1', true),
-            array('_svc', true),
-            array('milanfar@ucsc.edu', false),
-            array('-rf', false),
-            array('-123', false),
-            array('.hidden', false),
-            array('a b', false),
-            array('a/b', false),
-            array('a;b', false),
-            array("\u{e9}", false),
-            array("a\nb", false),
-            array("ab\n", false),
-            array('', false),
-            array(null, false),
-        );
+        $tests = [
+            ['milanfar', true],
+            ['John.Smith', true],
+            ['a_b-c', true],
+            ['user1', true],
+            ['_svc', true],
+            ['milanfar@ucsc.edu', false],
+            ['-rf', false],
+            ['-123', false],
+            ['.hidden', false],
+            ['a b', false],
+            ['a/b', false],
+            ['a;b', false],
+            ["\u{e9}", false],
+            ["a\nb", false],
+            ["ab\n", false],
+            ['', false],
+            [null, false],
+        ];
 
         foreach ($tests as $test) {
             list($value, $result) = $test;
@@ -394,23 +394,23 @@ class ValidateTest extends Basic
      **/
     public function testHomeDirectory()
     {
-        $tests = array(
-            array('/home/nanohub/milanfar', true),
-            array('/home/nanohub/John.Smith', true),
-            array('/srv/home/a_b-c', true),
-            array('home/nanohub/x', false),
-            array('/home/nanohub/', false),
-            array('/home//x', false),
-            array('/', false),
-            array('/home/nanohub/../etc', false),
-            array('/home/./x', false),
-            array('/home/nanohub/milanfar@ucsc.edu', false),
-            array('/home/nano hub/x', false),
-            array("/home/nanohub/\u{e9}", false),
-            array("/home/nanohub/x\n", false),
-            array('', false),
-            array(null, false),
-        );
+        $tests = [
+            ['/home/nanohub/milanfar', true],
+            ['/home/nanohub/John.Smith', true],
+            ['/srv/home/a_b-c', true],
+            ['home/nanohub/x', false],
+            ['/home/nanohub/', false],
+            ['/home//x', false],
+            ['/', false],
+            ['/home/nanohub/../etc', false],
+            ['/home/./x', false],
+            ['/home/nanohub/milanfar@ucsc.edu', false],
+            ['/home/nano hub/x', false],
+            ["/home/nanohub/\u{e9}", false],
+            ["/home/nanohub/x\n", false],
+            ['', false],
+            [null, false],
+        ];
 
         foreach ($tests as $test) {
             list($value, $result) = $test;
@@ -425,7 +425,7 @@ class ValidateTest extends Basic
      **/
     public function testReserved()
     {
-        $usernames = array(
+        $usernames = [
             'adm',
             'alfred',
             'apache',
@@ -489,8 +489,8 @@ class ValidateTest extends Basic
             'www',
             'www-data',
             'xfs',
-        );
-        $groups = array(
+        ];
+        $groups = [
             'abrt',
             'adm',
             'apache',
@@ -602,7 +602,7 @@ class ValidateTest extends Basic
             'wheel',
             'www-data',
             'zookeeper',
-        );
+        ];
 
         foreach ($usernames as $val) {
             $this->assertTrue(Validate::reserved('username', $val));
@@ -635,7 +635,7 @@ class ValidateTest extends Basic
      **/
     public function testAlphaNumeric()
     {
-        $tests = array(
+        $tests = [
             'testname' => true,
             '91test' => true,
             '91_test' => false,
@@ -645,7 +645,7 @@ class ValidateTest extends Basic
             'TESTNAME' => true,
             'test!' => false,
             'test-name' => false
-        );
+        ];
 
         foreach ($tests as $value => $result) {
             $this->assertEquals(Validate::alphaNumeric($value), $result);
@@ -658,7 +658,7 @@ class ValidateTest extends Basic
         $this->assertFalse(Validate::alphaNumeric($value));
 
         foreach ($tests as $value => $result) {
-            $value = array('check' => $value);
+            $value = ['check' => $value];
             $this->assertEquals(Validate::alphaNumeric($value), $result);
         }
     }
@@ -721,7 +721,7 @@ class ValidateTest extends Basic
         $value = 0;
         $this->assertFalse(Validate::blank($value));
 
-        $value = array('check' => '0');
+        $value = ['check' => '0'];
         $this->assertFalse(Validate::blank($value));
     }
 

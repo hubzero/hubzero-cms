@@ -18,7 +18,7 @@ $this->js('highlighter/shCore.js')
     <div class="file-preview-code">
         <pre name="code" class="<?php echo $this->ext; ?>:nocontrols"><?php
             $contents = trim($this->file->read());
-            $contents = str_replace(array('<', '>'), array('&lt;', '&gt;'), $contents);
+            $contents = str_replace(['<', '>'], ['&lt;', '&gt;'], $contents);
 
             echo $contents;
         ?></pre>

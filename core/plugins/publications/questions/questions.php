@@ -43,7 +43,7 @@ class Questions extends Plugin
      */
     public function &onPublicationAreas($publication, $version = 'default', $extended = true)
     {
-        $areas = array();
+        $areas = [];
 
         if ($publication->_category->_params->get('plg_questions') && $extended) {
             $areas['questions'] = Lang::txt('PLG_PUBLICATION_QUESTIONS');
@@ -65,10 +65,10 @@ class Questions extends Plugin
      */
     public function onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)
     {
-        $arr = array(
+        $arr = [
             'html'     => '',
             'metadata' => ''
-        );
+        ];
 
         // Check if our area is in the array of areas we want to return results for
         if (is_array($areas)) {
@@ -88,14 +88,14 @@ class Questions extends Plugin
         $this->option      = $option;
 
         // Get all the questions for this publication
-        $this->filters = array(
+        $this->filters = [
             'sort_Dir' => 'desc',
             'limit'    => Request::getInt('limit', 0),
             'start'    => Request::getInt('limitstart', 0),
             'search'   => Request::getString('q', ''),
             'filterby' => Request::getString('filterby', ''),
             'sortby'   => Request::getString('sortby', 'withinplugin')
-        );
+        ];
 
         $identifier = $this->publication->identifier();
         $this->filters['tag']    = $this->publication->isTool() ? 'tool:' . $identifier : 'publication:' . $identifier;
@@ -302,7 +302,7 @@ class Questions extends Plugin
         $reward = Request::getInt('reward', 0);
 
         // Initiate class and bind posted items to database fields
-        $fields = Request::getArray('question', array(), 'post');
+        $fields = Request::getArray('question', [], 'post');
 
         $__qid = isset($fields['id']) ? (int) $fields['id'] : 0;
         $row = \Components\Answers\Models\Question::oneOrNew($__qid);
@@ -315,7 +315,7 @@ class Questions extends Plugin
         $__isNew = $row->isNew();
         $__owner = $row->get('created_by');
         // Only the fields the form is meant to edit; state, points, helpful etc. stay server-side
-        $row->set(array_intersect_key($fields, array_flip(array('subject', 'question', 'anonymous', 'email'))));
+        $row->set(array_intersect_key($fields, array_flip(['subject', 'question', 'anonymous', 'email'])));
         if ($__isNew) {
             $row->set('state', 0);
         }

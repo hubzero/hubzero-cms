@@ -40,7 +40,7 @@ class Watch extends Plugin
      */
     public function &onPublicationSubAreas($publication)
     {
-        $areas = array();
+        $areas = [];
 
         if ($publication->category()->_params->get('plg_watch', 1) == 1) {
             $areas['watch'] = Lang::txt('PLG_PUBLICATION_WATCH');
@@ -59,14 +59,14 @@ class Watch extends Plugin
      */
     public function onPublicationSub($publication, $option, $miniview = 0)
     {
-        $arr = array(
+        $arr = [
             'html'    => '',
             'metadata' => '',
             'name'    => 'watch'
-        );
+        ];
 
         // Check if our area is in the array of areas we want to return results for
-        $areas = array('watch');
+        $areas = ['watch'];
         if (
             !array_intersect($areas, $this->onPublicationSubAreas($publication))
             && !array_intersect($areas, array_keys($this->onPublicationSubAreas($publication)))
@@ -195,10 +195,10 @@ class Watch extends Plugin
                 'scope'       => 'publication',
                 'scope_id'    => $this->publication->get('id'),
                 'description' => Lang::txt('PLG_PUBLICATIONS_WATCH_' . strtoupper($this->action) . 'D', '<a href="' . $url . '">' . htmlspecialchars((string) ($this->publication->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title' => $this->publication->get('title'),
                     'url'   => $url
-                )
+                ]
             ],
             'recipients' => [User::get('id')]
         ]);
@@ -268,11 +268,11 @@ class Watch extends Plugin
      */
     private function sendEmail($subscriber, $message, $subject, $url)
     {
-        $eview = new \Hubzero\Mail\View(array(
+        $eview = new \Hubzero\Mail\View([
             'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',
             'name'   => 'emails',
             'layout' => 'watch_plain'
-        ));
+        ]);
         $eview->delimiter   = '~!~!~!~!~!~!~!~!~!~!';
         $eview->message     = $message;
         $eview->subject     = $subject;

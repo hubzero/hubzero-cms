@@ -41,10 +41,10 @@ class Formula extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'inputhash'  => 'notempty',
         'outputhash' => 'notempty'
-    );
+    ];
 
     /**
      * Load a record by inputhash and bind to $this

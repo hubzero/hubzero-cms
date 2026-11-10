@@ -39,32 +39,32 @@ class Newsletter extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'name'     => 'notempty',
         'template' => 'notempty'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      **/
-    public $always = array(
+    public $always = [
         'modified',
         'modified_by',
         'alias',
         'plain_content'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Generates automatic alias value
@@ -445,10 +445,10 @@ class Newsletter extends Relational
                     $key = array_keys($enabledPlugins, strtolower($parts[1]))[0];
 
                     // Get the content for the desired plugin
-                    $content = Event::trigger('newsletter.onGetLatest', array($parts[2]))[$key];
+                    $content = Event::trigger('newsletter.onGetLatest', [$parts[2]])[$key];
 
                     // Apply the view template
-                    $view = new \Hubzero\Component\View(array());
+                    $view = new \Hubzero\Component\View([]);
 
                     // Written emphatically, set the paths and whatnot
                     $view->setName('storytemplates');
@@ -525,8 +525,8 @@ class Newsletter extends Relational
         $title .= "\r\n\r\n\r\n";
 
         // vars to hold story content
-        $primary   = array();
-        $secondary = array();
+        $primary   = [];
+        $secondary = [];
 
         // add story divider
         $storySeparator  = "\r\n\r\n\r\n";

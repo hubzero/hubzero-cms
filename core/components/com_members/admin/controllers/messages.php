@@ -33,7 +33,7 @@ class Messages extends AdminController
     public function displayTask()
     {
         // Get filters
-        $filters = array(
+        $filters = [
             'component' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.component',
                 'component',
@@ -62,7 +62,7 @@ class Messages extends AdminController
                 0,
                 'int'
             )
-        );
+        ];
 
         $obj = Message\Component::blank();
 
@@ -103,7 +103,7 @@ class Messages extends AdminController
 
         if (!is_object($row)) {
             // Incoming
-            $id = Request::getArray('id', array());
+            $id = Request::getArray('id', []);
 
             // Get the single ID we're working with
             if (is_array($id)) {
@@ -148,7 +148,7 @@ class Messages extends AdminController
         Request::checkToken();
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         // Load the record
         $row = Message\Component::blank()->set($fields);
@@ -181,8 +181,8 @@ class Messages extends AdminController
         Request::checkToken();
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Do we have any IDs?
         if (!empty($ids)) {
@@ -231,13 +231,13 @@ class Messages extends AdminController
             $this->setError(Lang::txt('No vlaues found'));
         }*/
 
-        $settings = array();
+        $settings = [];
         foreach ($components as $component) {
-            $settings[$component->get('action')] = array();
+            $settings[$component->get('action')] = [];
         }
 
         // Fetch message methods
-        $notimethods = Event::trigger('xmessage.onMessageMethods', array());
+        $notimethods = Event::trigger('xmessage.onMessageMethods', []);
 
         // A var for storing the default notification method
         $default_method = null;
@@ -266,8 +266,8 @@ class Messages extends AdminController
                     $settings[$key]['ids']['internal'] = 0;
                     $settings[$key]['ids'][$default_method] = 0;
                 } else {
-                    $settings[$key]['methods'] = array();
-                    $settings[$key]['ids'] = array();
+                    $settings[$key]['methods'] = [];
+                    $settings[$key]['ids'] = [];
                 }
             }
         }
@@ -308,8 +308,8 @@ class Messages extends AdminController
         $database = App::get('db');
 
         // Incoming
-        $settings = Request::getArray('settings', array());
-        $ids = Request::getArray('ids', array());
+        $settings = Request::getArray('settings', []);
+        $ids = Request::getArray('ids', []);
 
         // Ensure we have data to work with
         if ($settings && count($settings) > 0) {
@@ -393,7 +393,7 @@ class Messages extends AdminController
      * @param   array   $ids          Option IDs
      * @return  string
      */
-    public static function selectMethod($notimethods, $name, $values = array(), $ids = array())
+    public static function selectMethod($notimethods, $name, $values = [], $ids = [])
     {
         $out = '';
         $i = 0;

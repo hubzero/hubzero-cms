@@ -61,14 +61,14 @@ $now = Date::of('now')->toSql();
 
                 $tree     = $this->thread->toTree($all);
                 $root     = isset($tree[0]) ? $tree[0] : null;
-                $branches = $root ? $root->get('replies') : array();
+                $branches = $root ? $root->get('replies') : [];
                 $total    = count($branches);
 
                 if ($root) {
                     $root->set('replies', array_slice($branches, $this->filters['start'], $this->filters['limit']));
-                    $posts = array($root);
+                    $posts = [$root];
                 } else {
-                    $posts = array();
+                    $posts = [];
                 }
                 $count = count($posts);
 
@@ -158,29 +158,29 @@ $now = Date::of('now')->toSql();
                                     35,
                                     15,
                                     'fieldcomment',
-                                    array(
+                                    [
                                             'class' => 'minimal no-footer',
-                                            'mentions' => array(
-                                                array(
+                                            'mentions' => [
+                                                [
                                                     'minChars' => 0,
                                                     'feed' =>  '/api/members/mentions/list?search={encodedQuery}',
                                                     'itemTemplate' => '<li data-id="{id}"><img class="photo" src="{picture}" /><strong class="username">{username}</strong><span class="fullname">{name}</span></li>',
                                                     'outputTemplate' => '<a href="/members/{id}" data-user-id="{id}" target="_blank">@{username}</a>&nbsp;&nbsp;',
-                                                )
-                                            ),
+                                                ]
+                                            ],
                                             // A post is stored in a TEXT column, so cap it well inside that
                                             // ceiling. Without strict SQL mode an oversize value is truncated
                                             // rather than refused, which cuts the markup mid-tag.
                                     // Deliberately not called 'wordcount': the CKEditor 4 plugin reads
                                     // that key and would start showing a counter and enforcing a limit
                                     // it counts differently, changing behaviour for editors not in scope.
-                                            'limits' => array(
+                                            'limits' => [
                                                 'maxDataBytes'  => 60000,
                                                 'maxCharCount'  => 20000,
                                                 'hardLimit'     => true,
                                                 'showCharCount' => true
-                                            )
-                                        )
+                                            ]
+                                        ]
                                 ); ?>
                             </label>
 

@@ -43,9 +43,9 @@ class Secondary extends Relational
      *
      * @var  array
      **/
-    protected $rules = array(
+    protected $rules = [
         'cid' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Defines the inverse relationship between a record and a task

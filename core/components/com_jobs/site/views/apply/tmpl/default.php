@@ -62,7 +62,7 @@ $owner       = (User::get('id') == $job->employerid or $this->admin) ? 1 : 0;
             <h3>
                 <?php echo $this->escape($job->title); ?> -
                 <?php echo preg_match('#^https?://#i', (string) $job->companyWebsite) ? '<a href="' . $this->escape($job->companyWebsite) . '">' . $this->escape($job->companyName) . '</a>' : $this->escape($job->companyName); ?>,
-                <?php echo $this->escape(implode(', ', array_filter(array(trim((string) $job->companyLocation), trim((string) $job->companyLocationCountry))))); ?>
+                <?php echo $this->escape(implode(', ', array_filter([trim((string) $job->companyLocation), trim((string) $job->companyLocationCountry)]))); ?>
                 <span><?php echo Lang::txt('COM_JOBS_JOB_REFERENCE_CODE'); ?>: <?php echo $job->code; ?></span>
             </h3>
         </div>
@@ -92,13 +92,13 @@ $owner       = (User::get('id') == $job->employerid or $this->admin) ? 1 : 0;
                     // show seeker info
                     $out = Event::trigger(
                         'members.showSeeker',
-                        array(
+                        [
                             $seeker,
                             $this->emp,
                             $this->admin,
                             'com_members',
                             $list = 0
-                        )
+                        ]
                     );
                     if (count($out) > 0) {
                         echo implode("\n", $out);

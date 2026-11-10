@@ -42,14 +42,14 @@ class CronExpression
     /**
      * @var array Order in which to test of cron parts
      */
-    private static $order = array(
+    private static $order = [
         self::YEAR,
         self::MONTH,
         self::DAY,
         self::WEEKDAY,
         self::HOUR,
         self::MINUTE
-    );
+    ];
 
     /**
      * Factory method to create a new CronExpression.
@@ -69,14 +69,14 @@ class CronExpression
      */
     public static function factory($expression, ?FieldFactory $fieldFactory = null)
     {
-        $mappings = array(
+        $mappings = [
             '@yearly'   => '0 0 1 1 *',
             '@annually' => '0 0 1 1 *',
             '@monthly'  => '0 0 1 * *',
             '@weekly'   => '0 0 * * 0',
             '@daily'    => '0 0 * * *',
             '@hourly'   => '0 * * * *'
-        );
+        ];
 
         if (isset($mappings[$expression])) {
             $expression = $mappings[$expression];
@@ -194,7 +194,7 @@ class CronExpression
      */
     public function getMultipleRunDates($total, $currentTime = 'now', $invert = false, $allowCurrentDate = false)
     {
-        $matches = array();
+        $matches = [];
         for ($i = 0; $i < max(0, $total); $i++) {
             $matches[] = $this->getRunDate($currentTime, $i, $invert, $allowCurrentDate);
         }

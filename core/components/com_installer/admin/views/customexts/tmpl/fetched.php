@@ -102,7 +102,7 @@ $formAction = Route::url(
                             <?php
                             $msgs = is_array($failed['message'])
                                 ? $failed['message']
-                                : array($failed['message']);
+                                : [$failed['message']];
                             ?>
                             <pre><?php echo implode('<br>', $msgs); ?></pre>
                         </td>

@@ -23,7 +23,7 @@ class Feed extends Macro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['wiki'] = 'Embeds a RSS Feed into the Page';
         $txt['html'] = '<p>Embeds a RSS feed into the page.</p>
             <p>Examples:</p>
@@ -73,7 +73,7 @@ class Feed extends Macro
                 break;
             }
             $ch = curl_init();
-            curl_setopt_array($ch, array(
+            curl_setopt_array($ch, [
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_FOLLOWLOCATION => false,
                 CURLOPT_ENCODING       => '',
@@ -81,7 +81,7 @@ class Feed extends Macro
                 CURLOPT_CONNECTTIMEOUT => 5,
                 CURLOPT_TIMEOUT        => 10,
                 CURLOPT_PROTOCOLS      => CURLPROTO_HTTP | CURLPROTO_HTTPS,
-            ));
+            ]);
             // The hub's own feed is fetched as given; anything else from the
             // addresses checked (see \Hubzero\Utility\PublicUrl)
             if ($target === true) {
@@ -210,7 +210,7 @@ class Feed extends Macro
         if (!$parts || empty($parts['scheme']) || empty($parts['host'])) {
             return false;
         }
-        if (!in_array(strtolower($parts['scheme']), array('http', 'https'), true)) {
+        if (!in_array(strtolower($parts['scheme']), ['http', 'https'], true)) {
             return false;
         }
         // User info or a backslash can make parse_url() and curl read different
@@ -249,7 +249,7 @@ class Feed extends Macro
         if (
             $own !== '' && strcasecmp($host, $own) === 0
             && !filter_var($host, FILTER_VALIDATE_IP)
-            && (!$port || in_array($port, array(80, 443, $ownPort), true))
+            && (!$port || in_array($port, [80, 443, $ownPort], true))
         ) {
             return true;
         }

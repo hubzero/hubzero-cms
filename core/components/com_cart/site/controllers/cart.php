@@ -50,7 +50,7 @@ class Cart extends ComponentController
         $cart = new CurrentCart();
 
         // Initialize errors array
-        $errors = array();
+        $errors = [];
 
         // Update cart if needed
         $updateCartRequest = Request::getBool('updateCart', false, 'post');
@@ -64,7 +64,7 @@ class Cart extends ComponentController
             Request::checkToken();
 
             if (!empty($pIds)) {
-                $skus = array();
+                $skus = [];
 
                 $warehouse = new Warehouse();
 
@@ -81,7 +81,7 @@ class Cart extends ComponentController
                 }
             } else {
                 if (!is_array($skus)) {
-                    $skus = array($skus => 1);
+                    $skus = [$skus => 1];
                 }
             }
 

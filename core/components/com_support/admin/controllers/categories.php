@@ -43,7 +43,7 @@ class Categories extends AdminController
     public function displayTask()
     {
         // Get paging variables
-        $filters = array(
+        $filters = [
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
@@ -54,7 +54,7 @@ class Categories extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         // Fetch results
         $rows = Category::all()
@@ -87,7 +87,7 @@ class Categories extends AdminController
 
         if (!is_object($row)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id)) {
                 $id = (!empty($id) ? $id[0] : 0);
             }
@@ -121,7 +121,7 @@ class Categories extends AdminController
         }
 
         // Trim and addslashes all posted items
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         // Initiate class and bind posted items to database fields
         $row = Category::oneOrNew($fields['id'])->set($fields);
@@ -157,9 +157,9 @@ class Categories extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array(0));
+        $ids = Request::getArray('id', [0]);
         if (!is_array($ids)) {
-            $ids = array(0);
+            $ids = [0];
         }
 
         // Check for an ID

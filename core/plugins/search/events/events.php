@@ -34,7 +34,7 @@ class Events extends Plugin
         $terms = $request->get_term_ar();
         $weight = 'match(e.title, e.content) against(\'' . join(' ', $terms['stemmed']) . '\')';
 
-        $addtl_where = array();
+        $addtl_where = [];
         foreach ($terms['mandatory'] as $mand) {
             $addtl_where[] = "(e.title LIKE '%$mand%' OR e.content LIKE '%$mand%')";
         }
@@ -231,7 +231,7 @@ class Events extends Plugin
                 $record->hubtype = $type;
                 $record->title = $title;
                 $record->description = $description;
-                $record->author = array($author);
+                $record->author = [$author];
                 $record->tags = $tags;
                 $record->path = $path;
                 $record->access_level = $access_level;

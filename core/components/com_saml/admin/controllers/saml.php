@@ -36,10 +36,10 @@ class Saml extends AdminController
             $parsed = @openssl_x509_parse((string) file_get_contents($certFile));
 
             if ($parsed) {
-                $cert = array(
+                $cert = [
                     'subject'  => isset($parsed['subject']['CN']) ? $parsed['subject']['CN'] : '',
                     'valid_to' => isset($parsed['validTo_time_t']) ? (int) $parsed['validTo_time_t'] : 0
-                );
+                ];
             }
         }
 

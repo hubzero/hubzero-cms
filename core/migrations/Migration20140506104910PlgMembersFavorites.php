@@ -24,7 +24,7 @@ class Migration20140506104910PlgMembersFavorites extends Base
 
         // add comment ID
         if ($schema->tableExists('#__xfavorites')) {
-            $this->callback('progress', 'init', array('Running ' . __CLASS__ . '.php:'));
+            $this->callback('progress', 'init', ['Running ' . __CLASS__ . '.php:']);
 
             // Check if there are any favorites
             $query = $this->db->getQuery(true)
@@ -32,8 +32,8 @@ class Migration20140506104910PlgMembersFavorites extends Base
                 ->from('#__xfavorites')
                 ->order('uid', 'ASC');
             if ($results = $query->loadObjectList()) {
-                $objs  = array();
-                $usrs  = array();
+                $objs  = [];
+                $usrs  = [];
                 $total = count($results);
                 $i     = 1;
 
@@ -121,7 +121,7 @@ class Migration20140506104910PlgMembersFavorites extends Base
                     }
 
                     $progress = round($i / $total * 100);
-                    $this->callback('progress', 'setProgress', array($progress));
+                    $this->callback('progress', 'setProgress', [$progress]);
                     $i++;
                 }
             }

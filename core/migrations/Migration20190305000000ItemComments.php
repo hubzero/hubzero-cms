@@ -21,18 +21,18 @@ class Migration20190305000000ItemComments extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__item_comments' => array(
+    public static $tables = [
+        '#__item_comments' => [
             'created',
             'modified'
-        ),
-        '#__item_votes' => array(
+        ],
+        '#__item_votes' => [
             'created'
-        ),
-        '#__item_watch' => array(
+        ],
+        '#__item_watch' => [
             'created'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

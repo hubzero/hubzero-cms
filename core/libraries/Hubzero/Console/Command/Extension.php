@@ -25,7 +25,7 @@ class Extension extends Base implements CommandInterface
     public function execute()
     {
         if ($this->output->isInteractive()) {
-            $actions = array('add', 'delete', 'install', 'enable', 'disable');
+            $actions = ['add', 'delete', 'install', 'enable', 'disable'];
             $action  = $this->output->getResponse('What do you want to do? [' . implode("|", $actions) . ']');
 
             if (in_array($action, $actions)) {
@@ -128,7 +128,7 @@ class Extension extends Base implements CommandInterface
             }
         };
 
-        $migration = new Migration(\App::get('db'), array('migration' => $logger));
+        $migration = new Migration(\App::get('db'), ['migration' => $logger]);
 
         $name = null;
         if ($this->arguments->getOpt('name')) {
@@ -158,7 +158,7 @@ class Extension extends Base implements CommandInterface
                     $mthd          = $method . 'Component';
                 }
 
-                $this->callMigration($migration, 'components', $mthd, array($extensionName));
+                $this->callMigration($migration, 'components', $mthd, [$extensionName]);
                 break;
 
             case 'mod':
@@ -177,11 +177,11 @@ class Extension extends Base implements CommandInterface
                         }
                     }
 
-                    $this->callMigration($migration, 'modules', $mthd, array(str_replace('mod_', '', $name), $position, true, '', (($client == 'admin') ? 1 : 0)));
+                    $this->callMigration($migration, 'modules', $mthd, [str_replace('mod_', '', $name), $position, true, '', (($client == 'admin') ? 1 : 0)]);
                 } else {
                     $mthd = $method . 'Module' . (($method == 'add' || $method == 'delete') ? 'Entry' : '');
 
-                    $this->callMigration($migration, 'modules', $mthd, array($name, 1, '', (($client == 'admin') ? 1 : 0)));
+                    $this->callMigration($migration, 'modules', $mthd, [$name, 1, '', (($client == 'admin') ? 1 : 0)]);
                 }
                 break;
 
@@ -197,13 +197,13 @@ class Extension extends Base implements CommandInterface
                 $isCore  = $this->arguments->getOpt('core', false) ? 1 : 0;
 
                 if ($method == 'delete') {
-                    $args = array($element, $client);
+                    $args = [$element, $client];
                 } else if ($method == 'add') {
-                    $args = array($element, $name, $client, 1, 0, null, $isCore);
+                    $args = [$element, $name, $client, 1, 0, null, $isCore];
                 } else if ($method == 'install') {
-                    $args = array($element, $name, $client, null, $isCore);
+                    $args = [$element, $name, $client, null, $isCore];
                 } else {
-                    $args = array($element, $client);
+                    $args = [$element, $client];
                 }
 
                 $this->callMigration($migration, 'templates', $mthd, $args);
@@ -220,7 +220,7 @@ class Extension extends Base implements CommandInterface
                 $element = $matches[2];
                 $mthd    = $method . 'Plugin' . (($method == 'add' || $method == 'delete') ? 'Entry' : '');
 
-                $this->callMigration($migration, 'plugins', $mthd, array($folder, $element));
+                $this->callMigration($migration, 'plugins', $mthd, [$folder, $element]);
                 break;
 
             default:
@@ -247,7 +247,7 @@ class Extension extends Base implements CommandInterface
     private function callMigration($migration, $type, $method, array $args)
     {
         try {
-            $result = call_user_func_array(array($migration, $method), $args);
+            $result = call_user_func_array([$migration, $method], $args);
         } catch (\BadMethodCallException $e) {
             $this->output->error('Sorry, ' . $type . ' do not currently support the ' . $method . ' method');
         }

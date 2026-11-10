@@ -22,28 +22,28 @@ class HandlerTest extends Basic
      *
      * @var  array
      */
-    private $data = array(
-        array(
+    private $data = [
+        [
             'message' => 'This is an info message.',
             'type'    => 'info',
             'domain'  => null
-        ),
-        array(
+        ],
+        [
             'message' => 'This is a success message!',
             'type'    => 'success',
             'domain'  => null
-        ),
-        array(
+        ],
+        [
             'message' => 'This is a warning message!',
             'type'    => 'warning',
             'domain'  => null
-        ),
-        array(
+        ],
+        [
             'message' => 'This is an error message.',
             'type'    => 'error',
             'domain'  => null
-        )
-    );
+        ]
+    ];
 
     /**
      * Test that the lit of messages returned by the handler

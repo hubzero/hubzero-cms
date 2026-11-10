@@ -42,14 +42,14 @@ class Newsletter extends AbstractComponent
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
         // Menu items
-        $menuItems = array(
+        $menuItems = [
             'newsletters'  => Lang::txt('COM_NEWSLETTER_NEWSLETTERS'),
             'mailings'     => Lang::txt('COM_NEWSLETTER_MAILINGS'),
             'mailinglists' => Lang::txt('COM_NEWSLETTER_LISTS'),
             'templates'    => Lang::txt('COM_NEWSLETTER_TEMPLATES'),
             'tools'        => Lang::txt('COM_NEWSLETTER_TOOLS'),
             'campaigns'    => Lang::txt('COM_NEWSLETTER_CAMPAIGNS')
-        );
+        ];
 
         foreach ($menuItems as $k => $v) {
             $active = (Request::getCmd('controller', 'newsletters') == $k) ? true : false;

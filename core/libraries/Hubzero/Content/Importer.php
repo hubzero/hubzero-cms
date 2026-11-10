@@ -55,7 +55,7 @@ class Importer
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         if (!isset($instances[$key])) {
@@ -72,7 +72,7 @@ class Importer
      */
     private function bootAdapters()
     {
-        $this->adapters = array();
+        $this->adapters = [];
 
         foreach (glob(__DIR__ . DS . 'Import' . DS . 'Adapter' . DS . '*.php') as $adapter) {
             $class = __NAMESPACE__ . '\\Import\\Adapter\\' . basename($adapter, '.php');

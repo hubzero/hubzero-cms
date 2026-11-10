@@ -160,7 +160,7 @@ class Economy extends Obj
             ->rows();
 
         $n = $results->count();
-        $eligible = array();
+        $eligible = [];
 
         if ($n > 1) {
             // More than one answer found

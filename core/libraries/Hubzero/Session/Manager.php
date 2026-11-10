@@ -54,7 +54,7 @@ class Manager extends Obj
      *
      * @var  array
      */
-    protected $security = array('fix_browser');
+    protected $security = ['fix_browser'];
 
     /**
      * Force cookies to be SSL only
@@ -84,7 +84,7 @@ class Manager extends Obj
      * @param   string  $store    The type of storage for the session.
      * @param   array   $options  Optional parameters
      */
-    public function __construct($store = 'none', $options = array())
+    public function __construct($store = 'none', $options = [])
     {
         // Need to destroy any existing sessions started with session.auto_start
         if (session_id()) {
@@ -324,7 +324,7 @@ class Manager extends Obj
         // Get a list of types, only including php files
         $glob = glob(__DIR__ . DIRECTORY_SEPARATOR . 'Storage' . DIRECTORY_SEPARATOR . '*.php');
 
-        $names = array();
+        $names = [];
 
         if ($glob === false) {
             return $names;
@@ -344,7 +344,7 @@ class Manager extends Obj
             }
 
             // Our class exists, so now we just need to know if it passes it's test method
-            if (call_user_func_array(array($class, 'isAvailable'), array())) {
+            if (call_user_func_array([$class, 'isAvailable'], [])) {
                 $names[] = str_ireplace('.php', '', $name);
             }
         }
@@ -501,7 +501,7 @@ class Manager extends Obj
         session_start();
 
         // Regenerate session id if passed a session id that no longer exists
-        if (!isset($_SESSION) || $_SESSION === array()) {
+        if (!isset($_SESSION) || $_SESSION === []) {
             if (session_status() === PHP_SESSION_ACTIVE) {
                 session_abort();
             }
@@ -627,13 +627,13 @@ class Manager extends Obj
         // Restore config
         ini_set('session.use_trans_sid', $trans);
         // Always mark the session cookie HttpOnly so it cannot be read from JavaScript.
-        session_set_cookie_params(array(
+        session_set_cookie_params([
             'lifetime' => $cookie['lifetime'],
             'path'     => $cookie['path'],
             'domain'   => $cookie['domain'],
             'secure'   => $cookie['secure'],
             'httponly' => true,
-        ));
+        ]);
 
         // Restart session with new id
         session_id($id);
@@ -693,13 +693,13 @@ class Manager extends Obj
         }
 
         // Always mark the session cookie HttpOnly so it cannot be read from JavaScript.
-        session_set_cookie_params(array(
+        session_set_cookie_params([
             'lifetime' => $cookie['lifetime'],
             'path'     => $cookie['path'],
             'domain'   => $cookie['domain'],
             'secure'   => $cookie['secure'],
             'httponly' => true,
-        ));
+        ]);
     }
 
     /**

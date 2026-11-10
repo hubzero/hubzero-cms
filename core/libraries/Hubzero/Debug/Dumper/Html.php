@@ -37,7 +37,7 @@ class Html extends AbstractRenderer
 
         $messages = $this->getMessages();
 
-        $output = array();
+        $output = [];
         $output[] = '<div class="debug-varlist">';
         foreach ($messages as $item) {
             $output[] = $this->line($item);
@@ -75,7 +75,7 @@ class Html extends AbstractRenderer
         }
 
         $output = 'Array( ' . "\n";
-        $a = array();
+        $a = [];
         if (is_array($arr)) {
             foreach ($arr as $key => $val) {
                 if (is_array($val)) {

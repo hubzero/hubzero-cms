@@ -40,7 +40,7 @@ class Mypublications extends Module
         // Load classes
 
         // Filters
-        $filters = array(
+        $filters = [
             'created_by'        => User::get('id'),
             //'notauthorrole' => 'submitter',
             'sortby'        => 'created',
@@ -49,7 +49,7 @@ class Mypublications extends Module
             //'access'        => array(0, 1, 3),
             'limitstart'    => 0,
             'limit'         => intval($this->params->get('limit', 5))
-        );
+        ];
 
         // Get results
         $query = self::allWithFilters($filters);
@@ -81,7 +81,7 @@ class Mypublications extends Module
      * @param   array  $filters
      * @return  object
      */
-    public static function allWithFilters($filters = array())
+    public static function allWithFilters($filters = [])
     {
         $query = Version::all();
 
@@ -155,7 +155,7 @@ class Mypublications extends Module
                         break;
                     case 'all':
                     default:
-                        $filters['access'] = array(0, 1, 2, 3, 4);
+                        $filters['access'] = [0, 1, 2, 3, 4];
                         break;
                 }
             }

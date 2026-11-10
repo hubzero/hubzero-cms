@@ -18,16 +18,16 @@ $this->css()
     ->js('resources', 'com_resources');
 
 // Add the "all" category
-$all = array(
+$all = [
     'category' => '',
     'title'    => Lang::txt('PLG_MEMBERS_CONTRIBUTIONS_ALL_CATEGORIES'),
     'total'    => $this->total
-);
+];
 
 array_unshift($this->cats, $all);
 
 // An array for storing all the links we make
-$links = array();
+$links = [];
 $i = 0;
 // Loop through each category
 foreach ($this->cats as $cat) {
@@ -57,7 +57,7 @@ foreach ($this->cats as $cat) {
         // Are there sub-categories?
         if (isset($cat['_sub']) && is_array($cat['_sub'])) {
             // An array for storing the HTML we make
-            $k = array();
+            $k = [];
             // Loop through each sub-category
             foreach ($cat['_sub'] as $subcat) {
                 // Only show sub-categories that returned search results
@@ -248,7 +248,7 @@ foreach ($this->results as $category) {
         $catName = ucfirst($this->cats[$k]['category']);
         $obj = 'Plugins\\Members\\' . $catName . '\\' . $catName;
         if (method_exists($obj, 'documents')) {
-            $html .= call_user_func(array($obj, 'documents'));
+            $html .= call_user_func([$obj, 'documents']);
         }
 
         $ttl = ($total > 5) ? 5 : $total;
@@ -284,7 +284,7 @@ foreach ($this->results as $category) {
         $catName = ucfirst($this->cats[$k]['category']);
         $obj = 'Plugins\\Members\\' . $catName . '\\' . $catName;
         if (method_exists($obj, 'before')) {
-            $html .= call_user_func(array($obj,'before'));
+            $html .= call_user_func([$obj,'before']);
         }
 
         $html .= '<ol class="search results">' . "\n";
@@ -302,7 +302,7 @@ foreach ($this->results as $category) {
             if (function_exists($func)) {
                 $html .= $func($row);
             } elseif (method_exists($obj, 'out')) {
-                $html .= call_user_func(array($obj,'out'), $row);
+                $html .= call_user_func([$obj,'out'], $row);
             } else {
                 $html .= "\t" . '<li>' . "\n";
                 $html .= "\t\t"

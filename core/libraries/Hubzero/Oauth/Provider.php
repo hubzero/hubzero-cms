@@ -98,7 +98,7 @@ class Provider
      * @param   array  $params
      * @return  void
      */
-    public function __construct($params = array())
+    public function __construct($params = [])
     {
         if (!class_exists('OAuthProvider')) {
             throw new \Exception('OAuthProvider class not found.', 500);
@@ -106,9 +106,9 @@ class Provider
 
         $this->provider = new OAuthProvider($params);
 
-        $this->provider->consumerHandler(array($this,'consumerHandler'));
-        $this->provider->timestampNonceHandler(array($this,'timestampNonceHandler'));
-        $this->provider->tokenHandler(array($this, 'tokenHandler'));
+        $this->provider->consumerHandler([$this,'consumerHandler']);
+        $this->provider->timestampNonceHandler([$this,'timestampNonceHandler']);
+        $this->provider->tokenHandler([$this, 'tokenHandler']);
     }
 
     /**

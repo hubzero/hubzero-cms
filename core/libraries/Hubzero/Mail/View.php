@@ -31,7 +31,7 @@ class View extends AbstractView
      * @param   array  $config  A named configuration array for object construction.
      * @return  void
      */
-    public function __construct($config = array())
+    public function __construct($config = [])
     {
         // create new mail template, loading email.php
         // in active template falling back to system email.php
@@ -160,7 +160,7 @@ class View extends AbstractView
                     ? PATH_APP . DIRECTORY_SEPARATOR . 'templates'
                     : PATH_CORE . DIRECTORY_SEPARATOR . 'templates';
 
-                $home = array('template' => $tpl, 'directory' => $directory);
+                $home = ['template' => $tpl, 'directory' => $directory];
             }
         } catch (\Exception $e) {
             $home = false;

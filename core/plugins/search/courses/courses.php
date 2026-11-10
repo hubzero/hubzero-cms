@@ -33,7 +33,7 @@ class Courses extends Plugin
 
         $terms = $request->get_term_ar();
         $weight = '(match(c.alias, c.title, c.blurb) against (\'' . join(' ', $terms['stemmed']) . '\'))';
-        $addtl_where = array();
+        $addtl_where = [];
         foreach ($terms['mandatory'] as $mand) {
             $addtl_where[] = "(c.title LIKE '%$mand%' OR c.blurb LIKE '%$mand%')";
         }
@@ -114,9 +114,9 @@ class Courses extends Plugin
 				ON #__courses_members.user_id = #__users.id;";
                 $members = $db->setQuery($sql1)->query()->loadObjectList();
 
-                $authors = array();
-                $author_ids = array();
-                $students = array();
+                $authors = [];
+                $author_ids = [];
+                $students = [];
 
                 foreach ($members as $member) {
                     if ($member->student == 0) {

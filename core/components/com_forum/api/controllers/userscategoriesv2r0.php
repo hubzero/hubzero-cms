@@ -57,10 +57,10 @@ class UsersCategoriesv2r0 extends ApiController
             return $usersCategory->toArray();
         }, $usersCategories);
 
-        $result = array(
+        $result = [
             'records' => $arrayCategories,
             'errors' => $errors
-        );
+        ];
 
         $result['status'] = empty($errors) ? 'success' : 'error';
 
@@ -79,10 +79,10 @@ class UsersCategoriesv2r0 extends ApiController
     {
         $usersCategories = array_map(function ($categoryId) use ($currentUserId) {
             $usersCategory = UsersCategory::blank();
-            $usersCategory->set(array(
+            $usersCategory->set([
                 'category_id' => $categoryId,
                 'user_id' => $currentUserId
-            ));
+            ]);
             return $usersCategory;
         }, $categoriesIds);
 
@@ -98,7 +98,7 @@ class UsersCategoriesv2r0 extends ApiController
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _saveUsersCategories($usersCategories)
     {
-        $errors = array();
+        $errors = [];
 
         foreach ($usersCategories as $usersCategory) {
             if (!$usersCategory->save()) {
@@ -148,10 +148,10 @@ class UsersCategoriesv2r0 extends ApiController
 
         $arrayCategories = $usersCategories->rows()->toArray();
 
-        $result = array(
+        $result = [
             'records' => $arrayCategories,
             'errors' => $errors
-        );
+        ];
 
         $result['status'] = empty($errors) ? 'success' : 'error';
 
@@ -167,7 +167,7 @@ class UsersCategoriesv2r0 extends ApiController
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _destroyUsersCategories($usersCategories)
     {
-        $errors = array();
+        $errors = [];
 
         foreach ($usersCategories as $usersCategory) {
             if (!$usersCategory->destroy()) {

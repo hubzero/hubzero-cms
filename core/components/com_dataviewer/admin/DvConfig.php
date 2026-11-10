@@ -21,7 +21,7 @@ class DvConfig
     {
         // Request ID/CSRF prevention
         if (!isset($_SESSION['db'])) {
-            $_SESSION['db'] = array();
+            $_SESSION['db'] = [];
         }
 
         if (!isset($_SESSION['db']['__rid'])) {
@@ -53,7 +53,7 @@ class DvConfig
         }
 
         $mode_db_enabled = Component::params('com_dataviewer')->get('mode_db') == '1' ? true : false;
-        static::$conf['modes']['db'] = array('enabled' => $mode_db_enabled);
+        static::$conf['modes']['db'] = ['enabled' => $mode_db_enabled];
 
         // ACL
         static::$conf['access_limit_to_group'] = false;

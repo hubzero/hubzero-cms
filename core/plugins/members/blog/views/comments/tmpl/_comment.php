@@ -80,7 +80,7 @@ if ($this->comment->isReported()) {
                     <label for="comment_<?php echo $this->comment->get('id'); ?>_content">
                         <span class="label-text"><?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_COMMENTS'); ?></span>
                         <?php
-                        echo $this->editor('comment[content]', $this->comment->get('content'), 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'minimal no-footer'));
+                        echo $this->editor('comment[content]', $this->comment->get('content'), 35, 4, 'comment_' . $this->comment->get('id') . '_content', ['class' => 'minimal no-footer']);
                         ?>
                     </label>
 
@@ -149,7 +149,7 @@ if ($this->comment->isReported()) {
                         <label for="comment_<?php echo $this->comment->get('id'); ?>_content">
                             <span class="label-text"><?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_COMMENTS'); ?></span>
                             <?php
-                            echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'minimal no-footer'));
+                            echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', ['class' => 'minimal no-footer']);
                             ?>
                         </label>
 
@@ -175,10 +175,10 @@ if ($this->comment->isReported()) {
                 ->including(['creator', function ($creator) {
                     $creator->select('*');
                 }])
-                ->whereIn('state', array(
+                ->whereIn('state', [
                     Components\Blog\Models\Comment::STATE_PUBLISHED,
                     Components\Blog\Models\Comment::STATE_FLAGGED
-                ))
+                ])
                 ->ordered()
                 ->rows();
 

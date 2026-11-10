@@ -193,7 +193,7 @@ class CurrentCart extends Cart
         $items = $this->db->loadObjectList();
 
         // Initiate changes array
-        $changes = array();
+        $changes = [];
 
         $cartItems = $this->cart->items;
 
@@ -213,7 +213,7 @@ class CurrentCart extends Cart
                 if (!$itemName) {
                     $itemName = $item->crtiName;
                 }
-                $changes[] = array($itemName . ' is no longer available', 'info');
+                $changes[] = [$itemName . ' is no longer available', 'info'];
 
                 // skip the rest
                 continue;
@@ -221,14 +221,14 @@ class CurrentCart extends Cart
 
             if (!empty($item->crtiOldQty) && $item->crtiOldQty > $item->crtiQty) {
                 if ($item->crtiQty) {
-                    $changes[] = array($itemName . ' inventory reduced from ' . $item->crtiOldQty . ' to ' . $item->crtiQty, 'info');
+                    $changes[] = [$itemName . ' inventory reduced from ' . $item->crtiOldQty . ' to ' . $item->crtiQty, 'info'];
                 } else {
-                    $changes[] = array($itemName . ' is no longer in stock', 'info');
+                    $changes[] = [$itemName . ' is no longer in stock', 'info'];
                 }
             }
 
             if (!empty($item->crtiOldPrice) && $item->crtiOldPrice != $item->crtiPrice) {
-                $changes[] = array($itemName . ' price changed from ' . $item->crtiOldPrice . ' to ' . $item->crtiPrice, 'info');
+                $changes[] = [$itemName . ' price changed from ' . $item->crtiOldPrice . ' to ' . $item->crtiPrice, 'info'];
             }
         }
 
@@ -285,7 +285,7 @@ class CurrentCart extends Cart
      */
     public function setMessage($msg, $type = 'info')
     {
-        $this->cart->messages[] = array($msg, $type);
+        $this->cart->messages[] = [$msg, $type];
         $this->cart->hasMessages = true;
     }
 
@@ -302,7 +302,7 @@ class CurrentCart extends Cart
         }
 
         // Get messages
-        $messages = array();
+        $messages = [];
         if ((!empty($this->cart->hasMessages) && $this->cart->hasMessages)) {
             $messages = $this->cart->messages;
             // Reset messages flag
@@ -312,7 +312,7 @@ class CurrentCart extends Cart
         };
 
         // Get cart changes
-        $changes = array();
+        $changes = [];
         if ($this->cartChanged()) {
             $changes = $this->getCartChanges();
         }
@@ -471,12 +471,12 @@ class CurrentCart extends Cart
      */
     public function setTransactionShippingInfo()
     {
-        $errors = array();
+        $errors = [];
         // success by default
         $status = 1;
 
         // Check required fields
-        $requiredFields = array('shippingToFirst', 'shippingToLast', 'shippingAddress', 'shippingCity', 'shippingState', 'shippingZip');
+        $requiredFields = ['shippingToFirst', 'shippingToLast', 'shippingAddress', 'shippingCity', 'shippingState', 'shippingZip'];
 
         foreach ($requiredFields as $field) {
             $fieldValue = Request::getString($field, false, 'post');
@@ -1020,7 +1020,7 @@ class CurrentCart extends Cart
 
         $cartItems = $cartInfo->items;
         // initialize perks
-        $perks = array();
+        $perks = [];
 
         // Since coupons in $cartCoupons are expected to be ordered with item coupons coming first,
         // item coupons will be processed first in bulk
@@ -1038,13 +1038,13 @@ class CurrentCart extends Cart
             we need to apply the most recently applied only. As we iterate through coupons we only want to record the recent one.
             Same for non item coupons -- there is only one coupon per object type is allowed (shipping, total order discount, etc...)
         */
-        $couponMappings = array();
+        $couponMappings = [];
 
         /*
             Initialize a global SKU to discount mapping.
             Just like coupons we need to apply only the most recently applied discount and discard old ones
         */
-        $itemCouponDiscountMappings = array();
+        $itemCouponDiscountMappings = [];
 
         // go through each coupon in the cart
         foreach ($cartCoupons as $cn) {
@@ -1319,7 +1319,7 @@ class CurrentCart extends Cart
         $cartItems = $cartInfo->items;
 
         // init membership info
-        $memberships = array();
+        $memberships = [];
 
         $ms = new \Components\Storefront\Models\Memberships();
 
@@ -1398,7 +1398,7 @@ class CurrentCart extends Cart
 
         $skuInfo = $warehouse->getSkusInfo($skus);
 
-        $cartItems = array();
+        $cartItems = [];
 
         // Note that some items become unavailable/out of stock or prices may change, need to account for this
         foreach ($allSkuInfo as $sId => $sku) {
@@ -1717,7 +1717,7 @@ class CurrentCart extends Cart
             $sql = "UPDATE `#__cart_carts` SET `uidNumber` = {$user->id} WHERE `crtId` = {$this->crtId}";
             $this->db->setQuery($sql);
             $this->db->query();
-            $existingCnIds = array();
+            $existingCnIds = [];
         } else {
             // Merge session and user carts. Not so easy.
             // Get a static instance of the users' cart
@@ -1728,7 +1728,7 @@ class CurrentCart extends Cart
 
             // If both session and user carts are not empty notify the user that items are being combined
             if (!$this->isEmpty() && !empty($userCartItems)) {
-                $this->cart->messages[] = array(Lang::txt('COM_CART_ITEMS_COMBINED'), 'info');
+                $this->cart->messages[] = [Lang::txt('COM_CART_ITEMS_COMBINED'), 'info'];
                 $this->cart->hasMessages = true;
             }
 
@@ -1740,7 +1740,7 @@ class CurrentCart extends Cart
                     try {
                         $userCart->add($item['info']->sId, $item['cartInfo']->qty);
                     } catch (\Exception $e) {
-                        $this->cart->messages[] = array($e->getMessage(), 'warning');
+                        $this->cart->messages[] = [$e->getMessage(), 'warning'];
                         $this->cart->hasMessages = true;
                     }
                 }
@@ -1748,7 +1748,7 @@ class CurrentCart extends Cart
 
             // need to apply each coupon (mark as used) before merging
             $cnSql = '0';
-            $allCouponsIds = array();
+            $allCouponsIds = [];
             foreach ($coupons as $coupon) {
                 $cnSql .= ',' . $coupon->cnId;
                 $allCouponsIds[] = $coupon->cnId;
@@ -1847,8 +1847,8 @@ class CurrentCart extends Cart
         $sqlValues = '';
 
         // Initialize required steps, split it into logical parts
-        $preSteps = array();
-        $postSteps = array();
+        $preSteps = [];
+        $postSteps = [];
 
         $warehouse = $this->warehouse;
 

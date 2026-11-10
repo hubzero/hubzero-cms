@@ -15,9 +15,9 @@ use Hubzero\Facades\Route;
 defined('_HZEXEC_') or die();
 
 // Sort notes to display hierarchy by scope
-$notes = array();
-$order = array();
-$thirdlevel = array();
+$notes = [];
+$order = [];
+$thirdlevel = [];
 
 $pNotes = $this->note->getNotes();
 if ($pNotes) {
@@ -39,7 +39,7 @@ if ($pNotes) {
         }
 
         if ($level == 1) {
-            $notes[$note->pagename] = array($level => array($note));
+            $notes[$note->pagename] = [$level => [$note]];
         } else if ($level == 2) {
             $notes[$parent][$level][] = $note;
         } else if ($level >= 3) {

@@ -15,7 +15,7 @@ defined('_HZEXEC_') or die();
         // Instantiate a new view
         $this->view('item', 'browse')
             ->set('line', $line)
-            ->set('supported', isset($this->supported) ? $this->supported : array())
+            ->set('supported', isset($this->supported) ? $this->supported : [])
             ->display();
     }
     ?>

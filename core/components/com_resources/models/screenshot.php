@@ -43,28 +43,28 @@ class Screenshot extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'filename'   => 'notempty',
         'resourceid' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'filename'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'ordering'
-    );
+    ];
 
     /**
      * Generates automatic ordering field value
@@ -187,7 +187,7 @@ class Screenshot extends Relational
     {
         $query = self::all();
 
-        $query->whereEquals('filename', $query->automaticFilename(array('filename' => $filename)));
+        $query->whereEquals('filename', $query->automaticFilename(['filename' => $filename]));
 
         if ($resourceid) {
             $query->whereEquals('resourceid', $resourceid);

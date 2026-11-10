@@ -73,7 +73,7 @@ class Block extends Table
         $this->_db->setQuery($query);
         $results = $this->_db->loadObjectList();
         if ($select == 'block') {
-            $blocks = array();
+            $blocks = [];
             if ($results) {
                 foreach ($results as $result) {
                     $blocks[] = $result->block;

@@ -28,13 +28,13 @@ class Module extends Renderer
 
         // get the list of modules
         $groupModuleArchive = Archive::getInstance();
-        $modules = $groupModuleArchive->modules('list', array(
+        $modules = $groupModuleArchive->modules('list', [
             'gidNumber' => $this->group->get('gidNumber'),
-            'state'     => array(1),
-            'approved'  => ($this->allMods == 1) ? array(0,1) : array(1),
+            'state'     => [1],
+            'approved'  => ($this->allMods == 1) ? [0,1] : [1],
             'title'     => $this->params->title ?? null,
             'orderby'   => 'ordering DESC'
-        ));
+        ]);
 
         // make sure we have a module
         if ($modules->count() < 1) {

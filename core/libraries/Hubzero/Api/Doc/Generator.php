@@ -29,14 +29,14 @@ class Generator
      *
      * @var  array
      */
-    private $sections = array();
+    private $sections = [];
 
     /**
      * Var to hold output
      *
      * @var  array
      */
-    private $output = array();
+    private $output = [];
 
     /**
      * Create sections from component api controllers
@@ -49,15 +49,15 @@ class Generator
         $this->cache = (bool) $cache;
 
         // create all needed keys in output
-        $this->output = array(
-            'sections' => array(),
-            'versions' => array(
+        $this->output = [
+            'sections' => [],
+            'versions' => [
                 'max'       => '',
-                'available' => array()
-            ),
-            'errors'   => array(),
-            'files'    => array()
-        );
+                'available' => []
+            ],
+            'errors'   => [],
+            'files'    => []
+        ];
     }
 
     /**
@@ -166,7 +166,7 @@ class Generator
             $loader = App::get('component');
         }
 
-        $roots = array(PATH_CORE, PATH_APP);
+        $roots = [PATH_CORE, PATH_APP];
 
         // group by component
         foreach ($roots as $base) {
@@ -195,7 +195,7 @@ class Generator
     private function processComponentSections($sections)
     {
         // var to hold output
-        $output = array();
+        $output = [];
 
         // loop through each component grouping
         foreach ($sections as $component => $files) {
@@ -226,7 +226,7 @@ class Generator
     private function processFile($file)
     {
         // var to hold output
-        $output = array();
+        $output = [];
 
         require_once $file;
 
@@ -260,7 +260,7 @@ class Generator
             // Skip methods we don't want processed
             if (
                 substr($method->getName(), -4) != 'Task' ||
-                in_array($method->getName(), array('registerTask', 'unregisterTask', 'indexTask'))
+                in_array($method->getName(), ['registerTask', 'unregisterTask', 'indexTask'])
             ) {
                 continue;
             }
@@ -286,7 +286,7 @@ class Generator
             $controller = implode('v', $parts);
 
             // Create endpoint data array
-            $endpoint = array(
+            $endpoint = [
                 //'name'        => substr($method->getName(), 0, -4),
                 // 'description' => preg_replace('/\s+/', ' ', $phpdoc->getShortDescription()), //
                 // $phpdoc->getLongDescription()->getContents()
@@ -294,14 +294,14 @@ class Generator
                 'description' => $phpdoc->getDescription()->render(),
                 'method'      => '',
                 'uri'         => '',
-                'parameters'  => array(),
-                '_metadata'   => array(
+                'parameters'  => [],
+                '_metadata'   => [
                     'controller' => $controller,
                     'component' => $component,
                     'version'   => $version,
                     'method'    => $method->getName()
-                )
-            );
+                ]
+            ];
 
             // Loop through each tag
             foreach ($phpdoc->getTags() as $tag) {
@@ -365,12 +365,12 @@ class Generator
     {
         // replace some values in file path to get what we need
         $file = str_replace(
-            array(
+            [
                 PATH_CORE . DS . 'components' . DS . 'com_',
                 PATH_APP . DS . 'components' . DS . 'com_',
                 '.php'
-            ),
-            array('', '', ''),
+            ],
+            ['', '', ''],
             $file
         );
 

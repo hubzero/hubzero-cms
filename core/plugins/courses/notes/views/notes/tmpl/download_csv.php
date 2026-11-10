@@ -11,7 +11,7 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$results = array();
+$results = [];
 
 $entries = \Plugins\Courses\Notes\Models\Note::all()
     ->whereEquals('section_id', $this->offering->section()->get('id'))
@@ -27,7 +27,7 @@ if ($notes->count()) {
     foreach ($notes as $note) {
         $ky = $note->get('scope_id');
         if (!isset($results[$ky])) {
-            $results[$ky] = array();
+            $results[$ky] = [];
         }
         $results[$ky][] = $note;
     }

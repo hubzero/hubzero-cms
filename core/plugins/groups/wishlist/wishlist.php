@@ -70,13 +70,13 @@ class Wishlist extends Plugin
      */
     public function &onGroupAreas()
     {
-        $area = array(
+        $area = [
             'name' => 'wishlist',
             'title' => Lang::txt('PLG_GROUPS_WISHLIST'),
             'default_access' => $this->params->get('plugin_access', 'members'),
             'display_menu_tab' => $this->params->get('display_tab', 1),
             'icon' => 'f078'
-        );
+        ];
 
         return $area;
     }
@@ -100,10 +100,10 @@ class Wishlist extends Plugin
         $active = 'wishlist';
 
         // The output array we're returning
-        $arr = array(
+        $arr = [
             'html'     => '',
-            'metadata' => array()
-        );
+            'metadata' => []
+        ];
 
         //get this area details
         $this_area = $this->onGroupAreas();
@@ -259,7 +259,7 @@ class Wishlist extends Plugin
                     break;
                 case 'accepted':
                     $entries
-                        ->whereIn('status', array(0, 6))
+                        ->whereIn('status', [0, 6])
                         ->whereEquals('accepted', 1);
                     break;
                 case 'pending':

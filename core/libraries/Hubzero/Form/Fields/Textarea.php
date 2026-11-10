@@ -31,7 +31,7 @@ class Textarea extends Field
     protected function getInput()
     {
         // Initialize some field attributes.
-        $attributes = array(
+        $attributes = [
             'type'         => 'text',
             'name'         => $this->name,
             'id'           => $this->id,
@@ -40,9 +40,9 @@ class Textarea extends Field
             'rows'         => ($this->element['rows'] ? (int) $this->element['rows'] : ''),
             'disabled'     => ((string) $this->element['disabled'] == 'true'    ? 'disabled' : ''),
             'onchange'     => ($this->element['onchange']  ? (string) $this->element['onchange'] : '')
-        );
+        ];
 
-        $attr = array();
+        $attr = [];
         foreach ($attributes as $key => $value) {
             if (!$value) {
                 continue;

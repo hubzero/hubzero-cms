@@ -51,7 +51,7 @@ class SessionClass extends Table
         $this->jobs = intval($this->jobs);
 
         if (!$this->id) {
-            $query  = "SELECT id" . $this->buildQuery(array('alias' => $this->alias));
+            $query  = "SELECT id" . $this->buildQuery(['alias' => $this->alias]);
 
             $this->_db->setQuery($query);
             if ($this->_db->loadResult()) {
@@ -59,7 +59,7 @@ class SessionClass extends Table
                 return false;
             }
 
-            $query  = "SELECT id" . $this->buildQuery(array('jobs' => $this->jobs));
+            $query  = "SELECT id" . $this->buildQuery(['jobs' => $this->jobs]);
 
             $this->_db->setQuery($query);
             if ($this->_db->loadResult()) {
@@ -114,11 +114,11 @@ class SessionClass extends Table
      * @param   array   $filters
      * @return  string  Database query
      */
-    protected function buildQuery($filters = array())
+    protected function buildQuery($filters = [])
     {
         $query = " FROM $this->_tbl AS tsc";
 
-        $where = array();
+        $where = [];
 
         if (isset($filters['alias']) && $filters['alias']) {
             $where[] = "`alias`=" . $this->_db->quote($filters['alias']);
@@ -143,7 +143,7 @@ class SessionClass extends Table
      * @param   array    $select   List of fields to select
      * @return  mixed
      */
-    public function find($what = '', $filters = array(), $select = array())
+    public function find($what = '', $filters = [], $select = [])
     {
         $what = strtolower($what);
         $select = (array) $select;
@@ -190,13 +190,13 @@ class SessionClass extends Table
                 }
                 if ($filters['sort_Dir']) {
                     $filters['sort_Dir'] = strtoupper($filters['sort_Dir']);
-                    if (!in_array($filters['sort_Dir'], array('ASC', 'DESC'))) {
+                    if (!in_array($filters['sort_Dir'], ['ASC', 'DESC'])) {
                         $filters['sort_Dir'] = 'ASC';
                     }
                 }
 
                 if (empty($select)) {
-                    $select = array('*');
+                    $select = ['*'];
                 }
 
                 $query  = "SELECT " . implode(', ', $select) . " " . $this->buildQuery($filters);
@@ -226,11 +226,11 @@ class SessionClass extends Table
             $id = $this->id;
         }
 
-        $groups = array();
+        $groups = [];
 
         if ($id) {
             $qcGroups = new SessionClassGroup($this->_db);
-            foreach ($qcGroups->find('list', array('class_id' => $id)) as $group) {
+            foreach ($qcGroups->find('list', ['class_id' => $id]) as $group) {
                 $groups[] = $group->group_id;
             }
         }
@@ -244,10 +244,10 @@ class SessionClass extends Table
      * @param   array  $filters  Start and limit, needed for pagination
      * @return  array  Return password rule records
      */
-    public function setGroupIds($groups = array())
+    public function setGroupIds($groups = [])
     {
         if (!is_array($groups)) {
-            $groups = array($groups);
+            $groups = [$groups];
         }
         $groups = array_map('intval', $groups);
 

@@ -16,22 +16,22 @@ $this->css();
 
 $total = 0;
 $avg   = 0;
-$distribution = array(
+$distribution = [
     0 => 0,
     1 => 0,
     2 => 0,
     3 => 0,
     4 => 0,
     5 => 0
-);
+];
 
 $ratings = \Components\Courses\Models\Comment::all()
     ->whereEquals('item_id', $this->course->get('id'))
     ->whereEquals('item_type', 'courses')
     ->whereEquals('parent', 0)
-    ->whereEquals('state', array(
+    ->whereEquals('state', [
         Components\Courses\Models\Comment::STATE_PUBLISHED
-    ))
+    ])
     ->rows();
 
 if ($ratings) {

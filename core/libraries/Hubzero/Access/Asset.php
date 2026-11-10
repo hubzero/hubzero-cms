@@ -41,28 +41,28 @@ class Asset extends Nested
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'title' => 'notempty',
         'name'  => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'parent_id'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is touched
      *
      * @var  array
      **/
-    public $always = array(
+    public $always = [
         'rules'
-    );
+    ];
 
     /**
      * Sets up additional custom rules

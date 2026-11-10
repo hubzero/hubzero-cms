@@ -64,14 +64,14 @@ class Sync extends \Hubzero\Base\Obj
      */
     public function getStatus()
     {
-        $props = array(
+        $props = [
             'service' => $this->get('service'),
             'status'  => $this->get('status'),
             'message' => $this->get('message'),
             'error'   => $this->getError(),
             'output'  => $this->get('output'),
             'auto'    => $this->get('auto')
-        );
+        ];
         return $props;
     }
 
@@ -128,14 +128,14 @@ class Sync extends \Hubzero\Base\Obj
         $this->_connect->getAPI($service, $projectOwner);
 
         // Collectors
-        $locals        = array();
-        $remotes       = array();
-        $localRenames  = array();
-        $localFolders  = array();
-        $remoteFolders = array();
-        $deletes       = array();
-        $timedRemotes  = array();
-        $newRemotes    = array();
+        $locals        = [];
+        $remotes       = [];
+        $localRenames  = [];
+        $localFolders  = [];
+        $remoteFolders = [];
+        $deletes       = [];
+        $timedRemotes  = [];
+        $newRemotes    = [];
 
         // Sync start time
         $startTime =  date('c');
@@ -172,13 +172,13 @@ class Sync extends \Hubzero\Base\Obj
         $fromLocal = ($synced == $lastLocalChange || !$lastLocalChange) ? $synced : $lastLocalChange;
 
         // Get all local changes since last sync
-        $params = array(
+        $params = [
             'localPath'    => $localPath,
             'fromLocal'    => $fromLocal,
             'localDir'     => $localDir,
             'localRenames' => $localRenames,
             'connections'  => $connections
-        );
+        ];
         $locals = $this->model->repo()->getChanges($params);
 
         // Record sync status
@@ -509,7 +509,7 @@ class Sync extends \Hubzero\Base\Obj
                 $match = !empty($locals)
                     && isset($locals[$filename])
                     && $remote['type'] == $locals[$filename]['type']
-                    ? $locals[$filename] : array();
+                    ? $locals[$filename] : [];
 
                 // Check for match in local changes
                 // Remote usually prevails, unless it's older than last synced remote change
@@ -550,10 +550,10 @@ class Sync extends \Hubzero\Base\Obj
                 $local_dir = dirname($filename) != '.' ? dirname($filename) : '';
                 if ($remote['status'] != 'D' && $local_dir && !is_dir($this->_path . DS . $local_dir)) {
                     // Set params
-                    $params = array(
+                    $params = [
                         'newDir' => $local_dir, //$this->_path . DS . $local_dir
                         'author' => $author
-                    );
+                    ];
                     $created = $this->model->repo()->makeDirectory($params);
                     if (!$created) {
                         $output .= '[error] failed to provision local directory for: ' . $filename . "\n";
@@ -566,12 +566,12 @@ class Sync extends \Hubzero\Base\Obj
                 if ($remote['status'] == 'D') {
                     if (file_exists($this->_path . DS . $filename)) {
                         // Params for repo call
-                        $params = array(
+                        $params = [
                             'item'   => $filename,
                             'type'   => $remote['type'],
                             'author' => $author,
                             'date'   => $cDate
-                        );
+                        ];
                         // Delete local file or directory
                         if ($deleted = $this->model->repo()->deleteItem($params)) {
                             $output .= '-- deleted from local: ' . $filename . "\n";
@@ -601,13 +601,13 @@ class Sync extends \Hubzero\Base\Obj
                         // Rename
                         if ($remote['status'] == 'R') {
                             // Params for repo call
-                            $params = array(
+                            $params = [
                                 'from'   => $remote['rename'],
                                 'to'     => $filename,
                                 'type'   => $remote['type'],
                                 'author' => $author,
                                 'date'   => $cDate
-                            );
+                            ];
                             if ($updated = $this->model->repo()->rename($params)) {
                                 $output .= '>> renamed item locally: ' . $filename . "\n";
                             }
@@ -615,11 +615,11 @@ class Sync extends \Hubzero\Base\Obj
                             // Move
                             // Params for repo call
                             $target = dirname($filename) == '.' ? '' : dirname($filename);
-                            $params = array(
+                            $params = [
                                 'item'      => $remote['rename'],
                                 'targetDir' => $target,
                                 'type'      => $remote['type']
-                            );
+                            ];
                             if ($updated = $this->model->repo()->moveItem($params)) {
                                 $output .= '>> moved item locally: ' . $filename . "\n";
                             }
@@ -655,11 +655,11 @@ class Sync extends \Hubzero\Base\Obj
                                     )
                                 ) {
                                     // Checkin into repo
-                                    $this->model->repo()->call('checkin', array(
-                                        'file'   => $this->model->repo()->getMetadata($filename, 'file', array()),
+                                    $this->model->repo()->call('checkin', [
+                                        'file'   => $this->model->repo()->getMetadata($filename, 'file', []),
                                         'author' => $author,
                                         'date'   => $cDate
-                                        ));
+                                        ]);
 
                                     $output .= ' ! versions differ: remote md5 ' . $remote['md5'] . ', local md5' . $md5Checksum . "\n";
                                     $output .= '++ sent update from remote to local: ' . $filename . "\n";
@@ -678,10 +678,10 @@ class Sync extends \Hubzero\Base\Obj
                         // Add item from remote to local (new)
                         if ($remote['type'] == 'folder') {
                             // Set params
-                            $params = array(
+                            $params = [
                                 'newDir' => $this->_path . DS . $filename,
                                 'author' => $author
-                            );
+                            ];
 
                             if ($created = $this->model->repo()->makeDirectory($params)) {
                                 $output .= '++ created local folder: ' . $filename . "\n";
@@ -713,11 +713,11 @@ class Sync extends \Hubzero\Base\Obj
                                 )
                             ) {
                                 // Checkin into repo
-                                $this->model->repo()->call('checkin', array(
-                                    'file'   => $this->model->repo()->getMetadata($filename, 'file', array()),
+                                $this->model->repo()->call('checkin', [
+                                    'file'   => $this->model->repo()->getMetadata($filename, 'file', []),
                                     'author' => $author,
                                     'date'   => $cDate
-                                    ));
+                                    ]);
 
                                 $output .= '++ added new file to local: ' . $filename . "\n";
                                 $updated = 1;
@@ -944,13 +944,13 @@ class Sync extends \Hubzero\Base\Obj
         $projectId = $this->model->get('id');
         $remotes = $objRFile->getRemoteConnections($projectId, $service);
         // Get local directory repo information
-        $fileParams = array('showAll' => $showAll,'subdir' => "");
+        $fileParams = ['showAll' => $showAll,'subdir' => ""];
         $localFiles = $this->model->repo()->filelist($fileParams);
         $dirParams = $fileParams;
         $dirParams['dirsOnly'] = true;
         $localDirectories = $this->model->repo()->filelist($dirParams);
         $locals = array_merge($localFiles, $localDirectories);
-        $localIds = array();
+        $localIds = [];
         $localIds = array_map(function ($file) {
             $path = $file->get('localPath');
             return $path;

@@ -90,7 +90,7 @@ final class WrappedListener
                 return $this->listener->$method($args[0], $args[1], $args[2], $args[3]);
 
             default:
-                return call_user_func_array(array($this->listener, $method), $args);
+                return call_user_func_array([$this->listener, $method], $args);
         }
     }
 }

@@ -202,7 +202,7 @@ namespace Hubzero\Component\Tests {
             $this->headers['Vary'] = 'X-Inertia';
         }
 
-        protected function sendAndTerminate(int $status, array $headers = array(), ?string $body = null): void
+        protected function sendAndTerminate(int $status, array $headers = [], ?string $body = null): void
         {
             if ($this->terminated) {
                 return;
@@ -237,7 +237,7 @@ namespace Hubzero\Component\Tests {
 
         public function renderTask(): ?array
         {
-            return $this->inertiaRender('Test/Page', array('ok' => true));
+            return $this->inertiaRender('Test/Page', ['ok' => true]);
         }
 
         public function mutateTask(): void
@@ -260,7 +260,7 @@ namespace Hubzero\Component\Tests {
                 InertiaFlowAppStub::reset();
             }
 
-            $request = new InertiaFlowRequestStub($headers, $method, array('REQUEST_URI' => $uri));
+            $request = new InertiaFlowRequestStub($headers, $method, ['REQUEST_URI' => $uri]);
             \App::set('request', $request);
             \App::set('response', new InertiaFlowResponseStub());
 
@@ -277,7 +277,7 @@ namespace Hubzero\Component\Tests {
         #[Test]
         public function jsonRenderFlowReturns200WithInertiaAndVaryHeaders(): void
         {
-            $service = $this->bootstrap(array('X-Inertia' => 'true'), 'GET', '/component/render');
+            $service = $this->bootstrap(['X-Inertia' => 'true'], 'GET', '/component/render');
             $controller = new InertiaFlowController();
 
             $result = $controller->renderTask();
@@ -293,7 +293,7 @@ namespace Hubzero\Component\Tests {
         #[Test]
         public function fullPageVisitFlowReturnsPageEnvelopeWithoutTerminatingResponse(): void
         {
-            $service = $this->bootstrap(array(), 'GET', '/component/render');
+            $service = $this->bootstrap([], 'GET', '/component/render');
             $controller = new InertiaFlowController();
 
             $result = $controller->renderTask();
@@ -309,7 +309,7 @@ namespace Hubzero\Component\Tests {
         #[Test]
         public function mutationRedirectFlowNormalizes302To303(): void
         {
-            $service = $this->bootstrap(array('X-Inertia' => 'true'), 'POST', '/component/mutate');
+            $service = $this->bootstrap(['X-Inertia' => 'true'], 'POST', '/component/mutate');
             $controller = new InertiaFlowController();
 
             $controller->mutateTask();
@@ -323,7 +323,7 @@ namespace Hubzero\Component\Tests {
         public function locationMismatchFlowReturns409WithInertiaLocationHeader(): void
         {
             $service = $this->bootstrap(
-                array('X-Inertia' => 'true', 'X-Inertia-Version' => 'old'),
+                ['X-Inertia' => 'true', 'X-Inertia-Version' => 'old'],
                 'GET',
                 '/component/render',
                 'new'

@@ -20,12 +20,12 @@ $code = (is_numeric($this->error->getCode()) && $this->error->getCode() > 100 ? 
 
 $browser = new \Hubzero\Browser\Detector();
 
-$cls = array(
+$cls = [
     'nojs',
     $this->direction,
     $browser->name(),
     $browser->name() . $browser->major()
-);
+];
 ?>
 <!DOCTYPE html>
 <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>"

@@ -42,10 +42,10 @@ class Message extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'title'   => 'notempty',
         'message' => 'notempty'
-    );
+    ];
 
     /**
      * Get message

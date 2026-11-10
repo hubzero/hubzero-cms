@@ -20,7 +20,7 @@ class Memory implements MessageStore
      *
      * @var  array
      */
-    private $messages = array();
+    private $messages = [];
 
     /**
      * Constructor
@@ -29,7 +29,7 @@ class Memory implements MessageStore
      */
     public function __construct()
     {
-        $this->messages = array();
+        $this->messages = [];
     }
 
     /**
@@ -58,7 +58,7 @@ class Memory implements MessageStore
     {
         $key = $this->key($domain);
 
-        $messages = isset($this->messages[$key]) ? $this->messages[$key] : array();
+        $messages = isset($this->messages[$key]) ? $this->messages[$key] : [];
 
         if (count($messages)) {
             $this->clear($domain);
@@ -77,7 +77,7 @@ class Memory implements MessageStore
     {
         $key = $this->key($domain);
 
-        $this->messages[$key] = array();
+        $this->messages[$key] = [];
     }
 
     /**
@@ -90,7 +90,7 @@ class Memory implements MessageStore
     {
         $key = $this->key($domain);
 
-        $messages = isset($this->messages[$key]) ? $this->messages[$key] : array();
+        $messages = isset($this->messages[$key]) ? $this->messages[$key] : [];
 
         return count($messages);
     }

@@ -58,7 +58,7 @@ class Textfieldfilter extends Filter
         }
         $facetString = '(' . $filterField . ':(' . $textValue . '))';
         $queryName = ucfirst($filterField) . '_' . $this->get('id');
-        $query->addFilter($queryName, $facetString, array(strtolower($filterField) . '_type'));
+        $query->addFilter($queryName, $facetString, [strtolower($filterField) . '_type']);
         return true;
     }
 }

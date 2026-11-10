@@ -41,7 +41,7 @@ class Word extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'word' => 'notempty'
-    );
+    ];
 }

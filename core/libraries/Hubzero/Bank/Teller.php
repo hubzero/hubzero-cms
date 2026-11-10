@@ -319,7 +319,7 @@ class Teller extends Obj
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _saveTransaction($type, $amount, $desc, $cat, $ref)
     {
-        $transaction = Transaction::blank()->set(array(
+        $transaction = Transaction::blank()->set([
             'uid'         => $this->uid,
             'type'        => $type,
             'amount'      => $amount,
@@ -327,7 +327,7 @@ class Teller extends Obj
             'category'    => $cat,
             'referenceid' => $ref,
             'balance'     => $this->balance
-        ));
+        ]);
 
         if (!$transaction->save()) {
             $this->setError($transaction->getError());

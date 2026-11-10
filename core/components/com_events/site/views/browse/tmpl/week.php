@@ -71,7 +71,7 @@ $this->css();
                     <div class="ewrap">
                 <?php
                 if (count($rows['events']) > 0) {
-                    $e = array();
+                    $e = [];
 
                     foreach ($rows['events'] as $row) {
                         /*$event_up = new \Components\Events\Helpers\EventsDate( $row->publish_up );

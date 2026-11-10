@@ -43,28 +43,28 @@ class Campaign extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'title' => 'notempty'
-    );
+    ];
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'campaign_date',
         'secret'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      **/
-    public $always = array(
+    public $always = [
         'modified',
         'modified_by',
-    );
+    ];
 
     /**
      * Generates automatic current date field value for campaign_date

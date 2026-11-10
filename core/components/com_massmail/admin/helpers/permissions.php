@@ -40,7 +40,7 @@ class Permissions
 
         $result = new Obj();
 
-        $actions = array(
+        $actions = [
             'core.admin',
             'core.manage',
             'core.create',
@@ -52,7 +52,7 @@ class Permissions
             'core.override',
             'core.approve',
             'core.release'
-        );
+        ];
 
         foreach ($actions as $action) {
             $result->set($action, User::authorise($action, $assetName));

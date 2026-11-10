@@ -120,7 +120,7 @@ class Job extends Table
      * @return  object
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public function get_openings($filters = array(), $uid = 0, $admin = 0, $subscription = '', $count = 0)
+    public function get_openings($filters = [], $uid = 0, $admin = 0, $subscription = '', $count = 0)
     {
         $defaultsort = isset($filters['defaultsort']) && $filters['defaultsort'] == 'type' ? 'type' : 'category';
         $category    = isset($filters['category']) ? $filters['category'] : 'all';
@@ -209,7 +209,7 @@ class Job extends Table
 
             if (isset($filters['search']) && trim($filters['search'])) {
                 $words   = explode(',', $filters['search']);
-                $s = array();
+                $s = [];
                 foreach ($words as $word) {
                     if (trim($word) != '') {
                         $s[] = trim($word);

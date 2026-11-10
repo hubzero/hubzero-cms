@@ -18,7 +18,7 @@ trait ErrorBag
      *
      * @var  array
      **/
-    private $errors = array();
+    private $errors = [];
 
     /**
      * Sets all errors at once, overwritting any existing errors

@@ -88,6 +88,6 @@ class Migration20260603000000PlgAuthenticationPucas extends Base
 
         $params = json_decode($current, true);
 
-        return is_array($params) ? $params : array();
+        return is_array($params) ? $params : [];
     }
 }

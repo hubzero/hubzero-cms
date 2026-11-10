@@ -145,7 +145,7 @@ abstract class Cart
      * @param   bool   $completedOnly
      * @return  mixed
      */
-    public function getTransactions($filters = array(), $completedOnly = true)
+    public function getTransactions($filters = [], $completedOnly = true)
     {
         $filters['crtId'] = $this->crtId;
         return self::getAllTransactions($filters, $completedOnly);
@@ -158,7 +158,7 @@ abstract class Cart
      * @param   bool   $completedOnly
      * @return  mixed
      */
-    public static function getAllTransactions($filters = array(), $completedOnly = true)
+    public static function getAllTransactions($filters = [], $completedOnly = true)
     {
         $db = App::get('db');
 
@@ -177,7 +177,7 @@ abstract class Cart
         }
         $sql .= " LEFT JOIN `#__cart_transaction_info` ti ON (ti.`tId` = t.`tId`)";
 
-        $where = array();
+        $where = [];
 
         if (isset($filters['search']) && $filters['search']) {
             $sql .= " LEFT JOIN `#__cart_transaction_items` tis ON (t.tId = tis.tId)";
@@ -691,7 +691,7 @@ abstract class Cart
         if (empty($skuInfo)) {
             if (!$verifySkuInfo) {
                 foreach ($allSkuInfo as $sId => $skuInfo) {
-                    $info = array();
+                    $info = [];
                     $info['info'] = new \stdClass();
                     $info['meta'] = false;
 
@@ -859,7 +859,7 @@ abstract class Cart
         // We can check what changes have been made here and return them
 
         if ($returnChanges) {
-            $transactionItemsChanges = array();
+            $transactionItemsChanges = [];
         }
 
         foreach ($tiInfo as $sId => $sInfo) {
@@ -868,7 +868,7 @@ abstract class Cart
                 continue;
             }
 
-            $setSql = array();
+            $setSql = [];
             foreach ($sInfo as $key => $val) {
                 // Handle each update, except for meta
                 if ($key != 'meta') {
@@ -876,7 +876,7 @@ abstract class Cart
 
                     // note the changes
                     if ($returnChanges && $transactionItems[$sId]->$key != $val) {
-                        $transactionItemsChanges[] = array('object' => 'cart_transaction_item', 'sId' => $sId, 'key' => $key, 'old' => $transactionItems[$sId]->$key, 'new' => $val);
+                        $transactionItemsChanges[] = ['object' => 'cart_transaction_item', 'sId' => $sId, 'key' => $key, 'old' => $transactionItems[$sId]->$key, 'new' => $val];
                     }
                 } else {
                     // get the current object to save the other values that are not being saved
@@ -890,7 +890,7 @@ abstract class Cart
                         // note the changes
                         $current = isset($currentMetaObj->$k) ? $currentMetaObj->$k : null;
                         if ($returnChanges && $current != $v) {
-                            $transactionItemsChanges[] = array('object' => 'cart_transaction_item', 'sId' => $sId, 'key' => array('tiMeta' => $k), 'old' => $current, 'new' => $v);
+                            $transactionItemsChanges[] = ['object' => 'cart_transaction_item', 'sId' => $sId, 'key' => ['tiMeta' => $k], 'old' => $current, 'new' => $v];
                         }
 
                         $currentMetaObj->$k = $v;
@@ -952,16 +952,16 @@ abstract class Cart
         if ($returnChanges) {
             // get transaction info to check the changes against
             $currerntTransactionInfo = self::getTransactionInfo($tId);
-            $transactionChanges = array();
+            $transactionChanges = [];
         }
 
-        $setSql = array();
+        $setSql = [];
         foreach ($tInfo as $key => $val) {
             $setSql[] = '`' . $key . '` = ' . $db->quote($val);
 
             // note the changes
             if ($returnChanges && $currerntTransactionInfo->$key != $val) {
-                $transactionChanges[] = array('object' => 'cart_transaction_info', 'tId' => $tId, 'key' => $key, 'old' => $currerntTransactionInfo->$key, 'new' => $val);
+                $transactionChanges[] = ['object' => 'cart_transaction_info', 'tId' => $tId, 'key' => $key, 'old' => $currerntTransactionInfo->$key, 'new' => $val];
             }
         }
 
@@ -1059,7 +1059,7 @@ abstract class Cart
         $perks = unserialize($perks);
 
         // remove each coupon from the cart
-        $couponIds = array();
+        $couponIds = [];
         foreach ($perks as $k => $val) {
             if ($k != 'info') {
                 if (is_array($val)) {

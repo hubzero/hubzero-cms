@@ -22,7 +22,7 @@ class WinCache extends None
      * @param   array  $options
      * @return  void
      */
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
         parent::__construct($options);
 
@@ -169,7 +169,7 @@ class WinCache extends None
 
         $allinfo = wincache_ucache_info();
 
-        $data = array();
+        $data = [];
 
         foreach ($allinfo['cache_entries'] as $key) {
             $name    = $key['key_name'];

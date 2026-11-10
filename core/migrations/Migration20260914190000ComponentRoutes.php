@@ -44,7 +44,7 @@ class Migration20260914190000ComponentRoutes extends Base
      *
      * @var  array
      **/
-    protected $notPages = array(
+    protected $notPages = [
         'com_content',
         'com_cron',
         'com_dataviewer',
@@ -57,7 +57,7 @@ class Migration20260914190000ComponentRoutes extends Base
         'com_redirect',
         'com_saml',
         'com_system',
-    );
+    ];
 
     /**
      * Up

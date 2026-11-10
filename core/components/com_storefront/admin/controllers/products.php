@@ -35,7 +35,7 @@ class Products extends AdminController
     public function displayTask()
     {
         // Get filters
-        $this->view->filters = array(
+        $this->view->filters = [
             // Get sorting variables
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
@@ -72,7 +72,7 @@ class Products extends AdminController
                 0,
                 'int'
             )
-        );
+        ];
 
         $obj = new Archive();
 
@@ -106,7 +106,7 @@ class Products extends AdminController
         $this->view->skus = $skus;
 
         // access groups
-        $accessGroups = array();
+        $accessGroups = [];
         if ($this->config->get('productAccess')) {
             $ag = \Hubzero\Access\Group::all()->rows();
             $accessGroups[0] = 'None';
@@ -157,10 +157,10 @@ class Products extends AdminController
         $this->view->types = $obj->getProductTypes();
 
         // Get collections
-        $this->view->collections = $obj->collections('list', array('sort' => 'cType'));
+        $this->view->collections = $obj->collections('list', ['sort' => 'cType']);
 
         // Get all option groups
-        $this->view->optionGroups = $obj->optionGroups('list', array('sort' => 'ogName'));
+        $this->view->optionGroups = $obj->optionGroups('list', ['sort' => 'ogName']);
 
         if (is_object($row)) {
             $id = $row->getId();
@@ -168,7 +168,7 @@ class Products extends AdminController
             $this->view->task = 'edit';
         } else {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
 
             if (is_array($id) && !empty($id)) {
                 $id = $id[0];
@@ -234,7 +234,7 @@ class Products extends AdminController
         Request::checkToken();
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         if (isset($fields['publish_up']) && $fields['publish_up'] != '') {
             $fields['publish_up'] = Date::of($fields['publish_up'], Config::get('offset'))->toSql();
@@ -278,12 +278,12 @@ class Products extends AdminController
             }
 
             if (!isset($fields['collections'])) {
-                $fields['collections'] = array();
+                $fields['collections'] = [];
             }
             $product->setCollections($fields['collections']);
 
             if (!isset($fields['optionGroups'])) {
-                $fields['optionGroups'] = array();
+                $fields['optionGroups'] = [];
             }
             $product->setOptionGroups($fields['optionGroups']);
             $product->setPublishTime($fields['publish_up'], $fields['publish_down']);
@@ -293,13 +293,13 @@ class Products extends AdminController
             // wait until save() has given a new product its id (before, every
             // new product failed: pId '' is not an integer on strict SQL)
             if (isset($fields['pQtyTxt'])) {
-                $product->setMeta(array('qtyTxt' => $fields['pQtyTxt']));
+                $product->setMeta(['qtyTxt' => $fields['pQtyTxt']]);
             }
 
-            $accessgroups = Request::getArray('accessgroupsyes', array(), 'post');
+            $accessgroups = Request::getArray('accessgroupsyes', [], 'post');
             $product->setAccessGroups($accessgroups, 'include');
 
-            $accessgroups = Request::getArray('accessgroupsno', array(), 'post');
+            $accessgroups = Request::getArray('accessgroupsno', [], 'post');
             $product->setAccessGroups($accessgroups, 'exclude');
         } catch (\Exception $e) {
             Notify::error($e->getMessage());
@@ -352,9 +352,9 @@ class Products extends AdminController
                 Request::setVar('hidemainmenu', 1);
 
                 // Incoming
-                $id = Request::getArray('id', array());
+                $id = Request::getArray('id', []);
                 if (!is_array($id) && !empty($id)) {
-                    $id = array($id);
+                    $id = [$id];
                 }
                 $this->view->pIds = $id;
 
@@ -522,8 +522,8 @@ class Products extends AdminController
      */
     public function stateTask($state = 0)
     {
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for an ID
         if (count($ids) < 1) {

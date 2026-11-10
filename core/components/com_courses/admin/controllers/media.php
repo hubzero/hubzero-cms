@@ -60,7 +60,7 @@ class Media extends AdminController
         // Ensure we have an ID to work with
         $listdir = Request::getInt('listdir', 0);
         if (!$listdir) {
-            echo json_encode(array('error' => Lang::txt('COM_COURSES_ERROR_NO_ID')));
+            echo json_encode(['error' => Lang::txt('COM_COURSES_ERROR_NO_ID')]);
             return;
         }
 
@@ -87,30 +87,30 @@ class Media extends AdminController
             $file = $_FILES['qqfile']['name'];
             $size = (int) $_FILES['qqfile']['size'];
         } else {
-            echo json_encode(array('error' => Lang::txt('COM_COURSES_ERROR_FILE_NOT_FOUND')));
+            echo json_encode(['error' => Lang::txt('COM_COURSES_ERROR_FILE_NOT_FOUND')]);
             return;
         }
 
         if (!is_dir($path)) {
             if (!Filesystem::makeDirectory($path)) {
-                echo json_encode(array('error' => Lang::txt('COM_COURSES_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH')));
+                echo json_encode(['error' => Lang::txt('COM_COURSES_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH')]);
                 return;
             }
         }
 
         if (!is_writable($path)) {
-            echo json_encode(array('error' => Lang::txt('COM_COURSES_ERROR_UPLOAD_DIRECTORY_IS_NOT_WRITABLE')));
+            echo json_encode(['error' => Lang::txt('COM_COURSES_ERROR_UPLOAD_DIRECTORY_IS_NOT_WRITABLE')]);
             return;
         }
 
         //check to make sure we have a file and its not too big
         if ($size == 0) {
-            echo json_encode(array('error' => Lang::txt('COM_COURSES_ERROR_EMPTY_FILE')));
+            echo json_encode(['error' => Lang::txt('COM_COURSES_ERROR_EMPTY_FILE')]);
             return;
         }
         if ($size > $sizeLimit) {
             $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
-            echo json_encode(array('error' => Lang::txt('COM_COURSES_ERROR_FILE_TOO_LARGE', $max)));
+            echo json_encode(['error' => Lang::txt('COM_COURSES_ERROR_FILE_TOO_LARGE', $max)]);
             return;
         }
 
@@ -133,7 +133,7 @@ class Media extends AdminController
         $allowed = array_values(array_filter(explode(',', $mediaConfig->get('upload_extensions'))));
 
         if (!empty($allowed) && !in_array(strtolower($ext), $allowed)) {
-            echo json_encode(array('error' => Lang::txt('COM_COURSES_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed))));
+            echo json_encode(['error' => Lang::txt('COM_COURSES_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed))]);
             return;
         }
 
@@ -156,17 +156,17 @@ class Media extends AdminController
         if (!Filesystem::isSafe($file)) {
             Filesystem::delete($file);
 
-            echo json_encode(array('error' => Lang::txt('COM_COURSES_ERROR_FILE_UNSAFE')));
+            echo json_encode(['error' => Lang::txt('COM_COURSES_ERROR_FILE_UNSAFE')]);
             return;
         }
 
         //echo result
-        echo json_encode(array(
+        echo json_encode([
             'success'   => true,
             'file'      => $filename . '.' . $ext,
             'directory' => str_replace(PATH_APP, '', $path),
             'id'        => $listdir
-        ));
+        ]);
     }
 
     /**
@@ -224,7 +224,7 @@ class Media extends AdminController
             }
 
             // Incoming file
-            $file = Request::getArray('upload', array(), 'files');
+            $file = Request::getArray('upload', [], 'files');
             if (empty($file) || !$file['name']) {
                 $this->setError(Lang::txt('COM_COURSES_ERROR_NO_FILE'));
                 $this->displayTask();
@@ -420,7 +420,7 @@ class Media extends AdminController
         // Get list of directories
         $dirs = $this->_recursiveListDir($this->view->path);
 
-        $folders   = array();
+        $folders   = [];
         $folders[] = Html::select('option', '/');
         if ($dirs) {
             foreach ($dirs as $dir) {
@@ -472,8 +472,8 @@ class Media extends AdminController
         // Build the path
         $path = $this->_buildUploadPath($this->view->listdir, $this->view->subdir);
 
-        $folders = array();
-        $docs    = array();
+        $folders = [];
+        $docs    = [];
 
         if (is_dir($path)) {
             // Loop through all files and separate them into arrays of images, folders, and other
@@ -525,8 +525,8 @@ class Media extends AdminController
      */
     private function _recursiveListDir($base)
     {
-        static $filelist = array();
-        static $dirlist  = array();
+        static $filelist = [];
+        static $dirlist  = [];
 
         if (is_dir($base)) {
             $dh = opendir($base);

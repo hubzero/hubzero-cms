@@ -80,10 +80,10 @@ class Doi extends Plugin
     public function onCitationAfterSave()
     {
         // Associations and citation from citation component admin interface
-        $assocParams = Request::getArray('assocs', array(), 'post');
+        $assocParams = Request::getArray('assocs', [], 'post');
         $citation = array_map(
             'trim',
-            Request::getArray('citation', array(), 'post')
+            Request::getArray('citation', [], 'post')
         );
 
         if (!empty($assocParams)) {
@@ -224,14 +224,14 @@ class Doi extends Plugin
             $url = rtrim($this->_configs->dataciteServiceURL, '/') . '/metadata/' . $doi;
 
             $ch = curl_init($url);
-            $options = array(
+            $options = [
                 CURLOPT_URL             => $url,
                 CURLOPT_USERPWD         => $this->_configs->dataciteUserPW,
                 CURLOPT_RETURNTRANSFER  => true,
                 CURLOPT_HTTPHEADER      => [
                     'Content-Type:text/plain;charset=UTF-8'
                 ],
-            );
+            ];
 
             curl_setopt_array($ch, $options);
 
@@ -496,7 +496,7 @@ class Doi extends Plugin
         curl_setopt(
             $ch,
             CURLOPT_HTTPHEADER,
-            array('Content-Type:text/plain;charset=UTF-8')
+            ['Content-Type:text/plain;charset=UTF-8']
         );
         curl_setopt($ch, CURLOPT_FAILONERROR, true);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');

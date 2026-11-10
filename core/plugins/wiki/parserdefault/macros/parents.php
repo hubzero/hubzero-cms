@@ -23,7 +23,7 @@ class Parents extends WikiMacro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['wiki'] = 'Inserts a nested list of ancestor pages (parents) of the current page into the output. '
             . 'Accepts one parameter:' . "\n"
             . ' * \'\'\'depth:\'\'\' how deep to mine for pages. Default is one level.';
@@ -129,7 +129,7 @@ class Parents extends WikiMacro
     {
         $uri = explode('/', $scope);
 
-        $pages = array();
+        $pages = [];
         if (!is_array($uri)) {
             return $pages;
         }

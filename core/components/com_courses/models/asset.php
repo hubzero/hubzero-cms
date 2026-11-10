@@ -52,12 +52,12 @@ class Asset extends Base
      *
      * @var array
      */
-    protected static $_aux_tablekeys = array(
-        'progress_factors' => array(
+    protected static $_aux_tablekeys = [
+        'progress_factors' => [
             'id',
             'section_id'
-        )
-    );
+        ]
+    ];
 
     /**
      * Constructor
@@ -101,7 +101,7 @@ class Asset extends Base
                 $key = str_replace(' ', '', $key);
                 $tbl = "Components\\Courses\\Tables\\{$key}";
                 $tbl = new $tbl($this->_db);
-                $aux = array();
+                $aux = [];
                 foreach (self::$_aux_tablekeys[$parts[0]] as $item) {
                     $k = $item;
                     if ($item == 'id') {
@@ -145,7 +145,7 @@ class Asset extends Base
 
         // Override path for exam type assets
         // Override path for url/link type assets
-        if (in_array(strtolower($this->get('type')), array('form', 'link', 'url'))) {
+        if (in_array(strtolower($this->get('type')), ['form', 'link', 'url'])) {
             $path    = $this->get('url');
             $content = $this->get('content');
 
@@ -196,7 +196,7 @@ class Asset extends Base
                 $tbl = new $tbl($this->_db);
 
                 if ($v == 'delete') {
-                    $aux = array();
+                    $aux = [];
                     foreach (self::$_aux_tablekeys[$kname] as $item) {
                         $k = $item;
                         if ($item == 'id') {
@@ -316,11 +316,11 @@ class Asset extends Base
             $layout = $type;
         }
 
-        $view = new \Hubzero\Component\View(array(
+        $view = new \Hubzero\Component\View([
             'base_path' => PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'site',
             'name'      => 'assets',
             'layout'    => $layout
-        ));
+        ]);
         $view->asset   = $this->_tbl;
         $view->model   = $this;
         $view->course  = $course;
@@ -406,7 +406,7 @@ class Asset extends Base
      * @param   array $filters Filters to apply to results query
      * @return  array
      */
-    public function parents($filters = array())
+    public function parents($filters = [])
     {
         if (!isset($filters['asset_id'])) {
             $filters['asset_id'] = (int) $this->get('id');
@@ -419,7 +419,7 @@ class Asset extends Base
         }
 
         if (!($results = $tbl->find($filters))) {
-            $results = array();
+            $results = [];
         }
 
         return $results;
@@ -435,10 +435,10 @@ class Asset extends Base
         if (isset($this->units)) {
             return $this->units;
         } else {
-            $this->units = array();
+            $this->units = [];
         }
 
-        $assets = $this->_tbl->find(array('w' => array('asset_id' => $this->get('id'))));
+        $assets = $this->_tbl->find(['w' => ['asset_id' => $this->get('id')]]);
         if ($assets && count($assets) > 0) {
             foreach ($assets as $asset) {
                 if (isset($asset->unit_id)) {
@@ -534,13 +534,13 @@ class Asset extends Base
             if (!is_dir($uploadDirectory)) {
                 if (!Filesystem::makeDirectory($uploadDirectory, 0755, true)) {
                     Log::debug(var_export('Server error. Unable to create upload directory', true));
-                    return array('error' => 'Server error. Unable to create upload directory');
+                    return ['error' => 'Server error. Unable to create upload directory'];
                 }
             }
 
             if (!is_writable($uploadDirectory)) {
                 Log::debug(var_export('Server error. Upload directory is not writable', true));
-                return array('error' => 'Server error. Upload directory isn\'t writable');
+                return ['error' => 'Server error. Upload directory isn\'t writable'];
             }
 
             // Get the final file path

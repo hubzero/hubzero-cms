@@ -172,20 +172,20 @@ class Domainrestriction extends Plugin
      */
     private function blackwhite($ip)
     {
-        $lists = array(
-            'whitelist'    => array(),
-            'blacklist'    => array(),
-            'whitelistnet' => array(),
-            'blacklistnet' => array(),
-        );
+        $lists = [
+            'whitelist'    => [],
+            'blacklist'    => [],
+            'whitelistnet' => [],
+            'blacklistnet' => [],
+        ];
 
-        foreach (array('whitelist', 'blacklist') as $name) {
+        foreach (['whitelist', 'blacklist'] as $name) {
             $default = ($name == 'blacklist')
                 ? Lang::txt('PLG_USER_DOMAINRESTRICTION_DEFAULT_BLACKLIST')
                 : Lang::txt('PLG_USER_DOMAINRESTRICTION_DEFAULT_WHITELIST');
             $items = explode("\n", trim(str_replace(
-                array("\r", "\t", " "),
-                array('', '', ''),
+                ["\r", "\t", " "],
+                ['', '', ''],
                 $this->params->get($name, $default)
             )));
 
@@ -273,8 +273,8 @@ class Domainrestriction extends Plugin
     private function decision($allowed = false)
     {
         $ret = $allowed ?
-                $this->mailmatch(array('_tlds', '_domains', '_emails')) :
-                !$this->mailmatch(array('_badtlds', '_baddomains', '_bademails'));
+                $this->mailmatch(['_tlds', '_domains', '_emails']) :
+                !$this->mailmatch(['_badtlds', '_baddomains', '_bademails']);
         return $ret;
     }
 
@@ -284,7 +284,7 @@ class Domainrestriction extends Plugin
      * @param   array  $keys
      * @return  bool
      */
-    private function mailmatch($keys = array())
+    private function mailmatch($keys = [])
     {
         $ret = false;
 
@@ -312,12 +312,12 @@ class Domainrestriction extends Plugin
      */
     private function sortParams()
     {
-        foreach (array('tld', 'domain', 'email', 'badtld', 'baddomain', 'bademail') as $param) {
+        foreach (['tld', 'domain', 'email', 'badtld', 'baddomain', 'bademail'] as $param) {
             $paramvalue = $this->params->get($param, null);
             $arrayvar = '_' . $param . 's';
 
-            $this->{$arrayvar} = array();
-            $this->{$arrayvar} = array_map(array($this, 'clean'), explode(',', $paramvalue));
+            $this->{$arrayvar} = [];
+            $this->{$arrayvar} = array_map([$this, 'clean'], explode(',', $paramvalue));
 
             foreach ($this->{$arrayvar} as $key => $d) {
                 if (!strlen(trim($d))) {
@@ -370,7 +370,7 @@ class Domainrestriction extends Plugin
 
         $user = $this->getUser($user['username']);
 
-        $excludegroups = $this->params->get('excludegroup', array());
+        $excludegroups = $this->params->get('excludegroup', []);
         foreach ($user->groups as $group) {
             if (in_array($group, (array) $excludegroups)) {
                 return true;

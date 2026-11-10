@@ -45,7 +45,7 @@ class ImportHooks extends AdminController
     public function displayTask()
     {
         // Incoming
-        $filters = array(
+        $filters = [
             'sort' => Request::getState(
                 $this->_option . '.hooks.sort',
                 'filter_order',
@@ -56,7 +56,7 @@ class ImportHooks extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         // get all imports from archive
         $hooks = Hook::all()
@@ -90,7 +90,7 @@ class ImportHooks extends AdminController
 
         if (!($hook instanceof Hook)) {
             // get request vars
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id)) {
                 $id = (!empty($id)) ? $id[0] : 0;
             }
@@ -124,8 +124,8 @@ class ImportHooks extends AdminController
         }
 
         // get request vars
-        $data = Request::getArray('hook', array());
-        $file = Request::getArray('file', array(), 'FILES');
+        $data = Request::getArray('hook', []);
+        $file = Request::getArray('file', [], 'FILES');
 
         // The stored file name is written by the upload branch below and nowhere
         // else. Binding it from the request let a POST with no upload at all set
@@ -206,7 +206,7 @@ class ImportHooks extends AdminController
         }
 
         // get request vars
-        $id = Request::getArray('id', array());
+        $id = Request::getArray('id', []);
         if (is_array($id)) {
             $id = (!empty($id)) ? $id[0] : 0;
         }
@@ -247,8 +247,8 @@ class ImportHooks extends AdminController
         }
 
         // get request vars
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // loop through all ids posted
         $removed = 0;

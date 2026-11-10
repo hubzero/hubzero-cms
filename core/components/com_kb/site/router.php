@@ -25,7 +25,7 @@ class Router extends Base
      */
     public function build(&$query)
     {
-        $segments = array();
+        $segments = [];
 
         if (isset($query['task'])) {
             if ($query['task'] == 'article') {
@@ -86,7 +86,7 @@ class Router extends Base
      */
     public function parse(&$segments)
     {
-        $vars  = array();
+        $vars  = [];
 
         $vars['task'] = 'categories';
 

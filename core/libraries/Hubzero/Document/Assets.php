@@ -59,7 +59,7 @@ class Assets
 
         $ext = substr($image, $dot);
         $ext = strtolower($ext);
-        if (!in_array($ext, array('gif', 'jpg', 'jpe', 'jpeg', 'png', 'bmp'))) {
+        if (!in_array($ext, ['gif', 'jpg', 'jpe', 'jpeg', 'png', 'bmp'])) {
             return false;
         }
 
@@ -238,7 +238,7 @@ class Assets
             $template = self::app('template')->template;
         }
 
-        $paths = array();
+        $paths = [];
         $paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . $component . DS . 'images' . DS . $image;
         $paths[] = DS . 'components' . DS . $component . DS . 'assets' . ($dir ? DS . $dir : '') . DS . $image;
         $paths[] = DS . 'components' . DS . $component . DS . 'images' . DS . $image;
@@ -272,7 +272,7 @@ class Assets
             $template = self::app('template')->template;
         }
 
-        $paths = array();
+        $paths = [];
         $paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . $component . DS . $stylesheet;
         $paths[] = DS . 'components' . DS . $component . DS . 'assets' . ($dir ? DS . $dir : '') . DS . $stylesheet;
         $paths[] = DS . 'components' . DS . $component . DS . $dir . DS . $stylesheet;
@@ -312,7 +312,7 @@ class Assets
             $template = self::app('template')->template;
         }
 
-        $paths = array();
+        $paths = [];
         $paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . $module . DS . 'images' . DS . $image;
         $paths[] = DS . 'modules' . DS . $module . DS . 'assets' . ($dir ? DS . $dir : '') . DS . $image;
         $paths[] = DS . 'modules' . DS . $module . DS . 'images' . DS . $image;
@@ -399,7 +399,7 @@ class Assets
             $template = self::app('template')->template;
         }
 
-        $paths = array();
+        $paths = [];
         $paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . 'plg_' . $folder . '_' . $plugin . DS . 'images' . DS . $image;
         $paths[] = DS . 'plugins' . DS . $folder . DS . $plugin . DS . 'assets' . ($dir ? DS . $dir : '') . DS . $image;
         $paths[] = DS . 'plugins' . DS . $folder . DS . $plugin . DS . 'images' . DS . $image;
@@ -493,7 +493,7 @@ class Assets
             $template = substr($t->path, strlen(PATH_ROOT));
         }
 
-        $paths = array();
+        $paths = [];
         $paths[] = $template . DS . 'html' . DS . 'system' . ($dir ? DS . $dir : '') . DS . $image;
         $paths[] = DS . 'core' . DS . 'assets' . DS . $dir . DS . $image;
 
@@ -566,10 +566,10 @@ class Assets
                 }
 
                 // Add the template path to the import list
-                $less->setImportDir(array(
+                $less->setImportDir([
                     $template . DS,
                     $lesspath . DS
-                ));
+                ]);
 
                 $cacheFile = $cachedir . DS . $primary . '.less.cache';
                 $cache     = null;
@@ -622,7 +622,7 @@ class Assets
                 // Did the cache change?
                 if (!is_array($cache) || $newCache['updated'] > $cache['updated']) {
                     file_put_contents($cacheFile, serialize($newCache));  // Update the compiled LESS timestamp
-                    $newCache['compiled'] = str_replace(array("'/media/system/", "'/core/assets/"), "'" . rtrim(Request::root(true), '/') . '/core/assets/', $newCache['compiled']);
+                    $newCache['compiled'] = str_replace(["'/media/system/", "'/core/assets/"], "'" . rtrim(Request::root(true), '/') . '/core/assets/', $newCache['compiled']);
                     file_put_contents($output, $newCache['compiled']);    // Update the compiled LESS
                 }
                 $output = rtrim(Request::root(true), '/') . '/app/cache/' . $client . '/' . $primary . '.css?v=' . $newCache['updated'];
@@ -690,20 +690,20 @@ class Assets
                 foreach ($elements as $k => $element) {
                     $contents .= "\n\n" . file_get_contents($thispath . DS . $element . '.css');
                 }
-                $patterns = array(
+                $patterns = [
                     '!/\*[^*]*\*+([^/][^*]*\*+)*/!',  /* remove comments */
                     '/[\n\r \t]/',                    /* remove tabs, spaces, newlines, etc. */
                     '/ +/'                           /* collapse multiple spaces to a single space */
                     /* '/ ?([,:;{}]) ?/'                 remove space before and after , : ; { }     [!] apparently, IE 7 doesn't like this and won't process the stylesheet */
-                );
-                $replacements = array(
+                ];
+                $replacements = [
                     '',
                     ' ',
                     ' '/*,
                     '$1'*/
-                );
+                ];
                 $contents = preg_replace($patterns, $replacements, $contents);
-                $contents = str_replace(array("url('/media/system/", "url('/core/assets/"), "url('" . rtrim(Request::root(true), '/') . "/core/assets/", $contents);
+                $contents = str_replace(["url('/media/system/", "url('/core/assets/"], "url('" . rtrim(Request::root(true), '/') . "/core/assets/", $contents);
 
                 if ($fp = fopen($cachedir . DS . $cachefile, 'wb')) {
                     fwrite($fp, $contents);

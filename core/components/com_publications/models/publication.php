@@ -58,7 +58,7 @@ class Publication extends Obj
      *
      * @var  array
      */
-    private $_data = array();
+    private $_data = [];
 
     /**
      * Is this publication of type tool?
@@ -72,12 +72,12 @@ class Publication extends Obj
      *
      * @var  array
      */
-    protected $orcidServices = array(
+    protected $orcidServices = [
         'public'  => 'pub.orcid.org',
         'publicsandbox'  => 'pub.sandbox.orcid.org',
         'members' => 'api.orcid.org',
         'sandbox' => 'api.sandbox.orcid.org'
-    );
+    ];
 
     /**
      * Constructor
@@ -169,7 +169,7 @@ class Publication extends Obj
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         if (is_object($oid)) {
@@ -727,7 +727,7 @@ class Publication extends Obj
             $this->_tblAuthors = new Tables\Author($this->_db);
         }
         if (!$this->exists()) {
-            return array();
+            return [];
         }
         if (!isset($this->_authors)) {
             $this->_authors   = $this->_tblAuthors->getAuthors($this->version->id);
@@ -776,13 +776,13 @@ class Publication extends Obj
     public function getUnlinkedContributors($incSubmitter = false)
     {
         if (!$this->exists()) {
-            return array();
+            return [];
         }
         $contributors = $this->authors();
 
         $html = '';
         if (!empty($contributors)) {
-            $names = array();
+            $names = [];
             foreach ($contributors as $contributor) {
                 if ($incSubmitter == false && $contributor->role == 'submitter') {
                     continue;
@@ -819,7 +819,7 @@ class Publication extends Obj
     public function submitter()
     {
         if (!$this->exists()) {
-            return array();
+            return [];
         }
         if (!isset($this->_submitter)) {
             $this->authors();
@@ -836,7 +836,7 @@ class Publication extends Obj
     public function owner()
     {
         if (!$this->exists()) {
-            return array();
+            return [];
         }
         if (!isset($this->_owner)) {
             $objO = new \Components\Projects\Tables\Owner($this->_db);
@@ -854,10 +854,10 @@ class Publication extends Obj
     public function curatorGroups()
     {
         if (!$this->exists() || !$this->masterType()) {
-            return array();
+            return [];
         }
         if (!isset($this->_curatorGroups)) {
-            $groups = array();
+            $groups = [];
             if ($this->_type->curatorgroup) {
                 $groups[] = $this->_type->curatorgroup;
             }
@@ -878,7 +878,7 @@ class Publication extends Obj
     public function getAccessGroups()
     {
         if (!$this->exists() || !$this->masterType()) {
-            return array();
+            return [];
         }
         if (!isset($this->_accessGroups)) {
             $paccess = new Tables\Access($this->_db);
@@ -898,7 +898,7 @@ class Publication extends Obj
      */
     public function getGroupProperty($groups, $get = 'cn')
     {
-        $arr = array();
+        $arr = [];
         if (!empty($groups)) {
             foreach ($groups as $group) {
                 if ($group->regconfirmed) {
@@ -918,7 +918,7 @@ class Publication extends Obj
     public function attachments($reload = false)
     {
         if (!$this->exists()) {
-            return array();
+            return [];
         }
         if (!isset($this->_tblContent)) {
             $this->_tblContent = new Tables\Attachment($this->_db);
@@ -938,7 +938,7 @@ class Publication extends Obj
     public function attachmentsCount()
     {
         if (!$this->exists()) {
-            return array();
+            return [];
         }
         if (!isset($this->_tblContent)) {
             $this->_tblContent = new Tables\Attachment($this->_db);
@@ -958,7 +958,7 @@ class Publication extends Obj
     public function license()
     {
         if (!$this->exists()) {
-            return array();
+            return [];
         }
         if (!isset($this->_tblLicense)) {
             $this->_tblLicense = new Tables\License($this->_db);
@@ -1290,7 +1290,7 @@ class Publication extends Obj
     public function describe($as = 'parsed', $shorten = 0)
     {
         $as = strtolower($as);
-        $options = array();
+        $options = [];
 
         if ($this->get('description', null) == null) {
             $content = stripslashes($this->get('description'));
@@ -1304,21 +1304,21 @@ class Publication extends Obj
                 $content = $this->get('description.parsed', null);
 
                 if ($content === null) {
-                    $config = array(
+                    $config = [
                         'option'   => 'com_publications',
                         'scope'    => '',
                         'pagename' => 'publications',
                         'pageid'   => '',
                         'filepath' => '',
                         'domain'   => ''
-                    );
+                    ];
 
                     $content = (string) stripslashes($this->get('description', ''));
-                    Event::trigger('content.onContentPrepare', array(
+                    Event::trigger('content.onContentPrepare', [
                         'com_publications.publication.description',
                         &$this,
                         &$config
-                    ));
+                    ]);
 
                     $this->set('description.parsed', (string) $this->get('description', ''));
                     $this->set('description', $content);
@@ -1361,7 +1361,7 @@ class Publication extends Obj
     public function notes($as = 'parsed', $shorten = 0)
     {
         $as = strtolower($as);
-        $options = array();
+        $options = [];
 
         if ($this->get('release_notes', null) == null) {
             $content = stripslashes($this->get('release_notes'));
@@ -1374,21 +1374,21 @@ class Publication extends Obj
                 $content = $this->get('release_notes.parsed', null);
 
                 if ($content === null) {
-                    $config = array(
+                    $config = [
                         'option'   => 'com_publications',
                         'scope'    => '',
                         'pagename' => 'publications',
                         'pageid'   => '',
                         'filepath' => '',
                         'domain'   => ''
-                    );
+                    ];
 
                     $content = (string) stripslashes($this->get('release_notes', ''));
-                    Event::trigger('content.onContentPrepare', array(
+                    Event::trigger('content.onContentPrepare', [
                         'com_publications.publication.release_notes',
                         &$this,
                         &$config
-                    ));
+                    ]);
 
                     $this->set('release_notes.parsed', (string) $this->get('release_notes', ''));
                     $this->set('release_notes', $content);
@@ -1424,7 +1424,7 @@ class Publication extends Obj
      */
     public function getNbtag($aliasmap = '')
     {
-        $data = array();
+        $data = [];
 
         // Parse data
         preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->get('metadata', ''), $matches, PREG_SET_ORDER);
@@ -1456,7 +1456,7 @@ class Publication extends Obj
     public function parse($aliasmap = '', $field = '', $as = 'parsed', $shorten = 0)
     {
         $as = strtolower($as);
-        $options = array();
+        $options = [];
 
         if ($this->get($field, null) == null) {
             $content = stripslashes($this->get($field));
@@ -1473,24 +1473,24 @@ class Publication extends Obj
                 $content = $this->get($field . '.parsed', null);
 
                 if ($content === null) {
-                    $config = array(
+                    $config = [
                         'option'   => 'com_publications',
                         'scope'    => '',
                         'pagename' => 'publications',
                         'pageid'   => '',
                         'filepath' => '',
                         'domain'   => ''
-                    );
+                    ];
 
                     $content = (string) stripslashes($this->get($field, ''));
                     if ($field == 'metadata') {
                         $content = (string) stripslashes($this->getNbtag($aliasmap));
                     }
-                    Event::trigger('content.onContentPrepare', array(
+                    Event::trigger('content.onContentPrepare', [
                         'com_publications.publication.' . $field,
                         &$this,
                         &$config
-                    ));
+                    ]);
 
                     $parsed = (string) stripslashes($this->get($field, ''));
 
@@ -1976,7 +1976,7 @@ class Publication extends Obj
     public function saveParam($param = '', $value = '')
     {
         // Clean up incoming
-        $param  = \Hubzero\Utility\Sanitize::paranoid($param, array('-', '_'));
+        $param  = \Hubzero\Utility\Sanitize::paranoid($param, ['-', '_']);
         $value  = \Hubzero\Utility\Sanitize::clean($value);
 
         if (!$this->exists()) {
@@ -2062,7 +2062,7 @@ class Publication extends Obj
      * @param   boolean  $admin    Admin?
      * @return  mixed
      */
-    public function entries($rtrn = 'list', $filters = array(), $admin = false)
+    public function entries($rtrn = 'list', $filters = [], $admin = false)
     {
         if (!isset($this->_tbl)) {
             $this->_tbl = new Tables\Publication($this->_db);

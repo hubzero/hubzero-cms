@@ -57,7 +57,7 @@ class Session implements MessageStore
      */
     public function retrieve($domain)
     {
-        $messages = $this->session->get($this->key($domain), array());
+        $messages = $this->session->get($this->key($domain), []);
 
         if (count($messages)) {
             $this->clear($domain);
@@ -85,7 +85,7 @@ class Session implements MessageStore
      */
     public function total($domain)
     {
-        $messages = $this->session->get($this->key($domain), array());
+        $messages = $this->session->get($this->key($domain), []);
 
         return count($messages);
     }

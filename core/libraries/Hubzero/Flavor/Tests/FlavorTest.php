@@ -37,9 +37,9 @@ class FlavorTest extends TestCase
      */
     public function testFindsEveryFlavorInADirectory()
     {
-        $finder = new Finder(array($this->files('shipped')));
+        $finder = new Finder([$this->files('shipped')]);
 
-        $this->assertSame(array('plain', 'tooled'), array_keys($finder->all()));
+        $this->assertSame(['plain', 'tooled'], array_keys($finder->all()));
         $this->assertSame('The base', $finder->find('plain')->description());
         $this->assertNull($finder->find('no-such'));
     }
@@ -53,27 +53,27 @@ class FlavorTest extends TestCase
      */
     public function testAChildCascadesOntoItsParent()
     {
-        $tooled = (new Finder(array($this->files('shipped'))))->find('tooled');
+        $tooled = (new Finder([$this->files('shipped')]))->find('tooled');
 
         $this->assertNull($tooled->parent(), 'the cascade is done once resolved');
         $this->assertSame('The base, with tools', $tooled->description());
         $this->assertSame('meridian', $tooled->get('template'), 'a scalar the child does not set is inherited');
 
-        $this->assertSame(array('com_tools'), $tooled->get('components', array(), 'enable'));
-        $this->assertSame(array('com_usage'), $tooled->get('components', array(), 'disable'), 'enabling removes from disable');
+        $this->assertSame(['com_tools'], $tooled->get('components', [], 'enable'));
+        $this->assertSame(['com_usage'], $tooled->get('components', [], 'disable'), 'enabling removes from disable');
 
-        $this->assertSame(array('mod_mytools'), $tooled->get('modules', array(), 'enable'));
+        $this->assertSame(['mod_mytools'], $tooled->get('modules', [], 'enable'));
         $this->assertArrayNotHasKey('disable', $tooled->get('modules'));
         $this->assertSame(
-            array('show_tools' => '1', 'limit' => '5'),
-            $tooled->get('modules', array(), 'params')['mod_mycontributions'],
+            ['show_tools' => '1', 'limit' => '5'],
+            $tooled->get('modules', [], 'params')['mod_mycontributions'],
             'params merge key by key'
         );
 
-        $this->assertSame(array('tools' => 0), $tooled->get('kb', array(), 'categories'), 'an untouched state is kept');
-        $this->assertSame(array('webdav' => 1), $tooled->get('kb', array(), 'articles'));
-        $this->assertSame(array('tools' => array('contributable' => 1)), $tooled->get('resource_types'));
-        $this->assertCount(3, $tooled->get('dashboard', array(), 'tiles'), 'a layout replaces the layout');
+        $this->assertSame(['tools' => 0], $tooled->get('kb', [], 'categories'), 'an untouched state is kept');
+        $this->assertSame(['webdav' => 1], $tooled->get('kb', [], 'articles'));
+        $this->assertSame(['tools' => ['contributable' => 1]], $tooled->get('resource_types'));
+        $this->assertCount(3, $tooled->get('dashboard', [], 'tiles'), 'a layout replaces the layout');
     }
 
     /**
@@ -84,10 +84,10 @@ class FlavorTest extends TestCase
      */
     public function testAnEarlierDirectoryRedefinesAndExtendsAcrossDirectories()
     {
-        $finder = new Finder(array($this->files('local'), $this->files('shipped')));
+        $finder = new Finder([$this->files('local'), $this->files('shipped')]);
         $all    = $finder->all();
 
-        $this->assertSame(array('mine', 'plain', 'tooled'), array_keys($all));
+        $this->assertSame(['mine', 'plain', 'tooled'], array_keys($all));
         $this->assertSame('lucent', $all['plain']->get('template'), 'the local plain replaces the shipped one');
         $this->assertArrayNotHasKey('components', $all['plain']->toArray(), 'replaced, not merged');
 
@@ -96,8 +96,8 @@ class FlavorTest extends TestCase
 
         // mine extends tooled, which is shipped
         $this->assertSame('lucent', $all['mine']->get('template'));
-        $this->assertSame(array('com_tools'), $all['mine']->get('components', array(), 'enable'));
-        $this->assertSame(array('welcome' => 0), $all['mine']->get('content', array(), 'articles'));
+        $this->assertSame(['com_tools'], $all['mine']->get('components', [], 'enable'));
+        $this->assertSame(['welcome' => 0], $all['mine']->get('content', [], 'articles'));
     }
 
     /**
@@ -108,32 +108,32 @@ class FlavorTest extends TestCase
      */
     public function testYamlAndJsonReadAlike()
     {
-        $finder = new Finder(array($this->files('yaml'), $this->files('shipped')));
+        $finder = new Finder([$this->files('yaml'), $this->files('shipped')]);
         $all    = $finder->all();
 
-        $this->assertSame(array('plain', 'quiet', 'quieter', 'tooled'), array_keys($all));
+        $this->assertSame(['plain', 'quiet', 'quieter', 'tooled'], array_keys($all));
 
         // quiet (yml) extends plain (json, other directory)
         $quiet = $all['quiet'];
         $this->assertSame('meridian', $quiet->get('template'));
         $this->assertSame(
-            array('com_tools', 'com_usage', 'com_poll'),
-            $quiet->get('components', array(), 'disable')
+            ['com_tools', 'com_usage', 'com_poll'],
+            $quiet->get('components', [], 'disable')
         );
-        $this->assertSame(array('community/poll' => 0), $quiet->get('menu', array(), 'items'));
+        $this->assertSame(['community/poll' => 0], $quiet->get('menu', [], 'items'));
         $this->assertStringEndsWith('extra.yml', $quiet->file());
 
         // quieter (json, same directory) extends quiet (yml): menu items merge by path
         $this->assertSame(
-            array('community/poll' => 0, 'community/poll/archive' => 0),
-            $all['quieter']->get('menu', array(), 'items')
+            ['community/poll' => 0, 'community/poll/archive' => 0],
+            $all['quieter']->get('menu', [], 'items')
         );
 
         // module instances merge by id or title, alongside the module switches
-        $this->assertSame(array('Latest Poll' => 0, 92 => 0), $quiet->get('modules', array(), 'items'));
-        $this->assertSame(array('Latest Poll' => 0, 92 => 1), $all['quieter']->get('modules', array(), 'items'));
-        $this->assertSame(array('mod_mytools'), $all['quieter']->get('modules', array(), 'disable'), 'switches kept');
-        $this->assertSame(array('com_tools', 'com_usage', 'com_poll'), $all['quieter']->get('components', array(), 'disable'));
+        $this->assertSame(['Latest Poll' => 0, 92 => 0], $quiet->get('modules', [], 'items'));
+        $this->assertSame(['Latest Poll' => 0, 92 => 1], $all['quieter']->get('modules', [], 'items'));
+        $this->assertSame(['mod_mytools'], $all['quieter']->get('modules', [], 'disable'), 'switches kept');
+        $this->assertSame(['com_tools', 'com_usage', 'com_poll'], $all['quieter']->get('components', [], 'disable'));
     }
 
     /**
@@ -146,7 +146,7 @@ class FlavorTest extends TestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('broken.yml does not read as flavors');
 
-        (new Finder(array($this->files('broken'))))->all();
+        (new Finder([$this->files('broken')]))->all();
     }
 
     /**
@@ -159,7 +159,7 @@ class FlavorTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('circle');
 
-        (new Finder(array($this->files('looped'))))->all();
+        (new Finder([$this->files('looped')]))->all();
     }
 
     /**
@@ -172,15 +172,15 @@ class FlavorTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage("extends 'ghost'");
 
-        $orphan = new Flavor('orphan', array('extends' => 'ghost'));
+        $orphan = new Flavor('orphan', ['extends' => 'ghost']);
         $this->assertSame('ghost', $orphan->parent());
 
-        $finder = new Finder(array($this->files('local'), $this->files('shipped')));
+        $finder = new Finder([$this->files('local'), $this->files('shipped')]);
         // Nothing in the fixtures does this, so resolve one by hand through a
         // finder that only knows the fixtures
         $method = new \ReflectionMethod($finder, 'resolve');
         $method->setAccessible(true);
-        $method->invoke($finder, 'orphan', array('orphan' => $orphan), array());
+        $method->invoke($finder, 'orphan', ['orphan' => $orphan], []);
     }
 
     /**
@@ -193,7 +193,7 @@ class FlavorTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage("'templates' is not a lever");
 
-        new Flavor('typo', array('templates' => 'meridian'));
+        new Flavor('typo', ['templates' => 'meridian']);
     }
 
     /**
@@ -206,7 +206,7 @@ class FlavorTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage("'components.params' is not a lever");
 
-        new Flavor('typo', array('components' => array('params' => array())));
+        new Flavor('typo', ['components' => ['params' => []]]);
     }
 
     /**
@@ -219,7 +219,7 @@ class FlavorTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage("'components.disable' should be a list of names");
 
-        new Flavor('shape', array('components' => array('disable' => 'com_tools')));
+        new Flavor('shape', ['components' => ['disable' => 'com_tools']]);
     }
 
     /**
@@ -230,20 +230,20 @@ class FlavorTest extends TestCase
      */
     public function testTilesAreLaidOutByColumn()
     {
-        $laid = Applier::layout(array(
-            array('module' => 37, 'col' => 3),
-            array('module' => 44, 'col' => 1),
-            array('module' => 41, 'col' => 3),
-            array('module' => 35, 'col' => 1),
-        ));
+        $laid = Applier::layout([
+            ['module' => 37, 'col' => 3],
+            ['module' => 44, 'col' => 1],
+            ['module' => 41, 'col' => 3],
+            ['module' => 35, 'col' => 1],
+        ]);
 
         $this->assertSame(
-            array(
-                array('module' => 44, 'col' => 1, 'row' => 1, 'size_x' => 1, 'size_y' => 2),
-                array('module' => 35, 'col' => 1, 'row' => 3, 'size_x' => 1, 'size_y' => 2),
-                array('module' => 37, 'col' => 3, 'row' => 1, 'size_x' => 1, 'size_y' => 2),
-                array('module' => 41, 'col' => 3, 'row' => 3, 'size_x' => 1, 'size_y' => 2),
-            ),
+            [
+                ['module' => 44, 'col' => 1, 'row' => 1, 'size_x' => 1, 'size_y' => 2],
+                ['module' => 35, 'col' => 1, 'row' => 3, 'size_x' => 1, 'size_y' => 2],
+                ['module' => 37, 'col' => 3, 'row' => 1, 'size_x' => 1, 'size_y' => 2],
+                ['module' => 41, 'col' => 3, 'row' => 3, 'size_x' => 1, 'size_y' => 2],
+            ],
             $laid
         );
     }
@@ -255,7 +255,7 @@ class FlavorTest extends TestCase
      */
     public function testTheShippedFlavorsResolve()
     {
-        $finder = new Finder(array(dirname(dirname(dirname(dirname(__DIR__)))) . '/flavors'));
+        $finder = new Finder([dirname(dirname(dirname(dirname(__DIR__)))) . '/flavors']);
         $all    = $finder->all();
 
         $this->assertArrayHasKey('default', $all);
@@ -264,10 +264,10 @@ class FlavorTest extends TestCase
         $default = $all['default'];
         $full    = $all['full'];
 
-        $this->assertContains('com_tools', $default->get('components', array(), 'disable'));
-        $this->assertContains('com_tools', $full->get('components', array(), 'enable'));
+        $this->assertContains('com_tools', $default->get('components', [], 'disable'));
+        $this->assertContains('com_tools', $full->get('components', [], 'enable'));
         $this->assertArrayNotHasKey('disable', $full->get('components'), 'full disables nothing default did');
-        $this->assertSame('1', $full->get('modules', array(), 'params')['mod_mycontributions']['show_tools']);
+        $this->assertSame('1', $full->get('modules', [], 'params')['mod_mycontributions']['show_tools']);
         $this->assertSame(
             $default->get('plugins'),
             $full->get('plugins'),

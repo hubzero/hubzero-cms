@@ -23,7 +23,7 @@ class Geocode
      *
      * @var  array
      */
-    public static $countries = array();
+    public static $countries = [];
 
     /**
      * Get a list of countries and their coutnry code
@@ -39,14 +39,14 @@ class Geocode
 
         $adapter = new \Http\Discovery\Psr18Client();
 
-        $p = array();
+        $p = [];
 
         // Get a list of providers
         //
         // Each provider has an associated plugin. If the provider supports
         // the desired data look-up, it (the provider) will be returned by
         // the plugin. Otherwise, the plugin returns nothing.
-        if ($providers = Event::trigger('geocode.onGeocodeProvider', array('geocode.countries', $adapter))) {
+        if ($providers = Event::trigger('geocode.onGeocodeProvider', ['geocode.countries', $adapter])) {
             foreach ($providers as $provider) {
                 if ($provider) {
                     $p[] = $provider;
@@ -67,7 +67,7 @@ class Geocode
 
         // Try to get some data...
 
-        $countries = array();
+        $countries = [];
 
         if ($data = $geocoder->geocode($continent)) {
             foreach ($data as $item) {
@@ -95,10 +95,10 @@ class Geocode
     {
         $adapter = new \Http\Discovery\Psr18Client();
 
-        $p = array();
+        $p = [];
 
         // Get a list of providers
-        if ($providers = Event::trigger('geocode.onGeocodeProvider', array('geocode.country', $adapter))) {
+        if ($providers = Event::trigger('geocode.onGeocodeProvider', ['geocode.country', $adapter])) {
             foreach ($providers as $provider) {
                 if ($provider) {
                     $p[] = $provider;
@@ -136,10 +136,10 @@ class Geocode
     {
         $adapter = new \Http\Discovery\Psr18Client();
 
-        $p = array();
+        $p = [];
 
         // Get a list of providers
-        if ($providers = Event::trigger('geocode.onGeocodeProvider', array('geocode.continent', $adapter))) {
+        if ($providers = Event::trigger('geocode.onGeocodeProvider', ['geocode.continent', $adapter])) {
             foreach ($providers as $provider) {
                 if ($provider) {
                     $p[] = $provider;
@@ -182,10 +182,10 @@ class Geocode
 
         $adapter = new \Http\Discovery\Psr18Client();
 
-        $p = array();
+        $p = [];
 
         // Get a list of providers
-        if ($providers = Event::trigger('geocode.onGeocodeProvider', array('geocode.locate', $adapter, $ip))) {
+        if ($providers = Event::trigger('geocode.onGeocodeProvider', ['geocode.locate', $adapter, $ip])) {
             foreach ($providers as $provider) {
                 if ($provider) {
                     $p[] = $provider;
@@ -219,10 +219,10 @@ class Geocode
     public static function address($coordinates)
     {
         $adapter = new \Http\Discovery\Psr18Client();
-        $p = array();
+        $p = [];
 
         // Get a list of providers
-        if ($providers = Event::trigger('geocode.onGeocodeProvider', array('geocode.address', $adapter))) {
+        if ($providers = Event::trigger('geocode.onGeocodeProvider', ['geocode.address', $adapter])) {
             foreach ($providers as $provider) {
                 if ($provider) {
                     $p[] = $provider;
@@ -262,7 +262,7 @@ class Geocode
         if (!is_object($instance)) {
             $geodb_params = Component::params('com_system');
 
-            $options = array();
+            $options = [];
             $options['driver']   = $geodb_params->get('geodb_driver', 'pdo');
             $options['host']     = $geodb_params->get('geodb_host', 'localhost');
             $options['port']     = $geodb_params->get('geodb_port', '');
@@ -296,7 +296,7 @@ class Geocode
      */
     public static function getcountries()
     {
-        $countries = array();
+        $countries = [];
 
         if (!($gdb = self::getGeoDBO())) {
             return $countries;
@@ -308,11 +308,11 @@ class Geocode
         if ($results) {
             foreach ($results as $row) {
                 if ($row->code != '-' && $row->name != '-') {
-                    array_push($countries, array(
+                    array_push($countries, [
                         'code' => strtolower($row->code),
                         'id'   => $row->code,
                         'name' => $row->name
-                    ));
+                    ]);
                 }
             }
         }
@@ -329,7 +329,7 @@ class Geocode
     public static function getCountriesByContinent($continent = '')
     {
         if (!$continent || !($gdb = self::getGeoDBO())) {
-            return array();
+            return [];
         }
 
         $gdb->setQuery("SELECT DISTINCT country FROM country_continent WHERE LOWER(continent) =" . $gdb->quote(strtolower($continent)));
@@ -345,7 +345,7 @@ class Geocode
     public static function getContinentByCountry($country = '')
     {
         if (!$country || !($gdb = self::getGeoDBO())) {
-            return array();
+            return [];
         }
 
         $gdb->setQuery("SELECT DISTINCT continent FROM country_continent WHERE LOWER(country) =" . $gdb->quote(strtolower($country)));
@@ -358,10 +358,10 @@ class Geocode
      * @param   array  $names  List of country names
      * @return  array
      */
-    public static function getCodesByNames($names = array())
+    public static function getCodesByNames($names = [])
     {
         if (!($gdb = self::getGeoDBO())) {
-            return array();
+            return [];
         }
 
         $names = array_map('strtolower', $names);
@@ -372,7 +372,7 @@ class Geocode
         $gdb->setQuery("SELECT DISTINCT name, code FROM countries WHERE LOWER(name) IN (" . implode(",", $names) . ")");
         $values = $gdb->loadAssocList('name');
         if (!is_array($values)) {
-            $values = array();
+            $values = [];
         }
         return $values;
     }
@@ -426,14 +426,14 @@ class Geocode
      *
      * @var  array
      */
-    private static $cache = array();
+    private static $cache = [];
 
     /**
      * Whether each IPv6 table is known unusable, as found in this request
      *
      * @var  array
      */
-    private static $unusable = array();
+    private static $unusable = [];
 
     /**
      * A cached lookup, made when not cached yet
@@ -459,7 +459,7 @@ class Geocode
         }
 
         if (isset(self::$cache[$kind]) && count(self::$cache[$kind]) >= 1000) {
-            self::$cache[$kind] = array();
+            self::$cache[$kind] = [];
         }
 
         return self::$cache[$kind][$key] = $result;
@@ -528,7 +528,7 @@ class Geocode
         }
 
         if (strpos($ip, ':') === false) {
-            return array($table, $gdb->quote(ip2long($ip)));
+            return [$table, $gdb->quote(ip2long($ip))];
         }
 
         $table .= '6';
@@ -537,7 +537,7 @@ class Geocode
             return null;
         }
 
-        return array($table, 'CAST(' . $gdb->quote(\Hubzero\Utility\Ip::toDecimal($ip)) . ' AS DECIMAL(39,0))');
+        return [$table, 'CAST(' . $gdb->quote(\Hubzero\Utility\Ip::toDecimal($ip)) . ' AS DECIMAL(39,0))'];
     }
 
     /**

@@ -28,10 +28,10 @@ class MozifyHelper
         //if we have matches mozify the images
         if (count($matches) > 0) {
             foreach ($matches as $match) {
-                $config = array(
+                $config = [
                     'imageUrl'   => $match[1],
                     'mosaicSize' => $mosaicSize
-                );
+                ];
                 $him = new Mozify($config);
                 $html = str_replace($match[0], $him->mozify(), $html);
             }

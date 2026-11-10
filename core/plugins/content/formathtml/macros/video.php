@@ -25,7 +25,7 @@ class Video extends Macro
      *
      * @var  array
      */
-    protected $attr = array();
+    protected $attr = [];
 
     /**
      * Hubzero\Config\Registry
@@ -41,7 +41,7 @@ class Video extends Macro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['wiki'] = 'Embeds a video into the Page';
         $txt['html'] = '<p>Embeds a video into the Page. Accepts either full video URL (YouTube, Vimeo, Kaltura, Blip TV) or a file name or path.</p>
 						<p><strong>Youtube URL:</strong> https://www.youtube.com/watch?v=<span class="highlight">FgfGOEpZEOw</span></p>
@@ -97,17 +97,17 @@ class Video extends Macro
         $url  = $args[0];
 
         // We need to reset thinsg in case of multiple usage of macro
-        $this->attr = array();
+        $this->attr = [];
 
         // Get single attributes
         // EX: [[Image(myimage.png, nolink, right)]]
-        $argues = preg_replace_callback('/[, ](left|right|top|center|bottom|[0-9]+(px|%|em)?)(?:[, ]|$)/i', array(&$this, 'parseSingleAttribute'), $content);
+        $argues = preg_replace_callback('/[, ](left|right|top|center|bottom|[0-9]+(px|%|em)?)(?:[, ]|$)/i', [&$this, 'parseSingleAttribute'], $content);
         // Get quoted attribute/value pairs
         // EX: [[Image(myimage.png, desc="My description, contains, commas")]]
-        $argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link|captions|captionlang|captionlabel|transcript)=(?:["\'])([^"]*)(?:["\'])/i', array(&$this, 'parseAttributeValuePair'), $content);
+        $argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link|captions|captionlang|captionlabel|transcript)=(?:["\'])([^"]*)(?:["\'])/i', [&$this, 'parseAttributeValuePair'], $content);
         // Get non-quoted attribute/value pairs
         // EX: [[Image(myimage.png, width=100)]]
-        $argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link|captions|captionlang|captionlabel|transcript)=([^"\',]*)(?:[, ]|$)/i', array(&$this, 'parseAttributeValuePair'), $content);
+        $argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link|captions|captionlang|captionlabel|transcript)=([^"\',]*)(?:[, ]|$)/i', [&$this, 'parseAttributeValuePair'], $content);
 
         $width  = (isset($this->attr['width']) && $this->attr['width'] != '')   ? $this->attr['width']  : $default_width;
         $height = (isset($this->attr['height']) && $this->attr['height'] != '') ? $this->attr['height'] : $default_height;
@@ -354,7 +354,7 @@ class Video extends Macro
 
         // Check for alignment, no key given
         // e.g., [[File(myfile.jpg, align=left)]]
-        if (in_array($key, array('left', 'right', 'top', 'bottom', 'center'))) {
+        if (in_array($key, ['left', 'right', 'top', 'bottom', 'center'])) {
             if ($key == 'center') {
                 $this->attr['style']['display'] = 'block';
                 $this->attr['style']['margin-right'] = 'auto';
@@ -424,7 +424,7 @@ class Video extends Macro
 
         // Check for alignment, no key given
         // e.g., [[File(myfile.jpg, left)]]
-        if (in_array($key, array('left', 'right', 'top', 'bottom', 'center'))) {
+        if (in_array($key, ['left', 'right', 'top', 'bottom', 'center'])) {
             if ($key == 'center') {
                 $this->attr['style']['display'] = 'block';
                 $this->attr['style']['margin-right'] = 'auto';
@@ -464,7 +464,7 @@ class Video extends Macro
             $link .= $scope . DS;
         }
         $type = 'File';
-        $this->imgs = array('jpg', 'jpe', 'jpeg', 'gif', 'png');
+        $this->imgs = ['jpg', 'jpe', 'jpeg', 'gif', 'png'];
         if (in_array(strtolower(Filesystem::extension($file)), $this->imgs)) {
             if (Request::getString('format') == 'pdf') {
                 return $this->_path($file);

@@ -34,14 +34,14 @@ class Project
      *
      * @var  array
      */
-    private $_updatedkeys = array();
+    private $_updatedkeys = [];
 
     /**
      * List keys
      *
      * @var  array
      */
-    private $_list_keys = array();
+    private $_list_keys = [];
 
     /**
      * Resets internal properties
@@ -52,7 +52,7 @@ class Project
     {
         $cvars = get_class_vars(__CLASS__);
 
-        $this->_updatedkeys = array();
+        $this->_updatedkeys = [];
 
         foreach ($cvars as $key => $value) {
             if ($key[0] != '_') {
@@ -61,12 +61,12 @@ class Project
                 if (!in_array($key, $this->_list_keys)) {
                     $this->$key = null;
                 } else {
-                    $this->$key = array();
+                    $this->$key = [];
                 }
             }
         }
 
-        $this->_updatedkeys = array();
+        $this->_updatedkeys = [];
 
         return true;
     }
@@ -90,7 +90,7 @@ class Project
      */
     public function toArray()
     {
-        $result = array();
+        $result = [];
 
         $cvars = get_class_vars(__CLASS__);
 
@@ -248,7 +248,7 @@ class Project
             }
         }
 
-        $this->_updatedkeys = array();
+        $this->_updatedkeys = [];
 
         return true;
     }
@@ -433,7 +433,7 @@ class Project
         }
 
         if (in_array($property, $this->_list_keys)) {
-            $value = array_diff((array) $value, array(''));
+            $value = array_diff((array) $value, ['']);
             $value = array_unique($value);
             $value = array_values($value);
             $this->$property = $value;
@@ -485,7 +485,7 @@ class Project
             die();
         }
 
-        $this->_updatedkeys = array_diff($this->_updatedkeys, array($property));
+        $this->_updatedkeys = array_diff($this->_updatedkeys, [$property]);
 
         unset($this->$property);
     }

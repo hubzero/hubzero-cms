@@ -128,12 +128,12 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
                 $short = null;
 
                 $attachments = $this->row->log->details->get('attachments');
-                $attachments = $attachments ?: array();
+                $attachments = $attachments ?: [];
 
                 $attached = count($attachments);
 
                 if (strlen(strip_tags($content)) > 150) {
-                    $short = Hubzero\Utility\Str::truncate($content, 150, array('html' => true));
+                    $short = Hubzero\Utility\Str::truncate($content, 150, ['html' => true]);
                     ?>
                     <div class="activity-event-preview">
                         <?php echo $short; ?>
@@ -281,7 +281,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
                         <div class="form-group">
                             <label for="comment-<?php echo $this->row->get('id'); ?>-content">
                                 <span class="label-text"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_COMMENTS'); ?></span>
-                                <?php echo $this->editor('activity[description]', '', 35, 4, 'field_' . $this->row->get('id') . '_comment', array('class' => 'form-control minimal no-footer')); ?>
+                                <?php echo $this->editor('activity[description]', '', 35, 4, 'field_' . $this->row->get('id') . '_comment', ['class' => 'form-control minimal no-footer']); ?>
                             </label>
                         </div>
 
@@ -314,7 +314,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
         $l = Hubzero\Activity\Log::blank()->getTableName();
 
         // Replies in the managers' channel are recorded for managers only
-        $scopes = array('group');
+        $scopes = ['group'];
         if (in_array(User::get('id'), $this->group->get('managers'))) {
             $scopes[] = 'group_managers';
         }

@@ -55,15 +55,15 @@ class RegistryTest extends TestCase
         $this->assertEquals($data['lorem.ipsum'], 'ipsum');
         $this->assertEquals($data->get('lorem.dolor', 'mit'), 'mit');
 
-        $data['lorem'] = array('ipsum' => 'dolor');
+        $data['lorem'] = ['ipsum' => 'dolor'];
 
         $this->assertEquals($data->get('lorem.ipsum'), 'dolor');
 
-        $data->set('lorem.ipsum', array('dolor' => 'mit'));
+        $data->set('lorem.ipsum', ['dolor' => 'mit']);
 
         $this->assertEquals($data->get('lorem.ipsum.dolor'), 'mit');
 
-        $data->set('lorem', array('ipsum' => 'dolor'));
+        $data->set('lorem', ['ipsum' => 'dolor']);
         $data->set('lorem.dolor.foo', 'bar');
 
         $this->assertEquals($data->get('lorem.dolor.foo'), 'bar');
@@ -329,7 +329,7 @@ class RegistryTest extends TestCase
     {
         $data = new Registry();
 
-        foreach (array('ini', 'yaml', 'json', 'php', 'xml') as $type) {
+        foreach (['ini', 'yaml', 'json', 'php', 'xml'] as $type) {
             $result = $data->processor($type);
 
             $this->assertInstanceOf(Processor::class, $result);
@@ -397,10 +397,10 @@ class RegistryTest extends TestCase
         $this->assertEquals($data->get('bar'), 'newfoo');
         $this->assertEquals($data->get('lorem'), 'dolor');
 
-        $data3 = array(
-            'lorem' => array('ipsum' => 'mit'),
+        $data3 = [
+            'lorem' => ['ipsum' => 'mit'],
             'cullen' => 'didae'
-        );
+        ];
 
         $result = $data->merge($data3, true);
 
@@ -450,7 +450,7 @@ class RegistryTest extends TestCase
         // Parse from an array
         $data = new Registry();
 
-        $arr = array('one' => 'bar', 'bar' => 'foo', 'lorem' => array('ipsum' => 'sham'));
+        $arr = ['one' => 'bar', 'bar' => 'foo', 'lorem' => ['ipsum' => 'sham']];
 
         $data->set('one', 'blue');
         $data->set('two', 'shoe');
@@ -474,7 +474,7 @@ class RegistryTest extends TestCase
         $this->assertFalse($result);
 
         // Test parsing from constructor
-        $arr = array('one' => 'bar', 'bar' => 'foo', 'lorem' => array('ipsum' => 'sham'));
+        $arr = ['one' => 'bar', 'bar' => 'foo', 'lorem' => ['ipsum' => 'sham']];
 
         $data = new Registry($arr);
 

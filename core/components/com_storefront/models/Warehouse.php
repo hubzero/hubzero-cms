@@ -36,7 +36,7 @@ class Warehouse extends \Hubzero\Base\Obj
     public $accessLevelsScope = false;
 
     // Access groups scope (what is allowed to display)
-    public $accessGroupsScope = array();
+    public $accessGroupsScope = [];
 
     // User scope (what user is trying to get the info)
     public $userScope = false;
@@ -97,7 +97,7 @@ class Warehouse extends \Hubzero\Base\Obj
      */
     public function addAccessLevels($accessLevels)
     {
-        $this->accessLevelsScope = array_merge(array('NULL', 0), $accessLevels);
+        $this->accessLevelsScope = array_merge(['NULL', 0], $accessLevels);
     }
 
     /**
@@ -108,7 +108,7 @@ class Warehouse extends \Hubzero\Base\Obj
      */
     public function addAccessGroups($accessGroups)
     {
-        $this->accessGroupsScope = array();
+        $this->accessGroupsScope = [];
 
         foreach ($accessGroups as $group) {
             if ($group != null) {
@@ -194,13 +194,13 @@ class Warehouse extends \Hubzero\Base\Obj
      * @param  void
      * @return void
      */
-    public function getCategories($rtrn = 'list', $filters = array())
+    public function getCategories($rtrn = 'list', $filters = [])
     {
         $filters['collectionType'] = 'category';
         return $this->_getAllCollections($rtrn, $filters);
     }
 
-    public function getCollections($rtrn = 'list', $filters = array())
+    public function getCollections($rtrn = 'list', $filters = [])
     {
         return $this->_getAllCollections($rtrn, $filters);
     }
@@ -257,7 +257,7 @@ class Warehouse extends \Hubzero\Base\Obj
      */
     private function doCollection($collection, $action)
     {
-        $allowedActions = array('add', 'update');
+        $allowedActions = ['add', 'update'];
 
         // Check everything
         $cId = $collection->getId();
@@ -528,7 +528,7 @@ class Warehouse extends \Hubzero\Base\Obj
 
         // Filter by filters
         if (isset($filters['search']) && $filters['search']) {
-            $where   = array();
+            $where   = [];
             $where[] = "p.`pName` LIKE " . $this->_db->quote('%' . $filters['search'] . '%');
             $where[] = "p.`pDescription` LIKE " . $this->_db->quote('%' . $filters['search'] . '%');
 
@@ -770,9 +770,9 @@ class Warehouse extends \Hubzero\Base\Obj
         }
 
         // Initialize array for option groups
-        $options = array();
+        $options = [];
         // Array for SKUs
-        $skus = array();
+        $skus = [];
 
         // Parse result and populate $options with option groups and corresponding options
         $currentOgId = false;
@@ -820,7 +820,7 @@ class Warehouse extends \Hubzero\Base\Obj
     }
 
     // Get all option groups (for admin)
-    public function getOptionGroups($rtrn = 'list', $filters = array())
+    public function getOptionGroups($rtrn = 'list', $filters = [])
     {
         $sql = "SELECT og.*
 				FROM `#__storefront_option_groups` og
@@ -833,7 +833,7 @@ class Warehouse extends \Hubzero\Base\Obj
 
         if (isset($filters['ids']) && !empty($filters['ids'])) {
             if (!is_array($filters['ids'])) {
-                $filters['ids'] = array($filters['ids']);
+                $filters['ids'] = [$filters['ids']];
             }
 
             $sql .= " AND ogId IN (0";
@@ -1068,9 +1068,9 @@ class Warehouse extends \Hubzero\Base\Obj
             )
         */
 
-        $skusInfo = array();
-        $skuoptions = array();
-        $skuMeta = array();
+        $skusInfo = [];
+        $skuoptions = [];
+        $skuMeta = [];
         $currentSku = false;
         foreach ($rawSkusInfo as $row) {
             if ($currentSku != $row->sId) {
@@ -1082,8 +1082,8 @@ class Warehouse extends \Hubzero\Base\Obj
                     $skusInfo[$currentSku]['meta'] = $skuMeta;
                 }
                 $currentSku = $row->sId;
-                $skuoptions = array();
-                $skuMeta = array();
+                $skuoptions = [];
+                $skuMeta = [];
             }
 
             // Fix the NULL price
@@ -1119,7 +1119,7 @@ class Warehouse extends \Hubzero\Base\Obj
      */
     public function getSkuInfo($sId, $showInactive = true)
     {
-        $sInfo = $this->getSkusInfo(array($sId), $showInactive);
+        $sInfo = $this->getSkusInfo([$sId], $showInactive);
 
         if (empty($sInfo[$sId])) {
             return false;
@@ -1341,7 +1341,7 @@ class Warehouse extends \Hubzero\Base\Obj
      */
     private function _doCoupon($coupon, $action)
     {
-        $allowedActions = array('add', 'update');
+        $allowedActions = ['add', 'update'];
 
         $couponCode = $coupon->getCode();
 
@@ -1409,7 +1409,7 @@ class Warehouse extends \Hubzero\Base\Obj
         $objects = $coupon->getObjects();
 
         // Remember all obejct IDs used
-        $activeObjectIds = array();
+        $activeObjectIds = [];
 
         foreach ($objects as $obj) {
             $sql = "INSERT INTO `#__storefront_coupon_objects`
@@ -1496,7 +1496,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * @param  $collectionType -- type of collection, category by default
      * @return array|int
      */
-    private function _getAllCollections($return = 'list', $filters = array())
+    private function _getAllCollections($return = 'list', $filters = [])
     {
         $sql = "SELECT c.*
 				FROM `#__storefront_collections` c

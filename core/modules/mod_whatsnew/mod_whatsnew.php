@@ -43,7 +43,7 @@ class Whatsnew extends Module
         // Do we already have an array of areas?
         if (!isset($this->searchareas) || empty($this->searchareas)) {
             // No - so we'll need to get it
-            $areas = array();
+            $areas = [];
 
             // Trigger the functions that return the areas we'll be searching
             $searchareas = Event::trigger('whatsnew.onWhatsnewAreas');
@@ -69,7 +69,7 @@ class Whatsnew extends Module
      * @param   integer  $max   Max characters for a tag
      * @return  string   HTML
      */
-    public function formatTags($tags = array(), $num = 3, $max = 25)
+    public function formatTags($tags = [], $num = 3, $max = 25)
     {
         $out = '';
 
@@ -165,7 +165,7 @@ class Whatsnew extends Module
         $this->area = $area;
 
         // Get the active category
-        $activeareas = array();
+        $activeareas = [];
         if ($area) {
             $activeareas[] = $area;
         }
@@ -174,15 +174,15 @@ class Whatsnew extends Module
         $p = new Period($this->period);
 
         // Get the search results
-        $results = Event::trigger('whatsnew.onWhatsnew', array(
+        $results = Event::trigger('whatsnew.onWhatsnew', [
                 $p,
                 $count,
                 0,
                 $activeareas,
-                array()
-            ));
+                []
+            ]);
 
-        $rows = array();
+        $rows = [];
 
         if ($results) {
             foreach ($results as $result) {
@@ -206,21 +206,21 @@ class Whatsnew extends Module
             $this->tags = $tags;
 
             if (count($tags) > 0) {
-                $tagids = array();
+                $tagids = [];
                 foreach ($tags as $tag) {
                     $tagids[] = $tag->get('id');
                 }
 
                 // Get the search results
-                $results2 = Event::trigger('onWhatsnew', array(
+                $results2 = Event::trigger('onWhatsnew', [
                         $p,
                         $count,
                         0,
                         $activeareas,
                         $tagids
-                    ));
+                    ]);
 
-                $rows2 = array();
+                $rows2 = [];
 
                 if ($results2) {
                     foreach ($results2 as $result2) {

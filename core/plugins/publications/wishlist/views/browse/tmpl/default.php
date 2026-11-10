@@ -194,11 +194,11 @@ if ($this->rows->count() > 0) {
             <?php if ($item->status != 7) { ?>
                     <td class="voting">
                     <?php
-                        $view = new \Hubzero\Component\View(array(
+                        $view = new \Hubzero\Component\View([
                             'name'      => 'wishlists',
                             'base_path' => Component::path($this->option) . DS . 'site',
                             'layout'    => '_vote'
-                        ));
+                        ]);
                         $view->set('option', 'com_wishlist')
                              ->set('item', $item)
                              ->set('listid', $this->wishlist->id)

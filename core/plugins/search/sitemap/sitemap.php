@@ -41,7 +41,7 @@ class Sitemap extends Plugin
         $terms = $request->get_term_ar();
         $weight = 'match(s.title, s.description) against (\'' . join(' ', $terms['stemmed']) . '\')';
 
-        $addtl_where = array();
+        $addtl_where = [];
         foreach ($terms['mandatory'] as $mand) {
             $addtl_where[] = "(s.title LIKE '%$mand%' OR s.description LIKE '%$mand%')";
         }
@@ -83,7 +83,7 @@ class Sitemap extends Plugin
             $edit = $context['sitemap']['edit_id'];
         }
 
-        $html = array();
+        $html = [];
         $html[] = '<form action="index.php?option=com_search" method="post">';
         $html[] = '<input type="hidden" name="search-task" value="SiteMap' . ($edit ? 'SaveEdit' : 'Edit') . '" />';
         $html[] = '<table class="adminlist">';
@@ -158,7 +158,7 @@ class Sitemap extends Plugin
         $html[] = '</tbody>';
         $html[] = '</table>';
         $html[] = '</form>';
-        return array('Site Map', join("\n", $html));
+        return ['Site Map', join("\n", $html)];
     }
 
     /**
@@ -170,7 +170,7 @@ class Sitemap extends Plugin
     private static function saveEntryFromPost($update = false)
     {
         $dbh = App::get('db');
-        $fields = array('sm-title', 'sm-link', 'sm-description');
+        $fields = ['sm-title', 'sm-link', 'sm-description'];
         if ($update) {
             $fields[] = 'sm-id';
         }
@@ -182,7 +182,7 @@ class Sitemap extends Plugin
             if (!array_key_exists($key, $_POST) || empty($_POST[$key])) {
                 $errorMsg = '<p class="error">'
                     . Lang::txt('COM_SEARCH_ERROR_REQUIRED_FIELDS') . '</p>';
-                return array('sitemap', $errorMsg, array());
+                return ['sitemap', $errorMsg, []];
             }
         }
 
@@ -207,7 +207,7 @@ class Sitemap extends Plugin
             $id = $dbh->insertid();
         }
         $successMsg = '<p class="success">' . Lang::txt('COM_SEARCH_ENTRY_SAVED') . '</p>';
-        return array('sitemap', $successMsg, array('save_id' => $id));
+        return ['sitemap', $successMsg, ['save_id' => $id]];
     }
 
     /**
@@ -223,17 +223,17 @@ class Sitemap extends Plugin
         foreach ($_POST as $k => $v) {
             if (preg_match('/(delete|edit)-(\d+)/', $k, $id)) {
                 if ($id[1] == 'edit') {
-                    return array('sitemap', '', array('edit_id' => (int)$id[2]));
+                    return ['sitemap', '', ['edit_id' => (int)$id[2]]];
                 } else {
                     $dbh = App::get('db');
                     $dbh->execute('DELETE FROM `#__ysearch_site_map` WHERE id = ' . (int)$id[2]);
                     $deleteMsg = '<p class="success">'
                         . Lang::txt('COM_SEARCH_ENTRY_DELETED') . '</p>';
-                    return array('sitemap', $deleteMsg, array());
+                    return ['sitemap', $deleteMsg, []];
                 }
             }
         }
-        return array('sitemap', '', array());
+        return ['sitemap', '', []];
     }
 
     /**
@@ -244,7 +244,7 @@ class Sitemap extends Plugin
     public static function onSearchTaskSiteMapSaveEdit()
     {
         if (array_key_exists('cancel', $_POST)) {
-            return array('sitemap', '', array());
+            return ['sitemap', '', []];
         }
 
         return self::saveEntryFromPost(true);

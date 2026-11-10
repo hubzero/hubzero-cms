@@ -36,12 +36,12 @@ Html::behavior('keepalive');
 
 $this->js();
 
-$data = array();
+$data = [];
 $i = 0;
 if ($this->ownerassignees) {
     foreach ($this->ownerassignees as $k => $items) {
         foreach ($items as $v) {
-            $data[] = array($k, $v->id, $v->name);
+            $data[] = [$k, $v->id, $v->name];
         }
     }
 }
@@ -113,7 +113,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                         50,
                         30,
                         'field-about',
-                        array('class' => 'minimal no-footer', 'buttons' => false)
+                        ['class' => 'minimal no-footer', 'buttons' => false]
                     );
                     ?>
                 </div>
@@ -216,7 +216,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                         50,
                         30,
                         'plan-pagetext',
-                        array('class' => 'minimal no-footer', 'buttons' => false)
+                        ['class' => 'minimal no-footer', 'buttons' => false]
                     );
                     ?>
                 </div>

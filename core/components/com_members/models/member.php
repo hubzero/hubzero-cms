@@ -164,7 +164,7 @@ class Member extends User implements \Hubzero\Search\Searchable
         if (!$this->get('id')) {
             switch (strtolower($what)) {
                 case 'array':
-                    return array();
+                    return [];
                 break;
 
                 case 'string':
@@ -178,7 +178,7 @@ class Member extends User implements \Hubzero\Search\Searchable
 
         $cloud = new Tags($this->get('id'));
 
-        return $cloud->render($what, array('admin' => $admin));
+        return $cloud->render($what, ['admin' => $admin]);
     }
 
     /**
@@ -255,7 +255,7 @@ class Member extends User implements \Hubzero\Search\Searchable
      * @param   array   $access
      * @return  boolean
      */
-    public function saveProfile($profile, $access = array())
+    public function saveProfile($profile, $access = [])
     {
         $profile = (array)$profile;
         $access  = (array)$access;
@@ -266,9 +266,9 @@ class Member extends User implements \Hubzero\Search\Searchable
             if (!is_array($value) || count($value) < 2) {
                 continue;
             }
-            foreach (array('refused', 'no') as $exclusive) {
+            foreach (['refused', 'no'] as $exclusive) {
                 if (in_array($exclusive, $value, true)) {
-                    $profile[$key] = array($exclusive);
+                    $profile[$key] = [$exclusive];
                     break;
                 }
             }
@@ -276,14 +276,14 @@ class Member extends User implements \Hubzero\Search\Searchable
 
         // Fire the onUserBeforeSaveProfile event
         $user = $this->toArray();
-        $result = Event::trigger('user.onUserBeforeSaveProfile', array($user, $profile, $access));
+        $result = Event::trigger('user.onUserBeforeSaveProfile', [$user, $profile, $access]);
 
         if (in_array(false, $result, true)) {
             // Plugin will have to raise its own error or throw an exception.
             return false;
         }
 
-        $keep = array();
+        $keep = [];
 
         foreach ($this->profiles as $field) {
             // Remove any entries not in the incoming data
@@ -302,7 +302,7 @@ class Member extends User implements \Hubzero\Search\Searchable
             } else {
                 // Multi-value field
                 $values = $keep[$field->get('profile_key')];
-                $values = is_array($values) ? $values : array($values->get('profile_value') => $values);
+                $values = is_array($values) ? $values : [$values->get('profile_value') => $values];
                 $values[$field->get('profile_value')] = $field;
 
                 $keep[$field->get('profile_key')] = $values;
@@ -354,13 +354,13 @@ class Member extends User implements \Hubzero\Search\Searchable
                         $field = Profile::blank();
                     }
 
-                    $field->set(array(
+                    $field->set([
                         'user_id'       => $this->get('id'),
                         'profile_key'   => $key,
                         'profile_value' => $val,
                         'ordering'      => $i,
                         'access'        => (isset($access[$key]) ? $access[$key] : $field->get('access', 5))
-                    ));
+                    ]);
 
                     if (!$field->save()) {
                         $this->addError($field->getError());
@@ -404,13 +404,13 @@ class Member extends User implements \Hubzero\Search\Searchable
                     continue;
                 }
 
-                $field->set(array(
+                $field->set([
                     'user_id'       => $this->get('id'),
                     'profile_key'   => $key,
                     'profile_value' => $val,
                     'ordering'      => $i,
                     'access'        => (isset($access[$key]) ? $access[$key] : $field->get('access', 5))
-                ));
+                ]);
 
                 if (!$field->save()) {
                     $this->addError($field->getError());
@@ -422,7 +422,7 @@ class Member extends User implements \Hubzero\Search\Searchable
         }
 
         // Fire the onUserAfterSaveProfile event
-        Event::trigger('user.onUserAfterSaveProfile', array($user, $profile, $access));
+        Event::trigger('user.onUserAfterSaveProfile', [$user, $profile, $access]);
 
         return true;
     }
@@ -436,7 +436,7 @@ class Member extends User implements \Hubzero\Search\Searchable
     {
         $data = $this->toArray();
 
-        Event::trigger('user.onUserBeforeDelete', array($data));
+        Event::trigger('user.onUserBeforeDelete', [$data]);
 
         // Remove profile fields
         foreach ($this->profiles()->rows() as $field) {
@@ -469,7 +469,7 @@ class Member extends User implements \Hubzero\Search\Searchable
         $result = parent::destroy();
 
         if ($result) {
-            Event::trigger('user.onUserAfterDelete', array($data, true, $this->getError()));
+            Event::trigger('user.onUserAfterDelete', [$data, true, $this->getError()]);
         }
 
         return $result;
@@ -486,7 +486,7 @@ class Member extends User implements \Hubzero\Search\Searchable
 
         $query = $tbl->getQuery()
             ->update($tbl->getTableName())
-            ->set(array('usageAgreement' => 0));
+            ->set(['usageAgreement' => 0]);
 
         return $query->execute();
     }

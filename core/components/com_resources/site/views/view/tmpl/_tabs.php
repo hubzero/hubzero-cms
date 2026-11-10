@@ -21,7 +21,7 @@ $active_key = Request::get('tab_active_key', null) ? Request::get('tab_active_ke
 
 ?>
 <?php
-$tabItems = array();
+$tabItems = [];
 foreach ($this->cats as $cat) {
     $name = key($cat);
 
@@ -42,7 +42,7 @@ foreach ($this->cats as $cat) {
         $active = true;
     }
 
-    $tabItems[] = array('name' => $name, 'label' => $cat[$name], 'url' => $url, 'active' => $active);
+    $tabItems[] = ['name' => $name, 'label' => $cat[$name], 'url' => $url, 'active' => $active];
 }
 
 if (count($tabItems) > 0) { ?>

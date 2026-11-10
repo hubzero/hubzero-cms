@@ -58,7 +58,7 @@ class Migration20250411110620ComUsage extends Base
                 $statsDb->query();
                 $this->log("Altered table, added date col");
 
-                $values = array(
+                $values = [
                     "('googlebot.com','domain','bot')",
                     "('crawl.yahoo.net','domain','bot')",
                     "('search.msn.com','domain','bot')",
@@ -247,7 +247,7 @@ class Migration20250411110620ComUsage extends Base
                     "('125.122.36.248','ip','attempt login 12k times')",
                     "('52.54.191.160','ip','tries to access /cron/tick')",
                     "('%.rcac.purdue.edu','host','Purdue')"
-                );
+                ];
                 $query = "INSERT INTO `exclude_list` (`filter`, `type`, `notes`) VALUES "
                     . implode(", ", $values);
                 $statsDb->setQuery($query);

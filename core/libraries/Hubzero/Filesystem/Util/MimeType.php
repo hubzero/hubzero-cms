@@ -59,7 +59,7 @@ class MimeType
      */
     public static function getExtensionToMimeTypeMap()
     {
-        return array(
+        return [
             'hqx'   => 'application/mac-binhex40',
             'cpt'   => 'application/mac-compactpro',
             'csv'   => 'text/x-comma-separated-values',
@@ -202,6 +202,6 @@ class MimeType
             'mbz'   => 'application/x-zip',
                         'imscc' => 'application/x-zip',
             'prm'   => 'application/octet-stream'
-        );
+        ];
     }
 }

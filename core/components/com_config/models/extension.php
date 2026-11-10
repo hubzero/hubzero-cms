@@ -61,10 +61,10 @@ class Extension extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'element' => 'notempty',
         'name'    => 'notempty'
-    );
+    ];
 
     /**
      * Find a record by name
@@ -151,7 +151,7 @@ class Extension extends Relational
 
         Form::addFieldPath(__DIR__ . '/fields');
 
-        $form = new Form('com_config.application', array('control' => 'fields'));
+        $form = new Form('com_config.application', ['control' => 'fields']);
 
         if (!$form->loadFile($file, false, '//form')) {
             $this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));

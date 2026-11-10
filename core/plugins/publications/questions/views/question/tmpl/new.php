@@ -55,7 +55,7 @@ $this->css();
                 <?php
                 $tf = Event::trigger(
                     'hubzero.onGetMultiEntry',
-                    array(array('tags', 'tags', 'actags','', $this->row->get('tags', '')))
+                    [['tags', 'tags', 'actags','', $this->row->get('tags', '')]]
                 );
                 $tf = implode("\n", $tf);
 
@@ -88,7 +88,7 @@ $this->css();
                     50,
                     10,
                     'field-question',
-                    array('class' => 'minimal no-footer')
+                    ['class' => 'minimal no-footer']
                 );
                 ?>
             </label>

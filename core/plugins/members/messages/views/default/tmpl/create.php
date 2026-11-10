@@ -22,7 +22,7 @@ $disabled = ($this->tos) ? true : false;
 //get autocompleter
 $tos = Event::trigger(
     'hubzero.onGetMultiEntry',
-    array(array('members', 'mbrs', 'members', '', $this->tos, '', $disabled))
+    [['members', 'mbrs', 'members', '', $this->tos, '', $disabled]]
 );
 
 $this->css();

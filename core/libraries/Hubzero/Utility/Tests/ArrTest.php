@@ -24,13 +24,13 @@ class ArrTest extends Basic
      **/
     public function testToInteger()
     {
-        $data = array(
+        $data = [
             '1',
             '322',
             55,
             false,
             'foo'
-        );
+        ];
 
         Arr::toInteger($data);
 
@@ -50,13 +50,13 @@ class ArrTest extends Basic
         $this->assertTrue(is_array($data), 'Value returned was not an array');
         $this->assertTrue(empty($data), 'Value returned was not an empty array');
 
-        $dflt = array(
+        $dflt = [
             '1',
             '322',
             55,
             false,
             'foo'
-        );
+        ];
 
         $data = new stdClass();
         $data->one = '1';
@@ -97,25 +97,25 @@ class ArrTest extends Basic
      **/
     public function testToObject()
     {
-        $data1 = array(
+        $data1 = [
             'one' => '1',
             'two' => '322',
             'three' => 55,
-            'four' => array(
+            'four' => [
                 'a' => 'foo',
                 'b' => 'bar'
-            )
-        );
+            ]
+        ];
 
         $data2 = new stdClass();
         $data2->foo = 'one';
         $data2->bar = 'two';
-        $data2->lor = array(
+        $data2->lor = [
             'ipsum',
             'lorem'
-        );
+        ];
 
-        $datas = array();
+        $datas = [];
         $datas[] = $data1;
         $datas[] = $data2;
 
@@ -147,28 +147,28 @@ class ArrTest extends Basic
      **/
     public function testFromObject()
     {
-        $data1 = array(
+        $data1 = [
             'one' => '1',
             'two' => '322',
             'three' => 55,
-            'four' => array(
+            'four' => [
                 'a' => 'foo',
                 'b' => 'bar'
-            )
-        );
+            ]
+        ];
 
         $data2 = new stdClass();
         $data2->foo = 'one';
         $data2->bar = 'two';
-        $data2->lor = array(
+        $data2->lor = [
             'ipsum',
             'lorem'
-        );
+        ];
         $data2->ipsum = new stdClass();
         $data2->ipsum->dolor = 'mit';
         $data2->ipsum->carac = 'kol';
 
-        $datas = array();
+        $datas = [];
         $datas[] = $data1;
         $datas[] = $data2;
 
@@ -208,19 +208,19 @@ class ArrTest extends Basic
      **/
     public function testIsAssociative()
     {
-        $data = array(
+        $data = [
             'one' => '1',
             'two' => '322',
             'three' => 55
-        );
+        ];
 
         $this->assertTrue(Arr::isAssociative($data), 'Value is an associative array');
 
-        $data = array(
+        $data = [
             133,
             675,
             744
-        );
+        ];
 
         $this->assertFalse(Arr::isAssociative($data), 'Value is not an associative array');
 
@@ -238,15 +238,15 @@ class ArrTest extends Basic
      **/
     public function testToString()
     {
-        $data = array(
+        $data = [
             'one' => '1',
             'two' => '322',
             'three' => 55,
-            'four' => array(
+            'four' => [
                 'a' => 'foo',
                 'b' => 'bar'
-            )
-        );
+            ]
+        ];
 
         $result = Arr::toString($data, '=', '&');
 
@@ -264,17 +264,17 @@ class ArrTest extends Basic
      **/
     public function testGetValue()
     {
-        $data = array(
+        $data = [
             'one' => '1',
             'two' => '322',
             'three' => 55,
-            'four' => array(
+            'four' => [
                 'a' => 'foo',
                 'b' => 'bar'
-            ),
+            ],
             'six' => '!! good123',
             'seven' => '5.5'
-        );
+        ];
 
         $result = Arr::getValue($data, 'one');
 
@@ -293,15 +293,15 @@ class ArrTest extends Basic
         $result = Arr::getValue($data, 'two', null, 'array');
 
         $this->assertTrue(is_array($result), 'Value is not an array');
-        $this->assertEquals($result, array('322'));
+        $this->assertEquals($result, ['322']);
 
         $result = Arr::getValue($data, 'four', null, 'array');
 
         $this->assertTrue(is_array($result), 'Value is not an array');
-        $this->assertEquals($result, array(
+        $this->assertEquals($result, [
             'a' => 'foo',
             'b' => 'bar'
-        ));
+        ]);
 
         $result = Arr::getValue($data, 'five');
 
@@ -332,18 +332,18 @@ class ArrTest extends Basic
      **/
     public function testGetColumn()
     {
-        $arrs = array(
-            array(
+        $arrs = [
+            [
                 'id' => 1,
                 'name' => 'Joe',
                 'age' => 27
-            ),
-            array(
+            ],
+            [
                 'id' => 2,
                 'name' => 'Susan',
                 'age' => 24
-            ),
-        );
+            ],
+        ];
 
         $item = new stdClass();
         $item->id = 3;
@@ -361,11 +361,11 @@ class ArrTest extends Basic
 
         $result = Arr::getColumn($arrs, 'id');
 
-        $this->assertEquals($result, array(1, 2, 3, 4));
+        $this->assertEquals($result, [1, 2, 3, 4]);
 
         $result = Arr::getColumn($arrs, 'name');
 
-        $this->assertEquals($result, array('Joe', 'Susan', 'Frank', 'Helen'));
+        $this->assertEquals($result, ['Joe', 'Susan', 'Frank', 'Helen']);
     }
 
     /**
@@ -468,23 +468,23 @@ class ArrTest extends Basic
      **/
     public function testArrayUnique()
     {
-        $arrs = array(
-            array(
+        $arrs = [
+            [
                 'id' => 1,
                 'name' => 'Joe',
                 'age' => 27
-            ),
-            array(
+            ],
+            [
                 'id' => 2,
                 'name' => 'Susan',
                 'age' => 24
-            ),
-            array(
+            ],
+            [
                 'id' => 1,
                 'name' => 'Joe',
                 'age' => 27
-            ),
-        );
+            ],
+        ];
 
         $foo = 'bar';
 
@@ -505,14 +505,14 @@ class ArrTest extends Basic
      **/
     public function testPivot()
     {
-        $arrs = array(
-            array(
+        $arrs = [
+            [
                 'id' => 1,
                 'name' => 'Joe',
                 'age' => 27
-            ),
+            ],
             'name' => 'Mark'
-        );
+        ];
 
         $item = new stdClass();
         $item->id = 4;
@@ -523,15 +523,15 @@ class ArrTest extends Basic
 
         $result = Arr::pivot($arrs, 'name');
 
-        $expected = array(
-            'Joe' => array(
+        $expected = [
+            'Joe' => [
                 'id' => 1,
                 'name' => 'Joe',
                 'age' => 27
-            ),
+            ],
             'Mark' => 'name',
             'Jane' => $item
-        );
+        ];
 
         $this->assertEquals($result, $expected);
     }
@@ -543,7 +543,7 @@ class ArrTest extends Basic
      **/
     public function testSortObjects()
     {
-        $arr = array();
+        $arr = [];
 
         $item1 = new stdClass();
         $item1->id = 1;
@@ -578,13 +578,13 @@ class ArrTest extends Basic
 
         $result = Arr::sortObjects($arr, 'name');
 
-        $expected = array(
+        $expected = [
             $item3,
             $item5,
             $item2,
             $item1,
             $item4
-        );
+        ];
 
         $this->assertEquals($result, $expected);
 
@@ -596,13 +596,13 @@ class ArrTest extends Basic
 
         $result = Arr::sortObjects($arr, 'name', 1, false);
 
-        $expected = array(
+        $expected = [
             $item3,
             $item4,
             $item5,
             $item2,
             $item1
-        );
+        ];
 
         $this->assertEquals($result, $expected);
 
@@ -614,13 +614,13 @@ class ArrTest extends Basic
 
         $result = Arr::sortObjects($arr, 'age');
 
-        $expected = array(
+        $expected = [
             $item5,
             $item1,
             $item3,
             $item2,
             $item4
-        );
+        ];
 
         $this->assertEquals($result, $expected);
     }

@@ -42,7 +42,7 @@ class DirectoryTree extends Base
      */
     public function handle($path, $filter = '.', $maxLevel = 3, $level = 0, $parent = 0)
     {
-        $dirs = array();
+        $dirs = [];
 
         if ($level == 0) {
             $this->index = 0;
@@ -61,13 +61,13 @@ class DirectoryTree extends Base
 
                 $fullName = $this->filesystem->cleanPath($path . DS . $name['path']);
 
-                $dirs[] = array(
+                $dirs[] = [
                     'id'       => $this->index,
                     'parent'   => $parent,
                     'name'     => ltrim($name['path'], '\\/'),
                     'fullname' => $fullName,
                     'relname'  => str_replace(PATH_ROOT, '', $fullName)
-                );
+                ];
 
                 $dirs2 = $this->handle($fullName, $filter, $maxLevel, $level + 1, $this->index);
 

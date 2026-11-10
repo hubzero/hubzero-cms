@@ -26,11 +26,11 @@ class Html
      */
     public static function selectAccess($name, $value, $class = '', $id = '')
     {
-        $arr = array(
+        $arr = [
             1 => Lang::txt('COM_MEMBERS_FIELD_ACCESS_PUBLIC'),
             2 => Lang::txt('COM_MEMBERS_FIELD_ACCESS_REGISTERED'),
             5 => Lang::txt('COM_MEMBERS_FIELD_ACCESS_PRIVATE')
-        );
+        ];
 
         // Extract field name for aria-label
         $fieldName = $name;

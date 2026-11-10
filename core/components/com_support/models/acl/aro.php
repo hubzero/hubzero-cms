@@ -41,10 +41,10 @@ class Aro extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'model'       => 'notempty',
         'foreign_key' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Get maps

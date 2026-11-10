@@ -43,22 +43,22 @@ class Link extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'old_url' => 'notempty'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'old_url',
         'new_url',
         'status_code',
         'created_date',
         'modified_date'
-    );
+    ];
 
     /**
      * Sets up additional custom rules
@@ -122,7 +122,7 @@ class Link extends Relational
     public function automaticStatusCode($data)
     {
         // Redirects must be either a 301 or 302
-        if (isset($data['new_url']) && $data['new_url'] && !in_array($data['status_code'], array(301, 302))) {
+        if (isset($data['new_url']) && $data['new_url'] && !in_array($data['status_code'], [301, 302])) {
             $data['status_code'] = 301;
         }
 

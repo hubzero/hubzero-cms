@@ -14,12 +14,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$group_statuses = array(
+$group_statuses = [
     'all' => Lang::txt('All Group Members'),
     'managers' => Lang::txt('All Group Managers'),
     'invitees' => Lang::txt('All Group Invitees'),
     'applicants' => Lang::txt('All Group Applicants')
-);
+];
 
 $role_name = '';
 $role_id = Request::getInt('role_id');

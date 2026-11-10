@@ -39,5 +39,5 @@ interface Cipher
      * @param   array   $options  Key generation options.
      * @return  object
      */
-    public function generateKey(array $options = array());
+    public function generateKey(array $options = []);
 }

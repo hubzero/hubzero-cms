@@ -131,7 +131,7 @@ class Codemirror extends Plugin
         $id = null,
         $asset = null,
         $author = null,
-        $params = array()
+        $params = []
     ) {
         if (empty($id)) {
             $id = $name;
@@ -153,7 +153,7 @@ class Codemirror extends Plugin
 
         // Default syntax
         $parserFile = 'parsexml.js';
-        $styleSheet = array('xmlcolors.css');
+        $styleSheet = ['xmlcolors.css'];
 
         // Look if we need special syntax coloring.
         $syntax = User::getState('editor.source.syntax');
@@ -162,27 +162,27 @@ class Codemirror extends Plugin
             switch ($syntax) {
                 case 'css':
                     $parserFile = 'parsecss.js';
-                    $styleSheet = array('csscolors.css');
+                    $styleSheet = ['csscolors.css'];
                     break;
 
                 case 'js':
-                    $parserFile = array('tokenizejavascript.js', 'parsejavascript.js');
-                    $styleSheet = array('jscolors.css');
+                    $parserFile = ['tokenizejavascript.js', 'parsejavascript.js'];
+                    $styleSheet = ['jscolors.css'];
                     break;
 
                 case 'html':
-                    $parserFile = array(
+                    $parserFile = [
                         'parsexml.js', 'parsecss.js', 'tokenizejavascript.js', 'parsejavascript.js', 'parsehtmlmixed.js'
-                    );
-                    $styleSheet = array('xmlcolors.css', 'jscolors.css', 'csscolors.css');
+                    ];
+                    $styleSheet = ['xmlcolors.css', 'jscolors.css', 'csscolors.css'];
                     break;
 
                 case 'php':
-                    $parserFile = array(
+                    $parserFile = [
                         'parsexml.js', 'parsecss.js', 'tokenizejavascript.js', 'parsejavascript.js',
                         'tokenizephp.js', 'parsephp.js', 'parsephphtmlmixed.js'
-                    );
-                    $styleSheet = array('xmlcolors.css', 'jscolors.css', 'csscolors.css', 'phpcolors.css');
+                    ];
+                    $styleSheet = ['xmlcolors.css', 'jscolors.css', 'csscolors.css', 'phpcolors.css'];
                     break;
 
                 default:
@@ -196,7 +196,7 @@ class Codemirror extends Plugin
 
         $options = new \stdClass();
 
-        $options->basefiles  = array('basefiles' . $compressed . '.js');
+        $options->basefiles  = ['basefiles' . $compressed . '.js'];
         $options->path       = Request::root() . '/' . $this->_basePath . 'assets/js/';
         $options->parserfile = $parserFile;
         $options->stylesheet = $styleSheet;
@@ -213,7 +213,7 @@ class Codemirror extends Plugin
             $options->tabMode = 'shift';
         }
 
-        $html = array();
+        $html = [];
         $html[] = "<textarea name=\"$name\" id=\"$id\" cols=\"$col\" rows=\"$row\">$content</textarea>";
         $html[] = $buttons;
         $html[] = '<script type="text/javascript">';
@@ -242,7 +242,7 @@ class Codemirror extends Plugin
         // Load modal popup behavior
         Html::behavior('modal', 'a.modal-button');
 
-        $html = array();
+        $html = [];
         $results[] = $this->onGetInsertMethod($name);
 
         foreach ($results as $result) {

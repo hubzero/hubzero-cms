@@ -54,13 +54,13 @@ if ($showtoc) {
         }
 
         $parser = Parser::getInstance();
-        $toc = $parser->toc($this->page->version->get('pagehtml'), array(
+        $toc = $parser->toc($this->page->version->get('pagehtml'), [
             'option'    => ($this->option ?: Request::getCmd('option')),
             'scope'     => $this->page->get('path'),
             'domain'    => $this->page->get('scope'),
             'domain_id' => $this->page->get('scope_id'),
             'url'       => $url,
-        ), $depth);
+        ], $depth);
     }
 }
 

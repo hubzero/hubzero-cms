@@ -41,14 +41,14 @@ class Migration20150820154213ComCitations extends Base
         if (!$apa) {
             //insert apa
             $apaFormat = Format::oneOrNew(null);
-            $apaFormat->set(array(
+            $apaFormat->set([
                 'style'  => 'APA',
                 'format' => '{AUTHORS}, {EDITORS} ({YEAR}), {TITLE/CHAPTER}, <i>{JOURNAL}</i>, '
                     . '<i>{BOOK TITLE}</i>, {EDITION}, {CHAPTER}, {SERIES}, {PUBLISHER}, {ADDRESS}, '
                     . '<b>{VOLUME}</b>, <b>{ISSUE/NUMBER}</b>: {PAGES}, {ORGANIZATION}, {INSTITUTION}, '
                     . '{SCHOOL}, {LOCATION}, {MONTH}, {ISBN/ISSN}, (DOI: {DOI}). '
                     . "Cited by: <a href='{SECONDARY LINK}'>{SECONDARY COUNT}</a>"
-            ));
+            ]);
 
             $apaFormat->save();
         }
@@ -56,13 +56,13 @@ class Migration20150820154213ComCitations extends Base
         if (!$ieee) {
             //insert ieee
             $ieeeFormat = Format::oneOrNew(null);
-            $ieeeFormat->set(array(
+            $ieeeFormat->set([
                 'style'  => 'IEEE',
                 'format' => '{AUTHORS}, {EDITORS} ({YEAR}), {TITLE/CHAPTER}, <i>{JOURNAL}</i>, '
                     . '<i>{BOOK TITLE}</i>, {EDITION}, {CHAPTER}, {SERIES}, {PUBLISHER}, {ADDRESS}, '
                     . '<b>{VOLUME}</b>, <b>{ISSUE/NUMBER}</b>: {PAGES}, {ORGANIZATION}, {INSTITUTION}, '
                     . '{SCHOOL}, {LOCATION}, {MONTH}, {ISBN/ISSN}, (DOI: {DOI})'
-            ));
+            ]);
 
             $ieeeFormat->save();
         }

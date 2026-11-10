@@ -47,7 +47,7 @@ class AuthorizationCode implements GrantTypeInterface
      * @param   array   $config   Config array
      * @return  void
      */
-    public function __construct(AuthorizationCodeInterface $storage, array $config = array())
+    public function __construct(AuthorizationCodeInterface $storage, array $config = [])
     {
         $this->storage = $storage;
     }

@@ -70,7 +70,7 @@ class Archive extends Obj
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         if (!isset($instances[$key])) {
@@ -88,11 +88,11 @@ class Archive extends Obj
      * @param   boolean $boolean Clear cached data?
      * @return  mixed
      */
-    public function modules($rtrn = 'list', $filters = array(), $clear = false)
+    public function modules($rtrn = 'list', $filters = [], $clear = false)
     {
         switch (strtolower($rtrn)) {
             case 'unapproved':
-                $unapproved = array();
+                $unapproved = [];
                 if ($results = $this->modules('list', $filters, true)) {
                     foreach ($results as $k => $result) {
                         // if module is unapproved return it

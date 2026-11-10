@@ -47,20 +47,20 @@ class Comment extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         //'comment' => 'notempty',
         'ticket'  => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Base URL
@@ -81,10 +81,10 @@ class Comment extends Relational
      *
      * @var array
      */
-    private $cache = array(
-        'recipients.added'  => array(),
-        'recipients.failed' => array()
-    );
+    private $cache = [
+        'recipients.added'  => [],
+        'recipients.failed' => []
+    ];
 
     /**
      * Is the comment private?
@@ -196,12 +196,12 @@ class Comment extends Relational
             $comment = preg_replace('/\{ticket#([\d]+)\}/i', $ticketLink, $comment);
 
             // Handle legacy attachment strings
-            $comment = preg_replace_callback('/\{attachment#[0-9]*\}/sU', array(&$this,'_getAttachment'), $comment);
+            $comment = preg_replace_callback('/\{attachment#[0-9]*\}/sU', [&$this,'_getAttachment'], $comment);
 
             $this->set('comment', $comment);
 
             // Prepare comment
-            $results = Event::trigger('support.onCommentPrepare', array('com_support.comment', &$this));
+            $results = Event::trigger('support.onCommentPrepare', ['com_support.comment', &$this]);
             $results = implode('', $results);
 
             $comment = $this->get('comment');
@@ -308,12 +308,12 @@ class Comment extends Relational
                 if (isset($this->cache['recipients.added'][$user->get('email')])) {
                     return $this;
                 }
-                $this->cache['recipients.added'][$user->get('email')] = array(
+                $this->cache['recipients.added'][$user->get('email')] = [
                     'role'    => $role,
                     'name'    => $user->get('name'),
                     'email'   => $user->get('email'),
                     'id'      => $user->get('id')
-                );
+                ];
                 $added = true;
             }
         } elseif (is_string($to)) {
@@ -322,12 +322,12 @@ class Comment extends Relational
                 if (isset($this->cache['recipients.added'][$to])) {
                     return $this;
                 }
-                $this->cache['recipients.added'][$to] = array(
+                $this->cache['recipients.added'][$to] = [
                     'role'    => $role,
                     'name'    => Lang::txt('COM_SUPPORT_UNKNOWN'),
                     'email'   => $to,
                     'id'      => 0
-                );
+                ];
                 $added = true;
             } else {
                 // Username
@@ -336,12 +336,12 @@ class Comment extends Relational
                     if (isset($this->cache['recipients.added'][$user->get('email')])) {
                         return $this;
                     }
-                    $this->cache['recipients.added'][$user->get('email')] = array(
+                    $this->cache['recipients.added'][$user->get('email')] = [
                         'role'    => $role,
                         'name'    => $user->get('name'),
                         'email'   => $user->get('email'),
                         'id'      => $user->get('id')
-                    );
+                    ];
                     $added = true;
                 }
             }
@@ -373,7 +373,7 @@ class Comment extends Relational
         switch ($who) {
             case 'id':
             case 'ids':
-                $tos = array();
+                $tos = [];
                 foreach ($this->cache['recipients.added'] as $to) {
                     if ($to['id']) {
                         $tos[] = $to;
@@ -384,7 +384,7 @@ class Comment extends Relational
 
             case 'email':
             case 'emails':
-                $tos = array();
+                $tos = [];
                 foreach ($this->cache['recipients.added'] as $to) {
                     if (!$to['id'] && $to['email']) {
                         $tos[] = $to;

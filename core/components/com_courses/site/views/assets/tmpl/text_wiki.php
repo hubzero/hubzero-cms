@@ -15,22 +15,22 @@ defined('_HZEXEC_') or die();
 
 $asset = new \Components\Courses\Models\Asset($this->asset->id);
 
-$config = array(
+$config = [
     'option'   => 'com_courses',
     'scope'    => $this->course->get('alias') . DS . $this->course->offering()->alias() . DS . 'asset',
     'pagename' => $this->asset->id,
     'pageid'   => '',
     'filepath' => $asset->path($this->course->get('id')),
     'domain'   => $this->course->get('alias')
-);
+];
 
 $this->model->set('content', stripslashes($this->model->get('content')));
 
-Event::trigger('content.onContentPrepare', array(
+Event::trigger('content.onContentPrepare', [
     'com_courses.asset.content',
     &$this->model,
     &$config
-));
+]);
 ?>
 
 <header id="content-header">

@@ -52,7 +52,7 @@ class Application extends Container
      *
      * @var  array
      */
-    protected $serviceProviders = array();
+    protected $serviceProviders = [];
 
     protected $startms = 0;
 
@@ -156,7 +156,7 @@ class Application extends Container
      * @param   array  $aliases
      * @return  void
      */
-    public function registerFacades($aliases = array())
+    public function registerFacades($aliases = [])
     {
         // Set the application to resolve Facades
         Facade::setApplication($this);
@@ -173,7 +173,7 @@ class Application extends Container
      * @param  bool    $force
      * @return object
      */
-    public function register($provider, $options = array()) //, $force = false)
+    public function register($provider, $options = []) //, $force = false)
     {
         /*if ($registered = $this->getRegistered($provider) && !$force)
         {
@@ -355,13 +355,13 @@ class Application extends Container
 
         if ($client == null) {
             if ($environments == null) {
-                $environments = array(
+                $environments = [
                     'administrator' => 'administrator',
                     'api' => 'api',
                     'cli' => 'cli',
                     'install' => 'install',
                     'files' => 'files',
-                );
+                ];
             }
 
             $this->detectClient($environments);
@@ -374,7 +374,7 @@ class Application extends Container
         $this['config'] = new \Hubzero\Config\Repository(PATH_APP, $client);
 
         $providers = PATH_CORE . '/bootstrap/' . $client . '/services.php';
-        $services = file_exists($providers) ? require $providers : array();
+        $services = file_exists($providers) ? require $providers : [];
 
         $providers = PATH_CORE . '/bootstrap/' . ucfirst($client) . '/services.php';
         $services = file_exists($providers) ? array_merge($services, require $providers) : $services;
@@ -387,7 +387,7 @@ class Application extends Container
         }
 
         $facades = PATH_CORE . '/bootstrap/' . $client . '/aliases.php';
-        $aliases = file_exists($facades) ? require $facades : array();
+        $aliases = file_exists($facades) ? require $facades : [];
 
         $facades = PATH_CORE . '/bootstrap/' . ucfirst($client) . '/aliases.php';
         $aliases = file_exists($facades) ? array_merge($aliases, require $facades) : $aliases;

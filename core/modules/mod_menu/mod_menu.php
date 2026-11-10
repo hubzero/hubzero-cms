@@ -44,7 +44,7 @@ class Menu extends Module
         $active_id = isset($active)
             ? $active->id
             : (is_object($default) ? $default->id : 0);
-        $path      = isset($active) ? $active->tree : array();
+        $path      = isset($active) ? $active->tree : [];
         $showAll   = $params->get('showAllChildren');
         $class_sfx = htmlspecialchars($params->get('class_sfx', ''));
         $disclosureMenu = $params->get('disclosureMenu', false);
@@ -81,18 +81,18 @@ class Menu extends Module
 
         if (!($items = Cache::get($key))) {
             // Initialise variables.
-            $list     = array();
+            $list     = [];
             $db       = App::get('db');
 
-            $path     = $active ? $active->tree : array();
+            $path     = $active ? $active->tree : [];
             $start    = (int) $params->get('startLevel');
             $end      = (int) $params->get('endLevel');
             $showAll  = $params->get('showAllChildren');
             $items    = $menu->getItems('menutype', $params->get('menutype'));
 
             $lastitem = 0;
-            $hidden   = array();
-            $shown  = array();
+            $hidden   = [];
+            $shown  = [];
 
             if ($items) {
                 foreach ($items as $i => $item) {

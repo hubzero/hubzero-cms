@@ -47,10 +47,10 @@ class Miner extends Obj implements Provider
      *
      * @var  object
      */
-    protected $provides = array(
+    protected $provides = [
         'resources',
         'resource'
-    );
+    ];
 
     /**
      * Constructor
@@ -121,7 +121,7 @@ class Miner extends Obj implements Provider
      * @param   array   $filters
      * @return  string
      */
-    public function records($filters = array())
+    public function records($filters = [])
     {
         if (isset($filters['set']) && $filters['set']) {
             if (!preg_match('/^resources\:(.+)/i', $filters['set'], $matches)) {
@@ -356,7 +356,7 @@ class Miner extends Obj implements Provider
         );
         $record->subject = $this->database->loadColumn();
 
-        $record->relation = array();
+        $record->relation = [];
 
         $this->database->setQuery(
             "SELECT r.id, r.title, r.type, r.logical_type AS logicaltype, r.created, r.created_by,
@@ -377,10 +377,10 @@ class Miner extends Obj implements Provider
                     $uri = self::$base . '/' . ltrim($uri, '/');
                 }
 
-                $record->relation[] = array(
+                $record->relation[] = [
                     'type'  => 'hasPart',
                     'value' => $uri
-                );
+                ];
             }
         }
 
@@ -393,10 +393,10 @@ class Miner extends Obj implements Provider
         );
         if ($parents = $this->database->loadObjectList()) {
             foreach ($parents as $parent) {
-                $record->relation[] = array(
+                $record->relation[] = [
                     'type'  => 'isPartOf',
                     'value' => $this->identifier($parent->parent_id, 0)
-                );
+                ];
             }
         }
 
@@ -439,10 +439,10 @@ class Miner extends Obj implements Provider
                     continue;
                 }
 
-                $record->relation[] = array(
+                $record->relation[] = [
                     'type'  => 'hasVersion',
                     'value' => $this->identifier($id, $v, $v->revision)
-                );
+                ];
             }
         }
 
@@ -485,10 +485,10 @@ class Miner extends Obj implements Provider
                     $cite = strip_tags(html_entity_decode($formatted));
                     $cite = str_replace('&quot;', '"', $cite);
 
-                    $record->relation[] = array(
+                    $record->relation[] = [
                         'type'  => 'isReferencedBy',
                         'value' => trim($cite)
-                    );
+                    ];
                 }
             }
 
@@ -513,10 +513,10 @@ class Miner extends Obj implements Provider
                     $cite = strip_tags(html_entity_decode($formatted));
                     $cite = str_replace('&quot;', '"', $cite);
 
-                    $record->relation[] = array(
+                    $record->relation[] = [
                         'type'  => 'references',
                         'value' => trim($cite)
-                    );
+                    ];
                 }
             }
         }

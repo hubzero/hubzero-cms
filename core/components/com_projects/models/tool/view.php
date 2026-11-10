@@ -60,7 +60,7 @@ class View extends Model
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         if (is_object($oid)) {

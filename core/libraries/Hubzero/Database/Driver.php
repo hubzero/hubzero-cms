@@ -1386,7 +1386,7 @@ abstract class Driver implements LoggerAwareInterface
     public function quoteName($name, $as = null)
     {
         $parts = (strpos($name, '.') !== false) ? explode('.', $name) : (array)$name;
-        $bits  = array();
+        $bits  = [];
 
         // A quote character inside an identifier can only be an attempt to
         // break out of the quoting, so escapeName() doubles it
@@ -1788,7 +1788,7 @@ abstract class Driver implements LoggerAwareInterface
             }
 
             // Our class exists, so now we just need to know if it passes it's test method
-            if (call_user_func_array(array($class, 'test'), array())) {
+            if (call_user_func_array([$class, 'test'], [])) {
                 // Preserve historical connector naming style (ucfirst)
                 $connectors[] = ucfirst($type);
             }

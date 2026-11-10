@@ -28,7 +28,7 @@ if ($this->version == 'dev') {
                     <label for="acmembers">
                         <?php echo Lang::txt('COM_TOOLS_AUTHORS_ENTER_LOGINS'); ?>
                         <?php
-                        $mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'new_authors', 'acmembers')));
+                        $mc = Event::trigger('hubzero.onGetMultiEntry', [['members', 'new_authors', 'acmembers']]);
                         if (count($mc) > 0) {
                             echo $mc[0];
                         } else {

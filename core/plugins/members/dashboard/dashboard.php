@@ -39,7 +39,7 @@ class Dashboard extends Plugin
      *
      * @var  array
      */
-    protected $_actionMap = array();
+    protected $_actionMap = [];
 
     /**
      * Constructor
@@ -74,7 +74,7 @@ class Dashboard extends Plugin
     public function onMembersAreas($user, $member)
     {
         //default areas returned to nothing
-        $areas = array();
+        $areas = [];
 
         //if this is the logged in user show them
         if ($user->get('id') == $member->get('id')) {
@@ -111,10 +111,10 @@ class Dashboard extends Plugin
             }
         }
 
-        $arr = array(
+        $arr = [
             'html' => '',
-            'metadata' => array()
-        );
+            'metadata' => []
+        ];
 
         // Build the final HTML
         if ($returnhtml) {
@@ -166,7 +166,7 @@ class Dashboard extends Plugin
         $preferences = $this->_loadPreferences();
 
         // var to hold modules
-        $view->modules = array();
+        $view->modules = [];
 
         // check to see if which modules to display
         foreach ($preferences as $preference) {
@@ -243,7 +243,7 @@ class Dashboard extends Plugin
         }
 
         if (!$module) {
-            echo json_encode(array('html' => Lang::txt('Module (ID #%s) not found.', $moduleId), 'assets' => array()));
+            echo json_encode(['html' => Lang::txt('Module (ID #%s) not found.', $moduleId), 'assets' => []]);
             exit();
         }
 
@@ -255,8 +255,8 @@ class Dashboard extends Plugin
         $view->module = $module;
         $content      = $view->loadTemplate();
 
-        $stylesheets = array();
-        $scripts     = array();
+        $stylesheets = [];
+        $scripts     = [];
 
         if (!Request::getInt('no_html') && Request::getString('format') != 'raw') {
             $document = Document::getHeadData();
@@ -273,7 +273,7 @@ class Dashboard extends Plugin
         }
 
         // return content
-        echo json_encode(array('html' => $content, 'assets' => array('scripts' => $scripts, 'stylesheets' => $stylesheets)));
+        echo json_encode(['html' => $content, 'assets' => ['scripts' => $scripts, 'stylesheets' => $stylesheets]]);
         exit();
     }
 
@@ -339,10 +339,10 @@ class Dashboard extends Plugin
         }
 
         // build return
-        echo json_encode(array(
+        echo json_encode([
             'saved'   => true,
             'modules' => json_decode($modules)
-        ));
+        ]);
         exit();
     }
 
@@ -397,13 +397,13 @@ class Dashboard extends Plugin
         $view = $this->view('default', 'manage');
 
         // var to hold modules
-        $view->modules = array();
+        $view->modules = [];
 
         // load dashboard modules
         $dashboardModules = $this->_loadModules($this->params->get('position', 'memberDashboard'));
 
         // get default prefs
-        $preferences = $this->params->get('defaults', array());
+        $preferences = $this->params->get('defaults', []);
         if (is_string($preferences)) {
             $preferences = json_decode($preferences);
         }
@@ -514,7 +514,7 @@ class Dashboard extends Plugin
         $view->module = $module;
 
         // return content
-        echo json_encode(array('html' => $view->loadTemplate()));
+        echo json_encode(['html' => $view->loadTemplate()]);
         exit();
     }
 
@@ -562,7 +562,7 @@ class Dashboard extends Plugin
         // loop through each member preference and attempt to push module
         foreach ($memberPreferences as $memberPreference) {
             // load their member preferences
-            $params = array();
+            $params = [];
             if ((string)$memberPreference->get('preferences') !== '') {
                 $params = json_decode($memberPreference->get('preferences'));
             }
@@ -578,7 +578,7 @@ class Dashboard extends Plugin
             }
 
             // calculate the heights for each column
-            $maxForCols = array('1' => 0, '2' => 0, '3' => 0);
+            $maxForCols = ['1' => 0, '2' => 0, '3' => 0];
             foreach ($params as $param) {
                 $col    = $param->col;
                 $height = $param->size_y;
@@ -601,7 +601,7 @@ class Dashboard extends Plugin
                 array_unshift($params, $newModule);
 
                 // run through following params (modules) and adjust their position
-                $mins = array('1' => 0, '2' => 0, '3' => 0);
+                $mins = ['1' => 0, '2' => 0, '3' => 0];
                 foreach ($params as $param) {
                     $col = $param->col;
                     $min = $param->row + $param->size_y;
@@ -621,7 +621,7 @@ class Dashboard extends Plugin
         }
 
         // return message
-        echo json_encode(array('module_pushed' => true));
+        echo json_encode(['module_pushed' => true]);
         exit();
     }
 
@@ -674,7 +674,7 @@ class Dashboard extends Plugin
             }
         } else if ($preferences === '') {
             // handle user setting dashboard to empty
-            $preferences = array();
+            $preferences = [];
         } else {
             // use users settings
             $preferences = json_decode($preferences);

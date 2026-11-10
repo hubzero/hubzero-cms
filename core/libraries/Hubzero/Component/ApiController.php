@@ -46,9 +46,9 @@ class ApiController implements ControllerInterface
      *
      * @var  array
      */
-    protected $_taskMap = array(
+    protected $_taskMap = [
         '__default' => 'index'
-    );
+    ];
 
     /**
      * The name of the task to be executed
@@ -120,28 +120,28 @@ class ApiController implements ControllerInterface
      *
      * @var  array
      */
-    public $authenticated = array('all');
+    public $authenticated = ['all'];
 
     /**
      * Methods skipping Auth
      *
      * @var  array
      */
-    public $unauthenticated = array();
+    public $unauthenticated = [];
 
     /**
      * Methods needing rate limiting
      *
      * @var  array
      */
-    public $rateLimited = array();
+    public $rateLimited = [];
 
     /**
      * Methods skipping rate limiting
      *
      * @var  array
      */
-    public $notRateLimited = array('all');
+    public $notRateLimited = ['all'];
 
     /**
      * Constructor
@@ -149,7 +149,7 @@ class ApiController implements ControllerInterface
      * @param   array  $config  Optional configurations to be used
      * @return  void
      */
-    public function __construct(Response $response, $config = array())
+    public function __construct(Response $response, $config = [])
     {
         $this->response = $response;
 
@@ -205,7 +205,7 @@ class ApiController implements ControllerInterface
 
             // Ensure task isn't in the exclude list and ends in 'Task'
             if (
-                !in_array($name, array('registerTask', 'unregisterTask'))
+                !in_array($name, ['registerTask', 'unregisterTask'])
                 && substr(strtolower($name), -4) == 'task'
             ) {
                 // Remove the 'Task' suffix
@@ -327,8 +327,8 @@ class ApiController implements ControllerInterface
         $output->version = (strpos($versionPart, 'r') !== false)
             ? str_replace('r', '.', $versionPart)
             : str_replace('_', '.', $versionPart);
-        $output->tasks     = array();
-        $output->errors    = array();
+        $output->tasks     = [];
+        $output->errors    = [];
 
         // create reflection class of file
         $classReflector = new ReflectionClass($this);
@@ -355,7 +355,7 @@ class ApiController implements ControllerInterface
                         $phpdoc = $factory->create($docblock);
 
             // skip constructor
-            if (substr($method->getName(), -4) != 'Task' || in_array($method->getName(), array('registerTask', 'unregisterTask'))) {
+            if (substr($method->getName(), -4) != 'Task' || in_array($method->getName(), ['registerTask', 'unregisterTask'])) {
                 continue;
             }
 
@@ -377,13 +377,13 @@ class ApiController implements ControllerInterface
             }
 
             // create endpoint data array
-            $endpoint = array(
+            $endpoint = [
                 'name'        => substr($method->getName(), 0, -4),
                 'description' => preg_replace('/\s+/', ' ', $phpdoc->getSummary()),
                 'method'      => '',
                 'uri'         => '',
-                'parameters'  => array()
-            );
+                'parameters'  => []
+            ];
 
             // loop through each tag
             foreach ($phpdoc->getTags() as $tag) {
@@ -427,19 +427,19 @@ class ApiController implements ControllerInterface
                 $endpoint['uri'] = str_replace('{primary key}', '{' . $model->getPrimaryKey() . '}', $endpoint['uri']);
 
                 foreach ($properties as $prop => $type) {
-                    $parameter = array(
+                    $parameter = [
                         'name'        => $prop,
                         'description' => '',
                         'type'        => $type,
                         'required'    => false,
                         'default'     => null
-                    );
+                    ];
 
-                    if ($prop == $model->getPrimaryKey() && in_array($endpoint['name'], array('read', 'update', 'delete'))) {
+                    if ($prop == $model->getPrimaryKey() && in_array($endpoint['name'], ['read', 'update', 'delete'])) {
                         $parameter['required'] = true;
 
-                        if (in_array($endpoint['name'], array('read', 'delete'))) {
-                            $endpoint['parameters'] = array($parameter);
+                        if (in_array($endpoint['name'], ['read', 'delete'])) {
+                            $endpoint['parameters'] = [$parameter];
                             break;
                         }
                     }
@@ -477,7 +477,7 @@ class ApiController implements ControllerInterface
         $properties = $query->getStructure()->getTableColumns($query->getTableName());
         $properties = $this->normalizeProperties($properties);
 
-        $searches = array();
+        $searches = [];
 
         // Build a list of incoming filters from
         // the propertes of the model
@@ -524,7 +524,7 @@ class ApiController implements ControllerInterface
             $filters['sort'] = $query->orderBy;
         }
 
-        if (!in_array($filters['sort_Dir'], array('asc', 'desc'))) {
+        if (!in_array($filters['sort_Dir'], ['asc', 'desc'])) {
             $filters['sort_Dir'] = $query->orderDir;
         }
 
@@ -569,7 +569,7 @@ class ApiController implements ControllerInterface
 
         // Build the response
         $response = new stdClass();
-        $response->records = array();
+        $response->records = [];
         $response->total = $total;
 
         if ($response->total) {
@@ -651,7 +651,7 @@ class ApiController implements ControllerInterface
         }
 
         // Trigger before save event
-        $result = Event::trigger('on' . $model->getModelName() . 'BeforeSave', array(&$model, true));
+        $result = Event::trigger('on' . $model->getModelName() . 'BeforeSave', [&$model, true]);
 
         // Save the data
         if (!$model->save()) {
@@ -659,7 +659,7 @@ class ApiController implements ControllerInterface
         }
 
         // Trigger after save event
-        Event::trigger('on' . $model->getModelName() . 'AfterSave', array(&$model, true));
+        Event::trigger('on' . $model->getModelName() . 'AfterSave', [&$model, true]);
 
         // Log activity
         if (method_exists($model, 'link')) {
@@ -667,7 +667,7 @@ class ApiController implements ControllerInterface
             $url  = str_replace('/api', '', $base . '/' . ltrim(Route::url($model->link()), '/'));
         }
 
-        $recipients = array();
+        $recipients = [];
 
         if ($model->hasAttribute('created_by')) {
             $recipients[] = $model->get('created_by');
@@ -786,7 +786,7 @@ class ApiController implements ControllerInterface
         // resolve, to an abstract class, and fatals on `new`. Keep the branch: a
         // subclass that sets $_model reaches it, and then it is the only guard.
         $ownerId = null;
-        foreach (array('created_by', 'user_id', 'uidNumber') as $ownerColumn) {
+        foreach (['created_by', 'user_id', 'uidNumber'] as $ownerColumn) {
             if ($model->hasAttribute($ownerColumn)) {
                 $ownerId = (int) $model->get($ownerColumn);
                 break;
@@ -820,7 +820,7 @@ class ApiController implements ControllerInterface
         }
 
         // Trigger before save event
-        $result = Event::trigger('on' . $model->getModelName() . 'BeforeSave', array(&$model, true));
+        $result = Event::trigger('on' . $model->getModelName() . 'BeforeSave', [&$model, true]);
 
         // Save the data
         if (!$model->save()) {
@@ -828,7 +828,7 @@ class ApiController implements ControllerInterface
         }
 
         // Trigger after save event
-        Event::trigger('on' . $model->getModelName() . 'AfterSave', array(&$model, true));
+        Event::trigger('on' . $model->getModelName() . 'AfterSave', [&$model, true]);
 
         // Log activity
         if (method_exists($model, 'link')) {
@@ -836,7 +836,7 @@ class ApiController implements ControllerInterface
             $url  = str_replace('/api', '', $base . '/' . ltrim(Route::url($model->link()), '/'));
         }
 
-        $recipients = array();
+        $recipients = [];
 
         if ($model->hasAttribute('created_by')) {
             $recipients[] = $model->get('created_by');
@@ -912,7 +912,7 @@ class ApiController implements ControllerInterface
         // resolve, to an abstract class, and fatals on `new`. Keep the branch: a
         // subclass that sets $_model reaches it, and then it is the only guard.
         $ownerId = null;
-        foreach (array('created_by', 'user_id', 'uidNumber') as $ownerColumn) {
+        foreach (['created_by', 'user_id', 'uidNumber'] as $ownerColumn) {
             if ($model->hasAttribute($ownerColumn)) {
                 $ownerId = (int) $model->get($ownerColumn);
                 break;
@@ -930,7 +930,7 @@ class ApiController implements ControllerInterface
         }
 
         // Log activity
-        $recipients = array();
+        $recipients = [];
 
         if ($model->hasAttribute('created_by')) {
             $recipients[] = $model->get('created_by');

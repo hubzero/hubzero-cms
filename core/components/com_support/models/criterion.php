@@ -30,7 +30,7 @@ class Criterion extends Relational
      */
     public function getViolations()
     {
-        $violations = array();
+        $violations = [];
 
         if ($query = $this->get('query')) {
             $db = App::get('db');

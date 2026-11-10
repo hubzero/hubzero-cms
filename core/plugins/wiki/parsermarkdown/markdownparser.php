@@ -21,7 +21,7 @@ class MarkdownParser
      *
      * @var  array
      */
-    private $_tokens = array();
+    private $_tokens = [];
 
     /**
      * A unique token
@@ -35,7 +35,7 @@ class MarkdownParser
      *
      * @var array
      */
-    private $_config = array(
+    private $_config = [
         'option'    => null,
         'scope'     => null,
         'pagename'  => null,
@@ -51,18 +51,18 @@ class MarkdownParser
         'camelcase' => true,
         'loglinks'  => false,
         'style'     => 'Markdown'
-    );
+    ];
 
     /**
      * Data store
      *
      * @var array
      */
-    private $_data = array(
+    private $_data = [
         'input'  => null,
         'output' => null,
-        'links'  => array()
-    );
+        'links'  => []
+    ];
 
     /**
      * Constructor
@@ -70,7 +70,7 @@ class MarkdownParser
      * @param      array $config Configuration options
      * @return     void
      */
-    public function __construct($config = array())
+    public function __construct($config = [])
     {
         if (is_array($config)) {
             // We need this info for links that may get generated
@@ -183,11 +183,11 @@ class MarkdownParser
 
         // The Extra and GitHub flavours carry tables, and ours add
         // scope="col" to the header cells; plain Markdown has no tables
-        $parsers = array(
+        $parsers = [
             'Markdown'       => \cebe\markdown\Markdown::class,
             'MarkdownExtra'  => Markdown\MarkdownExtra::class,
             'GithubMarkdown' => Markdown\GithubMarkdown::class,
-        );
+        ];
         $style = $this->get('style', 'Markdown');
         $cls   = isset($parsers[$style]) ? $parsers[$style] : $parsers['Markdown'];
 
@@ -240,7 +240,7 @@ class MarkdownParser
     private function math($text)
     {
         Html::behavior('math');
-        return preg_replace_callback('/<math>(.*?)<\/math>/s', array(&$this, '_stripMath'), $text);
+        return preg_replace_callback('/<math>(.*?)<\/math>/s', [&$this, '_stripMath'], $text);
     }
 
     /**
@@ -251,12 +251,12 @@ class MarkdownParser
      */
     private function _stripMath($matches)
     {
-        return $this->_dataPush(array(
+        return $this->_dataPush([
             $matches[0],
             'math',
             $this->_randomString(),
             '$$' . $matches[1] . '$$'
-        ));
+        ]);
     }
 
     /**
@@ -283,8 +283,8 @@ class MarkdownParser
 
         if (!empty($this->_tokens)) {
             foreach ($this->_tokens as $tag => $vals) {
-                $text = preg_replace_callback('/<(' . $tag . ') (.+?)>(.*)<\/(\1) \2>/si', array(&$this, '_dataPull'), $text);
-                $this->_tokens[$tag] = array();
+                $text = preg_replace_callback('/<(' . $tag . ') (.+?)>(.*)<\/(\1) \2>/si', [&$this, '_dataPull'], $text);
+                $this->_tokens[$tag] = [];
             }
         }
 

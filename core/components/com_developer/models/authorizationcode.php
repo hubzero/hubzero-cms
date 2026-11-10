@@ -55,11 +55,11 @@ class Authorizationcode extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'authorization_code' => 'notempty',
         'uidNumber'          => 'positive|nonzero',
         'application_id'     => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Sets up additional custom rules
@@ -81,7 +81,7 @@ class Authorizationcode extends Relational
             }
 
             // validate each one
-            $invalid = array();
+            $invalid = [];
             foreach ($uris as $uri) {
                 if (!Validate::url($uri)) {
                     $invalid[] = $uri;

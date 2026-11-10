@@ -25,7 +25,7 @@ class Menutype extends Obj
      *
      * @var  array
      */
-    protected $rlu = array();
+    protected $rlu = [];
 
     /**
      * Method to get the reverse lookup of the base link URL to Title
@@ -49,7 +49,7 @@ class Menutype extends Obj
     {
         // Initialise variables.
         $lang = Lang::getRoot();
-        $list = array();
+        $list = [];
 
         // Get the list of components.
         $db = App::get('db');
@@ -97,7 +97,7 @@ class Menutype extends Obj
     protected function getTypeOptionsByComponent($component)
     {
         // Initialise variables.
-        $options = array();
+        $options = [];
 
         $mainXML = Component::path($component->option) . '/site/metadata.xml';
 
@@ -122,7 +122,7 @@ class Menutype extends Obj
     protected function getTypeOptionsFromXML($file, $component)
     {
         // Initialise variables.
-        $options = array();
+        $options = [];
 
         // Attempt to load the xml file.
         if (!$xml = simplexml_load_file($file)) {
@@ -142,7 +142,7 @@ class Menutype extends Obj
             $o = new Obj();
             $o->title       = (string) $menu['name'];
             $o->description = (string) $menu['msg'];
-            $o->request     = array('option' => $component);
+            $o->request     = ['option' => $component];
 
             $options[] = $o;
 
@@ -168,7 +168,7 @@ class Menutype extends Obj
                     $o->title       = (string) $child['name'];
                     $o->description = (string) $child['msg'];
                     $varKey = (string) $optionsNode['var'];
-                    $o->request     = array('option' => $component, $varKey => (string) $child['value']);
+                    $o->request     = ['option' => $component, $varKey => (string) $child['value']];
 
                     $options[] = $o;
                 } elseif ($child->getName() == 'default') {
@@ -176,7 +176,7 @@ class Menutype extends Obj
                     $o = new Obj();
                     $o->title       = (string) $child['name'];
                     $o->description = (string) $child['msg'];
-                    $o->request     = array('option' => $component);
+                    $o->request     = ['option' => $component];
 
                     $options[] = $o;
                 }
@@ -195,7 +195,7 @@ class Menutype extends Obj
     protected function getTypeOptionsFromMVC($component)
     {
         // Initialise variables.
-        $options = array();
+        $options = [];
 
         // Get the views for this component.
         $path = Component::path($component->option) . '/site/views';
@@ -240,11 +240,11 @@ class Menutype extends Obj
                                             $o = new Obj();
                                             $o->title       = (string) $child['name'];
                                             $o->description = (string) $child['msg'];
-                                            $o->request     = array(
+                                            $o->request     = [
                                                 'option' => $component->option,
                                                 'view'   => $view,
                                                 (string) $optionsNode['var'] => (string) $child['value']
-                                            );
+                                            ];
 
                                             $options[] = $o;
                                         } elseif ($child->getName() == 'default') {
@@ -252,10 +252,10 @@ class Menutype extends Obj
                                             $o = new Obj();
                                             $o->title       = (string) $child['name'];
                                             $o->description = (string) $child['msg'];
-                                            $o->request     = array(
+                                            $o->request     = [
                                                 'option' => $component->option,
                                                 'view'   => $view
-                                            );
+                                            ];
 
                                             $options[] = $o;
                                         }
@@ -287,10 +287,10 @@ class Menutype extends Obj
     protected function getTypeOptionsFromLayouts($component, $view)
     {
         // Initialise variables.
-        $options = array();
-        $layouts = array();
-        $layoutNames = array();
-        $templateLayouts = array();
+        $options = [];
+        $layouts = [];
+        $layoutNames = [];
+        $templateLayouts = [];
         $lang = Lang::getRoot();
 
         // Get the layouts from the view folder.
@@ -317,7 +317,7 @@ class Menutype extends Obj
         // TODO: This should only search one template -- the current template for this item (default of specified)
         $folders = Filesystem::directories(PATH_CORE . '/templates', '', false, true);
         // Array to hold association between template file names and templates
-        $templateName = array();
+        $templateName = [];
         foreach ($folders as $folder) {
             if (Filesystem::exists($folder . '/html/' . $component->option . '/' . $view)) {
                 $template = basename($folder);
@@ -357,10 +357,10 @@ class Menutype extends Obj
                 $o = new Obj();
                 $o->title       = ucfirst($layout);
                 $o->description = '';
-                $o->request     = array(
+                $o->request     = [
                     'option' => $component->option,
                     'view'   => $view
-                );
+                ];
 
                 // Only add the layout request argument if not the default layout.
                 if ($layout != 'default') {

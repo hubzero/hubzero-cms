@@ -257,7 +257,7 @@ class Sku
         $productOptionGroups = $product->getOptionGroups();
 
         // Init the set options array()
-        $optionGroupOptionsSet = array();
+        $optionGroupOptionsSet = [];
         // Init the flag whether the extra/useless options are set
         $extraOptionsSet = false;
         foreach ($this->getOptions() as $oId) {
@@ -305,7 +305,7 @@ class Sku
         // Do SKU meta (if any)
         $skuMeta = $this->getMeta();
 
-        $activeMetaIds = array();
+        $activeMetaIds = [];
 
         if (!empty($skuMeta)) {
             // Go through each meta key and insert/update it, remembering the affected ID

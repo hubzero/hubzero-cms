@@ -13,7 +13,7 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$groupProjectPlugins = Event::trigger('groups.onGroupProjects', array($this->group));
+$groupProjectPlugins = Event::trigger('groups.onGroupProjects', [$this->group]);
 ?>
 
 <ul class="sub-menu">

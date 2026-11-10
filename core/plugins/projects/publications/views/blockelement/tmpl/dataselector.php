@@ -229,7 +229,7 @@ if ($coming) {
                 $shorten = ($aboutText && strlen($aboutText) > 200) ? 1 : 0;
 
                 if ($shorten) {
-                    $about = \Hubzero\Utility\Str::truncate($aboutText, 200, array('html' => true));
+                    $about = \Hubzero\Utility\Str::truncate($aboutText, 200, ['html' => true]);
                     $about .= ' <a href="#more-'
                         . $elName
                         . '" class="more-content">'

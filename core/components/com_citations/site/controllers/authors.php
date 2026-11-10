@@ -118,7 +118,7 @@ class Authors extends SiteController
                 }
             }
 
-            $authorValues = array(
+            $authorValues = [
                 'cid'          => $this->citation->id,
                 'author'       => $user->get('name'),
                 'uidNumber'    => $user->get('id', 0),
@@ -127,7 +127,7 @@ class Authors extends SiteController
                 'middleName'   => $user->get('middleName', ''),
                 'surname'      => $user->get('surname'),
                 'email'        => $user->get('email', '')
-            );
+            ];
             $author = Author::blank()->set($authorValues);
 
             if (!$author->save()) {
@@ -154,8 +154,8 @@ class Authors extends SiteController
             return $this->displayTask();
         }
 
-        $mbrs = Request::getArray('author', array());
-        $mbrs = (!is_array($mbrs) ? array($mbrs) : $mbrs);
+        $mbrs = Request::getArray('author', []);
+        $mbrs = (!is_array($mbrs) ? [$mbrs] : $mbrs);
 
         foreach ($mbrs as $i => $mbr) {
             $author = Author::one($mbr);
@@ -192,8 +192,8 @@ class Authors extends SiteController
         }
 
 
-        $mbrs = Request::getArray('author', array());
-        $mbrs = (!is_array($mbrs) ? array($mbrs) : $mbrs);
+        $mbrs = Request::getArray('author', []);
+        $mbrs = (!is_array($mbrs) ? [$mbrs] : $mbrs);
         $authors = Author::all()
             ->whereIn('id', $mbrs)
             ->whereEquals('cid', (int) $this->citation->get('id'))

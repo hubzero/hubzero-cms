@@ -34,7 +34,7 @@ class Newslettersv1r0 extends ApiController
         $newsletter = Newsletter::current();
 
         // build the newsletter based on campaign
-        $result = array();
+        $result = [];
         $result['id']      = $newsletter->issue;
         $result['title']   = $newsletter->name;
         $result['content'] = $newsletter->buildNewsletter($newsletter);
@@ -117,7 +117,7 @@ class Newslettersv1r0 extends ApiController
             ->start($start)
             ->rows();
 
-        $result = array();
+        $result = [];
 
         // add newsletter details to return array
         $k = 0;

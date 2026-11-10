@@ -39,9 +39,9 @@ class Tools extends Plugin
      */
     public function onUsageAreas()
     {
-        return array(
+        return [
             'tools' => Lang::txt('PLG_USAGE_TOOLs')
-        );
+        ];
     }
 
     /**
@@ -293,10 +293,10 @@ class Tools extends Plugin
      */
     private function drop_down_dates(&$db, $period, $s_top, $dthis)
     {
-        $months = array(
+        $months = [
             "01" => "Jan", "02" => "Feb", "03" => "Mar", "04" => "Apr", "05" => "May", "06" => "Jun",
             "07" => "Jul", "08" => "Aug", "09" => "Sep", "10" => "Oct", "11" => "Nov", "12" => "Dec"
-            );
+            ];
         $monthsReverse = array_reverse($months, true);
         $cur_year = floor(date("Y"));
         $cur_month = floor(date("n"));
@@ -502,7 +502,7 @@ class Tools extends Plugin
                 $database->setQuery($sql);
                 $results = $database->loadObjectList();
             if ($results) {
-                        $this->totals = array();
+                        $this->totals = [];
                 foreach ($results as $row) {
                     $this->totals[$row->date] = $row->total;
                 }
@@ -579,10 +579,10 @@ class Tools extends Plugin
             $cur_year  = floor(date("Y"));
             $cur_month = floor(date("n"));
             $year_data_start = 2000;
-            $months = array(
+            $months = [
                 "01" => "Jan", "02" => "Feb", "03" => "Mar", "04" => "Apr", "05" => "May", "06" => "Jun",
                 "07" => "Jul", "08" => "Aug", "09" => "Sep", "10" => "Oct", "11" => "Nov", "12" => "Dec"
-            );
+            ];
             $monthsReverse = array_reverse($months, true);
 
             for ($i = $cur_year; $i >= $year_data_start; $i--) {

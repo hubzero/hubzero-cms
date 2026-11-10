@@ -41,9 +41,9 @@ class Group extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'class_id' => 'nonzero|positive'
-    );
+    ];
 
     /**
      * Get parent group

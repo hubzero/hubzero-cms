@@ -101,7 +101,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
                             </a>
                         </li>
                         <?php
-                        $filters = array('state' => Components\Kb\Models\Category::STATE_PUBLISHED, 'access' => User::getAuthorisedViewLevels());
+                        $filters = ['state' => Components\Kb\Models\Category::STATE_PUBLISHED, 'access' => User::getAuthorisedViewLevels()];
 
                         $categories = $this->archive->categories($filters);
 
@@ -155,10 +155,10 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 
             <?php
             $comments = $this->article->comments()
-                ->whereIn('state', array(
+                ->whereIn('state', [
                     Components\Kb\Models\Comment::STATE_PUBLISHED,
                     Components\Kb\Models\Comment::STATE_FLAGGED
-                ))
+                ])
                 ->rows();
 
             if ($comments->count() > 0) {
@@ -233,7 +233,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
                                 <?php echo Lang::txt('COM_KB_YOUR_COMMENTS'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
                                 <?php
                                 if (!User::isGuest()) {
-                                    echo $this->editor('comment[content]', '', 40, 15, 'commentcontent', array('class' => 'minimal'));
+                                    echo $this->editor('comment[content]', '', 40, 15, 'commentcontent', ['class' => 'minimal']);
                                 } else {
                                     $rtrn = Route::url($this->article->link() . '#post-comment', false, true);
                                     ?>

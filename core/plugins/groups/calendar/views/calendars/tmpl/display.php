@@ -69,7 +69,7 @@ defined('_HZEXEC_') or die();
                     <td><?php echo $this->escape($calendar->get('title')); ?></td>
                     <td>
                         <?php
-                        $colors = array('red','orange','yellow','green','blue','purple','brown');
+                        $colors = ['red','orange','yellow','green','blue','purple','brown'];
                         if (!in_array($calendar->get('color'), $colors)) {
                             $calendar->set('color', '');
                         }

@@ -41,9 +41,9 @@ class Mailinglist extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'name' => 'notempty'
-    );
+    ];
 
     /**
      * Get a list of emails

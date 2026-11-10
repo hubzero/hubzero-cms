@@ -37,19 +37,19 @@ class Author extends Relational
      *
      * @var array
      **/
-    protected $rules = array(
+    protected $rules = [
         'author' => 'notempty',
         'cid'    => 'nonzero'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'ordering'
-    );
+    ];
 
     /**
      * Generates automatic ordering field value
@@ -116,12 +116,12 @@ class Author extends Relational
 
         if (count($geoFields) < $totalOptions) {
             $geoKeys = array_keys($geoFields);
-            $countryCodes = array();
+            $countryCodes = [];
             foreach ($geoKeys as $continent) {
                 if ($continent == 'us') {
                     $countryCodes[] = 'us';
                 } else {
-                    $countries = array();
+                    $countries = [];
                     $countries = Geocode::getCountriesByContinent($continent);
                     $countryCodes = array_merge($countryCodes, $countries);
                 }

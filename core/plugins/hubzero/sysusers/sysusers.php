@@ -29,7 +29,7 @@ class Sysusers extends Plugin
         $response = new \stdClass();
         $response->name  = 'users';
         $response->label = 'Users';
-        $response->data  = array();
+        $response->data  = [];
 
         if ($values == 'all') {
             $database->setQuery("SELECT COUNT(*) FROM `#__users`");

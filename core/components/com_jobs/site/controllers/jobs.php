@@ -255,13 +255,13 @@ class Jobs extends SiteController
         // of the group, so without a list any public method of any members plugin
         // was callable from a URL (windowstools' command-line builder among
         // them). Only the triggers this component's own pages link to.
-        if (!in_array($trigger, array('onMembersShortlist'), true)) {
+        if (!in_array($trigger, ['onMembersShortlist'], true)) {
             echo '<p class="error">' . Lang::txt('COM_JOBS_ERROR_NO_TRIGGER_FOUND') . '</p>';
             return;
         }
 
         // Call the trigger
-        $results = Event::trigger('members.' . $trigger, array());
+        $results = Event::trigger('members.' . $trigger, []);
         if (is_array($results) && isset($results[0]) && isset($results[0]['html'])) {
             $html = $results[0]['html'];
         }
@@ -281,7 +281,7 @@ class Jobs extends SiteController
         $oid  = Request::getInt('oid', 0);
 
         // Call the trigger
-        $results = Event::trigger('members.shortlist', array($oid, $ajax = 0));
+        $results = Event::trigger('members.shortlist', [$oid, $ajax = 0]);
 
         // Go back to the page
         App::redirect(
@@ -355,7 +355,7 @@ class Jobs extends SiteController
         // Output HTML
         if ($this->_task != 'browse' && $this->_allowSubscriptions) {
             // Component introduction
-            $view = new View(array('name' => 'intro'));
+            $view = new View(['name' => 'intro']);
             $view->title       = $this->_title;
             $view->config      = $this->config;
             $view->set('option', $this->_option);
@@ -366,7 +366,7 @@ class Jobs extends SiteController
             $view->display();
 
             // Show latest jobs
-            $view = new View(array('name' => 'jobs', 'layout' => 'latest'));
+            $view = new View(['name' => 'jobs', 'layout' => 'latest']);
             $view->set('option', $this->_option)
              ->set('filters', $filters)
              ->set('config', $this->config)
@@ -377,11 +377,11 @@ class Jobs extends SiteController
              ->display();
         } else {
             // Jobs list
-            $view = new View(array(
+            $view = new View([
                 'base_path' => dirname(__DIR__),
                 'name'      => 'jobs',
                 'layout'    => 'default'
-            ));
+            ]);
             $view->title            = $this->_title;
             $view->config           = $this->config;
             $view->set('option', $this->_option);
@@ -482,7 +482,7 @@ class Jobs extends SiteController
                 //do we have a pending subscription?
                 $subscription = Subscription::all()
                     ->whereEquals('id', $employer->subscriptionid)
-                    ->whereIn('status', array(0))
+                    ->whereIn('status', [0])
                     ->row();
                 if ($subscription->get('id')) {
                     App::redirect(
@@ -558,7 +558,7 @@ class Jobs extends SiteController
         // do we have an active subscription already?
         $subscription = Subscription::all()
             ->whereEquals('id', $employer->subscriptionid)
-            ->whereIn('status', array(0, 1))
+            ->whereIn('status', [0, 1])
             ->row();
 
         if (!$subscription || !$subscription->get('id')) {
@@ -1017,7 +1017,7 @@ class Jobs extends SiteController
 
             // Error view
             $this->setError(Lang::txt('COM_JOBS_ERROR_JOB_INACTIVE'));
-            $view = new View(array('name' => 'error'));
+            $view = new View(['name' => 'error']);
             $view->title = Lang::txt(strtoupper($this->_name));
             if ($this->getError()) {
                 $view->setError($this->getError());
@@ -1057,7 +1057,7 @@ class Jobs extends SiteController
         $seeker = count($seeker) > 0 ? $seeker[0] : null;
 
         // Output HTML
-        $view = new View(array('name' => 'apply'));
+        $view = new View(['name' => 'apply']);
         $view->title       = $this->_title;
         $view->config      = $this->config;
         $view->emp         = $this->_emp;
@@ -1140,7 +1140,7 @@ class Jobs extends SiteController
                 // carries. bind($_POST) also took id, uid, jid and status, which
                 // rewrote any application on the hub or filed one in another
                 // member's name.
-                $ja->bind(array_intersect_key($_POST, array_flip(array('cover', 'resumeid'))));
+                $ja->bind(array_intersect_key($_POST, array_flip(['cover', 'resumeid'])));
                 // A new application belongs to the caller and to this job; the
                 // form used to supply both, and without them the row was stored
                 // with uid 0 / jid 0, visible to nobody
@@ -1212,7 +1212,7 @@ class Jobs extends SiteController
             }
 
             // Output HTML
-            $view = new View(array('name' => 'error'));
+            $view = new View(['name' => 'error']);
             $view->title = Lang::txt(strtoupper($this->_name));
             if ($this->getError()) {
                 $view->setError($this->getError());
@@ -1243,7 +1243,7 @@ class Jobs extends SiteController
             $this->setError($error);
 
             // Output HTML
-            $view = new View(array('name' => 'error'));
+            $view = new View(['name' => 'error']);
             $view->title = Lang::txt(strtoupper($this->_name));
             if ($this->getError()) {
                 $view->setError($this->getError());
@@ -1272,10 +1272,10 @@ class Jobs extends SiteController
         // Get applications
         $ja = new Application($this->database);
         $canViewApps = $this->_admin || ($this->_emp && User::get('id') == $job->employerid);
-        $job->applications = $canViewApps ? $ja->getApplications($job->id) : array();
+        $job->applications = $canViewApps ? $ja->getApplications($job->id) : [];
 
         // Get profile info of applicants
-        $job->withdrawnlist = array();
+        $job->withdrawnlist = [];
         if (count($job->applications) > 0) {
             $js = new Seeker($this->database);
             foreach ($job->applications as $ap) {
@@ -1404,7 +1404,7 @@ class Jobs extends SiteController
 
             // missing required information
             if (!$job->description or !$job->title or !$job->companyName or !$job->companyLocation) {
-                $job->bind(array_intersect_key($_POST, array_flip(array('title', 'companyName', 'companyLocation', 'companyLocationCountry', 'companyWebsite', 'description', 'type', 'cid', 'closedate', 'expiredate', 'opendate', 'startdate', 'applyExternalUrl', 'applyInternal', 'contactName', 'contactEmail', 'contactPhone'))));
+                $job->bind(array_intersect_key($_POST, array_flip(['title', 'companyName', 'companyLocation', 'companyLocationCountry', 'companyWebsite', 'description', 'type', 'cid', 'closedate', 'expiredate', 'opendate', 'startdate', 'applyExternalUrl', 'applyInternal', 'contactName', 'contactEmail', 'contactPhone'])));
                 $this->_job     = $job;
                 $this->_jobCode = $code;
                 $this->setError(Lang::txt('COM_JOBS_ERROR_MISSING_INFORMATION'));
@@ -1417,7 +1417,7 @@ class Jobs extends SiteController
 
         // Save new information
         if (!$min) {
-            $job->bind(array_intersect_key($_POST, array_flip(array('title', 'companyName', 'companyLocation', 'companyLocationCountry', 'companyWebsite', 'description', 'type', 'cid', 'closedate', 'expiredate', 'opendate', 'startdate', 'applyExternalUrl', 'applyInternal', 'contactName', 'contactEmail', 'contactPhone'))));
+            $job->bind(array_intersect_key($_POST, array_flip(['title', 'companyName', 'companyLocation', 'companyLocationCountry', 'companyWebsite', 'description', 'type', 'cid', 'closedate', 'expiredate', 'opendate', 'startdate', 'applyExternalUrl', 'applyInternal', 'contactName', 'contactEmail', 'contactPhone'])));
             $job->description      = rtrim(stripslashes($_POST['description']));
             $job->title            = rtrim(stripslashes($_POST['title']));
             $job->companyName      = rtrim(stripslashes($_POST['companyName']));
@@ -1478,7 +1478,7 @@ class Jobs extends SiteController
 
         // The form's date fields are optional; a blank one posts '', which
         // strict SQL refuses for a datetime column. Store it as NULL.
-        foreach (array('closedate', 'expiredate', 'opendate', 'startdate') as $dateField) {
+        foreach (['closedate', 'expiredate', 'opendate', 'startdate'] as $dateField) {
             if (isset($job->$dateField) && $job->$dateField === '') {
                 $job->$dateField = null;
             }
@@ -1540,7 +1540,7 @@ class Jobs extends SiteController
                 //do we have a pending subscription?
                 $subscription = Subscription::all()
                     ->whereEquals('id', $employer->subscriptionid)
-                    ->whereIn('status', array(0))
+                    ->whereIn('status', [0])
                     ->row();
                 if ($subscription && $subscription->get('id')) {
                     App::redirect(
@@ -1582,7 +1582,7 @@ class Jobs extends SiteController
         }
 
         $uid = $code ? $job->employerid : User::get('id');
-        $job->admins = $code ? $jobadmin->getAdmins($job->id) : array(User::get('id'));
+        $job->admins = $code ? $jobadmin->getAdmins($job->id) : [User::get('id')];
 
         // Get the member's info
         $profile = User::getInstance($uid);
@@ -1809,7 +1809,7 @@ class Jobs extends SiteController
                     // only the search filters belong here: the stored text is built
                     // from the request, so a name outside this list (say _admin)
                     // must never become a property of the controller
-                    $allowed = array('filterby', 'match', 'search', 'category', 'type', 'sortby');
+                    $allowed = ['filterby', 'match', 'search', 'category', 'type', 'sortby'];
 
                     foreach ($col as $c) {
                         $nuk = explode('=', $c, 2);
@@ -1838,7 +1838,7 @@ class Jobs extends SiteController
     protected function _getFilters($admin = 0, $emp = 0, $checkstored = 1, $jobs = 0)
     {
         // Query filters defaults
-        $filters = array();
+        $filters = [];
 
         // jobs filters
         if ($jobs) {
@@ -1898,7 +1898,7 @@ class Jobs extends SiteController
         $pile = Request::getString('pile', 'all');
 
         // the pile names the zip file; only the three the dashboard offers
-        if (!in_array($pile, array('all', 'shortlisted', 'applied'), true)) {
+        if (!in_array($pile, ['all', 'shortlisted', 'applied'], true)) {
             $pile = 'all';
         }
 
@@ -1943,7 +1943,7 @@ class Jobs extends SiteController
         // Get available resume files
         $resume = new Resume($this->database);
         $files  = $resume->getResumeFiles($pile, User::get('id'), $this->_masterAdmin);
-        $batch  = array();
+        $batch  = [];
 
         if (count($files) > 0) {
             if (!extension_loaded('zip')) {
@@ -1967,7 +1967,7 @@ class Jobs extends SiteController
             $zip = new ZipArchive();
             if ($zip->open(PATH_APP . $base_path . DS . $zipname, ZipArchive::OVERWRITE) === true) {
                 foreach ($files as $avalue => $alabel) {
-                    $apath = Event::trigger('members.build_path', array($avalue));
+                    $apath = Event::trigger('members.build_path', [$avalue]);
                     $path  = is_array($apath) ? $apath[0] : '';
                     $file = $path ? PATH_APP . $path . DS . $alabel : '';
 
@@ -1995,7 +1995,7 @@ class Jobs extends SiteController
                     'error'
                 );
             } else {
-                $archive = array();
+                $archive = [];
                 $archive['path'] = PATH_APP . $base_path . DS . $zipname;
                 $archive['name'] = $zipname;
                 return $archive;
@@ -2039,7 +2039,7 @@ class Jobs extends SiteController
         $objS = Service::blank();
         $now = Date::toSql();
 
-        $default1 = array(
+        $default1 = [
             'id'          => 0,
             'title'       => Lang::txt('Employer Service, Basic'),
             'category'    => strtolower(Lang::txt('jobs')),
@@ -2055,8 +2055,8 @@ class Jobs extends SiteController
             'unitmeasure' => strtolower(Lang::txt('month')),
             'changed'     => $now,
             'params'      => "promo=First 3 months FREE\npromomaxunits=3\nmaxads=1"
-        );
-        $default2 = array(
+        ];
+        $default2 = [
             'id'          => 0,
             'title'       => Lang::txt('Employer Service, Premium'),
             'category'    => strtolower(Lang::txt('jobs')),
@@ -2072,7 +2072,7 @@ class Jobs extends SiteController
             'unitmeasure' => strtolower(Lang::txt('month')),
             'changed'     => $now,
             'params'      => "promo=\npromomaxunits=\nmaxads=3"
-        );
+        ];
 
         $objS->set($default1);
 

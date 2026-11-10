@@ -45,18 +45,18 @@ class Type extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'type' => 'notempty'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'alias'
-    );
+    ];
 
     /**
      * Params Registry

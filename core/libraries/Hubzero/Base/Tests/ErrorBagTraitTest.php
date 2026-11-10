@@ -78,11 +78,11 @@ class ErrorBagTraitTest extends Basic
         $this->assertEquals($this->obj->getError(0), 'Aenean lacinia bibendum.');
 
         // Test setting the entire list
-        $newerrors = array(
+        $newerrors = [
             'Integer posuere erat',
             'Ante venenatis dapibus',
             'Posuere velit aliquet.'
-        );
+        ];
 
         $this->obj->setErrors($newerrors);
 

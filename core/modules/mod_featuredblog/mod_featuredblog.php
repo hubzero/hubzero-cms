@@ -46,7 +46,7 @@ class Featuredblog extends Module
 
         $this->row = null;
 
-        $filters = array(
+        $filters = [
             'state'      => 1,
             'access'     => 1,
             'sort'       => App::get('db')->sqlRand(),
@@ -55,7 +55,7 @@ class Featuredblog extends Module
             'scope'      => 'member',
             'scope_id'   => 0,
             'authorized' => false
-        );
+        ];
 
         $row = Entry::all()
             ->whereEquals('scope', $filters['scope'])

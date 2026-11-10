@@ -32,7 +32,7 @@ class Sessions extends AdminController
      */
     public function displayTask()
     {
-        $filters = array(
+        $filters = [
             'sp' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sp',
                 'sp',
@@ -55,7 +55,7 @@ class Sessions extends AdminController
                 'filter_order_Dir',
                 'DESC'
             )
-        );
+        ];
 
         $records = SamlSession::all();
 
@@ -98,8 +98,8 @@ class Sessions extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $i = 0;
 

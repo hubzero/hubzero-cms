@@ -157,7 +157,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                         50,
                         30,
                         'field-content',
-                        array('class' => 'required', 'buttons' => false)
+                        ['class' => 'required', 'buttons' => false]
                     );
                     ?>
                 </div>
@@ -171,7 +171,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                     <?php
                     $tf = Event::trigger(
                         'hubzero.onGetMultiEntry',
-                        array(array('tags', 'tags', 'field-tags', '', $this->row->tags('string')))
+                        [['tags', 'tags', 'field-tags', '', $this->row->tags('string')]]
                     );
 
                     if (count($tf) > 0) {
@@ -303,7 +303,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                         'calendar',
                         'fields[publish_up]',
                         $publishUpVal,
-                        array('id' => 'field-publish_up')
+                        ['id' => 'field-publish_up']
                     );
                     ?>
                 </div>
@@ -327,7 +327,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                         'calendar',
                         'fields[publish_down]',
                         $publishDownVal,
-                        array('id' => 'field-publish_down')
+                        ['id' => 'field-publish_down']
                     );
                     ?>
                 </div>

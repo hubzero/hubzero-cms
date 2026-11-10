@@ -23,7 +23,7 @@ $sef  = ltrim(Route::url('index.php?option=' . $this->option . '&cn=' . $this->g
 
 // Pre-change values (keyed) for noting what changed. Empty for a new group,
 // in which case no change markers are shown.
-$before = (isset($this->before) && is_array($this->before)) ? $this->before : array();
+$before = (isset($this->before) && is_array($this->before)) ? $this->before : [];
 
 // Return a "*** was: <old> ***" marker when a field's display value changed.
 $wasText = function ($key, $newDisplay, $oldDisplay) use ($before) {
@@ -113,21 +113,21 @@ $message .= "\t" . Lang::txt('Discoverability:') . ' ';
     $message .= $wasText('discoverability', $discoverability, isset($before['discoverability']) ? $discoverabilityLabel($before['discoverability']) : null) . "\n\n";
 
 $message .= "\t" . Lang::txt('Access Permissions:') . "\n";
-    $levels = array(
+    $levels = [
         'anyone' => 'Any HUB Visitor',
         'registered' => 'Only Registered User of the HUB',
         'members' => 'Only Group Members',
         'nobody' => 'Disabled/Off'
-    );
+    ];
 
     // Get plugins
-    $group_plugins = Event::trigger('groups.onGroupAreas', array());
-    array_unshift($group_plugins, array(
+    $group_plugins = Event::trigger('groups.onGroupAreas', []);
+    array_unshift($group_plugins, [
         'name'             => 'overview',
         'title'            => 'Overview',
         'default_access'   => 'anyone',
         'display_menu_tab' => true
-    ));
+    ]);
 
     $access = \Hubzero\User\Group\Helper::getPluginAccess($this->group);
     $oldAccess = (isset($before['access']) && is_array($before['access'])) ? $before['access'] : null;

@@ -34,7 +34,7 @@ class Ticketstate extends Element
      */
     public function fetchElement($name, $value, &$node, $control_name)
     {
-        $html = array();
+        $html = [];
 
         $html[] = '<select name="' . $control_name . '[' . $name . ']" id="' . $control_name . $name . '">';
 

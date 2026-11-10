@@ -49,9 +49,9 @@ class Help extends Output
             ->addSection('Overview')
             ->addParagraph(
                 $text,
-                array(
+                [
                     'indentation' => 2
-                )
+                ]
             )
             ->addSpacer();
 
@@ -140,18 +140,18 @@ class Help extends Output
 
         $this->addLine(
             $argument . (($required) ? ' (*required)' : ''),
-            array(
+            [
                 'color'       => (($required) ? 'red' : 'blue'),
                 'indentation' => 2
-            )
+            ]
         );
 
         if (isset($details)) {
             $this->addParagraph(
                 $details,
-                array(
+                [
                     'indentation' => 4
-                )
+                ]
             );
 
             if (!isset($example)) {
@@ -161,10 +161,10 @@ class Help extends Output
         if (isset($example)) {
             $this->addLine(
                 $example,
-                array(
+                [
                     'color'       => 'green',
                     'indentation' => 4
-                )
+                ]
             )
             ->addSpacer();
         }
@@ -181,10 +181,10 @@ class Help extends Output
     {
         $this->addLine(
             $text . ":",
-            array(
+            [
                 'color'       => 'yellow',
                 'indentation' => 0
-            )
+            ]
         );
 
         return $this;

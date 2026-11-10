@@ -21,7 +21,7 @@ class Migration20190228183602Latin1ToUtf8 extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
+    public static $tables = [
         'hg_update_queue',
         '#__audit_results',
         '#__developer_access_tokens',
@@ -38,7 +38,7 @@ class Migration20190228183602Latin1ToUtf8 extends Base
         '#__solr_search_searchcomponents',
         '#__storefront_skus',
         '#__support_criteria'
-    );
+    ];
 
     /**
      * Up

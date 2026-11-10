@@ -34,7 +34,7 @@ class Migration20190620000000ComPublications extends Base
             $this->db->setQuery($query);
             $publications = $this->db->loadColumn();
 
-            $pubtags = array();
+            $pubtags = [];
             foreach ($publications as $publication) {
                 $query = "SELECT * FROM `$table` WHERE `tbl`='publications' AND `objectid`=" . $publication;
                 $this->db->setQuery($query);
@@ -68,7 +68,7 @@ class Migration20190620000000ComPublications extends Base
 
                 foreach ($versions as $i => $version) {
                     if ($i == 0) {
-                        $ids = array();
+                        $ids = [];
                         foreach ($pubtags[$publication] as $tag) {
                             $ids[] = $tag->id;
                         }

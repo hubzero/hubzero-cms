@@ -54,18 +54,18 @@ class Secondary extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'story' => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'order'
-    );
+    ];
 
     /**
      * Defines a belongs to one relationship between newsletter and story

@@ -84,9 +84,9 @@ class ZoneLocations extends Table
      * @return  string  SQL
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private function _buildQuery($filters = array())
+    private function _buildQuery($filters = [])
     {
-        $where = array();
+        $where = [];
 
         if (isset($filters['zone_id']) && $filters['zone_id'] != '') {
             $where[] = "c.`zone_id`=" . $this->_db->quote($filters['zone_id']);
@@ -110,7 +110,7 @@ class ZoneLocations extends Table
      * @param   array   $filters  Filters to build SQL from
      * @return  mixed
      */
-    public function find($what = 'list', $filters = array())
+    public function find($what = 'list', $filters = [])
     {
         switch ($what) {
             case 'count':

@@ -52,7 +52,7 @@ $this->css();
                 continue;
             }
             if ($this->course->isManager()) {
-                $offering->sections(array('available' => false));
+                $offering->sections(['available' => false]);
             }
             ?>
             <tr>

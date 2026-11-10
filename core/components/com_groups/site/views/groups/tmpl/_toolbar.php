@@ -84,7 +84,7 @@ if ($this->group->isSuperGroup()) {
         $cn = $this->group->get('cn');
 
         // Build menu items array so we can skip the <ul role="menu"> when empty
-        $menuItems = array();
+        $menuItems = [];
 
         if ($this->group->get('published') != 2) {
             if ($isManager) {

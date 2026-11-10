@@ -18,23 +18,23 @@ $html = '';
 
 if ($this->contributors) {
     $html = '';
-    $names = array();
-    $orgs = array();
+    $names = [];
+    $orgs = [];
     $i = 1;
     $k = 0;
     $orgsln = '';
-    $names_s = array();
+    $names_s = [];
     $orgsln_s = '';
 
     $database = App::get('db');
 
-    $types = array(
+    $types = [
         'manager'       => 'manager',
         'administrator' => 'administrator',
         'super users'   => 'super administrator',
         'publisher'     => 'publisher',
         'editor'        => 'editor'
-    );
+    ];
     //$types = array(23 => 'manager', 24 => 'administrator', 25 => 'super administrator',
     //    21 => 'publisher', 20 => 'editor');
 

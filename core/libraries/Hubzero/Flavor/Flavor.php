@@ -36,19 +36,19 @@ class Flavor
      *
      * @var  array
      */
-    const LEVERS = array(
+    const LEVERS = [
         'description'    => 'string',
         'extends'        => 'string',
         'template'       => 'string',
-        'components'     => array('enable' => 'list', 'disable' => 'list'),
-        'modules'        => array('enable' => 'list', 'disable' => 'list', 'params' => 'map', 'items' => 'states'),
-        'plugins'        => array('enable' => 'list', 'disable' => 'list', 'params' => 'map'),
-        'dashboard'      => array('tiles' => 'tiles'),
-        'kb'             => array('categories' => 'states', 'articles' => 'states'),
-        'content'        => array('articles' => 'states'),
-        'menu'           => array('items' => 'states'),
+        'components'     => ['enable' => 'list', 'disable' => 'list'],
+        'modules'        => ['enable' => 'list', 'disable' => 'list', 'params' => 'map', 'items' => 'states'],
+        'plugins'        => ['enable' => 'list', 'disable' => 'list', 'params' => 'map'],
+        'dashboard'      => ['tiles' => 'tiles'],
+        'kb'             => ['categories' => 'states', 'articles' => 'states'],
+        'content'        => ['articles' => 'states'],
+        'menu'           => ['items' => 'states'],
         'resource_types' => 'map',
-    );
+    ];
 
     /**
      * The flavor's name, the key it was defined under
@@ -196,7 +196,7 @@ class Flavor
                 case 'modules':
                 case 'plugins':
                     $result[$lever] = self::mergeSwitches(
-                        isset($parent[$lever]) ? $parent[$lever] : array(),
+                        isset($parent[$lever]) ? $parent[$lever] : [],
                         $value
                     );
                     break;
@@ -204,23 +204,23 @@ class Flavor
                 case 'kb':
                 case 'content':
                 case 'menu':
-                    $result[$lever] = isset($parent[$lever]) ? $parent[$lever] : array();
+                    $result[$lever] = isset($parent[$lever]) ? $parent[$lever] : [];
 
                     foreach ($value as $key => $states) {
                         $result[$lever][$key] = self::over(
                             $states,
-                            isset($result[$lever][$key]) ? $result[$lever][$key] : array()
+                            isset($result[$lever][$key]) ? $result[$lever][$key] : []
                         );
                     }
                     break;
 
                 case 'resource_types':
-                    $result[$lever] = isset($parent[$lever]) ? $parent[$lever] : array();
+                    $result[$lever] = isset($parent[$lever]) ? $parent[$lever] : [];
 
                     foreach ($value as $alias => $columns) {
                         $result[$lever][$alias] = self::over(
                             $columns,
-                            isset($result[$lever][$alias]) ? $result[$lever][$alias] : array()
+                            isset($result[$lever][$alias]) ? $result[$lever][$alias] : []
                         );
                     }
                     break;
@@ -247,8 +247,8 @@ class Flavor
      */
     protected static function mergeSwitches(array $parent, array $child)
     {
-        $enable  = isset($parent['enable']) ? $parent['enable'] : array();
-        $disable = isset($parent['disable']) ? $parent['disable'] : array();
+        $enable  = isset($parent['enable']) ? $parent['enable'] : [];
+        $disable = isset($parent['disable']) ? $parent['disable'] : [];
 
         if (isset($child['enable'])) {
             $disable = array_diff($disable, $child['enable']);
@@ -260,7 +260,7 @@ class Flavor
             $disable = array_merge($disable, $child['disable']);
         }
 
-        $result = array();
+        $result = [];
 
         if ($enable) {
             $result['enable'] = array_values(array_unique($enable));
@@ -270,10 +270,10 @@ class Flavor
             $result['disable'] = array_values(array_unique($disable));
         }
 
-        $params = isset($parent['params']) ? $parent['params'] : array();
+        $params = isset($parent['params']) ? $parent['params'] : [];
 
-        foreach (isset($child['params']) ? $child['params'] : array() as $element => $values) {
-            $params[$element] = self::over($values, isset($params[$element]) ? $params[$element] : array());
+        foreach (isset($child['params']) ? $child['params'] : [] as $element => $values) {
+            $params[$element] = self::over($values, isset($params[$element]) ? $params[$element] : []);
         }
 
         if ($params) {
@@ -282,8 +282,8 @@ class Flavor
 
         // Module instances, by id or title: the child's word on each
         $items = self::over(
-            isset($child['items']) ? $child['items'] : array(),
-            isset($parent['items']) ? $parent['items'] : array()
+            isset($child['items']) ? $child['items'] : [],
+            isset($parent['items']) ? $parent['items'] : []
         );
 
         if ($items) {

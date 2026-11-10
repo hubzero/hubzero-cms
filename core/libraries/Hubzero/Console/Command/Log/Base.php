@@ -18,7 +18,7 @@ class Base
      *
      * @public array
      **/
-    protected static $fields = array();
+    protected static $fields = [];
 
     /**
      * If dates/times are present, how are they formatted
@@ -66,7 +66,7 @@ class Base
     public static function format($output)
     {
         $output->addString('The profile log has the following format (');
-        $output->addString('* indicates visible field', array('color' => 'blue'));
+        $output->addString('* indicates visible field', ['color' => 'blue']);
         $output->addLine('):');
 
         $i = 0;
@@ -82,7 +82,7 @@ class Base
             }
 
             if ($status) {
-                $output->addString('*' . $field, array('color' => 'blue'));
+                $output->addString('*' . $field, ['color' => 'blue']);
             } else {
                 $output->addString($field);
             }
@@ -127,7 +127,7 @@ class Base
         } elseif (strpos($field, ',')) {
         // Toggling comma-separated list of fields
             $fields = explode(',', $field);
-            $valid  = array();
+            $valid  = [];
 
             foreach ($fields as $f) {
                 $f = trim($f);
@@ -211,7 +211,7 @@ class Base
         foreach (static::$fields as $field => $show) {
             if ($show) {
                 if ($exceeded) {
-                    $style = array('color' => 'red');
+                    $style = ['color' => 'red'];
 
                     if (in_array($field, $exceeded)) {
                         $style = 'error';

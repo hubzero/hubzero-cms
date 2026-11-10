@@ -48,12 +48,12 @@ class HtmlMenus
         }
 
         // Construct html
-        $text = array();
+        $text = [];
         foreach ($associations as $tag => $associated) {
             if ($associated != $itemid) {
                 $item = $items[$associated];
                 $imgPath = 'mod_languages/' . $item->image . '.gif';
-                $imgOpts = array('title' => $item->language_title);
+                $imgOpts = ['title' => $item->language_title];
                 $img = Html::asset('image', $imgPath, $item->language_title, $imgOpts, true);
                 $text[] = Lang::txt(
                     'COM_MENUS_TIP_ASSOCIATED_LANGUAGE',
@@ -82,8 +82,8 @@ class HtmlMenus
      */
     public static function state($value, $i, $enabled = true, $checkbox = 'cb')
     {
-        $states = array(
-            7 => array(
+        $states = [
+            7 => [
                 'unpublish',
                 '',
                 'COM_MENUS_HTML_UNPUBLISH_SEPARATOR',
@@ -91,8 +91,8 @@ class HtmlMenus
                 false,
                 'publish',
                 'publish'
-            ),
-            6 => array(
+            ],
+            6 => [
                 'publish',
                 '',
                 'COM_MENUS_HTML_PUBLISH_SEPARATOR',
@@ -100,8 +100,8 @@ class HtmlMenus
                 false,
                 'unpublish',
                 'unpublish'
-            ),
-            5 => array(
+            ],
+            5 => [
                 'unpublish',
                 '',
                 'COM_MENUS_HTML_UNPUBLISH_ALIAS',
@@ -109,8 +109,8 @@ class HtmlMenus
                 false,
                 'publish',
                 'publish'
-            ),
-            4 => array(
+            ],
+            4 => [
                 'publish',
                 '',
                 'COM_MENUS_HTML_PUBLISH_ALIAS',
@@ -118,8 +118,8 @@ class HtmlMenus
                 false,
                 'unpublish',
                 'unpublish'
-            ),
-            3 => array(
+            ],
+            3 => [
                 'unpublish',
                 '',
                 'COM_MENUS_HTML_UNPUBLISH_URL',
@@ -127,8 +127,8 @@ class HtmlMenus
                 false,
                 'publish',
                 'publish'
-            ),
-            2 => array(
+            ],
+            2 => [
                 'publish',
                 '',
                 'COM_MENUS_HTML_PUBLISH_URL',
@@ -136,8 +136,8 @@ class HtmlMenus
                 false,
                 'unpublish',
                 'unpublish'
-            ),
-            1 => array(
+            ],
+            1 => [
                 'unpublish',
                 'COM_MENUS_EXTENSION_PUBLISHED_ENABLED',
                 'COM_MENUS_HTML_UNPUBLISH_ENABLED',
@@ -145,8 +145,8 @@ class HtmlMenus
                 true,
                 'publish',
                 'publish'
-            ),
-            0 => array(
+            ],
+            0 => [
                 'publish',
                 'COM_MENUS_EXTENSION_UNPUBLISHED_ENABLED',
                 'COM_MENUS_HTML_PUBLISH_ENABLED',
@@ -154,8 +154,8 @@ class HtmlMenus
                 true,
                 'unpublish',
                 'unpublish'
-            ),
-            -1 => array(
+            ],
+            -1 => [
                 'unpublish',
                 'COM_MENUS_EXTENSION_PUBLISHED_DISABLED',
                 'COM_MENUS_HTML_UNPUBLISH_DISABLED',
@@ -163,8 +163,8 @@ class HtmlMenus
                 true,
                 'warning',
                 'warning'
-            ),
-            -2 => array(
+            ],
+            -2 => [
                 'publish',
                 'COM_MENUS_EXTENSION_UNPUBLISHED_DISABLED',
                 'COM_MENUS_HTML_PUBLISH_DISABLED',
@@ -172,8 +172,8 @@ class HtmlMenus
                 true,
                 'unpublish',
                 'unpublish'
-            ),
-        );
+            ],
+        ];
 
         return Html::grid('state', $states, $value, $i, 'items.', $enabled, true, $checkbox);
     }

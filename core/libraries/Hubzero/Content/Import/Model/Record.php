@@ -81,7 +81,7 @@ class Record extends Obj
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function __construct($raw, $options = array(), $mode = 'UPDATE')
+    public function __construct($raw, $options = [], $mode = 'UPDATE')
     {
         // Store our incoming data
         $this->raw      = $raw;
@@ -96,8 +96,8 @@ class Record extends Obj
         $this->record = new stdClass();
 
         // Message bags for user
-        $this->record->errors  = array();
-        $this->record->notices = array();
+        $this->record->errors  = [];
+        $this->record->notices = [];
 
         // Bind data
         $this->bind();

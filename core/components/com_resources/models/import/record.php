@@ -45,7 +45,7 @@ class Record extends Obj
      * @param   array  $options  Import options
      * @return  void
      */
-    public function __construct($raw, $options = array(), $mode = 'UPDATE')
+    public function __construct($raw, $options = [], $mode = 'UPDATE')
     {
         static $fields = null;
 
@@ -62,14 +62,14 @@ class Record extends Obj
         $this->record               = new stdClass();
         $this->record->resource     = Entry::blank();
         $this->record->type         = Type::blank();
-        $this->record->children     = array();
-        $this->record->tags         = array();
-        $this->record->contributors = array();
+        $this->record->children     = [];
+        $this->record->tags         = [];
+        $this->record->contributors = [];
         $this->record->custom       = new stdClass();
 
         // message bags for user
-        $this->record->errors       = array();
-        $this->record->notices      = array();
+        $this->record->errors       = [];
+        $this->record->notices      = [];
 
         // bind data
         $this->bind();
@@ -325,7 +325,7 @@ class Record extends Obj
         $this->record->resource->set('fulltxt', "<p>" . implode("</p>\n<p>", $fullTextPieces) . "</p>");
 
         if (!isset($this->raw->custom_fields)) {
-            $this->raw->custom_fields = array();
+            $this->raw->custom_fields = [];
         }
 
         $this->record->type = $this->record->resource->type;
@@ -479,7 +479,7 @@ class Record extends Obj
 
         // get roles for resource type
         $rolesForType = $this->record->resource->type->roles->toArray();
-        $rolesForType = (is_array($rolesForType)) ? $rolesForType : array();
+        $rolesForType = (is_array($rolesForType)) ? $rolesForType : [];
 
         // get valid role aliases
         $existingRoles = array_map(function ($role) {
@@ -537,12 +537,12 @@ class Record extends Obj
             $hasValidRole = isset($contributor->role)
                 && in_array($contributor->role, $existingRoles);
             $contribRole = $hasValidRole ? $contributor->role : '';
-            $resourceContributor->set(array(
+            $resourceContributor->set([
                 'name'         => $contribName,
                 'organization' => $contribOrg,
                 'role'         => $contribRole,
                 'subtable'     => 'resources'
-            ));
+            ]);
 
             array_push($this->record->contributors, $resourceContributor);
         }
@@ -603,8 +603,8 @@ class Record extends Obj
      */
     private function saveTagsData()
     {
-        $ntags = array();
-        $admintags = array();
+        $ntags = [];
+        $admintags = [];
 
         // save tags
         $resourcesTags = new Tags($this->record->resource->id);

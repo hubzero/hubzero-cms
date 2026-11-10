@@ -32,7 +32,7 @@ $longComment = str_replace('<!-- {FORMAT:HTML} -->', '', $longComment);
 
 $shorten = (strlen($longComment) > 250) ? 1 : 0;
 $shortComment = $shorten
-    ? \Hubzero\Utility\Str::truncate($longComment, 250, array('html' => true)) : $longComment;
+    ? \Hubzero\Utility\Str::truncate($longComment, 250, ['html' => true]) : $longComment;
 
 $longComment  = \Components\Projects\Helpers\Html::replaceUrls($longComment, 'external');
 $shortComment = \Components\Projects\Helpers\Html::replaceUrls($shortComment, 'external');
@@ -118,7 +118,7 @@ if (isset($this->online) && in_array($comment->created_by, $this->online)) {
                                 <input type="hidden" name="cid" value="<?php echo $comment->id; ?>" />
                                 <?php echo Html::input('token'); ?>
 
-                                <?php echo $this->editor('comment', $comment->comment, 5, 5, 'comment' . $comment->id, array('class' => 'minimal no-footer')); ?>
+                                <?php echo $this->editor('comment', $comment->comment, 5, 5, 'comment' . $comment->id, ['class' => 'minimal no-footer']); ?>
 
                                 <p class="blog-submit">
                                     <input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_SAVE'); ?>" class="btn c-submit" />

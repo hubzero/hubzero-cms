@@ -37,7 +37,7 @@ class Html
         $href = str_replace("'", '', $href);
         $href = str_replace('&#8221', '', $href);
 
-        $h = array('h', 'm', 'f', 'g', 'n');
+        $h = ['h', 'm', 'f', 'g', 'n'];
         if (!in_array(substr($href, 0, 1), $h)) {
             $href = substr($href, 1);
         }
@@ -122,7 +122,7 @@ class Html
      */
     public static function buildReccurDaySelect($reccurday, $tag_name, $args)
     {
-        $day_name = array(
+        $day_name = [
             Lang::txt('EVENTS_CAL_LANG_SUNDAYSHORT'),
             Lang::txt('EVENTS_CAL_LANG_MONDAYSHORT'),
             Lang::txt('EVENTS_CAL_LANG_TUESDAYSHORT'),
@@ -130,7 +130,7 @@ class Html
             Lang::txt('EVENTS_CAL_LANG_THURSDAYSHORT'),
             Lang::txt('EVENTS_CAL_LANG_FRIDAYSHORT'),
             Lang::txt('EVENTS_CAL_LANG_SATURDAYSHORT')
-        );
+        ];
         $daynamelist[] = \Html::select('option', '-1', '&nbsp;' . Lang::txt('EVENTS_CAL_LANG_BYDAYNUMBER') . '<br />', 'value', 'text');
         for ($a = 0; $a < 7; $a++) {
             $name_of_day = '&nbsp;' . $day_name[$a];
@@ -243,7 +243,7 @@ class Html
         $start = intval($start);
         $end   = intval($end);
         $inc   = intval($inc);
-        $arr   = array();
+        $arr   = [];
         $tmpi  = '';
         for ($i = $start; $i <= $end; $i += $inc) {
             if (_CAL_CONF_DATEFORMAT == 1) { // US time
@@ -297,7 +297,7 @@ class Html
     {
         // Legacy events may still carry a numeric UTC offset; map it to the IANA
         // zone the save used so the current value pre-selects correctly.
-        $offsets = array(
+        $offsets = [
             '-12' => 'Etc/GMT-12', '-11' => 'Pacific/Midway', '-10' => 'Pacific/Honolulu',
             '-9.5' => 'Pacific/Marquesas', '-9' => 'US/Alaska', '-8' => 'US/Pacific',
             '-7' => 'US/Mountain', '-6' => 'US/Central', '-5' => 'US/Eastern',
@@ -311,7 +311,7 @@ class Html
             '10.5' => 'Australia/Lord_Howe', '11' => 'Pacific/Kosrae', '11.5' => 'Pacific/Norfolk',
             '12' => 'Pacific/Auckland', '12.75' => 'Pacific/Chatham', '13' => 'Pacific/Tongatapu',
             '14' => 'Pacific/Kiritimati'
-        );
+        ];
         if (isset($offsets[(string) $tzselected])) {
             $tzselected = $offsets[(string) $tzselected];
         }
@@ -321,7 +321,7 @@ class Html
         }
 
         // Full IANA list, labeled with the current UTC offset and abbreviation.
-        $timezones = array();
+        $timezones = [];
         foreach (\DateTimeZone::listIdentifiers() as $zone) {
             try {
                 $now   = new \DateTime('now', new \DateTimeZone($zone));
@@ -343,7 +343,7 @@ class Html
      */
     public static function getTimeZoneName($tz)
     {
-        $timezones = array(
+        $timezones = [
             "-12"   => Lang::txt('EVENTS_TIME_UTC_-12'),
             "-11"   => Lang::txt('EVENTS_TIME_UTC_-11'),
             "-10"   => Lang::txt('EVENTS_TIME_UTC_-10'),
@@ -384,7 +384,7 @@ class Html
             "12.75" => Lang::txt('EVENTS_TIME_UTC_1245'),
             "13"    => Lang::txt('EVENTS_TIME_UTC_13'),
             "14"    => Lang::txt('EVENTS_TIME_UTC_14')
-        );
+        ];
 
         if (array_key_exists($tz, $timezones)) {
             return $timezones[$tz];
@@ -401,7 +401,7 @@ class Html
      */
     public static function buildWeekDaysCheck($reccurweekdays, $args)
     {
-        $day_name = array(
+        $day_name = [
             Lang::txt('EVENTS_CAL_LANG_SUNDAYSHORT'),
             Lang::txt('EVENTS_CAL_LANG_MONDAYSHORT'),
             Lang::txt('EVENTS_CAL_LANG_TUESDAYSHORT'),
@@ -409,10 +409,10 @@ class Html
             Lang::txt('EVENTS_CAL_LANG_THURSDAYSHORT'),
             Lang::txt('EVENTS_CAL_LANG_FRIDAYSHORT'),
             Lang::txt('EVENTS_CAL_LANG_SATURDAYSHORT')
-        );
+        ];
         $tosend = '';
         if ($reccurweekdays == '') {
-            $split = array();
+            $split = [];
             $countsplit = 0;
         } else {
             $split = explode('|', $reccurweekdays);
@@ -440,19 +440,19 @@ class Html
      */
     public static function buildWeeksCheck($reccurweeks, $args)
     {
-        $week_name = array(
+        $week_name = [
             '',
             Lang::txt('EVENTS_CAL_LANG_REP_WEEK') . ' 1',
             Lang::txt('EVENTS_CAL_LANG_REP_WEEK') . ' 2',
             Lang::txt('EVENTS_CAL_LANG_REP_WEEK') . ' 3',
             Lang::txt('EVENTS_CAL_LANG_REP_WEEK') . ' 4',
             Lang::txt('EVENTS_CAL_LANG_REP_WEEK') . ' 5'
-        );
+        ];
         $tosend = '';
         $checked = '';
 
         if ($reccurweeks == '') {
-            $split = array();
+            $split = [];
             $countsplit = 0;
         } else {
             $split = explode('|', $reccurweeks);

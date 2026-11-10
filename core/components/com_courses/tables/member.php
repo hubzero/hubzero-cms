@@ -235,13 +235,13 @@ class Member extends Table
      * @param  array $filters
      * @return $query database query
      */
-    private function _buildQuery($filters = array())
+    private function _buildQuery($filters = [])
     {
         $query = " FROM $this->_tbl AS m
 				JOIN #__users AS u ON u.id=m.user_id
 				LEFT JOIN #__courses_roles AS r ON r.id=m.role_id";
 
-        $where = array();
+        $where = [];
         if (isset($filters['course_id']) && $filters['course_id']) {
             $where[] = "m.`course_id`=" . $this->_db->quote(intval($filters['course_id']));
         }
@@ -299,7 +299,7 @@ class Member extends Table
      * @param  array $filters
      * @return object Return course units
      */
-    public function count($filters = array())
+    public function count($filters = [])
     {
         $query  = "SELECT COUNT(*) ";
         $query .= $this->_buildquery($filters);
@@ -314,7 +314,7 @@ class Member extends Table
      * @param  array $filters
      * @return object Return course units
      */
-    public function find($filters = array())
+    public function find($filters = [])
     {
         $query  = "SELECT m.*, u.name, u.email, u.username, r.alias AS role_alias, r.title AS role_title, r.permissions AS role_permissions ";
         /*if (isset($filters['offering_id']))
@@ -333,7 +333,7 @@ class Member extends Table
         }
         if (isset($filters['sort_Dir'])) {
             $filters['sort_Dir'] = strtoupper($filters['sort_Dir']);
-            if (!in_array($filters['sort_Dir'], array('ASC', 'DESC'))) {
+            if (!in_array($filters['sort_Dir'], ['ASC', 'DESC'])) {
                 $filters['sort_Dir'] = 'ASC';
             }
             $query .= " " . $filters['sort_Dir'];

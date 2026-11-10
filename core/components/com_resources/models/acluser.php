@@ -56,10 +56,10 @@ class AclUser extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'resource_id' => 'positive|nonzero',
         'user_id'     => 'positive|nonzero',
-    );
+    ];
 
     /**
      * Defines a belongs to one relationship between resource and user
@@ -94,7 +94,7 @@ class AclUser extends Relational
             . "u.givenName, u.middleName, u.surname, u.username "
             . "FROM `#__resources` AS r, `#__resource_acl_user` AS a, `#__users` AS u "
             . "WHERE r.id=? AND a.resource_id=r.id AND a.user_id=u.id;";
-        $database->prepare($sql)->bind(array($resource_id));
+        $database->prepare($sql)->bind([$resource_id]);
         $aclusers = $database->loadObjectList();
         return $aclusers;
     }
@@ -102,8 +102,8 @@ class AclUser extends Relational
     public static function removeUsers($resource_id, $list)
     {
         $database = App::get('db');
-        $binds = array();
-        $values = array();
+        $binds = [];
+        $values = [];
 
         $resource_id = intval($resource_id);
 
@@ -124,7 +124,7 @@ class AclUser extends Relational
             $values[] = $item;
         }
 
-        if ($binds !== array()) {
+        if ($binds !== []) {
             $sql = "DELETE FROM #__resource_acl_user "
                 . "WHERE resource_id = ? AND user_id IN (" . implode(',', $binds) . ");";
             $database->prepare($sql)->bind($values);
@@ -137,7 +137,7 @@ class AclUser extends Relational
     public static function addUsers($resource_id, $list)
     {
         $database = App::get('db');
-        $values = array();
+        $values = [];
 
         $resource_id = intval($resource_id);
 
@@ -155,7 +155,7 @@ class AclUser extends Relational
             $values[] = '(' . $resource_id . ',' . $item . ')';
         }
 
-        if ($values !== array()) {
+        if ($values !== []) {
             $sql = "INSERT INTO #__resource_acl_user (resource_id, user_id) VALUES " . implode(',', $values) . ";";
             $database->setQuery($sql);
             $database->execute();

@@ -44,7 +44,7 @@ $hide = Request::getInt('hidemainmenu');
 if (App::has('subsubmenu')) {
     $list = App::get('subsubmenu')->getItems();
 } else {
-    $list = array();
+    $list = [];
 }
 
 if (is_array($list) && count($list)) {

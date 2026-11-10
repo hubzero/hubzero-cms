@@ -45,7 +45,7 @@ class PasswordBlacklist extends AdminController
     public function displayTask()
     {
         // Incoming
-        $filters = array(
+        $filters = [
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
@@ -56,7 +56,7 @@ class PasswordBlacklist extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         $rows = Blacklist::all()
             ->order($filters['sort'], $filters['sort_Dir'])
@@ -90,7 +90,7 @@ class PasswordBlacklist extends AdminController
 
         if (!$row) {
             // Incoming
-            $id = Request::getArray('id', array());
+            $id = Request::getArray('id', []);
 
             // Get the single ID we're working with
             if (is_array($id)) {
@@ -128,7 +128,7 @@ class PasswordBlacklist extends AdminController
         }
 
         // Incoming password blacklist edits
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         // Load the record
         $row = Blacklist::oneOrNew($fields['id'])->set($fields);
@@ -169,8 +169,8 @@ class PasswordBlacklist extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $i = 0;
 

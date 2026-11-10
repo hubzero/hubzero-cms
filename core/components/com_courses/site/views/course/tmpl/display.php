@@ -24,22 +24,22 @@ $field  = strtolower(Request::getWord('field', ''));
 $action = strtolower(Request::getWord('action', ''));
 
 if ($this->course->isManager()) {
-    $filters = array(
+    $filters = [
         'available' => false,
-        'state'     => array(0, 1, 3),
+        'state'     => [0, 1, 3],
         // Same publish-date ordering the public sees (managers just also see
         // unpublished offerings, which fall back to created within that sort).
         'sort'      => 'available',
         'sort_Dir'  => 'DESC'
-    );
+    ];
 } else {
-    $filters = array(
+    $filters = [
         'available' => true,
         'state'     => 1,
         'sort'      => 'available',
         'sort_Dir'  => 'DESC'/*,
         'limit'     => ($this->course->isStudent() ? 0 : 1)*/
-    );
+    ];
 }
 $offerings = $this->course->offerings($filters, true);
 
@@ -315,7 +315,7 @@ $this->css('course.css')
 
                             <div class="form-group">
                                 <label for="field_description">
-                                    <?php echo $this->editor('page[content]', $this->escape(stripslashes($page->get('content'))), 35, 50, 'field_content', array('class' => 'form-control')); ?>
+                                    <?php echo $this->editor('page[content]', $this->escape(stripslashes($page->get('content'))), 35, 50, 'field_content', ['class' => 'form-control']); ?>
                                 </label>
                             </div>
 
@@ -421,7 +421,7 @@ $this->css('course.css')
                 $hasCert = false;
                 if ($this->course->certificate()->exists()) {
                     foreach ($offerings as $off) {
-                        $secs = $off->sections(array('state' => 1, 'available' => true));
+                        $secs = $off->sections(['state' => 1, 'available' => true]);
                         foreach ($secs as $sec) {
                             if ($sec->params('certificate') && $sec->get('enrollment') != 2) {
                                 $hasCert = true;
@@ -439,7 +439,7 @@ $this->css('course.css')
                                 <th scope="row"><?php echo Lang::txt('COM_COURSES_COURSE_ENROLLED'); ?>:
                                 </th>
                                 <td>
-                                    <?php echo number_format((int) $this->course->students(array('count' => true))); ?>
+                                    <?php echo number_format((int) $this->course->students(['count' => true])); ?>
                                 </td>
                             </tr>
                         <?php } ?>
@@ -467,10 +467,10 @@ $this->css('course.css')
                         $cert = false;
                         if ($this->course->certificate()->exists()) {
                             foreach ($offerings as $offering) {
-                                $sections = $offering->sections(array(
+                                $sections = $offering->sections([
                                     'state'      => 1,
                                     'available'  => true
-                                ));
+                                ]);
                                 foreach ($sections as $section) {
                                     if ($section->params('certificate') && $section->get('enrollment') != 2) {
                                         $cert = true;
@@ -503,13 +503,13 @@ $this->css('course.css')
                     if ($this->course->isStudent()) {
                         // Filters for getting all available sections
                         // includng the default
-                        $filters = array(
+                        $filters = [
                             'state'      => 1,
                             'available'  => true
-                        );
+                        ];
 
                         foreach ($offerings as $offering) {
-                            $s = array();
+                            $s = [];
 
                             // Get all the sections for this offering
                             $sections = $offering->sections($filters);
@@ -560,18 +560,18 @@ $this->css('course.css')
                         // If a course manager,
                         // show all sections regardless of published state
                         if ($this->course->isManager()) {
-                            $filters = array(
+                            $filters = [
                                 'available'  => false
-                            );
+                            ];
                         } else {
-                            $filters = array(
+                            $filters = [
                                 'state'      => 1,
                                 'available'  => true,
-                                'enrollment' => array(0, 1),
+                                'enrollment' => [0, 1],
                                 'started'    => true,
                                 'ended'      => false,
                                 'is_default' => 0
-                            );
+                            ];
                         }
 
                         foreach ($offerings as $offering) {
@@ -680,7 +680,7 @@ $this->css('course.css')
 </section><!-- / .course section -->
 
 <?php
-$after = Event::trigger('courses.onCourseViewAfter', array($this->course));
+$after = Event::trigger('courses.onCourseViewAfter', [$this->course]);
 if ($after && count($after) > 0) { ?>
 <section class="below course section">
     <?php echo implode("\n", $after); ?>

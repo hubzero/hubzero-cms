@@ -73,7 +73,7 @@ class Redirect extends GroupMacro
         }
 
         // Delayed redirect
-        $safeUrl = str_replace(array("'", '"'), array('%27', '%22'), $url);
+        $safeUrl = str_replace(["'", '"'], ['%27', '%22'], $url);
         $script = '<script type="text/javascript">setTimeout(function () { window.location.href = "' .
             $safeUrl . '"; }, ' . ($delay * 1000) . ');</script>';
         $message = '<p class="warning">' . Lang::txt('This page will redirect in %s seconds', $delay) . '</p>';

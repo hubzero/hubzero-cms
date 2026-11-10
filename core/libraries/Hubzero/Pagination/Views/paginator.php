@@ -12,7 +12,7 @@ use Hubzero\Facades\Lang;
 defined('_HZEXEC_') or die();
 
 // Initialise variables.
-$limits = array();
+$limits = [];
 
 // Make the option list.
 if ($this->limits) {

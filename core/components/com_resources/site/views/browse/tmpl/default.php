@@ -13,7 +13,7 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$sortbys = array();
+$sortbys = [];
 if ($this->config->get('show_ranking')) {
     $sortbys['ranking'] = Lang::txt('COM_RESOURCES_RANKING');
 }
@@ -150,7 +150,7 @@ $this->css()
                             <?php
                             $config = Component::params('com_resources');
 
-                            $supported = array();
+                            $supported = [];
 
                             if ($tag = $config->get('supportedtag')) {
                                 $rt = new \Components\Resources\Helpers\Tags(0);

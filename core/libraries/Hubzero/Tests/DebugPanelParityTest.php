@@ -136,23 +136,23 @@ namespace Hubzero\Tests {
         public function htmxAndInertiaDebugPanelsExposeSameCoreControls(): void
         {
             \App::set('request', new DebugParityRequestStub(
-                array('HX-Request' => 'true', 'X-Inertia' => 'true'),
-                array('htmx_debug' => '1', 'inertia_debug' => '1'),
-                array('REQUEST_URI' => '/debug/parity'),
+                ['HX-Request' => 'true', 'X-Inertia' => 'true'],
+                ['htmx_debug' => '1', 'inertia_debug' => '1'],
+                ['REQUEST_URI' => '/debug/parity'],
                 'GET'
             ));
 
             $htmx = (new HtmxService())->renderDebugPanel();
             $inertia = (new InertiaService())->renderDebugPanel();
 
-            $sharedMarkers = array(
+            $sharedMarkers = [
                 'x-model="mode"',
                 'x-model="timelineKind"',
                 'x-model="autoscroll"',
                 'x-on:click="clear()"',
                 'panelData()',
                 'window.__hzDebugPanel(',
-            );
+            ];
 
             foreach ($sharedMarkers as $marker) {
                 $this->assertStringContainsString($marker, $htmx);
@@ -164,9 +164,9 @@ namespace Hubzero\Tests {
         public function debugPanelsUseProtocolSpecificSharedFactoryInit(): void
         {
             \App::set('request', new DebugParityRequestStub(
-                array('HX-Request' => 'true', 'X-Inertia' => 'true'),
-                array('htmx_debug' => '1', 'inertia_debug' => '1'),
-                array('REQUEST_URI' => '/debug/parity'),
+                ['HX-Request' => 'true', 'X-Inertia' => 'true'],
+                ['htmx_debug' => '1', 'inertia_debug' => '1'],
+                ['REQUEST_URI' => '/debug/parity'],
                 'GET'
             ));
 
@@ -193,17 +193,17 @@ namespace Hubzero\Tests {
         public function htmxAndInertiaShareDebugLifecycleHelpersForParamAndHiddenInput(): void
         {
             \App::set('request', new DebugParityRequestStub(
-                array(),
-                array('htmx_debug' => '1', 'inertia_debug' => '1'),
-                array('REQUEST_URI' => '/debug/parity'),
+                [],
+                ['htmx_debug' => '1', 'inertia_debug' => '1'],
+                ['REQUEST_URI' => '/debug/parity'],
                 'GET'
             ));
 
             $htmx = new HtmxService();
             $inertia = new InertiaService();
 
-            $htmxParams = $htmx->preserveDebugParam(array('task' => 'display'), 'debug mode[]', 'on');
-            $inertiaParams = $inertia->preserveDebugParam(array('task' => 'display'), 'debug mode[]', 'on');
+            $htmxParams = $htmx->preserveDebugParam(['task' => 'display'], 'debug mode[]', 'on');
+            $inertiaParams = $inertia->preserveDebugParam(['task' => 'display'], 'debug mode[]', 'on');
             $htmxInput = $htmx->renderDebugHiddenInput('debug mode[]', 'on');
             $inertiaInput = $inertia->renderDebugHiddenInput('debug mode[]', 'on');
 

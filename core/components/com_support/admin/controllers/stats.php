@@ -26,18 +26,18 @@ class Stats extends AdminController
     public function displayTask()
     {
         // Instantiate a new view
-        $filters = array(
+        $filters = [
             'type'  => Request::getString('type', 'submitted'),
             'group' => Request::getString('group', ''),
             'sort'  => Request::getString('sort', 'name'),
             'year'  => Request::getInt('year', Date::of('now')->format('Y')),
             'month' => Date::of('now')->format('m')
-        );
+        ];
 
         $filters['type'] = ($filters['type'] == 'automatic') ? 1 : 0;
 
-        $this->view->opened = array();
-        $this->view->closed = array();
+        $this->view->opened = [];
+        $this->view->closed = [];
 
         $sql = "SELECT DISTINCT(g.`cn`), g.description
 				FROM `#__support_tickets` AS s
@@ -94,15 +94,15 @@ class Stats extends AdminController
         $this->database->setQuery($sql);
         $openTickets = $this->database->loadObjectList();
 
-        $owners = array();
+        $owners = [];
 
-        $open = array();
+        $open = [];
         $this->view->opened['open'] = 0;
         $this->view->opened['new'] = 0;
         $this->view->opened['unassigned'] = 0;
         foreach ($openTickets as $o) {
             if (!isset($open[$o->year])) {
-                $open[$o->year] = array();
+                $open[$o->year] = [];
             }
             if (!isset($open[$o->year][$o->month])) {
                 $open[$o->year][$o->month] = 0;
@@ -146,7 +146,7 @@ class Stats extends AdminController
         $clsd = $this->database->loadObjectList();
 
         $this->view->opened['closed'] = 0;
-        $closedTickets = array();
+        $closedTickets = [];
         foreach ($clsd as $closed) {
             if (!isset($closedTickets[$closed->ticket])) {
                 $closedTickets[$closed->ticket] = $closed;
@@ -157,10 +157,10 @@ class Stats extends AdminController
             }
         }
         $this->view->closedTickets = $closedTickets;
-        $closed = array();
+        $closed = [];
         foreach ($closedTickets as $o) {
             if (!isset($closed[$o->year])) {
-                $closed[$o->year] = array();
+                $closed[$o->year] = [];
             }
             if (!isset($closed[$o->year][$o->month])) {
                 $closed[$o->year][$o->month] = 0;
@@ -172,11 +172,11 @@ class Stats extends AdminController
         // Group data by year and gather some info for each user
         $y = date("Y");
         $y++;
-        $this->view->closedmonths = array();
-        $this->view->openedmonths = array();
+        $this->view->closedmonths = [];
+        $this->view->openedmonths = [];
         for ($k = $first, $n = $y; $k < $n; $k++) {
-            $this->view->closedmonths[$k] = array();
-            $this->view->openedmonths[$k] = array();
+            $this->view->closedmonths[$k] = [];
+            $this->view->openedmonths[$k] = [];
 
             for ($i = 1; $i <= 12; $i++) {
                 if ($k == $filters['year'] && $i > $filters['month']) {
@@ -195,13 +195,13 @@ class Stats extends AdminController
                         $user->total = 0;
                     }
                     if (!isset($user->tickets)) {
-                        $user->tickets = array();
+                        $user->tickets = [];
                     }
                     if (!isset($user->closed)) {
-                        $user->closed = array();
+                        $user->closed = [];
                     }
                     if (!isset($user->closed[$k])) {
-                        $user->closed[$k] = array();
+                        $user->closed[$k] = [];
                     }
 
                     if ($i <= "9" & preg_match("#(^[1-9]{1})#", $i)) {
@@ -228,7 +228,7 @@ class Stats extends AdminController
         }
 
         // Sort users by number of tickets closed
-        $u = array();
+        $u = [];
         foreach ($users as $k => $user) {
             $user->assigned = 0;
             if (isset($owners[$user->id])) {

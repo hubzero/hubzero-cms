@@ -44,7 +44,7 @@ class ServiceAccountsMigrationTest extends Basic
 
 		$sql = PATH_CORE . '/bootstrap/Install/sql/mysql/';
 
-		foreach (array('users', 'usergroups', 'user_usergroup_map') as $table)
+		foreach (['users', 'usergroups', 'user_usergroup_map'] as $table)
 		{
 			$pdo->exec('DROP TABLE IF EXISTS `jos_' . $table . '`');
 			$pdo->exec(str_replace('#__', 'jos_', self::statement($sql . 'schema.sql', '/CREATE TABLE `#__' . $table . '` \(.*?\) ENGINE=[^;]*;/s')));
@@ -62,7 +62,7 @@ class ServiceAccountsMigrationTest extends Basic
 
 		$before = self::tree($pdo);
 
-		$db = Driver::getInstance(array('driver' => 'pdo', 'dsn' => $dsn, 'user' => getenv('HZ_TEST_DB_USER'), 'password' => getenv('HZ_TEST_DB_PASS'), 'prefix' => 'jos_'));
+		$db = Driver::getInstance(['driver' => 'pdo', 'dsn' => $dsn, 'user' => getenv('HZ_TEST_DB_USER'), 'password' => getenv('HZ_TEST_DB_PASS'), 'prefix' => 'jos_']);
 		$migration = new Migration20261029000001PlgCronMembersServiceAccounts($db);
 
 		$migration->up();
@@ -80,7 +80,7 @@ class ServiceAccountsMigrationTest extends Basic
 		$this->assertTrue(self::nestedSetIsValid($after), 'nested set consistent after up()');
 
 		$members = $pdo->query('SELECT user_id FROM jos_user_usergroup_map WHERE group_id = ' . (int) $group[0]['id'] . ' ORDER BY user_id')->fetchAll(PDO::FETCH_COLUMN);
-		$this->assertSame(array(1001, 1002), array_map('intval', $members));
+		$this->assertSame([1001, 1002], array_map('intval', $members));
 
 		// A group an admin creates later, to the right of "Service accounts"
 		$rgt = (int) $pdo->query('SELECT rgt FROM jos_usergroups WHERE parent_id = 0')->fetchColumn();
@@ -92,7 +92,7 @@ class ServiceAccountsMigrationTest extends Basic
 
 		$expected = $before;
 		$expected[1]['rgt'] = (int) $before[1]['rgt'] + 2;
-		$expected[50] = array('id' => 50, 'parent_id' => 1, 'lft' => (int) $before[1]['rgt'], 'rgt' => (int) $before[1]['rgt'] + 1, 'title' => 'Later');
+		$expected[50] = ['id' => 50, 'parent_id' => 1, 'lft' => (int) $before[1]['rgt'], 'rgt' => (int) $before[1]['rgt'] + 1, 'title' => 'Later'];
 		$this->assertEquals($expected, self::tree($pdo), 'down() removes the group and closes its gap');
 		$this->assertTrue(self::nestedSetIsValid(self::tree($pdo)), 'nested set consistent after down()');
 		$this->assertSame(0, (int) $pdo->query('SELECT COUNT(*) FROM jos_user_usergroup_map')->fetchColumn());
@@ -106,7 +106,7 @@ class ServiceAccountsMigrationTest extends Basic
 	 */
 	private static function tree($pdo)
 	{
-		$rows = array();
+		$rows = [];
 		foreach ($pdo->query('SELECT id, parent_id, lft, rgt, title FROM jos_usergroups ORDER BY id')->fetchAll(PDO::FETCH_ASSOC) as $row)
 		{
 			$rows[$row['id']] = $row;
@@ -124,7 +124,7 @@ class ServiceAccountsMigrationTest extends Basic
 	 */
 	private static function nestedSetIsValid($rows)
 	{
-		$bounds = array();
+		$bounds = [];
 
 		foreach ($rows as $row)
 		{
@@ -147,8 +147,8 @@ class ServiceAccountsMigrationTest extends Basic
 
 			foreach ($rows as $other)
 			{
-				$a = array((int) $row['lft'], (int) $row['rgt']);
-				$b = array((int) $other['lft'], (int) $other['rgt']);
+				$a = [(int) $row['lft'], (int) $row['rgt']];
+				$b = [(int) $other['lft'], (int) $other['rgt']];
 				$disjoint = ($a[1] < $b[0] || $b[1] < $a[0]);
 				$nested   = ($a[0] <= $b[0] && $b[1] <= $a[1]) || ($b[0] <= $a[0] && $a[1] <= $b[1]);
 				if (!$disjoint && !$nested)

@@ -42,39 +42,39 @@ class Verb
             $args2pass[$i] = (int) $args2pass[$i];
         }
 
-        $task = array(
+        $task = [
             "task" => "metrics_base.{$params[0]}",
             "args" => $args2pass,
-        );
+        ];
 
         $task["id"] = sha1(json_encode($task["args"]) . time());
 
-        $bodyTask = array(
+        $bodyTask = [
             "body" => base64_encode(json_encode($task)),
             "headers" => new stdClass(),
             "content-type" => "application/json",
-            "properties" => array(
+            "properties" => [
                 "body_encoding" => "base64",
-                "delivery_info" => array(
+                "delivery_info" => [
                     "priority" => 0,
                     "routing_key" => "default",
                     "exchange" => "default",
-                ),
+                ],
                 "delivery_tag" => sha1(base64_encode(json_encode($task)) . time()),
                 "delivery_mode" => 2,
-            ),
+            ],
             "content-encoding" => "utf-8",
-        );
+        ];
 
     // new Predis\Client
 
         try {
-            $redis = new \Predis\Client(array(
+            $redis = new \Predis\Client([
                 "host" => "127.0.0.1",
                 "port" => 6379,
                 "password" => Config::get('redis_password'),
                 "database" => 9,
-            ));
+            ]);
         } catch (Exception $e) {
             die($e->getMessage());
         }
@@ -99,12 +99,12 @@ class Verb
         $verbName = $params[0];
         // ...and hookup with redis
         try {
-            $redis = new \Predis\Client(array(
+            $redis = new \Predis\Client([
                 "host" => "127.0.0.1",
                 "port" => 6379,
                 "password" => Config::get('redis_password'),
                 "database" => 8,
-            ));
+            ]);
         } catch (Exception $e) {
             die($e->getMessage());
         }
@@ -192,12 +192,12 @@ class Verb
 
         // ...and hookup with redis
         try {
-            $redis = new \Predis\Client(array(
+            $redis = new \Predis\Client([
                 "host" => "127.0.0.1",
                 "port" => 6379,
                 "password" => Config::get('redis_password'),
                 "database" => 8,
-            ));
+            ]);
         } catch (Exception $e) {
             die($e->getMessage());
         }

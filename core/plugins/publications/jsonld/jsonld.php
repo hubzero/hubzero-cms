@@ -46,7 +46,7 @@ class Jsonld extends Plugin
         $publication->license();
 
         // Add metadata
-        $data = array();
+        $data = [];
         $data['@context'] = 'http://schema.org';
         $data['@type'] = 'Dataset';
         $data['name'] = $publication->title;
@@ -89,7 +89,7 @@ class Jsonld extends Plugin
             }
         }
 
-        $keywords = array();
+        $keywords = [];
         foreach ($publication->getTags() as $tag) {
             $keywords[] = $tag->raw_tag;
         }
@@ -98,7 +98,7 @@ class Jsonld extends Plugin
             $data['keywords'] = $keywords;
         }
 
-        $authors = array();
+        $authors = [];
 
         foreach ($publication->_authors as $contributor) {
             if ($contributor->role && strtolower($contributor->role) == 'submitter') {
@@ -129,21 +129,21 @@ class Jsonld extends Plugin
             $contributor->organization = stripslashes(trim($contributor->organization ?
                     $contributor->organization : ''));
 
-            $author = array(
+            $author = [
                 '@type'      => 'Person',
                 'givenName'  => $givenName,
                 'familyName' => $familyName
-            );
+            ];
 
             if ($contributor->orcid) {
                 $author['@id'] = "https://orcid.org/" . $contributor->orcid;
             }
 
             if ($contributor->organization) {
-                $org = array(
+                $org = [
                     '@type' => 'Organization',
                     'name'  => $contributor->organization
-                );
+                ];
 
                 if (isset($contributor->orgid) && $contributor->orgid) {
                     $org['@id'] = $contributor->orgid;
@@ -166,11 +166,11 @@ class Jsonld extends Plugin
             $data['author'] = $authors;
         }
 
-        $data['publisher'] = array(
+        $data['publisher'] = [
             '@type' => 'Organization',
             'url' => Request::root(),
             'name' => Config::get('sitename')
-        );
+        ];
 
         if ($desc = Config::get('MetaDesc')) {
             $data['publisher']['description'] = $desc;

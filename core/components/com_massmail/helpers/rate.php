@@ -90,7 +90,7 @@ class Rate
      */
     protected static function expandField($field, $min, $max)
     {
-        $out = array();
+        $out = [];
         foreach (explode(',', (string) $field) as $part) {
             $part = trim($part);
             if ($part === '') {

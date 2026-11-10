@@ -41,13 +41,13 @@ class Migration20261104160100ComUsage extends Base
      *
      * @var  array
      **/
-    protected $columns = array(
-        'sessionlog_metrics' => array('ip', null),
-        'toolstart'          => array('ip', null),
-        'userlogin'          => array('ip', 'ascii'),
-        'web'                => array('ip', null),
-        'websessions'        => array('ip', null)
-    );
+    protected $columns = [
+        'sessionlog_metrics' => ['ip', null],
+        'toolstart'          => ['ip', null],
+        'userlogin'          => ['ip', 'ascii'],
+        'web'                => ['ip', null],
+        'websessions'        => ['ip', null]
+    ];
 
     /**
      * Up

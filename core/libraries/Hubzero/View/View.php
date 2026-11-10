@@ -79,10 +79,10 @@ class View extends Obj
      *
      * @var  array
      */
-    protected $_path = array(
-        'template' => array(),
-        'helper'   => array()
-    );
+    protected $_path = [
+        'template' => [],
+        'helper'   => []
+    ];
 
     /**
      * The name of the default template source file.
@@ -103,7 +103,7 @@ class View extends Obj
      *
      * @var  array
      */
-    protected static $helpers = array();
+    protected static $helpers = [];
 
     /**
      * Constructor
@@ -121,7 +121,7 @@ class View extends Obj
      *                          layout: the layout (optional) to use to display the view
      * @return  void
      */
-    public function __construct($config = array())
+    public function __construct($config = [])
     {
         // Set the override path
         //
@@ -130,7 +130,7 @@ class View extends Obj
         // Template override roots, highest priority first: the supergroup
         // template inside a supergroup's pages, then the site template
         if (!array_key_exists('override_root', $config)) {
-            $config['override_root'] = array();
+            $config['override_root'] = [];
 
             foreach (Overrides::roots() as $root) {
                 $config['override_root'][] = $root . '/html';
@@ -483,13 +483,13 @@ class View extends Obj
         // Load the template script
         $this->_template = $this->find(
             $this->_path['template'],
-            $this->createFileName('template', array('name' => $file))
+            $this->createFileName('template', ['name' => $file])
         );
         // If alternate layout can't be found, fall back to default layout
         if ($this->_template == false) {
             $this->_template = $this->find(
                 $this->_path['template'],
-                $this->createFileName('', array('name' => 'default' . ($tpl ? '_' . $tpl : $tpl)))
+                $this->createFileName('', ['name' => 'default' . ($tpl ? '_' . $tpl : $tpl)])
             );
         }
         if ($this->_template != false) {
@@ -532,7 +532,7 @@ class View extends Obj
         $type = strtolower($type);
 
         // Clear out the prior search dirs
-        $this->_path[$type] = array();
+        $this->_path[$type] = [];
 
         // Add view directories without the '/tmpl' legacy directory
         if ($type == 'template' && basename($path) == 'tmpl') {
@@ -595,7 +595,7 @@ class View extends Obj
      * @param   array   $parts  An associative array of filename information
      * @return  string  The filename
      */
-    protected function createFileName($type, $parts = array())
+    protected function createFileName($type, $parts = [])
     {
         $filename = strtolower($parts['name']);
 
@@ -617,7 +617,7 @@ class View extends Obj
      */
     protected function find($paths, $file)
     {
-        $paths = is_array($paths) ? $paths : array($paths);
+        $paths = is_array($paths) ? $paths : [$paths];
         foreach ($paths as $path) {
             $fullname = $path . $file;
             // Is the path based on a stream?

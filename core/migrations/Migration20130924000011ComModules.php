@@ -148,7 +148,7 @@ class Migration20130924000011ComModules extends Base
                         continue;
                     }
 
-                    $array = array();
+                    $array = [];
                     $ar    = explode("\n", $params);
 
                     foreach ($ar as $a) {

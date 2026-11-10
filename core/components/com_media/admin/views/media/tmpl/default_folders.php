@@ -26,7 +26,7 @@ endif;
         $icon = Html::asset('image', 'assets/filetypes/folder.svg', '', null, true, true);
 
         $open = 0;
-        $p = array();
+        $p = [];
         if ($this->folderDepth == 1) :
             $cls = ' class="open"';
             $icon = Html::asset('image', 'assets/filetypes/folder-open.svg', '', null, true, true);

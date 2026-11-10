@@ -52,7 +52,7 @@ class Loader implements LoaderInterface
      */
     public function loadListeners($type)
     {
-        $results = array();
+        $results = [];
         $plugins = (array) $this->byType($type);
 
         foreach ($plugins as $p) {
@@ -97,7 +97,7 @@ class Loader implements LoaderInterface
      */
     public function byType($type, $plugin = null)
     {
-        $result = array();
+        $result = [];
 
         foreach ($this->all() as $p) {
             // Is this the right plugin?
@@ -139,14 +139,14 @@ class Loader implements LoaderInterface
      */
     public function path($type, $plugin = null)
     {
-        static $paths = array();
+        static $paths = [];
 
         if (!isset($paths[$type . $plugin])) {
             $paths[$type . $plugin] = '';
 
             $p = DS . 'plugins' . DS . $type . ($plugin ? DS . $plugin : '');
 
-            foreach (array(PATH_APP, PATH_CORE) as $base) {
+            foreach ([PATH_APP, PATH_CORE] as $base) {
                 if (is_dir($base . $p)) {
                     $paths[$type . $plugin] = $base . $p;
                     break;
@@ -169,7 +169,7 @@ class Loader implements LoaderInterface
      */
     public function import($type, $plugin = null, $autocreate = true, $dispatcher = null)
     {
-        static $loaded = array();
+        static $loaded = [];
 
         // check for the default args, if so we can optimise cheaply
         $defaults = false;
@@ -238,7 +238,7 @@ class Loader implements LoaderInterface
 
         if ($autocreate) {
             // Try namespaced first, then legacy
-            foreach (array($classNameN, $classNameL) as $className) {
+            foreach ([$classNameN, $classNameL] as $className) {
                 if (!class_exists($className)) {
                     continue;
                 }

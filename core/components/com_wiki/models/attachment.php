@@ -45,20 +45,20 @@ class Attachment extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'page_id'  => 'nonzero',
         'filename' => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Defines a belongs to one relationship between task and liaison

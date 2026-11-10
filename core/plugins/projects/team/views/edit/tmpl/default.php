@@ -29,8 +29,8 @@ $next_start = $this->filters['start'] + $this->filters['limit'];
 
 $group = $this->model->groupOwner();
 
-$members = array();
-$managers = array();
+$members = [];
+$managers = [];
 if ($group) {
     $members = $group->get('members');
     $managers = $group->get('managers');
@@ -138,7 +138,7 @@ $roles = [
         <label id="add-users">
             <span class="instr i_user"><?php echo Lang::txt('PLG_PROJECTS_TEAM_ADD_IND_USER'); ?>:</span>
             <?php
-                $mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'newmember', 'newmember')));
+                $mc = Event::trigger('hubzero.onGetMultiEntry', [['members', 'newmember', 'newmember']]);
             if (count($mc) > 0) {
                 echo $mc[0];
             } else { ?>
@@ -149,7 +149,7 @@ $roles = [
         <label id="add-groups">
             <span class="instr i_group"><?php echo Lang::txt('PLG_PROJECTS_TEAM_ADD_GROUP_OF_USERS'); ?>:</span>
             <?php
-                $mc = Event::trigger('hubzero.onGetMultiEntry', array(array('groups', 'newgroup', 'newgroup')));
+                $mc = Event::trigger('hubzero.onGetMultiEntry', [['groups', 'newgroup', 'newgroup']]);
             if (count($mc) > 0) {
                 echo $mc[0];
             } else { ?>

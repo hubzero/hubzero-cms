@@ -57,7 +57,7 @@ class Identicon
     /**
      * @var  array
      */
-    private $arrayOfSquare = array();
+    private $arrayOfSquare = [];
 
     /**
      * Set the image size

@@ -56,7 +56,7 @@ class Reviews extends Obj
             . "\n FROM #__resource_ratings AS r";
         $this->db->setQuery($sql);
         $result = $this->db->loadObjectList();
-        $reviews = array();
+        $reviews = [];
         if ($result) {
             foreach ($result as $r) {
                 // item is not abusive, got at least 3 votes, more positive than negative

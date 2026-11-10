@@ -36,19 +36,19 @@ class Publication extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'title' => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Active version
@@ -201,10 +201,10 @@ class Publication extends Relational
 
         $cloud = new \Components\Tags\Models\Cloud();
 
-        $filters = array(
+        $filters = [
             'scope'    => 'publications',
             'scope_id' => $this->getActiveVersion()->id
-        );
+        ];
 
         return $cloud->tags('list', $filters);
     }

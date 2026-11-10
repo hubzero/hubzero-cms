@@ -33,7 +33,7 @@ class Resourcetype extends Select
 
         $types = \Components\Resources\Models\Type::getMajorTypes();
 
-        $options = array();
+        $options = [];
 
         foreach ($types as $type) {
             $options[] = Html::select('option', $type->id, stripslashes($type->type), 'value', 'text');

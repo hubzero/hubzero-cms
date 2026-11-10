@@ -31,11 +31,11 @@ class Quotes extends Module
     {
 
         //Get the admin configured settings
-        $this->filters = array(
+        $this->filters = [
             'limit'         => trim($this->params->get('maxquotes', '')),
             'id'            => Request::getInt('quoteid', 0),
             'notable_quote' => 1
-        );
+        ];
 
         // Get quotes
         $sq = Quote::all()->whereEquals('notable_quote', 1)->where('quote', 'IS NOT', null)->order('date', 'desc');

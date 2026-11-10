@@ -23,7 +23,7 @@ class Main extends WikiMacro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['wiki'] = 'Displays a message containing links to articles with further details on a topic. '
             . 'Accepts a list of comma-separated page names.';
         $txt['html'] = '<p>Displays a message containing links to articles with further details on a topic. '

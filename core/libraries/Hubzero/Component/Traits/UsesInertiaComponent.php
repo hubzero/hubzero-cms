@@ -72,6 +72,6 @@ trait UsesInertiaComponent
      */
     protected function inertiaSharedProps(): array
     {
-        return array();
+        return [];
     }
 }

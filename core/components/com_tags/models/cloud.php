@@ -45,13 +45,13 @@ class Cloud extends \Hubzero\Base\Obj
      *
      * @var array
      */
-    protected $_cache = array(
+    protected $_cache = [
         'tags.one'    => null,
         'tags.count'  => null,
         'tags.list'   => null,
         'tags.string' => null,
         'tags.cloud'  => null
-    );
+    ];
 
     /**
      * Constructor
@@ -84,7 +84,7 @@ class Cloud extends \Hubzero\Base\Obj
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         $key = (string) $scope . '_' . (int) $scope_id;
@@ -166,7 +166,7 @@ class Cloud extends \Hubzero\Base\Obj
      * @param   boolean  $clear    Clear cached data?
      * @return  mixed
      */
-    public function tags($rtrn = '', $filters = array(), $clear = false)
+    public function tags($rtrn = '', $filters = [], $clear = false)
     {
         if (!isset($filters['scope']) && $this->get('scope') != 'site') {
             $filters['scope'] = (string) $this->get('scope');
@@ -397,7 +397,7 @@ class Cloud extends \Hubzero\Base\Obj
             $to->whereEquals('taggerid', $tagger);
         }
 
-        $tags = array();
+        $tags = [];
 
         foreach ($to->rows() as $row) {
             $tags[] = $row->get('tagid');
@@ -443,12 +443,12 @@ class Cloud extends \Hubzero\Base\Obj
      * @param   boolean  $clear    Clear cached data?
      * @return  string
      */
-    public function render($rtrn = 'html', $filters = array(), $clear = false)
+    public function render($rtrn = 'html', $filters = [], $clear = false)
     {
         switch (strtolower($rtrn)) {
             case 'string':
                 if (!isset($this->_cache['tags.string']) || $clear) {
-                    $tags = array();
+                    $tags = [];
                     foreach ($this->tags('list', $filters, $clear) as $tag) {
                         $tags[] = $tag->get('raw_tag');
                     }
@@ -458,7 +458,7 @@ class Cloud extends \Hubzero\Base\Obj
             break;
 
             case 'array':
-                $tags = array();
+                $tags = [];
                 foreach ($this->tags('list', $filters, $clear) as $tag) {
                     $tags[] = $tag->get('tag');
                 }
@@ -469,11 +469,11 @@ class Cloud extends \Hubzero\Base\Obj
             case 'html':
             default:
                 if (!isset($this->_cache['tags.cloud']) || $clear) {
-                    $view = new View(array(
+                    $view = new View([
                         'base_path' => dirname(__DIR__) . '/site',
                         'name'      => 'tags',
                         'layout'    => '_cloud'
-                    ));
+                    ]);
                     $view->set('config', Component::params('com_tags'))
                          ->set('tags', $this->tags('list', $filters, $clear));
 
@@ -506,7 +506,7 @@ class Cloud extends \Hubzero\Base\Obj
         $tagArray  = $this->_parse($tag_string);    // array of normalized tags
         $tagArray2 = $this->_parse($tag_string, 1); // array of normalized => raw tags
 
-        $filters = array();
+        $filters = [];
         if ($label) {
             $filters['label'] = $label;
         }
@@ -518,7 +518,7 @@ class Cloud extends \Hubzero\Base\Obj
         }*/
         $oldTags = $this->tags('list', $filters, true);
 
-        $preserveTags = array();
+        $preserveTags = [];
 
         if (count($oldTags) > 0) {
             foreach ($oldTags as $tagItem) {
@@ -570,7 +570,7 @@ class Cloud extends \Hubzero\Base\Obj
             $tags = preg_split("/(,|;)/", $tags);
         }
 
-        $parsed = array();
+        $parsed = [];
 
         // If the tag list is empty, return the empty set.
         if (empty($tags)) {

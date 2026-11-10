@@ -20,64 +20,64 @@ class Migration20190307000000ComCourses extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__courses' => array(
+    public static $tables = [
+        '#__courses' => [
             'created'
-        ),
-        '#__courses_announcements' => array(
+        ],
+        '#__courses_announcements' => [
             'created',
             'publish_up',
             'publish_down'
-        ),
-        '#__courses_asset_groups' => array(
+        ],
+        '#__courses_asset_groups' => [
             'created'
-        ),
-        '#__courses_assets' => array(
+        ],
+        '#__courses_assets' => [
             'created'
-        ),
-        '#__courses_log' => array(
+        ],
+        '#__courses_log' => [
             'timestamp'
-        ),
-        '#__courses_member_notes' => array(
+        ],
+        '#__courses_member_notes' => [
             'created'
-        ),
-        '#__courses_members' => array(
+        ],
+        '#__courses_members' => [
             'enrolled',
             'first_visit'
-        ),
-        '#__courses_offering_section_codes' => array(
+        ],
+        '#__courses_offering_section_codes' => [
             'created',
             'expires',
             'redeemed'
-        ),
-        '#__courses_offering_section_dates' => array(
+        ],
+        '#__courses_offering_section_dates' => [
             'created',
             'publish_up',
             'publish_down'
-        ),
-        '#__courses_offering_sections' => array(
+        ],
+        '#__courses_offering_sections' => [
             'created',
             'publish_up',
             'publish_down',
             'start_date',
             'end_date'
-        ),
-        '#__courses_offerings' => array(
+        ],
+        '#__courses_offerings' => [
             'created',
             'publish_up',
             'publish_down'
-        ),
-        '#__courses_page_hits' => array(
+        ],
+        '#__courses_page_hits' => [
             'datetime'
-        ),
-        '#__courses_reviews' => array(
+        ],
+        '#__courses_reviews' => [
             'created',
             'modified'
-        ),
-        '#__courses_units' => array(
+        ],
+        '#__courses_units' => [
             'created'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

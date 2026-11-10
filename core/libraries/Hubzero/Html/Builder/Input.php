@@ -24,7 +24,7 @@ class Input
      * @param   array   $options
      * @return  string
      */
-    public static function input($type, $name, $value = null, $options = array())
+    public static function input($type, $name, $value = null, $options = [])
     {
         //if (!isset($options['name'])) $options['name'] = $name;
 
@@ -52,7 +52,7 @@ class Input
      */
     public static function token()
     {
-        return self::input('hidden', \App::get('session')->getFormToken(), 1, array('id' => null)) . "\n";
+        return self::input('hidden', \App::get('session')->getFormToken(), 1, ['id' => null]) . "\n";
     }
 
     /**
@@ -63,7 +63,7 @@ class Input
      * @param   array   $options
      * @return  string
      */
-    public static function text($name, $value = null, $options = array())
+    public static function text($name, $value = null, $options = [])
     {
         return self::input('text', $name, $value, $options);
     }
@@ -75,7 +75,7 @@ class Input
      * @param   array   $options
      * @return  string
      */
-    public static function password($name, $options = array())
+    public static function password($name, $options = [])
     {
         return self::input('password', $name, '', $options);
     }
@@ -88,7 +88,7 @@ class Input
      * @param   array   $options
      * @return  string
      */
-    public static function hidden($name, $value = null, $options = array())
+    public static function hidden($name, $value = null, $options = [])
     {
         return self::input('hidden', $name, $value, $options);
     }
@@ -101,7 +101,7 @@ class Input
      * @param   array   $options
      * @return  string
      */
-    public static function email($name, $value = null, $options = array())
+    public static function email($name, $value = null, $options = [])
     {
         return self::input('email', $name, $value, $options);
     }
@@ -114,7 +114,7 @@ class Input
      * @param   array   $options
      * @return  string
      */
-    public static function url($name, $value = null, $options = array())
+    public static function url($name, $value = null, $options = [])
     {
         return self::input('url', $name, $value, $options);
     }
@@ -126,7 +126,7 @@ class Input
      * @param   array   $options
      * @return  string
      */
-    public static function file($name, $options = array())
+    public static function file($name, $options = [])
     {
         return self::input('file', $name, null, $options);
     }
@@ -139,12 +139,12 @@ class Input
      * @param   array   $options
      * @return  string  HTML markup for a calendar field
      */
-    public static function calendar($name, $value = null, $options = array())
+    public static function calendar($name, $value = null, $options = [])
     {
         static $done;
 
         if ($done === null) {
-            $done = array();
+            $done = [];
         }
 
         $readonly = isset($options['readonly']) && $options['readonly'] == 'readonly';
@@ -175,7 +175,7 @@ class Input
                 if ($format == 'Y-m-d H:i:s' || $format == '%Y-%m-%d %H:%M:%S') {
                     $time = true;
                 }
-                $altformats = array('Y-m-d H:i:s', '%Y-%m-%d %H:%M:%S', 'Y-m-d', '%Y-%m-%d');
+                $altformats = ['Y-m-d H:i:s', '%Y-%m-%d %H:%M:%S', 'Y-m-d', '%Y-%m-%d'];
 
                 $format = (in_array($format, $altformats) ? 'yy-mm-dd' : $format);
 
@@ -215,12 +215,12 @@ class Input
      * @param   array   $options
      * @return  string  HTML markup for a calendar field
      */
-    public static function colorpicker($name, $value = null, $options = array())
+    public static function colorpicker($name, $value = null, $options = [])
     {
         static $done;
 
         if ($done === null) {
-            $done = array();
+            $done = [];
         }
 
         $readonly = isset($options['readonly']) && $options['readonly'] == 'readonly';
@@ -287,7 +287,7 @@ class Input
      */
     protected static function transformKey($key)
     {
-        return str_replace(array('.', '[]', '[', ']'), array('_', '', '-', ''), $key);
+        return str_replace(['.', '[]', '[', ']'], ['_', '', '-', ''], $key);
     }
 
     /**
@@ -298,7 +298,7 @@ class Input
      */
     protected static function attributes($attributes)
     {
-        $html = array();
+        $html = [];
 
         // For numeric keys we will assume that the key and the value are the same
         // as this will convert HTML attributes such as "required" to a correct

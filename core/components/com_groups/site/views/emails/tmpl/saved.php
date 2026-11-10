@@ -21,7 +21,7 @@ $groupLink = $base . '/groups/' . $this->group->get('cn');
 
 // Pre-change values (keyed) for highlighting what changed. Empty for a new
 // group, in which case no change markers are shown.
-$before = (isset($this->before) && is_array($this->before)) ? $this->before : array();
+$before = (isset($this->before) && is_array($this->before)) ? $this->before : [];
 
 // Return a red "(was: <old>)" marker when a field's display value changed.
 // $oldDisplay is the already-formatted previous value; pass null when there
@@ -413,22 +413,22 @@ $onOffLabel = function ($v) {
                                 <td style="text-align:left; padding:1em; line-height:18px;" align="left">
                                     <?php
                                     //access levels
-                                    $levels = array(
+                                    $levels = [
                                         //'anyone' => 'Enabled/On',
                                         'anyone' => 'Any HUB Visitor',
                                         'registered' => 'Only Registered User of the HUB',
                                         'members' => 'Only Group Members',
                                         'nobody' => 'Disabled/Off'
-                                    );
+                                    ];
 
                                     // Get plugins
-                                    $group_plugins = Event::trigger('groups.onGroupAreas', array());
-                                    array_unshift($group_plugins, array(
+                                    $group_plugins = Event::trigger('groups.onGroupAreas', []);
+                                    array_unshift($group_plugins, [
                                         'name'             => 'overview',
                                         'title'            => 'Overview',
                                         'default_access'   => 'anyone',
                                         'display_menu_tab' => true
-                                    ));
+                                    ]);
 
                                     $access = \Hubzero\User\Group\Helper::getPluginAccess($this->group);
                                     $oldAccess = (isset($before['access']) && is_array($before['access'])) ? $before['access'] : null;

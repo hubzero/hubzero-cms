@@ -94,7 +94,7 @@ class MailLog
         // prefixes covering the last hour and match line starts against them.
         // substr(line, 0, 12) is always "Mon dd HH:MM".
         $now      = time();
-        $prefixes = array();
+        $prefixes = [];
         for ($i = 0; $i <= 60; $i++) {
             $prefixes[self::prefix($now - ($i * 60))] = true;
         }
@@ -138,13 +138,13 @@ class MailLog
     public static function sentLastHourByMinute()
     {
         $now    = time();
-        $counts = array();  // "Mon dd HH:MM" => count
-        $order  = array();  // preserves oldest -> newest ordering
+        $counts = [];  // "Mon dd HH:MM" => count
+        $order  = [];  // preserves oldest -> newest ordering
         for ($i = 59; $i >= 0; $i--) {
             $t   = $now - ($i * 60);
             $key = self::prefix($t);
             $counts[$key] = 0;
-            $order[] = array('key' => $key, 'label' => date('H:i', $t));
+            $order[] = ['key' => $key, 'label' => date('H:i', $t)];
         }
 
         $path = self::path();
@@ -169,9 +169,9 @@ class MailLog
             fclose($fh);
         }
 
-        $series = array();
+        $series = [];
         foreach ($order as $o) {
-            $series[] = array('label' => $o['label'], 'value' => $counts[$o['key']]);
+            $series[] = ['label' => $o['label'], 'value' => $counts[$o['key']]];
         }
         return $series;
     }

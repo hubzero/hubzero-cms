@@ -98,7 +98,7 @@ class Helper extends \Hubzero\Base\Obj
         $publication =& $this->publication;
 
         // Trim and addslashes all posted items
-        $comment = Request::getArray('comment', array(), 'post');
+        $comment = Request::getArray('comment', [], 'post');
 
         if (!$publication->exists()) {
             // Cannot proceed
@@ -237,14 +237,14 @@ class Helper extends \Hubzero\Base\Obj
 
         if ($vote) {
             $v = \Plugins\Publications\Reviews\Models\Vote::oneByUserAndPublication(User::get('id'), $id);
-            $v->set(array(
+            $v->set([
                 'referenceid' => $id,
                 'category'    => $cat,
                 'voter'       => User::get('id'),
                 'ip'          => $ip,
                 'voted'       => Date::toSql(),
                 'helpful'     => $vote
-            ));
+            ]);
 
             if (!$v->save()) {
                 $this->setError($v->getError());
@@ -259,12 +259,12 @@ class Helper extends \Hubzero\Base\Obj
                 exit();
             }
             $view = new \Hubzero\Plugin\View(
-                array(
+                [
                     'folder' => 'publications',
                     'element' => 'reviews',
                     'name'   => 'browse',
                     'layout' => '_rateitem'
-                )
+                ]
             );
             $view->option = $this->_option;
             $view->item   = new Models\Review($response[0]);
@@ -421,11 +421,11 @@ class Helper extends \Hubzero\Base\Obj
 
         // Message
         $eview = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'publications',
                 'element' => 'reviews',
                 'name'    => 'emails'
-            )
+            ]
         );
         $eview->option      = $this->_option;
         $eview->juser       = User::getInstance();
@@ -434,20 +434,20 @@ class Helper extends \Hubzero\Base\Obj
         $message            = str_replace("\n", "\r\n", $message);
 
         // Build the "from" data for the e-mail
-        $from = array();
+        $from = [];
         $from['name']  = Config::get('sitename') . ' ' . Lang::txt('PLG_PUBLICATIONS_REVIEWS_CONTRIBUTIONS');
         $from['email'] = Config::get('mailfrom');
 
         // Send message
         if (
-            !Event::trigger('xmessage.onSendMessage', array(
+            !Event::trigger('xmessage.onSendMessage', [
                 'publications_new_comment',
                 $subject,
                 $message,
                 $from,
                 $users,
                 $this->_option
-            ))
+            ])
         ) {
             $this->setError(Lang::txt('PLG_PUBLICATIONS_REVIEWS_FAILED_TO_MESSAGE'));
         }

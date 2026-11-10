@@ -52,7 +52,7 @@ class Windows extends AdminController
         }
 
         // Get filters
-        $filters = array(
+        $filters = [
             // Sorting
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
@@ -64,7 +64,7 @@ class Windows extends AdminController
                 'filter_order_Dir',
                 'DESC'
             )
-        );
+        ];
 
         // Get a list of tools
         $rows = Entry::all()
@@ -91,7 +91,7 @@ class Windows extends AdminController
 
         if (!is_object($row)) {
             // Incoming
-            $id = Request::getArray('id', array());
+            $id = Request::getArray('id', []);
 
             // Get the single ID we're working with
             if (is_array($id)) {
@@ -123,7 +123,7 @@ class Windows extends AdminController
         Request::checkToken();
 
         // Incoming fields
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
         $fields['standalone'] = 1;
 
         // Load the profile
@@ -182,8 +182,8 @@ class Windows extends AdminController
         Request::checkToken();
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
         $i = 0;
 
         // Do we have any IDs?
@@ -217,7 +217,7 @@ class Windows extends AdminController
     public function sessionsTask()
     {
         // Get filters
-        $filters = array(
+        $filters = [
             'appname' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.appname',
                 'appname',
@@ -247,10 +247,10 @@ class Windows extends AdminController
                 0,
                 'int'
             )
-        );
+        ];
 
         // Get the list of sessions
-        $rows = array();
+        $rows = [];
 
         // Get a count of all sessions (for pagination)
         $total = count($rows);
@@ -266,21 +266,21 @@ class Windows extends AdminController
         // Get a list of all active sessions for specified app
         $appname = Request::getString('appname', '');
 
-        $sessions = array();
+        $sessions = [];
 
         if (!empty($appname)) {
             exec('/usr/bin/hz-aws-appstream getappsessions --appid ' . escapeshellarg($appname), $rawsessions);
 
-            $sessions = array();
+            $sessions = [];
             foreach ($rawsessions as $s) {
                 $sessionsArray = explode("|", $s);
 
                 if (count($sessionsArray) == 4) {
-                    $sessions[] = array(
+                    $sessions[] = [
                         "sessionid" => $sessionsArray[0],
                         "status" => $sessionsArray[2],
                         "opaquedata" => $sessionsArray[3]
-                    );
+                    ];
                 }
                 //else
                 //{
@@ -389,8 +389,8 @@ class Windows extends AdminController
         Request::checkToken(['get', 'post']);
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         if (count($ids) > 0) {
             // Loop through each ID

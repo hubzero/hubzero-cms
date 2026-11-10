@@ -70,28 +70,28 @@ class Field extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'label' => 'notempty',
         'type'  => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'ordering'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'name'
-    );
+    ];
 
     /**
      * Generates automatic name field value
@@ -257,13 +257,13 @@ class Field extends Relational
      * @param   array   $data
      * @return  mixed
      */
-    public static function resolveDependencies($fields, $data = array())
+    public static function resolveDependencies($fields, $data = [])
     {
         if (empty($data)) {
             return $fields;
         }
 
-        $skip = array();
+        $skip = [];
 
         foreach ($fields as $field) {
             foreach ($field->options as $option) {
@@ -323,12 +323,12 @@ class Field extends Relational
      * @param   array   $data
      * @return  string
      */
-    public static function toXml($fields, $action = null, $data = array())
+    public static function toXml($fields, $action = null, $data = [])
     {
         $fields = self::resolveDependencies($fields, $data);
 
         // Convert to XML so we can use the Form processor
-        $xml   = array();
+        $xml   = [];
         $xml[] = '<?xml version="1.0" encoding="utf-8"?>';
         $xml[] = '<form>';
         $xml[] = '<fieldset name="basic">';
@@ -347,7 +347,7 @@ class Field extends Relational
             $f .= (!is_null($field->get('min')) ? ' min="' . (int) $field->get('min') . '"' : '');
             $f .= (!is_null($field->get('max')) ? ' max="' . (int) $field->get('max') . '"' : '');
             $f .= ($field->get('type') == 'orcid' ? ' validate="orcid"' : '');
-            if (in_array($action, array('create', 'update', 'edit'))) {
+            if (in_array($action, ['create', 'update', 'edit'])) {
                 $f .= ($field->get('action_' . $action) == self::STATE_REQUIRED ? ' required="true"' : '');
             }
             $f .= '>';

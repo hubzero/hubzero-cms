@@ -33,9 +33,9 @@ class Wiki extends Plugin
      */
     public function onWhatsnewAreas()
     {
-        return array(
+        return [
             'wiki' => Lang::txt('PLG_WHATSNEW_WIKI')
-        );
+        ];
     }
 
     /**
@@ -48,20 +48,20 @@ class Wiki extends Plugin
      * @param   array    $tagids      Array of tag IDs
      * @return  array
      */
-    public function onWhatsnew($period, $limit = 0, $limitstart = 0, $areas = null, $tagids = array())
+    public function onWhatsnew($period, $limit = 0, $limitstart = 0, $areas = null, $tagids = [])
     {
         if (is_array($areas) && $limit) {
             if (
                 !isset($areas[$this->_name])
                 && !in_array($this->_name, $areas)
             ) {
-                return array();
+                return [];
             }
         }
 
         // Do we have a time period?
         if (!is_object($period)) {
-            return array();
+            return [];
         }
 
         // @TODO: Move these to separate plugins so Wiki doesn't directly reference other extensions
@@ -83,7 +83,7 @@ class Wiki extends Plugin
                 ->start($limitstart)
                 ->rows();
 
-            $rows = array();
+            $rows = [];
 
             foreach ($pages as $page) {
                 $row = new \stdClass();

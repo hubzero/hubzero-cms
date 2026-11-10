@@ -41,7 +41,7 @@ class Downloads extends AdminController
         }
 
         // Get filters
-        $this->view->filters = array(
+        $this->view->filters = [
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
@@ -104,7 +104,7 @@ class Downloads extends AdminController
                 0,
                 'int'
             )
-        );
+        ];
 
         // Is a particular SKU requested?
         $skuRequested = Request::getInt('sku', 0);
@@ -125,7 +125,7 @@ class Downloads extends AdminController
         }
 
         // Clean filters -- reset to default if needed
-        $allowedSorting = array('product', 'dName', 'dDownloaded', 'dStatus');
+        $allowedSorting = ['product', 'dName', 'dDownloaded', 'dStatus'];
         if (!in_array($this->view->filters['sort'], $allowedSorting)) {
             $this->view->filters['sort'] = 'dDownloaded';
         }
@@ -148,7 +148,7 @@ class Downloads extends AdminController
     public function skuTask()
     {
         // Get filters
-        $this->view->filters = array(
+        $this->view->filters = [
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . 'sku.search',
                 'search',
@@ -188,7 +188,7 @@ class Downloads extends AdminController
                 'report-to',
                 date('m/d/Y')
             )
-        );
+        ];
 
         // Get record count
         $this->view->total = Download::getDownloadsSku('count', $this->view->filters);
@@ -229,8 +229,8 @@ class Downloads extends AdminController
      */
     public function stateTask($state = 0)
     {
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for an ID
         if (count($ids) < 1) {
@@ -275,7 +275,7 @@ class Downloads extends AdminController
     public function downloadTask()
     {
         // Get filters
-        $filters = array(
+        $filters = [
             // Get sorting variables
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
@@ -326,7 +326,7 @@ class Downloads extends AdminController
                 0,
                 'int'
             )
-        );
+        ];
 
         $dateFrom = date('dMY', strtotime($filters['report-from']));
         $dateTo = date('dMY', strtotime($filters['report-to']));
@@ -351,10 +351,10 @@ class Downloads extends AdminController
 
         $output = fopen("php://output", "w");
 
-        $row = array(
+        $row = [
             'Downloaded', 'Product', 'SKU', 'User', 'Username',
             'User ID', 'User Details', 'EULA', 'IP', 'Status'
-        );
+        ];
         fputcsv($output, $row);
 
         // flush to get the headers to the browser and give the user the download dialog immediately
@@ -381,7 +381,7 @@ class Downloads extends AdminController
                     // userInfo
                     if (array_key_exists('userInfo', $row->meta) && $row->meta['userInfo']) {
                         $metaUserInfo = unserialize($row->meta['userInfo']['mtValue']);
-                        $metaUserInfoCsv = array();
+                        $metaUserInfoCsv = [];
                         foreach ($metaUserInfo as $mtK => $mtV) {
                             if (is_array($mtV)) {
                                 $mtV = implode('; ', $mtV);
@@ -405,10 +405,10 @@ class Downloads extends AdminController
                 }
 
                 // ouput to stream
-                fputcsv($output, array(
+                fputcsv($output, [
                     $row->dDownloaded, $row->pName, $row->sSku, $row->dName, $row->username,
                     $row->uId, $metaUserInfoCsv, $metaEula, $row->dIp, $status
-                ));
+                ]);
                 // flush up to 5000 lines of output to browser
                 flush();
             }
@@ -426,7 +426,7 @@ class Downloads extends AdminController
     public function downloadSkuTask()
     {
         // Get filters
-        $filters = array(
+        $filters = [
             // Get sorting variables
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . 'sku.sort',
@@ -453,13 +453,13 @@ class Downloads extends AdminController
                 'search',
                 ''
             )
-        );
+        ];
         $rowsRaw = Download::getDownloadsSku('array', $filters);
 
-        $rows = array();
+        $rows = [];
 
         foreach ($rowsRaw as $row) {
-            $rows[] = array($row['pName'], $row['sSku'], $row['downloaded']);
+            $rows[] = [$row['pName'], $row['sSku'], $row['downloaded']];
         }
 
         $dateFrom = date('dMY', strtotime($filters['report-from']));
@@ -475,7 +475,7 @@ class Downloads extends AdminController
         header("Expires: 0"); // Proxies
 
         $output = fopen("php://output", "w");
-        $row = array('Product', 'SKU', 'Downloaded (times)');
+        $row = ['Product', 'SKU', 'Downloaded (times)'];
         fputcsv($output, $row);
         foreach ($rows as $row) {
             // replace($row) empty vals with n/a

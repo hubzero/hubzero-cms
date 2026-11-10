@@ -40,16 +40,16 @@ class SolrHelper
         $path = $config->get('solr_path', '/');
         $context = $config->get('solr_context', 'solr');
 
-        $solrConfig = array('endpoint' =>
-            array($core =>
-                array(  'host' => $host,
+        $solrConfig = ['endpoint' =>
+            [$core =>
+                [  'host' => $host,
                     'port' => $port,
                     'path' => $path,
                     'context' => $context,
                     'core' => $core
-                )
-            )
-        );
+                ]
+            ]
+        ];
 
         $adapter = new Solarium\Core\Client\Adapter\Curl();
         $eventDispatcher = new \Symfony\Component\EventDispatcher\EventDispatcher();
@@ -81,7 +81,7 @@ class SolrHelper
                 $id   = $parts[1];
             }
 
-            return array('type' => $type, 'id' => $id);
+            return ['type' => $type, 'id' => $id];
         }
         return false;
     }

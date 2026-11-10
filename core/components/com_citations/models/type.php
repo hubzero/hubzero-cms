@@ -36,18 +36,18 @@ class Type extends Relational
      *
      * @var array
      **/
-    protected $rules = array(
+    protected $rules = [
         'type_title' => 'notempty'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      **/
-    public $always = array(
+    public $always = [
         'type'
-    );
+    ];
 
     /**
      * Generates automatic type field value
@@ -85,12 +85,12 @@ class Type extends Relational
      * @param   array  $filters
      * @return  array
      **/
-    public static function getCitationsCountByType($filters = array())
+    public static function getCitationsCountByType($filters = [])
     {
         $types = self::all()
             ->including(['citations', function ($citation) use ($filters) {
-                $publishState = empty($filters['published']) ? array(1) : $filters['published'];
-                $publishState = !is_array($publishState) ? array($publishState) : $publishState;
+                $publishState = empty($filters['published']) ? [1] : $filters['published'];
+                $publishState = !is_array($publishState) ? [$publishState] : $publishState;
                 $scope = empty($filters['scope']) ? 'hub' : $filters['scope'];
                 $citation->select('*, count(type) as totalcite')
                          ->whereIn('published', $publishState)
@@ -106,7 +106,7 @@ class Type extends Relational
                     $citation->whereEquals('scope_id', $filters['scope_id']);
                 }
             }])->rows();
-        $typeStats = array();
+        $typeStats = [];
         foreach ($types as $type) {
             $typeTitle = $type->type_title;
             if (!isset($typeStats[$typeTitle])) {

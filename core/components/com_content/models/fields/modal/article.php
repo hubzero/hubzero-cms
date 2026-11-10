@@ -40,7 +40,7 @@ class Article extends Field
         Html::behavior('modal', 'a.modal');
 
         // Build the script.
-        $script = array();
+        $script = [];
         $script[] = '	function jSelectArticle_' . $this->id . '(id, title, catid, object) {';
         $script[] = '		$("#' . $this->id . '_id").val(id);';
         $script[] = '		$("#' . $this->id . '_name").val(title);';
@@ -51,7 +51,7 @@ class Article extends Field
         Document::addScriptDeclaration(implode("\n", $script));
 
         // Setup variables for display.
-        $html = array();
+        $html = [];
         $link = Route::url(
             'index.php?option=com_content&view=articles&layout=modal&tmpl=component&function=jSelectArticle_'
             . $this->id . '&' . Session::getFormToken() . '=1'

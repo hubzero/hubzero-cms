@@ -169,7 +169,7 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
                 $short = null;
 
                 if (strlen(strip_tags($content)) > 150) {
-                    $short = Hubzero\Utility\Str::truncate($content, 150, array('html' => true));
+                    $short = Hubzero\Utility\Str::truncate($content, 150, ['html' => true]);
                     ?>
                     <div class="activity-event-preview">
                         <?php echo $short; ?>
@@ -186,7 +186,7 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
                     <?php echo $content; ?>
                 </div>
                 <?php
-                if (in_array($this->row->log->get('action'), array('updated', 'emailed', 'downloaded', 'uploaded', 'denied', 'voted', 'shared'))) {
+                if (in_array($this->row->log->get('action'), ['updated', 'emailed', 'downloaded', 'uploaded', 'denied', 'voted', 'shared'])) {
                     $recipient = Hubzero\Activity\Recipient::all();
 
                     $r = $recipient->getTableName();

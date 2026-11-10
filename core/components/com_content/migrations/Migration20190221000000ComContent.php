@@ -20,15 +20,15 @@ class Migration20190221000000ComContent extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__content' => array(
+    public static $tables = [
+        '#__content' => [
             'created',
             'modified',
             'checked_out_time',
             'publish_up',
             'publish_down'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

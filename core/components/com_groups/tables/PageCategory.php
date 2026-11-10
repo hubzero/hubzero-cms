@@ -55,7 +55,7 @@ class PageCategory extends Table
      * @param   array  $filters
      * @return  array
      */
-    public function find($filters = array())
+    public function find($filters = [])
     {
         $sql = "SELECT * FROM {$this->_tbl}";
         $sql .= $this->buildQuery($filters);
@@ -70,7 +70,7 @@ class PageCategory extends Table
      * @param   array  $filters
      * @return  int
      */
-    public function count($filters = array())
+    public function count($filters = [])
     {
         $sql = "SELECT COUNT(*) FROM {$this->_tbl}";
         $sql .= $this->buildQuery($filters);
@@ -85,11 +85,11 @@ class PageCategory extends Table
      * @param   array   $filters
      * @return  string
      */
-    private function buildQuery($filters = array())
+    private function buildQuery($filters = [])
     {
         //vars
         $sql   = '';
-        $where = array();
+        $where = [];
 
         // check for gidNumber
         if (isset($filters['gidNumber'])) {
@@ -117,7 +117,7 @@ class PageCategory extends Table
      */
     public function getCategories($group)
     {
-        $categories = array();
+        $categories = [];
 
         // make sure we have a valid group
         if (!is_object($group) || $group->get('gidNumber') == '') {

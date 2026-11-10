@@ -65,16 +65,16 @@ class SolrQueryAdapter implements QueryInterface
         $this->logPath = $config->get('solr_log_path');
 
         // Build the Solr config object
-        $solrConfig = array( 'endpoint' =>
-            array( $core =>
-                array(  'host' => $host,
+        $solrConfig = [ 'endpoint' =>
+            [ $core =>
+                [  'host' => $host,
                     'port' => $port,
                     'path' => $path,
                     'context' => $context,
                     'core' => $core
-                )
-            )
-        );
+                ]
+            ]
+        ];
 
         // Create the client
         $adapter = new Solarium\Core\Client\Adapter\Curl();
@@ -184,9 +184,9 @@ class SolrQueryAdapter implements QueryInterface
         $client = new \GuzzleHttp\Client();
         $res = $client->get($url);
         $body = json_decode((string) $res->getBody(), true);
-        $resultSet = isset($body['facet_counts']['facet_fields']) ? $body['facet_counts']['facet_fields'] : array();
+        $resultSet = isset($body['facet_counts']['facet_fields']) ? $body['facet_counts']['facet_fields'] : [];
 
-        $suggestions = array();
+        $suggestions = [];
 
         foreach ($resultSet as $results) {
             $x = 0;
@@ -294,7 +294,7 @@ class SolrQueryAdapter implements QueryInterface
      * @access public
      * @return void
      */
-    public function addFacet($name, $query = array())
+    public function addFacet($name, $query = [])
     {
         $this->facetSet = $this->query->getFacetSet();
 
@@ -312,17 +312,17 @@ class SolrQueryAdapter implements QueryInterface
      * @access public
      * @return void
      */
-    public function addFilter($name, $query = array(), $tag = 'root_type')
+    public function addFilter($name, $query = [], $tag = 'root_type')
     {
         if (is_array($query)) {
             $string = $this->makeQueryString($query);
         } elseif (is_string($query)) {
             $string = $query;
             if ($name == 'BoundingBox') {
-                $this->query->setOptions(array('geo' => true));
+                $this->query->setOptions(['geo' => true]);
             }
         }
-        $filterParams = array();
+        $filterParams = [];
         $filterParams['key'] = $name;
         $filterParams['query'] = $string;
         if ($tag) {
@@ -410,7 +410,7 @@ class SolrQueryAdapter implements QueryInterface
 
             $userGroups = \Hubzero\User\Helper::getGroups($user);
             if (!$userGroups) {
-                $userGroups = array();
+                $userGroups = [];
             }
             $userGroups = array_map(function ($group) {
                 return $group->gidNumber;
@@ -442,7 +442,7 @@ class SolrQueryAdapter implements QueryInterface
             $this->run();
         }
 
-        $documents = array();
+        $documents = [];
         foreach ($this->resultset as $document) {
             array_push($documents, $document);
         }
@@ -461,7 +461,7 @@ class SolrQueryAdapter implements QueryInterface
      * @access private
      * @return string
      */
-    private function makeQueryString($query = array())
+    private function makeQueryString($query = [])
     {
         $subject = $query[0];
         $operator = $query[1];
@@ -486,7 +486,7 @@ class SolrQueryAdapter implements QueryInterface
     {
         $query = $this->connection->createSelect();
         $query->setQuery('*:*');
-        $query->setFields(array('timestamp'));
+        $query->setFields(['timestamp']);
         $query->addSort('timestamp', 'DESC');
         $query->setRows(1);
         $query->setStart(0);

@@ -63,30 +63,30 @@ class Wishlist extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'title'       => 'notempty',
         'category'    => 'notempty',
         'referenceid' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Fields to be parsed
      *
      * @var  array
      */
-    protected $parsed = array(
+    protected $parsed = [
         'description'
-    );
+    ];
 
     /**
      * Component configuration
@@ -319,7 +319,7 @@ class Wishlist extends Relational
             $what = 'groups';
         }
 
-        if (!in_array($what, array('advisory', 'individuals', 'groups'))) {
+        if (!in_array($what, ['advisory', 'individuals', 'groups'])) {
             throw new \InvalidArgumentException(Lang::txt('Owner type not supported.'));
         }
 
@@ -467,7 +467,7 @@ class Wishlist extends Relational
             $admingroup = $this->config()->get('group');
         }
 
-        $owners = array();
+        $owners = [];
 
         // If private user list, add the user
         if ($this->get('category') == 'user') {
@@ -506,7 +506,7 @@ class Wishlist extends Relational
         // Are we also including advisory committee?
         $wconfig = Component::params('com_wishlist');
 
-        $advisory = array();
+        $advisory = [];
 
         if ($wconfig->get('allow_advisory')) {
             foreach ($this->owners()->whereEquals('type', 2)->rows() as $result) {
@@ -516,7 +516,7 @@ class Wishlist extends Relational
 
         // Find out those who voted - for distribution of points
         if ($wishid) {
-            $activeowners = array();
+            $activeowners = [];
 
             $result = Rank::all()
                 ->whereEquals('wishid', $wishid)
@@ -532,7 +532,7 @@ class Wishlist extends Relational
             }
         }
 
-        $collect = array();
+        $collect = [];
         $collect['individuals'] = $owners;
         $collect['groups']      = $groups;
         $collect['advisory']    = $advisory;
@@ -549,7 +549,7 @@ class Wishlist extends Relational
      */
     public function getOwnergroups($controlgroup, $native = 0)
     {
-        $groups = array();
+        $groups = [];
 
         // If private user list, add the user
         if ($this->get('category') == 'group') {
@@ -594,7 +594,7 @@ class Wishlist extends Relational
         }
 
         if (!strstr($data, ' ') && !strstr($data, ',')) {
-            return array($data);
+            return [$data];
         }
 
         $data = str_replace(' ', ',', $data);

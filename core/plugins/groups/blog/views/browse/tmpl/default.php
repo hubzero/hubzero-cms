@@ -16,11 +16,11 @@ defined('_HZEXEC_') or die();
 
 $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=blog';
 
-$first = $this->archive->entries(array(
+$first = $this->archive->entries([
         'state'    => 1,
         'scope'    => $this->filters['scope'],
         'scope_id' => $this->filters['scope_id']
-    ))
+    ])
     ->order('publish_up', 'asc')
     ->limit(1)
     ->row();
@@ -207,10 +207,10 @@ $isEmpty = $noFilters && !$rows->count();
                                             <a href="<?php echo Route::url($row->link('comments')); ?>">
                                                 <?php
                                                 $comments = $row->comments()
-                                                    ->whereIn('state', array(
+                                                    ->whereIn('state', [
                                                         Components\Blog\Models\Comment::STATE_PUBLISHED,
                                                         Components\Blog\Models\Comment::STATE_FLAGGED
-                                                    ))
+                                                    ])
                                                     ->count();
                                                 echo Lang::txts('PLG_GROUPS_BLOG_NUM_COMMENTS', $comments); ?>
                                             </a>
@@ -321,7 +321,7 @@ $isEmpty = $noFilters && !$rows->count();
                                     <?php if ($isSelectedYear || $isCurrentYear) { ?>
                                         <ol>
                                             <?php
-                                                $m = array(
+                                                $m = [
                                                     'PLG_GROUPS_BLOG_JANUARY',
                                                     'PLG_GROUPS_BLOG_FEBRUARY',
                                                     'PLG_GROUPS_BLOG_MARCH',
@@ -334,7 +334,7 @@ $isEmpty = $noFilters && !$rows->count();
                                                     'PLG_GROUPS_BLOG_OCTOBER',
                                                     'PLG_GROUPS_BLOG_NOVEMBER',
                                                     'PLG_GROUPS_BLOG_DECEMBER'
-                                                );
+                                                ];
                                                 if ($i == $now) {
                                                     $months = date("m");
                                                 } else {
@@ -371,10 +371,10 @@ $isEmpty = $noFilters && !$rows->count();
                 <div class="container blog-popular-entries">
                     <h4><?php echo Lang::txt('PLG_GROUPS_BLOG_POPULAR_ENTRIES'); ?></h4>
                     <?php
-                    $popular = $this->archive->entries(array(
+                    $popular = $this->archive->entries([
                             'state'  => $this->filters['state'],
                             'access' => $this->filters['access']
-                        ))
+                        ])
                         ->order('hits', 'desc')
                         ->limit(5)
                         ->rows();

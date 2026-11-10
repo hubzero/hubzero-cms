@@ -20,7 +20,7 @@ class Event
      *
      * @var  array
      **/
-    private static $events = array();
+    private static $events = [];
 
     /**
      * Registers an event callback

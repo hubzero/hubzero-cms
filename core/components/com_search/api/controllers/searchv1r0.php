@@ -111,7 +111,7 @@ class Searchv1r0 extends ApiController
         $sortBy  = Request::getString('sortBy', '');
         $sortDir = Request::getString('sortDir', '');
         $type    = Request::getString('type', '');
-        $filters = Request::getArray('filters', array());
+        $filters = Request::getArray('filters', []);
 
         // Apply the sorting
         if ($sortBy != '' && $sortDir != '') {
@@ -119,7 +119,7 @@ class Searchv1r0 extends ApiController
         }
 
         if ($type != '') {
-            $query->addFilter('Type', array('hubtype', '=', $type));
+            $query->addFilter('Type', ['hubtype', '=', $type]);
         }
 
         // Administrators can see all records
@@ -135,11 +135,11 @@ class Searchv1r0 extends ApiController
         $results = $query->getResults();
         $numFound = $query->getNumFound();
 
-        $highlightOptions = array(
+        $highlightOptions = [
             'format' => '<span class="highlight">\1</span>',
             'html'   => false,
             'regex'  => "|%s|iu"
-        );
+        ];
 
         foreach ($results as &$result) {
             $snippet = '';
@@ -192,7 +192,7 @@ class Searchv1r0 extends ApiController
     public function suggestTask()
     {
         $terms = Request::getString('terms', '');
-        $suggest = array();
+        $suggest = [];
 
         if ($terms != '') {
             $config = Component::params('com_search');
@@ -224,7 +224,7 @@ class Searchv1r0 extends ApiController
     public function typeSuggestionsTask()
     {
         $terms = Request::getString('terms', '');
-        $suggestedWords = array();
+        $suggestedWords = [];
 
         if ($terms != '') {
             $config = Component::params('com_search');
@@ -273,7 +273,7 @@ class Searchv1r0 extends ApiController
 
         $types = Event::trigger('search.onGetTypes');
         foreach ($types as $type) {
-            $query->addFacet($type, array('hubtype', '=', $type));
+            $query->addFacet($type, ['hubtype', '=', $type]);
         }
 
         // Administrators can see all records
@@ -285,7 +285,7 @@ class Searchv1r0 extends ApiController
         }
 
         $query = $query->run();
-        $facets = array();
+        $facets = [];
         $total = 0;
         foreach ($types as $type) {
             $name = $type;
@@ -296,7 +296,7 @@ class Searchv1r0 extends ApiController
             $count = $query->getFacetCount($type);
             $total += $count;
             $name = ucfirst(Inflector::pluralize($name));
-            array_push($facets, array('type' => $type, 'name' => $name,'count' => $count));
+            array_push($facets, ['type' => $type, 'name' => $name,'count' => $count]);
         }
 
         $response = new stdClass();

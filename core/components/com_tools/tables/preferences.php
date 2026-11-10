@@ -62,9 +62,9 @@ class Preferences extends Table
      */
     public function loadByUser($user_id)
     {
-        return parent::load(array(
+        return parent::load([
             'user_id' => (int) $user_id
-        ));
+        ]);
     }
 
     /**
@@ -110,20 +110,20 @@ class Preferences extends Table
      * @param   array   $filters
      * @return  string  Database query
      */
-    protected function buildQuery($filters = array())
+    protected function buildQuery($filters = [])
     {
         $query  = " FROM $this->_tbl AS uq";
         $query .= " LEFT JOIN `#__tool_session_classes` AS tsc ON uq.class_id = tsc.id";
         $query .= " LEFT JOIN `#__users` AS m ON uq.user_id = m.id";
 
-        $where = array();
+        $where = [];
 
         if (isset($filters['class_id'])) {
             $where[] = "`class_id` = " . $this->_db->quote($filters['class_id']);
         }
         if (isset($filters['search']) && isset($filters['search_field'])) {
             // Only the two columns the search form offers
-            if (!in_array($filters['search_field'], array('username', 'name'))) {
+            if (!in_array($filters['search_field'], ['username', 'name'])) {
                 $filters['search_field'] = 'name';
             }
             $where[] = $this->_db->quoteName($filters['search_field']) . ' LIKE ' . $this->_db->quote('%' . $filters['search'] . '%');
@@ -150,7 +150,7 @@ class Preferences extends Table
      * @param   array   $select   List of fields to select
      * @return  mixed
      */
-    public function find($what = '', $filters = array(), $select = array())
+    public function find($what = '', $filters = [], $select = [])
     {
         $what = strtolower($what);
         $select = (array) $select;
@@ -197,13 +197,13 @@ class Preferences extends Table
                 }
                 if ($filters['sort_Dir']) {
                     $filters['sort_Dir'] = strtoupper($filters['sort_Dir']);
-                    if (!in_array($filters['sort_Dir'], array('ASC', 'DESC'))) {
+                    if (!in_array($filters['sort_Dir'], ['ASC', 'DESC'])) {
                         $filters['sort_Dir'] = 'ASC';
                     }
                 }
 
                 if (empty($select)) {
-                    $select = array('uq.*', 'm.username', 'm.name', 'tsc.alias AS class_alias');
+                    $select = ['uq.*', 'm.username', 'm.name', 'tsc.alias AS class_alias'];
                 }
 
                 $query  = "SELECT " . implode(', ', $select) . " " . $this->buildQuery($filters);
@@ -237,7 +237,7 @@ class Preferences extends Table
             return false;
         }
 
-        $records = self::find('list', array('class_id' => $class->id));
+        $records = self::find('list', ['class_id' => $class->id]);
 
         if ($records && count($records) > 0) {
             foreach ($records as $r) {
@@ -261,13 +261,13 @@ class Preferences extends Table
     {
 
         $class = new SessionClass($this->_db);
-        $class->load(array('alias' => 'default'));
+        $class->load(['alias' => 'default']);
 
         if (!$class->id) {
             return false;
         }
 
-        $records = self::find('list', array('class_id' => $id));
+        $records = self::find('list', ['class_id' => $id]);
 
         if ($records && count($records) > 0) {
             foreach ($records as $r) {

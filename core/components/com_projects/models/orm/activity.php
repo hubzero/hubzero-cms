@@ -51,19 +51,19 @@ class Activity extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'projectid' => 'positive|nonzero',
         'activity'  => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'recorded'
-    );
+    ];
 
     /**
      * Generates automatic created field value

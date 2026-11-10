@@ -103,11 +103,11 @@ class Announcement extends Table
      * @param  array $filters
      * @return $query database query
      */
-    private function buildQuery($filters = array())
+    private function buildQuery($filters = [])
     {
         $query =  " FROM $this->_tbl AS a";
 
-        $where = array();
+        $where = [];
 
         if (isset($filters['offering_id']) && $filters['offering_id']) {
             $where[] = "a.`offering_id` = " . $this->_db->quote(intval($filters['offering_id']));
@@ -158,7 +158,7 @@ class Announcement extends Table
      * @param     array $filters
      * @return    integer
      */
-    public function count($filters = array())
+    public function count($filters = [])
     {
         $query  = "SELECT COUNT(*)";
         $query .= $this->buildQuery($filters);

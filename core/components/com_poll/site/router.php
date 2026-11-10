@@ -27,7 +27,7 @@ class Router extends Base
     {
         static $items;
 
-        $segments = array();
+        $segments = [];
         $itemid   = null;
 
         // Break up the poll id into numeric and alias values.
@@ -119,7 +119,7 @@ class Router extends Base
      */
     public function parse(&$segments)
     {
-        $vars = array();
+        $vars = [];
 
         if ($segments[0] == 'latest') {
             $vars['task'] = 'latest';

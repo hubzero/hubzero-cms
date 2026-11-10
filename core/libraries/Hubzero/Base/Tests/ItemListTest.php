@@ -24,11 +24,11 @@ class ItemListTest extends Basic
      **/
     protected function list()
     {
-        return new ItemList(array(
-            new Obj(array('name' => 'first')),
-            new Obj(array('name' => 'second')),
-            new Obj(array('name' => 'third')),
-        ));
+        return new ItemList([
+            new Obj(['name' => 'first']),
+            new Obj(['name' => 'second']),
+            new Obj(['name' => 'third']),
+        ]);
     }
 
     /**
@@ -48,13 +48,13 @@ class ItemListTest extends Basic
 
         $this->assertEquals(1, $filtered->count());
 
-        $walked = array();
+        $walked = [];
 
         foreach ($filtered as $item) {
             $walked[] = $item->get('name');
         }
 
-        $this->assertEquals(array('third'), $walked);
+        $this->assertEquals(['third'], $walked);
     }
 
     /**

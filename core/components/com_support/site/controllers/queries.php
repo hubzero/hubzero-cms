@@ -54,7 +54,7 @@ class Queries extends SiteController
      */
     public function editTask()
     {
-        $lists = array();
+        $lists = [];
         $lists['severities'] = Utilities::getSeverities($this->config->get('severities'));
 
         $id = Request::getInt('id', 0);
@@ -109,7 +109,7 @@ class Queries extends SiteController
         Request::checkToken();
 
         // Incoming
-        $fields  = Request::getArray('fields', array(), 'post');
+        $fields  = Request::getArray('fields', [], 'post');
         $no_html = Request::getInt('no_html', 0);
         $tmpl    = Request::getCmd('component', '');
 
@@ -271,7 +271,7 @@ class Queries extends SiteController
         Request::setVar('hidemainmenu', 1);
 
         if (!is_object($row)) {
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id)) {
                 $id = (!empty($id) ? intval($id[0]) : 0);
             }
@@ -323,7 +323,7 @@ class Queries extends SiteController
         Request::checkToken(['get', 'post']);
 
         // Incoming
-        $fields  = Request::getArray('fields', array());
+        $fields  = Request::getArray('fields', []);
         $no_html = Request::getInt('no_html', 0);
         $tmpl    = Request::getString('component', '');
 
@@ -388,8 +388,8 @@ class Queries extends SiteController
         Request::checkToken();
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (is_array($ids) ? $ids : array($ids));
+        $ids = Request::getArray('id', []);
+        $ids = (is_array($ids) ? $ids : [$ids]);
 
         $no_html = Request::getInt('no_html', 0);
 
@@ -433,8 +433,8 @@ class Queries extends SiteController
         Request::checkToken(['get', 'post']);
 
         // Incoming
-        $folders = Request::getArray('folder', array());
-        $queries = Request::getArray('queries', array());
+        $folders = Request::getArray('folder', []);
+        $queries = Request::getArray('queries', []);
 
         if (is_array($folders)) {
             foreach ($folders as $key => $folder) {

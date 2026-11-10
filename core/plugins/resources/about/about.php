@@ -35,7 +35,7 @@ class About extends Plugin
      */
     public function &onResourcesAreas($model)
     {
-        $areas = array();
+        $areas = [];
 
         if (
             $model->type->params->get('plg_about', 0)
@@ -58,11 +58,11 @@ class About extends Plugin
      */
     public function onResources($model, $option, $areas, $rtrn = 'all')
     {
-        $arr = array(
+        $arr = [
             'area'     => $this->_name,
             'html'     => '',
             'metadata' => ''
-        );
+        ];
 
         // Check if our area is in the array of areas we want to return results for
         if (is_array($areas)) {

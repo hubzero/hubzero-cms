@@ -45,19 +45,19 @@ class SearchComponent extends Relational
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created'
-    );
+    ];
 
     /**
      * Fields and their validation criteria
      *
      * @var  array
      **/
-    protected $rules = array(
+    protected $rules = [
         'title' => 'notempty',
         'name' => 'notempty'
-    );
+    ];
 
 
     /**
@@ -127,7 +127,7 @@ class SearchComponent extends Relational
         $blackListIds = Blacklist::getDocIdsByScope($model::searchNamespace());
 
         if (count($modelResults) > 0) {
-            $searchResults = array();
+            $searchResults = [];
             foreach ($modelResults as $result) {
                 $searchResult = $result->searchResult();
                 if ($searchResult && !in_array($searchResult->id, $blackListIds)) {
@@ -135,11 +135,11 @@ class SearchComponent extends Relational
                     $searchResults[] = $searchResult;
                 }
             }
-            Event::trigger('search.sendSolrRequest', array($searchResults, 'update'));
-            $results = array(
+            Event::trigger('search.sendSolrRequest', [$searchResults, 'update']);
+            $results = [
                 'limit'  => $batchSize,
                 'offset' => $offset + $batchSize,
-            );
+            ];
             $error = $newQuery->finalize();
             if ($error) {
                 $results['error'] = $error;
@@ -152,7 +152,7 @@ class SearchComponent extends Relational
     public function getSearchableFields()
     {
         $model = $this->getSearchableModel();
-        $searchFields = array();
+        $searchFields = [];
         if (class_exists($model)) {
             $modelResults = $model::searchResults(1);
             $firstResultModel = $modelResults->first();
@@ -255,7 +255,7 @@ class SearchComponent extends Relational
      * @param   string  $childTerms  any currently applied filters
      * @return  string  HTML list with links to apply a facet with currently selected searchTerms
      */
-    public function formatWithCounts($counts, $activeType = null, $terms = null, $childTerms = null, $selectedOptions = array())
+    public function formatWithCounts($counts, $activeType = null, $terms = null, $childTerms = null, $selectedOptions = [])
     {
         $countIndex = $this->getQueryName();
         $count = isset($counts[$countIndex]) ? $counts[$countIndex] : 0;
@@ -271,7 +271,7 @@ class SearchComponent extends Relational
             // Display filter controls, if the admin has configured a filter for this component:
             if ($activeType && $this->filters->count() > 0) {
                 foreach ($this->filters()->order('ordering', 'ASC') as $filter) {
-                    $filterSelectedOptions = isset($selectedOptions[$filter->get('field')]) ? $selectedOptions[$filter->get('field')] : array();
+                    $filterSelectedOptions = isset($selectedOptions[$filter->get('field')]) ? $selectedOptions[$filter->get('field')] : [];
                     $filterHtml = $filter->renderHtml($counts, $filterSelectedOptions);
                     $html .= $filterHtml;
                 }

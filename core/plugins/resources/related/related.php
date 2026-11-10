@@ -34,9 +34,9 @@ class Related extends Plugin
      */
     public function &onResourcesSubAreas($resource)
     {
-        $areas = array(
+        $areas = [
             'related' => Lang::txt('PLG_RESOURCES_RELATED')
-        );
+        ];
         return $areas;
     }
 
@@ -50,11 +50,11 @@ class Related extends Plugin
      */
     public function onResourcesSub($resource, $option, $miniview = 0)
     {
-        $arr = array(
+        $arr = [
             'area'     => $this->_name,
             'html'     => '',
             'metadata' => ''
-        );
+        ];
 
         $database = App::get('db');
 

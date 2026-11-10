@@ -38,7 +38,7 @@ if ($this->publish) {
                 $path = $bits[0];
                 $qs   = isset($bits[1]) ? $bits[1] : '';
                 if ($qs !== '') {
-                    $keep = array();
+                    $keep = [];
                     foreach (explode('&', $qs) as $pair) {
                         if ($pair === '') {
                             continue;

@@ -39,7 +39,7 @@ class Blocks extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_blocks = array();
+    protected $_blocks = [];
 
     /**
      * Directories, where block types can be stored
@@ -47,7 +47,7 @@ class Blocks extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_blockPath = array();
+    protected $_blockPath = [];
 
     /**
      * Constructor

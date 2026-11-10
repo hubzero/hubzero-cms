@@ -36,9 +36,9 @@ class Maps extends Plugin
      */
     public function onUsageAreas()
     {
-        return array(
+        return [
             'maps' => Lang::txt('PLG_USAGE_MAPS')
-        );
+        ];
     }
 
     /**
@@ -220,7 +220,7 @@ class Maps extends Plugin
 
                 if ($rows) {
                     foreach ($rows as $row) {
-                        $location = array();
+                        $location = [];
                         $location['lat'] = $row->ipLATITUDE;
                         $location['lng'] = $row->ipLONGITUDE;
                         $city = '_b_' . $row->ipCITY . ', ' . $row->ipREGION . ', ' . $row->countrySHORT . '_bb_';

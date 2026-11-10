@@ -33,7 +33,7 @@ class Select extends Field
     protected function getInput()
     {
         // Initialize variables.
-        $html = array();
+        $html = [];
         $attr = '';
 
         // Initialize some field attributes.
@@ -93,7 +93,7 @@ class Select extends Field
     protected function getOptions()
     {
         // Initialize variables.
-        $options = array();
+        $options = [];
 
         if ($this->element['option_blank']) {
             $options[] = Dropdown::option('', App::get('language')->txt('- Select -'), 'value', 'text');

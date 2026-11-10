@@ -38,7 +38,7 @@ class Select extends Base
     {
         $class = (isset($element->class)) ? 'class="' . $element->class . '"' : 'class="inputbox"';
 
-        $options = array();
+        $options = [];
         if (!$element->required) {
             $options[] = Html::select('option', '', Lang::txt('Select...'));
         }
@@ -74,7 +74,7 @@ class Select extends Base
      */
     public function fetchOptions($name, $value, &$element, $control_name)
     {
-        $html = array();
+        $html = [];
 
         $k = 0;
         $idBase = $control_name . '-' . $name;

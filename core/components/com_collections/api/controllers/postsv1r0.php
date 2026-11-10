@@ -109,7 +109,7 @@ class Postsv1r0 extends ApiController
     {
         $model = new Collection();
 
-        $filters = array(
+        $filters = [
             'limit'         => Request::getInt('limit', 25),
             'start'         => Request::getInt('limitstart', 0),
             'search'        => Request::getString('search', ''),
@@ -119,14 +119,14 @@ class Postsv1r0 extends ApiController
             'is_default'    => 0,
             'access'        => 0,
             'count'         => true
-        );
+        ];
         if ($collection_id = Request::getInt('collection_id')) {
             $filters['collection_id'] = $collection_id;
         }
         $filters['sort'] = 'p.' . $filters['sort'];
 
         $response = new stdClass();
-        $response->posts = array();
+        $response->posts = [];
         $response->total = $model->posts($filters);
 
         if ($response->total) {
@@ -159,7 +159,7 @@ class Postsv1r0 extends ApiController
                 $obj->comments  = $item->get('comments', 0);
                 $obj->likes     = $item->get('positive', 0);
                 $obj->reposts   = $item->get('reposts', 0);
-                $obj->assets    = array();
+                $obj->assets    = [];
 
                 $assets = $item->assets();
                 if ($assets->total() > 0) {
@@ -266,7 +266,7 @@ class Postsv1r0 extends ApiController
     {
         $this->requiresAuthentication();
 
-        $fields = array(
+        $fields = [
             'title'          => Request::getString('title', null, 'post', 'none', 2),
             'description'    => Request::getString('description', null, 'post', 'none', 2),
             'url'            => Request::getString('url', null, 'post'),
@@ -277,7 +277,7 @@ class Postsv1r0 extends ApiController
             'type'           => Request::getString('type', 'file', 'post'),
             'object_id'      => Request::getInt('object_id', 0, 'post'),
             'collection_id'  => Request::getInt('collection_id', 0, 'post')
-        );
+        ];
 
         if (!$fields['collection_id']) {
             throw new Exception(Lang::txt('COM_COLLECTIONS_ERROR_MISSING_COLLECTION'), 422);
@@ -338,7 +338,7 @@ class Postsv1r0 extends ApiController
         $obj->comments  = $item->get('comments', 0);
         $obj->likes     = $item->get('positive', 0);
         $obj->reposts   = $item->get('reposts', 0);
-        $obj->assets    = array();
+        $obj->assets    = [];
 
         $assets = $item->assets();
 
@@ -419,7 +419,7 @@ class Postsv1r0 extends ApiController
         $obj->comments  = $item->get('comments', 0);
         $obj->likes     = $item->get('positive', 0);
         $obj->reposts   = $item->get('reposts', 0);
-        $obj->assets    = array();
+        $obj->assets    = [];
 
         $assets = $item->assets();
 
@@ -535,7 +535,7 @@ class Postsv1r0 extends ApiController
         // Fields not sent keep their current values. They defaulted to
         // empty/0 before, so a partial PUT (just a new description) zeroed
         // collection_id and the store failed with a 500.
-        $fields = array(
+        $fields = [
             'id'             => Request::getInt('id', 0, 'put'),
             'title'          => Request::getString('title', $row->get('title'), 'put'),
             'description'    => Request::getString('description', $row->get('description'), 'put'),
@@ -547,7 +547,7 @@ class Postsv1r0 extends ApiController
             'type'           => Request::getString('type', $row->get('type', 'file'), 'put'),
             'object_id'      => Request::getInt('object_id', (int) $row->get('object_id', 0), 'put'),
             'collection_id'  => Request::getInt('collection_id', (int) $row->get('collection_id', 0), 'put')
-        );
+        ];
 
         if (!$row->exists()) {
             throw new Exception(Lang::txt('COM_COLLECTIONS_ERROR_MISSING_RECORD'), 404);
@@ -603,7 +603,7 @@ class Postsv1r0 extends ApiController
         $obj->comments  = $item->get('comments', 0);
         $obj->likes     = $item->get('positive', 0);
         $obj->reposts   = $item->get('reposts', 0);
-        $obj->assets    = array();
+        $obj->assets    = [];
 
         $assets = $item->assets();
 
@@ -644,8 +644,8 @@ class Postsv1r0 extends ApiController
     {
         $this->requiresAuthentication();
 
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         if (count($ids) <= 0) {
             throw new Exception(Lang::txt('COM_COLLECTIONS_ERROR_MISSING_ID'), 500);

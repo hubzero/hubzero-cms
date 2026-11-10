@@ -31,29 +31,29 @@ class RouteTest extends Basic
      */
     public static function routes()
     {
-        return array(
-            'plain'                => array('handbook', 'handbook'),
-            'nested'               => array('docs/handbook', 'docs/handbook'),
-            'leading slash'        => array('/handbook', 'handbook'),
-            'trailing slash'       => array('handbook/', 'handbook'),
-            'both'                 => array('/docs/handbook/', 'docs/handbook'),
-            'doubled slashes'      => array('docs//handbook', 'docs/handbook'),
-            'shouted'              => array('Docs/Handbook', 'docs/handbook'),
-            'spaces'               => array('  handbook  ', 'handbook'),
-            'inner spaces'         => array('user guide', 'userguide'),
-            'hyphens and unders'   => array('a-b_c', 'a-b_c'),
-            'a dot'                => array('faq.html', 'faq.html'),
-            'climbing out'         => array('../../etc/passwd', 'etc/passwd'),
-            'a single dot'         => array('./handbook', 'handbook'),
-            'backslashes'          => array('docs\\handbook', 'docs/handbook'),
-            'a query string'       => array('page?id=1', 'pageid1'),
-            'a fragment'           => array('page#top', 'pagetop'),
-            'an absolute url'      => array('https://elsewhere.test/x', 'https/elsewhere.test/x'),
-            'a null byte'          => array("handbook\0.php", 'handbook.php'),
-            'nothing'              => array('', ''),
-            'only slashes'         => array('///', ''),
-            'only dots'            => array('../..', ''),
-        );
+        return [
+            'plain'                => ['handbook', 'handbook'],
+            'nested'               => ['docs/handbook', 'docs/handbook'],
+            'leading slash'        => ['/handbook', 'handbook'],
+            'trailing slash'       => ['handbook/', 'handbook'],
+            'both'                 => ['/docs/handbook/', 'docs/handbook'],
+            'doubled slashes'      => ['docs//handbook', 'docs/handbook'],
+            'shouted'              => ['Docs/Handbook', 'docs/handbook'],
+            'spaces'               => ['  handbook  ', 'handbook'],
+            'inner spaces'         => ['user guide', 'userguide'],
+            'hyphens and unders'   => ['a-b_c', 'a-b_c'],
+            'a dot'                => ['faq.html', 'faq.html'],
+            'climbing out'         => ['../../etc/passwd', 'etc/passwd'],
+            'a single dot'         => ['./handbook', 'handbook'],
+            'backslashes'          => ['docs\\handbook', 'docs/handbook'],
+            'a query string'       => ['page?id=1', 'pageid1'],
+            'a fragment'           => ['page#top', 'pagetop'],
+            'an absolute url'      => ['https://elsewhere.test/x', 'https/elsewhere.test/x'],
+            'a null byte'          => ["handbook\0.php", 'handbook.php'],
+            'nothing'              => ['', ''],
+            'only slashes'         => ['///', ''],
+            'only dots'            => ['../..', ''],
+        ];
     }
 
     /**

@@ -75,7 +75,7 @@ class Migration extends Base implements CommandInterface
                 }
 
                 // Get group database
-                $alternativeDatabase = \Hubzero\User\Group\Helper::getDBO(array(), $group->get('cn'));
+                $alternativeDatabase = \Hubzero\User\Group\Helper::getDBO([], $group->get('cn'));
 
                 // make sure we have a group db
                 if ($alternativeDatabase->getErrorNum() > 0) {
@@ -264,9 +264,9 @@ class Migration extends Base implements CommandInterface
                 if (!$this->output->isInteractive()) {
                     if ($this->output->getMode() == 'minimal') {
                         if (count($migration->get('log')) > 0) {
-                            $missed   = array();
-                            $pending  = array();
-                            $complete = array();
+                            $missed   = [];
+                            $pending  = [];
+                            $complete = [];
                             foreach ($migration->get('log') as $log) {
                                 if (
                                     preg_match(
@@ -301,13 +301,13 @@ class Migration extends Base implements CommandInterface
                             }
 
                             if (count($pending) > 0) {
-                                $this->output->addLine(array('pending'  => $pending));
+                                $this->output->addLine(['pending'  => $pending]);
                             }
                             if (count($missed) > 0) {
-                                $this->output->addLine(array('missed'   => $missed));
+                                $this->output->addLine(['missed'   => $missed]);
                             }
                             if (count($complete) > 0) {
-                                $this->output->addLine(array('complete' => $complete));
+                                $this->output->addLine(['complete' => $complete]);
                             }
                         }
                     } else {
@@ -579,7 +579,7 @@ class Migration extends Base implements CommandInterface
                     $this->output->error('Error: Migrations directory does not exist.');
                 }
 
-                $alternativeDatabase = \Hubzero\User\Group\Helper::getDBO(array(), $group->get('cn'));
+                $alternativeDatabase = \Hubzero\User\Group\Helper::getDBO([], $group->get('cn'));
 
                 if ($alternativeDatabase->getErrorNum() > 0) {
                     $this->output->error('Error: Could not connect to Group Database.');
@@ -739,7 +739,7 @@ class Migration extends Base implements CommandInterface
                     $this->output->error('Error: Migrations directory does not exist.');
                 }
 
-                $alternativeDatabase = \Hubzero\User\Group\Helper::getDBO(array(), $group->get('cn'));
+                $alternativeDatabase = \Hubzero\User\Group\Helper::getDBO([], $group->get('cn'));
 
                 if ($alternativeDatabase->getErrorNum() > 0) {
                     $this->output->error('Error: Could not connect to Group Database.');
@@ -898,7 +898,7 @@ class Migration extends Base implements CommandInterface
                     $this->output->error('Error: Migrations directory does not exist.');
                 }
 
-                $alternativeDatabase = \Hubzero\User\Group\Helper::getDBO(array(), $group->get('cn'));
+                $alternativeDatabase = \Hubzero\User\Group\Helper::getDBO([], $group->get('cn'));
 
                 if ($alternativeDatabase->getErrorNum() > 0) {
                     $this->output->error('Error: Could not connect to Group Database.');

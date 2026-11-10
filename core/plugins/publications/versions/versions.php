@@ -36,7 +36,7 @@ class Versions extends Plugin
      */
     public function &onPublicationAreas($publication, $version = 'default', $extended = true)
     {
-        $areas = array();
+        $areas = [];
 
         if ($publication->_category->_params->get('plg_versions')) {
             $areas['versions'] = Lang::txt('PLG_PUBLICATION_VERSIONS');
@@ -66,10 +66,10 @@ class Versions extends Plugin
         $extended = true,
         $authorized = false
     ) {
-        $arr = array(
+        $arr = [
             'html'     => '',
             'metadata' => ''
-        );
+        ];
 
         // Check if our area is in the array of areas we want to return results for
         if (is_array($areas)) {
@@ -87,7 +87,7 @@ class Versions extends Plugin
 
             $database = App::get('db');
             $objV = new \Components\Publications\Tables\Version($database);
-            $versions = $objV->getVersions($publication->id, $filters = array('public' => 1));
+            $versions = $objV->getVersions($publication->id, $filters = ['public' => 1]);
 
             // Are we allowing contributions
             $contributable = \Plugin::isEnabled('projects', 'publications') ? 1 : 0;

@@ -50,19 +50,19 @@ class File extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'comment_id' => 'positive|nonzero',
         'filename'   => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      **/
-    public $always = array(
+    public $always = [
         'filename'
-    );
+    ];
 
     /**
      * Set the upload path
@@ -181,10 +181,10 @@ class File extends Relational
             }
         }
 
-        $filename = $this->uniqueFilename(array(
+        $filename = $this->uniqueFilename([
             'filename'   => $name,
             'comment_id' => $this->get('comment_id')
-        ));
+        ]);
 
         $destination .= DS . $filename;
 
@@ -247,7 +247,7 @@ class File extends Relational
     public function dimensions()
     {
         if (!$this->dimensions) {
-            $this->dimensions = array(0, 0);
+            $this->dimensions = [0, 0];
 
             if ($this->isImage() && file_exists($this->path())) {
                 $this->dimensions = getimagesize($this->path());

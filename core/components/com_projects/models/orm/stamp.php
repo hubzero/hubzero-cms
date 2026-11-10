@@ -44,20 +44,20 @@ class Stamp extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'projectid' => 'positive|nonzero',
         'stamp' => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Generates automatic priority field value
@@ -149,14 +149,14 @@ class Stamp extends Relational
 
         $stamp = \Components\Projects\Helpers\Html::generateCode(20, 20, 0, 1, 1);
 
-        $obj->set(array(
+        $obj->set([
             'stamp'     => $stamp,
             'projectid' => $projectid,
             'listed'    => $listed,
             'type'      => $type,
             'reference' => $reference,
             'expires'   => $expires
-        ));
+        ]);
 
         if (!$obj->save()) {
             return false;

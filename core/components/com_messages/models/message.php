@@ -46,20 +46,20 @@ class Message extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'subject' => 'notempty',
         'message' => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'user_id_from',
         'date_time'
-    );
+    ];
 
     /**
      * Generates automatic created by field value
@@ -80,7 +80,7 @@ class Message extends Relational
      *
      * @return  string
      */
-    public function automaticDateTime($data = array())
+    public function automaticDateTime($data = [])
     {
         return (isset($data['date_time']) && $data['date_time'] ? $data['date_time'] : Date::toSql());
     }

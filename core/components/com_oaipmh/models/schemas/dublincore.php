@@ -64,14 +64,14 @@ class DublinCore implements Schema
      */
     public static function handles($type)
     {
-        return in_array($type, array(
+        return in_array($type, [
             'dc',
             'oai_dc',
             'oai_pmh:dc',
             'simple-dublin-core',
             'dublincore',
             __CLASS__
-        ));
+        ]);
     }
 
     /**
@@ -312,7 +312,7 @@ class DublinCore implements Schema
                         ->attr('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
                         ->attr('xsi:schemaLocation', self::$ns . ' ' . self::$schema);
 
-            $dcs = array(
+            $dcs = [
                 'title',
                 'creator',
                 'subject',
@@ -328,7 +328,7 @@ class DublinCore implements Schema
                 'coverage',
                 'language',
                 'source'
-            );
+            ];
 
             // Loop through DC elements
             foreach ($dcs as $dc) {

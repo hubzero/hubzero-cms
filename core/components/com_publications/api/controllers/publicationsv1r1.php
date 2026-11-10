@@ -69,16 +69,16 @@ class Publicationsv1r1 extends ApiController
         Lang::load('plg_projects_publications', PATH_CORE . DS . 'plugins' . DS . 'projects' . DS . 'publications');
 
         // Set filters
-        $filters = array(
+        $filters = [
             'limit'      => Request::getInt('limit', Config::get('list_limit')),
             'start'      => Request::getInt('start', 0),
             'sortby'     => Request::getWord('sort', 'title'),
             'sortdir'    => strtoupper(Request::getWord('sort_Dir', 'ASC')),
             'author'     => User::get('id')
-        );
+        ];
 
         $response = new stdClass();
-        $response->publications = array();
+        $response->publications = [];
 
         $database = App::get('db');
         $pa = new \Components\Publications\Tables\Author($database);
@@ -159,7 +159,7 @@ class Publicationsv1r1 extends ApiController
                 $tags = $entry->getTags();
 
                 if (count($tags) > 0) {
-                    $obj->tags = array();
+                    $obj->tags = [];
                     foreach ($tags as $tag) {
                         $obj->tags[] = $tag->raw_tag;
                     }

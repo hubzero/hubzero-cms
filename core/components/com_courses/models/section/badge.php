@@ -78,7 +78,7 @@ class Badge extends Base
     public static function loadBySectionId($id)
     {
         $model = new self();
-        $model->_tbl->load(array('section_id' => $id));
+        $model->_tbl->load(['section_id' => $id]);
         $model->loadCriteriaText();
 
         return $model;
@@ -94,7 +94,7 @@ class Badge extends Base
     {
         // (an instance method called statically by the passport API: an Error on PHP 8)
         $model = new self();
-        $model->_tbl->load(array('provider_badge_id' => $id));
+        $model->_tbl->load(['provider_badge_id' => $id]);
         $model->loadCriteriaText();
 
         return $model;

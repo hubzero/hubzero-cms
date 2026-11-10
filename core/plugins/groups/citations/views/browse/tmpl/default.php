@@ -63,7 +63,7 @@ if (isset($this->messages)) {
                         <ul class="entries-menu filter-options">
                             <?php
                                 $queryString = "";
-                                $exclude = array("filter");
+                                $exclude = ["filter"];
                             foreach ($this->filters as $k => $v) {
                                 if ($v != "" && !in_array($k, $exclude)) {
                                     if (is_array($v)) {
@@ -260,7 +260,7 @@ if (isset($this->messages)) {
                     <label for="actags">
                         <?php echo Lang::txt('PLG_GROUPS_CITATIONS_TAGS'); ?>:
                         <?php
-                            $tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'filters[tag]', 'actags', '', $this->filters['tag'])));  // type, field name, field id, class, value
+                            $tf = Event::trigger('hubzero.onGetMultiEntry', [['tags', 'filters[tag]', 'actags', '', $this->filters['tag']]]);  // type, field name, field id, class, value
                         if (count($tf) > 0) : ?>
                                 <?php echo $tf[0]; ?>
                         <?php else : ?>

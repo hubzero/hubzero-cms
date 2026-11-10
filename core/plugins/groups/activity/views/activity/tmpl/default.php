@@ -23,11 +23,11 @@ $no_html = Request::getInt('no_html', 0);
 $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn');
 
 // get all sessions
-$online = array();
-$sessions = Hubzero\Session\Helper::getAllSessions(array(
+$online = [];
+$sessions = Hubzero\Session\Helper::getAllSessions([
     'guest'    => 0,
     'distinct' => 1
-));
+]);
 if ($sessions) {
     // see if any session matches our userid
     foreach ($sessions as $session) {
@@ -100,7 +100,7 @@ if (!$no_html) {
                         5,
                         3,
                         'activity-description',
-                        array('class' => 'form-control minimal no-footer')
+                        ['class' => 'form-control minimal no-footer']
                     );
                     ?>
                     <label for="activity-description">

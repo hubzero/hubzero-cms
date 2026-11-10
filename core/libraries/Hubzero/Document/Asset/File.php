@@ -67,11 +67,11 @@ class File extends Obj
      *
      * @var  array
      */
-    protected $paths = array(
+    protected $paths = [
         'source'   => null,
         'override' => null,
         'target'   => null
-    );
+    ];
 
     /**
      * Constructor
@@ -253,7 +253,7 @@ class File extends Obj
             if ($this->directory == '/') {
                 $this->paths['source'] = PATH_ROOT . DS . $this->directory . $this->file();
             } else {
-                $paths  = array();
+                $paths  = [];
 
                 $basea  = PATH_APP . DS;
                 $basec  = PATH_CORE . DS;

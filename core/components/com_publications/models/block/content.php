@@ -69,22 +69,22 @@ class Content extends Base
         if ($viewname == 'curator') {
             // Output HTML
             $view = new \Hubzero\Component\View(
-                array(
+                [
                     'name'      => 'curation',
                     'layout'    => 'block'
-                )
+                ]
             );
         } else {
             $name = $viewname == 'freeze' ? 'freeze' : 'draft';
 
             // Output HTML
             $view = new \Hubzero\Plugin\View(
-                array(
+                [
                     'folder'    => 'projects',
                     'element'   => 'publications',
                     'name'      => $name,
                     'layout'    => 'wrapper'
-                )
+                ]
             );
         }
 
@@ -262,7 +262,7 @@ class Content extends Base
         // Check against manifested requirements
         if ($this->_manifest) {
             // Get attachment elements from manifest
-            $mAttach = array();
+            $mAttach = [];
             foreach ($this->_manifest->elements as $id => $element) {
                 if ($element->type == 'attachment') {
                     $mAttach[$id] = $element->params;
@@ -450,32 +450,32 @@ class Content extends Base
      */
     public function getElementManifest()
     {
-        $manifest = array (
+        $manifest =  [
             'name'      => 'dataselector',
             'type'      => 'attachment',
             'label'     => 'Add file(s)',
             'about'     => '<p>Select a file or a number of files from the project repository</p>',
             'aboutProv' => '<p>Attach a file or a number of files to be bundled together</p>',
             'adminTips' => '',
-            'params'    => array (
+            'params'    =>  [
                 'type'          => 'file',
                 'title'         => '',
                 'required'      => 0,
                 'min'           => 0,
                 'max'           => 500,
                 'role'          => 2,
-                'typeParams'    => array(
-                    'allowed_ext'       => array(),
-                    'required_ext'      => array(),
+                'typeParams'    => [
+                    'allowed_ext'       => [],
+                    'required_ext'      => [],
                     'handler'           => null,
                     'handlers'          => null,
                     'directory'         => '',
                     'reuse'             => 0,
                     'dirHierarchy'      => 1,
                     'multiZip'          => 1
-                )
-            )
-        );
+                ]
+            ]
+        ];
         return json_decode(json_encode($manifest), false);
     }
 
@@ -492,7 +492,7 @@ class Content extends Base
 
         // Fall back
         if (!$manifest) {
-            $manifest = array(
+            $manifest = [
                 'name'          => 'content',
                 'label'         => 'Content',
                 'title'         => 'Publication Content',
@@ -500,44 +500,44 @@ class Content extends Base
                 'draftTagline'  => 'Here is what\'s required:',
                 'about'         => '',
                 'adminTips'     => '',
-                'elements'      => array(
-                    1 => array (
+                'elements'      => [
+                    1 =>  [
                         'name'      => 'dataselector',
                         'type'      => 'attachment',
                         'label'     => 'Primary File(s)',
                         'about'     => '<p>Select a file or a number of files from the project repository</p>',
                         'aboutProv' => '<p>Attach a file or a number of files to be bundled together</p>',
                         'adminTips' => '',
-                        'params'    => array (
+                        'params'    =>  [
                             'type'          => 'file',
                             'title'         => '',
                             'required'      => 1,
                             'min'           => 1,
                             'max'           => 500,
                             'role'          => 1,
-                            'typeParams'    => array(
-                                'allowed_ext'       => array(),
-                                'required_ext'      => array(),
+                            'typeParams'    => [
+                                'allowed_ext'       => [],
+                                'required_ext'      => [],
                                 'handler'           => null,
-                                'handlers'          => array(),
+                                'handlers'          => [],
                                 'directory'         => '',
                                 'reuse'             => 0,
                                 'dirHierarchy'      => 1,
                                 'multiZip'          => 1
-                            )
-                        )
-                    )
-                ),
-                'params'    => array(
+                            ]
+                        ]
+                    ]
+                ],
+                'params'    => [
                     'required'          => 1,
                     'published_editing' => 0,
                     'collapse_elements' => 1,
                     'verify_types'      => 1
-                )
-            );
+                ]
+            ];
 
             if ($new == true) {
-                $manifest['elements'] = array(1 => $this->getElementManifest());
+                $manifest['elements'] = [1 => $this->getElementManifest()];
             }
 
             return json_decode(json_encode($manifest), false);

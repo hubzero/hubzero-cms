@@ -17,7 +17,7 @@ use Hubzero\Utility\Inflector;
 class InflectorTest extends Basic
 {
     // Words that should not be inflected.
-    protected static $uncountable_words = array(
+    protected static $uncountable_words = [
         'equipment',
         'information',
         'rice',
@@ -33,9 +33,9 @@ class InflectorTest extends Basic
         'salmon',
         'bison',
         'headquarters'
-    );
+    ];
 
-    protected static $strings = array(
+    protected static $strings = [
         // -en
         'ox' => 'oxen',
         // -ices
@@ -94,7 +94,7 @@ class InflectorTest extends Basic
         'dog' => 'dogs',
         'cup' => 'cups',
         'car' => 'cars'
-    );
+    ];
 
     /**
      * Tests is_countable

@@ -64,7 +64,7 @@ class Pucas extends Plugin
         }
 
         if ($this->casAuthenticated()) {
-            phpCAS::logout(array('service' => $service . $return, 'url' => $service . $return));
+            phpCAS::logout(['service' => $service . $return, 'url' => $service . $return]);
         }
     }
 
@@ -75,7 +75,7 @@ class Pucas extends Plugin
      */
     public function status()
     {
-        $status = array();
+        $status = [];
 
         $this->initialize();
 
@@ -240,27 +240,27 @@ class Pucas extends Plugin
             if ($this->params->get('profile_i2a2')) {
                 $val = phpCAS::getAttribute('i2a2characteristics');
                 $datum = \Hubzero\Auth\Link\Data::oneByLinkAndKey($hzal->id, 'i2a2');
-                $datum->set(array(
+                $datum->set([
                     'link_id'      => $hzal->id,
                     'domain_key'   => 'i2a2',
                     'domain_value' => (string)$val
-                ));
+                ]);
                 $datum->save();
             }
 
             // If we have a real user, drop the authenticator cookie
             if (isset($user) && is_object($user)) {
                 // Set cookie with login preference info
-                $prefs = array(
+                $prefs = [
                     'user_id'       => $user->get('id'),
                     'user_img'      => $user->picture(0, false),
                     'authenticator' => 'pucas'
-                );
+                ];
             } else {
                 // A partially baked cookie when a new user account is created.
-                $prefs = array(
+                $prefs = [
                     'authenticator' => 'pucas'
-                );
+                ];
             }
 
             $namespace = 'authenticator';
@@ -279,7 +279,7 @@ class Pucas extends Plugin
      * @param   array  $options
      * @return  void
      */
-    public function link($options = array())
+    public function link($options = [])
     {
         $this->initialize();
 

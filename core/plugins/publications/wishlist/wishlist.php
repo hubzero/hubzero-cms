@@ -40,7 +40,7 @@ class Wishlist extends Plugin
      */
     public function &onPublicationAreas($publication, $version = 'default', $extended = true)
     {
-        $areas = array();
+        $areas = [];
 
         if ($publication->_category->_params->get('plg_wishlist') && $extended) {
             $areas['wishlist'] = Lang::txt('Wishlist');
@@ -62,10 +62,10 @@ class Wishlist extends Plugin
      */
     public function onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)
     {
-        $arr = array(
+        $arr = [
             'html'     => '',
             'metadata' => ''
-        );
+        ];
 
         // Check if our area is in the array of areas we want to return results for
         if (is_array($areas)) {
@@ -175,7 +175,7 @@ class Wishlist extends Plugin
                         break;
                     case 'accepted':
                         $entries
-                            ->whereIn('status', array(0, 6))
+                            ->whereIn('status', [0, 6])
                             ->whereEquals('accepted', 1);
                         break;
                     case 'pending':
@@ -381,10 +381,10 @@ class Wishlist extends Plugin
             $metadata = $view->loadTemplate();
         }
 
-        $arr = array(
+        $arr = [
             'html'     => $html,
             'metadata' => $metadata
-        );
+        ];
 
         if ($publication->state == 1) {
             $arr['count'] = $items;

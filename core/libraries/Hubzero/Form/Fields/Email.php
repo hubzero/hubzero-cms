@@ -37,7 +37,7 @@ class Email extends Field
         $disabled = ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
 
         // " and \ are always forbidden in email unless escaped.
-        $this->value = str_replace(array('"','\\'), '', $this->value);
+        $this->value = str_replace(['"','\\'], '', $this->value);
 
         // Initialize JavaScript field attributes.
         $onchange = $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';

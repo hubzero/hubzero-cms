@@ -79,7 +79,7 @@ defined('_HZEXEC_') or die();
                 $item .= '</li>';
             } else {
                 //menu item meta data vars
-                $metadata = (isset($this->sectionsContent[$k]['metadata'])) ? $this->sectionsContent[$k]['metadata'] : array();
+                $metadata = (isset($this->sectionsContent[$k]['metadata'])) ? $this->sectionsContent[$k]['metadata'] : [];
                 $meta_count = (isset($metadata['count']) && $metadata['count'] != '') ? $metadata['count'] : '';
                 $meta_alert = (isset($metadata['alert']) && $metadata['alert'] != '') ? $metadata['alert'] : '';
 
@@ -107,7 +107,7 @@ defined('_HZEXEC_') or die();
                             $option['text'] = $option['title'];
                         }
 
-                        $attribs = array();
+                        $attribs = [];
                         foreach ($option as $key => $val) {
                             if ($key == 'text') {
                                 continue;

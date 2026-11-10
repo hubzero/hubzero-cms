@@ -110,11 +110,11 @@ class Status extends AdminController
 
         // Daily queue peak (30d) for the 30-day chart overlay + pill.
         $db->setQuery("SELECT `day`, `max` FROM `#__massmail_queue_daily` WHERE `day` >= (UTC_DATE() - INTERVAL 29 DAY)");
-        $qdmap = array();
+        $qdmap = [];
         foreach ($db->loadObjectList() as $r) {
             $qdmap[$r->day] = (int) $r->max;
         }
-        $q30 = array();
+        $q30 = [];
         for ($i = 29; $i >= 0; $i--) {
             $d = gmdate('Y-m-d', strtotime("-$i day"));
             $q30[] = isset($qdmap[$d]) ? $qdmap[$d] : 0;
@@ -124,26 +124,26 @@ class Status extends AdminController
         // --- Postfix outbound volume (all senders, from the log collector) ---
         // Buckets are keyed in UTC (see PostfixCollector); look them up the same way.
         $db->setQuery("SELECT `day`, sent FROM `#__massmail_postfix_daily` WHERE `day` >= (UTC_DATE() - INTERVAL 29 DAY) ORDER BY `day`");
-        $dmap = array();
+        $dmap = [];
         foreach ($db->loadObjectList() as $r) {
             $dmap[$r->day] = (int) $r->sent;
         }
-        $dailyVolume = array();
+        $dailyVolume = [];
         for ($i = 29; $i >= 0; $i--) {
             $d = gmdate('Y-m-d', strtotime("-$i day"));
-            $dailyVolume[] = array('label' => date('n/j', strtotime($d)), 'value' => isset($dmap[$d]) ? $dmap[$d] : 0);
+            $dailyVolume[] = ['label' => date('n/j', strtotime($d)), 'value' => isset($dmap[$d]) ? $dmap[$d] : 0];
         }
 
         $db->setQuery("SELECT `hour`, sent FROM `#__massmail_postfix_hourly` WHERE `hour` >= (UTC_TIMESTAMP() - INTERVAL 48 HOUR) ORDER BY `hour`");
-        $hmap = array();
+        $hmap = [];
         foreach ($db->loadObjectList() as $r) {
             $hmap[$r->hour] = (int) $r->sent;
         }
-        $hourlyVolume = array();
+        $hourlyVolume = [];
         for ($i = 47; $i >= 0; $i--) {
             $t = time() - ($i * 3600);
             $k = gmdate('Y-m-d H:00:00', $t);
-            $hourlyVolume[] = array('label' => date('H', $t), 'value' => isset($hmap[$k]) ? $hmap[$k] : 0);
+            $hourlyVolume[] = ['label' => date('H', $t), 'value' => isset($hmap[$k]) ? $hmap[$k] : 0];
         }
 
         // Last 60 minutes, by minute -- computed live from the log tail.
@@ -210,7 +210,7 @@ class Status extends AdminController
 			 AND sent_on >= (UTC_TIMESTAMP() - INTERVAL " . $interval . ")
 			 GROUP BY k"
         );
-        $map = array();
+        $map = [];
         foreach ($db->loadObjectList() as $r) {
             $map[$r->k] = (int) $r->c;
         }
@@ -229,14 +229,14 @@ class Status extends AdminController
      */
     protected function series($map, $count, $step, $keyFmt, $labelFmt)
     {
-        $out = array();
+        $out = [];
         for ($i = $count - 1; $i >= 0; $i--) {
             $t = time() - ($i * $step);
             $k = gmdate($keyFmt, $t);
-            $out[] = array(
+            $out[] = [
                 'label' => date($labelFmt, $t),
                 'value' => isset($map[$k]) ? $map[$k] : 0
-            );
+            ];
         }
         return $out;
     }
@@ -261,12 +261,12 @@ class Status extends AdminController
 			 WHERE recorded >= (UTC_TIMESTAMP() - INTERVAL " . (int) $secs . " SECOND)
 			 GROUP BY k"
         );
-        $map = array();
+        $map = [];
         foreach ($db->loadObjectList() as $r) {
             $map[$r->k] = (float) $r->d;
         }
 
-        $out  = array();
+        $out  = [];
         $last = 0;
         $have = false;
         for ($i = $count - 1; $i >= 0; $i--) {

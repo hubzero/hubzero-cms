@@ -30,7 +30,7 @@ class Migration20261029000001PlgCronMembersServiceAccounts extends Base
      *
      * @var  array
      */
-    const USERNAMES = array('apps', 'gridstat', 'hubzerosolrworker');
+    const USERNAMES = ['apps', 'gridstat', 'hubzerosolrworker'];
 
     /**
      * Up
@@ -76,7 +76,7 @@ class Migration20261029000001PlgCronMembersServiceAccounts extends Base
         $this->db->setQuery(
             "INSERT IGNORE INTO `#__user_usergroup_map` (`user_id`, `group_id`)"
             . " SELECT `id`, " . (int) $id . " FROM `#__users`"
-            . " WHERE `username` IN (" . implode(', ', array_map(array($this->db, 'quote'), self::USERNAMES)) . ")"
+            . " WHERE `username` IN (" . implode(', ', array_map([$this->db, 'quote'], self::USERNAMES)) . ")"
         );
         $this->db->query();
     }

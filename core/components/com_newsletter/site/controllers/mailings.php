@@ -67,14 +67,14 @@ class Mailings extends SiteController
             if (!$action->get('id')) {
                 //create object holding our vars to store action
                 $action = Action::blank()
-                    ->set(array(
+                    ->set([
                         'mailingid'   => $recipient->mid,
                         'action'      => 'open',
                         'email'       => $recipient->email,
                         'ip'          => Request::ip(),
                         'user_agent'  => $_SERVER['HTTP_USER_AGENT'],
                         'date'        => Date::toSql()
-                    ));
+                    ]);
 
                 //save action
                 $action->save();
@@ -107,11 +107,11 @@ class Mailings extends SiteController
         //if we found an object lets track it
         if (is_object($recipient) && $recipient->id) {
             //array of action vars, json encoded for saving to db
-            $actionVars = json_encode(array('url' => $link));
+            $actionVars = json_encode(['url' => $link]);
 
             //create object holding our vars to store action
             $action = Action::blank()
-                ->set(array(
+                ->set([
                     'mailingid'   => $recipient->mid,
                     'action'      => 'click',
                     'action_vars' => $actionVars,
@@ -119,7 +119,7 @@ class Mailings extends SiteController
                     'ip'          => Request::ip(),
                     'user_agent'  => $_SERVER['HTTP_USER_AGENT'] ?? '',
                     'date'        => Date::toSql()
-                ));
+                ]);
 
             //save action
             $action->save();
@@ -149,14 +149,14 @@ class Mailings extends SiteController
         if (is_object($recipient) && $recipient->id) {
             //create object holding our vars to store action
             $action = Action::blank()
-                ->set(array(
+                ->set([
                     'mailingid'   => $recipient->mid,
                     'action'      => 'print',
                     'email'       => $recipient->email,
                     'ip'          => Request::ip(),
                     'user_agent'  => $_SERVER['HTTP_USER_AGENT'],
                     'date'        => Date::toSql()
-                ));
+                ]);
 
             //save action
             $action->save();
@@ -180,14 +180,14 @@ class Mailings extends SiteController
         if (is_object($recipient) && $recipient->id) {
             // create object holding our vars to store action
             $action = Action::blank()
-                ->set(array(
+                ->set([
                     'mailingid'   => $recipient->mid,
                     'action'      => 'forward',
                     'email'       => $recipient->email,
                     'ip'          => Request::ip(),
                     'user_agent'  => $_SERVER['HTTP_USER_AGENT'],
                     'date'        => Date::toSql()
-                ));
+                ]);
 
             // save action
             $action->save();

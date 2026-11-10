@@ -528,7 +528,7 @@ class Migration20130829211856ComPublications extends Base
             }
         }
 
-        $params = array(
+        $params = [
             "enabled" => "1",
             "autoapprove" => "1",
             "autoapproved_users" => "",
@@ -571,7 +571,7 @@ class Migration20130829211856ComPublications extends Base
             "dbcheck" => "0",
             "repository" => "0",
             "aip_path" => "/srv/AIP"
-        );
+        ];
 
         $this->addComponentEntry('Publications', 'com_publications', 1, $params);
 

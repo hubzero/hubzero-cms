@@ -92,10 +92,10 @@ class Notes extends Plugin
                 ->set('offering', $offering)
                 ->set('no_html', Request::getInt('no_html', 0));
 
-            $this->view->filters = array(
+            $this->view->filters = [
                 'section_id' => $offering->section()->get('id'),
                 'search'     => Request::getString('search', '')
-            );
+            ];
 
             $result = null;
 
@@ -183,7 +183,7 @@ class Notes extends Plugin
     public function _download()
     {
         $format = strtolower(Request::getWord('frmt', 'txt'));
-        if (!in_array($format, array('txt', 'csv'))) {
+        if (!in_array($format, ['txt', 'csv'])) {
             $format = 'txt';
         }
         $this->view->setLayout('download_' . $format);

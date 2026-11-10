@@ -43,7 +43,7 @@ class File implements Resolver
      * @param   array  $config
      * @return  void
      */
-    public function __construct($config = array())
+    public function __construct($config = [])
     {
         if (array_key_exists('pictureName', $config)) {
             $this->pictureName = $config['pictureName'];

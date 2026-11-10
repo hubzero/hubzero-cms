@@ -41,20 +41,20 @@ class Profile extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'profile_key' => 'notempty',
         'user_id'     => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'ordering',
         'access'
-    );
+    ];
 
     /**
      * Get parent member
@@ -125,7 +125,7 @@ class Profile extends Relational
      */
     public static function collect($data)
     {
-        $arr = array();
+        $arr = [];
 
         foreach ($data as $profile) {
             if (!isset($arr[$profile->get('profile_key')])) {
@@ -133,7 +133,7 @@ class Profile extends Relational
             } else {
                 $values = $arr[$profile->get('profile_key')];
                 if (!is_array($values)) {
-                    $values = array($values);
+                    $values = [$values];
                 }
                 $values[] = $profile->get('profile_value');
 

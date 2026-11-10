@@ -76,13 +76,13 @@ class PositionsTest extends TestCase
     #[Test]
     public function testWhatIsNotATemplateDeclaresNothing()
     {
-        $this->assertSame(array(), Positions::declared('nosuchtemplate'));
-        $this->assertSame(array(), Positions::declared(''));
+        $this->assertSame([], Positions::declared('nosuchtemplate'));
+        $this->assertSame([], Positions::declared(''));
 
         // A position is a name, not a path: without the guard these would
         // read a file from outside the templates directory.
         $this->assertSame('', Positions::file('../components'));
-        $this->assertSame(array(), Positions::declared('../../etc'));
+        $this->assertSame([], Positions::declared('../../etc'));
     }
 
     /**

@@ -60,7 +60,7 @@ class Error extends Base
      * @param   array  $options  Associative array of attributes
      * @return  void
      */
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         parent::__construct($options);
 
@@ -94,7 +94,7 @@ class Error extends Base
      * @param   array    $params  Associative array of attributes
      * @return  string   The rendered data
      */
-    public function render($cache = false, $params = array())
+    public function render($cache = false, $params = [])
     {
         // If no error object is set return null
         if (!isset($this->error)) {
@@ -172,7 +172,7 @@ class Error extends Base
 
             $j = 1;
 
-            $html = array();
+            $html = [];
             $html[] = '<table class="backtrace">';
             $html[] = '	<caption>Call stack</caption>';
             $html[] = '	<thead>';

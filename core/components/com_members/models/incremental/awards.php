@@ -65,10 +65,10 @@ class Awards
         $this->uid = is_integer($profile) ? $profile : (int)$this->profile->get('uidNumber');
         self::getDbh();
         do {
-            $columns = array(
+            $columns = [
                 'opted_out', 'name', 'orgtype', 'organization', 'countryresident',
                 'countryorigin', 'gender', 'url', 'reason', 'race', 'phone', 'picture', 'disability'
-            );
+            ];
 
             foreach ($columns as $key => $val) {
                 // Make sure the column exists
@@ -121,7 +121,7 @@ class Awards
         $opts = new Options();
         $awardPer = $opts->getAwardPerField();
 
-        $fieldMap = array(
+        $fieldMap = [
             'name'            => 'Fullname',
             'orgtype'         => 'Employment',
             'organization'    => 'Organization',
@@ -133,9 +133,9 @@ class Awards
             'race'            => 'Race',
             'phone'           => 'Phone',
             'disability'      => 'Disability'
-        );
+        ];
         $alreadyComplete = 0;
-        $eligible = array();
+        $eligible = [];
         $newAmount = 0;
         $completeSql = 'UPDATE `#__profile_completion_awards` SET edited_profile = 1';
         $optedOut = null;
@@ -186,11 +186,11 @@ class Awards
             $BTL->deposit($alreadyComplete, 'Profile completion award', 'registration', 0);
         }
 
-        return array(
+        return [
             'prior'     => $prior,
             'new'       => $alreadyComplete,
             'eligible'  => $eligible,
             'opted_out' => $optedOut
-        );
+        ];
     }
 }

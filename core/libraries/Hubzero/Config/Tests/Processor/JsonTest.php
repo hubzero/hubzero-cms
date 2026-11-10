@@ -79,10 +79,10 @@ class JsonTest extends TestCase
         $data->seo->sitename_pagetitles = 0;
 
         $this->obj = $data;
-        $this->arr = array(
+        $this->arr = [
             'app' => (array) $data->app,
             'seo' => (array) $data->seo
-        );
+        ];
 
         $this->processor = new Json();
 

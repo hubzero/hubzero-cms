@@ -108,7 +108,7 @@ class Connections
      **/
     public function __call($name, $arguments)
     {
-        return call_user_func_array(array($this->plugin, $name), $arguments);
+        return call_user_func_array([$this->plugin, $name], $arguments);
     }
 
     /**
@@ -301,7 +301,7 @@ class Connections
         // Creating stays open to any project member, as upstream had it; the
         // dispatcher in files.php has already refused non-members, and the
         // project id below comes from the loaded model rather than the request.
-        $data = Request::getArray('connect', array(), 'post');
+        $data = Request::getArray('connect', [], 'post');
 
         $__cid = isset($data['id']) ? (int) $data['id'] : 0;
 
@@ -614,7 +614,7 @@ class Connections
             return $this->connectionUnavailable($e);
         }
 
-        $dirs = array();
+        $dirs = [];
         foreach ($contents as $file) {
             if ($file->isDir()) {
                 $dirs[] = $file;
@@ -722,12 +722,12 @@ class Connections
     {
         // Output HTML
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'files',
                 'name'    => 'connected',
                 'layout'  => 'preview'
-            )
+            ]
         );
 
         $file = Request::getString('asset');
@@ -864,15 +864,15 @@ class Connections
                     // Ajax requires output right here
                     if ($ajaxUpload) {
                         if ($updateType == 'failed') {
-                            return json_encode(array(
+                            return json_encode([
                                 'error' => 'error uploading file'
-                            ));
+                            ]);
                         } else {
-                            return json_encode(array(
+                            return json_encode([
                                 'success'   => 1,
                                 'file'      => $file,
                                 'isNew'     => $updateType == 'uploaded' ? true : false
-                                ));
+                                ]);
                         }
                     }
                 }
@@ -1145,15 +1145,15 @@ class Connections
                     // Ajax requires output right here
                     if ($ajaxUpload) {
                         if ($updateType == 'failed') {
-                            return json_encode(array(
+                            return json_encode([
                                 'error' => 'error uploading file'
-                            ));
+                            ]);
                         } else {
-                            return json_encode(array(
+                            return json_encode([
                                 'success'   => 1,
                                 'file'      => $file,
                                 'isNew'     => $updateType == 'uploaded' ? true : false
-                            ));
+                            ]);
                         }
                     }
                 }
@@ -1512,7 +1512,7 @@ class Connections
         $metadata = Event::trigger('metadata.onMetadataGet', [$entity]);
 
         $view->set('item', $entity);
-        $view->set('metadata', isset($metadata[0]) ? $metadata[0] : array());
+        $view->set('metadata', isset($metadata[0]) ? $metadata[0] : []);
         $view->set('option', $this->option);
         $view->set('model', $this->model);
         $view->set('ajax', 1);

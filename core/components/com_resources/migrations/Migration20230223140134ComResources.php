@@ -20,12 +20,12 @@ class Migration20230223140134ComResources extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__author_roles' => array(
+    public static $tables = [
+        '#__author_roles' => [
             'created',
             'modified'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

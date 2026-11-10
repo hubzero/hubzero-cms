@@ -38,8 +38,8 @@ $manifest  = $this->curation->_manifest;
 $curParams = $manifest->params;
 $blocks    = $manifest->blocks;
 
-$blockSelection = array('active' => array());
-$masterBlocks = array();
+$blockSelection = ['active' => []];
+$masterBlocks = [];
 foreach ($this->blocks as $b) {
     $masterBlocks[$b->block] = $b;
 }

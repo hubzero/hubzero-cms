@@ -40,7 +40,7 @@ class RestrictionsHelper
      */
     public static function getWhitelistedSkuUsers($filters, $sId)
     {
-        return self::getSkuUsers($filters, $sId, array('usersType' => 'skuWhitelist'));
+        return self::getSkuUsers($filters, $sId, ['usersType' => 'skuWhitelist']);
     }
 
     /**
@@ -93,7 +93,7 @@ class RestrictionsHelper
      * @param   array  $options  Options
      * @return  mixed
      */
-    private static function getSkuUsers($filters, $sId, $options = array())
+    private static function getSkuUsers($filters, $sId, $options = [])
     {
         if (!isset($filters['sort'])) {
             $filters['sort'] = 'uId';
@@ -114,7 +114,7 @@ class RestrictionsHelper
         // values from the restrictions and whitelist controllers never arrive --
         // but the allowlist is what makes that a bug about sorting rather than a
         // bug about SQL, and both default here anyway, so nothing changes today.
-        $sortable = array('id', 'uId', 'uName', 'name', 'username', 'email');
+        $sortable = ['id', 'uId', 'uName', 'name', 'username', 'email'];
 
         if (!in_array($filters['sort'], $sortable, true)) {
             $filters['sort'] = 'uId';

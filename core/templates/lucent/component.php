@@ -5,11 +5,11 @@ use Hubzero\Facades\Html;
 defined('_HZEXEC_') or die();
 
 $browser = new \Hubzero\Browser\Detector();
-$cls = array(
+$cls = [
     $this->direction,
     $browser->name(),
     $browser->name() . $browser->major()
-);
+];
 
 Html::behavior('framework', true);
 ?>

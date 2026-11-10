@@ -52,11 +52,11 @@ class Memberoption extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'optionname'  => 'notempty',
         'gidNumber'   => 'positive|nonzero',
         'userid'      => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Retrieves one row by a combination of group ID, user ID, and option name

@@ -36,7 +36,7 @@ foreach ($this->documentation['sections'][$this->active] as &$endpoint) {
     $available[] = $version;
 
     if (!isset($endpoints[$version])) {
-        $endpoints[$version] = array();
+        $endpoints[$version] = [];
     }
 }
 
@@ -78,10 +78,10 @@ $activeVersion = number_format((float) $activeVersion, 1);
 $base = 'index.php?option=' . $this->option
     . '&controller=' . $this->controller;
 
-$skipKeys = array(
+$skipKeys = [
     'name', 'method', 'description', 'replaces',
     'deprecated', 'uri', 'parameters', 'return', '_metadata'
-);
+];
 
 $typeStyle = 'color: var(--dev-text-muted); font-weight: normal; font-size: 0.9em;';
 
@@ -159,7 +159,7 @@ $docsVersionUrl = Route::url(
             <?php
             $activeEndpoints = isset($endpoints[$activeVersion])
                 ? $endpoints[$activeVersion]
-                : array();
+                : [];
             ?>
             <?php foreach ($activeEndpoints as $endpoint) : ?>
                 <?php

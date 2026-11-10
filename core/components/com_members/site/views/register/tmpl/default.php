@@ -29,7 +29,7 @@ if ($form_redirect = Request::getString('return', '', 'get')) {
     $form_redirect = urldecode($form_redirect);
 }
 $current = Request::path();
-if (!$form_redirect && !in_array($current, array('/register/update', '/members/update', '/members/register/update'))) {
+if (!$form_redirect && !in_array($current, ['/register/update', '/members/update', '/members/register/update'])) {
     $form_redirect = Request::current();
 }
 ?>
@@ -60,8 +60,8 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
                 // "Please correct the indicated fields" summary box (_missing).
                 // Those only appear once they've actually submitted an
                 // incomplete form (i.e. the 'update' POST var is present).
-                $this->xregistration->_invalid = array();
-                $this->xregistration->_missing = array();
+                $this->xregistration->_invalid = [];
+                $this->xregistration->_missing = [];
             }
             break;
 
@@ -105,16 +105,16 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
             // Check to see if third party auth plugins are enabled
             Plugin::import('authentication');
             $plugins        = Plugin::byType('authentication');
-            $authenticators = array();
+            $authenticators = [];
 
             foreach ($plugins as $p) {
                 if ($p->name != 'hubzero') {
                     $pparams = new \Hubzero\Config\Registry($p->params);
                     $display = $pparams->get('display_name', ucfirst($p->name));
-                    $authenticators[] = array(
+                    $authenticators[] = [
                         'name'    => $p->name,
                         'display' => $display
-                    );
+                    ];
                 }
             }
 
@@ -395,12 +395,12 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
         // Create a new form
         Hubzero\Form\Form::addFieldPath(Component::path('com_members') . DS . 'models' . DS . 'fields');
 
-        $form = new Hubzero\Form\Form('profile', array('control' => 'profile'));
+        $form = new Hubzero\Form\Form('profile', ['control' => 'profile']);
         $form->load($xml);
         $form->bind($data);
 
-        $scripts = array();
-        $toggle = array();
+        $scripts = [];
+        $toggle = [];
 
         if ($this->fields->count() > 0) : ?>
             <fieldset>
@@ -420,8 +420,8 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
                     if ($field->options->count()) {
                         $i = 0;
                         $hasEvents = false;
-                        $opts = array();
-                        $hide = array();
+                        $opts = [];
+                        $hide = [];
 
                         foreach ($field->options as $option) {
                             $opts[] = '#' . $formfield->id . $i;
@@ -460,7 +460,7 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
 
                             if ($field->get('type') == 'dropdown') {
                                 $scripts[] = '		if ($(this).val() == "' . ($option->value ? $option->value : $option->label) . '") {';
-                                $show = array();
+                                $show = [];
                                 foreach ($events as $s) {
                                     $show[] = '#input-' . $s;
                                 }
@@ -477,7 +477,7 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
                                 $toggle[] = '	}';
                             } else {
                                 $scripts[] = '		if ($(this).is(":checked") && $(this).val() == "' . ($option->value ? $option->value : $option->label) . '") {';
-                                $show = array();
+                                $show = [];
                                 foreach ($events as $s) {
                                     $show[] = '#input-' . $s;
                                 }

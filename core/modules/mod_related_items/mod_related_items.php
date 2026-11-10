@@ -69,7 +69,7 @@ class RelatedItems extends Module
         $showDate = $params->get('showDate', 0);
         $nullDate = $db->getNullDate();
         $now      = $date->toSql();
-        $related  = array();
+        $related  = [];
         $query    = $db->getQuery();
 
         if ($option == 'com_content' && $view == 'article' && $id) {
@@ -80,7 +80,7 @@ class RelatedItems extends Module
             if ($metakey = trim((string) $query->value('metakey'))) {
                 // Explode the meta keys on a comma
                 $keys  = explode(',', $metakey);
-                $likes = array();
+                $likes = [];
 
                 // Assemble any non-blank word(s)
                 foreach ($keys as $key) {
@@ -106,7 +106,7 @@ class RelatedItems extends Module
                     $case_when .= $query->charLength('a.alias');
                     $case_when .= ' THEN ';
                     $a_id = $query->castAsChar('a.id');
-                    $case_when .= $query->concatenate(array($a_id, 'a.alias'), ':');
+                    $case_when .= $query->concatenate([$a_id, 'a.alias'], ':');
                     $case_when .= ' ELSE ';
                     $case_when .= $a_id . ' END as slug';
                     $query->select($case_when);
@@ -115,7 +115,7 @@ class RelatedItems extends Module
                     $case_when .= $query->charLength('cc.alias');
                     $case_when .= ' THEN ';
                     $c_id = $query->castAsChar('cc.id');
-                    $case_when .= $query->concatenate(array($c_id, 'cc.alias'), ':');
+                    $case_when .= $query->concatenate([$c_id, 'cc.alias'], ':');
                     $case_when .= ' ELSE ';
                     $case_when .= $c_id . ' END as catslug';
                     $query->select($case_when);
@@ -126,7 +126,7 @@ class RelatedItems extends Module
                     $query->where('a.state', '=', 1);
                     $query->where('a.access', 'IN', '(' . $groups . ')');
                     $concat_string = $query->concatenate(
-                        array('","', ' REPLACE(a.metakey, ", ", ",")', ' ","')
+                        ['","', ' REPLACE(a.metakey, ", ", ",")', ' ","']
                     );
                     // TODO: Fix the where clauses below. Not sure how to break
                     // the params out to work with the new where clause

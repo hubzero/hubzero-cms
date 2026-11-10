@@ -46,7 +46,7 @@ class Latestgroups extends Module
         $popularGroups = Group\Helper::getPopularGroups();
 
         $counter = 0;
-        $groupsToDisplay = array();
+        $groupsToDisplay = [];
         foreach ($popularGroups as $g) {
             // Get the group
             $group = Group::getInstance($g->gidNumber);

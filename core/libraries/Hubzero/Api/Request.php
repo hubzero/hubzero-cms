@@ -49,18 +49,18 @@ class Request
 
     private $version = 'HTTP/1.0';
 
-    private $headers = array();
+    private $headers = [];
 
     private $body = '';
 
-    private $server = array();
-    private $get = array();
-    private $post = array();
-    private $files = array();
-    private $cookie = array();
-    private $session = array();
-    private $request = array();
-    private $env = array();
+    private $server = [];
+    private $get = [];
+    private $post = [];
+    private $files = [];
+    private $cookie = [];
+    private $session = [];
+    private $request = [];
+    private $env = [];
 
     /**
      * Short description for 'getHeaderField'
@@ -95,7 +95,7 @@ class Request
      * @return     void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         if (($options == '_SERVER') || (in_array('_SERVER', $options))) {
             $this->set('request', '_SERVER');
@@ -140,7 +140,7 @@ class Request
         }
     }
 
-    public function import($what = array('all'), $where = '_SYSTEM')
+    public function import($what = ['all'], $where = '_SYSTEM')
     {
         if ($where != '_SYSTEM') {
             return false;
@@ -149,8 +149,8 @@ class Request
         $what = (array) $what;
 
         if (in_array('all', $what)) {
-            $what = array_merge($what, array('method', 'request', 'version', 'headers', 'body', 'hostname', 'scheme',
-                'postdata'));
+            $what = array_merge($what, ['method', 'request', 'version', 'headers', 'body', 'hostname', 'scheme',
+                'postdata']);
         }
 
         foreach ($what as $item) {
@@ -206,7 +206,7 @@ class Request
         $what = (array) $what;
 
         if (in_array('all', $what)) {
-            $what = array_merge($what, array('uri', 'get', 'method', 'version', 'headers', 'postdata'));
+            $what = array_merge($what, ['uri', 'get', 'method', 'version', 'headers', 'postdata']);
         }
 
         // uri.... fill _SERVER: SCRIPT_*, QUERY_STRING
@@ -318,7 +318,7 @@ class Request
             }
         }
 
-        $GLOBALS['_REQUEST'] = array();
+        $GLOBALS['_REQUEST'] = [];
     }
 
     /**
@@ -356,7 +356,7 @@ class Request
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore,PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     protected function _parse_accept($input)
     {
-        static $_types = array(
+        static $_types = [
             'xml' => 'application/xml',
             'html' => 'text/html',
             'xhtml' => 'application/xhtml+xml',
@@ -366,7 +366,7 @@ class Request
             'plain' => 'text/plain',
             'php_serialized' => 'application/vnd.php.serialized',
             'php' => 'application/php',
-        );
+        ];
 
         if (isset($_types[$input])) {
             return $_types[$input];

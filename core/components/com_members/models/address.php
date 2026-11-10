@@ -41,9 +41,9 @@ class Address extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'uidNumber' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Get parent member

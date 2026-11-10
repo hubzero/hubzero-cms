@@ -32,7 +32,7 @@ class Toolbar extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_bar = array();
+    protected $_bar = [];
 
     /**
      * Loaded buttons
@@ -40,7 +40,7 @@ class Toolbar extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_buttons = array();
+    protected $_buttons = [];
 
     /**
      * Directories, where button types can be stored.
@@ -48,7 +48,7 @@ class Toolbar extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_buttonPath = array();
+    protected $_buttonPath = [];
 
     /**
      * Constructor
@@ -120,14 +120,14 @@ class Toolbar extends Obj
      */
     public function render()
     {
-        $html = array();
+        $html = [];
 
         // Start toolbar div.
         $html[] = '<div class="toolbar-list" id="' . $this->_name . '">';
         $html[] = '<ul>';
 
         foreach ($this->_bar as $key => $button) {
-            $this->_bar[$key][9] = array();
+            $this->_bar[$key][9] = [];
             if ($button[0] == 'Separator') {
                 continue;
             }
@@ -187,7 +187,7 @@ class Toolbar extends Obj
 
         $buttonClass = __NAMESPACE__ . '\\Toolbar\\Button\\' . $type;
         if (!class_exists($buttonClass)) {
-            $dirs = isset($this->_buttonPath) ? $this->_buttonPath : array();
+            $dirs = isset($this->_buttonPath) ? $this->_buttonPath : [];
             $file = preg_replace('/[^A-Z0-9_\.-]/i', '', str_replace('_', DIRECTORY_SEPARATOR, strtolower($type)))  .
                 '.php';
 

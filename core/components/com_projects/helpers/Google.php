@@ -135,7 +135,7 @@ class Google extends Obj
         }
 
         if ($parentId) {
-            $file->setParents(array($parentId));
+            $file->setParents([$parentId]);
         }
 
         try {
@@ -179,12 +179,12 @@ class Google extends Obj
         $file = new Google_Service_Drive_DriveFile();
         $file->setMimeType($mimeType);
         $file->setName($title);
-        $file->setParents(array($parentId));
+        $file->setParents([$parentId]);
 
         // Determine file size
         $size = filesize($localPath);
 
-        $fparams = array();
+        $fparams = [];
         $fparams['mimeType'] = $mimeType;
         $fparams['uploadType'] = 'media';
 
@@ -300,13 +300,13 @@ class Google extends Obj
         $file->setName($title);
 
         if ($parentId) {
-            $file->setParents(array($parentId));
+            $file->setParents([$parentId]);
         }
 
         // Determine file size
         $size = filesize($localPath);
 
-        $fparams = array();
+        $fparams = [];
         $fparams['mimeType'] = $mimeType;
 
         // Are we converting to Google format?
@@ -390,7 +390,7 @@ class Google extends Obj
 
         try {
             $file = $apiService->files->get($id);
-            $success = $apiService->files->update($id, $file, array('trash' => false));
+            $success = $apiService->files->update($id, $file, ['trash' => false]);
             return true;
         } catch (Exception $e) {
             return false;
@@ -475,7 +475,7 @@ class Google extends Obj
                 $success = $apiService->files->delete($id);
             } else {
                 $file = $apiService->files->get($id);
-                $success = $apiService->files->update($id, $file, array('trashed' => true));
+                $success = $apiService->files->update($id, $file, ['trashed' => true]);
             }
             return true;
         } catch (Exception $e) {
@@ -504,13 +504,13 @@ class Google extends Obj
         $file->setName($title);
 
         if ($parentId != null) {
-            $file->setParents(array($parentId));
+            $file->setParents([$parentId]);
         }
 
         try {
-            $createdFolder = $apiService->files->create($file, array(
+            $createdFolder = $apiService->files->create($file, [
                 'mimeType' => 'application/vnd.google-apps.folder'
-            ));
+            ]);
 
             $metadata = $createdFolder;
 
@@ -539,7 +539,7 @@ class Google extends Obj
         &$deletes,
         $path = '',
         $startChangeId = null,
-        $connections = array()
+        $connections = []
     ) {
         // Check for what we need
         if (!$apiService || !$folderID) {
@@ -547,10 +547,10 @@ class Google extends Obj
         }
 
         // Collect remote items with duplicate names
-        $duplicates = array();
+        $duplicates = [];
 
         // Params for API call
-        $parameters = array();
+        $parameters = [];
 
         if ($startChangeId) {
             $parameters['startChangeId'] = $startChangeId;
@@ -681,7 +681,7 @@ class Google extends Obj
                         }
                     }
 
-                    $remotes[$fpath] = array(
+                    $remotes[$fpath] = [
                         'status'     => $status,
                         'time'       => $time,
                         'modified'   => gmdate('Y-m-d H:i:s', $time),
@@ -700,7 +700,7 @@ class Google extends Obj
                         'thumb'      => $thumb,
                         'rename'     => $rename,
                         'fileSize'   => $fileSize
-                    );
+                    ];
 
                     if (preg_match("/.folder/", $doc['mimeType'])) {
                         // Recurse
@@ -726,7 +726,7 @@ class Google extends Obj
      * @param   string  $ext       Export ext
      * @return  string
      */
-    public static function getDownloadUrl($resource = array(), $ext = 'pdf')
+    public static function getDownloadUrl($resource = [], $ext = 'pdf')
     {
         $url = '';
         if (empty($resource)) {
@@ -771,7 +771,7 @@ class Google extends Obj
             if (isset($duplicates[$fpath])) {
                 $duplicates[$fpath][] = $id;
             } else {
-                $duplicates[$fpath] = array();
+                $duplicates[$fpath] = [];
                 $duplicates[$fpath][] = $id;
             }
 
@@ -812,10 +812,10 @@ class Google extends Obj
         $q = "'" . $folderID . "' in parents";
         $q .= " and mimeType = 'application/vnd.google-apps.folder' ";
 
-        $parameters = array(
+        $parameters = [
             'q' => $q//,
             //'fields' => 'items(id,title,labels/trashed,parents/id)'
-        );
+        ];
 
         // Get a list of files in remote folder
         try {
@@ -834,11 +834,11 @@ class Google extends Obj
                     $fpath  = $lpath ? $lpath . DS . $title : $title;
                     $status = $item->getTrashed() ? 'D' : 'A';
 
-                    $remoteFolders[$fpath] = array(
+                    $remoteFolders[$fpath] = [
                         'remoteid' => $item->getId(),
                         'status'   => $status,
                         'rParent'  => self::getParentID($item->getParents())
-                    );
+                    ];
 
                     // Recurse
                     self::getFolders($apiService, $item->getId(), $remoteFolders, $fpath);
@@ -886,7 +886,7 @@ class Google extends Obj
      * @param   array  $parents
      * @return  mixed  string or false
      */
-    public static function getParentID($parents = array())
+    public static function getParentID($parents = [])
     {
         if (!empty($parents)) {
             if (is_object($parents[0])) {
@@ -923,10 +923,10 @@ class Google extends Obj
         // Search param
         $q = "'" . $folderID . "' in parents";
 
-        $parameters = array(
+        $parameters = [
             'q' => $q//,
             //'fields' => 'items(id,title,mimeType,downloadUrl,md5Checksum,labels,fileSize,thumbnailLink,modifiedDate,parents/id,originalFilename,lastModifyingUserName,ownerNames)'
-        );
+        ];
 
         // Get a list of files in remote folder
         try {
@@ -1019,7 +1019,7 @@ class Google extends Obj
                     }
 
                     if (!$skip) {
-                        $remotes[$fpath] = array(
+                        $remotes[$fpath] = [
                             'status'     => $status,
                             'time'       => $time,
                             'modified'   => gmdate('Y-m-d H:i:s', $time),
@@ -1038,7 +1038,7 @@ class Google extends Obj
                             'thumb'      => $thumb,
                             'rename'     => $rename,
                             'fileSize'   => $fileSize
-                        );
+                        ];
                     }
 
                     if (preg_match("/.folder/", $item->getMimeType())) {
@@ -1222,15 +1222,15 @@ class Google extends Obj
         $getPaired = 0,
         $original_ext = ''
     ) {
-        $formats = array();
+        $formats = [];
         $ext = '';
 
         switch ($mimeType) {
             case 'application/vnd.google-apps.presentation':
-                $formats = array('MS PowerPoint', 'PDF');
+                $formats = ['MS PowerPoint', 'PDF'];
 
                 if ($getPaired) {
-                    $exts = array('pptx', 'pdf');
+                    $exts = ['pptx', 'pdf'];
                     return array_combine($exts, $formats);
                 }
 
@@ -1239,10 +1239,10 @@ class Google extends Obj
 
             case 'application/vnd.google-apps.spreadsheet':
             case 'application/vnd.google-apps.form':
-                $formats = array('MS Excel', 'Open Office sheet' , 'PDF');
+                $formats = ['MS Excel', 'Open Office sheet' , 'PDF'];
 
                 if ($getPaired) {
-                    $exts = array('xlsx', 'ods', 'pdf');
+                    $exts = ['xlsx', 'ods', 'pdf'];
                     return array_combine($exts, $formats);
                 }
 
@@ -1250,10 +1250,10 @@ class Google extends Obj
                 break;
 
             case 'application/vnd.google-apps.drawing':
-                $formats = array('JPEG', 'PNG', 'SVG', 'PDF');
+                $formats = ['JPEG', 'PNG', 'SVG', 'PDF'];
 
                 if ($getPaired) {
-                    $exts = array('jpeg', 'png', 'svg', 'pdf');
+                    $exts = ['jpeg', 'png', 'svg', 'pdf'];
                     return array_combine($exts, $formats);
                 }
 
@@ -1262,7 +1262,7 @@ class Google extends Obj
 
             case 'application/vnd.google-apps.document':
             default:
-                $formats = array(
+                $formats = [
                     'MS Word document',
                     'PDF',
                     'HTML',
@@ -1270,15 +1270,15 @@ class Google extends Obj
                     'Rich text',
                     'Open Office doc',
                     'LaTeX'
-                );
+                ];
 
                 // LaTeX files get special treatment, hey!
                 if ($original_ext == 'tex' && $getPaired) {
-                    return array('tex' => 'LaTeX', 'pdf' => 'PDF');
+                    return ['tex' => 'LaTeX', 'pdf' => 'PDF'];
                 }
 
                 if ($getPaired) {
-                    $exts = array('docx', 'pdf', 'html', 'txt', 'rtf', 'otd', 'tex');
+                    $exts = ['docx', 'pdf', 'html', 'txt', 'rtf', 'otd', 'tex'];
                     return array_combine($exts, $formats);
                 }
                 $ext = 'gdoc';
@@ -1358,7 +1358,7 @@ class Google extends Obj
      */
     public static function getGoogleConversionExts()
     {
-        $formats = array(
+        $formats = [
             'doc',
             'docx',
             'html',
@@ -1379,7 +1379,7 @@ class Google extends Obj
             'png',
             'pdf',
             'tex'
-        );
+        ];
 
         return $formats;
     }
@@ -1391,7 +1391,7 @@ class Google extends Obj
      */
     public static function getGoogleNativeExts()
     {
-        $formats = array(
+        $formats = [
             'gdoc',
             'gsheet',
             'gslides',
@@ -1401,7 +1401,7 @@ class Google extends Obj
             'gvi',
             'glink',
             'gvp'
-        );
+        ];
 
         return $formats;
     }

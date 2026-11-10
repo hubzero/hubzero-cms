@@ -39,7 +39,7 @@ class Migration20140423131112ComGroups extends Base
             ->loadObjectList();
 
         // var to hold original groups
-        $original = array();
+        $original = [];
 
         // loop through each group
         foreach ($duplicateGroups as $duplicateGroup) {

@@ -43,9 +43,9 @@ class Job extends Relational
      *
      * @var  array
      **/
-    protected $rules = array(
+    protected $rules = [
         'sessnum' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Defines a one to many relationship between location and zone

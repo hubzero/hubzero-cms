@@ -61,7 +61,7 @@ class Book extends Obj
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         $key = $scope . $scope_id;
@@ -163,7 +163,7 @@ class Book extends Obj
             $path .= DS . $this->get('scope');
         }
 
-        $pages = array();
+        $pages = [];
 
         if (is_dir($path)) {
             $dirIterator = new \DirectoryIterator($path);
@@ -293,7 +293,7 @@ class Book extends Obj
      * @param   array  $filters  Filters to apply
      * @return  mixed
      */
-    public function pages($filters = array())
+    public function pages($filters = [])
     {
         $pages = Page::all();
 
@@ -322,14 +322,14 @@ class Book extends Obj
 
         if (isset($filters['access'])) {
             if (!is_array($filters['access'])) {
-                $filters['access'] = array($filters['access']);
+                $filters['access'] = [$filters['access']];
             }
             $pages->whereIn('access', $filters['access']);
         }
 
         if (isset($filters['state'])) {
             if (!is_array($filters['state'])) {
-                $filters['state'] = array($filters['state']);
+                $filters['state'] = [$filters['state']];
             }
             $pages->whereIn('state', $filters['state']);
         }
@@ -343,7 +343,7 @@ class Book extends Obj
      * @param   array  $filters  Filters to apply
      * @return  array
      */
-    public function templates($filters = array())
+    public function templates($filters = [])
     {
         $filters['namespace'] = 'Template';
 
@@ -362,7 +362,7 @@ class Book extends Obj
         if (!isset($pages)) {
             $path = dirname(__DIR__) . DS . 'site' . DS . 'views' . DS . 'special' . DS . 'tmpl';
 
-            $pages = array();
+            $pages = [];
 
             if (is_dir($path)) {
                 // Loop through all files and find views

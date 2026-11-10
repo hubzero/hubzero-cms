@@ -52,7 +52,7 @@ class ModulePosition extends Text
         Html::behavior('modal', 'a.modal');
 
         // Build the script.
-        $script = array();
+        $script = [];
         $script[] = '	function jSelectPosition_' . $this->id . '(name) {';
         $script[] = '		$("#' . $this->id . '").val(name);';
         $script[] = '		$.fancybox.close();';
@@ -62,7 +62,7 @@ class ModulePosition extends Text
         Document::addScriptDeclaration(implode("\n", $script));
 
         // Setup variables for display.
-        $html = array();
+        $html = [];
         $link = 'index.php?option=com_modules&amp;task=positions&amp;tmpl=component'
             . '&amp;function=jSelectPosition_' . $this->id . '&amp;client_id=' . $clientId;
 

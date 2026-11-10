@@ -74,12 +74,12 @@ class Novnc extends Plugin
             //$us->set('tool_viewer', $this->_name);
         }
 
-        $view = new \Hubzero\Plugin\View(array(
+        $view = new \Hubzero\Plugin\View([
             'folder'  => $this->_type,
             'element' => $this->_name,
             'name'    => 'session',
             'layout'  => 'default'
-        ));
+        ]);
 
         return $view->set('option', Request::getCmd('option', 'com_tools'))
                     ->set('controller', Request::getWord('controller', 'sessions'))
@@ -131,7 +131,7 @@ class Novnc extends Plugin
         $browser = new \Hubzero\Browser\Detector();
 
         if ($allowed = trim($this->params->get('browsers', ''))) {
-            $browsers = array();
+            $browsers = [];
 
             $allowed = str_replace("\r", '', $allowed);
             $allowed = str_replace('\n', "\n", $allowed);

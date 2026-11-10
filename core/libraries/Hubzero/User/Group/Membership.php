@@ -199,7 +199,7 @@ class Membership
     public static function termsFor($gidNumber)
     {
         if (!self::supported()) {
-            return array();
+            return [];
         }
 
         $db = self::db();
@@ -210,8 +210,8 @@ class Membership
 			    AND `expires` IS NOT NULL"
         );
 
-        $rows = $db->loadObjectList() ?: array();
-        $out  = array();
+        $rows = $db->loadObjectList() ?: [];
+        $out  = [];
 
         foreach ($rows as $row) {
             $out[(int) $row->uidNumber] = $row->expires;
@@ -315,7 +315,7 @@ class Membership
             $gid,
             $uid,
             is_null($expires) ? 'group_member_term_cleared' : 'group_member_term_set',
-            array('uidNumber' => $uid, 'expires' => $expires),
+            ['uidNumber' => $uid, 'expires' => $expires],
             $actor
         );
 
@@ -360,7 +360,7 @@ class Membership
             $days = $max;
         }
 
-        $ids = array();
+        $ids = [];
 
         foreach ((array) $uidNumbers as $uid) {
             $uid = (int) $uid;
@@ -424,7 +424,7 @@ class Membership
     public static function expired($limit = 500)
     {
         if (!self::supported()) {
-            return array();
+            return [];
         }
 
         $db    = self::db();
@@ -442,7 +442,7 @@ class Membership
 			  LIMIT " . (int) $limit
         );
 
-        return $db->loadObjectList() ?: array();
+        return $db->loadObjectList() ?: [];
     }
 
     /**
@@ -592,35 +592,35 @@ class Membership
         self::archive($gid, $uid, $expires, $reason, $wasManager, $actor);
 
         // 5/6. audit
-        self::log($gid, $uid, 'group_member_' . $reason, array('uidNumber' => $uid, 'expires' => $expires), $actor);
+        self::log($gid, $uid, 'group_member_' . $reason, ['uidNumber' => $uid, 'expires' => $expires], $actor);
 
-        $recipients = array(
-            array('group', $gid),
-            array('user', $uid)
-        );
+        $recipients = [
+            ['group', $gid],
+            ['user', $uid]
+        ];
 
         try {
-            Event::trigger('system.logActivity', array(
-                'activity' => array(
+            Event::trigger('system.logActivity', [
+                'activity' => [
                     'action'      => 'removed',
                     'scope'       => 'group.membership',
                     'scope_id'    => $gid,
                     'description' => 'membership ' . $reason,
-                    'details'     => array(
+                    'details'     => [
                         'gidNumber' => $gid,
                         'uidNumber' => $uid,
                         'reason'    => $reason
-                    )
-                ),
+                    ]
+                ],
                 'recipients' => $recipients
-            ));
+            ]);
         } catch (\Exception $e) {
             // activity logging must never take the revocation down with it
         }
 
         // 7. symmetric to groups.onGroupUserEnrollment, so listeners that set
         // something up on join get a chance to tear it down
-        Event::trigger('groups.onGroupUserRevocation', array($gid, $uid, $reason));
+        Event::trigger('groups.onGroupUserRevocation', [$gid, $uid, $reason]);
 
         return true;
     }
@@ -718,7 +718,7 @@ class Membership
             return 0;
         }
 
-        $ids = array();
+        $ids = [];
 
         foreach ((array) $uidNumbers as $uid) {
             $uid = (int) $uid;
@@ -803,7 +803,7 @@ class Membership
      * @param   integer  $actor
      * @return  boolean
      */
-    protected static function log($gidNumber, $uidNumber, $action, $comments = array(), $actor = null)
+    protected static function log($gidNumber, $uidNumber, $action, $comments = [], $actor = null)
     {
         $db = self::db();
 
@@ -847,7 +847,7 @@ class Membership
      */
     public static function parseWarningDays($raw)
     {
-        $days = array();
+        $days = [];
 
         foreach (explode(',', (string) $raw) as $piece) {
             $piece = trim($piece);
@@ -886,7 +886,7 @@ class Membership
     public static function dueForWarning($days, $limit = 1000)
     {
         if (!self::supported()) {
-            return array();
+            return [];
         }
 
         $db   = self::db();
@@ -904,7 +904,7 @@ class Membership
 			  LIMIT " . (int) $limit
         );
 
-        return $db->loadObjectList() ?: array();
+        return $db->loadObjectList() ?: [];
     }
 
     /**
@@ -941,7 +941,7 @@ class Membership
      * @param   array  $result  as returned by reap()
      * @return  boolean
      */
-    public static function heartbeat($result = array())
+    public static function heartbeat($result = [])
     {
         $db = self::db();
 
@@ -949,11 +949,11 @@ class Membership
             return false;
         }
 
-        $comments = json_encode(array(
+        $comments = json_encode([
             'revoked' => isset($result['revoked']) ? (int) $result['revoked'] : 0,
             'skipped' => isset($result['skipped']) ? (int) $result['skipped'] : 0,
             'groups'  => isset($result['groups']) ? (int) $result['groups'] : 0
-        ));
+        ]);
 
         $db->setQuery(
             "INSERT INTO `#__xgroups_log` (`gidNumber`,`timestamp`,`userid`,`action`,`comments`,`actorid`)
@@ -1022,7 +1022,7 @@ class Membership
      */
     public static function reap($limit = null)
     {
-        $result = array('revoked' => 0, 'skipped' => 0, 'groups' => 0);
+        $result = ['revoked' => 0, 'skipped' => 0, 'groups' => 0];
 
         if (!self::supported()) {
             return $result;
@@ -1040,7 +1040,7 @@ class Membership
         }
 
         // group the work so the store event fires once per group
-        $byGroup = array();
+        $byGroup = [];
 
         foreach ($rows as $row) {
             $byGroup[(int) $row->gidNumber][] = $row;
@@ -1056,11 +1056,11 @@ class Membership
                 // health, so the last one keeps their seat and the situation
                 // is logged for an administrator to resolve
                 if (self::isLastManager($gid, $uid)) {
-                    self::log($gid, $uid, 'group_member_expiry_blocked', array(
+                    self::log($gid, $uid, 'group_member_expiry_blocked', [
                         'uidNumber' => $uid,
                         'expires'   => $row->expires,
                         'reason'    => 'last manager'
-                    ));
+                    ]);
 
                     $result['skipped']++;
                     continue;
@@ -1080,7 +1080,7 @@ class Membership
                 $group = new Group();
 
                 if ($group->read($gid)) {
-                    Event::trigger('user.onAfterStoreGroup', array($group));
+                    Event::trigger('user.onAfterStoreGroup', [$group]);
                 }
             }
         }

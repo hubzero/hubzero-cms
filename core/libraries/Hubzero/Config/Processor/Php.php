@@ -24,7 +24,7 @@ class Php extends Base
      */
     public function getSupportedExtensions()
     {
-        return array('php');
+        return ['php'];
     }
 
     /**
@@ -46,10 +46,10 @@ class Php extends Base
             $temp = require $path;
         } catch (\Throwable $exception) {
             throw new ParseException(
-                array(
+                [
                     'message'   => 'PHP file threw an exception',
                     'exception' => $exception,
-                )
+                ]
             );
         }
 
@@ -73,7 +73,7 @@ class Php extends Base
      * @param   array   $options  Parameters used by the formatter
      * @return  string  Config class formatted string
      */
-    public function objectToString($object, $options = array())
+    public function objectToString($object, $options = [])
     {
         if (is_string($object)) {
             return $object;
@@ -150,7 +150,7 @@ class Php extends Base
      * @param   array   $options  Options used by the formatter.
      * @return  object  Data object.
      */
-    public function stringToObject($data, $options = array())
+    public function stringToObject($data, $options = [])
     {
         return true;
     }

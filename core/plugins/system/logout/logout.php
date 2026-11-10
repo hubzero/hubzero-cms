@@ -41,7 +41,7 @@ class Logout extends Plugin
             setcookie($hash, false, time() - 86400, $cookie_path, $cookie_domain);
 
             // Set the error handler for E_ALL to be the class handleError method.
-            set_exception_handler(array(static::class, 'handleError'));
+            set_exception_handler([static::class, 'handleError']);
         }
     }
 
@@ -52,7 +52,7 @@ class Logout extends Plugin
      * @param   array  $options  Array holding options (client, ...).
      * @return  bool
      */
-    public function onUserLogout($user, $options = array())
+    public function onUserLogout($user, $options = [])
     {
         if (App::isSite()) {
             // Create the cookie

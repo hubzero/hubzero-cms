@@ -27,7 +27,7 @@ class Tabs
      * @param   array   $params  An array of option.
      * @return  string
      */
-    public static function start($group = 'tabs', $params = array())
+    public static function start($group = 'tabs', $params = [])
     {
         self::behavior($group, $params);
         self::$open = false;
@@ -75,12 +75,12 @@ class Tabs
      * @param   array   $params  Array of options.
      * @return  void
      */
-    protected static function behavior($group, $params = array())
+    protected static function behavior($group, $params = [])
     {
-        static $loaded = array();
+        static $loaded = [];
 
         if (!array_key_exists((string) $group, $loaded)) {
-            $options = array();
+            $options = [];
 
             $opt['onActive']            = (isset($params['onActive'])) ? $params['onActive'] : null;
             $opt['onBackground']        = (isset($params['onBackground'])) ? $params['onBackground'] : null;

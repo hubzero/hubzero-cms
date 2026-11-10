@@ -57,7 +57,7 @@ class UsersLatest extends Module
         if (!User::authorise('core.admin') && $params->get('filter_groups', 0) == 1) {
             $groups = User::getAuthorisedGroups();
             if (empty($groups)) {
-                return array();
+                return [];
             }
             $query
                 ->join('#__user_usergroup_map AS m', 'm.user_id', 'a.id', 'left')

@@ -205,10 +205,10 @@ Html::behavior('tooltip');
         $k = 0;
         $n = $this->rows->total();
         foreach ($this->rows as $row) {
-            $students = $row->members(array('count' => true, 'student' => 1));
+            $students = $row->members(['count' => true, 'student' => 1]);
 
-            $allcodes = $row->codes(array('count' => true));
-            $redeemed = $row->codes(array('count' => true, 'redeemed' => 1));
+            $allcodes = $row->codes(['count' => true]);
+            $redeemed = $row->codes(['count' => true, 'redeemed' => 1]);
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>

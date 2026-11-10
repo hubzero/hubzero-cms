@@ -120,7 +120,7 @@ class Group extends Table
      * @param   array   $membergroups
      * @return  boolean
      */
-    public function saveMemberGroups($toolid, $newgroups, $editversion = 'dev', $membergroups = array())
+    public function saveMemberGroups($toolid, $newgroups, $editversion = 'dev', $membergroups = [])
     {
         if (!$toolid) {
             return false;
@@ -165,7 +165,7 @@ class Group extends Table
         $toolhelper = new \Components\Tools\Helpers\Utils();
 
         $groups    = is_array($new) ? $new : $toolhelper->makeArray($new);
-        $grouplist = array();
+        $grouplist = [];
         $invalid   = '';
         $i = 0;
 
@@ -205,7 +205,7 @@ class Group extends Table
         $toolhelper = new \Components\Tools\Helpers\Utils();
 
         $members  = is_array($new) ? $new : $toolhelper->makeArray($new);
-        $teamlist = array();
+        $teamlist = [];
         $invalid  = '';
         $i = 0;
 

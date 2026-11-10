@@ -40,13 +40,13 @@ class Activity extends Plugin
      */
     public function &onGroupAreas()
     {
-        $area = array(
+        $area = [
             'name' => $this->_name,
             'title' => Lang::txt('PLG_GROUPS_ACTIVITY'),
             'default_access' => $this->params->get('plugin_access', 'members'),
             'display_menu_tab' => $this->params->get('display_tab', 1),
             'icon' => 'f056'
-        );
+        ];
         return $area;
     }
 
@@ -69,10 +69,10 @@ class Activity extends Plugin
         $active = $this->_name;
 
         // The output array we're returning
-        $arr = array(
+        $arr = [
             'html'     => '',
-            'metadata' => array()
-        );
+            'metadata' => []
+        ];
 
         //get this area details
         $this_area = $this->onGroupAreas();
@@ -177,7 +177,7 @@ class Activity extends Plugin
      */
     protected function feedAction()
     {
-        $filters = array();
+        $filters = [];
         $filters['filter'] = Request::getWord('filter');
         $filters['search'] = Request::getString('q');
         $filters['limit']  = Request::getInt('limit', Config::get('list_limit'));
@@ -192,7 +192,7 @@ class Activity extends Plugin
         $r = $recipient->getTableName();
         $l = \Hubzero\Activity\Log::blank()->getTableName();
 
-        $scopes = array('group');
+        $scopes = ['group'];
         if (in_array(User::get('id'), $this->group->get('managers'))) {
             $scopes[] = 'group_managers';
         }
@@ -317,7 +317,7 @@ class Activity extends Plugin
         $scopes = \Hubzero\Activity\Recipient::all()
             ->select('scope')
             ->whereEquals('log_id', (int) $logId)
-            ->whereIn('scope', array('group', 'group_managers'))
+            ->whereIn('scope', ['group', 'group_managers'])
             ->whereEquals('scope_id', (int) $this->group->get('gidNumber'))
             ->rows()
             ->fieldsByKey('scope');
@@ -339,7 +339,7 @@ class Activity extends Plugin
     {
         $entry = \Hubzero\Activity\Recipient::oneOrFail($id);
 
-        if (!in_array($entry->get('scope'), array('group', 'group_managers')) || $entry->get('scope_id') != $this->group->get('gidNumber')) {
+        if (!in_array($entry->get('scope'), ['group', 'group_managers']) || $entry->get('scope_id') != $this->group->get('gidNumber')) {
             App::abort(403, Lang::txt('You are not authorized to perform this action.'));
         }
 
@@ -495,7 +495,7 @@ class Activity extends Plugin
         Request::checkToken();
 
         // Incoming
-        $comment = Request::getArray('activity', array(), 'post');
+        $comment = Request::getArray('activity', [], 'post');
 
         // Instantiate a new object and bind data
         $lid = isset($comment['id']) ? (int) $comment['id'] : 0;
@@ -515,10 +515,10 @@ class Activity extends Plugin
         // of activity[] (scope, scope_id, created_by, details) is decided
         // here: the log is this group's, by this user, and the body is
         // editor HTML that the feed echoes as-is, so purify it.
-        $row->set(array(
+        $row->set([
             'description' => \Hubzero\Utility\Sanitize::html((string) (isset($comment['description']) ? $comment['description'] : '')),
             'anonymous'   => (isset($comment['anonymous']) ? (int) $comment['anonymous'] : 0)
-        ));
+        ]);
 
         if ($row->isNew()) {
             $scope   = 'activity.comment';
@@ -572,9 +572,9 @@ class Activity extends Plugin
                     'error'
                 );
             } else {
-                $row->details->set('attachments', array(
+                $row->details->set('attachments', [
                     $file->toArray()
-                ));
+                ]);
                 $row->set('details', $row->details->toString());
             }
         }
@@ -604,7 +604,7 @@ class Activity extends Plugin
         }
 
         // Record the activity
-        $recipients = array();
+        $recipients = [];
         $recipients[] = [$audience, $this->group->get('gidNumber')];
         $recipients[] = ['user', $row->get('created_by')];
         if ($row->get('parent')) {
@@ -619,11 +619,11 @@ class Activity extends Plugin
                 'scope_id'    => $row->get('scope_id'),
                 'anonymous'   => $row->get('anonymous', 0),
                 'description' => $row->get('description'),
-                'details'     => array(
+                'details'     => [
                     'url'         => Route::url($this->base . '&active=' . $this->_name . '#activity' . $row->get('id')),
                     'title'       => $this->group->get('description'),
                     'attachments' => $row->details->get('attachments')
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);

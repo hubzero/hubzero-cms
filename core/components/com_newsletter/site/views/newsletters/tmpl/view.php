@@ -64,7 +64,7 @@ $this->css()
         // because an unpublished newsletter is skipped and on a hub that has
         // never sent one that is all of them - which left a heading over an
         // empty list rather than no list at all.
-        $past = array();
+        $past = [];
 
         foreach ($this->newsletters as $newsletter) {
             if ($newsletter->published) {

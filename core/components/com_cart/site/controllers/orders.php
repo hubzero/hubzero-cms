@@ -55,15 +55,15 @@ class Orders extends ComponentController
     public function homeTask()
     {
         // Incoming
-        $this->view->filters = array(
+        $this->view->filters = [
             'limit'  => Request::getInt('limit', Config::get('list_limit')),
             'start'  => Request::getInt('limitstart', 0),
-        );
+        ];
 
         $cart = new CurrentCart();
 
         // Get all completed transactions count
-        $this->view->total = $cart->getTransactions(array('count' => true));
+        $this->view->total = $cart->getTransactions(['count' => true]);
 
         // Get all completed transactions
         $transactions = $cart->getTransactions($this->view->filters);

@@ -46,28 +46,28 @@ class Role extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'title' => 'notempty'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'alias'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Generates automatic owned by field value
@@ -145,7 +145,7 @@ class Role extends Relational
     public function setTypes($current)
     {
         // Get an array of all the previous types
-        $old = array();
+        $old = [];
 
         $types = $this->types()
             ->rows()
@@ -153,8 +153,8 @@ class Role extends Relational
 
         // Run through the $current array and determine if
         // each item is new or not
-        $keep = array();
-        $add  = array();
+        $keep = [];
+        $add  = [];
 
         foreach ($current as $bit) {
             if (!isset($types[$bit])) {

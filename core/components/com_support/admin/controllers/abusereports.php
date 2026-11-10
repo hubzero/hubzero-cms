@@ -38,7 +38,7 @@ class Abusereports extends AdminController
     public function displayTask()
     {
         // Incoming
-        $filters = array(
+        $filters = [
             'state' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.state',
                 'state',
@@ -55,7 +55,7 @@ class Abusereports extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         // Fetch results
         $query = Report::all()
@@ -95,10 +95,10 @@ class Abusereports extends AdminController
         $report =  Report::oneOrFail($id);
 
         // Get the parent ID
-        $results = Event::trigger('support.getParentId', array(
+        $results = Event::trigger('support.getParentId', [
             $report->get('referenceid'),
             $report->get('category')
-        ));
+        ]);
 
         // Check the results returned for a parent ID
         $parentid = 0;
@@ -111,11 +111,11 @@ class Abusereports extends AdminController
         }
 
         // Get the reported item
-        $results = Event::trigger('support.getReportedItem', array(
+        $results = Event::trigger('support.getReportedItem', [
             $report->get('referenceid'),
             $cat,
             $parentid
-        ));
+        ]);
 
         // Check the results returned for a reported item
         $reported = null;
@@ -128,10 +128,10 @@ class Abusereports extends AdminController
         }
 
         // Get the title
-        $titles = Event::trigger('support.getTitle', array(
+        $titles = Event::trigger('support.getTitle', [
             $report->get('category'),
             $parentid
-        ));
+        ]);
 
         // Check the results returned for a title
         $title = null;
@@ -187,11 +187,11 @@ class Abusereports extends AdminController
         }
 
         // Remove the reported item and any other related processes that need be performed
-        $results = Event::trigger('support.releaseReportedItem', array(
+        $results = Event::trigger('support.releaseReportedItem', [
             $report->get('referenceid'),
             $parentid,
             $report->get('category')
-        ));
+        ]);
 
         Notify::success(Lang::txt('COM_SUPPORT_REPORT_ITEM_RELEASED_SUCCESSFULLY'));
 
@@ -244,11 +244,11 @@ class Abusereports extends AdminController
         $report->set('note', Request::getString('note', ''));
 
         // Get the reported item
-        $results = Event::trigger('support.getReportedItem', array(
+        $results = Event::trigger('support.getReportedItem', [
             $report->get('referenceid'),
             $report->get('category'),
             $parentid
-        ));
+        ]);
 
         // Check the results returned for a reported item
         $reported = null;
@@ -261,12 +261,12 @@ class Abusereports extends AdminController
         }
 
         // Remove the reported item and any other related processes that need be performed
-        $results = Event::trigger('support.deleteReportedItem', array(
+        $results = Event::trigger('support.deleteReportedItem', [
             $report->get('referenceid'),
             $parentid,
             $report->get('category'),
             $message
-        ));
+        ]);
 
         if ($results) {
             foreach ($results as $result) {
@@ -278,10 +278,10 @@ class Abusereports extends AdminController
 
         // The reported item may already be gone
         if ($isSpam && $reported) {
-            $results = Event::trigger('antispam.onAntispamTrain', array(
+            $results = Event::trigger('antispam.onAntispamTrain', [
                 $reported->text,
                 $isSpam
-            ));
+            ]);
         }
 
         // Mark abuse report as deleted
@@ -299,21 +299,21 @@ class Abusereports extends AdminController
             $user = User::getInstance($reported->author);
 
             // Email "from" info
-            $from = array(
+            $from = [
                 'name'  => Config::get('sitename') . ' ' . Lang::txt('COM_SUPPORT'),
                 'email' => Config::get('mailfrom'),
                 'multipart' => md5(date('U'))
-            );
+            ];
 
             // Email subject
             $subject = Lang::txt('COM_SUPPORT_REPORT_ABUSE_EMAIL_SUBJECT', Config::get('sitename'));
 
             // Plain text
-            $eview = new View(array(
+            $eview = new View([
                 'base_path' => dirname(dirname(__DIR__)) . DS . 'site',
                 'name'      => 'emails',
                 'layout'    => 'abuse_plain'
-            ));
+            ]);
             $eview->option     = $this->_option;
             $eview->controller = $this->_controller;
             $eview->reported   = $reported;

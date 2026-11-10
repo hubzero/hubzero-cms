@@ -42,7 +42,7 @@ class Configuration extends Base implements CommandInterface
 
         if (empty($options)) {
             if ($this->output->isInteractive()) {
-                $options = array();
+                $options = [];
                 $option  = $this->output->getResponse('What do you want to configure [name|email|etc...] ?');
 
                 if (is_string($option) && !empty($option)) {

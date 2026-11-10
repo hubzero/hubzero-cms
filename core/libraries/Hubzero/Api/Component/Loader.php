@@ -23,7 +23,7 @@ class Loader extends Base
      * @param   array   $params  The component parameters
      * @return  bool
      */
-    public function render($option, $params = array())
+    public function render($option, $params = [])
     {
         $lang = $this->app['language'];
 
@@ -115,10 +115,10 @@ class Loader extends Base
         }
 
         // Handle template preview outlining.
-        $action = new $controllerClass($this->app->get('response'), array(
+        $action = new $controllerClass($this->app->get('response'), [
             'name'       => substr($option, 4),
             'controller' => $controller
-        ));
+        ]);
         $action->execute();
 
         // Revert the scope

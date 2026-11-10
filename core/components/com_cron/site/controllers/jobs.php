@@ -70,7 +70,7 @@ class Jobs extends SiteController
             ->rows();
 
         $output = new stdClass();
-        $output->jobs = array();
+        $output->jobs = [];
 
         // A fatal (OOM, max_execution_time, or a plugin exit()) inside a job's
         // event bypasses the finally below, leaving the row active with THIS
@@ -131,7 +131,7 @@ class Jobs extends SiteController
             $job->mark('start_run');
 
             try {
-                Event::trigger('cron.' . $job->get('event'), array($job));
+                Event::trigger('cron.' . $job->get('event'), [$job]);
             } catch (\Throwable $e) {
                 // Don't let one failing job abort the tick and block the jobs
                 // after it. The job is released below regardless.

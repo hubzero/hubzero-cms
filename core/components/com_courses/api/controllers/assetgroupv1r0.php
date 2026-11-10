@@ -217,7 +217,7 @@ class Assetgroupv1r0 extends base
         $groups = Request::getArray('assetgroupitem', []);
 
         $db      = App::get('db');
-        $courses = array();
+        $courses = [];
         foreach ($groups as $id) {
             $db->setQuery("SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = " . (int) $id);
             $cid = (int) $db->loadResult();
@@ -375,7 +375,7 @@ class Assetgroupv1r0 extends base
         $database->setQuery($query);
         $rows = $database->loadObjectList();
 
-        $jsonArray = array();
+        $jsonArray = [];
         foreach ($rows as $v) {
             // Solve Error "Cannot use object of type stdClass as array"
             $assetGroupArray = (array) json_decode(json_encode($v), true);
@@ -401,7 +401,7 @@ class Assetgroupv1r0 extends base
         $childNodesField = 'child',
         $curIdx = 0
     ) {
-        $indexed = array();
+        $indexed = [];
 
         foreach ($flat as $row) {
             if ($row[$parentIdField] == $curIdx) {

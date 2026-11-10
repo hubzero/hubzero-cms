@@ -46,7 +46,7 @@ class Sections extends AdminController
     public function displayTask()
     {
         // Filters
-        $filters = array(
+        $filters = [
             'state' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.state',
                 'state',
@@ -79,7 +79,7 @@ class Sections extends AdminController
                 'scopeinfo',
                 ''
             )
-        );
+        ];
 
         if (strstr($filters['scopeinfo'], ':')) {
             $bits = explode(':', $filters['scopeinfo']);
@@ -150,7 +150,7 @@ class Sections extends AdminController
         Request::setVar('hidemainmenu', 1);
 
         if (!is_object($row)) {
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id)) {
                 $id = (!empty($id) ? intval($id[0]) : 0);
             }
@@ -165,10 +165,10 @@ class Sections extends AdminController
             $row->set('scope_id', 0);
         }
 
-        User::setState('com_forum.edit.section.data', array(
+        User::setState('com_forum.edit.section.data', [
             'id'       => $row->get('id'),
             'asset_id' => $row->get('asset_id')
-        ));
+        ]);
 
         $form = $row->getForm();
 
@@ -200,14 +200,14 @@ class Sections extends AdminController
         User::setState('com_forum.edit.section.data', null);
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
         $fields = array_map('trim', $fields);
 
         // Initiate extended database class
         $section = Section::oneOrNew($fields['id'])->set($fields);
 
         // Bind the rules.
-        $data = Request::getArray('data', array(), 'post');
+        $data = Request::getArray('data', [], 'post');
         // Only from someone the form shows the rules to (core.admin); a posted
         // one is dropped.
         if (
@@ -253,8 +253,8 @@ class Sections extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $i = 0;
 
@@ -294,8 +294,8 @@ class Sections extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $state = ($this->getTask() == 'publish' ? Section::STATE_PUBLISHED : Section::STATE_UNPUBLISHED);
 
@@ -354,8 +354,8 @@ class Sections extends AdminController
 
         // Incoming
         $state = Request::getInt('access', 0);
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for an ID
         if (count($ids) < 1) {

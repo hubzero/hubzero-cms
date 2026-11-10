@@ -5,7 +5,7 @@
  */
 
 // @codeCoverageIgnoreStart
-return array(
+return [
     'application_env' => 'development',
     'editor' => 'ckeditor',
     'list_limit' => '25',
@@ -16,5 +16,5 @@ return array(
     'error_reporting' => '-1',
     'sitename' => 'Test Hub',
     'offline' => '0',
-);
+];
 // @codeCoverageIgnoreEnd

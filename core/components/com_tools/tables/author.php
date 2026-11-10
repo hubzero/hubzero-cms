@@ -122,7 +122,7 @@ class Author extends Table
      * @param   array    $authors   Author list
      * @return  array
      */
-    public function getToolAuthors($version = '', $rid = 0, $toolname = '', $revision = '', $authors = array())
+    public function getToolAuthors($version = '', $rid = 0, $toolname = '', $revision = '', $authors = [])
     {
         if ($version == 'dev' && $rid) {
             $query = "SELECT authorid as uidNumber, ordering FROM `#__author_assoc` "

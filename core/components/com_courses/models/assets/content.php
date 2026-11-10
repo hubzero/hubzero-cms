@@ -27,10 +27,10 @@ class Content extends Handler
      *
      * @var array
      **/
-    protected static $info = array(
+    protected static $info = [
         'action_message' => 'As textual content',
-        'responds_to'    => array('text')
-    );
+        'responds_to'    => ['text']
+    ];
 
     /**
      * Create method for this handler
@@ -75,15 +75,15 @@ class Content extends Handler
 
         // Save the asset
         if (!$asset->store()) {
-            return array('error' => 'Asset save failed');
+            return ['error' => 'Asset save failed'];
         }
 
         // If we're saving progress calculation var
         if ($progress = Request::getInt('progress_factors', false)) {
-            $progressFactors = array(
+            $progressFactors = [
                 'asset_id' => $asset->get('id'),
                 'section_id' => Request::getInt('section_id', 0)
-            );
+            ];
             $asset->set('progress_factors', $progressFactors);
             $asset->store();
         }
@@ -97,7 +97,7 @@ class Content extends Handler
 
         // Save the asset association
         if (!$assocObj->save($this->assoc)) {
-            return array('error' => 'Asset association save failed');
+            return ['error' => 'Asset association save failed'];
         }
 
         // Get the url to return to the page
@@ -110,7 +110,7 @@ class Content extends Handler
         $url = str_replace('/api', '', $url);
         $url = rtrim(Request::root(), '/') . '/' . ltrim($url, '/');
 
-        $files = array(
+        $files = [
             'asset_id'       => $asset->get('id'),
             'asset_title'    => $asset->get('title'),
             'asset_type'     => $asset->get('type'),
@@ -118,9 +118,9 @@ class Content extends Handler
             'asset_url'      => $url,
             'asset_state'    => $asset->get('state'),
             'scope_id'       => $this->assoc['scope_id']
-        );
+        ];
 
-        $return_info = array(
+        $return_info = [
             'asset_id'       => $asset->get('id'),
             'asset_title'    => $asset->get('title'),
             'asset_type'     => $asset->get('type'),
@@ -129,11 +129,11 @@ class Content extends Handler
             'course_id'      => $asset->get('course_id'),
             'offering_alias' => $offering_alias,
             'scope_id'       => $this->assoc['scope_id'],
-            'files'          => array($files)
-        );
+            'files'          => [$files]
+        ];
 
         // Return info
-        return array('assets' => $return_info);
+        return ['assets' => $return_info];
     }
 
     /**
@@ -186,10 +186,10 @@ class Content extends Handler
 
         // If we're saving progress calculation var
         if ($progress = Request::getInt('progress_factors', false)) {
-            $progressFactors = array(
+            $progressFactors = [
                 'asset_id' => $asset->get('id'),
                 'section_id' => Request::getInt('section_id', 0)
-            );
+            ];
             $asset->set('progress_factors', $progressFactors);
         } elseif (Request::getInt('edit_progress_factors', false)) {
             $asset->set('section_id', Request::getInt('section_id', 0));
@@ -198,7 +198,7 @@ class Content extends Handler
 
         // Save the asset
         if (!$asset->store()) {
-            return array('error' => 'Asset save failed');
+            return ['error' => 'Asset save failed'];
         }
 
         $scope_id          = Request::getInt('scope_id', null);
@@ -211,12 +211,12 @@ class Content extends Handler
             $assoc = new Tables\AssetAssociation($this->db);
 
             if (!$assoc->loadByAssetScope($asset->get('id'), $original_scope_id, $scope)) {
-                return array('error' => 'Failed to load asset association');
+                return ['error' => 'Failed to load asset association'];
             }
 
             // Save the asset association
-            if (!$assoc->save(array('scope_id' => $scope_id))) {
-                return array('error' => 'Asset association save failed');
+            if (!$assoc->save(['scope_id' => $scope_id])) {
+                return ['error' => 'Asset association save failed'];
             }
         }
 
@@ -229,7 +229,7 @@ class Content extends Handler
         $url = Route::url($course->offering()->link() . '&asset=' . $asset->get('id'));
         $url = rtrim(str_replace('/api', '', Request::root()), '/') . '/' . ltrim($url, '/');
 
-        $files = array(
+        $files = [
             'asset_id'       => $asset->get('id'),
             'asset_title'    => $asset->get('title'),
             'asset_type'     => $asset->get('type'),
@@ -237,9 +237,9 @@ class Content extends Handler
             'asset_url'      => $url,
             'asset_state'    => $asset->get('state'),
             'scope_id'       => $scope_id,
-        );
+        ];
 
-        $return_info = array(
+        $return_info = [
             'asset_id'       => $asset->get('id'),
             'asset_title'    => $asset->get('title'),
             'asset_type'     => $asset->get('type'),
@@ -248,10 +248,10 @@ class Content extends Handler
             'course_id'      => $asset->get('course_id'),
             'offering_alias' => $offering_alias,
             'scope_id'       => $scope_id,
-            'files'          => array($files)
-        );
+            'files'          => [$files]
+        ];
 
         // Return info
-        return array('assets' => $return_info);
+        return ['assets' => $return_info];
     }
 }

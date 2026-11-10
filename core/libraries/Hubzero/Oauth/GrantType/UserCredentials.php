@@ -40,7 +40,7 @@ class UserCredentials implements GrantTypeInterface
      * @param   array   $config   Config array
      * @return  void
      */
-    public function __construct(UserCredentialsInterface $storage, $config = array())
+    public function __construct(UserCredentialsInterface $storage, $config = [])
     {
         $this->storage = $storage;
     }

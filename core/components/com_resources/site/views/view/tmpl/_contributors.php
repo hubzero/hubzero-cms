@@ -18,12 +18,12 @@ $database = App::get('db');
 
 if ($this->contributors) {
     $html = '';
-    $names = array();
-    $orgs = array();
+    $names = [];
+    $orgs = [];
     $i = 1;
     $k = 0;
     $orgsln = '';
-    $names_s = array();
+    $names_s = [];
     $orgsln_s = '';
 
     foreach ($this->contributors as $contributor) {

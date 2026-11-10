@@ -103,13 +103,13 @@ class Notes extends Plugin
      */
     public function &onProjectAreas($alias = null)
     {
-        $area = array(
+        $area = [
             'name'    => 'notes',
             'title'   => Lang::txt('COM_PROJECTS_TAB_NOTES'),
             'submenu' => null,
             'show'    => true,
             'icon'    => 'f0c1'
-        );
+        ];
 
         return $area;
     }
@@ -147,10 +147,10 @@ class Notes extends Plugin
     {
         $returnhtml = true;
 
-        $arr = array(
+        $arr = [
             'html'     => '',
             'metadata' => ''
-        );
+        ];
 
         // Get this area details
         $this->_area = $this->onProjectAreas();
@@ -293,19 +293,19 @@ class Notes extends Plugin
     {
         // Incoming
         $preview = trim(Request::getString('preview', ''));
-        $note    = Request::getArray('page', array(), 'post');
+        $note    = Request::getArray('page', [], 'post');
         $scope   = trim(Request::getString('scope', $this->_masterScope), '/');
         $scope   = trim(str_replace($this->_masterScope, '', $scope), '/');
         $pagePrefix = '';
 
         // Output HTML (wrap for notes)
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'notes',
                 'name'    => 'wrap',
                 'layout'  => 'wrap'
-            )
+            ]
         );
 
         // Get first project note
@@ -338,12 +338,12 @@ class Notes extends Plugin
         if (!$view->page->get('id') && $this->_task == 'view' && $view->page->get('namespace') != 'special') {
             // Output HTML (wrap for notes)
             $nview = new \Hubzero\Plugin\View(
-                array(
+                [
                     'folder'  => 'projects',
                     'element' => 'notes',
                     'name'    => 'pages',
                     'layout'  => 'doesnotexist'
-                )
+                ]
             );
             $nview->scope   = $scope;
             $nview->option  = $this->_option;
@@ -362,12 +362,12 @@ class Notes extends Plugin
         if (!$view->content) {
             $controllerName = "Components\Wiki\Site\Controllers\\"  . ucfirst($this->_controllerName);
             // Instantiate controller
-            $controller = new $controllerName(array(
+            $controller = new $controllerName([
                 'base_path' => $basePath,
                 'scope'     => 'project',
                 'scope_id'  => $this->model->get('id'),
                 'sub'       => true
-            ));
+            ]);
 
             // Catch any echoed content with ob
             ob_start();
@@ -473,11 +473,11 @@ class Notes extends Plugin
 
         // Output HTML
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'notes',
                 'name'    => 'pubsettings'
-            )
+            ]
         );
 
         // Get/update public stamp for page
@@ -489,11 +489,11 @@ class Notes extends Plugin
 
             // Output error
             $view = new \Hubzero\Plugin\View(
-                array(
+                [
                     'folder'  => 'projects',
                     'element' => 'files',
                     'name'    => 'error'
-                )
+                ]
             );
 
             $view->set('title', '');
@@ -593,11 +593,11 @@ class Notes extends Plugin
 
         // Output HTML
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'notes',
                 'name'    => 'browser'
-            )
+            ]
         );
 
         // Get current attachments
@@ -607,7 +607,7 @@ class Notes extends Plugin
 
         $view->attachments = $pContent->getAttachments(
             $versionid,
-            $filters = array('role' => $role, 'type' => 'note')
+            $filters = ['role' => $role, 'type' => 'note']
         );
 
         // Output HTML
@@ -627,10 +627,10 @@ class Notes extends Plugin
         }
         $html = $view->loadTemplate();
 
-        $arr = array(
+        $arr = [
             'html'     => $html,
             'metadata' => ''
-        );
+        ];
 
         return $arr;
     }
@@ -688,11 +688,11 @@ class Notes extends Plugin
 
         // Instantiate a new view
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'notes',
                 'name'    => 'pubview'
-            )
+            ]
         );
         $view->option = $this->_option;
         $view->model = $this->model;
@@ -722,11 +722,11 @@ class Notes extends Plugin
         }
 
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'notes',
                 'name'    => 'mini'
-            )
+            ]
         );
 
         $group = $model->config()->get('group_prefix', 'pr-') . $model->get('alias');
@@ -761,11 +761,11 @@ class Notes extends Plugin
         }
 
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'notes',
                 'name'    => 'publist'
-            )
+            ]
         );
 
         $database = App::get('db');

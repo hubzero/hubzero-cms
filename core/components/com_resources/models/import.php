@@ -49,19 +49,19 @@ class Import extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'name' => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created_at',
         'created_by'
-    );
+    ];
 
     /**
      * Generates automatic added field value
@@ -192,13 +192,13 @@ class Import extends Relational
     public function markRun($dryRun = 1)
     {
         $importRun = Run::blank()
-            ->set(array(
+            ->set([
                 'import_id' => $this->get('id'),
                 'count'     => $this->get('count'),
                 'ran_by'    => User::get('id'),
                 'ran_at'    => Date::toSql(),
                 'dry_run'   => $dryRun
-            ));
+            ]);
         $importRun->save();
     }
 }

@@ -187,7 +187,7 @@ $this->css('browse.css');
                                         <?php
                                         $instructors = $course->instructors();
                                         if (count($instructors) > 0) {
-                                            $names = array();
+                                            $names = [];
                                             foreach ($instructors as $i) {
                                                 $instructor = Components\Members\Models\Member::oneOrNew($i->get('user_id'));
                                                 $name = $this->escape(stripslashes($instructor->get('name')));
@@ -234,7 +234,7 @@ $this->css('browse.css');
             <div class="container">
                 <h3><?php echo Lang::txt('COM_COURSES_POPULAR_CATEGORIES'); ?></h3>
                 <?php
-                $tags = $this->model->tags('cloud', array(
+                $tags = $this->model->tags('cloud', [
                     'limit'    => 20,
                     'start'    => 0,
                     'sort'     => 'total',
@@ -243,7 +243,7 @@ $this->css('browse.css');
                     'scope'    => 'courses',
                     'base'     => 'index.php?option=' . $this->option . '&task=browse',
                     'filters'  => $this->filters
-                ));
+                ]);
                 if ($tags) {
                     echo $tags;
                 } else {

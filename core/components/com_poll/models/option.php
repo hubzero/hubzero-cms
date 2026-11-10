@@ -41,9 +41,9 @@ class Option extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'poll_id' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Defines a belongs to one relationship between option and poll

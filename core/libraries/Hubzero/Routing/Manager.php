@@ -25,14 +25,14 @@ class Manager
      *
      * @var  array
      */
-    protected $paths = array();
+    protected $paths = [];
 
     /**
      * The array of created "drivers".
      *
      * @var  array
      */
-    protected $routers = array();
+    protected $routers = [];
 
     /**
      * Create a new manager instance.
@@ -41,7 +41,7 @@ class Manager
      * @param   array   $paths
      * @return  void
      */
-    public function __construct($app, $paths = array())
+    public function __construct($app, $paths = [])
     {
         $this->app   = $app;
         $this->paths = (array)$paths;
@@ -87,9 +87,9 @@ class Manager
     {
         $prefix = $this->app['request']->getHttpHost();
 
-        $router = new Router(array(), $prefix);
+        $router = new Router([], $prefix);
 
-        $routes = array();
+        $routes = [];
 
         foreach ($this->paths as $path) {
             $routes[] = $path . DIRECTORY_SEPARATOR . 'bootstrap' . DIRECTORY_SEPARATOR . $client;
@@ -126,7 +126,7 @@ class Manager
      */
     public function __call($method, $parameters)
     {
-        return call_user_func_array(array($this->client(), $method), $parameters);
+        return call_user_func_array([$this->client(), $method], $parameters);
     }
 
     /**

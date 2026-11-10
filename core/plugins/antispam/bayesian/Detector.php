@@ -56,7 +56,7 @@ class Detector implements DetectorInterface
      * @param   array  $options
      * @return  void
      */
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
         if (isset($options['threshold'])) {
             $this->setThreshold($options['threshold']);
@@ -98,7 +98,7 @@ class Detector implements DetectorInterface
     {
         // We only need the text
         $text = strip_tags($data['text']);
-        $text = str_replace(array('&amp;', '&nbsp;'), array('&', ' '), $text);
+        $text = str_replace(['&amp;', '&nbsp;'], ['&', ' '], $text);
         $text = html_entity_decode($text);
 
         $score = 0;
@@ -106,7 +106,7 @@ class Detector implements DetectorInterface
         $words_count = preg_match_all('/([a-zA-Z]\w+)\W*/', $text, $words);
 
         $tokens = $this->getTokensProb($words[1]);
-        $tokens_prob = array();
+        $tokens_prob = [];
         foreach ($words[1] as $word) {
             foreach ($tokens as $token) {
                 if ($token->get('token') == $word) {
@@ -116,7 +116,7 @@ class Detector implements DetectorInterface
             }
         }
 
-        usort($tokens_prob, array($this, 'compareToken'));
+        usort($tokens_prob, [$this, 'compareToken']);
         $index = 0;
         $mult = 1.0;
         $comb = 1.0;
@@ -234,7 +234,7 @@ class Detector implements DetectorInterface
             return false;
         }
         $words_count = preg_match_all('/([a-zA-Z]\w+)\W*/', $text, $matches);
-        $words = array();
+        $words = [];
 
         $tokens_count = $this->getTokensCount();
 
@@ -290,7 +290,7 @@ class Detector implements DetectorInterface
         }
 
         $words_count = preg_match_all('/([a-zA-Z]\w+)\W*/', $text, $matches);
-        $words = array();
+        $words = [];
 
         $tokens_count = $this->getTokensCount();
 

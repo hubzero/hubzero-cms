@@ -28,7 +28,7 @@ class Log extends Plugin
             return;
         }
 
-        $errorlog = array();
+        $errorlog = [];
 
         switch ($response['status']) {
             case \Hubzero\Auth\Status::SUCCESS:

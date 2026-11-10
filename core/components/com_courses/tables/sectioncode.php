@@ -56,7 +56,7 @@ class SectionCode extends Table
         $this->redeemed_by = intval($this->redeemed_by);
 
         // Blank date boxes post ''; strict SQL refuses '' for a datetime, so store NULL
-        foreach (array('expires') as $col) {
+        foreach (['expires'] as $col) {
             if (isset($this->$col) && trim((string) $this->$col) === '') {
                 $this->$col = null;
             }
@@ -88,10 +88,10 @@ class SectionCode extends Table
             return parent::load($oid);
         }
 
-        return parent::load(array(
+        return parent::load([
             'code'       => $oid,
             'section_id' => $section_id
-        ));
+        ]);
     }
 
     /**
@@ -101,11 +101,11 @@ class SectionCode extends Table
      * @return  string  SQL
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildQuery($filters = array())
+    protected function _buildQuery($filters = [])
     {
         $query  = " FROM $this->_tbl AS c";
 
-        $where = array();
+        $where = [];
 
         if (isset($filters['redeemed'])) {
             if ($filters['redeemed'] > 0) {
@@ -147,7 +147,7 @@ class SectionCode extends Table
      * @param   array    $filters  Filters to construct query from
      * @return  integer
      */
-    public function count($filters = array())
+    public function count($filters = [])
     {
         $filters['limit'] = 0;
 
@@ -163,7 +163,7 @@ class SectionCode extends Table
      * @param   array  $filters  Filters to construct query from
      * @return  array
      */
-    public function find($filters = array())
+    public function find($filters = [])
     {
         $query = "SELECT c.*" . $this->_buildQuery($filters);
 

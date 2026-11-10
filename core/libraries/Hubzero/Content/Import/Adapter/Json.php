@@ -30,7 +30,7 @@ class Json implements Adapter
      *
      * @var  array
      */
-    private $data = array();
+    private $data = [];
 
     /**
      * Integer to hold count
@@ -47,12 +47,12 @@ class Json implements Adapter
      */
     public static function accepts($mime)
     {
-        return in_array($mime, array(
+        return in_array($mime, [
             'json',
             'text/x-json',
             'text/json',
             'application/json'
-        ));
+        ]);
     }
 
     /**
@@ -85,7 +85,7 @@ class Json implements Adapter
         $iterator = new Reader($import->getDataPath(), $this->key);
         $iterator->rewind();
 
-        $headers = array();
+        $headers = [];
 
         $row = $iterator->current();
         foreach ($row as $key => $val) {

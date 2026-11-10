@@ -39,7 +39,7 @@ class Create extends SiteController
      *
      * @var array
      */
-    public $steps = array('Type', 'Compose', 'Attach', 'Authors', 'Tags', 'Review');
+    public $steps = ['Type', 'Compose', 'Attach', 'Authors', 'Tags', 'Review'];
 
     /**
      * Execute a task
@@ -174,7 +174,7 @@ class Create extends SiteController
     {
         $steps = $this->steps;
         $laststep = (count($steps) - 1);
-        $stepchecks = array();
+        $stepchecks = [];
 
         $progress['submitted'] = 0;
         for ($i = 1, $n = count($steps); $i < $n; $i++) {
@@ -439,9 +439,9 @@ class Create extends SiteController
 				WHERE fr.resource_type_id = ' . $type
             );
             if (!($labels = $this->database->loadColumn())) {
-                return array();
+                return [];
             }
-            $labels = '\'' . implode('\', \'', array_map(array($this->database, 'escape'), $labels)) . '\'';
+            $labels = '\'' . implode('\', \'', array_map([$this->database, 'escape'], $labels)) . '\'';
         }
 
         $this->database->setQuery(
@@ -482,7 +482,7 @@ class Create extends SiteController
      *
      * @param   array  $existing
      */
-    public function step_tags($existing = array())
+    public function step_tags($existing = [])
     {
         if ($this->view->getName() != 'steps') {
             $this->setView('steps', 'tags');
@@ -505,10 +505,10 @@ class Create extends SiteController
         // Get focus areas
         $this->database->setQuery('SELECT type FROM `#__resources` WHERE id = ' . $this->database->quote($id));
         $fas = $this->_loadFocusAreas($this->database->loadResult());
-        $focusareas = array();
+        $focusareas = [];
         foreach ($fas as $tag => $fa) {
             if (!isset($focusareas[$fa['label']])) {
-                $focusareas[$fa['label']] = array();
+                $focusareas[$fa['label']] = [];
             }
             $focusareas[$fa['label']][$tag] = $fa;
         }
@@ -517,7 +517,7 @@ class Create extends SiteController
         $tagcloud = new Tags($id);
         $tags_men = $tagcloud->tags();
 
-        $mytagarray = array();
+        $mytagarray = [];
         foreach ($tags_men as $tag_men) {
             $mytagarray[] = $tag_men->get('raw_tag');
         }
@@ -573,7 +573,7 @@ class Create extends SiteController
         // Load resource info
         $row = Entry::oneOrFail($id);
 
-        $usersgroups = array();
+        $usersgroups = [];
         if (!User::isGuest()) {
             $xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'all');
             // Get the groups the user has access to
@@ -608,7 +608,7 @@ class Create extends SiteController
      */
     private function _getUsersGroups($groups)
     {
-        $arr = array();
+        $arr = [];
         if (!empty($groups)) {
             foreach ($groups as $group) {
                 if ($group->regconfirmed) {
@@ -661,7 +661,7 @@ class Create extends SiteController
     public function step_compose_process()
     {
         // Initiate extended database class
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         $rid = isset($fields['id']) ? (int) $fields['id'] : 0;
 
@@ -723,10 +723,10 @@ class Create extends SiteController
         // Get custom areas, add wrapper tags, and compile into fulltxt
         $type = Type::oneOrFail($row->get('type'));
 
-        $elements = new Elements(array(), $type->customFields);
+        $elements = new Elements([], $type->customFields);
         $schema = $elements->getSchema();
 
-        $fields = array();
+        $fields = [];
         if (is_object($schema)) {
             foreach ($schema->fields as $field) {
                 $fields[$field->name] = $field;
@@ -735,8 +735,8 @@ class Create extends SiteController
 
         $fulltxt = $row->get('fulltxt');
 
-        $nbtag = Request::getArray('nbtag', array(), 'post');
-        $found = array();
+        $nbtag = Request::getArray('nbtag', [], 'post');
+        $found = [];
         foreach ($nbtag as $tagname => $tagcontent) {
             $f = '';
 
@@ -839,14 +839,14 @@ class Create extends SiteController
             Request::setVar('authid', User::get('id'));
 
             $authors = new Authors();
-            $authors->saveAuthors(0, array(), 0);
+            $authors->saveAuthors(0, [], 0);
         }
 
         // Log activity
-        $recipients = array(
+        $recipients = [
             ['resource', $row->get('id')],
             ['user', $row->get('created_by')]
-        );
+        ];
         foreach ($row->authors()->where('authorid', '>', 0)->rows() as $author) {
             $recipients[] = ['user', $author->get('authorid')];
         }
@@ -857,10 +857,10 @@ class Create extends SiteController
                 'scope'       => 'resource',
                 'scope_id'    => $row->get('id'),
                 'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_' . (!$isNew ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url('index.php?option=com_resources&id=' . $row->get('id')) . '">' . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title' => $row->get('title'),
                     'url'   => Route::url('index.php?option=com_resources&id=' . $row->get('id'))
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -943,10 +943,10 @@ class Create extends SiteController
                 $action = 'REMOVED';
             }
 
-            $recipients = array(
+            $recipients = [
                 ['resource', $row->get('id')],
                 ['user', $row->get('created_by')]
-            );
+            ];
             foreach ($row->authors()->where('authorid', '>', 0)->rows() as $author) {
                 $recipients[] = ['user', $author->get('authorid')];
             }
@@ -975,10 +975,10 @@ class Create extends SiteController
                         '<a href="' . Route::url('index.php?option=com_resources&id=' . $row->get('id')) . '">' . htmlspecialchars((string) $row->get('title'), ENT_QUOTES, 'UTF-8') . '</a>',
                         '<a href="' . Route::url('index.php?option=com_groups&cn=' . $group->get('cn')) . '">' . htmlspecialchars((string) $group->get('description'), ENT_QUOTES, 'UTF-8') . '</a>'
                     ),
-                    'details'     => array(
+                    'details'     => [
                         'title' => $row->get('title'),
                         'url'   => Route::url('index.php?option=com_resources&id=' . $row->get('id'))
-                    )
+                    ]
                 ],
                 'recipients' => $recipients
             ]);
@@ -1011,8 +1011,8 @@ class Create extends SiteController
         }
 
         $tags = preg_split('/,\s*/', $_POST['tags']);
-        $push = array();
-        $map  = array();
+        $push = [];
+        $map  = [];
 
         $this->database->setQuery(
             'SELECT fa.tag_id, t.raw_tag, fa.mandatory_depth AS minimum_depth, 0 AS actual_depth
@@ -1029,7 +1029,7 @@ class Create extends SiteController
                 continue;
             }
             if (!is_array($vs)) {
-                $vs = array($vs);
+                $vs = [$vs];
             }
             foreach ($vs as $v) {
                 $norm_tag = preg_replace('/[^a-zA-Z0-9]/', '', strtolower($v));
@@ -1045,13 +1045,13 @@ class Create extends SiteController
 					WHERE t.tag = ' . $this->database->quote($norm_tag)
                 );
                 if (($row = $this->database->loadAssoc())) {
-                    $push[] = array($v, $norm_tag, $row['fa'], $row['id'], $row['label_id']);
+                    $push[] = [$v, $norm_tag, $row['fa'], $row['id'], $row['label_id']];
                     $map[$norm_tag] = true;
                 }
             }
         }
 
-        $filtered = array();
+        $filtered = [];
         // only accept focus areas with parents if their parent is also checked
         foreach ($push as $idx => $tag) {
             $this->database->setQuery(
@@ -1062,7 +1062,7 @@ class Create extends SiteController
 				WHERE to1.objectid = ' . $tag[3] . ' AND to1.tbl = \'tags\' AND to1.label = \'parent\''
             );
             $any_match = false;
-            $parent = array();
+            $parent = [];
             $possible_parents = $this->database->loadAssocList();
             foreach ($possible_parents as $par) {
                 if (isset($map[$par['tag']])) {
@@ -1072,7 +1072,7 @@ class Create extends SiteController
             }
             if (!$possible_parents || $any_match) {
                 $filtered[] = $tag;
-                $parent_id = array();
+                $parent_id = [];
                 foreach ($parent as $par) {
                     $parent_id[] = $par['id'];
                 }
@@ -1102,7 +1102,7 @@ class Create extends SiteController
             if (!$norm_tag || isset($map[$norm_tag])) {
                 continue;
             }
-            $push[] = array($tag, $norm_tag, null);
+            $push[] = [$tag, $norm_tag, null];
             $map[$norm_tag] = true;
         }
         foreach ($push as $idx => $tag) {
@@ -1272,7 +1272,7 @@ class Create extends SiteController
         }
 
         // Allow for any other validation
-        $results = Event::trigger('resources.onResourceBeforeSubmit', array($resource));
+        $results = Event::trigger('resources.onResourceBeforeSubmit', [$resource]);
 
         foreach ($results as $result) {
             if ($result) {
@@ -1338,10 +1338,10 @@ class Create extends SiteController
                 );
 
                 // Plain text email
-                $eview = new \Hubzero\Mail\View(array(
+                $eview = new \Hubzero\Mail\View([
                     'name'   => 'emails',
                     'layout' => 'submitted_plain'
-                ));
+                ]);
                 $eview->option     = $this->_option;
                 $eview->controller = $this->_controller;
                 $eview->resource   = $resource;
@@ -1372,17 +1372,17 @@ class Create extends SiteController
                     // Check for a valid address
                     if (\Hubzero\Utility\Validate::email($def)) {
                         // Send e-mail
-                        $message->setTo(array($def));
+                        $message->setTo([$def]);
                         $message->send();
                     }
                 }
             }
 
             // Log activity
-            $recipients = array(
+            $recipients = [
                 ['resource', $resource->get('id')],
                 ['user', $resource->get('created_by')]
-            );
+            ];
             foreach ($authors as $author) {
                 if ($author->get('authorid') > 0) {
                     $recipients[] = ['user', $author->get('authorid')];
@@ -1395,10 +1395,10 @@ class Create extends SiteController
                     'scope'       => 'resource',
                     'scope_id'    => $resource->get('title'),
                     'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_' . strtoupper($activity), '<a href="' . Route::url($resource->link()) . '">' . htmlspecialchars((string) ($resource->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                    'details'     => array(
+                    'details'     => [
                         'title' => $resource->get('title'),
                         'url'   => Route::url($resource->link())
-                    )
+                    ]
                 ],
                 'recipients' => $recipients
             ]);
@@ -1435,7 +1435,7 @@ class Create extends SiteController
         // Save the resource
         $resource->save();
 
-        Event::trigger('resources.onResourceAfterSubmit', array($resource));
+        Event::trigger('resources.onResourceAfterSubmit', [$resource]);
 
         // If a previously published resource, redirect to the resource page
         if ($published == 1) {
@@ -1447,7 +1447,7 @@ class Create extends SiteController
 
         // If the resource gets published (auto-publish or the user is in the auto-approved list), trigger the onAfterContentSubmission event
         if ($resource->get('published')) {
-            Event::trigger('content.onAfterContentSubmission', array('Resource'));
+            Event::trigger('content.onAfterContentSubmission', ['Resource']);
         }
 
         // Output HTML
@@ -1552,10 +1552,10 @@ class Create extends SiteController
                 }
 
                 // Log activity
-                $recipients = array(
+                $recipients = [
                     ['resource', $resource->get('id')],
                     ['user', $resource->get('created_by')]
-                );
+                ];
                 foreach ($resource->authors()->where('authorid', '>', 0)->rows() as $author) {
                     $recipients[] = ['user', $author->get('authorid')];
                 }
@@ -1566,10 +1566,10 @@ class Create extends SiteController
                         'scope'       => 'resource',
                         'scope_id'    => $resource->get('id'),
                         'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_DELETED', '<a href="' . Route::url($resource->link()) . '">' . htmlspecialchars((string) ($resource->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                        'details'     => array(
+                        'details'     => [
                             'title' => $resource->get('title'),
                             'url'   => Route::url($resource->link())
-                        )
+                        ]
                     ],
                     'recipients' => $recipients
                 ]);

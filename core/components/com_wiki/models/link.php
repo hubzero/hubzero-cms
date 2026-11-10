@@ -43,19 +43,19 @@ class Link extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'page_id' => 'positive|nonzero',
         'scope'   => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'timestamp'
-    );
+    ];
 
     /**
      * Generates automatic owned by field value
@@ -113,7 +113,7 @@ class Link extends Relational
      * @param   array    $links
      * @return  boolean  True on success
      */
-    public function addLinks($links = array())
+    public function addLinks($links = [])
     {
         if (count($links) <= 0) {
             return true;
@@ -150,9 +150,9 @@ class Link extends Relational
      * @param   array    $data
      * @return  boolean  True on success
      */
-    public function updateLinks($page_id, $data = array())
+    public function updateLinks($page_id, $data = [])
     {
-        $links = array();
+        $links = [];
 
         foreach ($data as $data) {
             // Eliminate duplicates

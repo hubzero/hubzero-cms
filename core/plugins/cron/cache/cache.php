@@ -50,18 +50,18 @@ class Cache extends Plugin
 
         $obj = new \stdClass();
         $obj->plugin = $this->_name;
-        $obj->events = array(
-            array(
+        $obj->events = [
+            [
                 'name'   => 'cleanSystemCss',
                 'label'  => Lang::txt('PLG_CRON_CACHE_REMOVE_SYSTEM_CSS'),
                 'params' => ''
-            ),
-            array(
+            ],
+            [
                 'name'   => 'trashExpiredData',
                 'label'  => Lang::txt('PLG_CRON_CACHE_TRASH_EXPIRED_DATA'),
                 'params' => ''
-            )
-        );
+            ]
+        ];
 
         return $obj;
     }
@@ -95,7 +95,7 @@ class Cache extends Plugin
             return;
         }
 
-        $docs = array();
+        $docs = [];
 
         $dirIterator = new \DirectoryIterator($this->_path);
         foreach ($dirIterator as $file) {

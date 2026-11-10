@@ -71,7 +71,7 @@ class Utilities
     public static function getClientOptions()
     {
         // Build the filter options.
-        $options = array();
+        $options = [];
         $options[] = Html::select('option', '0', Lang::txt('JSITE'));
         $options[] = Html::select('option', '1', Lang::txt('JADMINISTRATOR'));
 
@@ -148,7 +148,7 @@ class Utilities
                 return $data;
             }
 
-            $meta = array();
+            $meta = [];
             $meta['legacy']       = ($xml->getName() == 'mosinstall' || $xml->getName() == 'install');
             $meta['name']         = (string) $xml->name;
 

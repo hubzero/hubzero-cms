@@ -130,12 +130,12 @@ class MarkTest extends Basic
     {
         $mark = new Mark('test', 0, 1.5, 1048576);
 
-        $result = array(
+        $result = [
             'label'  => 'test',
             'start'  => 0.0,
             'end'    => 1.5,
             'memory' => 1048576
-        );
+        ];
 
         $this->assertEquals($mark->toArray(), $result);
     }

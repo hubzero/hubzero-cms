@@ -68,7 +68,7 @@ class Plugins extends AdminController
      */
     public function displayTask()
     {
-        $filters = array(
+        $filters = [
             'folder' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.folder',
                 'filter_folder',
@@ -107,7 +107,7 @@ class Plugins extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         $query = Plugin::all()
             ->where('state', '>=', 0);
@@ -137,7 +137,7 @@ class Plugins extends AdminController
         if (is_numeric($filters['state'])) {
             $query->whereEquals($p . '.enabled', (int) $filters['state']);
         } elseif ($filters['state'] === '') {
-            $query->whereIn($p . '.enabled', array(0, 1));
+            $query->whereIn($p . '.enabled', [0, 1]);
         }
 
         // Filter by folder.
@@ -202,7 +202,7 @@ class Plugins extends AdminController
 
         if (!is_object($model)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id) && !empty($id)) {
                 $id = $id[0];
             }
@@ -254,13 +254,13 @@ class Plugins extends AdminController
         }
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post', 'none', 2);
+        $fields = Request::getArray('fields', [], 'post', 'none', 2);
 
         // Initiate extended database class
         $model = Plugin::oneOrNew($fields['extension_id'])->set($fields);
 
         // Get parameters
-        $params = Request::getArray('params', array(), 'post');
+        $params = Request::getArray('params', [], 'post');
 
         $p = $model->params;
 
@@ -272,7 +272,7 @@ class Plugins extends AdminController
         }
 
         // Trigger before save event
-        $result = Event::trigger('onExtensionBeforeSave', array($this->_option . '.plugin', &$model, $model->isNew()));
+        $result = Event::trigger('onExtensionBeforeSave', [$this->_option . '.plugin', &$model, $model->isNew()]);
 
         if (in_array(false, $result, true)) {
             Notify::error($model->getError());
@@ -286,7 +286,7 @@ class Plugins extends AdminController
         }
 
         // Trigger after save event
-        Event::trigger('onExtensionAfterSave', array($this->_option . '.plugin', &$model, $model->isNew()));
+        Event::trigger('onExtensionAfterSave', [$this->_option . '.plugin', &$model, $model->isNew()]);
 
         // Clean the cache.
         $this->cleanCache();
@@ -327,8 +327,8 @@ class Plugins extends AdminController
 
         // Incoming
         $cid = Request::getInt('cid', 0);
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $success = 0;
 
@@ -337,7 +337,7 @@ class Plugins extends AdminController
             $model = Plugin::oneOrFail(intval($id));
 
             // Trigger before delete event
-            Event::trigger('onExtensionBeforeDelete', array('com_plugins.plugin', $model->getTableName()));
+            Event::trigger('onExtensionBeforeDelete', ['com_plugins.plugin', $model->getTableName()]);
 
             // Attempt to delete the record
             if (!$model->destroy()) {
@@ -346,7 +346,7 @@ class Plugins extends AdminController
             }
 
             // Trigger after delete event
-            Event::trigger('onExtensionAfterDelete', array('com_plugins.plugin', $model->getTableName()));
+            Event::trigger('onExtensionAfterDelete', ['com_plugins.plugin', $model->getTableName()]);
 
             $success++;
         }
@@ -381,14 +381,14 @@ class Plugins extends AdminController
         }
 
         // Get items to publish from the request.
-        $cid   = Request::getArray('cid', array(), '', 'array');
-        $data  = array(
+        $cid   = Request::getArray('cid', [], '', 'array');
+        $data  = [
             'publish'   => 1,
             'unpublish' => 0,
             'archive'   => 2,
             'trash'     => -2,
             'report'    => -3
-        );
+        ];
         $task  = $this->getTask();
         $value = Arr::getValue($data, $task, 0, 'int');
 
@@ -406,7 +406,7 @@ class Plugins extends AdminController
                 continue;
             }
             if ($value != 1) {
-                Event::trigger('onExtensionAfterDelete', array('com_plugins.plugin', $model));
+                Event::trigger('onExtensionAfterDelete', ['com_plugins.plugin', $model]);
             }
 
             $success++;
@@ -450,7 +450,7 @@ class Plugins extends AdminController
         }
 
         // Initialise variables.
-        $ids = Request::getArray('cid', array(), 'post');
+        $ids = Request::getArray('cid', [], 'post');
         $inc = ($this->getTask() == 'orderup') ? -1 : +1;
 
         $success = 0;
@@ -494,8 +494,8 @@ class Plugins extends AdminController
         }
 
         // Get the input
-        $pks   = Request::getArray('cid', array(), 'post');
-        $order = Request::getArray('order', array(), 'post');
+        $pks   = Request::getArray('cid', [], 'post');
+        $order = Request::getArray('order', [], 'post');
 
         // Sanitize the input
         Arr::toInteger($pks);
@@ -534,7 +534,7 @@ class Plugins extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('cid', array(), 'post');
+        $ids = Request::getArray('cid', [], 'post');
 
         foreach ($ids as $id) {
             $model = Plugin::oneOrFail(intval($id));

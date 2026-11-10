@@ -2190,7 +2190,7 @@ class PgsqlDriver extends BaseSqlDriver
         $q = '"';
 
         $parts = (strpos($name, '.') !== false) ? explode('.', $name) : (array)$name;
-        $bits  = array();
+        $bits  = [];
 
         foreach ($parts as $part) {
             // Trim existing quotes if any

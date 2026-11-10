@@ -45,41 +45,41 @@ class Comment extends Relational
      *
      * @var  array
      */
-    protected $parsed = array(
+    protected $parsed = [
         'content'
-    );
+    ];
 
     /**
      * Fields and their validation criteria
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'content'   => 'notempty',
         'item_id'   => 'positive|nonzero',
         'item_type' => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      **/
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      **/
-    public $always = array(
+    public $always = [
         'modified',
         'modified_by',
         'item_type'
-    );
+    ];
 
     /**
      * Return a formatted Created timestamp
@@ -194,7 +194,7 @@ class Comment extends Relational
      * @param   array   $filters  Filters to apply to query
      * @return  object
      */
-    public function replies($filters = array())
+    public function replies($filters = [])
     {
         if (!isset($filters['item_id'])) {
             $filters['item_id'] = $this->get('item_id');

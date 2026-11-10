@@ -111,7 +111,7 @@ $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this
             if ($this->pub->_project->groupOwner()) {
                 $this->groups[] = $this->pub->_project->groupOwner();
             }
-            $used = array();
+            $used = [];
 
             ?>
             <div class="submitter groupowner"><p><strong><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_GROUP_OWNER'); ?>*: </strong> <?php if ($this->pub->_project->groupOwner()) {

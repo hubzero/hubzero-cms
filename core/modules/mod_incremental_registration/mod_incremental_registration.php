@@ -112,7 +112,7 @@ class IncrementalRegistration extends Module
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     require $this->getLayoutPath('popover');
                 } elseif (isset($_POST['incremental-registration']) && $_POST['incremental-registration'] == 'update') {
-                    $errors       = array();
+                    $errors       = [];
                     $orgtype      = null;
                     $organization = null;
                     $reason       = null;
@@ -138,7 +138,7 @@ class IncrementalRegistration extends Module
                         $reason = trim($_POST['reason']);
                     }
 
-                    $nameInput = Request::getArray('name', array());
+                    $nameInput = Request::getArray('name', []);
                     if (!empty($nameInput)) {
                         if (empty($nameInput['first']) || empty($nameInput['last'])) {
                             $errors['name'] = true;
@@ -146,11 +146,11 @@ class IncrementalRegistration extends Module
                         $name = preg_replace(
                             '/\s+/',
                             ' ',
-                            trim(implode(' ', array(
+                            trim(implode(' ', [
                                 $nameInput['first'] ?? '',
                                 $nameInput['middle'] ?? '',
                                 $nameInput['last'] ?? ''
-                            )))
+                            ]))
                         );
                     }
 
@@ -297,7 +297,7 @@ class IncrementalRegistration extends Module
                                         ->whereEquals('user_id', $uid)
                                         ->rows();
 
-                                    $found = array();
+                                    $found = [];
                                     foreach ($profiles as $profile) {
                                         if (in_array($profile->get('profile_value'), $race)) {
                                             $found[] = $profile->get('profile_value');
@@ -323,10 +323,10 @@ class IncrementalRegistration extends Module
                                 continue;
                             }
                             if ($k == 'disability') {
-                                $disabilities = array();
+                                $disabilities = [];
                                 switch ($_POST['disability']) {
                                     case 'yes':
-                                        $disabilities = array();
+                                        $disabilities = [];
                                         $isSpecificArray = isset($_POST['specificDisability'])
                                             && is_array($_POST['specificDisability']);
                                         if ($isSpecificArray) {
@@ -351,7 +351,7 @@ class IncrementalRegistration extends Module
                                     ->whereEquals('user_id', $uid)
                                     ->rows();
 
-                                $found = array();
+                                $found = [];
                                 foreach ($profiles as $profile) {
                                     if (in_array($profile->get('profile_value'), $disabilities)) {
                                         $found[] = $profile->get('profile_value');

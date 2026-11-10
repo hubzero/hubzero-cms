@@ -167,7 +167,7 @@ $this->css()
                                 $current = explode("\n", $pageVersion->content('raw'));
                                 $previousVersion = $pageVersion->get('version') - 1;
                             if ($previousVersion == 0) {
-                                $previous = array();
+                                $previous = [];
                             } else {
                                 $previous = $this->page->version($previousVersion);
 

@@ -31,7 +31,7 @@ class IcalParser
      *
      * @var array
      */
-    public $windows_timezones = array (
+    public $windows_timezones =  [
         'Dateline Standard Time'          => 'Etc/GMT+12',
         'UTC-11'                          => 'Etc/GMT+11',
         'Hawaiian Standard Time'          => 'Pacific/Honolulu',
@@ -131,7 +131,7 @@ class IcalParser
         'Magadan Standard Time'           => 'Asia/Magadan',
         'Tonga Standard Time'             => 'Pacific/Tongatapu',
         'Samoa Standard Time'             => 'Pacific/Apia',
-    );
+    ];
 
     /**
      * New instance of ical parser
@@ -173,13 +173,13 @@ class IcalParser
      */
     public function parseString($string, $callback = null)
     {
-        $this->data = array();
+        $this->data = [];
 
         if (!preg_match('/BEGIN:VCALENDAR/', $string)) {
             throw new \InvalidArgumentException('Invalid ICAL data format');
         }
 
-        $counters = array();
+        $counters = [];
         $section = 'VCALENDAR';
 
         // Replace \r\n with \n
@@ -265,7 +265,7 @@ class IcalParser
 
             // have some middle part ?
             if ($middle && preg_match_all('#(?<key>[^=;]+)=(?<value>[^;]+)#', $middle, $matches, PREG_SET_ORDER)) {
-                $middle = array();
+                $middle = [];
                 foreach ($matches as $match) {
                     if ($match['key'] === 'TZID') {
                         if (isset($this->windows_timezones[$match['value']])) {
@@ -283,7 +283,7 @@ class IcalParser
         }
 
         // process simple dates with timezone
-        $dateKeys = array('DTSTAMP', 'LAST-MODIFIED', 'CREATED', 'DTSTART', 'DTEND');
+        $dateKeys = ['DTSTAMP', 'LAST-MODIFIED', 'CREATED', 'DTSTART', 'DTEND'];
         if (in_array($key, $dateKeys)) {
             if (strlen($value) == 8) {
                 $value .= 'T000000Z';
@@ -302,7 +302,7 @@ class IcalParser
         $rrulePattern = '#(?<key>[^=;]+)=(?<value>[^;]+)#';
         if ($key === 'RRULE' && preg_match_all($rrulePattern, $value, $matches, PREG_SET_ORDER)) {
             $middle = null;
-            $value = array();
+            $value = [];
             foreach ($matches as $match) {
                 $value[$match['key']] = $match['value'];
             }
@@ -314,23 +314,23 @@ class IcalParser
         }
 
         //implement 4.3.11 Text ESCAPED-CHAR
-        $text_properties = array(
+        $text_properties = [
             'CALSCALE', 'METHOD', 'PRODID', 'VERSION', 'CATEGORIES', 'CLASS',
             'COMMENT', 'DESCRIPTION', 'LOCATION', 'RESOURCES', 'STATUS', 'SUMMARY',
             'TRANSP', 'TZID', 'TZNAME', 'CONTACT', 'RELATED-TO', 'UID', 'ACTION',
             'REQUEST-STATUS'
-        );
+        ];
         if (in_array($key, $text_properties) || strpos($key, 'X-') === 0) {
             if (is_array($value)) {
                 foreach ($value as &$var) {
-                    $var = strtr($var, array('\\\\' => '\\', '\\N' => "\n", '\\n' => "\n", '\\;' => ';', '\\,' => ','));
+                    $var = strtr($var, ['\\\\' => '\\', '\\N' => "\n", '\\n' => "\n", '\\;' => ';', '\\,' => ',']);
                 }
             } else {
-                $value = strtr($value, array('\\\\' => '\\', '\\N' => "\n", '\\n' => "\n", '\\;' => ';', '\\,' => ','));
+                $value = strtr($value, ['\\\\' => '\\', '\\N' => "\n", '\\n' => "\n", '\\;' => ';', '\\,' => ',']);
             }
         }
 
-        return array($key, $middle, $value, $allDay);
+        return [$key, $middle, $value, $allDay];
     }
 
     /**
@@ -340,7 +340,7 @@ class IcalParser
      */
     public function getEvents()
     {
-        return isset($this->data['VEVENT']) ? $this->data['VEVENT'] : array();
+        return isset($this->data['VEVENT']) ? $this->data['VEVENT'] : [];
     }
 
     /**
@@ -350,7 +350,7 @@ class IcalParser
      */
     public function getAlarms()
     {
-        return isset($this->data['VALARM']) ? $this->data['VALARM'] : array();
+        return isset($this->data['VALARM']) ? $this->data['VALARM'] : [];
     }
 
     /**
@@ -360,7 +360,7 @@ class IcalParser
      */
     public function getTimezones()
     {
-        return isset($this->data['VTIMEZONE']) ? $this->data['VTIMEZONE'] : array();
+        return isset($this->data['VTIMEZONE']) ? $this->data['VTIMEZONE'] : [];
     }
 
     /**
@@ -387,7 +387,7 @@ class IcalParser
             });
             return $events;
         }
-        return array();
+        return [];
     }
 
     /**
@@ -403,6 +403,6 @@ class IcalParser
             });
             return $events;
         }
-        return array();
+        return [];
     }
 }

@@ -60,7 +60,7 @@ class Password
      *
      * @var array
      */
-    private $shadowMin = array();
+    private $shadowMin = [];
 
     /**
      * Description for 'shadowMax'
@@ -102,7 +102,7 @@ class Password
      *
      * @var  array
      */
-    private $_updatedkeys = array();
+    private $_updatedkeys = [];
 
     /**
      * Constructor
@@ -122,7 +122,7 @@ class Password
     {
         $cvars = get_class_vars(__CLASS__);
 
-        $this->_updatedkeys = array();
+        $this->_updatedkeys = [];
 
         foreach ($cvars as $key => $value) {
             if ($key[0] != '_') {
@@ -132,7 +132,7 @@ class Password
             }
         }
 
-        $this->_updatedkeys = array();
+        $this->_updatedkeys = [];
     }
 
     /**
@@ -232,7 +232,7 @@ class Password
                 $this->__set($key, $value);
             }
 
-            $this->_updatedkeys = array();
+            $this->_updatedkeys = [];
         } else {
             $hzp = Profile::getInstance($instance);
 
@@ -309,7 +309,7 @@ class Password
         }
 
         if ($affected > 0) {
-            Event::trigger('user.onAfterStorePassword', array($this));
+            Event::trigger('user.onAfterStorePassword', [$this]);
         }
 
         return true;
@@ -351,7 +351,7 @@ class Password
         }
 
         if ($affected > 0) {
-            Event::trigger('user.onAfterDeletePassword', array($this));
+            Event::trigger('user.onAfterDeletePassword', [$this]);
         }
 
         return true;
@@ -448,7 +448,7 @@ class Password
             die();
         }
 
-        $this->_updatedkeys = array_diff($this->_updatedkeys, array($property));
+        $this->_updatedkeys = array_diff($this->_updatedkeys, [$property]);
 
         unset($this->$property);
     }
@@ -867,7 +867,7 @@ class Password
                     $binary = self::_bin(md5($new));
                 }
 
-                $p = array();
+                $p = [];
                 for ($i = 0; $i < 5; $i++) {
                     $k = $i + 6;
                     $j = $i + 12;

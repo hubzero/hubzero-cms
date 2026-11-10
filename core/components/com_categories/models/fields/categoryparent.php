@@ -34,7 +34,7 @@ class CategoryParent extends Select
     protected function getOptions()
     {
         // Initialise variables.
-        $options = array();
+        $options = [];
         $name = (string) $this->element['name'];
 
         // Let's get the id for the current item, either category or content item.
@@ -81,7 +81,7 @@ class CategoryParent extends Select
                 $row = $db->loadObject();
             }
         }
-        $query->whereIn('a.published', array(0, 1))
+        $query->whereIn('a.published', [0, 1])
             ->group('a.id')
             ->group('a.title')
             ->group('a.level')

@@ -130,7 +130,7 @@ class Tool extends Table
      * @param   boolean  $admin
      * @return  integer
      */
-    public function getToolCount($filters = array(), $admin = false)
+    public function getToolCount($filters = [], $admin = false)
     {
         $sql = "SELECT count(*) FROM " . $this->buildQuery($filters, $admin);
 
@@ -166,7 +166,7 @@ class Tool extends Table
      * @param   boolean  $admin
      * @return  array
      */
-    public function getTools($filters = array(), $admin = false)
+    public function getTools($filters = [], $admin = false)
     {
         $sql = "SELECT f.id, f.toolname, f.registered, f.published, f.state_changed, "
             . "f.priority, f.ticketid, f.state as state, v.title, v.version, g.cn as devgroup"
@@ -434,7 +434,7 @@ class Tool extends Table
      * @param   array    $groups
      * @return  array
      */
-    public function getToolGroups($toolid, $groups = array())
+    public function getToolGroups($toolid, $groups = [])
     {
         // @FIXME cn should be unique, this was a workaround for a nanohub data bug
         $query  = "SELECT DISTINCT g.cn FROM `#__tool_groups` AS g ";
@@ -466,7 +466,7 @@ class Tool extends Table
 
             $this->buildToolStatus($toolinfo, $developers, $authors, $version, $status, $option);
         } else {
-            $status = array();
+            $status = [];
         }
     }
 
@@ -505,7 +505,7 @@ class Tool extends Table
             $pubType = 'standard';
         }
 
-        $status = array(
+        $status = [
             'resourceid'    => isset($toolinfo[0]->rid) ? $toolinfo[0]->rid : 0,
             'resource_created' => isset($toolinfo[0]->rcreated) ? $toolinfo[0]->rcreated : '',
             'resource_modified' => (
@@ -534,7 +534,7 @@ class Tool extends Table
             'developers'    => $developers,
             'devgroup'      => isset($toolinfo[0]->devgroup) ? $toolinfo[0]->devgroup : '',
             'membergroups'  => (isset($version[0]->toolaccess) && $version[0]->toolaccess == '@GROUP')
-                ? $this->getToolGroups($toolinfo[0]->id) : array(),
+                ? $this->getToolGroups($toolinfo[0]->id) : [],
             'ntools'        => isset($toolinfo[0]->ntools) ? $toolinfo[0]->ntools : 0,
             'ntoolsdev'     => isset($toolinfo[0]->ntoolsdev) ? $toolinfo[0]->ntoolsdev : 0,
             'ntools_published' => isset($toolinfo[0]->ntoolspublished)
@@ -561,7 +561,7 @@ class Tool extends Table
             'repohost'      => $params->get('repohost'),
             'github'        => $params->get('github'),
             'publishType'   => $pubType
-        );
+        ];
 
         if (is_null($status['repohost'])) {
             if (empty($status['github'])) {

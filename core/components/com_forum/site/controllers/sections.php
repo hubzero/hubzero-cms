@@ -51,13 +51,13 @@ class Sections extends SiteController
         $forum = new Manager('site', 0);
 
         // Filters
-        $filters = array(
+        $filters = [
             'scope'    => $forum->get('scope'),
             'scope_id' => $forum->get('scope_id'),
             'state'    => Section::STATE_PUBLISHED,
             'search'   => '',
             'access'   => User::getAuthorisedViewLevels()
-        );
+        ];
 
         // Flag to indicate if a section is being put into edit mode
         $edit = null;
@@ -129,7 +129,7 @@ class Sections extends SiteController
         Request::checkToken();
 
         // Incoming posted data
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
         $fields = array_map('trim', $fields);
 
         // Instantiate a new table row and bind the incoming data
@@ -156,16 +156,16 @@ class Sections extends SiteController
                 'scope'       => 'forum.section',
                 'scope_id'    => $section->get('id'),
                 'description' => Lang::txt('COM_FORUM_ACTIVITY_SECTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url('index.php?option=' . $this->_option) . '">' . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title' => $section->get('title'),
                     'url'   => Route::url('index.php?option=' . $this->_option)
-                )
+                ]
             ],
-            'recipients' => array(
+            'recipients' => [
                 ['forum.site', 1],
                 ['forum.section', $section->get('id')],
                 ['user', $section->get('created_by')]
-            )
+            ]
         ]);
 
         // Set the redirect
@@ -242,16 +242,16 @@ class Sections extends SiteController
                 'scope'       => 'forum.section',
                 'scope_id'    => $section->get('id'),
                 'description' => Lang::txt('PLG_GROUPS_FORUM_ACTIVITY_SECTION_DELETED', '<a href="' . Route::url('index.php?option=' . $this->_option) . '">' . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title' => $section->get('title'),
                     'url'   => Route::url('index.php?option=' . $this->_option)
-                )
+                ]
             ],
-            'recipients' => array(
+            'recipients' => [
                 ['forum.site', 1],
                 ['forum.section', $section->get('id')],
                 ['user', $section->get('created_by')]
-            )
+            ]
         ]);
 
         // Redirect to main listing

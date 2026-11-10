@@ -29,8 +29,8 @@ $base = 'index.php?option=' . $this->option;
 $assets = $item->assets();
 
 if ($assets->total() > 0) {
-    $images = array();
-    $files = array();
+    $images = [];
+    $files = [];
 
     foreach ($assets as $asset) {
         if ($asset->image()) {

@@ -36,9 +36,9 @@ class Sponsor extends Relational
      *
      * @var  array
      **/
-    protected $rules = array(
+    protected $rules = [
         'name' => 'sponsor'
-    );
+    ];
 
     /**
      * Establish relationship to citations

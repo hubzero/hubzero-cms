@@ -61,8 +61,8 @@ class Coupons
 
         // Initialize temp storage arrays
         $temp = new \stdClass();
-        $temp->itemCoupons = array();
-        $temp->genericCoupons = array();
+        $temp->itemCoupons = [];
+        $temp->genericCoupons = [];
 
         // $cnIds are orderd by time applied
         if (is_array($cnIds) || is_object($cnIds)) {

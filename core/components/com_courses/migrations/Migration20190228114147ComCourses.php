@@ -20,58 +20,58 @@ class Migration20190228114147ComCourses extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__courses_asset_views' => array(
+    public static $tables = [
+        '#__courses_asset_views' => [
             'asset_id',
             'course_id',
             'viewed_by'
-        ),
-        '#__courses_certificates' => array(
+        ],
+        '#__courses_certificates' => [
             'course_id'
-        ),
-        '#__courses_form_deployments' => array(
+        ],
+        '#__courses_form_deployments' => [
             'form_id',
             'user_id'
-        ),
-        '#__courses_form_questions' => array(
+        ],
+        '#__courses_form_questions' => [
             'form_id',
             'page'
-        ),
-        '#__courses_form_respondent_progress' => array(
+        ],
+        '#__courses_form_respondent_progress' => [
             'answer_id'
-        ),
-        '#__courses_forms' => array(
+        ],
+        '#__courses_forms' => [
             'asset_id'
-        ),
-        '#__courses_log' => array(
+        ],
+        '#__courses_log' => [
             'user_id',
             'actor_id',
             'action'
-        ),
-        '#__courses_offering_section_badges' => array(
+        ],
+        '#__courses_offering_section_badges' => [
             'section_id',
             'criteria_id',
             'published'
-        ),
-        '#__courses_offering_section_codes' => array(
+        ],
+        '#__courses_offering_section_codes' => [
             'section_id'
-        ),
-        '#__courses_pages' => array(
+        ],
+        '#__courses_pages' => [
             'course_id',
             'section_id'
-        ),
-        '#__courses_prerequisites' => array(
+        ],
+        '#__courses_prerequisites' => [
             'section_id'
-        ),
-        '#__courses_progress_factors' => array(
+        ],
+        '#__courses_progress_factors' => [
             'section_id',
             'asset_id'
-        ),
-        '#__courses_reviews' => array(
+        ],
+        '#__courses_reviews' => [
             'course_id',
             'offering_id'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

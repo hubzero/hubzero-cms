@@ -76,17 +76,17 @@ class Relationships extends AdminController
     {
         $tag = isset($_GET['tag']) ? $_GET['tag'] : 0;
 
-        $nodes = array();
-        $links = array();
+        $nodes = [];
+        $links = [];
         $id = null;
         $descr = '';
 
         $rv = $tag = $this->get_tag($tag, true, false);
-        $nodes[] = array(
+        $nodes[] = [
             'id'      => $rv['id'],
             'tag'     => $rv['tag'],
             'raw_tag' => $rv['raw_tag']
-        );
+        ];
         if (!$rv['new']) {
             $this->database->setQuery(
                 'SELECT t.id, t.tag, t.raw_tag, count(t.id) AS count FROM `#__tags_object` to1
@@ -98,8 +98,8 @@ class Relationships extends AdminController
 				LIMIT 20'
             );
             $t_idx = 0;
-            $idx_map = array($rv['id'] => $t_idx);
-            $follow = array();
+            $idx_map = [$rv['id'] => $t_idx];
+            $follow = [];
             $max_weight = null;
             foreach ($this->database->loadAssocList() as $idx => $row) {
                 if (is_null($max_weight)) {
@@ -111,11 +111,11 @@ class Relationships extends AdminController
                 }
                 $nodes[] = $row;
                 $idx_map[$row['id']] = ++$t_idx;
-                $links[] = array(
+                $links[] = [
                     'source' => $idx + 1,
                     'target' => 0,
                     'value'  => $row['count']
-                );
+                ];
                 $follow[$idx + 1] = $row['id'];
             }
 
@@ -141,11 +141,11 @@ class Relationships extends AdminController
                         $target_idx = ++$t_idx;
                         $idx_map[$row['id']] = $t_idx;
                     }
-                    $links[] = array(
+                    $links[] = [
                         'source' => $idx,
                         'target' => $target_idx,
                         'value'  => $row['count']
-                    );
+                    ];
                 }
 
                 foreach ($links as &$link) {
@@ -172,19 +172,19 @@ class Relationships extends AdminController
 
         $tag = isset($_GET['tag']) ? $_GET['tag'] : 0;
 
-        $links = array();
+        $links = [];
         $id = null;
         $descr = '';
 
         $rv = $tag = $this->get_tag($tag, true, false);
         $tag['type'] = 'center';
-        $nodes = array(array(
+        $nodes = [[
             'id'      => $rv['id'],
             'tag'     => $rv['tag'],
             'raw_tag' => $rv['raw_tag']
-        ));
-        $tagIdMap = array($rv['id'] => 0);
-        $byDepth = array(array($tag));
+        ]];
+        $tagIdMap = [$rv['id'] => 0];
+        $byDepth = [[$tag]];
 
         for ($depth = 0; $depth < $DEPTH; ++$depth) {
             if (!isset($byDepth[$depth])) {
@@ -218,17 +218,17 @@ class Relationships extends AdminController
                         $tagIdMap[$subTag['id']] = count($nodes) - 1;
                         if ($subTag['label'] == 'parent') {
                             if (!array_key_exists($depth + 1, $byDepth)) {
-                                $byDepth[$depth + 1] = array();
+                                $byDepth[$depth + 1] = [];
                             }
                             $byDepth[$depth + 1][] = $subTag;
                         }
                     } elseif ($subTag['label'] == 'parent') {
                     }
 
-                    $links[] = array(
+                    $links[] = [
                         'source' => $tagIdMap[$tag['id']],
                         'target' => $tagIdMap[$subTag['id']]
-                    );
+                    ];
                 }
             }
         }
@@ -248,11 +248,11 @@ class Relationships extends AdminController
      */
     public function suggestTask()
     {
-        $suggestions = array();
+        $suggestions = [];
 
         if (isset($_GET['term'])) {
             $this->database->setQuery("SELECT raw_tag FROM `#__tags` WHERE raw_tag LIKE " . $this->database->quote('%' . $_GET['term'] . '%'));
-            $later = array();
+            $later = [];
             foreach ($this->database->loadColumn() as $tag) {
                 $tag = stripslashes($tag);
                 if (strpos($tag, $_GET['term']) === 0) {
@@ -292,23 +292,23 @@ class Relationships extends AdminController
             };
             // reconcile post data with what we already know about a tag's relationships
             foreach (
-                array(
-                'labels'   => array(
+                [
+                'labels'   => [
                     'INSERT INTO `#__tags_object` (tbl, label, tagid, objectid) VALUES (\'tags\', \'label\', %d, %d)',
                     'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'label\' AND tagid = %d AND objectid = %d'
-                ),
-                'labeled'  => array(
+                ],
+                'labeled'  => [
                     'INSERT INTO `#__tags_object` (tbl, label, objectid, tagid) VALUES (\'tags\', \'label\', %d, %d)',
                     'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'label\' AND objectid = %d AND tagid = %d'
-                ),
-                'parents'  => array(
+                ],
+                'parents'  => [
                     'INSERT INTO `#__tags_object` (tbl, label, objectid, tagid) VALUES (\'tags\', \'parent\', %d, %d)',
                     'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'parent\' AND objectid = %d AND tagid = %d'
-                ),
-                'children' => array(
+                ],
+                'children' => [
                     'INSERT INTO `#__tags_object` (tbl, label, tagid, objectid) VALUES (\'tags\', \'parent\', %d, %d)',
                     'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'parent\' AND tagid = %d AND objectid = %d'
-                )) as $type => $sql
+                ]] as $type => $sql
             ) {
                 $ex = array_flip(array_map($normalize, $tag[$type]));
                 if (isset($_POST[$type])) {
@@ -448,14 +448,14 @@ class Relationships extends AdminController
                 : 'SELECT DISTINCT t.id, tag, raw_tag, description, COUNT(to1.id) AS count FROM `#__tags` t LEFT JOIN `#__tags_object` to1 ON to1.tagid = t.id WHERE tag = ' . $this->database->quote($tag_str) . ' OR raw_tag = ' . $this->database->quote($tag_str) . ' GROUP BY t.id, tag, raw_tag, description'
         );
         if (($tag = $this->database->loadAssoc())) {
-            $rv = array(
+            $rv = [
                 'id' => $tag['id'],
                 'tag' => $tag['tag'],
                 'count' => $tag['count'],
                 'raw_tag' => $tag['raw_tag'],
                 'description' => $tag['description'],
                 'new' => false
-            );
+            ];
             if (!$detailed) {
                 return $rv;
             }
@@ -506,16 +506,16 @@ class Relationships extends AdminController
             $id = $this->database->insertid();
         }
 
-        return array(
+        return [
             'id'          => $id,
             'tag'         => $norm_tag,
             'raw_tag'     => $tag_str,
             'description' => '',
             'new'         => true,
-            'labeled'     => array(),
-            'labels'      => array(),
-            'parents'     => array(),
-            'children'    => array()
-        );
+            'labeled'     => [],
+            'labels'      => [],
+            'parents'     => [],
+            'children'    => []
+        ];
     }
 }

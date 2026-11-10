@@ -32,7 +32,7 @@ class Sessionhandler extends Select
     protected function getOptions()
     {
         // Initialize variables.
-        $options = array();
+        $options = [];
 
         // Get the options from Session.
         foreach (Manager::getStores() as $store) {

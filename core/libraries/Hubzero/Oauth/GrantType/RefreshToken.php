@@ -47,12 +47,12 @@ class RefreshToken implements GrantTypeInterface
      * @param   array   $config   Config array
      * @return  void
      */
-    public function __construct(RefreshTokenInterface $storage, $config = array())
+    public function __construct(RefreshTokenInterface $storage, $config = [])
     {
         $this->storage = $storage;
-        $this->config  = array_merge(array(
+        $this->config  = array_merge([
             'always_issue_new_refresh_token' => false
-        ), $config);
+        ], $config);
     }
 
     /**

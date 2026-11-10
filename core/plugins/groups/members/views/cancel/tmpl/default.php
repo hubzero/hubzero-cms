@@ -28,7 +28,7 @@ $formUrl = Route::url(
         <legend><?php echo Lang::txt('PLG_GROUPS_MEMBERS_CANCEL_INVITATION'); ?></legend>
 
         <?php
-        $names = array();
+        $names = [];
         foreach ($this->users as $user) {
             if (\Components\Members\Helpers\Utility::validemail($user)) {
                 $names[] = $user;

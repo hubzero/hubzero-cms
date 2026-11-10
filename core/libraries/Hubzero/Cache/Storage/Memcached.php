@@ -29,7 +29,7 @@ class Memcached extends None
      * @param   array  $options
      * @return  void
      */
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
         parent::__construct($options);
 
@@ -44,13 +44,13 @@ class Memcached extends None
         if (!$this->engine) {
             if (!isset($this->options['servers']) || empty($this->options['servers'])) {
                 $config = \Hubzero\Facades\App::get('config');
-                $this->options['servers'] = array(
-                    array(
+                $this->options['servers'] = [
+                    [
                         'host'   => $conf->get('memcache_server_host', 'localhost'),
                         'port'   => $conf->get('memcache_server_port', 11211),
                         'weight' => 1
-                    )
-                );
+                    ]
+                ];
             }
 
             $this->engine = $this->connect($this->options['servers']);
@@ -199,7 +199,7 @@ class Memcached extends None
 
         $index = $this->engine->get($hash . '-index');
         if ($index === false) {
-            $index = array();
+            $index = [];
         }
 
         foreach ($index as $key => $value) {
@@ -222,7 +222,7 @@ class Memcached extends None
 
         $index = $this->engine->get($hash . '-index');
         if ($index === false) {
-            $index = array();
+            $index = [];
         }
 
         foreach ($index as $key) {

@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
     /*
     |--------------------------------------------------------------------------
     | Email Driver
@@ -106,4 +106,4 @@ return array(
     |
     */
     'sendmail' => '/usr/sbin/sendmail',
-);
+];

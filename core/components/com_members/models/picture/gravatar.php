@@ -34,14 +34,14 @@ class Gravatar
      *
      * @var  array
      */
-    private $config = array(
+    private $config = [
         'secure'         => false,
         'fallback'       => false,
         'forceExtension' => false,
         'forceDefault'   => false,
         'maximumRating'  => null,
         'size'           => null
-    );
+    ];
 
     /**
      * Constructor
@@ -49,7 +49,7 @@ class Gravatar
      * @param   array  $config
      * @return  void
      */
-    public function __construct($config = array())
+    public function __construct($config = [])
     {
         foreach ($this->config as $key => $val) {
             if (array_key_exists($key, $config)) {
@@ -59,7 +59,7 @@ class Gravatar
                         FILTER_VALIDATE_URL,
                         FILTER_FLAG_PATH_REQUIRED
                     );
-                    $validTypes = array('mm', 'identicon', 'monsterid', 'wavatar', 'retro', 'blank');
+                    $validTypes = ['mm', 'identicon', 'monsterid', 'wavatar', 'retro', 'blank'];
                     if ($validUrl || in_array($config['fallback'], $validTypes)) {
                         $this->set('fallback', $config['fallback']);
                     }
@@ -152,14 +152,14 @@ class Gravatar
      */
     public function parameters()
     {
-        $build = array();
+        $build = [];
 
         foreach (get_class_methods($this) as $method) {
             if (substr($method, -strlen('Parameter')) !== 'Parameter') {
                 continue;
             }
 
-            if ($called = call_user_func(array($this, $method))) {
+            if ($called = call_user_func([$this, $method])) {
                 $build = array_replace($build, $called);
             }
         }
@@ -178,7 +178,7 @@ class Gravatar
             return null;
         }
 
-        return array('s' => (int)$this->get('size'));
+        return ['s' => (int)$this->get('size')];
     }
 
     /**
@@ -194,7 +194,7 @@ class Gravatar
             return null;
         }
 
-        return array('d' => $fallback);
+        return ['d' => $fallback];
     }
 
     /**
@@ -206,11 +206,11 @@ class Gravatar
     {
         $rating = $this->get('maximumRating');
 
-        if (!$rating || !in_array($rating, array('g','pg','r','x'))) {
+        if (!$rating || !in_array($rating, ['g','pg','r','x'])) {
             return null;
         }
 
-        return array('r' => $rating);
+        return ['r' => $rating];
     }
 
     /**
@@ -221,7 +221,7 @@ class Gravatar
     public function forceDefaultParameter()
     {
         if ($this->get('forceDefault') === true) {
-            return array('forcedefault' => 'y');
+            return ['forcedefault' => 'y'];
         }
 
         return null;

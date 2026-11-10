@@ -99,37 +99,37 @@ class Migration20180524092913ComGroups extends Base
             ->where('private_desc', '!=', '', 'or')
             ->rows();
 
-        $publicDescriptionAnswers = array();
-        $privateDescriptionAnswers = array();
+        $publicDescriptionAnswers = [];
+        $privateDescriptionAnswers = [];
 
         foreach ($groups as $group) {
             if (!$group->get('gidNumber')) {
                 continue;
             }
             if ($group->get('public_desc')) {
-                $publicDescriptionAnswers[] = array(
+                $publicDescriptionAnswers[] = [
                     'group_id' => $group->get('gidNumber'),
                     'value' => $group->get('public_desc')
-                );
+                ];
             }
 
             if ($group->get('private_desc')) {
-                $privateDescriptionAnswers[] = array(
+                $privateDescriptionAnswers[] = [
                     'group_id' => $group->get('gidNumber'),
                     'value' => $group->get('private_desc')
-                );
+                ];
             }
         }
         $publicDescField = Field::blank()
             ->set(
-                array(
+                [
                     'type' => 'textarea',
                     'name' => 'public_desc',
                     'label' => 'Public Description',
                     'access' => 0,
                     'ordering' => 1,
                     'rows' => 10
-                )
+                ]
             );
         if ($publicDescField->save()) {
             if (!empty($publicDescriptionAnswers)) {
@@ -138,14 +138,14 @@ class Migration20180524092913ComGroups extends Base
         }
         $privateDescField = Field::blank()
             ->set(
-                array(
+                [
                     'type' => 'textarea',
                     'name' => 'private_desc',
                     'label' => 'Private Description',
                     'access' => 2,
                     'ordering' => 1,
                     'rows' => 10
-                )
+                ]
             );
         if ($privateDescField->save()) {
             if (!empty($privateDescriptionAnswers)) {

@@ -46,7 +46,7 @@ class Hosts extends AdminController
     public function displayTask()
     {
         // Get filters
-        $filters = array(
+        $filters = [
             'hostname' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.hostname',
                 'hostname',
@@ -81,7 +81,7 @@ class Hosts extends AdminController
                 0,
                 'int'
             )
-        );
+        ];
         // In case limit has been changed, adjust limitstart accordingly
         $filters['limit'] = ($filters['limit'] == 'all') ? 0 : $filters['limit'];
         $filters['start'] = ($filters['limit'] != 0 ? (floor($filters['start'] / $filters['limit']) * $filters['limit']) : 0);
@@ -163,8 +163,8 @@ class Hosts extends AdminController
         $zones = $v->find('list');
 
         // make sure we have a hostname
-        $toolCounts = array();
-        $statusCounts = array();
+        $toolCounts = [];
+        $statusCounts = [];
         if ($row->hostname != '') {
             //get tool instance counts
             $sql = "SELECT appname, count(*) as count from session where exechost=" . $mwdb->quote($row->hostname) . " group by appname";
@@ -202,7 +202,7 @@ class Hosts extends AdminController
         $mwdb = Utils::getMWDBO();
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         $row = new Host($mwdb);
 
@@ -222,8 +222,8 @@ class Hosts extends AdminController
         }
 
         // Figure out the hosttype stuff.
-        $hosttype = Request::getArray('hosttype', array(), 'post');
-        $harr = array();
+        $hosttype = Request::getArray('hosttype', [], 'post');
+        $harr = [];
         foreach ($hosttype as $name => $value) {
             $harr[$value] = 1;
         }
@@ -312,7 +312,7 @@ class Hosts extends AdminController
         Request::checkToken();
 
         // Incoming
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
 
         $removed = 0;
 

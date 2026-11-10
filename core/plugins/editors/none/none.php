@@ -151,7 +151,7 @@ class None extends Plugin
         $id = null,
         $asset = null,
         $author = null,
-        $params = array()
+        $params = []
     ) {
         if (empty($id)) {
             $id = $name;

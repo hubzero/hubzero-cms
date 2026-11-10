@@ -46,28 +46,28 @@ class Response extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'answer'  => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Fields to be parsed
      *
      * @var array
      */
-    protected $parsed = array(
+    protected $parsed = [
         'answer'
-    );
+    ];
 
     /**
      * Base URL
@@ -429,11 +429,11 @@ class Response extends Relational
         $valid = parent::validate();
 
         if ($valid) {
-            $results = Event::trigger('content.onContentBeforeSave', array(
+            $results = Event::trigger('content.onContentBeforeSave', [
                 'com_answers.response.answer',
                 &$this,
                 $this->isNew()
-            ));
+            ]);
 
             foreach ($results as $result) {
                 if ($result === false) {

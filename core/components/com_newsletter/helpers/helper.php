@@ -216,16 +216,16 @@ class Helper
     public static function sendMailinglistConfirmationEmail($emailAddress, $mailinglistObject, $addedByAdmin = true)
     {
         // create from details
-        $from = array(
+        $from = [
             'name'  => Config::get('sitename') . ' Mailing Lists',
             'email' => 'hubmail-mailinglists@' . $_SERVER['HTTP_HOST']
-        );
+        ];
 
         // create replyto details
-        $replyto = array(
+        $replyto = [
             'name'  => 'DO NOT REPLY',
             'email' => 'do-not-reply@' . $_SERVER['HTTP_HOST']
-        );
+        ];
 
         //build subject
         $subject = "Confirm Email Subscription to '" . $mailinglistObject->name . "' on " . Config::get('sitename');

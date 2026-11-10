@@ -23,7 +23,7 @@ interface Provider
      *
      * @param  array  $filters
      */
-    public function records($filters = array());
+    public function records($filters = []);
 
     /**
      * Return a single record

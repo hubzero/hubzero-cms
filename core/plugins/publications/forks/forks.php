@@ -37,7 +37,7 @@ class Forks extends Plugin
      */
     public function &onPublicationAreas($publication, $version = 'default', $extended = true)
     {
-        $areas = array();
+        $areas = [];
 
         if ($publication->_category->_params->get('plg_forks')) {
             $areas['forks'] = Lang::txt('PLG_PUBLICATIONS_FORKS');
@@ -59,11 +59,11 @@ class Forks extends Plugin
      */
     public function onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)
     {
-        $arr = array(
+        $arr = [
             'html'     => '',
             'metadata' => '',
             'name'     => $this->_name
-        );
+        ];
 
         // Check if our area is in the array of areas we want to return results for
         if (is_array($areas)) {
@@ -112,11 +112,11 @@ class Forks extends Plugin
     //public function onPublicationExtended($publication, $option, $miniview=0)
     public function onPublicationSub($publication, $option, $miniview = 0)
     {
-        $arr = array(
+        $arr = [
             'html'    => '',
             'metadata' => '',
             'name'    => 'forks'
-        );
+        ];
 
         // Make sure forks are allowed
         if (!$publication->config('forks')) {
@@ -136,9 +136,9 @@ class Forks extends Plugin
         $db = App::get('db');
 
         $objV = new \Components\Publications\Tables\Version($db);
-        $versions = $objV->getVersions($publication->id, $filters = array('public' => 1));
+        $versions = $objV->getVersions($publication->id, $filters = ['public' => 1]);
 
-        $sources = array();
+        $sources = [];
         foreach ($versions as $version) {
             $sources[] = $version->id;
         }
@@ -190,9 +190,9 @@ class Forks extends Plugin
         $db = App::get('db');
 
         $objV = new \Components\Publications\Tables\Version($db);
-        $versions = $objV->getVersions($publication->id, $filters = array('public' => 1));
+        $versions = $objV->getVersions($publication->id, $filters = ['public' => 1]);
 
-        $forks = array();
+        $forks = [];
         foreach ($versions as $version) {
             // Now find all the forks for each version
             $db->setQuery("SELECT id, publication_id FROM `#__publication_versions` WHERE `forked_from`=" .
@@ -235,7 +235,7 @@ class Forks extends Plugin
         $model = new \Components\Projects\Models\Project();
 
         // Set filters
-        $filters = array(
+        $filters = [
             'mine'     => 1,
             'updates'  => 1,
             'getowner' => 1,
@@ -243,9 +243,9 @@ class Forks extends Plugin
             'sortdir'  => 'ASC',
             'filterby' => 'active',
             'uid'      => User::get('id')
-        );
+        ];
 
-        $projects = array();
+        $projects = [];
 
         // Get owned
         $filters['which'] = 'owned';
@@ -257,7 +257,7 @@ class Forks extends Plugin
         // the "other" list and sort everything by title
         foreach ($owned as $own) {
             // If not a  1 = manager, 0 = collaborator, or 2 = author, 5 = reviewer, skip
-            if (!in_array($own->get('role'), array(0, 1, 2, 3))) {
+            if (!in_array($own->get('role'), [0, 1, 2, 3])) {
                 continue;
             }
             $projects[$own->get('title')] = $own;
@@ -269,7 +269,7 @@ class Forks extends Plugin
 
         foreach ($other as $own) {
             // If not a  1 = manager, 0 = collaborator, or 2 = author, 5 = reviewer, skip
-            if (!in_array($own->get('role'), array(0, 1, 2, 3))) {
+            if (!in_array($own->get('role'), [0, 1, 2, 3])) {
                 continue;
             }
             $projects[$own->get('title')] = $own;

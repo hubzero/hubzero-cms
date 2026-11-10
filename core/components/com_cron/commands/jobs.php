@@ -62,7 +62,7 @@ class Jobs extends Base implements CommandInterface
                 ->rows();
         }
 
-        $processed = array();
+        $processed = [];
 
         // A specific --job is force-run regardless of its schedule.
         $forced = (bool) $id;
@@ -104,7 +104,7 @@ class Jobs extends Base implements CommandInterface
                 $job->mark('start_run');
 
                 try {
-                    Event::trigger('cron.' . $job->get('event'), array($job));
+                    Event::trigger('cron.' . $job->get('event'), [$job]);
 
                     $this->output->addLine(Lang::txt('[%s] Finished event "%s".', with(new Date('now'))->toLocal(), $job->get('event')), 'info');
                 } catch (\Throwable $e) {
@@ -191,7 +191,7 @@ class Jobs extends Base implements CommandInterface
         // recognizable user agent so com_usage keeps filtering the hit out of
         // traffic stats.
         $ch = curl_init();
-        curl_setopt_array($ch, array(
+        curl_setopt_array($ch, [
             CURLOPT_URL            => $url,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_FOLLOWLOCATION => true,
@@ -200,7 +200,7 @@ class Jobs extends Base implements CommandInterface
             CURLOPT_CONNECTTIMEOUT => 10,
             CURLOPT_TIMEOUT        => 1800,
             CURLOPT_USERAGENT      => 'hubzero-cms cron tick',
-        ));
+        ]);
 
         $start = microtime(true);
         $body  = curl_exec($ch);
@@ -255,22 +255,22 @@ class Jobs extends Base implements CommandInterface
                 ->rows();
         }
 
-        $rows = array(
-            array(
+        $rows = [
+            [
                 Lang::txt('ID'),
                 Lang::txt('Title'),
                 Lang::txt('Last Run'),
                 Lang::txt('Next Run')
-            )
-        );
+            ]
+        ];
 
         foreach ($jobs as $job) {
-            $rows[] = array(
+            $rows[] = [
                 $job->get('id'),
                 Str::truncate($job->get('title'), 30),
                 $job->get('last_run'),
                 $job->get('next_run')
-            );
+            ];
         }
 
         $this->output->addTable($rows, true);

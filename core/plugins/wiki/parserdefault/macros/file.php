@@ -35,7 +35,7 @@ class File extends WikiMacro
      *
      * @var array
      */
-    private $attr = array();
+    private $attr = [];
 
     /**
      * Returns description of macro, use, and accepted arguments
@@ -44,7 +44,7 @@ class File extends WikiMacro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['wiki'] = 'This macro alternately generates a link to a file or embeds the file '
             . 'for display (only valid for CDF files and images). The first argument is the filename.';
         $txt['html'] = '<p>This macro alternately generates a link to a file or embeds the file '
@@ -105,21 +105,21 @@ class File extends WikiMacro
         $args   = explode(',', $content);
         $file   = array_shift($args);
 
-        $this->attr   = array();
+        $this->attr   = [];
         $this->attr['href']  = '';
-        $this->attr['style'] = array();
+        $this->attr['style'] = [];
         $this->attr['details'] = true;
 
         // Get single attributes
         // EX: [[Image(myimage.png, nolink, right)]]
         $pattern = '/[, ](left|right|top|center|bottom|nodetails|[0-9]+(px|%|em)?)(?:[, ]|$)/i';
-        $argues = preg_replace_callback($pattern, array(&$this, 'parseSingleAttribute'), $content);
+        $argues = preg_replace_callback($pattern, [&$this, 'parseSingleAttribute'], $content);
         // Get quoted attribute/value pairs
         // EX: [[Image(myimage.png, desc="My description, contains, commas")]]
         $argues = preg_replace_callback(
             '/[, ](alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap|link|rel' .
             '|details)=(?:["\'])([^"\']*)(?:["\'])/i',
-            array(&$this, 'parseAttributeValuePair'),
+            [&$this, 'parseAttributeValuePair'],
             $content
         );
         // Get non-quoted attribute/value pairs
@@ -127,7 +127,7 @@ class File extends WikiMacro
         $argues = preg_replace_callback(
             '/[, ](alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap|link|rel' .
             '|details)=([^"\',]*)(?:[, ]|$)/i',
-            array(&$this, 'parseAttributeValuePair'),
+            [&$this, 'parseAttributeValuePair'],
             $content
         );
 
@@ -139,7 +139,7 @@ class File extends WikiMacro
             $this->config->set('filepath', $this->filepath);
         }
 
-        $this->imgs = array(
+        $this->imgs = [
             'jpg',
             'jpeg',
             'jpe',
@@ -153,7 +153,7 @@ class File extends WikiMacro
             'jp2',
             'jpg2',
             'svg'
-        );
+        ];
 
         $ret = false;
         // Is it numeric?
@@ -219,14 +219,14 @@ class File extends WikiMacro
         // Set width if just a pixel size is given
         // e.g., [[File(myfile.jpg, width=120px)]]
         if (preg_match($size, $val, $matches) && $key != 'border') {
-            if ($matches[0] && in_array($key, array('width', 'height'))) {
+            if ($matches[0] && in_array($key, ['width', 'height'])) {
                 $this->attr['style'][$key] = $val;
                 //$this->attr[$key] = $val;
                 return;
             }
         }
 
-        if (is_numeric($val) && in_array($key, array('width', 'height'))) {
+        if (is_numeric($val) && in_array($key, ['width', 'height'])) {
             $this->attr['style'][$key] = $val . 'px';
             $this->attr[$key] = $val;
         }
@@ -271,7 +271,7 @@ class File extends WikiMacro
         }
         // Check for alignment, no key given
         // e.g., [[File(myfile.jpg, left)]]
-        if (in_array($key, array('left', 'right', 'top', 'bottom', 'center'))) {
+        if (in_array($key, ['left', 'right', 'top', 'bottom', 'center'])) {
             if ($key == 'center') {
                 $this->attr['style']['display'] = 'block';
                 $this->attr['style']['margin-right'] = 'auto';
@@ -356,7 +356,7 @@ class File extends WikiMacro
 
         // Check for alignment, no key given
         // e.g., [[File(myfile.jpg, left)]]
-        if (in_array($key, array('left', 'right', 'top', 'bottom'))) {
+        if (in_array($key, ['left', 'right', 'top', 'bottom'])) {
             if ($key == 'center') {
                 $this->attr['style']['display'] = 'block';
                 $this->attr['style']['margin-right'] = 'auto';
@@ -461,7 +461,7 @@ class File extends WikiMacro
      * @param      array  $attr Attributes to apply to the HTML
      * @return     string
      */
-    private function embed($file, $attr = array())
+    private function embed($file, $attr = [])
     {
         $ext = strtolower(Filesystem::extension($file));
 
@@ -621,7 +621,7 @@ class File extends WikiMacro
                 if (in_array($ext, $this->imgs)) {
                     $styles = '';
                     if (count($attr['style']) > 0) {
-                        $s = array();
+                        $s = [];
                         foreach ($attr['style'] as $k => $v) {
                             $s[] = strtolower($k) . ':' . $v;
                         }
@@ -629,7 +629,7 @@ class File extends WikiMacro
                     }
                     $attr['style'] = '';
 
-                    $attribs = array();
+                    $attribs = [];
                     foreach ($attr as $k => $v) {
                         $k = strtolower($k);
                         if ($k != 'href' && $k != 'rel' && $k != 'desc' && $v) {

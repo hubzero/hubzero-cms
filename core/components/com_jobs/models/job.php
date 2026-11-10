@@ -100,28 +100,28 @@ class Job extends Model
     public function content($as = 'parsed', $shorten = 0)
     {
         $as = strtolower($as);
-        $options = array();
+        $options = [];
 
         switch ($as) {
             case 'parsed':
                 $content = $this->get('description.parsed', null);
 
                 if ($content == null) {
-                    $config = array(
+                    $config = [
                         'option'   => 'com_jobs',
                         'scope'    => 'job' . DS . $this->get('code'),
                         'pagename' => 'jobs',
                         'pageid'   => $this->get('code'),
                         'filepath' => '',
                         'domain'   => ''
-                    );
+                    ];
 
                     $content = stripslashes($this->get('description'));
-                    $this->importPlugin('content')->trigger('onContentPrepare', array(
+                    $this->importPlugin('content')->trigger('onContentPrepare', [
                         $this->_context,
                         &$this,
                         &$config
-                    ));
+                    ]);
 
                     $this->set('description.parsed', $this->get('description'));
                     $this->set('description', $content);

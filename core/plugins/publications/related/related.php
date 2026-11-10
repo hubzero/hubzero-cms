@@ -34,11 +34,11 @@ class Related extends Plugin
      */
     public function &onPublicationSubAreas($publication)
     {
-        $areas = array();
+        $areas = [];
         if ($publication->category()->_params->get('plg_related', 1) == 1) {
-            $areas = array(
+            $areas = [
                 'related' => Lang::txt('PLG_PUBLICATION_RELATED')
-            );
+            ];
         }
         return $areas;
     }
@@ -53,13 +53,13 @@ class Related extends Plugin
      */
     public function onPublicationSub($publication, $option, $miniview = 0)
     {
-        $arr = array(
+        $arr = [
             'html'     => '',
             'metadata' => ''
-        );
+        ];
 
         // Check if our area is in the array of areas we want to return results for
-        $areas = array('related');
+        $areas = ['related'];
         if (
             !array_intersect($areas, $this->onPublicationSubAreas($publication))
             && !array_intersect($areas, array_keys($this->onPublicationSubAreas($publication)))
@@ -93,8 +93,8 @@ class Related extends Plugin
                 $sql1 .= '';
             } else {
                 $ugs = \Hubzero\User\Helper::getGroups(User::get('id'), 'members');
-                $groups = array();
-                $cns = array();
+                $groups = [];
+                $cns = [];
                 if ($ugs && count($ugs) > 0) {
                     foreach ($ugs as $ug) {
                         $cns[] = $database->quote($ug->cn);
@@ -126,7 +126,7 @@ class Related extends Plugin
         $tags = $model->getTags();
 
         // Get version authors
-        $authors = isset($publication->_authors) ? $publication->_authors : array();
+        $authors = isset($publication->_authors) ? $publication->_authors : [];
 
         // Build the query that get publications related by tag
         $sql2 = "SELECT DISTINCT r.publication_id as id, NULL AS pageid, r.id AS version,
@@ -138,7 +138,7 @@ class Related extends Plugin
 				INNER JOIN `#__publication_authors` AS PA ON PA.publication_version_id=r.id
 				WHERE C.id=r.publication_id ";
         if ($tags) {
-            $tquery = array(0);
+            $tquery = [0];
             foreach ($tags as $tagg) {
                 $tquery[] = $database->quote($tagg->get('id'));
             }
@@ -147,7 +147,7 @@ class Related extends Plugin
             $sql2 .= (count($authors) > 0) ? " OR " : "";
         }
         if (count($authors) > 0) {
-            $aquery = array();
+            $aquery = [];
             foreach ($authors as $author) {
                 $aquery[] = $database->quote($author->user_id);
             }
@@ -197,12 +197,12 @@ class Related extends Plugin
         }
 
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'publications',
                 'element' => 'related',
                 'name'    => 'browse',
                 'layout'  => $layout
-            )
+            ]
         );
 
         // Pass the view some info

@@ -66,7 +66,7 @@ class Reports extends Base
     public function generateTask()
     {
         // Incoming
-        $data   = Request::getArray('data', array(), 'post');
+        $data   = Request::getArray('data', [], 'post');
         $from   = Request::getString('fromdate', Date::of('-1 month')->toLocal('Y-m'));
         $to     = Request::getString('todate', Date::of('now')->toLocal('Y-m'));
         $filter = Request::getString('searchterm', '');
@@ -120,7 +120,7 @@ class Reports extends Base
                 fputcsv($output, $data);
 
                 foreach ($stats as $record) {
-                    $sorted = array();
+                    $sorted = [];
                     foreach ($data as $field) {
                         $input = $record->$field;
                         if ($field == 'doi') {

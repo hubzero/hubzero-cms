@@ -13,7 +13,7 @@ defined('_HZEXEC_') or die();
 
 $base = 'index.php?option=' . $this->option
     . '&controller=' . $this->controller;
-$done = array();
+$done = [];
 
 $docsUrl = Route::url($base . '&task=docs');
 $schemaUrl = Route::url($base . '&task=docs#overview-schema');

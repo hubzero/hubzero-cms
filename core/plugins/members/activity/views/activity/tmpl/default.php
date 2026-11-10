@@ -22,12 +22,12 @@ $this->css()
 $no_html = Request::getInt('no_html', 0);
 
 // get all sessions
-$online = array();
+$online = [];
 $sessions = Hubzero\Session\Helper::getAllSessions(
-    array(
+    [
     'guest'    => 0,
     'distinct' => 1
-    )
+    ]
 );
 if ($sessions) {
     // see if any session matches our userid

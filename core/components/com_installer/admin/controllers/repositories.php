@@ -33,11 +33,11 @@ class Repositories extends AdminController
     public function execute()
     {
         if (!is_file(PATH_APP . '/composer.json')) {
-            $view = new \Hubzero\Component\View(array(
+            $view = new \Hubzero\Component\View([
                 'base_path' => dirname(__DIR__),
                 'name'      => 'warnings',
                 'layout'    => 'composer'
-            ));
+            ]);
             $view->display();
             return;
         }
@@ -55,7 +55,7 @@ class Repositories extends AdminController
     public function displayTask()
     {
         // Paging
-        $filters = array(
+        $filters = [
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
@@ -79,13 +79,13 @@ class Repositories extends AdminController
                 'filter_order_Dir',
                 'DESC'
             )
-        );
+        ];
 
         try {
             $repositories = ComposerHelper::getRepositoryConfigs();
         } catch (\Exception $e) {
             Notify::error($e->getMessage());
-            $repositories = array();
+            $repositories = [];
         }
 
         // Output the HTML
@@ -192,8 +192,8 @@ class Repositories extends AdminController
         }
 
         // Incoming aliases as repos
-        $repos = Request::getArray('repositories', array());
-        $repos = (!is_array($repos) ? array($repos) : $repos);
+        $repos = Request::getArray('repositories', []);
+        $repos = (!is_array($repos) ? [$repos] : $repos);
 
         if (count($repos) <= 0) {
             return $this->cancelTask();
@@ -204,7 +204,7 @@ class Repositories extends AdminController
             ComposerHelper::removeRepository($repo);
 
             // Trigger after delete event
-            Event::trigger('onRepositoryAfterDelete', array($repo));
+            Event::trigger('onRepositoryAfterDelete', [$repo]);
 
             $success++;
         }

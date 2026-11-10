@@ -20,7 +20,7 @@ $about = $this->manifest->adminTips ? $this->manifest->adminTips : $this->manife
 // Get curator status
 $curatorStatus = $this->pub->curation()->getCurationStatus($this->pub, $this->step, 0, 'curator');
 
-$cls = array();
+$cls = [];
 $cls[] = $required ? ' el-required' : ' el-optional';
 $cls[] = $complete ? ' el-complete' : ' el-incomplete';
 $cls[] = $curatorStatus->status == 1 ? ' el-passed' : '';

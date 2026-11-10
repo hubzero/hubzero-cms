@@ -44,11 +44,11 @@ class Metadata
      *
      * @var  array
      */
-    protected static $nameIdSources = array(
+    protected static $nameIdSources = [
         'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress' => 'email',
         'urn:oasis:names:tc:SAML:2.0:nameid-format:persistent'   => 'id',
         'urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified'  => 'username'
-    );
+    ];
 
     /**
      * Fetch a metadata document over http(s)
@@ -68,7 +68,7 @@ class Metadata
         // A host with only public addresses, IPv4 and IPv6, fetched from those
         // addresses, so it cannot reach the hub's own network; see
         // \Hubzero\Utility\PublicUrl
-        $target = \Hubzero\Utility\PublicUrl::check($url, array('https'));
+        $target = \Hubzero\Utility\PublicUrl::check($url, ['https']);
 
         if (!$target) {
             return false;
@@ -148,9 +148,9 @@ class Metadata
         // registration never blanks a value the descriptor is simply silent
         // about (an SP may publish SSO-only metadata and still have a
         // registered SLO endpoint or certificate)
-        $fields = array(
+        $fields = [
             'entity_id' => $entity->getAttribute('entityID')
-        );
+        ];
 
         $acsUrl = '';
 
@@ -161,7 +161,7 @@ class Metadata
         if ($descriptor->hasAttribute('AuthnRequestsSigned')) {
             $signed = strtolower($descriptor->getAttribute('AuthnRequestsSigned'));
 
-            $fields['want_requests_signed'] = in_array($signed, array('true', '1')) ? 1 : 0;
+            $fields['want_requests_signed'] = in_array($signed, ['true', '1']) ? 1 : 0;
         }
 
         // Same rule for WantAssertionsSigned, which decides whether we add an
@@ -169,7 +169,7 @@ class Metadata
         if ($descriptor->hasAttribute('WantAssertionsSigned')) {
             $wants = strtolower($descriptor->getAttribute('WantAssertionsSigned'));
 
-            $fields['sign_assertion'] = in_array($wants, array('true', '1')) ? 1 : 0;
+            $fields['sign_assertion'] = in_array($wants, ['true', '1']) ? 1 : 0;
         }
 
         // NameID format: take the first one we can actually issue. An SP that
@@ -196,10 +196,10 @@ class Metadata
                 continue;
             }
 
-            $rank = array(
+            $rank = [
                 strtolower($acs->getAttribute('isDefault')) == 'true' ? 0 : 1,
                 (int) $acs->getAttribute('index')
-            );
+            ];
 
             if ($best === null || $rank < $best) {
                 $best = $rank;

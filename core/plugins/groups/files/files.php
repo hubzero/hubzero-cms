@@ -69,13 +69,13 @@ class Files extends Plugin
      */
     public function &onGroupAreas()
     {
-        $area = array(
+        $area = [
             'name' => 'files',
             'title' => Lang::txt('PLG_GROUPS_FILES'),
             'default_access' => $this->params->get('plugin_access', 'members'),
             'display_menu_tab' => $this->params->get('display_tab', 1),
             'icon' => 'f0c5'
-        );
+        ];
         return $area;
     }
 
@@ -98,10 +98,10 @@ class Files extends Plugin
         $active = 'files';
 
         // The output array we're returning
-        $arr = array(
+        $arr = [
             'html'     => '',
-            'metadata' => array()
-        );
+            'metadata' => []
+        ];
 
         //get this area details
         $this_area = $this->onGroupAreas();
@@ -189,7 +189,7 @@ class Files extends Plugin
             ->set('config', $this->params)
             ->set('task', $this->action)
             ->set('authorized', $this->authorized)
-            ->set('notifications', array());
+            ->set('notifications', []);
 
         //get rel path to start
         $view->activeFolder = Request::getString('path', '/');
@@ -262,7 +262,7 @@ class Files extends Plugin
      */
     private function _buildFolderTree($folders, $parent_id = 0)
     {
-        $branch = array();
+        $branch = [];
         foreach ($folders as $folder) {
             if ($folder['parent'] == $parent_id) {
                 $children = $this->_buildFolderTree($folders, $folder['id']);

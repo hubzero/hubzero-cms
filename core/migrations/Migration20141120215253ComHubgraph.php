@@ -23,12 +23,12 @@ class Migration20141120215253ComHubgraph extends Base
     {
         $schema = $this->db->schema();
 
-        $params = array(
+        $params = [
             "host"           => "unix:///var/run/hubgraph-server.sock",
             "port"           => null,
             "showTagCloud"   => true,
             "enabledOptions" => ""
-        );
+        ];
         $this->addComponentEntry('Hubgraph', 'com_hubgraph', 1, $params, false);
 
         if ($schema->tableExists('#__extensions')) {

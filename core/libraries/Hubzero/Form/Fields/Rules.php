@@ -50,17 +50,17 @@ class Rules extends Field
         $actions = Access::getActionsFromFile($comfile, $sectioned);
 
         if (!$actions) {
-            $actions = array();
+            $actions = [];
         }
 
         // Iterate over the children and add to the actions.
         foreach ($this->element->children() as $el) {
             if ($el->getName() == 'action') {
-                $actions[] = (object) array(
+                $actions[] = (object) [
                     'name' => (string) $el['name'],
                     'title' => (string) $el['title'],
                     'description' => (string) $el['description']
-                );
+                ];
             }
         }
 
@@ -99,7 +99,7 @@ class Rules extends Field
         $lang = App::get('language');
 
         // Prepare output
-        $html = array();
+        $html = [];
         $html[] = '<div id="permissions-sliders" class="pane-sliders">';
         $html[] = '<p class="rule-desc">' . $lang->txt('JLIB_RULES_SETTINGS_DESC') . '</p>';
         $html[] = '<div id="permissions-rules">';

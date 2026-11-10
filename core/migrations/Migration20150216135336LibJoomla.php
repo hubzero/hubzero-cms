@@ -31,7 +31,7 @@ class Migration20150216135336LibJoomla extends Base
             $i = (int) $query->value('ordering');
 
             if ($i == 2) {
-                foreach (array('Protected' => '[1]', 'Private' => '[8]') as $title => $usergroups) {
+                foreach (['Protected' => '[1]', 'Private' => '[8]'] as $title => $usergroups) {
                     $i++;
 
                     $this->db->getQuery(true)

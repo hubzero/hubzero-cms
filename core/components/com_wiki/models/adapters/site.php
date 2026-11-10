@@ -19,9 +19,9 @@ class Site extends Base
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_segments = array(
+    protected $_segments = [
         'option' => 'com_wiki',
-    );
+    ];
 
     /**
      * Constructor
@@ -106,9 +106,9 @@ class Site extends Base
      */
     public function routing($task = 'save')
     {
-        return array(
+        return [
             'option' => $this->_segments['option'],
             'task'   => $task
-        );
+        ];
     }
 }

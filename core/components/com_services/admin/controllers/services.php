@@ -43,7 +43,7 @@ class Services extends AdminController
      */
     public function displayTask()
     {
-        $filters = array(
+        $filters = [
             // Get sorting variables
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
@@ -55,7 +55,7 @@ class Services extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         // get all available services
         $query = Service::all();
@@ -82,8 +82,8 @@ class Services extends AdminController
     {
         $now = Date::toSql();
 
-        $defaults = array(
-            array(
+        $defaults = [
+            [
                 'title' => Lang::txt('COM_SERVICES_BASIC_SERVICE_TITLE'),
                 'category' => strtolower(Lang::txt('COM_SERVICES_JOBS')),
                 'alias' => 'employer_basic',
@@ -98,8 +98,8 @@ class Services extends AdminController
                 'unitmeasure' => strtolower(Lang::txt('month')),
                 'changed' => $now,
                 'params' => "promo=" . Lang::txt('COM_SERVICES_BASIC_SERVICE_PROMO') . "\npromomaxunits=3\nmaxads=1"
-            ),
-            array(
+            ],
+            [
                 'title' => Lang::txt('COM_SERVICES_PREMIUM_SERVICE_TITLE'),
                 'category' => strtolower(Lang::txt('COM_SERVICES_JOBS')),
                 'alias' => 'employer_premium',
@@ -114,8 +114,8 @@ class Services extends AdminController
                 'unitmeasure' => strtolower(Lang::txt('month')),
                 'changed' => $now,
                 'params' => "promo=\npromomaxunits=\nmaxads=3"
-            )
-        );
+            ]
+        ];
 
         foreach ($defaults as $data) {
             $row = Service::blank()->set($data);
@@ -146,7 +146,7 @@ class Services extends AdminController
         Request::setVar('hidemainmenu', 1);
 
         if (!is_object($row)) {
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id)) {
                 $id = (!empty($id) ? intval($id[0]) : 0);
             }
@@ -180,12 +180,12 @@ class Services extends AdminController
         }
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
         $fields = array_map('trim', $fields);
 
         // Blank number boxes post ''; strict SQL refuses '' for the numeric
         // columns (unitprice is blank on a points-only service), so store NULL
-        foreach (array('unitprice', 'pointsprice', 'minunits', 'maxunits', 'unitsize', 'ordering') as $num) {
+        foreach (['unitprice', 'pointsprice', 'minunits', 'maxunits', 'unitsize', 'ordering'] as $num) {
             if (isset($fields[$num]) && $fields[$num] === '') {
                 $fields[$num] = null;
             }
@@ -226,8 +226,8 @@ class Services extends AdminController
         }
 
         // get the request vars
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $removed = 0;
 

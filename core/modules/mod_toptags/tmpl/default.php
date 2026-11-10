@@ -15,7 +15,7 @@ defined('_HZEXEC_') or die();
 $exclude = explode(',', $this->params->get('exclude', ''));
 $exclude = array_map('trim', $exclude);
 
-$tl = array();
+$tl = [];
 if ($this->tags->count() > 0) {
     $html  = '<ol class="tags">' . "\n";
     foreach ($this->tags as $tag) {

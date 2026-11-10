@@ -42,7 +42,7 @@ class Points extends AdminController
         $lastmonth = Date::of(time() - (32 * 24 * 60 * 60))->format('Y-m');
 
         // Get overall earnings
-        $this->view->stats[] = array(
+        $this->view->stats[] = [
             'memo'          => 'Earnings - Total',
             'class'         => 'earntotal',
             'alltimepts'    => Transaction::getTotals('', 'deposit', '', 0, '', '', 1, ''),
@@ -52,10 +52,10 @@ class Points extends AdminController
             'thismonthtran' => Transaction::getTotals('', 'deposit', '', 0, '', '', 1, $thismonth, $calc = 2),
             'lastmonthtran' => Transaction::getTotals('', 'deposit', '', 0, '', '', 1, $lastmonth, $calc = 2),
             'avg'           => round(Transaction::getTotals('', 'deposit', '', 0, '', '', 1, '', $calc = 1))
-        );
+        ];
 
         // Get overall earnings on Answers
-        $this->view->stats[] = array(
+        $this->view->stats[] = [
             'memo'          => 'Earnings: Answers',
             'class'         => 'earn',
             'alltimepts'    => Transaction::getTotals('answers', 'deposit', '', 0, '', '', 1, ''),
@@ -65,10 +65,10 @@ class Points extends AdminController
             'thismonthtran' => Transaction::getTotals('answers', 'deposit', '', 0, '', '', 1, $thismonth, $calc = 2),
             'lastmonthtran' => Transaction::getTotals('answers', 'deposit', '', 0, '', '', 1, $lastmonth, $calc = 2),
             'avg'           => round(Transaction::getTotals('answers', 'deposit', '', 0, '', '', 1, '', $calc = 1))
-        );
+        ];
 
         // Get overall earnings on Wishes
-        $this->view->stats[] = array(
+        $this->view->stats[] = [
             'memo'          => 'Earnings: Wish List',
             'class'         => 'earn',
             'alltimepts'    => Transaction::getTotals('wish', 'deposit', '', 0, '', '', 1, ''),
@@ -78,10 +78,10 @@ class Points extends AdminController
             'thismonthtran' => Transaction::getTotals('wish', 'deposit', '', 0, '', '', 1, $thismonth, $calc = 2),
             'lastmonthtran' => Transaction::getTotals('wish', 'deposit', '', 0, '', '', 1, $lastmonth, $calc = 2),
             'avg'           => round(Transaction::getTotals('wish', 'deposit', '', 0, '', '', 1, '', $calc = 1))
-        );
+        ];
 
         // Get overall spending
-        $this->view->stats[] = array(
+        $this->view->stats[] = [
             'memo'          => 'Spending - Total',
             'class'         => 'spendtotal',
             'alltimepts'    => Transaction::getTotals('', 'withdraw', '', 0, '', '', 1, ''),
@@ -91,10 +91,10 @@ class Points extends AdminController
             'thismonthtran' => Transaction::getTotals('', 'withdraw', '', 0, '', '', 1, $thismonth, $calc = 2),
             'lastmonthtran' => Transaction::getTotals('', 'withdraw', '', 0, '', '', 1, $lastmonth, $calc = 2),
             'avg'           => round(Transaction::getTotals('', 'withdraw', '', 0, '', '', 1, '', $calc = 1))
-        );
+        ];
 
         // Get overall spending in Store
-        $this->view->stats[] = array(
+        $this->view->stats[] = [
             'memo'          => 'Spending: Store',
             'class'         => 'spend',
             'alltimepts'    => Transaction::getTotals('store', 'withdraw', '', 0, '', '', 1, ''),
@@ -104,10 +104,10 @@ class Points extends AdminController
             'thismonthtran' => Transaction::getTotals('store', 'withdraw', '', 0, '', '', 1, $thismonth, $calc = 2),
             'lastmonthtran' => Transaction::getTotals('store', 'withdraw', '', 0, '', '', 1, $lastmonth, $calc = 2),
             'avg'           => round(Transaction::getTotals('store', 'withdraw', '', 0, '', '', 1, '', $calc = 1))
-        );
+        ];
 
         // Get overall spending on Answers
-        $this->view->stats[] = array(
+        $this->view->stats[] = [
             'memo'          => 'Spending: Answers',
             'class'         => 'spend',
             'alltimepts'    => Transaction::getTotals('answers', 'withdraw', '', 0, '', '', 1, ''),
@@ -117,10 +117,10 @@ class Points extends AdminController
             'thismonthtran' => Transaction::getTotals('answers', 'withdraw', '', 0, '', '', 1, $thismonth, $calc = 2),
             'lastmonthtran' => Transaction::getTotals('answers', 'withdraw', '', 0, '', '', 1, $lastmonth, $calc = 2),
             'avg'           => round(Transaction::getTotals('answers', 'withdraw', '', 0, '', '', 1, '', $calc = 1))
-        );
+        ];
 
         // Get overall spending on Wishes
-        $this->view->stats[] = array(
+        $this->view->stats[] = [
             'memo'          => 'Spending: Wish List',
             'class'         => 'spend',
             'alltimepts'    => Transaction::getTotals('wish', 'withdraw', '', 0, '', '', 1, ''),
@@ -130,10 +130,10 @@ class Points extends AdminController
             'thismonthtran' => Transaction::getTotals('wish', 'withdraw', '', 0, '', '', 1, $thismonth, $calc = 2),
             'lastmonthtran' => Transaction::getTotals('wish', 'withdraw', '', 0, '', '', 1, $lastmonth, $calc = 2),
             'avg'           => round(Transaction::getTotals('wish', 'withdraw', '', 0, '', '', 1, '', $calc = 1))
-        );
+        ];
 
         // Get royalties
-        $this->view->stats[] = array(
+        $this->view->stats[] = [
             'memo'          => 'Royalties - Total',
             'class'         => 'royaltytotal',
             'alltimepts'    => Transaction::getTotals('', 'deposit', '', $royalty = 1, '', '', 1, ''),
@@ -143,10 +143,10 @@ class Points extends AdminController
             'thismonthtran' => Transaction::getTotals('', 'deposit', '', $royalty = 1, '', '', 1, $thismonth, $calc = 2),
             'lastmonthtran' => Transaction::getTotals('', 'deposit', '', $royalty = 1, '', '', 1, $lastmonth, $calc = 2),
             'avg'           => round(Transaction::getTotals('', 'deposit', '', $royalty = 1, '', '', 1, '', $calc = 1))
-        );
+        ];
 
         // Get royalties on answers
-        $this->view->stats[] = array(
+        $this->view->stats[] = [
             'memo'          => 'Royalties: Answers',
             'class'         => 'royalty',
             'alltimepts'    => Transaction::getTotals('answers', 'deposit', '', $royalty = 1, '', '', 1, ''),
@@ -156,10 +156,10 @@ class Points extends AdminController
             'thismonthtran' => Transaction::getTotals('answers', 'deposit', '', $royalty = 1, '', '', 1, $thismonth, $calc = 2),
             'lastmonthtran' => Transaction::getTotals('answers', 'deposit', '', $royalty = 1, '', '', 1, $lastmonth, $calc = 2),
             'avg'           => round(Transaction::getTotals('answers', 'deposit', '', $royalty = 1, '', '', 1, '', $calc = 1))
-        );
+        ];
 
         // Get royalties on reviews
-        $this->view->stats[] = array(
+        $this->view->stats[] = [
             'memo'          => 'Royalties: Reviews',
             'class'         => 'royalty',
             'alltimepts'    => Transaction::getTotals('review', 'deposit', '', $royalty = 1, '', '', 1, ''),
@@ -169,10 +169,10 @@ class Points extends AdminController
             'thismonthtran' => Transaction::getTotals('review', 'deposit', '', $royalty = 1, '', '', 1, $thismonth, $calc = 2),
             'lastmonthtran' => Transaction::getTotals('review', 'deposit', '', $royalty = 1, '', '', 1, $lastmonth, $calc = 2),
             'avg'           => round(Transaction::getTotals('review', 'deposit', '', $royalty = 1, '', '', 1, '', $calc = 1))
-        );
+        ];
 
         // Get royalties on resource contributions
-        $this->view->stats[] = array(
+        $this->view->stats[] = [
             'memo'          => 'Royalties: Resources',
             'class'         => 'royalty',
             'alltimepts'    => Transaction::getTotals('resource', 'deposit', '', $royalty = 1, '', '', 1, ''),
@@ -182,7 +182,7 @@ class Points extends AdminController
             'thismonthtran' => Transaction::getTotals('resource', 'deposit', '', $royalty = 1, '', '', 1, $thismonth, $calc = 2),
             'lastmonthtran' => Transaction::getTotals('resource', 'deposit', '', $royalty = 1, '', '', 1, $lastmonth, $calc = 2),
             'avg'           => round(Transaction::getTotals('resource', 'deposit', '', $royalty = 1, '', '', 1, '', $calc = 1))
-        );
+        ];
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -246,7 +246,7 @@ class Points extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        $account = Request::getArray('account', array(), 'post');
+        $account = Request::getArray('account', [], 'post');
 
         $row = \Hubzero\Bank\Account::blank()->set($account);
 
@@ -254,7 +254,7 @@ class Points extends AdminController
         $row->set('balance', intval($row->get('balance')));
         $row->set('earnings', intval($row->get('earnings')));
 
-        $data = Request::getArray('transaction', array(), 'post');
+        $data = Request::getArray('transaction', [], 'post');
 
         if (isset($data['amount']) && intval($data['amount']) > 0) {
             $data['uid'] = $row->get('uid');
@@ -334,9 +334,9 @@ class Points extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        $points = Request::getArray('points', array());
-        $descriptions = Request::getArray('description', array());
-        $aliases = Request::getArray('alias', array());
+        $points = Request::getArray('points', []);
+        $descriptions = Request::getArray('description', []);
+        $aliases = Request::getArray('alias', []);
 
         $this->database->setQuery('DELETE FROM `#__users_points_config`');
         $this->database->query();
@@ -387,14 +387,14 @@ class Points extends AdminController
 
         $duplicate = 0;
 
-        $log = Request::getArray('log', array());
+        $log = Request::getArray('log', []);
         $log = array_map('trim', $log);
         $log['category'] = (isset($log['category']) && $log['category']) ? $log['category'] : 'general';
         $log['action']   = (isset($log['action']) && $log['action']) ? $log['action'] : 'batch';
         // An item id (int columns: '' fails under strict SQL modes)
         $log['ref']      = (isset($log['ref']) && $log['ref']) ? (int) $log['ref'] : 0;
 
-        $data = Request::getArray('transaction', array());
+        $data = Request::getArray('transaction', []);
         $data = array_map('trim', $data);
 
         $when = Date::toSql();
@@ -434,7 +434,7 @@ class Points extends AdminController
 
                 // Save log
                 $MH = MarketHistory::blank();
-                $dat = array();
+                $dat = [];
                 $dat['itemid']       = $log['ref'];
                 $dat['date']         = Date::toSql();
                 $dat['market_value'] = $data['amount'];

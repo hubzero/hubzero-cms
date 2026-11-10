@@ -114,7 +114,7 @@ class Citations extends SiteController
         $earliest_year = !empty($earliest_year) ? $earliest_year : 1970;
 
         // Incoming
-        $this->view->filters = array(
+        $this->view->filters = [
             // Search/filtering params
             'id'              => Request::getInt('id', 0),
             'tag'             => Request::getString('tag', '', 'request', 'none', 2),
@@ -129,37 +129,37 @@ class Citations extends SiteController
             'year_end'        => Request::getInt('year_end', gmdate("Y")),
             'filter'          => Request::getString('filter', ''),
             'sort'            => Request::getString('sort', 'created DESC'),
-            'reftype'         => Request::getSimpleArray('reftype', array('research' => 1, 'education' => 1, 'eduresearch' => 1, 'cyberinfrastructure' => 1)),
-            'geo'             => Request::getSimpleArray('geo', array('us' => 1, 'na' => 1,'eu' => 1, 'as' => 1)),
-            'aff'             => Request::getSimpleArray('aff', array('university' => 1, 'industry' => 1, 'government' => 1)),
+            'reftype'         => Request::getSimpleArray('reftype', ['research' => 1, 'education' => 1, 'eduresearch' => 1, 'cyberinfrastructure' => 1]),
+            'geo'             => Request::getSimpleArray('geo', ['us' => 1, 'na' => 1,'eu' => 1, 'as' => 1]),
+            'aff'             => Request::getSimpleArray('aff', ['university' => 1, 'industry' => 1, 'government' => 1]),
             'startuploaddate' => Request::getString('startuploaddate', '0000-00-00'),
             'enduploaddate'   => Request::getString('enduploaddate', '0000-00-00'),
             'scope'           => 'hub'
-        );
+        ];
 
         if (User::authorise('core.manage', $this->_option)) {
             $this->view->isAdmin = true;
-            $this->view->filters['published'] = array(0, 1);
+            $this->view->filters['published'] = [0, 1];
         }
 
-        $this->view->filter = array(
+        $this->view->filter = [
             'all'    => Lang::txt('COM_CITATIONS_ALL'),
             'aff'    => Lang::txt('COM_CITATIONS_AFFILIATED'),
             'nonaff' => Lang::txt('COM_CITATIONS_NONAFFILIATED')
-        );
+        ];
         if (!in_array($this->view->filters['filter'], array_keys($this->view->filter))) {
             $this->view->filters['filter'] = '';
         }
 
         // Sort Filter
-        $this->view->sorts = array(
+        $this->view->sorts = [
             'sec_cnt DESC' => Lang::txt('COM_CITATIONS_CITEDBY'),
             'year DESC'    => Lang::txt('COM_CITATIONS_YEAR'),
             'created DESC' => Lang::txt('COM_CITATIONS_NEWEST'),
             'title ASC'    => Lang::txt('COM_CITATIONS_TITLE'),
             'author ASC'   => Lang::txt('COM_CITATIONS_AUTHOR'),
             'journal ASC'  => Lang::txt('COM_CITATIONS_JOURNAL')
-        );
+        ];
         if (!in_array($this->view->filters['sort'], array_keys($this->view->sorts))) {
             $this->view->filters['sort'] = 'created DESC';
         }
@@ -288,11 +288,11 @@ class Citations extends SiteController
         }
 */
         // Parse the returned xml
-        $this->view->openurl = array(
+        $this->view->openurl = [
             'link' => '',
             'text' => '',
             'icon' => ''
-        );
+        ];
 /*
         // Parse the return from resolver lookup
         $resolver = null;
@@ -412,11 +412,11 @@ class Citations extends SiteController
      */
     private function openUrl()
     {
-        return array(
+        return [
             'link' => '',
             'text' => '',
             'icon' => ''
-        );
+        ];
 
         /*
         // get the users id to make lookup
@@ -527,7 +527,7 @@ class Citations extends SiteController
         // get the citation types
         $types = Type::all()->rows()->toArray();
 
-        $fields = array();
+        $fields = [];
         foreach ($types as $type) {
             if (isset($type['fields'])) {
                 $f = $type['fields'];
@@ -543,11 +543,11 @@ class Citations extends SiteController
         }
 
         // add an empty value for the first type
-        array_unshift($types, array(
+        array_unshift($types, [
             'id' => '',
             'type' => '',
             'type_title' => ' - Select a Type &mdash;'
-        ));
+        ]);
 
         $this->view->types = $types;
 
@@ -558,7 +558,7 @@ class Citations extends SiteController
             $citation = Citation::oneOrNew($id);
         }
 
-        $associations = array();
+        $associations = [];
         foreach ($citation->associations as $cite) {
             $associations[] = $cite;
         }
@@ -606,11 +606,11 @@ class Citations extends SiteController
             $citation->set('id', -time());
 
             // It's new - no associations to get
-            $this->view->assocs = array();
+            $this->view->assocs = [];
 
             //tags & badges
-            $this->view->tags   = array();
-            $this->view->badges = array();
+            $this->view->tags   = [];
+            $this->view->badges = [];
         } else {
             //tags & badges
             $this->view->tags   = Format::citationTags($this->view->row, false);
@@ -644,7 +644,7 @@ class Citations extends SiteController
 
         // get the posted vars
         $id = Request::getInt('id', 0, 'post');
-        $c  = Request::getArray('fields', array(), 'post');
+        $c  = Request::getArray('fields', [], 'post');
 
 
         // Bind incoming data to object
@@ -697,8 +697,8 @@ class Citations extends SiteController
         }
 
         // Incoming associations
-        $associations = array();
-        $assocParams = Request::getArray('assocs', array(), 'post');
+        $associations = [];
+        $assocParams = Request::getArray('assocs', [], 'post');
         foreach ($assocParams as $assoc) {
             $assoc = array_map('trim', $assoc);
             $assocId = !empty($assoc['id']) ? $assoc['id'] : null;
@@ -722,7 +722,7 @@ class Citations extends SiteController
 
         // Trigger before save event
         $isNew  = $row->isNew();
-        $result = Event::trigger('onCitationBeforeSave', array(&$row, $isNew));
+        $result = Event::trigger('onCitationBeforeSave', [&$row, $isNew]);
 
         if (in_array(false, $result, true)) {
             $this->setError($row->getError());
@@ -750,7 +750,7 @@ class Citations extends SiteController
         }
 
         // Trigger after save event
-        Event::trigger('onCitationAfterSave', array(&$row, $isNew));
+        Event::trigger('onCitationAfterSave', [&$row, $isNew]);
 
         // Redirect
         $task = '&task=browse';
@@ -788,16 +788,16 @@ class Citations extends SiteController
         }
 
         // Incoming (we're expecting an array)
-        $ids = (array) Request::getArray('id', array());
+        $ids = (array) Request::getArray('id', []);
         if (!is_array($ids)) {
-            $ids = array();
+            $ids = [];
         }
 
         // Make sure we have IDs to work with
         if (count($ids) > 0 && User::authorise('core.delete', 'com_citations')) {
             // Loop through the IDs and delete the citation
             $citations = Citation::whereIn('id', $ids)->rows();
-            $citationsRemoved = array();
+            $citationsRemoved = [];
             foreach ($citations as $citation) {
                 $citationId = $citation->get('id');
                 if (!$citation->destroy()) {
@@ -829,7 +829,7 @@ class Citations extends SiteController
         $id = Request::getInt('id', 0, 'request');
         $format = strtolower(Request::getString('citationFormat', 'bibtex', 'request'));
 
-        if (!in_array($format, array('bibtex', 'endnote'))) {
+        if (!in_array($format, ['bibtex', 'endnote'])) {
             App::abort(404, Lang::txt('COM_CITATIONS_NO_CITATION_FORMAT'));
         }
 
@@ -892,7 +892,7 @@ class Citations extends SiteController
             if (!$no_html) {
                 return $this->displayTask();
             } else {
-                return json_encode(array('status' => '1'));
+                return json_encode(['status' => '1']);
             }
         }
 
@@ -934,7 +934,7 @@ class Citations extends SiteController
      * @param   array    $ignored  Array of keys to bypass
      * @return  boolean  True if empty, false if not
      */
-    private function _isempty($b, $ignored = array())
+    private function _isempty($b, $ignored = [])
     {
         foreach ($ignored as $ignore) {
             if (array_key_exists($ignore, $b)) {

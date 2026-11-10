@@ -36,7 +36,7 @@ class Resourcetype extends Select
     protected function getInput()
     {
         // Initialize variables.
-        $html = array();
+        $html = [];
         $attr = '';
 
         // Initialize some field attributes.
@@ -92,12 +92,12 @@ class Resourcetype extends Select
             }
         }*/
         if (empty($this->value)) {
-            $this->value = array(
-                array(
+            $this->value = [
+                [
                     'resource' => 0,
                     'genre' => 'article'
-                )
-            );
+                ]
+            ];
         }
 
         foreach ($this->value as $i => $value) {
@@ -205,7 +205,7 @@ class Resourcetype extends Select
 
         $types = \Components\Resources\Models\Type::getMajorTypes();
 
-        $options = array();
+        $options = [];
 
         foreach ($types as $type) {
             $options[] = Html::select('option', $type->id, $type->type, 'value', 'text');

@@ -54,7 +54,7 @@ class Tags extends Cloud
 
         $ids = '';
         if ($objs) {
-            $s = array();
+            $s = [];
             foreach ($objs as $obj) {
                 $s[] = $obj->objectid;
             }
@@ -103,13 +103,13 @@ class Tags extends Cloud
         $this->_db->setQuery($sql);
         $results = $this->_db->loadObjectList();
 
-        $rows = array();
+        $rows = [];
         if ($results) {
             foreach ($results as $result) {
                 if (!isset($rows[$result->id])) {
                     $rows[$result->id] = $result;
                     $rows[$result->id]->ucount++;
-                    $rows[$result->id]->rids = array($result->rid);
+                    $rows[$result->id]->rids = [$result->rid];
                 } else {
                     if (!in_array($result->rid, $rows[$result->id]->rids)) {
                         $rows[$result->id]->ucount++;
@@ -129,7 +129,7 @@ class Tags extends Cloud
      */
     public static function getUsersGroups($groups)
     {
-        $arr = array();
+        $arr = [];
 
         if (!empty($groups)) {
             foreach ($groups as $group) {
@@ -153,7 +153,7 @@ class Tags extends Cloud
      * @param   array    $filterby  Extra, optional filters
      * @return  array
      */
-    public function get_objects_on_tag($tag = '', $id = 0, $type = 0, $sortby = 'title', $tag2 = '', $filterby = array())
+    public function get_objects_on_tag($tag = '', $id = 0, $type = 0, $sortby = 'title', $tag2 = '', $filterby = [])
     {
         $now  = Date::toSql();
 
@@ -164,7 +164,7 @@ class Tags extends Cloud
         // " AND (() OR ())" and turned the page into a SQL syntax error.
         $filterby = array_values(array_intersect(
             (array) $filterby,
-            array('level0', 'level1', 'level2', 'level3', 'level4')
+            ['level0', 'level1', 'level2', 'level3', 'level4']
         ));
 
         if ($tag || $tag2) {
@@ -347,7 +347,7 @@ class Tags extends Cloud
     public function getTagUsage($tag, $rtrn = 'id')
     {
         if (!$tag) {
-            return array();
+            return [];
         }
 
         $query = "SELECT r.$rtrn
@@ -407,7 +407,7 @@ class Tags extends Cloud
         $tags = $this->getTopTags($limit);
 
         if ($tags && count($tags) > 0) {
-            $tagarray = array();
+            $tagarray = [];
             foreach ($tags as $tag) {
                 $tagarray[] = $tag->get('raw_tag');
             }
@@ -441,7 +441,7 @@ class Tags extends Cloud
     {
         $bunch = $this->_parse($tag);
 
-        $tags = array();
+        $tags = [];
         if ($remove) {
             foreach ($bunch as $t) {
                 if ($remove == $t) {
@@ -469,7 +469,7 @@ class Tags extends Cloud
         $html = '';
 
         if ($tags && count($tags) > 0) {
-            $lst = array();
+            $lst = [];
             if (is_string($tagstring)) {
                 $lst = $this->_parse($tagstring);
             } else {
@@ -480,7 +480,7 @@ class Tags extends Cloud
             $max_font_size = 1.8;
 
             if ($showsizes) {
-                $retarr = array();
+                $retarr = [];
                 foreach ($tags as $tag) {
                     $retarr[$tag->raw_tag] = $tag->count;
                 }
@@ -500,7 +500,7 @@ class Tags extends Cloud
 
             // build HTML
             $html .= '<ol class="tags">' . "\n";
-            $tll = array();
+            $tll = [];
             foreach ($tags as $tag) {
                 $class = '';
                 switch ($tag->admin) {
@@ -519,7 +519,7 @@ class Tags extends Cloud
                         $lsst[] = $tag->tag;
                     }
                 } else {
-                    $lsst = array($tag->tag);
+                    $lsst = [$tag->tag];
                 }
 
                 $tag->raw_tag = stripslashes($tag->raw_tag);

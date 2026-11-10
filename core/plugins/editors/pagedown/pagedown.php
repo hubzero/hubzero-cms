@@ -151,7 +151,7 @@ class Pagedown extends Plugin
         $id = null,
         $asset = null,
         $author = null,
-        $params = array()
+        $params = []
     ) {
         $id = empty($id) ? $name : $id;
         $columns = $columns ? $columns : 35;

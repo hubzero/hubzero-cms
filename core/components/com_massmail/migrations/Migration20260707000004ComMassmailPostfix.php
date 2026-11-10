@@ -66,7 +66,7 @@ class Migration20260707000004ComMassmailPostfix extends Base
      **/
     public function down()
     {
-        foreach (array('#__massmail_postfix_hourly', '#__massmail_postfix_daily', '#__massmail_postfix_state') as $table) {
+        foreach (['#__massmail_postfix_hourly', '#__massmail_postfix_daily', '#__massmail_postfix_state'] as $table) {
             if ($this->db->tableExists($table)) {
                 $this->db->setQuery("DROP TABLE `$table`;");
                 $this->db->query();

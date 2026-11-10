@@ -25,7 +25,7 @@ class Xml implements \Components\Resources\Import\Interfaces\Adapter
      *
      * @var  array
      */
-    private $data = array();
+    private $data = [];
 
     /**
      * Integer to hold count

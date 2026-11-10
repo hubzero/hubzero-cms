@@ -20,11 +20,11 @@ Pathway::append(
 );
 
 $dir = strtoupper(Request::getString('dir', 'ASC'));
-if (!in_array($dir, array('ASC', 'DESC'))) {
+if (!in_array($dir, ['ASC', 'DESC'])) {
     $dir = 'ASC';
 }
 
-$filters = array('state' => \Components\Wiki\Models\Page::STATE_PUBLISHED);
+$filters = ['state' => \Components\Wiki\Models\Page::STATE_PUBLISHED];
 
 $namespace = urldecode(Request::getString('namespace', ''));
 if ($namespace) {
@@ -74,7 +74,7 @@ $namespaces = \Components\Wiki\Models\Page::all()
     <div class="grid">
         <?php
         if ($rows->count()) {
-            $data = array();
+            $data = [];
             foreach ($rows as $row) {
                 $data[] = $row;
             }

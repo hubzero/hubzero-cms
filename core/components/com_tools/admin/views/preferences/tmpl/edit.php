@@ -52,15 +52,15 @@ $base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
                     <div class="input-wrap">
                         <label for="field-user_id"><?php echo Lang::txt('COM_TOOLS_USER_PREFS_USER'); ?>:</label>
                         <?php
-                        $mc = Event::trigger('hubzero.onGetSingleEntry', array(
-                            array(
+                        $mc = Event::trigger('hubzero.onGetSingleEntry', [
+                            [
                                 'members',  // The component to call
                                 'fields[user_id]',  // Name of the input field
                                 'field-user_id',  // ID of the input field
                                 '',  // CSS class(es) for the input field
                                 ''  // The value of the input field
-                            )
-                        ));
+                            ]
+                        ]);
                         if (count($mc) > 0) {
                             echo $mc[0];
                         } else { ?>

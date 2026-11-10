@@ -39,7 +39,7 @@ class Migration20130415000000ComSupport extends Base
                 ->loadObjectList();
 
             // First we need to loop through all the entries and reove some potential duplicates
-            $closedTickets = array();
+            $closedTickets = [];
             foreach ($clsd as $closed) {
                 if (!isset($closedTickets[$closed->ticket])) {
                     $closedTickets[$closed->ticket] = $closed->created;

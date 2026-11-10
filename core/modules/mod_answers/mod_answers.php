@@ -37,11 +37,11 @@ class Answers extends Module
 
         $database = App::get('db');
 
-        $queries = array(
+        $queries = [
             'closed'  => "state=1",
             'open'    => "state=0",
             'pastDay' => "created >= " . $database->quote(gmdate('Y-m-d', (time() - 24 * 3600)) . ' 00:00:00')
-        );
+        ];
 
         if ($this->params->get('showMine', 0)) {
             $this->username = User::get('username');

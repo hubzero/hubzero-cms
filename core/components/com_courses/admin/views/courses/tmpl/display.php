@@ -160,8 +160,8 @@ Html::behavior('tooltip');
         $k = 0;
 
         foreach ($this->rows as $row) {
-            $offerings = $row->offerings(array('count' => true));
-            $pages     = $row->pages(array('count' => true, 'active' => array(0, 1)));
+            $offerings = $row->offerings(['count' => true]);
+            $pages     = $row->pages(['count' => true, 'active' => [0, 1]]);
 
             $params = new \Hubzero\Config\Registry($row->get('params'));
             ?>
@@ -316,7 +316,7 @@ Html::behavior('tooltip');
                 </td>
                 <td class="priority-3">
                     <span class="glyph member">
-                        <?php echo $row->managers(array('count' => true)); ?>
+                        <?php echo $row->managers(['count' => true]); ?>
                     </span>
                 </td>
                 <td>

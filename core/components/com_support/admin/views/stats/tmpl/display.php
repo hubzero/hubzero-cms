@@ -52,7 +52,7 @@ $database->setQuery($sql);
 $resolutions = $database->loadObjectList();
 
 $total = count($resolutions);
-$res = array();
+$res = [];
 foreach ($resolutions as $resolution) {
     if (!isset($res[$resolution->status])) {
         $res[$resolution->status] = 1;
@@ -74,7 +74,7 @@ $database->setQuery($sql);
 $severities = $database->loadObjectList();
 
 $total = count($severities);
-$sev = array();
+$sev = [];
 foreach ($severities as $severity) {
     if (!isset($sev[$severity->severity])) {
         $sev[$severity->severity] = 1;
@@ -153,7 +153,7 @@ $formAction = Route::url(
 
                 $closeddata = '';
                 if ($this->closedmonths) {
-                    $c = array();
+                    $c = [];
                     foreach ($this->closedmonths as $year => $data) {
                         foreach ($data as $k => $v) {
                             $top = ($v > $top) ? $v : $top;
@@ -167,7 +167,7 @@ $formAction = Route::url(
 
                 $openeddata = '';
                 if ($this->openedmonths) {
-                    $o = array();
+                    $o = [];
                     foreach ($this->openedmonths as $year => $data) {
                         foreach ($data as $k => $v) {
                             $top = ($v > $top) ? $v : $top;
@@ -267,7 +267,7 @@ $formAction = Route::url(
                         </thead>
                         <tbody>
                             <?php
-                            $colors = array(
+                            $colors = [
                                 '#7c7c7c',
                                 '#515151',
                                 '#404040',//'#d9d9d9',
@@ -288,14 +288,14 @@ $formAction = Route::url(
                                 '#828282',
                                 '#404040',
                                 '#3a3a3a'
-                            );
+                            ];
 
                             $severities = \Components\Support\Helpers\Utilities::getSeverities(
                                 $this->config->get('severities')
                             );
 
                             $cls = 'odd';
-                            $data = array();
+                            $data = [];
                             $i = 0;
                             foreach ($severities as $severity) {
                                 $r  = '{"label": "' . $this->escape($severity) . '", "data": ';
@@ -377,10 +377,10 @@ $formAction = Route::url(
                             $cls = 'odd';
                             $noResLabel = Lang::txt('COM_SUPPORT_STATS_NO_RESOLUTION');
                             $noResVal = isset($res[0]) ? $res[0] / $total : '0';
-                            $data = array(
+                            $data = [
                                 '{"label": "' . $noResLabel . '", "data": ' . $noResVal
                                 . ', "color": "' . $colors[0] . '"}'
-                            );
+                            ];
                             $i = 1;
                             foreach ($resolutions as $resolution) {
                                 $r  = '{"label": "' . $this->escape($resolution->title) . '", "data": ';
@@ -458,7 +458,7 @@ $formAction = Route::url(
                     $closeddata = '';
                     //$utot = 0;
                     if ($user->closed) {
-                        $c = array();
+                        $c = [];
                         foreach ($user->closed as $year => $data) {
                             foreach ($data as $k => $v) {
                                 $monthPad3 = Hubzero\Utility\Str::pad(($k - 1), 2);

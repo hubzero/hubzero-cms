@@ -27,7 +27,7 @@ class Parser
      *
      * @var  array
      */
-    private $_config = array(
+    private $_config = [
         'option'    => null,
         'scope'     => null,
         'pagename'  => null,
@@ -35,43 +35,43 @@ class Parser
         'filepath'  => null,
         'domain'    => null,
         'fullparse' => true,
-    );
+    ];
 
     /**
      * Data store
      *
      * @var  array
      */
-    private $_data = array(
+    private $_data = [
         'input'  => null,
         'output' => null,
-        'links'  => array()
-    );
+        'links'  => []
+    ];
 
     /**
      * Parsed content temp storage
      *
      * @var  array
      */
-    private $_tokens = array(
-        'pre'    => array(),
-        'code'   => array(),
-        'macro'  => array()
-    );
+    private $_tokens = [
+        'pre'    => [],
+        'code'   => [],
+        'macro'  => []
+    ];
 
     /**
      * Configuration options
      *
      * @var  array
      */
-    private $_macroPaths = array();
+    private $_macroPaths = [];
 
     /**
      * List of used macros
      *
      * @var  array
      */
-    private static $macros = array();
+    private static $macros = [];
 
     /**
      * Constructor
@@ -79,7 +79,7 @@ class Parser
      * @param   array  $config  Configuration options
      * @return  void
      */
-    public function __construct($config = array())
+    public function __construct($config = [])
     {
         if (is_array($config)) {
             // We need this info for links that may get generated
@@ -170,7 +170,7 @@ class Parser
      */
     public function clearMacroPaths()
     {
-        $this->_macroPaths = array();
+        $this->_macroPaths = [];
 
         return $this;
     }
@@ -254,8 +254,8 @@ class Parser
 
         // Unstrip macro blocks BEFORE doing block levels or <p> tags will get messy
         //$text = preg_replace_callback('/MACRO' . $this->_token . '/i', array(&$this, 'restore_macros'), $text);
-        $text = preg_replace_callback('/<(macro) (.+?)>(.*)<\/(\1) \2>/si', array(&$this, '_dataPull'), $text);
-        $this->_tokens['macro'] = array();
+        $text = preg_replace_callback('/<(macro) (.+?)>(.*)<\/(\1) \2>/si', [&$this, '_dataPull'], $text);
+        $this->_tokens['macro'] = [];
 
         // Put back removed blocks <pre>, <code>, <a>, <math>
         $text = $this->unstrip($text);
@@ -280,9 +280,9 @@ class Parser
      */
     private function strip($text)
     {
-        $text = preg_replace_callback('/<(pre)(.*?)>(.+?)<\/(pre)>/is', array(&$this, '_dataPush'), $text ?: '');
+        $text = preg_replace_callback('/<(pre)(.*?)>(.+?)<\/(pre)>/is', [&$this, '_dataPush'], $text ?: '');
 
-        $text = preg_replace_callback('/<(code)(.*?)>(.+)<\/(code)>/iU', array(&$this, '_dataPush'), $text ?: '');
+        $text = preg_replace_callback('/<(code)(.*?)>(.+)<\/(code)>/iU', [&$this, '_dataPush'], $text ?: '');
 
         return $text;
     }
@@ -341,8 +341,8 @@ class Parser
     private function unstrip($text, $html = true)
     {
         foreach ($this->_tokens as $tag => $vals) {
-            $text = preg_replace_callback('/<(' . $tag . ') (.+?)><\/(\1) \2>/si', array(&$this, '_dataPull'), $text);
-            $this->_tokens[$tag] = array();
+            $text = preg_replace_callback('/<(' . $tag . ') (.+?)><\/(\1) \2>/si', [&$this, '_dataPull'], $text);
+            $this->_tokens[$tag] = [];
         }
 
         return $text;
@@ -384,7 +384,7 @@ class Parser
         $this->addMacroPath(__DIR__ . DS . 'macros');
 
         // Get macros [[name(args)]]
-        return preg_replace_callback('/\[\[(?P<macroname>[\w.]+)(\]\]|\((?P<macroargs>.*)\)\]\])/U', array(&$this, '_getMacro'), $text);
+        return preg_replace_callback('/\[\[(?P<macroname>[\w.]+)(\]\]|\((?P<macroargs>.*)\)\]\])/U', [&$this, '_getMacro'], $text);
     }
 
     /**
@@ -479,12 +479,12 @@ class Parser
                 }
             }
 
-            return $this->_dataPush(array(
+            return $this->_dataPush([
                 $matches[1],
                 'macro',
                 $this->_randomString(),
                 $macro->render()
-            ));
+            ]);
         }
 
         return '';

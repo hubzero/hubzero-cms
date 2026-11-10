@@ -24,9 +24,9 @@ class Resources extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_segments = array(
+    protected $_segments = [
         'option' => 'com_wishlist',
-    );
+    ];
 
     /**
      * Scope name
@@ -64,7 +64,7 @@ class Resources extends Base
      */
     public function owners()
     {
-        $owners = array();
+        $owners = [];
 
         if ($this->_item->isTool()) {
             $cons = $this->_item->contributors('tool');
@@ -90,7 +90,7 @@ class Resources extends Base
      */
     public function groups()
     {
-        $groups = array();
+        $groups = [];
 
         if ($this->_item->isTool()) {
             $db = App::get('db');

@@ -186,7 +186,7 @@ class OneToOneThrough extends Relationship
         $this->applyDefaultConditions($this->related);
 
         if (isset($constraint)) {
-            call_user_func_array($constraint, array($this->related));
+            call_user_func_array($constraint, [$this->related]);
         }
 
         return $this->related->whereIn($this->throughTable . '.' . $this->throughLocalKey, array_unique($keys));

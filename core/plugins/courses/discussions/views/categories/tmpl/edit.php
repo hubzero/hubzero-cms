@@ -45,7 +45,7 @@ defined('_HZEXEC_') or die();
                     <select name="fields[section_id]" id="field-section_id">
                         <option value="0"><?php echo $selectText; ?></option>
                         <?php
-                        $sections = $this->forum->sections(array('state' => 1))->rows();
+                        $sections = $this->forum->sections(['state' => 1])->rows();
                         foreach ($sections as $section) {
                             $sectionId = $section->get('id');
                             $selected = ($this->category->get('section_id') == $sectionId)

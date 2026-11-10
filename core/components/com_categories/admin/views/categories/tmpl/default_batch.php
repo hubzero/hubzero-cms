@@ -12,10 +12,10 @@ use Hubzero\Facades\Lang;
 // no direct access
 defined('_HZEXEC_') or die();
 
-$options = array(
+$options = [
     Html::select('option', 'c', Lang::txt('JLIB_HTML_BATCH_COPY')),
     Html::select('option', 'm', Lang::txt('JLIB_HTML_BATCH_MOVE'))
-);
+];
 $published = $this->filters['published'];
 $extension = $this->filters['extension'];
 ?>
@@ -50,7 +50,7 @@ $extension = $this->filters['extension'];
                             $catOptions = Html::category(
                                 'categories',
                                 $extension,
-                                array('filter.published' => $published)
+                                ['filter.published' => $published]
                             );
                             ?>
                             <select name="batch[category_id]"

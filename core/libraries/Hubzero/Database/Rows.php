@@ -21,7 +21,7 @@ class Rows implements Iterator, Countable
      **/
     use Traits\ErrorBag;
 
-    public function __construct($rows = array())
+    public function __construct($rows = [])
     {
         // While arrays are traversable with foreach,
         // they will not return true as an instance of Traverable
@@ -37,7 +37,7 @@ class Rows implements Iterator, Countable
      *
      * @public array
      **/
-    private $rows = array();
+    private $rows = [];
 
     /**
      * Order by used to retrieve these rows
@@ -110,7 +110,7 @@ class Rows implements Iterator, Countable
      **/
     public function clear()
     {
-        $this->rows = array();
+        $this->rows = [];
     }
 
     /**
@@ -224,7 +224,7 @@ class Rows implements Iterator, Countable
      **/
     public function fieldsByKey($key)
     {
-        $keys = array();
+        $keys = [];
 
         if ($this->rows && $this->count()) {
             foreach ($this->rows as $row) {

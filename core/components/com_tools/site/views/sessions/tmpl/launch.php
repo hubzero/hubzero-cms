@@ -17,14 +17,14 @@ $this->css('launch.css')
 
 $base = rtrim(Request::root(), '/');
 
-$config = array(
+$config = [
     'app'     => $this->app,
     'version' => $this->version,
     'mode'    => $this->mode,
     'base'    => $base,
     // Routed (SEF) viewer URL with a placeholder the JS fills in with the sess
     'viewerUrl' => Route::url('index.php?option=com_tools&controller=sessions&app=' . urlencode($this->app) . '&task=session&sess=__SESS__', false),
-    'strings' => array(
+    'strings' => [
         'starting'    => Lang::txt('COM_TOOLS_LAUNCH_STARTING'),
         'waiting'     => Lang::txt('COM_TOOLS_LAUNCH_WAITING'),
         'connecting'  => Lang::txt('COM_TOOLS_LAUNCH_CONNECTING'),
@@ -36,8 +36,8 @@ $config = array(
         'errExited'   => Lang::txt('COM_TOOLS_LAUNCH_ERROR_EXITED'),
         'errDisplay'  => Lang::txt('COM_TOOLS_LAUNCH_ERROR_DISPLAY'),
         'errTimeout'  => Lang::txt('COM_TOOLS_LAUNCH_ERROR_TIMEOUT')
-    )
-);
+    ]
+];
 
 $classicUrl = Route::url('index.php?option=com_tools&controller=sessions&app=' . urlencode($this->app) . '&task=invoke&version=' . urlencode($this->version) . '&launch=legacy');
 ?>

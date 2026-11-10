@@ -43,7 +43,7 @@ class Timezones extends Element
         $lang = App::get('language');
 
         // LOCALE SETTINGS
-        $timezones = array(
+        $timezones = [
             Select::option(-12, $lang->txt('UTC__12_00__INTERNATIONAL_DATE_LINE_WEST')),
             Select::option(-11, $lang->txt('UTC__11_00__MIDWAY_ISLAND__SAMOA')),
             Select::option(-10, $lang->txt('UTC__10_00__HAWAII')),
@@ -89,16 +89,16 @@ class Timezones extends Element
                 $lang->txt('UTC__12_45__CHATHAM_ISLAND')
             ), Select::option(13, $lang->txt('UTC__13_00__TONGA')),
             Select::option(14, $lang->txt('UTC__14_00__KIRIBATI'))
-        );
+        ];
 
         return Select::genericlist(
             $timezones,
             $control_name . '[' . $name . ']',
-            array(
+            [
                 'id' => $control_name . $name,
                 'list.attr' => 'class="inputbox"',
                 'list.select' => $value
-            )
+            ]
         );
     }
 }

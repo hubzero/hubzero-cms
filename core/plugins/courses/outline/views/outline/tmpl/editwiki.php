@@ -18,7 +18,7 @@ Html::behavior('core');
 $id     = Request::getInt('asset_id', null);
 $asset  = new \Components\Courses\Models\Asset($id);
 $asset->set('section_id', $this->course->offering()->section()->get('id'));
-$assets = array();
+$assets = [];
 
 ?>
 
@@ -47,11 +47,11 @@ $assets = array();
                 <ul>
 -->
 <?php
-                    $assetgroups = array();
+                    $assetgroups = [];
 foreach ($this->course->offering()->units() as $unit) :
     foreach ($unit->assetgroups() as $agt) :
         foreach ($agt->children() as $ag) :
-            $assetgroups[] = array('id' => $ag->get('id'), 'title' => $ag->get('title'));
+            $assetgroups[] = ['id' => $ag->get('id'), 'title' => $ag->get('title')];
             if ($ag->assets()->total()) :
                 foreach ($ag->assets() as $a) :
                     if ($a->isPublished()) :
@@ -83,7 +83,7 @@ endforeach;
                 <div class="wiki-files-available">
                     <?php $path = $asset->path($this->course->get('id')); ?>
                     <?php if ($path && is_dir(PATH_APP . $path)) : ?>
-                        <?php $files = array_diff(scandir(PATH_APP . $asset->path($this->course->get('id'))), array('..', '.', '.DS_Store')); ?>
+                        <?php $files = array_diff(scandir(PATH_APP . $asset->path($this->course->get('id'))), ['..', '.', '.DS_Store']); ?>
                         <ul class="wiki-files-list">
                             <?php foreach ($files as $file) : ?>
                                 <li class="wiki-file">

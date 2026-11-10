@@ -87,7 +87,7 @@ class Content extends GenericItem
         }
 
         $text = strip_tags($article->introtext);
-        $text = str_replace(array("\n", "\r", "\t"), ' ', $text);
+        $text = str_replace(["\n", "\r", "\t"], ' ', $text);
         $text = preg_replace('/\s+/', ' ', $text);
 
         $url = Request::getString('REQUEST_URI', '', 'server');
@@ -101,7 +101,7 @@ class Content extends GenericItem
              ->set('created', $article->created)
              ->set('created_by', $article->created_by)
              ->set('title', $article->title)
-             ->set('description', Str::truncate($text, 300, array('html' => true)))
+             ->set('description', Str::truncate($text, 300, ['html' => true]))
              ->set('url', $url);
 
         if (!$this->store()) {

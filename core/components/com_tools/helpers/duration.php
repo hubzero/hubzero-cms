@@ -18,12 +18,12 @@ class Duration
      *
      * @var  array
      */
-    const UNITS = array(
+    const UNITS = [
         'days'    => 86400,
         'hours'   => 3600,
         'minutes' => 60,
         'seconds' => 1
-    );
+    ];
 
     /**
      * Seconds in a number of the given unit
@@ -70,15 +70,15 @@ class Duration
         $seconds = (int) $seconds;
 
         if ($seconds <= 0) {
-            return array('', $default);
+            return ['', $default];
         }
 
         foreach (self::UNITS as $unit => $size) {
             if ($seconds % $size == 0) {
-                return array($seconds / $size, $unit);
+                return [$seconds / $size, $unit];
             }
         }
 
-        return array($seconds, 'seconds');
+        return [$seconds, 'seconds'];
     }
 }

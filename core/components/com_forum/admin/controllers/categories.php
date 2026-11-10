@@ -47,7 +47,7 @@ class Categories extends AdminController
     public function displayTask()
     {
         // Filters
-        $filters = array(
+        $filters = [
             'state' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.state',
                 'state',
@@ -86,7 +86,7 @@ class Categories extends AdminController
                 'scopeinfo',
                 ''
             )
-        );
+        ];
         if (strstr($filters['scopeinfo'], ':')) {
             $bits = explode(':', $filters['scopeinfo']);
             $filters['scope']    = $bits[0];
@@ -109,7 +109,7 @@ class Categories extends AdminController
             $filters['scopeinfo'] = $filters['scope'] . ':' . $filters['scope_id'];
         }
 
-        $sections = array();
+        $sections = [];
 
         if ($filters['scope_id'] >= 0) {
             $sections = Section::all()
@@ -188,7 +188,7 @@ class Categories extends AdminController
         $section = Section::oneOrNew(Request::getInt('section_id', 0));
 
         if (!is_object($category)) {
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id)) {
                 $id = (!empty($id) ? intval($id[0]) : 0);
             }
@@ -207,7 +207,7 @@ class Categories extends AdminController
             ->ordered()
             ->rows();
 
-        $sections = array();
+        $sections = [];
 
         foreach ($data as $s) {
             $ky = $s->scope . ' (' . $s->scope_id . ')';
@@ -215,16 +215,16 @@ class Categories extends AdminController
                 $ky = '[ site ]';
             }
             if (!isset($sections[$ky])) {
-                $sections[$ky] = array();
+                $sections[$ky] = [];
             }
             $sections[$ky][] = $s;
             asort($sections[$ky]);
         }
 
-        User::setState('com_forum.edit.category.data', array(
+        User::setState('com_forum.edit.category.data', [
             'id'       => $category->get('id'),
             'asset_id' => $category->get('asset_id')
-        ));
+        ]);
 
         // Output the HTML
         $this->view
@@ -256,14 +256,14 @@ class Categories extends AdminController
         User::setState('com_forum.edit.category.data', null);
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
         $fields = array_map('trim', $fields);
 
         // Initiate extended database class
         $category = Category::oneOrNew($fields['id'])->set($fields);
 
         // Bind the rules.
-        $data = Request::getArray('data', array(), 'post');
+        $data = Request::getArray('data', [], 'post');
         // Only from someone the form shows the rules to (core.admin); a posted
         // one is dropped.
         if (
@@ -324,8 +324,8 @@ class Categories extends AdminController
         // Incoming
         $section = Request::getInt('section_id', 0);
 
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $i = 0;
 
@@ -367,8 +367,8 @@ class Categories extends AdminController
         // Incoming
         $section = Request::getInt('section_id', 0);
 
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $state = ($this->getTask() == 'publish' ? Category::STATE_PUBLISHED : Category::STATE_UNPUBLISHED);
 
@@ -425,8 +425,8 @@ class Categories extends AdminController
 
         // Incoming
         $state   = Request::getInt('access', 0);
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for an ID
         if (count($ids) < 1) {
@@ -462,7 +462,7 @@ class Categories extends AdminController
      */
     public function cancelTask()
     {
-        $fields = Request::getArray('fields', array('section_id' => 0));
+        $fields = Request::getArray('fields', ['section_id' => 0]);
         if (!isset($fields['section_id']) || !$fields['section_id']) {
             $fields['section_id'] = Request::getInt('section_id', 0);
         }

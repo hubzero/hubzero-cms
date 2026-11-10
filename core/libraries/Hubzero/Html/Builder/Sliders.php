@@ -27,7 +27,7 @@ class Sliders
      * @param   array   $params  An array of options.
      * @return  string
      */
-    public static function start($group = 'sliders', $params = array())
+    public static function start($group = 'sliders', $params = [])
     {
         self::behavior($group, $params);
         self::$open = false;
@@ -84,9 +84,9 @@ class Sliders
      * @param   array   $params  Array of options.
      * @return  void
      */
-    protected static function behavior($group, $params = array())
+    protected static function behavior($group, $params = [])
     {
-        static $loaded = array();
+        static $loaded = [];
 
         if (!array_key_exists($group, $loaded)) {
             $loaded[$group] = true;
@@ -99,7 +99,7 @@ class Sliders
                 $params['startTransition']))
                 ? (int) $params['startOffset'] : null;
 
-            $opt = array();
+            $opt = [];
             $opt['heightStyle'] = "'content'";
             /*$opt['onActive'] = "function(toggler, i) {toggler.addClass('pane-toggler-down');" .
                 "toggler.removeClass('pane-toggler');i.addClass('pane-down');" .
@@ -126,7 +126,7 @@ class Sliders
                 ($params['opacityTransition'])) ? 'true' : 'false';
             $opt['alwaysHide'] = (isset($params['allowAllClose']) && (!$params['allowAllClose'])) ? 'false' : 'true';*/
 
-            $options = array();
+            $options = [];
             foreach ($opt as $k => $v) {
                 if ($v) {
                     $options[] = $k . ': ' . $v;

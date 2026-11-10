@@ -43,7 +43,7 @@ if ($label == 'none') {
     <h2><?php echo $this->title; ?></h2>
 
     <?php
-    $importLinks = array();
+    $importLinks = [];
     if ($this->allow_import == 1 || ($this->allow_import == 2 && $this->isAdmin)) {
         $importLinks[] = '<li><a class="btn icon-add" href="' . Route::url('index.php?option=com_citations&task=add') . '">' . Lang::txt('COM_CITATIONS_SUBMIT_CITATION') . '</a></li>';
     }
@@ -78,7 +78,7 @@ if ($label == 'none') {
                         <ul class="entries-menu filter-options">
                             <?php
                                 $queryString = "";
-                                $exclude = array("filter");
+                                $exclude = ["filter"];
                             foreach ($this->filters as $k => $v) {
                                 if ($v != "" && !in_array($k, $exclude)) {
                                     if (is_array($v)) {
@@ -165,7 +165,7 @@ if ($label == 'none') {
                                         <?php endif; ?>
                                         <td class="citation-container">
                                             <?php
-                                                $formatted = $cite->formatted(array('format' => $this->defaultFormat));
+                                                $formatted = $cite->formatted(['format' => $this->defaultFormat]);
                                             if ($cite->doi) {
                                                 $formatted = str_replace(
                                                     'doi:' . $cite->doi,
@@ -289,7 +289,7 @@ if ($label == 'none') {
                 <label for="actags">
                     <?php echo Lang::txt('COM_CITATIONS_TAGS'); ?>:
                     <?php
-                        $tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tag', 'actags', '', $this->escape($this->filters['tag']))));  // type, field name, field id, class, value
+                        $tf = Event::trigger('hubzero.onGetMultiEntry', [['tags', 'tag', 'actags', '', $this->escape($this->filters['tag'])]]);  // type, field name, field id, class, value
                     if (count($tf) > 0) : ?>
                             <?php echo $tf[0]; ?>
                     <?php else : ?>

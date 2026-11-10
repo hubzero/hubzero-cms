@@ -57,7 +57,7 @@ $this->view('submenu', 'partials')
                         5,
                         3,
                         'blogentry',
-                        array('class' => 'minimal no-footer')
+                        ['class' => 'minimal no-footer']
                     );
                     ?>
 

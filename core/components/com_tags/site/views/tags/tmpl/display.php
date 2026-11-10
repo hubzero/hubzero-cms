@@ -60,12 +60,12 @@ $this->css('introduction.css', 'system')
             <h2><?php echo Lang::txt('COM_TAGS_RECENTLY_USED'); ?></h2>
 
             <?php
-            $filters = array(
+            $filters = [
                 'limit'    => 50,
                 'admin'    => 0,
                 'sort'     => 'taggedon',
                 'sort_Dir' => 'DESC'
-            );
+            ];
 
             if ($this->config->get('cache', 1)) {
                 $ttl = intval($this->config->get('cache_time', 15));
@@ -86,12 +86,12 @@ $this->css('introduction.css', 'system')
             <h2><?php echo Lang::txt('COM_TAGS_TOP_USED'); ?></h2>
 
             <?php
-            $filters = array(
+            $filters = [
                 'limit'    => 50,
                 'admin'    => 0,
                 'sort'     => 'objects',
                 'sort_Dir' => 'DESC'
-            );
+            ];
 
             if ($this->config->get('cache', 1)) {
                 if (!($cloud = Cache::get('tags.top'))) {

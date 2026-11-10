@@ -22,7 +22,7 @@ class HelloWorld extends Macro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['wiki'] = 'Outputs "Hello world"';
         $txt['html'] = '<p>Outputs "Hello world"</p>';
         return $txt['html'];

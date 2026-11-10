@@ -56,33 +56,33 @@ class Publications extends Plugin
      */
     public function onTagView($tags, $limit = 0, $limitstart = 0, $sort = '', $areas = null)
     {
-        $response = array(
+        $response = [
             'name'     => $this->_name,
             'title'    => Lang::txt('PLG_TAGS_PUBLICATIONS'),
             'total'    => 0,
             'results'  => null,
             'sql'      => '',
-            'children' => array()
-        );
+            'children' => []
+        ];
 
         $database = App::get('db');
         $rt = new \Components\Publications\Tables\Category($database);
         foreach ($rt->getCategories() as $category) {
-            $response['children'][$category->url_alias] = array(
+            $response['children'][$category->url_alias] = [
                 'name'     => $category->url_alias,
                 'title'    => $category->name,
                 'total'    => 0,
                 'results'  => null,
                 'sql'      => '',
                 'id'       => $category->id
-            );
+            ];
         }
 
         if (empty($tags)) {
             return $response;
         }
 
-        $ids = array();
+        $ids = [];
         foreach ($tags as $tag) {
             $ids[] = $tag->get('id');
         }
@@ -91,7 +91,7 @@ class Publications extends Plugin
         $rr = new \Components\Publications\Tables\Publication($database);
 
         // Build query
-        $filters = array();
+        $filters = [];
         $filters['tags'] = $ids;
         $filters['now'] = Date::toSql();
         $filters['sortby'] = ($sort) ? $sort : 'ranking';
@@ -156,7 +156,7 @@ class Publications extends Plugin
      * @param   array   $filters  Options for building the query
      * @return  string  SQL
      */
-    private function buildPluginQuery($filters = array())
+    private function buildPluginQuery($filters = [])
     {
         $database = App::get('db');
 

@@ -85,21 +85,21 @@ class Extension extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'folder'  => 'notempty',
         'element' => 'notempty',
         'name'    => 'notempty'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      **/
-    public $always = array(
+    public $always = [
         'modified',
         'modified_by'
-    );
+    ];
 
     /**
      * Generates automatic modified field value
@@ -198,10 +198,10 @@ class Extension extends Relational
                 '.',
                 false,
                 false,
-                array('.svn', 'CVS', '.DS_Store', '__MACOSX', 'pdf_fonts', 'overrides')
+                ['.svn', 'CVS', '.DS_Store', '__MACOSX', 'pdf_fonts', 'overrides']
             );
             if (!$this->folders || !is_array($this->folders)) {
-                $this->folders = array();
+                $this->folders = [];
             }
         }
 
@@ -223,7 +223,7 @@ class Extension extends Relational
             $path = $this->path($client_id);
 
             $dir = '/' . $lang . '/' . $lang . '.xml';
-            foreach (array(PATH_APP, PATH_CORE) as $base) {
+            foreach ([PATH_APP, PATH_CORE] as $base) {
                 $file = $base . $path . $dir;
 
                 if (file_exists($file)) {
@@ -245,7 +245,7 @@ class Extension extends Relational
             if (!is_array($info)) {
                 $row->missing = true;
 
-                $info = array(
+                $info = [
                     'language'     => $lang,
                     'name'         => $lang,
                     'description'  => '',
@@ -255,7 +255,7 @@ class Extension extends Relational
                     'authorEmail'  => '',
                     'authorUrl'    => '',
                     'missing'      => true
-                );
+                ];
             }
 
             foreach ($info as $key => $value) {
@@ -302,7 +302,7 @@ class Extension extends Relational
             return false;
         }
 
-        $data = array();
+        $data = [];
 
         $data['name'] = (string) $xml->name;
         $data['type'] = $xml->attributes()->type;

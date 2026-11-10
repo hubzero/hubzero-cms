@@ -40,10 +40,10 @@ $this->css()
                                 !$reply->get('id')
                                 || $reply->get('item_type') != $this->obj_type
                                 || (int) $reply->get('item_id') !== (int) $this->obj_id
-                                || !in_array($reply->get('state'), array(
+                                || !in_array($reply->get('state'), [
                                     \Plugins\Hubzero\Comments\Models\Comment::STATE_PUBLISHED,
                                     \Plugins\Hubzero\Comments\Models\Comment::STATE_FLAGGED
-                                ))
+                                ])
                             ) {
                                 $replyto = 0;
                                 $reply   = \Plugins\Hubzero\Comments\Models\Comment::blank();
@@ -108,7 +108,7 @@ $this->css()
                                     <?php echo Lang::txt('PLG_HUBZERO_COMMENTS_YOUR_COMMENTS'); ?>:
                                     <?php
                                     if (!User::isGuest()) {
-                                        echo $this->editor('comment[content]', $this->escape($comment->get('content')), 35, 15, 'commentcontent', array('class' => 'form-control minimal no-footer'));
+                                        echo $this->editor('comment[content]', $this->escape($comment->get('content')), 35, 15, 'commentcontent', ['class' => 'form-control minimal no-footer']);
                                     }
                                     ?>
                                 </label>

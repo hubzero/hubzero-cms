@@ -72,36 +72,36 @@ class Page extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'title' => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'pagename',
         'namespace'
-    );
+    ];
 
     /**
      * List of adapter paths
      *
      * @var  array
      */
-    protected static $paths = array();
+    protected static $paths = [];
 
     /**
      * Sets up additional custom rules
@@ -115,7 +115,7 @@ class Page extends Relational
 
             $error = null;
 
-            if (in_array(strtolower($ns), array('special', 'image', 'file'))) {
+            if (in_array(strtolower($ns), ['special', 'image', 'file'])) {
                 $error = Lang::txt('COM_WIKI_ERROR_INVALID_TITLE');
             }
 
@@ -220,7 +220,7 @@ class Page extends Relational
     {
         $page = $this->parent();
 
-        $ancestors = array();
+        $ancestors = [];
 
         if ($page->get('id')) {
             $ancestors[] = $page;
@@ -500,8 +500,8 @@ class Page extends Relational
                 // used to have to register them itself, and the ones that did not
                 // (the API, the media controller) died on any group page.
                 // App plugins shadow core ones, so look there first.
-                foreach (array(PATH_APP, PATH_CORE) as $root) {
-                    foreach (glob($root . DS . 'plugins' . DS . '*' . DS . '*' . DS . 'adapters' . DS . $file) ?: array() as $plugged) {
+                foreach ([PATH_APP, PATH_CORE] as $root) {
+                    foreach (glob($root . DS . 'plugins' . DS . '*' . DS . '*' . DS . 'adapters' . DS . $file) ?: [] as $plugged) {
                         static::addAdapterPath($plugged);
                     }
                 }
@@ -549,7 +549,7 @@ class Page extends Relational
     public static function addAdapterPath($path)
     {
         if (!isset(static::$paths)) {
-            static::$paths = array();
+            static::$paths = [];
         }
 
         if (!empty($path)) {
@@ -574,7 +574,7 @@ class Page extends Relational
         if (!$this->get('id')) {
             switch (strtolower($as)) {
                 case 'array':
-                    return array();
+                    return [];
                 break;
 
                 case 'string':
@@ -588,7 +588,7 @@ class Page extends Relational
 
         $cloud = new Tags($this->get('id'));
 
-        return $cloud->render($as, array('admin' => $admin));
+        return $cloud->render($as, ['admin' => $admin]);
     }
 
     /**
@@ -617,7 +617,7 @@ class Page extends Relational
 
         // Make sure the path is updated
         if ($this->get('parent')) {
-            $path = array();
+            $path = [];
 
             foreach ($this->ancestors() as $ancestor) {
                 $path[] = $ancestor->get('pagename');
@@ -1031,12 +1031,12 @@ class Page extends Relational
             return $regexp;
         }
 
-        static $classes = array(
+        static $classes = [
             'alnum' => "0-9A-Za-z\xc0-\xd6\xd8-\xf6\xf8-\xff",
             'alpha' => "A-Za-z\xc0-\xd6\xd8-\xf6\xf8-\xff",
             'upper' => "A-Z\xc0-\xd6\xd8-\xde",
             'lower' => "a-z\xdf-\xf6\xf8-\xff"
-        );
+        ];
 
         $keys = join('|', array_keys($classes));
 

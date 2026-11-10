@@ -18,7 +18,7 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
      *
      * @var  array
      */
-    private $items = array();
+    private $items = [];
 
     /**
      * Cursor position
@@ -63,7 +63,7 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
      */
     public function names()
     {
-        $names = array();
+        $names = [];
 
         foreach ($this->items as $item) {
             $names[] = $item->name;
@@ -132,7 +132,7 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
      */
     public function clear()
     {
-        $this->items = array();
+        $this->items = [];
 
         return $this;
     }

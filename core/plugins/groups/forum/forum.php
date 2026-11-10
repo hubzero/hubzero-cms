@@ -89,13 +89,13 @@ class Forum extends Plugin
      */
     public function &onGroupAreas()
     {
-        $area = array(
+        $area = [
             'name'             => $this->_name,
             'title'            => Lang::txt('PLG_GROUPS_FORUM'),
             'default_access'   => $this->params->get('plugin_access', 'members'),
             'display_menu_tab' => $this->params->get('display_tab', 1),
             'icon'             => 'f086'
-        );
+        ];
         return $area;
     }
 
@@ -119,11 +119,11 @@ class Forum extends Plugin
         $active_real = 'discussion';
 
         // The output array we're returning
-        $arr = array(
+        $arr = [
             'html' => '',
-            'metadata' => array(),
+            'metadata' => [],
             'name' => $active
-        );
+        ];
 
         //get this area details
         $this_area = $this->onGroupAreas();
@@ -330,7 +330,7 @@ class Forum extends Plugin
             }
         }
 
-        $arr['metadata']['count'] = $this->forum->count('threads', array('state' => 1));
+        $arr['metadata']['count'] = $this->forum->count('threads', ['state' => 1]);
 
         // Return the output
         return $arr;
@@ -356,14 +356,14 @@ class Forum extends Plugin
             $blog = '/groups/' . $this->group->get('cn') . '/forum';
 
             if ($path == $blog) {
-                $path = array();
+                $path = [];
                 return $path;
             }
 
             $path = ltrim($path, DS);
             $path = explode('/', $path);
 
-            $paths = array();
+            $paths = [];
             $start = false;
             foreach ($path as $bit) {
                 if ($bit == 'groups' && !$start) {
@@ -463,7 +463,7 @@ class Forum extends Plugin
     public function sections()
     {
         // Incoming
-        $filters = array(
+        $filters = [
             'scope'      => $this->forum->get('scope'),
             'scope_id'   => $this->forum->get('scope_id'),
             'search'     => Request::getString('q', ''),
@@ -471,7 +471,7 @@ class Forum extends Plugin
             'sort'       => 'ordering',
             'sort_Dir'   => 'ASC',
             'access'     => User::getAuthorisedViewLevels()
-        );
+        ];
 
         if (!User::isGuest()) {
             $filters['access'][] = 2; // Registered
@@ -557,7 +557,7 @@ class Forum extends Plugin
             || $this->group->get('discoverability') == 1);
 
         // Rank ACL levels from least to most restrictive
-        $rank = array('anyone' => 1, 'registered' => 2, 'members' => 3, 'nobody' => 4);
+        $rank = ['anyone' => 1, 'registered' => 2, 'members' => 3, 'nobody' => 4];
 
         $forumAcl = $this->group_plugin_acl;
         $groupAcl = $groupPrivate ? 'members' : 'anyone';
@@ -588,7 +588,7 @@ class Forum extends Plugin
         Request::checkToken();
 
         // Incoming posted data
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
         $fields = array_map('trim', $fields);
         $fields['state'] = 1;
 
@@ -629,7 +629,7 @@ class Forum extends Plugin
             $section->set('access', $this->defaultContentAccess());
         }
 
-        if (in_array($section->get('alias'), array('new', 'settings', 'savesettings'))) {
+        if (in_array($section->get('alias'), ['new', 'settings', 'savesettings'])) {
             App::redirect(
                 Route::url($this->base),
                 Lang::txt('PLG_GROUPS_FORUM_SECTION_TITLE_RESERVED', $section->get('alias')),
@@ -657,17 +657,17 @@ class Forum extends Plugin
                     'scope'       => 'forum.section',
                     'scope_id'    => $section->get('id'),
                     'description' => Lang::txt('PLG_GROUPS_FORUM_ACTIVITY_SECTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($this->base) . '">' . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                    'details'     => array(
+                    'details'     => [
                         'title' => $section->get('title'),
                         'url'   => Route::url($this->base)
-                    )
+                    ]
                 ],
-                'recipients' => array(
+                'recipients' => [
                     ['group', $this->group->get('gidNumber')],
                     ['forum.' . $this->forum->get('scope'), $this->forum->get('scope_id')],
                     ['forum.section', $section->get('id')],
                     ['user', $section->get('created_by')]
-                )
+                ]
             ]);
         }
 
@@ -738,17 +738,17 @@ class Forum extends Plugin
                     'scope'       => 'forum.section',
                     'scope_id'    => $section->get('id'),
                     'description' => Lang::txt('PLG_GROUPS_FORUM_ACTIVITY_SECTION_DELETED', '<a href="' . Route::url($this->base) . '">' . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                    'details'     => array(
+                    'details'     => [
                         'title' => $section->get('title'),
                         'url'   => Route::url($this->base)
-                    )
+                    ]
                 ],
-                'recipients' => array(
+                'recipients' => [
                     ['group', $this->group->get('gidNumber')],
                     ['forum.' . $this->forum->get('scope'), $this->forum->get('scope_id')],
                     ['forum.section', $section->get('id')],
                     ['user', $section->get('created_by')]
-                )
+                ]
             ]);
         }
 
@@ -766,7 +766,7 @@ class Forum extends Plugin
     public function categories()
     {
         // Incoming
-        $filters = array(
+        $filters = [
             'limit'      => Request::getInt('limit', 25),
             'start'      => Request::getInt('limitstart', 0),
             'section'    => Request::getString('section', ''),
@@ -777,7 +777,7 @@ class Forum extends Plugin
             'state'      => 1,
             'parent'     => 0,
             'access'     => User::getAuthorisedViewLevels()
-        );
+        ];
         if (!User::isGuest()) {
             $filters['access'][] = 2;
             $filters['access'][] = 4;
@@ -810,7 +810,7 @@ class Forum extends Plugin
                 break;
         }
 
-        if (!in_array($filters['sort_Dir'], array('ASC', 'DESC'))) {
+        if (!in_array($filters['sort_Dir'], ['ASC', 'DESC'])) {
             $filters['sort_Dir'] = 'DESC';
         }
 
@@ -874,7 +874,7 @@ class Forum extends Plugin
     public function search()
     {
         // Incoming
-        $filters = array(
+        $filters = [
             'limit'      => Request::getInt('limit', 25),
             'start'      => Request::getInt('limitstart', 0),
             'search'     => Request::getString('q', ''),
@@ -884,12 +884,12 @@ class Forum extends Plugin
             'scope_id'   => $this->forum->get('scope_id'),
             'state'      => 1,
             'access'     => User::getAuthorisedViewLevels()
-        );
+        ];
         if (!$filters['search']) {
             return $this->sections();
         }
 
-        if (!in_array($filters['orderDir'], array('ASC', 'DESC'))) {
+        if (!in_array($filters['orderDir'], ['ASC', 'DESC'])) {
             $filters['orderDir'] = 'DESC';
         }
 
@@ -908,7 +908,7 @@ class Forum extends Plugin
         $section->set('alias', preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($section->get('title'))));
 
         // Get all sections
-        $sections = array();
+        $sections = [];
         foreach ($this->forum->sections($filters)->rows() as $section) {
             $sections[$section->get('id')] = $section;
         }
@@ -920,7 +920,7 @@ class Forum extends Plugin
         $category->set('alias', str_replace(' ', '-', $category->get('title')));
         $category->set('alias', preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($category->get('title'))));
 
-        $categories = array();
+        $categories = [];
         foreach ($this->forum->categories($filters)->rows() as $category) {
             $categories[$category->get('id')] = $category;
         }
@@ -1016,7 +1016,7 @@ class Forum extends Plugin
         // Check for request forgeries
         Request::checkToken();
 
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
         $fields = array_map('trim', $fields);
 
         // Instantiate a category
@@ -1083,7 +1083,7 @@ class Forum extends Plugin
 
         // Forge an alias from the title
         if ($category->get('alias') == '') {
-            $alias = $category->automaticAlias(array('title' => $category->get('title')));
+            $alias = $category->automaticAlias(['title' => $category->get('title')]);
             $category->set('alias', $alias);
         }
 
@@ -1110,17 +1110,17 @@ class Forum extends Plugin
                 'scope'       => 'forum.category',
                 'scope_id'    => $category->get('id'),
                 'description' => Lang::txt('PLG_GROUPS_FORUM_ACTIVITY_CATEGORY_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($this->base) . '">' . htmlspecialchars((string) ($category->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title' => $category->get('title'),
                     'url'   => Route::url($this->base)
-                )
+                ]
             ],
-            'recipients' => array(
+            'recipients' => [
                 ['group', $this->group->get('gidNumber')],
                 ['forum.' . $this->forum->get('scope'), $this->forum->get('scope_id')],
                 ['forum.section', $category->get('section_id')],
                 ['user', $category->get('created_by')]
-            )
+            ]
         ]);
 
         // Set the redirect
@@ -1195,17 +1195,17 @@ class Forum extends Plugin
                 'scope'       => 'forum.category',
                 'scope_id'    => $category->get('id'),
                 'description' => Lang::txt('PLG_GROUPS_FORUM_ACTIVITY_CATEGORY_DELETED', '<a href="' . Route::url($this->base) . '">' . htmlspecialchars((string) ($category->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title' => $category->get('title'),
                     'url'   => Route::url($this->base)
-                )
+                ]
             ],
-            'recipients' => array(
+            'recipients' => [
                 ['group', $this->group->get('gidNumber')],
                 ['forum.' . $this->forum->get('scope'), $this->forum->get('scope_id')],
                 ['forum.section', $category->get('section_id')],
                 ['user', $category->get('created_by')]
-            )
+            ]
         ]);
 
         // Redirect to main listing
@@ -1224,7 +1224,7 @@ class Forum extends Plugin
     public function threads()
     {
         // Incoming
-        $filters = array(
+        $filters = [
             'limit'    => (int)Request::getState('groups.forum.thread', 'limit', Config::get('list_limit'), 'int'),
             'start'    => (int)Request::getState('groups.forum.thread.' . Request::getInt('thread', 0), 'limitstart', 0, 'int'),
             'section'  => Request::getString('section', ''),
@@ -1234,7 +1234,7 @@ class Forum extends Plugin
             'scope_id' => $this->forum->get('scope_id'),
             'state'    => Post::STATE_PUBLISHED,
             'access'   => User::getAuthorisedViewLevels()
-        );
+        ];
         if (!User::isGuest()) {
             $filters['access'][] = 2; // Registered
             $filters['access'][] = 4; // Protected
@@ -1286,7 +1286,7 @@ class Forum extends Plugin
             );
         }
 
-        $filters['state'] = array(1, 3);
+        $filters['state'] = [1, 3];
 
         // Get authorization
         $this->_authorize('category', $category->get('id'));
@@ -1455,7 +1455,7 @@ class Forum extends Plugin
 
         // Incoming
         $section = Request::getString('section', '');
-        $fields  = Request::getArray('fields', array(), 'post');
+        $fields  = Request::getArray('fields', [], 'post');
         $fields  = array_map('trim', $fields);
 
         $fields['sticky']    = (isset($fields['sticky']))    ? $fields['sticky']    : 0;
@@ -1499,7 +1499,7 @@ class Forum extends Plugin
         // of the posted HTML, so only members of this group can be mentioned.
         // loadHTML() refuses an empty string outright and warns on markup it
         // does not know, so guard both.
-        $mentionEmailList = array();
+        $mentionEmailList = [];
         if (isset($fields['comment']) && trim((string) $fields['comment']) !== '') {
             $domComment = new \DOMDocument();
             $__libxml = libxml_use_internal_errors(true);
@@ -1720,12 +1720,12 @@ class Forum extends Plugin
             // Figure out who should be notified about this comment. Only members
             // authorised to view the content (section/category/thread/post
             // access levels) are emailed (ticket 307).
-                $userIDsToEmail = $this->_getEmailRecipientIds($category, array(
+                $userIDsToEmail = $this->_getEmailRecipientIds($category, [
                 $section->get('access'),
                 $category->get('access'),
                 $thread->get('access'),
                 $post->get('access')
-                ));
+                ]);
 
                 $allowEmailResponses = true;
 
@@ -1735,12 +1735,12 @@ class Forum extends Plugin
                     $allowEmailResponses = false;
                 }
 
-                $from = array(
+                $from = [
                 'name'  => (!$post->get('anonymous') ? $post->creator->get('name', Lang::txt('PLG_GROUPS_FORUM_UNKNOWN')) : Lang::txt('JANONYMOUS')) . ' @ ' . Config::get('sitename'),
                 'email' => Config::get('mailfrom'),
                 'replytoname'  => Config::get('sitename'),
                 'replytoemail' => Config::get('mailfrom')
-                );
+                ];
 
             // Email each group member separately, each needs a user specific token
                 foreach ($userIDsToEmail as $userID) {
@@ -1768,14 +1768,14 @@ class Forum extends Plugin
                         }
                     }
 
-                    $msg = array();
+                    $msg = [];
 
                     // create view object
-                    $eview = new \Hubzero\Mail\View(array(
+                    $eview = new \Hubzero\Mail\View([
                     'base_path' => __DIR__,
                     'name'      => 'email',
                     'layout'    => 'comment_plain'
-                    ));
+                    ]);
 
                     // plain text
                     $eview
@@ -1797,7 +1797,7 @@ class Forum extends Plugin
 
                     $subject = Lang::txt('PLG_GROUPS_FORUM') . ': ' . $this->group->get('cn') . ' - ' . $thread->get('title');
 
-                    if (!Event::trigger('xmessage.onSendMessage', array('group_message', $subject, $msg, $from, array($userID), $this->option, null, '', $this->group->get('gidNumber'), false, $post->get('anonymous', 0)))) {
+                    if (!Event::trigger('xmessage.onSendMessage', ['group_message', $subject, $msg, $from, [$userID], $this->option, null, '', $this->group->get('gidNumber'), false, $post->get('anonymous', 0)])) {
                         $this->setError(Lang::txt('GROUPS_ERROR_EMAIL_MEMBERS_FAILED'));
                     }
                 }
@@ -1809,11 +1809,11 @@ class Forum extends Plugin
         $url = $this->base . '&scope=' . $section->get('alias') . '/' . $category->get('alias') . '/' . $thread->get('id');
 
         // Record the activity
-        $recipients = array(
+        $recipients = [
             ['group', $this->group->get('gidNumber')],
             ['forum.' . $this->forum->get('scope'), $this->forum->get('scope_id')],
             ['user', $post->get('created_by')]
-        );
+        ];
         foreach ($this->group->get('managers') as $recipient) {
             $recipients[] = ['user', $recipient];
         }
@@ -1866,10 +1866,10 @@ class Forum extends Plugin
                 'scope_id'    => $post->get('id'),
                 'anonymous'   => $post->get('anonymous', 0),
                 'description' => $desc,
-                'details'     => array(
+                'details'     => [
                     'thread' => $post->get('thread'),
                     'url'    => Route::url($url)
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -1893,18 +1893,18 @@ class Forum extends Plugin
             return;
         }
 
-        $from = array();
+        $from = [];
         $from['name']  = Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name));
         $from['email'] = Config::get('mailfrom');
 
         $subject = $postAuthor . " mentioned you on a group thread from " . $groupTitle;
 
         // BUILDING THE EMAIL TEMPLATE
-        $eView = new \Hubzero\Mail\View(array(
+        $eView = new \Hubzero\Mail\View([
             'base_path' => __DIR__,
             'name'      => 'email',
             'layout'    => 'mentions_html'
-        ));
+        ]);
 
         $eView->comment = $comment;
         $eView->commentNoTags = strip_tags($comment);
@@ -1938,9 +1938,9 @@ class Forum extends Plugin
      *                                  authorised to view every one of them.
      * @return  array
      */
-    protected function _getEmailRecipientIds($category, $accessLevels = array())
+    protected function _getEmailRecipientIds($category, $accessLevels = [])
     {
-        $userIDsToEmail = array();
+        $userIDsToEmail = [];
         $memberoptions = $this->_loadMemberOptions();
         $categorySubscriptionsEnabled = Component::params('com_groups')->get('enable_forum_email_categories', 0);
         $users = $this->_loadExistingUsers($this->members);
@@ -1960,7 +1960,7 @@ class Forum extends Plugin
             // regardless of access level (ticket 307).
             if (!empty($accessLevels)) {
                 $viewable = array_merge(
-                    array(1, 2, 4, 5),
+                    [1, 2, 4, 5],
                     \Hubzero\Access\Access::getAuthorisedViewLevels($userId)
                 );
 
@@ -2139,10 +2139,10 @@ class Forum extends Plugin
             Notify::error($post->getError());
         } else {
             // Record the activity
-            $recipients = array(
+            $recipients = [
                 ['group', $this->group->get('gidNumber')],
                 ['forum.' . $this->forum->get('scope'), $this->forum->get('scope_id')]
-            );
+            ];
             foreach ($this->group->get('managers') as $recipient) {
                 $recipients[] = ['user', $recipient];
             }
@@ -2155,10 +2155,10 @@ class Forum extends Plugin
                     'scope'       => 'forum.thread',
                     'scope_id'    => $post->get('thread'),
                     'description' => Lang::txt('PLG_GROUPS_FORUM_THREAD_DELETED', '<a href="' . Route::url($url) . '">' . htmlspecialchars((string) ($post->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                    'details'     => array(
+                    'details'     => [
                         'thread' => $post->get('thread'),
                         'url'    => Route::url($url)
-                    )
+                    ]
                 ],
                 'recipients' => $recipients
             ]);
@@ -2216,7 +2216,7 @@ class Forum extends Plugin
         }
 
         // Incoming file
-        $file = Request::getArray('upload', array(), 'files');
+        $file = Request::getArray('upload', [], 'files');
         if (!$file || !isset($file['name']) || !$file['name']) {
             if ($attachment->get('id')) {
                 // Only updating the description
@@ -2455,7 +2455,7 @@ class Forum extends Plugin
         $row = \Hubzero\Plugin\Params::oneByPluginOrNew($this->group->get('gidNumber'), $this->_type, $this->_name);
 
         // Get parameters
-        $params = new \Hubzero\Config\Registry(Request::getArray('params', array(), 'post'));
+        $params = new \Hubzero\Config\Registry(Request::getArray('params', [], 'post'));
         $row->set('params', $params->toString());
 
         // Store new content
@@ -2465,10 +2465,10 @@ class Forum extends Plugin
         }
 
         // Record the activity
-        $recipients = array(
+        $recipients = [
             ['group', $this->group->get('gidNumber')],
             ['forum.' . $this->forum->get('scope'), $this->forum->get('scope_id')]
-        );
+        ];
         foreach ($this->group->get('managers') as $recipient) {
             $recipients[] = ['user', $recipient];
         }
@@ -2599,11 +2599,11 @@ class Forum extends Plugin
             Notify::error($section->getError());
         } else {
             // Record the activity
-            $recipients = array(
+            $recipients = [
                 ['group', $this->group->get('gidNumber')],
                 ['forum.' . $this->forum->get('scope'), $this->forum->get('scope_id')],
                 ['forum.section', $section->get('id')]
-            );
+            ];
             foreach ($this->group->get('managers') as $recipient) {
                 $recipients[] = ['user', $recipient];
             }
@@ -2614,10 +2614,10 @@ class Forum extends Plugin
                     'scope'       => 'forum.section',
                     'scope_id'    => $section->get('id'),
                     'description' => Lang::txt('PLG_GROUPS_FORUM_ACTIVITY_SECTION_REORDERED', '<a href="' . Route::url($this->base) . '">' . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                    'details'     => array(
+                    'details'     => [
                         'title' => $section->get('title'),
                         'url'   => Route::url($this->base)
-                    )
+                    ]
                 ],
                 'recipients' => $recipients
             ]);

@@ -36,9 +36,9 @@ class Content extends Plugin
      */
     public function onWhatsnewAreas()
     {
-        return array(
+        return [
             'content' => Lang::txt('PLG_WHATSNEW_CONTENT')
-        );
+        ];
     }
 
     /**
@@ -51,20 +51,20 @@ class Content extends Plugin
      * @param   array    $tagids      Array of tag IDs
      * @return  array
      */
-    public function onWhatsnew($period, $limit = 0, $limitstart = 0, $areas = null, $tagids = array())
+    public function onWhatsnew($period, $limit = 0, $limitstart = 0, $areas = null, $tagids = [])
     {
         if (is_array($areas) && $limit) {
             if (
                 !isset($areas[$this->_name])
                 && !in_array($this->_name, $areas)
             ) {
-                return array();
+                return [];
             }
         }
 
         // Do we have a search term?
         if (!is_object($period)) {
-            return array();
+            return [];
         }
 
         $database = App::get('db');
@@ -161,7 +161,7 @@ class Content extends Plugin
      */
     private function recursiveMenuLookup($id, $startnew = true)
     {
-        static $aliases = array();
+        static $aliases = [];
 
         if ($startnew) {
             unset($aliases);

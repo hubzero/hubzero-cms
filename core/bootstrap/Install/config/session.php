@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
     /*
     |--------------------------------------------------------------------------
     | Session Handler
@@ -50,4 +50,4 @@ return array(
     */
     'cookie_domain' => '',
     'cookiesubdomains' => '0',
-);
+];

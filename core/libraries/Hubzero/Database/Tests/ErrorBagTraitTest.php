@@ -67,11 +67,11 @@ class ErrorBagTraitTest extends TestCase
         $this->assertEquals($this->traitObject->getError(), 'Donec sed odio dui.');
 
         // Test setting the entire list
-        $newerrors = array(
+        $newerrors = [
             'Integer posuere erat',
             'Ante venenatis dapibus',
             'Posuere velit aliquet.'
-        );
+        ];
 
         $this->traitObject->setErrors($newerrors);
 

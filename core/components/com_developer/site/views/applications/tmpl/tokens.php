@@ -15,10 +15,10 @@ defined('_HZEXEC_') or die();
 
 // pagination
 $total = $this->application->accessTokens()->count();
-$filters = array(
+$filters = [
     'limit' => Request::getInt('limit', 25),
     'start' => Request::getInt('limitstart', Request::getInt('start', 0))
-);
+];
 $tokens = $this->application->accessTokens()
     ->limit($filters['limit'], $filters['start'])
     ->ordered()

@@ -59,30 +59,30 @@ class Todo extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'projectid' => 'positive|nonzero',
         'content'   => 'notempty'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'content'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by',
         'priority'
-    );
+    ];
 
     /**
      * Generates automatic content field value

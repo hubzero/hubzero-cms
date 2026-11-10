@@ -15,7 +15,7 @@ class Gallery
     public static function render($hash)
     {
         if (!isset($_SESSION['dv'])) {
-            $_SESSION['dv'] = array();
+            $_SESSION['dv'] = [];
         }
 
         if (!isset($_SESSION['dv']['gallery']['list'][$hash])) {
@@ -28,9 +28,9 @@ class Gallery
         $real_path = explode('/site/', $http_path);
         $real_path = '/site/' . $real_path[1];
 
-        $imagetypes = array('png', 'gif', 'jpg', 'jprg');
-        $image_list = array();
-        $image_viewer = array();
+        $imagetypes = ['png', 'gif', 'jpg', 'jprg'];
+        $image_list = [];
+        $image_viewer = [];
 
         if (!is_dir(PATH_ROOT . $real_path)) {
             print "<h2>Error: Missing images.</h2>";

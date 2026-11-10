@@ -42,19 +42,19 @@ class Recent extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'user_id'  => 'nonzero|positive',
         'group_id' => 'nonzero|positive'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created'
-    );
+    ];
 
     /**
      * Retrieves one row loaded by user ID and group ID combo

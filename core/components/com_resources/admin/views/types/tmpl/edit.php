@@ -275,7 +275,7 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
                         45,
                         10,
                         'field-description',
-                        array('class' => 'minimal')
+                        ['class' => 'minimal']
                     );
                     ?>
                 </div>
@@ -308,7 +308,7 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
                     );
                     $plugins = $database->loadObjectList();
 
-                    $found = array();
+                    $found = [];
                     $lang = Lang::getRoot();
                     foreach ($plugins as $plugin) {
                         if (in_array('plg_' . $plugin->element, $found)) {
@@ -408,7 +408,7 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
 
             if (!is_object($schema)) {
                 $schema = new stdClass();
-                $schema->fields = array();
+                $schema->fields = [];
             }
 
             if (count($schema->fields) <= 0) {
@@ -581,7 +581,7 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
                     <td>
                         <select name="fields[<?php echo $i; ?>][display]" id="fields-<?php echo $i; ?>-display">
                             <?php
-                            $skipPlugins = array(
+                            $skipPlugins = [
                                 'groups', 'coins', 'collections',
                                 'dublincore', 'findthistext',
                                 'googlescholar', 'opengraph', 'watch',
@@ -589,7 +589,7 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
                                 'recommendations', 'reviews', 'share',
                                 'sponsors', 'usage', 'versions',
                                 'wishlist'
-                            );
+                            ];
                             foreach ($plugins as $plugin) {
                                 if (
                                     in_array($plugin->element, $skipPlugins)

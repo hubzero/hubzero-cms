@@ -68,7 +68,7 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                         <?php echo Lang::txt('Calendar:'); ?> <span class="optional">Optional</span>
                         <select name="event[calendar_id]" id="event-calendar-picker">
                             <option value=""><?php echo Lang::txt('&mdash; Select Calendar for Event &mdash;'); ?></option>
-                            <?php $colors = array('red','orange','yellow','green','blue','purple','brown'); ?>
+                            <?php $colors = ['red','orange','yellow','green','blue','purple','brown']; ?>
                             <?php foreach ($this->calendars as $calendar) : ?>
                                 <?php
                                 if (!in_array($calendar->get('color'), $colors)) {
@@ -174,13 +174,13 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                 </fieldset>
                 <?php
                     $repeating = $this->event->parseRepeatingRule();
-                    $freqs = array(
+                    $freqs = [
                         ''        => '- None &mdash;',
                         'daily'   => 'Daily',
                         'weekly'  => 'Weekly',
                         'monthly' => 'Monthly',
                         'yearly'  => 'Yearly'
-                    );
+                    ];
                     ?>
                 <fieldset class="reccurance">
                     <legend>

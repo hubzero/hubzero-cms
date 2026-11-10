@@ -27,10 +27,10 @@ class PostfixCollector
     /** Newest external-send timestamp seen during the current pass. */
     protected static $maxTs = 0;
 
-    protected static $months = array(
+    protected static $months = [
         'Jan' => 1, 'Feb' => 2, 'Mar' => 3, 'Apr' => 4, 'May' => 5, 'Jun' => 6,
         'Jul' => 7, 'Aug' => 8, 'Sep' => 9, 'Oct' => 10, 'Nov' => 11, 'Dec' => 12
-    );
+    ];
 
     /**
      * @return  string
@@ -145,7 +145,7 @@ class PostfixCollector
     {
         $db     = \App::get('db');
         $path   = self::logPath();
-        $result = array('mode' => '', 'counted' => 0, 'hours' => 0, 'days' => 0, 'readable' => false);
+        $result = ['mode' => '', 'counted' => 0, 'hours' => 0, 'days' => 0, 'readable' => false];
 
         if (!$path || !is_readable($path)) {
             $result['error'] = 'log unreadable';
@@ -168,8 +168,8 @@ class PostfixCollector
         $curSize  = $st['size'];
         $now      = time();
 
-        $hours = array();
-        $days  = array();
+        $hours = [];
+        $days  = [];
         self::$maxTs = 0;
 
         if (!$state || $lastInode === 0) {
@@ -177,7 +177,7 @@ class PostfixCollector
             $result['mode'] = 'first';
             $files = glob(dirname($path) . '/' . basename($path) . '*');
             if (!$files) {
-                $files = array($path);
+                $files = [$path];
             }
             foreach ($files as $f) {
                 if (!is_file($f) || !is_readable($f)) {
@@ -323,7 +323,7 @@ class PostfixCollector
         }
         $files = glob(dirname($path) . '/' . basename($path) . '*');
         if (!$files) {
-            $files = array($path);
+            $files = [$path];
         }
         $max = 0;
         $now = time();

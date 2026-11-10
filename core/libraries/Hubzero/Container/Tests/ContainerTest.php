@@ -24,7 +24,7 @@ class ContainerTest extends Basic
      **/
     public function testConstructor()
     {
-        $params = array('param' => 'value');
+        $params = ['param' => 'value'];
 
         $container = new Container($params);
 
@@ -126,7 +126,7 @@ class ContainerTest extends Basic
         $container->set('foo', 'bar');
         $container->set('bar', 'foo');
 
-        $this->assertEquals(array('foo', 'bar'), $container->keys());
+        $this->assertEquals(['foo', 'bar'], $container->keys());
     }
 
     /**

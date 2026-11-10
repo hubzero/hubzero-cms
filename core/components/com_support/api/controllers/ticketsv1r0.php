@@ -102,8 +102,8 @@ class Ticketsv1r0 extends ApiController
         $stats->unassigned = 0;
         $stats->closed = 0;
         $stats->tickets = new stdClass();
-        $stats->tickets->opened = array();
-        $stats->tickets->closed = array();
+        $stats->tickets->opened = [];
+        $stats->tickets->closed = [];
 
         $sql = "SELECT id, created, YEAR(created) AS `year`, MONTH(created) AS `month`, status, owner
 				FROM `#__support_tickets`
@@ -127,7 +127,7 @@ class Ticketsv1r0 extends ApiController
         $openTickets = $this->database->loadObjectList();
         foreach ($openTickets as $o) {
             if (!isset($stats->tickets->opened[$o->year])) {
-                $stats->tickets->opened[$o->year] = array();
+                $stats->tickets->opened[$o->year] = [];
             }
             if (!isset($stats->tickets->opened[$o->year][$o->month])) {
                 $stats->tickets->opened[$o->year][$o->month] = 0;
@@ -253,7 +253,7 @@ class Ticketsv1r0 extends ApiController
             throw new Exception(Lang::txt('Not authorized'), 403);
         }
 
-        $filters = array(
+        $filters = [
             'limit'      => Request::getInt('limit', 25),
             'start'      => Request::getInt('limitstart', 0),
             'search'     => Request::getString('search', ''),
@@ -265,7 +265,7 @@ class Ticketsv1r0 extends ApiController
             'type'       => Request::getInt('type', 0),
             'status'     => strtolower(Request::getWord('status', '')),
             'tag'        => Request::getWord('tag', ''),
-        );
+        ];
 
         $filters['opened'] = $this->toTimestamp(Request::getString('opened', ''));
         $filters['closed'] = $this->toTimestamp(Request::getString('closed', ''));
@@ -273,7 +273,7 @@ class Ticketsv1r0 extends ApiController
         $response = new stdClass();
         $response->success = true;
         $response->total   = 0;
-        $response->tickets = array();
+        $response->tickets = [];
 
         // Get a list of all statuses
         $statuses = \Components\Support\Models\Status::all()->rows();
@@ -502,10 +502,10 @@ class Ticketsv1r0 extends ApiController
         $response->status->title = $ticket->status->get('text');
         $response->status->id    = $ticket->get('status');
 
-        $props = array(
+        $props = [
             'created', 'severity', 'os', 'browser', 'ip',
             'hostname', 'uas', 'referrer', 'open', 'closed'
-        );
+        ];
         foreach ($props as $prop) {
             $response->$prop = $ticket->get($prop);
         }
@@ -518,7 +518,7 @@ class Ticketsv1r0 extends ApiController
         $response->url = str_replace('/api', '', rtrim(Request::base(), '/')
             . '/' . ltrim($ticketRoute, '/'));
 
-        $response->comments = array();
+        $response->comments = [];
         foreach ($ticket->comments as $comment) {
             $c = new stdClass();
             $c->id = $comment->get('id');

@@ -69,11 +69,11 @@ class Access
         return Select::genericlist(
             $options,
             $name,
-            array(
+            [
                 'list.attr' => $attribs,
                 'list.select' => $selected,
                 'id' => $id
-            )
+            ]
         );
     }
 
@@ -118,7 +118,7 @@ class Access
             array_unshift($options, Select::option('', Lang::txt('JOPTION_ACCESS_SHOW_ALL_GROUPS')));
         }
 
-        return Select::genericlist($options, $name, array('list.attr' => $attribs, 'list.select' => $selected));
+        return Select::genericlist($options, $name, ['list.attr' => $attribs, 'list.select' => $selected]);
     }
 
     /**
@@ -158,7 +158,7 @@ class Access
             return null;
         }
 
-        $html = array();
+        $html = [];
 
         $html[] = '<ul class="checklist usergroups">';
 
@@ -228,10 +228,10 @@ class Access
         );
 
         if (empty($actions)) {
-            $actions = array();
+            $actions = [];
         }
 
-        $html = array();
+        $html = [];
         $html[] = '<ul class="checklist access-actions">';
 
         for ($i = 0, $n = count($actions); $i < $n; $i++) {
@@ -266,7 +266,7 @@ class Access
      * @param   array  $config  An array of options for the options
      * @return  mixed  An array or false if an error occurs
      */
-    public static function assetgroups($config = array())
+    public static function assetgroups($config = [])
     {
         if (empty(self::$asset_groups)) {
             $db = App::get('db');
@@ -302,7 +302,7 @@ class Access
      * @param   array   $config    An array of options for the control
      * @return  mixed   An HTML string or null if an error occurs
      */
-    public static function assetgrouplist($name, $selected, $attribs = null, $config = array())
+    public static function assetgrouplist($name, $selected, $attribs = null, $config = [])
     {
         static $count;
 
@@ -314,11 +314,11 @@ class Access
         return Select::genericlist(
             $options,
             $name,
-            array(
+            [
                 'id' => isset($config['id']) ? $config['id'] : 'assetgroups_' . ++$count,
                 'list.attr' => (is_null($attribs) ? 'class="inputbox" size="3"' : $attribs),
                 'list.select' => (int) $selected
-            )
+            ]
         );
     }
 }

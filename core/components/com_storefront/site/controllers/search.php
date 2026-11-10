@@ -62,7 +62,7 @@ class Search extends \Hubzero\Component\SiteController
             $this->warehouse->addLookupCollection($cId);
         }
 
-        $products = $this->warehouse->getProducts('rows', true, array('sort' => 'title', 'search' => $search));
+        $products = $this->warehouse->getProducts('rows', true, ['sort' => 'title', 'search' => $search]);
         $this->view->products = $products;
         $this->view->config = $this->config;
         $this->view->search = $search;

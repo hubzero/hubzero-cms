@@ -35,7 +35,7 @@ if (count($this->folders) > 0) { ?>
                         echo ' class="active"';
                                   }?>>
                         <a class="aquery" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=tickets&task=display&show=' . $query->id . (intval($this->show) != $query->id ? '&search=' : '')); ?>">
-                            <?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo Components\Support\Models\Ticket::countWithQuery($query, array()); ?></span>
+                            <?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo Components\Support\Models\Ticket::countWithQuery($query, []); ?></span>
                         </a>
                         <span class="query-options">
                             <button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=' . $this->option . '&controller=queries&task=remove&id=' . $query->id); ?>" class="delete" title="<?php echo Lang::txt('JACTION_DELETE'); ?>" data-confirm="<?php echo Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE'); ?>">

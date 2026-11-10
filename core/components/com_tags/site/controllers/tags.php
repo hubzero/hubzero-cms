@@ -98,7 +98,7 @@ class Tags extends SiteController
             $tgs = explode(',', $tagstring);
             $tgs = array_map('trim', $tgs);
         } else {
-            $tgs = array();
+            $tgs = [];
         }
 
         // See if we're adding any tags to the search list
@@ -107,9 +107,9 @@ class Tags extends SiteController
         }
 
         // Sanitize the tag
-        $tags  = array();
-        $added = array();
-        $rt    = array();
+        $tags  = [];
+        $added = [];
+        $rt    = [];
         foreach ($tgs as $tag) {
             // Load the tag
             $tagobj = Tag::oneByTag($tag);
@@ -140,15 +140,15 @@ class Tags extends SiteController
 
         $this->view->total      = 0;
         $this->view->results    = null;
-        $this->view->categories = array();
+        $this->view->categories = [];
 
         // Incoming paging vars
-        $this->view->filters = array(
+        $this->view->filters = [
             'limit' => Request::getInt('limit', Config::get('list_limit')),
             'start' => Request::getInt('limitstart', 0),
             'sort'  => Request::getCmd('sort', 'date')
-        );
-        if (!in_array($this->view->filters['sort'], array('date', 'title'))) {
+        ];
+        if (!in_array($this->view->filters['sort'], ['date', 'title'])) {
             App::abort(404, Lang::txt('Invalid sort value of "%s".', $this->view->filters['sort']));
         }
 
@@ -162,18 +162,18 @@ class Tags extends SiteController
         if (empty($tags)) {
             //App::abort(404, Lang::txt('COM_TAGS_TAG_NOT_FOUND'));
         } else {
-            $this->view->categories = Event::trigger('tags.onTagView', array(
+            $this->view->categories = Event::trigger('tags.onTagView', [
                 $tags,
                 $this->view->filters['limit'],
                 $this->view->filters['start'],
                 $this->view->filters['sort'],
                 $area
-            ));
+            ]);
 
             if (!$area) {
                 $query = '';
                 if ($this->view->categories) {
-                    $s = array();
+                    $s = [];
                     foreach ($this->view->categories as $response) {
                         $this->view->total += $response['total'];
 
@@ -253,7 +253,7 @@ class Tags extends SiteController
         if (count($tags) == 1) {
             $this->view->tagstring = $tags[0]->get('tag');
         } else {
-            $tagstring = array();
+            $tagstring = [];
             foreach ($tags as $tag) {
                 $tagstring[] = $tag->get('tag');
             }
@@ -287,10 +287,10 @@ class Tags extends SiteController
      */
     public function autocompleteTask()
     {
-        $filters = array(
+        $filters = [
             'start'  => 0,
             'search' => trim(Request::getString('value', ''))
-        );
+        ];
 
         if (!User::authorise('core.manage')) {
             $filters['admin'] = 0;
@@ -303,20 +303,20 @@ class Tags extends SiteController
         $rows = $cloud->tags('list', $filters);
 
         // Output search results in JSON format
-        $json = array();
-        $exactMatches = array();
-        $beginsWithWord = array();
-        $beginWith = array();
+        $json = [];
+        $exactMatches = [];
+        $beginsWithWord = [];
+        $beginWith = [];
 
         if (count($rows) > 0) {
             foreach ($rows as $row) {
                 $name = str_replace("\n", '', stripslashes(trim($row->get('raw_tag'))));
                 $name = str_replace("\r", '', $name);
 
-                $item = array(
+                $item = [
                     'id'   => $row->get('tag'),
                     'name' => $name
-                );
+                ];
 
                 $tagLower = strtolower($row->get('tag'));
                 $nameLower = strtolower($name);
@@ -390,8 +390,8 @@ class Tags extends SiteController
         $tgs = explode(',', $tagstring);
 
         // Sanitize the tag
-        $tags  = array();
-        $added = array();
+        $tags  = [];
+        $added = [];
         foreach ($tgs as $tag) {
             // Load the tag
             $tagobj = Tag::oneByTag($tag);
@@ -427,16 +427,16 @@ class Tags extends SiteController
         if (!$area) {
             $sqls = Event::trigger(
                 'tags.onTagView',
-                array(
+                [
                     $tags,
                     $limit,
                     $limitstart,
                     $sort,
                     ''
-                )
+                ]
             );
             if ($sqls) {
-                $s = array();
+                $s = [];
                 foreach ($sqls as $response) {
                     if (is_array($response['sql'])) {
                         continue;
@@ -483,17 +483,17 @@ class Tags extends SiteController
         } else {
             $results = Event::trigger(
                 'tags.onTagView',
-                array(
+                [
                     $tags,
                     $limit,
                     $limitstart,
                     $sort,
                     $area
-                )
+                ]
             );
 
             // Run through the array of arrays returned from plugins and find the one that returned results
-            $rows = array();
+            $rows = [];
             if ($results) {
                 foreach ($results as $result) {
                     if (is_array($result['results'])) {
@@ -584,7 +584,7 @@ class Tags extends SiteController
         }
 
         // Incoming
-        $filters = array(
+        $filters = [
             'admin' => 0,
             'start' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limitstart',
@@ -616,12 +616,12 @@ class Tags extends SiteController
                 'asc',
                 'string'
             ))
-        );
+        ];
 
-        if (!in_array($filters['sort'], array('raw_tag', 'total'))) {
+        if (!in_array($filters['sort'], ['raw_tag', 'total'])) {
             $filters['sort'] = 'raw_tag';
         }
-        if (!in_array($filters['sort_Dir'], array('asc', 'desc'))) {
+        if (!in_array($filters['sort_Dir'], ['asc', 'desc'])) {
             $filters['sort_Dir'] = 'asc';
         }
 
@@ -675,13 +675,13 @@ class Tags extends SiteController
             $tag = Tag::oneOrNew(Request::getInt('id', 0));
         }
 
-        $filters = array(
+        $filters = [
             'limit'    => Request::getInt('limit', 0),
             'start'    => Request::getInt('limitstart', 0),
             'sort'     => Request::getString('sort', ''),
             'sort_Dir' => Request::getString('sortdir', ''),
             'search'   => urldecode(Request::getString('search', ''))
-        );
+        ];
 
         // Set the pathway
         $this->_buildPathway();
@@ -730,11 +730,11 @@ class Tags extends SiteController
         }
 
         // Incoming
-        $tag = Request::getArray('fields', array(), 'post');
+        $tag = Request::getArray('fields', [], 'post');
 
         // Only what the form offers; the rest of the row (creator, counts,
         // aliases) is the model's to keep
-        $tag = array_intersect_key($tag, array_flip(array('id', 'raw_tag', 'description', 'admin', 'substitutions')));
+        $tag = array_intersect_key($tag, array_flip(['id', 'raw_tag', 'description', 'admin', 'substitutions']));
 
         // Site editors may not flag a tag as an admin/system tag
         if (!$this->config->get('access-manage-tag')) {
@@ -757,7 +757,7 @@ class Tags extends SiteController
 
         // Trigger before save event
         $isNew  = $row->isNew();
-        $result = Event::trigger('tags.onTagBeforeSave', array(&$row, $isNew));
+        $result = Event::trigger('tags.onTagBeforeSave', [&$row, $isNew]);
 
         if (in_array(false, $result, true)) {
             Notify::error($row->getError());
@@ -776,7 +776,7 @@ class Tags extends SiteController
         }
 
         // Trigger after save event
-        Event::trigger('tags.onTagAfterSave', array(&$row, $isNew));
+        Event::trigger('tags.onTagAfterSave', [&$row, $isNew]);
 
         // Redirect to main listing
         $limit  = Request::getInt('limit', 0);
@@ -812,9 +812,9 @@ class Tags extends SiteController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
         if (!is_array($ids)) {
-            $ids = array();
+            $ids = [];
         }
 
         // Make sure we have an ID
@@ -826,7 +826,7 @@ class Tags extends SiteController
             $id = intval($id);
 
             // Trigger before delete event
-            Event::trigger('tags.onTagDelete', array($id));
+            Event::trigger('tags.onTagDelete', [$id]);
 
             // Remove the tag
             $tag = Tag::oneOrFail($id);
@@ -889,8 +889,8 @@ class Tags extends SiteController
             );
         }
         if (is_array($tags) && count($tags) > 0) {
-            $t = array();
-            $l = array();
+            $t = [];
+            $l = [];
             foreach ($tags as $tag) {
                 $t[] = stripslashes($tag->get('raw_tag'));
                 $l[] = $tag->get('tag');
@@ -917,7 +917,7 @@ class Tags extends SiteController
             $this->view->title .= ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
         }
         if (is_array($tags) && count($tags) > 0) {
-            $t = array();
+            $t = [];
             foreach ($tags as $tag) {
                 $t[] = stripslashes($tag->get('raw_tag'));
             }

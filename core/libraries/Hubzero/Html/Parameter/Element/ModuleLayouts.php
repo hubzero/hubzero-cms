@@ -38,7 +38,7 @@ class ModuleLayouts extends Select
         $v = (int) $node['client_id'];
         $clientId = $v ? $v : 0;
 
-        $options = array();
+        $options = [];
         $path1 = null;
         $path2 = null;
 

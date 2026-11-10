@@ -61,13 +61,13 @@ class Token
      */
     public static function unsubscribeUrl($mailingId, $email)
     {
-        $query = http_build_query(array(
+        $query = http_build_query([
             'option' => 'com_massmail',
             'task'   => 'unsubscribe',
             'e'      => $email,
             'm'      => (int) $mailingId,
             't'      => self::make($mailingId, $email)
-        ));
+        ]);
 
         return self::siteBase() . '/index.php?' . $query;
     }

@@ -31,7 +31,7 @@ class Writer
      *
      * @var  array
      */
-    protected $levels = array(
+    protected $levels = [
         'debug',
         'info',
         'notice',
@@ -40,7 +40,7 @@ class Writer
         'critical',
         'alert',
         'emergency',
-    );
+    ];
 
     /**
      * The event dispatcher instance.
@@ -78,7 +78,7 @@ class Writer
             $parameters[0] = json_encode($parameters[0]);
         }
 
-        return call_user_func_array(array($this->monolog, $method), $parameters);
+        return call_user_func_array([$this->monolog, $method], $parameters);
     }
 
     /**
@@ -215,13 +215,13 @@ class Writer
      * @param   array   $context
      * @return  void
      */
-    protected function triggerLogEvent($level, $message, array $context = array())
+    protected function triggerLogEvent($level, $message, array $context = [])
     {
         // If the event dispatcher is set, we will pass along the parameters to the
         // log listeners. These are useful for building profilers or other tools
         // that aggregate all of the log messages for a given "request" cycle.
         if ($this->dispatcher instanceof DispatcherInterface) {
-            $this->dispatcher->trigger('onLog', array($level, $message, $context));
+            $this->dispatcher->trigger('onLog', [$level, $message, $context]);
         }
     }
 
@@ -235,7 +235,7 @@ class Writer
     public function __call($method, $parameters)
     {
         if (in_array($method, $this->levels)) {
-            call_user_func_array(array($this, 'triggerLogEvent'), array_merge(array($method), $parameters));
+            call_user_func_array([$this, 'triggerLogEvent'], array_merge([$method], $parameters));
 
             // Monolog 2 dropped the addInfo()-style methods; the PSR-3
             // names (info(), error(), ...) are the same in both.

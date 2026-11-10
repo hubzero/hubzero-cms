@@ -34,7 +34,7 @@ class Iprange
      *
      * @var  array
      */
-    const EVERYONE = array('00000000000000000000000000000000', 'ffffffffffffffffffffffffffffffff');
+    const EVERYONE = ['00000000000000000000000000000000', 'ffffffffffffffffffffffffffffffff'];
 
     /**
      * An address as the column holds it
@@ -104,7 +104,7 @@ class Iprange
         $to   = trim((string) $to);
 
         if (self::isColumn($from) && self::isColumn($to)) {
-            return array(strtolower($from), strtolower($to));
+            return [strtolower($from), strtolower($to)];
         }
 
         if (strpos($from, '/') !== false) {
@@ -134,7 +134,7 @@ class Iprange
         }
 
         if ($from === '' || strcmp($from, $to) > 0) {
-            return ($from === '' && $to === '') ? array('', '') : false;
+            return ($from === '' && $to === '') ? ['', ''] : false;
         }
 
         // IPv4 to IPv6 would cover every address between, of both families
@@ -142,7 +142,7 @@ class Iprange
             return false;
         }
 
-        return array($from, $to);
+        return [$from, $to];
     }
 
     /**

@@ -25,7 +25,7 @@ class Wiki extends Plugin
      */
     private function canHandle($category)
     {
-        if (in_array($category, array('wiki', 'wikicomment'))) {
+        if (in_array($category, ['wiki', 'wikicomment'])) {
             return true;
         }
         return false;

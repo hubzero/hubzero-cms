@@ -55,7 +55,7 @@ class Category extends Table
      * @param   array   $filters
      * @return  integer
      */
-    public function getCount($filters = array())
+    public function getCount($filters = [])
     {
         $query  = "SELECT count(*) FROM $this->_tbl";
         $query .= isset($filters['state']) && $filters['state'] == 'all' ? '' : " WHERE state=1";
@@ -70,7 +70,7 @@ class Category extends Table
      * @param   array   $filters
      * @return  object
      */
-    public function getCategories($filters = array())
+    public function getCategories($filters = [])
     {
         $query  = "SELECT * ";
 

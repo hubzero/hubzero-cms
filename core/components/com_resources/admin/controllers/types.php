@@ -47,7 +47,7 @@ class Types extends AdminController
     public function displayTask()
     {
         // Incoming
-        $filters = array(
+        $filters = [
             'sort' => Request::getState(
                 $this->_option . '.types.sort',
                 'filter_order',
@@ -64,7 +64,7 @@ class Types extends AdminController
                 27,
                 'int'
             )
-        );
+        ];
 
         // Get the categories
         $categories = Type::all()
@@ -105,7 +105,7 @@ class Types extends AdminController
 
         if (!is_object($row)) {
             // Incoming (expecting an array)
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id)) {
                 $id = $id[0];
             }
@@ -151,7 +151,7 @@ class Types extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $type = Request::getArray('type', array(), 'post');
+        $type = Request::getArray('type', [], 'post');
 
         // Initiate extended database class
         $row = Type::oneOrNew($type['id'])->set($type);
@@ -161,10 +161,10 @@ class Types extends AdminController
         isset($type['collection']) ? $row->set('collection', 1) : $row->set('collection', 0);
 
         // Get the custom fields
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
         if (is_array($fields)) {
             $elements = new stdClass();
-            $elements->fields = array();
+            $elements->fields = [];
 
             foreach ($fields as $val) {
                 if (!isset($val['title'])) {
@@ -179,12 +179,12 @@ class Types extends AdminController
                     $element->type     = (isset($val['type']) && trim($val['type']) != '') ? $val['type'] : 'text';
                     $element->required = (isset($val['required'])) ? $val['required'] : '0';
                     foreach ($val as $key => $v) {
-                        if (!in_array($key, array('default', 'type', 'title', 'name', 'required', 'options'))) {
+                        if (!in_array($key, ['default', 'type', 'title', 'name', 'required', 'options'])) {
                             $element->$key = $v;
                         }
                     }
                     if (isset($val['options'])) {
-                        $element->options = array();
+                        $element->options = [];
                         foreach ($val['options'] as $option) {
                             if (trim($option['label'])) {
                                 $opt = new stdClass();
@@ -204,7 +204,7 @@ class Types extends AdminController
         }
 
         // Get parameters
-        $p = new \Hubzero\Config\Registry(Request::getArray('params', array(), 'post'));
+        $p = new \Hubzero\Config\Registry(Request::getArray('params', [], 'post'));
 
         $row->set('params', $p->toString());
 
@@ -255,8 +255,8 @@ class Types extends AdminController
         }
 
         // Incoming (expecting an array)
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Ensure we have an ID to work with
         if (empty($ids)) {
@@ -320,8 +320,8 @@ class Types extends AdminController
         $state = $this->getTask() == 'publish' ? Type::STATE_PUBLISHED : Type::STATE_UNPUBLISHED;
 
         // Incoming
-        $ids = Request::getArray('id', array(0));
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', [0]);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for a resource
         if (count($ids) < 1) {
@@ -383,10 +383,10 @@ class Types extends AdminController
         $field->name        = $field->label;
         $field->default     = '';
         $field->type        = Request::getString('type', '');
-        $field->options     = array(
+        $field->options     = [
             $option,
             $option
-        );
+        ];
 
         $elements = new \Components\Resources\Models\Elements();
         echo $elements->getElementOptions($field->name, $field, $ctrl);

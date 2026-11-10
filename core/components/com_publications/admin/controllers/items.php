@@ -49,7 +49,7 @@ class Items extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->filters = array();
+        $this->view->filters = [];
         $this->view->filters['ignore_access'] = true;
         $this->view->filters['limit']    = Request::getState(
             $this->_option . '.publications.limit',
@@ -131,7 +131,7 @@ class Items extends AdminController
         $this->view->config = $this->config;
 
         // Incoming publication ID
-        $id = Request::getArray('id', array(0));
+        $id = Request::getArray('id', [0]);
         if (is_array($id)) {
             $id = $id[0];
         }
@@ -151,7 +151,7 @@ class Items extends AdminController
         $version = Request::getString('version', 'default');
 
         // Grab some filters for returning to place after editing
-        $this->view->return = array();
+        $this->view->return = [];
         $this->view->return['category'] = Request::getString('category', '');
         $this->view->return['sortby']   = Request::getString('sortby', '');
         $this->view->return['status']   = Request::getString('status', '');
@@ -187,12 +187,12 @@ class Items extends AdminController
         $this->view->licenses = $this->view->model->table('License')->getLicenses();
 
         // Get groups
-        $filters = array(
+        $filters = [
             'authorized' => 'admin',
-            'fields'     => array('cn', 'description', 'published', 'gidNumber', 'type'),
-            'type'       => array(1, 3),
+            'fields'     => ['cn', 'description', 'published', 'gidNumber', 'type'],
+            'type'       => [1, 3],
             'sortby'     => 'description'
-        );
+        ];
         $this->view->groups = \Hubzero\User\Group::find($filters);
 
         // Set any errors
@@ -266,8 +266,8 @@ class Items extends AdminController
         $el      = Request::getInt('el', 0);
         $id      = Request::getInt('id', 0);
         $version = Request::getString('version', '');
-        $params  = Request::getArray('params', array());
-        $attachments = Request::getArray('attachments', array());
+        $params  = Request::getArray('params', []);
+        $attachments = Request::getArray('attachments', []);
 
         // Load publication model
         $this->model  = new Models\Publication($id, $version);
@@ -358,7 +358,7 @@ class Items extends AdminController
 
         // Instantiate project owner
         $objO = new \Components\Projects\Tables\Owner($this->database);
-        $filters = array();
+        $filters = [];
         $filters['limit']   = 0;
         $filters['start']   = 0;
         $filters['sortby']  = 'name';
@@ -686,7 +686,7 @@ class Items extends AdminController
         if (isset($_POST['nbtag'])) {
             $category = $this->model->category();
 
-            $fields = array();
+            $fields = [];
             if (trim($category->customFields) != '') {
                 $fs = explode("\n", trim($category->customFields));
                 foreach ($fs as $f) {
@@ -694,7 +694,7 @@ class Items extends AdminController
                 }
             }
 
-            $nbtag = Request::getArray('nbtag', array());
+            $nbtag = Request::getArray('nbtag', []);
             foreach ($nbtag as $tagname => $tagcontent) {
                 $tagcontent = trim(stripslashes($tagcontent));
                 if ($tagcontent != '') {
@@ -1027,11 +1027,11 @@ class Items extends AdminController
                                         $from['name']  = Config::get('sitename') . ' ' . Lang::txt('COM_PUBLICATIONS');
                                         $from['email'] = Config::get('mailfrom');
 
-                                        $eview = new \Hubzero\Mail\View(array(
+                                        $eview = new \Hubzero\Mail\View([
                                             'base_path' => dirname(__DIR__),
                                             'name'      => 'emails',
                                             'layout'    => 'admin_html'
-                                        ));
+                                        ]);
 
                                         $eview->model = $this->model;
                                         $eview->project = $this->model->project();
@@ -1339,7 +1339,7 @@ class Items extends AdminController
      * @param   string  $action
      * @return  void
      */
-    private function _emailContributors($subject = '', $message = '', $authors = array(), $action = 'publish')
+    private function _emailContributors($subject = '', $message = '', $authors = [], $action = 'publish')
     {
         if (!$this->model->exists() || !$this->model->project()->exists()) {
             return false;
@@ -1352,7 +1352,7 @@ class Items extends AdminController
 
         // No authors – send to publication creator
         if (count($authors) == 0) {
-            $authors = array($this->model->version->created_by);
+            $authors = [$this->model->version->created_by];
         }
 
         // Make sure there are no duplicates
@@ -1360,7 +1360,7 @@ class Items extends AdminController
 
         if ($authors && count($authors) > 0) {
             // Email all the contributors
-            $from = array();
+            $from = [];
             $from['email'] = Config::get('mailfrom');
             $from['name']  = Config::get('sitename') . ' ' . Lang::txt('COM_PUBLICATIONS');
 
@@ -1368,10 +1368,10 @@ class Items extends AdminController
                 ? $subject : Lang::txt('COM_PUBLICATIONS_STATUS_UPDATE');
 
             // Get message body
-            $eview = new \Hubzero\Mail\View(array(
+            $eview = new \Hubzero\Mail\View([
                 'name'      => 'emails',
                 'layout'    => 'admin_plain'
-            ));
+            ]);
             $eview->option  = $this->_option;
             $eview->subject = $subject;
             $eview->action  = $action;
@@ -1379,7 +1379,7 @@ class Items extends AdminController
             $eview->message = $message;
             $eview->project = $this->model->project();
 
-            $body = array();
+            $body = [];
             $body['plaintext'] = $eview->loadTemplate(false);
             $body['plaintext'] = str_replace("\n", "\r\n", $body['plaintext']);
 
@@ -1390,13 +1390,13 @@ class Items extends AdminController
 
             // Send message
             if (
-                !Event::trigger('xmessage.onSendMessage', array(
+                !Event::trigger('xmessage.onSendMessage', [
                 'publication_status_changed',
                 $subject,
                 $body,
                 $from,
                 $authors,
-                $this->_option))
+                $this->_option])
             ) {
                 $this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_FAILED_MESSAGE_AUTHORS'));
             }
@@ -1427,7 +1427,7 @@ class Items extends AdminController
         }
 
         // Grab some filters for returning to place after editing
-        $this->view->return = array();
+        $this->view->return = [];
         $this->view->return['cat']    = Request::getString('cat', '');
         $this->view->return['sortby'] = Request::getString('sortby', '');
         $this->view->return['status'] = Request::getString('status', '');
@@ -1445,7 +1445,7 @@ class Items extends AdminController
         }
 
         // Get versions
-        $this->view->versions = $this->view->pub->version->getVersions($id, $filters = array('withdev' => 1));
+        $this->view->versions = $this->view->pub->version->getVersions($id, $filters = ['withdev' => 1]);
 
         // Set any errors
         if ($this->getError()) {
@@ -1468,7 +1468,7 @@ class Items extends AdminController
         Request::checkToken();
 
         // Incoming
-        $ids = Request::getArray('id', array(0));
+        $ids = Request::getArray('id', [0]);
         $erase = Request::getInt('erase', 1);
 
         // Ensure we have some IDs to work with
@@ -1495,7 +1495,7 @@ class Items extends AdminController
             $row = new Tables\Version($this->database);
 
             // Get versions
-            $versions = $row->getVersions($id, $filters = array('withdev' => 1));
+            $versions = $row->getVersions($id, $filters = ['withdev' => 1]);
 
             if ($version != 'all' && count($versions) > 1) {
                 // Check that version exists
@@ -1554,7 +1554,7 @@ class Items extends AdminController
                         ->rows()
                         ->toArray();
 
-                    $logs = array();
+                    $logs = [];
                     foreach ($activities as $activity) {
                         $logs[] = $activity['id'];
                     }

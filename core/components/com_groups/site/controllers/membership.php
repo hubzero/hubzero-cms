@@ -108,7 +108,7 @@ class Membership extends Base
             return;
         }
 
-        $invites = Request::getArray('to', array());
+        $invites = Request::getArray('to', []);
 
         foreach ($invites as $i => $invite) {
             if (strpos($invite, '@')) {
@@ -126,7 +126,7 @@ class Membership extends Base
         $this->view->invites = $invites;
 
         // get view notifications
-        $this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
+        $this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : [];
 
         //set some vars for view
         $this->view->title  = Lang::txt('Invite Members: ' . $this->view->group->get('description'));
@@ -190,11 +190,11 @@ class Membership extends Base
         $current_inviteemails = $group_inviteemails->getInviteEmails($this->view->group->get('gidNumber'), true);
 
         //vars needed
-        $invitees = array();
-        $inviteemails = array();
-        $badentries = array();
-        $apps = array();
-        $mems = array();
+        $invitees = [];
+        $inviteemails = [];
+        $badentries = [];
+        $apps = [];
+        $mems = [];
 
         // Explode the string of logins/e-mails into an array
         $la = preg_split("/[,;]/", $logins);
@@ -233,7 +233,7 @@ class Membership extends Base
                             $invitees[] = $uid;
                         }
                     } else {
-                        $badentries[] = array($uid, Lang::txt('COM_GROUPS_INVITE_USER_IS_ALREADY_MEMBER'));
+                        $badentries[] = [$uid, Lang::txt('COM_GROUPS_INVITE_USER_IS_ALREADY_MEMBER')];
                     }
                 }
             } else {
@@ -254,7 +254,7 @@ class Membership extends Base
                         // Check if applicant remove from applicants and add as member
                         // Check if in current email invitee if not add a new email invite
                         if (in_array($uid, $members) || in_array($uid, $current_invitees)) {
-                            $badentries[] = array($uid, Lang::txt('COM_GROUPS_INVITE_USER_IS_ALREADY_MEMBER'));
+                            $badentries[] = [$uid, Lang::txt('COM_GROUPS_INVITE_USER_IS_ALREADY_MEMBER')];
                         } elseif (in_array($uid, $applicants)) {
                             $apps[] = $uid;
                             $mems[] = $uid;
@@ -263,17 +263,17 @@ class Membership extends Base
                         }
                     } else {
                         if (!in_array($l, $current_inviteemails)) {
-                            $inviteemails[] = array(
+                            $inviteemails[] = [
                                 'email'     => $l,
                                 'gidNumber' => $this->view->group->get('gidNumber'),
                                 'token'     => bin2hex(random_bytes(16))
-                            );
+                            ];
                         } else {
-                            $badentries[] = array($l, Lang::txt('COM_GROUPS_INVITE_EMAIL_ALREADY_INVITED'));
+                            $badentries[] = [$l, Lang::txt('COM_GROUPS_INVITE_EMAIL_ALREADY_INVITED')];
                         }
                     }
                 } else {
-                    $badentries[] = array($l, Lang::txt('COM_GROUPS_INVITE_EMAIL_NOT_VALID'));
+                    $badentries[] = [$l, Lang::txt('COM_GROUPS_INVITE_EMAIL_NOT_VALID')];
                 }
             }
         }
@@ -302,26 +302,26 @@ class Membership extends Base
         }
 
         // log invites
-        Log::log(array(
+        Log::log([
             'gidNumber' => $this->view->group->get('gidNumber'),
             'action'    => 'membership_invites_sent',
             'comments'  => array_merge($invitees, $inviteemails)
-        ));
+        ]);
 
         // Build the "from" info for e-mails
-        $from = array(
+        $from = [
             'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name)),
             'email' => Config::get('mailfrom')
-        );
+        ];
 
         // Message subject
         $subject = Lang::txt('COM_GROUPS_INVITE_EMAIL_SUBJECT', $this->view->group->get('description'));
 
         // Message body for HUB user
-        $eview = new \Hubzero\Mail\View(array(
+        $eview = new \Hubzero\Mail\View([
             'name'   => 'emails',
             'layout' => 'invite_plain'
-        ));
+        ]);
         $eview->option   = $this->_option;
         $eview->sitename = Config::get('sitename');
         $eview->user     = User::getInstance();
@@ -337,8 +337,8 @@ class Membership extends Base
         $html = str_replace("\n", "\r\n", $html);
 
         // build array of group invites to send
-        $groupInvitees = array();
-        $activity = array();
+        $groupInvitees = [];
+        $activity = [];
         foreach ($invitees as $invitee) {
             if ($profile = User::getInstance($invitee)) {
                 $groupInvitees[$profile->get('email')] = $profile->get('name');
@@ -380,23 +380,23 @@ class Membership extends Base
                     'scope'       => 'group',
                     'scope_id'    => $this->view->group->get('gidNumber'),
                     'description' => Lang::txt('COM_GROUPS_ACTIVITY_GROUP_USER_INVITED', '<a href="' . $url . '">' . htmlspecialchars((string) ($this->view->group->get('description')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                    'details'     => array(
+                    'details'     => [
                         'title'     => $this->view->group->get('description'),
                         'url'       => $url,
                         'cn'        => $this->view->group->get('cn'),
                         'gidNumber' => $this->view->group->get('gidNumber')
-                    )
+                    ]
                 ],
-                'recipients' => array(
+                'recipients' => [
                     ['user', $invitee]
-                )
+                ]
             ]);
         }
 
-        $recipients = array(
+        $recipients = [
             ['group', $this->view->group->get('gidNumber')],
             ['user', User::get('id')]
-        );
+        ];
         foreach ($this->view->group->get('managers') as $recipient) {
             $recipients[] = ['user', $recipient];
         }
@@ -407,12 +407,12 @@ class Membership extends Base
                 'scope'       => 'group',
                 'scope_id'    => $this->view->group->get('gidNumber'),
                 'description' => Lang::txt('COM_GROUPS_ACTIVITY_GROUP_USERS_INVITED', implode(', ', $activity), '<a href="' . $url . '">' . htmlspecialchars((string) ($this->view->group->get('description')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title'     => $this->view->group->get('description'),
                     'url'       => $url,
                     'cn'        => $this->view->group->get('cn'),
                     'gidNumber' => $this->view->group->get('gidNumber')
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -420,10 +420,10 @@ class Membership extends Base
         // send message to users invited via email
         foreach ($inviteemails as $mbr) {
             // Message body for HUB user
-            $eview2 = new \Hubzero\Mail\View(array(
+            $eview2 = new \Hubzero\Mail\View([
                 'name'   => 'emails',
                 'layout' => 'inviteemail_plain'
-            ));
+            ]);
 
             $eview2->option   = $this->_option;
             $eview2->sitename = Config::get('sitename');
@@ -446,7 +446,7 @@ class Membership extends Base
             // build message object and send
             $message->setSubject($subject)
                     ->addFrom($from['email'], $from['name'])
-                    ->setTo(array($mbr['email']))
+                    ->setTo([$mbr['email']])
                     ->addHeader('X-Mailer', 'PHP/' . phpversion())
                     ->addHeader('X-Component', 'com_groups')
                     ->addHeader('X-Component-Object', 'group_inviteemail')
@@ -613,8 +613,8 @@ class Membership extends Base
         $return = strtolower(trim(Request::getString('return', '', 'get')));
 
         // Join, and use up the invitation that let us in
-        $this->view->group->add('members', array(User::get('id')));
-        $this->view->group->remove('invitees', array(User::get('id')));
+        $this->view->group->add('members', [User::get('id')]);
+        $this->view->group->remove('invitees', [User::get('id')]);
         $this->view->group->update();
 
         if ($invite) {
@@ -627,19 +627,19 @@ class Membership extends Base
         }
 
         // log invites
-        Log::log(array(
+        Log::log([
             'gidNumber' => $this->view->group->get('gidNumber'),
             'action'    => 'membership_invite_accepted',
-            'comments'  => array(User::get('id'))
-        ));
+            'comments'  => [User::get('id')]
+        ]);
 
         // Log activity
         $url = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->view->group->get('cn'));
 
-        $recipients = array(
+        $recipients = [
             ['group', $this->view->group->get('gidNumber')],
             ['user', User::get('id')]
-        );
+        ];
         foreach ($this->view->group->get('managers') as $recipient) {
             $recipients[] = ['user', $recipient];
         }
@@ -650,12 +650,12 @@ class Membership extends Base
                 'scope'       => 'group',
                 'scope_id'    => $this->view->group->get('gidNumber'),
                 'description' => Lang::txt('COM_GROUPS_ACTIVITY_GROUP_USER_ACCEPTED', '<a href="' . $url . '">' . htmlspecialchars((string) ($this->view->group->get('description')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title'     => $this->view->group->get('description'),
                     'url'       => $url,
                     'cn'        => $this->view->group->get('cn'),
                     'gidNumber' => $this->view->group->get('gidNumber')
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -664,7 +664,7 @@ class Membership extends Base
         $subject = Lang::txt('COM_GROUPS_EMAIL_MEMBERSHIP_ACCEPTED_SUBJECT', $this->view->group->get('cn'));
 
         // Build the e-mail message
-        $eview = new \Hubzero\Component\View(array('name' => 'emails', 'layout' => 'accepted'));
+        $eview = new \Hubzero\Component\View(['name' => 'emails', 'layout' => 'accepted']);
         $eview->set('option', $this->_option);
         $eview->sitename = Config::get('sitename');
         $eview->user     = User::getInstance();
@@ -673,7 +673,7 @@ class Membership extends Base
         $body = str_replace("\n", "\r\n", $body);
 
         // Build the "from" portion of the e-mail
-        $from = array();
+        $from = [];
         $from['name']  = Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name));
         $from['email'] = Config::get('mailfrom');
 
@@ -681,7 +681,7 @@ class Membership extends Base
         $emailadmin = Config::get('mailfrom');
 
         // build array of managers
-        $managers = array();
+        $managers = [];
         foreach ($this->view->group->get('managers') as $m) {
             $profile = User::getInstance($m);
             if ($profile) {
@@ -779,11 +779,11 @@ class Membership extends Base
         \Components\Groups\Models\Member\Role::destroyByUserAndGroup(User::get('id'), $this->view->group->get('gidNumber'));
 
         // Log the membership cancellation
-        Log::log(array(
+        Log::log([
             'gidNumber' => $this->view->group->get('gidNumber'),
             'action'    => 'membership_cancelled',
-            'comments'  => array(User::get('id'))
-        ));
+            'comments'  => [User::get('id')]
+        ]);
 
         // Remove record of reason wanting to join group
         $reason = new Reason($this->database);
@@ -793,7 +793,7 @@ class Membership extends Base
         $subject = Lang::txt('COM_GROUPS_EMAIL_MEMBERSHIP_CANCELLED_SUBJECT', $this->view->group->get('cn'));
 
         // Build the e-mail message
-        $eview = new \Hubzero\Component\View(array('name' => 'emails', 'layout' => 'cancelled'));
+        $eview = new \Hubzero\Component\View(['name' => 'emails', 'layout' => 'cancelled']);
         $eview->set('option', $this->_option);
         $eview->sitename = Config::get('sitename');
         $eview->user     = User::getInstance();
@@ -805,22 +805,22 @@ class Membership extends Base
         $emailadmin = Config::get('mailfrom');
 
         // Build the "from" portion of the e-mail
-        $from = array();
+        $from = [];
         $from['name']  = Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name));
         $from['email'] = Config::get('mailfrom');
 
         // E-mail the administrator
-        if (!Event::trigger('xmessage.onSendMessage', array('groups_cancelled_me', $subject, $message, $from, $this->view->group->get('managers'), $this->_option))) {
+        if (!Event::trigger('xmessage.onSendMessage', ['groups_cancelled_me', $subject, $message, $from, $this->view->group->get('managers'), $this->_option])) {
             $this->setError(Lang::txt('GROUPS_ERROR_EMAIL_MANAGERS_FAILED') . ' ' . $emailadmin);
         }
 
         // Log activity
         $url = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->view->group->get('cn'));
 
-        $recipients = array(
+        $recipients = [
             ['group', $this->view->group->get('gidNumber')],
             ['user', User::get('id')]
-        );
+        ];
         foreach ($this->view->group->get('managers') as $recipient) {
             $recipients[] = ['user', $recipient];
         }
@@ -831,12 +831,12 @@ class Membership extends Base
                 'scope'       => 'group',
                 'scope_id'    => $this->view->group->get('gidNumber'),
                 'description' => Lang::txt('COM_GROUPS_ACTIVITY_GROUP_USER_CANCELLED', '<a href="' . $url . '">' . htmlspecialchars((string) ($this->view->group->get('description')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title'     => $this->view->group->get('description'),
                     'url'       => $url,
                     'cn'        => $this->view->group->get('cn'),
                     'gidNumber' => $this->view->group->get('gidNumber')
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -937,25 +937,25 @@ class Membership extends Base
             // Check for request forgeries
             Request::checkToken();
 
-            $this->view->group->add('members', array(User::get('id')));
-            $this->view->group->remove('applicants', array(User::get('id')));
-            $this->view->group->remove('invitees', array(User::get('id')));
+            $this->view->group->add('members', [User::get('id')]);
+            $this->view->group->remove('applicants', [User::get('id')]);
+            $this->view->group->remove('invitees', [User::get('id')]);
             $this->view->group->update();
 
             // Log the membership approval
-            Log::log(array(
+            Log::log([
                 'gidNumber' => $this->view->group->get('gidNumber'),
                 'action'    => 'membership_approved',
-                'comments'  => array(User::get('id'))
-            ));
+                'comments'  => [User::get('id')]
+            ]);
 
             // Log activity
             $url = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->view->group->get('cn'));
 
-            $recipients = array(
+            $recipients = [
                 ['group', $this->view->group->get('gidNumber')],
                 ['user', User::get('id')]
-            );
+            ];
             foreach ($this->view->group->get('managers') as $recipient) {
                 $recipients[] = ['user', $recipient];
             }
@@ -966,12 +966,12 @@ class Membership extends Base
                     'scope'       => 'group',
                     'scope_id'    => $this->view->group->get('gidNumber'),
                     'description' => Lang::txt('COM_GROUPS_ACTIVITY_GROUP_USER_JOINED', '<a href="' . $url . '">' . htmlspecialchars((string) ($this->view->group->get('description')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                    'details'     => array(
+                    'details'     => [
                         'title'     => $this->view->group->get('description'),
                         'url'       => $url,
                         'cn'        => $this->view->group->get('cn'),
                         'gidNumber' => $this->view->group->get('gidNumber')
-                    )
+                    ]
                 ],
                 'recipients' => $recipients
             ]);
@@ -994,7 +994,7 @@ class Membership extends Base
         }
 
         // Get view notifications
-        $notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
+        $notifications = ($this->getNotifications()) ? $this->getNotifications() : [];
 
         // Set the title
         $title = Lang::txt('COM_GROUPS_INVITE_REQUEST') . ': ' . $this->view->group->get('description');
@@ -1051,7 +1051,7 @@ class Membership extends Base
         }
 
         //add user to applicants
-        $this->view->group->add('applicants', array(User::get('id')));
+        $this->view->group->add('applicants', [User::get('id')]);
         $this->view->group->update();
 
         // Instantiate the reason object and bind the incoming data
@@ -1073,19 +1073,19 @@ class Membership extends Base
         }
 
         // Log the membership request
-        Log::log(array(
+        Log::log([
             'gidNumber' => $this->view->group->get('gidNumber'),
             'action'    => 'membership_requested',
-            'comments'  => array(User::get('id'))
-        ));
+            'comments'  => [User::get('id')]
+        ]);
 
         // Log activity
         $url = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->view->group->get('cn'));
 
-        $recipients = array(
+        $recipients = [
             ['group', $this->view->group->get('gidNumber')],
             ['user', User::get('id')]
-        );
+        ];
         foreach ($this->view->group->get('managers') as $recipient) {
             $recipients[] = ['user', $recipient];
         }
@@ -1096,12 +1096,12 @@ class Membership extends Base
                 'scope'       => 'group',
                 'scope_id'    => $this->view->group->get('gidNumber'),
                 'description' => Lang::txt('COM_GROUPS_ACTIVITY_GROUP_USER_REQUESTED', '<a href="' . $url . '">' . htmlspecialchars((string) ($this->view->group->get('description')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title'     => $this->view->group->get('description'),
                     'url'       => $url,
                     'cn'        => $this->view->group->get('cn'),
                     'gidNumber' => $this->view->group->get('gidNumber')
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -1110,10 +1110,10 @@ class Membership extends Base
         $subject = Lang::txt('COM_GROUPS_JOIN_REQUEST_EMAIL_SUBJECT', $this->view->group->get('cn'));
 
         // Build the e-mail message
-        $eview = new \Hubzero\Component\View(array(
+        $eview = new \Hubzero\Component\View([
             'name'   => 'emails',
             'layout' => 'request'
-        ));
+        ]);
         $eview->set('option', $this->_option);
         $eview->sitename = Config::get('sitename');
         $eview->user = User::getInstance();
@@ -1126,12 +1126,12 @@ class Membership extends Base
         $emailadmin = Config::get('mailfrom');
 
         // Build the "from" portion of the e-mail
-        $from = array();
+        $from = [];
         $from['name']  = Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name));
         $from['email'] = Config::get('mailfrom');
 
         // build array of managers
-        $managers = array();
+        $managers = [];
         foreach ($this->view->group->get('managers') as $m) {
             $profile = User::getInstance($m);
             if ($profile) {

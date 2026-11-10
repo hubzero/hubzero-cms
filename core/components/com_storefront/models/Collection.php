@@ -73,7 +73,7 @@ class Collection
      */
     public function setType($cType)
     {
-        $allowedTypes = array('category', 'collection');
+        $allowedTypes = ['category', 'collection'];
 
         if (!in_array($cType, $allowedTypes)) {
             throw new \Exception(Lang::txt('COM_STOREFRONT_INVALID_CATEGORY_TYPE'));

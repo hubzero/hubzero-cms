@@ -106,7 +106,7 @@ class Xhubtags extends Plugin
             return '';
         }
 
-        $attribs = array('style' => $this->params->get('style', 'xhtml'));
+        $attribs = ['style' => $this->params->get('style', 'xhtml')];
 
         $regex = "/style\s*=\s*(\"|&quot;)([^\"]+)(\"|&quot;)/i";
 

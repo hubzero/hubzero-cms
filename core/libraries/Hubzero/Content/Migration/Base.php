@@ -62,21 +62,21 @@ class Base
      *
      * @var  object
      **/
-    protected $callbacks = array();
+    protected $callbacks = [];
 
     /**
      * Options
      *
      * @var  array
      **/
-    protected $options = array();
+    protected $options = [];
 
     /**
      * Errors
      *
      * @var  array
      **/
-    protected $errors = array();
+    protected $errors = [];
 
     /**
      * Whether or not we're running in protected mode
@@ -97,14 +97,14 @@ class Base
      *
      * @var  array
      **/
-    protected static $macros = array();
+    protected static $macros = [];
 
     /**
      * Registered list of namespaces in which to search for commands
      *
      * @var  array
      **/
-    protected static $macroNamespaces = array();
+    protected static $macroNamespaces = [];
 
     /**
      * Constructor
@@ -114,7 +114,7 @@ class Base
      * @param   object  $altDb      Alternate db
      * @return  void
      **/
-    public function __construct($db, $callbacks = array(), $altDb = null)
+    public function __construct($db, $callbacks = [], $altDb = null)
     {
         $this->baseDb    = $db;
         $this->db        = (isset($altDb)) ? $altDb : $db;
@@ -137,7 +137,7 @@ class Base
      * @param   array   $args      Args to pass to callback function
      * @return  mixed
      **/
-    public function callback($callback, $func, $args = array())
+    public function callback($callback, $func, $args = [])
     {
         // Make sure the callback is set (this is protecting us when running in non-interactive mode and callbacks aren't set)
         if (!isset($this->callbacks[$callback])) {
@@ -145,7 +145,7 @@ class Base
         }
 
         // Call function
-        return call_user_func_array(array($this->callbacks[$callback], $func), $args);
+        return call_user_func_array([$this->callbacks[$callback], $func], $args);
     }
 
     /**
@@ -309,11 +309,11 @@ class Base
         }
 
         // Find MySQL socket
-        $socketPaths = array(
+        $socketPaths = [
             '/var/run/mysqld/mysqld.sock',
             '/var/lib/mysql/mysql.sock',
             '/tmp/mysql.sock',
-        );
+        ];
 
         $socket = null;
         foreach ($socketPaths as $path) {
@@ -338,14 +338,14 @@ class Base
                 $dsn .= ";dbname={$database}";
             }
 
-            $db = Driver::getInstance(array(
+            $db = Driver::getInstance([
                 'driver'   => 'pdo',
                 'dsn'      => $dsn,
                 'user'     => 'root',
                 'password' => '',
                 'database' => $database,
                 'prefix'   => Config::get('dbprefix')
-            ));
+            ]);
 
             if ($db->connected()) {
                 $this->db = $db;
@@ -400,7 +400,7 @@ class Base
      **/
     public function setError($message, $type = 'fatal')
     {
-        $this->errors[] = array('type' => $type, 'message' => $message);
+        $this->errors[] = ['type' => $type, 'message' => $message];
     }
 
     /**
@@ -442,7 +442,7 @@ class Base
      * @param   string  $namespace  The namespace location to use
      * @return  void
      **/
-    public static function registerMacroNamespace($namespace, $paths = array())
+    public static function registerMacroNamespace($namespace, $paths = [])
     {
         self::$macroNamespaces[$namespace] = (array)$paths;
     }

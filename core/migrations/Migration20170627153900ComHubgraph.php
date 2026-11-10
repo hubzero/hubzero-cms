@@ -24,7 +24,7 @@ class Migration20170627153900ComHubgraph extends Base
         // Dropping a trigger needs only the TRIGGER privilege on its table,
         // which the hub's own account has on its own database, so this runs
         // as that account. Most hubs never had these triggers at all.
-        $triggers = array(
+        $triggers = [
             //Answers
             'hg_jos_answers_questions_insert_trigger',
             'hg_jos_answers_questions_update_trigger',
@@ -172,7 +172,7 @@ class Migration20170627153900ComHubgraph extends Base
             'hg_jos_xprofiles_bio_insert_trigger',
             'hg_jos_xprofiles_bio_update_trigger',
             'hg_jos_xprofiles_bio_delete_trigger'
-        );
+        ];
 
         $this->db->setQuery(
             "SELECT TRIGGER_NAME FROM information_schema.TRIGGERS WHERE TRIGGER_SCHEMA = DATABASE()"

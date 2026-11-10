@@ -57,13 +57,13 @@ class Categories extends SiteController
         }
         if ($section) {
             Pathway::append(
-                Str::truncate(stripslashes($section->get('title')), 100, array('exact' => true)),
+                Str::truncate(stripslashes($section->get('title')), 100, ['exact' => true]),
                 'index.php?option=' . $this->_option . '&section=' . $section->get('alias')
             );
         }
         if ($category) {
             Pathway::append(
-                Str::truncate(stripslashes($category->get('title')), 100, array('exact' => true)),
+                Str::truncate(stripslashes($category->get('title')), 100, ['exact' => true]),
                 'index.php?option=' . $this->_option . '&section=' . $section->get('alias') . '&category=' . $category->get('alias')
             );
         }
@@ -80,10 +80,10 @@ class Categories extends SiteController
     {
         $this->_title = Lang::txt(strtoupper($this->_option));
         if ($section) {
-            $this->_title .= ': ' . Str::truncate(stripslashes($section->get('title')), 100, array('exact' => true));
+            $this->_title .= ': ' . Str::truncate(stripslashes($section->get('title')), 100, ['exact' => true]);
         }
         if ($category) {
-            $this->_title .= ': ' . Str::truncate(stripslashes($category->get('title')), 100, array('exact' => true));
+            $this->_title .= ': ' . Str::truncate(stripslashes($category->get('title')), 100, ['exact' => true]);
         }
 
         App::get('document')->setTitle($this->_title);
@@ -97,7 +97,7 @@ class Categories extends SiteController
     public function displayTask()
     {
         // Incoming
-        $filters = array(
+        $filters = [
             'section'    => Request::getString('section', ''),
             'category'   => Request::getCmd('category', ''),
             'search'     => Request::getString('q', ''),
@@ -106,7 +106,7 @@ class Categories extends SiteController
             'state'      => Category::STATE_PUBLISHED,
             'parent'     => 0,
             'access'     => User::getAuthorisedViewLevels()
-        );
+        ];
 
         $filters['sortby'] = Request::getWord('sortby', 'activity');
         switch ($filters['sortby']) {
@@ -132,7 +132,7 @@ class Categories extends SiteController
                 break;
         }
 
-        if (!in_array($filters['sort_Dir'], array('ASC', 'DESC'))) {
+        if (!in_array($filters['sort_Dir'], ['ASC', 'DESC'])) {
             $filters['sort_Dir'] = 'DESC';
         }
 
@@ -206,14 +206,14 @@ class Categories extends SiteController
     public function searchTask()
     {
         // Incoming
-        $filters = array(
+        $filters = [
             'scope'      => $this->forum->get('scope'),
             'scope_id'   => $this->forum->get('scope_id'),
             'orderBy'    => Request::getWord('orderBy', 'created'),
             'orderDir'   => Request::getWord('orderDir', 'DESC'),
             'state'      => Category::STATE_PUBLISHED,
             'access'     => User::getAuthorisedViewLevels()
-        );
+        ];
 
         $section = Section::blank();
         $section->set('scope', $this->forum->get('scope'));
@@ -222,7 +222,7 @@ class Categories extends SiteController
         $section->set('alias', preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($section->get('title'))));
 
         // Get all sections
-        $sections = array();
+        $sections = [];
         foreach ($this->forum->sections($filters)->rows() as $section) {
             $sections[$section->get('id')] = $section;
         }
@@ -234,7 +234,7 @@ class Categories extends SiteController
         $category->set('alias', str_replace(' ', '-', $category->get('title')));
         $category->set('alias', preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($category->get('title'))));
 
-        $categories = array();
+        $categories = [];
         foreach ($this->forum->categories($filters)->rows() as $category) {
             $categories[$category->get('id')] = $category;
         }
@@ -351,7 +351,7 @@ class Categories extends SiteController
         $url = 'index.php?option=' . $this->_option;
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
         $fields = array_map('trim', $fields);
 
         // Instantiate a category
@@ -387,16 +387,16 @@ class Categories extends SiteController
                 'scope'       => 'forum.category',
                 'scope_id'    => $category->get('id'),
                 'description' => Lang::txt('COM_FORUM_ACTIVITY_CATEGORY_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($url) . '">' . htmlspecialchars((string) ($category->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title' => $category->get('title'),
                     'url'   => Route::url($url)
-                )
+                ]
             ],
-            'recipients' => array(
+            'recipients' => [
                 ['forum.site', 1],
                 ['forum.section', $category->get('section_id')],
                 ['user', $category->get('created_by')]
-            )
+            ]
         ]);
 
         // Set the redirect
@@ -472,16 +472,16 @@ class Categories extends SiteController
                 'scope'       => 'forum.category',
                 'scope_id'    => $category->get('id'),
                 'description' => Lang::txt('COM_FORUM_ACTIVITY_CATEGORY_DELETED', '<a href="' . Route::url($url) . '">' . htmlspecialchars((string) ($category->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title' => $category->get('title'),
                     'url'   => Route::url($url)
-                )
+                ]
             ],
-            'recipients' => array(
+            'recipients' => [
                 ['forum.site', 1],
                 ['forum.section', $category->get('section_id')],
                 ['user', $category->get('created_by')]
-            )
+            ]
         ]);
 
         // Redirect to main listing

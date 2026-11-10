@@ -133,7 +133,7 @@ class Form extends SiteController
         $this->_buildPathway();
 
         if (!isset($this->view->errors)) {
-            $this->view->errors = array();
+            $this->view->errors = [];
         }
 
         $this->view->title = $this->_title;
@@ -168,10 +168,10 @@ class Form extends SiteController
         } else {
             // Just return JSON
             if (Request::getInt('no_html', false)) {
-                echo json_encode(array(
+                echo json_encode([
                     'success' => true,
                     'id'      => $pdf->getId()
-                ));
+                ]);
                 exit();
             } else // Otherwise, redirect
             {
@@ -233,7 +233,7 @@ class Form extends SiteController
             $pdf->renderPageImages();
         }
 
-        echo json_encode(array('result' => 'success'));
+        echo json_encode(['result' => 'success']);
         exit();
     }
 
@@ -281,11 +281,11 @@ class Form extends SiteController
             return;
         } else {
             if (Request::getInt('no_html', false)) {
-                echo json_encode(array(
+                echo json_encode([
                     'success' => true,
                     'id'      => $dep->save(),
                     'formId'  => $pdf->getId()
-                ));
+                ]);
                 exit();
             } else {
                 $tmpl = (Request::getWord('tmpl', false)) ? '&tmpl=component' : '';
@@ -430,7 +430,7 @@ class Form extends SiteController
                     $this->_buildTitle();
                     $this->_buildPathway();
 
-                    $this->view->incomplete = array();
+                    $this->view->incomplete = [];
                     $this->view->pdf        = $dep->getForm();
                     $this->view->title      = $this->view->pdf->getTitle();
                     $this->view->base       = $this->base;
@@ -449,7 +449,7 @@ class Form extends SiteController
                     $this->view->base       = $this->base;
                     $this->view->dep        = $dep;
                     $this->view->resp       = $resp;
-                    $this->view->incomplete = (isset($this->view->incomplete)) ? $this->view->incomplete : array();
+                    $this->view->incomplete = (isset($this->view->incomplete)) ? $this->view->incomplete : [];
                     $this->view->course     = $this->course;
                     $this->view->display();
                 }
@@ -511,7 +511,7 @@ class Form extends SiteController
             $resp->saveProgress($_POST['question'], $_POST['answer']);
         }
 
-        echo json_encode(array("result" => "success"));
+        echo json_encode(["result" => "success"]);
         exit();
     }
 

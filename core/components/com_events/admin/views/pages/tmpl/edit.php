@@ -98,7 +98,7 @@ $pagetextValue = $this->escape(
                         40,
                         20,
                         'field-pagetext',
-                        array('class' => 'required')
+                        ['class' => 'required']
                     );
                     ?>
                 </div>

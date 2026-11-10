@@ -48,7 +48,7 @@ class Jobs extends AdminController
     public function displayTask()
     {
         // Filters
-        $filters = array(
+        $filters = [
             'sort' => trim(Request::getState(
                 $this->_option . '.jobs.sort',
                 'filter_order',
@@ -59,7 +59,7 @@ class Jobs extends AdminController
                 'filter_order_Dir',
                 'ASC'
             ))
-        );
+        ];
 
         // Get records
         $rows = Job::all()
@@ -93,7 +93,7 @@ class Jobs extends AdminController
         // Load info from database
         if (!is_object($row)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id)) {
                 $id = intval($id[0]);
             }
@@ -123,20 +123,20 @@ class Jobs extends AdminController
             $row->set('dayofweek', $bits[4]);
         }
 
-        $defaults = array(
+        $defaults = [
             '',
             '0 0 1 1 *',
             '0 0 1 * *',
             '0 0 * * 0',
             '0 0 * * *',
             '0 * * * *'
-        );
+        ];
         if (!in_array($row->get('recurrence'), $defaults)) {
             $row->set('recurrence', 'custom');
         }
 
         // Get the lsit of available cron tasks
-        $plugins = array();
+        $plugins = [];
 
         $events = Event::trigger('cron.onCronEvents');
         if ($events && is_array($events)) {
@@ -173,9 +173,9 @@ class Jobs extends AdminController
         }
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
-        $recurrence = array();
+        $recurrence = [];
         if (isset($fields['minute'])) {
             $recurrence[] = ($fields['minute']['c']) ? $fields['minute']['c'] : $fields['minute']['s'];
         }
@@ -214,7 +214,7 @@ class Jobs extends AdminController
             }
         }
 
-        $p = new \Hubzero\Config\Registry(Request::getArray('params', array(), 'post'));
+        $p = new \Hubzero\Config\Registry(Request::getArray('params', [], 'post'));
 
         $row->set('params', $p->toString());
 
@@ -252,7 +252,7 @@ class Jobs extends AdminController
 
 
         // Incoming
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
 
         // Ensure we have an ID to work with
         if (empty($ids)) {
@@ -261,7 +261,7 @@ class Jobs extends AdminController
         }
 
         $output = new stdClass();
-        $output->jobs = array();
+        $output->jobs = [];
 
         // A fatal inside a job skips the finally below and left the job marked
         // active until STALE_ACTIVE_SECONDS (6 hours) passed. Release whatever
@@ -288,7 +288,7 @@ class Jobs extends AdminController
             $inFlight->job = $job;
 
             try {
-                Event::trigger('cron.' . $job->get('event'), array($job));
+                Event::trigger('cron.' . $job->get('event'), [$job]);
             } catch (\Throwable $e) {
                 // One job's failure shouldn't abort the batch; released below.
             } finally {
@@ -330,8 +330,8 @@ class Jobs extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Ensure we have an ID to work with
         if (empty($ids)) {
@@ -379,8 +379,8 @@ class Jobs extends AdminController
         // Incoming
         $state = $this->_task == 'publish' ? 1 : 0;
 
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for an ID
         if (count($ids) < 1) {
@@ -431,8 +431,8 @@ class Jobs extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Ensure we have an ID to work with
         if (empty($ids)) {

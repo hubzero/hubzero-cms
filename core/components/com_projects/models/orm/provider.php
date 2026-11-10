@@ -43,18 +43,18 @@ class Provider extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'name' => 'notempty'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'alias'
-    );
+    ];
 
     /**
      * Generates automatic owned by field value

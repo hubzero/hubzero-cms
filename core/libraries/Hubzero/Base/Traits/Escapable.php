@@ -52,10 +52,10 @@ trait Escapable
         // a template that then prints it emits the same "Array" it always did,
         // and one that implodes or loops gets escaped members.
         if (is_array($var)) {
-            return array_map(array($this, 'escape'), $var);
+            return array_map([$this, 'escape'], $var);
         }
 
-        if (in_array($this->_escape, array('htmlspecialchars', 'htmlentities'))) {
+        if (in_array($this->_escape, ['htmlspecialchars', 'htmlentities'])) {
             return call_user_func($this->_escape, $var, ENT_COMPAT, $this->_charset);
         }
 

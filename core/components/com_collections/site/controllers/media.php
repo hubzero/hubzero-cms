@@ -80,7 +80,7 @@ class Media extends SiteController
         $server = new Server();
         $server->filename($filename);
         $server->disposition('attachment');
-        if (in_array($ext, array('jpg','jpeg','jpe','png','gif'))) {
+        if (in_array($ext, ['jpg','jpeg','jpe','png','gif'])) {
             $server->disposition('inline');
         }
         $server->acceptranges(false); // @TODO fix byte range support
@@ -166,7 +166,7 @@ class Media extends SiteController
     {
         // Check if they're logged in
         if (User::isGuest()) {
-            echo json_encode(array('error' => Lang::txt('COM_COLLECTIONS_ERROR_LOGIN_REQUIRED')));
+            echo json_encode(['error' => Lang::txt('COM_COLLECTIONS_ERROR_LOGIN_REQUIRED')]);
             return;
         }
 
@@ -180,7 +180,7 @@ class Media extends SiteController
         // Ensure we have an ID to work with
         $listdir = strtolower(Request::getString('dir', ''));
         if (!$listdir) {
-            echo json_encode(array('error' => Lang::txt('COM_COLLECTIONS_NO_ID')));
+            echo json_encode(['error' => Lang::txt('COM_COLLECTIONS_NO_ID')]);
             return;
         }
 
@@ -192,13 +192,13 @@ class Media extends SiteController
                 $item->set('access', 0);
                 $item->set('title', $listdir);
                 if (!$item->store()) {
-                    echo json_encode(array(
+                    echo json_encode([
                         'success'   => false,
                         'errors'    => $item->getErrors(),
                         'file'      => 'http://',
                         'directory' => '',
                         'id'        => $listdir
-                    ));
+                    ]);
                     return;
                 }
             }
@@ -207,7 +207,7 @@ class Media extends SiteController
 
         // Only the item's owner (or an admin) may attach assets to it
         if (!$this->userOwnsItem($listdir)) {
-            echo json_encode(array('error' => Lang::txt('COM_COLLECTIONS_ERROR_ACCESS_DENIED')));
+            echo json_encode(['error' => Lang::txt('COM_COLLECTIONS_ERROR_ACCESS_DENIED')]);
             return;
         }
 
@@ -220,22 +220,22 @@ class Media extends SiteController
         $asset->set('type', 'link');
 
         if (!$asset->store()) {
-            echo json_encode(array(
+            echo json_encode([
                 'success'   => false,
                 'errors'    => $asset->getErrors(),
                 'file'      => 'http://',
                 'directory' => '',
                 'id'        => $listdir
-            ));
+            ]);
             return;
         }
 
-        echo json_encode(array(
+        echo json_encode([
             'success'   => true,
             'file'      => 'http://',
             'directory' => '',
             'id'        => $listdir
-        ));
+        ]);
     }
 
     /**
@@ -245,14 +245,14 @@ class Media extends SiteController
     {
         // Check if they're logged in
         if (User::isGuest()) {
-            echo json_encode(array('error' => Lang::txt('COM_COLLECTIONS_ERROR_LOGIN_REQUIRED')));
+            echo json_encode(['error' => Lang::txt('COM_COLLECTIONS_ERROR_LOGIN_REQUIRED')]);
             return;
         }
 
         // Ensure we have an ID to work with
         $listdir = strtolower(Request::getString('dir', ''));
         if (!$listdir) {
-            echo json_encode(array('error' => Lang::txt('COM_COLLECTIONS_NO_ID')));
+            echo json_encode(['error' => Lang::txt('COM_COLLECTIONS_NO_ID')]);
             return;
         }
 
@@ -263,9 +263,9 @@ class Media extends SiteController
                 $item->set('access', 0);
                 $item->set('title', $listdir);
                 if (!$item->store()) {
-                    echo json_encode(array(
+                    echo json_encode([
                         'error' => $item->getError()
-                    ));
+                    ]);
                     return;
                 }
             }
@@ -274,7 +274,7 @@ class Media extends SiteController
 
         // Only the item's owner (or an admin) may attach assets to it
         if (!$this->userOwnsItem($listdir)) {
-            echo json_encode(array('error' => Lang::txt('COM_COLLECTIONS_ERROR_ACCESS_DENIED')));
+            echo json_encode(['error' => Lang::txt('COM_COLLECTIONS_ERROR_ACCESS_DENIED')]);
             return;
         }
 
@@ -295,7 +295,7 @@ class Media extends SiteController
             $file = $_FILES['qqfile']['name'];
             $size = (int) $_FILES['qqfile']['size'];
         } else {
-            echo json_encode(array('error' => Lang::txt('COM_COLLECTIONS_FILE_NOT_FOUND')));
+            echo json_encode(['error' => Lang::txt('COM_COLLECTIONS_FILE_NOT_FOUND')]);
             return;
         }
 
@@ -305,25 +305,25 @@ class Media extends SiteController
         $path = $asset->filespace() . DS . $listdir;
         if (!is_dir($path)) {
             if (!Filesystem::makeDirectory($path)) {
-                echo json_encode(array('error' => Lang::txt('COM_COLLECTIONS_ERROR_UNABLE_TO_CREATE_UPLOAD_DIR')));
+                echo json_encode(['error' => Lang::txt('COM_COLLECTIONS_ERROR_UNABLE_TO_CREATE_UPLOAD_DIR')]);
                 return;
             }
         }
 
         if (!is_writable($path)) {
-            echo json_encode(array('error' => Lang::txt('COM_COLLECTIONS_ERROR_UPLOAD_DIR_NOT_WRITABLE')));
+            echo json_encode(['error' => Lang::txt('COM_COLLECTIONS_ERROR_UPLOAD_DIR_NOT_WRITABLE')]);
             return;
         }
 
         // Check to make sure we have a file and its not too big
         if ($size == 0) {
-            echo json_encode(array('error' => Lang::txt('COM_COLLECTIONS_ERROR_EMPTY_FILE')));
+            echo json_encode(['error' => Lang::txt('COM_COLLECTIONS_ERROR_EMPTY_FILE')]);
             return;
         }
 
         if ($size > $sizeLimit) {
             $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', Number::formatBytes($sizeLimit));
-            echo json_encode(array('error' => Lang::txt('COM_COLLECTIONS_ERROR_FILE_TOO_LARGE', $max)));
+            echo json_encode(['error' => Lang::txt('COM_COLLECTIONS_ERROR_FILE_TOO_LARGE', $max)]);
             return;
         }
 
@@ -348,7 +348,7 @@ class Media extends SiteController
 
         if (!empty($allowed) && !in_array(strtolower($ext), $allowed)) {
             $msg = Lang::txt('COM_COLLECTIONS_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed));
-            echo json_encode(array('error' => $msg));
+            echo json_encode(['error' => $msg]);
             return;
         }
 
@@ -373,7 +373,7 @@ class Media extends SiteController
         if (!Filesystem::isSafe($file)) {
             Filesystem::delete($file);
 
-            echo json_encode(array('error' => Lang::txt('File rejected because the anti-virus scan failed.')));
+            echo json_encode(['error' => Lang::txt('File rejected because the anti-virus scan failed.')]);
             return;
         }
 
@@ -392,16 +392,16 @@ class Media extends SiteController
         $asset->set('type', 'file');
 
         if (!$asset->store()) {
-            echo json_encode(array(
+            echo json_encode([
                 'error' => $asset->getError()
-            ));
+            ]);
             return;
         }
 
-        $view = new View(array(
+        $view = new View([
             'name'   => 'media',
             'layout' => '_asset'
-        ));
+        ]);
         $view->i          = Request::getInt('i', 0);
         $view->set('option', $this->_option);
         $view->set('controller', $this->_controller);
@@ -409,14 +409,14 @@ class Media extends SiteController
         $view->no_html    = 1;
 
         //echo result
-        echo json_encode(array(
+        echo json_encode([
             'success'   => true,
             'file'      => $filename . '.' . $ext,
             'directory' => str_replace(PATH_APP, '', $path),
             'id'        => $listdir,
             // Entities have to be encoded or IE 8 goes nuts
             'html'      => str_replace('>', '&gt;', $view->loadTemplate())
-        ));
+        ]);
     }
 
     /**
@@ -450,7 +450,7 @@ class Media extends SiteController
         }
 
         // Incoming file
-        $file = Request::getArray('upload', array(), 'files');
+        $file = Request::getArray('upload', [], 'files');
         if (empty($file) || !$file['name']) {
             $this->setError(Lang::txt('COM_COLLECTIONS_NO_FILE'));
             return $this->displayTask();
@@ -638,7 +638,7 @@ class Media extends SiteController
 
         // Must be logged in
         if (User::isGuest()) {
-            echo json_encode(array('success' => false, 'error' => Lang::txt('Login required.')));
+            echo json_encode(['success' => false, 'error' => Lang::txt('Login required.')]);
             return;
         }
 
@@ -657,25 +657,25 @@ class Media extends SiteController
 
             if ($model->exists()) {
                 if (!$this->userOwnsAsset($model)) {
-                    echo json_encode(array('success' => false, 'error' => Lang::txt('Not authorized.')));
+                    echo json_encode(['success' => false, 'error' => Lang::txt('Not authorized.')]);
                     return;
                 }
                 $model->set('state', 2);
                 if (!$model->store()) {
-                    echo json_encode(array(
+                    echo json_encode([
                         'success' => false,
                         'error'   => $model->getError()
-                    ));
+                    ]);
                     return;
                 }
             }
         }
 
         //echo result
-        echo json_encode(array(
+        echo json_encode([
             'success' => true,
             'asset'   => $id
-        ));
+        ]);
     }
 
     /**

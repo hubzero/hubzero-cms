@@ -21,7 +21,7 @@ class UpdateTimezoneDatabase extends Base
      *
      * @var array
      **/
-    protected $options = array('timing' => 'onBeforeMigrate');
+    protected $options = ['timing' => 'onBeforeMigrate'];
 
     /**
      * Execute hook
@@ -35,7 +35,7 @@ class UpdateTimezoneDatabase extends Base
         $zoneinfo    = '/usr/share/zoneinfo';
         $tz_dat_file = PATH_APP . DS . 'site' . DS . 'protected' . DS . 'timezone.dat';
 
-        $files = array_diff(scandir($zoneinfo), array('.', '..'));
+        $files = array_diff(scandir($zoneinfo), ['.', '..']);
 
         if (count($files) > 0) {
             foreach ($files as $file) {
@@ -87,7 +87,7 @@ class UpdateTimezoneDatabase extends Base
 
         // MariaDB 10.5 renamed the converter; older servers have only the old name
         $converter = null;
-        foreach (array('/usr/bin/mariadb-tzinfo-to-sql', '/usr/bin/mysql_tzinfo_to_sql') as $path) {
+        foreach (['/usr/bin/mariadb-tzinfo-to-sql', '/usr/bin/mysql_tzinfo_to_sql'] as $path) {
             if (is_executable($path)) {
                 $converter = $path;
                 break;
@@ -95,10 +95,10 @@ class UpdateTimezoneDatabase extends Base
         }
 
         if (!$converter) {
-            return array(
+            return [
                 'success' => false,
                 'message' => "No mariadb-tzinfo-to-sql or mysql_tzinfo_to_sql to load the timezone tables with."
-            );
+            ];
         }
 
         $this->db->select('mysql');
@@ -125,10 +125,10 @@ class UpdateTimezoneDatabase extends Base
                 try {
                     $this->db->setQuery($s)->execute();
                 } catch (\Exception $e) {
-                    $return = array(
+                    $return = [
                         'success' => false,
                         'message' => $e->getMessage()
-                    );
+                    ];
 
                     return $return;
                 }

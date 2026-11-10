@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
     /*
     |--------------------------------------------------------------------------
     | Caching Enabled
@@ -63,5 +63,5 @@ return array(
     | a value for "host", "port", and "weight" options.
     |
     */
-    'memcache_settings' => array(),
-);
+    'memcache_settings' => [],
+];

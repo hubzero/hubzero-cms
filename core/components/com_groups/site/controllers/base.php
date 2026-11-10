@@ -100,7 +100,7 @@ class Base extends SiteController
      * @return      void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _buildPathway($pages = array())
+    public function _buildPathway($pages = [])
     {
         //add 'groups' item to pathway
         if (Pathway::count() <= 0) {
@@ -123,10 +123,10 @@ class Base extends SiteController
         }
 
         //add task to pathway
-        $pageControllers = array('pages', 'modules', 'categories');
+        $pageControllers = ['pages', 'modules', 'categories'];
         if ($this->_task && $this->_task != 'view' && !in_array($this->_controller, $pageControllers)) {
             // if we browsing or creating a new group
-            if (in_array($this->_task, array('new', 'browse'))) {
+            if (in_array($this->_task, ['new', 'browse'])) {
                 Pathway::append(
                     Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
                     'index.php?option=' . $this->_option . '&task=' . $this->_task
@@ -161,7 +161,7 @@ class Base extends SiteController
             }
         }
 
-        if (in_array($this->_controller, array('pages', 'modules', 'categories'))) {
+        if (in_array($this->_controller, ['pages', 'modules', 'categories'])) {
             Pathway::append(
                 Lang::txt('COM_GROUPS_PAGES'),
                 'index.php?option=' . $this->_option . '&cn=' . $this->cn . '&controller=' . $this->_controller
@@ -187,7 +187,7 @@ class Base extends SiteController
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _buildTitle($pages = array())
+    public function _buildTitle($pages = [])
     {
         $this->_title = Lang::txt(strtoupper($this->_option));
 
@@ -232,10 +232,10 @@ class Base extends SiteController
         $no_html = Request::getInt('no_html', 0);
 
         if ($no_html) {
-            $error = array('error' => array(
+            $error = ['error' => [
                 'code'    => $errorCode,
                 'message' => $errorMessage
-            ));
+            ]];
             echo json_encode($error);
             exit();
         }

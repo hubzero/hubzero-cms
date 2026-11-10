@@ -44,18 +44,18 @@ class Tags extends AdminController
         // Get tags for this resource
         $rt = new TagCloud($id);
 
-        $mytagarray    = array();
-        $myrawtagarray = array();
+        $mytagarray    = [];
+        $myrawtagarray = [];
         foreach ($rt->tags() as $tagMen) {
             $mytagarray[]    = $tagMen->get('tag');
             $myrawtagarray[] = $tagMen->get('raw_tag');
         }
 
         // Get all tags
-        $tags = $rt->tags('list', array(
+        $tags = $rt->tags('list', [
             'scope'    => null,
             'scope_id' => 0
-        ), true);
+        ], true);
 
         $objtags = new stdClass();
         $objtags->tagMen = implode(', ', $myrawtagarray);
@@ -92,7 +92,7 @@ class Tags extends AdminController
         // Incoming
         $id       = Request::getInt('id', 0);
         $entered  = Request::getString('tags', '');
-        $selected = Request::getArray('tgs', array(0));
+        $selected = Request::getArray('tgs', [0]);
 
         // Process tags
         $tagging = new TagCloud($id);

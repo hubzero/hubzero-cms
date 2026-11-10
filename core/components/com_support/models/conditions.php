@@ -88,7 +88,7 @@ class Conditions extends Obj
     {
         $conditions = new stdClass();
         $conditions->owner = $this->expression(
-            array(
+            [
                 $this->operator('=', 'is', true),
                 $this->operator('!=', 'is not', false),
                 $this->operator('LIKE \'%$1%\'', 'contains', false),
@@ -97,14 +97,14 @@ class Conditions extends Obj
                 $this->operator('NOT LIKE \'%$1%\'', 'does not contain', false),
                 $this->operator('NOT LIKE \'$1%\'', 'does not start with', false),
                 $this->operator('NOT LIKE \'%$1\'', 'does not end with', false)
-            ),
+            ],
             'text'
         );
 
         // Groups
-        $items = array(
+        $items = [
             $this->value('*', Lang::txt('(any of mine)'), true)
-        );
+        ];
 
         if ($xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'members')) {
             foreach ($xgroups as $xgroup) {
@@ -113,7 +113,7 @@ class Conditions extends Obj
             }
         }
         $conditions->group = $this->expression(
-            array(
+            [
                 $this->operator('=', 'is', true),
                 $this->operator('!=', 'is not', false),
                 $this->operator('LIKE \'%$1%\'', 'contains', false),
@@ -122,11 +122,11 @@ class Conditions extends Obj
                 $this->operator('NOT LIKE \'%$1%\'', 'does not contain', false),
                 $this->operator('NOT LIKE \'$1%\'', 'does not start with', false),
                 $this->operator('NOT LIKE \'%$1\'', 'does not end with', false)
-            ),
+            ],
             $items
         );
         $conditions->login = $this->expression(
-            array(
+            [
                 $this->operator('=', 'is', true),
                 $this->operator('!=', 'is not', false),
                 $this->operator('LIKE \'%$1%\'', 'contains', false),
@@ -135,22 +135,22 @@ class Conditions extends Obj
                 $this->operator('NOT LIKE \'%$1%\'', 'does not contain', false),
                 $this->operator('NOT LIKE \'$1%\'', 'does not start with', false),
                 $this->operator('NOT LIKE \'%$1\'', 'does not end with', false)
-            ),
+            ],
             'text'
         );
         $conditions->id = $this->expression(
-            array(
+            [
                 $this->operator('=', 'is', true),
                 $this->operator('!=', 'is not', false),
                 $this->operator('lt', 'less than', false),
                 $this->operator('gt', 'grater than', false),
                 $this->operator('lt=', 'less than or equal to', false),
                 $this->operator('gt=', 'greater than or equal to', false)
-            ),
+            ],
             'text'
         );
         $conditions->report = $this->expression(
-            array(
+            [
                 $this->operator('=', 'is', false),
                 $this->operator('!=', 'is not', false),
                 $this->operator('LIKE \'%$1%\'', 'contains', true),
@@ -159,25 +159,25 @@ class Conditions extends Obj
                 $this->operator('NOT LIKE \'%$1%\'', 'does not contain', false),
                 $this->operator('NOT LIKE \'$1%\'', 'does not start with', false),
                 $this->operator('NOT LIKE \'%$1\'', 'does not end with', false)
-            ),
+            ],
             'text'
         );
         $conditions->open = $this->expression(
-            array(
+            [
                 $this->operator('=', 'is', true),
                 $this->operator('!=', 'is not', false)
-            ),
-            array(
+            ],
+            [
                 $this->value('1', 'open', true),
                 $this->value('0', 'closed', false)
-            )
+            ]
         );
 
         $status = Status::all()
             ->order('open', 'desc')
             ->rows();
 
-        $items = array();
+        $items = [];
         $items[] = $this->value(0, 'open: New', true);
         if (count($status) > 0) {
             $switched = false;
@@ -190,51 +190,51 @@ class Conditions extends Obj
             }
         }
         $conditions->status = $this->expression(
-            array(
+            [
                 $this->operator('=', 'is', true),
                 $this->operator('!=', 'is not', false)
-            ),
+            ],
             $items
         );
         $conditions->created = $this->expression(
-            array(
+            [
                 $this->operator('=', 'on', true),
                 $this->operator('lt', 'before', false),
                 $this->operator('gt', 'after', false)
-            ),
+            ],
             'text'
         );
         $conditions->closed = $this->expression(
-            array(
+            [
                 $this->operator('=', 'on', true),
                 $this->operator('lt', 'before', false),
                 $this->operator('gt', 'after', false)
-            ),
+            ],
             'text'
         );
         $conditions->tag = $this->expression(
-            array(
+            [
                 $this->operator('=', 'is', true),
                 $this->operator('!=', 'is not', false)
-            ),
+            ],
             'text'
         );
         $conditions->type = $this->expression(
-            array(
+            [
                 $this->operator('=', 'is', true),
                 $this->operator('!=', 'is not', false)
-            ),
-            array(
+            ],
+            [
                 $this->value('0', 'user submitted', true),
                 $this->value('1', 'automatic', false),
                 $this->value('3', 'tool', false)
-            )
+            ]
         );
 
         $severities = Utilities::getSeverities($this->config->get('severities'));
         $items = 'text';
         if (isset($severities) && is_array($severities)) {
-            $items = array();
+            $items = [];
             foreach ($severities as $severity) {
                 $sel = false;
                 if ($severity == 'normal') {
@@ -244,27 +244,27 @@ class Conditions extends Obj
             }
         }
         $conditions->severity = $this->expression(
-            array(
+            [
                 $this->operator('=', 'is', true),
                 $this->operator('!=', 'is not', false)
-            ),
+            ],
             $items
         );
 
         $categories = Category::all()->rows();
         $items = 'text';
         if (count($categories) > 0) {
-            $items = array();
+            $items = [];
             foreach ($categories as $anode) {
                 $sel = false;
                 $items[] = $this->value($anode->alias, stripslashes($anode->title), $sel);
             }
         }
         $conditions->category = $this->expression(
-            array(
+            [
                 $this->operator('=', 'is', true),
                 $this->operator('!=', 'is not', false)
-            ),
+            ],
             $items
         );
         return $conditions;

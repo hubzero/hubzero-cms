@@ -27,7 +27,7 @@ $this->css('create.css');
                     <label>
                         <?php echo Lang::txt('COM_CONTRIBUTE_AUTHORS_ENTER_LOGINS'); ?>
                         <?php
-                        $mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'new_authors', 'acmembers')));
+                        $mc = Event::trigger('hubzero.onGetMultiEntry', [['members', 'new_authors', 'acmembers']]);
                         if (count($mc) > 0) {
                             echo $mc[0];
                         } else {

@@ -21,7 +21,7 @@ $this->css()
      ->js('jquery.cycle2', 'system');
 
 //tag editor
-$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->tags)));
+$tf = Event::trigger('hubzero.onGetMultiEntry', [['tags', 'tags', 'actags','', $this->tags]]);
 
 //are we using the email gateway for group forum
 $params =  Component::params('com_groups');
@@ -33,12 +33,12 @@ $default_logo = $this->img('group_default_logo.png');
 $this->group->set('logo', ltrim($this->group->get('logo') ? $this->group->get('logo') : '', DS));
 
 //access levels
-$levels = array(
+$levels = [
     'anyone'     => Lang::txt('COM_GROUPS_PLUGIN_ANYONE'),
     'registered' => Lang::txt('COM_GROUPS_PLUGIN_REGISTERED'),
     'members'    => Lang::txt('COM_GROUPS_PLUGIN_MEMBERS'),
     'nobody'     => Lang::txt('COM_GROUPS_PLUGIN_DISABLED')
-);
+];
 
 //build back link
 $host = Request::getString("HTTP_HOST", "", "SERVER");

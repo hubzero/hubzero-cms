@@ -20,20 +20,20 @@ class Migration20190221000000ComEvents extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__events' => array(
+    public static $tables = [
+        '#__events' => [
             'created',
             'modified',
             'checked_out_time',
             'publish_up',
             'publish_down',
             'registerby'
-        ),
-        '#__events_pages' => array(
+        ],
+        '#__events_pages' => [
             'created',
             'modified'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

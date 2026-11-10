@@ -53,10 +53,10 @@ class Members extends Plugin
      */
     public function onQuestionsFilters()
     {
-        return array(
+        return [
             'name'  => 'area',
             'value' => 'interest',
             'label' => Lang::txt('COM_ANSWERS_QUESTIONS_TAGGED_WITH_MY_INTERESTS')
-        );
+        ];
     }
 }

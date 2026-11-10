@@ -29,17 +29,17 @@ class Finder
         $p = self::parseTimePeriod($period);
 
         // get the search areas
-        $areas = array();
+        $areas = [];
         $search_areas = Event::trigger('whatsnew.onWhatsNewAreas');
         foreach ($search_areas as $search_area) {
             $areas = array_merge($areas, $search_area);
         }
 
         // get the results
-        $config = array($p, $limit, 0, $areas);
+        $config = [$p, $limit, 0, $areas];
         $results = Event::trigger('onWhatsNew', $config);
 
-        $new = array();
+        $new = [];
         $i = 0;
         foreach ($areas as $k => $area) {
             $new[$i]['alias']   = $k;

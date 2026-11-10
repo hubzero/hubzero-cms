@@ -34,16 +34,16 @@ $data = new Hubzero\Config\Registry(
 // Create a new form
 Hubzero\Form\Form::addFieldPath(Component::path('com_members') . DS . 'models' . DS . 'fields');
 
-$form = new Hubzero\Form\Form('profile', array('control' => 'profile'));
+$form = new Hubzero\Form\Form('profile', ['control' => 'profile']);
 $form->load($xml);
 $form->bind($data);
 
-$fields = array();
+$fields = [];
 foreach ($profiles as $profile) {
     if (isset($fields[$profile->get('profile_key')])) {
         $values = $fields[$profile->get('profile_key')]->get('profile_value');
         if (!is_array($values)) {
-            $values = array($values);
+            $values = [$values];
         }
         $values[] = $profile->get('profile_value');
 
@@ -94,7 +94,7 @@ foreach ($profiles as $profile) {
         </h4>
 
         <?php
-        $output = Event::trigger('groups.onGroupMemberBefore', array($this->group, $this->profile));
+        $output = Event::trigger('groups.onGroupMemberBefore', [$this->group, $this->profile]);
         echo implode("\n", $output);
         ?>
 
@@ -151,7 +151,7 @@ foreach ($profiles as $profile) {
                 }
 
                 if (in_array($profile->get('access', $field->get('access', 5)), User::getAuthorisedViewLevels())) {
-                    $cls = array('profile-' . $field->get('name'));
+                    $cls = ['profile-' . $field->get('name')];
 
                     if ($profile->get('access', $field->get('access')) == 2) {
                         $cls[] = 'registered';
@@ -192,7 +192,7 @@ foreach ($profiles as $profile) {
                             $decoded = json_decode((string)$value, true);
 
                             if (!$decoded || json_last_error() !== JSON_ERROR_NONE) {
-                                $decoded = array($value);
+                                $decoded = [$value];
                             }
 
                             foreach ($decoded as $nm => $vl) {
@@ -229,7 +229,7 @@ foreach ($profiles as $profile) {
         </ul>
 
         <?php
-        $output = Event::trigger('groups.onGroupMemberAfter', array($this->group, $this->profile));
+        $output = Event::trigger('groups.onGroupMemberAfter', [$this->group, $this->profile]);
         echo implode("\n", $output);
         ?>
     </div>

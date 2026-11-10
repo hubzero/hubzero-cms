@@ -33,10 +33,10 @@ if ($this->getError()) { ?>
 <?php
 $d = @dir($this->upath);
 
-$images = array();
-$tns = array();
-$all = array();
-$ordering = array();
+$images = [];
+$tns = [];
+$all = [];
+$ordering = [];
 $html = '';
 
 // pick images from the upload directory
@@ -72,7 +72,7 @@ if ($images) {
 $b = 0;
 if ($images) {
     foreach ($images as $ima) {
-        $new = array();
+        $new = [];
         $new['img'] = $ima;
         $new['type'] = explode('.', $new['img']);
 

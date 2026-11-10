@@ -18,7 +18,7 @@ $site = rtrim(Request::base(), '/');
 
 $message = '----------------------------' . "\n\n";
 
-$cells = array();
+$cells = [];
 $cells[] = '"Number"';
 $cells[] = '"Issue"';
 $cells[] = '"Created"';
@@ -51,7 +51,7 @@ if (isset($this->tickets) && count($this->tickets) > 0) {
         $link = $site . '/' . trim($sef, '/');
         $link = str_replace('/administrator', '', $link);
 
-        $cells = array();
+        $cells = [];
         $cells[] = '"#' . addslashes($ticket->id) . '"';
         $cells[] = '"' . addslashes($ticket->summary) . '"';
         $cells[] = '"' . addslashes($ticket->created) . '"';

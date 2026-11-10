@@ -70,12 +70,12 @@ class Hubzero extends Plugin
 
         $emailAddress = $config->get('mailfrom');
 
-        $eview = new \Hubzero\Mail\View(array(
+        $eview = new \Hubzero\Mail\View([
             'base_path'     => __DIR__,
             'name'          => 'emails',
             'layout'        => 'admincreate_plain',
             'override_path' => ''
-        ));
+        ]);
         $eview->addTemplatePath(App::get('template')->path . '/html/plg_user_hubzero');
 
         $eview->set('user', $user);
@@ -239,7 +239,7 @@ class Hubzero extends Plugin
      * @param   array    $options  Array holding options (remember, autoregister, group)
      * @return  boolean  True on success
      */
-    public function onUserLogin($user, $options = array())
+    public function onUserLogin($user, $options = [])
     {
         $instance = $this->_getUser($user, $options);
 
@@ -300,18 +300,18 @@ class Hubzero extends Plugin
                     if ($session->isNew()) {
                         $query = $db->getQuery()
                             ->insert('#__session')
-                            ->values(array(
+                            ->values([
                                 'session_id' => $session->getId(),
                                 'client_id'  => (int) App::get('client')->id,
                                 'time'       => (int) time(),
                                 'ip'         => $ip
-                            ));
+                            ]);
 
                         $db->setQuery($query->toString());
                     } else {
                         $query = $db->getQuery()
                             ->insert('#__session')
-                            ->values(array(
+                            ->values([
                                 'session_id' => $session->getId(),
                                 'client_id'  => (int) App::get('client')->id,
                                 'guest'      => (int) $instance->get('guest'),
@@ -319,7 +319,7 @@ class Hubzero extends Plugin
                                 'userid'     => (int) $instance->get('id'),
                                 'username'   => $instance->get('username'),
                                 'ip'         => $ip
-                            ));
+                            ]);
 
                         $db->setQuery($query->toString());
                     }
@@ -343,11 +343,11 @@ class Hubzero extends Plugin
             $db = App::get('db');
             $query = $db->getQuery()
                 ->update('#__session')
-                ->set(array(
+                ->set([
                     'guest'    => $instance->get('guest'),
                     'username' => $instance->get('username'),
                     'userid'   => (int) $instance->get('id')
-                ))
+                ])
                 ->whereEquals('session_id', $session->getId());
             $db->setQuery($query->toString());
             $db->query();
@@ -410,7 +410,7 @@ class Hubzero extends Plugin
      * @param   array    $options  Array holding options (client, ...).
      * @return  boolean  True on success
      */
-    public function onUserLogout($user, $options = array())
+    public function onUserLogout($user, $options = [])
     {
         $my = User::getInstance();
 
@@ -450,7 +450,7 @@ class Hubzero extends Plugin
      * @param   array   $options  Array holding options (remember, autoregister, group).
      * @return  object  A User object
      */
-    protected function _getUser($user, $options = array())
+    protected function _getUser($user, $options = [])
     {
         $instance = \Hubzero\User\User::oneByUsername($user['username']);
 
@@ -470,7 +470,7 @@ class Hubzero extends Plugin
         //$instance->set('password_clear', ((isset($user['password_clear'])) ? $user['password_clear'] : ''));
         $instance->set('email', $user['email']);  // Result should contain an email (check)
         $instance->set('usertype', 'deprecated');
-        $instance->set('accessgroups', array($defaultUserGroup));
+        $instance->set('accessgroups', [$defaultUserGroup]);
         $instance->set('activation', 1);
         $instance->set('loginShell', '/bin/bash');
         $instance->set('ftpShell', '/usr/lib/sftp-server');
@@ -566,7 +566,7 @@ class Hubzero extends Plugin
         $userName = "";
 
         // There could be multiple auth links to a specific user. Will need to loop through this array to delete.
-        $userLinkIdArray = array();
+        $userLinkIdArray = [];
 
         if ($userJsonObj) {
             $userId = $userJsonObj[0]['id'];

@@ -72,7 +72,7 @@ class Review extends \Hubzero\Base\Model
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         if (!isset($instances[$oid])) {
@@ -166,7 +166,7 @@ class Review extends \Hubzero\Base\Model
      * @param   boolean  $clear    Clear cached data?
      * @return  mixed
      */
-    public function replies($rtrn = 'list', $filters = array(), $clear = false)
+    public function replies($rtrn = 'list', $filters = [], $clear = false)
     {
         if (is_array($rtrn)) {
             $filters = $rtrn;
@@ -183,7 +183,7 @@ class Review extends \Hubzero\Base\Model
             $filters['parent'] = 0;
         }
         if (!isset($filters['state'])) {
-            $filters['state'] = array(self::APP_STATE_PUBLISHED, self::APP_STATE_FLAGGED);
+            $filters['state'] = [self::APP_STATE_PUBLISHED, self::APP_STATE_FLAGGED];
         }
 
         switch (strtolower($rtrn)) {
@@ -227,28 +227,28 @@ class Review extends \Hubzero\Base\Model
     public function content($as = 'parsed', $shorten = 0)
     {
         $as = strtolower($as);
-        $options = array();
+        $options = [];
 
         switch ($as) {
             case 'parsed':
                 $content = $this->get('comment.parsed', null);
 
                 if ($content === null) {
-                    $config = array(
+                    $config = [
                         'option'   => $this->get('option', Request::getCmd('option', 'com_publications')),
                         'scope'    => 'reviews',
                         'pagename' => $this->get('publication_id'),
                         'pageid'   => 0,
                         'filepath' => '',
                         'domain'   => ''
-                    );
+                    ];
 
                     $content = (string) stripslashes($this->get('comment', ''));
-                    $this->importPlugin('content')->trigger('onContentPrepare', array(
+                    $this->importPlugin('content')->trigger('onContentPrepare', [
                         $this->context,
                         &$this,
                         &$config
-                    ));
+                    ]);
 
                     $this->set('comment.parsed', (string) $this->get('comment', ''));
                     $this->set('comment', $content);

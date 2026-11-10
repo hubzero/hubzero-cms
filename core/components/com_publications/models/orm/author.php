@@ -27,18 +27,18 @@ class Author extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'publication_version_id' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
-    );
+    ];
 
     /**
      * Establish relationship to parent version

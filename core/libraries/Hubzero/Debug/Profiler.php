@@ -51,7 +51,7 @@ class Profiler
      *
      * @var  array
      */
-    protected $marks = array();
+    protected $marks = [];
 
     /**
      * Constructor
@@ -75,7 +75,7 @@ class Profiler
     {
         $this->started = $this->now();
         $this->prefix  = '';
-        $this->marks   = array();
+        $this->marks   = [];
         $this->memory  = memory_get_usage(true);
         $this->lastNow = $this->started;
     }
@@ -199,12 +199,12 @@ class Profiler
      */
     public function summary()
     {
-        $summary = array(
+        $summary = [
             'start'  => $this->started(),
             'end'    => $this->ended(),
             'total'  => $this->duration(),
             'memory' => $this->memory()
-        );
+        ];
 
         return $summary;
     }

@@ -50,7 +50,7 @@ class Queries extends AdminController
     public function displayTask()
     {
         // Get paging variables
-        $filters = array(
+        $filters = [
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
@@ -73,8 +73,8 @@ class Queries extends AdminController
                 'filter_order_Dir',
                 'ASC'
             ),
-            'iscore' => array(4, 2, 1)
-        );
+            'iscore' => [4, 2, 1]
+        ];
 
         $query = Query::all();
 
@@ -108,7 +108,7 @@ class Queries extends AdminController
         Request::setVar('hidemainmenu', 1);
 
         if (!is_object($row)) {
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id)) {
                 $id = (!empty($id) ? $id[0] : 0);
             }
@@ -155,7 +155,7 @@ class Queries extends AdminController
         }
 
         // Incoming
-        $fields  = Request::getArray('fields', array(), 'post');
+        $fields  = Request::getArray('fields', [], 'post');
         $no_html = Request::getInt('no_html', 0);
         $tmpl    = Request::getString('component', '');
 
@@ -219,8 +219,8 @@ class Queries extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $no_html = Request::getInt('no_html', 0);
         $tmpl    = Request::getString('component', '');
@@ -278,7 +278,7 @@ class Queries extends AdminController
         Request::setVar('hidemainmenu', 1);
 
         if (!is_object($row)) {
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id)) {
                 $id = (!empty($id) ? intval($id[0]) : 0);
             }
@@ -311,7 +311,7 @@ class Queries extends AdminController
         }
 
         // Incoming
-        $fields  = Request::getArray('fields', array());
+        $fields  = Request::getArray('fields', []);
         $no_html = Request::getInt('no_html', 0);
         $tmpl    = Request::getString('component', '');
 
@@ -367,8 +367,8 @@ class Queries extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (is_array($ids) ? $ids : array($ids));
+        $ids = Request::getArray('id', []);
+        $ids = (is_array($ids) ? $ids : [$ids]);
 
         $no_html = Request::getInt('no_html', 0);
         $removed = 0;
@@ -412,8 +412,8 @@ class Queries extends AdminController
 
         // Incoming
         $no_html = Request::getInt('no_html', 0);
-        $folders = Request::getArray('folder', array());
-        $queries = Request::getArray('queries', array());
+        $folders = Request::getArray('folder', []);
+        $queries = Request::getArray('queries', []);
 
         if (is_array($folders)) {
             foreach ($folders as $key => $folder) {
@@ -493,22 +493,22 @@ class Queries extends AdminController
             ->rows();
 
         if (count($folders) <= 0) {
-            $defaults = array(
-                1 => array('Common', 'Mine', 'Custom'),
-                2 => array('Common', 'Mine'),
-            );
+            $defaults = [
+                1 => ['Common', 'Mine', 'Custom'],
+                2 => ['Common', 'Mine'],
+            ];
 
             foreach ($defaults as $iscore => $fldrs) {
                 $i = 1;
 
                 foreach ($fldrs as $fldr) {
                     $f = QueryFolder::blank()
-                        ->set(array(
+                        ->set([
                             'iscore'   => $iscore,
                             'title'    => $fldr,
                             'ordering' => $i,
                             'user_id'  => 0
-                        ));
+                        ]);
 
                     $f->save();
 

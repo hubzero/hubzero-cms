@@ -54,14 +54,14 @@ if ($this->paymentStatus == 'ok') {
             }
         }
 
-        $view = new \Hubzero\Component\View(array('name' => 'shared', 'layout' => 'messages'));
+        $view = new \Hubzero\Component\View(['name' => 'shared', 'layout' => 'messages']);
         $view->setError($this->getError());
         $view->display();
         ?>
 
         <div class="grid">
             <?php
-            $view = new \Hubzero\Component\View(array('name' => 'checkout', 'layout' => 'checkout_items'));
+            $view = new \Hubzero\Component\View(['name' => 'checkout', 'layout' => 'checkout_items']);
             $view->perks = $perks;
             $view->membershipInfo = $membershipInfo;
             $view->transactionItems = $this->transactionItems;
@@ -103,14 +103,14 @@ if ($this->paymentStatus == 'ok') {
         <?php
 
         // Check the notes, both SKU-specific and other
-        $notes = array();
+        $notes = [];
         foreach ($this->transactionItems as $item) {
             $meta = $item['transactionInfo']->tiMeta;
             if (isset($meta->checkoutNotes) && $meta->checkoutNotes) {
-                $notes[] = array(
+                $notes[] = [
                     'label' => $item['info']->pName . ', ' . $item['info']->sSku,
                     'notes' => $meta->checkoutNotes
-                );
+                ];
             }
         }
 
@@ -120,9 +120,9 @@ if ($this->paymentStatus == 'ok') {
         }
 
         if ($this->transactionInfo->tiNotes) {
-            $notes[] = array(
+            $notes[] = [
                 'label' => $genericNotesLabel,
-                'notes' => $this->transactionInfo->tiNotes);
+                'notes' => $this->transactionInfo->tiNotes];
         }
 
         if (!empty($notes)) {
@@ -144,12 +144,12 @@ if ($this->paymentStatus == 'ok') {
         };
 
         if (in_array('shipping', $this->transactionInfo->steps)) {
-            $view = new \Hubzero\Component\View(array('name' => 'checkout', 'layout' => 'checkout_shippinginfo'));
+            $view = new \Hubzero\Component\View(['name' => 'checkout', 'layout' => 'checkout_shippinginfo']);
             $view->transactionInfo = $this->transactionInfo;
             $view->display();
         }
 
-        $view = new \Hubzero\Component\View(array('name' => 'checkout', 'layout' => 'checkout_paymentinfo'));
+        $view = new \Hubzero\Component\View(['name' => 'checkout', 'layout' => 'checkout_paymentinfo']);
         $view->paymentInfo = $this->paymentInfo;
         $view->display();
 

@@ -48,10 +48,10 @@ class Following extends Table
             return parent::load($oid);
         }
 
-        $fields = array(
+        $fields = [
             'following_id'   => (int) $oid,
             'following_type' => (string) $following_type
-        );
+        ];
         if ($follower_id !== null) {
             $fields['follower_id'] = (int) $follower_id;
         }
@@ -69,7 +69,7 @@ class Following extends Table
      */
     public function check()
     {
-        $this->_errors = array();
+        $this->_errors = [];
 
         $this->follower_id = intval($this->follower_id);
         if (!$this->follower_id) {
@@ -104,11 +104,11 @@ class Following extends Table
      * @param   array   $filters  Filters to construct query from
      * @return  string  SQL
      */
-    private function buildQuery($filters = array())
+    private function buildQuery($filters = [])
     {
         $query  = " FROM $this->_tbl AS f";
 
-        $where = array();
+        $where = [];
 
         if (isset($filters['following_id']) && $filters['following_id']) {
             $where[] = "f.following_id=" . $this->_db->quote($filters['following_id']);
@@ -136,7 +136,7 @@ class Following extends Table
      * @param   array    $filters  Filters to construct query from
      * @return  integer
      */
-    public function count($filters = array())
+    public function count($filters = [])
     {
         $filters['limit'] = 0;
 
@@ -152,7 +152,7 @@ class Following extends Table
      * @param   array  $filters  Filters to construct query from
      * @return  array
      */
-    public function find($filters = array())
+    public function find($filters = [])
     {
         $query = "SELECT f.*, "
             . "(SELECT COUNT(*) FROM `#__collections_following` AS fg "

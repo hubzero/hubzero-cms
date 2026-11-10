@@ -53,18 +53,18 @@ class Domain extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'authenticator' => 'notempty'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      **/
-    public $always = array(
+    public $always = [
         'type'
-    );
+    ];
 
     /**
      * Generates automatic authenticator field value

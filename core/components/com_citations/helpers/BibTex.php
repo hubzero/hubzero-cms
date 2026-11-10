@@ -164,15 +164,15 @@ class BibTex
      * @param  array  $options
      * @return void
      */
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
-        $this->_delimiters     = array('"' => '"', '{' => '}');
-        $this->data            = array();
+        $this->_delimiters     = ['"' => '"', '{' => '}'];
+        $this->data            = [];
         $this->content         = '';
         //$this->_stripDelimiter = $stripDel;
         //$this->_validate       = $val;
-        $this->warnings        = array();
-        $this->_options        = array(
+        $this->warnings        = [];
+        $this->_options        = [
             'stripDelimiter'    => true,
             'validate'          => true,
             'unwrap'            => false,
@@ -181,7 +181,7 @@ class BibTex
             'wordWrapCut'       => 0,
             'removeCurlyBraces' => true,
             'extractAuthors'    => true,
-        );
+        ];
         foreach ($options as $option => $value) {
             $test = $this->setOption($option, $value);
             if ($test instanceof \Exception) {
@@ -191,7 +191,7 @@ class BibTex
         $this->rtfstring    = 'AUTHORS, "{\b TITLE}", {\i JOURNAL}, YEAR';
         $this->htmlstring   = '<tr><td>AUTHORS, "<strong>TITLE</strong>", '
             . '<em>JOURNAL</em>, VOLUME, PAGES, PUBLISHER, YEAR</th></td>';
-        $this->allowedTypes = array(
+        $this->allowedTypes = [
             'article',
             'book',
             'booklet',
@@ -214,7 +214,7 @@ class BibTex
             'notes',
             'letter',
             'manuscript'
-        );
+        ];
         $this->authorstring = 'VON LAST JR, FIRST';
     }
 
@@ -281,8 +281,8 @@ class BibTex
     {
         //The amount of opening braces is compared to the amount of closing braces
         //Braces inside comments are ignored
-        $this->warnings = array();
-        $this->data     = array();
+        $this->warnings = [];
+        $this->data     = [];
         $valid          = true;
         $open           = 0;
         $entry          = false;
@@ -349,13 +349,13 @@ class BibTex
         }
         //Are there Multiple entries with the same cite?
         if ($this->_options['validate']) {
-            $cites = array();
+            $cites = [];
             foreach ($this->data as $entry) {
                 $cites[] = $entry['cite'];
             }
             $unique = array_unique($cites);
             if (count($cites) != count($unique)) { //Some values have not been unique!
-                $notuniques = array();
+                $notuniques = [];
                 for ($i = 0; $i < count($cites); $i++) {
                     if (isset($unique[$i]) && '' == $unique[$i]) {
                         $notuniques[] = $cites[$i];
@@ -399,7 +399,7 @@ class BibTex
         if ($this->_options['validate']) {
             $entrycopy = $entry; //We need a copy for printing the warnings
         }
-        $ret = array();
+        $ret = [];
         if ('@string' ==  strtolower(substr($entry, 0, 7))) {
             //String are not yet supported!
             if ($this->_options['validate']) {
@@ -678,7 +678,7 @@ class BibTex
     public function _extractAuthors($entry)
     {
         $entry       = $this->_unwrap($entry);
-        $authorarray = array();
+        $authorarray = [];
         $authorarray = preg_split('# and #', $entry);
 
         for ($i = 0; $i < count($authorarray); $i++) {
@@ -690,7 +690,7 @@ class BibTex
             $last     = '';
             $jr       = '';
             if (strpos($author, ',') === false) {
-                $tmparray = array();
+                $tmparray = [];
                 //$tmparray = explode(' ', $author);
                 $tmparray = preg_split('# |~#', $author);
                 $size     = count($tmparray);
@@ -749,10 +749,10 @@ class BibTex
                     $last .= ' ' . $tmparray[$size - 1];
                 }
             } else { //Version 2 and 3
-                $tmparray     = array();
+                $tmparray     = [];
                 $tmparray     = explode(',', $author);
                 //The first entry must contain von and last
-                $vonlastarray = array();
+                $vonlastarray = [];
                 $vonlastarray = explode(' ', $tmparray[0]);
                 $size         = count($vonlastarray);
                 if (1 == $size) { //Only one entry->got to be the last
@@ -794,12 +794,12 @@ class BibTex
                 //Everything in the last entry is first
                 $first = $tmparray[count($tmparray) - 1];
             }
-            $authorarray[$i] = array(
+            $authorarray[$i] = [
                 'first' => trim($first),
                 'von' => trim($von),
                 'last' => trim($last),
                 'jr' => trim($jr)
-            );
+            ];
         }
         return $authorarray;
     }
@@ -955,7 +955,7 @@ class BibTex
      */
     public function clearWarnings()
     {
-        $this->warnings = array();
+        $this->warnings = [];
     }
 
     /**
@@ -1043,14 +1043,14 @@ class BibTex
                 if ($this->_options['wordWrapWidth'] > 0) {
                     $val = $this->_wordWrap($val);
                 }
-                if (!in_array($key, array('cite', 'type', 'author'))) {
+                if (!in_array($key, ['cite', 'type', 'author'])) {
                     $bibtex .= "\t" . $key . ' = {' . $val . "},\n";
                 }
             }
             //Author
             if (array_key_exists('author', $entry)) {
                 if ($this->_options['extractAuthors']) {
-                    $tmparray = array(); //In this array the authors are saved and the joind with an and
+                    $tmparray = []; //In this array the authors are saved and the joind with an and
                     foreach ($entry['author'] as $authorentry) {
                         $tmparray[] = $this->_formatAuthor($authorentry);
                     }
@@ -1091,7 +1091,7 @@ class BibTex
      */
     public function getStatistic()
     {
-        $ret = array();
+        $ret = [];
         foreach ($this->data as $entry) {
             if (array_key_exists($entry['type'], $ret)) {
                 $ret[$entry['type']]++;
@@ -1136,7 +1136,7 @@ class BibTex
             }
             if (array_key_exists('author', $entry)) {
                 if ($this->_options['extractAuthors']) {
-                    $tmparray = array(); //In this array the authors are saved and the joind with an and
+                    $tmparray = []; //In this array the authors are saved and the joind with an and
                     foreach ($entry['author'] as $authorentry) {
                         $tmparray[] = $this->_formatAuthor($authorentry);
                     }
@@ -1202,7 +1202,7 @@ class BibTex
             }
             if (array_key_exists('author', $entry)) {
                 if ($this->_options['extractAuthors']) {
-                    $tmparray = array(); //In this array the authors are saved and the joind with an and
+                    $tmparray = []; //In this array the authors are saved and the joind with an and
                     foreach ($entry['author'] as $authorentry) {
                         $tmparray[] = $this->_formatAuthor($authorentry);
                     }

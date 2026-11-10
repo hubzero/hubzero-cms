@@ -61,32 +61,32 @@ class Job extends Relational
      *
      * @var array
      */
-    protected $rules = array(
+    protected $rules = [
         'title'      => 'notempty',
         'recurrence' => 'notempty',
         'event'      => 'notempty'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'event',
         'publish_up',
         'publish_down'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Split event into plugin name and event
@@ -380,7 +380,7 @@ class Job extends Relational
         $start = $buffer[0];
         $end   = end($buffer);
 
-        return array(
+        return [
             'id'         => $this->get('id'),
             'title'      => $this->get('title'),
             'plugin'     => $this->get('plugin'),
@@ -394,7 +394,7 @@ class Job extends Relational
             'end_mem'    => round($end->memory(), 3),
             'delta_time' => round($end->ended() - $start->started(), 3),
             'delta_mem'  => round($end->memory() - $start->memory(), 3)
-        );
+        ];
     }
 
     /**

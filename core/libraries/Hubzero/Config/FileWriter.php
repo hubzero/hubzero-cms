@@ -32,7 +32,7 @@ class FileWriter
      *
      * @var  array
      */
-    protected $options = array();
+    protected $options = [];
 
     /**
      * Create a new file configuration loader.
@@ -42,7 +42,7 @@ class FileWriter
      * @param   array   $options  Formatting options
      * @return  void
      */
-    public function __construct($format, $path, $options = array('format' => 'array'))
+    public function __construct($format, $path, $options = ['format' => 'array'])
     {
         $this->format  = $format;
         $this->path    = $path;
@@ -104,7 +104,7 @@ class FileWriter
      * @param   array   $options
      * @return  string
      */
-    public function toContent($contents, $format, $options = array())
+    public function toContent($contents, $format, $options = [])
     {
         if (!($contents instanceof Registry)) {
             $contents = new Registry($contents);

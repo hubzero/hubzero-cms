@@ -76,7 +76,7 @@ class AddComponentEntry extends Macro
 
             $query = $this->db->getQuery()
                 ->insert('#__extensions')
-                ->values(array(
+                ->values([
                     'name'           => $name,
                     'type'           => 'component',
                     'element'        => $option,
@@ -92,7 +92,7 @@ class AddComponentEntry extends Macro
                     'checked_out'    => 0,
                     'ordering'       => $ordering,
                     'state'          => 0
-                ))
+                ])
                 ->toString();
 
             $this->db->setQuery($query);
@@ -113,18 +113,18 @@ class AddComponentEntry extends Macro
             $this->db->setQuery($query);
             if (!$this->db->loadResult()) {
                 // Build default ruleset
-                $defaulRules = array(
-                    "core.admin"      => array(
+                $defaulRules = [
+                    "core.admin"      => [
                         "7" => 1
-                    ),
-                    "core.manage"     => array(
+                    ],
+                    "core.manage"     => [
                         "6" => 1
-                    ),
-                    "core.create"     => array(),
-                    "core.delete"     => array(),
-                    "core.edit"       => array(),
-                    "core.edit.state" => array()
-                );
+                    ],
+                    "core.create"     => [],
+                    "core.delete"     => [],
+                    "core.edit"       => [],
+                    "core.edit.state" => []
+                ];
 
                 // Register the component container just under root in the assets table
                 $asset = Asset::blank();
@@ -159,7 +159,7 @@ class AddComponentEntry extends Macro
 
             $query = $this->db->getQuery()
                 ->insert('#__menu')
-                ->values(array(
+                ->values([
                     'menutype'          => 'main',
                     'title'             => $option,
                     'alias'             => $alias,
@@ -183,7 +183,7 @@ class AddComponentEntry extends Macro
                     'home'              => 0,
                     'language'          => '*',
                     'client_id'         => 1
-                ))
+                ])
                 ->toString();
             $this->db->setQuery($query);
             $this->db->query();
@@ -241,7 +241,7 @@ class AddComponentEntry extends Macro
     protected function routes()
     {
         if (!isset($this->routes)) {
-            $this->routes = new \Hubzero\Menu\ComponentRoute($this->db, array($this, 'log'));
+            $this->routes = new \Hubzero\Menu\ComponentRoute($this->db, [$this, 'log']);
         }
 
         return $this->routes;

@@ -21,11 +21,11 @@ class Migration20190305000000AuditResults extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__audit_results' => array(
+    public static $tables = [
+        '#__audit_results' => [
             'processed'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

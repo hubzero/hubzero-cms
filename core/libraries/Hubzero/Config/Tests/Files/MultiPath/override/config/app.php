@@ -5,9 +5,9 @@
  */
 
 // @codeCoverageIgnoreStart
-return array(
+return [
     'application_env' => 'production',
     'editor' => 'none',
     'debug' => '0',
-);
+];
 // @codeCoverageIgnoreEnd

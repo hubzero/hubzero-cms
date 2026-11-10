@@ -41,10 +41,10 @@ if ($this->model->isTool()) {
         $base = $this->model->params->get('uploadpath');
         $i = 0;
 
-        $displayedDocs = array();
+        $displayedDocs = [];
 
         $xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'all');
-        $usersgroups = array();
+        $usersgroups = [];
         if (!empty($xgroups)) {
             foreach ($xgroups as $group) {
                 if ($group->regconfirmed) {
@@ -103,13 +103,13 @@ if ($this->model->isTool()) {
                         default:
                             $linkAction = 0;
 
-                            $mediatypes = array('elink','quicktime','presentation','presentation_audio','breeze','quiz','player','video_stream','video','hubpresenter');
-                            $downtypes = array('thesis','handout','manual','software_download');
+                            $mediatypes = ['elink','quicktime','presentation','presentation_audio','breeze','quiz','player','video_stream','video','hubpresenter'];
+                            $downtypes = ['thesis','handout','manual','software_download'];
 
                             if (in_array($lt->alias, $downtypes)) {
                                 $class = 'download';
                             } elseif (in_array($rt->alias, $mediatypes)) {
-                                $mediatypes = array('flash_paper','breeze','32','26');
+                                $mediatypes = ['flash_paper','breeze','32','26'];
                                 if (in_array($child->get('type'), $mediatypes)) {
                                     $class = 'play';
                                 }
@@ -257,7 +257,7 @@ if ($this->model->isTool()) {
         // Parse for <nb:field> tags
         $type = $this->model->type;
 
-        $data = array();
+        $data = [];
         preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->model->fulltxt, $matches, PREG_SET_ORDER);
     if (count($matches) > 0) {
         foreach ($matches as $match) {
@@ -271,7 +271,7 @@ if ($this->model->isTool()) {
         $hasCustomFields = false;
     if (is_object($schema)) {
         if (!isset($schema->fields) || !is_array($schema->fields)) {
-            $schema->fields = array();
+            $schema->fields = [];
         }
         foreach ($schema->fields as $field) {
             if (isset($data[$field->name]) && $elements->display($field->type, $data[$field->name]) && isset($field->display) && $field->display == $tab) {

@@ -61,7 +61,7 @@ class Notes extends Base
 
         // Fall back
         if (!$manifest) {
-            $manifest = array(
+            $manifest = [
                 'name'          => 'notes',
                 'label'         => 'Notes',
                 'title'         => 'Version Release Notes',
@@ -69,8 +69,8 @@ class Notes extends Base
                 'draftTagline'  => '',
                 'about'         => '',
                 'adminTips'     => '',
-                'elements'  => array(
-                    10 => array (
+                'elements'  => [
+                    10 =>  [
                         'name'      => 'metadata',
                         'type'      => 'metadata',
                         'label'     => 'Release Notes',
@@ -79,7 +79,7 @@ class Notes extends Base
                             . 'as well as any miscellaneous information that couldn\'t fit '
                             . 'elsewhere.</p>',
                         'adminTips' => '',
-                        'params'    => array (
+                        'params'    =>  [
                             'required'      => 0,
                             'aliasmap'      => 'release_notes',
                             'field'         => 'release_notes',
@@ -89,11 +89,11 @@ class Notes extends Base
                             'maxlength'     => '3000',
                             'cols'          => '50',
                             'rows'          => '6'
-                        )
-                    )
-                ),
-                'params'    => array( 'required' => 0, 'published_editing' => 0, 'collapse_elements' => 1 )
-            );
+                        ]
+                    ]
+                ],
+                'params'    => [ 'required' => 0, 'published_editing' => 0, 'collapse_elements' => 1 ]
+            ];
 
             return json_decode(json_encode($manifest), false);
         }

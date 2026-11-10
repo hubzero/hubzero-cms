@@ -35,7 +35,7 @@ class Mycuration extends Module
         $this->moduleclass = $this->params->get('moduleclass');
 
         // Build query
-        $filters = array(
+        $filters = [
             'limit'         => intval($this->params->get('limit', 10)),
             'start'         => 0,
             'sortby'        => 'title',
@@ -43,8 +43,8 @@ class Mycuration extends Module
             'ignore_access' => 1,
             'curator'       => 'owner',
             'dev'           => 1, // get dev versions
-            'status'        => array(5, 7) // submitted/pending
-        );
+            'status'        => [5, 7] // submitted/pending
+        ];
 
         // Instantiate
         $objP = new \Components\Publications\Tables\Publication($database);

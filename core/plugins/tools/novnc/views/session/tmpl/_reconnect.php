@@ -23,14 +23,14 @@ $this->css('./css/reconnect.css')
 
 $base = rtrim(Request::root(), '/');
 
-$reconnectConfig = array(
+$reconnectConfig = [
     'sess'    => (int) $this->app->sess,
     'apiBase' => $base . '/api/tools',
-    'links'   => array(
+    'links'   => [
         'account' => Route::url('index.php?option=com_members&task=myaccount'),
         'home'    => $base . '/'
-    ),
-    'strings' => array(
+    ],
+    'strings' => [
         'lostTitle'    => Lang::txt('PLG_TOOLS_NOVNC_RECONNECT_LOST_TITLE'),
         'checking'     => Lang::txt('PLG_TOOLS_NOVNC_RECONNECT_CHECKING'),
         'waiting'      => Lang::txt('PLG_TOOLS_NOVNC_RECONNECT_WAITING'),
@@ -48,7 +48,7 @@ $reconnectConfig = array(
         'reload'       => Lang::txt('PLG_TOOLS_NOVNC_RECONNECT_RELOAD'),
         'account'      => Lang::txt('PLG_TOOLS_NOVNC_RECONNECT_ACCOUNT'),
         'home'         => Lang::txt('PLG_TOOLS_NOVNC_RECONNECT_HOME')
-    )
-);
+    ]
+];
 ?>
 <script type="application/json" id="novnc-reconnect-config"><?php echo json_encode($reconnectConfig); ?></script>

@@ -35,7 +35,7 @@ class Templatestyle extends Groupedlist
     protected function getGroups()
     {
         // Initialize variables.
-        $groups = array();
+        $groups = [];
         $lang = App::get('language');
 
         // Get the client and client_id.
@@ -80,7 +80,7 @@ class Templatestyle extends Groupedlist
 
                 // Initialize the group if necessary.
                 if (!isset($groups[$name])) {
-                    $groups[$name] = array();
+                    $groups[$name] = [];
                 }
 
                 $groups[$name][] = Dropdown::option($style->id, $style->title);

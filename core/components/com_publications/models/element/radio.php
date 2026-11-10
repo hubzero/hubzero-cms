@@ -52,7 +52,7 @@ class Radio extends Base
     {
         $label = $element->label ? $element->label : $element->name;
 
-        $html = array();
+        $html = [];
         $html[] = '<fieldset>';
 
         $output = '<legend id="' . $control_name . $name . '-lgd"';
@@ -111,7 +111,7 @@ class Radio extends Base
      */
     public function fetchOptions($name, $value, &$element, $control_name)
     {
-        $html = array();
+        $html = [];
 
         $k = 0;
         $idBase = $control_name . '-' . $name;

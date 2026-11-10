@@ -50,7 +50,7 @@ class Searchable extends AdminController
         $components = SearchComponent::all()->where('state', '!=', SearchComponent::STATE_TRASHED)->orWhere('state', 'IS', null)->rows();
         foreach ($components as $component) {
             $componentQuery = $component->getSearchQuery('hubtype');
-            $multifacet->createQuery($component->getQueryName(), $componentQuery, array('include' => 'child_type'));
+            $multifacet->createQuery($component->getQueryName(), $componentQuery, ['include' => 'child_type']);
         }
 
         // Perform the query
@@ -63,7 +63,7 @@ class Searchable extends AdminController
         if (isset($query->resultsFacetSet) && $query->resultsFacetSet) {
             $facetResults = $query->resultsFacetSet->getFacet('hubtypes');
         }
-        $facetCounts = array();
+        $facetCounts = [];
         if (!empty($facetResults)) {
             foreach ($facetResults as $facet => $count) {
                 $facetCounts[$facet] = $count;
@@ -83,7 +83,7 @@ class Searchable extends AdminController
      */
     public function activateIndexTask()
     {
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
         $offset = Request::getInt('offset', 0);
         $numProcess = Request::getInt('numprocess');
         $components = SearchComponent::all()
@@ -97,7 +97,7 @@ class Searchable extends AdminController
                 $recordsIndexed = null;
             }
             if (!$recordsIndexed) {
-                $recordsIndexed = array();
+                $recordsIndexed = [];
                 $component->set('state', SearchComponent::STATE_INDEXED);
                 $componentLink = Route::url('index.php?option=com_search&controller=' . $this->_controller . '&task=documentListing&facet=hubtype:' . $component->getSearchNamespace());
                 $recordsIndexed['state'] = SearchComponent::STATE_INDEXED; //1;
@@ -143,7 +143,7 @@ class Searchable extends AdminController
         $existingFields = $searchComponent->filters->fieldsByKey('field');
         $existingFields = array_filter($existingFields, 'strtolower');
         $availableFields = array_diff($fields, $existingFields);
-        $filters = array();
+        $filters = [];
         foreach ($searchComponent->filters()->order('ordering', 'ASC') as $filter) {
             $filters[$filter->field]['label'] = !empty($filter->get('label')) ? $filter->get('label') : $filter->field;
             $filters[$filter->field]['type'] = $filter->type;
@@ -159,7 +159,7 @@ class Searchable extends AdminController
         $this->view
             ->setLayout('edit')
             ->set('searchComponent', $searchComponent)
-            ->set('fields', array())
+            ->set('fields', [])
             ->set('filters', $filters)
             ->set('availableFields', $availableFields)
             ->display();
@@ -175,7 +175,7 @@ class Searchable extends AdminController
     {
         Request::checkToken(["post", "get"]);
 
-        $fields = Request::getArray('fields', array());
+        $fields = Request::getArray('fields', []);
         $id     = Request::getInt('id', 0);
         $filters = Request::getArray('filters');
         $searchComponent = SearchComponent::oneOrNew($id);
@@ -190,7 +190,7 @@ class Searchable extends AdminController
         } else {
             Notify::success(Lang::txt('COM_SEARCH_COMPONENT_SAVE_SUCCESS', $searchComponent->title));
             $oldFilters = $searchComponent->filters;
-            $oldFilterIds = array();
+            $oldFilterIds = [];
             foreach ($oldFilters as $filter) {
                 $field = $filter->get('field');
                 $oldFilterIds[$field] = $filter->get('id');
@@ -203,7 +203,7 @@ class Searchable extends AdminController
                 }
                 $filter = Filter::oneOrNew($filterId);
                 $filter->set('field', $field);
-                $optionValues = array();
+                $optionValues = [];
                 if (isset($element['options'])) {
                     $optionValues = $element['options'];
                     unset($element['options']);
@@ -217,7 +217,7 @@ class Searchable extends AdminController
                 }
                 $filterCount++;
                 $oldOptions = $filter->options;
-                $oldOptionIds = array();
+                $oldOptionIds = [];
                 foreach ($oldOptions as $option) {
                     $value = $option->get('value');
                     $oldOptionIds[$value] = $option->get('id');
@@ -257,7 +257,7 @@ class Searchable extends AdminController
      */
     public function deleteIndexTask()
     {
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
         $components = SearchComponent::all()
             ->whereIn('id', $ids)
             ->whereEquals('state', SearchComponent::STATE_INDEXED)
@@ -267,7 +267,7 @@ class Searchable extends AdminController
             $componentSearchModel = $component->getSearchableModel();
             if (class_exists($componentSearchModel)) {
                 $modelNamespace = $componentSearchModel::searchNamespace();
-                $deleteQuery = array('hubtype' => $modelNamespace);
+                $deleteQuery = ['hubtype' => $modelNamespace];
                 $searchIndex->delete($deleteQuery);
             }
             $component->set('state', SearchComponent::STATE_NOTINDEXED);
@@ -278,7 +278,7 @@ class Searchable extends AdminController
                 Notify::success(Lang::txt('COM_SEARCH_DELETE_COMPONENT_SUCCESS', ucfirst($component->name)));
                 $deleteObj = new stdClass();
                 $deleteObj->hubtype = $modelNamespace;
-                Event::trigger('search.sendSolrRequest', array($deleteObj, 'delete'));
+                Event::trigger('search.sendSolrRequest', [$deleteObj, 'delete']);
             }
         }
 
@@ -292,7 +292,7 @@ class Searchable extends AdminController
      */
     public function trashIndexTask()
     {
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
         $components = SearchComponent::all()
             ->whereIn('id', $ids)
             ->rows();
@@ -330,7 +330,7 @@ class Searchable extends AdminController
             ->toObject();
 
         // @TODO: PHP 5.5+ supports array_column()
-        $blacklist = array();
+        $blacklist = [];
         foreach ($blacklistEntries as $entry) {
             array_push($blacklist, $entry->doc_id);
         }
@@ -358,13 +358,13 @@ class Searchable extends AdminController
 
         // Create the pagination
         $pagination = new \Hubzero\Pagination\Paginator($total, $limitstart, $limit);
-        $pagination->setLimits(array('5','10','15','20','50','100','200'));
+        $pagination->setLimits(['5','10','15','20','50','100','200']);
         $this->view->pagination = $pagination;
 
         // Pass the filters and documents to the display
         $this->view->filter = ($filter == '' || $filter == '*:*') ? '' : $filter;
         $this->view->facet = !isset($facet) ? '' : $facet;
-        $this->view->documents = isset($results) ? $results : array();
+        $this->view->documents = isset($results) ? $results : [];
         $this->view->blacklist = $blacklist;
 
         // Display the view

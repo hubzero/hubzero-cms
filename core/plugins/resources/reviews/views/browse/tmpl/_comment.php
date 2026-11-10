@@ -143,7 +143,7 @@ if ($this->comment->get('resource_id')) {
                     <label for="comment_<?php echo $this->comment->get('id'); ?>_content">
                         <span class="label-text"><?php echo Lang::txt('PLG_RESOURCES_REVIEWS_ENTER_COMMENTS'); ?></span>
                         <?php
-                        echo $this->editor('comment[content]', $this->comment->get('content'), 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'minimal no-footer'));
+                        echo $this->editor('comment[content]', $this->comment->get('content'), 35, 4, 'comment_' . $this->comment->get('id') . '_content', ['class' => 'minimal no-footer']);
                         ?>
                     </label>
 
@@ -221,7 +221,7 @@ if ($this->comment->get('resource_id')) {
                         <label for="comment_<?php echo $this->comment->get('id'); ?>_content">
                             <span class="label-text"><?php echo Lang::txt('PLG_RESOURCES_REVIEWS_ENTER_COMMENTS'); ?></span>
                             <?php
-                            echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'minimal no-footer'));
+                            echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', ['class' => 'minimal no-footer']);
                             ?>
                         </label>
 
@@ -243,10 +243,10 @@ if ($this->comment->get('resource_id')) {
         <?php
         if ($this->depth < $this->config->get('comments_depth', 3)) {
             $replies = $this->comment->replies()
-                ->whereIn('state', array(
+                ->whereIn('state', [
                     \Components\Resources\Models\Reviewcomment::STATE_PUBLISHED,
                     \Components\Resources\Models\Reviewcomment::STATE_FLAGGED
-                ))
+                ])
                 ->ordered()
                 ->rows();
 

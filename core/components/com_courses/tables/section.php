@@ -37,7 +37,7 @@ class Section extends Table
      * @param   string  $scope     The page scope
      * @return  object
      */
-    public static function getInstance($type, $prefix = 'Table', $config = array())
+    public static function getInstance($type, $prefix = 'Table', $config = [])
     {
         static $instances;
 
@@ -45,7 +45,7 @@ class Section extends Table
         $offering_id = $prefix;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         if (!isset($instances[$alias . '_' . $offering_id])) {
@@ -75,15 +75,15 @@ class Section extends Table
         }
 
         if ($oid == '!!default!!') {
-            $fields = array(
+            $fields = [
                 'is_default'  => 1,
                 'offering_id' => intval($offering_id)
-            );
+            ];
         } else {
-            $fields = array(
+            $fields = [
                 'alias'       => trim($oid),
                 'offering_id' => intval($offering_id)
-            );
+            ];
         }
 
         return parent::load($fields);
@@ -126,13 +126,13 @@ class Section extends Table
         }
 
         // Blank date boxes post ''; strict SQL refuses '' for a datetime, so store NULL
-        foreach (array('start_date', 'end_date', 'publish_up', 'publish_down') as $col) {
+        foreach (['start_date', 'end_date', 'publish_up', 'publish_down'] as $col) {
             if (isset($this->$col) && trim((string) $this->$col) === '') {
                 $this->$col = null;
             }
         }
         // NOT NULL TEXT without a default: an unset value is left out of the INSERT
-        foreach (array('params') as $col) {
+        foreach (['params'] as $col) {
             if (!isset($this->$col)) {
                 $this->$col = '';
             }
@@ -152,12 +152,12 @@ class Section extends Table
      * @param   array   $filters
      * @return  string  Database query
      */
-    private function buildQuery($filters = array())
+    private function buildQuery($filters = [])
     {
         $query  = " FROM $this->_tbl AS os";
         $query .= " INNER JOIN #__courses_offerings AS o ON o.id=os.offering_id";
 
-        $where = array();
+        $where = [];
 
         if (isset($filters['offering_id']) && $filters['offering_id']) {
             $where[] = "os.offering_id=" . $this->_db->quote(intval($filters['offering_id']));
@@ -231,7 +231,7 @@ class Section extends Table
      * @param   array    $filters
      * @return  integer
      */
-    public function count($filters = array())
+    public function count($filters = [])
     {
         $query  = "SELECT COUNT(os.id)";
         $query .= $this->buildQuery($filters);
@@ -246,7 +246,7 @@ class Section extends Table
      * @param   array  $filters
      * @return  array
      */
-    public function find($filters = array())
+    public function find($filters = [])
     {
         $query  = "SELECT os.*";
         $query .= $this->buildQuery($filters);
@@ -254,7 +254,7 @@ class Section extends Table
         if (!isset($filters['sort']) || $filters['sort'] == '') {
             $filters['sort'] = 'os.title';
         }
-        if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC'))) {
+        if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), ['ASC', 'DESC'])) {
             $filters['sort_Dir'] = 'ASC';
         }
 

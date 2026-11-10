@@ -80,7 +80,7 @@ $backUrl = Route::url(
                         35,
                         5,
                         'field_content',
-                        array('class' => 'form-control minimal no-footer')
+                        ['class' => 'form-control minimal no-footer']
                     );
                     ?>
                 </label>

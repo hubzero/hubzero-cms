@@ -50,13 +50,13 @@ class CategoriesHelper
             $cName  = $prefix . 'Helper';
 
             if (class_exists($cName)) {
-                if (is_callable(array($cName, 'addSubmenu'))) {
+                if (is_callable([$cName, 'addSubmenu'])) {
                     // loading language file from the components/*extension*/admin/language directory
                     $langPath = Filesystem::cleanPath(Component::path($component) . '/admin');
                     Lang::load($component, $langPath, null, false, true);
 
                     $suffix = isset($section) ? '.' . $section : '';
-                    call_user_func(array($cName, 'addSubmenu'), 'categories' . $suffix);
+                    call_user_func([$cName, 'addSubmenu'], 'categories' . $suffix);
                 }
             }
         }
@@ -79,14 +79,14 @@ class CategoriesHelper
 
         $result = new Obj();
 
-        $actions = array(
+        $actions = [
             'core.admin',
             'core.manage',
             'core.create',
             'core.edit',
             'core.edit.state',
             'core.delete'
-        );
+        ];
 
         foreach ($actions as $action) {
             $result->set($action, User::authorise($action, $assetName));

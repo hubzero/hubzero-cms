@@ -44,30 +44,30 @@ class Log extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'action' => 'notempty',
         'scope'  => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'//,
         //'uuid'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'scope'
-    );
+    ];
 
     /**
      * Container for details
@@ -231,7 +231,7 @@ class Log extends Relational
      * @param   array  $recipients
      * @return  bool
      */
-    public function broadcast($recipients = array())
+    public function broadcast($recipients = [])
     {
         // Get everyone subscribed
         $subscriptions = Subscription::all()
@@ -240,13 +240,13 @@ class Log extends Relational
             ->rows();
 
         foreach ($subscriptions as $subscription) {
-            $recipients[] = array(
+            $recipients[] = [
                 'scope'    => 'user',
                 'scope_id' => $subscription->get('user_id')
-            );
+            ];
         }
 
-        $sent = array();
+        $sent = [];
 
         // An entry logged again (an edited post) keeps the recipients it
         // already has; adding them again would list it twice in each feed
@@ -266,10 +266,10 @@ class Log extends Relational
         foreach ($recipients as $receiver) {
             // Default to type 'user'
             if (!is_array($receiver)) {
-                $receiver = array(
+                $receiver = [
                     'scope'    => 'user',
                     'scope_id' => $receiver
-                );
+                ];
             }
 
             // Make sure we have expected data
@@ -315,14 +315,14 @@ class Log extends Relational
      * @param   array    $recipients
      * @return  boolean
      */
-    public static function log($data = array(), $recipients = array())
+    public static function log($data = [], $recipients = [])
     {
         if (is_object($data)) {
             $data = (array) $data;
         }
 
         if (is_string($data)) {
-            $data = array('description' => $data);
+            $data = ['description' => $data];
 
             $data['action'] = 'create';
 
@@ -373,7 +373,7 @@ class Log extends Relational
     public static function allForRecipient($scope, $scope_id = 0)
     {
         if (!is_array($scope)) {
-            $scope = array($scope);
+            $scope = [$scope];
         }
 
         $logs = self::all();

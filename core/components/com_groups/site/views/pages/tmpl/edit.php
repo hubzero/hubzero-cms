@@ -130,7 +130,7 @@ if ($this->page->get('id')) {
                         }
 
                             //build config
-                            $config = array(
+                            $config = [
                                 'startupMode'                 => $startupMode,
                                 'sourceViewButton'            => $showSourceBtn,
                                 'contentCss'                  => $this->stylesheets,
@@ -142,12 +142,12 @@ if ($this->page->get('id')) {
                                 'fileBrowserUploadUrl'        => Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=editorupload&tmpl=component&' . Session::getFormToken() . '=1', false),
                                 'allowPhpTags'                => $allowPhp,
                                 'allowScriptTags'             => $allowScripts
-                            );
+                            ];
 
                             // if super group add to templates
                             if ($this->group->isSuperGroup()) {
                                 $config['templates_replace'] = false;
-                                $config['templates_files']   = array('pagelayouts' => '/app/site/groups/' . $this->group->get('gidNumber') . '/template/assets/js/pagelayouts.js');
+                                $config['templates_files']   = ['pagelayouts' => '/app/site/groups/' . $this->group->get('gidNumber') . '/template/assets/js/pagelayouts.js'];
                             }
 
                             // display editor

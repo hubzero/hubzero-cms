@@ -41,7 +41,7 @@ class Login extends Obj
      * @param   array  $config  An array of configuration options (name, state, dbo, table_path, ignore_request).
      * @return  void
      */
-    public function __construct($config = array())
+    public function __construct($config = [])
     {
         parent::__construct($config);
 
@@ -99,10 +99,10 @@ class Login extends Obj
      */
     protected function populateState()
     {
-        $credentials = array(
+        $credentials = [
             'username' => Request::getString('username', '', 'post'),
             'password' => Request::getString('passwd', '', 'post')
-        );
+        ];
         $this->setState('credentials', $credentials);
 
         // Check for return URL from the request first
@@ -191,8 +191,8 @@ class Login extends Obj
         $clientId = (int) App::get('client')->id;
 
         $cache       = App::get('cache');
-        $cacheid     = 'com_modules.' . md5(serialize(array($clientId, $lang)));
-        $loginmodule = array();
+        $cacheid     = 'com_modules.' . md5(serialize([$clientId, $lang]));
+        $loginmodule = [];
 
         try {
             $clean = $cache->get($cacheid);
@@ -219,7 +219,7 @@ class Login extends Obj
 
             // Filter by language
             if (App::isSite() && App::get('language.filter')) {
-                $query->whereIn('m.language', array($lang, '*'));
+                $query->whereIn('m.language', [$lang, '*']);
             }
 
             $query->order('m.position', 'asc')

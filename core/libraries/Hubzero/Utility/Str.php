@@ -35,15 +35,15 @@ class Str
      * @param   array   $options  An array of options, see description above
      * @return  string
      */
-    public static function insert($str, $data, $options = array())
+    public static function insert($str, $data, $options = [])
     {
-        $defaults = array(
+        $defaults = [
             'before' => ':',
             'after'  => '',
             'escape' => '\\',
             'format' => null,
             'clean'  => false
-        );
+        ];
         $options += $defaults;
         $format = $options['format'];
         $data   = (array)$data;
@@ -111,18 +111,18 @@ class Str
             return $str;
         }
         if ($clean === true) {
-            $clean = array('method' => 'text');
+            $clean = ['method' => 'text'];
         }
         if (!is_array($clean)) {
-            $clean = array('method' => $options['clean']);
+            $clean = ['method' => $options['clean']];
         }
         switch ($clean['method']) {
             case 'html':
-                $clean = array_merge(array(
+                $clean = array_merge([
                     'word' => '[\w,.]+',
                     'andText' => true,
                     'replacement' => '',
-                ), $clean);
+                ], $clean);
                 $kleenex = sprintf(
                     '/[\s]*[a-z]+=(")(%s%s%s[\s]*)+\\1/i',
                     preg_quote($options['before'], '/'),
@@ -131,17 +131,17 @@ class Str
                 );
                 $str = preg_replace($kleenex, $clean['replacement'], $str);
                 if ($clean['andText']) {
-                    $options['clean'] = array('method' => 'text');
+                    $options['clean'] = ['method' => 'text'];
                     $str = self::cleanInsert($str, $options);
                 }
                 break;
 
             case 'text':
-                $clean = array_merge(array(
+                $clean = array_merge([
                     'word' => '[\w,.]+',
                     'gap' => '[\s]*(?:(?:and|or)[\s]*)?',
                     'replacement' => '',
-                ), $clean);
+                ], $clean);
 
                 $kleenex = sprintf(
                     '/(%s%s%s%s|%s%s%s%s)/',
@@ -175,22 +175,22 @@ class Str
      * @param   array   $options  An array of html attributes and options.
      * @return  string  The highlighted text
      */
-    public static function highlight($text, $phrase, $options = array())
+    public static function highlight($text, $phrase, $options = [])
     {
         if (empty($phrase)) {
             return $text;
         }
 
-        $default = array(
+        $default = [
             'format' => '<span class="highlight">\1</span>',
             'html'   => false,
             'regex'  => "|%s|iu"
-        );
+        ];
         $options = array_merge($default, $options);
 
         if (is_array($phrase)) {
-            $replace = array();
-            $with    = array();
+            $replace = [];
+            $with    = [];
 
             foreach ($phrase as $key => $segment) {
                 $segment = '(' . preg_quote($segment, '|') . ')';
@@ -229,12 +229,12 @@ class Str
      * @param   array    $options  An array of options.
      * @return  string   Trimmed string.
      */
-    public static function tail($text, $length = 100, $options = array())
+    public static function tail($text, $length = 100, $options = [])
     {
-        $default = array(
+        $default = [
             'ellipsis' => '...',
             'exact'    => true
-        );
+        ];
         $options = array_merge($default, $options);
         extract($options);
 
@@ -268,13 +268,13 @@ class Str
      * @param   array    $options  An array of html attributes and options.
      * @return  string   Trimmed string.
      */
-    public static function truncate($text, $length = 100, $options = array())
+    public static function truncate($text, $length = 100, $options = [])
     {
-        $default = array(
+        $default = [
             'ellipsis' => '...',
             'exact'    => false,
             'html'     => false
-        );
+        ];
 
         if (!empty($options['html']) && strtolower(mb_internal_encoding()) === 'utf-8') {
             $default['ellipsis'] = "\xe2\x80\xa6";
@@ -287,9 +287,9 @@ class Str
             $ellipsisLength = mb_strlen(strip_tags($options['ellipsis']));
             $truncateLength = 0;
             $totalLength = 0;
-            $openTags = array();
+            $openTags = [];
             $truncate = '';
-            $htmlNoCount = array('style', 'script');
+            $htmlNoCount = ['style', 'script'];
 
             preg_match_all('/(<\/?([\w+]+)[^>]*>)?([^<>]*)/', $text, $tags, PREG_SET_ORDER);
 
@@ -376,7 +376,7 @@ class Str
     public static function excerpt($text, $phrase, $radius = 100, $ellipsis = '...')
     {
         if (empty($text) || empty($phrase)) {
-            return self::truncate($text, $radius * 2, array('ellipsis' => $ellipsis));
+            return self::truncate($text, $radius * 2, ['ellipsis' => $ellipsis]);
         }
 
         $append = $prepend = $ellipsis;
@@ -559,7 +559,7 @@ class Str
      */
     public static function camel($value)
     {
-        $value = ucwords(str_replace(array('-', '_'), ' ', $value));
+        $value = ucwords(str_replace(['-', '_'], ' ', $value));
 
         return str_replace(' ', '', $value);
     }
@@ -661,8 +661,8 @@ class Str
     public static function parseAttributes($string)
     {
         // Initialise variables.
-        $attr = array();
-        $ret  = array();
+        $attr = [];
+        $ret  = [];
 
         // Let's grab all the key/value pairs using a regular expression
         preg_match_all('/([\w:-]+)[\s]?=[\s]?"([^"]*)"/i', $string, $attr);

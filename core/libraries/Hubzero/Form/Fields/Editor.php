@@ -62,7 +62,7 @@ class Editor extends Field
             $buttons = explode(',', $buttons);
         }
 
-        $hide = ((string) $this->element['hide']) ? explode(',', (string) $this->element['hide']) : array();
+        $hide = ((string) $this->element['hide']) ? explode(',', (string) $this->element['hide']) : [];
 
         // Get an editor object.
         $editor = $this->getEditor();

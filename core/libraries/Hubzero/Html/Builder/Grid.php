@@ -214,10 +214,10 @@ class Grid
      *                           These pairs determine which values are displayed.
      * @return  string  The HTML code for the select tag
      */
-    public static function publishedOptions($config = array())
+    public static function publishedOptions($config = [])
     {
         // Build the active state filter options.
-        $options = array();
+        $options = [];
         if (!array_key_exists('published', $config) || $config['published']) {
             $options[] = Select::option('1', 'JPUBLISHED');
         }
@@ -254,11 +254,11 @@ class Grid
         $archived = null,
         $trashed = null
     ) {
-        $state = array(
+        $state = [
             ''  => '- ' . Lang::txt('JLIB_HTML_SELECT_STATE') . ' -',
             'P' => Lang::txt($published),
             'U' => Lang::txt($unpublished)
-        );
+        ];
 
         if ($archived) {
             $state['A'] = Lang::txt($archived);
@@ -271,11 +271,11 @@ class Grid
         return Select::genericlist(
             $state,
             'filter_state',
-            array(
+            [
                 'list.attr'   => 'class="inputbox filter filter-submit" size="1"',
                 'list.select' => $filter_state,
                 'option.key'  => null
-            )
+            ]
         );
     }
 
@@ -535,16 +535,16 @@ class Grid
             $prefix   = array_key_exists('prefix', $options)   ? $options['prefix']   : '';
         }
 
-        $states = array(
-            1  => array('unpublish',
-                'JPUBLISHED',   'JLIB_HTML_UNPUBLISH_ITEM', 'JPUBLISHED',   false, 'publish',   'publish'),
-            0  => array('publish',
-                'JUNPUBLISHED', 'JLIB_HTML_PUBLISH_ITEM',   'JUNPUBLISHED', false, 'unpublish', 'unpublish'),
-            2  => array('unpublish',
-                'JARCHIVED',    'JLIB_HTML_UNPUBLISH_ITEM', 'JARCHIVED',    false, 'archive',   'archive'),
-            -2 => array('publish',
-                'JTRASHED',     'JLIB_HTML_PUBLISH_ITEM',   'JTRASHED',     false, 'trash',     'trash')
-        );
+        $states = [
+            1  => ['unpublish',
+                'JPUBLISHED',   'JLIB_HTML_UNPUBLISH_ITEM', 'JPUBLISHED',   false, 'publish',   'publish'],
+            0  => ['publish',
+                'JUNPUBLISHED', 'JLIB_HTML_PUBLISH_ITEM',   'JUNPUBLISHED', false, 'unpublish', 'unpublish'],
+            2  => ['unpublish',
+                'JARCHIVED',    'JLIB_HTML_UNPUBLISH_ITEM', 'JARCHIVED',    false, 'archive',   'archive'],
+            -2 => ['publish',
+                'JTRASHED',     'JLIB_HTML_PUBLISH_ITEM',   'JTRASHED',     false, 'trash',     'trash']
+        ];
 
         // Special state for dates
         if ($publish_up || $publish_down) {
@@ -561,7 +561,7 @@ class Grid
                 'UTC'
             ))->setTimeZone($tz) : false;
             // Create tip text, only we have publish up or down settings
-            $tips = array();
+            $tips = [];
             if ($publish_up) {
                 $tips[] = Lang::txt('JLIB_HTML_PUBLISHED_START', $publish_up->format(Date::$format, true));
             }
@@ -594,8 +594,8 @@ class Grid
                     $states[$key][4] = true;
                 }
             }
-            return self::state($states, $value, $i, array('prefix' => $prefix,
-                'translate' => !$tip), $enabled, true, $checkbox);
+            return self::state($states, $value, $i, ['prefix' => $prefix,
+                'translate' => !$tip], $enabled, true, $checkbox);
         }
 
         return self::state($states, $value, $i, $prefix, $enabled, true, $checkbox);
@@ -704,11 +704,11 @@ class Grid
             $prefix   = array_key_exists('prefix', $options)   ? $options['prefix']   : '';
         }
 
-        $states = array(
-            1 => array('unsetDefault',
-                'JDEFAULT', 'JLIB_HTML_UNSETDEFAULT_ITEM', 'JDEFAULT', false, 'default', 'default'),
-            0 => array('setDefault', '', 'JLIB_HTML_SETDEFAULT_ITEM', '', false, 'notdefault', 'notdefault'),
-        );
+        $states = [
+            1 => ['unsetDefault',
+                'JDEFAULT', 'JLIB_HTML_UNSETDEFAULT_ITEM', 'JDEFAULT', false, 'default', 'default'],
+            0 => ['setDefault', '', 'JLIB_HTML_SETDEFAULT_ITEM', '', false, 'notdefault', 'notdefault'],
+        ];
 
         return self::state($states, $value, $i, $prefix, $enabled, true, $checkbox);
     }

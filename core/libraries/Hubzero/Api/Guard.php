@@ -100,7 +100,7 @@ class Guard
      * @param   array  $options  configuration options
      * @return  array
      */
-    public function authenticate($params = array(), $options = array())
+    public function authenticate($params = [], $options = [])
     {
         // Fire before auth event
         Event::trigger('before_auth');
@@ -149,7 +149,7 @@ class Guard
                 $oauthResponse->send();
                 exit();
             }
-        } elseif ($oauthResponse->getParameters('error') != array()) {
+        } elseif ($oauthResponse->getParameters('error') != []) {
             // This request looked like OAuth2 but failed. We respond
             // immediately with an error here because the client was expecting
             // an authenticated response so returning a guest response would
@@ -178,6 +178,6 @@ class Guard
         Event::trigger('after_auth');
 
         // Return the user_id  (null == guest)
-        return array( 'user_id' => $userid ? $userid : null );
+        return [ 'user_id' => $userid ? $userid : null ];
     }
 }

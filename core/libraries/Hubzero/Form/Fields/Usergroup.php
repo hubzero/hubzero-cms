@@ -33,7 +33,7 @@ class Usergroup extends Field
     protected function getInput()
     {
         // Initialize variables.
-        $options = array();
+        $options = [];
         $attr = '';
 
         // Initialize some field attributes.

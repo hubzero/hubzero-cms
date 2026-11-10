@@ -80,9 +80,9 @@ class Handlers extends AdminController
 
         if (!isset($handler) || !is_object($handler)) {
             // Incoming - expecting an array
-            $cid = Request::getArray('id', array(0));
+            $cid = Request::getArray('id', [0]);
             if (!is_array($cid)) {
-                $cid = array($cid);
+                $cid = [$cid];
             }
             $uid = $cid[0];
 
@@ -111,7 +111,7 @@ class Handlers extends AdminController
 
         $rules = [];
         // Set the rule info on the handler
-        foreach (Request::getArray('rules', array(), 'post') as $rule) {
+        foreach (Request::getArray('rules', [], 'post') as $rule) {
             // First check and make sure we don't save a completely empty rule
             if (empty($rule['extension']) && empty($rule['quantity'])) {
                 break;
@@ -184,9 +184,9 @@ class Handlers extends AdminController
         Request::checkToken();
 
         // Incoming (expecting an array)
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
         if (!is_array($ids)) {
-            $ids = array($ids);
+            $ids = [$ids];
         }
 
         // Make sure we have IDs to work with

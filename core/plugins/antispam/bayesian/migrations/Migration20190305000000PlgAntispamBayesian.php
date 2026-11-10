@@ -20,12 +20,12 @@ class Migration20190305000000PlgAntispamBayesian extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__antispam_token_probs' => array(
+    public static $tables = [
+        '#__antispam_token_probs' => [
             'created',
             'modified'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

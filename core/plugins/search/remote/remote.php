@@ -28,7 +28,7 @@ class Remote extends Plugin
     public function sendSolrRequest($results, $method)
     {
         try {
-            $results = !is_array($results) ? array($results) : $results;
+            $results = !is_array($results) ? [$results] : $results;
             foreach ($results as &$result) {
                 $result = SearchComponent::addDomainNameSpace($result);
             }

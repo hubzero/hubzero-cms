@@ -74,7 +74,7 @@ $formAction = Route::url(
 
         <label for="field-color">
             <?php echo Lang::txt('Color:'); ?> <span class="optional"><?php echo Lang::txt('Optional'); ?></span>
-            <?php $colors = array('red','orange','yellow','green','blue','purple','brown'); ?>
+            <?php $colors = ['red','orange','yellow','green','blue','purple','brown']; ?>
             <select name="calendar[color]" id="field-color">
                 <option value=""><?php echo Lang::txt('&mdash; Select Color &mdash;'); ?></option>
                 <?php foreach ($colors as $color) : ?>

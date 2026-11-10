@@ -173,7 +173,7 @@ if ($mark = $this->params->get('onCommentMark')) {
                                     <label for="comment_<?php echo $this->comment->get('id'); ?>_content">
                                         <span class="label-text"><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_ENTER_COMMENTS'); ?></span>
                                         <?php
-                                        echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'form-control minimal no-footer'));
+                                        echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', ['class' => 'form-control minimal no-footer']);
                                         ?>
                                     </label>
                                 </div>
@@ -206,10 +206,10 @@ if ($mark = $this->params->get('onCommentMark')) {
             <?php
             if ($this->depth < $this->params->get('comments_depth', 3)) {
                 $replies = $this->comment->replies()
-                    ->whereIn('state', array(
+                    ->whereIn('state', [
                         Plugins\Hubzero\Comments\Models\Comment::STATE_PUBLISHED,
                         Plugins\Hubzero\Comments\Models\Comment::STATE_FLAGGED
-                    ))
+                    ])
                     ->whereIn('access', User::getAuthorisedViewLevels())
                     ->ordered()
                     ->rows();

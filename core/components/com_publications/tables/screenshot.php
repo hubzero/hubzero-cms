@@ -270,7 +270,7 @@ class Screenshot extends Table
             return false;
         }
 
-        $result = array();
+        $result = [];
         $shots = $this->getScreenshots($versionid);
 
         if ($shots) {

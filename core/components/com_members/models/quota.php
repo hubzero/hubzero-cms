@@ -47,9 +47,9 @@ class Quota extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'user_id'  => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Get parent user
@@ -138,7 +138,7 @@ class Quota extends Relational
 
         if ($records->count() > 0) {
             // Build an array of ids
-            $ids = array();
+            $ids = [];
 
             foreach ($records as $record) {
                 // Update their class id, and their actual quota will be
@@ -172,7 +172,7 @@ class Quota extends Relational
             // updated the next time they log in.
             $result = $model->getQuery()
                 ->update($model->getTableName())
-                ->set(array('class_id' => (int)$deflt->get('id')))
+                ->set(['class_id' => (int)$deflt->get('id')])
                 ->whereIn('id', $users)
                 ->execute();
 

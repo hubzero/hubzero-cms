@@ -80,7 +80,7 @@ class Htmx extends Scaffolding
             $this->ensureDirectory(dirname($testPath));
         }
 
-        $targets = array($controllerPath, $defaultViewPath, $fragmentViewPath);
+        $targets = [$controllerPath, $defaultViewPath, $fragmentViewPath];
         if ($withTest) {
             $targets[] = $testPath;
         }

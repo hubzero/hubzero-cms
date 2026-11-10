@@ -47,39 +47,39 @@ class Version extends Relational implements \Hubzero\Search\Searchable
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'publication_id' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'modified',
         'modified_by'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Fields that have content that can/should be parsed
      *
      * @var  array
      **/
-    protected $parsed = array(
+    protected $parsed = [
         'notes',
         'description'
-    );
+    ];
 
     public function transformStatusName()
     {
@@ -592,7 +592,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
      */
     public function transformMetadata()
     {
-        $data = array();
+        $data = [];
 
         preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->get('metadata', ''), $matches, PREG_SET_ORDER);
 
@@ -725,10 +725,10 @@ class Version extends Relational implements \Hubzero\Search\Searchable
 
         $cloud = new \Components\Tags\Models\Cloud();
 
-        $filters = array(
+        $filters = [
             'scope'    => 'publications',
             'scope_id' => $this->id
-        );
+        ];
 
         return $cloud->tags('list', $filters);
     }
@@ -780,25 +780,25 @@ class Version extends Relational implements \Hubzero\Search\Searchable
 
         $tags = $this->tags();
         if (count($tags) > 0) {
-            $obj->tags = array();
+            $obj->tags = [];
             foreach ($tags as $tag) {
                 $title = $tag->get('raw_tag', '');
                 $description = $tag->get('tag', '');
                 $label = $tag->get('label', '');
-                $obj->tags[] = array(
+                $obj->tags[] = [
                     'id' => 'tag-' . $tag->id,
                     'title' => $title,
                     'description' => $description,
                     'access_level' => $tag->admin == 0 ? 'public' : 'private',
                     'type' => 'publication-tag',
                     'badge_b' => $label == 'badge' ? true : false
-                );
+                ];
             }
         } else {
-            $obj->tags[] = array(
+            $obj->tags[] = [
                 'id' => '',
                 'title' => ''
-            );
+            ];
         }
 
         $authors = $this->authors;

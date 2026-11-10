@@ -201,7 +201,7 @@ $this->view('_submenu')
                     if ($row->meta) {
                         if (array_key_exists('userInfo', $row->meta) && $row->meta['userInfo']) {
                             $meta = unserialize($row->meta['userInfo']['mtValue']);
-                            $data = array();
+                            $data = [];
                             foreach ($meta as $mtK => $mtV) {
                                 if (is_array($mtV)) {
                                     $mtV = implode('; ', $mtV);

@@ -73,12 +73,12 @@ class Item extends Base
      *
      * @var array
      */
-    private $_cache = array(
+    private $_cache = [
         'comments.count'    => null,
         'comments.list'     => null,
         'collections.count' => null,
         'collections.list'  => null
-    );
+    ];
 
     /**
      * Constructor
@@ -117,7 +117,7 @@ class Item extends Base
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         if (is_numeric($oid) || is_string($oid)) {
@@ -220,7 +220,7 @@ class Item extends Base
      * @param   boolean $clear   Clear cached data?
      * @return  mixed
      */
-    public function comments($what = 'list', $filters = array(), $clear = false)
+    public function comments($what = 'list', $filters = [], $clear = false)
     {
         if (!isset($filters['item_id'])) {
             $filters['item_id'] = $this->get('id');
@@ -229,7 +229,7 @@ class Item extends Base
             $filters['item_type'] = 'collection';
         }
         if (!isset($filters['state'])) {
-            $filters['state'] = array(1, 3);
+            $filters['state'] = [1, 3];
         }
 
         switch (strtolower(trim($what))) {
@@ -272,7 +272,7 @@ class Item extends Base
      * @param   boolean  $clear    Reset internal cahce?
      * @return  mixed
      */
-    public function assets($filters = array(), $reset = false)
+    public function assets($filters = [], $reset = false)
     {
         if (!($this->_assets instanceof ItemList) || $reset) {
             $tbl = new Tables\Asset($this->_db);
@@ -286,7 +286,7 @@ class Item extends Base
                     $results[$key] = new Asset($result);
                 }
             } else {
-                $results = array();
+                $results = [];
             }
 
             $this->_assets = new ItemList($results);
@@ -303,7 +303,7 @@ class Item extends Base
     public function addAsset($asset = null)
     {
         if (!isset($this->_assets) || !($this->_assets instanceof ItemList)) {
-            $this->_assets = new ItemList(array());
+            $this->_assets = new ItemList([]);
         }
         if ($asset) {
             if (!($asset instanceof Asset)) {
@@ -365,7 +365,7 @@ class Item extends Base
         if (!$this->exists()) {
             switch (strtolower($as)) {
                 case 'array':
-                    return array();
+                    return [];
                 break;
 
                 case 'string':
@@ -381,7 +381,7 @@ class Item extends Base
             $this->_tags = new Tags($this->get('id'));
         }
 
-        return $this->_tags->render($as, array('admin' => $admin));
+        return $this->_tags->render($as, ['admin' => $admin]);
     }
 
     /**
@@ -523,7 +523,7 @@ class Item extends Base
                 }
             }
 
-            $descriptions = $this->get('_descriptions', array());
+            $descriptions = $this->get('_descriptions', []);
 
             if (isset($files['name'])) {
                 foreach ($files['name'] as $i => $file) {
@@ -554,7 +554,7 @@ class Item extends Base
             }
         }
 
-        $trashed = $this->assets(array('state' => self::APP_STATE_DELETED));
+        $trashed = $this->assets(['state' => self::APP_STATE_DELETED]);
         if ($trashed->total() > 0) {
             foreach ($trashed as $trash) {
                 if ($trash->get('filename') == 'http://') {
@@ -581,27 +581,27 @@ class Item extends Base
     public function description($as = 'parsed', $shorten = 0)
     {
         $as = strtolower($as);
-        $options = array();
+        $options = [];
 
         switch ($as) {
             case 'parsed':
                 $content = $this->get('description.parsed', null);
                 if ($content === null) {
-                    $config = array(
+                    $config = [
                         'option'   => $this->get('option', Request::getCmd('option', 'com_collections')),
                         'scope'    => 'collections',
                         'pagename' => 'collections',
                         'pageid'   => 0,
                         'filepath' => '',
                         'domain'   => ''//'collection'
-                    );
+                    ];
 
                     $content = stripslashes((string) $this->get('description', ''));
-                    $this->importPlugin('content')->trigger('onContentPrepare', array(
+                    $this->importPlugin('content')->trigger('onContentPrepare', [
                         $this->_context,
                         &$this,
                         &$config
-                    ));
+                    ]);
 
                     $this->set('description.parsed', (string) $this->get('description', ''));
                     $this->set('description', $content);
@@ -683,7 +683,7 @@ class Item extends Base
             }
         }
 
-        if (!in_array($type, array('publication', 'collection', 'deleted', 'image', 'file', 'text', 'link'))) {
+        if (!in_array($type, ['publication', 'collection', 'deleted', 'image', 'file', 'text', 'link'])) {
             $type = 'link';
         }
         return $type;
@@ -697,7 +697,7 @@ class Item extends Base
      * @param   boolean $clear   Clear cached results?
      * @return  mixed
      */
-    public function collections($what = 'list', $filters = array(), $clear = false)
+    public function collections($what = 'list', $filters = [], $clear = false)
     {
         if (!isset($filters['item_id'])) {
             $filters['item_id'] = $this->get('id');
@@ -706,7 +706,7 @@ class Item extends Base
             $filters['state'] = self::APP_STATE_PUBLISHED;
         }
         if (!isset($filters['access'])) {
-            $filters['access'] = (!User::isGuest() ? array(0, 1) : 0);
+            $filters['access'] = (!User::isGuest() ? [0, 1] : 0);
         }
 
         switch (strtolower($what)) {
@@ -729,7 +729,7 @@ class Item extends Base
                             $results[$key] = new Collection($result);
                         }
                     } else {
-                        $results = array();
+                        $results = [];
                     }
                     $this->_cache['collections.list'] = new ItemList($results);
                 }
@@ -881,16 +881,16 @@ class Item extends Base
      */
     public function layout($dir, $prefix)
     {
-        static $cache = array();
+        static $cache = [];
 
         $key = $dir . '|' . $prefix;
 
         if (!isset($cache[$key])) {
-            $found = array();
+            $found = [];
 
             // glob() returns false on error, and (array) false is array(false),
             // not an empty array -- so normalise explicitly.
-            foreach ((glob($dir . DS . $prefix . '*.php') ?: array()) as $file) {
+            foreach ((glob($dir . DS . $prefix . '*.php') ?: []) as $file) {
                 $found[] = substr(basename($file, '.php'), strlen($prefix));
             }
 
@@ -915,7 +915,7 @@ class Item extends Base
 
         // Closest equivalent that does exist: an image carries assets exactly as
         // a file does, and a publication is reached by its url, like a link.
-        $nearest = array('image' => 'file', 'publication' => 'link');
+        $nearest = ['image' => 'file', 'publication' => 'link'];
 
         if (isset($nearest[$type]) && in_array($nearest[$type], $available, true)) {
             return $nearest[$type];

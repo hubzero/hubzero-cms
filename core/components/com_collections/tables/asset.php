@@ -55,7 +55,7 @@ class Asset extends Table
         $this->description = trim($this->description ? $this->description : '');
 
         $this->type = strtolower(trim($this->type));
-        if (!in_array($this->type, array('file', 'link'))) {
+        if (!in_array($this->type, ['file', 'link'])) {
             $this->type = 'file';
         }
 
@@ -90,10 +90,10 @@ class Asset extends Table
             return parent::load($oid);
         }
 
-        $fields = array(
+        $fields = [
             'item_id'  => (int) $item_id,
             'filename' => (string) $oid
-        );
+        ];
 
         return parent::load($fields);
     }
@@ -106,7 +106,7 @@ class Asset extends Table
      * @param   array   $filters
      * @return  mixed
      */
-    public function find($what = '', $filters = array())
+    public function find($what = '', $filters = [])
     {
         $what = strtolower(trim($what));
 
@@ -180,12 +180,12 @@ class Asset extends Table
      * @return  string  SQL
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildQuery($filters = array())
+    protected function _buildQuery($filters = [])
     {
         $query  = " FROM $this->_tbl AS a";
         $query .= " LEFT JOIN #__users AS u ON a.created_by=u.id";
 
-        $where = array();
+        $where = [];
 
         if (isset($filters['item_id'])) {
             if (is_array($filters['item_id'])) {
@@ -225,7 +225,7 @@ class Asset extends Table
      * @param   array    $filters  Filters to construct query from
      * @return  integer
      */
-    public function getCount($filters = array())
+    public function getCount($filters = [])
     {
         return $this->find('count', $filters);
     }
@@ -236,7 +236,7 @@ class Asset extends Table
      * @param   array  $filters  Filters to construct query from
      * @return  array
      */
-    public function getRecords($filters = array())
+    public function getRecords($filters = [])
     {
         return $this->find('list', $filters);
     }

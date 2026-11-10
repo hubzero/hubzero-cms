@@ -24,7 +24,7 @@ class Truncate extends AbstractHelper
      * @return  string
      * @throws  \InvalidArgumentException If no text is passed or length isn't a positive integer
      */
-    public function __invoke($text = null, $length = null, $options = array())
+    public function __invoke($text = null, $length = null, $options = [])
     {
         if (null === $text) {
             throw new \InvalidArgumentException(__METHOD__ . '(); No text passed.');

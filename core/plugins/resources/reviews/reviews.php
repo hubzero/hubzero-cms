@@ -52,7 +52,7 @@ class Reviews extends Plugin
      */
     public function &onResourcesAreas($model)
     {
-        $areas = array();
+        $areas = [];
 
         if ($model->type->params->get('plg_reviews') && $model->access('view-all')) {
             $areas['reviews'] = Lang::txt('PLG_RESOURCES_REVIEWS');
@@ -71,11 +71,11 @@ class Reviews extends Plugin
     {
         $id = Request::getInt('rid', 0);
 
-        $arr = array(
+        $arr = [
             'area'     => $this->_name,
             'html'     => '',
             'metadata' => ''
-        );
+        ];
 
         $resource = \Components\Resources\Models\Entry::oneOrFail($id);
 
@@ -99,11 +99,11 @@ class Reviews extends Plugin
      */
     public function onResources($model, $option, $areas, $rtrn = 'all')
     {
-        $arr = array(
+        $arr = [
             'area'     => $this->_name,
             'html'     => '',
             'metadata' => ''
-        );
+        ];
 
         // Check if our area is in the array of areas we want to return results for
         if (is_array($areas)) {
@@ -123,7 +123,7 @@ class Reviews extends Plugin
             $rtrn = '';
         }
 
-        $authors = array();
+        $authors = [];
         foreach ($model->contributors() as $con) {
             $authors[] = $con->authorid;
         }
@@ -140,10 +140,10 @@ class Reviews extends Plugin
         // Get reviews for this resource
         $reviews = \Components\Resources\Models\Review::all()
             ->whereEquals('resource_id', $model->get('id'))
-            ->whereIn('state', array(
+            ->whereIn('state', [
                 \Components\Resources\Models\Review::STATE_PUBLISHED,
                 \Components\Resources\Models\Review::STATE_FLAGGED
-            ))
+            ])
             ->ordered()
             ->rows();
 

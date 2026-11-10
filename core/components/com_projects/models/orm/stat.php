@@ -45,18 +45,18 @@ class Stat extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'stats' => 'notempty'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'processed'
-    );
+    ];
 
     /**
      * Generates automatic priority field value

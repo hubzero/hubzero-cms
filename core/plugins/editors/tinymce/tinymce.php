@@ -44,7 +44,7 @@ class Tinymce extends Plugin
     public function onInit()
     {
         $mode  = (int) $this->params->get('mode', 1);
-        $theme = array('simple', 'advanced', 'advanced');
+        $theme = ['simple', 'advanced', 'advanced'];
         $skin  = $this->params->get('skin', '0');
 
         switch ($skin) {
@@ -175,11 +175,11 @@ class Tinymce extends Plugin
             $element_path = 'theme_advanced_statusbar_location : "none", theme_advanced_path : false';
         }
 
-        $buttons1_add_before = $buttons1_add = array();
-        $buttons2_add_before = $buttons2_add = array();
-        $buttons3_add_before = $buttons3_add = array();
-        $buttons4 = array();
-        $plugins  = array();
+        $buttons1_add_before = $buttons1_add = [];
+        $buttons2_add_before = $buttons2_add = [];
+        $buttons3_add_before = $buttons3_add = [];
+        $buttons4 = [];
+        $plugins  = [];
 
         if ($extended_elements != "") {
             $elements   = explode(',', $extended_elements);

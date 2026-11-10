@@ -276,7 +276,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
      * @param   mixed    $options  Options used by the formatter
      * @return  boolean  True on success
      */
-    public function write($file, $format = 'json', $options = array())
+    public function write($file, $format = 'json', $options = [])
     {
         return file_put_contents($file, $this->processor($format)->objectToString($this->data, $options));
     }
@@ -289,7 +289,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
      * @param   mixed    $options  Options used by the formatter
      * @return  boolean  True on success
      */
-    public function parse($data, $format = '', $options = array())
+    public function parse($data, $format = '', $options = [])
     {
         if (is_array($data) || is_object($data)) {
             $this->bind($this->data, $data);
@@ -376,7 +376,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
      * @param   mixed   $options  Parameters used by the formatter, see formatters for more info
      * @return  string  Namespace in string format
      */
-    public function toString($format = 'json', $options = array())
+    public function toString($format = 'json', $options = [])
     {
         return $this->processor($format)->objectToString($this->data, $options);
     }
@@ -427,7 +427,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
             // array counted as associative and came back as an empty object -
             // [] to {} on every round trip, and a TypeError for anything that
             // then did in_array() or count() on it.
-            if ($recursive && ((is_array($v) && $v !== array() && array_keys($v) !== range(0, count($v) - 1)) || is_object($v))) {
+            if ($recursive && ((is_array($v) && $v !== [] && array_keys($v) !== range(0, count($v) - 1)) || is_object($v))) {
                 if (!isset($parent->$k) || !is_object($parent->$k)) {
                     $parent->$k = new stdClass();
                 }
@@ -448,7 +448,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
      */
     protected function asArray($data)
     {
-        $array = array();
+        $array = [];
 
         if (is_object($data)) {
             $data = get_object_vars($data);
@@ -490,7 +490,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
      */
     public function flatten($separator = null)
     {
-        $array = array();
+        $array = [];
 
         $this->toFlatten($separator, $this->data, $array);
 
@@ -506,7 +506,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
      * @param   string        $prefix     Last level key prefix.
      * @return  void
      */
-    protected function toFlatten($separator = null, $data = null, &$array = array(), $prefix = '')
+    protected function toFlatten($separator = null, $data = null, &$array = [], $prefix = '')
     {
         $data = (array) $data;
 

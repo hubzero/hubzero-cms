@@ -107,29 +107,29 @@ class Wish extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'subject'    => 'notempty',
         'wishlist'  => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'proposed',
         'proposed_by'
-    );
+    ];
 
     /**
      * Fields to be parsed
      *
      * @var  array
      */
-    protected $parsed = array(
+    protected $parsed = [
         'about'
-    );
+    ];
 
     /**
      * Component configuration
@@ -549,8 +549,8 @@ class Wish extends Relational
         }
 
         $string = str_replace(
-            array('&amp;', '&lt;',  '&gt;'),
-            array('&#38;', '&#60;', '&#62;'),
+            ['&amp;', '&lt;',  '&gt;'],
+            ['&#38;', '&#60;', '&#62;'],
             $this->get('about')
         );
         $this->set('about', \Hubzero\Utility\Sanitize::clean($string));
@@ -619,7 +619,7 @@ class Wish extends Relational
         if (!$this->get('id')) {
             switch (strtolower($what)) {
                 case 'array':
-                    return array();
+                    return [];
                 break;
 
                 case 'string':
@@ -633,7 +633,7 @@ class Wish extends Relational
 
         $cloud = new Tags($this->get('id'));
 
-        return $cloud->render($what, array('admin' => $admin));
+        return $cloud->render($what, ['admin' => $admin]);
     }
 
     /**
@@ -663,14 +663,14 @@ class Wish extends Relational
         $property = "_{$field}Parsed";
 
         if (!isset($this->$property)) {
-            $params = array(
+            $params = [
                 'option'   => 'com_wishlist',
                 'scope'    => 'wishlist',
                 'pagename' => 'wishlist',
                 'pageid'   => $this->get('id'),
                 'filepath' => '',
                 'domain'   => $this->get('wishlist')
-            );
+            ];
 
             $this->$property = Html::content('prepare', $this->get($field, ''), $params);
         }
@@ -689,13 +689,13 @@ class Wish extends Relational
     {
         $rank = Rank::oneByUserAndWish(User::get('id'), $this->get('id'));
 
-        $rank->set(array(
+        $rank->set([
             'wishid'     => $this->get('id'),
             'userid'     => User::get('id'),
             'voted'      => Date::toSql(),
             'importance' => $importance,
             'effort'     => $effort
-        ));
+        ]);
 
         if (!$rank->save()) {
             $this->addError($rank->getError());
@@ -735,14 +735,14 @@ class Wish extends Relational
         }
 
         // Create a new entry
-        $voted->set(array(
+        $voted->set([
             'referenceid' => $this->get('id'),
             'category'    => 'wish',
             'voter'       => User::get('id'),
             'ip'          => Request::ip(),
             'voted'       => Date::toSql(),
             'helpful'     => $vote
-        ));
+        ]);
 
         if (!$voted->save()) {
             $this->addError($voted->getError());
@@ -793,7 +793,7 @@ class Wish extends Relational
                 break;
             case 'plan':
                 $plan = $this->plan;
-                $rows = ($plan && $plan->get('id')) ? array($plan) : array();
+                $rows = ($plan && $plan->get('id')) ? [$plan] : [];
                 break;
             default:
                 return false;

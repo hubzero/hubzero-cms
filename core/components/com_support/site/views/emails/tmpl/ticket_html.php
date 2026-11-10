@@ -49,7 +49,7 @@ switch ($this->ticket->get('severity')) {
 
 $usertype = Lang::txt('COM_SUPPORT_UNKNOWN');
 if ($this->ticket->submitter()->get('id')) {
-    $gids = array();
+    $gids = [];
     foreach (User::getInstance($this->ticket->submitter->get('id'))->accessgroups() as $g) {
         $gids[] = $g->group_id;
     }

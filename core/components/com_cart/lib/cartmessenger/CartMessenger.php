@@ -193,14 +193,14 @@ class CartMessenger
 
 
         // Check the notes, both SKU-specific and other
-        $notes = array();
+        $notes = [];
         foreach ($transactionItems as $item) {
             $meta = $item['transactionInfo']->tiMeta;
             if (isset($meta->checkoutNotes) && $meta->checkoutNotes) {
-                $notes[] = array(
+                $notes[] = [
                     'label' => $item['info']->pName . ', ' . $item['info']->sSku,
                     'notes' => $meta->checkoutNotes
-                );
+                ];
             }
         }
 
@@ -210,9 +210,9 @@ class CartMessenger
         }
 
         if ($transactionInfo->tiNotes) {
-            $notes[] = array(
+            $notes[] = [
                 'label' => $genericNotesLabel,
-                'notes' => $transactionInfo->tiNotes);
+                'notes' => $transactionInfo->tiNotes];
         }
 
         if (!empty($notes)) {
@@ -235,9 +235,9 @@ class CartMessenger
         $warehouse = new \Components\Storefront\Models\Warehouse();
 
         foreach ($items as $k => $item) {
-            $itemInfo = (isset($item['info']) ? $item['info'] : array());
-            $cartInfo = (isset($item['cartInfo']) ? $item['cartInfo'] : array());
-            $itemMeta = (isset($item['meta']) ? $item['meta'] : array());
+            $itemInfo = (isset($item['info']) ? $item['info'] : []);
+            $cartInfo = (isset($item['cartInfo']) ? $item['cartInfo'] : []);
+            $itemMeta = (isset($item['meta']) ? $item['meta'] : []);
 
             $productType = $warehouse->getProductTypeInfo($itemInfo->ptId)['ptName'];
 
@@ -325,7 +325,7 @@ class CartMessenger
         }
 
         // "from" info
-        $from = array();
+        $from = [];
         $from['name']  = Config::get('sitename');
         $from['email'] = Config::get('mailfrom');
 
@@ -393,10 +393,10 @@ class CartMessenger
                 $lowInventoryNotifyEmail .= $lowInventoryNotifySummary;
 
                 // Plain text email
-                $eview = new \Hubzero\Component\View(array(
+                $eview = new \Hubzero\Component\View([
                     'name' => 'emails',
                     'layout' => 'order_notify'
-                ));
+                ]);
                 $eview->message = $lowInventoryNotifySummary;
 
                 $plain = $lowInventoryNotifySummary;
@@ -435,13 +435,13 @@ class CartMessenger
         $params = Component::params(Request::getCmd('option'));
 
         // "from" info
-        $from = array();
+        $from = [];
 
         $from['name']  = Config::get('sitename');
         $from['email'] = Config::get('mailfrom');
 
         // get admin id
-        $adminId = array($params->get('storeAdminId'));
+        $adminId = [$params->get('storeAdminId')];
 
         $mailMessage = Date::getRoot() . "\n";
 
@@ -467,7 +467,7 @@ class CartMessenger
         // Send emails
         Event::trigger(
             'xmessage.onSendMessage',
-            array('store_notifications', $mailSubject, $mailMessage, $from, $adminId, '', null, '', 0, true)
+            ['store_notifications', $mailSubject, $mailMessage, $from, $adminId, '', null, '', 0, true]
         );
     }
 }

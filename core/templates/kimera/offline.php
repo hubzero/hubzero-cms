@@ -14,12 +14,12 @@ defined('_HZEXEC_') or die();
 
 // Get browser info to set some classes
 $browser = new \Hubzero\Browser\Detector();
-$cls = array(
+$cls = [
     'no-js',
     $browser->name(),
     $browser->name() . $browser->major(),
     $this->direction
-);
+];
 
 $this->setTitle(Config::get('sitename') . ' - ' . Lang::txt('TPL_KIMERA_OFFLINE'));
 ?>

@@ -173,35 +173,35 @@ $this->css('usage', 'com_usage');
         if ($this->andmore_stats) {
             $cls = 'even';
             $count = 0;
-            $total = array(
+            $total = [
                 'usercount12' => 0,
                 'usercount14' => 0,
                 'citations'   => 0
-            );
+            ];
 
             $serials = (array)PlgMembersUsage::getSerialResourceTypes();
 
             // First pass
             // See if any of the resource types are lists of other resources
-            $children = array();
+            $children = [];
             foreach ($this->andmore_stats as $row) {
                 if (in_array($row->type_id, $serials)) {
                     $children[$row->id] = (array)PlgMembersUsage::getSerialResourceChildren($row->id);
                 } else {
-                    $children[$row->id] = array();
+                    $children[$row->id] = [];
                 }
             }
 
             // Second pass
-            $andmore = array(
-                0 => array()
-            );
+            $andmore = [
+                0 => []
+            ];
             foreach ($this->andmore_stats as $row) {
                 $hasParent = false;
                 foreach ($children as $parent => $childs) {
                     if (in_array($row->id, $childs)) {
                         if (!isset($andmore[$parent])) {
-                            $andmore[$parent] = array();
+                            $andmore[$parent] = [];
                         }
                         $andmore[$parent][] = $row;
                         $hasParent = true;

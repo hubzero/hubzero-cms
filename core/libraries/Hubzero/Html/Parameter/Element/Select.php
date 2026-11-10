@@ -34,7 +34,7 @@ class Select extends Element
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getOptions(&$node)
     {
-        $options = array();
+        $options = [];
         foreach ($node->children() as $option) {
             $val  = $option['value'];
             $text = (string) $option;
@@ -73,11 +73,11 @@ class Select extends Element
         return Builder\Select::genericlist(
             $this->_getOptions($node),
             $ctrl,
-            array(
+            [
                 'id' => $control_name . $name,
                 'list.attr' => $attribs,
                 'list.select' => $value
-            )
+            ]
         );
     }
 }

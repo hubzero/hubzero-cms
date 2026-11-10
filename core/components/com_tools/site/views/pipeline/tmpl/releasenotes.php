@@ -19,14 +19,14 @@ $newstate         = ($this->action == 'confirm') ? 'Approved' :  $this->status['
 //$this->statuspath = Route::url('index.php?option=' . $this->option
 //  . '&controller=' . $this->controller . '&task=status&app='.$this->status['toolid']);
 
-$codeChoices = array(
+$codeChoices = [
     '@OPEN' => 'open source (anyone can access code)',
     '@DEV'  => 'closed code'
-);
+];
 
-$licenseChoices = array(
+$licenseChoices = [
     'c1' => Lang::txt('Load a standard license')
-);
+];
 if ($this->licenses) {
     foreach ($this->licenses as $l) {
         if ($l->name != 'default') {

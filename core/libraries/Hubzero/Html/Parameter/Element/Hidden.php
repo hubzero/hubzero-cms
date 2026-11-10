@@ -38,7 +38,7 @@ class Hidden extends Element
         $class = (string) $node['class'];
         $class = $class ?: 'text_area';
 
-        return Input::hidden($name, $value, array('class' => $class));
+        return Input::hidden($name, $value, ['class' => $class]);
     }
 
     /**

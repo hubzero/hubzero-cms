@@ -17,12 +17,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$filters = array(
+$filters = [
     'members'  => Lang::txt('PLG_GROUPS_MEMBERS'),
     'managers' => Lang::txt('PLG_GROUPS_MEMBERS_MANAGERS'),
     'pending'  => Lang::txt('PLG_GROUPS_MEMBERS_PENDING'),
     'invitees' => Lang::txt('PLG_GROUPS_MEMBERS_INVITEES')
-);
+];
 
 if ($this->filter == '') {
     $this->filter = 'members';
@@ -191,10 +191,10 @@ $option = 'com_groups';
                         <?php
                         if ($this->groupusers) {
                             // get all sessions
-                            $sessions = Hubzero\Session\Helper::getAllSessions(array(
+                            $sessions = Hubzero\Session\Helper::getAllSessions([
                                 'guest'    => 0,
                                 'distinct' => 1
-                            ));
+                            ]);
 
                             // Loop through the results
                             $html = '';

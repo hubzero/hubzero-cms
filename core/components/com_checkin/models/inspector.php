@@ -61,7 +61,7 @@ class Inspector extends Obj
      * @param   array  $config  An array of configuration options
      * @return  void
      */
-    public function __construct($config = array())
+    public function __construct($config = [])
     {
         parent::__construct();
 
@@ -122,7 +122,7 @@ class Inspector extends Obj
                 'filter_order',
                 'table'
             );
-            if (!in_array($value, array('table', 'count'))) {
+            if (!in_array($value, ['table', 'count'])) {
                 $value = 'table';
             }
             $this->state->set('list.ordering', $value);
@@ -133,7 +133,7 @@ class Inspector extends Obj
                 'filter_order_Dir',
                 'asc'
             );
-            if (!in_array(strtoupper($value), array('ASC', 'DESC', ''))) {
+            if (!in_array(strtoupper($value), ['ASC', 'DESC', ''])) {
                 $value = 'asc';
             }
             $this->state->set('list.direction', $value);
@@ -151,7 +151,7 @@ class Inspector extends Obj
      * @param   array    $ids  An array of table names. Optional.
      * @return  integer  Checked in item count
      */
-    public function checkin($ids = array())
+    public function checkin($ids = [])
     {
         // This int will hold the checked item count
         $results = 0;
@@ -174,10 +174,10 @@ class Inspector extends Obj
                 continue;
             }
 
-            $values = array(
+            $values = [
                 'checked_out' => 0,
                 'checked_out_time' => $fields['checked_out_time']->Default
-            );
+            ];
 
             // There was a branch here that blanked an `editor` column alongside
             // the check-in. It tested $fields[$tn]['editor'] - the column list
@@ -224,7 +224,7 @@ class Inspector extends Obj
             $tables = $db->getTableList();
 
             // this array will hold table name as key and checked in item count as value
-            $results = array();
+            $results = [];
 
             foreach ($tables as $i => $tn) {
                 // make sure we get the right tables based on prefix

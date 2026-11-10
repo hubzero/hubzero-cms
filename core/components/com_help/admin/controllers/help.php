@@ -93,8 +93,8 @@ class Help extends AdminController
         $lang   = Lang::getRoot();
         $db     = App::get('db');
         $query  = $db->getQuery();
-        $result = array();
-        $langs  = array();
+        $result = [];
+        $langs  = [];
 
         // Prepare the query.
         $query->select('id, title, alias, link, parent_id, img, element');
@@ -124,7 +124,7 @@ class Help extends AdminController
                     // Root level.
                     $result[$component->id] = $component;
                     if (!isset($result[$component->id]->submenu)) {
-                        $result[$component->id]->submenu = array();
+                        $result[$component->id]->submenu = [];
                     }
 
                     // If the root menu link is empty, add it in.
@@ -181,14 +181,14 @@ class Help extends AdminController
 
         // Make sure we have a component
         if ($name == '') {
-            return array();
+            return [];
         }
 
         // Path to help pages
         $path  = Component::path($component) . DS . 'admin' . DS . 'help' . DS . Lang::getTag();
 
         // Make sure directory exists
-        $pages = array();
+        $pages = [];
 
         // Get help pages for this component
         $pages = Filesystem::files($path, '.phtml');
@@ -197,11 +197,11 @@ class Help extends AdminController
         }, $pages);
 
         // Return pages
-        return array(
+        return [
             'name'   => $name,
             'option' => $component,
             'pages'  => $pages
-        );
+        ];
     }
 
     /**

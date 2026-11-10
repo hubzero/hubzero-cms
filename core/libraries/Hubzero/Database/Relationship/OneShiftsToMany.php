@@ -86,7 +86,7 @@ class OneShiftsToMany extends OneToMany
         $this->applyDefaultConditions($this->related);
 
         if (isset($constraint)) {
-            call_user_func_array($constraint, array($this->related));
+            call_user_func_array($constraint, [$this->related]);
         }
 
         return $this->related

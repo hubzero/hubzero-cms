@@ -16,25 +16,25 @@ defined('_HZEXEC_') or die();
 
 $this->css();
 
-$this->tagstring = str_replace(array('%20', ' ', '+'), ',', $this->tagstring);
+$this->tagstring = str_replace(['%20', ' ', '+'], ',', $this->tagstring);
 
 $name  = Lang::txt('COM_TAGS_ALL_CATEGORIES');
 $total = $this->total;
 $here  = 'index.php?option=' . $this->option . '&tag=' . $this->tagstring . ($this->filters['sort'] ? '&sort=' . $this->filters['sort'] : '');
 
 // Add the "all" category
-$all = array(
+$all = [
     'name'    => '',
     'title'   => Lang::txt('COM_TAGS_ALL_CATEGORIES'),
     'total'   => $this->total,
     'results' => null,
     'sql'     => ''
-);
+];
 $cats = $this->categories;
 array_unshift($cats, $all);
 
 // An array for storing all the links we make
-$links = array();
+$links = [];
 
 // Loop through each category
 foreach ($cats as $cat) {
@@ -69,7 +69,7 @@ foreach ($cats as $cat) {
     // Are there sub-categories?
     if (isset($cat['children']) && is_array($cat['children'])) {
         // An array for storing the HTML we make
-        $k = array();
+        $k = [];
         // Loop through each sub-category
         foreach ($cat['children'] as $subcat) {
             // Only show sub-categories that returned search results
@@ -178,7 +178,7 @@ foreach ($cats as $cat) {
                             $obj = 'Plugins\\Tags\\' . $section . '\\' . $section;
 
                             if (method_exists($obj, 'out')) {
-                                $html .= call_user_func(array($obj, 'out'), $row);
+                                $html .= call_user_func([$obj, 'out'], $row);
                             } else {
                                 // @todo accommodate scope (aka) group citations
                                 if (strstr($row->href, 'index.php')) {

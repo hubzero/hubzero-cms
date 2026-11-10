@@ -22,7 +22,7 @@ class XCache extends None
      * @param   array  $options
      * @return  void
      */
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
         parent::__construct($options);
 
@@ -158,7 +158,7 @@ class XCache extends None
 
         $allinfo = xcache_list(XC_TYPE_VAR, 0);
 
-        $data = array();
+        $data = [];
 
         foreach ($allinfo['cache_list'] as $key) {
             $namearr = explode('-', $key['name']);

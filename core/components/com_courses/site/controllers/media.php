@@ -64,7 +64,7 @@ class Media extends SiteController
 
         // Are we creating a new tracking record
         if ($trackingInformation->isNew()) {
-            $trackingInformation->set(array(
+            $trackingInformation->set([
                 'user_id'                     => User::get('id'),
                 'session_id'                  => $session->getId(),
                 'ip_address'                  => $ipAddress,
@@ -78,7 +78,7 @@ class Media extends SiteController
                 'completed'                   => 0,
                 'total_views'                 => 1,
                 'total_viewing_time'          => 0
-            ));
+            ]);
         } else {
             // Get the amount of video watched from last tracking event
             $time_viewed = (int)$time - (int)$trackingInformation->get('current_position');
@@ -117,7 +117,7 @@ class Media extends SiteController
 
         // Save detailed tracking info
         if ($event == 'start' || $trackingInformationDetailed->isNew()) {
-            $trackingInformationDetailed->set(array(
+            $trackingInformationDetailed->set([
                 'user_id'                     => User::get('id'),
                 'session_id'                  => $session->getId(),
                 'ip_address'                  => $ipAddress,
@@ -129,7 +129,7 @@ class Media extends SiteController
                 'current_position_timestamp'  => Date::toSql(),
                 'farthest_position_timestamp' => Date::toSql(),
                 'completed'                   => 0
-            ));
+            ]);
         } else {
             // Set the new current position
             $trackingInformationDetailed->set('current_position', $time);
@@ -191,7 +191,7 @@ class Media extends SiteController
         }
 
         // Incoming file
-        $file = Request::getArray('upload', array(), 'files');
+        $file = Request::getArray('upload', [], 'files');
         if (empty($file) || !$file['name']) {
             Notify::error(Lang::txt('COURSES_NO_FILE'), 'courses');
             return $this->displayTask();
@@ -239,7 +239,7 @@ class Media extends SiteController
         $ext = Filesystem::extension($file['name']);
 
         // Check that the file type is allowed
-        $allowed = array('png', 'gif', 'jpg', 'jpeg', 'jpe', 'jp2', 'jpx');
+        $allowed = ['png', 'gif', 'jpg', 'jpeg', 'jpe', 'jp2', 'jpx'];
 
         if (!empty($allowed) && !in_array(strtolower($ext), $allowed)) {
             Notify::error(Lang::txt('COM_COURSES_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
@@ -293,7 +293,7 @@ class Media extends SiteController
         // Incoming
         $listdir = Request::getInt('listdir', 0);
         if (!$listdir) {
-            echo json_encode(array('error' => Lang::txt('COM_COURSES_ERROR_NO_ID')));
+            echo json_encode(['error' => Lang::txt('COM_COURSES_ERROR_NO_ID')]);
             return;
         }
 
@@ -305,12 +305,12 @@ class Media extends SiteController
             && !$course->access('manage')
             && !$course->access('edit', 'course'))
         ) {
-            echo json_encode(array('error' => Lang::txt('COM_COURSES_NOT_AUTH')));
+            echo json_encode(['error' => Lang::txt('COM_COURSES_NOT_AUTH')]);
             return;
         }
 
         // Allowed extensions for uplaod
-        $allowedExtensions = array('png', 'jpe', 'jpeg', 'jpg', 'gif', 'jp2', 'jpx');
+        $allowedExtensions = ['png', 'jpe', 'jpeg', 'jpg', 'gif', 'jp2', 'jpx'];
 
         // Get media config
         $mediaConfig = Component::params('com_media');
@@ -338,25 +338,25 @@ class Media extends SiteController
         // make sure upload directory is writable
         if (!is_dir($uploadDirectory)) {
             if (!Filesystem::makeDirectory($uploadDirectory)) {
-                echo json_encode(array('error' => "Server error. Unable to create upload directory."));
+                echo json_encode(['error' => "Server error. Unable to create upload directory."]);
                 return;
             }
         }
 
         if (!is_writable($uploadDirectory)) {
-            echo json_encode(array('error' => "Server error. Upload directory isn't writable."));
+            echo json_encode(['error' => "Server error. Upload directory isn't writable."]);
             return;
         }
 
         // check to make sure we have a file and its not too big
         if ($size == 0) {
-            echo json_encode(array('error' => 'File is empty'));
+            echo json_encode(['error' => 'File is empty']);
             return;
         }
 
         if ($size > $sizeLimit) {
             $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
-            echo json_encode(array('error' => 'File is too large. Max file upload size is ' . $max));
+            echo json_encode(['error' => 'File is too large. Max file upload size is ' . $max]);
             return;
         }
 
@@ -366,7 +366,7 @@ class Media extends SiteController
         $ext      = $pathinfo['extension'];
         if ($allowedExtensions && !in_array(strtolower($ext), $allowedExtensions)) {
             $these = implode(', ', $allowedExtensions);
-            echo json_encode(array('error' => 'File has an invalid extension, it should be one of ' . $these . '.'));
+            echo json_encode(['error' => 'File has an invalid extension, it should be one of ' . $these . '.']);
             return;
         }
 
@@ -398,7 +398,7 @@ class Media extends SiteController
         if (!Filesystem::isSafe($file)) {
             Filesystem::delete($file);
 
-            echo json_encode(array('error' => Lang::txt('File rejected because the anti-virus scan failed.')));
+            echo json_encode(['error' => Lang::txt('File rejected because the anti-virus scan failed.')]);
             return;
         }
 
@@ -410,7 +410,7 @@ class Media extends SiteController
             // Remove old image
             if (file_exists($uploadDirectory . $curfile)) {
                 if (!Filesystem::delete($uploadDirectory . $curfile)) {
-                    echo json_encode(array('error' => Lang::txt('COM_COURSES_ERROR_UNABLE_TO_DELETE_FILE')));
+                    echo json_encode(['error' => Lang::txt('COM_COURSES_ERROR_UNABLE_TO_DELETE_FILE')]);
                     return;
                 }
             }
@@ -418,21 +418,21 @@ class Media extends SiteController
 
         $model->set('logo', $filename . '.' . $ext);
         if (!$model->store()) {
-            echo json_encode(array('error' => $model->getError()));
+            echo json_encode(['error' => $model->getError()]);
             return;
         }
 
         $this_size = filesize($file);
         list($width, $height, $type, $attr) = getimagesize($file);
 
-        echo json_encode(array(
+        echo json_encode([
             'success'   => true,
             'file'      => rtrim(Request::root(true), DS) . str_replace(PATH_ROOT, '', $file),
             'id'        => $listdir,
             'size'      => \Hubzero\Utility\Number::formatBytes($this_size),
             'width'     => $width,
             'height'    => $height
-        ));
+        ]);
     }
 
     /**
@@ -625,9 +625,9 @@ class Media extends SiteController
         // Get the directory we'll be reading out of
         $d = @dir($path);
 
-        $images  = array();
-        $folders = array();
-        $docs    = array();
+        $images  = [];
+        $folders = [];
+        $docs    = [];
 
         if ($d) {
             // Loop through all files and separate them into arrays of images, folders, and other

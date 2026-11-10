@@ -28,12 +28,12 @@ class Video extends Plugin
      *
      * @var  boolean
      */
-    public static $extensions = array(
+    public static $extensions = [
         'mp4',
         'm4v',
         'webm',
         'ogg'
-    );
+    ];
 
     /**
      * Determines if the given collection can be handled by this plugin

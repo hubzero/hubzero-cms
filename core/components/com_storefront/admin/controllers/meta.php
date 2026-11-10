@@ -30,9 +30,9 @@ class Meta extends AdminController
     public function displayTask()
     {
         // Get filters
-        $this->view->filters = array(
+        $this->view->filters = [
             'access' => -1
-        );
+        ];
         $this->view->filters['sort'] = trim(Request::getState(
             $this->_option . '.' . $this->_controller . '.sort',
             'filter_order',
@@ -159,7 +159,7 @@ class Meta extends AdminController
         Request::checkToken();
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         $obj = new Archive();
         // Get the product

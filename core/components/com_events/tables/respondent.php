@@ -22,7 +22,7 @@ class Respondent extends Table
      *
      * @var  mixed
      */
-    private $filters = array();
+    private $filters = [];
 
     /**
      * Ordering column

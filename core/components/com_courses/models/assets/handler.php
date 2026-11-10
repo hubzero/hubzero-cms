@@ -23,7 +23,7 @@ class Handler
      *
      * @var array
      **/
-    private $handlers = array();
+    private $handlers = [];
 
     /**
      * Database object
@@ -37,7 +37,7 @@ class Handler
      *
      * @var array
      **/
-    protected $asset = array(
+    protected $asset = [
         'title'        => '',
         'url'          => '',
         'type'         => '',
@@ -48,18 +48,18 @@ class Handler
         'course_id'    => '',
         'graded'       => 0,
         'grade_weight' => ''
-    );
+    ];
 
     /**
      * Array to hold the asset association
      *
      * @var array
      **/
-    protected $assoc = array(
+    protected $assoc = [
         'asset_id' => '',
         'scope'    => '',
         'scope_id' => '',
-    );
+    ];
 
     /**
      * Class info
@@ -69,10 +69,10 @@ class Handler
      *
      * @var array
      **/
-    protected static $info = array(
+    protected static $info = [
         'action_message' => '',
-        'responds_to'    => array(''),
-    );
+        'responds_to'    => [''],
+    ];
 
     /**
      * Constructor - sets the database object and initializes the file types
@@ -189,10 +189,10 @@ class Handler
      **/
     public function getHandlers()
     {
-        $handlers = array();
+        $handlers = [];
 
         foreach ($this->handlers as $h) {
-            $handlers[] = array('classname' => $h, 'message' => $h::getMessage());
+            $handlers[] = ['classname' => $h, 'message' => $h::getMessage()];
         }
 
         return $handlers;
@@ -216,7 +216,7 @@ class Handler
             $handler = $this->handlers[0];
         } else {
             // No handler class provided, and non set, oops!
-            return array('error' => 'There is no option available to handle this filetype/content');
+            return ['error' => 'There is no option available to handle this filetype/content'];
         }
 
         // Make sure the class exists and has a create method
@@ -226,7 +226,7 @@ class Handler
             return $object->create();
         } else {
             // Oops, provided class doesn't have a create method
-            return array('error' => 'This filetype/content does not have a create method');
+            return ['error' => 'This filetype/content does not have a create method'];
         }
     }
 
@@ -254,7 +254,7 @@ class Handler
             return $object->edit($asset);
         } else {
             // Default edit page
-            return array('type' => 'default');
+            return ['type' => 'default'];
         }
     }
 
@@ -277,7 +277,7 @@ class Handler
             return $object->preview($asset);
         } else {
             // Default edit page
-            return array('type' => 'default');
+            return ['type' => 'default'];
         }
     }
 }

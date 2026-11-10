@@ -68,18 +68,18 @@ class Article extends Relational implements \Hubzero\Search\Searchable
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'title'     => 'notempty',
         'introtext' => 'notempty',
         'scope'     => 'notempty'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'alias',
         'publish_up',
         'publish_down',
@@ -91,18 +91,18 @@ class Article extends Relational implements \Hubzero\Search\Searchable
         'metadata',
         'attribs',
         'asset_id'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by',
         'ordering'
-    );
+    ];
 
     /**
      * Rules array converted into JSON string.
@@ -283,7 +283,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     {
         $categories = Category::all()
             ->whereEquals('extension', 'com_content')
-            ->whereIn('published', array(0, 1))
+            ->whereIn('published', [0, 1])
             ->order('lft', 'asc');
         return $categories;
     }
@@ -295,12 +295,12 @@ class Article extends Relational implements \Hubzero\Search\Searchable
      */
     public function transformState()
     {
-        $states = array(
+        $states = [
             '0' => 'Unpublished',
             '1' => 'Published',
             '2' => 'Archived',
             '-2' => 'Trashed'
-        );
+        ];
         $stateNum = $this->get('state', 0);
         return $states[$stateNum];
     }
@@ -539,7 +539,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
         $file = __DIR__ . '/forms/article' . ($client ? '_' . $client : '') . '.xml';
         $file = Filesystem::cleanPath($file);
 
-        $form = new Form('content', array('control' => 'fields'));
+        $form = new Form('content', ['control' => 'fields']);
 
         if (!$form->loadFile($file, false, '//form')) {
             $this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
@@ -576,7 +576,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
             if (count($existingOrderedRows) <= 1) {
                 continue;
             }
-            $existingOrderIds = array();
+            $existingOrderIds = [];
             foreach ($existingOrderedRows as $row) {
                 $pkValue = $row->get('id');
                 $existingOrderIds[$pkValue] = $row->ordering;
@@ -762,7 +762,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
         $publishDown = $this->get('publish_down');
 
         // Make sure the article has state = published
-        if (in_array($this->get('state'), array(self::STATE_ARCHIVED, self::STATE_DELETED, self::STATE_UNPUBLISHED))) {
+        if (in_array($this->get('state'), [self::STATE_ARCHIVED, self::STATE_DELETED, self::STATE_UNPUBLISHED])) {
             return false;
         }
 
@@ -799,7 +799,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
      * @param   array  $filters
      * @return  object
      */
-    public static function allByFilters($filters = array())
+    public static function allByFilters($filters = [])
     {
         $query = self::all()->setTableAlias('a')->newQuery(); //self::blank()->getQuery(); //self::all();
 
@@ -835,7 +835,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
             //->from(self::blank()->getTableName(), 'a');
 
         if (isset($filters['published']) && !is_array($filters['published'])) {
-            $filters['published'] = array($filters['published']);
+            $filters['published'] = [$filters['published']];
         }
 
         // Process an Archived Article layout
@@ -871,7 +871,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 
         // Filter by language
         if (isset($filters['language']) && $filters['language']) {
-            $query->whereIn('a.language', array(Lang::getTag(), '*'));
+            $query->whereIn('a.language', [Lang::getTag(), '*']);
         }
 
         // Join over the categories to get parent category titles
@@ -911,7 +911,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
         // Filter by access level.
         if (isset($filters['access'])) {
             if (!is_array($filters['access'])) {
-                $filters['access'] = array($filters['access']);
+                $filters['access'] = [$filters['access']];
             }
             $query->whereIn('a.access', $filters['access']);
             $query->whereIn('c.access', $filters['access']);
@@ -920,7 +920,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
         // Filter by published state.
         if (isset($filters['published']) && $publishedWhere) {
             if (!is_array($filters['published'])) {
-                $filters['published'] = array($filters['published']);
+                $filters['published'] = [$filters['published']];
             }
             $query->whereRaw($publishedWhere . ' IN (' . implode(',', array_map('intval', $filters['published'])) . ')');
         }
@@ -1003,7 +1003,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 
                     // Add the subquery to the main query
                     $query->where('a.catid', $type, (int) $categoryId, 'and', 1)
-                        ->orWhereRaw('a.catid IN (' . $subQuery->toString() . ')', array(), 1)
+                        ->orWhereRaw('a.catid IN (' . $subQuery->toString() . ')', [], 1)
                         ->resetDepth();
                 } else {
                     $query->where('a.catid', $type, (int) $categoryId);
@@ -1031,7 +1031,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
             if (is_numeric($authorId)) {
                 $type = $filters['author_id.include'] ? '=' : '<>';
                 //$authorWhere = 'a.created_by '.$type.(int) $authorId;
-                $authorWhere = array('a.created_by', $type, (int) $authorId);
+                $authorWhere = ['a.created_by', $type, (int) $authorId];
             } elseif (is_array($authorId)) {
                 \Hubzero\Utility\Arr::toInteger($authorId);
                 $authorId = implode(',', $authorId);
@@ -1040,7 +1040,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
                     $type = $filters['author_id.include'] ? 'IN' : 'NOT IN';
                     //$authorWhere = 'a.created_by '.$type.' ('.$authorId.')';
 
-                    $authorWhere = array('a.created_by', $type, '(' . $authorId . ')');
+                    $authorWhere = ['a.created_by', $type, '(' . $authorId . ')'];
                 }
             }
         }
@@ -1057,7 +1057,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
             if (is_string($authorAlias)) {
                 $type = $filters['author_alias.include'] ? '=' : '<>';
 
-                $authorAliasWhere = array('a.created_by_alias', $type, $authorAlias);
+                $authorAliasWhere = ['a.created_by_alias', $type, $authorAlias];
             } elseif (is_array($authorAlias)) {
                 $first = current($authorAlias);
 
@@ -1074,7 +1074,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
                     if ($authorAlias) {
                         $type = $filters['author_alias.include'] ? 'IN' : 'NOT IN';
 
-                        $authorAliasWhere = array('a.created_by_alias', $type, '(' . $authorAlias . ')');
+                        $authorAliasWhere = ['a.created_by_alias', $type, '(' . $authorAlias . ')'];
                     }
                 }
             }
@@ -1178,7 +1178,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
         if (!isset($filters['ordering']) || !$filters['ordering']) {
             $filters['ordering'] = 'a.ordering';
         }
-        if (!isset($filters['direction']) || !in_array(strtolower($filters['direction']), array('asc', 'desc'))) {
+        if (!isset($filters['direction']) || !in_array(strtolower($filters['direction']), ['asc', 'desc'])) {
             $filters['direction'] = 'asc';
         }
 
@@ -1203,7 +1203,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
      * @param   array  $filters
      * @return  object
      */
-    public static function oneByFilters($filters = array())
+    public static function oneByFilters($filters = [])
     {
         $query = self::all()->setTableAlias('a')->newQuery();
 
@@ -1255,7 +1255,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 
         // Filter by language
         if (isset($filters['language']) && $filters['language']) {
-            $query->whereIn('a.language', array(Lang::getTag(), '*'));
+            $query->whereIn('a.language', [Lang::getTag(), '*']);
         }
 
         // Join over the categories to get parent category titles
@@ -1301,7 +1301,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
         // Filter by published state.
         if (isset($filters['state'])) {
             if (!is_array($filters['state'])) {
-                $filters['state'] = array($filters['state']);
+                $filters['state'] = [$filters['state']];
             }
             $query->whereIn('a.state', $filters['state']);
         }

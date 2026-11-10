@@ -23,7 +23,7 @@ class Migration20150626141512Core extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__extensions')) {
-            $components = array();
+            $components = [];
             foreach (self::$components as $c) {
                 $components[] = $c;
             }
@@ -34,7 +34,7 @@ class Migration20150626141512Core extends Base
                 ->whereIn('element', $components)
                 ->execute();
 
-            $modules = array();
+            $modules = [];
             foreach (self::$modules as $c) {
                 $modules[] = $c;
             }
@@ -45,7 +45,7 @@ class Migration20150626141512Core extends Base
                 ->whereIn('element', $modules)
                 ->execute();
 
-            $templates = array();
+            $templates = [];
             foreach (self::$templates as $c) {
                 $templates[] = $c;
             }
@@ -57,7 +57,7 @@ class Migration20150626141512Core extends Base
                 ->execute();
 
             foreach (self::$plugins as $folder => $plugs) {
-                $contents = array();
+                $contents = [];
                 foreach ($plugs as $c) {
                     $contents[] = $c;
                 }
@@ -80,7 +80,7 @@ class Migration20150626141512Core extends Base
         // Nothing really to do here
     }
 
-    protected static $components = array(
+    protected static $components = [
         'com_admin',
         'com_answers',
         'com_billboards',
@@ -144,9 +144,9 @@ class Migration20150626141512Core extends Base
         'com_whatsnew',
         'com_wiki',
         'com_wishlist'
-    );
+    ];
 
-    protected static $modules = array(
+    protected static $modules = [
         'mod_adminlogin',
         'mod_adminmenu',
         'mod_announcements',
@@ -246,19 +246,19 @@ class Migration20150626141512Core extends Base
         'mod_wishvoters',
         'mod_wrapper',
         'mod_youtube'
-    );
+    ];
 
-    protected static $templates = array(
+    protected static $templates = [
         'baselayer',
         'hubbasic2012',
         'hubbasic2013',
         'kameleon',
         'system',
         'welcome'
-    );
+    ];
 
-    protected static $plugins = array(
-        'antispam' => array(
+    protected static $plugins = [
+        'antispam' => [
             'akismet',
             'babajispam',
             'bayesian',
@@ -266,8 +266,8 @@ class Migration20150626141512Core extends Base
             'linkrife',
             'mollom',
             'spamassassin'
-        ),
-        'authentication' => array(
+        ],
+        'authentication' => [
             'certificate',
             'facebook',
             'google',
@@ -276,20 +276,20 @@ class Migration20150626141512Core extends Base
             'pucas',
             'shibboleth',
             'twitter'
-        ),
-        'authfactors' => array(
+        ],
+        'authfactors' => [
             'authy',
             'certificate'
-        ),
-        'captcha' => array(
+        ],
+        'captcha' => [
             'recaptcha'
-        ),
-        'citation' => array(
+        ],
+        'citation' => [
             'bibtex',
             'default',
             'endnote'
-        ),
-        'content' => array(
+        ],
+        'content' => [
             'antispam',
             'emailcloak',
             'formathtml',
@@ -301,8 +301,8 @@ class Migration20150626141512Core extends Base
             'pagenavigation',
             'vote',
             'xhubtags'
-        ),
-        'courses' => array(
+        ],
+        'courses' => [
             'announcements',
             'dashboard',
             'discussions',
@@ -318,8 +318,8 @@ class Migration20150626141512Core extends Base
             'related',
             'reviews',
             'store'
-        ),
-        'cron' => array(
+        ],
+        'cron' => [
             'cache',
             'courses',
             'forum',
@@ -332,25 +332,25 @@ class Migration20150626141512Core extends Base
             'resources',
             'support',
             'users'
-        ),
-        'editors' => array(
+        ],
+        'editors' => [
             'ckeditor',
             'codemirror',
             'none',
             'tinymce',
             'wikitoolbar',
             'wikiwyg'
-        ),
-        'editors-xtd' => array(
+        ],
+        'editors-xtd' => [
             'article',
             'image',
             'pagebreak',
             'readmore'
-        ),
-        'extension' => array(
+        ],
+        'extension' => [
             'joomla'
-        ),
-        'geocode' => array(
+        ],
+        'geocode' => [
             'arcgisonline',
             'baidu',
             'bingmaps',
@@ -378,8 +378,8 @@ class Migration20150626141512Core extends Base
             'openstreetmap',
             'tomtom',
             'yandex'
-        ),
-        'groups' => array(
+        ],
+        'groups' => [
             'announcements',
             'blog',
             'calendar',
@@ -395,8 +395,8 @@ class Migration20150626141512Core extends Base
             'usage',
             'wiki',
             'wishlist'
-        ),
-        'hubzero' => array(
+        ],
+        'hubzero' => [
             'autocompleter',
             'comments',
             'imagecaptcha',
@@ -405,11 +405,11 @@ class Migration20150626141512Core extends Base
             'systemplate',
             'systickets',
             'sysusers'
-        ),
-        'mail' => array(
+        ],
+        'mail' => [
             'mandrill'
-        ),
-        'members' => array(
+        ],
+        'members' => [
             'account',
             'blog',
             'citations',
@@ -427,12 +427,12 @@ class Migration20150626141512Core extends Base
             'resume',
             'usage',
             'wiki'
-        ),
-        'oaipmh' => array(
+        ],
+        'oaipmh' => [
             'publications',
             'resources'
-        ),
-        'projects' => array(
+        ],
+        'projects' => [
             'blog',
             'databases',
             'example',
@@ -443,8 +443,8 @@ class Migration20150626141512Core extends Base
             'publications',
             'team',
             'todo'
-        ),
-        'publications' => array(
+        ],
+        'publications' => [
             'citations',
             'groups',
             'questions',
@@ -457,12 +457,12 @@ class Migration20150626141512Core extends Base
             'versions',
             'watch',
             'wishlist'
-        ),
-        'quickicon' => array(
+        ],
+        'quickicon' => [
             'extensionupdate',
             'joomlaupdate'
-        ),
-        'resources' => array(
+        ],
+        'resources' => [
             'about',
             'citations',
             'classrooms',
@@ -478,8 +478,8 @@ class Migration20150626141512Core extends Base
             'usage',
             'versions',
             'wishlist'
-        ),
-        'search' => array(
+        ],
+        'search' => [
             'blogs',
             'citations',
             'collections',
@@ -503,8 +503,8 @@ class Migration20150626141512Core extends Base
             'weighttools',
             'wiki',
             'wishlists'
-        ),
-        'support' => array(
+        ],
+        'support' => [
             'answers',
             'blog',
             'captcha',
@@ -517,8 +517,8 @@ class Migration20150626141512Core extends Base
             'transfer',
             'wiki',
             'wishlist'
-        ),
-        'system' => array(
+        ],
+        'system' => [
             'authfactors',
             'cache',
             'certificate',
@@ -539,8 +539,8 @@ class Migration20150626141512Core extends Base
             'supergroup',
             'userconsent',
             'xfeed'
-        ),
-        'tags' => array(
+        ],
+        'tags' => [
             'answers',
             'blogs',
             'citations',
@@ -554,16 +554,16 @@ class Migration20150626141512Core extends Base
             'resources',
             'support',
             'wiki'
-        ),
-        'time' => array(
+        ],
+        'time' => [
             'csv',
             'summary'
-        ),
-        'tools' => array(
+        ],
+        'tools' => [
             'java',
             'novnc'
-        ),
-        'usage' => array(
+        ],
+        'usage' => [
             'domainclass',
             'domains',
             'maps',
@@ -571,8 +571,8 @@ class Migration20150626141512Core extends Base
             'partners',
             'region',
             'tools'
-        ),
-        'user' => array(
+        ],
+        'user' => [
             'constantcontact',
             'geo',
             'joomla',
@@ -580,8 +580,8 @@ class Migration20150626141512Core extends Base
             'middleware',
             'profile',
             'xusers'
-        ),
-        'whatsnew' => array(
+        ],
+        'whatsnew' => [
             'blogs',
             'content',
             'events',
@@ -589,19 +589,19 @@ class Migration20150626141512Core extends Base
             'publications',
             'resources',
             'wiki'
-        ),
-        'wiki' => array(
+        ],
+        'wiki' => [
             'editortoolbar',
             'editorwykiwyg',
             'parserdefault'
-        ),
-        'xmessage' => array(
+        ],
+        'xmessage' => [
             'email',
             'handler',
             'im',
             'internal',
             'rss',
             'smstxt'
-        )
-    );
+        ]
+    ];
 }

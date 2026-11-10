@@ -25,7 +25,7 @@ class Router extends Base
      */
     public function build(&$query)
     {
-        $segments = array();
+        $segments = [];
         $scope = 0;
 
         if (!empty($query['controller'])) {
@@ -73,7 +73,7 @@ class Router extends Base
         }
         if (!empty($query['scope'])) {
             // For wiki routing
-            $segments = array();
+            $segments = [];
             $scope = 1;
             $parts = explode('/', $query['scope']);
             if (count($parts) >= 3) {
@@ -115,21 +115,21 @@ class Router extends Base
      */
     public function parse(&$segments)
     {
-        $vars  = array();
+        $vars  = [];
 
         // General project tasks
-        $tasks = array(
+        $tasks = [
             'edit', 'browse', 'intro',
             'features', 'auth', 'delete',
             'fixownership', 'suspend', 'reinstate',
             'process', 'activate', 'requestaccess'
-        );
+        ];
 
         // Media tasks
-        $mediaTasks = array('deleteimg', 'media', 'thumb', 'doajaxupload');
+        $mediaTasks = ['deleteimg', 'media', 'thumb', 'doajaxupload'];
 
         // Tasks managed by Setup controller
-        $setupTasks = array('setup', 'start', 'edit', 'save', 'verify', 'suggestalias');
+        $setupTasks = ['setup', 'start', 'edit', 'save', 'verify', 'suggestalias'];
 
         if (empty($segments[0])) {
             return $vars;
@@ -225,7 +225,7 @@ class Router extends Base
                 if (!empty($segments[2]) && $vars['active'] == 'publications') {
                     if (is_numeric($segments[2])) {
                         $vars['pid'] = $segments[2];
-                        $blocks = array();
+                        $blocks = [];
 
                         if (is_file(Component::path('com_publications') . DS . 'tables' . DS . 'block.php')) {
                             $database = App::get('db');
@@ -277,10 +277,10 @@ class Router extends Base
                 // Tools
                 if (!empty($segments[2]) && $vars['active'] == 'tools') {
                     // App actions
-                    $appActions = array('status', 'history', 'wiki', 'browse',
+                    $appActions = ['status', 'history', 'wiki', 'browse',
                         'edit', 'start', 'save', 'register', 'attach', 'source',
                         'cancel', 'update', 'message', 'verify', 'addimage'
-                    );
+                    ];
                     if (in_array($segments[2], $appActions)) {
                         $vars['action'] = $segments[2];
                     } else {
@@ -295,7 +295,7 @@ class Router extends Base
                     // Notes
                     //!is_numeric($segments[2]) &&
                 // Wiki actions
-                    $wiki_actions = array('media', 'list', 'upload',
+                    $wiki_actions = ['media', 'list', 'upload',
                         'deletefolder', 'deletefile', 'view',
                         'new', 'edit', 'save', 'cancel',
                         'delete', 'deleteversion', 'approve',
@@ -303,7 +303,7 @@ class Router extends Base
                         'compare', 'comments', 'editcomment',
                         'addcomment', 'savecomment', 'removecomment',
                         'reportcomment', 'deleterevision', 'pdf'
-                    );
+                    ];
 
                     $remaining = array_slice($segments, 2);
                     $action = array_pop($remaining);

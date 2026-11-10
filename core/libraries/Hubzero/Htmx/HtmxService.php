@@ -22,7 +22,7 @@ class HtmxService
      *
      * @var array
      */
-    protected const RESWAP_STRATEGIES = array(
+    protected const RESWAP_STRATEGIES = [
         'innerhtml',
         'outerhtml',
         'textcontent',
@@ -32,63 +32,63 @@ class HtmxService
         'afterend',
         'delete',
         'none',
-    );
+    ];
 
     /**
      * Shared HTMX/Alpine state for current request.
      *
      * @var array
      */
-    protected $state = array();
+    protected $state = [];
 
     /**
      * Accumulated HX-Trigger payload.
      *
      * @var array
      */
-    protected $triggers = array();
+    protected $triggers = [];
 
     /**
      * Accumulated HX-Trigger-After-Settle payload.
      *
      * @var array
      */
-    protected $triggersAfterSettle = array();
+    protected $triggersAfterSettle = [];
 
     /**
      * Accumulated HX-Trigger-After-Swap payload.
      *
      * @var array
      */
-    protected $triggersAfterSwap = array();
+    protected $triggersAfterSwap = [];
 
     /**
      * Outbound HTMX headers emitted during this request.
      *
      * @var array
      */
-    protected $sentHeaders = array();
+    protected $sentHeaders = [];
 
     /**
      * Optional debug context entries for current request.
      *
      * @var array
      */
-    protected $debugContext = array();
+    protected $debugContext = [];
 
     /**
      * Profile timing data for current request.
      *
      * @var array
      */
-    protected $profile = array();
+    protected $profile = [];
 
     /**
      * Active profile timers keyed by label.
      *
      * @var array
      */
-    protected $profileTimers = array();
+    protected $profileTimers = [];
 
     /**
      * @return  bool
@@ -100,16 +100,16 @@ class HtmxService
             return false;
         }
 
-        return $this->isTruthyHeader($request, array(
+        return $this->isTruthyHeader($request, [
             'HX-Request',
             'Hx-Request',
             'hx-request'
-        ), array(
+        ], [
             'HTTP_HX_REQUEST',
             'REDIRECT_HTTP_HX_REQUEST',
             'HX_REQUEST',
             'REDIRECT_HX_REQUEST'
-        ));
+        ]);
     }
 
     /**
@@ -122,16 +122,16 @@ class HtmxService
             return false;
         }
 
-        return $this->isTruthyHeader($request, array(
+        return $this->isTruthyHeader($request, [
             'HX-Boosted',
             'Hx-Boosted',
             'hx-boosted'
-        ), array(
+        ], [
             'HTTP_HX_BOOSTED',
             'REDIRECT_HTTP_HX_BOOSTED',
             'HX_BOOSTED',
             'REDIRECT_HX_BOOSTED'
-        ));
+        ]);
     }
 
     /**
@@ -144,16 +144,16 @@ class HtmxService
             return false;
         }
 
-        return $this->isTruthyHeader($request, array(
+        return $this->isTruthyHeader($request, [
             'HX-History-Restore-Request',
             'Hx-History-Restore-Request',
             'hx-history-restore-request'
-        ), array(
+        ], [
             'HTTP_HX_HISTORY_RESTORE_REQUEST',
             'REDIRECT_HTTP_HX_HISTORY_RESTORE_REQUEST',
             'HX_HISTORY_RESTORE_REQUEST',
             'REDIRECT_HX_HISTORY_RESTORE_REQUEST'
-        ));
+        ]);
     }
 
     /**
@@ -212,7 +212,7 @@ class HtmxService
      * @param   array|mixed  $payload
      * @return  void
      */
-    public function trigger(string $event, $payload = array()): void
+    public function trigger(string $event, $payload = []): void
     {
         $event = trim($event);
         if ($event === '') {
@@ -228,7 +228,7 @@ class HtmxService
      * @param   array|mixed  $payload
      * @return  void
      */
-    public function triggerAfterSettle(string $event, $payload = array()): void
+    public function triggerAfterSettle(string $event, $payload = []): void
     {
         $event = trim($event);
         if ($event === '') {
@@ -244,7 +244,7 @@ class HtmxService
      * @param   array|mixed  $payload
      * @return  void
      */
-    public function triggerAfterSwap(string $event, $payload = array()): void
+    public function triggerAfterSwap(string $event, $payload = []): void
     {
         $event = trim($event);
         if ($event === '') {
@@ -274,7 +274,7 @@ class HtmxService
      * @param   array   $options
      * @return  void
      */
-    public function location(string $url, array $options = array()): void
+    public function location(string $url, array $options = []): void
     {
         if ($this->isHtmxRequest()) {
             if (empty($options)) {
@@ -282,7 +282,7 @@ class HtmxService
                 return;
             }
 
-            $payload = array_merge(array('path' => $url), $options);
+            $payload = array_merge(['path' => $url], $options);
             $this->setHeader('HX-Location', json_encode($payload));
             return;
         }
@@ -382,21 +382,21 @@ class HtmxService
      */
     public function varyOnRequest(): void
     {
-        $tokens = array();
+        $tokens = [];
 
         if (isset($this->sentHeaders['Vary'])) {
-            $tokens = array_merge($tokens, preg_split('/\s*,\s*/', (string) $this->sentHeaders['Vary']) ?: array());
+            $tokens = array_merge($tokens, preg_split('/\s*,\s*/', (string) $this->sentHeaders['Vary']) ?: []);
         }
 
         $response = \App::get('response');
         if ($response && isset($response->headers) && method_exists($response->headers, 'get')) {
             $existing = (string) $response->headers->get('Vary', '');
             if ($existing !== '') {
-                $tokens = array_merge($tokens, preg_split('/\s*,\s*/', $existing) ?: array());
+                $tokens = array_merge($tokens, preg_split('/\s*,\s*/', $existing) ?: []);
             }
         }
 
-        $normalized = array();
+        $normalized = [];
         foreach ($tokens as $token) {
             $token = trim((string) $token);
             if ($token === '') {
@@ -416,7 +416,7 @@ class HtmxService
      */
     public function requestDetails(): array
     {
-        return array(
+        return [
             'request'         => $this->isHtmxRequest(),
             'boosted'         => $this->isHtmxBoosted(),
             'history_restore' => $this->isHtmxHistoryRestoreRequest(),
@@ -427,7 +427,7 @@ class HtmxService
             'current_url'     => $this->requestHeaderValue('HX-Current-URL'),
             'current_url_abs_path' => $this->currentUrlAbsPath(),
             'prompt'          => $this->requestHeaderValue('HX-Prompt'),
-        );
+        ];
     }
 
     /**
@@ -493,7 +493,7 @@ class HtmxService
      * @param   array   $params
      * @return  string
      */
-    public function url(string $url, array $params = array()): string
+    public function url(string $url, array $params = []): string
     {
         if (!empty($params)) {
             $sep = strpos($url, '?') !== false ? '&' : '?';
@@ -509,17 +509,17 @@ class HtmxService
      * @param   array   $params
      * @return  string
      */
-    public function actionUrl(string $component, string $task, array $params = array()): string
+    public function actionUrl(string $component, string $task, array $params = []): string
     {
         $component = trim($component);
         if ($component !== '' && strpos($component, 'com_') !== 0) {
             $component = 'com_' . $component;
         }
 
-        $query = array(
+        $query = [
             'option' => $component,
             'task'   => trim($task)
-        );
+        ];
 
         return $this->url('index.php', array_merge($query, $params));
     }
@@ -580,12 +580,12 @@ class HtmxService
      * @param   array   $errors
      * @return  void
      */
-    public function validation(string $html, array $errors = array()): void
+    public function validation(string $html, array $errors = []): void
     {
-        $payload = array(
+        $payload = [
             'count' => count($errors),
             'errors' => $errors
-        );
+        ];
         $this->trigger('hubzero:validation-failed', $payload);
         $this->fragment($html, 422);
     }
@@ -597,14 +597,14 @@ class HtmxService
      */
     public function flush(): void
     {
-        $this->state = array();
-        $this->triggers = array();
-        $this->triggersAfterSettle = array();
-        $this->triggersAfterSwap = array();
-        $this->sentHeaders = array();
-        $this->debugContext = array();
-        $this->profile = array();
-        $this->profileTimers = array();
+        $this->state = [];
+        $this->triggers = [];
+        $this->triggersAfterSettle = [];
+        $this->triggersAfterSwap = [];
+        $this->sentHeaders = [];
+        $this->debugContext = [];
+        $this->profile = [];
+        $this->profileTimers = [];
     }
 
     /**
@@ -702,7 +702,7 @@ class HtmxService
      */
     protected function isTruthyHeader($request, array $headerKeys, array $serverKeys): bool
     {
-        $normalizedHeaderKeys = array();
+        $normalizedHeaderKeys = [];
         foreach ($headerKeys as $key) {
             $normalizedHeaderKeys[] = strtolower(trim($key));
         }
@@ -775,7 +775,7 @@ class HtmxService
             }
         }
 
-        return array();
+        return [];
     }
 
     /**
@@ -810,7 +810,7 @@ class HtmxService
      */
     public function debugSnapshot(): array
     {
-        $incoming = array();
+        $incoming = [];
         foreach ($this->allIncomingHeaders() as $name => $value) {
             $lower = strtolower((string) $name);
             if (strpos($lower, 'hx-') === 0 || $lower === 'x-requested-with') {
@@ -818,11 +818,11 @@ class HtmxService
             }
         }
 
-        return array(
+        return [
             'incoming' => $incoming,
             'outgoing' => $this->sentHeaders,
             'context'  => array_merge($this->requestContext(), $this->debugContext)
-        );
+        ];
     }
 
     /**
@@ -857,7 +857,7 @@ class HtmxService
      * @param   array  $options
      * @return  string
      */
-    public function renderDebugPanel(array $snapshot = array(), array $options = array()): string
+    public function renderDebugPanel(array $snapshot = [], array $options = []): string
     {
         if (!$this->isDebugEnabled()) {
             return '';
@@ -937,10 +937,10 @@ class HtmxService
     {
         $request = \App::get('request');
         if (!$request) {
-            return array();
+            return [];
         }
 
-        $ctx = array();
+        $ctx = [];
         if (method_exists($request, 'server')) {
             $ctx['method'] = (string) $request->server('REQUEST_METHOD', '');
             $ctx['uri'] = (string) $request->server('REQUEST_URI', '');
@@ -1087,11 +1087,11 @@ class HtmxService
             return null;
         }
 
-        return array(
+        return [
             'scheme' => $scheme,
             'host' => $host,
             'port' => $port,
-        );
+        ];
     }
 
     /**

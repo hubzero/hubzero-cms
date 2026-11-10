@@ -74,7 +74,7 @@ class Entriesv1r0 extends ApiController
         $order      = Request::getString('sort_Dir', 'desc');
 
         // get the search areas
-        $areas = array();
+        $areas = [];
         $searchareas = Event::trigger('whatsnew.onWhatsNewAreas');
         foreach ($searchareas as $area) {
             $areas = array_merge($areas, $area);
@@ -99,18 +99,18 @@ class Entriesv1r0 extends ApiController
 
         $results = Event::trigger(
             'whatsnew.onWhatsnew',
-            array(
+            [
                 $p,
                 999,
                 0,
                 $areas
-            )
+            ]
         );
 
-        $whatsnew = array();
+        $whatsnew = [];
         foreach ($results as $results_section) {
             foreach ($results_section as $result) {
-                $item = array();
+                $item = [];
                 $item['title'] = stripslashes($result->title);
                 $item['link']  = $result->href;
                 $item['date']  = @$result->created;
@@ -134,12 +134,12 @@ class Entriesv1r0 extends ApiController
 
         // order by the date created
         if ($order == 'asc') {
-            usort($whatsnew, array($this, "sorter_asc"));
+            usort($whatsnew, [$this, "sorter_asc"]);
         } else {
-            usort($whatsnew, array($this, "sorter"));
+            usort($whatsnew, [$this, "sorter"]);
         }
 
-        $w = array();
+        $w = [];
         $count = 0;
         for ($i = $limitstart, $n = count($whatsnew); $i < $n; $i++) {
             if ($count < $limit) {

@@ -2954,7 +2954,7 @@ abstract class BaseSqlSyntax
 
                     // Handle Value (might be an Expression or array of values)
                     if (is_array($constraint['value'])) {
-                        $values = array();
+                        $values = [];
                         foreach ($constraint['value'] as $value) {
                             if (is_object($value) && method_exists($value, 'build')) {
                                 $values[] = $value->build($this);

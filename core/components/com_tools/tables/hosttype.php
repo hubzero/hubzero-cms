@@ -93,7 +93,7 @@ class Hosttype extends Table
     public function update($key = null, $nulls = false)
     {
         // Initialise variables.
-        $fields = array();
+        $fields = [];
         $where = '';
 
         // Create the base update statement.
@@ -174,9 +174,9 @@ class Hosttype extends Table
      * @return  string  SQL
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private function _buildQuery($filters = array())
+    private function _buildQuery($filters = [])
     {
-        $where = array();
+        $where = [];
 
         if (isset($filters['search']) && $filters['search'] != '') {
             $where[] = "(LOWER(c.name) LIKE "
@@ -200,7 +200,7 @@ class Hosttype extends Table
      * @param   array   $filters  Filters to build SQL from
      * @return  integer
      */
-    public function getCount($filters = array())
+    public function getCount($filters = [])
     {
         $filters['limit'] = 0;
 
@@ -216,7 +216,7 @@ class Hosttype extends Table
      * @param   array  $filters  Filters to build SQL from
      * @return  array
      */
-    public function getRecords($filters = array())
+    public function getRecords($filters = [])
     {
         $query  = "SELECT c.* " . $this->_buildQuery($filters);
 
@@ -226,7 +226,7 @@ class Hosttype extends Table
         if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) {
             $filters['sort_Dir'] = 'ASC';
         }
-        if (!in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC'))) {
+        if (!in_array(strtoupper($filters['sort_Dir']), ['ASC', 'DESC'])) {
             $filters['sort_Dir'] = 'ASC';
         }
         $query .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1') . " " . (strtoupper((string) $filters['sort_Dir']) === 'ASC' ? 'ASC' : 'DESC');

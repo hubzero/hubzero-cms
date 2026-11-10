@@ -23,7 +23,7 @@ class Router extends Base
      */
     public function build(&$query)
     {
-        $segments = array();
+        $segments = [];
 
         if (!empty($query['controller'])) {
             if ($query['controller'] == 'certificate') {
@@ -81,21 +81,21 @@ class Router extends Base
      */
     public function parse(&$segments)
     {
-        $vars = array();
+        $vars = [];
 
         if (empty($segments)) {
             return $vars;
         }
 
         if (isset($segments[0])) {
-            if (in_array($segments[0], array('intro', 'browse', 'badge'))) {
+            if (in_array($segments[0], ['intro', 'browse', 'badge'])) {
                 $vars['controller'] = 'courses';
                 $vars['task'] = $segments[0];
 
                 if ($segments[0] == 'badge' && isset($segments[1]) && is_numeric($segments[1])) {
                     $vars['badge_id'] = $segments[1];
 
-                    if (in_array($segments[2], array('image', 'criteria', 'validation'))) {
+                    if (in_array($segments[2], ['image', 'criteria', 'validation'])) {
                         $vars['action'] = $segments[2];
 
                         if ($segments[2] == 'validation' && isset($segments[3])) {
@@ -191,7 +191,7 @@ class Router extends Base
 
                     $course = \Components\Courses\Models\Course::getInstance($vars['gid']);
                     if ($course->exists()) {
-                        $pages = $course->pages(array('active' => 1));
+                        $pages = $course->pages(['active' => 1]);
 
                         foreach ($pages as $page) {
                             if ($page->get('url') == $segments[1]) {

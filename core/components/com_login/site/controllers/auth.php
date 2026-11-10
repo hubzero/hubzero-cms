@@ -195,7 +195,7 @@ class Auth extends SiteController
         $multiAuth      = false;
         $local          = false;
         $plugins        = Plugin::byType('authentication');
-        $authenticators = array();
+        $authenticators = [];
         $remember_me_default = 0;
 
         foreach ($plugins as $p) {
@@ -210,10 +210,10 @@ class Auth extends SiteController
             if ($p->name != 'hubzero' && $p->name != $auth) {
                 $display = $pparams->get('display_name', ucfirst($p->name));
 
-                $authenticators[$p->name] = array(
+                $authenticators[$p->name] = [
                     'name'    => $p->name,
                     'display' => $display
-                );
+                ];
 
                 $multiAuth = true;
             } elseif ($p->name == 'hubzero') {
@@ -236,7 +236,7 @@ class Auth extends SiteController
 
         Plugin::import('authentication');
 
-        $status = array();
+        $status = [];
         $tpl = null;
         $this->return = $return;
 
@@ -323,13 +323,13 @@ class Auth extends SiteController
     public function loginTask()
     {
         // Populate the data array:
-        $options = array();
+        $options = [];
 
-        $data = array(
+        $data = [
             'username' => Request::getString('username', '', 'post'),
             'password' => Request::getString('passwd', '', 'post'),
             'return'   => Request::getString('return', '', 'post')
-        );
+        ];
         if (!$this->isBase64($data['return'])) {
             $data['return'] = '';
         } else {
@@ -397,7 +397,7 @@ class Auth extends SiteController
             }
 
             // Get the log in options.
-            $options = array();
+            $options = [];
             $options['remember'] = Request::getBool('remember', false);
             $options['return']   = $data['return'];
             $options['action']   = 'core.login.site';
@@ -427,10 +427,10 @@ class Auth extends SiteController
         // default branch above: an authenticator plugin handles the login
         // itself and takes that branch away, and the call below reads these
         // either way.
-        $credentials = array(
+        $credentials = [
             'username' => $data['username'],
             'password' => $data['password']
-        );
+        ];
 
         try {
             $result = App::get('auth')->login($credentials, $options);
@@ -441,7 +441,7 @@ class Auth extends SiteController
         // Perform the log in.
         if (true === $result) {
             // Success
-            User::setState('login.form.data', array());
+            User::setState('login.form.data', []);
 
             $return = User::getState('login.form.return');
 
@@ -459,10 +459,10 @@ class Auth extends SiteController
 
             // If no_html is set, return json response
             if (Request::getInt('no_html', 0)) {
-                echo json_encode(array(
+                echo json_encode([
                     'success'  => true,
                     'redirect' => $target
-                ));
+                ]);
                 exit;
             } else {
                 App::redirect($target);
@@ -485,10 +485,10 @@ class Auth extends SiteController
 
             // If no_html is set, return json response
             if (Request::getInt('no_html', 0)) {
-                echo json_encode(array(
+                echo json_encode([
                     'error'   => $error,
                     'freturn' => Route::url($return, false)
-                ));
+                ]);
                 exit;
             } else {
                 // Redirect to a login form
@@ -589,30 +589,30 @@ class Auth extends SiteController
             ->rows();
 
         // Now check the auth_link table
-        $link_conflicts = \Hubzero\Auth\Link::find_by_email($hzal->email, array($hzad->id));
+        $link_conflicts = \Hubzero\Auth\Link::find_by_email($hzal->email, [$hzad->id]);
 
-        $conflict = array();
+        $conflict = [];
 
         if ($profile_conflicts) {
             foreach ($profile_conflicts as $auser) {
                 $auth_link  = \Hubzero\Auth\Link::find_by_user_id($auser->id);
                 $dname      = (is_object($auth_link) && $auth_link->auth_domain_name) ? $auth_link->auth_domain_name : 'hubzero';
-                $conflict[] = array(
+                $conflict[] = [
                     'auth_domain_name' => $dname,
                     'name'  => $auser->name,
                     'email' => $auser->email
-                );
+                ];
             }
         }
 
         if ($link_conflicts) {
             foreach ($link_conflicts as $l) {
                 $auser      = User::getInstance($l['user_id']);
-                $conflict[] = array(
+                $conflict[] = [
                     'auth_domain_name' => $l['auth_domain_name'],
                     'name'  => $auser->name,
                     'email' => $l['email']
-                );
+                ];
             }
         }
 
@@ -655,7 +655,7 @@ class Auth extends SiteController
 
         // Do we have a return
         $return  = '';
-        $options = array();
+        $options = [];
         if ($return = Request::getString('return', '')) {
             $return = base64_decode($return);
             if (!Uri::isInternal($return)) {
@@ -798,11 +798,11 @@ class Auth extends SiteController
         //$user = User::getInstance();
 
         // Build the credentials array.
-        $parameters = array();
+        $parameters = [];
         $parameters['username'] = $user->get('username');
         $parameters['id'] = $user->get('id');
 
-        $options = array('clientid' => App::get('client')->id);
+        $options = ['clientid' => App::get('client')->id];
 
         // Set clientid in the options array if it hasn't been set already.
         //if (!isset($options['clientid']))
@@ -812,7 +812,7 @@ class Auth extends SiteController
         $error = false;
 
         // OK, the credentials are built. Lets fire the onLogout event.
-        $results = Event::trigger('user.onUserLogout', array($parameters, $options));
+        $results = Event::trigger('user.onUserLogout', [$parameters, $options]);
 
         // Check if any of the plugins failed. If none did, success.
         if (!in_array(false, $results, true)) {
@@ -822,7 +822,7 @@ class Auth extends SiteController
             setcookie(App::hash('JLOGIN_REMEMBER'), false, time() - 86400, $cookie_path, $cookie_domain);
         } else {
             // Trigger onUserLoginFailure Event.
-            Event::trigger('user.onUserLogoutFailure', array($parameters));
+            Event::trigger('user.onUserLogoutFailure', [$parameters]);
 
             $error = true;
         }

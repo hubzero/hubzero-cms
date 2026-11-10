@@ -81,7 +81,7 @@ class FileLoader
      */
     public function load($client = null)
     {
-        $data = array();
+        $data = [];
         $configPath = $this->getConfigPath();
 
         // First we'll get the root configuration path for the environment which is
@@ -130,7 +130,7 @@ class FileLoader
                     }
 
                     if (!isset($data[$group])) {
-                        $data[$group] = array();
+                        $data[$group] = [];
                     }
 
                     try {
@@ -192,7 +192,7 @@ class FileLoader
      */
     protected function getPaths($path)
     {
-        $paths = array();
+        $paths = [];
 
         // If `$path` is an array
         if (is_array($path)) {

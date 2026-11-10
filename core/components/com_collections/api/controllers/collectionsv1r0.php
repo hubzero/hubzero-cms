@@ -35,7 +35,7 @@ class Collectionsv1r0 extends ApiController
     {
         // Collection::_adapter() throws on any other scope, and that runs on
         // every listing that links the row
-        if (!in_array($objectType, array('member', 'group'), true)) {
+        if (!in_array($objectType, ['member', 'group'], true)) {
             return false;
         }
 
@@ -95,7 +95,7 @@ class Collectionsv1r0 extends ApiController
     {
         $model = new Archive();
 
-        $filters = array(
+        $filters = [
             'limit'      => Request::getInt('limit', 25),
             'start'      => Request::getInt('limitstart', 0),
             'search'     => Request::getString('search', ''),
@@ -104,10 +104,10 @@ class Collectionsv1r0 extends ApiController
             'is_default' => 0,
             'access'     => 0,
             'count'      => true
-        );
+        ];
 
         $response = new stdClass();
-        $response->collections = array();
+        $response->collections = [];
         $response->total = $model->collections($filters);
 
         if ($response->total) {
@@ -219,7 +219,7 @@ class Collectionsv1r0 extends ApiController
     {
         $this->requiresAuthentication();
 
-        $fields = array(
+        $fields = [
             'object_type'    => Request::getString('object_type', '', 'post'),
             'object_id'      => Request::getInt('object_id', 0, 'post'),
             'title'          => Request::getString('title', null, 'post', 'none', 2),
@@ -231,7 +231,7 @@ class Collectionsv1r0 extends ApiController
             'access'         => Request::getInt('access', 0, 'post'),
             'layout'         => Request::getWord('layout', 'grid', 'post'),
             'sort'           => Request::getString('sort', 'created', 'post')
-        );
+        ];
 
         // May only create a collection for an object the caller owns/manages
         if (!$this->_canManageObject($fields['object_type'], $fields['object_id'])) {
@@ -389,7 +389,7 @@ class Collectionsv1r0 extends ApiController
     {
         $this->requiresAuthentication();
 
-        $fields = array(
+        $fields = [
             'id'             => Request::getInt('id', 0, 'put'),
             'object_type'    => Request::getString('object_type', '', 'put'),
             'object_id'      => Request::getInt('object_id', 0, 'put'),
@@ -402,7 +402,7 @@ class Collectionsv1r0 extends ApiController
             'access'         => Request::getInt('access', 0, 'put'),
             'layout'         => Request::getWord('layout', 'grid', 'put'),
             'sort'           => Request::getString('sort', 'created', 'put')
-        );
+        ];
 
         $row = new Collection($fields['id']);
 
@@ -457,8 +457,8 @@ class Collectionsv1r0 extends ApiController
     {
         $this->requiresAuthentication();
 
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         if (count($ids) <= 0) {
             throw new Exception(Lang::txt('COM_COLLECTIONS_ERROR_MISSING_ID'), 500);

@@ -18,7 +18,7 @@ $base  = 'index.php?option=' . $this->option;
 $mode  = Request::getWord('mode', 'grid');
 
 if (!User::isGuest()) {
-    $foo = $this->editor('description', '', 35, 5, 'field_description', array('class' => 'minimal no-footer'));
+    $foo = $this->editor('description', '', 35, 5, 'field_description', ['class' => 'minimal no-footer']);
 }
 
 $this->css()

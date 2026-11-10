@@ -33,17 +33,17 @@ $cert = $this->row->certificateInfo();
 $allowedGroups = $this->row->allowedGroups();
 $allowedGroups = $allowedGroups ? implode(', ', $allowedGroups) : '';
 
-$nameidFormats = array(
+$nameidFormats = [
     'urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified'  => Lang::txt('COM_SAML_NAMEID_FORMAT_UNSPECIFIED'),
     'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress' => Lang::txt('COM_SAML_NAMEID_FORMAT_EMAIL'),
     'urn:oasis:names:tc:SAML:2.0:nameid-format:persistent'   => Lang::txt('COM_SAML_NAMEID_FORMAT_PERSISTENT')
-);
+];
 
-$nameidSources = array(
+$nameidSources = [
     'username' => Lang::txt('COM_SAML_NAMEID_SOURCE_USERNAME'),
     'email'    => Lang::txt('COM_SAML_NAMEID_SOURCE_EMAIL'),
     'id'       => Lang::txt('COM_SAML_NAMEID_SOURCE_ID')
-);
+];
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')); ?>">

@@ -52,42 +52,42 @@ class Comment extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'content'  => 'notempty',
         'entry_id' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'parent',
         'anonymous',
         'state',
         'modified',
         'modified_by'
-    );
+    ];
 
     /**
      * Fields to be parsed
      *
      * @var  array
      */
-    protected $parsed = array(
+    protected $parsed = [
         'content'
-    );
+    ];
 
     /**
      * Generates automatic state field value
@@ -165,14 +165,14 @@ class Comment extends Relational
         $property = "_{$field}Parsed";
 
         if (!isset($this->$property)) {
-            $params = array(
+            $params = [
                 'option'   => $this->get('option', Request::getCmd('option')),
                 'scope'    => $this->get('scope', 'blog'),
                 'pagename' => $this->get('alias'),
                 'pageid'   => 0,
                 'filepath' => $this->get('path'),
                 'domain'   => ''
-            );
+            ];
 
             $this->$property = Html::content('prepare', $this->get($field, ''), $params);
         }
@@ -272,7 +272,7 @@ class Comment extends Relational
      * @param   array  $filters  Filters to apply to query
      * @return  object
      */
-    public function replies($filters = array())
+    public function replies($filters = [])
     {
         if (!isset($filters['entry_id'])) {
             $filters['entry_id'] = $this->get('entry_id');
@@ -338,11 +338,11 @@ class Comment extends Relational
         $valid = parent::validate();
 
         if ($valid) {
-            $results = Event::trigger('content.onContentBeforeSave', array(
+            $results = Event::trigger('content.onContentBeforeSave', [
                 'com_blog.comment.content',
                 &$this,
                 $this->isNew()
-            ));
+            ]);
 
             foreach ($results as $result) {
                 if ($result === false) {

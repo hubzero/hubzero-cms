@@ -48,9 +48,9 @@ class RenamePluginEntry extends Macro
         if ($id = $this->db->loadResult()) {
             $query = $this->db->getQuery()
                 ->update($table)
-                ->set(array(
+                ->set([
                     'name' => $name
-                ))
+                ])
                 ->whereEquals($pk, $id)
                 ->toString();
 

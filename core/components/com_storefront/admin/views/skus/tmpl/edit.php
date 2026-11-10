@@ -242,7 +242,7 @@ $priceValue = $this->escape(stripslashes($this->row->getPrice()));
             // Product type specific meta options
 
             if ($this->pInfo->ptModel == 'software') {
-                $view = new \Hubzero\Component\View(array('name' => 'meta', 'layout' => 'sku-software'));
+                $view = new \Hubzero\Component\View(['name' => 'meta', 'layout' => 'sku-software']);
                 $view->parent = $this;
                 $view->skuMeta = $skuMeta;
                 $view->display();
@@ -429,7 +429,7 @@ $publishUpVal = ($publishUp && $publishUp != '0000-00-00 00:00:00')
                         'calendar',
                         'fields[publish_up]',
                         $publishUpVal,
-                        array('id' => 'field-publish_up')
+                        ['id' => 'field-publish_up']
                     ); ?>
                 </div>
 
@@ -446,7 +446,7 @@ $publishDownVal = ($publishDown && $publishDown != '0000-00-00 00:00:00')
                         'calendar',
                         'fields[publish_down]',
                         $publishDownVal,
-                        array('id' => 'field-publish_down')
+                        ['id' => 'field-publish_down']
                     ); ?>
                 </div>
             </fieldset>

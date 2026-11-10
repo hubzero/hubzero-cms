@@ -74,22 +74,22 @@ class Citations extends Base
         if ($viewname == 'curator') {
             // Output HTML
             $view = new \Hubzero\Component\View(
-                array(
+                [
                     'name'   => 'curation',
                     'layout' => 'block'
-                )
+                ]
             );
         } else {
             $name = $viewname == 'freeze' ? 'freeze' : 'draft';
 
             // Output HTML
             $view = new \Hubzero\Plugin\View(
-                array(
+                [
                     'folder'  => 'projects',
                     'element' => 'publications',
                     'name'    => $name,
                     'layout'  => 'wrapper'
-                )
+                ]
             );
         }
 
@@ -119,12 +119,12 @@ class Citations extends Base
 
         // Output HTML
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => $name,
                 'layout'  => 'citations'
-            )
+            ]
         );
 
         // Get selector styles
@@ -188,13 +188,13 @@ class Citations extends Base
         $citationFormat = $pub->config('citation_format', 'apa');
 
         // Plugin params
-        $plugin_params = array(
+        $plugin_params = [
             $pub->version->id,
             $doi,
             $citationFormat,
             $actor,
             true
-        );
+        ];
 
         // Attach citation
         $output = Event::trigger('projects.attachCitation', $plugin_params);
@@ -230,8 +230,8 @@ class Citations extends Base
      */
     public function addItem($manifest, $blockId, $pub, $actor = 0, $elementId = 0, $cid = 0)
     {
-        $cite = Request::getArray('cite', array(), 'post');
-        $cite = array_merge(array('id' => 0, 'type' => '', 'title' => ''), (array) $cite);
+        $cite = Request::getArray('cite', [], 'post');
+        $cite = array_merge(['id' => 0, 'type' => '', 'title' => ''], (array) $cite);
 
         $new  = $cite['id'] ? false : true;
 
@@ -325,11 +325,11 @@ class Citations extends Base
         $cid = $cid ? $cid : Request::getInt('cid', 0);
 
         // Plugin params
-        $plugin_params = array(
+        $plugin_params = [
             $pub->version->id,
             $cid,
             true
-        );
+        ];
 
         // Attach citation
         $output = Event::trigger('projects.unattachCitation', $plugin_params);
@@ -389,7 +389,7 @@ class Citations extends Base
 
         // Fall back
         if (!$manifest) {
-            $manifest = array(
+            $manifest = [
                 'name'         => 'citations',
                 'label'        => 'Citations',
                 'title'        => 'Citations to integral or companion resources',
@@ -397,9 +397,9 @@ class Citations extends Base
                 'draftTagline' => 'Cite integral or companion resources',
                 'about'        => '',
                 'adminTips'    => '',
-                'elements'     => array(),
-                'params'       => array('required' => 0, 'published_editing' => 1)
-            );
+                'elements'     => [],
+                'params'       => ['required' => 0, 'published_editing' => 1]
+            ];
 
             return json_decode(json_encode($manifest), false);
         }

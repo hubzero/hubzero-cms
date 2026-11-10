@@ -24,10 +24,10 @@ class Members extends Obj
      */
     public function sample()
     {
-        return array(
+        return [
             'header'  => 'members',
             'content' => 'username or id;username or id;username or id'
-        );
+        ];
     }
 
     /**
@@ -93,7 +93,7 @@ class Members extends Obj
         }
 
         // Add user to specified groups
-        $added = array();
+        $added = [];
         foreach ($record->members as $gid) {
             $member = User::getInstance($gid);
 

@@ -22,7 +22,7 @@ if (!$this->model->access('content')) {
 <div id="blab" class="miniblog">
     <form id="blogForm" method="post" class="focused" action="<?php echo Route::url($this->model->link()); ?>">
         <fieldset>
-            <?php echo $this->editor('comment', '', 5, 3, 'ca_base', array('class' => 'minimal no-footer')); ?>
+            <?php echo $this->editor('comment', '', 5, 3, 'ca_base', ['class' => 'minimal no-footer']); ?>
             <p id="blog-submitarea">
                 <span id="counter_number_blog" class="leftfloat mini"></span>
                 <input type="hidden" name="option" value="<?php echo $this->option; ?>" />

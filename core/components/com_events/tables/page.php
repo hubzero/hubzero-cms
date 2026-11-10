@@ -199,7 +199,7 @@ class Page extends Table
      * @param   array   $filters  Filters to construct query from
      * @return  integer
      */
-    public function getCount($filters = array())
+    public function getCount($filters = [])
     {
         $filters['limit'] = 0;
 
@@ -213,7 +213,7 @@ class Page extends Table
      * @param   array  $filters  Filters to construct query from
      * @return  array
      */
-    public function getRecords($filters = array())
+    public function getRecords($filters = [])
     {
         $this->_db->setQuery($this->buildQuery($filters));
         return $this->_db->loadObjectList();

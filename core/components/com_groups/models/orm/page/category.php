@@ -41,10 +41,10 @@ class Category extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'gidNumber' => 'positive|nonzero',
         'title'     => 'notempty'
-    );
+    ];
 
     /**
      * Get parent group

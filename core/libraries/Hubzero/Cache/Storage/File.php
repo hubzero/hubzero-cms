@@ -29,7 +29,7 @@ class File extends None
      *
      * @var  array
      */
-    protected static $skip = array(
+    protected static $skip = [
         '.svn',
         'cvs',
         '.ds_store',
@@ -37,7 +37,7 @@ class File extends None
         'index.html',
         'site.css',
         'site.less.cache'
-    );
+    ];
 
     /**
      * Create a new file cache store instance.
@@ -45,7 +45,7 @@ class File extends None
      * @param   array  $options
      * @return  void
      */
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
         parent::__construct($options);
 
@@ -106,11 +106,11 @@ class File extends None
     {
         $file = $this->path($key);
 
-        $data = array(
+        $data = [
             'time'  => time(),
             'value' => $value,
             'ttl'   => $this->expiration($minutes)
-        );
+        ];
 
         return $this->writeCacheFile($file, $data);
     }
@@ -289,7 +289,7 @@ class File extends None
     {
         $path = $this->directory;
 
-        $data = array();
+        $data = [];
 
         $dirIterator = new DirectoryIterator($path);
         foreach ($dirIterator as $folder) {

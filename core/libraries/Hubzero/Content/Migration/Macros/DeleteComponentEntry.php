@@ -39,7 +39,7 @@ class DeleteComponentEntry extends Macro
             // hub's, and the menu leaves it out anyway once the extension row
             // is gone.
             if ($this->db->tableExists('#__menu') && $this->db->tableExists('#__menu_types')) {
-                $routes = new \Hubzero\Menu\ComponentRoute($this->db, array($this, 'log'));
+                $routes = new \Hubzero\Menu\ComponentRoute($this->db, [$this, 'log']);
                 $routes->remove($name);
             }
 
@@ -146,12 +146,12 @@ class DeleteComponentEntry extends Macro
         // the children of this node we also know the right value.
         $query = $this->db->getQuery()
             ->update('#__menu')
-            ->set(array(
+            ->set([
                 'lft'   => (int) $leftId,
                 'rgt'   => (int) $rightId,
                 'level' => (int) $level,
                 'path'  => $path
-            ))
+            ])
             ->whereEquals('id', (int) $parentId)
             ->toString();
         $this->db->setQuery($query);

@@ -32,14 +32,14 @@ class Application extends Obj
      * @param   array   $data  Data for the form.
      * @return  object
      */
-    public function getForm($data = array())
+    public function getForm($data = [])
     {
         $file = __DIR__ . '/forms/application.xml';
         $file = Filesystem::cleanPath($file);
 
         Form::addFieldPath(__DIR__ . '/fields');
 
-        $form = new Form('com_config.application', array('control' => 'hzform'));
+        $form = new Form('com_config.application', ['control' => 'hzform']);
 
         if (!$form->loadFile($file, false, '//form')) {
             $this->setError(Lang::txt('JERROR_LOADFILE_FAILED'));
@@ -170,7 +170,7 @@ class Application extends Obj
 
         // Save the text filters
         if (isset($data['filters'])) {
-            $registry = new Registry(array('filters' => $data['filters']));
+            $registry = new Registry(['filters' => $data['filters']]);
 
             $extension = Extension::oneByElement('com_config');
 
@@ -196,7 +196,7 @@ class Application extends Obj
         //       options that were explicitely set to blank and merging
         //       will return the previous, filled-in value
         foreach ($prev as $key => $vals) {
-            $values = isset($data[$key]) ? $data[$key] : array();
+            $values = isset($data[$key]) ? $data[$key] : [];
 
             foreach ($vals as $k => $v) {
                 if (!isset($values[$k])) {
@@ -211,7 +211,7 @@ class Application extends Obj
                     if (is_numeric($v)) {
                         $values[$k] = 0;
                     } elseif (is_array($v)) {
-                        $values[$k] = array();
+                        $values[$k] = [];
                     } else {
                         $values[$k] = '';
                     }
@@ -293,7 +293,7 @@ class Application extends Obj
         // Clear cache of com_config component.
         Cache::clean('_system');
 
-        $result = Event::trigger('onApplicationBeforeSave', array($data));
+        $result = Event::trigger('onApplicationBeforeSave', [$data]);
 
         // Store the data.
         if (in_array(false, $result, true)) {
@@ -304,7 +304,7 @@ class Application extends Obj
         $return = $this->writeConfigFile($data);
 
         // Trigger the after save event.
-        Event::trigger('onApplicationAfterSave', array($data));
+        Event::trigger('onApplicationAfterSave', [$data]);
 
         return $result;
     }

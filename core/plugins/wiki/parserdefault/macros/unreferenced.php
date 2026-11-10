@@ -23,7 +23,7 @@ class Unreferenced extends WikiMacro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['wiki'] = 'Displays a notice that a section is unreferenced. Accepts a date as the only argument.';
         $txt['html'] = '<p>Displays a notice that a section is unreferenced. Accepts a date as the only argument.</p>';
         return $txt['html'];

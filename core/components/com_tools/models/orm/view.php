@@ -42,7 +42,7 @@ class View extends Relational
      *
      * @var  array
      **/
-    protected $rules = array(
+    protected $rules = [
         'sessnum' => 'positive|nonzero'
-    );
+    ];
 }

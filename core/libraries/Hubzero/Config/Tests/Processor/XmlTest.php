@@ -95,10 +95,10 @@ class XmlTest extends TestCase
         $data->app->sef_groups = 0;
         $data->app->feed_limit = 10;
         $data->app->feed_email = "author";
-        $data->app->ratelimit = array(
+        $data->app->ratelimit = [
             'short' => 500.1,
             'long' => 5000.7
-        );
+        ];
 
         $data->seo = new stdClass();
         $data->seo->sef = 1;
@@ -109,10 +109,10 @@ class XmlTest extends TestCase
         $data->seo->sitename_pagetitles = 0;
 
         $this->obj = $data;
-        $this->arr = array(
+        $this->arr = [
             'app' => (array) $data->app,
             'seo' => (array) $data->seo
-        );
+        ];
 
         $this->processor = new Xml();
 
@@ -183,12 +183,12 @@ class XmlTest extends TestCase
         $this->assertEquals($this->str, $result);
 
         // Test object to string conversion
-        $result = $this->processor->objectToString($this->obj, array(
+        $result = $this->processor->objectToString($this->obj, [
             'name' => 'config',
             'nodeName' => 'setting'
-        ));
+        ]);
 
-        $str = str_replace(array("\n", "\t"), '', $this->str);
+        $str = str_replace(["\n", "\t"], '', $this->str);
         $str = str_replace('<?xml version="1.0"?>', "<?xml version=\"1.0\"?>\n", $str);
 
         $this->assertEquals($str, trim($result));

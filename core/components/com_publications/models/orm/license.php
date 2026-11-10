@@ -42,29 +42,29 @@ class License extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'title' => 'notempty'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'name',
         'title'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'ordering',
         'icon'
-    );
+    ];
 
     /**
      * Generates automatic ordering field value
@@ -249,7 +249,7 @@ class License extends Relational
         $db = App::get('db');
         $query = $db->getQuery()
             ->update($this->getTableName())
-            ->set(array('main' => 1))
+            ->set(['main' => 1])
             ->where('id', '=', $this->get('id'))
             ->toString();
 
@@ -259,7 +259,7 @@ class License extends Relational
 
         $query = $db->getQuery()
             ->update($this->getTableName())
-            ->set(array('main' => 0))
+            ->set(['main' => 0])
             ->where('id', '!=', $this->get('id'))
             ->toString();
 

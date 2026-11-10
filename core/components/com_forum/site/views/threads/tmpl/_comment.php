@@ -116,7 +116,7 @@ if ($this->comment->isReported()) {
                             <div class="names">
                                 <?php
                                     $nameArray = preg_split("#/#", $userNameLikesArray);
-                                    $links = array();
+                                    $links = [];
                                 foreach ($nameArray as $nameString) {
                                     // Records are "percentEncodedName#id": the name is encoded
                                     // where the list is built above, so neither '#' nor '/' can
@@ -258,7 +258,7 @@ if ($this->comment->isReported()) {
                                 <label for="field_<?php echo $this->comment->get('id'); ?>_comment">
                                     <span class="label-text"><?php echo Lang::txt('COM_FORUM_FIELD_COMMENTS'); ?></span>
                                     <?php
-                                    echo $this->editor('fields[comment]', '', 35, 4, 'field_' . $this->comment->get('id') . '_comment', array('class' => 'form-control minimal no-footer'));
+                                    echo $this->editor('fields[comment]', '', 35, 4, 'field_' . $this->comment->get('id') . '_comment', ['class' => 'form-control minimal no-footer']);
                                     ?>
                                 </label>
                             </div>

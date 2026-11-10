@@ -20,7 +20,7 @@ $this->css('introduction.css', 'system')
     <h2><?php echo $this->title; ?></h2>
 
     <?php
-    $citationLinks = array();
+    $citationLinks = [];
     if ($this->allow_import == 1 || ($this->allow_import == 2 && $this->isAdmin)) {
         $citationLinks[] = '<li><a class="btn icon-add" href="' . Route::url('index.php?option=' . $this->option . '&task=add') . '">' . Lang::txt('COM_CITATIONS_SUBMIT_CITATION') . '</a></li>';
     }
@@ -94,7 +94,7 @@ $this->css('introduction.css', 'system')
 $yearlystats = $this->yearlystats;
 $cls = 'even';
 $tot = 0;
-$rows = array();
+$rows = [];
 foreach ($yearlystats as $year => $amt) {
     $cls = ($cls == 'even') ? 'odd' : 'even';
 
@@ -133,11 +133,11 @@ $html .= '</table>' . "\n";
 
 $typestats = $this->typestats;
 $cls = 'even';
-$rows = array();
+$rows = [];
 $j = 0;
-$data_arr = array();
-$data_arr['text'] = array();
-$data_arr['hits'] = array();
+$data_arr = [];
+$data_arr['text'] = [];
+$data_arr['hits'] = [];
 foreach ($typestats as $type => $stat) {
     $data_arr['text'][$j] = trim($type);
     $data_arr['hits'][$j] = $stat;

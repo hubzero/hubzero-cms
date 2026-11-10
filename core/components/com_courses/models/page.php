@@ -53,20 +53,20 @@ class Page extends Base
     public function content($as = 'parsed', $shorten = 0)
     {
         $as = strtolower($as);
-        $options = array();
+        $options = [];
 
         switch ($as) {
             case 'parsed':
                 $content = $this->get('content_parsed', null);
                 if ($content === null) {
-                    $config = array(
+                    $config = [
                         'option'   => Request::getCmd('option', 'com_courses'),
                         'scope'    => Request::getString('gid', ''),
                         'pagename' => $this->get('url'),
                         'pageid'   => '',
                         'filepath' => $this->buildFilePath(),
                         'domain'   => $this->get('course_id')
-                    );
+                    ];
                     if ($this->get('offering_id')) {
                         $courseAlias = Course::getInstance($this->get('course_id'))->get('alias');
                         $offeringAlias = Offering::getInstance($this->get('offering_id'))->get('alias');
@@ -79,11 +79,11 @@ class Page extends Base
                     }
 
                     $content = $this->get('content');
-                    $this->importPlugin('content')->trigger('onContentPrepare', array(
+                    $this->importPlugin('content')->trigger('onContentPrepare', [
                         $this->_context,
                         &$this,
                         &$config
-                    ));
+                    ]);
 
                     $this->set('content_parsed', (string) $this->get('content'));
                     $this->set('content', $content);

@@ -74,10 +74,10 @@ namespace Hubzero\Tests {
             ?string $media = null,
             array $attribs = []
         ): void {
-            $this->stylesheets[] = array(
+            $this->stylesheets[] = [
                 'url' => $url,
                 'attribs' => $attribs
-            );
+            ];
         }
 
         public function instance(): object
@@ -150,7 +150,7 @@ namespace Hubzero\Tests {
 
             $ref = new \ReflectionProperty(Behavior::class, 'loaded');
             $ref->setAccessible(true);
-            $ref->setValue(null, array());
+            $ref->setValue(null, []);
         }
 
         #[Test]

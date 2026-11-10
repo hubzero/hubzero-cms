@@ -24,7 +24,7 @@ class Help extends Base implements CommandInterface
      * @var array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_commands = array();
+    protected $_commands = [];
 
     /**
      * Default (required) command
@@ -38,16 +38,16 @@ class Help extends Base implements CommandInterface
         $this->output
             ->addLine(
                 'Muse: HUBzero Command Line Utility',
-                array(
+                [
                     'color'  => 'blue',
                     'format' => 'underline'
-                )
+                ]
             )
             ->addSpacer()
             ->addString('Usage: muse ')
-            ->addString('[command]', array('color' => 'green'))
-            ->addString('[:namespace] ', array('color' => 'blue'))
-            ->addString('[task] ', array('color' => 'yellow'))
+            ->addString('[command]', ['color' => 'green'])
+            ->addString('[:namespace] ', ['color' => 'blue'])
+            ->addString('[task] ', ['color' => 'yellow'])
             ->addString('[options]')
             ->addSpacer()
             ->addSpacer()
@@ -108,7 +108,7 @@ class Help extends Base implements CommandInterface
         $cur  = $root . ((!empty($dir)) ? DS . $dir : '');
 
         // Get files from command directory to use in list
-        $files = array_diff(scandir($cur), array('..', '.'));
+        $files = array_diff(scandir($cur), ['..', '.']);
 
         foreach ($files as $file) {
             if (is_file($cur . DS . $file) && strpos($file, '.php') !== false) {
@@ -144,11 +144,11 @@ class Help extends Base implements CommandInterface
      **/
     private function mergeCommands($commands)
     {
-        $parsed = array();
+        $parsed = [];
 
         // Loop through commands
         foreach ($commands as $command) {
-            $bits = array();
+            $bits = [];
 
             // Break up namespaced commands
             if (strpos($command, '\\')) {
@@ -188,10 +188,10 @@ class Help extends Base implements CommandInterface
                 if (is_string($element) && !empty($path)) {
                     $this->output->addLine(
                         $element,
-                        array(
+                        [
                             'color'       => 'blue',
                             'indentation' => $ind + 2
-                        )
+                        ]
                     );
                 }
 
@@ -201,10 +201,10 @@ class Help extends Base implements CommandInterface
         } else {
             $this->output->addLine(
                 $entry,
-                array(
+                [
                     'color'       => (($ind > 3) ? 'blue' : 'green'),
                     'indentation' => $ind
-                )
+                ]
             );
 
             // Increment indentation
@@ -224,10 +224,10 @@ class Help extends Base implements CommandInterface
                 ) {
                     $this->output->addLine(
                         $method->name,
-                        array(
+                        [
                             'color'       => 'yellow',
                             'indentation' => $ind
-                        )
+                        ]
                     );
                 }
             }

@@ -27,7 +27,7 @@ $fields->loadFile($manifest, true, 'config/fields');
 
 // This is done first as the 'renderModule' method loads the language file
 // which is needed when rendering the params below
-$module = Module::render($this->module, array('style' => 'none'));
+$module = Module::render($this->module, ['style' => 'none']);
 
 // create settings sub view
 $view = $this->view('parameters');

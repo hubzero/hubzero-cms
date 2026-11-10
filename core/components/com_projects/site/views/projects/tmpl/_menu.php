@@ -13,7 +13,7 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$assetTabs = array();
+$assetTabs = [];
 
 // Sort tabs so that asset tabs are together
 foreach ($this->tabs as $tab) {
@@ -144,7 +144,7 @@ $counts = $this->model->get('counts');
 </ul>
 <ul>
     <?php
-        $integrations = Event::trigger('projects.onProjectIntegrationList', array($this->model));
+        $integrations = Event::trigger('projects.onProjectIntegrationList', [$this->model]);
         $integrations = array_filter($integrations);
     ?>
     <?php foreach ($integrations as $integration) : ?>

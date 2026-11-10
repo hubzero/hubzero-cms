@@ -17,7 +17,7 @@ class Integrity
     {
         $return = new \stdClass();
         $return->status = 'ok';
-        $return->errors = array();
+        $return->errors = [];
 
         //print_r($sku);
 
@@ -55,7 +55,7 @@ class Integrity
     {
         $return = new \stdClass();
         $return->status = 'ok';
-        $return->errors = array();
+        $return->errors = [];
 
         // Check if there are other collections that have the same alias
         try {

@@ -24,7 +24,7 @@ trait PagePathway
      */
     protected function appendPagePathway()
     {
-        $parents = array();
+        $parents = [];
 
         if ($this->page->get('parent')) {
             $parents = $this->page->ancestors();
@@ -44,7 +44,7 @@ trait PagePathway
 
         // Off by default, since a site or group template may already show the pathway
         if ($parents && !Settings::get('wiki_crumbs', 0, $this->page->get('scope'), $this->page->get('scope_id'))) {
-            $parents = array();
+            $parents = [];
         }
 
         return $parents;

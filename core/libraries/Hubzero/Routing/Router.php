@@ -30,17 +30,17 @@ class Router
      *
      * @var  array
      */
-    protected $vars = array();
+    protected $vars = [];
 
     /**
      * An array of rules
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'build' => null,
         'parse' => null
-    );
+    ];
 
     /**
      * Class constructor
@@ -48,7 +48,7 @@ class Router
      * @param   array  $options  Array of options
      * @return  void
      */
-    public function __construct($vars = array(), $prefix = '')
+    public function __construct($vars = [], $prefix = '')
     {
         $this->flush()->bind($vars);
 
@@ -77,7 +77,7 @@ class Router
 
         // Build route.
         $uri = $this->build($url);
-        $url = $uri->toString(array('scheme', 'host', 'port', 'path', 'query', 'fragment'));
+        $url = $uri->toString(['scheme', 'host', 'port', 'path', 'query', 'fragment']);
 
         // Replace spaces.
         $url = preg_replace('/\s/u', '%20', $url);
@@ -184,11 +184,11 @@ class Router
      */
     public function flush()
     {
-        $this->rules = array(
+        $this->rules = [
             'build' => new Rules(),
             'parse' => new Rules()
-        );
-        $this->vars = array();
+        ];
+        $this->vars = [];
 
         return $this;
     }
@@ -217,7 +217,7 @@ class Router
      * @param   boolean  $merge  If True, the array will be merged instead of overwritten
      * @return  object
      */
-    public function bind($vars = array(), $merge = true)
+    public function bind($vars = [], $merge = true)
     {
         if ($merge) {
             $this->vars = array_merge($this->vars, $vars);
@@ -284,7 +284,7 @@ class Router
 
         // Create full URL if we are only appending variables to it
         if (substr($url, 0, 1) == '&') {
-            $vars = array();
+            $vars = [];
 
             if (strpos($url, '&amp;') !== false) {
                 $url = str_replace('&amp;', '&', $url);

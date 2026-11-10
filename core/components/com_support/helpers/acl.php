@@ -240,13 +240,13 @@ class ACL extends Obj
             }
         }
         if (!$set) {
-            $l = array(
+            $l = [
                 'aro_model'         => 'user',
                 'aro_foreign_key'   => $this->_user->get('id'),
                 'aco_model'         => $aco,
                 'aco_foreign_key'   => $aco_foreign_key,
                 'action_' . $action => $permission
-            );
+            ];
             array_push($this->_raw_data, $l);
         }
     }

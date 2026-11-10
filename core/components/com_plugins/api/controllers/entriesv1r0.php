@@ -111,14 +111,14 @@ class Entriesv1r0 extends ApiController
 
         $model = Plugin::all();
 
-        $filters = array(
+        $filters = [
             'folder'   => Request::getString('folder', ''),
             'enabled'  => Request::getInt('enabled', 0),
             'access'   => Request::getInt('access', 1)
-        );
+        ];
 
         $response = new stdClass();
-        $response->plugins = array();
+        $response->plugins = [];
 
         $model = Plugin::all()
             ->whereEquals('enabled', $filters['enabled'])
@@ -202,7 +202,7 @@ class Entriesv1r0 extends ApiController
             App::abort(403, 'Not Authorized');
         }
 
-        $fields = array(
+        $fields = [
             'type'           => 'plugin',
             'name'           => Request::getString('name', null, 'post'),
             'element'        => Request::getString('element', null, 'post'),
@@ -212,7 +212,7 @@ class Entriesv1r0 extends ApiController
             'access'         => Request::getInt('access', 1, 'post'),
             'protected'      => 0,
             'params'         => Request::getString('params', null, 'post', 'none')
-        );
+        ];
 
         $row = Plugin::blank();
 
@@ -332,7 +332,7 @@ class Entriesv1r0 extends ApiController
             App::abort(404, Lang::txt('COM_PLUGINS_ERROR_MISSING_RECORD'));
         }
 
-        $fields = array(
+        $fields = [
             'extension_id' => $row->get('extension_id'),
             'type'         => 'plugin',
             'name'         => Request::getString('name', $row->get('name')),
@@ -343,7 +343,7 @@ class Entriesv1r0 extends ApiController
             'access'       => Request::getInt('access', $row->get('access')),
             'protected'    => $row->get('protected'),
             'params'       => Request::getString('params', $row->get('params'))
-        );
+        ];
 
         if (!$row->set($fields)) {
             App::abort(422, Lang::txt('COM_PLUGINS_ERROR_BINDING_DATA'));
@@ -379,8 +379,8 @@ class Entriesv1r0 extends ApiController
             App::abort(403, 'Not Authorized');
         }
 
-        $ids = Request::getArray('extension_id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('extension_id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         if (count($ids) <= 0) {
             App::abort(500, Lang::txt('COM_PLUGINS_ERROR_MISSING_ID'));
@@ -446,7 +446,7 @@ class Entriesv1r0 extends ApiController
             $event = $folder . '.' . $event;
         }
 
-        $results = Event::trigger($event, array());
+        $results = Event::trigger($event, []);
 
         $this->send($results);
     }

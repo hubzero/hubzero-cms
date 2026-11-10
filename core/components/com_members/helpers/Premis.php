@@ -29,15 +29,15 @@ class Premis
      */
     public static function doRegistration($user, $courses)
     {
-        $messages = array();
+        $messages = [];
 
         // Validate required fields
         if (empty($user['email'])) {
-            return array('status' => 'error', 'message' => 'No email address provided.');
+            return ['status' => 'error', 'message' => 'No email address provided.'];
         }
 
         if (empty($user['fName']) || empty($user['lName'])) {
-            return array('status' => 'error', 'message' => 'First and last name are required.');
+            return ['status' => 'error', 'message' => 'First and last name are required.'];
         }
 
         // Check if user already exists by email
@@ -50,10 +50,10 @@ class Premis
             $member = self::createUser($user);
 
             if (!$member || !$member->get('id')) {
-                return array(
+                return [
                     'status' => 'error',
                     'message' => 'Failed to create user account for ' . $user['email'] . '.'
-                );
+                ];
             }
 
             $messages[] = 'User created (ID: ' . $member->get('id') . ').';
@@ -73,10 +73,10 @@ class Premis
             $messages = array_merge($messages, $dropResult);
         }
 
-        return array(
+        return [
             'status' => 'ok',
             'message' => implode(' ', $messages)
-        );
+        ];
     }
 
     /**
@@ -108,7 +108,7 @@ class Premis
         // Set default access group
         $config = Component::params('com_members');
         $newUsertype = $config->get('new_usertype', 2);
-        $member->set('accessgroups', array($newUsertype));
+        $member->set('accessgroups', [$newUsertype]);
         $member->set('access', 5);
 
         // Set home directory
@@ -174,7 +174,7 @@ class Premis
      */
     protected static function enrollInCourses($userId, $courses)
     {
-        $messages = array();
+        $messages = [];
 
         $aliases = array_map('trim', explode(',', $courses));
 
@@ -221,7 +221,7 @@ class Premis
      */
     protected static function dropFromCourses($userId, $courses)
     {
-        $messages = array();
+        $messages = [];
 
         $aliases = array_map('trim', explode(',', $courses));
 

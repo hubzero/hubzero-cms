@@ -55,18 +55,18 @@ class Doi extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'rid' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'doi_shoulder'
-    );
+    ];
 
     /**
      * Generates automatic doi_shoulder
@@ -139,7 +139,7 @@ class Doi extends Relational
      * @param   array   $metadata  Metadata
      * @return  mixed   False if error, string on success
      */
-    public function register($authors, $config, $metadata = array())
+    public function register($authors, $config, $metadata = [])
     {
         if (empty($metadata)) {
             return false;

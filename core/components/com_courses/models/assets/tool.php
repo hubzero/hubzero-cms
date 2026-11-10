@@ -29,10 +29,10 @@ class Tool extends Content
      *
      * @var array
      **/
-    protected static $info = array(
+    protected static $info = [
         'action_message' => 'Tool',
-        'responds_to'    => array('tool')
-    );
+        'responds_to'    => ['tool']
+    ];
 
     /**
      * Create method for this handler
@@ -67,15 +67,15 @@ class Tool extends Content
         // Make sure upload directory exists and is writable
         if (!is_dir($uploadDirectory)) {
             if (!Filesystem::makeDirectory($uploadDirectory)) {
-                return array(
+                return [
                     'error' => 'Server error. Unable to create upload directory'
-                );
+                ];
             }
             // Set the right permissions on the folder for the tools to access
             Filesystem::setPermissions($uploadDirectory, '0664', '02775');
         }
         if (!is_writable($uploadDirectory)) {
-            return array('error' => 'Server error. Upload directory isn\'t writable');
+            return ['error' => 'Server error. Upload directory isn\'t writable'];
         }
 
 
@@ -107,11 +107,11 @@ class Tool extends Content
 
                 // Check to make sure we have a file and its not too big
                 if ($size == 0) {
-                    return array('error' => 'File is empty');
+                    return ['error' => 'File is empty'];
                 }
                 if ($size > $sizeLimit) {
                     $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
-                    return array('error' => "File is too large. Max file upload size is $max");
+                    return ['error' => "File is too large. Max file upload size is $max"];
                 }
 
 
@@ -125,11 +125,11 @@ class Tool extends Content
                 $tmpFileName = $_FILES['files']['tmp_name'][$i];
                 if (!Filesystem::isSafe($tmpFileName)) {
                     // Scan failed, return an error
-                    return array('error' => 'File rejected because the anti-virus scan failed.');
+                    return ['error' => 'File rejected because the anti-virus scan failed.'];
                 }
 
                 if (!$move = move_uploaded_file($_FILES['files']['tmp_name'][$i], $target_path)) {
-                    return array('error' => 'Move file failed');
+                    return ['error' => 'Move file failed'];
                 }
                 // Set the file permissions for the tool to be able to access it
                 chmod($target_path, 0664);
@@ -142,7 +142,7 @@ class Tool extends Content
         // file dropped straight onto the asset, carries no project at all, so
         // there is nothing to copy and no project to authorize against.
         if (trim($selectedItems) === '') {
-            $return['projectFiles'] = array();
+            $return['projectFiles'] = [];
             return $return;
         }
 
@@ -153,11 +153,11 @@ class Tool extends Content
         // the same: membership (which read-only members also hold), not the
         // stricter content right
         if (!$project->get('id') || !$project->access('member')) {
-            return array('error' => 'Not authorized to access this project');
+            return ['error' => 'Not authorized to access this project'];
         }
         $repoPath = $project->repo()->get('path');
-        $filePaths = array();
-        $return['projectFiles'] = array();
+        $filePaths = [];
+        $return['projectFiles'] = [];
         foreach ($toAttach as $identifier) {
             if ($conFile = $this->checkForRemoteConnection($identifier)) {
                 if ($tempFile = $this->writeRemoteTempFile($conFile)) {
@@ -180,7 +180,7 @@ class Tool extends Content
                 if (Filesystem::copy($filePath, $targetPath)) {
                     $lastPos = strrpos($identifier, '/') ? strrpos($identifier, '/') + 1 : 0;
                     $name = empty($name) ? substr($identifier, $lastPos) : $name;
-                    $return['projectFiles'][] = array('name' => $name);
+                    $return['projectFiles'][] = ['name' => $name];
                 }
             }
 
@@ -218,7 +218,7 @@ class Tool extends Content
      */
     private function checkForRemoteConnection($identifier)
     {
-        $matches = array();
+        $matches = [];
 
         if (preg_match('/^([0-9]*):\/\//', $identifier, $matches)) {
             if (isset($matches[1])) {
@@ -273,8 +273,8 @@ class Tool extends Content
      */
     public function edit($asset)
     {
-        $options = array('scope' => 'tool');
-        return array('type' => 'default', 'options' => $options);
+        $options = ['scope' => 'tool'];
+        return ['type' => 'default', 'options' => $options];
     }
 
     /**
@@ -286,9 +286,9 @@ class Tool extends Content
     public function files($asset)
     {
         $path = self::getToolDirectory() . $asset->get('path') . '/';
-        $files = array();
+        $files = [];
         if ($path && is_dir($path)) {
-            $files = array_diff(scandir($path), array('..', '.', '.DS_Store'));
+            $files = array_diff(scandir($path), ['..', '.', '.DS_Store']);
         }
         return $files;
     }

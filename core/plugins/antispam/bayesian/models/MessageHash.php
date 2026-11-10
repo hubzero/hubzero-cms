@@ -52,9 +52,9 @@ class MessageHash extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'hash' => 'notempty'
-    );
+    ];
 
     /**
      * Load a record by hash

@@ -73,26 +73,26 @@ class Pages extends Plugin
         }
 
         // Section specific pages
-        $total = $offering->pages(array(
+        $total = $offering->pages([
             'count'       => true,
             'section_id'  => $offering->section()->get('id'),
             'active'      => 1
-        ), true);
+        ], true);
 
         // Offering specific pages
-        $total += $offering->pages(array(
+        $total += $offering->pages([
             'count'       => true,
             'section_id'  => 0,
             'active'      => 1
-        ), true);
+        ], true);
 
         // All course pages
-        $total += $offering->pages(array(
+        $total += $offering->pages([
             'count'       => true,
             'course_id'   => 0,
             'offering_id' => 0,
             'active'      => 1
-        ), true);
+        ], true);
 
         // Determine if we need to return any HTML (meaning this is the active plugin)
         if ($response->get('name') == $active) {
@@ -175,23 +175,23 @@ class Pages extends Plugin
         $active = Request::getString('unit', '');
 
         // Section specific pages
-        $spages = $this->view->offering->pages(array(
+        $spages = $this->view->offering->pages([
             'section_id'  => $this->view->offering->section()->get('id'),
             'active'      => 1
-        ), true);
+        ], true);
 
         // Offering specific pages
-        $opages = $this->view->offering->pages(array(
+        $opages = $this->view->offering->pages([
             'section_id'  => 0,
             'active'      => 1
-        ), true);
+        ], true);
 
         // All course pages
-        $gpages = $this->view->offering->pages(array(
+        $gpages = $this->view->offering->pages([
             'course_id'   => 0,
             'offering_id' => 0,
             'active'      => 1
-        ), true);
+        ], true);
 
         $pages = array_merge($spages, $opages);
         $pages = array_merge($pages, $gpages);
@@ -248,7 +248,7 @@ class Pages extends Plugin
         if (!$this->view->model) {
             $this->view->model =  new \Components\Courses\Models\Page($page);
         }
-        $this->view->notifications = array();
+        $this->view->notifications = [];
 
         if ($this->view->model->exists()) {
             // Ensure section managers can only edit section pages
@@ -258,20 +258,20 @@ class Pages extends Plugin
         }
 
         // Section specific pages
-        $spages = $this->view->offering->pages(array(
+        $spages = $this->view->offering->pages([
             'section_id' => $this->view->offering->section()->get('id')
-        ), true);
+        ], true);
 
         // Offering specific pages
-        $opages = $this->view->offering->pages(array(
+        $opages = $this->view->offering->pages([
             'section_id' => 0
-        ), true);
+        ], true);
 
         // All course pages
-        $gpages = $this->view->offering->pages(array(
+        $gpages = $this->view->offering->pages([
             'course_id'   => 0,
             'offering_id' => 0
-        ), true);
+        ], true);
 
         $pages = array_merge($spages, $opages);
         $pages = array_merge($pages, $gpages);
@@ -300,7 +300,7 @@ class Pages extends Plugin
         // Check for request forgeries
         Request::checkToken();
 
-        $page = Request::getArray('fields', array(), 'post');
+        $page = Request::getArray('fields', [], 'post');
 
         $pageId    = isset($page['id']) ? (int) $page['id'] : 0;
         $offering  = $this->view->offering;
@@ -395,7 +395,7 @@ class Pages extends Plugin
         if (User::isGuest()) {
             ob_clean();
             header('Content-type: text/plain');
-            echo json_encode(array('error' => Lang::txt('PLG_COURSES_PAGES_ERROR_LOGIN_NOTICE')));
+            echo json_encode(['error' => Lang::txt('PLG_COURSES_PAGES_ERROR_LOGIN_NOTICE')]);
             exit();
         }
 
@@ -403,7 +403,7 @@ class Pages extends Plugin
         if (!$this->view->offering->access('manage', 'section')) {
             ob_clean();
             header('Content-type: text/plain');
-            echo json_encode(array('error' => Lang::txt('PLG_COURSES_PAGES_ERROR_LOGIN_NOTICE')));
+            echo json_encode(['error' => Lang::txt('PLG_COURSES_PAGES_ERROR_LOGIN_NOTICE')]);
             exit();
         }
 
@@ -429,7 +429,7 @@ class Pages extends Plugin
         } else {
             ob_clean();
             header('Content-type: text/plain');
-            echo json_encode(array('error' => Lang::txt('PLG_COURSES_PAGES_ERROR_NO_FILE_PROVIDED')));
+            echo json_encode(['error' => Lang::txt('PLG_COURSES_PAGES_ERROR_NO_FILE_PROVIDED')]);
             exit();
         }
 
@@ -440,7 +440,7 @@ class Pages extends Plugin
             if (!Filesystem::makeDirectory($path)) {
                 ob_clean();
                 header('Content-type: text/plain');
-                echo json_encode(array('error' => Lang::txt('PLG_COURSES_PAGES_ERROR_UNABLE_TO_UPLOAD')));
+                echo json_encode(['error' => Lang::txt('PLG_COURSES_PAGES_ERROR_UNABLE_TO_UPLOAD')]);
                 exit();
             }
         }
@@ -448,7 +448,7 @@ class Pages extends Plugin
         if (!is_writable($path)) {
             ob_clean();
             header('Content-type: text/plain');
-            echo json_encode(array('error' => Lang::txt('PLG_COURSES_PAGES_ERROR_UPLOAD_DIR_NOT_WRITABLE')));
+            echo json_encode(['error' => Lang::txt('PLG_COURSES_PAGES_ERROR_UPLOAD_DIR_NOT_WRITABLE')]);
             exit();
         }
 
@@ -456,7 +456,7 @@ class Pages extends Plugin
         if ($size == 0) {
             ob_clean();
             header('Content-type: text/plain');
-            echo json_encode(array('error' => Lang::txt('File is empty')));
+            echo json_encode(['error' => Lang::txt('File is empty')]);
             exit();
         }
 
@@ -464,7 +464,7 @@ class Pages extends Plugin
             $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
             ob_clean();
             header('Content-type: text/plain');
-            echo json_encode(array('error' => Lang::txt('PLG_COURSES_PAGES_ERROR_FILE_TOO_LARGE', $max)));
+            echo json_encode(['error' => Lang::txt('PLG_COURSES_PAGES_ERROR_FILE_TOO_LARGE', $max)]);
             exit();
         }
 
@@ -490,7 +490,7 @@ class Pages extends Plugin
         if (!empty($allowed) && !in_array(strtolower($ext), $allowed)) {
             ob_clean();
             header('Content-type: text/plain');
-            echo json_encode(array('error' => Lang::txt('PLG_COURSES_PAGES_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed))));
+            echo json_encode(['error' => Lang::txt('PLG_COURSES_PAGES_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed))]);
             exit();
         }
 
@@ -515,7 +515,7 @@ class Pages extends Plugin
 
             ob_clean();
             header('Content-type: text/plain');
-            echo json_encode(array('error' => Lang::txt('File rejected because the anti-virus scan failed.')));
+            echo json_encode(['error' => Lang::txt('File rejected because the anti-virus scan failed.')]);
             // exit like every other branch: returning let the plugin go on to
             // render its page layout (no $page set) and the uploader got a 500
             exit();
@@ -523,11 +523,11 @@ class Pages extends Plugin
 
         ob_clean();
         header('Content-type: text/plain');
-        echo json_encode(array(
+        echo json_encode([
             'success'   => true,
             'file'      => $filename . '.' . $ext,
             'directory' => str_replace(PATH_CORE, '', $path)
-        ));
+        ]);
         exit();
     }
 
@@ -564,7 +564,7 @@ class Pages extends Plugin
         }
 
         // Incoming file
-        $file = Request::getArray('upload', array(), 'files');
+        $file = Request::getArray('upload', [], 'files');
         if (empty($file) || !$file['name']) {
             $this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_NO_FILE_PROVIDED'));
             return $this->_files();
@@ -690,10 +690,10 @@ class Pages extends Plugin
             if ($no_html) {
                 ob_clean();
                 header('Content-type: text/plain');
-                echo json_encode(array(
+                echo json_encode([
                     'success'   => false,
                     'error'     => $this->getError()
-                ));
+                ]);
                 exit();
             }
             return $this->_files();
@@ -717,10 +717,10 @@ class Pages extends Plugin
             if ($no_html) {
                 ob_clean();
                 header('Content-type: text/plain');
-                echo json_encode(array(
+                echo json_encode([
                     'success' => false,
                     'error'   => $this->getError()
-                ));
+                ]);
                 exit();
             }
             return $this->_files();
@@ -731,10 +731,10 @@ class Pages extends Plugin
                 if ($no_html) {
                     ob_clean();
                     header('Content-type: text/plain');
-                    echo json_encode(array(
+                    echo json_encode([
                         'success' => false,
                         'error'   => $this->getError()
-                    ));
+                    ]);
                     exit();
                 }
             }
@@ -780,8 +780,8 @@ class Pages extends Plugin
 
         $path = $this->_path($page);
 
-        $folders = array();
-        $docs    = array();
+        $folders = [];
+        $docs    = [];
 
         if (is_dir($path)) {
             // Loop through all files and separate them into arrays of images, folders, and other
@@ -856,13 +856,13 @@ class Pages extends Plugin
 
         $page = $this->view->offering->page(Request::getString('unit', ''));
         if (!$page->exists()) {
-            $pages = $this->view->offering->pages(array(
+            $pages = $this->view->offering->pages([
                 'url'         => Request::getString('unit', ''),
-                'offering_id' => array(0, $this->view->offering->get('id')),
-                'section_id'  => array(0, $this->view->offering->section()->get('id')),
+                'offering_id' => [0, $this->view->offering->get('id')],
+                'section_id'  => [0, $this->view->offering->section()->get('id')],
                 'limit'       => 1,
                 'start'       => 0
-            ), true);
+            ], true);
             $page = isset($pages[0]) ? $pages[0] : null;
         }
 

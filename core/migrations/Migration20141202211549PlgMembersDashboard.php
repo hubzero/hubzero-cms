@@ -36,12 +36,12 @@ class Migration20141202211549PlgMembersDashboard extends Base
 
         // only continue if plugin defaults are NOT set
         $defaults = $pluginParams->get('defaults', '');
-        if ($defaults != array()) {
+        if ($defaults != []) {
             return;
         }
 
         // array to hold new defaults
-        $defaults = array();
+        $defaults = [];
 
         if ($schema->tableExists('#__modules')) {
             // get top 6 modules
@@ -65,13 +65,13 @@ class Migration20141202211549PlgMembersDashboard extends Base
                     $row = 3;
                 }
 
-                array_push($defaults, array(
+                array_push($defaults, [
                     'module' => $module,
                     'col'    => $col,
                     'row'    => $row,
                     'size_x' => 1,
                     'size_y' => 2
-                ));
+                ]);
             }
         }
         // update params & save

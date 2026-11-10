@@ -20,10 +20,10 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=b
 $this->css()
      ->js();
 
-$first = $this->archive->entries(array(
+$first = $this->archive->entries([
         'state'      => $this->filters['state'],
         'authorized' => $this->filters['authorized']
-    ))
+    ])
     ->order('publish_up', 'asc')
     ->limit(1)
     ->row();
@@ -85,10 +85,10 @@ $first = $this->archive->entries(array(
                 </dd>
             <?php if ($this->row->get('allow_comments')) {
                     $comments = $this->row->comments()
-                        ->whereIn('state', array(
+                        ->whereIn('state', [
                             Components\Blog\Models\Comment::STATE_PUBLISHED,
                             Components\Blog\Models\Comment::STATE_FLAGGED
-                        ))
+                        ])
                         ->count();
                 ?>
                 <dd class="comments">
@@ -162,10 +162,10 @@ $first = $this->archive->entries(array(
         <div class="container blog-popular-entries">
             <h4><?php echo Lang::txt('PLG_GROUPS_BLOG_POPULAR_ENTRIES'); ?></h4>
             <?php
-                $popular = $this->archive->entries(array(
+                $popular = $this->archive->entries([
                         'state'  => $this->filters['state'],
                         'access' => $this->filters['access']
-                    ))
+                    ])
                     ->order('hits', 'desc')
                     ->limit(5)
                     ->rows();
@@ -202,10 +202,10 @@ $first = $this->archive->entries(array(
                 ->including(['creator', function ($creator) {
                     $creator->select('*');
                 }])
-                ->whereIn('state', array(
+                ->whereIn('state', [
                     Components\Blog\Models\Comment::STATE_PUBLISHED,
                     Components\Blog\Models\Comment::STATE_FLAGGED
-                ))
+                ])
                 ->whereEquals('parent', 0)
                 ->ordered()
                 ->rows();
@@ -241,10 +241,10 @@ $first = $this->archive->entries(array(
                         <?php
                             $replyto = $this->row->comments()
                                 ->whereEquals('id', Request::getInt('reply', 0))
-                                ->whereIn('state', array(
+                                ->whereIn('state', [
                                     Components\Blog\Models\Comment::STATE_PUBLISHED,
                                     Components\Blog\Models\Comment::STATE_FLAGGED
-                                ))
+                                ])
                                 ->row();
 
                         if ($replyto->get('id')) {
@@ -271,7 +271,7 @@ $first = $this->archive->entries(array(
                         <?php if (!User::isGuest()) { ?>
                             <label for="comment_content">
                                 Your <?php echo ($replyto->get('id')) ? 'reply' : 'comments'; ?>: <span class="required"><?php echo Lang::txt('PLG_GROUPS_BLOG_REQUIRED'); ?></span>
-                                <?php echo $this->editor('comment[content]', '', 40, 15, 'comment_content', array('class' => 'minimal no-footer')); ?>
+                                <?php echo $this->editor('comment[content]', '', 40, 15, 'comment_content', ['class' => 'minimal no-footer']); ?>
                             </label>
 
                             <label class="comment-anonymous-label">

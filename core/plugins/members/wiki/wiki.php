@@ -31,9 +31,9 @@ class Wiki extends Plugin
      */
     public function &onMembersContributionsAreas()
     {
-        $areas = array(
+        $areas = [
             'wiki' => Lang::txt('PLG_MEMBERS_WIKI')
-        );
+        ];
         return $areas;
     }
 
@@ -75,21 +75,21 @@ class Wiki extends Plugin
                 && !in_array($this->_name, $areas)
                 && !array_intersect($areas, array_keys($this->onMembersContributionsAreas()))
             ) {
-                return array();
+                return [];
             }
         }
 
         // Do we have a member ID?
         if ($member instanceof \Hubzero\User\User) {
             if (!$member->get('id')) {
-                return array();
+                return [];
             } else {
                 $uidNumber = $member->get('id');
                 $username = $member->get('username');
             }
         } else {
             if (!$member->uidNumber) {
-                return array();
+                return [];
             } else {
                 $uidNumber = $member->uidNumber;
                 $username = $member->username;
@@ -103,7 +103,7 @@ class Wiki extends Plugin
             ->group('id')
             ->rows();
 
-        $ids = array();
+        $ids = [];
 
         foreach ($versions as $version) {
             $ids[] = $version->get('page_id');

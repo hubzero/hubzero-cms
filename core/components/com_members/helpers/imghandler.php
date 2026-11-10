@@ -239,7 +239,7 @@ class ImgHandler extends Obj
         // Read in the original image
         $src = $creationFunction($docRoot . $image);
 
-        if (in_array($size['mime'], array('image/gif', 'image/png'))) {
+        if (in_array($size['mime'], ['image/gif', 'image/png'])) {
             if (!$color) {
                 // If this is a GIF or a PNG, we need to set up transparency
                 imagealphablending($dst, false);
@@ -278,11 +278,11 @@ class ImgHandler extends Obj
             //  (2) the final size
             $sharpness = $this->findSharp($width, $tnWidth);
 
-            $sharpenMatrix = array(
-                array(-1, -2, -1),
-                array(-2, $sharpness + 12, -2),
-                array(-1, -2, -1)
-            );
+            $sharpenMatrix = [
+                [-1, -2, -1],
+                [-2, $sharpness + 12, -2],
+                [-1, -2, -1]
+            ];
             $divisor = $sharpness;
             $offset  = 0;
             if (function_exists('imageconvolution')) {

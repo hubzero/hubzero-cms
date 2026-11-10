@@ -33,7 +33,7 @@ class Announcements extends GroupMacro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['html']  = '<p>Displays group announcements.</p>';
         $txt['html'] .= '<p>Examples:</p>
 							<ul>
@@ -59,9 +59,9 @@ class Announcements extends GroupMacro
         // Get args
         $args = $this->getArgs();
 
-        $filters = array(
+        $filters = [
             'limit' => (isset($args[0]) && is_numeric($args[0])) ? $args[0] : 3
-        );
+        ];
 
         $query = \Hubzero\Item\Announcement::all()
             ->whereEquals('scope', 'group')
@@ -87,12 +87,12 @@ class Announcements extends GroupMacro
         if ($rows->count() > 0) {
             foreach ($rows as $row) {
                 if (file_exists(Plugin::path('groups', 'announcements') . '/views/browse/tmpl/item.php')) {
-                    $view = new \Hubzero\Plugin\View(array(
+                    $view = new \Hubzero\Plugin\View([
                         'folder'  => 'groups',
                         'element' => 'announcements',
                         'name'    => 'browse',
                         'layout'  => 'item'
-                    ));
+                    ]);
                     $view->set('group', $this->group);
                     $view->set('authorized', false);
                     $view->set('announcement', $row);

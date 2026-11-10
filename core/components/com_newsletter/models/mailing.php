@@ -41,9 +41,9 @@ class Mailing extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'nid' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Defines a belongs to one relationship between newsletter and mailing

@@ -43,7 +43,7 @@ class Migration20260915170000ComponentRoutesAll extends Base
             return;
         }
 
-        $routes = new ComponentRoute($this->db, array($this, 'log'));
+        $routes = new ComponentRoute($this->db, [$this, 'log']);
 
         if (!$routes->menutype()) {
             return;
@@ -85,7 +85,7 @@ class Migration20260915170000ComponentRoutesAll extends Base
      */
     protected function components()
     {
-        $found = array();
+        $found = [];
 
         $rows = $this->db->getQuery(true)
             ->select('extension_id')
@@ -98,10 +98,10 @@ class Migration20260915170000ComponentRoutesAll extends Base
         foreach ($rows as $row) {
             $element = is_object($row) ? $row->element : $row['element'];
 
-            $found[$element] = array(
+            $found[$element] = [
                 'id'      => (int) (is_object($row) ? $row->extension_id : $row['extension_id']),
                 'enabled' => (int) (is_object($row) ? $row->enabled : $row['enabled']),
-            );
+            ];
         }
 
         return $found;

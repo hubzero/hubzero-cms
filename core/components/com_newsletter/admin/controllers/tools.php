@@ -73,7 +73,7 @@ class Tools extends AdminController
             //make sure file is image
             $info = pathinfo($imageFile['name']);
             $ext  = isset($info['extension']) ? strtolower($info['extension']) : '';
-            if (!in_array($ext, array('png','jpg','jpeg','bmp','gif', 'tiff'))) {
+            if (!in_array($ext, ['png','jpg','jpeg','bmp','gif', 'tiff'])) {
                 Notify::error(Lang::txt('COM_NEWSLETTER_TOOLS_NOT_VALID_IMAGE'));
                 return $this->displayTask();
             }
@@ -93,10 +93,10 @@ class Tools extends AdminController
         }
 
         //config for mozify
-        $config = array(
+        $config = [
             'imageUrl'   => $image,
             'mosaicSize' => $mosaicSize
-        );
+        ];
 
         //instantiate new hubzero image mozify object
         $hubzeroImageMozify = new Mozify($config);

@@ -52,9 +52,9 @@ class Blacklist extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'word' => 'notempty'
-    );
+    ];
 
     /**
      * Load a record by word
@@ -96,7 +96,7 @@ class Blacklist extends Relational
         $word     = self::normalize($word);
         $username = self::normalize($username);
 
-        $words   = array();
+        $words   = [];
         $words[] = $username;
         $words[] = strrev($username);
 
@@ -122,7 +122,7 @@ class Blacklist extends Relational
         $middleName = self::normalize($middleName);
         $surname    = self::normalize($surname);
 
-        $words   = array();
+        $words   = [];
         $words[] = $givenName;
         $words[] = strrev($givenName);
         $words[] = $middleName;
@@ -195,7 +195,7 @@ class Blacklist extends Relational
      */
     protected static function toSimpleL33t($word)
     {
-        $subs = array(
+        $subs = [
             '4' => 'A',
             '@' => 'A',
             '^' => 'A',
@@ -223,7 +223,7 @@ class Blacklist extends Relational
             '+' => 'T',
             '%' => 'Y',
             '2' => 'Z',
-        );
+        ];
 
         $word2 = str_replace(array_keys($subs), array_values($subs), $word);
 
@@ -238,7 +238,7 @@ class Blacklist extends Relational
      */
     protected static function toL33t($word)
     {
-        $subs = array(
+        $subs = [
             '][\\//][' => 'M',
 
             //'\\/\//' => 'W',
@@ -409,15 +409,15 @@ class Blacklist extends Relational
             //'j' => 'Y',
             '2' => 'Z',
             'z' => 'Z',
-        );
+        ];
 
-        $wordsubs = array(
+        $wordsubs = [
             ' joo ' => ' you ',
             ' teh ' => ' the ',
             ' wat ' => ' what ',
             ' sas ' => ' says ',
             ' u '   => ' you '
-        );
+        ];
 
         $word2 = str_replace(array_keys($subs), array_values($subs), $word);
         $word2 = strtolower($word2);

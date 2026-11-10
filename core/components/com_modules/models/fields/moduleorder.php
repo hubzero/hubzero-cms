@@ -32,7 +32,7 @@ class ModuleOrder extends Field
     protected function getInput()
     {
         // Initialize variables.
-        $html = array();
+        $html = [];
         $attr = '';
 
         // Initialize some field attributes.
@@ -52,7 +52,7 @@ class ModuleOrder extends Field
         $data = new \stdClass();
         $data->originalOrder = $ordering;
         $data->originalPos = $position;
-        $data->orders = array();
+        $data->orders = [];
         $data->name = $this->name;
         $data->id = $this->id;
         $data->attr = $attr;
@@ -72,7 +72,7 @@ class ModuleOrder extends Field
             App::abort(500, $error);
         }
 
-        $orders2 = array();
+        $orders2 = [];
         for ($i = 0, $n = count($orders); $i < $n; $i++) {
             if (!isset($orders2[$orders[$i]->position])) {
                 $orders2[$orders[$i]->position] = 0;
@@ -81,7 +81,7 @@ class ModuleOrder extends Field
             $ord = $orders2[$orders[$i]->position];
             $title = Lang::txt('COM_MODULES_OPTION_ORDER_POSITION', $ord, addslashes($orders[$i]->title));
 
-            $data->orders[$i] = array($orders[$i]->position, $ord, $title);
+            $data->orders[$i] = [$orders[$i]->position, $ord, $title];
         }
 
         $html[] = json_encode($data);

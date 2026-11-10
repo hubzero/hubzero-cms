@@ -48,12 +48,12 @@ class ClientCredentials implements GrantTypeInterface, ClientAssertionTypeInterf
      * @param   array   $config   Config array
      * @return  void
      */
-    public function __construct(ClientCredentialsInterface $storage, array $config = array())
+    public function __construct(ClientCredentialsInterface $storage, array $config = [])
     {
         $this->storage = $storage;
-        $this->config  = array_merge(array(
+        $this->config  = array_merge([
             'allow_credentials_in_request_body' => true,
-        ), $config);
+        ], $config);
 
         // force public clients off
         $config['allow_public_clients'] = false;
@@ -80,20 +80,20 @@ class ClientCredentials implements GrantTypeInterface, ClientAssertionTypeInterf
     {
         // check HTTP basic auth headers for client id/secret
         if (!is_null($request->headers('PHP_AUTH_USER')) && !is_null($request->headers('PHP_AUTH_PW'))) {
-            $clientData = array(
+            $clientData = [
                 'client_id'     => $request->headers('PHP_AUTH_USER'),
                 'client_secret' => $request->headers('PHP_AUTH_PW')
-            );
+            ];
         }
 
         // if we allow credentials via request body look there
         if ($this->config['allow_credentials_in_request_body']) {
             // check for client id in request
             if (!is_null($request->request('client_id'))) {
-                $clientData = array(
+                $clientData = [
                     'client_id'     => $request->request('client_id'),
                     'client_secret' => $request->request('client_secret')
-                );
+                ];
             }
         }
 

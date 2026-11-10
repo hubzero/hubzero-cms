@@ -13,7 +13,7 @@ defined('_HZEXEC_') or die();
 // category id, 0 for all), category (the active category), filters (sort,
 // search), which the links carry along so a reader keeps their search while
 // narrowing by category.
-$filters    = array('state' => 1, 'access' => User::getAuthorisedViewLevels());
+$filters    = ['state' => 1, 'access' => User::getAuthorisedViewLevels()];
 $categories = $this->archive->categories($filters);
 
 $carry = '';

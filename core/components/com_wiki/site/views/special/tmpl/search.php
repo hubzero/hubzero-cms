@@ -26,7 +26,7 @@ $limit = Request::getInt('limit', Config::get('list_limit'));
 $start = Request::getInt('limitstart', 0);
 $term  = Request::getString('q', '');
 
-$filters = array('state' => array(0, 1));
+$filters = ['state' => [0, 1]];
 
 if ($space = Request::getString('namespace', '')) {
     $filters['namespace'] = urldecode($space);

@@ -38,7 +38,7 @@ class Calendar extends Field
         $format = $this->element['format'] ? (string) $this->element['format'] : 'yy-mm-dd';
 
         // Build the attributes array.
-        $attributes = array();
+        $attributes = [];
         if ($this->element['size']) {
             $attributes['size'] = (int) $this->element['size'];
         }

@@ -42,7 +42,7 @@ if (!file_exists($filename)) {
 
 // Force certain extensions to the 'attachment' disposition
 $ext = strtolower(Filesystem::extension($filename));
-if (!in_array($ext, array('jpg', 'jpeg', 'jpe', 'gif', 'png', 'pdf', 'htm', 'html', 'txt', 'json', 'xml'))) {
+if (!in_array($ext, ['jpg', 'jpeg', 'jpe', 'gif', 'png', 'pdf', 'htm', 'html', 'txt', 'json', 'xml'])) {
     $d = 'attachment';
 }
 

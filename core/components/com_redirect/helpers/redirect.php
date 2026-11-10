@@ -39,7 +39,7 @@ class Redirect
         $path = dirname(__DIR__) . '/config/access.xml';
 
         $actions = \Hubzero\Access\Access::getActionsFromFile($path);
-        $actions ?: array();
+        $actions ?: [];
 
         $result  = new Obj();
 
@@ -58,7 +58,7 @@ class Redirect
     public static function publishedOptions()
     {
         // Build the active state filter options.
-        $options = array();
+        $options = [];
         $options[] = Html::select('option', '*', 'JALL');
         $options[] = Html::select('option', '1', 'JENABLED');
         $options[] = Html::select('option', '0', 'JDISABLED');
@@ -89,12 +89,12 @@ class Redirect
     public static function published($value, $i, $canChange = true)
     {
         // Array of image, task, title, action
-        $states = array(
-            1  => array('on', 'unpublish', 'JENABLED', 'COM_REDIRECT_DISABLE_LINK'),
-            0  => array('off', 'publish', 'JDISABLED', 'COM_REDIRECT_ENABLE_LINK'),
-            2  => array('archived', 'unpublish', 'JARCHIVED', 'JUNARCHIVE'),
-            -2 => array('trash', 'publish', 'JTRASHED', 'COM_REDIRECT_ENABLE_LINK'),
-        );
+        $states = [
+            1  => ['on', 'unpublish', 'JENABLED', 'COM_REDIRECT_DISABLE_LINK'],
+            0  => ['off', 'publish', 'JDISABLED', 'COM_REDIRECT_ENABLE_LINK'],
+            2  => ['archived', 'unpublish', 'JARCHIVED', 'JUNARCHIVE'],
+            -2 => ['trash', 'publish', 'JTRASHED', 'COM_REDIRECT_ENABLE_LINK'],
+        ];
         $state = \Hubzero\Utility\Arr::getValue($states, (int) $value, $states[0]);
         $html  = '<span>' . Lang::txt($state[3]) . '</span>';
         if ($canChange) {

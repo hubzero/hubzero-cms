@@ -29,10 +29,10 @@ class Metadata extends Relational
      *
      * @var array
      **/
-    protected $rules = array(
+    protected $rules = [
         'key'        => 'notempty',
         'value'      => 'notempty'
-    );
+    ];
 
     /**
      * Loads all metadata entries for a given path

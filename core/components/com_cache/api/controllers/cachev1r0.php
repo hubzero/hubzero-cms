@@ -104,8 +104,8 @@ class Cachev1r0 extends ApiController
             throw new Exception(Lang::txt('Not authorized'), 403);
         }
 
-        $ids = Request::getArray('group', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('group', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         if (count($ids) <= 0) {
             throw new Exception(Lang::txt('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST'), 500);

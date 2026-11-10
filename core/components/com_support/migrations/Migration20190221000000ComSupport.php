@@ -20,29 +20,29 @@ class Migration20190221000000ComSupport extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__support_attachments' => array(
+    public static $tables = [
+        '#__support_attachments' => [
             'created'
-        ),
-        '#__support_categories' => array(
+        ],
+        '#__support_categories' => [
             'created',
             'modified'
-        ),
-        '#__support_comments' => array(
+        ],
+        '#__support_comments' => [
             'created'
-        ),
-        '#__support_queries' => array(
+        ],
+        '#__support_queries' => [
             'created'
-        ),
-        '#__support_query_folders' => array(
+        ],
+        '#__support_query_folders' => [
             'created',
             'modified'
-        ),
-        '#__support_tickets' => array(
+        ],
+        '#__support_tickets' => [
             'created',
             'closed'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

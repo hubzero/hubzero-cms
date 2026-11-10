@@ -29,7 +29,7 @@ abstract class Format
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         // Sanitize format type.

@@ -302,49 +302,49 @@ class Profile extends Obj
      *
      * @var  array
      */
-    private $_auxv_disability = array();
+    private $_auxv_disability = [];
 
     /**
      * List of hispanic options
      *
      * @var  array
      */
-    private $_auxv_hispanic = array();
+    private $_auxv_hispanic = [];
 
     /**
      * List of races
      *
      * @var  array
      */
-    private $_auxv_race = array();
+    private $_auxv_race = [];
 
     /**
      * Description for '_auxv_admin'
      *
      * @var  array
      */
-    private $_auxv_admin = array();
+    private $_auxv_admin = [];
 
     /**
      * Description for '_auxv_host'
      *
      * @var  array
      */
-    private $_auxv_host = array();
+    private $_auxv_host = [];
 
     /**
      * List of Edu levels
      *
      * @var  array
      */
-    private $_auxv_edulevel = array();
+    private $_auxv_edulevel = [];
 
     /**
      * List of roles
      *
      * @var  array
      */
-    private $_auxv_role = array();
+    private $_auxv_role = [];
 
     /**
      * Description for '_password'
@@ -471,7 +471,7 @@ class Profile extends Obj
      */
     private function sql_author_load($authorid)
     {
-        static $_propertyauthormap = array(
+        static $_propertyauthormap = [
             'uidNumber'    => 'id',
             'givenName'    => 'firstname',
             'middleName'   => 'middlename',
@@ -481,7 +481,7 @@ class Profile extends Obj
             'url'          => 'url',
             'picture'      => 'picture',
             'vip'          => 'principal_investigator'
-        );
+        ];
 
         $db =  App::get('db');
 
@@ -520,7 +520,7 @@ class Profile extends Obj
      */
     private function xregistration_load($registration)
     {
-        static $_propertyregmap = array('username' => 'login', 'name' => 'name', 'email' => 'email', 'orcid' => 'orcid', 'orgtype' => 'orgtype', 'organization' => 'org', 'countryresident' => 'countryresident', 'countryorigin' => 'countryorigin', 'gender' => 'sex', 'url' => 'web', 'reason' => 'reason', 'mailPreferenceOption' => 'mailPreferenceOption', 'usageAgreement' => 'usageAgreement', 'nativeTribe' => 'nativeTribe', 'phone' => 'phone', 'disability' => 'disability', 'hispanic' => 'hispanic', 'race' => 'race', 'admin' => 'admin', 'host' => 'host', 'edulevel' => 'edulevel', 'role' => 'role', 'givenName' => 'givenName', 'middleName' => 'middleName', 'surname' => 'surname');
+        static $_propertyregmap = ['username' => 'login', 'name' => 'name', 'email' => 'email', 'orcid' => 'orcid', 'orgtype' => 'orgtype', 'organization' => 'org', 'countryresident' => 'countryresident', 'countryorigin' => 'countryorigin', 'gender' => 'sex', 'url' => 'web', 'reason' => 'reason', 'mailPreferenceOption' => 'mailPreferenceOption', 'usageAgreement' => 'usageAgreement', 'nativeTribe' => 'nativeTribe', 'phone' => 'phone', 'disability' => 'disability', 'hispanic' => 'hispanic', 'race' => 'race', 'admin' => 'admin', 'host' => 'host', 'edulevel' => 'edulevel', 'role' => 'role', 'givenName' => 'givenName', 'middleName' => 'middleName', 'surname' => 'surname'];
 
         if (!is_object($registration)) {
             $this->setError("Invalid XRegistration object");
@@ -551,7 +551,7 @@ class Profile extends Obj
             return false;
         }
 
-        $keys = array('email', 'name', 'orgtype', 'countryresident', 'countryorigin', 'disability', 'hispanic', 'race', 'phone', 'reason', 'edulevel', 'role', 'surname', 'givenName', 'middleName', 'orcid');
+        $keys = ['email', 'name', 'orgtype', 'countryresident', 'countryorigin', 'disability', 'hispanic', 'race', 'phone', 'reason', 'edulevel', 'role', 'surname', 'givenName', 'middleName', 'orcid'];
 
         foreach ($keys as $key) {
             if ($registration->get($key) !== null) {
@@ -607,7 +607,7 @@ class Profile extends Obj
      */
     public function load($user, $storage = 'mysql')
     {
-        if (!empty($storage) && !in_array($storage, array('mysql', 'author', 'xregistration'))) {
+        if (!empty($storage) && !in_array($storage, ['mysql', 'author', 'xregistration'])) {
             $this->setError('Invalid storage option requested [' . $storage . ']');
             return false;
         }
@@ -654,11 +654,11 @@ class Profile extends Obj
         static $usernames;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         if (!isset($usernames)) {
-            $usernames = array();
+            $usernames = [];
         }
 
         // Is this a username?
@@ -866,7 +866,7 @@ class Profile extends Obj
             $list = $this->get($property);
 
             if (!is_array($list)) {
-                $list = array($list);
+                $list = [$list];
             }
 
             foreach ($list as $value) {
@@ -913,7 +913,7 @@ class Profile extends Obj
         }
 
         if ($affected > 0) {
-            Event::trigger('user.onAfterStoreProfile', array($this));
+            Event::trigger('user.onAfterStoreProfile', [$this]);
         }
 
         return true;
@@ -964,7 +964,7 @@ class Profile extends Obj
         }
 
         if ($affected > 0) {
-            Event::trigger('user.onAfterDeleteProfile', array($this));
+            Event::trigger('user.onAfterDeleteProfile', [$this]);
         }
 
         $this->clear();
@@ -1022,7 +1022,7 @@ class Profile extends Obj
                 }
             } else {
                 if (is_array($result) && count($result) <= 1 && empty($result[0])) {
-                    $this->set($property_name, array());
+                    $this->set($property_name, []);
                 } else {
                     $this->set($property_name, $result);
                 }
@@ -1071,10 +1071,10 @@ class Profile extends Obj
 
         if ('_auxv_' == substr($property, 0, 6)) {
             if (empty($value)) {
-                $value = array();
+                $value = [];
             } else {
                 if (!is_array($value)) {
-                    $value = array($value);
+                    $value = [$value];
                 }
 
                 $list = array_unique($value);
@@ -1095,7 +1095,7 @@ class Profile extends Obj
             $this->_password = '';
         }
 
-        if (is_string($property) && in_array($property, array('givenName','middleName','surname','name'))) {
+        if (is_string($property) && in_array($property, ['givenName','middleName','surname','name'])) {
             $value = \Hubzero\Utility\Sanitize::cleanProperName($value);
         }
 
@@ -1131,7 +1131,7 @@ class Profile extends Obj
         }
 
         if (!is_array($value)) {
-            $value = array($value);
+            $value = [$value];
         }
 
         $property = '_auxv_' . $property;
@@ -1178,7 +1178,7 @@ class Profile extends Obj
         }
 
         if (!is_array($value)) {
-            $value = array($value);
+            $value = [$value];
         }
 
         $property = '_auxv_' . $property;
@@ -1187,7 +1187,7 @@ class Profile extends Obj
             $v = strval($v);
 
             if (in_array($v, $this->$property)) {
-                $this->$property = array_diff($this->$property, array($v));
+                $this->$property = array_diff($this->$property, [$v]);
             }
         }
 
@@ -1337,13 +1337,13 @@ class Profile extends Obj
         static $groups;
 
         if (!isset($groups)) {
-            $groups = array(
-                'applicants' => array(),
-                'invitees'   => array(),
-                'members'    => array(),
-                'managers'   => array(),
-                'all'        => array()
-            );
+            $groups = [
+                'applicants' => [],
+                'invitees'   => [],
+                'members'    => [],
+                'managers'   => [],
+                'all'        => []
+            ];
             $groups['all'] = Helper::getGroups($this->get('uidNumber'), 'all', 1);
 
             if ($groups['all']) {
@@ -1381,11 +1381,11 @@ class Profile extends Obj
      */
     public function getBio($as = 'parsed', $shorten = 0)
     {
-        $options = array();
+        $options = [];
 
         switch (strtolower($as)) {
             case 'parsed':
-                $config = array(
+                $config = [
                     'option'   => 'com_members',
                     'scope'    => 'profile',
                     'pagename' => 'member',
@@ -1393,16 +1393,16 @@ class Profile extends Obj
                     'filepath' => '',
                     'domain'   => '',
                     'camelcase' => 0
-                );
+                ];
 
-                Event::trigger('content.onContentPrepare', array(
+                Event::trigger('content.onContentPrepare', [
                     'com_members.profile.bio',
                     &$this,
                     &$config
-                ));
+                ]);
                 $content = $this->get('bio');
 
-                $options = array('html' => true);
+                $options = ['html' => true];
                 break;
 
             case 'clean':

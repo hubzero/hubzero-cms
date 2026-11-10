@@ -40,9 +40,9 @@ class Watch extends Plugin
      */
     public function &onResourcesSubAreas($publication)
     {
-        $areas = array(
+        $areas = [
             'watch' => Lang::txt('PLG_RESOURCES_WATCH')
-        );
+        ];
 
         return $areas;
     }
@@ -57,11 +57,11 @@ class Watch extends Plugin
      */
     public function onResourcesSub($resource, $option, $miniview = 0)
     {
-        $arr = array(
+        $arr = [
             'area'     => $this->_name,
             'html'     => '',
             'metadata' => ''
-        );
+        ];
 
         // Only show for logged-in users
         if (User::isGuest()) {
@@ -169,10 +169,10 @@ class Watch extends Plugin
                 'scope'       => 'resource',
                 'scope_id'    => $this->resource->id,
                 'description' => Lang::txt('PLG_RESOURCES_WATCH_' . strtoupper($this->action) . 'D', '<a href="' . $url . '">' . htmlspecialchars((string) ($this->resource->title), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title' => $this->resource->title,
                     'url'   => $url
-                )
+                ]
             ],
             'recipients' => [
                 User::get('id')

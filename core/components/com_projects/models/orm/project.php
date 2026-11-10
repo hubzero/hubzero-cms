@@ -61,37 +61,37 @@ class Project extends Relational implements \Hubzero\Search\Searchable
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'title' => 'notempty'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'alias'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by_user'
-    );
+    ];
 
     /**
      * Fields to be parsed
      *
      * @var array
      */
-    protected $parsed = array(
+    protected $parsed = [
         'about'
-    );
+    ];
 
     /**
      * Hubzero\Config\Registry
@@ -157,7 +157,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
             $reserved = explode(',', $this->config('reserved_names'));
             $reserved = array_map('trim', $reserved);
             $reserved = array_filter($reserved);
-            $tasks    = array(
+            $tasks    = [
                 'start', 'setup', 'browse',
                 'intro', 'features', 'deleteimg',
                 'reports', 'stats', 'view', 'edit',
@@ -166,7 +166,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
                 'upload', 'img', 'verify', 'autocomplete',
                 'showcount', 'preview', 'auth', 'public',
                 'get', 'media'
-            );
+            ];
             $reserved = array_merge($reserved, $tasks);
             $reserved = array_unique($reserved);
 
@@ -489,7 +489,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
         $data = $this->toArray();
 
         // Trigger before delete event
-        Event::trigger('projects.onProjectBeforeDelete', array($data));
+        Event::trigger('projects.onProjectBeforeDelete', [$data]);
 
         // Remove associated data
         foreach ($this->connections as $connection) {
@@ -518,7 +518,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
 
         if ($result) {
             // Trigger after delete event
-            Event::trigger('projects.onProjectAfterDelete', array($data));
+            Event::trigger('projects.onProjectAfterDelete', [$data]);
         }
 
         return $result;
@@ -607,12 +607,12 @@ class Project extends Relational implements \Hubzero\Search\Searchable
 
         // Still no file? Let's use the default
         if (!$src) {
-            $deprecated = array(
+            $deprecated = [
                 'components/com_projects/site/assets/img/project.png',
                 'components/com_projects/assets/img/project.png',
                 'components/com_projects/site/assets/img/projects-large.gif',
                 'components/com_projects/assets/img/projects-large.gif'
-            );
+            ];
 
             $path = trim($this->config()->get('defaultpic', 'components/com_projects/site/assets/img/project.png'), DS);
 
@@ -703,7 +703,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
         $page->access_level = $access_level;
         $page->owner_type = 'user';
 
-        $team = array();
+        $team = [];
         $team = array_map(
             function ($member) {
                 if ($member['status'] == 1 && !empty($member['userid']) && $member['userid'] > 0) {
@@ -773,7 +773,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
             // Get user groups
             $ugs = \Hubzero\User\Helper::getGroups(User::get('id'));
 
-            $userGroups = array();
+            $userGroups = [];
             if (!empty($ugs)) {
                 foreach ($ugs as $group) {
                     if ($group->regconfirmed) {

@@ -41,13 +41,13 @@ class Wiki extends Plugin
      */
     public function onTagView($tags, $limit = 0, $limitstart = 0, $sort = '', $areas = null)
     {
-        $response = array(
+        $response = [
             'name'    => $this->_name,
             'title'   => Lang::txt('PLG_TAGS_WIKI'),
             'total'   => 0,
             'results' => null,
             'sql'     => ''
-        );
+        ];
 
         if (empty($tags)) {
             return $response;
@@ -55,13 +55,13 @@ class Wiki extends Plugin
 
         $database = App::get('db');
 
-        $ids = array();
+        $ids = [];
         foreach ($tags as $tag) {
             $ids[] = $tag->get('id');
         }
 
         // Build query
-        $filters = array();
+        $filters = [];
         $filters['tags'] = $ids;
         $filters['sortby'] = ($sort) ? $sort : 'date';
         $filters['authorized'] = $this->authorize();
@@ -104,18 +104,18 @@ class Wiki extends Plugin
      * @param   array   $filters  Options for building the query
      * @return  string  SQL
      */
-    private function buildPluginQuery($filters = array())
+    private function buildPluginQuery($filters = [])
     {
         if (isset($filters['search']) && $filters['search'] != '') {
             $searchquery = $filters['search'];
             $phrases = $searchquery->searchPhrases;
         }
 
-        $groupAuth = array();
+        $groupAuth = [];
         $groupAuth[] = 'xg.plugins LIKE \'%wiki=anyone%\'';
         if (!User::isGuest()) {
             $groupAuth[] = 'xg.plugins LIKE \'%wiki=registered%\'';
-            $gids = array();
+            $gids = [];
             foreach (User::groups() as $group) {
                 $gids[] = $group->gidNumber;
             }

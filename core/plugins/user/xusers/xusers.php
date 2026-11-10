@@ -49,7 +49,7 @@ class Xusers extends Plugin
      * @param   array    $options  array holding options (remember, autoregister, group)
      * @return  boolean  True on success
      */
-    public function onUserLogin($user, $options = array())
+    public function onUserLogin($user, $options = [])
     {
         return $this->onLoginUser($user, $options);
     }
@@ -61,7 +61,7 @@ class Xusers extends Plugin
      * @param   array    $options  array holding options (remember, autoregister, group)
      * @return  boolean  True on success
      */
-    public function onLoginUser($user, $options = array())
+    public function onLoginUser($user, $options = [])
     {
         $xuser = User::getInstance(); // get user from session (might be tmp_user, can't fetch from db)
 
@@ -159,7 +159,7 @@ class Xusers extends Plugin
             new \Hubzero\Encryption\Key('simple', $key, $key)
         );
 
-        $tracker = array();
+        $tracker = [];
         $tracker['user_id']  = $session->get('tracker.user_id');
         $tracker['username'] = $session->get('tracker.username');
         $tracker['sid']      = $session->getId();
@@ -514,7 +514,7 @@ class Xusers extends Plugin
         }
 
         if ($success) {
-            Event::trigger('members.onMemberAfterSave', array($user, $isnew, $success, $msg));
+            Event::trigger('members.onMemberAfterSave', [$user, $isnew, $success, $msg]);
         }
     }
 
@@ -563,7 +563,7 @@ class Xusers extends Plugin
         }
 
         if ($success) {
-            Event::trigger('members.onMemberAfterDelete', array($user, $success, $msg));
+            Event::trigger('members.onMemberAfterDelete', [$user, $success, $msg]);
         }
 
         return true;
@@ -576,7 +576,7 @@ class Xusers extends Plugin
      * @param   array    $options  array holding options (remember, autoregister, group)
      * @return  boolean  True on success
      */
-    public function onUserLogout($user, $options = array())
+    public function onUserLogout($user, $options = [])
     {
         return $this->onLogoutUser($user, $options);
     }
@@ -588,7 +588,7 @@ class Xusers extends Plugin
      * @param   array    $options  array holding options (remember, autoregister, group)
      * @return  boolean  True on success
      */
-    public function onLogoutUser($user, $options = array())
+    public function onLogoutUser($user, $options = [])
     {
         Log::auth($user['username'] . ' ' . Request::ip() . ' logout');
 

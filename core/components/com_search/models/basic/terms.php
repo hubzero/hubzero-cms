@@ -36,21 +36,21 @@ class Terms extends Obj
      *
      * @var  array
      */
-    private $optional_chunks = array();
+    private $optional_chunks = [];
 
     /**
      * Forbidden chunks
      *
      * @var  array
      */
-    private $forbidden_chunks = array();
+    private $forbidden_chunks = [];
 
     /**
      * Mandatory chunks
      *
      * @var  array
      */
-    private $mandatory_chunks = array();
+    private $mandatory_chunks = [];
 
     /**
      * Search section
@@ -64,7 +64,7 @@ class Terms extends Obj
      *
      * @var  array
      */
-    private $quoted = array();
+    private $quoted = [];
 
     /**
      * Constructor
@@ -185,7 +185,7 @@ class Terms extends Obj
             }
         }
         $chunks = array_unique(array_merge(array_map([Basic::class, 'stem'], $chunks), $chunks));
-        Event::trigger('onSearchExpandTerms', array(&$chunks));
+        Event::trigger('onSearchExpandTerms', [&$chunks]);
 
         return array_unique($chunks);
     }
@@ -225,7 +225,7 @@ class Terms extends Obj
             $this->section = explode(':', $match[1]);
             $raw = preg_replace('/^' . preg_quote($match[1]) . ':/', '', $raw);
         } else if (array_key_exists('section', $_GET) && is_string($_GET['section'])) {
-            $this->section = array(preg_replace('/[^a-z0-9_:.\-]/i', '', (string) $_GET['section']));
+            $this->section = [preg_replace('/[^a-z0-9_:.\-]/i', '', (string) $_GET['section'])];
         }
 
         $raw = preg_replace('#[^-:/+"[:alnum:] ]#', '', preg_replace('/\s+/', ' ', trim($raw)));

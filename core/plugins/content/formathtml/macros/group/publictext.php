@@ -38,7 +38,7 @@ class Publictext extends GroupMacro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['html']  = '<p>Display public content. Note: Content wrapped in this macro will ' .
             '<strong>only</strong> be displayed to non-members of the group.</p>';
         $txt['html'] .= '<p>Examples:</p>
@@ -69,7 +69,7 @@ class Publictext extends GroupMacro
             return;
         }
 
-        if (in_array($arg, array('start', 'open', 'begin'))) {
+        if (in_array($arg, ['start', 'open', 'begin'])) {
             $this->open = true;
 
             return '<public>';
@@ -92,7 +92,7 @@ class Publictext extends GroupMacro
             $text = preg_replace('/<public>(.*?)<\/public>/iusm', '', $text);
         }
 
-        $text = str_replace(array('<public>', '</public>'), '', $text);
+        $text = str_replace(['<public>', '</public>'], '', $text);
 
         return $text;
     }

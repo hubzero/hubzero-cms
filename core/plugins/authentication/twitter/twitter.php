@@ -126,10 +126,10 @@ class Twitter extends \Hubzero\Plugin\OauthClient
      */
     public function display($view, $tpl)
     {
-        $params = array(
+        $params = [
             'scope' => ['tweet.read', 'users.read', 'users.email', 'offline.access'],
             'redirect_uri' => $this->getReturnUrl()
-        );
+        ];
 
         $loginUrl = $this->provider->getAuthorizationUrl($params);
 
@@ -165,9 +165,9 @@ class Twitter extends \Hubzero\Plugin\OauthClient
         $state = Request::getVar('state', null);
 
         if ($code == null) {
-            $authUrl = $this->provider->getAuthorizationUrl(array(
+            $authUrl = $this->provider->getAuthorizationUrl([
                 'scope' => ['tweet.read', 'users.read', 'users.email', 'offline.access']
-            ));
+            ]);
 
             Session::set('oauth2state', $this->provider->getState(), $this->name);
             Session::set('oauth2verifier', $this->provider->getPkceVerifier(), $this->name);
@@ -186,10 +186,10 @@ class Twitter extends \Hubzero\Plugin\OauthClient
             return;
         }
 
-        $token = $this->provider->getAccessToken('authorization_code', array(
+        $token = $this->provider->getAccessToken('authorization_code', [
             'code' => Request::getString('code'),
             'code_verifier' => Session::get('oauth2verifier', null, $this->name),
-        ));
+        ]);
 
         Session::clear('oauth2state', $this->name);
         Session::clear('oauth2verifier', $this->name);
@@ -252,11 +252,11 @@ class Twitter extends \Hubzero\Plugin\OauthClient
 
             // If we have a real user, drop the authenticator cookie
             if (isset($user) && is_object($user)) {
-                $prefs = array(
+                $prefs = [
                     'user_id'       => $user->get('id'),
                     'user_img'      => $owner->getImageUrl(),
                     'authenticator' => $this->name,
-                );
+                ];
 
                 $namespace = 'authenticator';
                 $lifetime  = time() + 365 * 24 * 60 * 60;
@@ -275,15 +275,15 @@ class Twitter extends \Hubzero\Plugin\OauthClient
      * @param   array  $options
      * @return  void
      */
-    public function link($options = array())
+    public function link($options = [])
     {
         $code = Request::getVar('code', null);
         $state = Request::getVar('state', null);
 
         if ($code == null) {
-            $authUrl = $this->provider->getAuthorizationUrl(array(
+            $authUrl = $this->provider->getAuthorizationUrl([
                 'scope' => ['tweet.read', 'users.read', 'users.email', 'offline.access']
-            ));
+            ]);
 
             Session::set('oauth2state', $this->provider->getState(), $this->name);
             Session::set('oauth2verifier', $this->provider->getPkceVerifier(), $this->name);
@@ -301,10 +301,10 @@ class Twitter extends \Hubzero\Plugin\OauthClient
             return;
         }
 
-        $token = $this->provider->getAccessToken('authorization_code', array(
+        $token = $this->provider->getAccessToken('authorization_code', [
             'code' => Request::getString('code'),
             'code_verifier' => Session::get('oauth2verifier', null, $this->name),
-        ));
+        ]);
 
         Session::clear('oauth2state', $this->name);
         Session::clear('oauth2verifier', $this->name);

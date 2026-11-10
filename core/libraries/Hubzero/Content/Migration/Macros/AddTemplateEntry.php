@@ -63,7 +63,7 @@ class AddTemplateEntry extends Macro
             if (!$this->db->loadResult()) {
                 $query = $this->db->getQuery()
                     ->insert('#__extensions')
-                    ->values(array(
+                    ->values([
                         'name'           => $name,
                         'type'           => 'template',
                         'element'        => $element,
@@ -79,7 +79,7 @@ class AddTemplateEntry extends Macro
                         'checked_out'    => 0,
                         'ordering'       => 0,
                         'state'          => 0
-                    ))
+                    ])
                     ->toString();
                 $this->db->setQuery($query);
                 $this->db->query();
@@ -91,9 +91,9 @@ class AddTemplateEntry extends Macro
                     if ($home) {
                         $query = $this->db->getQuery()
                             ->update('#__template_styles')
-                            ->set(array(
+                            ->set([
                                 'home' => 0
-                            ))
+                            ])
                             ->whereEquals('client_id', $client)
                             ->toString();
                         $this->db->setQuery($query);
@@ -104,13 +104,13 @@ class AddTemplateEntry extends Macro
 
                     $query = $this->db->getQuery()
                         ->insert('#__template_styles')
-                        ->values(array(
+                        ->values([
                             'template'  => $element,
                             'client_id' => $client,
                             'home'      => $home,
                             'title'     => $name,
                             'params'    => ((isset($styles)) ? $this->db->quote(json_encode($styles)) : '{}')
-                        ))
+                        ])
                         ->toString();
                     $this->db->setQuery($query);
                     $this->db->query();

@@ -49,7 +49,7 @@ class Migration20260921170000PlgContentFormathtml extends Base
             $params = json_decode((string) $row->params, true);
 
             if (!is_array($params)) {
-                $params = array();
+                $params = [];
             }
 
             if (

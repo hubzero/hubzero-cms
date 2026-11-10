@@ -66,18 +66,18 @@ class ModeDs
                     $update_link = '/datastores/' . $db_id['name']
                         . '/table/data_record_update/?table=' . $dv_id . '&__ds_rec_id=';
 
-                    $dd['cols'][$td['name'] . '.__ds_rec_id'] = array(
+                    $dd['cols'][$td['name'] . '.__ds_rec_id'] = [
                         'label' => 'Select <br />Record',
                         'raw' => "CONCAT('$update_link', __ds_rec_id)",
                         'type' => 'link',
                         'relative' => 'true',
                         'link_label' => 'Edit',
                         'link_title' => 'Click here to update or remove this record',
-                        'popup' => array(
+                        'popup' => [
                             'window' => 'Edit_Record',
                             'features' => 'width=1175px,resizable,scrollbars,status'
-                        )
-                    );
+                        ]
+                    ];
                 }
 
                 foreach ($td['columns'] as $col) {
@@ -124,7 +124,7 @@ class ModeDs
 
         $dd = self::ddPost($dd);
 
-        $dd['conf'] = (isset($dd['conf'])) ? $dd['conf'] : array();
+        $dd['conf'] = (isset($dd['conf'])) ? $dd['conf'] : [];
 
         if (isset($dd['conf']['proc_mode_switch'])) {
             DvConfig::$dv_conf['proc_mode_switch'] = $dd['conf']['proc_mode_switch'];
@@ -164,28 +164,28 @@ class ModeDs
             foreach ($dd['record_filters'] as $f) {
                 switch ($f['type']) {
                     case 'E':
-                        $dd['where'][] = array('raw' => $f['col'] . " = '" . $f['val'] . "'");
+                        $dd['where'][] = ['raw' => $f['col'] . " = '" . $f['val'] . "'"];
                         break;
                     case 'NE':
-                        $dd['where'][] = array('raw' => $f['col'] . " <> '" . $f['val'] . "'");
+                        $dd['where'][] = ['raw' => $f['col'] . " <> '" . $f['val'] . "'"];
                         break;
                     case 'LT':
-                        $dd['where'][] = array('raw' => $f['col'] . " < '" . $f['val'] . "'");
+                        $dd['where'][] = ['raw' => $f['col'] . " < '" . $f['val'] . "'"];
                         break;
                     case 'GT':
-                        $dd['where'][] = array('raw' => $f['col'] . " > '" . $f['val'] . "'");
+                        $dd['where'][] = ['raw' => $f['col'] . " > '" . $f['val'] . "'"];
                         break;
                     case 'LK':
-                        $dd['where'][] = array('raw' => $f['col'] . " LIKE '%" . $f['val'] . "%'");
+                        $dd['where'][] = ['raw' => $f['col'] . " LIKE '%" . $f['val'] . "%'"];
                         break;
                     case 'NLK':
-                        $dd['where'][] = array('raw' => $f['col'] . " NOT LIKE '%" . $f['val'] . "%'");
+                        $dd['where'][] = ['raw' => $f['col'] . " NOT LIKE '%" . $f['val'] . "%'"];
                         break;
                     case 'NULL':
-                        $dd['where'][] = array('raw' => $f['col'] . " IS NULL");
+                        $dd['where'][] = ['raw' => $f['col'] . " IS NULL"];
                         break;
                     case 'NNULL':
-                        $dd['where'][] = array('raw' => $f['col'] . " IS NOT NULL");
+                        $dd['where'][] = ['raw' => $f['col'] . " IS NOT NULL"];
                         break;
                 }
             }
@@ -207,7 +207,7 @@ class ModeDs
         $res = $db->loadAssoc();
 
         if (isset($res['id'])) {
-            $dd['acl'] = array();
+            $dd['acl'] = [];
 
             // Public
             if ($res['access'] == 0) {
@@ -224,13 +224,13 @@ class ModeDs
         if (!isset($dd['acl'])) {
             $dd['acl']['allowed_users'] = $managers;
         } elseif (!isset($dd['acl']['registered']) || !isset($dd['acl']['public'])) {
-            $dd['acl']['allowed_users'] = isset($dd['acl']['allowed_users']) ? $dd['acl']['allowed_users'] : array();
+            $dd['acl']['allowed_users'] = isset($dd['acl']['allowed_users']) ? $dd['acl']['allowed_users'] : [];
             $dd['acl']['allowed_users'] = array_merge($dd['acl']['allowed_users'], $managers);
         }
 
         // Giving Hub admins full access to the DataStore dataviews
         if (\Hubzero\Access\Access::check(User::get('id'), 'core.admin')) {
-            $dd['acl']['allowed_users'] = isset($dd['acl']['allowed_users']) ? $dd['acl']['allowed_users'] : array();
+            $dd['acl']['allowed_users'] = isset($dd['acl']['allowed_users']) ? $dd['acl']['allowed_users'] : [];
             $dd['acl']['allowed_users'][] = User::get('username');
         }
 
@@ -242,14 +242,14 @@ class ModeDs
         $id = Request::getString('id', false);
 
         if ($id) {
-            $dd['where'][] = array('field' => $dd['pk'], 'value' => $id);
+            $dd['where'][] = ['field' => $dd['pk'], 'value' => $id];
             $dd['single'] = true;
         }
 
         $custom_field =  Request::getString('custom_field', false);
         if ($custom_field) {
             $custom_field = explode('|', $custom_field);
-            $dd['where'][] = array('field' => $custom_field[0], 'value' => $custom_field[1]);
+            $dd['where'][] = ['field' => $custom_field[0], 'value' => $custom_field[1]];
             $dd['single'] = true;
         }
 
@@ -277,7 +277,7 @@ class ModeDs
             // would otherwise have made the injected UNION a syntax error.
             $group_by = Request::getString('group_by', '');
             if ($group_by !== '') {
-                $group_cols = array();
+                $group_cols = [];
                 foreach (explode(',', $group_by) as $gb_col) {
                     $gb_col = trim($gb_col);
                 // accept a bare column or its "WITH ROLLUP" suffix, nothing else
@@ -297,7 +297,7 @@ class ModeDs
 
             // Ordering
             $order_cols = $dd['cols'];
-            $dd['cols'] = array();
+            $dd['cols'] = [];
             foreach ($custom_view as $cv_col) {
             // Only real columns of this dataview. An unknown key yields a null
             // conf, and lib/db.php then uses the key itself both as the column

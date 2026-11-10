@@ -165,7 +165,7 @@ $bdcolor = '#e1e1e1';
                     <div style="line-height: 1.6em; margin: 0; padding: 0; text-align: left;"><?php echo $this->post->comment; ?></div>
                     <?php
                     $attachments = $this->post->attachments()
-                        ->whereIn('state', array(Components\Forum\Models\Post::STATE_PUBLISHED))
+                        ->whereIn('state', [Components\Forum\Models\Post::STATE_PUBLISHED])
                         ->rows();
 
                     if ($attachments->count() > 0) { ?>

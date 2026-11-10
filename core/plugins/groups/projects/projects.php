@@ -90,13 +90,13 @@ class Projects extends Plugin
      */
     public function &onGroupAreas()
     {
-        $area = array(
+        $area = [
             'name'             => $this->_name,
             'title'            => Lang::txt('PLG_GROUPS_PROJECTS'),
             'default_access'   => $this->params->get('plugin_access', 'members'),
             'display_menu_tab' => $this->params->get('display_tab', 1),
             'icon'             => 'f03f'
-        );
+        ];
         return $area;
     }
 
@@ -119,10 +119,10 @@ class Projects extends Plugin
         $active = $this->_name;
 
         // The output array we're returning
-        $arr = array(
+        $arr = [
             'html'     => '',
-            'metadata' => array()
-        );
+            'metadata' => []
+        ];
 
         // Get this area details
         $this_area = $this->onGroupAreas();
@@ -147,7 +147,7 @@ class Projects extends Plugin
         // If we want to return content
         if ($return == 'html') {
             // Set filters
-            $this->_filters = array(
+            $this->_filters = [
                 'mine'     => 1,
                 'updates'  => 1,
                 'getowner' => 1,
@@ -155,8 +155,8 @@ class Projects extends Plugin
                 'sortby'   => Request::getString('sortby', 'title'),
                 'sortdir'  => Request::getString('sortdir', 'ASC'),
                 'filterby' => Request::getString('filterby', 'active')
-            );
-            if (!in_array($this->_filters['filterby'], array('active', 'archived'))) {
+            ];
+            if (!in_array($this->_filters['filterby'], ['active', 'archived'])) {
                 $this->_filters['filterby'] = 'active';
             }
 
@@ -226,7 +226,7 @@ class Projects extends Plugin
         }
 
         // get meta
-        $arr['metadata'] = array();
+        $arr['metadata'] = [];
 
         // return total record count
         $arr['metadata']['count'] = count($this->_projects);
@@ -303,7 +303,7 @@ class Projects extends Plugin
                     $model->set('state', 3);
                     $model->store(false);
 
-                    Event::trigger('projects.onProjectAfterSave', array($model));
+                    Event::trigger('projects.onProjectAfterSave', [$model]);
                 }
             }
         }
@@ -320,7 +320,7 @@ class Projects extends Plugin
     {
         $which = strtolower($which);
 
-        if (!in_array($which, array('all', 'owned', 'other'))) {
+        if (!in_array($which, ['all', 'owned', 'other'])) {
             $which = 'owned';
         }
 
@@ -362,12 +362,12 @@ class Projects extends Plugin
 // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _updates()
     {
-        $filters = array(
+        $filters = [
             'limit' => Request::getInt('limit', 25)
-        );
+        ];
 
         // Get shared updates feed from feed plugin
-        $results = Event::trigger('projects.onShared', array(
+        $results = Event::trigger('projects.onShared', [
             'feed',
             $this->model,
             $this->_projects,
@@ -381,7 +381,7 @@ class Projects extends Plugin
                 'active' => $this->_name,
                 'action'=> 'update'
             )*/
-        ));
+        ]);
 
         $content = !empty($results) && isset($results[0]) ? $results[0] : null;
 
@@ -430,20 +430,20 @@ class Projects extends Plugin
             if (!in_array($projectid, (array) $this->_projects)) {
                 App::abort(403, Lang::txt('ALERTNOTAUTH'));
             }
-            $projects = array($projectid);
+            $projects = [$projectid];
         }
 
         // Add the post to each project
         foreach ($projects as $id) {
             $project = new \Components\Projects\Models\Project($id);
 
-            Event::trigger('projects.onSharedUpdate', array(
+            Event::trigger('projects.onSharedUpdate', [
                 $project,
                 $entry,
                 $managers,
                 $posted_by,
                 $posted
-            ));
+            ]);
         }
 
         // Redirect

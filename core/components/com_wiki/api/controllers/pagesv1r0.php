@@ -87,22 +87,22 @@ class Pagesv1r0 extends ApiController
      */
     public function listTask()
     {
-        $filters = array(
+        $filters = [
             'limit'      => Request::getInt('limit', 25),
             'start'      => Request::getInt('limitstart', 0),
             'search'     => Request::getString('search', ''),
             'sort'       => Request::getWord('sort', 'title'),
             'sort_Dir'   => strtoupper(Request::getWord('sort_Dir', 'ASC')),
-            'state'      => array(Page::STATE_PUBLISHED),
+            'state'      => [Page::STATE_PUBLISHED],
             'scope'      => Request::getWord('scope', 'site'),
             'scope_id'   => Request::getInt('scope_id', 0),
             'access'     => User::getAuthorisedViewLevels()
-        );
+        ];
 
         $book = new Book($filters['scope'], $filters['scope_id']);
 
         $response = new stdClass();
-        $response->pages = array();
+        $response->pages = [];
         $response->total = $book->pages($filters)->count();
 
         if ($response->total) {
@@ -384,7 +384,7 @@ class Pagesv1r0 extends ApiController
         $scope = Request::getVar('scope', null);
         $scope = (is_string($scope) && $scope !== '') ? preg_replace('/[^A-Z_]/i', '', $scope) : null;
 
-        $fields = array(
+        $fields = [
             'title'          => Request::getString('title', null, '', 'none', 2),
             'pagename'       => Request::getString('pagename', null),
             'scope'          => $scope,
@@ -393,7 +393,7 @@ class Pagesv1r0 extends ApiController
             'created_by'     => Request::getInt('created_by', null),
             'state'          => Request::getInt('state', null),
             'access'         => Request::getInt('access', null)
-        );
+        ];
 
         if (!$id) {
             throw new \Exception(Lang::txt('COM_WIKI_ERROR_PAGE_NOT_SPECIFIED'), 422);
@@ -423,7 +423,7 @@ class Pagesv1r0 extends ApiController
 
         // Get parameters
         $params = new \Hubzero\Config\Registry($page->get('params', ''));
-        $params->merge(Request::getArray('params', array(), 'post'));
+        $params->merge(Request::getArray('params', [], 'post'));
 
         $page->set('params', $params->toString());
 

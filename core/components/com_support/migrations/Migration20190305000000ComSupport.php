@@ -20,12 +20,12 @@ class Migration20190305000000ComSupport extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__abuse_reports' => array(
+    public static $tables = [
+        '#__abuse_reports' => [
             'created',
             'reviewed'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

@@ -313,7 +313,7 @@ class EventsLatest extends Module
     private function getEventsByDate(&$rows, $date, &$seenThisEvent)
     {
         $num_events = count($rows);
-        $new_rows_events = array();
+        $new_rows_events = [];
 
         if ($num_events > 0) {
             $year  = date('Y', $date);
@@ -330,7 +330,7 @@ class EventsLatest extends Module
                 $new_rows_events[] =& $rows[$r];
             }
 
-            usort($new_rows_events, array($this, 'cmpByStartTime'));
+            usort($new_rows_events, [$this, 'cmpByStartTime']);
         }
 
         return $new_rows_events;

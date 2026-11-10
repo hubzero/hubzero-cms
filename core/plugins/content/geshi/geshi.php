@@ -56,7 +56,7 @@ class Geshi extends Plugin
         $regex = "#<pre xml:\s*(.*?)>(.*?)</pre>#s";
 
         // Perform the replacement.
-        $article->text = preg_replace_callback($regex, array(&$this, '_replace'), $article->text);
+        $article->text = preg_replace_callback($regex, [&$this, '_replace'], $article->text);
 
         // Load highlight.js CSS theme
         $this->css('highlight.css');
@@ -79,8 +79,8 @@ class Geshi extends Plugin
         $lang  = \Hubzero\Utility\Arr::getValue($args, 'lang', 'php');
         $lines = \Hubzero\Utility\Arr::getValue($args, 'lines', 'false');
 
-        $html_entities_match   = array("|\<br \/\>|", "#<#", "#>#", "|&#39;|", '#&quot;#', '#&nbsp;#');
-        $html_entities_replace = array("\n", '&lt;', '&gt;', "'", '"', ' ');
+        $html_entities_match   = ["|\<br \/\>|", "#<#", "#>#", "|&#39;|", '#&quot;#', '#&nbsp;#'];
+        $html_entities_replace = ["\n", '&lt;', '&gt;', "'", '"', ' '];
 
         $text = preg_replace($html_entities_match, $html_entities_replace, $text);
         $text = str_replace('&lt;', '<', $text);
@@ -131,8 +131,8 @@ class Geshi extends Plugin
     protected static function parseAttributes($string)
     {
         // Initialise variables
-        $attr = array();
-        $retarray = array();
+        $attr = [];
+        $retarray = [];
 
         // Let's grab all the key/value pairs using a regular expression
         preg_match_all('/([\w:-]+)[\s]?=[\s]?"([^"]*)"/i', $string, $attr);

@@ -90,7 +90,7 @@ class Assetgroup extends Base
     {
         parent::__construct($oid);
 
-        $this->children = new Iterator(array());
+        $this->children = new Iterator([]);
     }
 
     /**
@@ -141,7 +141,7 @@ class Assetgroup extends Base
      * @param   array   $filters
      * @return  array
      */
-    public function children($idx = null, $populate = false, $filters = array())
+    public function children($idx = null, $populate = false, $filters = [])
     {
         if ($populate) {
             if (!isset($filters['parent'])) {
@@ -154,7 +154,7 @@ class Assetgroup extends Base
                 $filters['section_id'] = $this->get('section_id');
             }
 
-            if (($results = $this->_tbl->find(array('w' => $filters)))) {
+            if (($results = $this->_tbl->find(['w' => $filters]))) {
                 foreach ($results as $c) {
                     $this->children->add(new Assetgroup($c));
                 }
@@ -171,7 +171,7 @@ class Assetgroup extends Base
                 }
             } elseif (is_array($idx)) {
                 $found = false;
-                $res = array();
+                $res = [];
                 foreach ($this->children as $child) {
                     $obj = new \stdClass();
                     foreach ($idx as $property) {
@@ -189,7 +189,7 @@ class Assetgroup extends Base
             } elseif (is_string($idx)) {
                 $idx = strtolower(trim($idx));
 
-                $res = array();
+                $res = [];
                 foreach ($this->children as $child) {
                     if (isset($child->$idx)) {
                         $res[] = $child->$idx;
@@ -232,7 +232,7 @@ class Assetgroup extends Base
      * @param   array  $filters Filters to apply
      * @return  object \Components\Courses\Models\Iterator
      */
-    public function assets($filters = array())
+    public function assets($filters = [])
     {
         if (!($this->_assets instanceof \Traversable)) {
             if (!isset($filters['asset_scope_id'])) {
@@ -247,7 +247,7 @@ class Assetgroup extends Base
 
             $tbl = new Tables\Asset($this->_db);
 
-            if (($results = $tbl->find(array('w' => $filters)))) {
+            if (($results = $tbl->find(['w' => $filters]))) {
                 foreach ($results as $key => $result) {
                     $results[$key] = new Asset($result);
 
@@ -256,7 +256,7 @@ class Assetgroup extends Base
                     }
                 }
             } else {
-                $results = array();
+                $results = [];
             }
 
             $this->_assets = new Iterator($results);
@@ -362,7 +362,7 @@ class Assetgroup extends Base
 
         if ($value) {
             $this->importPlugin('courses')
-                 ->trigger('onAssetgroupSave', array($this));
+                 ->trigger('onAssetgroupSave', [$this]);
         }
 
         return $value;
@@ -399,7 +399,7 @@ class Assetgroup extends Base
         }
 
         $this->importPlugin('courses')
-             ->trigger('onAssetgroupDelete', array($this));
+             ->trigger('onAssetgroupDelete', [$this]);
 
         // Remove this record from the database and log the event
         return parent::delete();
@@ -445,10 +445,10 @@ class Assetgroup extends Base
                         // Copy asset associations
                         $tbl = new Tables\AssetAssociation($this->_db);
                         foreach (
-                            $tbl->find(array(
+                            $tbl->find([
                             'scope_id' => $oldAssetGroupId,
                             'scope' => 'asset_group',
-                            'asset_id' => $oldAssetId)) as $aa
+                            'asset_id' => $oldAssetId]) as $aa
                         ) {
                             $tbl->bind($aa);
                             $tbl->id = 0;
@@ -463,8 +463,8 @@ class Assetgroup extends Base
             }
 
             // Copy asset groups (child asset groups)
-            if ($children = $this->_tbl->find(array('w' => array('parent' => $oldAssetGroupId)))) {
-                $found = array();
+            if ($children = $this->_tbl->find(['w' => ['parent' => $oldAssetGroupId]])) {
+                $found = [];
 
                 foreach ($children as $c) {
                     if (in_array($c->id, $found)) {
@@ -524,11 +524,11 @@ class Assetgroup extends Base
                         // With the new duplicated asset, find the row with the previous
                         // scope_id, scope, and asset_id to duplicate
                         $tbl = new Tables\AssetAssociation($this->_db);
-                        $findParams = array(
+                        $findParams = [
                             'scope_id' => $startingAssetGroupId,
                             'scope' => 'asset_group',
                             'asset_id' => $startingAssetId
-                        );
+                        ];
                         foreach (
                             $tbl->find($findParams) as $aa
                         ) {

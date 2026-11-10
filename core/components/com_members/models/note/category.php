@@ -53,7 +53,7 @@ class Category extends Relational
      * @param   array    $filters  Filters to apply to query
      * @return  object
      */
-    public function children($filters = array())
+    public function children($filters = [])
     {
         $categories = self::blank()
             ->whereEquals('parent_id', $this->get('id'));

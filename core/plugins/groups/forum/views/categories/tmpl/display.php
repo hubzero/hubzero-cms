@@ -145,7 +145,7 @@ $this->css()
                                     $name = '<a href="' . Route::url($row->creator->link()) . '">' . $name . '</a>';
                                 }
                             }
-                            $cls = array();
+                            $cls = [];
                             if ($row->isClosed()) {
                                 $cls[] = 'closed';
                             }

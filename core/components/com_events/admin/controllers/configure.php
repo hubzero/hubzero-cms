@@ -56,12 +56,12 @@ class Configure extends AdminController
     public function saveTask()
     {
         // Get the configuration
-        $config = Request::getArray('config', array(), 'post');
+        $config = Request::getArray('config', [], 'post');
         foreach ($config as $n => $v) {
-            $box = array(
+            $box = [
                 'param' => $n,
                 'value' => $v
-            );
+            ];
 
             $row = new EventsConfig($this->database);
             if (!$row->bind($box)) {
@@ -78,15 +78,15 @@ class Configure extends AdminController
         }
 
         // Get the custom fields
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
-        $box = array();
+        $box = [];
         $box['param'] = 'fields';
         $box['value'] = '';
         $field        = '';
 
         if (is_array($fields)) {
-            $txta = array();
+            $txta = [];
             foreach ($fields as $val) {
                 if ($val['title']) {
                     $k = preg_replace("/[^a-zA-Z0-9]/", '', strtolower($val['title']));

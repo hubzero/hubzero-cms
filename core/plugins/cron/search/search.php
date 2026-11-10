@@ -35,18 +35,18 @@ class Search extends Plugin
 
         $obj = new \stdClass();
         $obj->plugin = $this->_name;
-        $obj->events = array(
-            array(
+        $obj->events = [
+            [
                 'name'   => 'processQueue',
                 'label'  => Lang::txt('PLG_CRON_SEARCH_PROCESS_QUEUE'),
                 'params' => ''
-            ),
-            array(
+            ],
+            [
                 'name'   => 'runFullIndex',
                 'label'  => Lang::txt('PLG_CRON_SEARCH_RUN_FULL_INDEX'),
                 'params' => ''
-            )
-        );
+            ]
+        ];
 
         return $obj;
     }
@@ -157,7 +157,7 @@ class Search extends Plugin
         $blacklist = $db->query()->loadColumn();
 
         foreach ($items as $item) {
-            $format = Event::trigger('search.onIndex', array($item->type, $item->type_id, true));
+            $format = Event::trigger('search.onIndex', [$item->type, $item->type_id, true]);
             if (isset($format[0])) {
                 $this->processRows($format[0], $item->action, $blacklist);
 

@@ -68,12 +68,12 @@ $this->css();
                             echo ' selected="selected"';
                                          } ?>><?php echo Lang::txt('COM_COURSES_NONE'); ?></option>
                         <?php
-                        $filters = array(
+                        $filters = [
                             'authorized' => 'admin',
-                            'fields'     => array('cn', 'description', 'published', 'gidNumber', 'type'),
-                            'type'       => array(1, 3),
+                            'fields'     => ['cn', 'description', 'published', 'gidNumber', 'type'],
+                            'type'       => [1, 3],
                             'sortby'     => 'description'
-                        );
+                        ];
                         $groups = \Hubzero\User\Group::find($filters);
                         if ($groups) {
                             foreach ($groups as $group) {

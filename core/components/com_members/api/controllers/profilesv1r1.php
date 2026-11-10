@@ -77,7 +77,7 @@ class Profilesv1r1 extends ApiController
     {
         $this->requiresAuthentication();
 
-        $filters = array(
+        $filters = [
             'limit'      => Request::getInt('limit', 25),
             'start'      => Request::getInt('limitstart', 0),
             'search'     => Request::getString('search', ''),
@@ -85,7 +85,7 @@ class Profilesv1r1 extends ApiController
             'sort_Dir'   => strtoupper(Request::getWord('sortDir', 'DESC')),
             'activation' => 1,
             'access'     => User::getAuthorisedViewLevels()
-        );
+        ];
 
         $admin = false;
         if (User::authorise('core.admin')) {
@@ -134,7 +134,7 @@ class Profilesv1r1 extends ApiController
             ->rows();
 
         $response = new stdClass();
-        $response->members = array();
+        $response->members = [];
         $response->total   = $rows->pagination->total;
 
         if ($response->total) {
@@ -229,7 +229,7 @@ class Profilesv1r1 extends ApiController
         // Incoming
         $user = User::getInstance();
         $user->set('id', 0);
-        $user->set('groups', array($newUsertype));
+        $user->set('groups', [$newUsertype]);
         $user->set('registerDate', Date::toSql());
 
         $user->set('name', Request::getString('name', '', 'post'));
@@ -300,13 +300,13 @@ class Profilesv1r1 extends ApiController
             App::abort(500, Lang::txt('Account creation failed.'));
         }
 
-        if ($groups = Request::getArray('groups', array(), 'post')) {
+        if ($groups = Request::getArray('groups', [], 'post')) {
             foreach ($groups as $id) {
                 $group = \Hubzero\User\Group::getInstance($id);
 
                 if ($group) {
                     if (!in_array($user->get('id'), $group->get('members'))) {
-                        $group->add('members', array($user->get('id')));
+                        $group->add('members', [$user->get('id')]);
                         $group->update();
                     }
                 }
@@ -378,7 +378,7 @@ class Profilesv1r1 extends ApiController
         // Get any request vars
         $base = rtrim(Request::base(), '/');
 
-        $profile = array(
+        $profile = [
             'id'                => $result->get('id'),
             'username'          => $result->get('username'),
             'name'              => $result->get('name'),
@@ -387,13 +387,13 @@ class Profilesv1r1 extends ApiController
             'last_name'         => $result->get('surname'),
             'email'             => $isSelfOrManager ? $result->get('email') : null,
             'member_since'      => $result->get('registerDate'),
-            'picture'   => array(
+            'picture'   => [
                 'thumb' => $result->picture(0, true),
                 'full'  => $result->picture(0, false)
-            ),
-            'interests' => array(),
+            ],
+            'interests' => [],
             'url'       => str_replace('/api', '', $base . '/' . ltrim(Route::url($result->link()), '/'))
-        );
+        ];
 
         // Get custom fields
         $attribs = Field::all()
@@ -434,7 +434,7 @@ class Profilesv1r1 extends ApiController
         // Corrects image path, API application breaks Route::url() in the Helper::getMemberPhoto() method.
         // A member with no picture gets an inline data: URI (and a resolver may
         // return an absolute URL); prefixing those with the base broke them
-        foreach (array('thumb', 'full') as $size) {
+        foreach (['thumb', 'full'] as $size) {
             if (!preg_match('#^(data:|https?://)#i', (string) $profile['picture'][$size])) {
                 $profile['picture'][$size] = str_replace('/api', '', $base . '/' . $profile['picture'][$size]);
             }
@@ -544,7 +544,7 @@ class Profilesv1r1 extends ApiController
 
         $groups = $result->groups('members');
 
-        $g = array();
+        $g = [];
         foreach ($groups as $k => $group) {
             $g[$k]['gidNumber']   = $group->gidNumber;
             $g[$k]['cn']          = $group->cn;
@@ -589,7 +589,7 @@ class Profilesv1r1 extends ApiController
                     ->whereEquals('enabled', 1)
                     ->rows();
 
-        $pw_rules = array();
+        $pw_rules = [];
 
         // Get the password rule descriptions
         foreach ($password_rules as $rule) {
@@ -605,7 +605,7 @@ class Profilesv1r1 extends ApiController
         if (!empty($pw)) {
             $msg = \Hubzero\Password\Rule::verify($pw, $password_rules, $userid);
         } else {
-            $msg = array();
+            $msg = [];
         }
 
         $html = '';
@@ -649,7 +649,7 @@ class Profilesv1r1 extends ApiController
      */
     public function organizationsTask()
     {
-        $organizations = array();
+        $organizations = [];
 
         $field = Field::all()
             ->whereEquals('name', 'organization')
@@ -719,7 +719,7 @@ class Profilesv1r1 extends ApiController
         $response = new stdClass();
         $response->type = $field->get('type');
 
-        $values = array();
+        $values = [];
 
         if ($field->get('type') == 'country') {
             $countries = \Hubzero\Geocode\Geocode::countries();

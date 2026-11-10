@@ -41,10 +41,10 @@ class Metric extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'page_id' => 'positive|nonzero',
         'scope'   => 'notempty'
-    );
+    ];
 
     /**
      * Defines a belongs to one relationship between task and liaison

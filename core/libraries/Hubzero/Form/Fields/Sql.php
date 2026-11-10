@@ -32,7 +32,7 @@ class Sql extends Select
     protected function getOptions()
     {
         // Initialize variables.
-        $options = array();
+        $options = [];
 
         // Initialize some field attributes.
         $key       = $this->element['key_field']   ? (string) $this->element['key_field']   : 'value';

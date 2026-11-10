@@ -169,7 +169,7 @@ class BundleBuilderTest extends Basic
         if (!is_dir($dir)) {
             return;
         }
-        foreach (array_diff((array) @scandir($dir), array('.', '..')) as $i) {
+        foreach (array_diff((array) @scandir($dir), ['.', '..']) as $i) {
             $this->saferm($dir . DIRECTORY_SEPARATOR . $i);
         }
         @rmdir($dir);
@@ -370,18 +370,18 @@ class BundleBuilderTest extends Basic
     {
         $this->assertSame(
             '10_4231_KPMA-CN98.zip',
-            $this->downloadLinkName(array('doi' => '10.4231/KPMA-CN98', 'publication_id' => 5081, 'version_number' => 1))
+            $this->downloadLinkName(['doi' => '10.4231/KPMA-CN98', 'publication_id' => 5081, 'version_number' => 1])
         );
 
         $this->assertSame(
             'Publication_5081_3.zip',
-            $this->downloadLinkName(array('doi' => '', 'publication_id' => 5081, 'version_number' => 3))
+            $this->downloadLinkName(['doi' => '', 'publication_id' => 5081, 'version_number' => 3])
         );
 
         // A missing doi key behaves like an empty one.
         $this->assertSame(
             'Publication_42_1.zip',
-            $this->downloadLinkName(array('publication_id' => 42, 'version_number' => 1))
+            $this->downloadLinkName(['publication_id' => 42, 'version_number' => 1])
         );
     }
 
@@ -503,10 +503,10 @@ class BundleBuilderTest extends Basic
 
         $a = new \ZipArchive();
         $a->open($z);
-        $this->ensureMetadata($a, $name, array(
-            $fresh  => array('readme',  $name . '/hubREADME.txt'),
-            $galSrc => array('gallery', $name . '/gallery/pic.png'),
-        ));
+        $this->ensureMetadata($a, $name, [
+            $fresh  => ['readme',  $name . '/hubREADME.txt'],
+            $galSrc => ['gallery', $name . '/gallery/pic.png'],
+        ]);
         $a->close();
 
         $a = new \ZipArchive();

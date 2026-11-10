@@ -27,7 +27,7 @@ $citations_require_attention = $this->citations_require_attention;
 $citations_require_no_attention = $this->citations_require_no_attention;
 
 //dont show array
-$no_show = array("errors","duplicate");
+$no_show = ["errors","duplicate"];
 
 $base = $this->member->link() . '&active=citations';
 ?>
@@ -195,7 +195,7 @@ $base = $this->member->link() . '&active=citations';
                                             <?php
 
                                             $recordAttributes = $cc->getAttributes();
-                                            $changedKeys = array();
+                                            $changedKeys = [];
                                             foreach ($c as $attribute => $value) {
                                                 if (!empty($recordAttributes[$attribute]) || !empty($value)) {
                                                     $changedKeys[] = $attribute;

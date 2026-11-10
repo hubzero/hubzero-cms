@@ -57,12 +57,12 @@ class Citations extends Plugin
      */
     public function &onMembersAreas($user, $member)
     {
-        $areas = array(
+        $areas = [
             'citations' => Lang::txt('PLG_MEMBERS_CITATIONS'),
             'icon'      => '275D',
             'icon-class' => 'icon-quote-open',
             'menu'      => $this->params->get('display_tab', 1)
-        );
+        ];
         return $areas;
     }
 
@@ -89,10 +89,10 @@ class Citations extends Plugin
             }
         }
 
-        $arr = array(
+        $arr = [
             'html'     => '',
-            'metadata' => array()
-        );
+            'metadata' => []
+        ];
 
         $this->database = App::get('db');
 
@@ -119,7 +119,7 @@ class Citations extends Plugin
                 $this->action = 'browse';
             }
 
-            if (in_array($this->action, array('import', 'upload', 'review', 'process', 'saved'))) {
+            if (in_array($this->action, ['import', 'upload', 'review', 'process', 'saved'])) {
                 $this->importer = new \Components\Citations\Models\Importer(
                     App::get('db'),
                     App::get('filesystem'),
@@ -186,7 +186,7 @@ class Citations extends Plugin
     private function browseAction()
     {
          // Instantiate a new citations object
-        $obj = $this->_filterHandler(Request::getArray('filters', array()), $this->member->get('id'));
+        $obj = $this->_filterHandler(Request::getArray('filters', []), $this->member->get('id'));
 
         $count = clone $obj['citations'];
         $count = $count->total();
@@ -242,12 +242,12 @@ class Citations extends Plugin
         $view->earliest_year = 2001;
 
         // Affiliation filter
-        $view->filterlist = array(
+        $view->filterlist = [
             'all'    => Lang::txt('PLG_MEMBERS_CITATIONS_ALL'),
             'aff'    => Lang::txt('PLG_MEMBERS_CITATIONS_AFFILIATED'),
             'nonaff' => Lang::txt('PLG_MEMBERS_CITATIONS_NONAFFILIATED'),
             'member' => Lang::txt('PLG_MEMBERS_CITATIONS_MEMBERCONTRIB')
-        );
+        ];
 
         // Set default values for required filters for this view.
         $view->filters['search'] = isset($view->filters['search']) ? $view->filters['search'] : "";
@@ -263,14 +263,14 @@ class Citations extends Plugin
         $view->filters['filter'] = isset($view->filters['filter']) ? $view->filters['filter'] : "";
 
         // Sort Filter
-        $view->sorts = array(
+        $view->sorts = [
             //'sec_cnt DESC' => Lang::txt('PLG_MEMBERS_CITATIONS_CITEDBY'),
             'year DESC'    => Lang::txt('PLG_MEMBERS_CITATIONS_YEAR'),
             'created DESC' => Lang::txt('PLG_MEMBERS_CITATIONS_NEWEST'),
             'title ASC'    => Lang::txt('PLG_MEMBERS_CITATIONS_TITLE'),
             'author ASC'   => Lang::txt('PLG_MEMBERS_CITATIONS_AUTHOR'),
             'journal ASC'  => Lang::txt('PLG_MEMBERS_CITATIONS_JOURNAL')
-        );
+        ];
 
         // Handling ids of the the boxes checked for download
         $referer = (isset($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : '';
@@ -354,7 +354,7 @@ class Citations extends Plugin
         $citationsType = \Components\Citations\Models\Type::all();
         $view->types = $citationsType->rows();
 
-        $fields = array();
+        $fields = [];
         foreach ($view->types as $type) {
             if (isset($type->fields)) {
                 $f = $type->fields;
@@ -418,8 +418,8 @@ class Citations extends Plugin
             $view->row->uid = User::get('id');
 
             // Tags & badges
-            $view->tags   = array();
-            $view->badges = array();
+            $view->tags   = [];
+            $view->badges = [];
 
             $view->row->id = -time();
         } else {
@@ -511,7 +511,7 @@ class Citations extends Plugin
         ) {
             throw new Exception(\Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
         }
-        $citation->set(array(
+        $citation->set([
                 'type' => Request::getInt('type'),
                 'cite' => Request::getString('cite'),
                 'ref_type' => Request::getString('ref_type'),
@@ -554,7 +554,7 @@ class Citations extends Plugin
                 'fundedby' => Request::getInt('fundedby', 0),
                 'scope' => $scope,
                 'scope_id' => $scopeID
-            ));
+            ]);
 
         // Datetime fields need to be set to null instead of empty strings
         foreach (['date_submit', 'date_accept', 'date_publish'] as $key) {
@@ -594,11 +594,11 @@ class Citations extends Plugin
 
             foreach ($authorField as $key => $a) {
                 // Create a new row
-                $authorObj = \Components\Citations\Models\Author::blank()->set(array(
+                $authorObj = \Components\Citations\Models\Author::blank()->set([
                     'cid' => $citation->id,
                     'ordering' => $key,
                     'author' => $a
-                ));
+                ]);
 
                 $authorObj->save();
             }
@@ -687,7 +687,7 @@ class Citations extends Plugin
                 );
             }
 
-            $deleted  = array();
+            $deleted  = [];
 
             $citationIDs = explode(',', $citationIDs);
 
@@ -748,10 +748,10 @@ class Citations extends Plugin
 
             // if the setting a custom member citation type
             if (($citationFormat->isNew()) || ($citationFormat->style == $name && !$citationFormat->isNew())) {
-                $citationFormat->set(array(
+                $citationFormat->set([
                     'format' => Request::getString('template'),
                     'style'  => $name
-                ));
+                ]);
 
                 // save format
                 $citationFormat->save();
@@ -922,7 +922,7 @@ class Citations extends Plugin
                 );
             }
 
-            $published = array();
+            $published = [];
             $citationIDs = explode(',', $citationIDs);
             $string = 'PLG_MEMBERS_CITATIONS_CITATION_PUBLISHED';
 
@@ -1013,7 +1013,7 @@ class Citations extends Plugin
         // citation temp file cleanup
         $this->importer->cleanup();
 
-        $view->accepted_files = Event::trigger('citation.onImportAcceptedFiles', array());
+        $view->accepted_files = Event::trigger('citation.onImportAcceptedFiles', []);
 
         $view->messages = Notify::messages('plg_members_citations');
 
@@ -1068,7 +1068,7 @@ class Citations extends Plugin
         }
 
         // call the plugins
-        $citations = Event::trigger('citation.onImport', array($file, 'member', User::get('id')));
+        $citations = Event::trigger('citation.onImport', [$file, 'member', User::get('id')]);
         $citations = array_values(array_filter($citations));
 
         // did we get citations from the citation plugins
@@ -1176,10 +1176,10 @@ class Citations extends Plugin
         $cites_require_no_attention = $this->importer->readRequiresNoAttention();
 
         // action for citations needing attention
-        $citations_action_attention    = Request::getArray('citation_action_attention', array());
+        $citations_action_attention    = Request::getArray('citation_action_attention', []);
 
         // action for citations needing no attention
-        $citations_action_no_attention = Request::getArray('citation_action_no_attention', array());
+        $citations_action_no_attention = Request::getArray('citation_action_no_attention', []);
 
         // check to make sure we have citations
         if (!$cites_require_attention && !$cites_require_no_attention) {
@@ -1285,11 +1285,11 @@ class Citations extends Plugin
         $view->isAdmin  = $this->params->get('access-manage');
         $view->config   = Component::params('com_citations');
         $view->database = $this->database;
-        $view->filters  = array(
+        $view->filters  = [
             'start'  => 0,
             'search' => ''
-        );
-        $view->citations = array();
+        ];
+        $view->citations = [];
         $citations = Citation::all()->whereIn('id', $citations_saved);
         foreach ($citations as $citation) {
             $view->citations[] = $citation;
@@ -1312,7 +1312,7 @@ class Citations extends Plugin
      * @param array  $filters array of POST values
      * @return  array sanitized and validated filter values
      */
-    private function _filterHandler($filters = array(), $scope_id = 0)
+    private function _filterHandler($filters = [], $scope_id = 0)
     {
         $citations = \Components\Citations\Models\Citation::all();
         // require citations
@@ -1375,8 +1375,8 @@ class Citations extends Plugin
 
                     $value = \Hubzero\Utility\Sanitize::clean($value);
                     $term = $value;
-                    $collection = array();
-                    $columns = array('author', 'title', 'isbn', 'doi', 'publisher', 'abstract');
+                    $collection = [];
+                    $columns = ['author', 'title', 'isbn', 'doi', 'publisher', 'abstract'];
                     foreach ($columns as $column) {
                         foreach ($terms as $term) {
                             // copy the original item
@@ -1401,7 +1401,7 @@ class Citations extends Plugin
 
                 // for tags
                 if ($filter == "tag" && $value != "") {
-                    $collection = array();
+                    $collection = [];
                     $cite = clone $citations;
                     foreach ($cite as $c) {
                         foreach ($c->tags as $tag) {
@@ -1421,16 +1421,16 @@ class Citations extends Plugin
                 if ($filter == "sort" && $value != "") {
                     // only the columns the sort menu offers, and a real direction
                     $clause = explode(" ", $value);
-                    if (in_array($clause[0], array('year', 'created', 'title', 'author', 'journal'))) {
+                    if (in_array($clause[0], ['year', 'created', 'title', 'author', 'journal'])) {
                         $dir = (isset($clause[1]) && strtolower($clause[1]) == 'desc') ? 'desc' : 'asc';
                         $citations->order($clause[0], $dir);
                     }
                 }
             } // end foreach filters as filter
 
-            return array('citations' => $citations, 'filters' => $filters);
+            return ['citations' => $citations, 'filters' => $filters];
         } else {
-            return array('citations' => $citations, 'filters' => array());
+            return ['citations' => $citations, 'filters' => []];
         }
     }
 
@@ -1451,10 +1451,10 @@ class Citations extends Plugin
      */
     private function _handleOpenURL()
     {
-        return array(
+        return [
             'link' => '',
             'text' => '',
             'icon' => ''
-        );
+        ];
     }
 }

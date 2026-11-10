@@ -54,19 +54,19 @@ class Mailing extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'subject' => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is updated. The framework
@@ -76,10 +76,10 @@ class Mailing extends Relational
      *
      * @var  array
      */
-    public $renew = array(
+    public $renew = [
         'modified',
         'modified_by'
-    );
+    ];
 
     /**
      * Generate the automatic `modified` value (now).
@@ -155,10 +155,10 @@ class Mailing extends Relational
      */
     public function isActive()
     {
-        return in_array($this->get('status'), array(
+        return in_array($this->get('status'), [
             self::STATUS_PREPARING,
             self::STATUS_SENDING
-        ));
+        ]);
     }
 
     /**
@@ -168,10 +168,10 @@ class Mailing extends Relational
      */
     public function isDone()
     {
-        return in_array($this->get('status'), array(
+        return in_array($this->get('status'), [
             self::STATUS_SENT,
             self::STATUS_CANCELLED
-        ));
+        ]);
     }
 
     /**
@@ -199,11 +199,11 @@ class Mailing extends Relational
      */
     public function canReturnToDraft()
     {
-        return in_array($this->get('status'), array(
+        return in_array($this->get('status'), [
             self::STATUS_PENDING_APPROVAL,
             self::STATUS_HELD,
             self::STATUS_SCHEDULED
-        ));
+        ]);
     }
 
     /**
@@ -222,13 +222,13 @@ class Mailing extends Relational
             return false;
         }
 
-        return in_array($this->get('status'), array(
+        return in_array($this->get('status'), [
             self::STATUS_DRAFT,
             self::STATUS_HELD,
             self::STATUS_PENDING_APPROVAL,
             self::STATUS_SCHEDULED,
             self::STATUS_CANCELLED
-        ));
+        ]);
     }
 
     /**
@@ -238,7 +238,7 @@ class Mailing extends Relational
      */
     public static function statuses()
     {
-        return array(
+        return [
             self::STATUS_DRAFT,
             self::STATUS_PENDING_APPROVAL,
             self::STATUS_HELD,
@@ -248,6 +248,6 @@ class Mailing extends Relational
             self::STATUS_PAUSED,
             self::STATUS_SENT,
             self::STATUS_CANCELLED
-        );
+        ];
     }
 }

@@ -24,7 +24,7 @@ class Router extends Base
      */
     public function build(&$query)
     {
-        $segments = array();
+        $segments = [];
 
         if (!empty($query['controller'])) {
             $segments[] = $query['controller'];
@@ -47,13 +47,13 @@ class Router extends Base
      */
     public function parse(&$segments)
     {
-        $vars = array();
+        $vars = [];
 
         $vars['controller'] = 'groups';
 
         if (isset($segments[0])) {
             // /groups/{id|cn}
-            if (is_numeric($segments[0]) || !in_array($segments[0], array('list', 'create'))) {
+            if (is_numeric($segments[0]) || !in_array($segments[0], ['list', 'create'])) {
                 $vars['id'] = $segments[0];
                 if (App::get('request')->method() == 'GET') {
                     $vars['task'] = 'read';
@@ -68,7 +68,7 @@ class Router extends Base
                 // /groups/{id|cn}/read
                 // /groups/{id|cn}/update
                 // /groups/{id|cn}/delete
-                if (in_array($segments[1], array('read', 'update', 'delete'))) {
+                if (in_array($segments[1], ['read', 'update', 'delete'])) {
                     $vars['task'] = $segments[1];
                 } else {
                     // /groups/{id|cn}/{plugin}
@@ -97,7 +97,7 @@ class Router extends Base
                                 $vars['task'] = 'read';
                             }
                             if (isset($segments[3])) {
-                                if (in_array($segments[3], array('read', 'update', 'delete'))) {
+                                if (in_array($segments[3], ['read', 'update', 'delete'])) {
                                     $vars['task'] = $segments[3];
                                 }
                             }

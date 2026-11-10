@@ -46,10 +46,10 @@ class Message extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'message'    => 'notempty',
         'created_by' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Defines a belongs to one relationship between entry and user
@@ -67,7 +67,7 @@ class Message extends Relational
      * @param   array    $filters  Filters to build query from
      * @return  integer
      */
-    public function getCount($filters = array())
+    public function getCount($filters = [])
     {
         return self::all()
             ->total();
@@ -79,7 +79,7 @@ class Message extends Relational
      * @param   array  $filters  Filters to build query from
      * @return  array
      */
-    public function getRecords($filters = array())
+    public function getRecords($filters = [])
     {
         return self::all()
             ->rows();
@@ -91,7 +91,7 @@ class Message extends Relational
      * @param   array   $filters  Filters to build query from
      * @return  string  SQL
      */
-    private function buildQuery($filters = array())
+    private function buildQuery($filters = [])
     {
         $entries = self::all();
 
@@ -134,7 +134,7 @@ class Message extends Relational
      * @param   array    $filters  Filters to build query from
      * @return  integer
      */
-    public function getSentMessages($filters = array())
+    public function getSentMessages($filters = [])
     {
         $entries = $this->buildQuery($filters);
         $entries->order($entries->getTableName() . '.created', 'desc');
@@ -153,7 +153,7 @@ class Message extends Relational
      * @param   array    $filters  Filters to build query from
      * @return  integer
      */
-    public function getSentMessagesCount($filters = array())
+    public function getSentMessagesCount($filters = [])
     {
         $entries = $this->buildQuery($filters);
 
@@ -171,7 +171,7 @@ class Message extends Relational
             "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
 
         $message = str_replace("\n", "\n ", htmlspecialchars(stripslashes($this->get('message') ?? ''), ENT_NOQUOTES, 'UTF-8'));
-        $message = preg_replace_callback("/$UrlPtrn/", array($this,'autolink'), $message);
+        $message = preg_replace_callback("/$UrlPtrn/", [$this,'autolink'], $message);
         $message = nl2br($message);
         $message = str_replace("\t", '&nbsp;&nbsp;&nbsp;&nbsp;', $message);
 
@@ -196,7 +196,7 @@ class Message extends Relational
         $href = str_replace("'", '', $href);
         $href = str_replace('&#8221', '', $href);
 
-        $h = array('h', 'm', 'f', 'g', 'n');
+        $h = ['h', 'm', 'f', 'g', 'n'];
         if (!in_array(substr($href, 0, 1), $h)) {
             $href = substr($href, 1);
         }

@@ -89,7 +89,7 @@ if ($this->feed) {
             <?php
             if (!is_null($currItem->get_link())) {
                 // Get video id
-                $match = array();
+                $match = [];
                 $vid = 0;
                 preg_match("/youtube\.com\/watch\?v=(.*)/", $currItem->get_link(), $match);
                 if (count($match) > 1 && strlen($match[1]) > 11) {

@@ -34,7 +34,7 @@ class Doi extends Obj
      *
      * @var  array
      */
-    private $_data = array();
+    private $_data = [];
 
     /**
      * Database
@@ -416,7 +416,7 @@ class Doi extends Obj
      * @param   string   $type     Mapping field
      * @return  void
      */
-    public function mapUser($uid = null, $authors = array(), $type = 'creator')
+    public function mapUser($uid = null, $authors = [], $type = 'creator')
     {
         if (!empty($authors) && count($authors) > 0) {
             $name = $authors[0]->name;
@@ -479,7 +479,7 @@ class Doi extends Obj
         $this->set('contributor', '');
         $this->set('creator', '');
         $this->set('creatorOrcid', '');
-        $this->set('authors', array());
+        $this->set('authors', []);
         $this->setDefaults();
     }
 
@@ -793,7 +793,7 @@ class Doi extends Obj
         curl_setopt($ch, CURLOPT_USERPWD, $this->_configs->dataciteUserPW);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postvals);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/xml;charset=UTF-8'));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/xml;charset=UTF-8']);
         curl_setopt($ch, CURLOPT_FAILONERROR, true);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
 
@@ -838,7 +838,7 @@ class Doi extends Obj
         curl_setopt($ch, CURLOPT_USERPWD, $this->_configs->dataciteUserPW);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postvals);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:text/plain;charset=UTF-8'));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type:text/plain;charset=UTF-8']);
         curl_setopt($ch, CURLOPT_FAILONERROR, true);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
 
@@ -943,7 +943,7 @@ class Doi extends Obj
         curl_setopt($ch, CURLOPT_USERPWD, $this->_configs->dataciteUserPW);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/xml;charset=UTF-8'));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/xml;charset=UTF-8']);
         curl_setopt($ch, CURLOPT_FAILONERROR, true);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
 
@@ -1028,14 +1028,14 @@ class Doi extends Obj
     {
         $ch = curl_init($url);
 
-        $options = array(
+        $options = [
             CURLOPT_URL             => $url,
             CURLOPT_POST            => true,
             CURLOPT_USERPWD         => $this->_configs->ezidUserPW,
             CURLOPT_POSTFIELDS      => $postvals,
             CURLOPT_RETURNTRANSFER  => true,
-            CURLOPT_HTTPHEADER      => array('Content-Type: text/plain; charset=UTF-8', 'Content-Length: ' . strlen($postvals))
-        );
+            CURLOPT_HTTPHEADER      => ['Content-Type: text/plain; charset=UTF-8', 'Content-Length: ' . strlen($postvals)]
+        ];
         curl_setopt_array($ch, $options);
 
         $response = curl_exec($ch);
@@ -1092,7 +1092,7 @@ class Doi extends Obj
             $xdoc->loadXML($xml);
 
             // Append XML
-            $input .= 'datacite: ' . strtr($xml, array(":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D")) . "\n";
+            $input .= 'datacite: ' . strtr($xml, [":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D"]) . "\n";
 
             // Make service call to send extended metadata
             $doi = $this->runCurl($url, $input);
@@ -1147,7 +1147,7 @@ class Doi extends Obj
                 $this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_XML_INVALID'));
             } else {
                 // Append XML
-                $input .= 'datacite: ' . strtr($xml, array(":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D")) . "\n";
+                $input .= 'datacite: ' . strtr($xml, [":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D"]) . "\n";
             }
         }
 
@@ -1184,14 +1184,14 @@ class Doi extends Obj
 
         $ch = curl_init($url);
 
-        $options = array(
+        $options = [
             CURLOPT_URL             => $url,
             CURLOPT_POST            => true,
             CURLOPT_USERPWD         => $this->_configs->ezidUserPW,
             CURLOPT_POSTFIELDS      => $postVals,
             CURLOPT_RETURNTRANSFER  => true,
-            CURLOPT_HTTPHEADER      => array('Content-Type: text/plain; charset=UTF-8', 'Content-Length: ' . strlen($postVals))
-        );
+            CURLOPT_HTTPHEADER      => ['Content-Type: text/plain; charset=UTF-8', 'Content-Length: ' . strlen($postVals)]
+        ];
         curl_setopt_array($ch, $options);
 
         $response = curl_exec($ch);
@@ -1226,7 +1226,7 @@ class Doi extends Obj
             $ch = curl_init($url);
             curl_setopt($ch, CURLOPT_USERPWD, $this->_configs->dataciteUserPW);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/plain;charset=UTF-8'));
+            curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/plain;charset=UTF-8']);
             curl_setopt($ch, CURLOPT_FAILONERROR, true);
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
 

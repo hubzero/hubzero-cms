@@ -63,7 +63,7 @@ class Courses extends SiteController
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _buildPathway($course_pages = array())
+    public function _buildPathway($course_pages = [])
     {
         if (Pathway::count() <= 0) {
             Pathway::append(
@@ -116,17 +116,17 @@ class Courses extends SiteController
         $model = Models\Courses::getInstance();
 
         // Get all courses
-        $all_courses = $model->courses(array(
+        $all_courses = $model->courses([
             'sort'  => 'students',
             'state' => 1
-        ), true);
+        ], true);
 
         // Get first 12 courses
-        $this->view->popularcourses = $model->courses(array(
+        $this->view->popularcourses = $model->courses([
             'limit' => self::INTRO_COURSE_LIMIT,
             'sort'  => 'students',
             'state' => 1
-        ), true);
+        ], true);
 
         // Output HTML
         $allCoursesCount = count($all_courses);
@@ -148,19 +148,19 @@ class Courses extends SiteController
     public function browseTask()
     {
         // Filters
-        $this->view->filters = array(
+        $this->view->filters = [
             'state'  => 1,
             'search' => Request::getString('search', ''),
             'sortby' => strtolower(Request::getWord('sortby', 'title')),
             'group'  => Request::getString('group', '')
-        );
+        ];
         if ($this->view->filters['group']) {
             $group = \Hubzero\User\Group::getInstance($this->view->filters['group']);
             if ($group) {
                 $this->view->filters['group_id'] = $group->get('gidNumber');
             }
         }
-        $validSorts = array('alias', 'title', 'popularity');
+        $validSorts = ['alias', 'title', 'popularity'];
         if (!in_array($this->view->filters['sortby'], $validSorts)) {
             $this->view->filters['sortby'] = 'title';
         }
@@ -181,10 +181,10 @@ class Courses extends SiteController
         $this->view->filters['limit']  = $limit ? $limit : 'all';
         $this->view->filters['start']  = Request::getInt('limitstart', 0);
         $this->view->filters['index']  = strtolower(Request::getWord('index', ''));
-        $validIndexes = array(
+        $validIndexes = [
             'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
             'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
-        );
+        ];
         $index = $this->view->filters['index'];
         if ($index && !in_array($index, $validIndexes)) {
             $this->view->filters['index'] = '';

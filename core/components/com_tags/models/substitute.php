@@ -55,29 +55,29 @@ class Substitute extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'raw_tag'  => 'notempty',
         'tag_id'   => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'tag'
-    );
+    ];
 
     /**
      * Generates automatic tag field
@@ -173,7 +173,7 @@ class Substitute extends Relational
             ->whereEquals('tag_id', $oldtagid)
             ->rows();
 
-        $entries = array();
+        $entries = [];
 
         foreach ($items as $item) {
             $item->set('tag_id', $newtagid);
@@ -210,7 +210,7 @@ class Substitute extends Relational
             ->whereEquals('tag_id', (int)$tag_id)
             ->rows();
 
-        $tags = array();
+        $tags = [];
 
         foreach ($subs as $sub) {
             if (!isset($tags[$sub->get('tag')])) {
@@ -250,7 +250,7 @@ class Substitute extends Relational
             ->rows();
 
         if ($rows) {
-            $entries = array();
+            $entries = [];
 
             foreach ($rows as $row) {
                 $row->set('id', null)

@@ -46,10 +46,10 @@ class Entriesv1r0 extends ApiController
     public function listTask()
     {
         // Incoming
-        $filters = array(
+        $filters = [
             'limit'  => Request::getInt('limit', Config::get('list_limit')),
             'start'  => Request::getInt('limitstart', 0),
-        );
+        ];
 
         $filters['limit'] = \Hubzero\Utility\Sanitize::paranoid($filters['limit']);
         $filters['start'] = \Hubzero\Utility\Sanitize::paranoid($filters['start']);

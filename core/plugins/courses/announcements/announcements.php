@@ -77,7 +77,7 @@ class Announcements extends Plugin
         }
 
         // Get a student count
-        $response->set('meta_count', $offering->announcements(array('count' => true)));
+        $response->set('meta_count', $offering->announcements(['count' => true]));
 
         // Check if our area is in the array of areas we want to return results for
         if ($response->get('name') == $active) {
@@ -175,11 +175,11 @@ class Announcements extends Plugin
             ->set('no_html', Request::getInt('no_html', 0));
 
         // Get filters for the entries list
-        $filters = array(
+        $filters = [
             'search' => Request::getString('q', ''),
             'limit' => Request::getInt('limit', Config::get('list_limit', 25)),
             'start' => Request::getInt('limitstart', 0)
-        );
+        ];
         $filters['start'] = ($filters['limit'] == 0 ? 0 : $filters['start']);
 
         $view->set('filters', $filters);
@@ -245,7 +245,7 @@ class Announcements extends Plugin
         $response->code = 0;
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
         $fields = array_map('trim', $fields);
 
         // Get the model and bind the data

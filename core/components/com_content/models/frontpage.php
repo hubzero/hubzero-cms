@@ -57,18 +57,18 @@ class Frontpage extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'content_id' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      **/
-    public $initiate = array(
+    public $initiate = [
         'ordering'
-    );
+    ];
 
     /**
      * Generates automatic ordering field value

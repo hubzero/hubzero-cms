@@ -98,13 +98,13 @@ class Repository extends Base implements CommandInterface
         if ($mode != 'minimal') {
             $this->output->addLine(
                 $message,
-                array(
+                [
                     'color' => 'blue'
-                )
+                ]
             );
         }
 
-        $colorMap = array(
+        $colorMap = [
             'added'     => 'green',
             'modified'  => 'yellow',
             'deleted'   => 'cyan',
@@ -113,16 +113,16 @@ class Repository extends Base implements CommandInterface
             'untracked' => 'black',
             'unmerged'  => 'red',
             'merged'    => 'blue'
-        );
+        ];
 
         if (is_array($status) && count($status) > 0) {
             foreach ($status as $k => $v) {
                 if (count($v) > 0) {
                     if ($mode == 'minimal') {
                         $this->output->addLine(
-                            array(
+                            [
                                 $k => $v
-                            )
+                            ]
                         );
                     } else {
                         $this->output->addSpacer();
@@ -130,10 +130,10 @@ class Repository extends Base implements CommandInterface
                         foreach ($v as $file) {
                             $this->output->addLine(
                                 $file,
-                                array(
+                                [
                                     'color'       => $colorMap[$k],
                                     'indentation' => 2
-                                )
+                                ]
                             );
                         }
                     }
@@ -172,23 +172,23 @@ class Repository extends Base implements CommandInterface
         }
 
         if ($mode != 'minimal') {
-            $output = array();
+            $output = [];
             foreach ($logs as $log) {
-                $output[] = array('message' => $log);
+                $output[] = ['message' => $log];
             }
 
             $this->output->addLinesFromArray($output);
         } else {
             if (is_array($logs) && count($logs) > 0) {
                 foreach ($logs as $log) {
-                    $entry = array();
+                    $entry = [];
                     $parts = explode('||', $log);
-                    $entry[$parts[0]] = array(
+                    $entry[$parts[0]] = [
                         'name'    => $parts[1],
                         'email'   => $parts[2],
                         'date'    => $parts[3],
                         'subject' => $parts[4]
-                    );
+                    ];
 
                     $this->output->addLine($entry);
                 }
@@ -218,9 +218,9 @@ class Repository extends Base implements CommandInterface
             if ($mode != 'minimal') {
                 $this->output->addLine(
                     'Updating the repository...',
-                    array(
+                    [
                         'color' => 'blue'
-                    ),
+                    ],
                     false
                 );
             }
@@ -247,35 +247,35 @@ class Repository extends Base implements CommandInterface
                         if ($mode != 'minimal') {
                             $this->output->addLine(
                                 'complete',
-                                array(
+                                [
                                     'color' => 'green'
-                                )
+                                ]
                             );
                         }
                     } else {
                         $this->output->addLine(
                             strtolower($response['message']),
-                            array(
+                            [
                                 'color' => 'red'
-                            )
+                            ]
                         );
                     }
                 } else {
                     if ($mode != 'minimal') {
                         $this->output->addLine(
                             'complete',
-                            array(
+                            [
                                 'color' => 'green'
-                            )
+                            ]
                         );
                     }
                 }
             } else if ($response['status'] == 'fatal') {
                 $this->output->addLine(
                     strtolower($response['message']),
-                    array(
+                    [
                         'color' => 'red'
-                    )
+                    ]
                 );
             } else {
                 $this->output->addSpacer();
@@ -288,18 +288,18 @@ class Repository extends Base implements CommandInterface
                 if ($mode != 'minimal') {
                     $this->output->addLine('The repository is behind by ' . count($response) . ' update(s):');
                 }
-                $logs = array();
+                $logs = [];
                 foreach ($response as $log) {
                     if ($mode == 'minimal') {
                         $this->output->addLine($log);
                     } else {
-                        $logs[] = array(
+                        $logs[] = [
                             'message' => $log,
-                            'type' => array(
+                            'type' => [
                                 'indentation' => 2,
                                 'color'       => 'blue'
-                            )
-                        );
+                            ]
+                        ];
                     }
                 }
 
@@ -411,7 +411,7 @@ class Repository extends Base implements CommandInterface
     {
         // Get files
         $status = $this->mechanism->status();
-        $files  = (isset($status['added']) || isset($status['modified'])) ? array_merge($status['added'], $status['modified']) : array();
+        $files  = (isset($status['added']) || isset($status['modified'])) ? array_merge($status['added'], $status['modified']) : [];
 
         // Whether or not to scan untracked files
         if (!$this->arguments->getOpt('exclude-untracked')) {
@@ -427,10 +427,10 @@ class Repository extends Base implements CommandInterface
                      ->addLine('You must specify your standards directory first via:')
                      ->addLine(
                          'muse configuration set --repository_standards_dir=/path/to/standards',
-                         array(
+                         [
                             'indentation' => '2',
                             'color'       => 'blue'
-                         )
+                         ]
                      )
                     ->addSpacer()
                     ->error("Error: failed to retrieve standards directory.");
@@ -462,7 +462,7 @@ class Repository extends Base implements CommandInterface
                         exec($cmd, $output, $code);
                         if ($code !== 0) {
                             $passed = false;
-                            $this->output->addLine("failed php linter", array('color' => 'red'));
+                            $this->output->addLine("failed php linter", ['color' => 'red']);
                         }
                     }
                 }
@@ -476,7 +476,7 @@ class Repository extends Base implements CommandInterface
 
                     if (!empty($result)) {
                         $passed = false;
-                        $this->output->addLine($result, array('color' => 'red'));
+                        $this->output->addLine($result, ['color' => 'red']);
                     }
                 }
 
@@ -544,7 +544,7 @@ class Repository extends Base implements CommandInterface
         $lsremote_command_response = shell_exec($lsremote_command);
 
         if (preg_match("/fatal: Authentication failed.../uis", $lsremote_command_response)) {
-            $output = array(Lang::txt("Authentication failure. Please check the specified Access Token has access to this extension's repository."));
+            $output = [Lang::txt("Authentication failure. Please check the specified Access Token has access to this extension's repository.")];
             $this->output->addLine($output);
         }
     }

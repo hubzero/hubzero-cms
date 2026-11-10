@@ -53,9 +53,9 @@ class Recipient extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'mid' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Defines a belongs to one relationship between entry and message
@@ -108,7 +108,7 @@ class Recipient extends Relational
      * @param   array   $filters  Filters to build query from
      * @return  string  SQL
      */
-    private function buildQuery($uid, $filters = array())
+    private function buildQuery($uid, $filters = [])
     {
         $r = $this->getTableName();
         $m = Message::blank()->getTableName();
@@ -137,12 +137,12 @@ class Recipient extends Relational
      * @param   array    $filters  Filters to build query from
      * @return  mixed    False if errors, array on success
      */
-    public function getMessages($uid = null, $filters = array())
+    public function getMessages($uid = null, $filters = [])
     {
         $uid = $uid ?: $this->uid;
 
         if (!$uid) {
-            return array();
+            return [];
         }
 
         $r = $this->getTableName();
@@ -166,7 +166,7 @@ class Recipient extends Relational
      * @param   array    $filters  Filters to build query from
      * @return  mixed    False if errors, integer on success
      */
-    public function getMessagesCount($uid, $filters = array())
+    public function getMessagesCount($uid, $filters = [])
     {
         if (!$uid) {
             return 0;
@@ -187,7 +187,7 @@ class Recipient extends Relational
     public function getUnreadMessages($uid, $limit = null)
     {
         if (!$uid) {
-            return array();
+            return [];
         }
 
         $r = $this->getTableName();
@@ -258,7 +258,7 @@ class Recipient extends Relational
      * @param   array    $ids    List of message IDs
      * @return  boolean  True on success
      */
-    public function setState($state = 0, $ids = array())
+    public function setState($state = 0, $ids = [])
     {
         if (count($ids) <= 0) {
             return false;
@@ -267,7 +267,7 @@ class Recipient extends Relational
         $ids = array_map('intval', $ids);
 
         return $this->update()
-            ->set(array('state' => $state))
+            ->set(['state' => $state])
             ->whereIn('id', $ids)
             ->execute();
     }

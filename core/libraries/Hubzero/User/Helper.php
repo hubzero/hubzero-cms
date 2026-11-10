@@ -268,7 +268,7 @@ class Helper
     {
         //return empty groups if user is not authenticated
         if ($uid == 0) {
-            return array();
+            return [];
         }
 
         $uid = (int) $uid;
@@ -311,7 +311,7 @@ class Helper
         $result = $db->loadObjectList();
 
         if (empty($result)) {
-            return array();
+            return [];
         }
 
         return $result;
@@ -326,7 +326,7 @@ class Helper
     public static function removeUserFromGroups($uid)
     {
         $db = App::get('db');
-        $tables = array('#__xgroups_members', '#__xgroups_managers', '#__xgroups_invitees', '#__xgroups_applicants');
+        $tables = ['#__xgroups_members', '#__xgroups_managers', '#__xgroups_invitees', '#__xgroups_applicants'];
 
         // Record the memberships, and any terms on them, before they go
         Group\Membership::archiveUser($uid, Group\Membership::REASON_USER);
@@ -406,7 +406,7 @@ class Helper
         // Get the groups the visiting user
         $xgroups = self::getGroups($uid, 'all', 1);
 
-        $usersgroups = array();
+        $usersgroups = [];
         if (!empty($xgroups)) {
             foreach ($xgroups as $group) {
                 if ($group->regconfirmed) {
@@ -419,7 +419,7 @@ class Helper
         $pgroups = self::getGroups($pid, 'all', 1);
 
         // Get the groups the user has access to
-        $profilesgroups = array();
+        $profilesgroups = [];
         if (!empty($pgroups)) {
             foreach ($pgroups as $group) {
                 if ($group->regconfirmed) {

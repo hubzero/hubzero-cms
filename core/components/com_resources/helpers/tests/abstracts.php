@@ -33,11 +33,11 @@ class Abstracts implements Test
      * @param   array  $options
      * @return  object
      */
-    public function examine(array $data, array $options = array())
+    public function examine(array $data, array $options = [])
     {
         $status = 0;
         $value  = null;
-        $meta   = array();
+        $meta   = [];
 
         if (isset($data['standalone']) && $data['standalone']) {
             $status = 1;

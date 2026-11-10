@@ -103,7 +103,7 @@ class Site extends Base
 
         foreach ($this->_items as &$item) {
             // Get parent information.
-            $parent_tree = array();
+            $parent_tree = [];
             if (isset($this->_items[$item->parent_id])) {
                 $parent_tree  = $this->_items[$item->parent_id]->tree;
             }
@@ -137,7 +137,7 @@ class Site extends Base
         if (($key = array_search('language', $attributes)) === false) {
             if ($this->get('language_filter')) {
                 $attributes[] = 'language';
-                $values[]     = array($this->get('language'), '*');
+                $values[]     = [$this->get('language'), '*'];
             }
         } elseif ($values[$key] === null) {
             unset($attributes[$key]);

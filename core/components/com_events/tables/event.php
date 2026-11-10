@@ -115,7 +115,7 @@ class Event extends Table
      * @param   array   $filters  Extra filters to apply to query
      * @return  array
      */
-    public function getEvents($period = 'month', $filters = array())
+    public function getEvents($period = 'month', $filters = [])
     {
         $gid = (isset($filters['gid'])) ? intval($filters['gid']) : 0;
 
@@ -261,10 +261,10 @@ class Event extends Table
      * @param   array    $filters  Filters to construct query from
      * @return  integer
      */
-    public function getCount($filters = array())
+    public function getCount($filters = [])
     {
         $query = "SELECT count(*) FROM $this->_tbl AS a";
-        $where = array();
+        $where = [];
         if ($filters['catid'] > 0) {
             $where[] = "a.catid='" . intval($filters['catid']) . "'";
         }
@@ -289,14 +289,14 @@ class Event extends Table
      * @param   array  $filters  Filters to construct query from
      * @return  array
      */
-    public function getRecords($filters = array())
+    public function getRecords($filters = [])
     {
         $query = "SELECT a.*, cc.title AS category, u.name AS editor, 'Public' as groupname
 			FROM `$this->_tbl` AS a
 			LEFT JOIN `#__users` AS u ON u.id = a.checked_out
 			LEFT JOIN `#__categories` AS cc ON a.catid=cc.id";
 
-        $where = array();
+        $where = [];
         if ($filters['catid'] > 0) {
             $where[] = "a.catid='" . intval($filters['catid']) . "'";
         }
@@ -335,7 +335,7 @@ class Event extends Table
      * @param   array  $filters
      * @return  array
      */
-    public function find($filters = array())
+    public function find($filters = [])
     {
         $sql  = "SELECT * FROM {$this->_tbl}";
         $sql .= $this->_buildQuery($filters);
@@ -350,7 +350,7 @@ class Event extends Table
      * @param   array  $filters
      * @return  int
      */
-    public function count($filters = array())
+    public function count($filters = [])
     {
         $sql  = "SELECT COUNT(*) FROM {$this->_tbl}";
         $sql .= $this->_buildQuery($filters);
@@ -365,10 +365,10 @@ class Event extends Table
      * @param   array   $filters
      * @return  string
      */
-    private function _buildQuery($filters = array())
+    private function _buildQuery($filters = [])
     {
         // var to hold conditions
-        $where = array();
+        $where = [];
         $sql   = '';
 
         // scope

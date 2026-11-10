@@ -37,7 +37,7 @@ if (!isset($this->category)) {
             $this->search = '';
         }
 
-        $subs = array();
+        $subs = [];
         foreach ($this->threads as $thread) {
             $view = $this->view('_thread')
                 ->set('option', $this->option)

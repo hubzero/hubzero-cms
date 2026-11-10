@@ -52,7 +52,7 @@ class Migration20140814103014ComSupport extends Base
 
             if ($resolutions) {
                 $i = 5;
-                $entries = array();
+                $entries = [];
                 foreach ($resolutions as $result) {
                     $entries[] = [
                         'id'    => $i,

@@ -46,7 +46,7 @@ class Groups extends AdminController
 
         // Incoming group table
         $tbl = Request::getString('tbl', '');
-        if (!$tbl || !in_array($tbl, array('invitees', 'applicants', 'members', 'managers'))) {
+        if (!$tbl || !in_array($tbl, ['invitees', 'applicants', 'members', 'managers'])) {
             $this->setError(Lang::txt('COM_MEMBERS_GROUPS_NO_TABLE'));
             return $this->displayTask($id);
         }
@@ -72,16 +72,16 @@ class Groups extends AdminController
         }
 
         // Remove the user from any other lists they may be apart of
-        $group->remove('invitees', array($id));
-        $group->remove('applicants', array($id));
-        $group->remove('members', array($id));
-        $group->remove('managers', array($id));
+        $group->remove('invitees', [$id]);
+        $group->remove('applicants', [$id]);
+        $group->remove('members', [$id]);
+        $group->remove('managers', [$id]);
 
         // Add the user to the group table
-        $group->add($tbl, array($id));
+        $group->add($tbl, [$id]);
         if ($tbl == 'managers') {
             // Ensure they're added to the members list as well if they're a manager
-            $group->add('members', array($id));
+            $group->add('members', [$id]);
         }
 
         $group->update();
@@ -126,10 +126,10 @@ class Groups extends AdminController
         $group = Group::getInstance($gid);
 
         // Remove the user from any other lists they may be apart of
-        $group->remove('invitees', array($id));
-        $group->remove('applicants', array($id));
-        $group->remove('members', array($id));
-        $group->remove('managers', array($id));
+        $group->remove('invitees', [$id]);
+        $group->remove('applicants', [$id]);
+        $group->remove('members', [$id]);
+        $group->remove('managers', [$id]);
 
         // Save changes
         $group->update();
@@ -155,7 +155,7 @@ class Groups extends AdminController
             return $this->displayTask();
         }
 
-        $options = Request::getArray('memberoption', array());
+        $options = Request::getArray('memberoption', []);
 
         // User ID
         $id = Request::getInt('id', 0);
@@ -189,14 +189,14 @@ class Groups extends AdminController
         $id = $id ? $id : Request::getInt('id', 0);
 
         // Get a list of all groups
-        $rows = \Hubzero\User\Group::find(array(
-            'type'       => array('all'),
+        $rows = \Hubzero\User\Group::find([
+            'type'       => ['all'],
             'limit'      => 'all',
             'search'     => '',
-            'fields'     => array('cn', 'description', 'published', 'gidNumber', 'type'),
+            'fields'     => ['cn', 'description', 'published', 'gidNumber', 'type'],
             'sortby'     => 'title',
             'authorized' => 'admin'
-        ));
+        ]);
 
         // Output the HTML
         $this->view

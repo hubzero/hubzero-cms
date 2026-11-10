@@ -29,7 +29,7 @@ if ($this->citations) {
 
     // Loop through the citations and build the HTML
     foreach ($this->citations as $cite) {
-        $formatted = trim($cite->formatted(array('format' => $this->citationFormat)));
+        $formatted = trim($cite->formatted(['format' => $this->citationFormat]));
         // Strip outer <p> tags since the citation is already inside <li>
         $formatted = preg_replace('#^\s*<p>\s*#i', '', $formatted);
         $formatted = preg_replace('#\s*</p>\s*$#i', '', $formatted);
@@ -91,7 +91,7 @@ if ($this->citations) {
     // Parse for <nb:field> tags
     $type = $this->resource->type;
 
-    $data = array();
+    $data = [];
     preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->resource->fulltxt, $matches, PREG_SET_ORDER);
 if (count($matches) > 0) {
     foreach ($matches as $match) {
@@ -105,7 +105,7 @@ if (count($matches) > 0) {
     $hasCustomFields = false;
 if (is_object($schema)) {
     if (!isset($schema->fields) || !is_array($schema->fields)) {
-        $schema->fields = array();
+        $schema->fields = [];
     }
     foreach ($schema->fields as $field) {
         if (isset($data[$field->name]) && $elements->display($field->type, $data[$field->name]) && isset($field->display) && $field->display == $tab) {

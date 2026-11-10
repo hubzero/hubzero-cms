@@ -98,7 +98,7 @@ function put(array $shape, $ground)
  */
 function band($file, $width, $height, $ground, array $shapes)
 {
-    $drawn = array();
+    $drawn = [];
 
     foreach ($shapes as $shape) {
         $drawn[] = put($shape, $ground);
@@ -538,20 +538,20 @@ function tear($file, $width, $height, $depth)
 //
 // Faint enough to read through: the opacities here are what veneer.mjs says
 // the footer's text can stand, overlaps included, and not a value more.
-band('frieze.svg', 1600, 260, 236, array(
+band('frieze.svg', 1600, 260, 236, [
     // name            x   scale  opacity  flip   own line
-    array('fern',            10,  0.95,    0.07,  true),
-    array('sauropod',       230,  1.25,    0.06),
-    array('egg',            470,  0.50,    0.08),
-    array('conifer',        560,  1.30,    0.06),
-    array('theropod',       830,  1.05,    0.06,  true),
-    array('footprint',     1050,  0.38,    0.08),
-    array('footprint',     1098,  0.38,    0.08),
-    array('footprint',     1146,  0.38,    0.08),
-    array('cycad',         1180,  0.95,    0.07),
-    array('ceratopsian',   1330,  1.00,    0.06),
-    array('horsetail',     1460,  0.55,    0.07),
-));
+    ['fern',            10,  0.95,    0.07,  true],
+    ['sauropod',       230,  1.25,    0.06],
+    ['egg',            470,  0.50,    0.08],
+    ['conifer',        560,  1.30,    0.06],
+    ['theropod',       830,  1.05,    0.06,  true],
+    ['footprint',     1050,  0.38,    0.08],
+    ['footprint',     1098,  0.38,    0.08],
+    ['footprint',     1146,  0.38,    0.08],
+    ['cycad',         1180,  0.95,    0.07],
+    ['ceratopsian',   1330,  1.00,    0.06],
+    ['horsetail',     1460,  0.55,    0.07],
+]);
 
 // The header: plants only, and fainter. The navigation sits over this, so
 // nothing here may compete with it - no animal, because an animal is a shape
@@ -560,21 +560,21 @@ band('frieze.svg', 1600, 260, 236, array(
 // A short tile rather than a tall one: the band is scaled to its own height,
 // so a 96-tall drawing in a 56px band renders everything at little more than
 // half size and the plants come out as specks.
-band('canopy.svg', 1600, 64, 60, array(
+band('canopy.svg', 1600, 64, 60, [
     // name            x   scale  opacity  flip
-    array('fern',            16,  0.36,    0.10,  true),
-    array('horsetail',      150,  0.32,    0.09),
-    array('conifer',        272,  0.42,    0.09),
-    array('fern',           412,  0.30,    0.10),
-    array('cycad',          548,  0.32,    0.09),
-    array('horsetail',      690,  0.36,    0.09,  true),
-    array('fern',           818,  0.32,    0.10),
-    array('conifer',        948,  0.38,    0.09),
-    array('cycad',         1086,  0.30,    0.09,  true),
-    array('fern',          1216,  0.34,    0.10,  true),
-    array('horsetail',     1348,  0.32,    0.09),
-    array('conifer',       1470,  0.40,    0.09),
-));
+    ['fern',            16,  0.36,    0.10,  true],
+    ['horsetail',      150,  0.32,    0.09],
+    ['conifer',        272,  0.42,    0.09],
+    ['fern',           412,  0.30,    0.10],
+    ['cycad',          548,  0.32,    0.09],
+    ['horsetail',      690,  0.36,    0.09,  true],
+    ['fern',           818,  0.32,    0.10],
+    ['conifer',        948,  0.38,    0.09],
+    ['cycad',         1086,  0.30,    0.09,  true],
+    ['fern',          1216,  0.34,    0.10,  true],
+    ['horsetail',     1348,  0.32,    0.09],
+    ['conifer',       1470,  0.40,    0.09],
+]);
 
 // Behind a page's title card: a band across it rather than a cluster at one
 // end, and drawn large enough to be seen through the title rather than only
@@ -583,18 +583,18 @@ band('canopy.svg', 1600, 64, 60, array(
 //
 // This one repeats like the others, so the same rule applies: nothing may
 // cross the edge of the box.
-band('thicket.svg', 1200, 150, 140, array(
+band('thicket.svg', 1200, 150, 140, [
     // name            x   scale  opacity  flip   own line
-    array('fern',            20,  0.85,    0.06,  true),
-    array('egg',            250,  0.55,    0.07),
-    array('cycad',          330,  0.90,    0.06),
-    array('hadrosaur',      430,  0.75,    0.05,  true),
-    array('footprint',      600,  0.42,    0.07),
-    array('footprint',      646,  0.42,    0.07),
-    array('footprint',      692,  0.42,    0.07),
-    array('conifer',        760,  1.05,    0.06),
-    array('horsetail',     1000,  0.80,    0.06),
-));
+    ['fern',            20,  0.85,    0.06,  true],
+    ['egg',            250,  0.55,    0.07],
+    ['cycad',          330,  0.90,    0.06],
+    ['hadrosaur',      430,  0.75,    0.05,  true],
+    ['footprint',      600,  0.42,    0.07],
+    ['footprint',      646,  0.42,    0.07],
+    ['footprint',      692,  0.42,    0.07],
+    ['conifer',        760,  1.05,    0.06],
+    ['horsetail',     1000,  0.80,    0.06],
+]);
 
 // The edge a title card ends on. Shallow: the card is 100px tall and this is
 // the last 14 of it, so the line reads as weathering rather than as a rip.

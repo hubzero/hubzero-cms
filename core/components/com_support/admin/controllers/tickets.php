@@ -66,9 +66,9 @@ class Tickets extends AdminController
     {
         // Get filters
         $total = 0;
-        $tickets = array();
+        $tickets = [];
 
-        $filters = array(
+        $filters = [
             // Paging
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
@@ -92,7 +92,7 @@ class Tickets extends AdminController
             'search'  => '',
             'sort'    => 'id',
             'sortdir' => 'DESC'
-        );
+        ];
 
         // Get query list
         $folders = QueryFolder::all()
@@ -185,10 +185,10 @@ class Tickets extends AdminController
             ->rows()
             ->fieldsByKey('ticket_id');
 
-        $watch = array(
+        $watch = [
             'open'   => Ticket::all()->whereEquals('open', 1)->whereIn('id', $watching)->total(),
             'closed' => Ticket::all()->whereEquals('open', 0)->whereIn('id', $watching)->total()
-        );
+        ];
 
         if ($filters['show'] < 0) {
             if (!isset($filters['sort']) || !$filters['sort']) {
@@ -266,7 +266,7 @@ class Tickets extends AdminController
         }
 
         $filters = Utilities::getFilters();
-        $lists = array();
+        $lists = [];
 
         // Get messages
         $lists['messages'] = Message::all()->rows();
@@ -343,7 +343,7 @@ class Tickets extends AdminController
         $old->set('tags', $old->tags('string'));
 
         // Initiate class and bind posted items to database fields
-        $data = Request::getArray('ticket', array(), 'post');
+        $data = Request::getArray('ticket', [], 'post');
         $ticket = Ticket::oneOrNew($id)->set($data);
 
         if ($ticket->get('target_date') && $ticket->get('target_date') != '0000-00-00 00:00:00') {
@@ -436,11 +436,11 @@ class Tickets extends AdminController
                 );
 
                 // Plain text email
-                $eview = new \Hubzero\Mail\View(array(
+                $eview = new \Hubzero\Mail\View([
                     'base_path' => dirname(dirname(__DIR__)) . DS . 'site',
                     'name'      => 'emails',
                     'layout'    => 'ticket_plain'
-                ));
+                ]);
                 $eview->option     = $this->_option;
                 $eview->controller = $this->_controller;
                 $eview->ticket     = $ticket;
@@ -489,7 +489,7 @@ class Tickets extends AdminController
                     // Check for a valid address
                     if (Validate::email($def)) {
                         // Send e-mail
-                        $msg->setTo(array($def));
+                        $msg->setTo([$def]);
                         $msg->send();
                     }
                 }
@@ -544,14 +544,14 @@ class Tickets extends AdminController
         // Only do the following if a comment was posted or ticket was reassigned
         // otherwise, we're only recording a changelog
         // Listeners, e-mail, the record of who was told, and the activity log
-        Notifier::ticketUpdated($ticket, $comment, $old, array(
+        Notifier::ticketUpdated($ticket, $comment, $old, [
             'email_submitter' => Request::getInt('email_submitter', 0) == 1,
             'email_owner'     => Request::getInt('email_owner', 0) == 1,
             'email_terse'     => Request::getInt('email_terse', 0) == 1,
             'option'          => $this->_option,
             'controller'      => $this->_controller,
             'acl'             => $this->acl,
-        ));
+        ]);
 
         if ($this->getTask() != 'apply') {
             $filters = Request::getString('filters', '');
@@ -578,11 +578,11 @@ class Tickets extends AdminController
         Request::setVar('hidemainmenu', 1);
 
         // Incoming
-        $ids  = Request::getArray('id', array());
+        $ids  = Request::getArray('id', []);
         $tmpl = Request::getString('tmpl', '');
 
         $filters = Utilities::getFilters();
-        $lists = array();
+        $lists = [];
 
         // Get categories
         $lists['categories'] = Category::all()->rows();
@@ -611,8 +611,8 @@ class Tickets extends AdminController
         // Incoming
         $tmpl    = Request::getString('tmpl');
 
-        $ids     = Request::getArray('id', array());
-        $fields  = Request::getArray('fields', array());
+        $ids     = Request::getArray('id', []);
+        $fields  = Request::getArray('fields', []);
         $tags    = Request::getString('tags', '');
         $access  = 1;
 
@@ -654,7 +654,7 @@ class Tickets extends AdminController
             }
         }
 
-        $processed = array();
+        $processed = [];
 
         foreach ($ids as $id) {
             if (!$id) {
@@ -863,7 +863,7 @@ class Tickets extends AdminController
         Request::checkToken();
 
         // Incoming
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
 
         // Check for an ID
         if (count($ids) < 1) {
@@ -931,10 +931,10 @@ class Tickets extends AdminController
             . " ORDER BY " . $order;
         $database->setQuery($query);
         if ($results = $database->loadObjectList()) {
-            $groups = array();
+            $groups = [];
             foreach ($results as $result) {
                 if (!isset($groups[$result->alias])) {
-                    $groups[$result->alias] = array();
+                    $groups[$result->alias] = [];
                 }
                 $groups[$result->alias][] = $result;
             }
@@ -962,7 +962,7 @@ class Tickets extends AdminController
      */
     private function _userSelectGroup($name, $active, $nouser = 0, $javascript = null, $group = '')
     {
-        $users = array();
+        $users = [];
         if ($nouser) {
             $users[] = Html::select('option', '0', Lang::txt('COM_SUPPORT_NO_USER'), 'value', 'text');
         }
@@ -1155,13 +1155,13 @@ class Tickets extends AdminController
             // Create database entry
             $description = htmlspecialchars($description);
 
-            $attachment->set(array(
+            $attachment->set([
                 'id'          => 0,
                 'ticket'      => $ticket_id,
                 'comment_id'  => $comment_id,
                 'filename'    => $filename . '.' . $ext,
                 'description' => $description
-            ));
+            ]);
             if (!$attachment->save()) {
                 $this->setError($attachment->getError());
             }

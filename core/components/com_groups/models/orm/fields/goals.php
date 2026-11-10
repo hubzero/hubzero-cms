@@ -38,7 +38,7 @@ class Goals extends Radio
     protected function getInput()
     {
         // Initialize variables.
-        $html = array();
+        $html = [];
 
         // Initialize some field attributes.
         $class = $this->element['class'] ? ' class="goals ' . (string) $this->element['class'] . '"' : ' class="goals"';
@@ -170,15 +170,15 @@ class Goals extends Radio
 		';
 
         $values = $this->value;
-        $values = is_array($values) ? $values : array($values);
+        $values = is_array($values) ? $values : [$values];
 
         if (empty($values)) {
-            $values[] = array(
+            $values[] = [
                 'goal' => '',
                 'skills_needed' => '',
                 'skills_level' => '',
                 'id' => 0
-            );
+            ];
         }
 
         // Build the radio field output.
@@ -188,7 +188,7 @@ class Goals extends Radio
             }
 
             if (!$value || json_last_error() !== JSON_ERROR_NONE) {
-                $value = array();
+                $value = [];
                 $value['goal'] = '';
                 $value['skills_needed'] = '';
                 $value['skills_level'] = '';
@@ -210,7 +210,7 @@ class Goals extends Radio
                 if (isset($value['skills_level']) && $value['skills_level']) {
                     $value['skills_level'] = json_decode($value['skills_level'], true);
                 } else {
-                    $value['skills_level'] = array();
+                    $value['skills_level'] = [];
                 }
                 $html[] = '<fieldset>';
                 $html[] = '<legend>' . Lang::txt('Skills Needed') . '</legend>';
@@ -247,15 +247,15 @@ class Goals extends Radio
             }
 
             if (!isset($value['strategy']) || !is_array($value['strategy'])) {
-                $value['strategy'] = array();
+                $value['strategy'] = [];
             }
             if (empty($value['strategy'])) {
-                $value['strategy'][] = array(
+                $value['strategy'][] = [
                     'content'   => '',
                     'completed' => '',
                     'badge'     => 0,
                     'id'        => 0
-                );
+                ];
             }
                 $html[] = '<fieldset class="goals-strategies" data-index="' . count($value['strategy']) . '">';
                     $html[] = '<legend>Strategies</legend>';
@@ -348,7 +348,7 @@ class Goals extends Radio
      */
     public function renderValue($value)
     {
-        $html = array();
+        $html = [];
 
         if (is_array($value)) {
             foreach ($value as $goal) {

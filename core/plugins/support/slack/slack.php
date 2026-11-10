@@ -35,12 +35,12 @@ class Slack extends Plugin
      */
     protected function getEndpoints()
     {
-        $endpoints = array();
+        $endpoints = [];
 
-        foreach (array(1, 2, 3) as $point) {
+        foreach ([1, 2, 3] as $point) {
             $sfx = ($point > 1 ? $point : '');
 
-            $endpoints[] = array(
+            $endpoints[] = [
                 // Default endpoint info
                 'endpoint' => $this->params->get('endpoint' . $sfx),
                 'username' => $this->params->get('username' . $sfx),
@@ -54,7 +54,7 @@ class Slack extends Plugin
                 'notify_private'  => $this->params->get('notify_private' . $sfx),
                 'group_updated'   => $this->params->get('group_updated' . $sfx),
                 'channel_updated' => ($this->params->get('channel_updated' . $sfx) ? $this->params->get('channel_updated' . $sfx) : $this->params->get('channel' . $sfx))
-            );
+            ];
         }
 
         return $endpoints;
@@ -99,12 +99,12 @@ class Slack extends Plugin
         // Set up the client
         $client = new \Maknz\Slack\Client(
             $endpoint,
-            array(
+            [
                 'username'       => $username,
                 'channel'        => '#' . trim($channel, '#'),
                 'link_names'     => ($this->params->get('link_names', 1) ? true : false),
                 'allow_markdown' => ($this->params->get('allow_markdown', 1) ? true : false)
-            )
+            ]
         );
 
         try {
@@ -161,7 +161,7 @@ class Slack extends Plugin
                 $color = '#5fd2db';
             }
 
-            $data = array(
+            $data = [
                 'fallback'   => $pretext . ': ' . $url . ' - ' . $text, // Fallback text for plaintext clients, like IRC
                 'pretext'    => $pretext, // Optional text to appear above the attachment and below the actual message
                 'title'      => Lang::txt('PLG_SUPPORT_SLACK_TICKET_NUMBER', $ticket->get('id')),
@@ -169,7 +169,7 @@ class Slack extends Plugin
                 'text'       => $text, // The text for inside the attachment
                 'color'      => $color, // Change the color of the attachment, default is 'good'. May be a hex value or 'good', 'warning', or 'danger'
                 'author_name' => $ticket->get('name', $ticket->get('email')),
-            );
+            ];
 
             $this->send(
                 $endpoint['endpoint'],
@@ -228,7 +228,7 @@ class Slack extends Plugin
                 $title .= ': ' . $ticket->get('summary');
             }
 
-            $data = array(
+            $data = [
                 'fallback'   => $pretext . ': ' . $url . ' - ' . $text, // Fallback text for plaintext clients, like IRC
                 'pretext'    => $pretext, // Optional text to appear above the attachment and below the actual message
                 'title'      => $title,
@@ -236,9 +236,9 @@ class Slack extends Plugin
                 'text'       => $text, // The text for inside the attachment
                 'color'      => $color, // Change the color of the attachment, default is 'good'. May be a hex value or 'good', 'warning', or 'danger'
                 'author_name' => $comment->creator->get('name'),
-            );
+            ];
             if (!Component::params('com_support')->get('email_terse')) {
-                $fields = array();
+                $fields = [];
                 foreach ($comment->changelog()->lists() as $type => $log) {
                     if (is_array($log) && count($log) > 0) {
                         if ($type != 'changes') {
@@ -247,11 +247,11 @@ class Slack extends Plugin
 
                         foreach ($log as $items) {
                             if ($items->before != $items->after) {
-                                $fields[] = array(
+                                $fields[] = [
                                     'title' => ucfirst($items->field),
                                     'value' => $items->after,
                                     'short' => true
-                                );
+                                ];
                             }
                         }
                     }

@@ -113,7 +113,7 @@ $this->category->set('section_alias', $this->filters['section']);
                                             $name = '<a href="' . Route::url($row->creator->link()) . '">' . $name . '</a>';
                                         }
                                     }
-                                    $cls = array();
+                                    $cls = [];
                                     $icn = 'icon-comments';
                                     if ($row->isClosed()) {
                                         $cls[] = 'closed';

@@ -46,11 +46,11 @@ Toolbar::cancel();
                     <label for="field-type"><?php echo Lang::txt('COM_GROUPS_MODULES_STATUS'); ?>:</label>
                     <select name="module[state]" id="field-type">
                         <?php
-                        $states = array(
+                        $states = [
                             1 => Lang::txt('COM_GROUPS_MODULES_STATUS_PUBLISHED'),
                             0 => Lang::txt('COM_GROUPS_MODULES_STATUS_UNPUBLISHED'),
                             2 => Lang::txt('COM_GROUPS_MODULES_STATUS_DELETED')
-                        );
+                        ];
 
                         foreach ($states as $k => $v) {
                             $sel = ($this->module->get('state') == $k) ? 'selected="selected"' : '';
@@ -72,7 +72,7 @@ Toolbar::cancel();
             <?php
                 // get module menus
                 $menus = $this->module->menu('list');
-                $activeMenu = (!$this->module->get('id')) ? array(0) : array();
+                $activeMenu = (!$this->module->get('id')) ? [0] : [];
             foreach ($menus as $menu) {
                 $activeMenu[] = $menu->get('pageid');
             }

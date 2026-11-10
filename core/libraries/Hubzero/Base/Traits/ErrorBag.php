@@ -24,7 +24,7 @@ trait ErrorBag
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_errors = array();
+    protected $_errors = [];
 
     /**
      * Get the most recent error message.

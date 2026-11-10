@@ -19,7 +19,7 @@ class Category extends \Components\Categories\Helpers\Categories
      * @param   array  $options  Array of options
      * @return  void
      */
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         $options['table'] = '#__content';
         $options['extension'] = 'com_content';

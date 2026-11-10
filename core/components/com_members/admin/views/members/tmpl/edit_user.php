@@ -135,15 +135,15 @@ if (substr($this->profile->get('email', ''), -8) == '@invalid') {
                     <div class="input-wrap">
                         <?php
                             //mailPreferenceOption
-                            $options = array(
+                            $options = [
                                 '1'  => Lang::txt('JYES'),
                                 '0'  => Lang::txt('JNO')
-                            );
+                            ];
                             // -1 means "not chosen yet": the member is asked the next time
                             // they sign in. Only offer it for an account already in that
                             // state, rather than as a choice for new ones.
                             if ($this->profile->get('sendEmail') == -1 && $this->profile->get('id')) {
-                                $options = array('-1' => Lang::txt('COM_MEMBERS_FIELD_MAIL_PREFERENCE_NOT_SET')) + $options;
+                                $options = ['-1' => Lang::txt('COM_MEMBERS_FIELD_MAIL_PREFERENCE_NOT_SET')] + $options;
                             }
                             ?>
                         <?php $text = Lang::txt('COM_MEMBERS_FIELD_MAIL_PREFERENCE'); ?>
@@ -195,7 +195,7 @@ if (substr($this->profile->get('email', ''), -8) == '@invalid') {
 
             <div class="input-wrap">
                 <?php
-                $groups = array();
+                $groups = [];
                 foreach ($this->profile->accessgroups()->rows() as $g) {
                     $groups[] = $g->get('group_id');
                 }
@@ -469,7 +469,7 @@ if (substr($this->profile->get('email', ''), -8) == '@invalid') {
         // Create a new form
         $data = new Hubzero\Config\Registry();
         $data->set('params', $this->profile->params->toArray());
-        $form = new Hubzero\Form\Form('fields', array('control' => 'fields'));
+        $form = new Hubzero\Form\Form('fields', ['control' => 'fields']);
         $form->load(Hubzero\Form\Form::getXML(Component::path('com_members') . DS . 'models' . DS . 'forms' . DS .
         'user.xml', true));
         $form->bind($data);

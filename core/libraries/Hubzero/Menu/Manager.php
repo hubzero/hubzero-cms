@@ -18,7 +18,7 @@ class Manager
      *
      * @var  array
      */
-    protected $menus = array();
+    protected $menus = [];
 
     /**
      * Create a new manager instance.
@@ -27,7 +27,7 @@ class Manager
      */
     public function __construct()
     {
-        $this->menus = array();
+        $this->menus = [];
     }
 
     /**
@@ -46,7 +46,7 @@ class Manager
      * @param   string  $menu
      * @return  mixed
      */
-    public function menu($menu = null, $options = array())
+    public function menu($menu = null, $options = [])
     {
         $menu = $menu ?: $this->getDefaultMenu();
 
@@ -67,7 +67,7 @@ class Manager
      * @return  mixed
      * @throws  \InvalidArgumentException
      */
-    protected function createMenu($menu, $options = array())
+    protected function createMenu($menu, $options = [])
     {
         $cls = __NAMESPACE__ . '\\Type\\' . ucfirst($menu);
 
@@ -97,6 +97,6 @@ class Manager
      */
     public function __call($method, $parameters)
     {
-        return call_user_func_array(array($this->menu(), $method), $parameters);
+        return call_user_func_array([$this->menu(), $method], $parameters);
     }
 }

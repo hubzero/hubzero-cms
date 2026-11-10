@@ -39,7 +39,7 @@ class Weighttitle extends Plugin
             return 0.5;
         }
 
-        $term_stems = array();
+        $term_stems = [];
         $quoted_weight = 0;
         foreach ($terms->get_positive_chunks() as $idx => $chunk) {
             if ($terms->is_quoted($idx)) {
@@ -75,7 +75,7 @@ class Weighttitle extends Plugin
         if (!$stemmer) {
             $stemmer = new \Wamania\Snowball\Stemmer\English();
         }
-        $stems = array();
+        $stems = [];
         foreach (array_unique(preg_split('/\s+/', trim($str))) as $word) {
             if (!\Components\Search\Models\Basic\DocumentMetadata::is_stop_word($word)) {
                 $stems[] = $stemmer->stem(preg_replace('/[^[:alnum:]]/', '', $word));

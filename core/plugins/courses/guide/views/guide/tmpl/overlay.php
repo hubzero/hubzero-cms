@@ -14,11 +14,11 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$plugins = Event::trigger('courses.onCourse', array(
+$plugins = Event::trigger('courses.onCourse', [
     $this->course,
     $this->offering,
     true
-));
+]);
 ?>
 <div id="guide-overlay"
     class="guide-wrap"

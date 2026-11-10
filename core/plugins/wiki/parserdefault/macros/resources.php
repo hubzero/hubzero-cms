@@ -31,7 +31,7 @@ class Resources extends WikiMacro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['wiki'] = 'This macro will insert a linked title to a resource. It can be passed either an ID or alias.';
         $txt['html'] = '<p>This macro will insert a linked title to a resource. It can be passed '
             . 'either an ID or alias.</p>';
@@ -45,7 +45,7 @@ class Resources extends WikiMacro
      */
     public function render()
     {
-        $this->linkLog = array();
+        $this->linkLog = [];
 
         $et = $this->args;
 
@@ -101,13 +101,13 @@ class Resources extends WikiMacro
                 $link = 'index.php?option=com_resources&amp;id=' . $id;
             }
 
-            $this->linkLog[] = array(
+            $this->linkLog[] = [
                 'link'     => '[[Resource(' . $et . ')]]',
                 'url'      => $link,
                 'page_id'  => $this->pageid,
                 'scope'    => 'resource',
                 'scope_id' => $r[0]
-            );
+            ];
 
             if ($nolink) {
                 return htmlspecialchars(stripslashes($r[1]), ENT_QUOTES, 'UTF-8');
@@ -134,7 +134,7 @@ class Resources extends WikiMacro
 
         $alias = strtolower($alias);
         $d = @dir(PATH_APP . $path . DS . $alias);
-        $images = array();
+        $images = [];
 
         if ($d) {
             while (false !== ($entry = $d->read())) {

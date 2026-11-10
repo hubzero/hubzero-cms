@@ -36,38 +36,38 @@ class Announcement extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'content' => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'publish_up',
         'publish_down'
-    );
+    ];
 
     /**
      * Fields to be parsed
      *
      * @var array
      */
-    protected $parsed = array(
+    protected $parsed = [
         'content'
-    );
+    ];
 
     /**
      * Sets up additional custom rules

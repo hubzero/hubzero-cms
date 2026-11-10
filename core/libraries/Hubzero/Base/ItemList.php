@@ -43,7 +43,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_data = array();
+    protected $_data = [];
 
     /**
      * Constructor

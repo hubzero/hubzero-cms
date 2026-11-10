@@ -111,7 +111,7 @@ class Archive extends Obj
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         $oid = $object_type . '_' . $object_id;
@@ -222,7 +222,7 @@ class Archive extends Obj
      * @param   array  $filters  Filters to apply to the query that retrieves records
      * @return  mixed  Integer or object
      */
-    public function collections($filters = array())
+    public function collections($filters = [])
     {
         if ($this->_object_id) {
             $filters['object_id']   = $this->_object_id;
@@ -262,7 +262,7 @@ class Archive extends Obj
      * @param   array  $filters  Filters to apply to the query that retrieves records
      * @return  mixed  Integer or object
      */
-    public function followers($filters = array())
+    public function followers($filters = [])
     {
         $filters['following_id']   = $this->_object_id;
         $filters['following_type'] = $this->_object_type;
@@ -295,7 +295,7 @@ class Archive extends Obj
      * @param   string  $what     Following what? A collection or a member, etc.
      * @return  mixed   Integer or object
      */
-    public function following($filters = array(), $what = 'all')
+    public function following($filters = [], $what = 'all')
     {
         $filters['follower_id']   = $this->_object_id;
         $filters['follower_type'] = $this->_object_type;
@@ -324,9 +324,9 @@ class Archive extends Obj
         }
 
         if ($what == 'collections') {
-            $ids     = array();
-            $members = array();
-            $groups  = array();
+            $ids     = [];
+            $members = [];
+            $groups  = [];
             foreach ($this->_following as $following) {
                 if ($following->get('following_type') == 'collection') {
                     $ids[] = $following->get('following_id');
@@ -369,7 +369,7 @@ class Archive extends Obj
      * @param   array  $filters  Filters to apply to the query that retrieves records
      * @return  mixed  Integer or array
      */
-    public function posts($filters = array())
+    public function posts($filters = [])
     {
         $filters['object_id']   = $this->_object_id;
         $filters['object_type'] = $this->_object_type;
@@ -385,14 +385,14 @@ class Archive extends Obj
         $tbl = new Tables\Post($this->_db);
 
         if ($results = $tbl->getRecords($filters)) {
-            $ids = array();
+            $ids = [];
             foreach ($results as $key => $result) {
                 $ids[] = $result->item_id;
             }
 
             // Get all the assets for this list of items (avoids an N+1 per post)
             $ba = new Tables\Asset($this->_db);
-            $assets = $ba->getRecords(array('item_id' => $ids));
+            $assets = $ba->getRecords(['item_id' => $ids]);
 
             // Get all the tags for this list of items
             $bt = new Tags();
@@ -421,7 +421,7 @@ class Archive extends Obj
                 }
             }
         } else {
-            $results = array();
+            $results = [];
         }
 
         return new ItemList($results);
@@ -447,7 +447,7 @@ class Archive extends Obj
         switch (strtolower(trim($type))) {
             case 'group':
             case 'groups':
-                $collections = array();
+                $collections = [];
 
                 $usergroups = $user->groups('members');
                 $usergroups_manager = $user->groups('managers');
@@ -463,18 +463,18 @@ class Archive extends Obj
                         }
                     }
                     foreach ($usergroups as $usergroup) {
-                        $groups = $tbl->getRecords(array(
+                        $groups = $tbl->getRecords([
                             'object_type' => 'group',
                             'object_id'   => $usergroup->gidNumber,
                             'state'       => 1
-                        ));
+                        ]);
                         if ($groups) {
                             if (!isset($usergroup->params) || !is_object($usergroup->params)) {
                                 $usergroup->params = Params::getCustomParams($usergroup->gidNumber, 'groups', 'collections');
                             }
                             foreach ($groups as $s) {
                                 if (!isset($collections[$s->group_alias])) {
-                                    $collections[$s->group_alias] = array();
+                                    $collections[$s->group_alias] = [];
                                 }
                                 if ($usergroup->params->get('create_post', 0) == 1 && !$usergroup->manager) {
                                     continue;
@@ -495,11 +495,11 @@ class Archive extends Obj
 
             case 'member':
             default:
-                $collections = $tbl->getRecords(array(
+                $collections = $tbl->getRecords([
                     'object_type' => 'member',
                     'object_id'   => $user->get('id'),
                     'state'       => 1
-                ));
+                ]);
                 break;
         }
 
@@ -592,12 +592,12 @@ class Archive extends Obj
         $follow = new Following($id, $what, $follower_id, $follower_type);
 
         if (!$follow->exists()) {
-            $follow->bind(array(
+            $follow->bind([
                 'following_id'   => $id,
                 'following_type' => $what,
                 'follower_id'    => $follower_id,
                 'follower_type'  => $follower_type
-            ));
+            ]);
             if (!$follow->store(true)) {
                 $this->setError($follow->getError());
                 return false;

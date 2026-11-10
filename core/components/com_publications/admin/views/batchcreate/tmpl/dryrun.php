@@ -11,7 +11,7 @@ use Hubzero\Facades\Lang;
 // No direct access
 defined('_HZEXEC_') or die();
 $i = 1;
-$skipFields = array('license_type', 'state', 'main', 'secret', 'access');
+$skipFields = ['license_type', 'state', 'main', 'secret', 'access'];
 ?>
 <p id="recordcount"><?php echo Lang::txt('COM_PUBLICATIONS_BATCH_NUMBER_RECORDS'); ?>: <?php echo count($this->items); ?></p>
 <ul class="pubitems" id="resultlist">

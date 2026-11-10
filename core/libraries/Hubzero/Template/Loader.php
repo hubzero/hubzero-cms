@@ -32,10 +32,10 @@ class Loader
      *
      * @var  array
      */
-    protected $paths = array(
+    protected $paths = [
         'app'  => null,
         'core' => null
-    );
+    ];
 
     /**
      * Specified style
@@ -58,7 +58,7 @@ class Loader
      * @param   array   $options
      * @return  void
      */
-    public function __construct(Container $app, $options = array())
+    public function __construct(Container $app, $options = [])
     {
         $this->app = $app;
 
@@ -257,7 +257,7 @@ class Loader
             return null;
         }
 
-        foreach (array('app', 'core') as $base) {
+        foreach (['app', 'core'] as $base) {
             $path = $this->getPath($base) . DIRECTORY_SEPARATOR . $name;
 
             if (file_exists($path . DIRECTORY_SEPARATOR . 'index.php')) {
@@ -286,7 +286,7 @@ class Loader
     public function getTemplate($client_id = 0, $id = 0)
     {
         if (!$this->app->has('cache.store') || !($cache = $this->app['cache.store'])) {
-            $cache = new \Hubzero\Cache\Storage\None(array('hash' => $this->app->hash('template.loader')));
+            $cache = new \Hubzero\Cache\Storage\None(['hash' => $this->app->hash('template.loader')]);
         }
 
         $templates = $cache->get('com_templates.templates' . $client_id . $this->lang);
@@ -340,7 +340,7 @@ class Loader
 
                 $cache->put('com_templates.templates' . $client_id . $this->lang, $templates, $this->app['config']->get('cachetime', 15));
             } catch (Exception $e) {
-                $templates = array();
+                $templates = [];
             }
         }
 

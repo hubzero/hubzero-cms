@@ -75,17 +75,17 @@ class Download extends ComponentController
         // Error if needed
         if ($tStatus !== 'completed') {
             // Transaction not completed
-            $messages = array(array(Lang::txt('COM_CART_DOWNLOAD_TRANSACTION_NOT_COMPLETED'), 'error'));
+            $messages = [[Lang::txt('COM_CART_DOWNLOAD_TRANSACTION_NOT_COMPLETED'), 'error']];
             $this->messageTask($messages);
             return;
         } elseif ($cartUser != $currentUser) {
             // Transaction requested doesn't belong to the user
-            $messages = array(array(Lang::txt('COM_CART_DOWNLOAD_NOT_AUTHORIZED'), 'error'));
+            $messages = [[Lang::txt('COM_CART_DOWNLOAD_NOT_AUTHORIZED'), 'error']];
             $this->messageTask($messages);
             return;
         } elseif (!array_key_exists($sId, $transactionItems)) {
             // The SKU requested is not in the transaction
-            $messages = array(array(Lang::txt('COM_CART_DOWNLOAD_NOT_AUTHORIZED'), 'error'));
+            $messages = [[Lang::txt('COM_CART_DOWNLOAD_NOT_AUTHORIZED'), 'error']];
             $this->messageTask($messages);
             return;
         }
@@ -98,7 +98,7 @@ class Download extends ComponentController
 
         // Error if needed
         if ($productType['ptName'] != 'Software Download' || empty($downloadFile)) {
-            $messages = array(array(Lang::txt('COM_CART_DOWNLOAD_FILE_NOT_DOWNLOADABLE'), 'error'));
+            $messages = [[Lang::txt('COM_CART_DOWNLOAD_FILE_NOT_DOWNLOADABLE'), 'error']];
             $this->messageTask($messages);
             return;
         }
@@ -119,7 +119,7 @@ class Download extends ComponentController
             $downloadsCount = $db->loadResult();
 
             if ($downloadsCount >= $sku['meta']['downloadLimit']) {
-                $messages = array(array('Download limit exceeded', 'error'));
+                $messages = [['Download limit exceeded', 'error']];
                 $this->messageTask($messages);
                 return;
             }
@@ -132,7 +132,7 @@ class Download extends ComponentController
         $file = PATH_APP . $dir . DS . $downloadFile;
 
         if (!file_exists($file)) {
-            $messages = array(array(Lang::txt('COM_CART_DOWNLOAD_FILE_NOT_FOUND'), 'error'));
+            $messages = [[Lang::txt('COM_CART_DOWNLOAD_FILE_NOT_FOUND'), 'error']];
             $this->messageTask($messages);
             return;
         }
@@ -154,8 +154,8 @@ class Download extends ComponentController
 
         // Save the meta data
         $userGroups = User::getAuthorisedGroups();
-        $meta = array();
-        $ignoreGroups = array('public', 'registered');
+        $meta = [];
+        $ignoreGroups = ['public', 'registered'];
         foreach ($userGroups as $groupId) {
             $group = Accessgroup::one($groupId);
             if ($group && !in_array(strtolower($group->get('title')), $ignoreGroups)) {

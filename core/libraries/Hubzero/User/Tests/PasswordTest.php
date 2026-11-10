@@ -40,7 +40,7 @@ class PasswordTest extends Basic
 	 */
 	public function testExpiryDayIsFirstDayPamDenies()
 	{
-		foreach (array(1, 10957, 20000, 20389) as $lastChange)
+		foreach ([1, 10957, 20000, 20389] as $lastChange)
 		{
 			foreach (range(0, 400) as $max)
 			{
@@ -60,7 +60,7 @@ class PasswordTest extends Basic
 	 */
 	public function testShadowMaxRoundTrips()
 	{
-		foreach (array(20000, '20000') as $lastChange)
+		foreach ([20000, '20000'] as $lastChange)
 		{
 			foreach (range(20001, 21500, 7) as $day)
 			{
@@ -110,7 +110,7 @@ class PasswordTest extends Basic
 		$this->assertTrue(Password::isInactive(self::record('333')));
 		$this->assertTrue(Password::isInactive(self::record(Password::INACTIVE_EXPIRE_DAY)));
 
-		foreach (array(null, '', '0', '1', (string) Password::BLOCKED_EXPIRE_DAY) as $other)
+		foreach ([null, '', '0', '1', (string) Password::BLOCKED_EXPIRE_DAY] as $other)
 		{
 			$this->assertFalse(Password::isInactive(self::record($other)), var_export($other, true) . ' is not inactive');
 		}

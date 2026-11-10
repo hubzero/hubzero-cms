@@ -28,14 +28,14 @@ Html::behavior('formvalidation');
 Html::behavior('switcher', 'submenu');
 Html::behavior('tooltip');
 
-$ignore = array(
+$ignore = [
     'app', 'site', 'offline', 'meta', 'seo', 'cookie', 'system',
     'debug', 'cache', 'session', 'server', 'locale', 'ftp', 'database',
     'mail', 'api', 'permissions', 'filters', 'rate_limit', 'asset_id',
     'hub_secret'
-);
+];
 
-$this->others = array();
+$this->others = [];
 foreach ($this->data as $section => $values) :
     if (in_array($section, $ignore)) :
         continue;

@@ -81,28 +81,28 @@ class Question extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'subject'  => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      **/
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Fields to be parsed
      *
      * @var array
      **/
-    protected $parsed = array(
+    protected $parsed = [
         'question'
-    );
+    ];
 
     /**
      * Base URL
@@ -216,7 +216,7 @@ class Question extends Relational
         if (!$this->get('id')) {
             switch (strtolower($as)) {
                 case 'array':
-                    return array();
+                    return [];
                 break;
 
                 case 'string':
@@ -230,7 +230,7 @@ class Question extends Relational
 
         $cloud = new Tags($this->get('id'));
 
-        return $cloud->render($as, array('admin' => $admin));
+        return $cloud->render($as, ['admin' => $admin]);
     }
 
     /**
@@ -516,11 +516,11 @@ class Question extends Relational
         $valid = parent::validate();
 
         if ($valid) {
-            $results = Event::trigger('content.onContentBeforeSave', array(
+            $results = Event::trigger('content.onContentBeforeSave', [
                 'com_answers.question.question',
                 &$this,
                 $this->isNew()
-            ));
+            ]);
 
             foreach ($results as $result) {
                 if ($result === false) {

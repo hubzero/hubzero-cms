@@ -135,7 +135,7 @@ class Ckeditor5 extends Plugin
      * @param   array    $params  Associative array of editor parameters.
      * @return  string
      */
-    public function onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = array())
+    public function onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = [])
     {
         // Make sure we have an id too
         if (empty($id)) {
@@ -156,7 +156,7 @@ class Ckeditor5 extends Plugin
         // Optional file-browser wiring: callers pass the same fileBrowser* keys
         // the CKEditor 4 plugin reads. Pulled out here for the same reason.
         $browseUrl = '';
-        foreach (array('fileBrowserImageBrowseUrl', 'fileBrowserBrowseUrl') as $key) {
+        foreach (['fileBrowserImageBrowseUrl', 'fileBrowserBrowseUrl'] as $key) {
             if (!empty($params[$key])) {
                 $browseUrl = $params[$key];
                 break;
@@ -181,10 +181,10 @@ class Ckeditor5 extends Plugin
         $sourceViewButton = !isset($params['sourceViewButton']) || $params['sourceViewButton'];
         $allowScriptTags  = !empty($params['allowScriptTags']);
         $editorHeight     = isset($params['height']) ? $params['height'] : '';
-        $mentions  = (isset($params['mentions']) && is_array($params['mentions'])) ? $params['mentions'] : array();
+        $mentions  = (isset($params['mentions']) && is_array($params['mentions'])) ? $params['mentions'] : [];
         // Not 'wordcount': the CKEditor 4 plugin reads that key, and a caller
         // asking this editor for a limit must not silently reconfigure that one.
-        $limits = (isset($params['limits']) && is_array($params['limits'])) ? $params['limits'] : array();
+        $limits = (isset($params['limits']) && is_array($params['limits'])) ? $params['limits'] : [];
         unset(
             $params['startupMode'],
             $params['sourceViewButton'],
@@ -195,12 +195,12 @@ class Ckeditor5 extends Plugin
         );
 
         if (!isset($params['class'])) {
-            $params['class'] = array();
+            $params['class'] = [];
         }
         if (!is_array($params['class'])) {
             //$params['class'] = array($params['class']);
             $cls = $params['class'];
-            $params['class'] = array();
+            $params['class'] = [];
             foreach ($this->_split(' ', $cls) as $piece) {
                 $params['class'][] = $piece;
             }
@@ -214,7 +214,7 @@ class Ckeditor5 extends Plugin
         }
 
         // Editor options (image upload is enabled only when an uploadUrl is given)
-        $opts = array();
+        $opts = [];
         if ($uploadUrl !== '') {
             $opts['uploadUrl'] = $uploadUrl;
         }
@@ -222,11 +222,11 @@ class Ckeditor5 extends Plugin
             $opts['tokenField'] = $tokenField;
         }
         if ($browseUrl !== '') {
-            $opts['fileBrowser'] = array(
+            $opts['fileBrowser'] = [
                 'url'    => $browseUrl,
                 'width'  => $browseWidth,
                 'height' => $browseHeight
-            );
+            ];
         }
         if ($startInSource) {
             $opts['startInSource'] = true;
@@ -279,7 +279,7 @@ class Ckeditor5 extends Plugin
 
         $params['class'] = implode(' ', $params['class']);
 
-        $atts = array();
+        $atts = [];
         foreach ($params as $key => $value) {
             if (is_array($value)) {
                 $value = implode(';', $value);
@@ -354,7 +354,7 @@ class Ckeditor5 extends Plugin
      */
     private function _split($delimiter, $input)
     {
-        $even = array();
+        $even = [];
 
         if (is_array($input)) {
             foreach ($input as $el) {

@@ -70,9 +70,9 @@ class Collections extends AdminController
 
         if (!isset($collection) || !is_object($collection)) {
             // Incoming (expecting an array)
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (!is_array($id)) {
-                $id = array($id);
+                $id = [$id];
             }
             $cid = $id[0];
 
@@ -104,9 +104,9 @@ class Collections extends AdminController
         }
 
         // Create object
-        $collection = Collection::oneOrNew(Request::getInt('id'))->set(array(
+        $collection = Collection::oneOrNew(Request::getInt('id'))->set([
             'name' => Request::getString('name')
-        ));
+        ]);
 
         if (!$collection->save()) {
             // Something went wrong...return errors
@@ -138,9 +138,9 @@ class Collections extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
         if (!is_array($ids)) {
-            $ids = array($ids);
+            $ids = [$ids];
         }
 
         // Loop through the selected collections to delete

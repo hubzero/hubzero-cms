@@ -27,8 +27,8 @@ $fieldset_label = ($allow_tags == "yes") ? "Tags" : "";
 $fieldset_label = ($allow_badges == "yes") ? "Badges" : $fieldset_label;
 $fieldset_label = ($allow_tags == "yes" && $allow_badges == "yes") ? "Tags and Badges" : $fieldset_label;
 
-$t = array();
-$b = array();
+$t = [];
+$b = [];
 
 foreach ($this->tags as $tag) {
     $t[] = $tag;
@@ -42,8 +42,8 @@ foreach ($this->badges as $badge) {
 $tags   = implode(",", $t);
 $badges = implode(",", $b);
 
-$tags_list = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $tags)));
-$badges_list = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'badges', 'actags1', '', $badges)));
+$tags_list = Event::trigger('hubzero.onGetMultiEntry', [['tags', 'tags', 'actags', '', $tags]]);
+$badges_list = Event::trigger('hubzero.onGetMultiEntry', [['tags', 'badges', 'actags1', '', $badges]]);
 
 //get the referrer
 $backLink = Route::url('index.php?option=' . $this->_name);
@@ -141,7 +141,7 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
                                 <?php echo Lang::txt('PLG_MEMBERS_CITATIONS_AUTHORS') . ' '; ?>
                                 <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
                                 <?php
-                                    $mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'author', 'field-author', '', (isset($this->authorString) ? $this->authorString : ''))));
+                                    $mc = Event::trigger('hubzero.onGetMultiEntry', [['members', 'author', 'field-author', '', (isset($this->authorString) ? $this->authorString : '')]]);
                                 if (count($mc) > 0) {
                                     echo $mc[0];
                                 } else { ?>

@@ -66,7 +66,7 @@ class Date extends Base
      */
     public function fetchElement($name, $value, &$element, $control_name)
     {
-        $html = array();
+        $html = [];
 
         $c = 0;
         if (isset($element->year) && $element->year) {
@@ -124,7 +124,7 @@ class Date extends Base
             $y = (isset($y) && $y) ? $y : date("Y");
 
             // Build the list of years
-            $options = array();
+            $options = [];
             $y++;
             for ($i, $n = $y; $i < $n; $i++) {
                 $options[] = Html::select('option', $i, $i);
@@ -151,9 +151,9 @@ class Date extends Base
             $month = $this->_getValue('month', $value);
 
             // Build the list of years
-            $options = array(
+            $options = [
                 Html::select('option', '0', Lang::txt('Month...'))
-            );
+            ];
             $i = 1;
             $y = 13;
             for ($i, $n = $y; $i < $n; $i++) {
@@ -178,9 +178,9 @@ class Date extends Base
             $day = $this->_getValue('day', $value);
 
             // Build the list of years
-            $options = array(
+            $options = [
                 Html::select('option', '0', Lang::txt('Day...'))
-            );
+            ];
             $i = 1;
             $y = 32;
             for ($i, $n = $y; $i < $n; $i++) {
@@ -312,10 +312,10 @@ class Date extends Base
      */
     public function fetchOptions($name, $value, &$element, $control_name)
     {
-        $html = array();
+        $html = [];
 
         if (!isset($element->options)) {
-            $element->options = array();
+            $element->options = [];
         }
 
         if (count($element->options) < 1) {

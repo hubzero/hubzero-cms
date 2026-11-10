@@ -25,7 +25,7 @@ $citations_require_attention    = $this->citations_require_attention;
 $citations_require_no_attention = $this->citations_require_no_attention;
 
 //dont show array
-$no_show = array('errors', 'duplicate', 'bdsk-file-1');
+$no_show = ['errors', 'duplicate', 'bdsk-file-1'];
 
 $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=citations';
 ?>
@@ -178,7 +178,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
                                         <tbody>
                                             <?php
                                             $recordAttributes = $cc->getAttributes();
-                                            $changedKeys = array();
+                                            $changedKeys = [];
                                             foreach ($c as $attribute => $value) {
                                                 if (!empty($recordAttributes[$attribute]) || !empty($value)) {
                                                     $changedKeys[] = $attribute;

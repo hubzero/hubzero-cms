@@ -39,7 +39,7 @@ class Articles extends SiteController
     {
         $params = App::get('menu.params');
 
-        $filters = array();
+        $filters = [];
         $filters['id'] = Request::getInt('id');
         $filters['language'] = Lang::isMultilang();
         $filters['access'] = null;
@@ -50,7 +50,7 @@ class Articles extends SiteController
             !User::authorise('core.edit.state', $this->_option)
             && !User::authorise('core.edit', $this->_option)
         ) {
-            $filters['state'] = array(Article::STATE_PUBLISHED, Article::STATE_ARCHIVED);
+            $filters['state'] = [Article::STATE_PUBLISHED, Article::STATE_ARCHIVED];
         }
 
         $data = Article::oneByFilters($filters);
@@ -174,16 +174,16 @@ class Articles extends SiteController
         //
         // Process the content plugins.
         //
-        $results = Event::trigger('content.onContentPrepare', array ('com_content.article', &$item, &$params, $offset));
+        $results = Event::trigger('content.onContentPrepare', ['com_content.article', &$item, &$params, $offset]);
 
         $item->event = new stdClass();
-        $results = Event::trigger('content.onContentAfterTitle', array('com_content.article', &$item, &$params, $offset));
+        $results = Event::trigger('content.onContentAfterTitle', ['com_content.article', &$item, &$params, $offset]);
         $item->event->afterDisplayTitle = trim(implode("\n", $results));
 
-        $results = Event::trigger('content.onContentBeforeDisplay', array('com_content.article', &$item, &$params, $offset));
+        $results = Event::trigger('content.onContentBeforeDisplay', ['com_content.article', &$item, &$params, $offset]);
         $item->event->beforeDisplayContent = trim(implode("\n", $results));
 
-        $results = Event::trigger('content.onContentAfterDisplay', array('com_content.article', &$item, &$params, $offset));
+        $results = Event::trigger('content.onContentAfterDisplay', ['com_content.article', &$item, &$params, $offset]);
         $item->event->afterDisplayContent = trim(implode("\n", $results));
 
         // Increment the hit counter of the article.
@@ -217,24 +217,24 @@ class Articles extends SiteController
             if ($item->title) {
                 $title = $item->title;
             }
-            $path = array(array(
+            $path = [[
                 'title' => $item->title,
                 'link' => ''
-            ));
+            ]];
             $category = \Components\Categories\Helpers\Categories::getInstance('Content')->get($item->catid);
 
             // Build the menu route segments for comparison so we can skip
             // category entries already covered by the menu trail
-            $menuSegments = $menu ? array_map('strtolower', explode('/', $menu->route)) : array();
+            $menuSegments = $menu ? array_map('strtolower', explode('/', $menu->route)) : [];
 
             while ($category && ($menu->query['option'] != 'com_content' || $menu->query['view'] == 'article' || $id != $category->id) && $category->id !== 'root' && $category->id > 1) {
                 // Skip this category if its alias already appears in the
                 // menu route (the menu pathway already covers it)
                 if (!in_array(strtolower($category->alias), $menuSegments)) {
-                    $path[] = array(
+                    $path[] = [
                         'title' => $category->title,
                         'link' => HelperRoute::getCategoryRoute($category->id)
-                    );
+                    ];
                 }
                 $category = $category->getParent();
             }
@@ -314,13 +314,13 @@ class Articles extends SiteController
         $params = App::get('menu.params');
 
         // List state information
-        $filters = array();
+        $filters = [];
         $filters['limit'] = Request::getUInt('limit', Config::get('list_limit', 0));
         $filters['start'] = Request::getUInt('limitstart', 0);
         $filters['context'] = 'com_content.archive';
 
         $orderCol = Request::getCmd('filter_order', 'a.ordering');
-        $filter_fields = array(
+        $filter_fields = [
             'id', 'a.id',
             'title', 'a.title',
             'alias', 'a.alias',
@@ -339,14 +339,14 @@ class Articles extends SiteController
             'publish_down', 'a.publish_down',
             'images', 'a.images',
             'urls', 'a.urls',
-        );
+        ];
         if (!in_array($orderCol, $filter_fields)) {
             $orderCol = 'a.ordering';
         }
         $filters['ordering'] = $orderCol;
 
         $listOrder = Request::getCmd('filter_order_Dir', 'ASC');
-        if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', ''))) {
+        if (!in_array(strtoupper($listOrder), ['ASC', 'DESC', ''])) {
             $listOrder = 'ASC';
         }
         $filters['direction'] = $listOrder;
@@ -399,7 +399,7 @@ class Articles extends SiteController
         $case_when .= 'CHAR_LENGTH(a.alias)';
         $case_when .= ' THEN ';
         //$a_id = $query->castAsChar('a.id');
-        $case_when .= 'CONCAT_WS(\':\', ' . implode(', ', array('a.id', 'a.alias')) . ')'; //$query->concatenate(array($a_id, 'a.alias'), ':');
+        $case_when .= 'CONCAT_WS(\':\', ' . implode(', ', ['a.id', 'a.alias']) . ')'; //$query->concatenate(array($a_id, 'a.alias'), ':');
         $case_when .= ' ELSE ';
         $case_when .= 'a.id END';
 
@@ -409,7 +409,7 @@ class Articles extends SiteController
         $case_when .= 'CHAR_LENGTH(c.alias)';
         $case_when .= ' THEN ';
         //$c_id = $query->castAsChar('c.id');
-        $case_when .= 'CONCAT_WS(\':\', ' . implode(', ', array('c.id', 'c.alias')) . ')'; //$query->concatenate(array($c_id, 'c.alias'), ':');
+        $case_when .= 'CONCAT_WS(\':\', ' . implode(', ', ['c.id', 'c.alias']) . ')'; //$query->concatenate(array($c_id, 'c.alias'), ':');
         $case_when .= ' ELSE ';
         $case_when .= 'c.id END';
         $query->select($case_when, 'catslug');
@@ -457,7 +457,7 @@ class Articles extends SiteController
             ) {
                 // create an array of just the params set to 'use_article'
                 $menuParamsArray = $params->toArray();
-                $articleArray = array();
+                $articleArray = [];
 
                 foreach ($menuParamsArray as $key => $value) {
                     if ($value === 'use_article') {
@@ -539,7 +539,7 @@ class Articles extends SiteController
         $form = new stdClass();
 
         // Month Field
-        $months = array(
+        $months = [
             ''   => Lang::txt('COM_CONTENT_MONTH'),
             '01' => Lang::txt('JANUARY_SHORT'),
             '02' => Lang::txt('FEBRUARY_SHORT'),
@@ -553,20 +553,20 @@ class Articles extends SiteController
             '10' => Lang::txt('OCTOBER_SHORT'),
             '11' => Lang::txt('NOVEMBER_SHORT'),
             '12' => Lang::txt('DECEMBER_SHORT')
-        );
+        ];
         $form->monthField = Html::select(
             'genericlist',
             $months,
             'month',
-            array(
+            [
                 'list.attr'   => 'size="1" class="inputbox"',
                 'list.select' => $month,
                 'option.key'  => null
-            )
+            ]
         );
 
         // Year Field
-        $years = array();
+        $years = [];
         $years[] = Html::select('option', null, Lang::txt('JYEAR'));
         for ($i = 2000; $i <= 2020; $i++) {
             $years[] = Html::select('option', $i, $i);
@@ -575,10 +575,10 @@ class Articles extends SiteController
             'genericlist',
             $years,
             'year',
-            array(
+            [
                 'list.attr' => 'size="1" class="inputbox"',
                 'list.select' => $year
-            )
+            ]
         );
 
         $form->limitField = ''; //$pagination->getLimitBox();
@@ -640,7 +640,7 @@ class Articles extends SiteController
 
         $limit = $params->get('num_leading_articles') + $params->get('num_intro_articles') + $params->get('num_links');
 
-        $filters = array();
+        $filters = [];
         $filters['start'] = Request::getInt('limitstart', 0);
         $filters['limit'] = $limit;
         $filters['links'] = $params->get('num_links');
@@ -652,9 +652,9 @@ class Articles extends SiteController
             && !User::authorise('core.edit', 'com_content')
         ) {
             // filter on published for those who do not have edit or edit.state rights.
-            $filters['published'] = array(Article::STATE_PUBLISHED);
+            $filters['published'] = [Article::STATE_PUBLISHED];
         } else {
-            $filters['published'] = array(Article::STATE_UNPUBLISHED, Article::STATE_PUBLISHED, Article::STATE_ARCHIVED);
+            $filters['published'] = [Article::STATE_UNPUBLISHED, Article::STATE_PUBLISHED, Article::STATE_ARCHIVED];
         }
 
         // process show_noauth parameter
@@ -735,24 +735,24 @@ class Articles extends SiteController
                 $item->text = $item->introtext;
             }
 
-            $results = Event::trigger('content.onContentPrepare', array('com_content.featured', &$item, &$params, 0));
+            $results = Event::trigger('content.onContentPrepare', ['com_content.featured', &$item, &$params, 0]);
 
             // Old plugins: Use processed text as introtext
             $item->introtext = $item->text;
 
-            $results = Event::trigger('content.onContentAfterTitle', array('com_content.featured', &$item, &$item->params, 0));
+            $results = Event::trigger('content.onContentAfterTitle', ['com_content.featured', &$item, &$item->params, 0]);
             $item->event->afterDisplayTitle = trim(implode("\n", $results));
 
-            $results = Event::trigger('content.onContentBeforeDisplay', array('com_content.featured', &$item, &$item->params, 0));
+            $results = Event::trigger('content.onContentBeforeDisplay', ['com_content.featured', &$item, &$item->params, 0]);
             $item->event->beforeDisplayContent = trim(implode("\n", $results));
 
-            $results = Event::trigger('content.onContentAfterDisplay', array('com_content.featured', &$item, &$item->params, 0));
+            $results = Event::trigger('content.onContentAfterDisplay', ['com_content.featured', &$item, &$item->params, 0]);
             $item->event->afterDisplayContent = trim(implode("\n", $results));
         }
 
-        $lead_items = array();
-        $intro_items = array();
-        $link_items = array();
+        $lead_items = [];
+        $intro_items = [];
+        $link_items = [];
         $columns = 1;
 
         // Preprocess the breakdown of leading, intro and linked articles.
@@ -823,10 +823,10 @@ class Articles extends SiteController
         if ($params->get('show_feed_link', 1) && Document::getType() == 'html') {
             $link = '&format=feed&limitstart=';
 
-            $attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
+            $attribs = ['type' => 'application/rss+xml', 'title' => 'RSS 2.0'];
             Document::addHeadLink(Route::url($link . '&type=rss'), 'alternate', 'rel', $attribs);
 
-            $attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
+            $attribs = ['type' => 'application/atom+xml', 'title' => 'Atom 1.0'];
             Document::addHeadLink(Route::url($link . '&type=atom'), 'alternate', 'rel', $attribs);
         }
 
@@ -855,7 +855,7 @@ class Articles extends SiteController
         $params = App::get('menu.params');
 
         // List state information
-        $filters = array();
+        $filters = [];
         $filters['parentId']  = Request::getInt('id');
         $filters['published'] = Article::STATE_PUBLISHED;
         $filters['access']    = true;
@@ -869,7 +869,7 @@ class Articles extends SiteController
             $mparams = $active->params;
         }
 
-        $options = array();
+        $options = [];
         $options['countItems'] = $mparams->get('show_cat_num_articles_cat', 1) || !$mparams->get('show_empty_categories_cat', 0);
 
         $categories = \Components\Categories\Helpers\Categories::getInstance('Content', $options);
@@ -885,7 +885,7 @@ class Articles extends SiteController
             App::abort(404, Lang::txt('COM_CONTENT_ERROR_CATEGORY_NOT_FOUND'));
         }
 
-        $items = array($parent->id => $items);
+        $items = [$parent->id => $items];
 
         //Escape strings for HTML output
         $pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx', ''));
@@ -955,7 +955,7 @@ class Articles extends SiteController
         $params = clone $menuParams;
         $params->merge($globalparams);
 
-        $filters = array();
+        $filters = [];
         $filters['category_id'] = Request::getInt('id');
         $filters['start']       = Request::getInt('limitstart', 0);
         $filters['params']      = $params;
@@ -968,9 +968,9 @@ class Articles extends SiteController
             && !User::authorise('core.edit', 'com_content')
         ) {
             // filter on published for those who do not have edit or edit.state rights.
-            $filters['published'] = array(Article::STATE_PUBLISHED);
+            $filters['published'] = [Article::STATE_PUBLISHED];
         } else {
-            $filters['published'] = array(Article::STATE_UNPUBLISHED, Article::STATE_PUBLISHED, Article::STATE_ARCHIVED);
+            $filters['published'] = [Article::STATE_UNPUBLISHED, Article::STATE_PUBLISHED, Article::STATE_ARCHIVED];
         }
 
         // process show_noauth parameter
@@ -986,7 +986,7 @@ class Articles extends SiteController
         // filter.order
         $itemid = Request::getInt('id', 0) . ':' . Request::getInt('Itemid', 0);
         $orderCol = Request::getState('com_content.category.list.' . $itemid . '.filter_order', 'filter_order', '', 'string');
-        $filter_fields = array(
+        $filter_fields = [
             'id', 'a.id',
             'title', 'a.title',
             'alias', 'a.alias',
@@ -1005,14 +1005,14 @@ class Articles extends SiteController
             'publish_up', 'a.publish_up',
             'publish_down', 'a.publish_down',
             'author', 'a.author'
-        );
+        ];
         if (!in_array($orderCol, $filter_fields)) {
             $orderCol = 'a.ordering';
         }
         $filters['ordering'] = $orderCol;
 
         $listOrder = Request::getState('com_content.category.list.' . $itemid . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
-        if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', ''))) {
+        if (!in_array(strtoupper($listOrder), ['ASC', 'DESC', ''])) {
             $listOrder = 'ASC';
         }
         $filters['direction'] = $listOrder;
@@ -1038,7 +1038,7 @@ class Articles extends SiteController
         $filters['language'] = App::get('language.filter');
 
         // Get category
-        $options = array();
+        $options = [];
         $options['countItems'] = $params->get('show_cat_num_articles', 1) || !$params->get('show_empty_categories_cat', 0);
 
         $categories = \Components\Categories\Helpers\Categories::getInstance('Content', $options);
@@ -1147,18 +1147,18 @@ class Articles extends SiteController
             $item->params = new \Hubzero\Config\Registry($item->attribs);
             $item->metadata = new \Hubzero\Config\Registry($item->metadata);
 
-            $results = Event::trigger('content.onContentPrepare', array ('com_content.category', &$item, &$item->params, 0));
+            $results = Event::trigger('content.onContentPrepare', ['com_content.category', &$item, &$item->params, 0]);
 
             // Old plugins: Use processed text as introtext
             $item->introtext = $item->text;
 
-            $results = Event::trigger('content.onContentAfterTitle', array('com_content.category', &$item, &$item->params, 0));
+            $results = Event::trigger('content.onContentAfterTitle', ['com_content.category', &$item, &$item->params, 0]);
             $item->event->afterDisplayTitle = trim(implode("\n", $results));
 
-            $results = Event::trigger('content.onContentBeforeDisplay', array('com_content.category', &$item, &$item->params, 0));
+            $results = Event::trigger('content.onContentBeforeDisplay', ['com_content.category', &$item, &$item->params, 0]);
             $item->event->beforeDisplayContent = trim(implode("\n", $results));
 
-            $results = Event::trigger('content.onContentAfterDisplay', array('com_content.category', &$item, &$item->params, 0));
+            $results = Event::trigger('content.onContentAfterDisplay', ['com_content.category', &$item, &$item->params, 0]);
             $item->event->afterDisplayContent = trim(implode("\n", $results));
         }
 
@@ -1191,17 +1191,17 @@ class Articles extends SiteController
 
 
         if ($menu && ($menu->query['option'] != 'com_content' || $menu->query['view'] == 'article' || $id != $category->id)) {
-            $path = array(array(
+            $path = [[
                 'title' => $category->title,
                 'link'  => ''
-            ));
+            ]];
             $parent = $category->getParent();
 
             while (($menu->query['option'] != 'com_content' || $menu->query['view'] == 'article' || $id != $parent->id) && $parent->id !== 'root' && $parent->id > 1) {
-                $path[] = array(
+                $path[] = [
                     'title' => $parent->title,
                     'link'  => HelperRoute::getCategoryRoute($parent->id)
-                );
+                ];
                 $parent = $category->getParent();
             }
 
@@ -1212,9 +1212,9 @@ class Articles extends SiteController
             }
         }
 
-        $lead_items = array();
-        $intro_items = array();
-        $link_items = array();
+        $lead_items = [];
+        $intro_items = [];
+        $link_items = [];
         $columns = 1;
 
         // For blog layouts, preprocess the breakdown of leading, intro and linked articles.
@@ -1251,7 +1251,7 @@ class Articles extends SiteController
             }
         }
 
-        $children = array($category->id => $children);
+        $children = [$category->id => $children];
 
         // Escape strings for HTML output
         $pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx', ''));
@@ -1302,10 +1302,10 @@ class Articles extends SiteController
         if ($params->get('show_feed_link', 1) && Document::getType() == 'html') {
             $link = '&format=feed&limitstart=';
 
-            $attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
+            $attribs = ['type' => 'application/rss+xml', 'title' => 'RSS 2.0'];
             Document::addHeadLink(Route::url($link . '&type=rss'), 'alternate', 'rel', $attribs);
 
-            $attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
+            $attribs = ['type' => 'application/atom+xml', 'title' => 'Atom 1.0'];
             Document::addHeadLink(Route::url($link . '&type=atom'), 'alternate', 'rel', $attribs);
         }
 
@@ -1469,7 +1469,7 @@ class Articles extends SiteController
         Request::checkToken();
 
         $id = Request::getInt('id');
-        $data = Request::getArray('fields', array(), 'post');
+        $data = Request::getArray('fields', [], 'post');
         $context = "com_content.article.$id";
 
         // $asset and $catId are assigned in editTask, not here, so the checks

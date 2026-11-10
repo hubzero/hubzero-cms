@@ -35,8 +35,8 @@ class Legacy extends Registry
      *
      * @var  string
      */
-    protected $map = array(
-        'app' => array(
+    protected $map = [
+        'app' => [
             'application_env',
             'editor',
             'list_limit',
@@ -59,14 +59,14 @@ class Legacy extends Registry
             'robots',
             'captcha',
             'access'
-        ),
-        'cache' => array(
+        ],
+        'cache' => [
             'caching',
             'cachetime',
             'cache_handler',
             'memcache_settings'
-        ),
-        'database' => array(
+        ],
+        'database' => [
             'dbtype',
             'host',
             'user',
@@ -75,16 +75,16 @@ class Legacy extends Registry
             'dbcharset',
             'dbcollation',
             'dbprefix'
-        ),
-        'ftp' => array(
+        ],
+        'ftp' => [
             'ftp_enabled',
             'ftp_host',
             'ftp_port',
             'ftp_user',
             'ftp_pass',
             'ftp_root'
-        ),
-        'mail' => array(
+        ],
+        'mail' => [
             'mailer',
             'mailfrom',
             'fromname',
@@ -95,37 +95,37 @@ class Legacy extends Registry
             'smtppass',
             'smtpsecure',
             'sendmail'
-        ),
-        'meta' => array(
+        ],
+        'meta' => [
             'MetaAuthor',
             'MetaTitle',
             'MetaDesc',
             'MetaKeys',
             'MetaRights',
             'MetaVersion'
-        ),
-        'offline' => array(
+        ],
+        'offline' => [
             'display_offline_message',
             'offline_image',
             'offline_message',
             'offline'
-        ),
-        'seo' => array(
+        ],
+        'seo' => [
             'sef',
             'sef_rewrite',
             'sef_suffix',
             'sef_groups',
             'unicodeslugs',
             'sitename_pagetitles'
-        ),
-        'session' => array(
+        ],
+        'session' => [
             'session_handler',
             'lifetime',
             'cookiesubdomains',
             'cookie_path',
             'cookie_domain'
-        )
-    );
+        ]
+    ];
 
     /**
      * Path to the configurations.php file
@@ -168,12 +168,12 @@ class Legacy extends Registry
             // read back as empty with nothing to say why.
             $data = $this->objectToArray($data);
 
-            $config = array();
+            $config = [];
 
             foreach ($data as $key => $value) {
                 foreach ($this->map as $group => $values) {
                     if (!isset($config[$group])) {
-                        $config[$group] = array();
+                        $config[$group] = [];
                     }
                     if (in_array($key, $values)) {
                         $config[$group][$key] = $value;
@@ -258,7 +258,7 @@ class Legacy extends Registry
         );
 
         foreach ($this->map as $group => $values) {
-            $contents = array();
+            $contents = [];
             foreach ($values as $key) {
                 $contents[$key] = $this->get($group . '.' . $key);
             }
@@ -277,7 +277,7 @@ class Legacy extends Registry
     {
         $file = ($file ?: $this->file);
 
-        $contents = $this->toString('PHP', array('class' => 'JConfig', 'closingtag' => false));
+        $contents = $this->toString('PHP', ['class' => 'JConfig', 'closingtag' => false]);
         $original = '0640';
 
         if (is_file($file)) {

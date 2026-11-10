@@ -150,7 +150,7 @@ class Idp extends SiteController
             App::abort(400, Lang::txt('COM_SAML_ERROR_ACS_MISMATCH'));
         }
 
-        return array($message, $sp);
+        return [$message, $sp];
     }
 
     /**
@@ -166,7 +166,7 @@ class Idp extends SiteController
 
         // Bounded ring of pending stashes, so repeated round trips cannot
         // grow the session without limit
-        $pending = (array) Session::get('saml.pending', array());
+        $pending = (array) Session::get('saml.pending', []);
         $pending[] = $key;
 
         while (count($pending) > self::MAX_PENDING_REQUESTS) {
@@ -178,13 +178,13 @@ class Idp extends SiteController
         // Read the superglobals, not the framework Request: restoring a stash
         // writes there, and the framework's copy was snapshotted at bootstrap
         // — reading it would stash an empty request on a second pass.
-        Session::set('saml.request.' . $key, array(
+        Session::set('saml.request.' . $key, [
             'qs'   => isset($_SERVER['QUERY_STRING']) ? (string) $_SERVER['QUERY_STRING'] : '',
-            'post' => array(
+            'post' => [
                 'SAMLRequest' => isset($_POST['SAMLRequest']) ? (string) $_POST['SAMLRequest'] : '',
                 'RelayState'  => isset($_POST['RelayState']) ? (string) $_POST['RelayState'] : ''
-            )
-        ));
+            ]
+        ]);
 
         return $key;
     }
@@ -213,7 +213,7 @@ class Idp extends SiteController
 
         Session::set(
             'saml.pending',
-            array_values(array_diff((array) Session::get('saml.pending', array()), array($key)))
+            array_values(array_diff((array) Session::get('saml.pending', []), [$key]))
         );
 
         if (!is_array($stashed)) {
@@ -243,7 +243,7 @@ class Idp extends SiteController
      */
     public function loginTask()
     {
-        if (!in_array(Request::method(), array('GET', 'POST'))) {
+        if (!in_array(Request::method(), ['GET', 'POST'])) {
             App::abort(405);
         }
 
@@ -333,7 +333,7 @@ class Idp extends SiteController
      */
     public function logoutTask()
     {
-        if (!in_array(Request::method(), array('GET', 'POST'))) {
+        if (!in_array(Request::method(), ['GET', 'POST'])) {
             App::abort(405);
         }
 
@@ -505,11 +505,11 @@ class Idp extends SiteController
             $log = App::get('log');
 
             if (!$log->has('saml')) {
-                $log->register('saml', array(
+                $log->register('saml', [
                     'file'   => 'saml.log',
                     'level'  => 'info',
                     'format' => "%datetime% %message%\n"
-                ));
+                ]);
             }
 
             $log->logger('saml')->info(

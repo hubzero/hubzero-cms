@@ -37,14 +37,14 @@ class Resources extends Module
 
         $database = App::get('db');
 
-        $queries = array(
+        $queries = [
             'unpublished'   => 0,
             'published'     => 1,
             'draftUser'     => 2,
             'pending'       => 3,
             'removed'       => 4,
             'draftInternal' => 5
-        );
+        ];
 
         foreach ($queries as $key => $state) {
             $database->setQuery("SELECT count(*) FROM `#__resources` WHERE published=$state AND standalone=1");

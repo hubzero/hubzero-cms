@@ -105,7 +105,7 @@ class Profiles extends SiteController
                     case 1:
                     default:
                         $xgroups = User::groups();
-                        $usersgroups = array();
+                        $usersgroups = [];
                         if (!empty($xgroups)) {
                             foreach ($xgroups as $group) {
                                 if ($group->regconfirmed) {
@@ -125,7 +125,7 @@ class Profiles extends SiteController
                         }
 
                         if (!$members || empty($members)) {
-                            $members = array(User::get('id'));
+                            $members = [User::get('id')];
                         }
 
                         $restrict = " AND u.id IN (" . implode(',', $members) . ")";
@@ -134,7 +134,7 @@ class Profiles extends SiteController
             }
         }
 
-        $filters = array();
+        $filters = [];
         $filters['limit']  = 20;
         $filters['start']  = 0;
         $filters['search'] = strtolower(trim(Request::getString('value', '')));
@@ -176,12 +176,12 @@ class Profiles extends SiteController
         $rows = $this->database->loadObjectList();
 
         // Output search results in JSON format
-        $json = array();
+        $json = [];
         if (count($rows) > 0) {
             foreach ($rows as $row) {
                 $user = Member::blank()->set($row);
 
-                $obj = array();
+                $obj = [];
                 $obj['id']       = $user->get('id');
                 $obj['name']     = $user->get('name');
                 $obj['username'] = $user->get('username');
@@ -198,7 +198,7 @@ class Profiles extends SiteController
         }
 
         //original query
-        $obj = array();
+        $obj = [];
         $obj['name'] = $originalQuery;
         $obj['id'] = $originalQuery;
         $obj['org'] = '';
@@ -261,36 +261,36 @@ class Profiles extends SiteController
             ->ordered()
             ->rows();
 
-        $q = (array)Request::getArray('q', array());
+        $q = (array)Request::getArray('q', []);
 
-        $filters = array(
+        $filters = [
             'search'   => Request::getString('search', ''),
-            'q'        => array(),
+            'q'        => [],
             'tags'     => Request::getString('tags', ''),
             'sort'     => strtolower(Request::getWord('sort', 'name')),
             'sort_Dir' => strtolower(Request::getWord('sort_Dir', 'asc'))
-        );
+        ];
 
         // If we have a search and it's not an array (i.e. it's coming in fresh with this request)
         if ($filters['search']) {
-            $q[] = array(
+            $q[] = [
                 'field'    => 'search',
                 'human_field' => Lang::txt('COM_MEMBERS_SEARCH'),
                 'operator' => 'like',
                 'value'    => $filters['search']
-            );
+            ];
         }
 
         // Make sure sort direction is valid
-        if (!in_array($filters['sort_Dir'], array('asc', 'desc'))) {
+        if (!in_array($filters['sort_Dir'], ['asc', 'desc'])) {
             $filters['sort_Dir'] = 'asc';
         }
 
         // Make sure sort value is valid
-        $searches = array();
-        $fieldnames = array('surname', 'name');
+        $searches = [];
+        $fieldnames = ['surname', 'name'];
         foreach ($fields as $field) {
-            if (in_array($field->get('type'), array('text', 'textarea', 'orcid', 'address'))) {
+            if (in_array($field->get('type'), ['text', 'textarea', 'orcid', 'address'])) {
                 $searches[] = $field->get('name');
             }
             $fieldnames[] = $field->get('name');
@@ -315,11 +315,11 @@ class Profiles extends SiteController
                     continue;
                 }
 
-                $val = array(
+                $val = [
                     'field'    => $key,
                     'operator' => 'e',
                     'value'    => $val
-                );
+                ];
             }
 
             if (!isset($val['field']) || !isset($val['operator']) || !isset($val['value'])) {
@@ -347,7 +347,7 @@ class Profiles extends SiteController
 
                 // Multi-value field (checkboxes)
                 if (is_array($val['value'])) {
-                    $val['human_value'] = array();
+                    $val['human_value'] = [];
                     foreach ($val['value'] as $value) {
                         $multi = $val;
                         $multi['value'] = $value;
@@ -478,7 +478,7 @@ class Profiles extends SiteController
                     $q['value'] = '%' . $q['value'] . '%';
                 }
 
-                if (in_array($q['o'], array('>', '>=', '<', '<=')) && is_numeric($q['value'])) {
+                if (in_array($q['o'], ['>', '>=', '<', '<=']) && is_numeric($q['value'])) {
                     $entries->joinRaw(
                         $b . ' AS t' . $i,
                         't' . $i . '.user_id=' . $a . '.id AND t' . $i . '.profile_key=' . $db->quote($q['field']) . ' AND t' . $i . '.profile_value ' . $q['o'] . ' ' . (int)$q['value'],
@@ -605,7 +605,7 @@ class Profiles extends SiteController
         $response = new \stdClass();
         $response->type = $field->get('type');
 
-        $values = array();
+        $values = [];
 
         if ($field->get('type') == 'country') {
             $countries = \Hubzero\Geocode\Geocode::countries();
@@ -779,9 +779,9 @@ class Profiles extends SiteController
         }
 
         // Trigger the functions that return the areas we'll be using
-        $cats = Event::trigger('members.onMembersAreas', array(User::getInstance(), $profile));
+        $cats = Event::trigger('members.onMembersAreas', [User::getInstance(), $profile]);
 
-        $available = array();
+        $available = [];
 
         foreach ($cats as $cat) {
             $name = key($cat);
@@ -797,7 +797,7 @@ class Profiles extends SiteController
         }
 
         // Get the sections
-        $sections = Event::trigger('members.onMembers', array(User::getInstance(), $profile, $this->_option, array($tab)));
+        $sections = Event::trigger('members.onMembers', [User::getInstance(), $profile, $this->_option, [$tab]]);
 
         // Build the page title
         $title  = Lang::txt(strtoupper($this->_option));
@@ -937,7 +937,7 @@ class Profiles extends SiteController
             ->whereEquals('enabled', 1)
             ->rows();
 
-        $this->view->password_rules = array();
+        $this->view->password_rules = [];
 
         foreach ($password_rules as $rule) {
             if (!empty($rule['description'])) {
@@ -948,7 +948,7 @@ class Profiles extends SiteController
         if (!empty($newpass)) {
             $msg = \Hubzero\Password\Rule::verify($newpass, $password_rules, $profile->get('username'));
         } else {
-            $msg = array();
+            $msg = [];
         }
 
         // Blank form request (no data submitted)
@@ -986,7 +986,7 @@ class Profiles extends SiteController
         }
 
         if ($this->getError()) {
-            $change = array();
+            $change = [];
             $change['_missing']['password'] = $this->getError();
 
             if (!empty($msg) && $passrules) {
@@ -1021,7 +1021,7 @@ class Profiles extends SiteController
             return;
         }
 
-        Event::trigger('onUserAfterChangePassword', array($profile->toArray()));
+        Event::trigger('onUserAfterChangePassword', [$profile->toArray()]);
 
         // Redirect user back to main account page
         $return = base64_decode(Request::getString('return', '', 'method', 'base64'));
@@ -1038,7 +1038,7 @@ class Profiles extends SiteController
                 $session->set('expiredpassword', '0');
             }
 
-            echo json_encode(array("success" => true));
+            echo json_encode(["success" => true]);
             exit();
         } else {
             if ($session->get('badpassword', '0') || $session->get('expiredpassword', '0')) {
@@ -1125,7 +1125,7 @@ class Profiles extends SiteController
                     $preferences = new \Components\Tools\Tables\Preferences($this->database);
                     $preferences->loadByUser($profile->get('id'));
                     if (!$preferences || !$preferences->id) {
-                        $default = $preferences->find('one', array('alias' => 'default'));
+                        $default = $preferences->find('one', ['alias' => 'default']);
                         $preferences->user_id  = $profile->get('id');
                         $preferences->class_id = $default->id;
                         $preferences->jobs     = $default->jobs;
@@ -1383,7 +1383,7 @@ class Profiles extends SiteController
             return false;
         }
 
-        Request::checkToken(array('get', 'post'));
+        Request::checkToken(['get', 'post']);
 
         $no_html = Request::getInt('no_html', 0);
 
@@ -1405,7 +1405,7 @@ class Profiles extends SiteController
         $member = Member::oneOrFail($id);
 
         // Name changed?
-        $name = Request::getArray('name', array(), 'post');
+        $name = Request::getArray('name', [], 'post');
 
         if ($name && !empty($name)) {
             $name['first']  = strip_tags($name['first']);
@@ -1432,7 +1432,7 @@ class Profiles extends SiteController
 
         if (!is_null($visibility)) {
             // Public, registered or private -- the only levels the form offers
-            if (!in_array((int) $visibility, array(1, 2, 5))) {
+            if (!in_array((int) $visibility, [1, 2, 5])) {
                 $visibility = 1;
             }
             $member->set('access', (int) $visibility);
@@ -1481,7 +1481,7 @@ class Profiles extends SiteController
             $member->set('usageAgreement', 0);
         }
 
-        $access  = Request::getArray('access', array(), 'post');
+        $access  = Request::getArray('access', [], 'post');
 
         if (is_array($access) && !empty($access)) {
             foreach ($access as $k => $v) {
@@ -1501,8 +1501,8 @@ class Profiles extends SiteController
         }
 
         // Incoming profile edits
-        $profile = Request::getArray('profile', array(), 'post');
-        $field_to_check = Request::getArray('field_to_check', array());
+        $profile = Request::getArray('profile', [], 'post');
+        $field_to_check = Request::getArray('field_to_check', []);
 
         // Querying the organization id on ror.org
         // If RoR Api is turned off because of failed API or if key doesn't exist, don't retrieve list from Api.
@@ -1540,14 +1540,14 @@ class Profiles extends SiteController
             ->ordered()
             ->rows();
 
-        $form = new \Hubzero\Form\Form('profile', array('control' => 'profile'));
+        $form = new \Hubzero\Form\Form('profile', ['control' => 'profile']);
         $form->load(Field::toXml($fields, 'edit', $profile));
         $form->bind(new \Hubzero\Config\Registry($profile));
 
-        $errors = array(
-            '_missing' => array(),
-            '_invalid' => array()
-        );
+        $errors = [
+            '_missing' => [],
+            '_invalid' => []
+        ];
 
         if (!$form->validate($profile)) {
             foreach ($form->getErrors() as $key => $error) {
@@ -1629,19 +1629,19 @@ class Profiles extends SiteController
 
             //$this->_sendConfirmationCode($member->get('username'), $email, $confirm, $member->get('registerDate'),$member->get('name'));
 
-            Event::trigger('onUserAfterChangeEmail', array($member->toArray()));
+            Event::trigger('onUserAfterChangeEmail', [$member->toArray()]);
         }
 
         // If were declinging the terms we want to logout user and tell the javascript
         if ($declineTOU) {
             App::get('auth')->logout();
-            echo json_encode(array('loggedout' => true));
+            echo json_encode(['loggedout' => true]);
             return;
         }
 
         if ($no_html) {
             // Output JSON
-            echo json_encode(array('success' => true));
+            echo json_encode(['success' => true]);
             exit();
         }
 
@@ -1665,10 +1665,10 @@ class Profiles extends SiteController
         $subject = Config::get('sitename') . ' account email confirmation';
 
         // Email message
-        $eview = new \Hubzero\Component\View(array(
+        $eview = new \Hubzero\Component\View([
             'name'   => 'emails',
             'layout' => 'confirm'
-        ));
+        ]);
 
         $eview->set('option', $this->_option)
             ->set('sitename', Config::get('sitename'))
@@ -1749,14 +1749,14 @@ class Profiles extends SiteController
 
         // Get logged-in users
         $prevuser = '';
-        $user     = array();
-        $users    = array();
-        $guests   = array();
+        $user     = [];
+        $users    = [];
+        $guests   = [];
 
         // get sessions
-        $result = SessionHelper::getAllSessions(array(
+        $result = SessionHelper::getAllSessions([
             'guest' => 0
-        ));
+        ]);
 
         if ($result && count($result) > 0) {
             foreach ($result as $row) {
@@ -1774,9 +1774,9 @@ class Profiles extends SiteController
                         $users[$prevuser]['countryresident'] = $profile->get('countryresident');
                     }
                     $prevuser = $row->username;
-                    $user = array();
+                    $user = [];
                 }
-                array_push($user, array('ip' => $row->ip, 'idle' => $row->idle));
+                array_push($user, ['ip' => $row->ip, 'idle' => $row->idle]);
             }
 
             if ($user) {
@@ -1792,14 +1792,14 @@ class Profiles extends SiteController
         }
 
         // get sessions
-        $result = SessionHelper::getAllSessions(array(
+        $result = SessionHelper::getAllSessions([
             'guest' => 1
-        ));
+        ]);
 
         if (count($result) > 0) {
             foreach ($result as $row) {
                 $row->idle = time() - $row->time;
-                array_push($guests, array('ip' => $row->ip, 'idle' => $row->idle));
+                array_push($guests, ['ip' => $row->ip, 'idle' => $row->idle]);
             }
         }
 
@@ -1887,7 +1887,7 @@ class Profiles extends SiteController
             $words = array_values(array_filter($words, function ($w) {
                 return $w !== '';
             }));
-            $parts = array();
+            $parts = [];
             foreach ($words as $i => $word) {
                 // Add wildcard to last word for partial matching as user types
                 $suffix = ($i === count($words) - 1) ? '*' : '';

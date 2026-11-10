@@ -47,10 +47,10 @@ class Miner extends Obj implements Provider
      *
      * @var  array
      */
-    protected $provides = array(
+    protected $provides = [
         'publications',
         'publication'
-    );
+    ];
 
     /**
      * Constructor
@@ -119,7 +119,7 @@ class Miner extends Obj implements Provider
      * @param   array   $filters
      * @return  string
      */
-    public function records($filters = array())
+    public function records($filters = [])
     {
         if (isset($filters['set']) && $filters['set']) {
             if (!preg_match('/^publications\:(.+)/i', $filters['set'], $matches)) {
@@ -285,11 +285,11 @@ class Miner extends Obj implements Provider
             }
 
             if ($results) {
-                $attachments = array(
-                    '1'        => array(),
-                    '2'        => array(),
-                    '3'        => array(),
-                );
+                $attachments = [
+                    '1'        => [],
+                    '2'        => [],
+                    '3'        => [],
+                ];
 
                 foreach ($results as $result) {
                     if ($result->role == 1) {
@@ -370,7 +370,7 @@ class Miner extends Obj implements Provider
         $record->subject = $this->database->loadColumn();
 
         // Relations
-        $record->relation = array();
+        $record->relation = [];
 
         $this->database->setQuery(
             "SELECT v.id, v.publication_id, v.version_number, v.doi
@@ -384,10 +384,10 @@ class Miner extends Obj implements Provider
                 continue;
             }
 
-            $record->relation[] = array(
+            $record->relation[] = [
                 'type'  => 'hasVersion',
                 'value' => $this->identifier($id, $v->doi, $v->version_number)
-            );
+            ];
         }
 
         $this->database->setQuery(
@@ -407,10 +407,10 @@ class Miner extends Obj implements Provider
                 $cite = strip_tags(html_entity_decode($reference->formatted ? $reference->formatted : \Components\Citations\Helpers\Format::formatReference($reference, '')));
                 $cite = str_replace('&quot;', '"', $cite);
 
-                $record->relation[] = array(
+                $record->relation[] = [
                     'type'  => 'isReferencedBy',
                     'value' => trim($cite)
-                );
+                ];
             }
         }
 
@@ -430,10 +430,10 @@ class Miner extends Obj implements Provider
                 $cite = strip_tags(html_entity_decode($reference->formatted ? $reference->formatted : \Components\Citations\Helpers\Format::formatReference($reference, '')));
                 $cite = str_replace('&quot;', '"', $cite);
 
-                $record->relation[] = array(
+                $record->relation[] = [
                     'type'  => 'references',
                     'value' => trim($cite)
-                );
+                ];
             }
         }
 

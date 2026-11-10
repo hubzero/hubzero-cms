@@ -77,7 +77,7 @@ if ($mode != 'preview') {
                     <?php
                     // Private/Public resource access check
                     if (!$this->model->access('view-all')) {
-                        $ghtml = array();
+                        $ghtml = [];
                         foreach ($this->model->groups as $allowedgroup) {
                             $ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
                         }
@@ -207,7 +207,7 @@ if ($mode != 'preview') {
             <?php
             $asideContent = '';
             // Show related content
-            $out = Event::trigger('resources.onResourcesSub', array($this->model, $this->option, 1));
+            $out = Event::trigger('resources.onResourcesSub', [$this->model, $this->option, 1]);
             if (count($out) > 0) {
                 foreach ($out as $ou) {
                     if (isset($ou['html'])) {

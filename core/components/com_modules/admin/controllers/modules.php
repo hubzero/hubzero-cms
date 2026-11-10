@@ -69,7 +69,7 @@ class Modules extends AdminController
      */
     public function displayTask()
     {
-        $filters = array(
+        $filters = [
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
@@ -130,7 +130,7 @@ class Modules extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         $query = Module::all();
 
@@ -201,7 +201,7 @@ class Modules extends AdminController
         if (is_numeric($filters['state'])) {
             $query->whereEquals($p . '.published', (int) $filters['state']);
         } elseif ($filters['state'] === '') {
-            $query->whereIn($p . '.published', array(0, 1));
+            $query->whereIn($p . '.published', [0, 1]);
         }
 
         // Filter by position.
@@ -302,7 +302,7 @@ class Modules extends AdminController
 
         if (!is_object($model)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id) && !empty($id)) {
                 $id = $id[0];
             }
@@ -372,7 +372,7 @@ class Modules extends AdminController
         }
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
         if (!isset($fields['id'])) {
             $fields['id'] = 0;
         }
@@ -392,7 +392,7 @@ class Modules extends AdminController
         $model = Module::oneOrNew($fields['id'])->set($fields);
 
         // Get parameters
-        $params = Request::getArray('params', array(), 'post');
+        $params = Request::getArray('params', [], 'post');
 
         $p = $model->params;
 
@@ -404,7 +404,7 @@ class Modules extends AdminController
         }
 
         // Trigger before save event
-        $eventArgs = array($this->_option . '.module', &$model, $model->isNew());
+        $eventArgs = [$this->_option . '.module', &$model, $model->isNew()];
         $result = Event::trigger('extension.onExtensionBeforeSave', $eventArgs);
 
         if (in_array(false, $result, true)) {
@@ -419,9 +419,9 @@ class Modules extends AdminController
         }
 
         // Update menu assignments
-        $menu = Request::getArray('menu', array(), 'post');
+        $menu = Request::getArray('menu', [], 'post');
         $assignment = (isset($menu['assignment']) ? $menu['assignment'] : 0);
-        $assigned   = (isset($menu['assigned']) ? $menu['assigned'] : array());
+        $assigned   = (isset($menu['assigned']) ? $menu['assigned'] : []);
 
         if (!$model->saveAssignment($assignment, $assigned)) {
             Notify::error($model->getError());
@@ -429,7 +429,7 @@ class Modules extends AdminController
         }
 
         // Trigger after save event
-        Event::trigger('extension.onExtensionAfterSave', array($this->_option . '.module', &$model, $model->isNew()));
+        Event::trigger('extension.onExtensionAfterSave', [$this->_option . '.module', &$model, $model->isNew()]);
 
         // Clean the cache.
         $this->cleanCache();
@@ -462,7 +462,7 @@ class Modules extends AdminController
     public function selectTask()
     {
         // Filter by client.
-        $filters = array(
+        $filters = [
             'client_id' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.client_id',
                 'filter_client_id',
@@ -472,7 +472,7 @@ class Modules extends AdminController
             // Get sorting variables
             'sort' => 'name',
             'sort_Dir' => 'ASC'
-        );
+        ];
 
         $db = App::get('db');
 
@@ -534,7 +534,7 @@ class Modules extends AdminController
      */
     public function positionsTask()
     {
-        $filters = array(
+        $filters = [
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.positions.limit',
                 'limit',
@@ -584,10 +584,10 @@ class Modules extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
         $client = \Hubzero\Base\ClientManager::client($filters['client_id']);
 
-        $positions = array();
+        $positions = [];
 
         if ($filters['type'] != 'template') {
             // Get the database object and a new query object.
@@ -601,7 +601,7 @@ class Modules extends AdminController
             $rows = $query->rows();
 
             foreach ($rows as $position) {
-                $positions[$position->get('value')] = array();
+                $positions[$position->get('value')] = [];
             }
         }
 
@@ -647,7 +647,7 @@ class Modules extends AdminController
                     && ($filters['template'] == '' || $filters['template'] == $template->element)
                 ) {
                     if (!isset($positions[$value])) {
-                        $positions[$value] = array();
+                        $positions[$value] = [];
                     }
                     $positions[$value][$template->name] = $label;
                 }
@@ -698,8 +698,8 @@ class Modules extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('cid', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('cid', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $success = 0;
 
@@ -743,8 +743,8 @@ class Modules extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('cid', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('cid', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $success = 0;
 
@@ -753,7 +753,7 @@ class Modules extends AdminController
             $model = Module::oneOrFail(intval($id));
 
             // Trigger before delete event
-            Event::trigger('extension.onExtensionBeforeDelete', array('com_modules.module', $model->getTableName()));
+            Event::trigger('extension.onExtensionBeforeDelete', ['com_modules.module', $model->getTableName()]);
 
             // Attempt to delete the record
             if (!$model->destroy()) {
@@ -762,7 +762,7 @@ class Modules extends AdminController
             }
 
             // Trigger after delete event
-            Event::trigger('extension.onExtensionAfterDelete', array('com_modules.module', $model->getTableName()));
+            Event::trigger('extension.onExtensionAfterDelete', ['com_modules.module', $model->getTableName()]);
 
             $success++;
         }
@@ -794,8 +794,8 @@ class Modules extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('cid', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('cid', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $success = 0;
 
@@ -842,14 +842,14 @@ class Modules extends AdminController
         }
 
         // Get items to publish from the request.
-        $cid   = Request::getArray('cid', array());
-        $data  = array(
+        $cid   = Request::getArray('cid', []);
+        $data  = [
             'publish'   => 1,
             'unpublish' => 0,
             'archive'   => 2,
             'trash'     => -2,
             'report'    => -3
-        );
+        ];
         $task  = $this->getTask();
         $value = Arr::getValue($data, $task, 0, 'int');
 
@@ -1106,8 +1106,8 @@ class Modules extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $commands = Request::getArray('batch', array(), 'post');
-        $pks = Request::getArray('cid', array(), 'post');
+        $commands = Request::getArray('batch', [], 'post');
+        $pks = Request::getArray('cid', [], 'post');
 
         // Sanitize user ids.
         $pks = array_unique($pks);
@@ -1124,13 +1124,13 @@ class Modules extends AdminController
         }
 
         // Build an array of item contexts to check
-        $contexts = array();
+        $contexts = [];
         foreach ($pks as $id) {
             $contexts[$id] = $this->_option . '.module.' . $id;
         }
 
         $done = false;
-        $contexts = array($this->_option . '.' . $this->_controller);
+        $contexts = [$this->_option . '.' . $this->_controller];
 
         if (!empty($commands['position_id'])) {
             $cmd = \Hubzero\Utility\Arr::getValue($commands, 'move_copy', 'c');
@@ -1190,7 +1190,7 @@ class Modules extends AdminController
     protected function batchCopy($value, $pks, $contexts)
     {
         // Set the variables
-        $newIds = array();
+        $newIds = [];
         $i = 0;
 
         foreach ($pks as $pk) {
@@ -1243,10 +1243,10 @@ class Modules extends AdminController
                 foreach ($menus as $menu) {
                     $query = $db->getQuery()
                         ->insert('#__modules_menu')
-                        ->values(array(
+                        ->values([
                             'moduleid' => $newId,
                             'menuid'   => $menu
-                        ));
+                        ]);
 
                     $db->setQuery($query->toString());
                     $db->query();

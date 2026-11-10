@@ -67,7 +67,7 @@ switch ($this->action) {
         $db = App::get('db');
 
         $memberBadge = new \Components\Courses\Tables\MemberBadge($db);
-        $memberBadge->load(array('validation_token' => $this->token));
+        $memberBadge->load(['validation_token' => $this->token]);
 
         if (!$memberBadge->get('id')) {
             App::abort(404, Lang::txt('COM_COURSES_INVALID_REQUEST'));

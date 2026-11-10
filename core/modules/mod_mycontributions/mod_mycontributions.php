@@ -63,7 +63,7 @@ class Mycontributions extends Module
         $database = \Hubzero\Facades\App::get('db');
 
         // Query filters defaults
-        $filters = array();
+        $filters = [];
         $filters['sortby'] = 'f.published DESC';
         $filters['filterby'] = 'all';
 
@@ -296,7 +296,7 @@ class Mycontributions extends Module
         $this->limit_other = intval($this->params->get('limit_other', 5));
 
         // Tools in progress
-        $this->tools = array();
+        $this->tools = [];
         if ($this->show_tools) {
             $this->tools = $this->getToollist(
                 $this->show_questions,

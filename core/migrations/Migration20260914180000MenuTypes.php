@@ -107,7 +107,7 @@ class Migration20260914180000MenuTypes extends Base
         // both com_content articles that happen to live in the same menu. A
         // route is an item whose alias is its own component's name; anything
         // else is a page, and a page does not belong in a generated menu.
-        $strays = array();
+        $strays = [];
 
         $rows = $this->db->getQuery(true)
             ->select('id')
@@ -165,15 +165,15 @@ class Migration20260914180000MenuTypes extends Base
                 ->value('params');
 
             $params = json_decode((string) $params, true);
-            $params = is_array($params) ? $params : array();
+            $params = is_array($params) ? $params : [];
             $params['menu_show'] = 0;
 
             $this->db->getQuery()
                 ->update('#__menu')
-                ->set(array(
+                ->set([
                     'menutype' => $display,
                     'params'   => json_encode($params),
-                ))
+                ])
                 ->whereEquals('id', $id)
                 ->execute();
 

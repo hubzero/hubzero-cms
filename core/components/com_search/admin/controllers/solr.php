@@ -105,7 +105,7 @@ class Solr extends AdminController
             // Give the Solr user full permissions
             $accessgroups = Accessgroup::all();
             $accessgroups = $accessgroups->rows()->toObject();
-            $userAccessGroups = array();
+            $userAccessGroups = [];
 
             foreach ($accessgroups as $ag) {
                 array_push($userAccessGroups, $ag->id);
@@ -134,7 +134,7 @@ class Solr extends AdminController
 
                 $comConfig = Component::params('com_search');
                 $application = $application->toObject();
-                $config = array();
+                $config = [];
                 $config['solr_client_id'] = $application->client_id;
                 $config['solr_client_secret'] = $application->client_secret;
                 $config['solr_username'] = $user->get('username');
@@ -183,7 +183,7 @@ class Solr extends AdminController
             $this->view->setError($e->getMessage());
             $insertTime = '';
             $status = 'failed';
-            $logs = array();
+            $logs = [];
         }
 
         // Explicitly set the view since it may be called by another method

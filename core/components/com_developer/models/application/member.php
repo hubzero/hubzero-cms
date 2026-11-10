@@ -42,10 +42,10 @@ class Member extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'application_id' => 'positive|nonzero',
         'uidNumber'      => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Get Profile Object from user id

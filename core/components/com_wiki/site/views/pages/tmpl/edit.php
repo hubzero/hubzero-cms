@@ -46,7 +46,7 @@ $formatting = \Components\Wiki\Models\Page::oneByPath('Help:WikiFormatting', 'si
 $formatting->set('scope', $this->book->get('scope'))
     ->set('scope_id', $this->book->get('scope_id'));
 
-$authors = array();
+$authors = [];
 foreach ($this->page->authors()->rows() as $auth) {
     $authors[] = $auth->user->get('username');
 }
@@ -184,7 +184,7 @@ $authors = implode(', ', $authors);
                                         <select name="tplate" id="templates" class="form-control">
                                             <option value="tc"><?php echo Lang::txt('COM_WIKI_FIELD_TEMPLATE_SELECT'); ?></option>
                                             <?php
-                                            $hi = array();
+                                            $hi = [];
 
                                             $tplate = strtolower(Request::getString('tplate', ''));
 
@@ -297,13 +297,13 @@ $authors = implode(', ', $authors);
                                         <?php
                                         $mc = Event::trigger(
                                             'hubzero.onGetMultiEntry',
-                                            array(array(
+                                            [[
                                                 'members',
                                                 'authors',
                                                 'params_authors',
                                                 '',
                                                 $authors
-                                            ))
+                                            ]]
                                         );
                                         if (count($mc) > 0) {
                                             echo $mc[0];
@@ -378,7 +378,7 @@ $authors = implode(', ', $authors);
                             <label for="actags">
                                 <?php echo Lang::txt('COM_WIKI_FIELD_TAGS'); ?>:
                                 <?php
-                                $tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->escape($tags))));
+                                $tf = Event::trigger('hubzero.onGetMultiEntry', [['tags', 'tags', 'actags', '', $this->escape($tags)]]);
                                 if (count($tf) > 0) {
                                     echo $tf[0];
                                 } else {

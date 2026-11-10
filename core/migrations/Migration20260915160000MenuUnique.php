@@ -53,8 +53,8 @@ class Migration20260915160000MenuUnique extends Base
         foreach ($this->duplicates() as $group) {
             // Keep one. Prefer to rename the ones nothing routes to.
             usort($group, function ($a, $b) {
-                $aCosmetic = in_array($a['type'], array('alias', 'separator'), true);
-                $bCosmetic = in_array($b['type'], array('alias', 'separator'), true);
+                $aCosmetic = in_array($a['type'], ['alias', 'separator'], true);
+                $bCosmetic = in_array($b['type'], ['alias', 'separator'], true);
 
                 if ($aCosmetic != $bCosmetic) {
                     // The one that answers at its path stays
@@ -67,7 +67,7 @@ class Migration20260915160000MenuUnique extends Base
             $keep = array_shift($group);
 
             foreach ($group as $row) {
-                if (!in_array($row['type'], array('alias', 'separator'), true)) {
+                if (!in_array($row['type'], ['alias', 'separator'], true)) {
                     $this->log(
                         'Left /' . $row['path'] . ' (#' . $row['id'] . ') alone: it shares an alias with #'
                         . $keep['id'] . ' and both answer at a path, so renaming either would move a'
@@ -167,16 +167,16 @@ class Migration20260915160000MenuUnique extends Base
             . " ORDER BY `a`.`id` ASC"
         );
 
-        $groups = array();
+        $groups = [];
 
         foreach ((array) $this->db->loadObjectList() as $row) {
-            $groups[$row->k][] = array(
+            $groups[$row->k][] = [
                 'id'        => (int) $row->id,
                 'type'      => (string) $row->type,
                 'alias'     => (string) $row->alias,
                 'path'      => (string) $row->path,
                 'parent_id' => (int) $row->parent_id,
-            );
+            ];
         }
 
         return array_values($groups);

@@ -24,7 +24,7 @@ class Contributor extends Macro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['wiki'] = 'This macro will generate a link to a contributor\'s page with the ' .
             'contributor\'s name as the link text. It accepts either the contributor\'s ID, ' .
             'username, or name. NOTE: to use a name, it must be identical to their contributor page.';

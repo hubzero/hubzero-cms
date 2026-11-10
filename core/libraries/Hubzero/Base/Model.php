@@ -351,7 +351,7 @@ abstract class Model extends Obj
         }
 
         $type = strtolower($type);
-        if (!in_array($type, array('error', 'debug', 'critical', 'warning', 'notice', 'alert', 'emergency', 'info'))) {
+        if (!in_array($type, ['error', 'debug', 'critical', 'warning', 'notice', 'alert', 'emergency', 'info'])) {
             return;
         }
 
@@ -390,11 +390,11 @@ abstract class Model extends Obj
             }
 
             if ($this->_context) {
-                $results = Event::trigger('content.onContentBeforeSave', array(
+                $results = Event::trigger('content.onContentBeforeSave', [
                     $this->_context,
                     &$this,
                     $this->exists()
-                ));
+                ]);
                 foreach ($results as $result) {
                     if ($result === false) {
                         $this->setError(App::get('language')->txt('Content failed validation.'));
@@ -452,7 +452,7 @@ abstract class Model extends Obj
      *
      * @return  object
      */
-    public function trigger($event = '', $params = array())
+    public function trigger($event = '', $params = [])
     {
         return Event::trigger($event, $params);
     }
@@ -473,7 +473,7 @@ abstract class Model extends Obj
      *
      * @return  string
      */
-    public function toString($ignore = array('_db'))
+    public function toString($ignore = ['_db'])
     {
         return $this->print_r($this, $ignore);
     }
@@ -488,7 +488,7 @@ abstract class Model extends Obj
      * @return  string
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    private function print_r($subject, $ignore = array(), $depth = 1, $refChain = array())
+    private function print_r($subject, $ignore = [], $depth = 1, $refChain = [])
     {
         $str = '';
 

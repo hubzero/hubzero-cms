@@ -27,7 +27,7 @@ class Latin
 
         if ($case <= 0) {
             if (is_null($lower)) {
-                $lower = array(
+                $lower = [
                     'à' => 'a',
                     'ô' => 'o',
                     'ď' => 'd',
@@ -133,7 +133,7 @@ class Latin
                     'µ' => 'u',
                     'ĕ' => 'e',
                     'œ' => 'oe'
-                );
+                ];
             }
 
             $string = str_replace(array_keys($lower), array_values($lower), $string);
@@ -141,7 +141,7 @@ class Latin
 
         if ($case >= 0) {
             if (is_null($upper)) {
-                $upper = array(
+                $upper = [
                     'À' => 'A',
                     'Ô' => 'O',
                     'Ď' => 'D',
@@ -245,7 +245,7 @@ class Latin
                     'Æ' => 'Ae',
                     'Ĕ' => 'E',
                     'Œ' => 'Oe'
-                );
+                ];
             }
             $string = str_replace(array_keys($upper), array_values($upper), $string);
         }

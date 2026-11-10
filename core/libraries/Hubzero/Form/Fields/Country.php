@@ -39,10 +39,10 @@ class Country extends Select
     protected function getOptions()
     {
         // Initialize variables.
-        $options = array();
+        $options = [];
 
         if (!self::$countries) {
-            self::$countries = array();
+            self::$countries = [];
 
             $countries = Geocode::countries();
 

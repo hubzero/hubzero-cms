@@ -44,7 +44,7 @@ class Filelist extends Element
         $stripExt = (string) $node['stripext'];
         $files    = App::get('filesystem')->files($path, $filter);
 
-        $options = array();
+        $options = [];
 
         if (!$node['hide_none']) {
             $options[] = Builder\Select::option('-1', App::get('language')->txt('JOPTION_DO_NOT_USE'));
@@ -71,7 +71,7 @@ class Filelist extends Element
         return Builder\Select::genericlist(
             $options,
             $control_name . '[' . $name . ']',
-            array('id' => 'param' . $name, 'list.attr' => 'class="inputbox"', 'list.select' => $value)
+            ['id' => 'param' . $name, 'list.attr' => 'class="inputbox"', 'list.select' => $value]
         );
     }
 }

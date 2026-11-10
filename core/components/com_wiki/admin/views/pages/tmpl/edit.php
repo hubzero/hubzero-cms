@@ -74,7 +74,7 @@ $this->js();
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_WIKI_FIELD_AUTHORS_HINT'); ?>">
                     <label for="pageauthors"><?php echo Lang::txt('COM_WIKI_FIELD_AUTHORS'); ?>:</label><br />
                     <textarea name="page[authors]" id="pageauthors" cols="35" rows="3"><?php
-                        $authors = array();
+                        $authors = [];
                     foreach ($this->row->authors()->rows() as $author) {
                         $authors[] = $author->user()->get('username');
                     }

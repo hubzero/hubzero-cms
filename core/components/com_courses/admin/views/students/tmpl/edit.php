@@ -85,7 +85,7 @@ foreach ($roles as $role) {
                         <option value="-1"><?php echo Lang::txt('COM_COURSES_NONE'); ?></option>
                         <?php
                         $model = \Components\Courses\Models\Courses::getInstance();
-                        $data = array();
+                        $data = [];
                         if ($model->courses()->total() > 0) {
                             foreach ($model->courses() as $course) {
                                 ?>
@@ -94,11 +94,11 @@ foreach ($roles as $role) {
                                 $j = 0;
                                 foreach ($course->offerings() as $i => $offering) {
                                     foreach ($offering->sections() as $section) {
-                                        $data[$j++] = array(
+                                        $data[$j++] = [
                                             $offering->get('id'),
                                             $section->get('id'),
                                             $section->get('title')
-                                        );
+                                        ];
                                     }
                                     $val = $this->escape(
                                         stripslashes($offering->get('id'))
@@ -145,7 +145,7 @@ foreach ($roles as $role) {
                         'calendar',
                         'fields[enrolled]',
                         $this->row->get('enrolled'),
-                        array('id' => 'field-enrolled')
+                        ['id' => 'field-enrolled']
                     ); ?>
                 </div>
                 <div class="input-wrap">

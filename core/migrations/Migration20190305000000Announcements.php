@@ -21,13 +21,13 @@ class Migration20190305000000Announcements extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__announcements' => array(
+    public static $tables = [
+        '#__announcements' => [
             'created',
             'publish_up',
             'publish_down'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

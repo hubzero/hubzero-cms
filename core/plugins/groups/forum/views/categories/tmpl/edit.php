@@ -48,7 +48,7 @@ if ($this->category->get('section_id') == 0) {
                     <span class="required"><?php echo Lang::txt('PLG_GROUPS_FORUM_REQUIRED'); ?></span>
                     <select name="fields[section_id]" id="field-section_id" class="form-control">
                         <option value="0"><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_SECTION_SELECT'); ?></option>
-                        <?php foreach ($this->forum->sections(array('state' => 1))->rows() as $section) { ?>
+                        <?php foreach ($this->forum->sections(['state' => 1])->rows() as $section) { ?>
                             <?php
                             $sectionId = $section->get('id');
                             $sectionTitle = $this->escape(stripslashes($section->get('title')));

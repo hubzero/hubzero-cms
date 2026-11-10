@@ -11,9 +11,9 @@ use Hubzero\Facades\Lang;
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$levels   = array();
-$labels   = array();
-$selected = array();
+$levels   = [];
+$labels   = [];
+$selected = [];
 $txtlabel = '';
 
 if ($this->audience && !$this->audience->isNew()) { ?>

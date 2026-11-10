@@ -33,10 +33,10 @@ class Session extends Base
      * @var  object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_cache = array(
+    private $_cache = [
         'shared.count' => null,
         'shared.list'  => null
-    );
+    ];
 
     /**
      * Constructor
@@ -90,7 +90,7 @@ class Session extends Base
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         if (is_object($oid)) {
@@ -129,7 +129,7 @@ class Session extends Base
      * @param   boolean  $clear    Clear cached data?
      * @return  mixed    Returns an integer or array depending upon format chosen
      */
-    public function shared($rtrn = 'list', $filters = array(), $clear = false)
+    public function shared($rtrn = 'list', $filters = [], $clear = false)
     {
         $tbl = new \Components\Tools\Tables\Viewperm($this->_db);
 
@@ -154,7 +154,7 @@ class Session extends Base
                             $results[$key] = new Location($result);
                         }
                     } else {
-                        $results = array();
+                        $results = [];
                     }
                     $this->_cache['shared.list'] = new ItemList($results);
                 }
@@ -173,7 +173,7 @@ class Session extends Base
      */
     public function share($with = null, $group = null, $readonly = 'Yes')
     {
-        $users = array();
+        $users = [];
 
         if (strstr($with, ',')) {
             $users = explode(',', $with);

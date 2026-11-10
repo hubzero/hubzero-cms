@@ -62,7 +62,7 @@ $editBaseUrl = 'index.php?option=com_templates'
                     <legend><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_MASTER_FILES');?></legend>
 
                     <ul class="item-list layout">
-                        <?php foreach (($this->files['main'] ?? array()) as $key => $file) : ?>
+                        <?php foreach (($this->files['main'] ?? []) as $key => $file) : ?>
                             <li>
                                 <?php $id = $file->id; ?>
                                 <?php if ($canDo->get('core.edit')) : ?>

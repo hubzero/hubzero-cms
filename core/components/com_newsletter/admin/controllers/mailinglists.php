@@ -49,7 +49,7 @@ class Mailinglists extends AdminController
      */
     public function displayTask()
     {
-        $filters = array(
+        $filters = [
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
@@ -65,7 +65,7 @@ class Mailinglists extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         // instantiate mailing list object
         $lists = Mailinglist::all()
@@ -108,7 +108,7 @@ class Mailinglists extends AdminController
         // Load object
         if (!is_object($row)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             $id = is_array($id) ? $id[0] : $id;
 
             $row = Mailinglist::oneOrNew($id);
@@ -139,7 +139,7 @@ class Mailinglists extends AdminController
         }
 
         // Incoming data
-        $fields = Request::getArray('field', array(), 'post');
+        $fields = Request::getArray('field', [], 'post');
 
         // Initiate model
         $row = Mailinglist::oneOrNew($fields['id'])->set($fields);
@@ -176,7 +176,7 @@ class Mailinglists extends AdminController
         }
 
         // get the request vars
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
 
         // make sure we have ids
         $success = 0;
@@ -220,7 +220,7 @@ class Mailinglists extends AdminController
         }
 
         //get request vars
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
         $id = (isset($ids[0])) ? $ids[0] : 0;
 
         if (!$id) {
@@ -228,7 +228,7 @@ class Mailinglists extends AdminController
         }
 
         //get request vars
-        $filters = array(
+        $filters = [
             'status' => Request::getWord('status', 'active'),
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.' . $this->_task . '.sort',
@@ -240,8 +240,8 @@ class Mailinglists extends AdminController
                 'filter_order_Dir',
                 'DESC'
             )
-        );
-        if (!in_array($filters['sort'], array('id', 'email', 'date_added', 'date_confirmed'))) {
+        ];
+        if (!in_array($filters['sort'], ['id', 'email', 'date_added', 'date_confirmed'])) {
             $filters['sort'] = 'email';
         }
 
@@ -290,17 +290,17 @@ class Mailinglists extends AdminController
         Request::setVar('hidemainmenu', 1);
 
         // get request vars
-        $mailinglistId = Request::getVar('id', array(Request::getInt('mid', 0)));
+        $mailinglistId = Request::getVar('id', [Request::getInt('mid', 0)]);
         $mailinglistId = (isset($mailinglistId[0])) ? $mailinglistId[0] : 0;
 
         // load mailing list
         $list = Mailinglist::oneOrFail($mailinglistId);
 
         // get list of groups
-        $filters = array(
-            'fields' => array('gidNumber', 'description'),
-            'type'   => array('hub', 'project', 'super', 'course')
-        );
+        $filters = [
+            'fields' => ['gidNumber', 'description'],
+            'type'   => ['hub', 'project', 'super', 'course']
+        ];
         $groups = \Hubzero\User\Group::find($filters);
 
         // output
@@ -327,16 +327,16 @@ class Mailinglists extends AdminController
         }
 
         // array to hold emails
-        $emails           = array();
-        $duplicateEmails  = array();
-        $badEmails        = array();
-        $emailFileEmails  = array();
-        $emailGroupEmails = array();
-        $emailBoxEmails   = array();
+        $emails           = [];
+        $duplicateEmails  = [];
+        $badEmails        = [];
+        $emailFileEmails  = [];
+        $emailGroupEmails = [];
+        $emailBoxEmails   = [];
 
         // get request vars
         $this->mid               = Request::getInt('mid', 0);
-        $this->emailFile         = Request::getArray('email_file', array(), 'files');
+        $this->emailFile         = Request::getArray('email_file', [], 'files');
         $this->emailGroup        = Request::getInt('email_group', 0);
         $this->emailBox          = Request::getString('email_box', '');
         $this->emailConfirmation = Request::getString('email_confirmation', '-1');
@@ -351,7 +351,7 @@ class Mailinglists extends AdminController
         $newsletterMailinglist = Mailinglist::oneOrFail($this->mid);
 
         // get current emails on list
-        $currentEmails = array();
+        $currentEmails = [];
         foreach ($newsletterMailinglist->emails as $email) {
             $currentEmails[] = $email->email;
         }
@@ -360,7 +360,7 @@ class Mailinglists extends AdminController
         $config = Component::params('com_media');
 
         // array of allowed extensions
-        $allowedExtensions = array('txt', 'csv', 'xls', 'xlsx');
+        $allowedExtensions = ['txt', 'csv', 'xls', 'xlsx'];
 
         // max file size
         $maxFileSize = (int) $config->get('upload_maxsize');
@@ -393,7 +393,7 @@ class Mailinglists extends AdminController
         // do we have an email group
         if ($this->emailGroup) {
             $hg = \Hubzero\User\Group::getInstance($this->emailGroup);
-            $emailGroupEmails = $hg ? $hg->getEmails('members') : array();
+            $emailGroupEmails = $hg ? $hg->getEmails('members') : [];
         }
 
         // do we have a emails in the textarea
@@ -423,13 +423,13 @@ class Mailinglists extends AdminController
                 unset($emails[$k]);
             } else {
                 $insert = Email::blank();
-                $insert->set(array(
+                $insert->set([
                     'mid'        => $this->mid,
                     'email'      => $email,
                     'status'     => 'active',
                     'confirmed'  => 0,
                     'date_added' => Date::toSql()
-                ));
+                ]);
                 if ($insert->save()) {
                     $inserts++;
                 }
@@ -512,8 +512,8 @@ class Mailinglists extends AdminController
 
         // Incoming data -- the form edits the address only; status and
         // confirmation are set by the (un)subscribe and confirmation flows
-        $fields = Request::getArray('fields', array(), 'post');
-        $fields = array_intersect_key($fields, array_flip(array('id', 'mid', 'email')));
+        $fields = Request::getArray('fields', [], 'post');
+        $fields = array_intersect_key($fields, array_flip(['id', 'mid', 'email']));
 
         // Initiate model
         $row = Email::oneOrNew(isset($fields['id']) ? (int) $fields['id'] : 0)->set($fields);
@@ -550,8 +550,8 @@ class Mailinglists extends AdminController
         }
 
         // get request vars
-        $ids = Request::getArray('email_id', array());
-        $mailinglistId = Request::getArray('id', array());
+        $ids = Request::getArray('email_id', []);
+        $mailinglistId = Request::getArray('id', []);
         $mailinglistId = (isset($mailinglistId[0])) ? $mailinglistId[0] : 0;
 
         // make sure we have ids
@@ -667,7 +667,7 @@ class Mailinglists extends AdminController
         }
 
         // get request vars
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
         $id = (isset($ids[0])) ? $ids[0] : null;
 
         // instantiate mailing list object
@@ -705,7 +705,7 @@ class Mailinglists extends AdminController
      */
     public function cancelemailTask()
     {
-        $email = Request::getArray('fields', array(), 'post');
+        $email = Request::getArray('fields', [], 'post');
 
         $mid = (isset($email['mid']) ? $email['mid'] : Request::getInt('mid', 0));
 
@@ -737,7 +737,7 @@ class Mailinglists extends AdminController
             ->whereEquals('status', 'active')
             ->rows();
 
-        $items = array();
+        $items = [];
         foreach ($emails as $email) {
             $items[] = $email->email;
         }
@@ -756,7 +756,7 @@ class Mailinglists extends AdminController
     private function _parseEmails($emails)
     {
         // array to hold parsed emails
-        $parsedEmails = array();
+        $parsedEmails = [];
 
         // split file by line break
         $parsedEmailLines = explode(PHP_EOL, $emails);

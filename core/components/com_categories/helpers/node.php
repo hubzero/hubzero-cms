@@ -227,7 +227,7 @@ class Node extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_children = array();
+    protected $_children = [];
 
     /**
      * Path from root to this category
@@ -235,7 +235,7 @@ class Node extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_path = array();
+    protected $_path = [];
 
     /**
      * Category left of this one
@@ -373,7 +373,7 @@ class Node extends Obj
         }
 
         if ($recursive) {
-            $items = array();
+            $items = [];
             foreach ($this->_children as $child) {
                 $items[] = $child;
                 $items = array_merge($items, $child->getChildren(true));

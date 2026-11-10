@@ -65,10 +65,10 @@ class Filesv1r0 extends ApiController
         // case-sensitive against a case-insensitive dispatch, so a read-only
         // member -- or, on an open project, anyone -- could write or delete.
         $task      = strtolower(Request::getCmd('task', 'list'));
-        $readTasks = array('list', 'files', 'get', 'download', 'getmetadata', 'connections');
+        $readTasks = ['list', 'files', 'get', 'download', 'getmetadata', 'connections'];
 
         //tasks specific to adapters
-        $connectionTasks = array('upload', 'chunkedupload', 'download', 'getmetadata', 'setmetadata');
+        $connectionTasks = ['upload', 'chunkedupload', 'download', 'getmetadata', 'setmetadata'];
 
         // Check authorization
         if (
@@ -164,12 +164,12 @@ class Filesv1r0 extends ApiController
             try {
                 $files = $dir->listContents();
             } catch (Exception $e) {
-                $files = array();
+                $files = [];
             }
 
             $response->results = $this->_parseFlysystemListing($files);
         } else {
-            $files = $this->model->repo()->filelist(array(
+            $files = $this->model->repo()->filelist([
                 'subdir'           => Request::getString('subdir', ''),
                 'filter'           => Request::getString('filter', ''),
                 'limit'            => Request::getInt('limit', 0),
@@ -178,7 +178,7 @@ class Filesv1r0 extends ApiController
                 'showFullMetadata' => true,
                 'getParents'       => true,
                 'getChildren'      => true
-            ));
+            ]);
 
             $response->results = $this->_parseResults($files);
         }
@@ -224,7 +224,7 @@ class Filesv1r0 extends ApiController
     public function getTask()
     {
         // Incoming
-        $files = Request::getArray('asset', array());
+        $files = Request::getArray('asset', []);
 
         if (empty($files)) {
             throw new Exception(Lang::txt('No asset path given'), 404);
@@ -233,7 +233,7 @@ class Filesv1r0 extends ApiController
         $response = new stdClass();
 
         if ($this->cid) { //connection specific listing
-            $entities = array();
+            $entities = [];
             foreach ($files as $file) {
                 try {
                     $entities[] = Entity::fromPath(Request::getString('subdir', '', 'post') . DS . $file, $this->ormconn->adapter());
@@ -243,13 +243,13 @@ class Filesv1r0 extends ApiController
             }
             $response->results = $this->_parseFlysystemListing($entities);
         } else {
-            $files = $this->model->repo()->filelist(array(
+            $files = $this->model->repo()->filelist([
                 'subdir'           => Request::getString('subdir', '', 'post'),
                 'files'            => $files,
                 'showFullMetadata' => true,
                 'getParents'       => true,
                 'getChildren'      => true
-            ));
+            ]);
             $response->results = $this->_parseResults($files);
         }
         $this->send($response);
@@ -303,10 +303,10 @@ class Filesv1r0 extends ApiController
             }
         } else {
             // Set params
-            $params = array(
+            $params = [
                 'subdir' => Request::getString('subdir', '', 'post'),
                 'newDir' => urldecode($directory)
-            );
+            ];
 
             if ($this->model->repo()->makeDirectory($params)) {
                 $response->success = 1;
@@ -389,11 +389,11 @@ class Filesv1r0 extends ApiController
                     // Nothing here
                 }
             } else {
-                $params = array(
+                $params = [
                     'type'   => $type,
                     'item'   => $item,
                     'subdir' => Request::getString('subdir', '', 'post')
-                );
+                ];
 
                 if ($this->model->repo()->deleteItem($params)) {
                     $deleted++;
@@ -482,12 +482,12 @@ class Filesv1r0 extends ApiController
                     // Nothing here
                 }
             } else {
-                $params = array(
+                $params = [
                     'type'            => $type,
                     'item'            => $item,
                     'targetDir'       => $target,
                     'createTargetDir' => true // allow new directories
-                );
+                ];
 
                 if ($this->model->repo()->moveItem($params)) {
                     $moved++;
@@ -566,12 +566,12 @@ class Filesv1r0 extends ApiController
             }
         } else {
             // Set params
-            $params = array(
+            $params = [
                 'subdir'  => Request::getString('subdir', ''),
                 'from'    => Request::getString('from', ''),
                 'to'      => Request::getString('to', ''),
                 'type'    => Request::getString('type', 'file')
-            );
+            ];
 
             if ($this->model->repo()->rename($params)) {
                 $response->success = 1;
@@ -638,7 +638,7 @@ class Filesv1r0 extends ApiController
                 $file->setContents(file_get_contents($_FILES["file"]["tmp_name"]));
                 $file->setSize((int) $_FILES["file"]["size"]);
                 if ($file->save()) {
-                    $parsedResults = array();
+                    $parsedResults = [];
 
                     // Get metadata
                     $parsedResults[] = $this->ormconn->adapter()->getMetadata($file->getPath());
@@ -838,7 +838,7 @@ class Filesv1r0 extends ApiController
             // (and the last chunk's tmp_name is gone), so only report it
             $file = Entity::fromPath(trim($subdir, DS) . DS . $flowFilename, $this->ormconn->adapter());
 
-            $parsedResults = array();
+            $parsedResults = [];
 
             // Get metadata
             $parsedResults[] = $this->ormconn->adapter()->getMetadata($file->getPath());
@@ -976,17 +976,17 @@ class Filesv1r0 extends ApiController
         // Insert file
         $response = new stdClass();
         $response->results     = $this->model->repo()->insert(
-            array(
+            [
                 'dataPath'    => $dataPath,
                 'allowReplace' => $this->_task == 'insert' ? false : true,
                 'update'      => $this->_task == 'insert' ? false : true,
                 'subdir'      => Request::getString('subdir', '')
-            )
+            ]
         );
 
         // Parse results
         if (!empty($response->results)) {
-            $parsedResults = array();
+            $parsedResults = [];
             $names = null;
             foreach ($response->results as $updateType => $files) {
                 foreach ($files as $file) {
@@ -1002,10 +1002,10 @@ class Filesv1r0 extends ApiController
             if (!empty($parsedResults)) {
                 $updateType = $this->_task == 'insert' ? 'uploaded' : 'updated';
                 // Plugin params
-                $plugin_params = array(
+                $plugin_params = [
                     $this->model,
-                    array($updateType => $names)
-                );
+                    [$updateType => $names]
+                ];
 
                 Event::trigger('projects.onAfterUpdate', $plugin_params);
             }
@@ -1068,10 +1068,10 @@ class Filesv1r0 extends ApiController
         $response = new stdClass();
         $response->success = 0;
 
-        $files = Request::getArray('asset', array());
-        $fields   = Request::getArray('fields', array());
+        $files = Request::getArray('asset', []);
+        $fields   = Request::getArray('fields', []);
 
-        $response->metadata = array();
+        $response->metadata = [];
 
         if (is_array($files)) {
             foreach ($files as $file) {
@@ -1150,8 +1150,8 @@ class Filesv1r0 extends ApiController
         $response = new stdClass();
         $response->success = 0;
 
-        $files = Request::getArray('asset', array());
-        $metadata = Request::getArray('metadata', array());
+        $files = Request::getArray('asset', []);
+        $metadata = Request::getArray('metadata', []);
 
         if (is_array($files)) {
             if (is_array($metadata)) {
@@ -1198,7 +1198,7 @@ class Filesv1r0 extends ApiController
     {
         // Get array of file metadata
         if (!empty($files)) {
-            $results = array();
+            $results = [];
             foreach ($files as $result) {
                 // Access file metadata
                 $results[] = $this->ormconn->adapter()->getMetadata($result->getPath());
@@ -1206,7 +1206,7 @@ class Filesv1r0 extends ApiController
             return $results;
         }
 
-        return array();
+        return [];
     }
 
     /**
@@ -1219,7 +1219,7 @@ class Filesv1r0 extends ApiController
     {
         // Get array of file metadata
         if (!empty($files)) {
-            $results = array();
+            $results = [];
             foreach ($files as $result) {
                 // Access private _data container
                 $results[] = $result->getData();
@@ -1227,7 +1227,7 @@ class Filesv1r0 extends ApiController
             return $results;
         }
 
-        return array();
+        return [];
     }
 
     /**
@@ -1239,7 +1239,7 @@ class Filesv1r0 extends ApiController
      */
     protected function _filter($source, $filter)
     {
-        $result = array();
+        $result = [];
         foreach ($source as $key => $value) {
             if (in_array($key, $filter)) {
                 $result[$key] = $value;
@@ -1301,28 +1301,28 @@ class Filesv1r0 extends ApiController
     protected function _sortIncoming()
     {
         // Incoming
-        $checked = Request::getArray('asset', array());
-        $folders = Request::getArray('folder', array());
+        $checked = Request::getArray('asset', []);
+        $folders = Request::getArray('folder', []);
 
-        $combined = array();
+        $combined = [];
         if (!empty($checked) && is_array($checked)) {
             foreach ($checked as $ch) {
                 if (trim($ch) != '') {
-                    $combined[] = array('file' => urldecode($ch));
+                    $combined[] = ['file' => urldecode($ch)];
                 }
             }
         } elseif ($file = Request::getString('asset', '')) {
-            $combined[] = array('file' => urldecode($file));
+            $combined[] = ['file' => urldecode($file)];
         }
 
         if (!empty($folders) && is_array($folders)) {
             foreach ($folders as $f) {
                 if (trim($f) != '') {
-                    $combined[] = array('folder' => urldecode($f));
+                    $combined[] = ['folder' => urldecode($f)];
                 }
             }
         } elseif ($folder = Request::getString('folder', '')) {
-            $combined[] = array('folder' => urldecode($folder));
+            $combined[] = ['folder' => urldecode($folder)];
         }
 
         return $combined;
@@ -1336,7 +1336,7 @@ class Filesv1r0 extends ApiController
      */
     protected function _packMetadata($metadata)
     {
-        $packedMetadata = array();
+        $packedMetadata = [];
         if (!empty($metadata) && is_array($metadata)) {
             foreach ($metadata as $key => $avu) {
                 if (trim($avu['units']) != '') {
@@ -1369,7 +1369,7 @@ class Filesv1r0 extends ApiController
         $response = new stdClass();
         $connections = $this->ormproj->connections()->thatICanView()->rows();
         $response->count = count($connections);
-        $response->connections = array();
+        $response->connections = [];
 
         foreach ($connections as $connection) {
             $obj = new stdClass();

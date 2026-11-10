@@ -49,7 +49,7 @@ class File extends Base
      *
      * @var  array
      */
-    protected $_connector = array('path', 'vcs_hash');
+    protected $_connector = ['path', 'vcs_hash'];
 
     /**
      * Get configs
@@ -211,7 +211,7 @@ class File extends Base
             }
         } elseif ($attachments) {
             $readme .= "\n" . $element->label . ': ' . "\n";
-            $added = array();
+            $added = [];
 
             // Add separately
             foreach ($attachments as $attach) {
@@ -523,7 +523,7 @@ class File extends Base
             $attachments,
             $this->_name
         );
-        $attachments = $attachments ? (array) $attachments : array();
+        $attachments = $attachments ? (array) $attachments : [];
 
         $disabled = 0;
         $pop = null;
@@ -559,7 +559,7 @@ class File extends Base
 
         // Primary button
         if ($role == 1) {
-            $options = array();
+            $options = [];
 
             if (count($attachments ? $attachments : []) > 1) {
                 $fpath = $this->bundle($attachments, $configs, false);
@@ -826,7 +826,7 @@ class File extends Base
 
         // Sort out attachments for this element
         $attachments = $this->_parent->getElementAttachments($elementId, $attachments, $this->_name);
-        $attachments = $attachments ? (array) $attachments : array();
+        $attachments = $attachments ? (array) $attachments : [];
 
         if (!$forceDownload && $configs->handler) {
             // serve through handler
@@ -976,7 +976,7 @@ class File extends Base
         $this->cleanupStaleBundleParts($path);
 
         // Resolve source files and total size before doing any zip work.
-        $files = array();
+        $files = [];
         $totalBytes = 0;
         foreach ($attachments as $attach) {
             $fpath = $this->getFilePath($attach->path, $attach->id, $configs, $attach->params);
@@ -1143,7 +1143,7 @@ class File extends Base
      * @param   array    $toAttach
      * @return  boolean
      */
-    public function save($element, $elementId, $pub, $blockParams, $toAttach = array())
+    public function save($element, $elementId, $pub, $blockParams, $toAttach = [])
     {
         // Incoming selections
         if (empty($toAttach)) {
@@ -1207,7 +1207,7 @@ class File extends Base
 
                         // Rebuild identifier
                         // We need to make sure the filename and directory are human readable at this point
-                        $id = array();
+                        $id = [];
                         if (count($dirParts) > 0) {
                             for ($p = 0; $p < count($dirParts) - 1; $p++) {
                                 // For some adapters that store files in a flat structure we need to actually
@@ -1384,7 +1384,7 @@ class File extends Base
     {
         // Need to check against allowed types
         if ($configs->check) {
-            if (!$this->checkAllowed(array($filePath), $element->typeParams->allowed_ext)) {
+            if (!$this->checkAllowed([$filePath], $element->typeParams->allowed_ext)) {
                 return false;
             }
         }
@@ -1396,7 +1396,7 @@ class File extends Base
         $update = 0;
 
         $objPA = new \Components\Publications\Tables\Attachment($this->_parent->_db);
-        if ($objPA->loadElementAttachment($pub->version_id, array('path' => $filePath), $elementId, $this->_name, $element->role)) {
+        if ($objPA->loadElementAttachment($pub->version_id, ['path' => $filePath], $elementId, $this->_name, $element->role)) {
             // Update if new hash
             if ($vcs_hash && $vcs_hash != $objPA->vcs_hash) {
                 $objPA->vcs_hash    = $vcs_hash;
@@ -1641,7 +1641,7 @@ class File extends Base
      * @param   array    $formats
      * @return  boolean
      */
-    public function checkAllowed($attachments, $formats = array())
+    public function checkAllowed($attachments, $formats = [])
     {
         if (empty($attachments)) {
             return true;
@@ -1670,7 +1670,7 @@ class File extends Base
      * @param   array    $formats
      * @return  boolean
      */
-    public function checkRequired($attachments, $formats = array())
+    public function checkRequired($attachments, $formats = [])
     {
         if (empty($attachments)) {
             return true;
@@ -1776,12 +1776,12 @@ class File extends Base
 
         // Output HTML
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => 'attachments',
                 'layout'  => $this->_name
-            )
+            ]
         );
 
         $view->data   = $data;

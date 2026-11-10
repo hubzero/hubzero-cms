@@ -20,7 +20,7 @@ class Profile extends Base
      *
      * @var  array
      **/
-    protected static $fields = array(
+    protected static $fields = [
         'timestamp'     => true,
         'hubname'       => true,
         'ip'            => true,
@@ -31,7 +31,7 @@ class Profile extends Base
         'querycount'    => true,
         'timeinqueries' => true,
         'totaltime'     => true
-    );
+    ];
 
     /**
      * If dates/times are present, how are they formatted

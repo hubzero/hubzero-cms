@@ -26,7 +26,7 @@ class Content extends Plugin
     public function onContentSave($table, $model)
     {
         //@TODO: Add check for isIndexable
-        Event::trigger('search.onAddIndex', array($table, $model));
+        Event::trigger('search.onAddIndex', [$table, $model]);
     }
 
     /**
@@ -39,6 +39,6 @@ class Content extends Plugin
     public function onContentDestroy($table, $model)
     {
         //@TODO: Add check for isIndexable
-        Event::trigger('search.onRemoveIndex', array($table, $model));
+        Event::trigger('search.onRemoveIndex', [$table, $model]);
     }
 }

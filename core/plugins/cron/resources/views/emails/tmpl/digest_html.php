@@ -93,7 +93,7 @@ $link = $base . '/' . trim($sef, '/');
             <tr>
                 <td style="font-weight: normal; padding: 5px; text-align: left; color: #aaaaaa;" align="left">
                     <?php
-                    $info = array();
+                    $info = [];
                     if ($thedate = $row->date) {
                         $info[] = $thedate;
                     }

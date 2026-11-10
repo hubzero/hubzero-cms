@@ -52,20 +52,20 @@ class Attachment extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'parent'   => 'positive|nonzero',
         'post_id'  => 'positive|nonzero',
         'filename' => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      **/
-    public $initiate = array(
+    public $initiate = [
         'filename'
-    );
+    ];
 
     /**
      * Defines a belongs to one relationship between category and post
@@ -191,11 +191,11 @@ class Attachment extends Relational
         }
 
         // Make sure the name is unique
-        $filename = $this->uniqueFilename(array(
+        $filename = $this->uniqueFilename([
             'filename' => $name,
             'parent'   => $this->get('parent'),
             'post_id'  => $this->get('post_id')
-        ));
+        ]);
 
         // Upload the file
         if (!Filesystem::upload($temp, $destination . DS . $filename)) {
@@ -292,7 +292,7 @@ class Attachment extends Relational
     public function dimensions()
     {
         if (!$this->dimensions) {
-            $this->dimensions = array(0, 0);
+            $this->dimensions = [0, 0];
 
             if ($this->isImage() && $this->exists()) {
                 $this->dimensions = getimagesize($this->path());

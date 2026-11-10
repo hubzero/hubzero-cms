@@ -49,7 +49,7 @@ trait UsesInertiaDebug
      * @param   array  $options
      * @return  string
      */
-    protected function inertiaDebugBar(array $snapshot = array(), array $options = array()): string
+    protected function inertiaDebugBar(array $snapshot = [], array $options = []): string
     {
         return Inertia::renderDebugPanel($snapshot, $options);
     }

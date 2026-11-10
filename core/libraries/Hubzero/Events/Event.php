@@ -54,7 +54,7 @@ class Event implements ArrayAccess, Countable
      *
      * @var    array
      */
-    protected $response = array();
+    protected $response = [];
 
     /**
      * Constructor.
@@ -62,7 +62,7 @@ class Event implements ArrayAccess, Countable
      * @param  string  $name       The event name.
      * @param  array   $arguments  The event arguments.
      */
-    public function __construct($name, array $arguments = array())
+    public function __construct($name, array $arguments = [])
     {
         if (strstr($name, '.')) {
             $this->group = strstr($name, '.', true);
@@ -145,7 +145,7 @@ class Event implements ArrayAccess, Countable
      */
     public function clearArguments()
     {
-        $this->arguments = array();
+        $this->arguments = [];
 
         return $this;
     }
@@ -218,7 +218,7 @@ class Event implements ArrayAccess, Countable
      */
     public function __serialize()
     {
-        return serialize(array($this->name, $this->arguments, $this->stopped));
+        return serialize([$this->name, $this->arguments, $this->stopped]);
     }
 
     /**

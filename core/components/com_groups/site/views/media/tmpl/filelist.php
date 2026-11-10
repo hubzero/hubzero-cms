@@ -133,8 +133,8 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
                 $formattedModified   = Date::of($modified)->toLocal('m/d/Y g:ia');
 
                 // is this file an image
-                $isImage   = (in_array($extension, array('jpg','jpeg','jpe','png','gif','bmp','tiff','tif'))) ? true : false;
-                $isArchive = (in_array($extension, array('zip', 'tar', 'gz'))) ? true : false;
+                $isImage   = (in_array($extension, ['jpg','jpeg','jpe','png','gif','bmp','tiff','tif'])) ? true : false;
+                $isArchive = (in_array($extension, ['zip', 'tar', 'gz'])) ? true : false;
 
                 // build paths
                 $downloadPath = $baseURI . DS . 'File:' . $relFilePath;

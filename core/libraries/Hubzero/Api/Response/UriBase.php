@@ -22,10 +22,10 @@ class UriBase extends Middleware
      *
      * @var  array
      */
-    private $keys = array(
+    private $keys = [
         'uri',
         'url'
-    );
+    ];
 
     /**
      * Handle request in HTTP stack

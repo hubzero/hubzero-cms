@@ -103,7 +103,7 @@ class Unconfirmed extends Plugin
                 // we land on a page whose template shows the component. The
                 // $originalOption guard keeps this from firing on the redirect
                 // target itself (com_members), so it can't loop.
-                if (!in_array($originalOption, array('com_members'))) {
+                if (!in_array($originalOption, ['com_members'])) {
                     $menu = App::get('menu');
 
                     if (

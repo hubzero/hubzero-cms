@@ -21,10 +21,10 @@ class Swf extends File
      *
      * @var array
      **/
-    protected static $info = array(
+    protected static $info = [
         'action_message' => 'As an Adobe Shockwave Flash file',
-        'responds_to'    => array('swf'),
-    );
+        'responds_to'    => ['swf'],
+    ];
 
     /**
      * Create method for this handler

@@ -92,12 +92,12 @@ $pluginJs = $basePath . '/core/plugins/projects/publications/assets/js';
                     <?php
                     // Show selection
                     $view = new \Hubzero\Plugin\View(
-                        array(
+                        [
                             'folder'  => 'projects',
                             'element' => 'publications',
                             'name'    => 'selector',
                             'layout'  => $this->block
-                        )
+                        ]
                     );
                     $view->option      = $this->option;
                     $view->project     = $this->project;
@@ -125,12 +125,12 @@ $pluginJs = $basePath . '/core/plugins/projects/publications/assets/js';
 
             // Show selection
             $view = new \Hubzero\Plugin\View(
-                array(
+                [
                     'folder'  => 'projects',
                     'element' => 'publications',
                     'name'    => 'selector',
                     'layout'  => $this->block
-                )
+                ]
             );
             $view->option      = $this->option;
             $view->project     = $this->project;

@@ -103,7 +103,7 @@ class Tickets extends Plugin
                 $record->hubtype = $type;
                 $record->title = $title;
                 $record->description = $description;
-                $record->author = array($author);
+                $record->author = [$author];
                 $record->tags = $tags;
                 $record->path = $path;
                 $record->access_level = $access_level;

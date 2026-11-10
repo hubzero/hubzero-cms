@@ -22,7 +22,7 @@ class DateFormatter extends Middleware
      *
      * @var  array
      */
-    private $dateKeys = array('created', 'modified');
+    private $dateKeys = ['created', 'modified'];
 
     /**
      * Handle request in HTTP stack

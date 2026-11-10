@@ -30,9 +30,9 @@ class Preference extends Relational
      *
      * @var  array
      **/
-    protected $rules = array(
+    protected $rules = [
         'user_id' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Registry

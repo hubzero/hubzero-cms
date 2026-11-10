@@ -129,7 +129,7 @@ class Collection extends Base
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         $key = $oid . '_' . $object_id . '_' . $object_type;
@@ -153,7 +153,7 @@ class Collection extends Base
         Lang::load('com_collections', PATH_APP . DS . 'bootstrap' . DS . 'site') ||
         Lang::load('com_collections', Component::path('com_collections') . DS . 'site');
 
-        $result = array(
+        $result = [
             'id'          => 0,
             'title'       => Lang::txt('COM_COLLECTIONS_DEFAULT_TITLE'),
             'description' => Lang::txt('COM_COLLECTIONS_DEFAULT_DESC'),
@@ -162,7 +162,7 @@ class Collection extends Base
             'is_default'  => 1,
             'created_by'  => $object_id,
             'access'      => 4 // Private by default
-        );
+        ];
         if (!$result['created_by']) {
             $result['created_by'] = User::get('id');
         }
@@ -310,7 +310,7 @@ class Collection extends Base
      * @param   boolean $clear   Clear cached data?
      * @return  mixed   Integer or object
      */
-    public function posts($filters = array(), $clear = false)
+    public function posts($filters = [], $clear = false)
     {
         if (!isset($filters['collection_id'])) {
             $filters['collection_id'] = $this->get('id');
@@ -319,7 +319,7 @@ class Collection extends Base
             $filters['state'] = self::APP_STATE_PUBLISHED;
         }
         if (!isset($filters['access'])) {
-            $filters['access'] = (User::isGuest() ? 0 : array(0, 1));
+            $filters['access'] = (User::isGuest() ? 0 : [0, 1]);
         }
         if (!isset($filters['sort'])) {
             if ($sort = $this->get('sort', 'created')) {
@@ -338,14 +338,14 @@ class Collection extends Base
             $tbl = new Tables\Post($this->_db);
 
             if ($results = $tbl->getRecords($filters)) {
-                $ids = array();
+                $ids = [];
                 foreach ($results as $key => $result) {
                     $ids[] = $result->item_id;
                 }
 
                 // Get all the assets for this list of items
                 $ba = new Tables\Asset($this->_db);
-                $assets = $ba->getRecords(array('item_id' => $ids));
+                $assets = $ba->getRecords(['item_id' => $ids]);
 
                 // Get all the tags for this list of items
                 $bt = new Tags();
@@ -374,7 +374,7 @@ class Collection extends Base
                     }
                 }
             } else {
-                $results = array();
+                $results = [];
             }
 
             $this->posts = new ItemList($results);
@@ -392,7 +392,7 @@ class Collection extends Base
     public function count($what = '')
     {
         if (!isset($this->_counts) || !is_array($this->_counts)) {
-            $this->_counts = array();
+            $this->_counts = [];
         }
         $what = strtolower(trim($what));
         switch ($what) {
@@ -411,10 +411,10 @@ class Collection extends Base
             case 'followers':
                 if (!isset($this->_counts[$what])) {
                     $tbl = new Tables\Following($this->_db);
-                    $this->_counts[$what] = $tbl->count(array(
+                    $this->_counts[$what] = $tbl->count([
                         'following_type' => 'collection',
                         'following_id'   => $this->get('id')
-                    ));
+                    ]);
                 }
                 return $this->_counts[$what];
             break;
@@ -425,10 +425,10 @@ class Collection extends Base
             case 'vote':
                 if ($this->get('likes', null) == null) {
                     $tbl = new Tables\Item($this->_db);
-                    $this->set('likes', $tbl->getLikes(array(
+                    $this->set('likes', $tbl->getLikes([
                         'object_type' => 'collection',
                         'object_id'   => $this->get('id')
-                    )));
+                    ]));
                 }
                 return (int) $this->get('likes', 0);
             break;
@@ -437,10 +437,10 @@ class Collection extends Base
             case 'repost':
                 if ($this->get('reposts', null) == null) {
                     $tbl = new Tables\Item($this->_db);
-                    $this->set('reposts', $tbl->getReposts(array(
+                    $this->set('reposts', $tbl->getReposts([
                         'object_type' => 'collection',
                         'object_id'   => $this->get('id')
-                    )));
+                    ]));
                 }
                 return (int) $this->get('reposts', 0);
             break;
@@ -448,9 +448,9 @@ class Collection extends Base
             case 'posts':
             case 'post':
                 if ($this->get('posts', null) == null) {
-                    $this->set('posts', $this->posts(array(
+                    $this->set('posts', $this->posts([
                         'count' => true
-                    )));
+                    ]));
                 }
                 return (int) $this->get('posts', 0);
             break;
@@ -519,12 +519,12 @@ class Collection extends Base
     public function follow($follower_id = null, $follower_type = 'member')
     {
         $follow = new Following();
-        $follow->bind(array(
+        $follow->bind([
             'following_id'   => $this->get('id'),
             'following_type' => 'collection',
             'follower_id'    => $follower_id,
             'follower_type'  => $follower_type
-        ));
+        ]);
         if (!$follow->store(true)) {
             $this->setError($follow->getError());
             return false;
@@ -553,27 +553,27 @@ class Collection extends Base
     public function description($as = 'parsed', $shorten = 0)
     {
         $as = strtolower($as);
-        $options = array();
+        $options = [];
 
         switch ($as) {
             case 'parsed':
                 $content = $this->get('description.parsed', null);
                 if ($content === null) {
-                    $config = array(
+                    $config = [
                         'option'   => $this->get('option', Request::getCmd('option')),
                         'scope'    => $this->get('scope', 'collection'),
                         'pagename' => $this->get('alias'),
                         'pageid'   => 0,
                         'filepath' => $this->get('path', '/site/collections'),
                         'domain'   => ''
-                    );
+                    ];
 
                     $content = stripslashes((string) $this->get('description', ''));
-                    $this->importPlugin('content')->trigger('onContentPrepare', array(
+                    $this->importPlugin('content')->trigger('onContentPrepare', [
                         $this->_context,
                         &$this,
                         &$config
-                    ));
+                    ]);
 
                     $this->set('description.parsed', (string) $this->get('description', ''));
                     $this->set('description', $content);

@@ -34,14 +34,14 @@ class Loader
      *
      * @var  array
      */
-    protected static $components = array();
+    protected static $components = [];
 
     /**
      * The component router cache
      *
      * @var  array
      */
-    protected static $routers = array();
+    protected static $routers = [];
 
     /**
      * Constructor
@@ -51,8 +51,8 @@ class Loader
      */
     public function __construct(Container $app)
     {
-        self::$components = array();
-        self::$routers    = array();
+        self::$components = [];
+        self::$routers    = [];
 
         $this->app = $app;
     }
@@ -97,12 +97,12 @@ class Loader
         if (!isset($result->path)) {
             $result->path = '';
 
-            $paths = array(
+            $paths = [
                 PATH_APP . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . substr($result->option, 4),
                 PATH_APP . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . $result->option,
                 PATH_CORE . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . substr($result->option, 4),
                 PATH_CORE . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . $result->option
-            );
+            ];
 
             foreach ($paths as $path) {
                 if (is_dir($path)) {
@@ -151,7 +151,7 @@ class Loader
      * @param   array   $params  The component parameters
      * @return  object
      */
-    public function render($option, $params = array())
+    public function render($option, $params = [])
     {
         $client = (isset($this->app['client']->alias) ? $this->app['client']->alias : $this->app['client']->name);
 
@@ -320,7 +320,7 @@ class Loader
 
         $path = PATH_COMPONENT;
 
-        $config = array('base_path' => PATH_COMPONENT);
+        $config = ['base_path' => PATH_COMPONENT];
         $namespace = 'Components\\' . ucfirst($component) . '\Site\Controllers';
         $class = ucfirst($controller);
 
@@ -454,7 +454,7 @@ class Loader
 
             if (!class_exists($name) && !class_exists($legacy)) {
                 // Use the component routing handler if it exists
-                $paths = array();
+                $paths = [];
                 if (!is_null($version)) {
                     $paths[] = $this->path($option) . DIRECTORY_SEPARATOR . strtolower($client) . DIRECTORY_SEPARATOR . 'routerv' . $version . '.php';
                 }

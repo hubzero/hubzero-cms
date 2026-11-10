@@ -65,10 +65,10 @@ $access_levels = $db->loadAssocList();
                         echo ' selected="selected"';
                                           } ?>><?php echo Lang::txt('COM_FORUM_NONE'); ?></option>
                     <?php
-                    $list = array();
+                    $list = [];
                     foreach ($this->scopes as $result) {
                         if (!isset($list[$result->scope])) {
-                            $list[$result->scope] = array();
+                            $list[$result->scope] = [];
                         }
                         $list[$result->scope][$result->scope_id] = $result;
                     }

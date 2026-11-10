@@ -23,7 +23,7 @@ class Result
     /**
      * @var  array
      */
-    protected $messages = array();
+    protected $messages = [];
 
     /**
      * Constructor
@@ -32,7 +32,7 @@ class Result
      * @param   array  $messages  Messages to pass along
      * @return  void
      */
-    public function __construct($isSpam, array $messages = array())
+    public function __construct($isSpam, array $messages = [])
     {
         $this->isSpam   = $isSpam;
         $this->messages = $messages;

@@ -111,7 +111,7 @@ class Migration20260911120000ComUsage extends Base
     {
         $driver = $saved['statsDBDriver'] ?? 'mysql';
 
-        $options = array(
+        $options = [
             'driver'   => ($driver == 'mysql') ? 'pdo' : $driver,
             'host'     => $saved['statsDBHost'] ?? '',
             'port'     => $saved['statsDBPort'] ?? '',
@@ -120,7 +120,7 @@ class Migration20260911120000ComUsage extends Base
             'database' => $saved['statsDBDatabase'] ?? '',
             'prefix'   => $saved['statsDBPrefix'] ?? '',
             'ssl_ca'   => $saved['statsDBSSLCa'] ?? '',
-        );
+        ];
 
         try {
             $db = \Hubzero\Database\Driver::getInstance($options);

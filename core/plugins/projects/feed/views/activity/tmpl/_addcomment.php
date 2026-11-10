@@ -31,7 +31,7 @@ if ($this->model->access('content')) { ?>
             <?php
             $activityId = $this->activity->log->get('id');
             $editorId = 'ca_' . $activityId;
-            $editorAttrs = array('class' => 'commentarea minimal no-footer');
+            $editorAttrs = ['class' => 'commentarea minimal no-footer'];
             $submitId = 'cs_' . $activityId;
             $submitVal = Lang::txt('COM_PROJECTS_COMMENT');
             ?>

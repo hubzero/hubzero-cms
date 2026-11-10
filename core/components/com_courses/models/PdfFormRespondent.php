@@ -165,21 +165,21 @@ class PdfFormRespondent
         $gradebook->loadByUserAndAssetId($this->member_id, $asset_id);
 
         if (!$gradebook->get('id')) {
-            $grade = array(
+            $grade = [
                 'member_id'      => $this->member_id,
                 'score'          => $score,
                 'scope'          => 'asset',
                 'scope_id'       => $asset_id,
                 'score_recorded' => Date::toSql()
-            );
+            ];
 
             $gradebook->save($grade);
         } elseif ($score > $gradebook->get('score')) {
             $gradebook->save(
-                array(
+                [
                     'score'          => $score,
                     'score_recorded' => Date::toSql()
-                )
+                ]
             );
         }
     }
@@ -226,15 +226,15 @@ class PdfFormRespondent
             . 'WHERE pfr.respondent_id = ' . $this->id
         );
 
-        $rv = array(
-            'summary' => array('correct' => 0, 'total' => 0, 'score' => null, 'version' => null),
-            'detail' => array()
-        );
+        $rv = [
+            'summary' => ['correct' => 0, 'total' => 0, 'score' => null, 'version' => null],
+            'detail' => []
+        ];
 
         // NOTE: added this to allow a scenario where there are multiple correct answers.
         //       In that scenario, we still want to increment the correct count, but we don't
         //       want to increment the total count, as that question has already been counted.
-        $questionIds = array();
+        $questionIds = [];
 
         foreach ($dbh->loadAssocList() as $answer) {
             // If the answer is correct, increment correct count

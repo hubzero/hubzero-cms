@@ -23,7 +23,7 @@ class Categories
      *
      * @var  array
      */
-    public static $instances = array();
+    public static $instances = [];
 
     /**
      * Array of category nodes
@@ -116,7 +116,7 @@ class Categories
      * @param   array   $options    An array of options
      * @return  object  Categories object
      */
-    public static function getInstance($extension, $options = array())
+    public static function getInstance($extension, $options = [])
     {
         $hash = md5($extension . serialize($options));
 
@@ -201,7 +201,7 @@ class Categories
         $case_when .= 'CHAR_LENGTH(c.alias)';
         $case_when .= ' THEN ';
         //$c_id = $query->castAsChar('c.id');
-        $concatArgs = implode(', ', array('c.id', 'c.alias'));
+        $concatArgs = implode(', ', ['c.id', 'c.alias']);
         $case_when .= 'CONCAT_WS(' . $db->quote(':') . ', ' . $concatArgs . ')';
         $case_when .= ' ELSE ';
         $case_when .= 'c.id END as slug';
@@ -238,7 +238,7 @@ class Categories
             }
         } else {
             if (App::isSite() && App::get('language.filter')) {
-                $query->whereIn('c.language', array(Lang::getTag(), '*'));
+                $query->whereIn('c.language', [Lang::getTag(), '*']);
             }
         }
 

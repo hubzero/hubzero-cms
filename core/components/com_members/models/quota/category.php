@@ -54,9 +54,9 @@ class Category extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'alias' => 'notempty'
-    );
+    ];
 
     /**
      * Sets up additional custom rules
@@ -165,10 +165,10 @@ class Category extends Relational
      * @param   array  $groups
      * @return  boolean
      */
-    public function setGroupIds($groups = array())
+    public function setGroupIds($groups = [])
     {
         if (!is_array($groups)) {
-            $groups = array($groups);
+            $groups = [$groups];
         }
 
         $groups = array_map('intval', $groups);

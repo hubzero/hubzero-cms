@@ -29,7 +29,7 @@ class Memcache extends None
      * @param   array  $options
      * @return  void
      */
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
         parent::__construct($options);
 
@@ -48,13 +48,13 @@ class Memcache extends None
                     'memcache_compress',
                     false
                 ) == false ? 0 : MEMCACHE_COMPRESSED;
-                $this->options['servers'] = array(
-                    array(
+                $this->options['servers'] = [
+                    [
                         'host'    => $conf->get('memcache_server_host', 'localhost'),
                         'port'    => $conf->get('memcache_server_port', 11211),
                         'persist' => $conf->get('memcache_persist', true)
-                    )
-                );
+                    ]
+                ];
             }
 
             $this->engine = $this->connect($this->options['servers']);
@@ -102,7 +102,7 @@ class Memcache extends None
 
         // Memcahed has no list keys, we do our own accounting, initialise key index
         if ($memcache->get($this->options['hash'] . '-index') === false) {
-            $empty = array();
+            $empty = [];
             $this->engine->set($this->options['hash'] . '-index', $empty, $this->options['compress'], 0);
         }
 
@@ -208,7 +208,7 @@ class Memcache extends None
 
         $index = $this->engine->get($hash . '-index');
         if ($index === false) {
-            $index = array();
+            $index = [];
         }
 
         foreach ($index as $key => $value) {
@@ -232,7 +232,7 @@ class Memcache extends None
 
         $index = $this->engine->get($hash . '-index');
         if ($index === false) {
-            $index = array();
+            $index = [];
         }
 
         foreach ($index as $key) {

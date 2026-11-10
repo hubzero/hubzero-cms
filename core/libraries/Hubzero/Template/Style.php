@@ -128,7 +128,7 @@ class Style
             return false;
         }
 
-        foreach (array('PATH_APP', 'PATH_CORE') as $constant) {
+        foreach (['PATH_APP', 'PATH_CORE'] as $constant) {
             if (!defined($constant)) {
                 continue;
             }

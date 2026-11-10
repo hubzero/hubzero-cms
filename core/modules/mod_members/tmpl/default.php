@@ -18,7 +18,7 @@ $this->css();
     if (count($this->domains) > 0) :
         $this->js();
 
-        $colors = array(
+        $colors = [
             '#56e2cf', // aqua
             '#56aee2', // light blue
             '#5668e2', // blue
@@ -31,7 +31,7 @@ $this->css();
             '#aee256', // lime
             '#68e256', // light green
             '#56e289'  // green-blue
-        );
+        ];
 
         $total = 0;
         $other = new stdClass();
@@ -72,7 +72,7 @@ $this->css();
                 {
                     "datasets": [
                     <?php
-                    $d = array();
+                    $d = [];
                     foreach ($this->domains as $i => $domain) :
                         if ($k > 11) :
                             $k = 0;

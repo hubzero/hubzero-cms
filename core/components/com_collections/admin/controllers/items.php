@@ -45,7 +45,7 @@ class Items extends AdminController
     public function displayTask()
     {
         // Get filters
-        $filters = array(
+        $filters = [
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
@@ -76,7 +76,7 @@ class Items extends AdminController
                 'access',
                 '-1'
             )
-        );
+        ];
 
         $model = Item::all()
             ->including(['creator', function ($creator) {
@@ -139,7 +139,7 @@ class Items extends AdminController
 
         if (!is_object($row)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
 
             if (is_array($id)) {
                 $id = (!empty($id) ? $id[0] : 0);
@@ -178,7 +178,7 @@ class Items extends AdminController
         }
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         // Initiate extended database class
         $row = Item::oneOrNew($fields['id'])->set($fields);
@@ -190,7 +190,7 @@ class Items extends AdminController
         }
 
         // Save assets
-        $assets = Request::getArray('assets', array(), 'post');
+        $assets = Request::getArray('assets', [], 'post');
 
         $k = 1;
 
@@ -249,8 +249,8 @@ class Items extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
         $i = 0;
 
         if (count($ids) > 0) {

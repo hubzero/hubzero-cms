@@ -20,12 +20,12 @@ class Migration20190221000000ComRedirect extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__redirect_links' => array(
+    public static $tables = [
+        '#__redirect_links' => [
             'created_date',
             'modified_date'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

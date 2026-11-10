@@ -44,7 +44,7 @@ class Media extends AdminController
         $path = PATH_APP . DS . trim($this->config->get('webpath', '/site/members'), DS) . DS . $dir;
 
         // Allowed extensions for uplaod
-        $allowedExtensions = array('png', 'jpe', 'jpeg', 'jpg', 'gif', 'jp2', 'jpx');
+        $allowedExtensions = ['png', 'jpe', 'jpeg', 'jpg', 'gif', 'jp2', 'jpx'];
 
         // Get media config
         $mediaConfig = Component::params('com_media');

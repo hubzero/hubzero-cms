@@ -199,13 +199,13 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                             </li>
                         <?php if ($this->wish->isPrivate()) { ?>
                             <li>
-                                <a class="icon-eye-open makepublic" href="<?php echo Route::url($this->wish->link('privacy', array('private' => '0'))); ?>">
+                                <a class="icon-eye-open makepublic" href="<?php echo Route::url($this->wish->link('privacy', ['private' => '0'])); ?>">
                                     <?php echo Lang::txt('COM_WISHLIST_MAKE_PUBLIC'); ?>
                                 </a>
                             </li>
                         <?php } else { ?>
                             <li>
-                                <a class="icon-eye-close makeprivate" href="<?php echo Route::url($this->wish->link('privacy', array('private' => '1'))); ?>">
+                                <a class="icon-eye-close makeprivate" href="<?php echo Route::url($this->wish->link('privacy', ['private' => '1'])); ?>">
                                     <?php echo Lang::txt('COM_WISHLIST_MAKE_PRIVATE'); ?>
                                 </a>
                             </li>
@@ -275,7 +275,7 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                                 <?php
                                 // My opinion is available for list owners/advisory committee only
                                 if ($this->wishlist->access('manage')) {
-                                    $importance = array(
+                                    $importance = [
                                         ''    => Lang::txt('COM_WISHLIST_SELECT_IMP'),
                                         '0.0' => '0 -' . Lang::txt('COM_WISHLIST_RUBBISH'),
                                         '1'   => '1 - ' . Lang::txt('COM_WISHLIST_MAYBE'),
@@ -283,7 +283,7 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                                         '3'   => '3 - ' . Lang::txt('COM_WISHLIST_GOODIDEA'),
                                         '4'   => '4 - ' . Lang::txt('COM_WISHLIST_IMPORTANT'),
                                         '5'   => '5 - ' . Lang::txt('COM_WISHLIST_CRITICAL')
-                                    );
+                                    ];
                                     ?>
                                     <td>
                                         <?php echo \Components\Wishlist\Helpers\Html::formSelect('importance', $importance, $this->wish->ranking('importance'), 'rankchoices'); ?>
@@ -319,7 +319,7 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                                 <?php
                                 // My opinion is available for list owners/advisory committee only
                                 if ($this->wishlist->access('manage')) {
-                                    $effort = array(
+                                    $effort = [
                                         ''    => Lang::txt('COM_WISHLIST_SELECT_EFFORT'),
                                         '5'   => Lang::txt('COM_WISHLIST_FOURHOURS'),
                                         '4'   => Lang::txt('COM_WISHLIST_ONEDAY'),
@@ -328,7 +328,7 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                                         '1'   => Lang::txt('COM_WISHLIST_TWOWEEKS'),
                                         '0.0' => Lang::txt('COM_WISHLIST_TWOMONTHS'),
                                         '6'   => Lang::txt('COM_WISHLIST_DONT_KNOW')
-                                    );
+                                    ];
                                     ?>
                                     <td>
                                         <?php echo \Components\Wishlist\Helpers\Html::formSelect('effort', $effort, $this->wish->ranking('effort'), 'rankchoices'); ?>
@@ -642,10 +642,10 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
             <?php if (!$this->wish->isDeleted() && !$this->wish->isWithdrawn()) { ?>
                 <?php
                 $comments = $this->wish->comments()
-                    ->whereIn('state', array(
+                    ->whereIn('state', [
                         Components\Wishlist\Models\Comment::STATE_PUBLISHED,
                         Components\Wishlist\Models\Comment::STATE_FLAGGED
-                    ))
+                    ])
                 ->rows();
                 ?>
     <section class="below section" id="section-comments">
@@ -716,7 +716,7 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                             <label for="comment<?php echo $this->wish->get('id'); ?>">
                                 <?php echo Lang::txt('COM_WISHLIST_ENTER_COMMENTS'); ?>
                                 <?php
-                                echo $this->editor('comment[content]', '', 35, 4, 'comment' . $this->wish->get('id'), array('class' => 'form-control minimal no-footer'));
+                                echo $this->editor('comment[content]', '', 35, 4, 'comment' . $this->wish->get('id'), ['class' => 'form-control minimal no-footer']);
                                 ?>
                             </label>
                         </div>
@@ -816,7 +816,7 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                         <div class="form-group">
                             <label for="pagetext">
                                 <?php echo Lang::txt('COM_WISHLIST_ACTION_INSERT_TEXT'); ?>
-                                <?php echo $this->editor('pagetext', $this->escape($this->wish->plan->get('pagetext')), 35, 40, 'pagetext', array('class' => 'form-control minimal no-footer')); ?>
+                                <?php echo $this->editor('pagetext', $this->escape($this->wish->plan->get('pagetext')), 35, 40, 'pagetext', ['class' => 'form-control minimal no-footer']); ?>
                             </label>
                         </div>
 

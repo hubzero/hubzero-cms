@@ -21,7 +21,7 @@ $maxlevel = 100;
 $subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
 
 // Get all parents
-$dirs = array();
+$dirs = [];
 if ($this->list) {
     foreach ($this->list as $item) {
         if ($item->type == 'folder') {

@@ -53,7 +53,7 @@ class Zones extends Table
             $this->setError(Lang::txt('No state provided.'));
             return false;
         }
-        if (!in_array($this->state, array('up', 'down'))) {
+        if (!in_array($this->state, ['up', 'down'])) {
             $this->setError(Lang::txt('Invalid state provided.'));
             return false;
         }
@@ -90,9 +90,9 @@ class Zones extends Table
      * @return  string  SQL
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private function _buildQuery($filters = array())
+    private function _buildQuery($filters = [])
     {
-        $where = array();
+        $where = [];
 
         if (isset($filters['state']) && $filters['state'] != '') {
             $where[] = "c.`state`=" . $this->_db->quote($filters['state']);
@@ -105,7 +105,7 @@ class Zones extends Table
         }
         if (isset($filters['id'])) {
             if (!is_array($filters['id'])) {
-                $filters['id'] = array($filters['id']);
+                $filters['id'] = [$filters['id']];
             }
             $filters['id'] = array_map('intval', $filters['id']);
             if (empty($filters['id'])) {
@@ -139,7 +139,7 @@ class Zones extends Table
             // this keeps their 0 (no range) from matching every address, since
             // MySQL reads the hex as the number 0.
             $ranged = false;
-            foreach (array('ipFROM' => array('ipFROM' => '='), 'ipTO' => array('ipTO' => '='), 'ip' => array('ipFROM' => '<=', 'ipTO' => '>=')) as $filter => $compare) {
+            foreach (['ipFROM' => ['ipFROM' => '='], 'ipTO' => ['ipTO' => '='], 'ip' => ['ipFROM' => '<=', 'ipTO' => '>=']] as $filter => $compare) {
                 if (!isset($filters[$filter]) || $filters[$filter] == '') {
                     continue;
                 }
@@ -162,7 +162,7 @@ class Zones extends Table
             }
             if (isset($filters['continent']) && $filters['continent']) {
                 if (!is_array($filters['continent'])) {
-                    $filters['continent'] = array($filters['continent']);
+                    $filters['continent'] = [$filters['continent']];
                 }
                 foreach ($filters['continent'] as $k => $v) {
                     $filters['continent'][$k] = $this->_db->quote(strtolower($v));
@@ -195,7 +195,7 @@ class Zones extends Table
      * @param   array   $filters  Filters to build SQL from
      * @return  mixed
      */
-    public function find($what = 'list', $filters = array())
+    public function find($what = 'list', $filters = [])
     {
         switch ($what) {
             case 'count':

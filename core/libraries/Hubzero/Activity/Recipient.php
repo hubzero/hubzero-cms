@@ -42,20 +42,20 @@ class Recipient extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'log_id'   => 'positive|nonzero',
         'scope'    => 'notempty',
         'scope_id' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created'
-    );
+    ];
 
     /**
      * Defines a belongs to one relationship between recipient and log
@@ -179,7 +179,7 @@ class Recipient extends Relational
     public static function allForScope($scope, $scope_id = 0)
     {
         if (!is_array($scope)) {
-            $scope = array($scope);
+            $scope = [$scope];
         }
 
         $recipient = self::all();

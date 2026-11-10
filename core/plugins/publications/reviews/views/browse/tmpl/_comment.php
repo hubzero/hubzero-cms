@@ -86,12 +86,12 @@ if ($this->comment->get('publication_id')) {
             <div class="comment-voting voting" id="answers_<?php echo $this->comment->get('id'); ?>">
                 <?php
                 $view = new \Hubzero\Plugin\View(
-                    array(
+                    [
                         'folder'  => 'publications',
                         'element' => 'reviews',
                         'name'    => 'browse',
                         'layout'  => '_rateitem'
-                    )
+                    ]
                 );
                 $view->option = $this->option;
                 $view->item   = $this->comment;
@@ -149,7 +149,7 @@ if ($this->comment->get('publication_id')) {
                     <label for="comment_<?php echo $this->comment->get('id'); ?>_content">
                         <span class="label-text"><?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_ENTER_COMMENTS'); ?></span>
                         <?php
-                        echo $this->editor('comment[content]', $this->comment->content('raw'), 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'minimal no-footer'));
+                        echo $this->editor('comment[content]', $this->comment->content('raw'), 35, 4, 'comment_' . $this->comment->get('id') . '_content', ['class' => 'minimal no-footer']);
                         ?>
                     </label>
 
@@ -228,7 +228,7 @@ if ($this->comment->get('publication_id')) {
                         <label for="comment_<?php echo $this->comment->get('id'); ?>_content">
                             <span class="label-text"><?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_ENTER_COMMENTS'); ?></span>
                             <?php
-                            echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'minimal no-footer'));
+                            echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', ['class' => 'minimal no-footer']);
                             ?>
                         </label>
 
@@ -253,7 +253,7 @@ if ($this->comment->get('publication_id')) {
                  ->set('parent', $this->comment->get('id'))
                  ->set('publication', $this->publication)
                  ->set('option', $this->option)
-                 ->set('comments', $this->comment->replies(array('state' => array(1, 3))))
+                 ->set('comments', $this->comment->replies(['state' => [1, 3]]))
                  ->set('config', $this->config)
                  ->set('depth', $this->depth)
                  ->set('cls', $cls)

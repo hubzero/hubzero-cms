@@ -49,37 +49,37 @@ class Course extends Relational implements \Hubzero\Search\Searchable
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'title' => 'notempty'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'alias'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Fields to be parsed
      *
      * @var array
      */
-    protected $parsed = array(
+    protected $parsed = [
         'description'
-    );
+    ];
 
     /**
      * Registry
@@ -193,7 +193,7 @@ class Course extends Relational implements \Hubzero\Search\Searchable
         if (!$this->get('id')) {
             switch (strtolower($what)) {
                 case 'array':
-                    return array();
+                    return [];
                 break;
 
                 case 'string':
@@ -206,13 +206,13 @@ class Course extends Relational implements \Hubzero\Search\Searchable
         }
         $cloud = new Tags($this->get('id'));
         if ($what == 'list') {
-            $filters = array(
+            $filters = [
                 'scope' => 'courses',
                 'scope_id' => $this->id
-            );
+            ];
             return $cloud->tags('list', $filters);
         }
-        return $cloud->render($what, array('admin' => $admin));
+        return $cloud->render($what, ['admin' => $admin]);
     }
 
     /**
@@ -346,14 +346,14 @@ class Course extends Relational implements \Hubzero\Search\Searchable
         $property = "_{$field}Parsed";
 
         if (!isset($this->$property)) {
-            $params = array(
+            $params = [
                 'option'   => 'com_courses',
                 'scope'    => '',
                 'pagename' => $this->get('alias'),
                 'pageid'   => 0,
                 'filepath' => '',
                 'domain'   => ''
-            );
+            ];
 
             $this->$property = Html::content('prepare', $this->get($field, ''), $params);
         }
@@ -371,7 +371,7 @@ class Course extends Relational implements \Hubzero\Search\Searchable
         $result = parent::save();
 
         if ($result) {
-            Event::trigger('courses.onCourseSave', array($this));
+            Event::trigger('courses.onCourseSave', [$this]);
         }
 
         return $result;
@@ -384,7 +384,7 @@ class Course extends Relational implements \Hubzero\Search\Searchable
      */
     public function destroy()
     {
-        Event::trigger('courses.onCourseDelete', array($this));
+        Event::trigger('courses.onCourseDelete', [$this]);
 
         // Remove offerings
         foreach ($this->offerings()->rows() as $offering) {
@@ -470,29 +470,29 @@ class Course extends Relational implements \Hubzero\Search\Searchable
 
         $tags = $this->tags('list');
         if (count($tags) > 0) {
-            $obj->tags = array();
+            $obj->tags = [];
             foreach ($tags as $tag) {
                 $title = $tag->get('raw_tag', '');
                 $description = $tag->get('tag', '');
                 $label = $tag->get('label', '');
-                $obj->tags[] = array(
+                $obj->tags[] = [
                     'id' => 'tag-' . $tag->id,
                     'title' => $title,
                     'description' => $description,
                     'access_level' => $tag->admin == 0 ? 'public' : 'private',
                     'type' => 'course-tag',
                     'badge_b' => $label == 'badge' ? true : false
-                );
+                ];
             }
         } else {
-            $obj->tags[] = array(
+            $obj->tags[] = [
                 'id' => '',
                 'title' => ''
-            );
+            ];
         }
         $managers = $this->managers;
-        $instructors = array();
-        $managerIds = array();
+        $instructors = [];
+        $managerIds = [];
         foreach ($managers as $manager) {
             $managerIds[] = $manager->get('user_id');
             if (strtolower($manager->role->alias) == 'instructor') {

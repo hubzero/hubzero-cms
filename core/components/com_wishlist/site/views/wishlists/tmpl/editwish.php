@@ -152,7 +152,7 @@ if ($this->wishlist->get('id')) {
                             35,
                             10,
                             'field_about',
-                            array('class' => 'form-control minimal no-footer')
+                            ['class' => 'form-control minimal no-footer']
                         );
                         ?>
                     </label>
@@ -165,7 +165,7 @@ if ($this->wishlist->get('id')) {
                         // Tag editor plug-in
                         $tf = Event::trigger(
                             'hubzero.onGetMultiEntry',
-                            array(array('tags', 'tags', 'actags', '', $tags))
+                            [['tags', 'tags', 'actags', '', $tags]]
                         );
                         if (count($tf) > 0) {
                             echo $tf[0];

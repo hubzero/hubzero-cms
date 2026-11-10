@@ -37,7 +37,7 @@ class Set extends Obj implements Iterator
      *
      * @var array
      */
-    private $tags = array();
+    private $tags = [];
 
     /**
      * Total list count
@@ -93,21 +93,21 @@ class Set extends Obj implements Iterator
      *
      * @var array
      */
-    private $results = array();
+    private $results = [];
 
     /**
      * Custom
      *
      * @var array
      */
-    private $custom = array();
+    private $custom = [];
 
     /**
      * Processed results
      *
      * @var array
      */
-    private $processed_results = array();
+    private $processed_results = [];
 
     /**
      * Highlight string
@@ -142,21 +142,21 @@ class Set extends Obj implements Iterator
      *
      * @var array
      */
-    private $result_counts = array();
+    private $result_counts = [];
 
     /**
      * Shown results
      *
      * @var array
      */
-    private $shown_results = array();
+    private $shown_results = [];
 
     /**
      * Sorters
      *
      * @var array
      */
-    private $sorters = array();
+    private $sorters = [];
 
     /**
      * Constructor
@@ -171,7 +171,7 @@ class Set extends Obj implements Iterator
         $this->_db = App::get('db');
 
         if (is_null(self::$plugin_weights) && $terms->any()) {
-            self::$plugin_weights = array();
+            self::$plugin_weights = [];
             $this->_db->setQuery('SELECT plugin, weight FROM `#__ysearch_plugin_weights`');
             foreach ($this->_db->loadAssocList() as $weight) {
                 self::$plugin_weights[$weight['plugin']] = $weight['weight'];
@@ -179,7 +179,7 @@ class Set extends Obj implements Iterator
         }
 
         $this->terms = $terms;
-        $this->widgets = array();
+        $this->widgets = [];
     }
 
     /**
@@ -192,7 +192,7 @@ class Set extends Obj implements Iterator
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_tags()
     {
-        return ($this->tags instanceof Blank) ? array() : $this->tags;
+        return ($this->tags instanceof Blank) ? [] : $this->tags;
     }
 
     /**
@@ -345,7 +345,7 @@ class Set extends Obj implements Iterator
         $req = new Request($this->terms);
         $this->tags = $req->get_tags();
 
-        $weighters = array('all' => array());
+        $weighters = ['all' => []];
         $plugins = Plugin::byType('search');
 
         $this->custom_mode = true;
@@ -362,7 +362,7 @@ class Set extends Obj implements Iterator
                     if ($refl->hasMethod('onSearchCustom')) {
                         $this->current_plugin = $plugin->name;
                         $method = $refl->getMethod('onSearchCustom');
-                        $args = array($req, &$this, $authz);
+                        $args = [$req, &$this, $authz];
                         if ($this->custom_title = $method->invokeArgs(null, $args)) {
                             break;
                         }
@@ -385,27 +385,27 @@ class Set extends Obj implements Iterator
             $pluginName = ucfirst($plugin->name);
             $refl = new ReflectionClass('Plugins\\Search\\' . $pluginName . '\\' . $pluginName);
             $this->current_plugin = $plugin->name;
-            $weighters[$plugin->name] = array();
+            $weighters[$plugin->name] = [];
 
             // generic resource plugin
             if ($refl->hasMethod('onSearch')) {
-                $refl->getMethod('onSearch')->invokeArgs(null, array($req, &$this, $authz));
+                $refl->getMethod('onSearch')->invokeArgs(null, [$req, &$this, $authz]);
             }
 
-            $this->result_counts[$plugin->name] = array(
+            $this->result_counts[$plugin->name] = [
                 'friendly_name' =>
                     $refl->hasMethod('getName')
                         ? $refl->getMethod('getName')->invoke(null)
                         : ucwords($plugin->name),
                 'plugin_name' => $plugin->name,
                 'count' => 0
-            );
+            ];
 
             // custom results like Google does when you enter a stock symbol.
             // tags used to be implemented this way, but they got moved into the core
             // so other plugins could use them to find tagged results
             if ($refl->hasMethod('onSearchWidget')) {
-                $refl->getMethod('onSearchWidget')->invokeArgs(null, array($req, &$this->widgets, $authz));
+                $refl->getMethod('onSearchWidget')->invokeArgs(null, [$req, &$this->widgets, $authz]);
             }
 
             if ($refl->hasMethod('onSearchSort')) {
@@ -428,12 +428,12 @@ class Set extends Obj implements Iterator
             $class = 'Plugins\\Search\\' . $pluginName . '\\' . $pluginName;
             $refl = new ReflectionClass($class);
             if ($refl->hasMethod('onSearchWeightAll')) {
-                $weighters['all'][] = array($plugin->name, $refl->getMethod('onSearchWeightAll'));
+                $weighters['all'][] = [$plugin->name, $refl->getMethod('onSearchWeightAll')];
             }
 
             foreach ($plugin_types as $type) {
                 if ($refl->hasMethod("onSearchWeight$type")) {
-                    $weighters[$type][] = array($plugin->name, $refl->getMethod("onSearchWeight$type"));
+                    $weighters[$type][] = [$plugin->name, $refl->getMethod("onSearchWeight$type")];
                 }
             }
         }
@@ -467,14 +467,14 @@ class Set extends Obj implements Iterator
                 if (array_key_exists($plugin, self::$plugin_weights)) {
                     $res->adjust_weight(self::$plugin_weights[$plugin], $plugin . ' base weight');
                 }
-                $used = array();
+                $used = [];
                 $pluginWeighters = array_key_exists($plugin, $weighters)
                     ? array_merge($weighters['all'], $weighters[$plugin]) : $weighters['all'];
                 foreach ($pluginWeighters as $weight_plugin) {
                     list($name, $mtd) = $weight_plugin;
                     if (!array_key_exists($name, $used)) {
                         $used[$name] = true;
-                        $adj = 2 * $mtd->invokeArgs(null, array($this->terms, &$res));
+                        $adj = 2 * $mtd->invokeArgs(null, [$this->terms, &$res]);
                         if (array_key_exists($name, self::$plugin_weights)) {
                             // adj is 0..1
                             // weight is 0..1
@@ -486,25 +486,25 @@ class Set extends Obj implements Iterator
                 $this->shown_results[] = $res;
             }
         }
-        usort($this->shown_results, array($this, 'sortResults'));
+        usort($this->shown_results, [$this, 'sortResults']);
 
-        $links = array();
+        $links = [];
         foreach ($this->shown_results as $res) {
-            $links[] = array(spl_object_hash($res), $res->has_parent(), $res->get_links());
+            $links[] = [spl_object_hash($res), $res->has_parent(), $res->get_links()];
         }
 
-        $link_map = array();
+        $link_map = [];
         foreach ($links as $row) {
             list($id, $has_parent, $rlinks) = $row;
             foreach ($rlinks as $link) {
                 if (array_key_exists($id, $link_map)) {
-                    $link_map[$link] = array(array($id, $has_parent));
+                    $link_map[$link] = [[$id, $has_parent]];
                 } else {
-                    $link_map[$link][] = array($id, $has_parent);
+                    $link_map[$link][] = [$id, $has_parent];
                 }
             }
         }
-        $dont_show_because_nested_elsewhere = array();
+        $dont_show_because_nested_elsewhere = [];
         foreach ($link_map as $rows) {
             if (count($rows) > 0) {
                 foreach ($rows as $row) {
@@ -526,7 +526,7 @@ class Set extends Obj implements Iterator
 
         if ($this->custom) {
             // remove dupes
-            $custom_links = array();
+            $custom_links = [];
             foreach ($this->custom as $custom) {
                 $plugin = $custom->get_plugin();
                 $this->result_counts[$plugin]['count']++;
@@ -568,10 +568,10 @@ class Set extends Obj implements Iterator
             $this->result_counts[$plugin]['list_count'] -= $ccount;
 
             if (!array_key_exists('sections', $this->result_counts[$plugin])) {
-                $this->result_counts[$plugin]['sections'] = array();
+                $this->result_counts[$plugin]['sections'] = [];
             }
 
-            foreach (array_merge(array($parent), $parent->get_children()) as $idx => $res) {
+            foreach (array_merge([$parent], $parent->get_children()) as $idx => $res) {
                 if ($idx > 0) {
                     --$this->total_list_count;
                     --$this->result_counts[$plugin]['list_count'];
@@ -584,7 +584,7 @@ class Set extends Obj implements Iterator
                 $section_key = strtolower(str_replace(' ', '_', trim($section)));
 
                 if (!array_key_exists($section_key, $this->result_counts[$plugin]['sections'])) {
-                    $this->result_counts[$plugin]['sections'][$section_key] = array('name' => $section, 'count' => 1);
+                    $this->result_counts[$plugin]['sections'][$section_key] = ['name' => $section, 'count' => 1];
                 } else {
                     ++$this->result_counts[$plugin]['sections'][$section_key]['count'];
                 }
@@ -615,10 +615,10 @@ class Set extends Obj implements Iterator
      */
     private function sortResults($a, $b)
     {
-        $weight = array(
+        $weight = [
             'a' => 0,
             'b' => 0
-        );
+        ];
         if (($relevance_diff = $a->get_weight() - $b->get_weight())) {
             $weight[$relevance_diff > 0 ? 'a' : 'b'] += self::$plugin_weights['sortrelevance'];
         }

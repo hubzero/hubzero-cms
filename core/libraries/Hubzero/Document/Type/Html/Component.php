@@ -25,7 +25,7 @@ class Component extends Renderer
      * @param   string  $content    Content script
      * @return  string  The output of the script
      */
-    public function render($component = null, $params = array(), $content = null)
+    public function render($component = null, $params = [], $content = null)
     {
         return $content;
     }

@@ -46,31 +46,31 @@ class Section extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'title' => 'notempty'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      **/
-    public $always = array(
+    public $always = [
         'alias',
         'scope',
         'asset_id'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by',
         'ordering'
-    );
+    ];
 
     /**
      * ACL asset rules
@@ -361,13 +361,13 @@ class Section extends Relational
      * @param   array   $data
      * @return  object
      */
-    public function getForm($data = array())
+    public function getForm($data = [])
     {
         $name = strtolower($this->getModelName());
         $file = __DIR__ . '/forms/' . $name . '.xml';
         $file = Filesystem::cleanPath($file);
 
-        $form = new Form('com_forum.' . $name, array('control' => 'data'));
+        $form = new Form('com_forum.' . $name, ['control' => 'data']);
 
         if (!$form->loadFile($file, false, '//form')) {
             $this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));

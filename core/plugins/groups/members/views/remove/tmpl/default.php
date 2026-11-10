@@ -27,7 +27,7 @@ $formUrl = Route::url(
         <legend><?php echo Lang::txt('PLG_GROUPS_MEMBERS_REMOVE_MEMBERSHIP'); ?></legend>
 
         <?php
-        $names = array();
+        $names = [];
         foreach ($this->users as $user) {
             $u = User::getInstance($user);
             $names[] = $this->escape($u->get('name'));

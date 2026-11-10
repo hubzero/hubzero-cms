@@ -27,7 +27,7 @@ class Editor extends AbstractHelper
      * @param   array    $params   Associative array of editor parameters.
      * @return  string
      */
-    public function __invoke($name = '', $content = '', $col = 35, $row = 15, $id = null, $params = array())
+    public function __invoke($name = '', $content = '', $col = 35, $row = 15, $id = null, $params = [])
     {
         if (!count(func_get_args())) {
             return $this->instance();
@@ -52,7 +52,7 @@ class Editor extends AbstractHelper
             App::abort(500, Lang::txt('Editor must have a name'));
         }
 
-        $id = $id ?: str_replace(array('[', ']'), '', $name);
+        $id = $id ?: str_replace(['[', ']'], '', $name);
         return $this->instance()->display(
             $name,
             $content,

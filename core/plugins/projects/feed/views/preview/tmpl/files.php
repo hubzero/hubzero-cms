@@ -40,12 +40,12 @@ if (count($selected) % 2 == 0) {
 $minHeight = $cols > 3 ? round($this->minHeight / $cols) : $this->minHeight;
 $genStyle = 'min-height:' . $minHeight . 'px;';
 
-$colors = array('#909a9e', '#878795', '#a7a9a4', 'black', '#646d70', '#e2d8c5', '#d4cfd8');
+$colors = ['#909a9e', '#878795', '#a7a9a4', 'black', '#646d70', '#e2d8c5', '#d4cfd8'];
 if ($empty) {
     for ($i = 0; $i < $empty; $i++) {
         shuffle($colors);
         $color = isset($colors[$i]) ? $colors[$i] : 'black';
-        $selected[] = array('color' => $color);
+        $selected[] = ['color' => $color];
     }
 
     // Randomize

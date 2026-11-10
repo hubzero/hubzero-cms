@@ -28,10 +28,10 @@ class Audio extends Plugin
      *
      * @var  boolean
      */
-    public static $extensions = array(
+    public static $extensions = [
         'mp3',
         'wav'
-    );
+    ];
 
     /**
      * Determines if the given collection can be handled by this plugin

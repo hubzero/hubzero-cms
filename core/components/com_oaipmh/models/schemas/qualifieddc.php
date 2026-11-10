@@ -57,7 +57,7 @@ class QualifiedDC extends DublinCore
      */
     public static function handles($type)
     {
-        return in_array($type, array(
+        return in_array($type, [
             'qdc',
             'dcq',
             'oai_qdc',
@@ -65,7 +65,7 @@ class QualifiedDC extends DublinCore
             'qualifieddublincore',
             'qualifiedddc',
             __CLASS__
-        ));
+        ]);
     }
 
     /**
@@ -120,13 +120,13 @@ class QualifiedDC extends DublinCore
                         ->attr('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
                         ->attr('xsi:schemaLocation', $schemaLoc);
 
-            $dcs = array(
-                'title'   => array(
+            $dcs = [
+                'title'   => [
                     'alternative'
-                ),
+                ],
                 'creator' => null,
                 'subject' => null,
-                'date'    => array(
+                'date'    => [
                     'created',
                     'valid',
                     'available',
@@ -135,17 +135,17 @@ class QualifiedDC extends DublinCore
                     'dateAccepted',
                     'dateCopyrighted',
                     'dateSubmitted'
-                ),
+                ],
                 'identifier'  => null,
-                'description' => array(
+                'description' => [
                     'tableOfContents',
                     'abstract'
-                ),
+                ],
                 'type'        => null,
                 'publisher'   => null,
                 'rights'      => null,
                 'contributor' => null,
-                'relation'    => array(
+                'relation'    => [
                     'isVersionOf',
                     'hasVersion',
                     'isReplacedBy',
@@ -159,19 +159,19 @@ class QualifiedDC extends DublinCore
                     'isFormatof',
                     'hasFormat',
                     'conformsTo'
-                ),
-                'format'   => array(
+                ],
+                'format'   => [
                     'medium',
                     'extent'
-                ),
-                'coverage' => array(
+                ],
+                'coverage' => [
                     'spatial',
                     'temporal'
-                ),
+                ],
                 'language' => null,
                 'source'   => null,
                 'extent' => null
-            );
+            ];
 
             // Loop through DC elements
             foreach ($dcs as $dc => $attrs) {

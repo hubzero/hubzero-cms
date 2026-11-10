@@ -36,12 +36,12 @@ class Contributions extends Plugin
      */
     public function &onMembersAreas($user, $member)
     {
-        $areas = array(
+        $areas = [
             'contributions' => Lang::txt('PLG_MEMBERS_CONTRIBUTIONS'),
             'icon' => 'f02d',
             'icon-class' => 'icon-book',
             'menu' => $this->params->get('display_tab', 1)
-        );
+        ];
         return $areas;
     }
 
@@ -68,10 +68,10 @@ class Contributions extends Plugin
             }
         }
 
-        $arr = array(
+        $arr = [
             'html' => '',
-            'metadata' => array()
-        );
+            'metadata' => []
+        ];
 
         $database = App::get('db');
 
@@ -79,13 +79,13 @@ class Contributions extends Plugin
         $limit = Request::getInt('limit', 25);
         $limitstart = Request::getInt('limitstart', 0);
         $sort = strtolower(Request::getString('sort', 'date'));
-        if (!in_array($sort, array('usage', 'title', 'date'))) {
+        if (!in_array($sort, ['usage', 'title', 'date'])) {
             $sort = 'date';
         }
 
         // Trigger the functions that return the areas we'll be using
-        $areas = array();
-        $searchareas = Event::trigger('members.onMembersContributionsAreas', array());
+        $areas = [];
+        $searchareas = Event::trigger('members.onMembersContributionsAreas', []);
         foreach ($searchareas as $area) {
             $areas = array_merge($areas, $area);
         }
@@ -93,7 +93,7 @@ class Contributions extends Plugin
         // Get the active category
         $area = Request::getString('area', '');
         if ($area) {
-            $activeareas = array($area);
+            $activeareas = [$area];
         } else {
             $activeareas = $areas;
         }
@@ -105,19 +105,19 @@ class Contributions extends Plugin
         }
 
         // Get the search result totals
-        $totals = Event::trigger('members.onMembersContributions', array(
+        $totals = Event::trigger('members.onMembersContributions', [
                 $member,
                 $option,
                 0,
                 $limitstart,
                 $sort,
                 $activeareas
-            ));
+            ]);
 
         // Get the total results found (sum of all categories)
         $i = 0;
         $total = 0;
-        $cats = array();
+        $cats = [];
         foreach ($areas as $c => $t) {
             $cats[$i]['category'] = $c;
 
@@ -126,7 +126,7 @@ class Contributions extends Plugin
                 // They do - do some processing
                 $cats[$i]['title'] = ucfirst($c);
                 $cats[$i]['total'] = 0;
-                $cats[$i]['_sub']  = array();
+                $cats[$i]['_sub']  = [];
                 $z = 0;
                 // Loop through each sub-category
                 foreach ($t as $s => $st) {
@@ -157,13 +157,13 @@ class Contributions extends Plugin
             $limit = ($limit == 0) ? 'all' : $limit;
 
             // Get the search results
-            $results = Event::trigger('members.onMembersContributions', array(
+            $results = Event::trigger('members.onMembersContributions', [
                 $member,
                 $option,
                 $limit,
                 $limitstart,
                 $sort,
-                $activeareas));
+                $activeareas]);
 
             // Do we have an active area?
             if (count($activeareas) == 1 && !is_array(current($activeareas))) {
@@ -191,7 +191,7 @@ class Contributions extends Plugin
         }
 
         // Build the metadata
-        $arr['metadata'] = array();
+        $arr['metadata'] = [];
         $prefix = '';
         $total = 0;
 

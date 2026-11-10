@@ -123,7 +123,7 @@ $this->css();
                                     'calendar',
                                     'fields[publish_up]',
                                     $pubUp,
-                                    array('id' => 'publish_up')
+                                    ['id' => 'publish_up']
                                 );
                                 ?>
                             <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_STARTS_HINT'); ?></span>
@@ -140,7 +140,7 @@ $this->css();
                                     'calendar',
                                     'fields[publish_down]',
                                     $pubDown,
-                                    array('id' => 'publish_down')
+                                    ['id' => 'publish_down']
                                 );
                                 ?>
                             <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_ENDS_HINT'); ?></span>

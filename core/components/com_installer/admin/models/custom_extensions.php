@@ -79,11 +79,11 @@ class Custom_extensions extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'name'    => 'notempty',
         'alias'  => 'notempty',
         'type' => 'notempty'
-    );
+    ];
 
     /**
      * Sets up additional custom rules
@@ -96,7 +96,7 @@ class Custom_extensions extends Relational
      */
     public function setup()
     {
-        foreach (array('alias', 'folder') as $key) {
+        foreach (['alias', 'folder'] as $key) {
             $this->addRule($key, function ($data) use ($key) {
                 if (!empty($data[$key]) && !preg_match('/^[A-Za-z0-9][A-Za-z0-9_]*$/', $data[$key])) {
                     return $key . ' may only contain letters, numbers and underscores, and cannot start with an underscore';
@@ -111,13 +111,13 @@ class Custom_extensions extends Relational
      *
      * @var  array
      **/
-    public $always = array(
+    public $always = [
         'path',
         'modified',
         'modified_by',
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Delete the existing/current model

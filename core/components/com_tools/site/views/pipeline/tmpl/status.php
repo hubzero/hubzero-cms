@@ -42,14 +42,14 @@ $this->css('pipeline.css')
 <section class="main section">
     <?php
     if (\Components\Tools\Helpers\Html::toolActive($this->status['state'])) {
-        $states = array(
+        $states = [
             Lang::txt('COM_TOOLS_REGISTERED'),
             Lang::txt('COM_TOOLS_CREATED'),
             Lang::txt('COM_TOOLS_UPLOADED'),
             Lang::txt('COM_TOOLS_INSTALLED'),
             Lang::txt('COM_TOOLS_APPROVED'),
             Lang::txt('COM_TOOLS_PUBLISHED')
-        ); // regular state list
+        ]; // regular state list
 
         if ($state == Lang::txt('COM_TOOLS_RETIRED')) {
             $states[] = Lang::txt('COM_TOOLS_RETIRED');

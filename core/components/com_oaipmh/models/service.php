@@ -61,7 +61,7 @@ class Service extends Obj
      *
      * @var  array
      */
-    protected $providers = array();
+    protected $providers = [];
 
     /**
      * Database connection
@@ -237,7 +237,7 @@ class Service extends Obj
      */
     private function loadProviders()
     {
-        Event::trigger('oaipmh.onOaipmhProvider', array(&$this));
+        Event::trigger('oaipmh.onOaipmhProvider', [&$this]);
 
         return $this;
     }
@@ -305,7 +305,7 @@ class Service extends Obj
             ->end()
             ->element('Identify');
 
-        $fields = array(
+        $fields = [
             'repositoryName',
             'baseURL',
             'protocolVersion',
@@ -313,7 +313,7 @@ class Service extends Obj
             'earliestDatestamp',
             'deletedRecord',
             'granularity'
-        );
+        ];
 
         foreach ($fields as $key) {
             if ($val = $this->get($key)) {
@@ -364,7 +364,7 @@ class Service extends Obj
         $total   = 0;
         $limit   = $this->get('limit', 50);
         $start   = $this->get('start', 0);
-        $records = array();
+        $records = [];
 
         foreach ($this->providers as $provider) {
             if (!($query = $provider->sets())) {
@@ -488,10 +488,10 @@ class Service extends Obj
         $limit = $this->get('limit', 50);
         $start = $this->get('start', 0);
 
-        $queries = array();
+        $queries = [];
 
         foreach ($this->providers as $provider) {
-            if (!($query = $provider->records(array('from' => $from, 'until' => $until, 'set' => $set)))) {
+            if (!($query = $provider->records(['from' => $from, 'until' => $until, 'set' => $set]))) {
                 continue;
             }
 
@@ -566,14 +566,14 @@ class Service extends Obj
      */
     public function encodeToken($limit, $start, $from, $until, $set, $prefix)
     {
-        $resumption = implode(',', array(
+        $resumption = implode(',', [
             $limit,
             $start,
             $from,
             $until,
             $set,
             $prefix
-        ));
+        ]);
         if (function_exists('gzcompress')) {
             $resumption = gzcompress($resumption);
         }
@@ -598,14 +598,14 @@ class Service extends Obj
 
         list($limit, $start, $from, $until, $set, $prefix) = explode(',', $resumption);
 
-        return array(
+        return [
             'limit'  => $limit,
             'start'  => $start,
             'from'   => $from,
             'until'  => $until,
             'set'    => $set,
             'prefix' => $prefix
-        );
+        ];
     }
 
     /**

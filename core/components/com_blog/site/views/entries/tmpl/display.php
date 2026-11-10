@@ -47,12 +47,12 @@ Document::setTitle($title);
 $this->css()
      ->js();
 
-$first = $this->archive->entries(array(
+$first = $this->archive->entries([
         'state'      => 1,
         'authorized' => $this->filters['authorized'],
         'scope'      => $this->filters['scope'],
         'scope_id'   => $this->filters['scope_id']
-    ))
+    ])
     ->order('publish_up', 'asc')
     ->limit(1)
     ->row();
@@ -259,7 +259,7 @@ $rows = $this->archive->entries($this->filters)
                                         echo \Hubzero\Utility\Str::truncate(
                                             $row->content,
                                             $introLength,
-                                            array('html' => true)
+                                            ['html' => true]
                                         );
                                         ?>
                                     <?php } ?>
@@ -324,7 +324,7 @@ $rows = $this->archive->entries($this->filters)
                             ?>
                             <ol>
                             <?php
-                            $m = array(
+                            $m = [
                                 'COM_BLOG_JANUARY',
                                 'COM_BLOG_FEBRUARY',
                                 'COM_BLOG_MARCH',
@@ -337,7 +337,7 @@ $rows = $this->archive->entries($this->filters)
                                 'COM_BLOG_OCTOBER',
                                 'COM_BLOG_NOVEMBER',
                                 'COM_BLOG_DECEMBER'
-                            );
+                            ];
                             //if (($this->year && $i == $this->year) || (!$this->year && $i == $now)) {
                             if ($i == $now) {
                                 $months = Date::format("m");
@@ -381,10 +381,10 @@ $rows = $this->archive->entries($this->filters)
             <div class="container blog-popular-entries">
                 <h4><?php echo Lang::txt('COM_BLOG_POPULAR_ENTRIES'); ?></h4>
                 <?php
-                $popular = $this->archive->entries(array(
+                $popular = $this->archive->entries([
                         'state'  => $this->filters['state'],
                         'access' => $this->filters['access']
-                    ))
+                    ])
                     ->order('hits', 'desc')
                     ->limit(5)
                     ->rows();

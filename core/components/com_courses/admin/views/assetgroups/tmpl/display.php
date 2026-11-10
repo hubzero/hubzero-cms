@@ -16,7 +16,7 @@ use Hubzero\Facades\Toolbar;
 defined('_HZEXEC_') or die();
 
 // Preprocess the list of items to find ordering divisions.
-$this->ordering = array();
+$this->ordering = [];
 foreach ($this->rows as $row) {
     $this->ordering[$row->get('parent')][] = $row->get('id');
 }

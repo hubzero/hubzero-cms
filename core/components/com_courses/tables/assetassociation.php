@@ -108,11 +108,11 @@ class AssetAssociation extends Table
      * @param  array $filters
      * @return $query database query
      */
-    private function buildQuery($filters = array())
+    private function buildQuery($filters = [])
     {
         $query = " FROM $this->_tbl AS caa";
 
-        $where = array();
+        $where = [];
 
         if (isset($filters['asset_id'])) {
             $where[] = "caa.asset_id=" . $this->_db->quote((int) $filters['asset_id']);
@@ -137,7 +137,7 @@ class AssetAssociation extends Table
      * @param  array $filters
      * @return integer
      */
-    public function count($filters = array())
+    public function count($filters = [])
     {
         $query  = "SELECT COUNT(*)";
         $query .= $this->buildQuery($filters);
@@ -152,7 +152,7 @@ class AssetAssociation extends Table
      * @param  array $filters
      * @return object Return course units
      */
-    public function find($filters = array())
+    public function find($filters = [])
     {
         $query  = "SELECT caa.*";
         $query .= $this->buildQuery($filters);

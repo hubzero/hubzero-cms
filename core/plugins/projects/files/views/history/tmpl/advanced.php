@@ -132,7 +132,7 @@ $allowDiff = ($this->file->isBinary() || $this->file->get('converted') || $candi
                         $url = $this->url
                         . '/?asset=' . urlencode($version['name'])
                         . '&amp;action=download&amp;hash=' . $version['hash'];
-                        $action = (in_array($version['commitStatus'], array('A', 'M', 'R', 'W')))
+                        $action = (in_array($version['commitStatus'], ['A', 'M', 'R', 'W']))
                         ? '<a href="' . $url . '" class="download_file" title="' . Lang::txt('PLG_PROJECTS_FILES_DOWNLOAD') . '" >&nbsp;</a>'
                         : '';
                     }
@@ -203,7 +203,7 @@ $allowDiff = ($this->file->isBinary() || $this->file->get('converted') || $candi
                             <?php echo $this->escape($version['name']); ?>
                             <?php echo $version['size'] ? ', ' . $version['size'] : '';  ?>
                         </span>
-                        <div class="commitcontent"><?php if ($version['content'] && in_array($version['commitStatus'], array('A', 'M'))) {
+                        <div class="commitcontent"><?php if ($version['content'] && in_array($version['commitStatus'], ['A', 'M'])) {
                             $over = strlen($version['content']) >= $charLimit ? 1 : 0;
                             $content = $over ? \Hubzero\Utility\Str::truncate($version['content'], $charLimit) : $version['content'];
 

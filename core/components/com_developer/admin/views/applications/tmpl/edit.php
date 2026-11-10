@@ -126,7 +126,7 @@ $this->js();
                         <label for="acmembers"><?php echo Lang::txt('COM_DEVELOPER_FIELD_ADD_TEAM'); ?>:</label><br />
                         <?php
                         // get team and format for autocompletor
-                        $currentTeam = array();
+                        $currentTeam = [];
                         foreach ($this->row->team()->rows() as $member) {
                             $profile = \Hubzero\User\User::oneOrNew($member->get('uidNumber'));
 
@@ -134,7 +134,7 @@ $this->js();
                         }
 
                         // output member autocompletor
-                        $mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'team', 'acmembers', '', implode(', ', $currentTeam))));
+                        $mc = Event::trigger('hubzero.onGetMultiEntry', [['members', 'team', 'acmembers', '', implode(', ', $currentTeam)]]);
                         if (count($mc) > 0) {
                             echo $mc[0];
                         } else { ?>

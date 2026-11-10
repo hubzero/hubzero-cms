@@ -37,7 +37,7 @@ class Serials extends AdminController
         $this->view->sku = $sku;
 
         // Get filters
-        $this->view->filters = array(
+        $this->view->filters = [
             // Get sorting variables
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
@@ -62,7 +62,7 @@ class Serials extends AdminController
                 0,
                 'int'
             )
-        );
+        ];
         //print_r($this->view->filters); die;
 
         // Get record count
@@ -103,7 +103,7 @@ class Serials extends AdminController
         Request::checkToken();
 
         // Incoming (the list view posts srId[] checkboxes)
-        $ids = array_map('intval', (array) Request::getArray('srId', array()));
+        $ids = array_map('intval', (array) Request::getArray('srId', []));
         $sId = Request::getInt('sId');
 
         $msg  = '';
@@ -195,8 +195,8 @@ class Serials extends AdminController
         if (isset($csvFile['name']) && $csvFile['name'] && $csvFile['type'] == 'text/csv') {
             if (($handle = fopen($csvFile['tmp_name'], "r")) !== false) {
                 $inserted = 0;
-                $skipped = array();
-                $ignored = array();
+                $skipped = [];
+                $ignored = [];
 
                 while (($line = fgetcsv($handle, 1000, ",")) !== false) {
                     if (!empty($line[0])) {

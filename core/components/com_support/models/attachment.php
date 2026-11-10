@@ -46,29 +46,29 @@ class Attachment extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'filename' => 'notempty',
         //'ticket'   => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'filename'
-    );
+    ];
 
     /**
      * Diemnsions for file (must be an image)
@@ -162,7 +162,7 @@ class Attachment extends Relational
     public function width()
     {
         if (!$this->dimensions) {
-            $this->dimensions = $this->isImage() && $this->hasFile() ? getimagesize($this->path()) : array(0, 0);
+            $this->dimensions = $this->isImage() && $this->hasFile() ? getimagesize($this->path()) : [0, 0];
         }
 
         return $this->dimensions[0];
@@ -176,7 +176,7 @@ class Attachment extends Relational
     public function height()
     {
         if (!$this->dimensions) {
-            $this->dimensions = $this->isImage() && $this->hasFile() ? getimagesize($this->path()) : array(0, 0);
+            $this->dimensions = $this->isImage() && $this->hasFile() ? getimagesize($this->path()) : [0, 0];
         }
 
         return $this->dimensions[1];
@@ -313,7 +313,7 @@ class Attachment extends Relational
         $newname = $newname . '.' . $ext;
 
         // We should ask the model if the name we generated is OK
-        $data = array();
+        $data = [];
         $data['filename'] = $newname;
         $newname = $this->automaticFilename($data);
 

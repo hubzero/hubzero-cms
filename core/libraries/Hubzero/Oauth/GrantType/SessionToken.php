@@ -37,7 +37,7 @@ class SessionToken implements GrantTypeInterface, ClientAssertionTypeInterface
      *
      * @var  array
      */
-    private $userInfo = array();
+    private $userInfo = [];
 
     /**
      * Define identifier for this type of grant
@@ -56,7 +56,7 @@ class SessionToken implements GrantTypeInterface, ClientAssertionTypeInterface
      * @param   array   $config   Config array
      * @return  void
      */
-    public function __construct(SessionTokenInterface $storage, $config = array())
+    public function __construct(SessionTokenInterface $storage, $config = [])
     {
         $this->storage = $storage;
     }
@@ -85,10 +85,10 @@ class SessionToken implements GrantTypeInterface, ClientAssertionTypeInterface
         }
 
         // store our session & user id
-        $this->userInfo = array(
+        $this->userInfo = [
             'user_id'    => $userId,
             'session_id' => $sessionId
-        );
+        ];
         return true;
     }
 

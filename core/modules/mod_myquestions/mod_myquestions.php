@@ -99,7 +99,7 @@ class Myquestions extends Module
      * @param   array   $interests  Array of tags
      * @return  array   Database results
      */
-    private function getQuestions($kind = 'open', $interests = array())
+    private function getQuestions($kind = 'open', $interests = [])
     {
         // Get some classes we need
 
@@ -109,14 +109,14 @@ class Myquestions extends Module
             $interests = explode(',', $interests);
         }
         if (!is_array($interests)) {
-            $interests = array();
+            $interests = [];
         }
 
         if (is_string($interests)) {
                 $interests = explode(',', $interests);
         }
         if (!is_array($interests)) {
-                $interests = array();
+                $interests = [];
         }
         $records = \Components\Answers\Models\Question::all()
             ->including(['responses', function ($response) {
@@ -164,7 +164,7 @@ class Myquestions extends Module
             ->ordered()
             ->rows();
 
-        $results = array();
+        $results = [];
         foreach ($data as $datum) {
             $datum->set('rcount', $datum->responses->count());
             $results[] = $datum;
@@ -175,7 +175,7 @@ class Myquestions extends Module
 
             $AE = new \Components\Answers\Helpers\Economy($database);
 
-            $awards = array();
+            $awards = [];
 
             foreach ($results as $result) {
                 // Calculate max award

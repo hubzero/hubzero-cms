@@ -19,12 +19,12 @@ class ModeDb
 {
     public static function getConf($db_id)
     {
-        $db_dv_conf = array();
+        $db_dv_conf = [];
 
         $db_name = isset($db_id['name']) ? str_replace('..', '', preg_replace('/[^A-Za-z0-9_.-]/', '', (string) $db_id['name'])) : '';
 
         if (empty($db_name)) {
-            return array();
+            return [];
         }
 
         // Base directory
@@ -43,7 +43,7 @@ class ModeDb
         if (file_exists($dv_conf_file)) {
             $db_dv_conf = json_decode(file_get_contents($dv_conf_file), true);
             if (!is_array($db_dv_conf)) {
-                $db_dv_conf = array();
+                $db_dv_conf = [];
             } if (isset($db_dv_conf['settings'])) {
                 $db_dv_conf['settings'] = array_merge(DvConfig::$dv_conf['settings'], $db_dv_conf['settings']);
             }
@@ -94,8 +94,8 @@ class ModeDb
             } else {
                 // Browsing a raw table is a manager feature; without a managers list
                 // nobody else may read it, whatever the component-level ACL allows.
-                $dd['acl']['allowed_users'] = array();
-                $dd['acl']['allowed_groups'] = array();
+                $dd['acl']['allowed_users'] = [];
+                $dd['acl']['allowed_groups'] = [];
             }
         } else {
             // Definitions are read from JSON; the PHP form is the admin's source only
@@ -115,7 +115,7 @@ class ModeDb
             }
 
 
-            $dd['conf'] = (isset($dd['conf'])) ? $dd['conf'] : array();
+            $dd['conf'] = (isset($dd['conf'])) ? $dd['conf'] : [];
 
             if (isset($dd['conf']['proc_mode_switch'])) {
                 DvConfig::$dv_conf['proc_mode_switch'] = $dd['conf']['proc_mode_switch'];
@@ -172,14 +172,14 @@ class ModeDb
         $id = Request::getString('id', false);
 
         if ($id) {
-            $dd['where'][] = array('field' => $dd['pk'], 'value' => $id);
+            $dd['where'][] = ['field' => $dd['pk'], 'value' => $id];
             $dd['single'] = true;
         }
 
         $custom_field =  Request::getString('custom_field', false);
         if ($custom_field) {
             $custom_field = explode('|', $custom_field);
-            $dd['where'][] = array('field' => $custom_field[0], 'value' => $custom_field[1]);
+            $dd['where'][] = ['field' => $custom_field[0], 'value' => $custom_field[1]];
             $dd['single'] = true;
         }
 
@@ -207,7 +207,7 @@ class ModeDb
             // would otherwise have made the injected UNION a syntax error.
             $group_by = Request::getString('group_by', '');
             if ($group_by !== '') {
-                $group_cols = array();
+                $group_cols = [];
                 foreach (explode(',', $group_by) as $gb_col) {
                     $gb_col = trim($gb_col);
                 // accept a bare column or its "WITH ROLLUP" suffix, nothing else
@@ -227,7 +227,7 @@ class ModeDb
 
             // Ordering
             $order_cols = $dd['cols'];
-            $dd['cols'] = array();
+            $dd['cols'] = [];
             foreach ($custom_view as $cv_col) {
             // Only real columns of this dataview. An unknown key yields a null
             // conf, and lib/db.php then uses the key itself both as the column

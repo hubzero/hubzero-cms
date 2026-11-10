@@ -41,19 +41,19 @@ class Vote extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'user_id' => 'positive|nonzero',
         'item_id' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'voted'
-    );
+    ];
 
     /**
      * Get represented item

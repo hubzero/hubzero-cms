@@ -49,7 +49,7 @@ class Pages extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->filters = array(
+        $this->view->filters = [
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
@@ -78,7 +78,7 @@ class Pages extends AdminController
                 'offering',
                 0
             )
-        );
+        ];
 
         $this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->filters['offering']);
         if ($this->view->offering->exists()) {
@@ -99,9 +99,9 @@ class Pages extends AdminController
         $this->view->course = \Components\Courses\Models\Course::getInstance($this->view->filters['course']);
 
         if ($this->view->offering->exists()) {
-            $list = $this->view->offering->pages(array('active' => array(0, 1)));
+            $list = $this->view->offering->pages(['active' => [0, 1]]);
         } else {
-            $list = $this->view->course->pages(array('active' => array(0, 1)));
+            $list = $this->view->course->pages(['active' => [0, 1]]);
         }
 
         $this->view->total = count($list);
@@ -126,7 +126,7 @@ class Pages extends AdminController
 
         if (!is_object($model)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
 
             // Get the single ID we're working with
             if (is_array($id)) {
@@ -173,7 +173,7 @@ class Pages extends AdminController
         Request::checkToken();
 
         // load the request vars
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         // instatiate course page object for saving
         $row = new \Components\Courses\Models\Page($fields['id']);
@@ -215,8 +215,8 @@ class Pages extends AdminController
         Request::checkToken();
 
         // Incoming (expecting an array)
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $url = 'index.php?option=' . $this->_option
             . '&controller=' . $this->_controller
@@ -331,32 +331,32 @@ class Pages extends AdminController
             $file = $_FILES['qqfile']['name'];
             $size = (int) $_FILES['qqfile']['size'];
         } else {
-            echo json_encode(array('error' => Lang::txt('COM_COURSES_ERROR_NO_FILE_FOUND')));
+            echo json_encode(['error' => Lang::txt('COM_COURSES_ERROR_NO_FILE_FOUND')]);
             return;
         }
 
         if (!is_dir($path)) {
             if (!Filesystem::makeDirectory($path)) {
-                echo json_encode(array('error' => Lang::txt('COM_COURSES_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH')));
+                echo json_encode(['error' => Lang::txt('COM_COURSES_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH')]);
                 return;
             }
         }
 
         if (!is_writable($path)) {
-            echo json_encode(array('error' => Lang::txt('COM_COURSES_ERROR_UPLOAD_DIRECTORY_IS_NOT_WRITABLE')));
+            echo json_encode(['error' => Lang::txt('COM_COURSES_ERROR_UPLOAD_DIRECTORY_IS_NOT_WRITABLE')]);
             return;
         }
 
         //check to make sure we have a file and its not too big
         if ($size == 0) {
-            echo json_encode(array('error' => Lang::txt('COM_COURSES_ERROR_EMPTY_FILE')));
+            echo json_encode(['error' => Lang::txt('COM_COURSES_ERROR_EMPTY_FILE')]);
             return;
         }
 
         if ($size > $sizeLimit) {
             $pattern = '/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/';
             $max = preg_replace($pattern, '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
-            echo json_encode(array('error' => Lang::txt('COM_COURSES_ERROR_FILE_TOO_LARGE', $max)));
+            echo json_encode(['error' => Lang::txt('COM_COURSES_ERROR_FILE_TOO_LARGE', $max)]);
             return;
         }
 
@@ -380,7 +380,7 @@ class Pages extends AdminController
 
         if (!empty($allowed) && !in_array(strtolower($ext), $allowed)) {
             $msg = Lang::txt('COM_COURSES_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed));
-            echo json_encode(array('error' => $msg));
+            echo json_encode(['error' => $msg]);
             return;
         }
 
@@ -403,17 +403,17 @@ class Pages extends AdminController
         if (!Filesystem::isSafe($file)) {
             Filesystem::delete($file);
 
-            echo json_encode(array('error' => Lang::txt('COM_COURSES_ERROR_FILE_UNSAFE')));
+            echo json_encode(['error' => Lang::txt('COM_COURSES_ERROR_FILE_UNSAFE')]);
             return;
         }
 
         //echo result
-        echo json_encode(array(
+        echo json_encode([
             'success'   => true,
             'file'      => $filename . '.' . $ext,
             'directory' => str_replace(PATH_APP, '', $path),
             'id'        => $listdir
-        ));
+        ]);
     }
 
     /**
@@ -471,7 +471,7 @@ class Pages extends AdminController
             }
 
             // Incoming file
-            $file = Request::getArray('upload', array(), 'files');
+            $file = Request::getArray('upload', [], 'files');
             if (empty($file) || !$file['name']) {
                 $this->setError(Lang::txt('COM_COURSES_ERROR_NO_FILE'));
                 $this->displayTask();
@@ -519,7 +519,7 @@ class Pages extends AdminController
                 if (!Filesystem::isSafe($path . DS . $file['name'])) {
                     Filesystem::delete($path . DS . $file['name']);
 
-                    echo json_encode(array('error' => Lang::txt('COM_COURSES_ERROR_FILE_UNSAFE')));
+                    echo json_encode(['error' => Lang::txt('COM_COURSES_ERROR_FILE_UNSAFE')]);
                     return;
                 }
             }
@@ -642,7 +642,7 @@ class Pages extends AdminController
         // Get list of directories
         $dirs = $this->recursiveListDir($this->view->path);
 
-        $folders   = array();
+        $folders   = [];
         $folders[] = Html::select('option', '/');
         if ($dirs) {
             foreach ($dirs as $dir) {
@@ -692,8 +692,8 @@ class Pages extends AdminController
         // Build the path
         $path = $this->buildUploadPath($this->view->listdir, $this->view->subdir);
 
-        $folders = array();
-        $docs    = array();
+        $folders = [];
+        $docs    = [];
 
         if (is_dir($path)) {
             // Loop through all files and separate them into arrays of images, folders, and other
@@ -745,8 +745,8 @@ class Pages extends AdminController
      */
     private function recursiveListDir($base)
     {
-        static $filelist = array();
-        static $dirlist  = array();
+        static $filelist = [];
+        static $dirlist  = [];
 
         if (is_dir($base)) {
             $dh = opendir($base);
@@ -772,8 +772,8 @@ class Pages extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        $id = Request::getArray('id', array(0), 'post');
-        \Hubzero\Utility\Arr::toInteger($id, array(0));
+        $id = Request::getArray('id', [0], 'post');
+        \Hubzero\Utility\Arr::toInteger($id, [0]);
 
         $uid = $id[0];
         $inc = ($this->_task == 'orderup' ? -1 : 1);
@@ -801,8 +801,8 @@ class Pages extends AdminController
         $state = $this->_task == 'publish' ? 1 : 0;
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Do we have any IDs?
         $num = 0;

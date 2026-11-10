@@ -124,7 +124,7 @@ class Source extends Obj
         }
 
         // Trigger the onExtensionBeforeSave event.
-        $result = Event::trigger('extension.onExtensionBeforeSave', array('com_templates.source', &$data, false));
+        $result = Event::trigger('extension.onExtensionBeforeSave', ['com_templates.source', &$data, false]);
 
         if (in_array(false, $result, true)) {
             $this->setError(Lang::txt('COM_TEMPLATES_ERROR_SOURCE_FILE_NOT_WRITABLE'));
@@ -146,7 +146,7 @@ class Source extends Obj
         }
 
         // Trigger the onExtensionAfterSave event.
-        Event::trigger('extension.onExtensionAfterSave', array('com_templates.source', &$this, false));
+        Event::trigger('extension.onExtensionAfterSave', ['com_templates.source', &$this, false]);
 
         return true;
     }

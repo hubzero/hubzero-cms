@@ -100,7 +100,7 @@ class Passport implements ProviderInterface
             'https://www.openpassport.org/oauth/token',
             $params,
             OAUTH_HTTP_METHOD_POST,
-            array('user-agent' => $userAgent)
+            ['user-agent' => $userAgent]
         );
         $access = json_decode($this->request->getLastResponse());
         $this->credentials->access_token = $access->access_token;
@@ -167,13 +167,13 @@ class Passport implements ProviderInterface
         }
 
         if (!is_array($users)) {
-            $users = array($users);
+            $users = [$users];
         }
 
-        $assertions = array();
+        $assertions = [];
 
         foreach ($users as $user) {
-            $data = array();
+            $data = [];
 
             $data['BadgeId']      = $badge->id;
             $data['EvidenceUrl']  = $badge->evidenceUrl;
@@ -194,7 +194,7 @@ class Passport implements ProviderInterface
                     "assertions/",
                     $assertionsData,
                     OAUTH_HTTP_METHOD_POST,
-                    array('Content-Type' => 'application/json')
+                    ['Content-Type' => 'application/json']
                 );
             } catch (Exception $e) {
                 throw new Exception('Badge grant request failed.');
@@ -269,7 +269,7 @@ class Passport implements ProviderInterface
         }
 
         if (!is_array($emailAddresses)) {
-            $emailAddresses = array($emailAddresses);
+            $emailAddresses = [$emailAddresses];
         }
 
         $query_params = implode('%20', $emailAddresses);
@@ -278,7 +278,7 @@ class Passport implements ProviderInterface
         if ($this->request_type == 'oauth' && is_a($this->request, 'oauth')) {
             $this->request->setAuthType(OAUTH_AUTH_TYPE_URI);
             try {
-                $this->request->fetch($url, null, OAUTH_HTTP_METHOD_GET, array('Content-Type' => 'application/json'));
+                $this->request->fetch($url, null, OAUTH_HTTP_METHOD_GET, ['Content-Type' => 'application/json']);
             } catch (Exception $e) {
                 throw new Exception('Assertations by email request failed.');
             }

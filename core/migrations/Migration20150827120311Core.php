@@ -22,7 +22,7 @@ class Migration20150827120311Core extends Base
      *
      * @var  array
      **/
-    public $files = array(
+    public $files = [
         'Migration201508281131531Core.php'           => 'Migration20150828113153Core.php',
         'Migration201508281528321Core.php'           => 'Migration20150828152832Core.php',
         'Migration201603091905401ComNewsletter.php'  => 'Migration20160309190540ComNewsletter.php',
@@ -39,7 +39,7 @@ class Migration20150827120311Core extends Base
         'Migration2016090710530000ComUsers.php'      => 'Migration20160907105300ComUsers.php',
         'Migration2016090710560000ComSupport.php'    => 'Migration20160907105600ComSupport.php',
         'Migration2016090711260000Core.php'          => 'Migration20160907112600Core.php'
-    );
+    ];
 
     /**
      * Up

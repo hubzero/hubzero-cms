@@ -69,7 +69,7 @@ class ListenersPriorityQueue implements IteratorAggregate, Countable
     {
         if (!$this->storage->contains($listener)) {
             // Compute the internal priority as an array.
-            $priority = array($priority, $this->counter--);
+            $priority = [$priority, $this->counter--];
 
             $this->storage->attach($listener, $priority);
             $this->queue->insert($listener, $priority);
@@ -200,7 +200,7 @@ class ListenersPriorityQueue implements IteratorAggregate, Countable
      */
     public function getAll()
     {
-        $listeners = array();
+        $listeners = [];
 
         // Get a clone of the queue.
         $queue = $this->getIterator();

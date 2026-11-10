@@ -26,14 +26,14 @@ class Checker
      *
      * @var  array
      */
-    protected $detectors = array();
+    protected $detectors = [];
 
     /**
      * Holds list of detectors and what they reported
      *
      * @var  array
      */
-    protected $report = array();
+    protected $report = [];
 
     /**
      * StringProcessorInterface
@@ -85,10 +85,10 @@ class Checker
     public function check($data)
     {
         $failure  = 0;
-        $messages = array();
+        $messages = [];
 
         if (is_string($data)) {
-            $data = array('text' => $data);
+            $data = ['text' => $data];
         }
 
         $data = $this->prepareData($data);
@@ -187,7 +187,7 @@ class Checker
      */
     protected function prepareData(array $data)
     {
-        $data = array_merge(array(
+        $data = array_merge([
             'name'       => null,
             'email'      => null,
             'username'   => null,
@@ -195,7 +195,7 @@ class Checker
             'text'       => null,
             'ip'         => null,
             'user_agent' => null
-        ), $data);
+        ], $data);
 
         $data['original_text'] = $data['text'];
 
@@ -231,10 +231,10 @@ class Checker
      */
     protected function mark($name, $value, $message = null)
     {
-        $this->report[] = array(
+        $this->report[] = [
             'service' => $name,
             'is_spam' => $value,
             'message' => $message
-        );
+        ];
     }
 }

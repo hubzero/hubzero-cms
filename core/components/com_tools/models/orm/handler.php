@@ -36,10 +36,10 @@ class Handler extends Relational
      *
      * @var array
      **/
-    protected $rules = array(
+    protected $rules = [
         'tool_id' => 'notempty|nonzero',
         'prompt'  => 'notempty'
-    );
+    ];
 
     /**
      * Defines the relationship between a handler and it's rules

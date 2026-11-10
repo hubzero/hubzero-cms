@@ -30,7 +30,7 @@ class GlobusResourceOwner implements ResourceOwnerInterface
      *
      * @param array  $response
      */
-    public function __construct(array $response = array())
+    public function __construct(array $response = [])
     {
         $this->response = $response;
     }

@@ -89,12 +89,12 @@ class PhpTest extends TestCase
         $data->seo->sitename_pagetitles = 0;
 
         $this->obj = $data;
-        $this->arr = array(
+        $this->arr = [
             //'foo' => '1',
             //'bar' => '',
             'app' => (array) $data->app,
             'seo' => (array) $data->seo
-        );
+        ];
 
         $this->processor = new Php();
 
@@ -220,16 +220,16 @@ class PhpTest extends TestCase
         $this->assertEquals($this->str, $result);
 
         // Test object to string conversion
-        $result = $this->processor->objectToString($this->obj, array(
+        $result = $this->processor->objectToString($this->obj, [
             'format' => 'array'
-        ));
+        ]);
 
         $this->assertEquals($this->str, $result);
 
         // Test object to string conversion
-        $result = $this->processor->objectToString($this->obj, array(
+        $result = $this->processor->objectToString($this->obj, [
             'format' => 'object'
-        ));
+        ]);
 
         $this->assertEquals($this->strObject, $result);
     }

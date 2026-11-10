@@ -97,8 +97,8 @@ class Adminmenu extends Module
         // Initialise variables.
         $lang   = App::get('language');
         $db     = App::get('db');
-        $result = array();
-        $langs  = array();
+        $result = [];
+        $langs  = [];
 
         // Prepare the query.
         $query = $db->getQuery()
@@ -138,7 +138,7 @@ class Adminmenu extends Module
                     // Root level.
                     $result[$component->id] = $component;
                     if (!isset($result[$component->id]->submenu)) {
-                        $result[$component->id]->submenu = array();
+                        $result[$component->id]->submenu = [];
                     }
 
                     // If the root menu link is empty, add it in.

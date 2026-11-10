@@ -65,7 +65,7 @@ class Order extends ComponentController
     {
         // Get the plugins working
         $provider = Request::getString('provider', '', 'get');
-        $pay = Event::trigger('cart.onComplete', array($provider));
+        $pay = Event::trigger('cart.onComplete', [$provider]);
 
         $verificationVar = false;
 
@@ -205,7 +205,7 @@ class Order extends ComponentController
         $logger = new CartMessenger('Payment Postback');
 
         // Get the plugins working
-        $pay = Event::trigger('cart.onPostback', array($_POST, User::getRoot()));
+        $pay = Event::trigger('cart.onPostback', [$_POST, User::getRoot()]);
 
         foreach ($pay as $response) {
             if ($response) {

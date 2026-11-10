@@ -13,7 +13,7 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$mylistIds = array();
+$mylistIds = [];
 
 $this->css()
      ->js();

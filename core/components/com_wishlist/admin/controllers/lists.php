@@ -51,7 +51,7 @@ class Lists extends AdminController
     public function displayTask()
     {
         // Get filters
-        $filters = array(
+        $filters = [
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
@@ -86,7 +86,7 @@ class Lists extends AdminController
                 0,
                 'int'
             )
-        );
+        ];
 
         $model = Wishlist::all();
 
@@ -137,7 +137,7 @@ class Lists extends AdminController
 
         if (!is_object($row)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
 
             if (is_array($id) && !empty($id)) {
                 $id = $id[0];
@@ -177,7 +177,7 @@ class Lists extends AdminController
         }
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
         $fields = array_map('trim', $fields);
 
         // Initiate extended database class
@@ -187,7 +187,7 @@ class Lists extends AdminController
 
         // Trigger before save event
         $isNew  = $row->isNew();
-        $result = Event::trigger('wishlist.onWishlistBeforeSave', array(&$row, $isNew));
+        $result = Event::trigger('wishlist.onWishlistBeforeSave', [&$row, $isNew]);
 
         if (in_array(false, $result, true)) {
             Notify::error($row->getError());
@@ -201,7 +201,7 @@ class Lists extends AdminController
         }
 
         // Trigger after save event
-        Event::trigger('wishlist.onWishlistAfterSave', array(&$row, $isNew));
+        Event::trigger('wishlist.onWishlistAfterSave', [&$row, $isNew]);
 
         Notify::success(Lang::txt('COM_WISHLIST_LIST_SAVED'));
 
@@ -228,8 +228,8 @@ class Lists extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Make sure we have an ID to work with
         if (!count($ids)) {
@@ -248,7 +248,7 @@ class Lists extends AdminController
             }
 
             // Trigger after delete event
-            Event::trigger('wishlist.onWishlistAfterDelete', array($id));
+            Event::trigger('wishlist.onWishlistAfterDelete', [$id]);
 
             $removed++;
         }
@@ -324,8 +324,8 @@ class Lists extends AdminController
 
         // Incoming
         $cid = Request::getInt('cid', 0);
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for an ID
         if (count($ids) < 1) {

@@ -138,7 +138,7 @@ class Entriesv1r1 extends ApiController
      */
     public function listTask()
     {
-        $filters = array(
+        $filters = [
             'scope'      => Request::getCmd('scope'),
             'scope_id'   => Request::getInt('scope_id', 0),
             'search'     => Request::getString('search', ''),
@@ -151,7 +151,7 @@ class Entriesv1r1 extends ApiController
             'sort_Dir'   => strtolower(Request::getString('sort_Dir', 'desc')),
         'limit'      => Request::getInt('limit', Config::get('list_limit')),
             'start'      => Request::getInt('start', 0)
-        );
+        ];
 
         if (!in_array($filters['sort_Dir'], ['asc', 'desc'])) {
             throw new Exception(Lang::txt('COM_ACTIVITY_ERROR_INVALID_INPUT', $filters['sort']), 409);
@@ -161,15 +161,15 @@ class Entriesv1r1 extends ApiController
             throw new Exception(Lang::txt('COM_ACTIVITY_ERROR_INVALID_INPUT', $filters['sort']), 409);
         }
 
-        $recipients = array();
+        $recipients = [];
 
         if ($filters['recipients']) {
             $rs = explode(',', $filters['recipients']);
             foreach ($rs as $r) {
-                $recipient = array(
+                $recipient = [
                     'scope'    => 'user',
                     'scope_id' => 0
-                );
+                ];
 
                 $parts = explode(':', $r);
 
@@ -266,7 +266,7 @@ class Entriesv1r1 extends ApiController
         }
 
         //$total = $query->copy()->total();
-        $response = array();
+        $response = [];
 
         $rows = $query
             ->order($l . '.' . $filters['sort'], $filters['sort_Dir'])
@@ -399,7 +399,7 @@ class Entriesv1r1 extends ApiController
     {
         $this->requiresAuthentication();
 
-        $fields = array(
+        $fields = [
             'scope'          => Request::getString('scope', '', 'post'),
             'scope_id'       => Request::getInt('scope_id', 0, 'post'),
             'action'         => Request::getString('action', null, 'post', 'none', 2),
@@ -419,7 +419,7 @@ class Entriesv1r1 extends ApiController
                 : User::get('id')),
             'anonymous'      => Request::getInt('anonymous', 0, 'post'),
             'parent'         => Request::getInt('parent', 0, 'post')
-        );
+        ];
 
         $row = Activity::blank();
 
@@ -453,10 +453,10 @@ class Entriesv1r1 extends ApiController
                 if (strstr($recipient, ':')) {
                     $parts = explode(':', $recipient);
 
-                    $recipient = array(
+                    $recipient = [
                         'scope'    => $parts[0],
                         'scope_id' => $parts[1]
-                    );
+                    ];
                 }
 
                 $recipients[$key] = $recipient;
@@ -469,22 +469,22 @@ class Entriesv1r1 extends ApiController
                 ->rows();
 
             foreach ($subscriptions as $subscription) {
-                $recipients[] = array(
+                $recipients[] = [
                     'scope'    => 'user',
                     'scope_id' => $subscription->user_id
-                );
+                ];
             }
 
-            $sent = array();
+            $sent = [];
 
             // Do we have any recipients?
             foreach ($recipients as $receiver) {
                 // Default to type 'user'
                 if (!is_array($receiver)) {
-                    $receiver = array(
+                    $receiver = [
                         'scope'    => 'user',
                         'scope_id' => $receiver
-                    );
+                    ];
                 }
 
                 // Make sure we have expected data
@@ -682,7 +682,7 @@ class Entriesv1r1 extends ApiController
             throw new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 403);
         }
 
-        $fields = array(
+        $fields = [
             'scope'          => Request::getString('scope', $row->get('scope')),
             'scope_id'       => Request::getInt('scope_id', $row->get('scope_id')),
             'action'         => Request::getString('action', $row->get('action')),
@@ -693,7 +693,7 @@ class Entriesv1r1 extends ApiController
             'created_by'     => $row->get('created_by'),
             'anonymous'      => Request::getInt('anonymous', $row->get('anonymous')),
             'parent'         => Request::getInt('parent', $row->get('parent'))
-        );
+        ];
 
         if (!$row->set($fields)) {
             throw new Exception(Lang::txt('COM_ACTIVITY_ERROR_BINDING_DATA'), 422);
@@ -717,10 +717,10 @@ class Entriesv1r1 extends ApiController
                 if (strstr($recipient, ':')) {
                     $parts = explode(':', $recipient);
 
-                    $recipient = array(
+                    $recipient = [
                         'scope'    => $parts[0],
                         'scope_id' => $parts[1]
-                    );
+                    ];
                 }
 
                 $recipients[$key] = $recipient;
@@ -733,22 +733,22 @@ class Entriesv1r1 extends ApiController
                 ->rows();
 
             foreach ($subscriptions as $subscription) {
-                $recipients[] = array(
+                $recipients[] = [
                     'scope'    => 'user',
                     'scope_id' => $subscription->user_id
-                );
+                ];
             }
 
-            $sent = array();
+            $sent = [];
 
             // Do we have any recipients?
             foreach ($recipients as $receiver) {
                 // Default to type 'user'
                 if (!is_array($receiver)) {
-                    $receiver = array(
+                    $receiver = [
                         'scope'    => 'user',
                         'scope_id' => $receiver
-                    );
+                    ];
                 }
 
                 // Make sure we have expected data
@@ -817,8 +817,8 @@ class Entriesv1r1 extends ApiController
     {
         $this->requiresAuthentication();
 
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         if (count($ids) <= 0) {
             throw new Exception(Lang::txt('COM_ACTIVITY_ERROR_MISSING_ID'), 500);

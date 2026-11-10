@@ -113,8 +113,8 @@ class Posts extends SiteController
      */
     protected function _postableBoards($current = null)
     {
-        $boards = array();
-        $seen   = array();
+        $boards = [];
+        $seen   = [];
 
         foreach ((array) $this->model->mine() as $row) {
             $boards[] = new Collection($row);
@@ -232,12 +232,12 @@ class Posts extends SiteController
         // If not being called through AJAX
         // push scripts and styles to document
         if (!$this->view->no_html) {
-            $filters = array(
+            $filters = [
                 'count'   => true,
                 'access'  => 0,
                 'state'   => 1,
                 'user_id' => User::get('id')
-            );
+            ];
             $this->view->counts['collections'] = $this->model->collections($filters);
             $this->view->counts['posts'] = $this->model->posts($filters);
         }
@@ -269,7 +269,7 @@ class Posts extends SiteController
         }
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         // fields[id] names an existing row and Item resolves any of them, so
         // without this a caller could overwrite another member's item -- title,
@@ -285,7 +285,7 @@ class Posts extends SiteController
             // The Edit button is also offered on a member's own REPOST, whose
             // item belongs to the original poster: the form posts post[id], and
             // a post the caller made of this very item is theirs to edit.
-            $__postin = Request::getArray('post', array(), 'post');
+            $__postin = Request::getArray('post', [], 'post');
             $__pid    = isset($__postin['id']) ? (int) $__postin['id'] : 0;
             $__mine   = false;
             if ($__pid) {
@@ -312,7 +312,7 @@ class Posts extends SiteController
 
         // Add some data
         //$row->set('_files', $files);
-        $row->set('_assets', Request::getArray('assets', array(), 'post'));
+        $row->set('_assets', Request::getArray('assets', [], 'post'));
         $row->set('_tags', trim(Request::getString('tags', '')));
         $row->set('state', 1);
 
@@ -323,7 +323,7 @@ class Posts extends SiteController
         }
 
         // Create a post entry linking the item to the board
-        $p = Request::getArray('post', array(), 'post');
+        $p = Request::getArray('post', [], 'post');
 
         // Load a post entry. post[id] resolves any row, so an existing one has
         // to be the caller's and has to carry the item just written -- otherwise
@@ -415,7 +415,7 @@ class Posts extends SiteController
         }
 
         // Incoming
-        $comment = Request::getArray('comment', array(), 'post');
+        $comment = Request::getArray('comment', [], 'post');
 
         // The post being commented on, which decides what the comment hangs off.
         // ?post= is what the form and the routes already carry.
@@ -495,11 +495,11 @@ class Posts extends SiteController
 
         $item = '<a href="' . Route::url($url) . '">' . $title . '</a>';
 
-        $recipients = array(
+        $recipients = [
             ['collection', $post->get('collection_id')],
             ['user', $row->get('created_by')],
             ['user', $post->item()->get('created_by')]
-        );
+        ];
 
         if ($row->get('parent')) {
             $parent = Comment::oneOrFail($row->get('parent'));
@@ -512,12 +512,12 @@ class Posts extends SiteController
                 'scope'       => 'collections.comment',
                 'scope_id'    => $row->get('id'),
                 'description' => Lang::txt('COM_COLLECTIONS_ACTIVITY_COMMENT_' . ($comment['id'] ? 'UPDATED' : 'CREATED'), $row->get('id'), $item),
-                'details'     => array(
+                'details'     => [
                     'collection_id' => $post->get('collection_id'),
                     'post_id' => $post->get('id'),
                     'item_id' => $row->get('item_id'),
                     'url'     => Route::url($url)
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -589,18 +589,18 @@ class Posts extends SiteController
                 'scope'       => 'collections.comment',
                 'scope_id'    => $comment->get('id'),
                 'description' => Lang::txt('COM_COLLECTIONS_ACTIVITY_COMMENT_DELETED', $comment->get('id'), $item),
-                'details'     => array(
+                'details'     => [
                     'collection_id' => $post->get('collection_id'),
                     'post_id' => $post->get('id'),
                     'item_id' => $comment->get('item_id'),
                     'url'     => Route::url($url)
-                )
+                ]
             ],
-            'recipients' => array(
+            'recipients' => [
                 ['collection', $post->get('collection_id')],
                 ['user', $comment->get('created_by')],
                 ['user', $post->item()->get('created_by')]
-            )
+            ]
         ]);
 
         // Return the topics list
@@ -659,17 +659,17 @@ class Posts extends SiteController
                 'scope'       => 'collections.item',
                 'scope_id'    => $post->get('item_id'),
                 'description' => Lang::txt('COM_COLLECTIONS_ACTIVITY_VOTED', $post->get('item_id'), '<a href="' . Route::url($url) . '">' . htmlspecialchars((string) ($title), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'collection_id' => $post->get('collection_id'),
                     'post_id' => $post->get('id'),
                     'item_id' => $post->get('item_id'),
                     'url'     => Route::url($url)
-                )
+                ]
             ],
-            'recipients' => array(
+            'recipients' => [
                 ['collection', $post->get('collection_id')],
                 ['user', $post->item()->get('created_by')]
-            )
+            ]
         ]);
 
         // Display updated item stats if called via AJAX
@@ -812,22 +812,22 @@ class Posts extends SiteController
                     'COM_COLLECTIONS_ACTIVITY_COLLECTED',
                     '<a href="' . Route::url($collection->link()) . '">' . $collection->get('title') . '</a>'
                 ),
-                'details'     => array(
+                'details'     => [
                     'collection_id' => $post->collection_id,
                     'post_id' => $post->id,
                     'item_id' => $post->item_id
-                )
+                ]
             ],
-            'recipients' => array(
+            'recipients' => [
                 ['collection', $post->collection_id],
                 ['user', $collection->get('created_by')],
                 ['user', $post->created_by]
-            )
+            ]
         ]);
 
         // Display updated item stats if called via AJAX
         if ($no_html) {
-            echo Lang::txt('COM_COLLECTIONS_NUM_REPOSTS', $post->getCount(array('item_id' => $post->get('item_id'), 'original' => 0)));
+            echo Lang::txt('COM_COLLECTIONS_NUM_REPOSTS', $post->getCount(['item_id' => $post->get('item_id'), 'original' => 0]));
             exit;
         }
 
@@ -848,7 +848,7 @@ class Posts extends SiteController
         Request::checkToken(['get', 'post']);
 
         // Incoming
-        $posts = Request::getArray('post', array());
+        $posts = Request::getArray('post', []);
 
         if (is_array($posts)) {
             $folder = null;

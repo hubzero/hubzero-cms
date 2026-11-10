@@ -64,7 +64,7 @@ $this->css()
                                             $name = '<a href="' . Route::url($row->creator->link()) . '">' . $name . '</a>';
                                         }
                                     }
-                                    $cls = array();
+                                    $cls = [];
                                     $icn = 'icon-comments';
                                     if ($row->get('closed')) {
                                         $cls[] = 'closed';
@@ -110,13 +110,13 @@ $this->css()
                                         <td class="priority-4">
                                             <span><?php echo Lang::txt('COM_FORUM_SECTION'); ?></span>
                                             <span class="entry-details section-name">
-                                                <?php echo $this->escape(\Hubzero\Utility\Str::truncate($section, 100, array('exact' => true))); ?>
+                                                <?php echo $this->escape(\Hubzero\Utility\Str::truncate($section, 100, ['exact' => true])); ?>
                                             </span>
                                         </td>
                                         <td class="priority-3">
                                             <span><?php echo Lang::txt('COM_FORUM_CATEGORY'); ?></span>
                                             <span class="entry-details category-name">
-                                                <?php echo $this->escape(\Hubzero\Utility\Str::truncate($category, 100, array('exact' => true))); ?>
+                                                <?php echo $this->escape(\Hubzero\Utility\Str::truncate($category, 100, ['exact' => true])); ?>
                                             </span>
                                         </td>
                                     </tr>

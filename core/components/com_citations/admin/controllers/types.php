@@ -68,7 +68,7 @@ class Types extends AdminController
 
         if (!($row instanceof Type)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id) && !empty($id)) {
                 $id = $id[0];
             }
@@ -101,7 +101,7 @@ class Types extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $fields = Request::getArray('type', array(), 'post');
+        $fields = Request::getArray('type', [], 'post');
         $typeId = !empty($fields['id']) ? $fields['id'] : null;
         unset($fields['id']);
 
@@ -134,8 +134,8 @@ class Types extends AdminController
         }
 
         // Incoming (expecting an array)
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $removed = 0;
 

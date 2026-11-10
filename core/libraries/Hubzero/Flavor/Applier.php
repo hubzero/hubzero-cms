@@ -50,7 +50,7 @@ class Applier
      *
      * @var  array
      */
-    protected $notes = array();
+    protected $notes = [];
 
     /**
      * Constructor
@@ -73,23 +73,23 @@ class Applier
      */
     public function apply(Flavor $flavor)
     {
-        $this->applySwitches('component', $flavor->get('components', array()));
-        $this->applySwitches('module', $flavor->get('modules', array()));
-        $this->applyModuleItems($flavor->get('modules', array(), 'items') ?: array());
-        $this->applySwitches('plugin', $flavor->get('plugins', array()));
+        $this->applySwitches('component', $flavor->get('components', []));
+        $this->applySwitches('module', $flavor->get('modules', []));
+        $this->applyModuleItems($flavor->get('modules', [], 'items') ?: []);
+        $this->applySwitches('plugin', $flavor->get('plugins', []));
         $this->applyTemplate($flavor->get('template'));
         $this->applyTiles($flavor->get('dashboard', null, 'tiles'));
         $this->applyStates(
             '#__categories',
             'published',
-            $flavor->get('kb', array(), 'categories'),
+            $flavor->get('kb', [], 'categories'),
             "`extension` = 'com_kb'",
             'knowledge base category'
         );
-        $this->applyStates('#__kb_articles', 'state', $flavor->get('kb', array(), 'articles'), '', 'knowledge base article');
-        $this->applyStates('#__content', 'state', $flavor->get('content', array(), 'articles'), '', 'article');
-        $this->applyStates('#__menu', 'published', $flavor->get('menu', array(), 'items'), '`client_id` = 0', 'menu item', 'path');
-        $this->applyResourceTypes($flavor->get('resource_types', array()));
+        $this->applyStates('#__kb_articles', 'state', $flavor->get('kb', [], 'articles'), '', 'knowledge base article');
+        $this->applyStates('#__content', 'state', $flavor->get('content', [], 'articles'), '', 'article');
+        $this->applyStates('#__menu', 'published', $flavor->get('menu', [], 'items'), '`client_id` = 0', 'menu item', 'path');
+        $this->applyResourceTypes($flavor->get('resource_types', []));
     }
 
     /**
@@ -100,35 +100,35 @@ class Applier
      */
     public function check(Flavor $flavor)
     {
-        $found       = array();
-        $this->notes = array();
+        $found       = [];
+        $this->notes = [];
 
-        $this->checkSwitches($found, 'component', $flavor->get('components', array()));
-        $this->checkSwitches($found, 'module', $flavor->get('modules', array()));
-        $this->checkModuleItems($found, $flavor->get('modules', array(), 'items') ?: array());
-        $this->checkSwitches($found, 'plugin', $flavor->get('plugins', array()));
+        $this->checkSwitches($found, 'component', $flavor->get('components', []));
+        $this->checkSwitches($found, 'module', $flavor->get('modules', []));
+        $this->checkModuleItems($found, $flavor->get('modules', [], 'items') ?: []);
+        $this->checkSwitches($found, 'plugin', $flavor->get('plugins', []));
         $this->checkTemplate($found, $flavor->get('template'));
         $this->checkTiles($found, $flavor->get('dashboard', null, 'tiles'));
         $this->checkStates(
             $found,
             '#__categories',
             'published',
-            $flavor->get('kb', array(), 'categories'),
+            $flavor->get('kb', [], 'categories'),
             "`extension` = 'com_kb'",
             'knowledge base category'
         );
-        $this->checkStates($found, '#__kb_articles', 'state', $flavor->get('kb', array(), 'articles'), '', 'knowledge base article');
-        $this->checkStates($found, '#__content', 'state', $flavor->get('content', array(), 'articles'), '', 'article');
+        $this->checkStates($found, '#__kb_articles', 'state', $flavor->get('kb', [], 'articles'), '', 'knowledge base article');
+        $this->checkStates($found, '#__content', 'state', $flavor->get('content', [], 'articles'), '', 'article');
         $this->checkStates(
             $found,
             '#__menu',
             'published',
-            $flavor->get('menu', array(), 'items'),
+            $flavor->get('menu', [], 'items'),
             '`client_id` = 0',
             'menu item',
             'path'
         );
-        $this->checkResourceTypes($found, $flavor->get('resource_types', array()));
+        $this->checkResourceTypes($found, $flavor->get('resource_types', []));
 
         return $found;
     }
@@ -154,8 +154,8 @@ class Applier
      */
     protected function applySwitches($type, array $lever)
     {
-        foreach (array('enable', 'disable') as $way) {
-            foreach (isset($lever[$way]) ? $lever[$way] : array() as $name) {
+        foreach (['enable', 'disable'] as $way) {
+            foreach (isset($lever[$way]) ? $lever[$way] : [] as $name) {
                 if ($type == 'plugin') {
                     list($folder, $element) = $this->pluginParts($name);
                     $way == 'enable'
@@ -173,7 +173,7 @@ class Applier
             }
         }
 
-        foreach (isset($lever['params']) ? $lever['params'] : array() as $name => $params) {
+        foreach (isset($lever['params']) ? $lever['params'] : [] as $name => $params) {
             $this->setParams($type, $name, $params);
             $this->say('Setting ' . implode(', ', array_keys($params)) . ' on ' . $type . ' ' . $name);
         }
@@ -189,8 +189,8 @@ class Applier
      */
     protected function checkSwitches(array &$found, $type, array $lever)
     {
-        foreach (array('enable', 'disable') as $way) {
-            foreach (isset($lever[$way]) ? $lever[$way] : array() as $name) {
+        foreach (['enable', 'disable'] as $way) {
+            foreach (isset($lever[$way]) ? $lever[$way] : [] as $name) {
                 $enabled = $this->enabled($type, $name);
 
                 if ($enabled === null) {
@@ -204,7 +204,7 @@ class Applier
             }
         }
 
-        foreach (isset($lever['params']) ? $lever['params'] : array() as $name => $params) {
+        foreach (isset($lever['params']) ? $lever['params'] : [] as $name => $params) {
             foreach ($this->currentParams($type, $name) as $where => $current) {
                 foreach ($params as $key => $value) {
                     $now = isset($current[$key]) ? $current[$key] : null;
@@ -247,7 +247,7 @@ class Applier
      */
     protected function currentParams($type, $name)
     {
-        $out = array();
+        $out = [];
 
         if ($type == 'module') {
             if (!$this->db->tableExists('#__modules')) {
@@ -362,7 +362,7 @@ class Applier
     {
         $parts = explode('/', $name, 2);
 
-        return array($parts[0], isset($parts[1]) ? $parts[1] : '');
+        return [$parts[0], isset($parts[1]) ? $parts[1] : ''];
     }
 
     // ------------------------------------------------------- module instances
@@ -501,7 +501,7 @@ class Applier
             return;
         }
 
-        $this->setParams('plugin', 'members/dashboard', array('defaults' => json_encode(self::layout($tiles))));
+        $this->setParams('plugin', 'members/dashboard', ['defaults' => json_encode(self::layout($tiles))]);
         $this->say('Setting the default member dashboard (' . count($tiles) . ' tiles)');
     }
 
@@ -542,21 +542,21 @@ class Applier
      */
     public static function layout(array $tiles)
     {
-        $next = array();
-        $laid = array();
+        $next = [];
+        $laid = [];
 
         foreach ($tiles as $tile) {
             $col = (int) $tile['col'];
             $row = isset($next[$col]) ? $next[$col] : 1;
             $next[$col] = $row + 2;
 
-            $laid[] = array(
+            $laid[] = [
                 'module' => (int) $tile['module'],
                 'col'    => $col,
                 'row'    => $row,
                 'size_x' => 1,
                 'size_y' => 2,
-            );
+            ];
         }
 
         usort($laid, function ($a, $b) {
@@ -574,7 +574,7 @@ class Applier
      */
     protected function tileKeys(array $tiles)
     {
-        $keys = array();
+        $keys = [];
 
         foreach ($tiles as $tile) {
             if (is_array($tile) && isset($tile['module'], $tile['col'], $tile['row'])) {
@@ -688,7 +688,7 @@ class Applier
         }
 
         foreach ($types as $alias => $columns) {
-            $set = array();
+            $set = [];
 
             foreach ($columns as $column => $value) {
                 $set[] = $this->db->quoteName($column) . ' = ' . $this->db->quote($value);
@@ -756,7 +756,7 @@ class Applier
 
         $decoded = json_decode((string) $params, true);
 
-        return is_array($decoded) ? $decoded : array();
+        return is_array($decoded) ? $decoded : [];
     }
 
     /**

@@ -57,7 +57,7 @@ class Exception extends \Exception
      *
      * @var  array
      */
-    protected $args = array();
+    protected $args = [];
 
     /**
      * Backtrace information.

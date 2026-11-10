@@ -78,7 +78,7 @@ class Groupsv1r0 extends ApiController
      */
     public function listTask()
     {
-        $filters = array(
+        $filters = [
             'limit'      => Request::getInt('limit', 25),
             'start'      => Request::getInt('limitstart', 0),
             'search'     => Request::getString('search', ''),
@@ -86,9 +86,9 @@ class Groupsv1r0 extends ApiController
             'sort_Dir'   => strtoupper(Request::getWord('sort_Dir', 'DESC')),
             'fields'     => Request::getString('fields', 'gidNumber,cn,description,created,created_by'),
             'policy'     => strtolower(Request::getWord('policy', '')),
-            'type'       => array(1, 3),
+            'type'       => [1, 3],
             'published'  => 1
-        );
+        ];
 
         $filters['fields'] = explode(',', $filters['fields']);
         $filters['fields'] = array_map('trim', $filters['fields']);
@@ -180,64 +180,64 @@ class Groupsv1r0 extends ApiController
         $discoverability = Request::getWord('discoverability', 'visible');
 
         // var to hold errors
-        $errors = array();
+        $errors = [];
 
         // check for required fields (cn & title)
         if ($cn == '') {
-            $errors[] = array(
+            $errors[] = [
                 'field'   => 'cn',
                 'message' => Lang::txt('Group cn cannot be empty.')
-            );
+            ];
         }
         if ($title == '') {
-            $errors[] = array(
+            $errors[] = [
                 'field'   => 'title',
                 'message' => Lang::txt('Group title cannot be empty.')
-            );
+            ];
         }
 
         // check to make sure cn is valid & isnt taken
         if (!\Hubzero\Utility\Validate::group($cn, false)) {
-            $errors[] = array(
+            $errors[] = [
                 'field'   => 'cn',
                 'message' => Lang::txt('COM_GROUPS_SAVE_ERROR_INVALID_ID')
-            );
+            ];
         }
         if (\Hubzero\User\Group::exists($cn, false)) {
-            $errors[] = array(
+            $errors[] = [
                 'field'   => 'cn',
                 'message' => Lang::txt('COM_GROUPS_SAVE_ERROR_ID_TAKEN')
-            );
+            ];
         }
 
         // valid join policy
-        $policies = array(
+        $policies = [
             0 => 'open',
             1 => 'restricted',
             2 => 'invite_only',
             3 => 'closed'
-        );
+        ];
 
         // make sure we have a valid policy
         if (!in_array($joinPolicy, $policies)) {
-            $errors[] = array(
+            $errors[] = [
                 'field'   => 'join_policy',
                 'message' => Lang::txt('Group "join_policy" value must be one of the following: %s', implode(', ', $policies))
-            );
+            ];
         }
 
         // valid discoverabilities
-        $discoverabilities = array(
+        $discoverabilities = [
             0 => 'visible',
             1 => 'hidden'
-        );
+        ];
 
         // make sure we have a valid discoverability
         if (!in_array($discoverability, $discoverabilities)) {
-            $errors[] = array(
+            $errors[] = [
                 'field'   => 'discoverability',
                 'message' => Lang::txt('Group "discoverability" value must be one of the following: %s', implode(', ', $discoverabilities))
-            );
+            ];
         }
 
         // check for errors at this point
@@ -269,8 +269,8 @@ class Groupsv1r0 extends ApiController
         $group->set('discoverability', $discoverability);
         $group->set('created', with(new Date('now'))->toSql());
         $group->set('created_by', User::get('id'));
-        $group->add('managers', array(User::get('id')));
-        $group->add('members', array(User::get('id')));
+        $group->add('managers', [User::get('id')]);
+        $group->add('members', [User::get('id')]);
 
         if (!$group->create() || !$group->update()) {
             throw new Exception(Lang::txt('Failed to create group.'), 500);
@@ -312,7 +312,7 @@ class Groupsv1r0 extends ApiController
             throw new Exception(Lang::txt('COM_GROUPS_ERROR_MISSING_RECORD'), 404);
         }
 
-        $group = array();
+        $group = [];
 
         $fields = explode(',', $fields);
         $fields = array_map('trim', $fields);
@@ -323,7 +323,7 @@ class Groupsv1r0 extends ApiController
             || in_array($uid, (array) $record->get('managers'))
             || User::authorise('core.admin', 'com_groups'));
         if (!$isMember) {
-            $fields = array_diff($fields, array('private_desc', 'params'));
+            $fields = array_diff($fields, ['private_desc', 'params']);
         }
 
         // the group's page, offered as 'link' when asked for and always as 'url'
@@ -353,12 +353,12 @@ class Groupsv1r0 extends ApiController
 
         $group['url'] = $url;
 
-        $sections = array();
+        $sections = [];
 
         // getPluginAccess() takes the group object; handed the output array it
         // returned null and every read died on the offset lookups below
         $pluginAccess = (array) \Hubzero\User\Group\Helper::getPluginAccess($record);
-        $plugins = Event::trigger('groups.onGroupAreas', array());
+        $plugins = Event::trigger('groups.onGroupAreas', []);
 
         if ($plugins) {
             $isMember = (in_array(User::get('id'), $record->get('members')));
@@ -386,13 +386,13 @@ class Groupsv1r0 extends ApiController
             }
         }
 
-        array_unshift($sections, array(
+        array_unshift($sections, [
             'name'             => 'overview',
             'title'            => 'Overview',
             'default_access'   => 'anyone',
             'display_menu_tab' => true,
             'url'              => str_replace('/api', '', $base . '/' . ltrim(Route::url('index.php?option=com_groups&cn=' . $record->get('cn') . '&active=overview'), '/'))
-        ));
+        ]);
 
         $group['sections'] = $sections;
 
@@ -483,50 +483,50 @@ class Groupsv1r0 extends ApiController
         $discoverability = strtolower(Request::getString('discoverability', $group->get('discoverability')));
 
         // var to hold errors
-        $errors = array();
+        $errors = [];
 
         // check for required fields (cn & title)
         if ($title == '') {
-            $errors[] = array(
+            $errors[] = [
                 'field'   => 'title',
                 'message' => Lang::txt('Group title cannot be empty.')
-            );
+            ];
         }
 
         // valid join policy
-        $policies = array(
+        $policies = [
             0 => 'open',
             1 => 'restricted',
             2 => 'invite_only',
             3 => 'closed'
-        );
+        ];
 
         // make sure we have a valid policy
         if (
             !in_array($joinPolicy, $policies)
             && !in_array($joinPolicy, array_keys($policies))
         ) {
-            $errors[] = array(
+            $errors[] = [
                 'field'   => 'join_policy',
                 'message' => Lang::txt('Group "join_policy" value must be one of the following: %s', implode(', ', $policies))
-            );
+            ];
         }
 
         // valid discoverabilities
-        $discoverabilities = array(
+        $discoverabilities = [
             0 => 'visible',
             1 => 'hidden'
-        );
+        ];
 
         // make sure we have a valid discoverability
         if (
             !in_array($discoverability, $discoverabilities)
             && !in_array($discoverability, array_keys($discoverabilities))
         ) {
-            $errors[] = array(
+            $errors[] = [
                 'field'   => 'discoverability',
                 'message' => Lang::txt('Group "discoverability" value must be one of the following: %s', implode(', ', $discoverabilities))
-            );
+            ];
         }
 
         // check for errors at this point

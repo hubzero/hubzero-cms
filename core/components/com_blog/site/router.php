@@ -23,7 +23,7 @@ class Router extends Base
      */
     public function build(&$query)
     {
-        $segments = array();
+        $segments = [];
 
         if (!empty($query['task']) && $query['task'] != 'feed.rss' && $query['task'] != 'feed') {
             $segments[] = $query['task'];
@@ -67,7 +67,7 @@ class Router extends Base
      */
     public function parse(&$segments)
     {
-        $vars = array();
+        $vars = [];
 
         if (empty($segments)) {
             return $vars;
@@ -107,7 +107,7 @@ class Router extends Base
             } elseif (strstr($segments[3], ':')) {
                 $parts = explode(':', $segments[3]);
                 $namespace = strtolower(trim($parts[0]));
-                if (in_array($namespace, array('image', 'file'))) {
+                if (in_array($namespace, ['image', 'file'])) {
                     $vars['task'] = 'download';
                     $vars['file'] = trim($parts[1]);
                 }
@@ -117,7 +117,7 @@ class Router extends Base
                 $vars['task'] = $segments[3];
             }
         }
-        if (in_array($vars['task'], array('deletefile', 'deletefolder', 'upload', 'download'))) {
+        if (in_array($vars['task'], ['deletefile', 'deletefolder', 'upload', 'download'])) {
             $vars['controller'] = 'media';
         }
 

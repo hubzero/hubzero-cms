@@ -23,7 +23,7 @@ class Formatwiki extends Plugin
      *
      * @var  array
      */
-    public static $rendered = array();
+    public static $rendered = [];
 
     /**
      * Did this plugin produce the given content in this request?
@@ -132,7 +132,7 @@ class Formatwiki extends Plugin
             }
 
             // Trigger the onFinderBeforeSave event.
-            $results = Event::trigger('wiki.onWikiParseText', array($content, $params, $params['fullparse'], true));
+            $results = Event::trigger('wiki.onWikiParseText', [$content, $params, $params['fullparse'], true]);
             $content = implode('', $results);
             $rendered = true;
         }

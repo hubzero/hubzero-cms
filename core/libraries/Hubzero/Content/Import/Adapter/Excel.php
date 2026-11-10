@@ -30,7 +30,7 @@ class Excel implements Adapter
      *
      * @var  array
      */
-    private $data = array();
+    private $data = [];
 
     /**
      * Integer to hold count
@@ -47,7 +47,7 @@ class Excel implements Adapter
      */
     public static function accepts($mime)
     {
-        return in_array($mime, array(
+        return in_array($mime, [
             'xls',
             'xlsx',
             'application/zip', // WTF?
@@ -57,7 +57,7 @@ class Excel implements Adapter
             'application/vnd.ms-excel.sheet.macroEnabled.12',
             'application/vnd.ms-excel.template.macroEnabled.12',
             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        ));
+        ]);
     }
 
     /**

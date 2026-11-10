@@ -67,7 +67,7 @@ class Mediav1r0 extends ApiController
         // Are we creating a new tracking record?
         if (!is_object($trackingInformation) || $trackingInformation->isNew()) {
             $trackingInformation = Mediatracking::blank();
-            $trackingInformation->set(array(
+            $trackingInformation->set([
                 'user_id'                     => User::get('id'),
                 'session_id'                  => $session->getId(),
                 'ip_address'                  => $ipAddress,
@@ -81,7 +81,7 @@ class Mediav1r0 extends ApiController
                 'completed'                   => 0,
                 'total_views'                 => 1,
                 'total_viewing_time'          => 0
-            ));
+            ]);
         } else {
             // Get the amount of video watched from last tracking event
             $time_viewed = (int)$time - (int)$trackingInformation->get('current_position');
@@ -121,7 +121,7 @@ class Mediav1r0 extends ApiController
 
         // Save detailed tracking info
         if ($event == 'start' || $trackingInformationDetailed->isNew()) {
-            $trackingInformationDetailed->set(array(
+            $trackingInformationDetailed->set([
                 'user_id'                     => User::get('id'),
                 'session_id'                  => $session->getId(),
                 'ip_address'                  => $ipAddress,
@@ -133,7 +133,7 @@ class Mediav1r0 extends ApiController
                 'current_position_timestamp'  => Date::toSql(),
                 'farthest_position_timestamp' => Date::toSql(),
                 'completed'                   => 0
-            ));
+            ]);
         } else {
             // Set the new current position
             $trackingInformationDetailed->set('current_position', $time);

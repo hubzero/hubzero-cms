@@ -62,7 +62,7 @@ class Hubpresenter extends Plugin
                         if ($s->isFile()) {
                             $extension = $s->getExtension();
 
-                            if (in_array($extension, array('mp4', 'm4v', 'webm', 'ogv'))) {
+                            if (in_array($extension, ['mp4', 'm4v', 'webm', 'ogv'])) {
                                 $slideVideos[$s->getDisplayName()][$extension] = $s->getName();
                             }
                         }

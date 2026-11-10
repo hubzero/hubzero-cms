@@ -23,10 +23,10 @@ class Url extends Content
      *
      * @var array
      **/
-    protected static $info = array(
+    protected static $info = [
             'action_message' => 'As a standard link',
-            'responds_to'    => array('url')
-        );
+            'responds_to'    => ['url']
+        ];
 
     /**
      * Create method for this handler
@@ -54,11 +54,11 @@ class Url extends Content
             $urls = (array) $url;
         }
 
-        $return = array();
+        $return = [];
 
         foreach ($urls as $url) {
             if (!preg_match('/^(http[s]*\:\/\/)?([0-9A-Za-z\.\/\-\=\:\?\_\&\%\~\(\)]+)((#[0-9A-Za-z_-]+)?)$/', $url, $matches)) {
-                return array('error' => 'Content did not match the pre-defined filter');
+                return ['error' => 'Content did not match the pre-defined filter'];
             }
 
             // Try to help users out by being a little smarter about url provided
@@ -93,12 +93,12 @@ class Url extends Content
                 $content .= '<iframe width="560" height="315" src="https://www.youtube.com/embed/';
                 $content .= $matches[2];
                 $content .= '?rel=0" frameborder="0" allowfullscreen></iframe>';
-                return array('type' => 'content', 'value' => $content);
+                return ['type' => 'content', 'value' => $content];
             } else {
-                return array('type' => 'default');
+                return ['type' => 'default'];
             }
         } else {
-            return array('type' => 'default');
+            return ['type' => 'default'];
         }
     }
 }

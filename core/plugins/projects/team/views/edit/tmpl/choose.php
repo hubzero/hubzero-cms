@@ -16,8 +16,8 @@ defined('_HZEXEC_') or die();
 
 $group = $this->model->groupOwner();
 
-$members  = array();
-$managers = array();
+$members  = [];
+$managers = [];
 if ($group) {
     $members  = $group->get('members');
     $managers = $group->get('managers');

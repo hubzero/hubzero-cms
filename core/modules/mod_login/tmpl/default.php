@@ -39,7 +39,7 @@ $usersConfig = Component::params('com_members');
 $primary     = Request::getWord('primary', false);
 
 // use some reflections to inspect plugins for special behavior (added for shibboleth)
-$refl = array();
+$refl = [];
 $login_provider_html = "";
 foreach ($authenticators as $a) {
     $authClass = 'Plugins\\Authentication\\' . ucfirst($a['name']) . '\\' . ucfirst($a['name']);

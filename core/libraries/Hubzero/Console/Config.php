@@ -133,7 +133,7 @@ class Config
     {
         foreach ($incoming as $k => $v) {
             if (is_array($v)) {
-                $existing[$k] = isset($existing[$k]) ? $this->merge($existing[$k], $v) : $this->merge(array(), $v);
+                $existing[$k] = isset($existing[$k]) ? $this->merge($existing[$k], $v) : $this->merge([], $v);
             } else {
                 if (is_numeric($k)) {
                     $existing[] = $v;

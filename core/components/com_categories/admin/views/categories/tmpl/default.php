@@ -216,7 +216,7 @@ $formAction = Route::url(
         </tfoot>
         <tbody>
             <?php
-            $originalOrders = array();
+            $originalOrders = [];
             foreach ($this->items as $i => $item) :
                 $orderkey  = array_search(
                     $item->id,

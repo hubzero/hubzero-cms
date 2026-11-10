@@ -305,7 +305,7 @@ class Server extends Obj
             $ranges   = explode(',', $range);
             $partial  = true;
         } else {
-            $ranges   = array('0-' . ($filesize - 1));
+            $ranges   = ['0-' . ($filesize - 1)];
             $partial  = false;
         }
 

@@ -90,7 +90,7 @@ class Stats extends Table
      */
     public function monthlyStats($numMonths = 3, $includeCurrent = false)
     {
-        $stats = array();
+        $stats = [];
 
         $obj  = new Project($this->_db);
         $objO = new Owner($this->_db);
@@ -153,7 +153,7 @@ class Stats extends Table
         }
 
         // Collectors
-        $stats   = array();
+        $stats   = [];
         $updated = null;
         $lastLog = null;
 
@@ -181,29 +181,29 @@ class Stats extends Table
         $validCount = count($validProjects) > 0 ? count($validProjects) : 1;
 
         // Collect overview stats
-        $stats['general'] = array(
-            'total'     => $tbl->getCount(array('exclude' => $exclude, 'all' => 1), true),
-            'setup'     => $tbl->getCount(array('exclude' => $exclude, 'setup' => 1), true),
-            'active'    => $tbl->getCount(array('exclude' => $exclude, 'active' => 1), true),
-            'public'    => $tbl->getCount(array('exclude' => $exclude, 'private' => '0'), true),
+        $stats['general'] = [
+            'total'     => $tbl->getCount(['exclude' => $exclude, 'all' => 1], true),
+            'setup'     => $tbl->getCount(['exclude' => $exclude, 'setup' => 1], true),
+            'active'    => $tbl->getCount(['exclude' => $exclude, 'active' => 1], true),
+            'public'    => $tbl->getCount(['exclude' => $exclude, 'private' => '0'], true),
             'sponsored' => $tbl->getCount(
-                array('exclude' => $exclude, 'reviewer' => 'sponsored'),
+                ['exclude' => $exclude, 'reviewer' => 'sponsored'],
                 true
             ),
             'sensitive' => $tbl->getCount(
-                array('exclude' => $exclude, 'reviewer' => 'sensitive'),
+                ['exclude' => $exclude, 'reviewer' => 'sensitive'],
                 true
             ),
             'new'       => $tbl->getCount(
-                array('exclude' => $exclude, 'created' => date('Y-m', time()), 'all' => 1),
+                ['exclude' => $exclude, 'created' => date('Y-m', time()), 'all' => 1],
                 true
             )
-        );
+        ];
         $active = $stats['general']['active'] ? $stats['general']['active'] : 1;
         $total  = $stats['general']['total'] ? $stats['general']['total'] : 1;
 
         // Activity stats
-        $recentlyActive = $tbl->getCount(array('exclude' => $exclude, 'timed' => $pastMonth, 'active' => 1), true);
+        $recentlyActive = $tbl->getCount(['exclude' => $exclude, 'timed' => $pastMonth, 'active' => 1], true);
 
         $l = \Hubzero\Activity\Log::blank()->getTableName();
         $r = \Hubzero\Activity\Recipient::blank()->getTableName();
@@ -235,11 +235,11 @@ class Stats extends Table
 
         $average = number_format($c / $d, 0);
 
-        $stats['activity'] = array(
+        $stats['activity'] = [
             'total'   => $total,
             'average' => $average,
             'usage'   => $recentlyActive
-        );
+        ];
 
         // Get top projects
         $log = \Hubzero\Activity\Log::all()
@@ -265,23 +265,23 @@ class Stats extends Table
         $teamTotal         = $activeTeam + $invitedTeam;
 
         $perc = round(($multiTeam * 100) / $total) . '%';
-        $stats['team'] = array(
+        $stats['team'] = [
             'total'      => $teamTotal,
             'average'    => $objO->getTeamStats($exclude, 'average'),
             'multi'      => $perc,
             'multiusers' => $multiProjectUsers
-        );
+        ];
 
         $stats['topTeamProjects'] = $objO->getTopTeamProjects($exclude, $limit, $publicOnly);
 
-        $stats['files'] = array(
+        $stats['files'] = [
             'total'     => 0,
             'average'   => 0,
             'usage'     => 0,
             'diskspace' => 0,
             'commits'   => 0,
             'pubspace'  => 0
-        );
+        ];
 
         // Collect files stats
         if ($lastLog) {
@@ -299,13 +299,13 @@ class Stats extends Table
 
             $perc = round(($fUsage * 100) / $active) . '%';
 
-            $stats['files'] = array(
+            $stats['files'] = [
                 'total'     => $fTotal,
                 'average'   => $fAverage,
                 'usage'     => $perc,
                 'diskspace' => \Hubzero\Utility\Number::formatBytes($fDSpace),
                 'pubspace'  => \Hubzero\Utility\Number::formatBytes($pDSpace)
-            );
+            ];
         }
 
         // Collect publication stats
@@ -315,13 +315,13 @@ class Stats extends Table
             $prPub = $objP->getPubStats($include, 'usage');
             $perc  = round(($prPub * 100) / $total) . '%';
 
-            $stats['pub'] = array(
+            $stats['pub'] = [
                 'total'    => $objP->getPubStats($include, 'total'),
                 'average'  => $objP->getPubStats($include, 'average'),
                 'usage'    => $perc,
                 'released' => $objP->getPubStats($include, 'released'),
                 'versions' => $objPV->getPubStats($include)
-            );
+            ];
         }
 
         // Save weekly stats

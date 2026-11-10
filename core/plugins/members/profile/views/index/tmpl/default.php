@@ -28,17 +28,17 @@ if (User::get('id') == $this->profile->get('id')) {
 }
 
 $isIncrementalEnabled = false;
-$update_missing = array();
-$invalid = array();
+$update_missing = [];
+$invalid = [];
 
 
 //registration update
-$update_missing = array();
+$update_missing = [];
 if (isset($this->registration_update)) {
     $update_missing = $this->registration_update->_missing;
 }
 
-$invalid = array();
+$invalid = [];
 if (isset($this->registration_update)) {
     $invalid = $this->registration_update->_invalid;
 }
@@ -86,16 +86,16 @@ $data = new Hubzero\Config\Registry(
 // Create a new form
 Hubzero\Form\Form::addFieldPath(Component::path('com_members') . DS . 'models' . DS . 'fields');
 
-$form = new Hubzero\Form\Form('profile', array('control' => 'profile'));
+$form = new Hubzero\Form\Form('profile', ['control' => 'profile']);
 $form->load($xml);
 $form->bind($data);
 
-$fields = array();
+$fields = [];
 foreach ($profiles as $profile) {
     if (isset($fields[$profile->get('profile_key')])) {
         $values = $fields[$profile->get('profile_key')]->get('profile_value');
         if (!is_array($values)) {
-            $values = array($values => $fields[$profile->get('profile_key')]->get('label', $values));
+            $values = [$values => $fields[$profile->get('profile_key')]->get('label', $values)];
         }
         $values[$profile->get('profile_value')] = $profile->get('label', $profile->get('profile_value'));
 
@@ -121,7 +121,7 @@ if (!function_exists('renderIfJson')) :
                 return $v;
             }
 
-            $o = array();
+            $o = [];
             $o[] = '<table>';
             $o[] = '<tbody>';
             foreach ($v as $nm => $vl) {
@@ -140,11 +140,11 @@ if (!function_exists('renderIfJson')) :
 endif;
 
 // Legacy access values for profile fields
-$legacy = array(
+$legacy = [
     0 => Lang::txt('COM_MEMBERS_FIELD_ACCESS_PUBLIC'),
     1 => Lang::txt('COM_MEMBERS_FIELD_ACCESS_REGISTERED'),
     2 => Lang::txt('COM_MEMBERS_FIELD_ACCESS_PRIVATE')
-);
+];
 ?>
 
 <?php if ($this->getError()) { ?>
@@ -241,7 +241,7 @@ $legacy = array(
                                 $page->text = $page->introtext;
                             }
                             $params = new \Hubzero\Config\Registry($page->attribs);
-                            $results = Event::trigger('content.onContentPrepare', array('com_content.article', &$page, &$params, 0));
+                            $results = Event::trigger('content.onContentPrepare', ['com_content.article', &$page, &$params, 0]);
                             echo $page->text;
                         }
                         ?>
@@ -494,15 +494,15 @@ $legacy = array(
         <?php endif; ?>
 
         <?php
-        $scripts = array();
-        $toggle = array();
+        $scripts = [];
+        $toggle = [];
 
         // We need to collect a list of all field options
         // that have dependent fields. We'll use this later
         // on to determine what we should or shouldn't
         // display, regardless if the field has a value
         // submitted by the user.
-        $f = array();
+        $f = [];
         foreach ($this->fields as $field) {
             if ($field->options->count()) {
                 foreach ($field->options as $option) {
@@ -518,15 +518,15 @@ $legacy = array(
                     }
 
                     if (!isset($f[$field->get('name')])) {
-                        $f[$field->get('name')] = array();
+                        $f[$field->get('name')] = [];
                     }
                     $f[$field->get('name')][$option->get('value')] = $events;
                 }
             }
         }
 
-        $sh = array();
-        $hd = array();
+        $sh = [];
+        $hd = [];
 
         foreach ($this->fields as $field) :
             // Add in class for JS selector to conditionally retrieve data from RoR Api
@@ -539,8 +539,8 @@ $legacy = array(
             if ($isUser && $field->options->count()) {
                 $i = 0;
                 $hasEvents = false;
-                $opts = array();
-                $hide = array();
+                $opts = [];
+                $hide = [];
 
                 foreach ($field->options as $option) {
                     $opts[] = '#profile_' . $field->get('name') . $i;
@@ -574,7 +574,7 @@ $legacy = array(
 
                     if ($field->get('type') == 'dropdown') {
                         $scripts[] = '		if ($(this).val() == "' . ($option->value ? $option->value : $option->label) . '") {';
-                        $show = array();
+                        $show = [];
                         foreach ($events as $s) {
                             $show[] = '#profile_' . $s;
                         }
@@ -591,7 +591,7 @@ $legacy = array(
                         $toggle[] = '	}';
                     } else {
                         $scripts[] = '		if ($(this).is(":checked") && $(this).val() == "' . ($option->value ? $option->value : $option->label) . '") {';
-                        $show = array();
+                        $show = [];
                         foreach ($events as $s) {
                             $show[] = '#profile_' . $s;
                         }
@@ -630,7 +630,7 @@ $legacy = array(
             }
 
             if (in_array($profile->get('access', $field->get('access', 5)), User::getAuthorisedViewLevels()) || $isUser) {
-                $cls = array('profile-' . $field->get('name'));
+                $cls = ['profile-' . $field->get('name')];
 
                 if ($profile->get('access', $field->get('access')) == 2) {
                     $cls[] = 'registered';
@@ -658,7 +658,7 @@ $legacy = array(
                         // IF the type is a URL, link it
                         if ($field->get('type') == 'url') {
                             $parsed = parse_url($value);
-                            if (empty($parsed['scheme']) || !in_array(strtolower($parsed['scheme']), array('http', 'https'))) {
+                            if (empty($parsed['scheme']) || !in_array(strtolower($parsed['scheme']), ['http', 'https'])) {
                                 $value = 'http://' . ltrim($value, '/');
                             }
                             $value = '<a href="' . $this->escape($value) . '" rel="external">' . $this->escape($value) . '</a>';
@@ -686,7 +686,7 @@ $legacy = array(
                         }
                     }
 
-                    $val = array();
+                    $val = [];
                     foreach ($value as $k => $v) {
                         $val[$k] = (is_string($v) && strpos($v, '{') === false) ? $this->escape($v) : renderIfJson($v);
                     }
@@ -696,7 +696,7 @@ $legacy = array(
                         $sh += $f[$field->get('name')][$value];
                     }
 
-                    if (is_string($value) && strpos($value, '{') === false && !in_array($field->get('type'), array('url', 'textarea', 'tags'))) {
+                    if (is_string($value) && strpos($value, '{') === false && !in_array($field->get('type'), ['url', 'textarea', 'tags'])) {
                         $val = $this->escape($value);
                     } else {
                         $val = renderIfJson($value);
@@ -827,11 +827,11 @@ $legacy = array(
                         <br class="clear" />
                         <?php
                             //define mail preference options
-                            $options = array(
+                            $options = [
                                 '-1' => Lang::txt('PLG_MEMBERS_PROFILE_EMAILUPDATES_OPT_SELECT'),
                                 '1'  => Lang::txt('PLG_MEMBERS_PROFILE_EMAILUPDATES_OPT_YES'),
                                 '0'  => Lang::txt('PLG_MEMBERS_PROFILE_EMAILUPDATES_OPT_NO')
-                            );
+                            ];
 
                             //build option list
                             $optin_html  = '<strong>' . Lang::txt('PLG_MEMBERS_PROFILE_EMAILUPDATES_EXPLANATION') . '</strong>';

@@ -25,15 +25,15 @@ class Query
     {
         switch ($orderby) {
             case 'alpha':
-                $orderby = array('c.path', 'asc');
+                $orderby = ['c.path', 'asc'];
                 break;
 
             case 'ralpha':
-                $orderby = array('c.path', 'desc');
+                $orderby = ['c.path', 'desc'];
                 break;
 
             case 'order':
-                $orderby = array('c.lft', 'asc');
+                $orderby = ['c.lft', 'asc'];
                 break;
 
             default:
@@ -57,47 +57,47 @@ class Query
 
         switch ($orderby) {
             case 'date':
-                $orderby = array($queryDate, 'asc');
+                $orderby = [$queryDate, 'asc'];
                 break;
 
             case 'rdate':
-                $orderby = array($queryDate, 'DESC');
+                $orderby = [$queryDate, 'DESC'];
                 break;
 
             case 'alpha':
-                $orderby = array('a.title', 'asc');
+                $orderby = ['a.title', 'asc'];
                 break;
 
             case 'ralpha':
-                $orderby = array('a.title', 'DESC');
+                $orderby = ['a.title', 'DESC'];
                 break;
 
             case 'hits':
-                $orderby = array('a.hits', 'DESC');
+                $orderby = ['a.hits', 'DESC'];
                 break;
 
             case 'rhits':
-                $orderby = array('a.hits', 'asc');
+                $orderby = ['a.hits', 'asc'];
                 break;
 
             case 'order':
-                $orderby = array('a.ordering', 'asc');
+                $orderby = ['a.ordering', 'asc'];
                 break;
 
             case 'author':
-                $orderby = array('author', 'asc');
+                $orderby = ['author', 'asc'];
                 break;
 
             case 'rauthor':
-                $orderby = array('author', 'DESC');
+                $orderby = ['author', 'DESC'];
                 break;
 
             case 'front':
-                $orderby = array('a.featured', 'DESC'); //, fp.ordering';
+                $orderby = ['a.featured', 'DESC']; //, fp.ordering';
                 break;
 
             default:
-                $orderby = array('a.ordering', 'asc');
+                $orderby = ['a.ordering', 'asc'];
                 break;
         }
 
@@ -154,10 +154,10 @@ class Query
             $join = '';
         }
 
-        $results = array(
+        $results = [
             'select' => $select,
             'join'   => $join
-        );
+        ];
 
         return $results;
     }
@@ -189,7 +189,7 @@ class Query
             $maxRows = ceil($count / $numColumns);
             $numCells = $maxRows * $numColumns;
             $numEmpty = $numCells - $count;
-            $index = array();
+            $index = [];
 
             // calculate number of empty cells in the array
 
@@ -221,7 +221,7 @@ class Query
 
             // now read the $index back row by row to get articles in right row/col
             // so that they will actually be ordered down the columns (when read by row in the layout)
-            $return = array();
+            $return = [];
             $i = 0;
             for ($row = 1; ($row <= $maxRows) && ($i < $count); $row++) {
                 for ($col = 1; ($col <= $numColumns) && ($i < $count); $col++) {

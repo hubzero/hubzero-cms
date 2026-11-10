@@ -16,7 +16,7 @@ class Dl
         $hash = md5($salt . $path);
 
         if (!isset($_SESSION['dv'])) {
-            $_SESSION['dv'] = array();
+            $_SESSION['dv'] = [];
         }
 
         $_SESSION['dv'][$type]['list'][$hash] = $path;

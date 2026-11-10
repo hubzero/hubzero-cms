@@ -89,7 +89,7 @@ class CustomFields extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $fs = Request::getArray('questions', array(), 'post');
+        $fs = Request::getArray('questions', [], 'post');
 
         // Posted data is coming in
         $form = json_decode(Request::getString('questions', '[]', 'post'), true);
@@ -108,7 +108,7 @@ class CustomFields extends AdminController
             ->ordered()
             ->rows();
 
-        $defaultValues = array(
+        $defaultValues = [
             'label' => '',
             'name' => '',
             'description' => '',
@@ -122,9 +122,9 @@ class CustomFields extends AdminController
             'max' => 0,
             'default_value' => '',
             'placeholder' => ''
-        );
+        ];
         $currentFields = array_reduce($form, function ($currentFields, $field) use ($defaultValues) {
-            $subTypes = array('address', 'facultyadvisor');
+            $subTypes = ['address', 'facultyadvisor'];
             $field['default_value'] = isset($field['value']) ? $field['value'] : '';
             $field['option_other'] = isset($field['other']) ? $field['other'] : '';
             $type = $field['type'];
@@ -153,7 +153,7 @@ class CustomFields extends AdminController
             $currentFields[] = array_merge($defaultValues, $field);
             return $currentFields;
         });
-        $currentFields = isset($currentFields) ? $currentFields : array();
+        $currentFields = isset($currentFields) ? $currentFields : [];
         $ordering = 0;
         foreach ($currentFields as $element) {
             $ordering++;
@@ -188,7 +188,7 @@ class CustomFields extends AdminController
                         $option = Option::blank();
                     }
 
-                    $dependents = array();
+                    $dependents = [];
                     if (isset($opt['dependents'])) {
                         $dependents = explode(',', trim($opt['dependents']));
                         $dependents = array_map('trim', $dependents);
@@ -199,14 +199,14 @@ class CustomFields extends AdminController
                         }
                     }
                     //$option = ($option ?: Option::oneOrNew($oid));
-                    $option->set(array(
+                    $option->set([
                         'field_id'   => $field->get('id'),
                         'label'      => (string) $opt['label'],
                         'value'      => (isset($opt['value']) ? (string) $opt['value'] : ''),
                         'checked'    => (isset($opt['selected']) ? (int) $opt['selected'] : 0),
                         'ordering'   => $j + 1,
                         'dependents' => json_encode($dependents)
-                    ));
+                    ]);
 
                     if (!$option->save()) {
                         Notify::error($option->getError());

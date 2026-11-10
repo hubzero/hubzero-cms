@@ -37,7 +37,7 @@ class Jobs extends AdminController
      */
     public function displayTask()
     {
-        $this->view->filters = array(
+        $this->view->filters = [
             // Get paging variables
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
@@ -74,7 +74,7 @@ class Jobs extends AdminController
                 'search',
                 ''
             ))
-        );
+        ];
 
         // Get data
         $obj = new Job($this->database);
@@ -115,11 +115,11 @@ class Jobs extends AdminController
         $this->css();
 
         // Incoming job ID
-        $id = Request::getArray('id', array(0));
+        $id = Request::getArray('id', [0]);
         $id = is_array($id) ? $id[0] : $id;
 
         // Grab some filters for returning to place after editing
-        $this->view->return = array();
+        $this->view->return = [];
         $this->view->return['sortby'] = Request::getString('sortby', 'added');
 
         $this->view->row = new Job($this->database);
@@ -290,10 +290,10 @@ class Jobs extends AdminController
 
         if (($message && $action == 'message' && $id) || ($action && $action != 'message')) {
             // E-mail "from" info
-            $from = array(
+            $from = [
                 'email' => Config::get('mailfrom'),
                 'name'  => Config::get('sitename') . ' ' . Lang::txt('COM_JOBS_JOBS')
-            );
+            ];
 
             $base = rtrim(Request::base(), '/');
             if (substr($base, -13) == 'administrator') {
@@ -313,14 +313,14 @@ class Jobs extends AdminController
                 $emailbody .= $message;
             }
 
-            $messageParams = array(
+            $messageParams = [
                 'jobs_ad_status_changed',
                 $subject,
                 $emailbody,
                 $from,
-                array($job->addedBy),
+                [$job->addedBy],
                 $this->_option
-            );
+            ];
             if (!Event::trigger('xmessage.onSendMessage', $messageParams)) {
                 Notify::error(Lang::txt('COM_JOBS_ERROR_FAILED_TO_MESSAGE_USERS'));
             }
@@ -369,8 +369,8 @@ class Jobs extends AdminController
         Request::checkToken();
 
         // Incoming (expecting an array)
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Ensure we have an ID to work with
         if (empty($ids)) {

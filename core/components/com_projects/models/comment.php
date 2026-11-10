@@ -65,7 +65,7 @@ class Comment extends Model
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         if (!isset($instances[$oid])) {
@@ -134,28 +134,28 @@ class Comment extends Model
     public function content($as = 'parsed', $shorten = 0)
     {
         $as = strtolower($as);
-        $options = array();
+        $options = [];
 
         switch ($as) {
             case 'parsed':
                 $content = $this->get('comment.parsed', null);
 
                 if ($content === null) {
-                    $config = array(
+                    $config = [
                         'option'   => $this->get('option', 'com_projects'),
                         'scope'    => $this->get('scope'),
                         'pagename' => $this->get('alias'),
                         'pageid'   => 0,
                         'filepath' => $this->get('path'),
                         'domain'   => ''
-                    );
+                    ];
 
-                    $content = str_replace(array('\"', "\'"), array('"', "'"), (string) $this->get('comment', ''));
-                    $this->importPlugin('content')->trigger('onContentPrepare', array(
+                    $content = str_replace(['\"', "\'"], ['"', "'"], (string) $this->get('comment', ''));
+                    $this->importPlugin('content')->trigger('onContentPrepare', [
                         $this->_context,
                         &$this,
                         &$config
-                    ));
+                    ]);
 
                     $this->set('comment.parsed', (string) $this->get('comment', ''));
                     $this->set('comment', $content);
@@ -172,7 +172,7 @@ class Comment extends Model
 
             case 'raw':
             default:
-                $content = str_replace(array('\"', "\'"), array('"', "'"), $this->get('comment'));
+                $content = str_replace(['\"', "\'"], ['"', "'"], $this->get('comment'));
                 $content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
                 break;
         }
@@ -191,7 +191,7 @@ class Comment extends Model
      * @param   boolean  $clear    Clear cached data?
      * @return  mixed
      */
-    public function replies($rtrn = 'list', $filters = array(), $clear = false)
+    public function replies($rtrn = 'list', $filters = [], $clear = false)
     {
         if (!isset($filters['entry_id'])) {
             $filters['entry_id'] = $this->get('entry_id');
@@ -242,7 +242,7 @@ class Comment extends Model
                             $results[$key]->set('path', $this->get('path'));
                         }
                     } else {
-                        $results = array();
+                        $results = [];
                     }
                     $this->comments = new \Hubzero\Base\ItemList($results);
                 }

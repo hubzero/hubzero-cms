@@ -131,7 +131,7 @@ class Git extends Obj
             return false;
         }
 
-        $result = array();
+        $result = [];
 
         // exec call
         exec($call, $result);
@@ -357,7 +357,7 @@ class Git extends Obj
      * @param   array   $new
      * @return  mixed
      */
-    public function gitDiff($old = array(), $new = array())
+    public function gitDiff($old = [], $new = [])
     {
         // Check for repo
         if (!$this->path || !is_dir($this->path)) {
@@ -423,7 +423,7 @@ class Git extends Obj
         // object id; answer as git would for a revision with no output.
         $hash = (string) $hash;
         if ($hash !== '' && !self::isHash($hash)) {
-            return $this->parseLog(array(), $return);
+            return $this->parseLog([], $return);
         }
         $rev = $hash !== '' ? escapeshellarg($hash) : '';
 
@@ -527,8 +527,8 @@ class Git extends Obj
         // Make Git call
         $out = $this->callGit($exec);
 
-        $collector = array();
-        $entry     = array();
+        $collector = [];
+        $entry     = [];
         $i = 0;
 
         foreach ($out as $line) {
@@ -536,7 +536,7 @@ class Git extends Obj
                 $line = str_replace('>>>', '', $line);
                 $data = explode("||", $line);
 
-                $entry = array();
+                $entry = [];
                 $entry['date']    = $data[0];
                 $entry['author']  = $data[1];
                 $entry['email']   = $data[2];
@@ -557,7 +557,7 @@ class Git extends Obj
      * @param   string  $return
      * @return  mixed
      */
-    public function parseLog($out = array(), $return = 'date')
+    public function parseLog($out = [], $return = 'date')
     {
         if (empty($out)) {
             return null;
@@ -569,7 +569,7 @@ class Git extends Obj
                 $arr  = explode("\t", $out[0]);
                 $data = explode("||", $arr[0]);
 
-                $entry = array();
+                $entry = [];
                 $entry['date']    = $data[0];
                 $entry['author']  = $data[1];
                 $entry['email']   = $data[2];
@@ -600,8 +600,8 @@ class Git extends Obj
 
             case 'rename':
                 if (count($out) > 0) {
-                    $names = array();
-                    $hashes = array();
+                    $names = [];
+                    $hashes = [];
                     $k = 0;
 
                     foreach ($out as $o) {
@@ -673,7 +673,7 @@ class Git extends Obj
         // Get Git status
         $out = $this->callGit("ls-tree $showArg --name-only master " . escapeshellarg($subdir));
 
-        return (empty($out) || substr($out[0], 0, 5) == 'fatal') ? array() : $out;
+        return (empty($out) || substr($out[0], 0, 5) == 'fatal') ? [] : $out;
     }
 
     /**
@@ -690,7 +690,7 @@ class Git extends Obj
         // Get Git status
         $out = $this->callGit('ls-tree --name-only -dr master ' . escapeshellarg($subdir));
 
-        return (empty($out) || substr($out[0], 0, 5) == 'fatal') ? array() : $out;
+        return (empty($out) || substr($out[0], 0, 5) == 'fatal') ? [] : $out;
     }
 
     /**
@@ -745,18 +745,18 @@ class Git extends Obj
         // Call Git
         $out = $this->callGit('log --diff-filter=D --pretty=format:">>>%ct||%an||%ae||%H||%f" --name-only ');
 
-        $files = array();
+        $files = [];
         if (empty($out) || count($out) == 0) {
             return $files;
         }
 
-        $collector = array();
+        $collector = [];
         foreach ($out as $line) {
             if (substr($line, 0, 3) == '>>>') {
                 $line = str_replace('>>>', '', $line);
                 $data = explode("||", $line);
 
-                $entry = array();
+                $entry = [];
                 $entry['date']    = $data[0];
                 $entry['author']  = $data[1];
                 $entry['email']   = $data[2];
@@ -790,13 +790,13 @@ class Git extends Obj
                 continue;
             }
 
-            $files[$filename] = array(
+            $files[$filename] = [
                 'hash'    => $gitData['hash'],
                 'author'  => $gitData['author'],
                 'date'    => date('c', $gitData['date']),
                 'size'    => null,
                 'message' => null
-            );
+            ];
         }
 
         return $files;
@@ -815,12 +815,12 @@ class Git extends Obj
     public function getChanges($localPath, $synced, $localDir, &$localRenames, $connections)
     {
         // Collector array
-        $locals = array();
+        $locals = [];
 
         // Initial sync
         if ($synced == 1) {
             $files = $this->callGit('ls-files --full-name ' . escapeshellarg($localDir));
-            $files = (empty($files) || substr($files[0], 0, 5) == 'fatal') ? array() : $files;
+            $files = (empty($files) || substr($files[0], 0, 5) == 'fatal') ? [] : $files;
 
             if (empty($files)) {
                 return $locals;
@@ -833,7 +833,7 @@ class Git extends Obj
                 if (!isset($locals[$filename])) {
                     $time = strtotime(date('c', time())); // Important! needs to be local time, NOT UTC
 
-                    $locals[$filename] = array(
+                    $locals[$filename] = [
                         'status'     => 'A',
                         'time'       => $time,
                         'type'       => $type,
@@ -849,7 +849,7 @@ class Git extends Obj
                         'mimeType'   => Filesystem::mimetype($localPath . DS . $filename),
                         'md5'        => null,
                         'rename'     => null
-                    );
+                    ];
                 }
             }
         } else {
@@ -861,12 +861,12 @@ class Git extends Obj
 
             // Empty repo or no changes?
             if (empty($changes) || trim(substr($changes[0], 0, 5)) == 'usage') {
-                $changes = array();
+                $changes = [];
             }
 
             // Parse Git file list to find which items changed since last sync
             if (count($changes) > 0) {
-                $timestamps = array();
+                $timestamps = [];
 
                 // Get files involved in each commit
                 foreach ($changes as $hash) {
@@ -966,7 +966,7 @@ class Git extends Obj
 
                         // We are only interested in last local change on the file
                         if (!isset($locals[$lFilename])) {
-                            $locals[$lFilename] = array(
+                            $locals[$lFilename] = [
                                 'status'     => $status,
                                 'time'       => $time,
                                 'type'       => $type,
@@ -982,7 +982,7 @@ class Git extends Obj
                                 'mimeType'   => $mimeType,
                                 'md5'        => $md5Checksum,
                                 'rename'     => $rename
-                            );
+                            ];
 
                             $timestamps[] = $time;
                         }
@@ -1043,7 +1043,7 @@ class Git extends Obj
      */
     public function getLocalFileHistory($file = '', $rev = '', $since = '')
     {
-        $hashes = array();
+        $hashes = [];
 
         // $rev is only ever the "--" separator, and $since is only ever the
         // option getChanges() builds with an escaped date. Keep it that way.
@@ -1078,7 +1078,7 @@ class Git extends Obj
      * @param   integer  $original     Source file?
      * @return  void
      */
-    public function sortLocalRevisions($local_path = '', &$versions = array(), &$timestamps = array(), $original = 0)
+    public function sortLocalRevisions($local_path = '', &$versions = [], &$timestamps = [], $original = 0)
     {
         // Get local file history
         $hashes = $this->getLocalFileHistory($local_path, '--');
@@ -1127,7 +1127,7 @@ class Git extends Obj
                     }
                 }
 
-                $revision = array(
+                $revision = [
                     'date'         => $date,
                     'author'       => $author,
                     'email'        => $email,
@@ -1149,14 +1149,14 @@ class Git extends Obj
                     'order'        => $order,
                     'count'        => count($hashes),
                     'commitStatus' => $this->gitLog($name, $hash, 'namestatus')
-                );
+                ];
 
-                if (in_array($revision['commitStatus'], array('A', 'M'))) {
+                if (in_array($revision['commitStatus'], ['A', 'M'])) {
                     $revision['size'] = \Hubzero\Utility\Number::formatBytes($this->gitLog($name, $hash, 'size'));
                 }
 
                 // Exctract file content for certain statuses
-                if (in_array($revision['commitStatus'], array('A', 'M', 'R')) && $content) {
+                if (in_array($revision['commitStatus'], ['A', 'M', 'R']) && $content) {
                     $revision['content'] = self::filterASCII($content, false, false, 10000);
                 }
 
@@ -1176,7 +1176,7 @@ class Git extends Obj
      * @param   int      $max    Max number of lines
      * @return  string
      */
-    public static function filterASCII($out = array(), $diff = false, $color = false, $max = 200)
+    public static function filterASCII($out = [], $diff = false, $color = false, $max = 200)
     {
         $text = '';
         $o = 1;
@@ -1292,7 +1292,7 @@ class Git extends Obj
      * @param   array  $versions  Array of file version data
      * @return  array
      */
-    public function getVersionStatus($versions = array())
+    public function getVersionStatus($versions = [])
     {
         if (count($versions) == 0) {
             return $versions;

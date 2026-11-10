@@ -151,7 +151,7 @@ foreach ($this->rows as $row) {
     $db->setQuery($sql);
     $lines = $db->loadObjectList();
 
-    $data = array();
+    $data = [];
     $data['tickets']['id']     = 0;
     $data['tickets']['create'] = 0;
     $data['tickets']['read']   = 0;

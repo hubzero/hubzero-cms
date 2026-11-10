@@ -28,7 +28,7 @@ class Router extends Base
      */
     public function build(&$query)
     {
-        $segments = array();
+        $segments = [];
 
         if (!empty($query['task']) && $query['task'] == 'view') {
             unset($query['task']);
@@ -109,7 +109,7 @@ class Router extends Base
      */
     public function parse(&$segments)
     {
-        $vars = array();
+        $vars = [];
 
         if (empty($segments)) {
             return $vars;
@@ -151,7 +151,7 @@ class Router extends Base
         }
 
         if (isset($segments[2])) {
-            $pageControllers = array('pages', 'media', 'categories', 'modules');
+            $pageControllers = ['pages', 'media', 'categories', 'modules'];
             if (isset($vars['controller']) && in_array($vars['controller'], $pageControllers)) {
                 $vars['task'] = $segments[2];
             } elseif ($segments[1] == 'wiki') {
@@ -182,13 +182,13 @@ class Router extends Base
                 if (isset($vars['year'])) {
                     $vars['month'] = $segments[3];
                 } else {
-                    $calendarActions = array(
+                    $calendarActions = [
                         'events',
                         'editcalendar',
                         'deletecalendar',
                         'refreshcalendar',
                         'subscribe'
-                    );
+                    ];
                     if (in_array($vars['action'], $calendarActions)) {
                         $vars['calendar_id'] = $segments[3];
                     } else {

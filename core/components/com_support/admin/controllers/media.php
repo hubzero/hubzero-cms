@@ -35,7 +35,7 @@ class Media extends AdminController
         $ticket  = Request::getInt('ticket', 0);
         $comment = Request::getInt('comment', 0);
         if (!$ticket) {
-            echo json_encode(array('error' => Lang::txt('COM_SUPPORT_NO_ID'), 'ticket' => $ticket));
+            echo json_encode(['error' => Lang::txt('COM_SUPPORT_NO_ID'), 'ticket' => $ticket]);
             return;
         }
 
@@ -58,7 +58,7 @@ class Media extends AdminController
             $file = $_FILES['qqfile']['name'];
             $size = (int) $_FILES['qqfile']['size'];
         } else {
-            echo json_encode(array('error' => Lang::txt('File not found')));
+            echo json_encode(['error' => Lang::txt('File not found')]);
             return;
         }
 
@@ -66,24 +66,24 @@ class Media extends AdminController
         $path = PATH_APP . DS . trim($this->config->get('webpath', '/site/tickets'), DS) . DS . $ticket;
         if (!is_dir($path)) {
             if (!Filesystem::makeDirectory($path)) {
-                echo json_encode(array('error' => Lang::txt('Error uploading. Unable to create path.')));
+                echo json_encode(['error' => Lang::txt('Error uploading. Unable to create path.')]);
                 return;
             }
         }
 
         if (!is_writable($path)) {
-            echo json_encode(array('error' => Lang::txt('Server error. Upload directory isn\'t writable.')));
+            echo json_encode(['error' => Lang::txt('Server error. Upload directory isn\'t writable.')]);
             return;
         }
 
         //check to make sure we have a file and its not too big
         if ($size == 0) {
-            echo json_encode(array('error' => Lang::txt('File is empty')));
+            echo json_encode(['error' => Lang::txt('File is empty')]);
             return;
         }
         if ($size > $sizeLimit) {
             $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', Number::formatBytes($sizeLimit));
-            echo json_encode(array('error' => Lang::txt('File is too large. Max file upload size is %s', $max)));
+            echo json_encode(['error' => Lang::txt('File is too large. Max file upload size is %s', $max)]);
             return;
         }
 
@@ -107,7 +107,7 @@ class Media extends AdminController
         $allowed = array_values(array_filter(explode(',', $exts)));
 
         if (!in_array(strtolower($ext), $allowed)) {
-            echo json_encode(array('error' => Lang::txt('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE')));
+            echo json_encode(['error' => Lang::txt('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE')]);
             return;
         }
 
@@ -131,42 +131,42 @@ class Media extends AdminController
 
         if (!Filesystem::isSafe($file)) {
             if (Filesystem::delete($file)) {
-                echo json_encode(array(
+                echo json_encode([
                     'success' => false,
                     'error'   => Lang::txt('ATTACHMENT: File rejected because the anti-virus scan failed.')
-                ));
+                ]);
                 return;
             }
         }
 
         // Create database entry
         $asset = Attachment::blank();
-        $asset->set(array(
+        $asset->set([
             'id'          => 0,
             'ticket'      => $ticket,
             'comment_id'  => $comment,
             'filename'    => $filename . '.' . $ext,
             'description' => Request::getString('description', '')
-        ));
+        ]);
         if (!$asset->save()) {
-            echo json_encode(array(
+            echo json_encode([
                 'success' => false,
                 'error'   => $asset->getError()
-            ));
+            ]);
             return;
         }
 
-        $view = new View(array(
+        $view = new View([
             'name'   => 'media',
             'layout' => '_asset'
-        ));
+        ]);
         $view->set('option', $this->_option);
         $view->set('controller', $this->_controller);
         $view->asset      = $asset;
         $view->no_html    = 1;
 
         //echo result
-        echo json_encode(array(
+        echo json_encode([
             'success'    => true,
             'file'       => $filename . '.' . $ext,
             'directory'  => str_replace(PATH_APP, '', $path),
@@ -174,7 +174,7 @@ class Media extends AdminController
             'comment_id' => $comment,
             // Entities have to be encoded or IE 8 goes nuts
             'html'       => str_replace('>', '&gt;', $view->loadTemplate())
-        ));
+        ]);
     }
 
     /**
@@ -270,13 +270,13 @@ class Media extends AdminController
 
             // Create database entry
             $asset = Attachment::blank();
-            $asset->set(array(
+            $asset->set([
                 'id'          => 0,
                 'ticket'      => $ticket,
                 'comment_id'  => $comment,
                 'filename'    => $filename,
                 'description' => Request::getString('description', '')
-            ));
+            ]);
 
             if (!$asset->save()) {
                 $this->setError($asset->getError());
@@ -328,18 +328,18 @@ class Media extends AdminController
             $model = Attachment::oneOrFail($id);
 
             if (!$model->destroy()) {
-                echo json_encode(array(
+                echo json_encode([
                     'success' => false,
                     'error'   => $model->getError()
-                ));
+                ]);
                 return;
             }
         }
 
-        echo json_encode(array(
+        echo json_encode([
             'success' => true,
             'asset'   => $id
-        ));
+        ]);
     }
 
     /**

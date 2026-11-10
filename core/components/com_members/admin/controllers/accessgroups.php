@@ -49,7 +49,7 @@ class Accessgroups extends AdminController
     public function displayTask()
     {
         // Incoming
-        $filters = array(
+        $filters = [
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
@@ -57,7 +57,7 @@ class Accessgroups extends AdminController
             )),
             'sort' => 'lft',
             'sort_Dir' => 'ASC'
-        );
+        ];
 
         $entries = Accessgroup::all();
 
@@ -100,9 +100,9 @@ class Accessgroups extends AdminController
         if (!$row) {
             // Incoming: the toolbar's Edit posts the checked rows as cid[],
             // the title links pass id
-            $id = Request::getArray('cid', array());
+            $id = Request::getArray('cid', []);
             if (empty($id)) {
-                $id = Request::getArray('id', array());
+                $id = Request::getArray('id', []);
             }
 
             // Get the single ID we're working with
@@ -158,7 +158,7 @@ class Accessgroups extends AdminController
         }
 
         // Incoming password blacklist edits
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         // Load the record
         $row = Accessgroup::oneOrNew($fields['id'])->set($fields);
@@ -201,7 +201,7 @@ class Accessgroups extends AdminController
 
             if (in_array($fields['id'], $myGroups)) {
                 // Now, would we have super admin permissions without the current group?
-                $otherGroups = array_diff($myGroups, array($fields['id']));
+                $otherGroups = array_diff($myGroups, [$fields['id']]);
                 $otherSuperAdmin = false;
                 foreach ($otherGroups as $otherGroup) {
                     $otherSuperAdmin = ($otherSuperAdmin)
@@ -235,7 +235,7 @@ class Accessgroups extends AdminController
         }
 
         // Fall through to edit form
-        if (in_array($this->getTask(), array('apply', 'save2new', 'save2copy'))) {
+        if (in_array($this->getTask(), ['apply', 'save2new', 'save2copy'])) {
             return $this->editTask($row);
         }
 
@@ -254,8 +254,8 @@ class Accessgroups extends AdminController
         Request::checkToken();
 
         // Incoming
-        $ids = Request::getArray('cid', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('cid', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $i = 0;
 
@@ -292,7 +292,7 @@ class Accessgroups extends AdminController
                 $data = $row->toArray();
 
                 // Fire the onUserBeforeDeleteGroup event.
-                Event::trigger('user.onUserBeforeDeleteGroup', array($data));
+                Event::trigger('user.onUserBeforeDeleteGroup', [$data]);
 
                 // Remove the record
                 if (!$row->destroy()) {
@@ -301,7 +301,7 @@ class Accessgroups extends AdminController
                 }
 
                 // Trigger the onUserAfterDeleteGroup event.
-                $afterData = array($data, true, $this->getError());
+                $afterData = [$data, true, $this->getError()];
                 Event::trigger('user.onUserAfterDeleteGroup', $afterData);
 
                 $i++;
@@ -328,7 +328,7 @@ class Accessgroups extends AdminController
     {
 
         // Get filters
-        $filters = array(
+        $filters = [
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
@@ -361,7 +361,7 @@ class Accessgroups extends AdminController
                 'filter_component',
                 ''
             )
-        );
+        ];
 
         if ($filters['level_end'] > 0 && $filters['level_end'] < $filters['level_start']) {
             $filters['level_end'] = $filters['level_start'];
@@ -406,7 +406,7 @@ class Accessgroups extends AdminController
         $assets->clear();
 
         foreach ($data as $key => $asset) {
-            $checks = array();
+            $checks = [];
 
             foreach ($actions as $action) {
                 $name  = $action[0];

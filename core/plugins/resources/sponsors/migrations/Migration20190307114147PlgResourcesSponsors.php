@@ -21,12 +21,12 @@ class Migration20190307114147PlgResourcesSponsors extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__resource_sponsors' => array(
+    public static $tables = [
+        '#__resource_sponsors' => [
             'created',
             'modified'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

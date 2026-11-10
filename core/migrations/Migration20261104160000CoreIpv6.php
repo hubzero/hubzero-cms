@@ -33,7 +33,7 @@ class Migration20261104160000CoreIpv6 extends Base
      *
      * @var  array
      **/
-    protected $columns = array(
+    protected $columns = [
         '#__session'               => 'ip',
         '#__session_geo'           => 'ip',
         '#__xsession'              => 'ip',
@@ -50,7 +50,7 @@ class Migration20261104160000CoreIpv6 extends Base
         '#__project_logs'          => 'ip',
         '#__xgroups_pages_hits'    => 'ip',
         '#__citations_authors'     => 'ip'
-    );
+    ];
 
     /**
      * Up

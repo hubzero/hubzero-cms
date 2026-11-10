@@ -48,7 +48,7 @@ class Imports extends AdminController
     public function displayTask()
     {
         // Incoming
-        $filters = array(
+        $filters = [
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
@@ -59,10 +59,10 @@ class Imports extends AdminController
                 'filter_order_Dir',
                 'desc'
             )
-        );
+        ];
 
         // Only the columns the list sorts by
-        if (!in_array($filters['sort'], array('id', 'name', 'count', 'created_at', 'ran_at'))) {
+        if (!in_array($filters['sort'], ['id', 'name', 'count', 'created_at', 'ran_at'])) {
             $filters['sort'] = 'created_at';
         }
         $filters['sort_Dir'] = (strtolower($filters['sort_Dir']) == 'asc') ? 'asc' : 'desc';
@@ -112,7 +112,7 @@ class Imports extends AdminController
 
         if (!($import instanceof Import)) {
             // get request vars
-            $ids = Request::getArray('id', array());
+            $ids = Request::getArray('id', []);
             $id  = (isset($ids[0])) ? $ids[0] : 0;
 
             // get the import object
@@ -127,16 +127,16 @@ class Imports extends AdminController
 
         // get all imports from archive
         $hooks = Hook::all()
-            ->whereIn('state', array(1))
+            ->whereIn('state', [1])
             ->rows();
 
         // Get groups
-        $groups = Group::find(array(
+        $groups = Group::find([
             'authorized' => 'admin',
-            'fields'     => array('cn', 'description', 'published', 'gidNumber', 'type'),
-            'type'       => array(1, 3),
+            'fields'     => ['cn', 'description', 'published', 'gidNumber', 'type'],
+            'type'       => [1, 3],
             'sortby'     => 'description'
-        ));
+        ]);
 
         // Output the HTML
         $this->view
@@ -168,10 +168,10 @@ class Imports extends AdminController
         }
 
         // get request vars
-        $fields = Request::getArray('import', array());
-        $hooks  = Request::getArray('hooks', array());
-        $params = Request::getArray('params', array());
-        $file   = Request::getArray('file', array(), 'FILES');
+        $fields = Request::getArray('import', []);
+        $hooks  = Request::getArray('hooks', []);
+        $params = Request::getArray('params', []);
+        $file   = Request::getArray('file', [], 'FILES');
 
         // The data file is whatever was uploaded into the import's own folder
         // (below); a posted import[file] would be joined onto that folder
@@ -228,7 +228,7 @@ class Imports extends AdminController
         if (is_array($file) && !empty($file['size']) && isset($file['error']) && $file['error'] == 0) {
             $ext = strtolower(Filesystem::extension($file['name']));
 
-            if (!in_array($ext, array('csv', 'xml'))) {
+            if (!in_array($ext, ['csv', 'xml'])) {
                 Notify::error(Lang::txt('COM_RESOURCES_IMPORT_UNSUPPORTED_FILE_TYPE'));
                 return $this->editTask();
             }
@@ -278,7 +278,7 @@ class Imports extends AdminController
         }
 
         // get request vars
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
 
         // loop through all ids posted
         $success = 0;
@@ -328,7 +328,7 @@ class Imports extends AdminController
         }
 
         // get request vars
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
         $id  = (isset($ids[0])) ? $ids[0] : 0;
 
         // create import model object
@@ -379,11 +379,11 @@ class Imports extends AdminController
 
         // run process task on importer
         // passed the import model, array or callbacks, and test mode flag
-        $resourceData = $importImporter->process($import, array(
+        $resourceData = $importImporter->process($import, [
             'postparse'   => $this->hooks('postparse', $import),
             'postmap'     => $this->hooks('postmap', $import),
             'postconvert' => $this->hooks('postconvert', $import)
-        ), $dryRun);
+        ], $dryRun);
 
         // calculate execution time
         $end  = microtime(true);
@@ -391,20 +391,20 @@ class Imports extends AdminController
 
         // outputted with html entities to allow browser json formatter
         if (Request::getInt('format', 0) == 1) {
-            echo htmlentities(json_encode(array(
+            echo htmlentities(json_encode([
                 'import'  => 'success',
                 'time'    => $time,
                 'records' => $resourceData
-            )));
+            ]));
             exit();
         }
 
         // return results to user
-        echo json_encode(array(
+        echo json_encode([
             'import'  => 'success',
             'time'    => $time,
             'records' => $resourceData
-        ));
+        ]);
         exit();
     }
 
@@ -435,10 +435,10 @@ class Imports extends AdminController
             ->first();
 
         // build array of data to return
-        $data = array(
+        $data = [
             'processed' => (int) $run->get('processed'),
             'total'     => (int) $run->get('count')
-        );
+        ];
 
         // return progress update
         echo json_encode($data);
@@ -455,7 +455,7 @@ class Imports extends AdminController
     private function hooks($type, $import)
     {
         // array to hold callbacks
-        $callbacks = array();
+        $callbacks = [];
 
         // get hooks on import
         $hooks = json_decode($import->get('hooks'));

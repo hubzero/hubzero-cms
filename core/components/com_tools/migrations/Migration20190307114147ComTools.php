@@ -20,11 +20,11 @@ class Migration20190307114147ComTools extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__recent_tools' => array(
+    public static $tables = [
+        '#__recent_tools' => [
             'created'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

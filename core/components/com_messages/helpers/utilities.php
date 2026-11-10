@@ -27,11 +27,11 @@ class Utilities
     public static function state($value, $i, $canChange)
     {
         // Array of image, task, title, action.
-        $states = array(
-            -2 => array('trashed', 'unpublish', 'JTRASHED', 'COM_MESSAGES_MARK_AS_UNREAD'),
-            1 => array('published', 'unpublish', 'COM_MESSAGES_OPTION_READ', 'COM_MESSAGES_MARK_AS_UNREAD'),
-            0 => array('unpublished', 'publish', 'COM_MESSAGES_OPTION_UNREAD', 'COM_MESSAGES_MARK_AS_READ')
-        );
+        $states = [
+            -2 => ['trashed', 'unpublish', 'JTRASHED', 'COM_MESSAGES_MARK_AS_UNREAD'],
+            1 => ['published', 'unpublish', 'COM_MESSAGES_OPTION_READ', 'COM_MESSAGES_MARK_AS_UNREAD'],
+            0 => ['unpublished', 'publish', 'COM_MESSAGES_OPTION_UNREAD', 'COM_MESSAGES_MARK_AS_READ']
+        ];
         $state = Arr::getValue($states, (int) $value, $states[0]);
         $html  = '<span class="state ' . $state[0] . '"><span>' . Lang::txt($state[2]) . '</span></span>';
         if ($canChange) {
@@ -68,7 +68,7 @@ class Utilities
     public static function getStateOptions()
     {
         // Build the filter options.
-        $options = array();
+        $options = [];
         $options[] = Html::select('option', '1', Lang::txt('COM_MESSAGES_OPTION_READ'));
         $options[] = Html::select('option', '0', Lang::txt('COM_MESSAGES_OPTION_UNREAD'));
         $options[] = Html::select('option', '-2', Lang::txt('JTRASHED'));

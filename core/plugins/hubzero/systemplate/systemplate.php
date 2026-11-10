@@ -31,7 +31,7 @@ class Systemplate extends Plugin
         $response = new \stdClass();
         $response->name  = 'template';
         $response->label = 'Template';
-        $response->data  = array();
+        $response->data  = [];
 
         $tmpl = 'system';
 
@@ -67,7 +67,7 @@ class Systemplate extends Plugin
 
         $response->data['site'] = $this->obj('Name', $tmpl);
 
-        $overrides = array();
+        $overrides = [];
         $path .= '/templates/' . $tmpl . '/html';
 
         if (is_dir($path)) {

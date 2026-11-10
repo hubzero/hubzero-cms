@@ -37,7 +37,7 @@ class MacrosTest extends TestCase
      *
      * @var  array
      */
-    private const MAGIC = array('__construct', '__call', '__get', '__set', '__invoke', '__toString');
+    private const MAGIC = ['__construct', '__call', '__get', '__set', '__invoke', '__toString'];
 
     /**
      * Every macro file, as a class name
@@ -46,11 +46,11 @@ class MacrosTest extends TestCase
      */
     public static function macroProvider(): array
     {
-        $macros = array();
+        $macros = [];
 
-        foreach (glob(self::MACROS . '/*.php') ?: array() as $file) {
+        foreach (glob(self::MACROS . '/*.php') ?: [] as $file) {
             $name = basename($file, '.php');
-            $macros[$name] = array('Hubzero\\Content\\Migration\\Macros\\' . $name);
+            $macros[$name] = ['Hubzero\\Content\\Migration\\Macros\\' . $name];
         }
 
         return $macros;
@@ -73,7 +73,7 @@ class MacrosTest extends TestCase
 
         preg_match_all('/\$this->([a-zA-Z_][a-zA-Z0-9_]*)\s*\(/', $source, $matches);
 
-        $missing = array();
+        $missing = [];
 
         foreach (array_unique($matches[1]) as $method) {
             if (in_array($method, self::MAGIC) || $reflection->hasMethod($method)) {
@@ -89,7 +89,7 @@ class MacrosTest extends TestCase
         }
 
         $this->assertSame(
-            array(),
+            [],
             $missing,
             $reflection->getShortName() . ' calls ' . implode(', ', $missing) . ' on itself, which it does not have'
         );

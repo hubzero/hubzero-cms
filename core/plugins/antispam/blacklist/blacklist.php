@@ -35,6 +35,6 @@ class Blacklist extends Plugin
         $words = explode(',', $words);
         $words = array_map('trim', $words);
 
-        return new \Plugins\Antispam\BlackList\Detector(array('blackLists' => $words));
+        return new \Plugins\Antispam\BlackList\Detector(['blackLists' => $words]);
     }
 }

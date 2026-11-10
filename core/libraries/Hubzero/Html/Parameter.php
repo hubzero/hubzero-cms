@@ -40,7 +40,7 @@ class Parameter extends Registry
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_elements = array();
+    protected $_elements = [];
 
     /**
      * Directories, where element types can be stored
@@ -48,7 +48,7 @@ class Parameter extends Registry
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_elementPath = array();
+    protected $_elementPath = [];
 
     /**
      * Constructor
@@ -126,7 +126,7 @@ class Parameter extends Registry
         }
 
         $params = $this->getParams($name, $group);
-        $html = array();
+        $html = [];
 
         if ($description = $this->_xml[$group]['description']) {
             // Add the params description to the display
@@ -166,7 +166,7 @@ class Parameter extends Registry
             return false;
         }
 
-        $results = array();
+        $results = [];
 
         foreach ($this->_xml[$group]->children() as $param) {
             $result = $this->getParam($param, $name, $group);
@@ -202,7 +202,7 @@ class Parameter extends Registry
             return false;
         }
 
-        $results = array();
+        $results = [];
         foreach ($this->_xml as $name => $group) {
             $results[$name] = $this->getNumParams($name);
         }
@@ -223,7 +223,7 @@ class Parameter extends Registry
             return false;
         }
 
-        $results = array();
+        $results = [];
         foreach ($this->_xml[$group]->children() as $param) {
             $results[] = $this->getParam($param, $name, $group);
         }
@@ -249,7 +249,7 @@ class Parameter extends Registry
 
         // Check for an error.
         if ($element === false) {
-            $result = array();
+            $result = [];
             $result[0] = (string) $node['name'];
             $result[1] = App::get('language')->txt('Element not defined for type') . ' = ' . $type;
             $result[5] = $result[0];
@@ -321,7 +321,7 @@ class Parameter extends Registry
             if (isset($this->_elementPath)) {
                 $dirs = $this->_elementPath;
             } else {
-                $dirs = array();
+                $dirs = [];
             }
             preg_match('/^[A-Za-z0-9_-]+[A-Za-z0-9_\.-]*([\\\\\/][A-Za-z0-9_-]+[A-Za-z0-9_\.-]*)*$/', str_replace(
                 '_',

@@ -36,7 +36,7 @@ class Publication extends Base
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_connector = array('path');
+    protected $_connector = ['path'];
 
     /**
      * Get configs
@@ -327,7 +327,7 @@ class Publication extends Base
      * @param   array    $toAttach
      * @return  boolean
      */
-    public function save($element, $elementId, $pub, $blockParams, $toAttach = array())
+    public function save($element, $elementId, $pub, $blockParams, $toAttach = [])
     {
         if (empty($toAttach)) {
             $selections = Request::getString('selecteditems', '');
@@ -447,7 +447,7 @@ class Publication extends Base
 
         $loaded = $objPA->loadElementAttachment(
             $pub->version_id,
-            array('path' => $path),
+            ['path' => $path],
             $elementId,
             $this->_name,
             $element->role
@@ -617,7 +617,7 @@ class Publication extends Base
      * @param   array    $formats
      * @return  boolean
      */
-    public function checkAllowed($attachments, $formats = array())
+    public function checkAllowed($attachments, $formats = [])
     {
         if (empty($formats)) {
             return true;
@@ -649,12 +649,12 @@ class Publication extends Base
     {
         // Output HTML
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => 'attachments',
                 'layout'  => $this->_name
-            )
+            ]
         );
         $view->data   = $data;
         $view->params = $params;

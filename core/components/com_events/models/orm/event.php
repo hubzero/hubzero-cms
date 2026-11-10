@@ -38,19 +38,19 @@ class Event extends Relational
      *
      * @var array
      **/
-    protected $rules = array(
+    protected $rules = [
         'title' => 'notempty'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var array
      **/
-    public $always = array(
+    public $always = [
         'modified',
         'modified_by'
-    );
+    ];
 
     /**
      * Generates automatic created field value

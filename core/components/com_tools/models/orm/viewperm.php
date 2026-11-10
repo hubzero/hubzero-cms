@@ -42,8 +42,8 @@ class Viewperm extends Relational
      *
      * @var  array
      **/
-    protected $rules = array(
+    protected $rules = [
         'sessnum'  => 'positive|nonzero',
         'viewuser' => 'positive|nonzero'
-    );
+    ];
 }

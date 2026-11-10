@@ -105,7 +105,7 @@ class Course extends Base
      * @var array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_plugins = array();
+    private $_plugins = [];
 
     /**
      * URL to this object
@@ -155,7 +155,7 @@ class Course extends Base
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         if (!isset($instances[$oid])) {
@@ -243,7 +243,7 @@ class Course extends Base
      * @param      array $filters Filters to build query from
      * @return     mixed
      */
-    public function offerings($filters = array(), $clear = false)
+    public function offerings($filters = [], $clear = false)
     {
         if (!isset($filters['course_id'])) {
             $filters['course_id'] = (int) $this->get('id');
@@ -269,7 +269,7 @@ class Course extends Base
             } else {
                 // No results found
                 // We need an empty array for the Iterator model
-                $results = array();
+                $results = [];
             }
 
             // Set the results
@@ -326,7 +326,7 @@ class Course extends Base
      * @param      boolean $clear   Force a new dataset?
      * @return     mixed
      */
-    public function managers($filters = array(), $clear = false)
+    public function managers($filters = [], $clear = false)
     {
         if (!isset($filters['course_id'])) {
             $filters['course_id'] = (int) $this->get('id');
@@ -348,7 +348,7 @@ class Course extends Base
         if (!isset($this->_managers) || !is_array($this->_managers) || $clear) {
             $tbl = new Tables\Member($this->_db);
 
-            $results = array();
+            $results = [];
 
             if (($data = $tbl->find($filters))) {
                 foreach ($data as $key => $result) {
@@ -379,7 +379,7 @@ class Course extends Base
      * @param      boolean $clear   Force a new dataset?
      * @return     mixed
      */
-    public function students($filters = array(), $clear = false)
+    public function students($filters = [], $clear = false)
     {
         if (!isset($filters['course_id'])) {
             $filters['course_id'] = (int) $this->get('id');
@@ -395,7 +395,7 @@ class Course extends Base
         if (!isset($this->_students) || !is_array($this->_students) || $clear) {
             $tbl = new Tables\Member($this->_db);
 
-            $results = array();
+            $results = [];
 
             if (($data = $tbl->find($filters))) {
                 foreach ($data as $key => $result) {
@@ -416,7 +416,7 @@ class Course extends Base
      * @param      boolean $clear   Force a new dataset?
      * @return     mixed
      */
-    public function instructors($filters = array(), $clear = true)
+    public function instructors($filters = [], $clear = true)
     {
         $filters['role'] = 'instructor';
         return $this->managers($filters, $clear);
@@ -434,9 +434,9 @@ class Course extends Base
 
         $tbl = new Tables\Member($this->_db);
 
-        $filters = array(
+        $filters = [
             'course_id' => (int) $this->get('id')
-        );
+        ];
 
         foreach ($user_ids as $user_id) {
             $filters['user_id'] = $user_id;
@@ -500,11 +500,11 @@ class Course extends Base
             return false;
         }
 
-        $usernames = array();
-        $userids = array();
+        $usernames = [];
+        $userids = [];
 
         if (!is_array($users)) {
-            $users = array($users);
+            $users = [$users];
         }
 
         foreach ($users as $u) {
@@ -522,7 +522,7 @@ class Course extends Base
         $this->_db->setQuery("SELECT id FROM `#__users` WHERE username IN (" . implode(",", $usernames) . ");");
 
         if (!($result = $this->_db->loadColumn())) {
-            $result = array();
+            $result = [];
         }
 
         return array_merge($result, $userids);
@@ -567,11 +567,11 @@ class Course extends Base
             }
         }
 
-        $this->importPlugin('content')->trigger('onContentBeforeSave', array(
+        $this->importPlugin('content')->trigger('onContentBeforeSave', [
             'com_courses.course.description',
             &$this,
             $this->exists()
-        ));
+        ]);
 
         if (!$this->_tbl->store()) {
             $this->setError($this->_tbl->getError());
@@ -583,11 +583,11 @@ class Course extends Base
         // After SQL is done and has no errors, fire off onCourseUserEnrolledEvents
         // for every user added to this course
         $this->importPlugin('courses')
-             ->trigger('onCourseSave', array($this));
+             ->trigger('onCourseSave', [$this]);
 
         if ($affected > 0) {
             $this->importPlugin('user')
-                 ->trigger('onAfterStoreCourse', array($this));
+                 ->trigger('onAfterStoreCourse', [$this]);
         }
 
         if ($isNew) {
@@ -605,7 +605,7 @@ class Course extends Base
     public function delete()
     {
         $this->importPlugin('courses')
-             ->trigger('onCourseDelete', array($this));
+             ->trigger('onCourseDelete', [$this]);
 
         return parent::delete();
     }
@@ -641,7 +641,7 @@ class Course extends Base
      * @param      array $filters Filters to apply
      * @return     array
      */
-    public function pages($filters = array())
+    public function pages($filters = [])
     {
         if (!isset($filters['course_id'])) {
             $filters['course_id'] = (int) $this->get('id');
@@ -662,7 +662,7 @@ class Course extends Base
         if (!isset($this->_pages) || !is_array($this->_pages)) {
             $tbl = new Tables\Page($this->_db);
 
-            $results = array();
+            $results = [];
 
             if (($data = $tbl->find($filters))) {
                 foreach ($data as $key => $result) {
@@ -686,7 +686,7 @@ class Course extends Base
         if (!$this->exists()) {
             switch (strtolower($as)) {
                 case 'array':
-                    return array();
+                    return [];
                 break;
 
                 case 'string':
@@ -700,7 +700,7 @@ class Course extends Base
 
         $cloud = new Tags($this->get('id'));
 
-        return $cloud->render($as, array('admin' => $admin));
+        return $cloud->render($as, ['admin' => $admin]);
     }
 
     /**
@@ -763,10 +763,10 @@ class Course extends Base
         }
 
         $path = '';
-        $size = array(
+        $size = [
             'width'  => 0,
             'height' => 0
-        );
+        ];
 
         if ($file = $this->get('logo')) {
             $uploadPath = '/' . trim($this->config('uploadpath', '/site/courses'), '/');
@@ -803,27 +803,27 @@ class Course extends Base
     public function description($as = 'parsed', $shorten = 0)
     {
         $as = strtolower($as);
-        $options = array();
+        $options = [];
 
         switch ($as) {
             case 'parsed':
                 $content = $this->get('description.parsed', null);
                 if ($content === null) {
-                    $config = array(
+                    $config = [
                         'option'   => 'com_courses',
                         'scope'    => '',
                         'pagename' => $this->get('alias'),
                         'pageid'   => 0, //$this->get('id'),
                         'filepath' => DS . ltrim($this->config()->get('uploadpath', '/site/courses'), DS),
                         'domain'   => $this->get('alias')
-                    );
+                    ];
 
                     $content = (string) $this->get('description', '');
-                    $this->importPlugin('content')->trigger('onContentPrepare', array(
+                    $this->importPlugin('content')->trigger('onContentPrepare', [
                         'com_courses.course.description',
                         &$this,
                         &$config
-                    ));
+                    ]);
 
                     $this->set('description.parsed', (string) $this->get('description', ''));
                     $this->set('description', $content);
@@ -843,7 +843,7 @@ class Course extends Base
                 $content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content == null ? '' : $content);
                 //$content = html_entity_decode($content);
                 //$content = str_replace("\xC2\xA0", ' ', $content);
-                $content = str_replace(array('&lt;', '&gt;', '&amp;'), array('<', '>', '&'), $content);
+                $content = str_replace(['&lt;', '&gt;', '&amp;'], ['<', '>', '&'], $content);
                 break;
         }
 
@@ -882,21 +882,21 @@ class Course extends Base
 
         if ($deep) {
             // Copy pages
-            foreach ($this->pages(array('course_id' => $c_id, 'active' => array(0, 1)), true) as $page) {
+            foreach ($this->pages(['course_id' => $c_id, 'active' => [0, 1]], true) as $page) {
                 if (!$page->copy($this->get('course_id'))) {
                     $this->setError($page->getError());
                 }
             }
 
             // Copy units
-            foreach ($this->offerings(array('course_id' => $c_id), true) as $offering) {
+            foreach ($this->offerings(['course_id' => $c_id], true) as $offering) {
                 if (!$offering->copy($this->get('id'))) {
                     $this->setError($offering->getError());
                 }
             }
 
             // Copy managers
-            foreach ($this->managers(array('course_id' => $c_id), true) as $manager) {
+            foreach ($this->managers(['course_id' => $c_id], true) as $manager) {
                 $manager->set('id', 0);
                 $manager->set('course_id', $this->get('id'));
                 if (!$manager->store()) {
@@ -926,7 +926,7 @@ class Course extends Base
 
             // Copy tags
             $tagger = new Tags($c_id);
-            $this->tag($tagger->render('string', array('admin' => 1)), User::get('id'), 1);
+            $this->tag($tagger->render('string', ['admin' => 1]), User::get('id'), 1);
         }
 
         return true;

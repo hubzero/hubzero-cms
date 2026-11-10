@@ -167,7 +167,7 @@ class OneToManyThrough extends OneToMany
         $this->applyDefaultConditions($this->related);
 
         if (isset($constraint)) {
-            call_user_func_array($constraint, array($this->related));
+            call_user_func_array($constraint, [$this->related]);
         }
 
         return $this->related->whereIn($this->associativeTable . '.' . $this->associativeLocal, array_unique($keys));

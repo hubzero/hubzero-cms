@@ -29,19 +29,19 @@ class UsersCategory extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'category_id' => 'notempty',
         'user_id'     => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created'
-    );
+    ];
 
     /**
      * Defines a belongs to one relationship to a category

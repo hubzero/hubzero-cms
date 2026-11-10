@@ -141,9 +141,9 @@ class IdP
      *
      * @var  array
      */
-    protected static $attributeSources = array(
+    protected static $attributeSources = [
         'email', 'name', 'givenName', 'middleName', 'surname', 'username', 'id'
-    );
+    ];
 
     /**
      * Group-membership sources, which resolve to a list of group cn's
@@ -151,7 +151,7 @@ class IdP
      *
      * @var  array
      */
-    protected static $groupSources = array('groups', 'groups:allowed');
+    protected static $groupSources = ['groups', 'groups:allowed'];
 
     /**
      * Assertion lifetime (NotOnOrAfter) in seconds
@@ -446,12 +446,12 @@ class IdP
 
         if (!$map) {
             // Default release set — matches the original hardcoded behavior
-            $map = array(
-                array('name' => \LightSaml\ClaimTypes::EMAIL_ADDRESS, 'friendly' => 'E-Mail',     'source' => 'email'),
-                array('name' => \LightSaml\ClaimTypes::COMMON_NAME,   'friendly' => 'CommonName', 'source' => 'name'),
-                array('name' => \LightSaml\ClaimTypes::GIVEN_NAME,    'friendly' => 'GivenName',  'source' => 'givenName'),
-                array('name' => \LightSaml\ClaimTypes::SURNAME,       'friendly' => 'Surname',    'source' => 'surname')
-            );
+            $map = [
+                ['name' => \LightSaml\ClaimTypes::EMAIL_ADDRESS, 'friendly' => 'E-Mail',     'source' => 'email'],
+                ['name' => \LightSaml\ClaimTypes::COMMON_NAME,   'friendly' => 'CommonName', 'source' => 'name'],
+                ['name' => \LightSaml\ClaimTypes::GIVEN_NAME,    'friendly' => 'GivenName',  'source' => 'givenName'],
+                ['name' => \LightSaml\ClaimTypes::SURNAME,       'friendly' => 'Surname',    'source' => 'surname']
+            ];
         }
 
         $statement = new \LightSaml\Model\Assertion\AttributeStatement();
@@ -474,7 +474,7 @@ class IdP
             // A multi-valued source that resolves to nothing is dropped for
             // the same reason, and because an Attribute carrying no value at
             // all fails schema validation at a strict SP
-            $values = is_array($value) ? $value : array($value);
+            $values = is_array($value) ? $value : [$value];
             $values = array_filter(array_map('strval', $values), 'strlen');
 
             if (!$values) {

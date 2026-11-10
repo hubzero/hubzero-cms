@@ -44,16 +44,16 @@ if ($this->subscriptionCode && $this->employer) {
 <section class="main section">
     <form method="get" action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>">
         <?php
-        $sortbys = array(
+        $sortbys = [
             'category' => Lang::txt('COM_JOBS_CATEGORY'),
             'opendate' => Lang::txt('COM_JOBS_POSTED_DATE'),
             'type'     => Lang::txt('COM_JOBS_TYPE')
-        );
-        $filterbys = array(
+        ];
+        $filterbys = [
             'all'   => Lang::txt('COM_JOBS_ALL'),
             'open'  => Lang::txt('COM_JOBS_ACTIVE'),
             'closed' => Lang::txt('COM_JOBS_EXPIRED')
-        );
+        ];
         ?>
         <?php if (count($this->jobs) > 0) { ?>
             <div class="container data-entry">
@@ -69,11 +69,11 @@ if ($this->subscriptionCode && $this->employer) {
                 <div class="container-block">
                     <?php
                     // Display List of items
-                    $view = new \Hubzero\Component\View(array(
+                    $view = new \Hubzero\Component\View([
                         'base_path' => Component::path('com_jobs') . DS . 'site',
                         'name'      => 'jobs',
                         'layout'    => '_list'
-                    ));
+                    ]);
                     $view->set('option', $this->option)
                         ->set('filters', $this->filters)
                         ->set('config', $this->config)

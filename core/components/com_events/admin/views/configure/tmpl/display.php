@@ -119,7 +119,7 @@ Toolbar::cancel();
             }
             for ($i = 0; $i < $n; $i++) {
                 if ($r == 0 || !isset($fields[$i])) {
-                    $fields[$i] = array();
+                    $fields[$i] = [];
                     $fields[$i][0] = null;
                     $fields[$i][1] = null;
                     $fields[$i][2] = null;

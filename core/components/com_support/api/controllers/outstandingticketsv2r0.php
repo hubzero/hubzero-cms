@@ -54,10 +54,10 @@ class OutstandingTicketsv2r0 extends ApiController
         }
 
         $criteria = Criterion::all();
-        $outstandingTicketData = array(
-            'tickets'  => array(),
-            'criteria' => array()
-        );
+        $outstandingTicketData = [
+            'tickets'  => [],
+            'criteria' => []
+        ];
 
         foreach ($criteria as $criterion) {
             $criterionId = $criterion->get('id');

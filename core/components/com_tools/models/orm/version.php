@@ -42,9 +42,9 @@ class Version extends Relational
      *
      * @var array
      **/
-    protected $rules = array(
+    protected $rules = [
         'toolname' => 'notempty',
-    );
+    ];
 
     /**
      * Get a list of versions

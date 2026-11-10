@@ -71,7 +71,7 @@ class Event extends Model
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         if (!isset($instances[$key])) {
@@ -110,13 +110,13 @@ class Event extends Model
     public function parseRepeatingRule()
     {
         // array to hold final values
-        $repeating = array(
+        $repeating = [
             'freq'     => '',
             'interval' => '',
             'end'      => 'never',
             'count'    => '',
             'until'    => ''
-        );
+        ];
 
         // split rules
         $parts = array_map('trim', explode(';', $this->get('repeating_rule', '')));

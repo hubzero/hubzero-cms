@@ -37,7 +37,7 @@ class Mastertype extends Select
         $mt = new \Components\Publications\Tables\MasterType($db);
         $types = $mt->getTypes('*', 0, 0, 'ordering');
 
-        $options = array();
+        $options = [];
         $options[] = Html::select('option', '*', Lang::txt('- All contributable -'), 'value', 'text');
 
         foreach ($types as $type) {

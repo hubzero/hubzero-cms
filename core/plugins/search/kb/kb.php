@@ -43,7 +43,7 @@ class Kb extends Plugin
         $terms = $request->get_term_ar();
         $weight = 'match(f.title, f.`fulltxt`) against (\'' . join(' ', $terms['stemmed']) . '\')';
 
-        $addtl_where = array();
+        $addtl_where = [];
         foreach ($terms['mandatory'] as $mand) {
             $addtl_where[] = "(f.title LIKE '%$mand%' OR f.`fulltxt` LIKE '%$mand%')";
         }
@@ -170,7 +170,7 @@ class Kb extends Plugin
                 $record->hubtype = $type;
                 $record->title = $title;
                 $record->description = $description;
-                $record->author = array($author);
+                $record->author = [$author];
                 $record->tags = $tags;
                 $record->path = $path;
                 $record->access_level = $access_level;

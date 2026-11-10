@@ -79,7 +79,7 @@ class Inertia extends Scaffolding
             $this->ensureDirectory(dirname($testPath));
         }
 
-        $targets = array($controllerPath, $defaultViewPath, $jsEntryPath);
+        $targets = [$controllerPath, $defaultViewPath, $jsEntryPath];
         if ($withTest) {
             $targets[] = $testPath;
         }

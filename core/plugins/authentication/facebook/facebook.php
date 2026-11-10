@@ -171,10 +171,10 @@ class Facebook extends \Hubzero\Plugin\OauthClient
     public function display($view, $tpl)
     {
         // Set up params for the login call
-        $params = array(
+        $params = [
             'scope' => ['email'],
             'redirect_uri' => $this->getReturnUrl()
-        );
+        ];
 
         $loginUrl = $this->provider->getAuthorizationUrl($params);
 
@@ -199,7 +199,7 @@ class Facebook extends \Hubzero\Plugin\OauthClient
         $state = Request::getVar('state', null);
 
         if ($code == null) {
-            $authUrl = $this->provider->getAuthorizationUrl(array('scope' => ['email']));
+            $authUrl = $this->provider->getAuthorizationUrl(['scope' => ['email']]);
 
             Session::set('oauth2state', $this->provider->getState(), $this->name);
 
@@ -213,7 +213,7 @@ class Facebook extends \Hubzero\Plugin\OauthClient
             return;
         }
 
-        $token = $this->provider->getAccessToken('authorization_code', array('code' => Request::getString('code')));
+        $token = $this->provider->getAccessToken('authorization_code', ['code' => Request::getString('code')]);
 
         Session::clear('oauth2state', $this->name);
 
@@ -280,11 +280,11 @@ class Facebook extends \Hubzero\Plugin\OauthClient
             // If we have a real user, drop the authenticator cookie
             if (isset($user) && is_object($user)) {
                 // Set cookie with login preference info
-                $prefs = array(
+                $prefs = [
                     'user_id'       => $user->get('id'),
                     'user_img'      => $owner->getPictureUrl(),
                     'authenticator' => $this->name,
-                );
+                ];
 
                 $namespace = 'authenticator';
                 $lifetime  = time() + 365 * 24 * 60 * 60;
@@ -303,13 +303,13 @@ class Facebook extends \Hubzero\Plugin\OauthClient
      * @param   array  $options
      * @return  void
      */
-    public function link($options = array())
+    public function link($options = [])
     {
         $code = Request::getVar('code', null);
         $state = Request::getVar('state', null);
 
         if ($code == null) {
-            $authUrl = $this->provider->getAuthorizationUrl(array('scope' => ['email']));
+            $authUrl = $this->provider->getAuthorizationUrl(['scope' => ['email']]);
 
             Session::set('oauth2state', $this->provider->getState(), $this->name);
 
@@ -327,7 +327,7 @@ class Facebook extends \Hubzero\Plugin\OauthClient
             return;
         }
 
-        $token = $this->provider->getAccessToken('authorization_code', array('code' => Request::getString('code')));
+        $token = $this->provider->getAccessToken('authorization_code', ['code' => Request::getString('code')]);
 
         Session::clear('oauth2state', $this->name);
 

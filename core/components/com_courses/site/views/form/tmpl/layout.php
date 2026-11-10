@@ -48,7 +48,7 @@ $this->css('jquery.ui.css', 'system')
         </label>
         <ol id="pages"<?php echo ($this->readonly) ? ' class="readonly"' : '' ?>>
             <?php
-                $tabs = array();
+                $tabs = [];
                 $layout = $this->pdf->getPageLayout();
                 $this->pdf->eachPage(function ($src, $idx) use (&$tabs, $layout) {
                     $tabs[] = '<li><a

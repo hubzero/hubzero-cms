@@ -47,7 +47,7 @@ class Metadata extends Base
         $incomplete = 0;
 
         // Parse data in metadata field
-        $data = array();
+        $data = [];
         $metadataStr = $pub->metadata == null ? '' : $pub->metadata;
         preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $metadataStr, $matches, PREG_SET_ORDER);
         if (count($matches) > 0) {
@@ -145,12 +145,12 @@ class Metadata extends Base
         $viewname = 'freeze'
     ) {
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'    => 'projects',
                 'element'   => 'publications',
                 'name'      => 'freeze',
                 'layout'    => 'metadata'
-            )
+            ]
         );
 
         $view->pub           = $pub;
@@ -180,12 +180,12 @@ class Metadata extends Base
         $order = 0
     ) {
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'    => 'projects',
                 'element'   => 'publications',
                 'name'      => 'blockelement',
                 'layout'    => 'metadata'
-            )
+            ]
         );
 
         $view->pub           = $pub;

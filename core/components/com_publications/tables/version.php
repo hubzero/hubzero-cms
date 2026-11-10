@@ -120,7 +120,7 @@ class Version extends Table
         if ($pid === null) {
             return false;
         }
-        $labels = array();
+        $labels = [];
 
         $query  = "SELECT version_label FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid);
 
@@ -189,7 +189,7 @@ class Version extends Table
      * @param   array    $filters  Query filters
      * @return  object
      */
-    public function getVersions($pid, $filters = array())
+    public function getVersions($pid, $filters = [])
     {
         if ($pid === null) {
             $pid = $this->publication_id;
@@ -565,7 +565,7 @@ class Version extends Table
      * @param   string  $get
      * @return  mixed
      */
-    public function getPubStats($validProjects = array(), $get = 'total')
+    public function getPubStats($validProjects = [], $get = 'total')
     {
         if (empty($validProjects)) {
             return null;

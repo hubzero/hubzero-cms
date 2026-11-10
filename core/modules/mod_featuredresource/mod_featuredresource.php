@@ -41,7 +41,7 @@ class Featuredresource extends Module
         $database = \Hubzero\Facades\App::get('db');
 
         //Get the admin configured settings
-        $filters = array(
+        $filters = [
             'limit'      => 1,
             'start'      => 0,
             'type'       => $this->params->get('type', ''),
@@ -53,7 +53,7 @@ class Featuredresource extends Module
             'standalone' => 1,
             // Only published tools
             'toolState'  => 7
-        );
+        ];
 
         $rows = Entry::allWithFilters($filters)
             ->limit(1000)
@@ -138,7 +138,7 @@ class Featuredresource extends Module
     {
         $d = (is_dir($path)) ? dir($path) : '';
 
-        $images = array();
+        $images = [];
 
         if ($d) {
             while (false !== ($entry = $d->read())) {

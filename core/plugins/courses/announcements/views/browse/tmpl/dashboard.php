@@ -17,10 +17,10 @@ defined('_HZEXEC_') or die();
 $this->css()
     ->js('announcements.dashboard.js');
 
-$rows = $this->offering->announcements(array(
+$rows = $this->offering->announcements([
     'limit' => $this->params->get('display_limit', 1),
     'published' => true
-));
+]);
 ?>
 <div class="sub-section announcements">
     <div class="grid">
@@ -73,8 +73,8 @@ $rows = $this->offering->announcements(array(
                                 <?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_REQUIRED'); ?>
                             </span></span>
                         <?php
-                        echo $this->editor('fields[content]', '', 35, 3, 'field_content', array('class' => 'minimal
-                        no-footer'));
+                        echo $this->editor('fields[content]', '', 35, 3, 'field_content', ['class' => 'minimal
+                        no-footer']);
                         ?>
                     </label>
 

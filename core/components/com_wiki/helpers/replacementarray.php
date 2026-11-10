@@ -35,7 +35,7 @@ class ReplacementArray
      * @param      array $data Parameter description (if any) ...
      * @return     void
      */
-    public function __construct($data = array())
+    public function __construct($data = [])
     {
         $this->data = $data;
     }
@@ -49,7 +49,7 @@ class ReplacementArray
      */
     public function __sleep()
     {
-        return array('data');
+        return ['data'];
     }
 
     /**

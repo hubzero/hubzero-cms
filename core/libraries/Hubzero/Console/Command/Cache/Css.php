@@ -54,7 +54,7 @@ class Css extends Base implements CommandInterface
         // This looked for app/cache/site.css, which nothing writes, so it
         // reported the file missing and cleared nothing on every hub.
         $cacheDir = PATH_APP . DS . 'cache';
-        $files    = array('site.css', 'site.less.cache');
+        $files    = ['site.css', 'site.less.cache'];
         $removed  = 0;
 
         foreach ((array) glob($cacheDir . DS . '*', GLOB_ONLYDIR) as $clientDir) {

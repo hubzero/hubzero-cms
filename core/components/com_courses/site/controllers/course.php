@@ -140,13 +140,13 @@ class Course extends SiteController
 
         $this->view->plugins = Event::trigger(
             'courses.onCourseView',
-            array(
+            [
                 $this->course,
                 $this->view->active
-            )
+            ]
         );
 
-        if ($pages = $this->course->pages(array('active' => 1))) {
+        if ($pages = $this->course->pages(['active' => 1])) {
             foreach ($pages as $page) {
                 $plg = with(new Obj())
                     ->set('name', $page->get('url'))
@@ -249,8 +249,8 @@ class Course extends SiteController
         }
 
         // Incoming
-        $data   = Request::getArray('course', array(), 'post');
-        $params = Request::getArray('params', array(), 'post');
+        $data   = Request::getArray('course', [], 'post');
+        $params = Request::getArray('params', [], 'post');
 
         $course = Models\Course::getInstance($data['id']);
 
@@ -429,7 +429,7 @@ class Course extends SiteController
             return $this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
         }
 
-        $data    = Request::getArray('offering', array(), 'post');
+        $data    = Request::getArray('offering', [], 'post');
         $no_html = Request::getInt('no_html', 0);
 
         $course   = Models\Course::getInstance($data['course_id']);
@@ -549,7 +549,7 @@ class Course extends SiteController
 
         // Trigger the functions that delete associated content
         // Should return logs of what was deleted
-        $logs = Event::trigger('courses.onCourseDeleteCount', array($this->course));
+        $logs = Event::trigger('courses.onCourseDeleteCount', [$this->course]);
         if (count($logs) > 0) {
             $log .= '<br />' . implode('<br />', $logs);
         }
@@ -588,20 +588,20 @@ class Course extends SiteController
         $date = Date::of('now');
 
         // Build the "from" info for e-mails
-        $from = array(
+        $from = [
             'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name)),
             'email' => Config::get('mailfrom')
-        );
+        ];
 
         // E-mail subject
         $gcn = $this->course->get('alias');
         $subject = Lang::txt('COM_COURSES_SUBJECT_COURSE_DELETED', $gcn);
 
         // Build the e-mail message
-        $eview = new \Hubzero\Component\View(array(
+        $eview = new \Hubzero\Component\View([
             'name'   => 'emails',
             'layout' => 'deleted'
-        ));
+        ]);
         $eview->set('option', $this->_option);
         $eview->sitename = Config::get('sitename');
         $eview->user = User::getInstance();
@@ -613,7 +613,7 @@ class Course extends SiteController
         $message = str_replace("\n", "\r\n", $message);
 
         // Send the message
-        if (!Event::trigger('xmessage.onSendMessage', array('courses_deleted', $subject, $message, $from, $managers, $this->_option))) {
+        if (!Event::trigger('xmessage.onSendMessage', ['courses_deleted', $subject, $message, $from, $managers, $this->_option])) {
             Notify::error(Lang::txt('COM_COURSES_ERROR_EMAIL_MEMBERS_FAILED'));
         }
 
@@ -652,7 +652,7 @@ class Course extends SiteController
         }
 
         // Incoming
-        $page = Request::getArray('page', array(), 'post');
+        $page = Request::getArray('page', [], 'post');
 
         $course = Models\Course::getInstance($page['course_id']);
         if (!$course->exists()) {
@@ -837,7 +837,7 @@ class Course extends SiteController
         }
 
         if (Request::getInt('no_html', 0) == 1) {
-            echo json_encode(array('available' => $availability));
+            echo json_encode(['available' => $availability]);
             return;
         }
 
@@ -982,7 +982,7 @@ class Course extends SiteController
             }
         }
 
-        $fields = Request::getArray('fields', array('title' => '', 'alias' => ''), 'post');
+        $fields = Request::getArray('fields', ['title' => '', 'alias' => ''], 'post');
 
         // Copy the course
         if (!$this->course->copy(true, $fields['title'], $fields['alias'])) {
@@ -1079,7 +1079,7 @@ class Course extends SiteController
             }
         }
 
-        $fields = Request::getArray('fields', array('title' => '', 'alias' => ''), 'post');
+        $fields = Request::getArray('fields', ['title' => '', 'alias' => ''], 'post');
 
         $original = $this->course->get('id');
 

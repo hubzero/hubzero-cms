@@ -27,7 +27,7 @@ class Utilities
     public static function publishedOptions()
     {
         // Build the active state filter options.
-        $options   = array();
+        $options   = [];
         $options[] = Html::select('option', '1', 'JPUBLISHED');
         $options[] = Html::select('option', '0', 'JUNPUBLISHED');
         $options[] = Html::select('option', '-2', 'JTRASHED');

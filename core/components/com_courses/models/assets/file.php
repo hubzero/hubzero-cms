@@ -29,15 +29,15 @@ class File extends Handler
      *
      * @var  array
      **/
-    protected static $info = array(
+    protected static $info = [
         'action_message' => 'Post notes or slides (i.e. a downloadable file)',
-        'responds_to'    => array(
+        'responds_to'    => [
             'txt', 'pdf', 'jpg', 'jpeg', 'gif', 'png', 'ppt',
             'pptx', 'pps', 'ppsx', 'doc', 'docx', 'xls', 'xlsx',
             'gz', 'zip', 'tgz', 'tar', 'mp3', 'm', 'cpp', 'c', 'r', 'rmd',
             'wm2d', 'slx', 'srt', 'ipynb', 'aedt', 'csv', 'xyz', 'prm', 'avi'
-        ),
-    );
+        ],
+    ];
 
     /**
      * Create method for this handler
@@ -54,7 +54,7 @@ class File extends Handler
                 $file = $_FILES['files']['name'][0];
                 $size = (int) $_FILES['files']['size'];
             } else {
-                return array('error' => 'No files provided');
+                return ['error' => 'No files provided'];
             }
         } else {
             $file = $localPath;
@@ -75,12 +75,12 @@ class File extends Handler
 
         // Check to make sure we have a file and its not too big
         if ($size == 0) {
-            return array('error' => 'File is empty');
+            return ['error' => 'File is empty'];
         }
         if ($size > $sizeLimit) {
             $formatted = \Hubzero\Utility\Number::formatBytes($sizeLimit);
             $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', $formatted);
-            return array('error' => "File is too large. Max file upload size is $max");
+            return ['error' => "File is too large. Max file upload size is $max"];
         }
 
         // Create our asset table object
@@ -96,7 +96,7 @@ class File extends Handler
 
         // Save the asset
         if (!$assetObj->save($this->asset)) {
-            return array('error' => 'Asset save failed');
+            return ['error' => 'Asset save failed'];
         }
 
         // Create asset assoc object
@@ -108,7 +108,7 @@ class File extends Handler
 
         // Save the asset association
         if (!$assocObj->save($this->assoc)) {
-            return array('error' => 'Asset association save failed');
+            return ['error' => 'Asset association save failed'];
         }
 
         // Get courses config
@@ -122,11 +122,11 @@ class File extends Handler
         // Make sure upload directory exists and is writable
         if (!is_dir($uploadDirectory)) {
             if (!Filesystem::makeDirectory($uploadDirectory, 0755, true)) {
-                return array('error' => 'Server error. Unable to create upload directory');
+                return ['error' => 'Server error. Unable to create upload directory'];
             }
         }
         if (!is_writable($uploadDirectory)) {
-            return array('error' => 'Server error. Upload directory isn\'t writable');
+            return ['error' => 'Server error. Upload directory isn\'t writable'];
         }
 
         // Get the final file path
@@ -141,14 +141,14 @@ class File extends Handler
                 $assetObj->delete();
                 $assocObj->delete();
                 Filesystem::deleteDirectory($uploadDirectory);
-                return array('error' => 'File rejected because the anti-virus scan failed.');
+                return ['error' => 'File rejected because the anti-virus scan failed.'];
             }
             if (!$move = move_uploaded_file($_FILES['files']['tmp_name'][0], $target_path)) {
                 // Move failed, delete asset and association and return an error
                 $assetObj->delete();
                 $assocObj->delete();
                 Filesystem::deleteDirectory($uploadDirectory);
-                return array('error' => 'Move file failed');
+                return ['error' => 'Move file failed'];
             }
         } else {
             Filesystem::copy($localPath, $target_path);
@@ -165,7 +165,7 @@ class File extends Handler
         );
         $url = rtrim(str_replace('/api', '', Request::root()), '/') . '/' . ltrim($url, '/');
 
-        $return_info = array(
+        $return_info = [
             'asset_id'       => $this->assoc['asset_id'],
             'asset_title'    => $this->asset['title'],
             'asset_type'     => $this->asset['type'],
@@ -177,9 +177,9 @@ class File extends Handler
             'asset_ext'      => $ext,
             'upload_path'    => $uploadDirectory,
             'target_path'    => $target_path
-        );
+        ];
 
         // Return info
-        return array('assets' => $return_info);
+        return ['assets' => $return_info];
     }
 }

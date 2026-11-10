@@ -21,12 +21,12 @@ class Post extends Base
      *
      * @var  array
      **/
-    protected static $fields = array(
+    protected static $fields = [
         'timestamp' => true,
         'uri'       => true,
         'referrer'  => true,
         'data'      => true
-    );
+    ];
 
     /**
      * If dates/times are present, how are they formatted

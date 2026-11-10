@@ -340,9 +340,9 @@ class Composer
         self::_init();
         self::_dispatch('update');
         if (is_null($packageName)) {
-            $package = array();
+            $package = [];
         } elseif (is_string($packageName)) {
-            $package = array($packageName);
+            $package = [$packageName];
         } else {
             $package = $packageName;
         }
@@ -373,7 +373,7 @@ class Composer
     public static function updatePackages()
     {
         // Send empty array to update all packages
-        self::_updatePackage(array());
+        self::_updatePackage([]);
     }
 
     /**
@@ -438,7 +438,7 @@ class Composer
     public static function getRemotePackages()
     {
         $remoteRepos = self::_getRemoteRepositories();
-        $remotePackages = array();
+        $remotePackages = [];
         foreach ($remoteRepos as $repo) {
             if (method_exists($repo, "getRepoConfig")) {
                 $config = $repo->getRepoConfig();

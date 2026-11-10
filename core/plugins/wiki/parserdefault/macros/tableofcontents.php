@@ -25,7 +25,7 @@ class TableOfContents extends WikiMacro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['wiki'] = 'Outputs a Table of Contents based off the page headers';
         $txt['html'] = '<p>Outputs a Table of Contents based off the page headers</p>';
         return $txt['html'];

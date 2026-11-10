@@ -42,9 +42,9 @@ class Owner extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'projectid' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Params

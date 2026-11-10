@@ -44,9 +44,9 @@ class Format extends Relational
      *
      * @var array
      **/
-    protected $rules = array(
+    protected $rules = [
         'style' => 'notempty'
-    );
+    ];
 
     /**
      * Defines a one to one relationship with citation
@@ -82,7 +82,7 @@ class Format extends Relational
      **/
     public function getTemplateKeys()
     {
-        $template_keys =  array(
+        $template_keys =  [
             "type" => "{TYPE}",
             "cite" => "{CITE KEY}",
             "ref_type" => "{REF TYPE}",
@@ -119,7 +119,7 @@ class Format extends Relational
             "month" => "{MONTH}",
             "search_string" => "{SECONDARY LINK}",
             "sec_cnt" => "{SECONDARY COUNT}"
-        );
+        ];
 
         return $template_keys;
     }

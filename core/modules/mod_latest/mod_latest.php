@@ -66,7 +66,7 @@ class Latest extends Module
                 break;
         }
 
-        $cacheid = md5(serialize(array($idbase, $module->module)));
+        $cacheid = md5(serialize([$idbase, $module->module]));
 
         $cacheparams = new stdClass();
         $cacheparams->cachemode    = 'id';
@@ -81,7 +81,7 @@ class Latest extends Module
             $grouped = false;
             $article_grouping = $params->get('article_grouping', 'none');
             $article_grouping_direction = $params->get('article_grouping_direction', 'ksort');
-            if (!in_array($article_grouping_direction, array('ksort', 'krsort', 'asort', 'arsort'), true)) {
+            if (!in_array($article_grouping_direction, ['ksort', 'krsort', 'asort', 'arsort'], true)) {
                 $article_grouping_direction = 'ksort';
             }
             $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx', ''));
@@ -141,10 +141,10 @@ class Latest extends Module
                 if ($option === 'com_content') {
                     switch ($view) {
                         case 'category':
-                            $catids = array(Request::getInt('id'));
+                            $catids = [Request::getInt('id')];
                             break;
                         case 'categories':
-                            $catids = array(Request::getInt('id'));
+                            $catids = [Request::getInt('id')];
                             break;
                         case 'article':
                             if ($params->get('show_on_article_page', 1)) {
@@ -159,9 +159,9 @@ class Latest extends Module
 
                                     $item = $article->row();
 
-                                    $catids = array($item->catid);
+                                    $catids = [$item->catid];
                                 } else {
-                                    $catids = array($catid);
+                                    $catids = [$catid];
                                 }
                             } else {
                                 // Return right away if show_on_article_page option is off
@@ -198,7 +198,7 @@ class Latest extends Module
                 if (!Component::params('com_content')->get('show_noauth')) {
                     $categories->whereIn('access', User::getAuthorisedViewLevels());
                 }
-                $additional_catids = array();
+                $additional_catids = [];
 
                 foreach ($catids as $catid) {
                     $catgories = clone $categories;
@@ -385,11 +385,11 @@ class Latest extends Module
         $diffLength = 0;
 
         // First get the plain text string. This is the rendered text we want to end up with.
-        $ptString = Str::truncate($html, $maxLength, array('html' => true));
+        $ptString = Str::truncate($html, $maxLength, ['html' => true]);
 
         for ($maxLength; $maxLength < $baseLength;) {
             // Now get the string if we allow html.
-            $htmlString = Str::truncate($html, $maxLength, array('html' => true));
+            $htmlString = Str::truncate($html, $maxLength, ['html' => true]);
 
             // Now get the plain text from the html string.
             $htmlStringToPtString = Str::truncate($htmlString, $maxLength);
@@ -421,19 +421,19 @@ class Latest extends Module
      */
     public static function groupBy($list, $fieldName, $article_grouping_direction, $fieldNameToKeep = null)
     {
-        $grouped = array();
+        $grouped = [];
 
         if (!is_array($list)) {
             if ($list == '') {
                 return $grouped;
             }
 
-            $list = array($list);
+            $list = [$list];
         }
 
         foreach ($list as $key => $item) {
             if (!isset($grouped[$item->$fieldName])) {
-                $grouped[$item->$fieldName] = array();
+                $grouped[$item->$fieldName] = [];
             }
 
             if (is_null($fieldNameToKeep)) {
@@ -461,14 +461,14 @@ class Latest extends Module
      */
     public static function groupByDate($list, $type, $article_grouping_direction, $month_year_format = 'F Y')
     {
-        $grouped = array();
+        $grouped = [];
 
         if (!is_array($list)) {
             if ($list == '') {
                 return $grouped;
             }
 
-            $list = array($list);
+            $list = [$list];
         }
 
         foreach ($list as $key => $item) {
@@ -477,7 +477,7 @@ class Latest extends Module
                     $month_year = substr($item->created, 0, 7);
 
                     if (!isset($grouped[$month_year])) {
-                        $grouped[$month_year] = array();
+                        $grouped[$month_year] = [];
                     }
 
                     $grouped[$month_year][$key] = $item;
@@ -488,7 +488,7 @@ class Latest extends Module
                     $year = substr($item->created, 0, 4);
 
                     if (!isset($grouped[$year])) {
-                        $grouped[$year] = array();
+                        $grouped[$year] = [];
                     }
 
                     $grouped[$year][$key] = $item;

@@ -70,28 +70,28 @@ class Field extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'label' => 'notempty',
         'type'  => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'ordering'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'name'
-    );
+    ];
 
     /**
      * Generates automatic name field value
@@ -259,7 +259,7 @@ class Field extends Relational
     public static function toXml($fields, $action = null)
     {
         // Convert to XML so we can use the Form processor
-        $xml   = array();
+        $xml   = [];
         $xml[] = '<?xml version="1.0" encoding="utf-8"?>';
         $xml[] = '<form>';
         $xml[] = '<fieldset name="basic">';
@@ -268,7 +268,7 @@ class Field extends Relational
             $f .= ($field->get('description')  ? ' description="' . htmlspecialchars($field->get('description'), ENT_COMPAT) . '"' : '');
             $f .= ($field->get('option_blank') ? ' option_blank="1"' : '');
             $f .= ($field->get('option_other') ? ' option_other="1"' : '');
-            if (in_array($action, array('create', 'update', 'edit'))) {
+            if (in_array($action, ['create', 'update', 'edit'])) {
                 $f .= ($field->get('action_' . $action) == self::STATE_REQUIRED ? ' required="true"' : '');
             }
             $f .= '>';

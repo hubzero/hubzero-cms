@@ -29,7 +29,7 @@ class Ftp implements AdapterInterface
      *
      * @public array
      */
-    protected $configurable = array(
+    protected $configurable = [
         'host',
         'port',
         'username',
@@ -39,7 +39,7 @@ class Ftp implements AdapterInterface
         'root',
         'passive',
         'transferMode',
-    );
+    ];
 
     protected $connection;
     protected $host;
@@ -485,7 +485,7 @@ class Ftp implements AdapterInterface
      */
     public function find($paths, $file)
     {
-        $paths = is_array($paths) ? $paths : array($paths);
+        $paths = is_array($paths) ? $paths : [$paths];
 
         foreach ($paths as $path) {
             $fullname = $path . DS . $file;
@@ -709,12 +709,12 @@ class Ftp implements AdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function listContents($path, $filter = '.', $recursive = false, $full = false, $exclude = array('.svn',
-        '.git', 'CVS', '.DS_Store', '__MACOSX'))
+    public function listContents($path, $filter = '.', $recursive = false, $full = false, $exclude = ['.svn',
+        '.git', 'CVS', '.DS_Store', '__MACOSX'])
     {
         $listing = ftp_rawlist($this->getConnection(), '-lna ' . $path, $recursive);
 
-        return $listing ? $this->normalizeListing($listing, ($full ? '' : $path), $filter, $exclude) : array();
+        return $listing ? $this->normalizeListing($listing, ($full ? '' : $path), $filter, $exclude) : [];
     }
 
     /**
@@ -724,12 +724,12 @@ class Ftp implements AdapterInterface
      * @param   string  $prefix
      * @return  array   Directory listing
      */
-    protected function normalizeListing(array $listing, $prefix = '', $filter = '.', $exclude = array('.svn', '.git',
-        'CVS', '.DS_Store', '__MACOSX'))
+    protected function normalizeListing(array $listing, $prefix = '', $filter = '.', $exclude = ['.svn', '.git',
+        'CVS', '.DS_Store', '__MACOSX'])
     {
         $base = $prefix;
 
-        $result  = array();
+        $result  = [];
         $listing = $this->removeDotDirectories($listing);
 
         while ($item = array_shift($listing)) {
@@ -816,12 +816,12 @@ class Ftp implements AdapterInterface
         $permissions = substr($permissions, 1);
 
         // map the string rights to the numeric counterparts
-        $map = array(
+        $map = [
             '-' => '0',
             'r' => '4',
             'w' => '2',
             'x' => '1'
-        );
+        ];
         $permissions = strtr($permissions, $map);
 
         // split up the permission groups

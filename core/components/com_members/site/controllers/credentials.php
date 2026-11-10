@@ -42,10 +42,10 @@ class Credentials extends SiteController
     protected function finish($url, $message = '', $type = 'message')
     {
         if (Request::getInt('no_html', 0)) {
-            echo json_encode(array(
-                'success' => !in_array($type, array('error', 'warning'), true),
+            echo json_encode([
+                'success' => !in_array($type, ['error', 'warning'], true),
                 'message' => $message
-            ));
+            ]);
             exit;
         }
 
@@ -140,10 +140,10 @@ class Credentials extends SiteController
             return;
         }
 
-        $eview  = new \Hubzero\Mail\View(array(
+        $eview  = new \Hubzero\Mail\View([
             'name'   => 'emails',
             'layout' => 'remind_plain'
-        ));
+        ]);
 
         $eview->config  = Config::getRoot();
         $eview->baseUrl = rtrim(Request::base(), DS);
@@ -285,10 +285,10 @@ class Credentials extends SiteController
         $user->tokens()->save(['token' => $hashedToken]);
 
         // Send an email
-        $sent = $this->sendResetMail($user, 'reset', 'password_reset', array(
+        $sent = $this->sendResetMail($user, 'reset', 'password_reset', [
             'token'  => $token,
             'return' => Route::url('index.php?option=' . $this->_option . '&task=verify')
-        ));
+        ]);
 
         if (!$sent) {
             Log::error('Members password reset email failed[2]: ' . Lang::txt('Failed to mail %s', $user->get('email')));
@@ -418,7 +418,7 @@ class Credentials extends SiteController
                     ->whereEquals('enabled', 1)
                     ->rows();
 
-        $password_rules = array();
+        $password_rules = [];
 
         foreach ($rules as $rule) {
             if (!empty($rule['description'])) {
@@ -490,7 +490,7 @@ class Credentials extends SiteController
         if (!empty($password1)) {
             $msg = \Hubzero\Password\Rule::verify($password1, $password_rules, $user->get('username'));
         } else {
-            $msg = array();
+            $msg = [];
         }
 
         $error    = false;
@@ -518,10 +518,10 @@ class Credentials extends SiteController
 
         if ($error) {
             if ($no_html) {
-                $response = array(
+                $response = [
                     'success' => false,
                     'message' => $error
-                );
+                ];
 
                 echo json_encode($response);
                 die();
@@ -543,10 +543,10 @@ class Credentials extends SiteController
         // Save the changes
         if (!$result) {
             if ($no_html) {
-                $response = array(
+                $response = [
                     'success' => false,
                     'message' => Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_GENERIC')
-                );
+                ];
 
                 echo json_encode($response);
                 die();
@@ -565,10 +565,10 @@ class Credentials extends SiteController
         User::setState('com_members.reset.user', null);
 
         if ($no_html) {
-            $response = array(
+            $response = [
                 'success'  => true,
                 'redirect' => Route::url('index.php?option=com_login', false)
-            );
+            ];
 
             echo json_encode($response);
             die();
@@ -608,12 +608,12 @@ class Credentials extends SiteController
      * @param   array   $vars    Extra variables for the layouts
      * @return  bool    Whether the message was sent
      */
-    private function sendResetMail($user, $layout, $object, $vars = array())
+    private function sendResetMail($user, $layout, $object, $vars = [])
     {
-        $eview  = new \Hubzero\Mail\View(array(
+        $eview  = new \Hubzero\Mail\View([
             'name'   => 'emails',
             'layout' => $layout . '_plain'
-        ));
+        ]);
 
         $eview->config  = Config::getRoot();
         $eview->baseUrl = rtrim(Request::base(), '/');

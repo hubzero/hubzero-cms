@@ -53,42 +53,42 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'title'    => 'notempty',
         'content'  => 'notempty',
         'scope'    => 'notempty'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'alias',
         'publish_up',
         'publish_down'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by',
         'params'
-    );
+    ];
 
     /**
      * Fields to be parsed
      *
      * @var array
      */
-    protected $parsed = array(
+    protected $parsed = [
         'content'
-    );
+    ];
 
     /**
      * Registry
@@ -332,7 +332,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
         if (!$this->get('id')) {
             switch (strtolower($what)) {
                 case 'array':
-                    return array();
+                    return [];
                 break;
 
                 case 'string':
@@ -349,7 +349,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
             return $cloud;
         }
 
-        return $cloud->render($what, array('admin' => $admin));
+        return $cloud->render($what, ['admin' => $admin]);
     }
 
     /**
@@ -574,14 +574,14 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
             $scope  = $published->toLocal('Y') . '/';
             $scope .= $published->toLocal('m');
 
-            $params = array(
+            $params = [
                 'option'   => $this->adapter()->get('option'),
                 'scope'    => $this->adapter()->get('scope') . '/' . $scope,
                 'pagename' => $this->get('alias'),
                 'pageid'   => 0,
                 'filepath' => $this->adapter()->get('path'),
                 'domain'   => ''
-            );
+            ];
 
             $this->$property = Html::content('prepare', $this->get($field, ''), $params);
         }
@@ -624,7 +624,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
                 $this->params->set('access-check-done', true);
             } else {
                 // Check if they're a site admin
-                foreach (array('admin', 'manage', 'delete', 'edit', 'edit-state', 'edit-own') as $option) {
+                foreach (['admin', 'manage', 'delete', 'edit', 'edit-state', 'edit-own'] as $option) {
                     $this->params->set(
                         'access-' . $option . '-entry',
                         User::authorise('core.' . ($option == 'admin' ? 'admin' : 'manage'), $this->get('id'))
@@ -698,11 +698,11 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
         $valid = parent::validate();
 
         if ($valid) {
-            $results = Event::trigger('content.onContentBeforeSave', array(
+            $results = Event::trigger('content.onContentBeforeSave', [
                 'com_blog.entry.content',
                 &$this,
                 $this->isNew()
-            ));
+            ]);
 
             foreach ($results as $result) {
                 if ($result === false) {
@@ -740,7 +740,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
         $file = __DIR__ . '/forms/' . strtolower($this->getModelName()) . '.xml';
         $file = Filesystem::cleanPath($file);
 
-        $form = new Form('blog', array('control' => 'fields'));
+        $form = new Form('blog', ['control' => 'fields']);
 
         if (!$form->loadFile($file, false, '//form')) {
             $this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
@@ -799,14 +799,14 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
                 $title = $tag->get('raw_tag', '');
                 $description = $tag->get('tag', '');
                 $label = $tag->get('label', '');
-                $blog->tags[] = array(
+                $blog->tags[] = [
                     'id' => 'tag-' . $tag->id,
                     'title' => $title,
                     'description' => $description,
                     'access_level' => $tag->admin == 0 ? 'public' : 'private',
                     'type' => 'blog-tag',
                     'badge_b' => $label == 'badge' ? true : false
-                );
+                ];
             }
         }
         $blog->owner_type = 'user';

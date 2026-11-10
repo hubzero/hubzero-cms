@@ -38,7 +38,7 @@ class Column extends Macro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['wiki'] = 'Allows content to be split into columns. This macro must first start ' .
             'with a declaration of the number of columns you want to use: `Column(3)`. Then ' .
             'you must use the macro twice to indicate where a column starts and ends: ' .
@@ -79,7 +79,7 @@ class Column extends Macro
         if (trim($text) == 'start') {
             $this->_cursor++;
 
-            $cls = array('col');
+            $cls = ['col'];
 
             switch ($this->_columns) {
                 case 6:
@@ -105,7 +105,7 @@ class Column extends Macro
                 $cls[] = 'omega';
             }
 
-            $atts = array();
+            $atts = [];
             if (!empty($attribs) && count($attribs) > 0) {
                 foreach ($attribs as $a) {
                     $a = preg_split('/=/', $a);

@@ -74,7 +74,7 @@ class Systemv1r0 extends ApiController
         //shell_exec("git log -1 --pretty=format:'%h - %s (%ci)' --abbrev-commit git merge-base local-dev dev");
 
         // System
-        $response->system = array(
+        $response->system = [
             'cms'         => App::version(),
             'php'         => php_uname(),
             'dbversion'   => App::get('db')->getVersion(),
@@ -84,7 +84,7 @@ class Systemv1r0 extends ApiController
             //'last_update' => null, //$commit,
             //'last_core_update' => null,
             'environment' => Config::get('application_env', 'production')
-        );
+        ];
 
         if (file_exists(Component::path('com_update') . DS . 'helpers' . DS . 'cli.php')) {
             $source = Component::params('com_update')->get('git_repository_source', null);
@@ -142,7 +142,7 @@ class Systemv1r0 extends ApiController
             $keys = explode(',', $values);
             $keys = array_map('trim', $keys);
             $keys = array_map('strtolower', $keys);
-            $data = array();
+            $data = [];
             foreach ($keys as $key) {
                 if (isset($response->system[$key])) {
                     $data[$key] = $response->system[$key];
@@ -151,9 +151,9 @@ class Systemv1r0 extends ApiController
             $response->system = $data;
         }
 
-        $results = Event::trigger('hubzero.onSystemOverview', array($values));
+        $results = Event::trigger('hubzero.onSystemOverview', [$values]);
         if ($results) {
-            $response->overview = array();
+            $response->overview = [];
 
             foreach ($results as $result) {
                 if ($result) {

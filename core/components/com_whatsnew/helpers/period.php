@@ -27,7 +27,7 @@ class Period
      *
      * @var  array
      */
-    private $data = array();
+    private $data = [];
 
     /**
      * Constructor

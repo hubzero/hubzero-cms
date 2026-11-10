@@ -28,7 +28,7 @@ class Script extends Plugin
      *
      * @var  boolean
      */
-    public static $extensions = array(
+    public static $extensions = [
         'c',
         'cpp',
         'css',
@@ -47,7 +47,7 @@ class Script extends Plugin
         'sql',
         'vb',
         'xml'
-    );
+    ];
 
     /**
      * Determines if the given collection can be handled by this plugin

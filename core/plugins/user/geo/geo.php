@@ -26,7 +26,7 @@ class Geo extends Plugin
      * @param array $options holding options (remember, autoregister, group)
      * @return void
      */
-    public function onUserLogin($user, $options = array())
+    public function onUserLogin($user, $options = [])
     {
         // Get params
         $groupAlias = $this->params->get('group', false);
@@ -62,7 +62,7 @@ class Geo extends Plugin
 
             if (is_object($group)) {
                 // Remove the user from the group
-                $group->remove('members', array($user['id']));
+                $group->remove('members', [$user['id']]);
 
                 // Update the groups
                 $group->update();

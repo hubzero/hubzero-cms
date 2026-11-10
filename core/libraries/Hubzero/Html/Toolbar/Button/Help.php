@@ -175,7 +175,7 @@ class Help extends Button
         $lang->setDebug($debug);
 
         // Replace substitution codes in help URL.
-        $search = array(
+        $search = [
             '{app}', // Application name (eg. 'Administrator')
             '{component}', // Component name (eg. 'com_content')
             '{keyref}', // Help screen key reference
@@ -185,9 +185,9 @@ class Help extends Button
             '{major}', // major version number
             '{minor}', // minor version number
             '{maintenance}'// maintenance version number
-        );
+        ];
 
-        $replace = array(
+        $replace = [
             App::get('client')->name, // {app}
             $component, // {component}
             $keyref, // {keyref}
@@ -197,7 +197,7 @@ class Help extends Button
             $hver[0], // {major}
             $hver[1], // {minor}
             $hver[2]// {maintenance}
-        );
+        ];
 
         // If the help file is local then check it exists.
         // If it doesn't then fallback to English.

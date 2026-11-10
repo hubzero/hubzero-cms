@@ -34,38 +34,38 @@ class Import extends Base
      *
      * @var  array
      */
-    private $_fieldMap = array(
-        'cn' => array(
+    private $_fieldMap = [
+        'cn' => [
             'cn',
             'name',
             'alias',
             'group',
             'group_alias',
             'group_aliases',
-        ),
-        'gidNumber' => array(
+        ],
+        'gidNumber' => [
             'id',
             'gid',
             'gids',
             'gidnumber',
             'groupid',
-        ),
-        'description' => array(
+        ],
+        'description' => [
             'description',
             'title',
-        ),
-        'published' => array(
+        ],
+        'published' => [
             'published',
             'state',
             'status',
             'unpublished',
-        ),
-        'approved' => array(
+        ],
+        'approved' => [
             'approved',
             'approval',
             'approve',
             'allowed',
-        ),
+        ],
         /*'public_desc' => array(
             'public_desc',
             'publicdesc',
@@ -83,7 +83,7 @@ class Import extends Base
             'privateinfo',
             'private',
         ),*/
-        'restrict_msg' => array(
+        'restrict_msg' => [
             'restrict_msg',
             'restrictmsg',
             'restrict',
@@ -91,15 +91,15 @@ class Import extends Base
             'restricted',
             'restrict_message',
             'restrictmessage',
-        ),
-        'join_policy' => array(
+        ],
+        'join_policy' => [
             'join_policy',
             'joinpolicy',
             'policy',
             'membership',
             'membershippolicy',
-        ),
-        'discoverability' => array(
+        ],
+        'discoverability' => [
             'discoverability',
             'access',
             'visibility',
@@ -108,8 +108,8 @@ class Import extends Base
             'hidden',
             'hide',
             'show',
-        ),
-        'discussion_email_autosubscribe' => array(
+        ],
+        'discussion_email_autosubscribe' => [
             'discussion_email_autosubscribe',
             'discussionemailautosubscribe',
             'discussionemail',
@@ -118,14 +118,14 @@ class Import extends Base
             'discussion',
             'email',
             'autosubscribe',
-        ),
-        'plugins' => array(
+        ],
+        'plugins' => [
             'plugins',
             'plugin',
             'extensions',
             'tabs',
-        ),
-        'created' => array(
+        ],
+        'created' => [
             'created',
             'createdtime',
             'createddate',
@@ -133,26 +133,26 @@ class Import extends Base
             'time',
             'datetime',
             'made',
-        ),
-        'created_by' => array(
+        ],
+        'created_by' => [
             'createdby',
             'creator',
             'maker',
-        ),
-        'members' => array(
+        ],
+        'members' => [
             'members',
             'membership',
             'users',
-        ),
-        'managers' => array(
+        ],
+        'managers' => [
             'managers',
             'manager',
-        ),
+        ],
         /*'projects' => array(
             'project',
             'projects',
         )*/
-    );
+    ];
 
     /**
      * Store changes to this database entry
@@ -174,10 +174,10 @@ class Import extends Base
      * @param   string  $mode     Operation mode (update|patch)
      * @return  object
      */
-    public function getRecord($raw, $options = array(), $mode = 'UPDATE')
+    public function getRecord($raw, $options = [], $mode = 'UPDATE')
     {
         $record = new stdClass();
-        $record->_unused = array();
+        $record->_unused = [];
 
         if (is_array($raw)) {
             foreach ($raw as $key => $val) {
@@ -224,7 +224,7 @@ class Import extends Base
     public function fields($name = null)
     {
         if (!$this->_fields) {
-            $this->_fields = array();
+            $this->_fields = [];
 
             if ($fields = $this->get('fields')) {
                 $this->_fields = json_decode($fields, true);
@@ -277,16 +277,16 @@ class Import extends Base
      */
     public function autoDetectFields(array $headers)
     {
-        $mapping = array();
+        $mapping = [];
 
         foreach ($headers as $header) {
             $norm = $this->normalize($header);
 
-            $map = array(
+            $map = [
                 'label' => $header,
                 'name'  => $norm,
                 'field' => ''
-            );
+            ];
 
             foreach ($this->fieldMap() as $column => $aliases) {
                 if (in_array($norm, $aliases)) {
@@ -318,11 +318,11 @@ class Import extends Base
                     continue;
                 }
 
-                $this->_fieldMap[$field->get('name')] = array(
+                $this->_fieldMap[$field->get('name')] = [
                     $field->get('name'),
                     strtolower($field->get('name')),
                     preg_replace('/[^a-zA-Z0-9]/', '', $field->get('name'))
-                );
+                ];
             }
         }
 

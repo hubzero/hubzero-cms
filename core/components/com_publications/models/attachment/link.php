@@ -35,7 +35,7 @@ class Link extends Base
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_connector  = array('path');
+    protected $_connector  = ['path'];
 
     /**
      * Get configs
@@ -293,7 +293,7 @@ class Link extends Base
      * @param   array    $toAttach
      * @return  boolean
      */
-    public function save($element, $elementId, $pub, $blockParams, $toAttach = array())
+    public function save($element, $elementId, $pub, $blockParams, $toAttach = [])
     {
         $toAttach = $toAttach ? $toAttach : Request::getArray('url', '', 'post');
         $titles   = Request::getArray('title', '', 'post');
@@ -301,7 +301,7 @@ class Link extends Base
 
         // Incoming selections
         if (!is_array($toAttach)) {
-            $toAttach = array($toAttach);
+            $toAttach = [$toAttach];
         }
 
         // Get configs
@@ -404,7 +404,7 @@ class Link extends Base
         // Need to check against allowed types
         $accept = isset($element->typeParams->accept) ? $element->typeParams->accept : null;
         if ($configs->check) {
-            if (!$this->checkAllowed(array($path), $accept)) {
+            if (!$this->checkAllowed([$path], $accept)) {
                 return false;
             }
         }
@@ -413,7 +413,7 @@ class Link extends Base
         if (
             $objPA->loadElementAttachment(
                 $pub->version_id,
-                array('path' => $path),
+                ['path' => $path],
                 $elementId,
                 $this->_name,
                 $element->role
@@ -580,7 +580,7 @@ class Link extends Base
      * @param   array    $formats
      * @return  boolean
      */
-    public function checkAllowed($attachments, $formats = array())
+    public function checkAllowed($attachments, $formats = [])
     {
         if (empty($formats)) {
             return true;
@@ -609,12 +609,12 @@ class Link extends Base
     {
         // Output HTML
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => 'attachments',
                 'layout'  => $this->_name
-            )
+            ]
         );
         $view->data   = $data;
         $view->params = $params;

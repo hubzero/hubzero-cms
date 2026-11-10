@@ -53,7 +53,7 @@ Html::behavior('tooltip');
                 <select name="offering" id="filter_offering" class="filter filter-submit">
                     <option value="0"><?php echo Lang::txt('COM_COURSES_OFFERING_SELECT'); ?></option>
                     <?php
-                    $offerings = array();
+                    $offerings = [];
                     $model = \Components\Courses\Models\Courses::getInstance();
                     if ($model->courses()->total() > 0) {
                         foreach ($model->courses() as $course) {

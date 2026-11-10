@@ -70,12 +70,12 @@ class Progress extends Plugin
 
         // Check to see if user is member and plugin access requires members
         if (!$course->offering()->section()->access('view')) {
-            $view = new \Hubzero\Plugin\View(array(
+            $view = new \Hubzero\Plugin\View([
                 'folder' => 'courses',
                 'element' => 'outline',
                 'name' => 'shared',
                 'layout' => '_not_enrolled'
-            ));
+            ]);
 
             $view->set('course', $course)
                 ->set('option', 'com_courses')
@@ -208,7 +208,7 @@ class Progress extends Plugin
     {
         // Only allow for instructors
         if (!$this->course->offering()->section()->access('manage')) {
-            echo json_encode(array('success' => false));
+            echo json_encode(['success' => false]);
             exit();
         }
 
@@ -218,14 +218,14 @@ class Progress extends Plugin
 
         // Get all section members
         $members = $this->course->offering()->section()->members(
-            array(
+            [
                 'student' => 1,
                 'limit' => $limit,
                 'start' => $start
-            )
+            ]
         );
-        $member_ids = array();
-        $mems = array();
+        $member_ids = [];
+        $mems = [];
         $grades = null;
         $progress = null;
         $passing = null;
@@ -235,7 +235,7 @@ class Progress extends Plugin
             foreach ($members as $m) {
                 $lst = User::getInstance($m->get('user_id'))->get('lastvisitDate');
                 $member_ids[] = $m->get('id');
-                $mems[] = array(
+                $mems[] = [
                     'id' => $m->get('id'),
                     'user_id' => $m->get('user_id'),
                     'name' => User::getInstance($m->get('user_id'))->get('name'),
@@ -247,27 +247,27 @@ class Progress extends Plugin
                     'lastvisit' => (($lst && $lst != '0000-00-00 00:00:00')
                         ? Date::of($lst)->format('M j, Y')
                         : 'never')
-                );
+                ];
             }
 
             // Refresh the grades
             $this->course->offering()->gradebook()->refresh($member_ids);
 
             // Get the grades
-            $grades = $this->course->offering()->gradebook()->grades(array('unit', 'course'));
+            $grades = $this->course->offering()->gradebook()->grades(['unit', 'course']);
             $progress = $this->course->offering()->gradebook()->progress($member_ids);
             $passing = $this->course->offering()->gradebook()->passing($member_ids);
             $recognitions = $this->course->offering()->gradebook()->isEligibleForRecognition($member_ids);
         }
 
         echo json_encode(
-            array(
+            [
                 'members' => $mems,
                 'grades' => $grades,
                 'progress' => $progress,
                 'passing' => $passing,
                 'recognitions' => $recognitions
-            )
+            ]
         );
 
         exit();
@@ -282,7 +282,7 @@ class Progress extends Plugin
     {
         // Only allow for instructors
         if (!$this->course->offering()->section()->access('manage')) {
-            echo json_encode(array('success' => false));
+            echo json_encode(['success' => false]);
             exit();
         }
 
@@ -310,21 +310,21 @@ class Progress extends Plugin
 
         // Get our units
         $unitsObj = $this->course->offering()->units();
-        $units = array();
+        $units = [];
         foreach ($unitsObj as $u) {
-            $units[] = array('id' => $u->get('id'), 'title' => $u->get('title'));
+            $units[] = ['id' => $u->get('id'), 'title' => $u->get('title')];
         }
 
         // Get total number of members
-        $members_cnt = $this->course->offering()->section()->members(array('student' => 1, 'count' => true));
+        $members_cnt = $this->course->offering()->section()->members(['student' => 1, 'count' => true]);
 
         echo json_encode(
-            array(
+            [
                 'gradepolicy' => $policy,
                 'units' => $units,
                 'members_cnt' => $members_cnt,
                 'course_id' => $this->course->get('id')
-            )
+            ]
         );
 
         exit();
@@ -339,16 +339,16 @@ class Progress extends Plugin
     {
         // Only allow for instructors
         if (!$this->course->offering()->section()->access('manage')) {
-            echo json_encode(array('success' => false));
+            echo json_encode(['success' => false]);
             exit();
         }
 
         // Get all section members
-        $members = $this->course->offering()->section()->members(array('student' => 1));
-        $mems = array();
+        $members = $this->course->offering()->section()->members(['student' => 1]);
+        $mems = [];
 
         foreach ($members as $m) {
-            $mems[] = array('id' => $m->get('id'), 'name' => User::getInstance($m->get('user_id'))->get('name'));
+            $mems[] = ['id' => $m->get('id'), 'name' => User::getInstance($m->get('user_id'))->get('name')];
         }
 
         // Refresh the grades
@@ -362,30 +362,30 @@ class Progress extends Plugin
         // Get the assets
         $asset = new \Components\Courses\Tables\Asset(App::get('db'));
         $assets = $asset->find(
-            array(
-                'w' => array(
+            [
+                'w' => [
                     'course_id' => $this->course->get('id'),
                     'section_id' => $this->course->offering()->section()->get('id'),
                     'offering_id' => $this->course->offering()->get('id'),
                     'graded' => true,
                     'state' => 1,
                     'asset_scope' => 'asset_group'
-                ),
+                ],
                 'order_by' => 'title',
                 'order_dir' => 'ASC'
-            )
+            ]
         );
 
         // Get gradebook auxiliary assets
         $auxiliary = $asset->findByScope(
             'offering',
             $this->course->offering()->get('id'),
-            array(
+            [
                 'asset_type' => 'gradebook',
                 'asset_subtype' => 'auxiliary',
                 'graded' => true,
                 'state' => 1
-            )
+            ]
         );
 
         $assets = array_merge($assets, $auxiliary);
@@ -395,12 +395,12 @@ class Progress extends Plugin
         });
 
         echo json_encode(
-            array(
+            [
                 'assets' => $assets,
                 'members' => $mems,
                 'grades' => $grades,
                 'canManage' => (($this->course->access('manage')) ? true : false)
-            )
+            ]
         );
         exit();
     }
@@ -414,7 +414,7 @@ class Progress extends Plugin
     {
         // Only allow for instructors
         if (!$this->course->offering()->section()->access('manage')) {
-            echo json_encode(array('success' => false));
+            echo json_encode(['success' => false]);
             exit();
         }
 
@@ -424,30 +424,30 @@ class Progress extends Plugin
         // Get the assets
         $asset = new \Components\Courses\Tables\Asset(App::get('db'));
         $assets = $asset->find(
-            array(
-                'w' => array(
+            [
+                'w' => [
                     'course_id' => $this->course->get('id'),
                     'section_id' => $this->course->offering()->section()->get('id'),
                     'offering_id' => $this->course->offering()->get('id'),
                     'graded' => true,
                     'state' => 1,
                     'asset_scope' => 'asset_group'
-                ),
+                ],
                 'order_by' => 'title',
                 'order_dir' => 'ASC'
-            )
+            ]
         );
 
         // Get gradebook auxiliary assets
         $auxiliary = $asset->findByScope(
             'offering',
             $this->course->offering()->get('id'),
-            array(
+            [
                 'asset_type' => 'gradebook',
                 'asset_subtype' => 'auxiliary',
                 'graded' => true,
                 'state' => 1
-            )
+            ]
         );
 
         $assets = array_merge($assets, $auxiliary);
@@ -457,10 +457,10 @@ class Progress extends Plugin
         });
 
         echo json_encode(
-            array(
+            [
                 'stats' => $stats,
                 'assets' => $assets
-            )
+            ]
         );
         exit();
     }
@@ -474,12 +474,12 @@ class Progress extends Plugin
     {
         // Only allow for instructors
         if (!$this->course->offering()->section()->access('manage')) {
-            echo json_encode(array('success' => false));
+            echo json_encode(['success' => false]);
             exit();
         }
 
         // Get all section members
-        $members = $this->course->offering()->section()->members(array('student' => 1));
+        $members = $this->course->offering()->section()->members(['student' => 1]);
 
         // Refresh the grades
         // @FIXME: This seems to cause memory problems...neeed trigger based solution, rather than one-time computation
@@ -491,30 +491,30 @@ class Progress extends Plugin
         // Get the assets
         $asset = new \Components\Courses\Tables\Asset(App::get('db'));
         $assets = $asset->find(
-            array(
-                'w' => array(
+            [
+                'w' => [
                     'course_id' => $this->course->get('id'),
                     'section_id' => $this->course->offering()->section()->get('id'),
                     'offering_id' => $this->course->offering()->get('id'),
                     'graded' => true,
                     'state' => 1,
                     'asset_scope' => 'asset_group'
-                ),
+                ],
                 'order_by' => 'title',
                 'order_dir' => 'ASC'
-            )
+            ]
         );
 
         // Get gradebook auxiliary assets
         $auxiliary = $asset->findByScope(
             'offering',
             $this->course->offering()->get('id'),
-            array(
+            [
                 'asset_type' => 'gradebook',
                 'asset_subtype' => 'auxiliary',
                 'graded' => true,
                 'state' => 1
-            )
+            ]
         );
 
         $assets = array_merge($assets, $auxiliary);
@@ -532,7 +532,7 @@ class Progress extends Plugin
         header("Pragma: no-cache");
         header("Expires: 0");
 
-        $row = array();
+        $row = [];
         $row[] = 'Student Name';
         $row[] = 'Student Email';
         foreach ($assets as $a) {
@@ -541,7 +541,7 @@ class Progress extends Plugin
         echo implode(',', $row) . "\n";
 
         foreach ($members as $m) {
-            $row = array();
+            $row = [];
             $row[] = User::getInstance($m->get('user_id'))->get('name');
             $row[] = User::getInstance($m->get('user_id'))->get('email');
             foreach ($assets as $a) {
@@ -671,7 +671,7 @@ class Progress extends Plugin
     {
         // Only allow for instructors
         if (!$this->course->offering()->section()->access('manage')) {
-            echo json_encode(array('success' => false));
+            echo json_encode(['success' => false]);
             exit();
         }
 
@@ -680,7 +680,7 @@ class Progress extends Plugin
             !$this->course->config()->get('section_grade_policy', true)
             && !$this->course->offering()->access('manage')
         ) {
-            echo json_encode(array('success' => false));
+            echo json_encode(['success' => false]);
             exit();
         }
 
@@ -714,7 +714,7 @@ class Progress extends Plugin
         }
 
         if (!$asset->store()) {
-            echo json_encode(array('success' => false));
+            echo json_encode(['success' => false]);
             exit();
         }
 
@@ -727,12 +727,12 @@ class Progress extends Plugin
 
             // Save the asset association
             if (!$assoc->store()) {
-                echo json_encode(array('success' => false));
+                echo json_encode(['success' => false]);
                 exit();
             }
         }
 
-        echo json_encode(array('id' => $asset->get('id'), 'title' => $asset->get('title')));
+        echo json_encode(['id' => $asset->get('id'), 'title' => $asset->get('title')]);
         exit();
     }
 
@@ -745,7 +745,7 @@ class Progress extends Plugin
     {
         // Only allow for instructors
         if (!$this->course->offering()->section()->access('manage')) {
-            echo json_encode(array('success' => false));
+            echo json_encode(['success' => false]);
             exit();
         }
 
@@ -754,7 +754,7 @@ class Progress extends Plugin
             !$this->course->config()->get('section_grade_policy', true)
             && !$this->course->offering()->access('manage')
         ) {
-            echo json_encode(array('success' => false));
+            echo json_encode(['success' => false]);
             exit();
         }
 
@@ -769,16 +769,16 @@ class Progress extends Plugin
                 $asset->set('state', 2);
             }
         } else {
-            echo json_encode(array('success' => false));
+            echo json_encode(['success' => false]);
             exit();
         }
 
         if (!$asset->store()) {
-            echo json_encode(array('success' => false));
+            echo json_encode(['success' => false]);
             exit();
         }
 
-        echo json_encode(array('success' => true));
+        echo json_encode(['success' => true]);
         exit();
     }
 
@@ -791,21 +791,21 @@ class Progress extends Plugin
     {
         // Only allow for instructors
         if (!$this->course->offering()->section()->access('manage')) {
-            echo json_encode(array('success' => false));
+            echo json_encode(['success' => false]);
             exit();
         }
 
         // Get request variables
         if (!$member_id = Request::getInt('student_id', false)) {
-            echo json_encode(array('success' => false));
+            echo json_encode(['success' => false]);
             exit();
         }
         if (!$asset_id = Request::getInt('asset_id', false)) {
-            echo json_encode(array('success' => false));
+            echo json_encode(['success' => false]);
             exit();
         }
         if (!$grade_value = Request::getString('grade', false)) {
-            echo json_encode(array('success' => false));
+            echo json_encode(['success' => false]);
             exit();
         }
 
@@ -823,11 +823,11 @@ class Progress extends Plugin
         $grade->set('override_recorded', Date::toSql());
 
         if (!$grade->store()) {
-            echo json_encode(array('success' => false));
+            echo json_encode(['success' => false]);
             exit();
         }
 
-        echo json_encode(array('success' => true));
+        echo json_encode(['success' => true]);
         exit();
     }
 
@@ -840,17 +840,17 @@ class Progress extends Plugin
     {
         // Only allow for instructors
         if (!$this->course->offering()->section()->access('manage')) {
-            echo json_encode(array('success' => false));
+            echo json_encode(['success' => false]);
             exit();
         }
 
         // Get request variables
         if (!$member_id = Request::getInt('student_id', false)) {
-            echo json_encode(array('success' => false));
+            echo json_encode(['success' => false]);
             exit();
         }
         if (!$asset_id = Request::getInt('asset_id', false)) {
-            echo json_encode(array('success' => false));
+            echo json_encode(['success' => false]);
             exit();
         }
 
@@ -859,7 +859,7 @@ class Progress extends Plugin
         $grade->loadByUserAndAssetId($member_id, $asset_id);
 
         if (!$grade->id) {
-            echo json_encode(array('success' => false));
+            echo json_encode(['success' => false]);
             exit();
         }
 
@@ -868,11 +868,11 @@ class Progress extends Plugin
 
         // Store (true to update nulls)
         if (!$grade->store(true)) {
-            echo json_encode(array('success' => false));
+            echo json_encode(['success' => false]);
             exit();
         }
 
-        echo json_encode(array('success' => true, 'score' => $grade->score));
+        echo json_encode(['success' => true, 'score' => $grade->score]);
         exit();
     }
 
@@ -917,7 +917,7 @@ class Progress extends Plugin
 
         if (($exam_weight + $quiz_weight + $homework_weight) != 1) {
             if (Request::getInt('no_html', false)) {
-                echo json_encode(array('error' => true, 'message' => 'The sum of all weights should be 100.'));
+                echo json_encode(['error' => true, 'message' => 'The sum of all weights should be 100.']);
                 exit();
             } else {
                 // Redirect with message
@@ -964,7 +964,7 @@ class Progress extends Plugin
         }
 
         if (Request::getInt('no_html', 0)) {
-            echo json_encode(array('success' => true, 'message' => 'Scoring policy successfully saved!'));
+            echo json_encode(['success' => true, 'message' => 'Scoring policy successfully saved!']);
             exit();
         } else {
             // Redirect with message
@@ -1034,11 +1034,11 @@ class Progress extends Plugin
             $policy->homework_weight = $gp->get('homework_weight') * 100;
             $policy->threshold = $gp->get('threshold') * 100;
             echo json_encode(
-                array(
+                [
                     'success' => true,
                     'message' => 'Scoring policy successfully restored to the default configuration!',
                     'gradepolicy' => $policy
-                )
+                ]
             );
             exit();
         } else {

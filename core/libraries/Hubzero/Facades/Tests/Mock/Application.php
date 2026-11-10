@@ -20,7 +20,7 @@ class Application implements \ArrayAccess
      *
      * @var  array
      */
-    protected $attributes = array();
+    protected $attributes = [];
 
     /**
      * Set a value

@@ -42,7 +42,7 @@ class Installed extends AdminController
      */
     public function displayTask()
     {
-        $filters = array(
+        $filters = [
             'client_id' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.client_id',
                 'client',
@@ -60,7 +60,7 @@ class Installed extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         $client = \Hubzero\Base\ClientManager::client($filters['client_id']);
 

@@ -23,7 +23,7 @@ if ($canDo->get('core.edit')) {
 }
 Toolbar::cancel();
 
-$authors = array();
+$authors = [];
 if ($this->installedPackage) {
     $packageAuthors = $this->installedPackage->getAuthors();
     if ($packageAuthors) {

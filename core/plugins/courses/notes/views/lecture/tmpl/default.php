@@ -28,10 +28,10 @@ jQuery(document).ready(function(jQuery) {
 
     var options = {
         notes: <?php
-            $n = array();
-            $access = array(0);
+            $n = [];
+            $access = [0];
         if ($this->course->access('manage')) {
-            $access = array(0, 1);
+            $access = [0, 1];
         }
             $notes = \Plugins\Courses\Notes\Models\Note::all()
                 ->whereEquals('scope', 'lecture')

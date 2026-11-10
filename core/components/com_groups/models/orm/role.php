@@ -41,10 +41,10 @@ class Role extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'gidNumber' => 'positive|nonzero',
         'name'      => 'notempty'
-    );
+    ];
 
     /**
      * Get parent group

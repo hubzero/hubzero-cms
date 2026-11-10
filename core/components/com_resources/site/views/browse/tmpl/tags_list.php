@@ -81,10 +81,10 @@ switch ($this->level) {
         $params    = $this->bits['params'];
         $filters   = $this->bits['filters'];
 
-        $sortbys = array(
+        $sortbys = [
             'date'  => Lang::txt('COM_RESOURCES_SORT_BY') . ' ' . Lang::txt('COM_RESOURCES_DATE'),
             'title' => Lang::txt('COM_RESOURCES_SORT_BY') . ' ' . Lang::txt('COM_RESOURCES_TITLE')
-        );
+        ];
         if ($this->bits['ranking']) {
             $sortbys['ranking'] = Lang::txt('COM_RESOURCES_SORT_BY') . ' ' . Lang::txt('COM_RESOURCES_RANKING');
         }
@@ -118,7 +118,7 @@ switch ($this->level) {
         }
         $html .= '</ul>';
         if ($type->isForTools() && $params->get('show_ranking')) {
-            $this->bits['filter'] = is_array($this->bits['filter']) ? $this->bits['filter'] : array();
+            $this->bits['filter'] = is_array($this->bits['filter']) ? $this->bits['filter'] : [];
             if (!empty($filters)) {
                 $html .= '<div id="filteroptions">';
                 $html .= ' <div>' . Lang::txt('Show:');
@@ -184,7 +184,7 @@ switch ($this->level) {
         $html .= '><a href="' . $sef . '">' . $this->escape(stripslashes($resource->title)) . '</a></h4>';
         $html .= '<p>' . \Hubzero\Utility\Str::truncate(stripslashes($resource->introtext), 400) . ' &nbsp; <a href="' . $sef . '">' . Lang::txt('COM_RESOURCES_LEARN_MORE') . '</a></p>';
 
-        $usersgroups = array();
+        $usersgroups = [];
         if (!User::isGuest()) {
             $xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'all');
             // Get the groups the user has access to
@@ -198,7 +198,7 @@ switch ($this->level) {
         }
 
         if ($resource->access == 3 && !in_array($resource->group_owner, $usersgroups) && !$authorized) {
-            $ghtml = array();
+            $ghtml = [];
             foreach ($resource->groups as $allowedgroup) {
                 $ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
             }

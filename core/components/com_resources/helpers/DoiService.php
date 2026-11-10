@@ -209,7 +209,7 @@ class DoiService extends Obj
      * @param   string   $type     Mapping field
      * @return  void
      */
-    public function mapUser($uid = null, $authors = array(), $type = 'creator')
+    public function mapUser($uid = null, $authors = [], $type = 'creator')
     {
         $name  = '';
         $orcid = '';
@@ -274,7 +274,7 @@ class DoiService extends Obj
         $this->set('contributor', '');
         $this->set('creator', '');
         $this->set('creatorOrcid', '');
-        $this->set('authors', array());
+        $this->set('authors', []);
         $this->setDefaults();
     }
 
@@ -395,7 +395,7 @@ class DoiService extends Obj
         curl_setopt($ch, CURLOPT_USERPWD, $this->_configs->userPW);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postvals);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/xml;charset=UTF-8', 'Content-Length: ' . strlen($postvals)));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type:application/xml;charset=UTF-8', 'Content-Length: ' . strlen($postvals)]);
         curl_setopt($ch, CURLOPT_FAILONERROR, true);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
 
@@ -441,7 +441,7 @@ class DoiService extends Obj
         curl_setopt($ch, CURLOPT_USERPWD, $this->_configs->userPW);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postvals);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:text/plain;charset=UTF-8', 'Content-Length: ' . strlen($postvals)));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type:text/plain;charset=UTF-8', 'Content-Length: ' . strlen($postvals)]);
         curl_setopt($ch, CURLOPT_FAILONERROR, true);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
 
@@ -545,7 +545,7 @@ class DoiService extends Obj
         curl_setopt($ch, CURLOPT_USERPWD, $this->_configs->userPW);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:text/plain;charset=UTF-8', 'Content-Length: ' . strlen($xml)));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type:text/plain;charset=UTF-8', 'Content-Length: ' . strlen($xml)]);
         curl_setopt($ch, CURLOPT_FAILONERROR, true);
         curl_setopt($ch, CURLOPT_POST, true);
 
@@ -612,7 +612,7 @@ class DoiService extends Obj
         $input .= "_profile: datacite" . "\n";
 
         $status = strtolower($status);
-        if (!in_array($status, array('public', 'reserved'))) {
+        if (!in_array($status, ['public', 'reserved'])) {
             $status = 'public';
         }
 
@@ -632,14 +632,14 @@ class DoiService extends Obj
     {
         $ch = curl_init($url);
 
-        $options = array(
+        $options = [
             CURLOPT_URL             => $url,
             CURLOPT_POST            => true,
             CURLOPT_USERPWD         => $this->_configs->userPW,
             CURLOPT_POSTFIELDS      => $postvals,
             CURLOPT_RETURNTRANSFER  => true,
-            CURLOPT_HTTPHEADER      => array('Content-Type: text/plain; charset=UTF-8', 'Content-Length: ' . strlen($postvals))
-        );
+            CURLOPT_HTTPHEADER      => ['Content-Type: text/plain; charset=UTF-8', 'Content-Length: ' . strlen($postvals)]
+        ];
         curl_setopt_array($ch, $options);
 
         $response = curl_exec($ch);
@@ -697,7 +697,7 @@ class DoiService extends Obj
             $xdoc->loadXML($xml);
 
             // Append XML
-            $input .= 'datacite: ' . strtr($xml, array(":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D")) . "\n";
+            $input .= 'datacite: ' . strtr($xml, [":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D"]) . "\n";
 
             // Make service call to send extended metadata
             $doi = $this->runCurl($url, $input);
@@ -752,7 +752,7 @@ class DoiService extends Obj
                 $this->setError(Lang::txt('COM_RESOURCES_ERROR_DOI_XML_INVALID'));
             } else {
                 // Append XML
-                $input .= 'datacite: ' . strtr($xml, array(":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D")) . "\n";
+                $input .= 'datacite: ' . strtr($xml, [":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D"]) . "\n";
             }
         }
 

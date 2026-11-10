@@ -69,20 +69,20 @@ class Format extends AdminController
         }
 
         //get format
-        $format = Request::getArray('citationFormat', array());
+        $format = Request::getArray('citationFormat', []);
 
         // create or update custom format
         $model = CitationFormat::oneOrNew($format['id']);
 
         if ($model->style == 'Hub Custom' || $model->isNew() === true) {
-            $model->set(array(
+            $model->set([
                 'style'  => 'Hub Custom',
                 'format' => \Hubzero\Utility\Sanitize::clean($format['format'])
-            ));
+            ]);
         } else {
-            $model->set(array(
+            $model->set([
                 'format' => \Hubzero\Utility\Sanitize::clean($format['format'])
-            ));
+            ]);
         }
 
         if (!$model->save()) {

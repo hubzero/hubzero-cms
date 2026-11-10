@@ -20,7 +20,7 @@ $this->css()
 $config = Component::params('com_resources');
 
 // An array for storing all the links we make
-$links = array();
+$links = [];
 $html = '';
 
 if ($this->cats) {
@@ -52,7 +52,7 @@ if ($this->cats) {
             // Are there sub-categories?
             if (isset($cat['_sub']) && is_array($cat['_sub'])) {
                 // An array for storing the HTML we make
-                $k = array();
+                $k = [];
                 // Loop through each sub-category
                 foreach ($cat['_sub'] as $subcat) {
                     // Only show sub-categories that returned search results

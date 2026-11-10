@@ -35,7 +35,7 @@ class NativeStringProcessor implements StringProcessorInterface
      * @param   array  $options
      * @return  void
      */
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
         if (isset($options['ascii_conversion'])) {
             $this->asciiConversion = (bool) $options['ascii_conversion'];
@@ -61,7 +61,7 @@ class NativeStringProcessor implements StringProcessorInterface
 
         if ($this->aggressive) {
             // Convert some characters that 'MAY' be used as alias
-            $string = str_replace(array('@', '$', '[dot]', '(dot)'), array('at', 's', '.', '.'), $string);
+            $string = str_replace(['@', '$', '[dot]', '(dot)'], ['at', 's', '.', '.'], $string);
 
             // Remove special characters
             $string = preg_replace("/[^a-zA-Z0-9-\.]/", '', $string);
@@ -71,7 +71,7 @@ class NativeStringProcessor implements StringProcessorInterface
         }
 
         $string = trim(strtolower($string));
-        $string = str_replace(array("\t", "\r\n", "\r", "\n"), '', $string);
+        $string = str_replace(["\t", "\r\n", "\r", "\n"], '', $string);
 
         return $string;
     }

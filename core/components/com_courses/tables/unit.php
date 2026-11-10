@@ -106,7 +106,7 @@ class Unit extends Table
      * @param  array $filters
      * @return $query database query
      */
-    private function _buildQuery($filters = array())
+    private function _buildQuery($filters = [])
     {
         $query = " FROM $this->_tbl AS cu
 					LEFT JOIN #__courses_offering_section_dates AS sd ON sd.scope='unit' AND sd.scope_id=cu.id";
@@ -115,7 +115,7 @@ class Unit extends Table
             $query .= " AND sd.section_id=" . $this->_db->quote($filters['section_id']);
         }
 
-        $where = array();
+        $where = [];
 
         // Note the deliberate lack of a truthiness test: an offering_id of 0
         // has to match no units, not every unit in the table.
@@ -143,7 +143,7 @@ class Unit extends Table
      * @param  array $filters
      * @return object Return course units
      */
-    public function count($filters = array())
+    public function count($filters = [])
     {
         $query  = "SELECT COUNT(cu.id)";
         $query .= $this->_buildQuery($filters);
@@ -158,7 +158,7 @@ class Unit extends Table
      * @param  array $filters
      * @return object Return course units
      */
-    public function find($filters = array())
+    public function find($filters = [])
     {
         $query  = "SELECT DISTINCT cu.*, sd.publish_up, sd.publish_down, sd.section_id";
         $query .= $this->_buildQuery($filters);

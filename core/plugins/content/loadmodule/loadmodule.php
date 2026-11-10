@@ -23,12 +23,12 @@ class Loadmodule extends Plugin
     /**
      * List of modules by position
      */
-    protected static $modules = array();
+    protected static $modules = [];
 
     /**
      * List of modules by name
      */
-    protected static $mods = array();
+    protected static $mods = [];
 
     /**
      * Plugin that loads module positions within content
@@ -130,7 +130,7 @@ class Loadmodule extends Plugin
             $document   = Document::instance();
             $renderer   = $document->loadRenderer('module');
             $modules    = Module::byPosition($position);
-            $params     = array('style' => $style);
+            $params     = ['style' => $style];
 
             ob_start();
             foreach ($modules as $module) {
@@ -160,7 +160,7 @@ class Loadmodule extends Plugin
             self::$mods[$moduleinstance] = '';
             $document = Document::instance();
             $renderer = $document->loadRenderer('module');
-            $params   = array('style' => $style);
+            $params   = ['style' => $style];
             $mod      = Module::byName($module, $title);
 
             // If the module without the mod_ isn't found, try it with mod_.

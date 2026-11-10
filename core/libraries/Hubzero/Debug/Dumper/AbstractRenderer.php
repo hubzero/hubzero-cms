@@ -21,7 +21,7 @@ class AbstractRenderer implements Renderable
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_messages = array();
+    protected $_messages = [];
 
     /**
      * Constructor
@@ -91,7 +91,7 @@ class AbstractRenderer implements Renderable
 
         $messages = $this->getMessages();
 
-        $output = array();
+        $output = [];
         foreach ($messages as $item) {
             $output[] = print_r($item['var'], true);
         }
@@ -108,7 +108,7 @@ class AbstractRenderer implements Renderable
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _deflate($arr)
     {
-        $arr = str_replace(array("\n", "\r", "\t"), ' ', $arr);
+        $arr = str_replace(["\n", "\r", "\t"], ' ', $arr);
         return preg_replace('/\s+/', ' ', $arr);
     }
 }

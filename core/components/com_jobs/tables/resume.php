@@ -124,7 +124,7 @@ class Resume extends Table
         }
         $query .= "WHERE s.active=1 AND r.main=1 ";
 
-        $files = array();
+        $files = [];
 
         $this->_db->setQuery($query);
         $result = $this->_db->loadObjectList();

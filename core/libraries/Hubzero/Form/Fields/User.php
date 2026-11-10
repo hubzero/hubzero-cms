@@ -33,7 +33,7 @@ class User extends Field
     protected function getInput()
     {
         // Initialize variables.
-        $html = array();
+        $html = [];
         $groups = $this->getGroups();
         $excluded = $this->getExcluded();
         $link = 'index.php?option=com_members&amp;layout=modal&amp;tmpl=component&amp;field=' . $this->id
@@ -51,7 +51,7 @@ class User extends Field
         Behavior::modal('a.modal_' . $this->id);
 
         // Build the script.
-        $script = array();
+        $script = [];
         $script[] = '	function jSelectUser_' . $this->id . '(id, title) {';
         $script[] = '		var old_id = document.getElementById("' . $this->id . '_id").value;';
         $script[] = '		if (old_id != id) {';

@@ -39,7 +39,7 @@ class Share extends Plugin
      */
     public function &onPublicationAreas($publication, $version = 'default', $extended = true)
     {
-        $areas = array();
+        $areas = [];
         return $areas;
     }
 
@@ -56,14 +56,14 @@ class Share extends Plugin
      */
     public function onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)
     {
-        $arr = array(
+        $arr = [
             'html'     => '',
             'metadata' => '',
             'name'     => 'share'
-        );
+        ];
 
         // Hide if version not published
-        if (!$extended || in_array($publication->state, array(4, 5, 6))) {
+        if (!$extended || in_array($publication->state, [4, 5, 6])) {
             return $arr;
         }
 
@@ -87,12 +87,12 @@ class Share extends Plugin
                         'scope'       => 'publication',
                         'scope_id'    => $publication->id,
                         'description' => Lang::txt('PLG_PUBLICATIONS_SHARE_ENTRY_SHARED', '<a href="' . $sef . '">' . htmlspecialchars((string) ($publication->title), ENT_QUOTES, 'UTF-8') . '</a>', $sharewith),
-                        'details'     => array(
+                        'details'     => [
                             'with'    => $sharewith,
                             'title'   => $publication->title,
                             'url'     => $sef,
                             'version' => $publication->version_number
-                        )
+                        ]
                     ],
                     'recipients' => [
                         ['publication', $publication->id],

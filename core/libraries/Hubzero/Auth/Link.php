@@ -53,10 +53,10 @@ class Link extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'auth_domain_id' => 'positive|nonzero',
         'username'       => 'notempty'
-    );
+    ];
 
     /**
      * Defines a belongs to one relationship between entry and user
@@ -380,7 +380,7 @@ class Link extends Relational
      * @return  mixed
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public static function find_by_email($email, $exclude = array())
+    public static function find_by_email($email, $exclude = [])
     {
         if (empty($email)) {
             return false;
@@ -397,7 +397,7 @@ class Link extends Relational
 
         $rows = $query->rows();
 
-        $results = array();
+        $results = [];
 
         foreach ($rows as $row) {
             $result = $row->toArray();

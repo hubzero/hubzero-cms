@@ -38,9 +38,9 @@ class Audience extends Table
             return false;
         }
 
-        return parent::load(array(
+        return parent::load([
             'publication_version_id' => (int) $versionid
-        ));
+        ]);
     }
 
     /**

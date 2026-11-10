@@ -55,20 +55,20 @@ class Author extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'subtable' => 'notempty',
         'subid'    => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'ordering',
         'subtable'
-    );
+    ];
 
     /**
      * Generates automatic ordering field value
@@ -132,7 +132,7 @@ class Author extends Relational
 
 
         if (!$profile->get('name')) {
-            $name = array();
+            $name = [];
             if ($profile->get('givenName')) {
                 $name[] = $profile->get('givenName');
             }

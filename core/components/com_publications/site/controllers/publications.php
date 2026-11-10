@@ -98,7 +98,7 @@ class Publications extends SiteController
                 $this->_task = 'intro';
             }
 
-            if (!$this->_id && !$this->_alias && in_array($this->_task, array('view', 'page'))) {
+            if (!$this->_id && !$this->_alias && in_array($this->_task, ['view', 'page'])) {
                 Request::setVar('task', 'intro');
                 $this->_task = 'intro';
             }
@@ -342,11 +342,11 @@ class Publications extends SiteController
         // Set the pathway
         $this->_buildPathway();
 
-        $filters = array(
+        $filters = [
             'sortby' => 'date_published',
             'limit'  => $this->config->get('listlimit', 10),
             'start'  => Request::getInt('limitstart', 0)
-        );
+        ];
 
         // Instantiate a publication object
         $model = new Models\Publication();
@@ -360,7 +360,7 @@ class Publications extends SiteController
 
         // Get major types
         $t = new Tables\Category($this->database);
-        $categories = $t->getCategories(array('itemCount' => 1));
+        $categories = $t->getCategories(['itemCount' => 1]);
 
         $this->view
             ->set('title', $this->_title)
@@ -595,29 +595,29 @@ class Publications extends SiteController
         }
 
         // Start sections
-        $sections = array();
-        $cats = array();
+        $sections = [];
+        $cats = [];
         $tab = $tab ? $tab : 'about';
 
         // Show extended pub info like reviews, questions etc.
         $extended = $lastPubRelease && $lastPubRelease->id == $this->model->version->id ? true : false;
 
         // Trigger the functions that return the areas we'll be using
-        $cats = Event::trigger('publications.onPublicationAreas', array(
+        $cats = Event::trigger('publications.onPublicationAreas', [
             $this->model,
             $this->model->versionAlias,
-            $extended));
+            $extended]);
 
         // Get the sections
-        $sections = Event::trigger('publications.onPublication', array(
+        $sections = Event::trigger('publications.onPublication', [
             $this->model,
             $this->_option,
-            array($tab),
+            [$tab],
             'all',
             $this->model->versionAlias,
-            $extended));
+            $extended]);
 
-        $available = array('play');
+        $available = ['play'];
         foreach ($cats as $cat) {
             $name = key($cat);
             if ($name != '') {
@@ -636,10 +636,10 @@ class Publications extends SiteController
                 'publication_version_id' => $publicationVersionId
             ]);
             // Build the HTML of the "about" tab
-            $view = new \Hubzero\Component\View(array(
+            $view = new \Hubzero\Component\View([
                 'name'   => 'about',
                 'layout' => 'default'
-            ));
+            ]);
             $view->set('option', $this->_option);
             $view->set('controller', $this->_controller);
             $view->set('task', $this->_task);
@@ -660,21 +660,21 @@ class Publications extends SiteController
         }
 
         // Add the default "About" section to the beginning of the lists
-        $cat = array();
+        $cat = [];
         $cat['about'] = Lang::txt('COM_PUBLICATIONS_ABOUT');
         array_unshift($cats, $cat);
-        array_unshift($sections, array('html' => $body, 'metadata' => ''));
+        array_unshift($sections, ['html' => $body, 'metadata' => '']);
 
         // Get filters (for series & workshops listing)
         $defaultsort = ($this->model->_category->alias == 'series') ? 'date' : 'ordering';
         $defaultsort = ($this->model->_category->alias == 'series' && $this->config->get('show_ranking')) ? 'ranking' : $defaultsort;
 
-        $filters = array(
+        $filters = [
             'sortby' => Request::getString('sortby', $defaultsort),
             'limit'  => Request::getInt('limit', 0),
             'start'  => Request::getInt('limitstart', 0),
             'id'     => $this->model->publication->id
-        );
+        ];
 
         // Write title & build pathway
         Document::setTitle(Lang::txt(strtoupper($this->_option)) . ': ' . stripslashes($this->model->version->title));
@@ -725,7 +725,7 @@ class Publications extends SiteController
         $vid        = Request::getInt('vid', '');
         $file       = Request::getString('file', '');
         $disp       = Request::getString('disposition');
-        $disp       = in_array($disp, array('inline', 'attachment')) ? $disp : 'attachment';
+        $disp       = in_array($disp, ['inline', 'attachment']) ? $disp : 'attachment';
 
         // Get our model and load publication data
         $this->model = new Models\Publication($this->_identifier, $this->_version, $vid);
@@ -1035,7 +1035,7 @@ class Publications extends SiteController
     {
         $this->model = new Models\Publication($this->_identifier, $this->_version);
 
-        $out = array('status' => 'unknown', 'ready' => false);
+        $out = ['status' => 'unknown', 'ready' => false];
 
         if ($this->model->exists() && !$this->model->isDeleted() && $this->model->access('view-all')) {
             $vid = (int) $this->model->get('version_id');
@@ -1163,7 +1163,7 @@ class Publications extends SiteController
             case 'bibtex':
             default:
                 $bibtex = new \Components\Citations\Helpers\BibTex();
-                $addarray = array();
+                $addarray = [];
                 $addarray['type']    = 'misc';
                 $addarray['cite']    = Config::get('sitename') . $this->model->get('id');
                 $addarray['title']   = stripslashes($this->model->version->get('title'));
@@ -1225,13 +1225,13 @@ class Publications extends SiteController
         // of the group, so without a list any public method of any publications plugin
         // was callable from a URL (windowstools' command-line builder among
         // them). Only the triggers this component's own pages link to.
-        if (!in_array($trigger, array('onPublicationsRecoms'), true)) {
+        if (!in_array($trigger, ['onPublicationsRecoms'], true)) {
             echo '<p class="error">' . Lang::txt('COM_PUBLICATIONS_NO_TRIGGER_FOUND') . '</p>';
             return;
         }
 
         // Call the trigger
-        $results = Event::trigger('publications.' . $trigger, array($this->_option));
+        $results = Event::trigger('publications.' . $trigger, [$this->_option]);
         if (is_array($results)) {
             $html = $results[0]['html'];
         }
@@ -1342,10 +1342,10 @@ class Publications extends SiteController
         Lang::load('com_projects', Component::path('com_projects') . DS . 'site');
 
         // Instantiate a new view
-        $this->view  = new \Hubzero\Component\View(array(
+        $this->view  = new \Hubzero\Component\View([
             'name'   => 'submit',
             'layout' => 'default'
-        ));
+        ]);
         $this->view->set('option', $this->_option);
         $this->view->set('config', $this->config);
 
@@ -1357,7 +1357,7 @@ class Publications extends SiteController
         $this->_buildPathway();
 
         // What plugin requested?
-        $allowed = array('team', 'files', 'notes', 'databases', 'publications', 'links');
+        $allowed = ['team', 'files', 'notes', 'databases', 'publications', 'links'];
         $plugin  = in_array($active, $allowed) ? $active : 'publications';
 
         if (User::isGuest() && ($action == 'login' || $action == 'start' || $action == 'publication')) {
@@ -1401,10 +1401,10 @@ class Publications extends SiteController
         if ($action == 'start' && !$project->access('create')) {
             $this->_buildPathway(null);
 
-            $this->view = new \Hubzero\Component\View(array(
+            $this->view = new \Hubzero\Component\View([
                 'name'   => 'error',
                 'layout' => 'restricted'
-            ));
+            ]);
             $this->view->set('error', Lang::txt('COM_PUBLICATIONS_ERROR_NOT_FROM_CREATOR_GROUP'));
             $this->view->set('title', $this->title);
             $this->view->set('option', $this->_option);
@@ -1418,11 +1418,11 @@ class Publications extends SiteController
         }
 
         // Plugin params
-        $plugin_params = array(
+        $plugin_params = [
             $project,
             $action,
-            $areas = array($plugin)
-        );
+            $areas = [$plugin]
+        ];
 
         $content = Event::trigger('projects.onProject', $plugin_params);
         $this->view->set('content', (is_array($content) && isset($content[0]['html'])) ? $content[0]['html'] : '');
@@ -1740,7 +1740,7 @@ class Publications extends SiteController
             $objO = $project->table('Owner');
         }
         $ownrs = $objO->getOwners($project->get('id'));
-        $owners = array();
+        $owners = [];
         foreach ($ownrs as $owner) {
             $owners[$owner->userid] = $owner->id;
         }
@@ -1811,14 +1811,14 @@ class Publications extends SiteController
         if (!$curation || json_last_error() !== JSON_ERROR_NONE) {
             $curation = json_decode($publication->type->get('curation'), true);
         }
-        $fileParams = array(
+        $fileParams = [
             'directory'    => '',
             'dirHierarchy' => 1
-        );
-        $galleryParams = array(
+        ];
+        $galleryParams = [
             'directory'    => 'gallery',
             'dirHierarchy' => 0
-        );
+        ];
         if (isset($curation['blocks'])) {
             foreach ($curation['blocks'] as $block) {
                 if (!isset($block['name'])) {
@@ -1952,12 +1952,12 @@ class Publications extends SiteController
                     }
                 }
 
-                $source = array();
+                $source = [];
                 $source['main'] = $file;
                 $source['hash'] = $file . '.hash';
                 $source['thmb'] = \Components\Projects\Helpers\Html::createThumbName($file, '_tn', 'png');
 
-                $dest = array();
+                $dest = [];
                 $dest['main'] = $filenew;
                 $dest['hash'] = $filenew . '.hash';
                 $dest['thmb'] = \Components\Projects\Helpers\Html::createThumbName($filenew, '_tn', 'png'); // thumbnails aren't in sub?
@@ -1974,10 +1974,10 @@ class Publications extends SiteController
                         $fileObj->set('type', 'folder');
                         $fileObj->clear('ext');
 
-                        $committed = $project->repo()->call('makeDirectory', array(
+                        $committed = $project->repo()->call('makeDirectory', [
                             'file'    => $fileObj,
                             'replace' => false
-                        ));
+                        ]);
                         if (!$committed) {
                             App::abort(500, Lang::txt('Error committing directory: %s', $project->repo()->getError()));
                         }
@@ -2009,13 +2009,13 @@ class Publications extends SiteController
                                 $repoPath
                             );
 
-                            $committed = $project->repo()->call('checkin', array(
+                            $committed = $project->repo()->call('checkin', [
                                 'file'    => $fileObj,
                                 'replace' => false,
                                 'message' => Lang::txt('Files forked from publication #%s', $pub_id),
                                 'author'  => null,
                                 'date'    => null
-                            ));
+                            ]);
                             if (!$committed) {
                                 App::abort(500, Lang::txt('Error committing file: %s', $project->repo()->getError()));
                             }
@@ -2045,7 +2045,7 @@ class Publications extends SiteController
         }
 
         // Copy publication thumbnail
-        $files = array('master.png', 'thumb.gif');
+        $files = ['master.png', 'thumb.gif'];
         $from  = dirname($pubfilespace);
         $to    = dirname($newpubfilespace);
 
@@ -2061,10 +2061,10 @@ class Publications extends SiteController
         }
 
         // Log activity
-        $recipients = array(
+        $recipients = [
             ['publication', $pub_id],
             ['user', User::get('id')]
-        );
+        ];
         foreach ($authors as $author) {
             $recipients[] = ['user', $author->get('user_id')];
         }
@@ -2075,11 +2075,11 @@ class Publications extends SiteController
                 'scope'       => 'publication',
                 'scope_id'    => $pub_id,
                 'description' => Lang::txt('COM_PUBLICATIONS_ACTIVITY_ENTRY_FORKED', '<a href="' . Route::url('index.php?option=com_publications&id=' . $pub_id . '&v=' . $vnum) . '">' . htmlspecialchars((string) ($version->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title' => $version->get('title'),
                     'url'   => Route::url('index.php?option=com_publications&id=' . $pub_id . '&v=' . $vnum),
                     'version_id' => $vid
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -2172,7 +2172,7 @@ class Publications extends SiteController
         $customFields = json_decode($rpublica->_curationModel->getMetaSchema(), true);
 
         // Diff the two versions
-        $diffs = array();
+        $diffs = [];
 
         $l = explode("\n", $lversion->get('title'));
         $r = explode("\n", $rversion->get('title'));
@@ -2180,11 +2180,11 @@ class Publications extends SiteController
         $diff = new \Diff($l, $r);
         $diffs['title'] = $diff->render(new \Diff_Renderer_Html_SideBySide());
 
-        $l = array();
+        $l = [];
         foreach ($lversion->authors as $author) {
             $l[] = $author->get('name') . ' (' . $author->get('organization') . ')';
         }
-        $r = array();
+        $r = [];
         foreach ($rversion->authors as $author) {
             $r[] = $author->get('name') . ' (' . $author->get('organization') . ')';
         }
@@ -2198,7 +2198,7 @@ class Publications extends SiteController
         $diff = new \Diff($l, $r);
         $diffs['description'] = $diff->render(new \Diff_Renderer_Html_SideBySide());
 
-        $diffs['metadata'] = array();
+        $diffs['metadata'] = [];
 
         $lmetadata = $lversion->metadata;
         $rmetadata = $rversion->metadata;
@@ -2287,10 +2287,10 @@ class Publications extends SiteController
             App::redirect(Route::url('index.php?option=' . $this->_option, false));
         }
 
-        $this->view  = new \Hubzero\Component\View(array(
+        $this->view  = new \Hubzero\Component\View([
             'name'   => 'tombstone',
             'layout' => 'default'
-        ));
+        ]);
 
         $this->view->set('option', $this->_option);
         $this->view->set('record', $version);

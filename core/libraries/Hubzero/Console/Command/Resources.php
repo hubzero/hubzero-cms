@@ -102,10 +102,10 @@ class Resources extends Base implements CommandInterface
      */
     public function exportcsv()
     {
-        $skip = array('password', 'params', 'usertype');
-        $keys = array();
-        $tags = array();
-        $records = array();
+        $skip = ['password', 'params', 'usertype'];
+        $keys = [];
+        $tags = [];
+        $records = [];
 
         // $members = Member::blank();
         $entries = Entry::all()->whereEquals('standalone', 1);
@@ -131,7 +131,7 @@ class Resources extends Base implements CommandInterface
         fputcsv($file, $keys, ',');
 
         foreach ($rows as $row) {
-            $record = array();
+            $record = [];
 
             foreach ($keys as $key) {
                 if ($key == 'tags') {
@@ -151,7 +151,7 @@ class Resources extends Base implements CommandInterface
                     $record[$key] = $val;
                 } elseif ($key == 'authors') {
                     $authnames = $row->authors()->ordered()->rows();
-                    $authors_array = array();
+                    $authors_array = [];
                     foreach ($authnames as $author) {
                         array_push($authors_array, User::getInstance($author->authorid)->get('username'));
                     }
@@ -162,7 +162,7 @@ class Resources extends Base implements CommandInterface
                     $record[$key] = $val;
                 } elseif ($key == 'children') {
                     $children = Entry::oneOrFail($row->get('id'))->children()->rows();
-                    $children_array = array();
+                    $children_array = [];
                     foreach ($children as $child) {
                         array_push($children_array, $child->id);
                     }
@@ -187,9 +187,9 @@ class Resources extends Base implements CommandInterface
      */
     public function exportxml()
     {
-        $skip = array('password', 'params', 'usertype');
-        $keys = array();
-        $tags = array();
+        $skip = ['password', 'params', 'usertype'];
+        $keys = [];
+        $tags = [];
 
         // $members = Member::blank();
         $entries = Entry::all()->whereEquals('standalone', 1);

@@ -19,16 +19,16 @@ defined('_HZEXEC_') or die();
 $pubParams = $this->publication->params;
 
 
-$filters = array(
+$filters = [
     'category'    => Request::getString('category', ''),
     'sortby'      => Request::getCmd('sortby', 'title'),
     'limit'       => Request::getInt('limit', 25), //Config::get('list_limit')),
     'start'       => Request::getInt('limitstart', 0),
     'search'      => Request::getString('search', ''),
     'tag'         => trim(Request::getString('tag', '')),
-    'tag_ignored' => array(),
+    'tag_ignored' => [],
     'all_versions' => true
-);
+];
 // Instantiate a publication object
 $model = new \Components\Publications\Models\Publication();
 
@@ -85,7 +85,7 @@ $pa = new \Components\Publications\Tables\Author($database);
                     $description = $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($item->get('description')), 300)) . "\n";
                 }
 
-                $info = array();
+                $info = [];
                 if ($item->get('category')) {
                     $info[] = $this->escape($item->get('cat_name'));
                 }

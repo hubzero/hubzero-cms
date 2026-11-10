@@ -66,14 +66,14 @@ class Entriesv1r1 extends ApiController
      */
     public function listTask()
     {
-        $filters = array(
+        $filters = [
             'limit'      => Request::getInt('limit', 25),
             'start'      => Request::getInt('limitstart', 0),
             'search'     => Request::getString('search', ''),
             'sort'       => Request::getString('sort', 'created'),
             'sort_Dir'   => strtoupper(Request::getWord('sortDir', 'DESC')),
             'state'      => 1
-        );
+        ];
 
         //get the earliest year we have citations for
         $earliest_year = Citation::all()
@@ -94,15 +94,15 @@ class Entriesv1r1 extends ApiController
         $filters['year_start']      = Request::getInt('year_start', $earliest_year);
         $filters['year_end']        = Request::getInt('year_end', date("Y"));
         $filters['filter']          = Request::getString('filter', '');
-        $filters['reftype']         = Request::getArray('reftype', array(
+        $filters['reftype']         = Request::getArray('reftype', [
             'research' => 1, 'education' => 1, 'eduresearch' => 1, 'cyberinfrastructure' => 1
-        ));
-        $filters['geo']             = Request::getArray('geo', array(
+        ]);
+        $filters['geo']             = Request::getArray('geo', [
             'us' => 1, 'na' => 1, 'eu' => 1, 'as' => 1
-        ));
-        $filters['aff']             = Request::getArray('aff', array(
+        ]);
+        $filters['aff']             = Request::getArray('aff', [
             'university' => 1, 'industry' => 1, 'government' => 1
-        ));
+        ]);
         $filters['startuploaddate'] = Request::getString('startuploaddate', '0000-00-00');
         $filters['enduploaddate']   = Request::getString('enduploaddate', '0000-00-00');
         $filters['scope']           = 'all';
@@ -120,7 +120,7 @@ class Entriesv1r1 extends ApiController
         }
 
         $response = new stdClass();
-        $response->citations = array();
+        $response->citations = [];
 
         $query = Citation::getFilteredRecords($filters);
         $total = clone $query;

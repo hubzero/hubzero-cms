@@ -25,7 +25,7 @@ if (!$this->no_html) {
         <?php
         if ($this->cats) {
             $i = 1;
-            $cs = array();
+            $cs = [];
             foreach ($this->cats as $cat) {
                 $name = key($cat);
                 if ($cat[$name] != '') {

@@ -37,7 +37,7 @@ class Usage extends Plugin
      */
     public function &onPublicationAreas($publication, $version = 'default', $extended = true)
     {
-        $areas = array();
+        $areas = [];
 
         if ($publication->_category->_params->get('plg_usage')) {
             $areas['usage'] = Lang::txt('PLG_PUBLICATION_USAGE');
@@ -59,10 +59,10 @@ class Usage extends Plugin
      */
     public function onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)
     {
-        $arr = array(
+        $arr = [
             'html'    => '',
             'metadata' => ''
-        );
+        ];
         $rtrn = 'all';
 
         // Check if our area is in the array of areas we want to return results for

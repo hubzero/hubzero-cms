@@ -78,10 +78,10 @@ class Pages
     public static function getDefaultHomePage($group)
     {
         // create view object
-        $view = new \Hubzero\Component\View(array(
+        $view = new \Hubzero\Component\View([
             'name'   => 'pages',
             'layout' => '_view_default'
-        ));
+        ]);
         $groupConfig = Component::params('com_groups');
         $customFields = $groupConfig->get('custom_fields');
         // pass vars to view
@@ -136,7 +136,7 @@ class Pages
             $path = trim(str_replace($base, '', Request::path()), '/');
 
             if ($path == 'index.php') {
-                return array();
+                return [];
             }
 
             $segments = explode('/', $path);
@@ -172,7 +172,7 @@ class Pages
      * @param    $group    \Hubzero\User\Group Object
      * @return   string
      */
-    public static function getActivePage($group, $pages = array())
+    public static function getActivePage($group, $pages = [])
     {
         // get path segments
         $segments = self::getCurrentPathSegments();
@@ -248,7 +248,7 @@ class Pages
      */
     public static function getPageApproversEmail()
     {
-        $emails    = array();
+        $emails    = [];
         $approvers = self::getPageApprovers();
 
         foreach ($approvers as $approver) {
@@ -283,16 +283,16 @@ class Pages
         $subject = Config::get('sitename') . ' ' . Lang::txt('Groups') . ', ' . $title;
 
         // from details
-        $from = array(
+        $from = [
             'name'  => Config::get('sitename') . ' ' . Lang::txt('Groups'),
             'email' => Config::get('mailfrom')
-        );
+        ];
 
         // build html email
-        $eview = new \Hubzero\Mail\View(array(
+        $eview = new \Hubzero\Mail\View([
             'name'   => 'emails',
             'layout' => $type . '_plain'
-        ));
+        ]);
         $eview->option     = Request::getCmd('option', 'com_groups');
         $eview->controller = Request::getCmd('controller', 'groups');
         $eview->group      = \Hubzero\User\Group::getInstance(Request::getCmd('cn', Request::getCmd('gid')));
@@ -340,7 +340,7 @@ class Pages
         $group = \Hubzero\User\Group::getInstance(Request::getCmd('cn', Request::getCmd('gid')));
 
         // array to hold manager emails
-        $managers = array();
+        $managers = [];
 
         // get all manager email addresses
         foreach ($group->get('managers') as $m) {
@@ -354,17 +354,17 @@ class Pages
         $subject = Config::get('sitename') . ' ' . Lang::txt('Groups') . ', ' . $title;
 
         // from details
-        $from = array(
+        $from = [
             'name'  => Config::get('sitename') . ' ' . Lang::txt('Groups'),
             'email' => Config::get('mailfrom')
-        );
+        ];
 
         // build html email
-        $eview = new \Hubzero\Component\View(array(
+        $eview = new \Hubzero\Component\View([
             'base_path' => dirname(__DIR__) . DS . 'site',
             'name'      => 'emails',
             'layout'    => $type
-        ));
+        ]);
 
         $eview->set('option', Request::getCmd('option', 'com_groups'));
         $eview->set('controller', Request::getCmd('controller', 'groups'));
@@ -393,10 +393,10 @@ class Pages
      */
     public static function getCodeFlags()
     {
-        return array(
-            'php' => array(
-                'minor'    => array(),
-                'elevated' => array(
+        return [
+            'php' => [
+                'minor'    => [],
+                'elevated' => [
                     'include',
                     'require',
                     'call_user_func',
@@ -416,8 +416,8 @@ class Pages
                     'tempnam',
                     'touch',
                     'unlink'
-                ),
-                'severe'   => array(
+                ],
+                'severe'   => [
                     'die',
                     'exit',
                     'exec',
@@ -454,19 +454,19 @@ class Pages
                     'phpAds_',
                     'system',
                     'xmlrpc_entity_decode',
-                ),
-            ),
-            'mysql' => array(
-                'minor'    => array(),
-                'elevated' => array(),
-                'severe'   => array(
+                ],
+            ],
+            'mysql' => [
+                'minor'    => [],
+                'elevated' => [],
+                'severe'   => [
                     'drop',
                     'rename',
                     'truncate',
                     'delete'
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
     /**
@@ -565,10 +565,10 @@ class Pages
     public static function displayPage($group, $page, $markHit = true)
     {
         // create view object
-        $view = new \Hubzero\Component\View(array(
+        $view = new \Hubzero\Component\View([
             'name'   => 'pages',
             'layout' => '_view'
-        ));
+        ]);
 
         // if super group add super group folder
         // to available paths
@@ -663,14 +663,14 @@ class Pages
             $path = Component::params('com_groups')->get('uploadpath');
 
             // build wiki config
-            $wikiConfig = array(
+            $wikiConfig = [
                 'option'   => 'com_groups',
                 'scope'    => '',
                 'pagename' => $group->get('cn'),
                 'pageid'   => 0,
                 'filepath' => $path . DS . $group->get('gidNumber') . DS . 'uploads',
                 'domain'   => $group->get('cn')
-            );
+            ];
 
             // create wiki parser
             $wikiParser = \Components\Wiki\Helpers\Parser::getInstance();
@@ -744,7 +744,7 @@ class Pages
 
         // are we allowed to display group modules
         if (!$group->isSuperGroup() && !$config->get('page_modules', 0)) {
-            $groupDocument->set('allowed_tags', array());
+            $groupDocument->set('allowed_tags', []);
         }
 
         // set group doc needed props
@@ -811,7 +811,7 @@ class Pages
 
         // are we allowed to display group modules
         if (!$group->isSuperGroup() && !$config->get('page_modules', 0)) {
-            $groupDocument->set('allowed_tags', array());
+            $groupDocument->set('allowed_tags', []);
         }
 
         // set group doc needed props

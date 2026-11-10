@@ -113,7 +113,7 @@ class Import extends SiteController
             . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_controller));
 
         //call the plugins
-        $this->view->accepted_files = Event::trigger('citation.onImportAcceptedFiles', array());
+        $this->view->accepted_files = Event::trigger('citation.onImportAcceptedFiles', []);
 
         //get any messages
         $this->view->messages = Notify::messages('citations');
@@ -161,7 +161,7 @@ class Import extends SiteController
         }
 
         // call the plugins
-        $citations = Event::trigger('citation.onImport', array($file));
+        $citations = Event::trigger('citation.onImport', [$file]);
         $citations = array_values(array_filter($citations));
 
         // did we get citations from the citation plugins
@@ -264,10 +264,10 @@ class Import extends SiteController
         $cites_require_no_attention = $this->importer->readRequiresNoAttention();
 
         // action for citations needing attention
-        $citations_action_attention = Request::getArray('citation_action_attention', array());
+        $citations_action_attention = Request::getArray('citation_action_attention', []);
 
         // action for citations needing no attention
-        $citations_action_no_attention = Request::getArray('citation_action_no_attention', array());
+        $citations_action_no_attention = Request::getArray('citation_action_no_attention', []);
 
         // check to make sure we have citations
         if (!$cites_require_attention && !$cites_require_no_attention) {
@@ -378,10 +378,10 @@ class Import extends SiteController
         $this->_buildPathway();
 
         // Filters for gettiung just previously uploaded
-        $filters = array(
+        $filters = [
             'start'  => 0,
             'search' => ''
-        );
+        ];
 
         // Instantiate a new view
         $this->view->title = Lang::txt(strtoupper($this->_option)) . ': '
@@ -390,7 +390,7 @@ class Import extends SiteController
         $this->view->database  = $this->database;
         $this->view->filters   = $filters;
         $this->view->defaultFormat = Format::getDefault();
-        $this->view->citations = array();
+        $this->view->citations = [];
         $citations_saved = Citation::all()->whereIn('id', $citations_saved)->rows();
 
         foreach ($citations_saved as $cs) {

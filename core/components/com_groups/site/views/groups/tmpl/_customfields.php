@@ -4,7 +4,7 @@ defined('_HZEXEC_') or die();
 
     $this->js('customfields');
     $xml = Components\Groups\Models\Orm\Field::toXml($this->customFields);
-    $formInfo = array('control' => 'customfields');
+    $formInfo = ['control' => 'customfields'];
     $form = new Hubzero\Form\Form('application', $formInfo);
     $form->load($xml);
     $form->bind($this->customAnswers);
@@ -26,7 +26,7 @@ foreach ($this->customFields as $field) {
             35,
             8,
             $fieldIdAttr,
-            array('class' => 'minimal no-footer images macros')
+            ['class' => 'minimal no-footer images macros']
         );
     } else {
         echo $formfield->input;

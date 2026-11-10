@@ -75,7 +75,7 @@ $router->rules('build')->append('content', function ($uri) {
     $query = $uri->getQuery(true);
 
     if (!isset($query['option']) || (isset($query['option']) && $query['option'] == 'com_content' && isset($query['task']) && $query['task'] == 'view')) {
-        $segments = array();
+        $segments = [];
 
         // Don't parse calls to other com_content views
         if (isset($query['view']) && $query['view'] == 'article' && !empty($query['id'])) {
@@ -148,7 +148,7 @@ $router->rules('build')->append('content', function ($uri) {
 | that asked for the component should not land there.
 */
 $speaksFor = function ($option) {
-    static $best = array();
+    static $best = [];
 
     // ?option[]=x is a request, and an array is not a key
     if (!is_string($option) || $option === '') {
@@ -589,7 +589,7 @@ $router->rules('parse')->append('content', function ($uri) {
         return;
     }
 
-    $vars  = array();
+    $vars  = [];
 
     //$view  = 'article';
     $menu  = App::get('menu.manager')->menu('site');
@@ -627,7 +627,7 @@ $router->rules('parse')->append('content', function ($uri) {
         // Now, check for uncategorised article with provided alias
         if ($result->alias == 'uncategorised') {
             // Success, that's it
-            $segments = array();
+            $segments = [];
 
             $vars['option'] = 'com_content';
             $vars['id']     = $result->id;
@@ -650,7 +650,7 @@ $router->rules('parse')->append('content', function ($uri) {
 
             if ($found) {
                 // Success, that's it
-                $segments = array();
+                $segments = [];
 
                 $vars['option'] = 'com_content';
                 $vars['id']     = $result->id;
@@ -663,7 +663,7 @@ $router->rules('parse')->append('content', function ($uri) {
         }
     } elseif ($count > 1) {
         // Build the path
-        $path = array();
+        $path = [];
         for ($i = 0; $i < ($count - 1); $i++) {
             $path[] = $segments[$i];
         }
@@ -679,7 +679,7 @@ $router->rules('parse')->append('content', function ($uri) {
 
         if ($result = $db->loadResult()) {
             // Success, that's it
-            $segments = array();
+            $segments = [];
 
             $vars['option'] = 'com_content';
             $vars['id']     = $result;
@@ -849,8 +849,8 @@ $router->rules('parse')->append('redirect', function ($uri) {
         "SELECT *
 		FROM `#__redirect_links`
 		WHERE `published`=1
-		AND (`old_url`=" . $db->quote($alturi->toString(array('scheme', 'host', 'port', 'path', 'query', 'fragment'))) . "
-		OR `old_url`=" . $db->quote($alturi->toString(array('path', 'query', 'fragment'))) . ")
+		AND (`old_url`=" . $db->quote($alturi->toString(['scheme', 'host', 'port', 'path', 'query', 'fragment'])) . "
+		OR `old_url`=" . $db->quote($alturi->toString(['path', 'query', 'fragment'])) . ")
 		LIMIT 1"
     );
 

@@ -211,7 +211,7 @@ class OptionGroup
         $options = $this->getOptions();
 
         // Save warning messages to display
-        $warnings = array();
+        $warnings = [];
 
         foreach ($options as $option) {
             $option->delete();
@@ -258,7 +258,7 @@ class OptionGroup
         }
 
         if (!isset($this->data->options)) {
-            $this->data->options = array();
+            $this->data->options = [];
         }
 
         return $this->data->options;

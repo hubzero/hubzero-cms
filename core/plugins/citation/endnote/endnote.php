@@ -76,8 +76,8 @@ class Endnote extends Plugin
             return;
         }
 
-        $raw_citation = array();
-        $raw_citations = array();
+        $raw_citation = [];
+        $raw_citations = [];
 
         foreach ($raw_citations_text as $k => $line) {
             // Get this lines content
@@ -91,7 +91,7 @@ class Endnote extends Plugin
             // If we have two line breaks in a row that means next citation
             if ($line == '' && $nextline == '') {
                 $raw_citations[] = $raw_citation;
-                $raw_citation = array();
+                $raw_citation = [];
                 continue;
             }
             $raw_citation[] = $line;
@@ -111,7 +111,7 @@ class Endnote extends Plugin
         }
 
         // Var to hold citation data
-        $citations = array();
+        $citations = [];
 
         // Loop through each citations raw data
         for ($i = 0, $n = count($raw_citations); $i < $n; $i++) {
@@ -120,7 +120,7 @@ class Endnote extends Plugin
             $citation_data = preg_split('/%.{1}/', $raw_citations[$i], -1, PREG_SPLIT_OFFSET_CAPTURE);
 
             // Array to hold each citation
-            $citation = array();
+            $citation = [];
 
             // Build array of citation data
             foreach ($citation_data as $cd) {
@@ -162,11 +162,11 @@ class Endnote extends Plugin
         $endnote_tags = $this->getEndnoteTags();
 
         // Array to hold final citations
-        $final_citations = array();
+        $final_citations = [];
 
         // Loop through the split up citations
         foreach ($citations as $citation) {
-            $cite = array();
+            $cite = [];
             foreach ($endnote_tags as $tag => $keys) {
                 // Loop through each key, we might have more than one key that we
                 // want as a var (ie. %K & %< to be tags)
@@ -236,35 +236,35 @@ class Endnote extends Plugin
      */
     protected function getEndnoteTags()
     {
-        $tags = array(
-            'author'           => array('%A'),
-            'booktitle'        => array('%B'),
-            'address'          => array('%C'),
-            'year'             => array('%D'),
-            'editor'           => array('%E'),
-            'label'            => array('%F'),
-            'language'         => array('%G'),
-            'publisher'        => array('%I'),
-            'journal'          => array('%J'),
-            'keywords'         => array('%K'),
-            'call_number'      => array('%L'),
-            'accession_number' => array('%M'),
-            'number'           => array('%N'),
-            'pages'            => array('%P'),
-            'doi'              => array('%R'),
-            'title'            => array('%T'),
-            'url'              => array('%U'),
-            'volume'           => array('%V'),
-            'abstract'         => array('%X'),
-            'notes'            => array('%Z'),
-            'type'             => array('%0'),
-            'edition'          => array('%7'),
-            'month'            => array('%8'),
-            'isbn'             => array('%@'),
-            'short_title'      => array('%!'),
-            'author_address'   => array('%+'),
-            'research_notes'   => array('%<')
-        );
+        $tags = [
+            'author'           => ['%A'],
+            'booktitle'        => ['%B'],
+            'address'          => ['%C'],
+            'year'             => ['%D'],
+            'editor'           => ['%E'],
+            'label'            => ['%F'],
+            'language'         => ['%G'],
+            'publisher'        => ['%I'],
+            'journal'          => ['%J'],
+            'keywords'         => ['%K'],
+            'call_number'      => ['%L'],
+            'accession_number' => ['%M'],
+            'number'           => ['%N'],
+            'pages'            => ['%P'],
+            'doi'              => ['%R'],
+            'title'            => ['%T'],
+            'url'              => ['%U'],
+            'volume'           => ['%V'],
+            'abstract'         => ['%X'],
+            'notes'            => ['%Z'],
+            'type'             => ['%0'],
+            'edition'          => ['%7'],
+            'month'            => ['%8'],
+            'isbn'             => ['%@'],
+            'short_title'      => ['%!'],
+            'author_address'   => ['%+'],
+            'research_notes'   => ['%<']
+        ];
 
         // Get any custom tags that we want to use
         $custom_tags = $this->params->get('custom_tags');
@@ -277,7 +277,7 @@ class Endnote extends Plugin
                 if (in_array($parts[0], array_keys($tags))) {
                     $tags[$parts[0]][] = $parts[1];
                 } else {
-                    $tags[$parts[0]] = array($parts[1]);
+                    $tags[$parts[0]] = [$parts[1]];
                 }
             }
         }
@@ -322,7 +322,7 @@ class Endnote extends Plugin
             $existingCitations->whereEquals('scope_id', $scope_id);
         }
 
-        $matchingKeys = array('isbn', 'title', 'doi');
+        $matchingKeys = ['isbn', 'title', 'doi'];
         $searchParams = array_intersect_key($citation, array_flip($matchingKeys));
         $searchParams = array_filter($searchParams);
         if (!empty($searchParams)) {

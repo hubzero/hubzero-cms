@@ -325,7 +325,7 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                     'calendar',
                                     'fields[publish_up]',
                                     $dateVal,
-                                    array('id' => 'field-publish_up')
+                                    ['id' => 'field-publish_up']
                                 );
                                 ?>
                             <?php $hintPubUp = Lang::txt('COM_COURSES_FIELD_PUBLISH_UP_HINT'); ?>
@@ -346,7 +346,7 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                     'calendar',
                                     'fields[start_date]',
                                     $dateVal,
-                                    array('id' => 'field-start_date')
+                                    ['id' => 'field-start_date']
                                 );
                                 ?>
                             <?php $hintStart = Lang::txt('COM_COURSES_FIELD_SECTION_STARTS_HINT'); ?>
@@ -367,7 +367,7 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                     'calendar',
                                     'fields[end_date]',
                                     $dateVal,
-                                    array('id' => 'field-end_date')
+                                    ['id' => 'field-end_date']
                                 );
                                 ?>
                             <?php $finishHintTxt = Lang::txt('COM_COURSES_FIELD_FINISHES_HINT'); ?>
@@ -388,7 +388,7 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                     'calendar',
                                     'fields[publish_down]',
                                     $dateVal,
-                                    array('id' => 'field-publish_down')
+                                    ['id' => 'field-publish_down']
                                 );
                                 ?>
                             <?php $hintPubDown = Lang::txt('COM_COURSES_FIELD_PUBLISH_DOWN_HINT'); ?>
@@ -727,7 +727,7 @@ $validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                 $this->offering->section($this->row->get('alias', '!!default!!'));
 
                     $i = 0;
-                foreach ($this->offering->units(array(), true) as $unit) {
+                foreach ($this->offering->units([], true) as $unit) {
                     $unitTitle = stripslashes($unit->get('title'));
                     $unitAlias = stripslashes($unit->get('alias'));
                     echo Html::sliders('panel', $unitTitle, $unitAlias);

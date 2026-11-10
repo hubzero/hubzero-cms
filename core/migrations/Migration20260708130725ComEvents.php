@@ -31,7 +31,7 @@ class Migration20260708130725ComEvents extends Base
      *
      * @var  array
      */
-    protected $map = array(
+    protected $map = [
         '-12' => 'Etc/GMT-12', '-11' => 'Pacific/Midway', '-10' => 'Pacific/Honolulu',
         '-9.5' => 'Pacific/Marquesas', '-9' => 'US/Alaska', '-8' => 'US/Pacific',
         '-7' => 'US/Mountain', '-6' => 'US/Central', '-5' => 'US/Eastern',
@@ -45,7 +45,7 @@ class Migration20260708130725ComEvents extends Base
         '10' => 'Australia/Brisbane', '10.5' => 'Australia/Lord_Howe', '11' => 'Pacific/Kosrae',
         '11.5' => 'Pacific/Norfolk', '12' => 'Pacific/Auckland', '12.75' => 'Pacific/Chatham',
         '13' => 'Pacific/Tongatapu', '14' => 'Pacific/Kiritimati'
-    );
+    ];
 
     /**
      * Up

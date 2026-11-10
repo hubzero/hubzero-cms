@@ -12,7 +12,7 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$authIDs = array();
+$authIDs = [];
 $html = '';
 $i = 1;
 $option = $this->option;

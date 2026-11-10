@@ -174,15 +174,15 @@ class Shibboleth extends Plugin
     {
         foreach (self::getInstitutions() as $inst) {
             if ($inst['entity_id'] == $eid) {
-                self::log('getInstitutionByEntityId', array(
+                self::log('getInstitutionByEntityId', [
                     'eid' => $eid,
                     'key' => $key,
                     'rv'  => $key ? $inst[$key] : $inst
-                ));
+                ]);
                 return $key ? $inst[$key] : $inst;
             }
         }
-        self::log('getInstitutionByEntityId', array('eid' => $eid, 'key' => $key, 'rv' => null));
+        self::log('getInstitutionByEntityId', ['eid' => $eid, 'key' => $key, 'rv' => null]);
         return null;
     }
 
@@ -223,8 +223,8 @@ class Shibboleth extends Plugin
         $com_user = 'com_users';
         $task     = (User::isGuest()) ? 'user.login' : 'user.link';
 
-        self::log('getLoginParams', array($service, $com_user, $task));
-        return array($service, $com_user, $task);
+        self::log('getLoginParams', [$service, $com_user, $task]);
+        return [$service, $com_user, $task];
     }
 
     /**
@@ -258,14 +258,14 @@ class Shibboleth extends Plugin
 
     private static function htmlify()
     {
-        return array(
+        return [
             function ($str) {
                 return str_replace('"', '&quot;', $str);
             },
             function ($str) {
                 return htmlentities($str);
             }
-        );
+        ];
     }
 
     public static function onRenderOption($return = null, $title = 'With Institutional Credentials')
@@ -296,13 +296,13 @@ class Shibboleth extends Plugin
 
         // Attach style and scripts
         foreach (
-            array(
+            [
             'bootstrap-select.min.js',
             'shibboleth.js',
             'bootstrap-select.min.css',
             'bootstrap-theme.min.css',
             'shibboleth.css'
-            ) as $asset
+            ] as $asset
         ) {
             $mtd = 'addPlugin' . (preg_match('/[.]js$/', $asset) ? 'script' : 'stylesheet');
             \Hubzero\Document\Assets::$mtd('authentication', 'shibboleth', $asset);
@@ -371,7 +371,7 @@ class Shibboleth extends Plugin
         }
         self::log('no shib session', $_GET);
         self::log('no shib session', $_COOKIE);
-        return array();
+        return [];
     }
 
     /**
@@ -410,17 +410,17 @@ class Shibboleth extends Plugin
             : (isset($_SERVER['Shib-Session-ID']) ? $_SERVER['Shib-Session-ID'] : null);
 
         if ($sid) {
-            $attrs = array(
+            $attrs = [
                 'id' => $sid,
                 'idp' => isset($_SERVER['REDIRECT_Shib-Identity-Provider'])
                     ? $_SERVER['REDIRECT_Shib-Identity-Provider']
                     : $_SERVER['Shib-Identity-Provider']
-            );
+            ];
             foreach (
-                array(
+                [
                 'email', 'eppn', 'displayName', 'givenName', 'sn', 'mail', 'middleName', 'lastName',
                 'userPrincipalName', 'eduPersonPrincipalName', 'eduPersonUniqueId'
-                ) as $key
+                ] as $key
             ) {
                 if (isset($_SERVER[$key])) {
                     $attrs[$key] = $_SERVER[$key];
@@ -514,10 +514,10 @@ class Shibboleth extends Plugin
             ? $_GET['idp']
             : (isset($_COOKIE['shib-entity-id']) ? $_COOKIE['shib-entity-id'] : null);
         if (!isset($eid) || !self::getInstitutionByEntityId($eid)) {
-            self::log('failed to look up entity id, redirect', array(
+            self::log('failed to look up entity id, redirect', [
                 'eid' => $eid,
                 'url' => $service . '/index.php?option=' . $com_user . '&view=login' . $return
-            ));
+            ]);
             App::redirect(
                 $service . '/index.php?option=' . $com_user . '&view=login' . $return
             );
@@ -680,11 +680,11 @@ class Shibboleth extends Plugin
             // If we have a real user, drop the authenticator cookie
             if (isset($user) && is_object($user)) {
                 // Set cookie with login preference info
-                $prefs = array(
+                $prefs = [
                     'user_id'       => $user->get('id'),
                     'user_img'      => $user->picture(0, false),
                     'authenticator' => 'shibboleth'
-                );
+                ];
                 self::log('auth cookie', $prefs);
 
                 $namespace = 'authenticator';
@@ -704,7 +704,7 @@ class Shibboleth extends Plugin
      * @param   array  $options
      * @return  void
      */
-    public function link($options = array())
+    public function link($options = [])
     {
         self::log('do link', $options);
         if (($status = $this->status())) {
@@ -714,7 +714,7 @@ class Shibboleth extends Plugin
             $hzad = \Hubzero\Auth\Domain::getInstance('authentication', 'shibboleth', $status['idp']);
 
             if (\Hubzero\Auth\Link::getInstance($hzad->id, $username)) {
-                self::log('already linked', array('domain' => $hzad->id, 'username' => $username));
+                self::log('already linked', ['domain' => $hzad->id, 'username' => $username]);
                 App::redirect(
                     Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
                     'This account appears to already be linked to a hub account',

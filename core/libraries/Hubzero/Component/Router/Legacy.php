@@ -56,7 +56,7 @@ class Legacy implements RouterInterface
             return $function($query);
         }
 
-        return array();
+        return [];
     }
 
     /**
@@ -73,6 +73,6 @@ class Legacy implements RouterInterface
             return $function($segments);
         }
 
-        return array();
+        return [];
     }
 }

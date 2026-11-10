@@ -35,7 +35,7 @@ class Wiki extends Plugin
         $weight = '(match(wp.title) against (\'' . $stemmed . '\') '
             . '+ match(wv.pagetext) against (\'' . $stemmed . '\'))';
 
-        $addtl_where = array();
+        $addtl_where = [];
         foreach ($terms['mandatory'] as $mand) {
             $addtl_where[] = "(wp.title LIKE '%$mand%' OR wv.pagetext LIKE '%$mand%')";
         }
@@ -54,7 +54,7 @@ class Wiki extends Plugin
         }
 
         // fml
-        $groupAuth = array();
+        $groupAuth = [];
         if ($authz->is_super_admin()) {
             $groupAuth[] = '1';
         } else {
@@ -233,7 +233,7 @@ class Wiki extends Plugin
                 $record->hubtype = $type;
                 $record->title = $title;
                 $record->description = $description;
-                $record->author = array($author);
+                $record->author = [$author];
                 $record->tags = $tags;
                 $record->path = $path;
                 $record->access_level = $access_level;

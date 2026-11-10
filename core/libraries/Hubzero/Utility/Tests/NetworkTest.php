@@ -149,7 +149,7 @@ class NetworkTest extends Basic
 	 */
 	public function testNonsenseIsNotANetwork()
 	{
-		foreach (array('nonsense/24', '192.0.2.0/33', '2001:db8::/129', '192.0.2.0/-1', '192.0.2.0/x', '') as $cidr)
+		foreach (['nonsense/24', '192.0.2.0/33', '2001:db8::/129', '192.0.2.0/-1', '192.0.2.0/x', ''] as $cidr)
 		{
 			$this->assertNull(Network::parse($cidr), $cidr);
 		}

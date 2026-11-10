@@ -54,31 +54,31 @@ class QueryFolder extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'title'   => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'alias',
         'modified',
         'modified_by'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by',
         'ordering'
-    );
+    ];
 
     /**
      * Generates automatic owned by field value
@@ -179,12 +179,12 @@ class QueryFolder extends Relational
             ->rows();
 
         if (count($folders) <= 0) {
-            $folders = array();
+            $folders = [];
 
-            $defaults = array(
-                1 => array('Common', 'Mine', 'Custom'),
-                2 => array('Common', 'Mine'),
-            );
+            $defaults = [
+                1 => ['Common', 'Mine', 'Custom'],
+                2 => ['Common', 'Mine'],
+            ];
 
             foreach ($defaults as $iscore => $fldrs) {
                 $i = 1;
@@ -241,7 +241,7 @@ class QueryFolder extends Relational
 
         $user_id = $user_id ?: User::get('id');
         $fid = 0;
-        $fldrs = array();
+        $fldrs = [];
 
         // Loop through each folder
         foreach ($folders as $k => $folder) {

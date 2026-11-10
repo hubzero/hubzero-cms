@@ -30,7 +30,7 @@ if ($customLandingPage && is_numeric($customLandingPage)) {
     }
 
     // Prepare content to add CSS and other xhub stuff
-    Event::trigger('content.onContentPrepare', array ('com_content.article', &$article, array()));
+    Event::trigger('content.onContentPrepare', ['com_content.article', &$article, []]);
 
     ?>
 

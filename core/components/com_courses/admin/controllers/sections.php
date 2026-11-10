@@ -49,7 +49,7 @@ class Sections extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->filters = array(
+        $this->view->filters = [
             'offering' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.offering',
                 'offering',
@@ -89,7 +89,7 @@ class Sections extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         $this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->filters['offering']);
         if (!$this->view->offering->exists()) {
@@ -131,7 +131,7 @@ class Sections extends AdminController
 
         if (!is_object($model)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
 
             // Get the single ID we're working with
             if (is_array($id)) {
@@ -190,7 +190,7 @@ class Sections extends AdminController
         Request::checkToken();
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         // Instantiate a Course object
         $model = \Components\Courses\Models\Section::getInstance($fields['id']);
@@ -215,7 +215,7 @@ class Sections extends AdminController
             return;
         }
 
-        $dates = Request::getArray('dates', array(), 'post');
+        $dates = Request::getArray('dates', [], 'post');
 
         //$i=0;
         //$unit_up = '';
@@ -376,7 +376,7 @@ class Sections extends AdminController
         }
 
         // Process badge info
-        $badge = Request::getArray('badge', array(), 'post');
+        $badge = Request::getArray('badge', [], 'post');
         if (isset($badge['published']) && $badge['published']) {
             // Get courses config
             $cconfig = Component::params('com_courses');
@@ -398,7 +398,7 @@ class Sections extends AdminController
                 $ext      = isset($pathinfo['extension']) ? strtolower($pathinfo['extension']) : '';
 
                 // Only allow image extensions for the badge upload.
-                if (!in_array($ext, array('png', 'jpg', 'jpeg', 'gif'), true)) {
+                if (!in_array($ext, ['png', 'jpg', 'jpeg', 'gif'], true)) {
                     $this->setError(Lang::txt('COM_COURSES_ERROR_IMG_MUST_BE_SQUARE'));
                     $ext = '';
                 }
@@ -443,7 +443,7 @@ class Sections extends AdminController
                     } else {
                         // Move successful, save the image url to the badge entry
                         $img_url = DS . 'courses' . DS . 'badge' . DS . $badgeObj->get('id') . DS . 'image';
-                        $badgeObj->bind(array('img_url' => $img_url));
+                        $badgeObj->bind(['img_url' => $img_url]);
                         $badgeObj->store();
                     }
                 }
@@ -476,7 +476,7 @@ class Sections extends AdminController
                     $offering = \Components\Courses\Models\Offering::getInstance($model->get('offering_id'));
                     $course   = \Components\Courses\Models\Course::getInstance($offering->get('course_id'));
 
-                    $data = array();
+                    $data = [];
                     $data['Name']          = $course->get('title');
                     $data['Description']   = trim($course->get('title')) . ' Badge';
                     $rootUrl = rtrim(Request::root(), '/');
@@ -497,7 +497,7 @@ class Sections extends AdminController
 
                         if (isset($provider_badge_id) && $provider_badge_id) {
                             // We've successfully created a badge, so save that id to the database
-                            $badgeObj->bind(array('provider_badge_id' => $provider_badge_id));
+                            $badgeObj->bind(['provider_badge_id' => $provider_badge_id]);
                             $badgeObj->store();
                         } else {
                             $this->setError(Lang::txt('COM_COURSES_ERROR_FAILED_TO_SAVE_BADGE'));
@@ -507,7 +507,7 @@ class Sections extends AdminController
             }
         } elseif ($badge['id']) { // badge exists and is being unpublished
             $badgeObj = new \Components\Courses\Models\Section\Badge($badge['id']);
-            $badgeObj->bind(array('published' => 0));
+            $badgeObj->bind(['published' => 0]);
             $badgeObj->store();
         }
 
@@ -542,8 +542,8 @@ class Sections extends AdminController
         Request::checkToken();
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
         $offering_id = Request::getInt('offering', 0);
 
         $num = 0;
@@ -572,21 +572,21 @@ class Sections extends AdminController
             }
 
             if ($num && $offering_id) {
-                $filters = array(
+                $filters = [
                     'count'       => true,
                     'offering_id' => $offering_id,
                     'is_default'  => 1
-                );
+                ];
                 $offering = \Components\Courses\Models\Offering::getInstance($filters['offering_id']);
 
                 if (!$offering->sections($filters)) {
-                    $sections = $offering->sections(array(
+                    $sections = $offering->sections([
                         'count'    => false,
                         'sort'     => 'id',
                         'sort_Dir' => 'ASC',
                         'limit'    => 1,
                         'start'    => 0
-                    ));
+                    ]);
                     foreach ($sections as $section) {
                         $section->makeDefault();
                     }
@@ -644,8 +644,8 @@ class Sections extends AdminController
         $state = $this->_task == 'publish' ? 1 : 0;
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Do we have any IDs?
         $num = 0;

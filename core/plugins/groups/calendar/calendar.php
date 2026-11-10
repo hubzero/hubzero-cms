@@ -79,13 +79,13 @@ class Calendar extends Plugin
      */
     public function &onGroupAreas()
     {
-        $area = array(
+        $area = [
             'name' => 'calendar',
             'title' => Lang::txt('PLG_GROUPS_CALENDAR'),
             'default_access' => $this->params->get('plugin_access', 'members'),
             'display_menu_tab' => $this->params->get('display_tab', 1),
             'icon' => 'f073'
-        );
+        ];
         return $area;
     }
 
@@ -108,10 +108,10 @@ class Calendar extends Plugin
         $active = 'calendar';
 
         // The output array we're returning
-        $arr = array(
+        $arr = [
             'html' => '',
-            'metadata' => array()
-        );
+            'metadata' => []
+        ];
 
         //get this area details
         $this_area = $this->onGroupAreas();
@@ -311,24 +311,24 @@ class Calendar extends Plugin
 
         //get calendars
         $eventsCalendarArchive = \Components\Events\Models\Calendar\Archive::getInstance();
-        $view->calendars = $eventsCalendarArchive->calendars('list', array(
+        $view->calendars = $eventsCalendarArchive->calendars('list', [
             'scope'     => 'group',
             'scope_id'  => $this->group->get('gidNumber')
-        ));
+        ]);
 
         // event calendar model
         $eventsCalendar = \Components\Events\Models\Calendar::getInstance();
 
         //define our filters
-        $view->filters = array(
+        $view->filters = [
             'scope'    => 'group',
             'scope_id' => $this->group->get('gidNumber'),
             'orderby'  => 'publish_up DESC',
             // Deleting a group event sets its state to 0 rather than removing
             // the row, so a list that does not ask for published events lists
             // the deleted ones too
-            'state'    => array(1)
-        );
+            'state'    => [1]
+        ];
 
         // get events count
         $view->eventsCount = $eventsCalendar->events('count', $view->filters);
@@ -346,7 +346,7 @@ class Calendar extends Plugin
         $this->js('moment.min', 'system');
         $this->js('jquery.fullcalendar.min', 'system');
         $this->css('jquery.fullcalendar.css', 'system');
-        $this->css('jquery.fullcalendar.print.css', 'system', array('media' => 'print'));
+        $this->css('jquery.fullcalendar.print.css', 'system', ['media' => 'print']);
 
         foreach ($this->getErrors() as $error) {
             $view->setError($error);
@@ -363,14 +363,14 @@ class Calendar extends Plugin
     private function eventSources()
     {
         // array to hold sources
-        $sources = array();
+        $sources = [];
 
         // get calendars
         $eventsCalendarArchive = \Components\Events\Models\Calendar\Archive::getInstance();
-        $calendars = $eventsCalendarArchive->calendars('list', array(
+        $calendars = $eventsCalendarArchive->calendars('list', [
             'scope'     => 'group',
             'scope_id'  => $this->group->get('gidNumber')
-        ));
+        ]);
 
         // add each calendar to the sources
         foreach ($calendars as $calendar) {
@@ -402,7 +402,7 @@ class Calendar extends Plugin
     public function events()
     {
         // array to hold events
-        $events = array();
+        $events = [];
 
         // get request params
         $start      = Request::getString('start');
@@ -424,25 +424,25 @@ class Calendar extends Plugin
 
         // get calendar events
         $eventsCalendar = \Components\Events\Models\Calendar::getInstance();
-        $rawEvents = $eventsCalendar->events('list', array(
+        $rawEvents = $eventsCalendar->events('list', [
             'scope'        => 'group',
             'scope_id'     => $this->group->get('gidNumber'),
             'calendar_id'  => $calendarId,
-            'state'        => array(1),
+            'state'        => [1],
             'publish_up'   => $start->format('Y-m-d H:i:s'),
             'publish_down' => $end->format('Y-m-d H:i:s'),
             'non_repeating'    => true
-        ));
+        ]);
 
         // get repeating events
-        $rawEventsRepeating = $eventsCalendar->events('repeating', array(
+        $rawEventsRepeating = $eventsCalendar->events('repeating', [
             'scope'        => 'group',
             'scope_id'     => $this->group->get('gidNumber'),
             'calendar_id'  => $calendarId,
-            'state'        => array(1),
+            'state'        => [1],
             'publish_up'   => $start->format('Y-m-d H:i:s'),
             'publish_down' => $end->format('Y-m-d H:i:s')
-        ));
+        ]);
 
         // merge events with repeating events
         $rawEvents = $rawEvents->merge($rawEventsRepeating);
@@ -543,11 +543,11 @@ class Calendar extends Plugin
 
         //get calendars
         $eventsCalendarArchive = \Components\Events\Models\Calendar\Archive::getInstance();
-        $view->calendars = $eventsCalendarArchive->calendars('list', array(
+        $view->calendars = $eventsCalendarArchive->calendars('list', [
             'scope'     => 'group',
             'scope_id'  => $this->group->get('gidNumber'),
             'readonly'  => 0
-        ));
+        ]);
 
         // do we have access to edit
         if ($view->event->get('id')) {
@@ -645,9 +645,9 @@ class Calendar extends Plugin
         }
 
         //get request vars
-        $event              = Request::getArray('event', array(), 'post');
+        $event              = Request::getArray('event', [], 'post');
         $event['time_zone'] = Request::getString('time_zone', null);
-        $event['params']    = Request::getArray('params', array());
+        $event['params']    = Request::getArray('params', []);
         $event['content']   = Request::getString('content', '', 'post');
         $registration       = Request::getInt('include-registration', 0);
 
@@ -936,7 +936,7 @@ class Calendar extends Plugin
         }
 
         //get registrants count
-        $eventsRespondent = new \Components\Events\Tables\Respondent(array('id' => $eventId));
+        $eventsRespondent = new \Components\Events\Tables\Respondent(['id' => $eventId]);
         $view->registrants = $eventsRespondent->getCount();
 
         //get calendar
@@ -1098,7 +1098,7 @@ class Calendar extends Plugin
         //include icalendar file reader
 
         //get incoming
-        $file = Request::getArray('import', array(), 'files');
+        $file = Request::getArray('import', [], 'files');
 
         // parse file & get first event
         $icalparser = new IcalParser($file['tmp_name']);
@@ -1111,7 +1111,7 @@ class Calendar extends Plugin
         $website     = (isset($icalEvent['URL'])) ? $icalEvent['URL'] : '';
         $start       = (isset($icalEvent['DTSTART']) && ($icalEvent['DTSTART'] instanceof \DateTime)) ? $icalEvent['DTSTART'] : new \DateTime();
         $end         = (isset($icalEvent['DTEND']) && ($icalEvent['DTEND'] instanceof \DateTime)) ? $icalEvent['DTEND'] : new \DateTime();
-        $recurrence  = (isset($icalEvent['RRULE'])) ? $icalEvent['RRULE'] : array();
+        $recurrence  = (isset($icalEvent['RRULE'])) ? $icalEvent['RRULE'] : [];
 
         // normalize until date
         if (isset($recurrence['UNTIL'])) {
@@ -1134,7 +1134,7 @@ class Calendar extends Plugin
         $event->recurrence = $recurrence;
 
         //return event details
-        echo json_encode(array('event' => $event));
+        echo json_encode(['event' => $event]);
         exit();
     }
 
@@ -1169,7 +1169,7 @@ class Calendar extends Plugin
         }
 
         //get registrants count
-        $eventsRespondent = new \Components\Events\Tables\Respondent(array('id' => $eventId));
+        $eventsRespondent = new \Components\Events\Tables\Respondent(['id' => $eventId]);
         $view->registrants = $eventsRespondent->getCount();
 
         //do we have a registration deadline
@@ -1272,7 +1272,7 @@ class Calendar extends Plugin
         $params = new \Hubzero\Config\Registry($event->get('params'));
 
         //array to hold any errors
-        $errors = array();
+        $errors = [];
 
         //check for first name
         if (!isset($register['first_name']) || $register['first_name'] == '') {
@@ -1315,7 +1315,7 @@ class Calendar extends Plugin
         }
 
         //set data for saving
-        $eventsRespondent = new \Components\Events\Tables\Respondent(array());
+        $eventsRespondent = new \Components\Events\Tables\Respondent([]);
         $eventsRespondent->event_id   = $event_id;
         $eventsRespondent->registered = Date::toSql();
         $eventsRespondent->arrival    = $arrival['day'] . ' ' . $arrival['time'];
@@ -1343,7 +1343,7 @@ class Calendar extends Plugin
 
         $r = $race;
         unset($r['nativetribe']);
-        $r = (empty($r)) ? array() : $r;
+        $r = (empty($r)) ? [] : $r;
         $sql = "INSERT INTO `#__events_respondent_race_rel` (respondent_id, race, tribal_affiliation)
 		        VALUES (" . $this->database->quote($eventsRespondent->id) . ", " . $this->database->quote(implode(',', $r)) . ", " . $this->database->quote($race['nativetribe']) . ")";
         $this->database->setQuery($sql);
@@ -1357,12 +1357,12 @@ class Calendar extends Plugin
         if ($eventsEvent->email != '') {
             //build message to send to event admin
             $email = new \Hubzero\Plugin\View(
-                array(
+                [
                     'folder'  => 'groups',
                     'element' => 'calendar',
                     'name'    => 'calendar',
                     'layout'  => 'register_email_admin'
-                )
+                ]
             );
             $email->option     = $this->option;
             $email->group      = $this->group;
@@ -1382,10 +1382,10 @@ class Calendar extends Plugin
             $subject = Lang::txt("[" . $email->sitename . "] Group \"{$this->group->get('description')}\" Event Registration: " . $eventsEvent->title);
 
             //make from array
-            $from = array(
+            $from = [
                 'email' => 'group-event-registration@' . $_SERVER['HTTP_HOST'],
                 'name'  => $register['first_name'] . ' ' . $register['last_name']
-            );
+            ];
 
             // email from person
             if ($params->get('show_email', 1) == 1) {
@@ -1417,7 +1417,7 @@ class Calendar extends Plugin
 
             // build to, from, & subject
             $to      = User::get('email');
-            $from    = array('email' => 'groups@' . $_SERVER['HTTP_HOST'], 'name'  => $email->sitename . ' Group Calendar: ' . $this->group->get('description'));
+            $from    = ['email' => 'groups@' . $_SERVER['HTTP_HOST'], 'name'  => $email->sitename . ' Group Calendar: ' . $this->group->get('description')];
             $subject = Lang::txt('Thank you for Registering for the "%s" event', $eventsEvent->title);
 
             // send mail to user registering
@@ -1479,7 +1479,7 @@ class Calendar extends Plugin
         $view->event = $this->_registrantEvent($eventId);
 
         //get registrants count
-        $eventsRespondent = new \Components\Events\Tables\Respondent(array('id' => $eventId));
+        $eventsRespondent = new \Components\Events\Tables\Respondent(['id' => $eventId]);
         $view->registrants = $eventsRespondent->getRecords();
 
         //push some vars to the view
@@ -1513,13 +1513,13 @@ class Calendar extends Plugin
         $this->_registrantEvent($eventId);
 
         //get registrants count
-        $eventsRespondent = new \Components\Events\Tables\Respondent(array('id' => $eventId));
+        $eventsRespondent = new \Components\Events\Tables\Respondent(['id' => $eventId]);
         $registrants = $eventsRespondent->getRecords();
 
         //var to hold output
         $output = 'First Name,Last Name,Title,Affiliation,Email,Website,Telephone,Fax,City,State,Zip,Country,Current Position,Highest Degree Earned,Gender,Race,Arrival Info,Departure Info,Disability Needs,Dietary Needs,Attending Dinner,Abstract,Comments,Register Date' . "\n";
 
-        $fields = array(
+        $fields = [
             'first_name',
             'last_name',
             'title',
@@ -1544,7 +1544,7 @@ class Calendar extends Plugin
             'abstract',
             'comment',
             'registered'
-        );
+        ];
 
         foreach ($registrants as $registrant) {
             $sql = "SELECT CONCAT(race, ',', tribal_affiliation) as race
@@ -1613,10 +1613,10 @@ class Calendar extends Plugin
     {
         //get calendars
         $eventsCalendarArchive = \Components\Events\Models\Calendar\Archive::getInstance();
-        $calendars = $eventsCalendarArchive->calendars('list', array(
+        $calendars = $eventsCalendarArchive->calendars('list', [
             'scope'     => 'group',
             'scope_id'  => $this->group->get('gidNumber')
-        ));
+        ]);
 
         //create the view
         $view = $this->view('display', 'calendars');
@@ -1714,7 +1714,7 @@ class Calendar extends Plugin
         }
 
         //get request vars
-        $calendarInput = Request::getArray('calendar', array());
+        $calendarInput = Request::getArray('calendar', []);
 
         // get the calendar
         $calendar = \Components\Events\Models\Calendar::getInstance($calendarInput['id']);
@@ -1738,7 +1738,7 @@ class Calendar extends Plugin
         $calendarInput['scope_id'] = $this->group->get('gidNumber');
         $calendarInput['url']      = trim($calendarInput['url']);
 
-        $colors = array('red', 'orange', 'yellow', 'green', 'blue', 'purple', 'brown');
+        $colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'brown'];
         if (!in_array($calendarInput['color'], $colors)) {
             $calendarInput['color'] = '';
         }
@@ -1868,13 +1868,13 @@ class Calendar extends Plugin
     {
         //get calendars
         $eventsCalendarArchive = \Components\Events\Models\Calendar\Archive::getInstance();
-        $calendars = $eventsCalendarArchive->calendars('list', array(
+        $calendars = $eventsCalendarArchive->calendars('list', [
             'scope'    => 'group',
             'scope_id' => $this->group->get('gidNumber')
-        ));
+        ]);
 
         // array to hold refreshed cals
-        $refreshed = array();
+        $refreshed = [];
 
         // refresh each calendar
         // dont force refresh if we havent made it to the next refresh interval
@@ -1887,7 +1887,7 @@ class Calendar extends Plugin
         });
 
         // return refreshed count
-        echo json_encode(array('refreshed' => count($refreshed)));
+        echo json_encode(['refreshed' => count($refreshed)]);
         exit();
     }
 
@@ -1898,13 +1898,13 @@ class Calendar extends Plugin
      */
     private function _buildRepeatingRule()
     {
-        $rules = array();
+        $rules = [];
 
         // get reccurrance
-        $reccurance = Request::getArray('reccurance', array(), 'post');
+        $reccurance = Request::getArray('reccurance', [], 'post');
 
         // valid frequencies
-        $validFreq = array('daily', 'weekly', 'monthly', 'yearly');
+        $validFreq = ['daily', 'weekly', 'monthly', 'yearly'];
 
         // make sure we have a frequency and its a valid type
         if (!isset($reccurance['freq']) || !in_array($reccurance['freq'], $validFreq)) {
@@ -1927,7 +1927,7 @@ class Calendar extends Plugin
         $rule[] = 'INTERVAL=' . $interval;
 
         // valid end
-        $validEnd = array('never','count','until');
+        $validEnd = ['never','count','until'];
 
         // do we need to add end rules?
         if (isset($reccurance['ends']['when']) && in_array($reccurance['ends']['when'], $validEnd)) {

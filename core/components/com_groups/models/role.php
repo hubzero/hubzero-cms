@@ -43,10 +43,10 @@ class Role extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'name'      => 'notempty',
         'gidNumber' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * A group's roles in the order its managers have set

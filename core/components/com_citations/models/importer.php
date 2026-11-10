@@ -280,13 +280,13 @@ class Importer extends Obj
      * @param   array  $action_no_attention
      * @return  array
      */
-    public function process($action_attention = array(), $action_no_attention = array())
+    public function process($action_attention = [], $action_no_attention = [])
     {
-        $results = array(
-            'saved'     => array(),
-            'not_saved' => array(),
-            'error'     => array()
-        );
+        $results = [
+            'saved'     => [],
+            'not_saved' => [],
+            'error'     => []
+        ];
 
         $now       = with(new Date('now'))->toSql();
         $user      = $this->get('user');

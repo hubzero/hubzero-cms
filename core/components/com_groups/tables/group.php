@@ -162,7 +162,7 @@ class Group extends Table
      * @param   array   $filters
      * @return  string  database query
      */
-    private function buildMembersQuery($filters = array())
+    private function buildMembersQuery($filters = [])
     {
         /*$query = "FROM (
             (" . $this->groupTable('invitee', 'i', $filters) . ") UNION
@@ -176,7 +176,7 @@ class Group extends Table
 			(" . $this->groupTable('member', 'm', $filters) . ")
 		) AS v";
 
-        $where = array();
+        $where = [];
 
         if (isset($filters['status']) && $filters['status']) {
             $query = "FROM (
@@ -214,7 +214,7 @@ class Group extends Table
      * @param   array   $filters  Filters to build query from
      * @return  string
      */
-    private function groupTable($role = 'member', $tbl = 'm', $filters = array())
+    private function groupTable($role = 'member', $tbl = 'm', $filters = [])
     {
         $query = "SELECT u.name, u.username, u.email, {$tbl}.uidNumber, '{$role}' AS role
 					FROM `#__xgroups_{$role}s` AS {$tbl} JOIN `#__users` AS u ON {$tbl}.uidNumber=u.id";
@@ -232,7 +232,7 @@ class Group extends Table
      * @param   array    $filters
      * @return  integer  Return course units
      */
-    public function countMembers($filters = array())
+    public function countMembers($filters = [])
     {
         $query  = "SELECT COUNT(DISTINCT v.username) ";
         $query .= $this->buildMembersQuery($filters);
@@ -247,9 +247,9 @@ class Group extends Table
      * @param   array   $filters
      * @return  object  Return course units
      */
-    public function findMembers($filters = array())
+    public function findMembers($filters = [])
     {
-        $results = array();
+        $results = [];
 
         $query  = "SELECT v.* ";
         $query .= $this->buildMembersQuery($filters);

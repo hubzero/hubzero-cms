@@ -25,16 +25,16 @@ class Json
 
         $single_record = isset($dd['single']) ? $dd['single'] : false;
 
-        $table = array();
+        $table = [];
         $table['title'] = $dd['title'];
-        $table['sColumns'] = array();
-        $table['aaData'] = array();
+        $table['sColumns'] = [];
+        $table['aaData'] = [];
         $table['iTotalRecords'] = $total;
         $table['iTotalDisplayRecords'] = $found;
-        $table['filters'] = isset($dd['filters']) ? $dd['filters'] : array();
-        $table['cols'] = array();
-        $vis_keys = array();
-        $field_types = array();
+        $table['filters'] = isset($dd['filters']) ? $dd['filters'] : [];
+        $table['cols'] = [];
+        $vis_keys = [];
+        $field_types = [];
 
         $header = isset($dd['cols']) ? $dd['cols'] : $data[0];
         $field_offset = 0;
@@ -186,19 +186,19 @@ class Json
                 }
                 $label = "<div class=\"dv_label css_left\" data-fieldtype=\"$data_type\" >"
                     . "$label $tool_bar</div>";
-                $table['aoColumns'][] = array(
+                $table['aoColumns'][] = [
                     'sTitle' => $label . '&nbsp;&nbsp;&nbsp;&nbsp;',
                     'sClass' => $align,
                     'sType' => $data_type,
                     'sWidth' => $width
-                );
+                ];
                 $table['sColumns'][] = $label;
                 $field_types[$key] = $data_type;
             }
         }
 
         if (isset($dd['order_by'])) {
-            $table['aaSorting'] = array();
+            $table['aaSorting'] = [];
         }
 
         $table['sColumns'] = implode(',', $table['sColumns']);
@@ -226,7 +226,7 @@ class Json
 
         $res_count = 0;
         foreach ($data as $rec) {
-            $row = array();
+            $row = [];
             foreach ($rec as $key => $val) {
                 $null_val = false;
                 if (!isset($dd['cols'][$key]['hide'])) {
@@ -262,7 +262,7 @@ class Json
 
                         if (isset($dd['cols'][$key]['type_extra']) && $dd['cols'][$key]['type_extra'] == 'multi') {
                             $list = explode('|#|', $val);
-                            $val = array();
+                            $val = [];
                             foreach ($list as $l) {
                                 $link_label = $l;
                                 $repoPath = $dd['cols'][$key]['ds-repo-path'];
@@ -358,7 +358,7 @@ class Json
                                 }
 
                                 // Publication version
-                                $arr = array();
+                                $arr = [];
                                 parse_str($repo_base['query'], $arr);
 
                                 $pub_vid = $arr['vid'];
@@ -469,7 +469,7 @@ class Json
                                 $prv_list = explode($sep, $rec[$dd['cols'][$key]['preview']]);
                             }
 
-                            $links = array();
+                            $links = [];
 
                             for ($i = 0; $i < count($multi_val); $i++) {
                                 $preview = '';
@@ -582,7 +582,7 @@ class Json
                         $fv['task'] = isset($fv['task']) ? $fv['task'] : 'view';
                         $fv['db'] = isset($fv['db']) ? $fv['db'] : $dd['db_id']['id'];
 
-                        $filter = array();
+                        $filter = [];
                         if (isset($fv['filter'])) {
                             foreach ($fv['filter'] as $c => $k) {
                                 $filter[] = "$c|" . urlencode((isset($rec[$k]) ? $rec[$k] : $k));
@@ -633,7 +633,7 @@ class Json
 
                     if (isset($dd['cols'][$key]['launch_view']) && !$null_val) {
                         $fv = $dd['cols'][$key]['filtered_view'];
-                        $filter = array();
+                        $filter = [];
                         foreach ($fv['filter'] as $c => $k) {
                             $filter[] = "$c|" . (isset($rec[$k]) ? $rec[$k] : $k);
                         }

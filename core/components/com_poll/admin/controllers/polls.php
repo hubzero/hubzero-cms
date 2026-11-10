@@ -33,7 +33,7 @@ class Polls extends AdminController
      * @param   array  $config  Optional configurations to be used
      * @return  void
      */
-    public function __construct($config = array())
+    public function __construct($config = [])
     {
         parent::__construct($config);
 
@@ -50,7 +50,7 @@ class Polls extends AdminController
      */
     public function displayTask()
     {
-        $filters = array(
+        $filters = [
             'state' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.filter_state',
                 'filter_state',
@@ -75,7 +75,7 @@ class Polls extends AdminController
                 '',
                 'word'
             )
-        );
+        ];
 
         $polls = Poll::all()
             ->including(['options', function ($option) {
@@ -92,7 +92,7 @@ class Polls extends AdminController
 
         if ($filters['search']) {
             if (strpos($filters['search'], '"') !== false) {
-                $filters['search'] = str_replace(array('=', '<'), '', $filters['search']);
+                $filters['search'] = str_replace(['=', '<'], '', $filters['search']);
             }
             $filters['search'] = strtolower($filters['search']);
 
@@ -130,7 +130,7 @@ class Polls extends AdminController
         Request::setVar('hidemainmenu', 1);
         Request::setVar('tmpl', 'component');
 
-        $id = Request::getArray('id', array(0));
+        $id = Request::getArray('id', [0]);
         if (is_array($id) && !empty($id)) {
             $id = $id[0];
         }
@@ -164,7 +164,7 @@ class Polls extends AdminController
         Request::setVar('hidemainmenu', 1);
 
         if (!is_object($poll)) {
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id) && !empty($id)) {
                 $id = $id[0];
             }
@@ -215,7 +215,7 @@ class Polls extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         // Save the poll parent information
         $row = Poll::oneOrNew($fields['id'])->set($fields);
@@ -228,7 +228,7 @@ class Polls extends AdminController
         $row->checkin();
 
         // Save the poll options
-        $options = Request::getArray('polloption', array(), 'post');
+        $options = Request::getArray('polloption', [], 'post');
 
         foreach ($options as $i => $text) {
             $option = new Option();
@@ -268,7 +268,7 @@ class Polls extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
         Arr::toInteger($ids);
 
         foreach ($ids as $id) {
@@ -296,8 +296,8 @@ class Polls extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $state = (Request::getCmd('task') == 'publish' ? 1 : 0);
 
@@ -340,8 +340,8 @@ class Polls extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $publish = ($this->getTask() == 'open' ? Poll::STATE_PUBLISHED : Poll::STATE_UNPUBLISHED);
 

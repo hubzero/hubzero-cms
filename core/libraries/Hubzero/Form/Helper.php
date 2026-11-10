@@ -46,7 +46,7 @@ class Helper
      *
      * @var  array
      */
-    protected static $entities = array();
+    protected static $entities = [];
 
     /**
      * Method to load a form field object given a type.
@@ -196,7 +196,7 @@ class Helper
      */
     protected static function find($paths, $file)
     {
-        $paths = is_array($paths) ? $paths : array($paths);
+        $paths = is_array($paths) ? $paths : [$paths];
 
         foreach ($paths as $path) {
             $fullname = $path . DIRECTORY_SEPARATOR . $file;

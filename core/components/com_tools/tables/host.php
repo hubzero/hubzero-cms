@@ -66,7 +66,7 @@ class Host extends Table
             if ($this->$k) {
                 //$ret = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, $updateNulls);
                 $fmtsql = "UPDATE $this->_tbl SET %s WHERE %s";
-                $tmp = array();
+                $tmp = [];
                 foreach (get_object_vars($this) as $ky => $v) {
                     if (is_array($v) or is_object($v) or $ky[0] == '_') { // internal or NA field
                         continue;
@@ -129,9 +129,9 @@ class Host extends Table
      * @return  string  SQL
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private function _buildQuery($filters = array())
+    private function _buildQuery($filters = [])
     {
-        $where = array();
+        $where = [];
 
         if (isset($filters['status']) && $filters['status'] != '') {
             $where[] = "c.`status`=" . $this->_db->quote($filters['status']);
@@ -169,7 +169,7 @@ class Host extends Table
      * @param   array   $filters  Filters to build SQL from
      * @return  integer
      */
-    public function getCount($filters = array())
+    public function getCount($filters = [])
     {
         $filters['limit'] = 0;
 
@@ -185,7 +185,7 @@ class Host extends Table
      * @param   array  $filters  Filters to build SQL from
      * @return  array
      */
-    public function getRecords($filters = array())
+    public function getRecords($filters = [])
     {
         $query  = "SELECT c.*, v.zone " . $this->_buildQuery($filters);
 
@@ -195,7 +195,7 @@ class Host extends Table
         if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) {
             $filters['sort_Dir'] = 'ASC';
         }
-        if (!in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC'))) {
+        if (!in_array(strtoupper($filters['sort_Dir']), ['ASC', 'DESC'])) {
             $filters['sort_Dir'] = 'ASC';
         }
         $query .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1') . " " . (strtoupper((string) $filters['sort_Dir']) === 'ASC' ? 'ASC' : 'DESC');

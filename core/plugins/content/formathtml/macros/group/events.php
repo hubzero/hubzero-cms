@@ -34,7 +34,7 @@ class Events extends GroupMacro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['html']  = '<p>Displays group events.</p>';
         $txt['html'] .= '<p>Arguments:</p>
 							<ul>
@@ -73,7 +73,7 @@ class Events extends GroupMacro
         $args = $this->getArgs();
 
         // Array of filters
-        $filters = array();
+        $filters = [];
 
         // Get arguments
         if (($filters['from'] = $this->_getFrom($args)) === false) {
@@ -120,41 +120,41 @@ class Events extends GroupMacro
      * @param   array   $filters
      * @return  array
      */
-    private function getGroupEvents($group, $filters = array())
+    private function getGroupEvents($group, $filters = [])
     {
         // Pulled from core/plugins/groups/calendar/calendar.php::events()
 
         // array to hold events
-        $events = array();
+        $events = [];
 
         // get request params ($from and $to should already exist)
         $start = $filters['from'];
         $end = $filters['to'];
-        $order = (in_array($filters['order'], array('forward', 'forwards')) ? 1 : -1);
+        $order = (in_array($filters['order'], ['forward', 'forwards']) ? 1 : -1);
         $calendarId = isset($filters['calendar_id']) ? $filters['calendar_id'] : 0;
 
         // get calendar events
         $eventsCalendar = Calendar::getInstance();
-        $rawEvents = $eventsCalendar->events('list', array(
+        $rawEvents = $eventsCalendar->events('list', [
             'scope'        => 'group',
             'scope_id'     => $this->group->get('gidNumber'),
             'calendar_id'  => $calendarId,
-            'state'        => array(1),
+            'state'        => [1],
             'publish_up'   => $start,
             'publish_down' => $end,
             'non_repeating'    => true
-        ));
+        ]);
 
         // get repeating events
-        $rawEventsRepeating = $eventsCalendar->events('repeating', array(
+        $rawEventsRepeating = $eventsCalendar->events('repeating', [
             'scope'        => 'group',
             'scope_id'     => $this->group->get('gidNumber'),
             'calendar_id'  => $calendarId,
-            'state'        => array(1),
+            'state'        => [1],
             'publish_up'   => $start,
             'publish_down' => $end,
             'until'        => $end
-        ));
+        ]);
 
         // merge events with repeating events
         $rawEvents = $rawEvents->merge($rawEventsRepeating);
@@ -184,7 +184,7 @@ class Events extends GroupMacro
             $event->about = nl2br($rawEvent->get('content'));
             $strcap = 255;
             if (strlen($event->about) > $strcap) {
-                $event->about = \Hubzero\Utility\Str::truncate($event->about, $strcap, array('html' => true)) . ' <a href="' . $event->url . '">[more]</a>';
+                $event->about = \Hubzero\Utility\Str::truncate($event->about, $strcap, ['html' => true]) . ' <a href="' . $event->url . '">[more]</a>';
             }
 
             $event->allDay    = $rawEvent->get('allday') == 1;
@@ -327,7 +327,7 @@ class Events extends GroupMacro
                 // Validation - Check if from is a number, space, then word
                 if (
                     !preg_match('/([\d]*)\s([\w]*)/', $for, $matches) ||
-                    !in_array($matches[2], array('day', 'days', 'week', 'weeks', 'month', 'months', 'year', 'years'))
+                    !in_array($matches[2], ['day', 'days', 'week', 'weeks', 'month', 'months', 'year', 'years'])
                 ) {
                     $for = false; // Invalid
                 }
@@ -358,7 +358,7 @@ class Events extends GroupMacro
                 // Validation - Check if from is a number, space, then word, or the word "today"
                 if (
                     !(preg_match('/([\d]{4}[-\/][\d]{2}[-\/][\d]{2})/', $from, $matches) && (strtotime($matches[1]) !== false)) &&
-                    !in_array($from, array("today", "yesterday", "tomorrow"))
+                    !in_array($from, ["today", "yesterday", "tomorrow"])
                 ) {
                     $from = false; // Invalid
                 } elseif ($from == "today") {
@@ -395,7 +395,7 @@ class Events extends GroupMacro
                 // Validation - Check if to is a number, space, then word, or the word "today"
                 if (
                     !(preg_match('/([\d]{4}[-\/][\d]{2}[-\/][\d]{2})/', $to, $matches) && (strtotime($matches[1]) !== false)) &&
-                    !in_array($to, array("today", "yesterday", "tomorrow"))
+                    !in_array($to, ["today", "yesterday", "tomorrow"])
                 ) {
                     $to = false; // Invalid
                 } elseif ($to == "today") {
@@ -426,7 +426,7 @@ class Events extends GroupMacro
                 unset($args[$k]);
 
                 // Validation - Check if order is either "forward" or "backward"
-                if (!in_array($order, array("forward", "forwards", "backward", "backwards"))) {
+                if (!in_array($order, ["forward", "forwards", "backward", "backwards"])) {
                     $order = false; // Invalid
                 }
 

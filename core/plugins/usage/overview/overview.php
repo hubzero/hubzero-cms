@@ -32,9 +32,9 @@ class Overview extends Plugin
      */
     public function onUsageAreas()
     {
-        return array(
+        return [
             'overview' => Lang::txt('PLG_USAGE_OVERVIEW')
-        );
+        ];
     }
 
     /**
@@ -170,61 +170,61 @@ class Overview extends Plugin
 
             switch ($i) {
                 case 3:
-                    $residence[] = array(
+                    $residence[] = [
                         'column' => 'US',
                         'value'  => $row->value,
                         'key'    => 'users-visits-res-us'
-                    );
+                    ];
                     break;
                 case 4:
-                    $residence[] = array(
+                    $residence[] = [
                         'column' => 'Asia',
                         'value'  => $row->value,
                         'key'    => 'users-visits-res-asia'
-                    );
+                    ];
                     break;
                 case 5:
-                    $residence[] = array(
+                    $residence[] = [
                         'column' => 'Europe',
                         'value'  => $row->value,
                         'key'    => 'users-visits-res-europe'
-                    );
+                    ];
                     break;
                 case 6:
-                    $residence[] = array(
+                    $residence[] = [
                         'column' => 'Other',
                         'value'  => $row->value,
                         'key'    => 'users-visits-res-other'
-                    );
+                    ];
                     break;
 
                 case 8:
-                    $organization[] = array(
+                    $organization[] = [
                         'column' => 'Education',
                         'value'  => $row->value,
                         'key'    => 'users-visits-org-education'
-                    );
+                    ];
                     break;
                 case 9:
-                    $organization[] = array(
+                    $organization[] = [
                         'column' => 'Industry',
                         'value'  => $row->value,
                         'key'    => 'users-visits-org-industry'
-                    );
+                    ];
                     break;
                 case 10:
-                    $organization[] = array(
+                    $organization[] = [
                         'column' => 'Government',
                         'value'  => $row->value,
                         'key'    => 'users-visits-org-government'
-                    );
+                    ];
                     break;
                 case 11:
-                    $organization[] = array(
+                    $organization[] = [
                         'column' => 'Other',
                         'value'  => $row->value,
                         'key'    => 'users-visits-org-other'
-                    );
+                    ];
                     break;
                 break;
 
@@ -279,61 +279,61 @@ class Overview extends Plugin
 
             switch ($i) {
                 case 3:
-                    $residence[] = array(
+                    $residence[] = [
                         'column' => 'US',
                         'value'  => $row->value,
                         'key'    => 'users-downloads-res-us'
-                    );
+                    ];
                     break;
                 case 4:
-                    $residence[] = array(
+                    $residence[] = [
                         'column' => 'Asia',
                         'value'  => $row->value,
                         'key'    => 'users-downloads-res-asia'
-                    );
+                    ];
                     break;
                 case 5:
-                    $residence[] = array(
+                    $residence[] = [
                         'column' => 'Europe',
                         'value'  => $row->value,
                         'key'    => 'users-downloads-res-europe'
-                    );
+                    ];
                     break;
                 case 6:
-                    $residence[] = array(
+                    $residence[] = [
                         'column' => 'Other',
                         'value'  => $row->value,
                         'key'    => 'users-downloads-res-other'
-                    );
+                    ];
                     break;
 
                 case 8:
-                    $organization[] = array(
+                    $organization[] = [
                         'column' => 'Education',
                         'value'  => $row->value,
                         'key'    => 'users-downloads-org-education'
-                    );
+                    ];
                     break;
                 case 9:
-                    $organization[] = array(
+                    $organization[] = [
                         'column' => 'Industry',
                         'value'  => $row->value,
                         'key'    => 'users-downloads-org-industry'
-                    );
+                    ];
                     break;
                 case 10:
-                    $organization[] = array(
+                    $organization[] = [
                         'column' => 'Government',
                         'value'  => $row->value,
                         'key'    => 'users-downloads-org-government'
-                    );
+                    ];
                     break;
                 case 11:
-                    $organization[] = array(
+                    $organization[] = [
                         'column' => 'Other',
                         'value'  => $row->value,
                         'key'    => 'users-downloads-org-other'
-                    );
+                    ];
                     break;
                 break;
 

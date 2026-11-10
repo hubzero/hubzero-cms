@@ -28,7 +28,7 @@ class Comments extends Plugin
      */
     public function getReportedItem($refid, $category, $parent)
     {
-        if (!in_array($category, array('wishcomment', 'answercomment', 'reviewcomment', 'citations', 'citationscomment', 'collection', 'itemcomment', 'coursescomment'))) {
+        if (!in_array($category, ['wishcomment', 'answercomment', 'reviewcomment', 'citations', 'citationscomment', 'collection', 'itemcomment', 'coursescomment'])) {
             return null;
         }
 
@@ -95,7 +95,7 @@ class Comments extends Plugin
      */
     public function onReportItem($refid, $category)
     {
-        if (!in_array($category, array('wishcomment', 'answercomment', 'reviewcomment', 'citations', 'citationscomment', 'collection', 'itemcomment', 'coursescomment'))) {
+        if (!in_array($category, ['wishcomment', 'answercomment', 'reviewcomment', 'citations', 'citationscomment', 'collection', 'itemcomment', 'coursescomment'])) {
             return null;
         }
 
@@ -116,7 +116,7 @@ class Comments extends Plugin
      */
     public function releaseReportedItem($refid, $parent, $category)
     {
-        if (!in_array($category, array('wishcomment', 'answercomment', 'reviewcomment', 'citations', 'citationscomment', 'collection', 'itemcomment', 'coursescomment'))) {
+        if (!in_array($category, ['wishcomment', 'answercomment', 'reviewcomment', 'citations', 'citationscomment', 'collection', 'itemcomment', 'coursescomment'])) {
             return null;
         }
 
@@ -138,7 +138,7 @@ class Comments extends Plugin
      */
     public function deleteReportedItem($refid, $parent, $category, $message)
     {
-        if (!in_array($category, array('wishcomment', 'answercomment', 'reviewcomment', 'citations', 'citationscomment', 'collection', 'itemcomment', 'coursescomment'))) {
+        if (!in_array($category, ['wishcomment', 'answercomment', 'reviewcomment', 'citations', 'citationscomment', 'collection', 'itemcomment', 'coursescomment'])) {
             return null;
         }
 

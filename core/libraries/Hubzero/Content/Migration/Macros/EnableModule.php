@@ -28,9 +28,9 @@ class EnableModule extends Macro
 
             $query = $this->db->getQuery()
                 ->update('#__extensions')
-                ->set(array(
+                ->set([
                     'enabled' => $enabled
-                ))
+                ])
                 ->whereEquals('element', $element)
                 ->toString();
 
@@ -40,9 +40,9 @@ class EnableModule extends Macro
                 if ($this->db->tableExists('#__modules')) {
                     $query = $this->db->getQuery()
                         ->update('#__modules')
-                        ->set(array(
+                        ->set([
                             'published' => $enabled
-                        ))
+                        ])
                         ->whereEquals('module', $element)
                         ->toString();
                     $this->db->setQuery($query);

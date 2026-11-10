@@ -48,7 +48,7 @@ class Aliases extends Base implements CommandInterface
         $this->arguments->deleteOpt(4);
 
         // Set the new aliases argument
-        $this->arguments->setOpt('aliases', array($name => $path));
+        $this->arguments->setOpt('aliases', [$name => $path]);
 
         // Redirect back to the basic configuration set method
         App::get('client')->call('configuration', 'set', $this->arguments, $this->output);

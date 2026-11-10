@@ -57,7 +57,7 @@ class Pages extends SiteController
      * @param   array  $config  Optional configurations
      * @return  void
      */
-    public function __construct($config = array())
+    public function __construct($config = [])
     {
         $this->_base_path = dirname(__DIR__);
 
@@ -103,7 +103,7 @@ class Pages extends SiteController
 
         $this->page = $this->book->page();
 
-        if (in_array($this->page->getNamespace(), array('image', 'file'))) {
+        if (in_array($this->page->getNamespace(), ['image', 'file'])) {
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=media&scope=' . $this->page->get('scope') . '&pagename=' . $this->page->get('pagename') . '&task=download')
             );
@@ -242,13 +242,13 @@ class Pages extends SiteController
         // Handle display events
         $event = new \stdClass();
 
-        $results = Event::trigger('wiki.onAfterDisplayTitle', array($this->page, &$revision, $this->config));
+        $results = Event::trigger('wiki.onAfterDisplayTitle', [$this->page, &$revision, $this->config]);
         $event->afterDisplayTitle = trim(implode("\n", $results));
 
-        $results = Event::trigger('wiki.onBeforeDisplayContent', array(&$this->page, &$revision, $this->config));
+        $results = Event::trigger('wiki.onBeforeDisplayContent', [&$this->page, &$revision, $this->config]);
         $event->beforeDisplayContent = trim(implode("\n", $results));
 
-        $results = Event::trigger('wiki.onAfterDisplayContent', array(&$this->page, &$revision, $this->config));
+        $results = Event::trigger('wiki.onAfterDisplayContent', [&$this->page, &$revision, $this->config]);
         $event->afterDisplayContent = trim(implode("\n", $results));
 
         $this->page->set('event', $event);
@@ -446,7 +446,7 @@ class Pages extends SiteController
             ->order('pagename', 'asc')
             ->rows();
 
-        $tree = array();
+        $tree = [];
         if ($items) {
             foreach ($items as $k => $branch) {
                 // Since these will be parent pages, we need to add the item's pagename to the scope
@@ -494,12 +494,12 @@ class Pages extends SiteController
         // Incoming revision
         $revision = $this->page->version;
         $revision->set('version', $revision->get('version') + 1);
-        $revision->set(Request::getArray('revision', array(), 'post'));
+        $revision->set(Request::getArray('revision', [], 'post'));
         $revision->set('created', Date::toSql());
         $revision->set('id', 0);
 
         // Incoming page
-        $page = Request::getArray('page', array(), 'post');
+        $page = Request::getArray('page', [], 'post');
         if (!isset($page['protected']) || !$page['protected']) {
             $page['protected'] = 0;
         }
@@ -590,12 +590,12 @@ class Pages extends SiteController
         }
 
         // Get parameters (a suggester's are ignored)
-        $p = $suggestOnly ? array() : Request::getArray('params', array(), 'post');
+        $p = $suggestOnly ? [] : Request::getArray('params', [], 'post');
 
         $params = new \Hubzero\Config\Registry($this->page->get('params', ''));
         $params->merge($p);
 
-        foreach (array('hide_authors', 'allow_changes', 'allow_comments') as $key) {
+        foreach (['hide_authors', 'allow_changes', 'allow_comments'] as $key) {
             if (!$suggestOnly && (!isset($p[$key]) || !$p[$key])) {
                 $params->set($key, 0);
             }
@@ -640,7 +640,7 @@ class Pages extends SiteController
 
         // Trigger before save event
         $isNew  = $this->page->isNew();
-        $result = Event::trigger('wiki.onWikiBeforeSave', array(&$this->page, $isNew));
+        $result = Event::trigger('wiki.onWikiBeforeSave', [&$this->page, $isNew]);
 
         if (in_array(false, $result, true)) {
             $this->setError($this->page->getError());
@@ -745,14 +745,14 @@ class Pages extends SiteController
         }
 
         // Trigger after save event
-        Event::trigger('wiki.onWikiAfterSave', array(&$this->page, $isNew));
+        Event::trigger('wiki.onWikiAfterSave', [&$this->page, $isNew]);
 
         // Log activity
-        $recipients = array(
+        $recipients = [
             ['wiki.site', 1],
             ['user', $this->page->get('created_by')],
             ['user', $revision->get('created_by')]
-        );
+        ];
         if ($this->page->get('scope') != 'site') {
             $recipients[]  = [$this->page->get('scope'), $this->page->get('scope_id')];
             $recipients[0] = ['wiki.' . $this->page->get('scope'), $this->page->get('scope_id')];
@@ -764,12 +764,12 @@ class Pages extends SiteController
                 'scope'       => 'wiki.page',
                 'scope_id'    => $this->page->get('id'),
                 'description' => Lang::txt('COM_WIKI_ACTIVITY_PAGE_' . ($page['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($this->page->link()) . '">' . htmlspecialchars((string) ($this->page->title), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title'    => $this->page->title,
                     'url'      => Route::url($this->page->link()),
                     'name'     => $this->page->get('pagename'),
                     'revision' => $revision->get('id')
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -829,10 +829,10 @@ class Pages extends SiteController
                 Cache::clean('wiki');
 
                 // Log activity
-                $recipients = array(
+                $recipients = [
                     ['wiki.site', 1],
                     ['user', $this->page->get('created_by')]
-                );
+                ];
                 if ($this->page->get('scope') != 'site') {
                     $recipients[]  = [$this->page->get('scope'), $this->page->get('scope_id')];
                     $recipients[0] = ['wiki.' . $this->page->get('scope'), $this->page->get('scope_id')];
@@ -844,11 +844,11 @@ class Pages extends SiteController
                         'scope'       => 'wiki.page',
                         'scope_id'    => $this->page->get('id'),
                         'description' => Lang::txt('COM_WIKI_ACTIVITY_PAGE_DELETED', '<a href="' . Route::url($this->page->link()) . '">' . htmlspecialchars((string) ($this->page->title), ENT_QUOTES, 'UTF-8') . '</a>'),
-                        'details'     => array(
+                        'details'     => [
                             'title' => $this->page->title,
                             'url'   => Route::url($this->page->link()),
                             'name'  => $this->page->get('pagename')
-                        )
+                        ]
                     ],
                     'recipients' => $recipients
                 ]);
@@ -1039,10 +1039,10 @@ class Pages extends SiteController
         $this->page->log('page_renamed');
 
         // Log activity
-        $recipients = array(
+        $recipients = [
             ['wiki.site', 1],
             ['user', $this->page->get('created_by')]
-        );
+        ];
         if ($this->page->get('scope') != 'site') {
             $recipients[]  = [$this->page->get('scope'), $this->page->get('scope_id')];
             $recipients[0] = ['wiki.' . $this->page->get('scope'), $this->page->get('scope_id')];
@@ -1054,11 +1054,11 @@ class Pages extends SiteController
                 'scope'       => 'wiki.page',
                 'scope_id'    => $this->page->get('id'),
                 'description' => Lang::txt('COM_WIKI_ACTIVITY_PAGE_RENAMED', '<a href="' . Route::url($this->page->link()) . '">' . htmlspecialchars((string) ($this->page->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title' => $this->page->get('title'),
                     'url'   => Route::url($this->page->link()),
                     'name'  => $this->page->get('pagename')
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -1109,9 +1109,9 @@ class Pages extends SiteController
         }
 
         // Log activity
-        $recipients = array(
+        $recipients = [
             ['wiki.site', 1]
-        );
+        ];
         if ($this->page->get('scope') != 'site') {
             $recipients[]  = [$this->page->get('scope'), $this->page->get('scope_id')];
             $recipients[0] = ['wiki.' . $this->page->get('scope'), $this->page->get('scope_id')];
@@ -1123,11 +1123,11 @@ class Pages extends SiteController
                 'scope'       => 'wiki.page',
                 'scope_id'    => $this->page->get('id'),
                 'description' => Lang::txt('COM_WIKI_ACTIVITY_PAGE_DOWNLOADED', '<a href="' . Route::url($this->page->link()) . '">' . htmlspecialchars((string) ($this->page->title), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title' => $this->page->title,
                     'url'   => Route::url($this->page->link()),
                     'name'  => $this->page->get('pagename')
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -1137,8 +1137,8 @@ class Pages extends SiteController
         $pdf = new \TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
         // set header and footer fonts
-        $pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-        $pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+        $pdf->setHeaderFont([PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN]);
+        $pdf->setFooterFont([PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA]);
 
         // set margins
         $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
@@ -1158,8 +1158,8 @@ class Pages extends SiteController
         $pdf->setCreator(Config::get('sitename'));
 
         $pdf->setDocModificationTimeStamp($this->page->modified());
-        $pdf->setHeaderData(null, 0, strtoupper($this->page->title), '', array(84, 94, 124), array(146, 152, 169));
-        $pdf->setFooterData(array(255, 255, 255), array(255, 255, 255));
+        $pdf->setHeaderData(null, 0, strtoupper($this->page->title), '', [84, 94, 124], [146, 152, 169]);
+        $pdf->setFooterData([255, 255, 255], [255, 255, 255]);
 
         $pdf->AddPage();
 
@@ -1242,7 +1242,7 @@ class Pages extends SiteController
     private static function sanitizeHtmlForPdf($html)
     {
         // Replace HTML5 semantic tags with divs (unsupported by TCPDF)
-        $semanticTags = array('header', 'article', 'section', 'nav', 'aside', 'figure', 'figcaption', 'footer', 'main', 'details', 'summary');
+        $semanticTags = ['header', 'article', 'section', 'nav', 'aside', 'figure', 'figcaption', 'footer', 'main', 'details', 'summary'];
         foreach ($semanticTags as $tag) {
             $html = preg_replace('/<' . $tag . '\b([^>]*)>/i', '<div$1>', $html);
             $html = preg_replace('/<\/' . $tag . '>/i', '</div>', $html);

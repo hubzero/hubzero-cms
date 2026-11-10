@@ -108,10 +108,10 @@ $required = Lang::txt('JOPTION_REQUIRED');
                         60,
                         30,
                         'field-fulltxt',
-                        array(
+                        [
                             'class' => 'required',
-                            'buttons' => array('pagebreak', 'readmore', 'article')
-                        )
+                            'buttons' => ['pagebreak', 'readmore', 'article']
+                        ]
                     );
                     ?>
                 </div>

@@ -31,7 +31,7 @@ class Optiongroups extends AdminController
      */
     public function displayTask()
     {
-        $this->view->filters = array(
+        $this->view->filters = [
             // Get sorting variables
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
@@ -56,7 +56,7 @@ class Optiongroups extends AdminController
                 0,
                 'int'
             )
-        );
+        ];
 
         $obj = new Archive();
 
@@ -127,7 +127,7 @@ class Optiongroups extends AdminController
             $this->view->task = 'edit';
         } else {
             // Incoming
-            $id = Request::getArray('ogId', array(0));
+            $id = Request::getArray('ogId', [0]);
 
             if (is_array($id) && !empty($id)) {
                 $id = $id[0];
@@ -170,7 +170,7 @@ class Optiongroups extends AdminController
         Request::checkToken();
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         // Update record(s)
         $obj = new Archive();
@@ -215,9 +215,9 @@ class Optiongroups extends AdminController
                 Request::setVar('hidemainmenu', 1);
 
                 // Incoming
-                $id = Request::getArray('id', array(0));
+                $id = Request::getArray('id', [0]);
                 if (!is_array($id) && !empty($id)) {
-                    $id = array($id);
+                    $id = [$id];
                 }
 
                 $this->view->ogId = $id;
@@ -257,7 +257,7 @@ class Optiongroups extends AdminController
                 if ($delete) {
                     // Do the delete
                     $obj = new Archive();
-                    $warnings = array();
+                    $warnings = [];
 
                     foreach ($ogIds as $ogId) {
                         // Delete option group
@@ -334,8 +334,8 @@ class Optiongroups extends AdminController
      */
     public function stateTask($state = 0)
     {
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for an ID
         if (count($ids) < 1) {
@@ -356,7 +356,7 @@ class Optiongroups extends AdminController
         foreach ($ids as $ogId) {
             // Save category
             try {
-                $obj->updateOptionGroup($ogId, array('state' => $state));
+                $obj->updateOptionGroup($ogId, ['state' => $state]);
             } catch (\Exception $e) {
                 Notify::error($e->getMessage());
                 return;

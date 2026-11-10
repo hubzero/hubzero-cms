@@ -22,7 +22,7 @@ $citations_require_attention = $this->citations_require_attention;
 $citations_require_no_attention = $this->citations_require_no_attention;
 
 //dont show array
-$no_show = array("errors","duplicate");
+$no_show = ["errors","duplicate"];
 ?>
 <header id="content-header">
     <h2><?php echo $this->title; ?></h2>
@@ -98,7 +98,7 @@ $no_show = array("errors","duplicate");
                                         <tbody>
                                             <?php
                                                 $recordAttributes = $c['duplicate']->getAttributes();
-                                                $changedKeys = array();
+                                                $changedKeys = [];
                                             foreach ($c as $attribute => $value) {
                                                 if (!empty($recordAttributes[$attribute]) || !empty($value)) {
                                                     $changedKeys[] = $attribute;

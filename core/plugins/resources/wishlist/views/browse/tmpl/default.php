@@ -121,11 +121,11 @@ $this->css();
                 <?php if ($item->status != 7) { ?>
                     <td class="voting">
                     <?php
-                        $view = new \Hubzero\Component\View(array(
+                        $view = new \Hubzero\Component\View([
                             'name'      => 'wishlists',
                             'base_path' => Component::path($this->option) . DS . 'site',
                             'layout'    => '_vote'
-                        ));
+                        ]);
                         $view->set('option', 'com_wishlist')
                              ->set('item', $item)
                              ->set('listid', $this->wishlist->id)
@@ -196,7 +196,7 @@ $this->css();
     // Parse for <nb:field> tags
     $type = $this->resource->type;
 
-    $data = array();
+    $data = [];
     preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->resource->fulltxt, $matches, PREG_SET_ORDER);
 if (count($matches) > 0) {
     foreach ($matches as $match) {
@@ -210,7 +210,7 @@ if (count($matches) > 0) {
     $hasCustomFields = false;
 if (is_object($schema)) {
     if (!isset($schema->fields) || !is_array($schema->fields)) {
-        $schema->fields = array();
+        $schema->fields = [];
     }
     foreach ($schema->fields as $field) {
         if (isset($data[$field->name]) && $elements->display($field->type, $data[$field->name]) && isset($field->display) && $field->display == $tab) {

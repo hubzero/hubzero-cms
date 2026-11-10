@@ -49,21 +49,21 @@ class Provider extends AbstractService
             return false;
         }
 
-        $params = array();
+        $params = [];
 
         if (!is_file(__DIR__ . DS . 'Client' . DS . ucfirst(strtolower($this->get('client'))) . '.php')) {
             throw new Exception(Lang::txt('Client type of "%s" not found.', $this->get('client')));
         }
 
         if ($this->get('client') == 'remote') {
-            foreach (array('server', 'verbose') as $option) {
+            foreach (['server', 'verbose'] as $option) {
                 if ($this->get($option) !== null) {
                     $params[$option] = $this->get($option);
                 }
             }
             $client = new Client\Remote($params);
         } elseif ($this->get('client') == 'local') {
-            foreach (array('socketPath', 'hostname', 'user', 'protocolVersion') as $option) {
+            foreach (['socketPath', 'hostname', 'user', 'protocolVersion'] as $option) {
                 if ($this->get($option) !== null) {
                     $params[$option] = $this->get($option);
                 }

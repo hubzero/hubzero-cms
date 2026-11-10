@@ -55,7 +55,7 @@ $this->css()
 
             <label>
                 <?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_DESCRIPTION'); ?>:
-                <?php echo App::get('editor')->display('econtent', $this->row->content, '', '', 10, 15, false, 'econtent', null, null, array('class' => 'minimal no-footer')); ?>
+                <?php echo App::get('editor')->display('econtent', $this->row->content, '', '', 10, 15, false, 'econtent', null, null, ['class' => 'minimal no-footer']); ?>
             </label>
 
             <label>
@@ -92,7 +92,7 @@ $this->css()
             <label>
                 <?php echo Lang::txt('EVENTS_E_TAGS'); ?>
                 <?php
-                $tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags','',$this->lists['tags'])));
+                $tf = Event::trigger('hubzero.onGetMultiEntry', [['tags', 'tags', 'actags','',$this->lists['tags']]]);
                 if (count($tf) > 0) {
                     echo $tf[0];
                 } else {

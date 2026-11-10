@@ -36,28 +36,28 @@ class Support extends Plugin
         $obj = new \stdClass();
         $obj->plugin = 'support';
 
-        $obj->events = array(
-            array(
+        $obj->events = [
+            [
                 'name'   => 'onClosePending',
                 'label'  => Lang::txt('PLG_CRON_SUPPORT_CLOSE_PENDING'),
                 'params' => 'ticketpending'
-            ),
-            array(
+            ],
+            [
                 'name'   => 'sendTicketsReminder',
                 'label'  =>  Lang::txt('PLG_CRON_SUPPORT_EMAIL_REMINDER'),
                 'params' => 'ticketreminder'
-            ),
-            array(
+            ],
+            [
                 'name'   => 'sendTicketList',
                 'label'  =>  Lang::txt('PLG_CRON_SUPPORT_EMAIL_LIST'),
                 'params' => 'ticketlist'
-            ),
-            array(
+            ],
+            [
                 'name'   => 'cleanTempUploads',
                 'label'  =>  Lang::txt('PLG_CRON_SUPPORT_CLEAN_UPLOADS'),
                 'params' => 'tickettemp'
-            )
-        );
+            ]
+        ];
 
         return $obj;
     }
@@ -113,13 +113,13 @@ class Support extends Plugin
         $upd = "UPDATE `#__support_tickets` AS t SET t.`open`=0, t.`status`=0, t.`closed`="
             . $database->quote(Date::toSql());
 
-        $where = array();
+        $where = [];
 
         $where[] = "t.`type`=0";
         $where[] = "t.`open`=1";
 
         if (is_object($params)) {
-            $statuses = array();
+            $statuses = [];
             if (is_numeric($params->get('support_ticketpending_status1'))) {
                 $statuses[] = $params->get('support_ticketpending_status1');
             }
@@ -281,7 +281,7 @@ class Support extends Plugin
         $message_id = $params->get('support_ticketpending_message');
 
         // Get a list of tickets before we update them
-        $tickets = array();
+        $tickets = [];
         if ($message_id) {
             $database->setQuery($slc);
             $tickets = $database->loadObjectList();
@@ -300,11 +300,11 @@ class Support extends Plugin
 
             // Make sure we have a message to send
             if ($message->message) {
-                $from = array(
+                $from = [
                     'name'      => Config::get('sitename') . ' ' . Lang::txt('COM_SUPPORT'),
                     'email'     => Config::get('mailfrom'),
                     'multipart' => md5(date('U'))
-                );
+                ];
 
                 // Set mail additional args (mail return path - used for bounces)
                 if ($host = Request::getString('HTTP_HOST', '', 'server')) {
@@ -313,7 +313,7 @@ class Support extends Plugin
 
                 $subject = Lang::txt('COM_SUPPORT') . ': ' . Lang::txt('COM_SUPPORT_TICKETS');
 
-                $mailed = array();
+                $mailed = [];
 
                 foreach ($tickets as $submitter) {
                     $name  = null;
@@ -364,11 +364,11 @@ class Support extends Plugin
                         $this->setError($comment->getError());
                     }
 
-                    $eview = new \Hubzero\Mail\View(array(
+                    $eview = new \Hubzero\Mail\View([
                         'base_path' => Component::path('com_support') . DS . 'site',
                         'name'      => 'emails',
                         'layout'    => 'comment_plain'
-                    ));
+                    ]);
                     $eview->option     = 'com_support';
                     $eview->controller = 'tickets';
                     $eview->delimiter  = '~!~!~!~!~!~!~!~!~!~!';
@@ -434,7 +434,7 @@ class Support extends Plugin
         if (is_object($params) && $params->get('support_ticketreminder_group')) {
             $group = \Hubzero\User\Group::getInstance($params->get('support_ticketreminder_group'));
 
-            $users = array();
+            $users = [];
             if ($group) {
                 $users = $group->get('members');
             }
@@ -456,14 +456,14 @@ class Support extends Plugin
             $severities = \Components\Support\Helpers\Utilities::getSeverities($sconfig->get('severities'));
         }
 
-        $tickets = array();
+        $tickets = [];
         foreach ($results as $result) {
             if (!isset($tickets[$result->owner])) {
-                $tickets[$result->owner] = array();
+                $tickets[$result->owner] = [];
                 foreach ($severities as $severity) {
-                    $tickets[$result->owner][$severity] = array();
+                    $tickets[$result->owner][$severity] = [];
                 }
-                $tickets[$result->owner]['unknown'] = array();
+                $tickets[$result->owner]['unknown'] = [];
             }
             if (isset($tickets[$result->owner][$result->severity])) {
                 $tickets[$result->owner][$result->severity][] = $result;
@@ -485,11 +485,11 @@ class Support extends Plugin
             }
         }
 
-        $from = array(
+        $from = [
             'name'      => Config::get('sitename') . ' ' . Lang::txt('COM_SUPPORT'),
             'email'     => Config::get('mailfrom'),
             'multipart' => md5(date('U'))
-        );
+        ];
 
         //set mail additional args (mail return path - used for bounces)
         if ($host = Request::getString('HTTP_HOST', '', 'server')) {
@@ -498,7 +498,7 @@ class Support extends Plugin
 
         $subject = Lang::txt('COM_SUPPORT') . ': ' . Lang::txt('COM_SUPPORT_OPEN_TICKETS');
 
-        $mailed = array();
+        $mailed = [];
 
         foreach ($tickets as $owner => $usertickets) {
             // Get the user's account
@@ -512,11 +512,11 @@ class Support extends Plugin
             }
 
             // Plain text
-            $eview = new \Hubzero\Mail\View(array(
+            $eview = new \Hubzero\Mail\View([
                 'base_path' => Component::path('com_support') . DS . 'site',
                 'name'      => 'emails',
                 'layout'    => 'tickets_plain'
-            ));
+            ]);
             $eview->option     = 'com_support';
             $eview->controller = 'tickets';
             $eview->tickets    = $tickets;
@@ -577,7 +577,7 @@ class Support extends Plugin
         $sql = "SELECT t.*, o.`name` AS owner_name, s.`title` as status_title FROM `#__support_tickets` AS t "
             . "LEFT JOIN `#__users` AS o ON o.`id`=t.`owner` LEFT JOIN `#__support_statuses` AS s ON s.`id`=t.`status`";
 
-        $where = array();
+        $where = [];
 
         $where[] = "t.`type`=0";
 
@@ -586,7 +586,7 @@ class Support extends Plugin
                 $where[] = "t.`open`=" . $val;
             }
 
-            $statuses = array();
+            $statuses = [];
             if (is_numeric($params->get('support_ticketlist_status1'))) {
                 $statuses[] = $params->get('support_ticketlist_status1');
             }
@@ -839,7 +839,7 @@ class Support extends Plugin
             $severities = \Components\Support\Helpers\Utilities::getSeverities($sconfig->get('severities'));
         }
 
-        $from = array();
+        $from = [];
         $from['name']      = Config::get('sitename') . ' ' . Lang::txt('COM_SUPPORT');
         $from['email']     = Config::get('mailfrom');
         $from['multipart'] = md5(date('U'));
@@ -851,13 +851,13 @@ class Support extends Plugin
 
         $subject = Lang::txt('COM_SUPPORT') . ': ' . Lang::txt('COM_SUPPORT_TICKETS');
 
-        $usernames = array();
+        $usernames = [];
         if ($users = $params->get('support_ticketlist_notify')) {
             $usernames = explode(',', $users);
             $usernames = array_map('trim', $usernames);
         }
 
-        $mailed = array();
+        $mailed = [];
 
         foreach ($usernames as $owner) {
             if ($owner == '{config.mailfrom}') {
@@ -882,11 +882,11 @@ class Support extends Plugin
                 continue;
             }
 
-            $eview = new \Hubzero\Mail\View(array(
+            $eview = new \Hubzero\Mail\View([
                 'base_path' => Component::path('com_support') . DS . 'site',
                 'name'      => 'emails',
                 'layout'    => 'ticketlist_plain'
-            ));
+            ]);
             $eview->option     = 'com_support';
             $eview->controller = 'tickets';
             $eview->delimiter  = '~!~!~!~!~!~!~!~!~!~!';

@@ -27,11 +27,11 @@ if ($canDo->get('core.edit')) {
 }
 Toolbar::cancel();
 
-$dcTypes = array(
+$dcTypes = [
     'Collection' , 'Dataset' , 'Event' , 'Image' ,
     'InteractivePublication' , 'MovingImage' , 'PhysicalObject' ,
     'Service' , 'Software' , 'Sound' , 'StillImage' , 'Text'
-);
+];
 
 $params = $this->row->params;
 
@@ -237,7 +237,7 @@ Html::behavior('framework', true);
                     );
 
                     if ($plugins = $database->loadObjectList()) {
-                        $found = array();
+                        $found = [];
                         foreach ($plugins as $plugin) {
                             if (in_array('plg_' . $plugin->element, $found)) {
                                 continue;
@@ -325,7 +325,7 @@ Html::behavior('framework', true);
 
                 if (!is_object($schema)) {
                     $schema = new stdClass();
-                    $schema->fields = array();
+                    $schema->fields = [];
                 }
 
                 if (count($schema->fields) <= 0) {

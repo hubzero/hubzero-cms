@@ -43,7 +43,7 @@ class Standard extends Button
 
         $cls = 'toolbar toolbar-submit';
 
-        $attr   = array();
+        $attr   = [];
         $attr[] = 'data-title="' . $i18n_text . '"';
         $attr[] = 'data-task="' . $task . '"';
 

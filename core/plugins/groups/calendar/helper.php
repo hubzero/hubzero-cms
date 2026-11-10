@@ -40,48 +40,48 @@ class Helper
      */
     public static function getTimezoneNameAndAbbreviation($timezone)
     {
-        $abbreviations = array(
-            '-12'   => array('abbreviation' => 'IDLW',  'name' => 'International Date Line West'),
-            '-11'   => array('abbreviation' => 'MART',  'name' => 'Midway Island, Samoa Time'),
-            '-10'   => array('abbreviation' => 'HAST',  'name' => 'Hawaii-Aleutian Standard Time'),
-            '-9.5'  => array('abbreviation' => 'MART',  'name' => 'Taiohae, Marquesas Islands Time'),
-            '-9'    => array('abbreviation' => 'AKST',  'name' => 'Alaska Standard Time'),
-            '-8'    => array('abbreviation' => 'PST',   'name' => 'Pacific Standard Time'),
-            '-7'    => array('abbreviation' => 'MST',   'name' => 'Mountain Standard Time'),
-            '-6'    => array('abbreviation' => 'CST',   'name' => 'Central Standard Time'),
-            '-5'    => array('abbreviation' => 'EST',   'name' => 'Eastern Standard Time'),
-            '-4.5'  => array('abbreviation' => 'VET',   'name' => 'Venezuelan Standard Time'),
-            '-4'    => array('abbreviation' => 'AST',   'name' => 'Atlantic Standard Time'),
-            '-3.5'  => array('abbreviation' => 'NST',   'name' => 'Newfoundland Standard Time'),
-            '-3'    => array('abbreviation' => 'WGT',   'name' => 'West Greenland Time'),
-            '-2'    => array('abbreviation' => 'MAT',   'name' => 'Mid Atlantic Time'),
-            '-1'    => array('abbreviation' => 'EGT',   'name' => 'East Greenland Time'),
-            '0'     => array('abbreviation' => 'GMT',   'name' => 'Greenwich Mean Time'),
-            '1'     => array('abbreviation' => 'CET',   'name' => 'Central European Time'),
-            '2'     => array('abbreviation' => 'EET',   'name' => 'Eastern European Time'),
-            '3'     => array('abbreviation' => 'EAT',   'name' => 'East Africa Time'),
-            '3.5'   => array('abbreviation' => 'IRST',  'name' => 'Iran Standard Time'),
-            '4'     => array('abbreviation' => 'GET',   'name' => 'Georgia Standard Time'),
-            '4.5'   => array('abbreviation' => 'AFT',   'name' => 'Afghanistan Time'),
-            '5'     => array('abbreviation' => 'PKT',   'name' => 'Pakistan Standard Time'),
-            '5.5'   => array('abbreviation' => 'IST',   'name' => 'India Standard Time'),
-            '5.75'  => array('abbreviation' => 'NPT',   'name' => 'Nepal Time'),
-            '6'     => array('abbreviation' => 'BST',   'name' => 'Bangladesh Standard Time'),
-            '6.5'   => array('abbreviation' => 'MMT',   'name' => 'Myanmar Time'),
-            '7'     => array('abbreviation' => 'ICT',   'name' => 'Indochina Time'),
-            '8'     => array('abbreviation' => 'HKT',   'name' => 'Hong Kong Time'),
-            '8.75'  => array('abbreviation' => 'ULAT',  'name' => 'Ulaanbaatar Time'),
-            '9'     => array('abbreviation' => 'JST',   'name' => 'Japan Standard Time'),
-            '9.5'   => array('abbreviation' => 'ACST',  'name' => 'Australian Central Standard Time'),
-            '10'    => array('abbreviation' => 'AEST',  'name' => 'Australian Eastern Standard Time'),
-            '10.5'  => array('abbreviation' => 'LHST',  'name' => 'Lord Howe Standard Time'),
-            '11'    => array('abbreviation' => 'NCT',   'name' => 'New Caledonia Time'),
-            '11.5'  => array('abbreviation' => 'NFT',   'name' => 'Norfolk Time'),
-            '12'    => array('abbreviation' => 'NZST',  'name' => 'New Zealand Standard Time'),
-            '12.75' => array('abbreviation' => 'CHAST', 'name' => 'Chatham Island Standard Time'),
-            '13'    => array('abbreviation' => 'TOT',   'name' => 'Tonga Time'),
-            '14'    => array('abbreviation' => 'LINT',  'name' => 'Line Islands Time')
-        );
+        $abbreviations = [
+            '-12'   => ['abbreviation' => 'IDLW',  'name' => 'International Date Line West'],
+            '-11'   => ['abbreviation' => 'MART',  'name' => 'Midway Island, Samoa Time'],
+            '-10'   => ['abbreviation' => 'HAST',  'name' => 'Hawaii-Aleutian Standard Time'],
+            '-9.5'  => ['abbreviation' => 'MART',  'name' => 'Taiohae, Marquesas Islands Time'],
+            '-9'    => ['abbreviation' => 'AKST',  'name' => 'Alaska Standard Time'],
+            '-8'    => ['abbreviation' => 'PST',   'name' => 'Pacific Standard Time'],
+            '-7'    => ['abbreviation' => 'MST',   'name' => 'Mountain Standard Time'],
+            '-6'    => ['abbreviation' => 'CST',   'name' => 'Central Standard Time'],
+            '-5'    => ['abbreviation' => 'EST',   'name' => 'Eastern Standard Time'],
+            '-4.5'  => ['abbreviation' => 'VET',   'name' => 'Venezuelan Standard Time'],
+            '-4'    => ['abbreviation' => 'AST',   'name' => 'Atlantic Standard Time'],
+            '-3.5'  => ['abbreviation' => 'NST',   'name' => 'Newfoundland Standard Time'],
+            '-3'    => ['abbreviation' => 'WGT',   'name' => 'West Greenland Time'],
+            '-2'    => ['abbreviation' => 'MAT',   'name' => 'Mid Atlantic Time'],
+            '-1'    => ['abbreviation' => 'EGT',   'name' => 'East Greenland Time'],
+            '0'     => ['abbreviation' => 'GMT',   'name' => 'Greenwich Mean Time'],
+            '1'     => ['abbreviation' => 'CET',   'name' => 'Central European Time'],
+            '2'     => ['abbreviation' => 'EET',   'name' => 'Eastern European Time'],
+            '3'     => ['abbreviation' => 'EAT',   'name' => 'East Africa Time'],
+            '3.5'   => ['abbreviation' => 'IRST',  'name' => 'Iran Standard Time'],
+            '4'     => ['abbreviation' => 'GET',   'name' => 'Georgia Standard Time'],
+            '4.5'   => ['abbreviation' => 'AFT',   'name' => 'Afghanistan Time'],
+            '5'     => ['abbreviation' => 'PKT',   'name' => 'Pakistan Standard Time'],
+            '5.5'   => ['abbreviation' => 'IST',   'name' => 'India Standard Time'],
+            '5.75'  => ['abbreviation' => 'NPT',   'name' => 'Nepal Time'],
+            '6'     => ['abbreviation' => 'BST',   'name' => 'Bangladesh Standard Time'],
+            '6.5'   => ['abbreviation' => 'MMT',   'name' => 'Myanmar Time'],
+            '7'     => ['abbreviation' => 'ICT',   'name' => 'Indochina Time'],
+            '8'     => ['abbreviation' => 'HKT',   'name' => 'Hong Kong Time'],
+            '8.75'  => ['abbreviation' => 'ULAT',  'name' => 'Ulaanbaatar Time'],
+            '9'     => ['abbreviation' => 'JST',   'name' => 'Japan Standard Time'],
+            '9.5'   => ['abbreviation' => 'ACST',  'name' => 'Australian Central Standard Time'],
+            '10'    => ['abbreviation' => 'AEST',  'name' => 'Australian Eastern Standard Time'],
+            '10.5'  => ['abbreviation' => 'LHST',  'name' => 'Lord Howe Standard Time'],
+            '11'    => ['abbreviation' => 'NCT',   'name' => 'New Caledonia Time'],
+            '11.5'  => ['abbreviation' => 'NFT',   'name' => 'Norfolk Time'],
+            '12'    => ['abbreviation' => 'NZST',  'name' => 'New Zealand Standard Time'],
+            '12.75' => ['abbreviation' => 'CHAST', 'name' => 'Chatham Island Standard Time'],
+            '13'    => ['abbreviation' => 'TOT',   'name' => 'Tonga Time'],
+            '14'    => ['abbreviation' => 'LINT',  'name' => 'Line Islands Time']
+        ];
 
         if (isset($abbreviations[$timezone])) {
             return $abbreviations[$timezone];
@@ -93,7 +93,7 @@ class Helper
         }
         try {
             $now = new \DateTime('now', new \DateTimeZone($timezone));
-            return array('abbreviation' => $now->format('T'), 'name' => $timezone);
+            return ['abbreviation' => $now->format('T'), 'name' => $timezone];
         } catch (\Exception $e) {
             return null;
         }

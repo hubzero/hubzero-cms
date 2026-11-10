@@ -34,22 +34,22 @@ class Batchcreate extends AdminController
         // Project info
         $project = new \Components\Projects\Tables\Project($this->database);
         // Get filters
-        $filters = array(
+        $filters = [
             'sortby'     => 'title',
             'sortdir'    => 'DESC',
             'authorized' => true
-        );
+        ];
         $this->view->projects  = $project->getRecords($filters, true, 0, 1);
 
         // Master type info
         $mt = new Tables\MasterType($this->database);
         // Get filters
-        $filters = array(
+        $filters = [
             'sortby'     => 'type',
             'sortdir'    => 'DESC',
             'contributable' => 1,
             'authorized' => true
-        );
+        ];
         $this->view->mastertypes = $mt->getRecords($filters);
 
         // Set any errors
@@ -139,7 +139,7 @@ class Batchcreate extends AdminController
         // Incoming
         $projectid = Request::getInt('projectid', 0);
         $mtid = Request::getInt('mastertypeid', 0);
-        $file = Request::getArray('file', array(), 'FILES');
+        $file = Request::getArray('file', [], 'FILES');
         $dryRun = Request::getInt('dryrun', 1);
         $api = Request::getInt('api', 0);
 
@@ -148,11 +148,11 @@ class Batchcreate extends AdminController
         // Project ID must be supplied
         $this->project = new \Components\Projects\Models\Project($projectid);
         if (!$this->project->exists()) {
-            echo json_encode(array(
+            echo json_encode([
                 'result'  => 'error',
                 'error'   => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_PROJECT_ID'),
                 'records' => null
-            ));
+            ]);
             if (!$api) {
                 exit();
             } else {
@@ -162,11 +162,11 @@ class Batchcreate extends AdminController
 
         // Master type ID must be supplied
         if (!$mtid) {
-            echo json_encode(array(
+            echo json_encode([
                 'result'  => 'error',
                 'error'   => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_MASTER_TYPE_ID'),
                 'records' => null
-            ));
+            ]);
             if (!$api) {
                 exit();
             } else {
@@ -178,11 +178,11 @@ class Batchcreate extends AdminController
 
         // Check for file
         if (!is_array($file) || $file['size'] == 0 || $file['error'] != 0) {
-            echo json_encode(array(
+            echo json_encode([
                 'result'  => 'error',
                 'error'   => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_FILE'),
                 'records' => null
-            ));
+            ]);
             if (!$api) {
                 exit();
             } else {
@@ -191,12 +191,12 @@ class Batchcreate extends AdminController
         }
 
         // Check for correct type
-        if (!in_array($file['type'], array('application/xml', 'text/xml'))) {
-            echo json_encode(array(
+        if (!in_array($file['type'], ['application/xml', 'text/xml'])) {
+            echo json_encode([
                 'result'  => 'error',
                 'error'   => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_WRONG_FORMAT'),
                 'records' => null
-            ));
+            ]);
             if (!$api) {
                 exit();
             } else {
@@ -209,11 +209,11 @@ class Batchcreate extends AdminController
             $this->data = file_get_contents($file['tmp_name']);
         }
         if (!$this->data) {
-            echo json_encode(array(
+            echo json_encode([
                 'result'  => 'error',
                 'error'   => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_DATA'),
                 'records' => null
-            ));
+            ]);
             if (!$api) {
                 exit();
             } else {
@@ -226,11 +226,11 @@ class Batchcreate extends AdminController
 
         // Open and validate XML against schema
         if (!$this->reader->XML($this->data, 'UTF-8', LIBXML_NONET)) {
-            echo json_encode(array(
+            echo json_encode([
                 'result'  => 'error',
                 'error'   => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_XML_VALIDATION_FAILED'),
                 'records' => null
-            ));
+            ]);
             if (!$api) {
                 exit();
             } else {
@@ -253,12 +253,12 @@ class Batchcreate extends AdminController
 
         // Parsing errors
         if ($this->getError()) {
-            echo json_encode(array(
+            echo json_encode([
                 'result'  => 'error',
                 'error'   => $this->getError(),
                 'records' => $outputData,
                 'dryrun'  => $dryRun
-            ));
+            ]);
             if (!$api) {
                 exit();
             } else {
@@ -267,12 +267,12 @@ class Batchcreate extends AdminController
         }
 
         // return results to user
-        echo json_encode(array(
+        echo json_encode([
             'result'  => 'success',
             'error'   => null,
             'records' => $outputData,
             'dryrun'  => $dryRun
-        ));
+        ]);
         if (!$api) {
             exit();
         } else {
@@ -333,7 +333,7 @@ class Batchcreate extends AdminController
         $this->projectPath = $this->project->repo()->get('path');
 
         // Parse data
-        $items = array();
+        $items = [];
         while ($this->reader->read()) {
             if ($this->reader->name === 'publication') {
                 $node = new \SimpleXMLElement($this->reader->readOuterXML());
@@ -343,10 +343,10 @@ class Batchcreate extends AdminController
 
                 $item['category'] = $category;
                 $item['type']     = $this->mastertype->alias;
-                $item['errors']   = array();
-                $item['tags']     = array();
-                $item['authors']  = array();
-                $item['metadata'] = array();
+                $item['errors']   = [];
+                $item['tags']     = [];
+                $item['authors']  = [];
+                $item['metadata'] = [];
 
                 // Publication properties
                 $item['publication'] = new Tables\Publication($this->database);
@@ -377,7 +377,7 @@ class Batchcreate extends AdminController
                 }
 
                 // Pick up files
-                $item['files'] = array();
+                $item['files'] = [];
                 if ($node->content) {
                     $i = 1;
                     foreach ($node->content->file as $file) {
@@ -444,10 +444,10 @@ class Batchcreate extends AdminController
         // Show what you'll get
         if ($dryRun == 1) {
             if (!$api) {
-                $eview = new \Hubzero\Component\View(array(
+                $eview = new \Hubzero\Component\View([
                     'name'   => 'batchcreate',
                     'layout' => 'dryrun'
-                ));
+                ]);
                 $eview->set('option', $this->_option);
                 $eview->items  = $items;
                 $output       .= $eview->loadTemplate();
@@ -623,13 +623,13 @@ class Batchcreate extends AdminController
         $type = $role == 3 ? 'gallery' : $type;
 
         // Add file record
-        $fileRecord = array(
+        $fileRecord = [
             'type'        => $type,
             'subtype'     => $subtype,
             'attachment'  => $attach,
             'projectPath' => $filePath,
             'error'       => $error
-        );
+        ];
 
         $item['files'][] = $fileRecord;
     }
@@ -803,7 +803,7 @@ class Batchcreate extends AdminController
         }
 
         // Add author record
-        $authorRecord = array('author' => $pAuthor, 'owner' => $owner, 'error' => $error);
+        $authorRecord = ['author' => $pAuthor, 'owner' => $owner, 'error' => $error];
 
         $item['authors'][] = $authorRecord;
     }

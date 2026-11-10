@@ -52,8 +52,8 @@ class Log extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'object_id'   => 'nonzero|positive',
         'object_type' => 'notempty'
-    );
+    ];
 }

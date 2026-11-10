@@ -60,7 +60,7 @@ class Bibtex extends Downloadable
 
         $bibtex = new \Components\Citations\Helpers\BibTex();
 
-        $addarray = array();
+        $addarray = [];
 
         //get all the citation types
         $type = $row->relatedType()->row()->get('type', 'Generic');

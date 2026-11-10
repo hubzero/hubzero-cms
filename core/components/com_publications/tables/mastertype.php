@@ -106,7 +106,7 @@ class MasterType extends Table
      */
     public function getCuratorGroups()
     {
-        $groups = array();
+        $groups = [];
 
         $query = "SELECT curatorgroup FROM $this->_tbl WHERE contributable=1
 				  AND curatorgroup !=0 AND curatorgroup IS NOT null";
@@ -132,9 +132,9 @@ class MasterType extends Table
      * @param   bool   $authorized
      * @return  mixed  array or False
      */
-    public function getAuthTypes($usergroups = array(), $authorized = false)
+    public function getAuthTypes($usergroups = [], $authorized = false)
     {
-        $types = array();
+        $types = [];
 
         if (empty($usergroups)) {
             return false;
@@ -192,7 +192,7 @@ class MasterType extends Table
         $this->_db->setQuery($query);
         $results = $this->_db->loadObjectList();
         if ($select == 'alias') {
-            $types = array();
+            $types = [];
             if ($results) {
                 foreach ($results as $result) {
                     $types[] = $result->alias;
@@ -209,7 +209,7 @@ class MasterType extends Table
      * @param   array  $filters  Filters to build query from
      * @return  array
      */
-    public function getRecords($filters = array())
+    public function getRecords($filters = [])
     {
         $query  = "SELECT c.*";
         $query .= $this->_buildQuery($filters);
@@ -237,7 +237,7 @@ class MasterType extends Table
      * @param   array  $filters  Filters to build query from
      * @return  array
      */
-    public function getCount($filters = array())
+    public function getCount($filters = [])
     {
         $filters['limit'] = 0;
 
@@ -254,11 +254,11 @@ class MasterType extends Table
      * @return  string  SQL
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildQuery($filters = array())
+    protected function _buildQuery($filters = [])
     {
         $query  = "FROM $this->_tbl AS c";
 
-        $where = array();
+        $where = [];
 
         if (count($where) > 0) {
             $query .= " WHERE ";

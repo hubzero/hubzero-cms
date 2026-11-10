@@ -55,29 +55,29 @@ class Plan extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'pagetext' => 'notempty',
         'wishid'   => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Fields to be parsed
      *
      * @var  array
      */
-    protected $parsed = array(
+    protected $parsed = [
         'pagetext'
-    );
+    ];
 
     /**
      * Get the owning wish
@@ -132,14 +132,14 @@ class Plan extends Relational
         $property = "_{$field}Parsed";
 
         if (!isset($this->$property)) {
-            $params = array(
+            $params = [
                 'option'   => 'com_wishlist',
                 'scope'    => 'wishlist',
                 'pagename' => 'wishlist',
                 'pageid'   => $this->get('wishid'),
                 'filepath' => '',
                 'domain'   => $this->get('wishid')
-            );
+            ];
 
             $this->$property = Html::content('prepare', $this->get($field, ''), $params);
         }

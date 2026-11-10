@@ -41,7 +41,7 @@ class Projects extends Plugin
                 . "AND m.uidNumber=" . User::get('id', 0);
         }
 
-        $addtl_where = array();
+        $addtl_where = [];
         foreach ($terms['mandatory'] as $mand) {
             $addtl_where[] = "(p.alias LIKE '%$mand%' OR p.title LIKE '%$mand%' OR p.about LIKE '%$mand%')";
         }

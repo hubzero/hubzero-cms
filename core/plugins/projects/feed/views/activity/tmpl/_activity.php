@@ -152,7 +152,7 @@ if (!$this->activity->log->get('anonymous')) {
                         ?></span>
                         <?php
                         if (strlen(strip_tags($content)) > 250) {
-                            $short = Hubzero\Utility\Str::truncate($content, 250, array('html' => true));
+                            $short = Hubzero\Utility\Str::truncate($content, 250, ['html' => true]);
                             ?>
                             <div class="activity-event-preview">
                                 <?php echo $short; ?>
@@ -180,7 +180,7 @@ if (!$this->activity->log->get('anonymous')) {
                     // Is this a file?
                     if ($ref = $this->activity->log->details->get('referenceid')) {
                         $files = explode(',', $ref);
-                        $selected  = array();
+                        $selected  = [];
                         $maxHeight = 0;
                         $minHeight = 0;
                         $minWidth  = 0;
@@ -255,7 +255,7 @@ if (!$this->activity->log->get('anonymous')) {
             <?php
             // Pre-compute which activity options are actually available
             $canComment = $edit && $commentable && $this->model->access('content');
-            $canEdit    = $edit && in_array($class, array('blog', 'quote')) && $this->model->access('manager');
+            $canEdit    = $edit && in_array($class, ['blog', 'quote']) && $this->model->access('manager');
             ?>
             <?php if ($canComment || $canEdit || $deletable) { ?>
                 <div class="activity-options">
@@ -276,7 +276,7 @@ if (!$this->activity->log->get('anonymous')) {
                         <?php } ?>
                         <?php
                         $canEdit = $edit
-                            && in_array($class, array('blog', 'quote'))
+                            && in_array($class, ['blog', 'quote'])
                             && $this->model->access('manager');
                         ?>
                         <?php if ($canEdit) { ?>
@@ -347,7 +347,7 @@ if (!$this->activity->log->get('anonymous')) {
                                     5,
                                     5,
                                     $editorId,
-                                    array('class' => 'minimal no-footer')
+                                    ['class' => 'minimal no-footer']
                                 );
                                 ?>
 

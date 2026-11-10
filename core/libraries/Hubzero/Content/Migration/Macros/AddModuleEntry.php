@@ -49,7 +49,7 @@ class AddModuleEntry extends Macro
 
             $query = $this->db->getQuery()
                 ->insert('#__extensions')
-                ->values(array(
+                ->values([
                     'name'           => $name,
                     'type'           => 'module',
                     'element'        => $element,
@@ -65,7 +65,7 @@ class AddModuleEntry extends Macro
                     'checked_out'    => 0,
                     'ordering'       => $ordering,
                     'state'          => 0
-                ))
+                ])
                 ->toString();
             $this->db->setQuery($query);
             $this->db->query();

@@ -68,7 +68,7 @@ class Projects extends Plugin
     public function &onMembersAreas($user, $member)
     {
         // default areas returned to nothing
-        $areas = array();
+        $areas = [];
 
         // if this is the logged in user show them
         if ($this->params->get('show', 'none') != 'none' || $user->get('id') == $member->get('id')) {
@@ -104,10 +104,10 @@ class Projects extends Plugin
             }
         }
 
-        $arr = array(
+        $arr = [
             'html'     => '',
             'metadata' => ''
-        );
+        ];
 
         // Load classes
 
@@ -115,7 +115,7 @@ class Projects extends Plugin
         $this->model = new \Components\Projects\Models\Project();
 
         // Set filters
-        $this->_filters = array(
+        $this->_filters = [
             'mine'     => 1,
             'updates'  => 1,
             'getowner' => 1,
@@ -123,8 +123,8 @@ class Projects extends Plugin
             'sortdir'  => Request::getString('sortdir', 'ASC'),
             'filterby' => Request::getString('filterby', 'active'),
             'uid'      => $member->get('id')
-        );
-        if (!in_array($this->_filters['filterby'], array('active', 'archived'))) {
+        ];
+        if (!in_array($this->_filters['filterby'], ['active', 'archived'])) {
             $this->_filters['filterby'] = 'active';
         }
 
@@ -169,7 +169,7 @@ class Projects extends Plugin
         }
 
         //get meta
-        $arr['metadata'] = array();
+        $arr['metadata'] = [];
 
         $prefix = ($user->get('id') == $member->get('id')) ? 'I have' : $member->get('name') . ' has';
         $title = $prefix . ' ' . $this->_total . ' active projects.';
@@ -216,7 +216,7 @@ class Projects extends Plugin
             $view->rows = $this->model->entries('list', $this->_filters);
         } else {
             // Get records
-            $options = array('owned', 'other', 'group');
+            $options = ['owned', 'other', 'group'];
             if (!in_array($which, $options)) {
                 $which = 'owned';
             }
@@ -252,20 +252,20 @@ class Projects extends Plugin
         // Get all projects user has access to
         $projects = $this->model->table()->getUserProjectIds($this->_user->get('id'));
 
-        $view->filters = array(
+        $view->filters = [
             'limit' => Request::getInt('limit', 25, 'request')
-        );
+        ];
 
         // Get shared updates feed from blog plugin
         $results = Event::trigger(
             'projects.onShared',
-            array(
+            [
             'feed',
             $this->model,
             $projects,
             $this->_user->get('id'),
             $view->filters
-            )
+            ]
         );
 
         $view->content      = !empty($results) && isset($results[0]) ? $results[0] : null;

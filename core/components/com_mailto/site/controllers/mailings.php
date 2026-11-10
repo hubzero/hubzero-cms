@@ -95,21 +95,21 @@ class Mailings extends SiteController
         }
 
         // An array of email headers we do not want to allow as input
-        $headers = array(
+        $headers = [
             'Content-Type:',
             'MIME-Version:',
             'Content-Transfer-Encoding:',
             'bcc:',
             'cc:'
-        );
+        ];
 
         // An array of the input fields to scan for injected headers
-        $fields = array(
+        $fields = [
             'mailto',
             'sender',
             'from',
             'subject',
-        );
+        ];
 
         // Here is the meat and potatoes of the header injection test.  We
         // iterate over the array of form input and check for header strings.

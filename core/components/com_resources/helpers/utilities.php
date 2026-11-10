@@ -48,7 +48,7 @@ class Utilities
         // to test each request value individually -- deletefolderTask tested
         // none, and deletefileTask tested only the file name while the
         // directory came from the same request.
-        foreach (array($dir, $subdir) as $segment) {
+        foreach ([$dir, $subdir] as $segment) {
             foreach (preg_split('#[\\\\/]+#', (string) $segment) as $part) {
                 if ($part === '..') {
                     throw new Exception(Lang::txt('COM_RESOURCES_ERROR_DIRECTORY_NOT_FOUND'), 403);

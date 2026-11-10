@@ -79,14 +79,14 @@ class Component extends Obj
      * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
      * @return  mixed    A Form object on success, false on failure
      */
-    public function getForm($data = array())
+    public function getForm($data = [])
     {
         $file = \Component::path($this->get('component.option')) . '/config/config.xml';
         $file = Filesystem::cleanPath($file);
 
         Form::addFieldPath(\Component::path($this->get('component.option')) . '/models/fields');
 
-        $form = new Form('com_config.component', array('control' => 'hzform'));
+        $form = new Form('com_config.component', ['control' => 'hzform']);
 
         if (!$form->loadFile($file, false, '//config')) {
             $this->setError(Lang::txt('JERROR_LOADFILE_FAILED'));
@@ -95,7 +95,7 @@ class Component extends Obj
 
         try {
             // Trigger the form preparation event.
-            $results = Event::trigger('onContentPrepareForm', array($form, $data));
+            $results = Event::trigger('onContentPrepareForm', [$form, $data]);
 
             // Check for errors encountered while preparing the form.
             if (count($results) && in_array(false, $results, true)) {
@@ -220,7 +220,7 @@ class Component extends Obj
         $table->set($data);
 
         // Trigger the onConfigurationBeforeSave event.
-        $result = Event::trigger($this->event_before_save, array('com_config.component', $table, $isNew));
+        $result = Event::trigger($this->event_before_save, ['com_config.component', $table, $isNew]);
 
         if (in_array(false, $result, true)) {
             $this->setError($table->getError());
@@ -237,7 +237,7 @@ class Component extends Obj
         Cache::clean('_system');
 
         // Trigger the onConfigurationAfterSave event.
-        Event::trigger($this->event_after_save, array('com_config.component', $table, $isNew));
+        Event::trigger($this->event_after_save, ['com_config.component', $table, $isNew]);
 
         return true;
     }

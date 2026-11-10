@@ -35,18 +35,18 @@ class Members extends Plugin
 
         $obj = new \stdClass();
         $obj->plugin = 'members';
-        $obj->events = array(
-            array(
+        $obj->events = [
+            [
                 'name'   => 'onPointRoyalties',
                 'label'  => Lang::txt('PLG_CRON_MEMBERS_POINT_ROYALTIES'),
                 'params' => ''
-            ),
-            array(
+            ],
+            [
                 'name'   => 'expireInactiveAccounts',
                 'label'  => Lang::txt('PLG_CRON_MEMBERS_EXPIRE_INACTIVE'),
                 'params' => 'expireinactive'
-            )
-        );
+            ]
+        ];
 
         return $obj;
     }
@@ -99,14 +99,14 @@ class Members extends Plugin
 
                 // make a record of royalty payment
                 if (intval($accumulated) > 0) {
-                    $MH = \Hubzero\Bank\MarketHistory::blank()->set(array(
+                    $MH = \Hubzero\Bank\MarketHistory::blank()->set([
                         'itemid'       => $ref,
                         'date'         => Date::toSql(),
                         'market_value' => $accumulated,
                         'category'     => 'answers',
                         'action'       => $action,
                         'log'          => $this->_message
-                    ));
+                    ]);
 
                     if (!$MH->save()) {
                         $err = $MH->getError();
@@ -144,14 +144,14 @@ class Members extends Plugin
 
             // make a record of royalty payment
             if (intval($accumulated) > 0) {
-                $MH = \Hubzero\Bank\MarketHistory::blank()->set(array(
+                $MH = \Hubzero\Bank\MarketHistory::blank()->set([
                     'itemid'       => $ref,
                     'date'         => Date::toSql(),
                     'market_value' => $accumulated,
                     'category'     => 'reviews',
                     'action'       => $action,
                     'log'          => $rmsg
-                ));
+                ]);
 
                 if (!$MH->save()) {
                     $err = $MH->getError();
@@ -181,14 +181,14 @@ class Members extends Plugin
 
             // make a record of royalty payment
             if (intval($accumulated) > 0) {
-                $MH = \Hubzero\Bank\MarketHistory::blank()->set(array(
+                $MH = \Hubzero\Bank\MarketHistory::blank()->set([
                     'itemid'       => $ref,
                     'date'         => Date::toSql(),
                     'market_value' => $accumulated,
                     'category'     => 'resources',
                     'action'       => $action,
                     'log'          => $resmsg
-                ));
+                ]);
 
                 if (!$MH->save()) {
                     $err = $MH->getError();

@@ -22,7 +22,7 @@ Pathway::append(
 $limit = Request::getInt('limit', Config::get('list_limit'));
 $start = Request::getInt('limitstart', 0);
 
-$filters = array('state' => array(0, 1));
+$filters = ['state' => [0, 1]];
 
 $rows = $this->book->pages($filters)
     ->paginated()

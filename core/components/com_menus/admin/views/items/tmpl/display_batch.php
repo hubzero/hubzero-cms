@@ -12,10 +12,10 @@ use Hubzero\Facades\Lang;
 // no direct access
 defined('_HZEXEC_') or die();
 
-$options = array(
+$options = [
     Html::select('option', 'c', Lang::txt('JLIB_HTML_BATCH_COPY')),
     Html::select('option', 'm', Lang::txt('JLIB_HTML_BATCH_MOVE'))
-);
+];
 $published = $this->filters['published'];
 
 // "No status filter" is an empty string, and until PHP 8 that compared equal to
@@ -51,7 +51,7 @@ $hasMenuTarget = ($published === '' || $published === null || $published >= 0);
                             <select name="batch[menu_id]" class="inputbox" id="batch-menu-id">
                                 <option value=""><?php echo Lang::txt('JSELECT') ?></option>
                                 <?php
-                                $menuItems = Html::menu('menuitems', array('published' => $published));
+                                $menuItems = Html::menu('menuitems', ['published' => $published]);
                                 echo Html::select('options', $menuItems);
                                 ?>
                             </select>

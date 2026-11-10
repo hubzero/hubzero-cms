@@ -36,7 +36,7 @@ class Category extends Table
      */
     public function getCats($sortby = 'ordernum', $sortdir = 'ASC', $getobject = 0)
     {
-        $cats = array();
+        $cats = [];
 
         $query  = $getobject ? "SELECT * " : "SELECT id, category ";
         $query .= "FROM `$this->_tbl` ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $sortby) ?: '1') . " " . (strtoupper((string) $sortdir) === 'DESC' ? 'DESC' : 'ASC') . "";

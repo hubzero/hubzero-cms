@@ -36,9 +36,9 @@ class Microblog extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'projectid'  => 'positive|nonzero',
         'activityid' => 'positive|nonzero',
         'blogentry'  => 'notempty'
-    );
+    ];
 }

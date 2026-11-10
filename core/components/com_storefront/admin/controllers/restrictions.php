@@ -32,7 +32,7 @@ class Restrictions extends AdminController
         // Get SKU ID
         $sId = Request::getInt('id');
         if (empty($sId)) {
-            $sId = Request::getArray('sId', array(0));
+            $sId = Request::getArray('sId', [0]);
         }
         $this->view->sId = $sId;
 
@@ -41,7 +41,7 @@ class Restrictions extends AdminController
         $this->view->sku = $sku;
 
         // Get filters
-        $this->view->filters = array(
+        $this->view->filters = [
             // Get sorting variables
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
@@ -66,7 +66,7 @@ class Restrictions extends AdminController
                 0,
                 'int'
             )
-        );
+        ];
 
         // Get record count
         $this->view->filters['return'] = 'count';
@@ -106,7 +106,7 @@ class Restrictions extends AdminController
         Request::checkToken();
 
         // Incoming
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
         $sId = Request::getInt('sId');
 
         RestrictionsHelper::removeUsers($ids);
@@ -156,7 +156,7 @@ class Restrictions extends AdminController
         $users = Request::getString('users', '');
 
         $users = explode(',', $users);
-        $noHubUserMatch = array();
+        $noHubUserMatch = [];
         $matched = 0;
         foreach ($users as $user) {
             $user = trim($user);
@@ -212,8 +212,8 @@ class Restrictions extends AdminController
 
         $sId = Request::getInt('sId', '');
         $inserted = 0;
-        $skipped = array();
-        $ignored = array();
+        $skipped = [];
+        $ignored = [];
 
         if (isset($csvFile['name']) && $csvFile['name']) {
             if (($handle = fopen($csvFile['tmp_name'], "r")) !== false) {

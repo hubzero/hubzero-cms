@@ -62,7 +62,7 @@ class Log extends Model
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         if (is_object($oid)) {
@@ -118,7 +118,7 @@ class Log extends Model
      * @param   array   $filters
      * @return  object  list
      */
-    public function getHistory($filters = array())
+    public function getHistory($filters = [])
     {
         return $this->_tbl->getHistory(
             $this->get('parent_name'),

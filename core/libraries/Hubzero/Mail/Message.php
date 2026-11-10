@@ -27,14 +27,14 @@ class Message extends \Symfony\Component\Mime\Email
      *
      * @var  array
      */
-    private $_tags = array();
+    private $_tags = [];
 
     /**
      * Message transporters
      *
      * @var  array
      */
-    private static $_transporters = array();
+    private static $_transporters = [];
 
     /**
      * Check if message needs to be sent as multipart
@@ -86,7 +86,7 @@ class Message extends \Symfony\Component\Mime\Email
      *
      * @return  object
      */
-    public function send($transport = '', $options = array())
+    public function send($transport = '', $options = [])
     {
         if (is_subclass_of($transport, '\Symfony\Component\Mailer\Transport\AbstractTransport')) {
             // We have our transport
@@ -302,7 +302,7 @@ class Message extends \Symfony\Component\Mime\Email
                 $name = '';
             }
 
-            $addresses = array($addresses => $name);
+            $addresses = [$addresses => $name];
         }
 
         foreach ($addresses as $key => $value) {
@@ -369,7 +369,7 @@ class Message extends \Symfony\Component\Mime\Email
     public function setTo($addresses, $name = '')
     {
         if (!is_array($addresses)) {
-            $addresses = array($addresses => $name);
+            $addresses = [$addresses => $name];
         }
 
         foreach ($addresses as $key => $value) {
@@ -436,7 +436,7 @@ class Message extends \Symfony\Component\Mime\Email
     public function setReplyTo($addresses, $name = '')
     {
         if (!is_array($addresses)) {
-            $addresses = array($addresses => $name);
+            $addresses = [$addresses => $name];
         }
 
         foreach ($addresses as $key => $value) {
@@ -502,7 +502,7 @@ class Message extends \Symfony\Component\Mime\Email
                 $name = '';
             }
 
-            $addresses = array($addresses => $name);
+            $addresses = [$addresses => $name];
         }
 
         foreach ($addresses as $key => $value) {

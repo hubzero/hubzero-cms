@@ -28,7 +28,7 @@ class IdPTest extends Basic
 	 **/
 	public function testKnownAttributeSources()
 	{
-		foreach (array('email', 'name', 'givenName', 'middleName', 'surname', 'username', 'id') as $source)
+		foreach (['email', 'name', 'givenName', 'middleName', 'surname', 'username', 'id'] as $source)
 		{
 			$this->assertTrue(IdP::isKnownAttributeSource($source), $source . ' should be resolvable');
 		}

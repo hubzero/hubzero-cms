@@ -45,14 +45,14 @@ class Myprojects extends Module
         // Load classes
 
         // Set filters
-        $filters = array(
+        $filters = [
             'mine'     => 1,
             'limit'    => $limit,
             'start'    => 0,
             'updates'  => 1,
             'sortby'   => 'myprojects',
             'getowner' => 1
-        );
+        ];
 
         if (!$this->params->get('include_archived', 1)) {
             $filters['filterby'] = 'active';

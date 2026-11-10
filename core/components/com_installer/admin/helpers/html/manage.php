@@ -26,8 +26,8 @@ abstract class Manage
      */
     public static function state($value, $i, $enabled = true, $checkbox = 'cb')
     {
-        $states = array(
-            2 => array(
+        $states = [
+            2 => [
                 '',
                 'COM_INSTALLER_EXTENSION_PROTECTED',
                 '',
@@ -35,8 +35,8 @@ abstract class Manage
                 false,
                 'protected',
                 'protected'
-            ),
-            1 => array(
+            ],
+            1 => [
                 'unpublish',
                 'COM_INSTALLER_EXTENSION_ENABLED',
                 'COM_INSTALLER_EXTENSION_DISABLE',
@@ -44,8 +44,8 @@ abstract class Manage
                 false,
                 'publish',
                 'publish'
-            ),
-            0 => array(
+            ],
+            0 => [
                 'publish',
                 'COM_INSTALLER_EXTENSION_DISABLED',
                 'COM_INSTALLER_EXTENSION_ENABLE',
@@ -53,8 +53,8 @@ abstract class Manage
                 false,
                 'unpublish',
                 'unpublish'
-            ),
-        );
+            ],
+        ];
 
         return Html::grid('state', $states, $value, $i, 'manage.', $enabled, true, $checkbox);
     }

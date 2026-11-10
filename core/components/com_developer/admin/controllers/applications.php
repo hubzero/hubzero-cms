@@ -45,7 +45,7 @@ class Applications extends AdminController
      */
     public function displayTask()
     {
-        $filters = array(
+        $filters = [
             'sort'     => trim(Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
@@ -56,7 +56,7 @@ class Applications extends AdminController
                 'filter_order_Dir',
                 'ASC'
             ))
-        );
+        ];
 
         $entries = Application::all();
 
@@ -98,7 +98,7 @@ class Applications extends AdminController
             // IDs can come arrive in two formts: single integer or
             // an array of integers. If it's the latter, we'll only take
             // the first ID in the list.
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id) && !empty($id)) {
                 $id = $id[0];
             }
@@ -137,7 +137,7 @@ class Applications extends AdminController
         }
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
         $team   = Request::getString('team', '', 'post');
 
         // Bind the incoming data to our mdoel
@@ -184,7 +184,7 @@ class Applications extends AdminController
         // get current team
         $currentTeam = $row->team()->rows();
 
-        $found = array();
+        $found = [];
 
         // Remove members not included now
         foreach ($currentTeam as $member) {
@@ -229,8 +229,8 @@ class Applications extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $i = 0;
 
@@ -277,8 +277,8 @@ class Applications extends AdminController
         $state = $this->getTask() == 'publish' ? 1 : 0;
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Do we actually have any entries?
         if (count($ids) < 1) {
@@ -346,8 +346,8 @@ class Applications extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Do we actually have any entries?
         if (count($ids) < 1) {
@@ -399,8 +399,8 @@ class Applications extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Do we actually have any entries?
         if (count($ids) < 1) {

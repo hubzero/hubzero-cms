@@ -189,7 +189,7 @@ class Spreadsheet
 
             // Filtered Views
             $filter = Request::getVar('filter', false);
-            $filted_view = array();
+            $filted_view = [];
             $filted_view_str = '';
             if ($filter !== false) {
                 DvConfig::$dv_conf['settings']['data_url'] .= '&filter=' . $filter;

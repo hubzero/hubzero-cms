@@ -148,7 +148,7 @@ class Section extends Base
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         $key = 0;
@@ -335,7 +335,7 @@ class Section extends Base
      * @param      boolean $clear   Force a new dataset?
      * @return     mixed
      */
-    public function members($filters = array(), $clear = false)
+    public function members($filters = [], $clear = false)
     {
         if (!isset($filters['section_id'])) {
             $filters['section_id'] = (int) $this->get('id');
@@ -350,7 +350,7 @@ class Section extends Base
         if (!isset($this->_members) || !is_array($this->_members) || $clear) {
             $tbl = new Tables\Member($this->_db);
 
-            $results = array();
+            $results = [];
 
             if (($data = $tbl->find($filters))) {
                 foreach ($data as $key => $result) {
@@ -399,7 +399,7 @@ class Section extends Base
      * @param      boolean $clear   Force a new dataset?
      * @return     mixed
      */
-    public function dates($filters = array(), $clear = false)
+    public function dates($filters = [], $clear = false)
     {
         if (!isset($filters['section_id'])) {
             $filters['section_id'] = (int) $this->get('id');
@@ -419,7 +419,7 @@ class Section extends Base
                     $results[$key] = new Section\Date($result);
                 }
             } else {
-                $results = array();
+                $results = [];
             }
 
             $this->_dates = new Iterator($results);
@@ -434,10 +434,10 @@ class Section extends Base
      * @param     array $value List of IDs or usernames
      * @return    void
      */
-    public function add($data = array(), $role_id = 'student')
+    public function add($data = [], $role_id = 'student')
     {
         if (!is_array($data)) {
-            $data = array($data);
+            $data = [$data];
         }
         $role = new Tables\Role($this->_db);
         $role->load($role_id);
@@ -479,10 +479,10 @@ class Section extends Base
      * @param     array $value List of IDs or usernames
      * @return    void
      */
-    public function remove($data = array())
+    public function remove($data = [])
     {
         if (!is_array($data)) {
-            $data = array($data);
+            $data = [$data];
         }
         if (!$this->get('course_id')) {
             $offering = Offering::getInstance($this->get('offering_id'));
@@ -541,7 +541,7 @@ class Section extends Base
         $value = parent::store($check);
 
         $this->importPlugin('courses')
-             ->trigger('onAfterSaveSection', array($this, $isNew));
+             ->trigger('onAfterSaveSection', [$this, $isNew]);
 
         if ($isNew) {
             $this->log($this->get('id'), $this->_scope, 'create');
@@ -575,7 +575,7 @@ class Section extends Base
         $value = parent::delete();
 
         $this->importPlugin('courses')
-             ->trigger('onAfterDeleteSection', array($this));
+             ->trigger('onAfterDeleteSection', [$this]);
 
         return $value;
     }
@@ -619,7 +619,7 @@ class Section extends Base
      * @param      boolean $clear   Force a new dataset?
      * @return     mixed
      */
-    public function codes($filters = array(), $clear = false)
+    public function codes($filters = [], $clear = false)
     {
         if (!isset($filters['section_id'])) {
             $filters['section_id'] = (int) $this->get('id');
@@ -639,7 +639,7 @@ class Section extends Base
                     $results[$key] = new Section\Code($result);
                 }
             } else {
-                $results = array();
+                $results = [];
             }
 
             $this->_codes = new Iterator($results);
@@ -671,7 +671,7 @@ class Section extends Base
      */
     public function generateCodes($num = 1)
     {
-        $codes = array();
+        $codes = [];
         for ($i = 0; $i < $num; $i++) {
             $codes[] = $this->generateCode();
         }
@@ -703,7 +703,7 @@ class Section extends Base
             return true;
         }
 
-        $sections = $this->_tbl->find(array('offering_id' => $this->get('offering_id')));
+        $sections = $this->_tbl->find(['offering_id' => $this->get('offering_id')]);
         foreach ($sections as $section) {
             $section = new Section($section);
             $section->set('is_default', 0);

@@ -45,32 +45,32 @@ class Attachment extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'type' => 'notempty',
         'path' => 'notempty',
         'publication_id' => 'positive|nonzero',
         'publication_version_id' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'modified',
         'modified_by'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Filespace path

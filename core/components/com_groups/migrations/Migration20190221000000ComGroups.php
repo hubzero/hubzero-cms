@@ -21,14 +21,14 @@ class Migration20190221000000ComGroups extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__xgroups_log' => array(
+    public static $tables = [
+        '#__xgroups_log' => [
             'timestamp'
-        ),
-        '#__xgroups_recents' => array(
+        ],
+        '#__xgroups_recents' => [
             'created'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

@@ -84,7 +84,7 @@ class Tool extends Table
         $project  = isset($filters['project']) && intval($filters['project']) ? (int) $filters['project'] : "";
         $dev      = isset($filters['dev']) && $filters['dev'] == 1 ? 1 : 0;
         $projects = isset($filters['projects']) && !empty($filters['projects'])
-                    ? $filters['projects'] : array();
+                    ? $filters['projects'] : [];
         $filterby = isset($filters['filterby']) ? $filters['filterby'] : "";
 
         switch ($filterby) {
@@ -204,7 +204,7 @@ class Tool extends Table
      * @param   integer  $count
      * @return  integer
      */
-    public function getRecordCount($filters = array(), $admin = false, $count = 1)
+    public function getRecordCount($filters = [], $admin = false, $count = 1)
     {
         $sql = "SELECT count(*) FROM " . $this->buildQuery($filters, $admin);
 
@@ -219,7 +219,7 @@ class Tool extends Table
      * @param   boolean  $admin
      * @return  array    list
      */
-    public function getRecords($filters = array(), $admin = false)
+    public function getRecords($filters = [], $admin = false)
     {
         $sql = "SELECT f.*, v.*, v.id as instanceId,
 			f.repotype, f.svntool_id, v.svntool_version_id";

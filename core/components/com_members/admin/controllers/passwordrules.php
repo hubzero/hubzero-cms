@@ -49,7 +49,7 @@ class PasswordRules extends AdminController
     public function displayTask()
     {
         // Incoming
-        $filters = array(
+        $filters = [
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
                 'filter_order',
@@ -60,7 +60,7 @@ class PasswordRules extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         $rows = Rule::all()
             ->order($filters['sort'], $filters['sort_Dir'])
@@ -105,7 +105,7 @@ class PasswordRules extends AdminController
 
         if (!$row) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
 
             // Get the single ID we're working with
             if (is_array($id)) {
@@ -146,7 +146,7 @@ class PasswordRules extends AdminController
         }
 
         // Incoming password rule edits
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         // Load the record
         $row = Rule::oneOrNew($fields['id'])->set($fields);
@@ -186,8 +186,8 @@ class PasswordRules extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $cid = Request::getArray('id', array(0), 'post');
-        \Hubzero\Utility\Arr::toInteger($cid, array(0));
+        $cid = Request::getArray('id', [0], 'post');
+        \Hubzero\Utility\Arr::toInteger($cid, [0]);
 
         $id  = $cid[0];
         $inc = ($this->getTask() == 'orderup' ? -1 : 1);
@@ -220,13 +220,13 @@ class PasswordRules extends AdminController
         }
 
         // Get the id's
-        $cid = Request::getArray('id', array(0), 'post');
-        \Hubzero\Utility\Arr::toInteger($cid, array(0));
+        $cid = Request::getArray('id', [0], 'post');
+        \Hubzero\Utility\Arr::toInteger($cid, [0]);
 
         // Get total and order values
         $total = count($cid);
-        $order = Request::getArray('order', array(0), 'post');
-        \Hubzero\Utility\Arr::toInteger($order, array(0));
+        $order = Request::getArray('order', [0], 'post');
+        \Hubzero\Utility\Arr::toInteger($order, [0]);
 
         // Update ordering values
         for ($i = 0; $i < $total; $i++) {
@@ -267,9 +267,9 @@ class PasswordRules extends AdminController
         }
 
         // Incoming (we're expecting an array)
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
         if (!is_array($ids)) {
-            $ids = array($ids);
+            $ids = [$ids];
         }
 
         // Loop through the IDs
@@ -337,9 +337,9 @@ class PasswordRules extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
         if (!is_array($ids)) {
-            $ids = array($ids);
+            $ids = [$ids];
         }
 
         $i = 0;
@@ -381,7 +381,7 @@ class PasswordRules extends AdminController
      */
     public function rulesList($current_rule = '')
     {
-        $rules   = array();
+        $rules   = [];
         $rules[] = Html::select('option', 'minClassCharacters', 'minClassCharacters', 'value', 'text');
         $rules[] = Html::select('option', 'minPasswordLength', 'minPasswordLength', 'value', 'text');
         $rules[] = Html::select('option', 'maxPasswordLength', 'maxPasswordLength', 'value', 'text');

@@ -32,7 +32,7 @@ class Scale extends Radio
     protected function getOptions()
     {
         // Initialize variables.
-        $options = array();
+        $options = [];
 
         for ($i = 1; $i < 6; $i++) {
             $option = new \stdClass();
@@ -53,7 +53,7 @@ class Scale extends Radio
     protected function getInput()
     {
         // Initialize variables.
-        $html = array();
+        $html = [];
 
         // Initialize some field attributes.
         if ($this->element['class']) {
@@ -146,7 +146,7 @@ class Scale extends Radio
 			}
 		');
 
-        $html = array();
+        $html = [];
         $html[] = '<div class="graph">';
         $barClass = 'bar bar' . $this->id . ' ' . $cls;
         $barText = Lang::txt('%s out of %s', $value, $top);

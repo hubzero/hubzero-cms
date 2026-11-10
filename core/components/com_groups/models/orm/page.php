@@ -43,29 +43,29 @@ class Page extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'gidNumber' => 'positive|nonzero',
         'title'     => 'notempty'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      **/
-    public $always = array(
+    public $always = [
         'alias'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'lft',
         'rgt'
-    );
+    ];
 
     /**
      * Generates automatic owned by field value
@@ -160,12 +160,12 @@ class Page extends Relational
     public function hit()
     {
         $hit = Page\Hit::blank()
-            ->set(array(
+            ->set([
                 'gidNumber' => $this->get('gidNumber'),
                 'pageid' => $this->get('id'),
                 'userid' => User::get('id'),
                 'ip' => Request::ip()
-            ));
+            ]);
 
         return $hit->save();
     }

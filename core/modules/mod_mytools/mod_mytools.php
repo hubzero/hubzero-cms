@@ -41,13 +41,13 @@ class Mytools extends Module
     private function getToollist($lst = null)
     {
 
-        $toollist = array();
+        $toollist = [];
 
         // Create a Tool object
         $database = \Hubzero\Facades\App::get('db');
 
         if (is_array($lst)) {
-            $tools = array();
+            $tools = [];
 
             // Check if the list is empty or not
             if (empty($lst)) {
@@ -55,7 +55,7 @@ class Mytools extends Module
             }
 
             ksort($lst);
-            $items = array();
+            $items = [];
             // Get info for tools in the list
             foreach ($lst as $item) {
                 if (strstr($item, '_r')) {
@@ -75,7 +75,7 @@ class Mytools extends Module
             $tools = \Components\Tools\Models\Tool::getMyTools();
         }
 
-        $toolnames = array();
+        $toolnames = [];
 
         // Turn it into an App array.
         foreach ($tools as $tool) {
@@ -122,7 +122,7 @@ class Mytools extends Module
     public function buildList($toollist, $type = 'all')
     {
         if ($type == 'favs') {
-            $favs = array();
+            $favs = [];
         } elseif ($type == 'all') {
             $favs = $this->favs;
         }
@@ -250,13 +250,13 @@ class Mytools extends Module
             $favs = explode(',', $this->fav);
             $favs = array_map('trim', $favs);
 
-            $this->favtools = ($this->fav) ? $this->getToollist($favs) : array();
+            $this->favtools = ($this->fav) ? $this->getToollist($favs) : [];
         } else {
             // Get a list of recent tools
             $rt = new \Components\Tools\Tables\Recent($database);
             $rows = $rt->getRecords(User::get('id'));
 
-            $recent = array();
+            $recent = [];
             if (!empty($rows)) {
                 foreach ($rows as $row) {
                     $recent[] = $row->tool;
@@ -268,7 +268,7 @@ class Mytools extends Module
             if ($fav) {
                 $favs = explode(',', $fav);
             } else {
-                $favs = array();
+                $favs = [];
             }
             $this->favs = $favs;
 

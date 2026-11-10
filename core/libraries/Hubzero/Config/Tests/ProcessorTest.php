@@ -39,7 +39,7 @@ class ProcessorTest extends TestCase
      **/
     public function testInstance()
     {
-        foreach (array('ini', 'yaml', 'json', 'php', 'xml') as $type) {
+        foreach (['ini', 'yaml', 'json', 'php', 'xml'] as $type) {
             $result = Processor::instance($type);
 
             $this->assertInstanceOf(Processor::class, $result);

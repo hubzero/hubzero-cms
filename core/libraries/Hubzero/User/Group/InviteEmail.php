@@ -52,11 +52,11 @@ class InviteEmail extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'gidNumber' => 'positive|nonzero',
         'email'     => 'notempty',
         'token'     => 'notempty'
-    );
+    ];
 
     /**
      * Get parent group
@@ -77,7 +77,7 @@ class InviteEmail extends Relational
      */
     public function getInviteEmails($gid, $email_only = false)
     {
-        $final = array();
+        $final = [];
 
         $invitees = self::all()
             ->whereEquals('gidNumber', $gid)
@@ -104,8 +104,8 @@ class InviteEmail extends Relational
      */
     public function addInvites($gid, $emails)
     {
-        $exists = array();
-        $added  = array();
+        $exists = [];
+        $added  = [];
 
         $current = $this->getInviteEmails($gid, true);
 

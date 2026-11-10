@@ -14,7 +14,7 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$team = $this->model->team($filters = array('status' => 1));
+$team = $this->model->team($filters = ['status' => 1]);
 
 ?>
 <div id="abox-content">
@@ -50,7 +50,7 @@ $team = $this->model->team($filters = array('status' => 1));
             </select>
         </label>
         <?php if (!empty($this->groups)) {
-            $used = array();
+            $used = [];
             ?>
         <label for="owned_by_group">
             <?php echo Lang::txt('PLG_PROJECTS_TEAM_CHANGE_OWNER_CHOOSE_GROUP'); ?>:

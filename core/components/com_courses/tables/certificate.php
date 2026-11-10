@@ -35,8 +35,8 @@ class Certificate extends Table
      */
     public function loadByCourse($course_id)
     {
-        return parent::load(array(
+        return parent::load([
             'course_id' => (int) $course_id
-        ));
+        ]);
     }
 }

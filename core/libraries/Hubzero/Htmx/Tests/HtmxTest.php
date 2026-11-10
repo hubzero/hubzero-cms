@@ -350,12 +350,12 @@ namespace Hubzero\Htmx\Tests {
             $service->trigger('saved', ['ok' => true]);
 
             $response = \App::get('response');
-            $this->assertDebugHeaderContains($response->headers->headers, 'X-Hubzero-Htmx-Debug', array(
+            $this->assertDebugHeaderContains($response->headers->headers, 'X-Hubzero-Htmx-Debug', [
                 '"outgoing"',
                 'HX-Trigger',
                 '"branch":"fragment"',
                 '"task":"add"'
-            ));
+            ]);
         }
 
         #[Test]
@@ -374,7 +374,7 @@ namespace Hubzero\Htmx\Tests {
             $this->assertDebugHeaderContains(
                 $response->headers->headers,
                 'X-Hubzero-Htmx-Profile',
-                array('fragment.render')
+                ['fragment.render']
             );
         }
 
@@ -566,7 +566,7 @@ namespace Hubzero\Htmx\Tests {
             $html = '<div class="errors">Invalid input</div>';
 
             ob_start();
-            $service->validation($html, array('title' => 'Required'));
+            $service->validation($html, ['title' => 'Required']);
             $output = (string) ob_get_clean();
 
             $response = \App::get('response');

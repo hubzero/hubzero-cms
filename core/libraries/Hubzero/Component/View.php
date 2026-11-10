@@ -62,7 +62,7 @@ class View extends AbstractView
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function __construct($config = array())
+    public function __construct($config = [])
     {
         // Look for overrides under the component that owns the view, not
         // the one the request is for: a group's wiki is com_wiki's views
@@ -130,11 +130,11 @@ class View extends AbstractView
             return $layout;
         }
 
-        $view = new self(array(
+        $view = new self([
             'base_path' => $this->_basePath,
             'name'      => ($name ? $name : $this->_name),
             'layout'    => $layout
-        ));
+        ]);
         $view->set('option', $this->option)
              ->set('controller', $this->controller)
              ->set('task', $this->task);

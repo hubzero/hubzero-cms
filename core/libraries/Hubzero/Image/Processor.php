@@ -51,7 +51,7 @@ class Processor extends Obj
      *
      * @var  array
      */
-    private $config = array();
+    private $config = [];
 
     /**
      * Constructor
@@ -61,7 +61,7 @@ class Processor extends Obj
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function __construct($image_source = null, $config = array(), $isRemoteImage = false)
+    public function __construct($image_source = null, $config = [], $isRemoteImage = false)
     {
         $this->source = $image_source;
         $this->config = $config;
@@ -209,7 +209,7 @@ class Processor extends Obj
             try {
                 $this->exif_data = exif_read_data($this->source);
             } catch (Exception $e) {
-                $this->exif_data = array();
+                $this->exif_data = [];
             }
 
             if (isset($this->exif_data['Orientation'])) {
@@ -394,7 +394,7 @@ class Processor extends Obj
         $resource = imagecreatetruecolor($new_w, $new_h);
 
         $transparencyIndex = imagecolortransparent($this->resource);
-        $transparencyColor = array('red' => 255, 'green' => 255, 'blue' => 255);
+        $transparencyColor = ['red' => 255, 'green' => 255, 'blue' => 255];
         if ($transparencyIndex >= 0) {
             $transparencyColor = imagecolorsforindex($this->resource, $transparencyIndex);
         }
@@ -433,7 +433,7 @@ class Processor extends Obj
         try {
             $this->exif_data = exif_read_data($this->source);
         } catch (Exception $e) {
-            $this->exif_data = array();
+            $this->exif_data = [];
         }
 
         if (isset($this->exif_data['GPSLatitude'])) {
@@ -455,14 +455,14 @@ class Processor extends Obj
                 $longitude *= -1;
             }
 
-            $geo = array(
+            $geo = [
                 'latitude'  => $latitude,
                 'longitude' => $longitude,
                 'latitude_formatted'  => $latitude_formatted,
                 'longitude_formatted' => $longitude_formatted
-            );
+            ];
         } else {
-            $geo = array();
+            $geo = [];
         }
 
         return $geo;

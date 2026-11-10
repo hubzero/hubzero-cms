@@ -22,7 +22,7 @@ class Manager
      *
      * @var  array
      */
-    protected $types = array();
+    protected $types = [];
 
     /**
      * The acurrent type.
@@ -38,7 +38,7 @@ class Manager
      */
     public function __construct()
     {
-        $this->types = array();
+        $this->types = [];
     }
 
     /**
@@ -48,11 +48,11 @@ class Manager
      * @param   array   $options  Associative array of options
      * @return  mixed
      */
-    public function instance($type = null, $options = array())
+    public function instance($type = null, $options = [])
     {
         $type = $type ?: $this->getType();
 
-        $signature = serialize(array($type, $options));
+        $signature = serialize([$type, $options]);
 
         // If the given type has not been created before, we will create the instances
         // here and cache it so we can return it next time very quickly. If there is
@@ -78,7 +78,7 @@ class Manager
      * @return  object
      * @throws  InvalidArgumentException
      */
-    protected function createType($type, $options = array())
+    protected function createType($type, $options = [])
     {
         $type = preg_replace('/[^A-Z0-9_\.-]/i', '', $type);
 
@@ -132,6 +132,6 @@ class Manager
      */
     public function __call($method, $parameters)
     {
-        return call_user_func_array(array($this->instance(), $method), $parameters);
+        return call_user_func_array([$this->instance(), $method], $parameters);
     }
 }

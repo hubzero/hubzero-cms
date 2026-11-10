@@ -28,25 +28,25 @@ class Migration20170902000000ComProjects extends Base
 
             if (!$total) {
                 $params = 'apps_dev=0\npublications_public=1\nteam_public=1\nallow_invite=0';
-                $types = array(
-                    array(
+                $types = [
+                    [
                         'General',
                         'Individual or collaborative projects of general nature',
                         $params
-                    ),
-                    array(
+                    ],
+                    [
                         'Content publication',
                         'Projects created with the purpose to publish data as a resource ' .
                             'or a collection of related resources',
                         $params
-                    ),
-                    array(
+                    ],
+                    [
                         'Application development',
                         'Projects created with the purpose to develop and publish ' .
                             'a simulation tool or a code library',
                         'apps_dev=1\npublications_public=1\nteam_public=1\nallow_invite=0'
-                    )
-                );
+                    ]
+                ];
                 foreach ($types as $type) {
                     $query = "INSERT INTO `#__project_types` (`type`,`description`,`params`) "
                         . "VALUES (" . $this->db->quote($type[0]) . ","

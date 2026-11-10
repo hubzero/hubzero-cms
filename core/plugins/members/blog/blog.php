@@ -56,12 +56,12 @@ class Blog extends Plugin
      */
     public function &onMembersAreas($user, $member)
     {
-        $areas = array(
+        $areas = [
             'blog' => Lang::txt('PLG_MEMBERS_BLOG'),
             'icon' => 'f075',
             'icon-class' => 'icon-comment',
             'menu' => $this->params->get('display_tab', 1)
-        );
+        ];
         return $areas;
     }
 
@@ -88,10 +88,10 @@ class Blog extends Plugin
             }
         }
 
-        $arr = array(
+        $arr = [
             'html'     => '',
-            'metadata' => array()
-        );
+            'metadata' => []
+        ];
 
         // Get our model
         $this->model = new \Components\Blog\Models\Archive('member', $member->get('id'));
@@ -195,13 +195,13 @@ class Blog extends Plugin
         }
 
         // Build filters
-        $filters = array(
+        $filters = [
             'scope'      => 'member',
             'scope_id'   => $member->get('id'),
             //'created_by' => $member->get('id'),
             'state'      => 1,
             'access'     => User::getAuthorisedViewLevels()
-        );
+        ];
 
         if (User::get('id') == $member->get('id')) {
             $filters['access'][] = 5;
@@ -233,7 +233,7 @@ class Blog extends Plugin
             $blog = '/members/' . $this->member->get('id') . '/' . $this->_name;
 
             if ($path == $blog) {
-                $path = array();
+                $path = [];
                 return $path;
             }
 
@@ -245,7 +245,7 @@ class Blog extends Plugin
             {
                 array_shift($path);
             }*/
-            $paths = array();
+            $paths = [];
             $start = false;
             foreach ($path as $bit) {
                 if ($bit == $this->_name && !$start) {
@@ -275,7 +275,7 @@ class Blog extends Plugin
     private function _browse()
     {
         // Filters for returning results
-        $filters = array(
+        $filters = [
             'year'       => Request::getInt('year', 0),
             'month'      => Request::getInt('month', 0),
             'scope'      => 'member',
@@ -284,7 +284,7 @@ class Blog extends Plugin
             'authorized' => false,
             'state'      => 1,
             'access'     => User::getAuthorisedViewLevels()
-        );
+        ];
 
         // See what information we can get from the path
         $path = Request::path();
@@ -330,7 +330,7 @@ class Blog extends Plugin
         }
 
         // Filters for returning results
-        $filters = array(
+        $filters = [
             'limit'      => Request::getInt('limit', Config::get('list_limit')),
             'start'      => Request::getInt('limitstart', 0),
             'year'       => Request::getInt('year', 0),
@@ -341,7 +341,7 @@ class Blog extends Plugin
             //'created_by' => $this->member->get('id')
             'state'      => 1,
             'access'     => User::getAuthorisedViewLevels()
-        );
+        ];
 
         if (User::get('id') == $this->member->get('id')) {
             $filters['access'][] = 5;
@@ -431,7 +431,7 @@ class Blog extends Plugin
                 ->whereEquals('alias', $alias)
                 ->whereEquals('scope', $this->model->get('scope'))
                 ->whereEquals('scope_id', $this->model->get('scope_id'))
-                ->whereIn('state', array(\Components\Blog\Models\Entry::STATE_UNPUBLISHED, \Components\Blog\Models\Entry::STATE_PUBLISHED))
+                ->whereIn('state', [\Components\Blog\Models\Entry::STATE_UNPUBLISHED, \Components\Blog\Models\Entry::STATE_PUBLISHED])
                 ->order('state', 'desc')
                 ->row();
         }
@@ -451,20 +451,20 @@ class Blog extends Plugin
         }
 
         // Filters for returning results
-        $filters = array(
+        $filters = [
             'limit'      => 10,
             'start'      => 0,
             'scope'      => 'member',
             'scope_id'   => $this->member->get('id'),
             'authorized' => false
-        );
+        ];
 
         if (User::get('id') != $this->member->get('id')) {
             $filters['state']  = 1;
             $filters['access'] = User::getAuthorisedViewLevels();
         }
 
-        Event::trigger('blog.onBlogView', array($row));
+        Event::trigger('blog.onBlogView', [$row]);
 
         $view = $this->view('default', 'entry')
             ->set('option', $this->option)
@@ -571,7 +571,7 @@ class Blog extends Plugin
         // Check for request forgeries
         Request::checkToken();
 
-        $entry = Request::getArray('entry', array(), 'post');
+        $entry = Request::getArray('entry', [], 'post');
 
         if (isset($entry['publish_up']) && $entry['publish_up'] != '') {
             $entry['publish_up']   = Date::of($entry['publish_up'], Config::get('offset'))->toSql();
@@ -625,10 +625,10 @@ class Blog extends Plugin
                 'scope'       => 'blog.entry',
                 'scope_id'    => $row->get('id'),
                 'description' => Lang::txt('PLG_MEMBERS_BLOG_ACTIVITY_ENTRY_' . ($isNew ? 'CREATED' : 'UPDATED'), '<a href="' . Route::url($row->link()) . '">' . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title' => $row->get('title'),
                     'url'   => Route::url($row->link())
-                )
+                ]
             ],
             'recipients' => [
                 $this->member->get('id')
@@ -710,10 +710,10 @@ class Blog extends Plugin
                 'scope'       => 'blog.entry',
                 'scope_id'    => $id,
                 'description' => Lang::txt('PLG_MEMBERS_BLOG_ACTIVITY_ENTRY_DELETED', $entry->get('title')),
-                'details'     => array(
+                'details'     => [
                     'title' => $entry->get('title'),
                     'url'   => Route::url($entry->link())
-                )
+                ]
             ],
             'recipients' => [
                 $this->member->get('id')
@@ -740,7 +740,7 @@ class Blog extends Plugin
         Request::checkToken();
 
         // Incoming
-        $data = Request::getArray('comment', array(), 'post');
+        $data = Request::getArray('comment', [], 'post');
 
         // comment[id] names any row on the hub: an existing comment has to be
         // the caller's own, and a new one goes on an entry of this blog.
@@ -787,7 +787,7 @@ class Blog extends Plugin
         // Log the activity
         $entry = \Components\Blog\Models\Entry::oneOrFail($comment->get('entry_id'));
 
-        $recipients = array($comment->get('created_by'));
+        $recipients = [$comment->get('created_by')];
         if ($comment->get('created_by') != $entry->get('created_by')) {
             $recipients[] = $entry->get('created_by');
         }
@@ -802,11 +802,11 @@ class Blog extends Plugin
                 'scope_id'    => $comment->get('id'),
                 'anonymous'   => $comment->get('anonymous', 0),
                 'description' => Lang::txt('PLG_MEMBERS_BLOG_ACTIVITY_COMMENT_' . ($isNew ? 'CREATED' : 'UPDATED'), $comment->get('id'), '<a href="' . Route::url($entry->link() . '#c' . $comment->get('id')) . '">' . htmlspecialchars((string) ($entry->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title'    => $entry->get('title'),
                     'entry_id' => $entry->get('id'),
                     'url'      => $entry->link() . '#c' . $comment->get('id')
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -873,7 +873,7 @@ class Blog extends Plugin
         }
 
         // Log the activity
-        $recipients = array($comment->get('created_by'));
+        $recipients = [$comment->get('created_by')];
         if ($comment->get('created_by') != $this->member->get('id')) {
             $recipients[] = $this->member->get('id');
         }
@@ -886,11 +886,11 @@ class Blog extends Plugin
                 'scope'       => 'blog.entry.comment',
                 'scope_id'    => $comment->get('id'),
                 'description' => Lang::txt('PLG_MEMBERS_BLOG_ACTIVITY_COMMENT_DELETED', $comment->get('id'), '<a href="' . Route::url($entry->link()) . '">' . htmlspecialchars((string) ($entry->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title'    => $entry->get('title'),
                     'entry_id' => $entry->get('id'),
                     'url'      => $entry->link()
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -949,7 +949,7 @@ class Blog extends Plugin
 
         $row = \Hubzero\Plugin\Params::oneByPluginOrNew($this->member->get('id'), $this->_type, $this->_name);
 
-        $params = new \Hubzero\Config\Registry(Request::getArray('params', array(), 'post'));
+        $params = new \Hubzero\Config\Registry(Request::getArray('params', [], 'post'));
         $row->set('params', $params->toString());
 
         // Store new content

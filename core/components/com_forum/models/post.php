@@ -49,9 +49,9 @@ class Post extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'comment' => 'notempty'
-    );
+    ];
 
     /**
      * Longest comment that can be stored, in bytes
@@ -70,7 +70,7 @@ class Post extends Relational
      *
      * @var  array
      **/
-    public $always = array(
+    public $always = [
         'title',
         'scope',
         'asset_id',
@@ -78,28 +78,28 @@ class Post extends Relational
         'thread',
         'scope_sub_id',
         'object_id'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by',
         'lft',
         'rgt'
-    );
+    ];
 
     /**
      * Fields to be parsed
      *
      * @var array
      */
-    protected $parsed = array(
+    protected $parsed = [
         'comment'
-    );
+    ];
 
     /**
      * ACL asset rules
@@ -461,7 +461,7 @@ class Post extends Relational
         if (!$this->get('id')) {
             switch (strtolower($what)) {
                 case 'array':
-                    return array();
+                    return [];
                 break;
 
                 case 'string':
@@ -480,7 +480,7 @@ class Post extends Relational
 
         $cloud = new Tags($thread);
 
-        return $cloud->render($what, array('admin' => $admin));
+        return $cloud->render($what, ['admin' => $admin]);
     }
 
     /**
@@ -593,7 +593,7 @@ class Post extends Relational
      * @param   array  $filters
      * @return  object
      */
-    public function lastActivity($filters = array())
+    public function lastActivity($filters = [])
     {
         $last = self::all()
             ->whereEquals('state', self::STATE_PUBLISHED)
@@ -642,11 +642,11 @@ class Post extends Relational
         $valid = parent::validate();
 
         if ($valid) {
-            $results = Event::trigger('content.onContentBeforeSave', array(
+            $results = Event::trigger('content.onContentBeforeSave', [
                 'com_forum.post.comment',
                 &$this,
                 $this->isNew()
-            ));
+            ]);
 
             foreach ($results as $result) {
                 if ($result === false) {
@@ -832,24 +832,24 @@ class Post extends Relational
         // Run the calculations and build the data object by reference position.
         switch ($position) {
             case 'first-child':
-                $data->left_where  = array('col' => 'lft', 'op' => '>', 'val' => $referenceNode->lft);
-                $data->right_where = array('col' => 'rgt', 'op' => '>=', 'val' => $referenceNode->lft);
+                $data->left_where  = ['col' => 'lft', 'op' => '>', 'val' => $referenceNode->lft];
+                $data->right_where = ['col' => 'rgt', 'op' => '>=', 'val' => $referenceNode->lft];
 
                 $data->new_lft = $referenceNode->lft + 1;
                 $data->new_rgt = $referenceNode->lft + $nodeWidth;
                 break;
 
             case 'last-child':
-                $data->left_where  = array('col' => 'lft', 'op' => '>', 'val' => $referenceNode->rgt);
-                $data->right_where = array('col' => 'rgt', 'op' => '>=', 'val' => $referenceNode->rgt);
+                $data->left_where  = ['col' => 'lft', 'op' => '>', 'val' => $referenceNode->rgt];
+                $data->right_where = ['col' => 'rgt', 'op' => '>=', 'val' => $referenceNode->rgt];
 
                 $data->new_lft = $referenceNode->rgt;
                 $data->new_rgt = $referenceNode->rgt + $nodeWidth - 1;
                 break;
 
             case 'before':
-                $data->left_where  = array('col' => 'lft', 'op' => '>=', 'val' => $referenceNode->lft);
-                $data->right_where = array('col' => 'rgt', 'op' => '>=', 'val' => $referenceNode->lft);
+                $data->left_where  = ['col' => 'lft', 'op' => '>=', 'val' => $referenceNode->lft];
+                $data->right_where = ['col' => 'rgt', 'op' => '>=', 'val' => $referenceNode->lft];
 
                 $data->new_lft = $referenceNode->lft;
                 $data->new_rgt = $referenceNode->lft + $nodeWidth - 1;
@@ -857,8 +857,8 @@ class Post extends Relational
 
             default:
             case 'after':
-                $data->left_where  = array('col' => 'lft', 'op' => '>', 'val' => $referenceNode->rgt);
-                $data->right_where = array('col' => 'rgt', 'op' => '>', 'val' => $referenceNode->rgt);
+                $data->left_where  = ['col' => 'lft', 'op' => '>', 'val' => $referenceNode->rgt];
+                $data->right_where = ['col' => 'rgt', 'op' => '>', 'val' => $referenceNode->rgt];
 
                 $data->new_lft = $referenceNode->rgt + 1;
                 $data->new_rgt = $referenceNode->rgt + $nodeWidth;
@@ -895,16 +895,16 @@ class Post extends Relational
      */
     public function toTree($rows)
     {
-        $results = array();
+        $results = [];
 
         if ($rows->count() > 0) {
-            $children = array(
-                0 => array()
-            );
+            $children = [
+                0 => []
+            ];
 
             foreach ($rows as $row) {
                 $pt   = $row->get('parent');
-                $list = isset($children[$pt]) ? $children[$pt] : array();
+                $list = isset($children[$pt]) ? $children[$pt] : [];
 
                 array_push($list, $row);
 
@@ -930,7 +930,7 @@ class Post extends Relational
     {
         if ($level <= $maxlevel) {
             foreach ($children as $v => $child) {
-                $replies = array();
+                $replies = [];
 
                 if (isset($list[$child->get('id')])) {
                     $replies = $this->treeRecurse($list[$child->get('id')], $list, $maxlevel, $level + 1);
@@ -948,13 +948,13 @@ class Post extends Relational
      * @param   array   $data
      * @return  object
      */
-    public function getForm($data = array())
+    public function getForm($data = [])
     {
         $name = strtolower($this->getModelName());
         $file = __DIR__ . '/forms/' . $name . '.xml';
         $file = Filesystem::cleanPath($file);
 
-        $form = new Form('com_forum.' . $name, array('control' => 'data'));
+        $form = new Form('com_forum.' . $name, ['control' => 'data']);
 
         if (!$form->loadFile($file, false, '//form')) {
             $this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));

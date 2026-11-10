@@ -79,7 +79,7 @@ class Installer
     public static function LocationOptions()
     {
         // Build the active state filter options.
-        $options = array();
+        $options = [];
         $options[] = Html::select('option', '0', 'JSITE');
         $options[] = Html::select('option', '1', 'JADMINISTRATOR');
 
@@ -95,7 +95,7 @@ class Installer
     public static function StatusOptions()
     {
         // Build the active state filter options.
-        $options = array();
+        $options = [];
         $options[] = Html::select('option', '1', 'JENABLED');
         $options[] = Html::select('option', '0', 'JDISABLED');
         $options[] = Html::select('option', '2', 'JPROTECTED');
@@ -165,7 +165,7 @@ class Installer
     public static function VersionOptions()
     {
         // Build the active state filter options.
-        $options = array();
+        $options = [];
         $options[] = Html::select('option', '0', 'Current');
         $options[] = Html::select('option', '1', 'Previous');
 

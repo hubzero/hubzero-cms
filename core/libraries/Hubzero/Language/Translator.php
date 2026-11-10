@@ -31,14 +31,14 @@ class Translator extends Obj
      *
      * @public array
      */
-    protected static $languages = array();
+    protected static $languages = [];
 
     /**
      * javascript strings
      *
      * @public array
      */
-    protected static $jsStrings = array();
+    protected static $jsStrings = [];
 
     /**
      * Application client
@@ -66,7 +66,7 @@ class Translator extends Obj
      *
      * @public array
      */
-    protected $orphans = array();
+    protected $orphans = [];
 
     /**
      * Array holding the language metadata.
@@ -94,14 +94,14 @@ class Translator extends Obj
      *
      * @public array
      */
-    protected $paths = array();
+    protected $paths = [];
 
     /**
      * List of language files that are in error state
      *
      * @public array
      */
-    protected $errorfiles = array();
+    protected $errorfiles = [];
 
     /**
      * Translations
@@ -115,14 +115,14 @@ class Translator extends Obj
      *
      * @public array
      */
-    protected $used = array();
+    protected $used = [];
 
     /**
      * An array used to store overrides.
      *
      * @public array
      */
-    protected $override = array();
+    protected $override = [];
 
     /**
      * Whether overrides have been merged into strings.
@@ -143,13 +143,13 @@ class Translator extends Obj
      *
      * @public array
      */
-    protected $callbacks = array(
+    protected $callbacks = [
         'pluralSuffixes'       => null,
         'ignoredSearchWords'   => null,
         'lowerLimitSearchWord' => null,
         'upperLimitSearchWord' => null,
         'searchDisplayedCharactersNumber' => null,
-    );
+    ];
 
     /**
      * Constructor activating the default information of the language.
@@ -160,7 +160,7 @@ class Translator extends Obj
      */
     public function __construct($lang = null, $debug = false, $client = 'site')
     {
-        $this->strings = array();
+        $this->strings = [];
 
         if ($lang == null) {
             $lang = $this->default;
@@ -192,7 +192,7 @@ class Translator extends Obj
         $classCamel = implode('', array_map('ucfirst', explode('-', $lang))) . 'Localise';
         $ns = 'Bootstrap\\' . ucfirst($client) . '\\Language\\';
         $class = $classLegacy;
-        $paths = array();
+        $paths = [];
 
         // App localise path
         $paths[0] = "$appLangPath/$lang.localise.php";
@@ -224,7 +224,7 @@ class Translator extends Obj
             // -a getUpperLimitSearchWord method
             // -a getSearchDisplayCharactersNumber method
             if (method_exists($class, 'transliterate')) {
-                $this->transliterator = array($class, 'transliterate');
+                $this->transliterator = [$class, 'transliterate'];
             }
 
             foreach ($this->callbacks as $callback => $value) {
@@ -235,7 +235,7 @@ class Translator extends Obj
                 $method = 'get' . ucfirst($callback);
 
                 if (method_exists($class, $method)) {
-                    $this->callbacks[$callback] = array($class, $method);
+                    $this->callbacks[$callback] = [$class, $method];
                 }
             }
         }
@@ -301,7 +301,7 @@ class Translator extends Obj
                 $caller = $this->getCallerInfo();
 
                 if (!array_key_exists($key, $this->used)) {
-                    $this->used[$key] = array();
+                    $this->used[$key] = [];
                 }
 
                 $this->used[$key][] = $caller;
@@ -312,7 +312,7 @@ class Translator extends Obj
                 $caller['string'] = $string;
 
                 if (!array_key_exists($key, $this->orphans)) {
-                    $this->orphans[$key] = array();
+                    $this->orphans[$key] = [];
                 }
 
                 $this->orphans[$key][] = $caller;
@@ -326,7 +326,7 @@ class Translator extends Obj
             $string = addslashes($string);
         } elseif ($interpretBackSlashes) {
             // Interpret \n and \t characters
-            $string = str_replace(array('\\\\', '\t', '\n'), array("\\", "\t", "\n"), $string);
+            $string = str_replace(['\\\\', '\t', '\n'], ["\\", "\t", "\n"], $string);
         }
 
         return $string;
@@ -387,7 +387,7 @@ class Translator extends Obj
         if ($this->callbacks['pluralSuffixes'] !== null) {
             return call_user_func($this->callbacks['pluralSuffixes'], $count);
         } else {
-            return array((string) $count);
+            return [(string) $count];
         }
     }
 
@@ -425,7 +425,7 @@ class Translator extends Obj
             return call_user_func($this->callbacks['ignoredSearchWords']);
         }
 
-        return array();
+        return [];
     }
 
     /**
@@ -575,7 +575,7 @@ class Translator extends Obj
      */
     public static function exists($lang, $basePath = PATH_APP, $client = null)
     {
-        static $paths = array();
+        static $paths = [];
 
         // Return false if no language was specified
         if (!$lang) {
@@ -701,7 +701,7 @@ class Translator extends Obj
 
         // Record the result of loading the extension's file.
         if (!isset($this->paths[$extension])) {
-            $this->paths[$extension] = array();
+            $this->paths[$extension] = [];
         }
 
         $this->paths[$extension][$filename] = $result;
@@ -724,8 +724,8 @@ class Translator extends Obj
         }
 
         // Initialise variables for manually parsing the file for common errors.
-        $reservedWord = array('YES', 'NO', 'NULL', 'FALSE', 'ON', 'OFF', 'NONE', 'TRUE');
-        $errors       = array();
+        $reservedWord = ['YES', 'NO', 'NULL', 'FALSE', 'ON', 'OFF', 'NONE', 'TRUE'];
+        $errors       = [];
 
         // Open the file as a stream.
         $file = new \SplFileObject($filename);
@@ -793,7 +793,7 @@ class Translator extends Obj
     {
         // Check if file exists.
         if (!is_file($fileName)) {
-            return array();
+            return [];
         }
 
         $disabledFunctions      = explode(',', ini_get('disable_functions'));
@@ -816,7 +816,7 @@ class Translator extends Obj
                 throw new \RuntimeException($e->getMessage());
             }
 
-            return array();
+            return [];
         } finally {
             restore_error_handler();
         }
@@ -825,7 +825,7 @@ class Translator extends Obj
         // postprocessthem
         $strings = str_replace('\"', '"', $strings);
 
-        return is_array($strings) ? $strings : array();
+        return is_array($strings) ? $strings : [];
     }
 
     /**
@@ -839,7 +839,7 @@ class Translator extends Obj
         try {
             $strings = $this->parseIniFile($fileName, $this->debug);
         } catch (\RuntimeException $e) {
-            $strings = array();
+            $strings = [];
 
             // Debug the ini file if needed.
             if ($this->debug && is_file($fileName)) {
@@ -882,7 +882,7 @@ class Translator extends Obj
         }
 
         $backtrace = debug_backtrace();
-        $info = array();
+        $info = [];
 
         // Search through the backtrace to our caller
         $continue = true;
@@ -1192,8 +1192,8 @@ class Translator extends Obj
 
         // If switching languages, reload everything in the new language
         if ($previous && $previous !== $lang) {
-            $this->strings = array();
-            $this->override = array();
+            $this->strings = [];
+            $this->override = [];
             $this->overridesMerged = false;
 
             // Reload base strings
@@ -1254,13 +1254,13 @@ class Translator extends Obj
      */
     public static function parseLanguageFiles($dir = null)
     {
-        $languages = array();
+        $languages = [];
 
         if (is_dir($dir)) {
             $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir));
 
             foreach ($iterator as $file) {
-                $langs    = array();
+                $langs    = [];
                 $fileName = $file->getFilename();
 
                 if (!$file->isFile() || !preg_match("/^([-_A-Za-z]*)\.xml$/", $fileName)) {
@@ -1308,7 +1308,7 @@ class Translator extends Obj
             return null;
         }
 
-        $metadata = array();
+        $metadata = [];
 
         foreach ($xml->metadata->children() as $child) {
             $metadata[$child->getName()] = (string) $child;
@@ -1373,12 +1373,12 @@ class Translator extends Obj
         if (empty($languages)) {
             // Installation uses available languages
             if (App::get('client')->id == 2) {
-                $languages[$key] = array();
+                $languages[$key] = [];
                 $knownLangs = self::getKnownLanguages(PATH_APP . DS . 'language' . DS . strtolower($this->client));
                 foreach ($knownLangs as $metadata) {
                     // Take off 3 letters iso code languages as they can't match browsers' languages and default them
                     // toen
-                    $languages[$key][] = new \Hubzero\Base\Obj(array('lang_code' => $metadata['tag']));
+                    $languages[$key][] = new \Hubzero\Base\Obj(['lang_code' => $metadata['tag']]);
                 }
             } else {
                 $cache = App::get('cache.store');
@@ -1392,8 +1392,8 @@ class Translator extends Obj
                     $db->setQuery($query->toString());
 
                     $languages['default']   = $db->loadObjectList();
-                    $languages['sef']       = array();
-                    $languages['lang_code'] = array();
+                    $languages['sef']       = [];
+                    $languages['lang_code'] = [];
 
                     if (isset($languages['default'][0])) {
                         foreach ($languages['default'] as $lang) {
@@ -1427,7 +1427,7 @@ class Translator extends Obj
         $installed = false,
         $client = null
     ) {
-        $list = array();
+        $list = [];
 
         $langs = self::getKnownLanguages($basePath);
 
@@ -1446,7 +1446,7 @@ class Translator extends Obj
 
         foreach ($langs as $lang => $metadata) {
             if (!$installed || array_key_exists($lang, $installed_languages)) {
-                $option = array();
+                $option = [];
                 $option['text']  = $metadata['name'];
                 $option['value'] = $lang;
                 if ($lang == $actualLanguage) {

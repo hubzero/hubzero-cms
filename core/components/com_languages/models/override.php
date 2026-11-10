@@ -23,7 +23,7 @@ class Override extends Obj
      *
      * @var  array
      */
-    protected $cache = array();
+    protected $cache = [];
 
     /**
      * Path to overrides
@@ -204,11 +204,11 @@ class Override extends Obj
             } else {
                 // If no, delete the old string and prepend the new one
                 unset($strings[$data['id']]);
-                $strings = array($data['key'] => $data['override']) + $strings;
+                $strings = [$data['key'] => $data['override']] + $strings;
             }
         } else {
             // If it is a new override simply prepend it
-            $strings = array($data['key'] => $data['override']) + $strings;
+            $strings = [$data['key'] => $data['override']] + $strings;
         }
 
         foreach ($strings as $key => $string) {
@@ -277,7 +277,7 @@ class Override extends Obj
     public static function parseFile($filename)
     {
         if (!Filesystem::exists($filename)) {
-            return array();
+            return [];
         }
 
         $version      = phpversion();
@@ -289,13 +289,13 @@ class Override extends Obj
             $strings  = parse_ini_string($contents, false, INI_SCANNER_RAW);
 
             if ($strings === false) {
-                return array();
+                return [];
             }
         } else {
             $strings = parse_ini_file($filename, false, INI_SCANNER_RAW);
 
             if ($strings === false) {
-                return array();
+                return [];
             }
 
             if ($version == '5.3.0' && is_array($strings)) {
@@ -324,7 +324,7 @@ class Override extends Obj
         }
 
         // Get all languages of frontend and backend
-        $languages = array();
+        $languages = [];
 
         $site_languages  = Lang::getKnownLanguages(PATH_CORE, 'site');
         $admin_languages = Lang::getKnownLanguages(PATH_CORE, 'administrator');

@@ -128,7 +128,7 @@ Toolbar::help('pages');
             <?php
 
             $i = 0;
-            $rows = array();
+            $rows = [];
             foreach ($this->rows as $key => $page) {
                 $rows[$i] = $page;
                 $i++;

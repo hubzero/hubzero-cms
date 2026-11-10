@@ -21,7 +21,7 @@ $docs = 0;
 
 $html = '';
 $supln  = '<ul class="supdocln">' . "\n";
-$supli  = array();
+$supli  = [];
 
 // Archival package?
 if (file_exists($archive) && $publication->base == 'databases') {
@@ -50,7 +50,7 @@ if ($children) {
         $doctitle = $params->get('title', $child->title);
 
         // Things we want to highlight
-        $toShow = array('iTunes', 'iTunes U', 'Syllabus', 'Audio', 'Video', 'Slides');
+        $toShow = ['iTunes', 'iTunes U', 'Syllabus', 'Audio', 'Video', 'Slides'];
 
         $url   = Route::url($publication->link('serve') . '&a=' . $child->id);
         $extra = '';

@@ -23,7 +23,7 @@ class Raw extends Base
      * @param   array  $options  Associative array of options
      * @return  void
      */
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         parent::__construct($options);
 
@@ -41,7 +41,7 @@ class Raw extends Base
      * @param   array    $params  Associative array of attributes
      * @return  string   The rendered data
      */
-    public function render($cache = false, $params = array())
+    public function render($cache = false, $params = [])
     {
         parent::render();
 

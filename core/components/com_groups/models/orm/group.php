@@ -81,38 +81,38 @@ class Group extends Relational implements \Hubzero\Search\Searchable
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'description' => 'notempty'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      **/
-    public $always = array(
+    public $always = [
         'cn'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Fields to be parsed
      *
      * @var array
      */
-    protected $parsed = array(
+    protected $parsed = [
         'public_desc',
         'private_desc'
-    );
+    ];
 
     /**
      * Gets an attribute by key
@@ -138,7 +138,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
             $default = 0;
         }
 
-        if (in_array($key, array('applicants', 'invitees', 'members', 'managers'))) {
+        if (in_array($key, ['applicants', 'invitees', 'members', 'managers'])) {
             return $this->$key()
                 ->rows()
                 ->fieldsByKey('uidNumber');
@@ -319,7 +319,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
      */
     public function is_member_of($table, $uid)
     {
-        if (!in_array($table, array('applicants', 'members', 'managers', 'invitees'))) {
+        if (!in_array($table, ['applicants', 'members', 'managers', 'invitees'])) {
             return false;
         }
 
@@ -379,7 +379,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
      *
      * @return  bool
      **/
-    public function add($role, $users = array())
+    public function add($role, $users = [])
     {
         $users = $this->normalizeUserIds($users);
 
@@ -396,10 +396,10 @@ class Group extends Relational implements \Hubzero\Search\Searchable
             $row = $model::oneByGroupAndUser($this->get('gidNumber'), $id);
 
             if ($row->isNew()) {
-                $row->set(array(
+                $row->set([
                     'uidNumber' => $id,
                     'gidNumber' => $this->get('gidNumber')
-                ));
+                ]);
 
                 if (!$row->save()) {
                     $this->addError($row->getError());
@@ -414,10 +414,10 @@ class Group extends Relational implements \Hubzero\Search\Searchable
                 $row = Member::oneByGroupAndUser($this->get('gidNumber'), $id);
 
                 if ($row->isNew()) {
-                    $row->set(array(
+                    $row->set([
                         'uidNumber' => $id,
                         'gidNumber' => $this->get('gidNumber')
-                    ));
+                    ]);
                     if (!$row->save()) {
                         $this->addError($row->getError());
                         return false;
@@ -426,9 +426,9 @@ class Group extends Relational implements \Hubzero\Search\Searchable
             }
         }
 
-        if (in_array($role, array('members', 'managers'))) {
+        if (in_array($role, ['members', 'managers'])) {
             foreach ($ids as $userid) {
-                Event::trigger('groups.onGroupUserEnrollment', array($this->get('gidNumber'), $userid));
+                Event::trigger('groups.onGroupUserEnrollment', [$this->get('gidNumber'), $userid]);
             }
         }
 
@@ -440,7 +440,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
      *
      * @return  bool
      **/
-    public function remove($role, $users = array())
+    public function remove($role, $users = [])
     {
         $users = $this->normalizeUserIds($users);
 
@@ -467,11 +467,11 @@ class Group extends Relational implements \Hubzero\Search\Searchable
      */
     private function normalizeUserIds($users)
     {
-        $usernames = array();
-        $userids = array();
+        $usernames = [];
+        $userids = [];
 
         if (!is_array($users)) {
-            $users = array($users);
+            $users = [$users];
         }
 
         foreach ($users as $u) {
@@ -493,7 +493,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
             ->fieldsByKey('id');
 
         if (empty($result)) {
-            $result = array();
+            $result = [];
         }
 
         $result = array_merge($result, $userids);
@@ -542,7 +542,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
         $result = parent::save();
 
         if ($result) {
-            Event::trigger('user.onAfterStoreGroup', array($this));
+            Event::trigger('user.onAfterStoreGroup', [$this]);
         }
 
         return $result;
@@ -615,7 +615,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
         $result = parent::destroy();
 
         if ($result) {
-            Event::trigger('user.onAfterStoreGroup', array($this));
+            Event::trigger('user.onAfterStoreGroup', [$this]);
         }
 
         return $result;
@@ -646,7 +646,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
 
         // Set instances array
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         // Do we have a matching instance?
@@ -760,11 +760,11 @@ class Group extends Relational implements \Hubzero\Search\Searchable
      * @param   array  $filters
      * @return  mixed
      */
-    public static function find($filters = array())
+    public static function find($filters = [])
     {
-        $gTypes = array('all', 'system', 'hub', 'project', 'super', 'course', '0', '1', '2', '3', '4');
+        $gTypes = ['all', 'system', 'hub', 'project', 'super', 'course', '0', '1', '2', '3', '4'];
 
-        $types = !empty($filters['type']) ? $filters['type'] : array('all');
+        $types = !empty($filters['type']) ? $filters['type'] : ['all'];
 
         foreach ($types as $type) {
             if (!in_array($type, $gTypes)) {
@@ -928,7 +928,7 @@ class Group extends Relational implements \Hubzero\Search\Searchable
      */
     public function searchResult()
     {
-        $groupTypes = array(1, 3);
+        $groupTypes = [1, 3];
         $notSearchable = !in_array($this->type, $groupTypes)
             || $this->get('published') != 1
             || $this->get('approved') != 1;

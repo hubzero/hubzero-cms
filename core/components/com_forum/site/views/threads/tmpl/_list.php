@@ -9,7 +9,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$hash_map = array();
+$hash_map = [];
 
 foreach ($this->likes as $like) {
     $postId = $like->postId;
@@ -17,7 +17,7 @@ foreach ($this->likes as $like) {
     if (isset($hash_map[$postId])) {
         $hash_map[$postId][] = $like;
     } else {
-        $hash_map[$postId] = array($like);
+        $hash_map[$postId] = [$like];
     }
 }
 

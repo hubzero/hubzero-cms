@@ -5,8 +5,8 @@
  */
 
 // @codeCoverageIgnoreStart
-return array(
+return [
     'session_handler' => 'database',
     'lifetime' => '45',
-);
+];
 // @codeCoverageIgnoreEnd

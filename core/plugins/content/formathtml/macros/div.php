@@ -22,7 +22,7 @@ class Div extends Macro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['wiki'] = 'Allows content to be wrapped in a `div` tag. This macro must be used ' .
             'twice: `Div(start)` to indicate where to create the opening `div` tag and ' .
             '`Div(end)` to indicate where to close the resulting `div` tag. Attributes may ' .
@@ -54,7 +54,7 @@ class Div extends Macro
         $text = array_shift($attribs);
 
         if (trim($text) == 'start') {
-            $atts = array();
+            $atts = [];
             if (!empty($attribs) && count($attribs) > 0) {
                 foreach ($attribs as $a) {
                     $a = explode('=', $a);

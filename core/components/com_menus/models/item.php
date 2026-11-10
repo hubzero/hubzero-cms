@@ -90,20 +90,20 @@ class Item extends Nested
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'title'    => 'notempty',
         'menutype' => 'notempty',
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      **/
-    public $always = array(
+    public $always = [
         'alias',
         'img'
-    );
+    ];
 
     /**
      * Asset rules
@@ -121,17 +121,17 @@ class Item extends Nested
     {
         $this->addRule('link', function ($data) {
             if ($data['type'] == 'url') {
-                $data['link'] = str_replace(array('"', '>', '<'), '', $data['link']);
+                $data['link'] = str_replace(['"', '>', '<'], '', $data['link']);
 
                 if (strstr($data['link'], ':') && substr($data['link'], 0, 1) != '/') {
                     $segments = explode(':', $data['link']);
                     $protocol = strtolower($segments[0]);
-                    $scheme = array(
+                    $scheme = [
                         'http', 'https', 'ftp', 'ftps', 'gopher', 'mailto', 'news',
                         'prospero', 'telnet', 'rlogin', 'tn3270', 'wais', 'url',
                         'mid', 'cid', 'nntp', 'tel', 'urn', 'ldap', 'file', 'fax',
                         'modem', 'git'
-                    );
+                    ];
 
                     if (!in_array($protocol, $scheme)) {
                         return Lang::txt('JLIB_APPLICATION_ERROR_SAVE_NOT_PERMITTED');
@@ -199,7 +199,7 @@ class Item extends Nested
             // template. The router still makes the item active, so the page
             // keeps its Itemid, its modules and its template style, and only
             // the component area is left empty.
-            if ($this->get('home') && !in_array($this->get('type'), array('component', 'none'))) {
+            if ($this->get('home') && !in_array($this->get('type'), ['component', 'none'])) {
                 return Lang::txt('JLIB_DATABASE_ERROR_MENU_HOME_NOT_COMPONENT');
             }
 
@@ -264,11 +264,11 @@ class Item extends Nested
      */
     public function transformHelp()
     {
-        return (object) array(
+        return (object) [
             'key'   => $this->helpKey,
             'url'   => $this->helpURL,
             'local' => $this->helpLocal
-        );
+        ];
     }
 
     /**
@@ -406,11 +406,11 @@ class Item extends Nested
             $stored = self::oneOrNew($this->get('id'));
 
             if ($stored->get('id') && $stored->isGenerated()) {
-                $derived = array(
+                $derived = [
                     'menutype', 'alias', 'path', 'route', 'link', 'type',
                     'component_id', 'parent_id', 'level', 'lft', 'rgt', 'home',
                     'language'
-                );
+                ];
 
                 foreach ($derived as $field) {
                     $this->set($field, $stored->get($field));
@@ -573,12 +573,12 @@ class Item extends Nested
         // the children of this node we also know the right value.
         $query = $this->getQuery()
             ->update($this->getTableName())
-            ->set(array(
+            ->set([
                 'lft'   => (int) $leftId,
                 'rgt'   => (int) $rightId,
                 'level' => (int) $level,
                 'path'  => $path
-            ))
+            ])
             ->whereEquals('id', (int) $parentId);
 
         // If there is an update failure, return false to break out of the recursion.
@@ -606,9 +606,9 @@ class Item extends Nested
         // Update the path field for the node.
         $query = $db->getQuery()
             ->update($this->getTableName())
-            ->set(array(
+            ->set([
                 'path' => $path
-            ))
+            ])
             ->whereEquals('id', (int) $this->get('id'));
         $db->setQuery($query->toString());
 
@@ -768,7 +768,7 @@ class Item extends Nested
         $route = str_replace('\\', '/', (string) $route);
         $route = strtolower(trim($route, " " . chr(9) . chr(10) . chr(13) . "/"));
 
-        $out = array();
+        $out = [];
 
         foreach (explode('/', $route) as $segment) {
             $segment = preg_replace('/[^a-z0-9._-]/', '', $segment);
@@ -816,8 +816,8 @@ class Item extends Nested
         // Run the calculations and build the data object by reference position.
         switch ($position) {
             case 'first-child':
-                $data->left_where  = array('col' => 'lft', 'op' => '>', 'val' => $referenceNode->lft);
-                $data->right_where = array('col' => 'rgt', 'op' => '>=', 'val' => $referenceNode->lft);
+                $data->left_where  = ['col' => 'lft', 'op' => '>', 'val' => $referenceNode->lft];
+                $data->right_where = ['col' => 'rgt', 'op' => '>=', 'val' => $referenceNode->lft];
 
                 $data->new_lft = $referenceNode->lft + 1;
                 $data->new_rgt = $referenceNode->lft + $nodeWidth;
@@ -826,8 +826,8 @@ class Item extends Nested
                 break;
 
             case 'last-child':
-                $data->left_where  = array('col' => 'lft', 'op' => '>', 'val' => $referenceNode->rgt);
-                $data->right_where = array('col' => 'rgt', 'op' => '>=', 'val' => $referenceNode->rgt);
+                $data->left_where  = ['col' => 'lft', 'op' => '>', 'val' => $referenceNode->rgt];
+                $data->right_where = ['col' => 'rgt', 'op' => '>=', 'val' => $referenceNode->rgt];
 
                 $data->new_lft = $referenceNode->rgt;
                 $data->new_rgt = $referenceNode->rgt + $nodeWidth - 1;
@@ -836,8 +836,8 @@ class Item extends Nested
                 break;
 
             case 'before':
-                $data->left_where  = array('col' => 'lft', 'op' => '>=', 'val' => $referenceNode->lft);
-                $data->right_where = array('col' => 'rgt', 'op' => '>=', 'val' => $referenceNode->lft);
+                $data->left_where  = ['col' => 'lft', 'op' => '>=', 'val' => $referenceNode->lft];
+                $data->right_where = ['col' => 'rgt', 'op' => '>=', 'val' => $referenceNode->lft];
 
                 $data->new_lft = $referenceNode->lft;
                 $data->new_rgt = $referenceNode->lft + $nodeWidth - 1;
@@ -847,8 +847,8 @@ class Item extends Nested
 
             default:
             case 'after':
-                $data->left_where  = array('col' => 'lft', 'op' => '>', 'val' => $referenceNode->rgt);
-                $data->right_where = array('col' => 'rgt', 'op' => '>', 'val' => $referenceNode->rgt);
+                $data->left_where  = ['col' => 'lft', 'op' => '>', 'val' => $referenceNode->rgt];
+                $data->right_where = ['col' => 'rgt', 'op' => '>', 'val' => $referenceNode->rgt];
 
                 $data->new_lft = $referenceNode->rgt + 1;
                 $data->new_rgt = $referenceNode->rgt + $nodeWidth;
@@ -873,7 +873,7 @@ class Item extends Nested
         Form::addFormPath(__DIR__ . '/forms');
         Form::addFieldPath(__DIR__ . '/fields');
 
-        $form = new Form('item', array('control' => 'fields'));
+        $form = new Form('item', ['control' => 'fields']);
 
         if (!$form->loadFile($file, false, '//form')) {
             $this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
@@ -908,10 +908,10 @@ class Item extends Nested
         // reports. What is left open is what the entry exists for: the template
         // style for that page, its access level, and its params.
         if ($this->isGenerated()) {
-            $locked = array(
+            $locked = [
                 'alias', 'path', 'route', 'link', 'type', 'component_id',
                 'menutype', 'parent_id', 'home', 'menuordering', 'language'
-            );
+            ];
 
             foreach ($locked as $field) {
                 $form->setFieldAttribute($field, 'disabled', 'true');
@@ -951,13 +951,13 @@ class Item extends Nested
         $pks = array_filter(array_map('intval', (array) $pks));
 
         if (!$pks) {
-            return array();
+            return [];
         }
 
         $db = App::get('db');
 
         if (!$db->tableHasField('#__menu_types', 'type')) {
-            return array();
+            return [];
         }
 
         $rows = $db->getQuery(true)
@@ -968,7 +968,7 @@ class Item extends Nested
             ->whereIn('m.id', $pks)
             ->fetch();
 
-        $found = array();
+        $found = [];
 
         foreach ($rows as $row) {
             $found[] = (int) (is_object($row) ? $row->id : $row['id']);
@@ -995,7 +995,7 @@ class Item extends Nested
             $link = htmlspecialchars_decode($link == null ? '' : $link);
 
             // Parse the link arguments.
-            $args = array();
+            $args = [];
             $url = parse_url(htmlspecialchars_decode($link), PHP_URL_QUERY);
             parse_str($url == null ? '' : $url, $args);
 
@@ -1156,7 +1156,7 @@ class Item extends Nested
         }
 
         // Trigger the form preparation event.
-        $results = Event::trigger($group . '.onContentPrepareForm', array($form, $data));
+        $results = Event::trigger($group . '.onContentPrepareForm', [$form, $data]);
 
         // Check for errors encountered while preparing the form.
         /*if (count($results) && in_array(false, $results, true))
@@ -1198,7 +1198,7 @@ class Item extends Nested
         // Initialise variables.
         $pks = (array) $pks;
 
-        $languages = array();
+        $languages = [];
         $onehome   = false;
 
         // Remember that we can set a home page for different languages,
@@ -1326,10 +1326,10 @@ class Item extends Nested
         // Move the sub-tree out of the nested sets by negating its left and right values.
         $query = $this->getQuery()
             ->update($this->getTableName())
-            ->set(array(
+            ->set([
                 'lft' => new Raw('lft * (-1)'),
                 'rgt' => new Raw('rgt * (-1)')
-            ))
+            ])
             ->whereRaw('lft BETWEEN ' . (int) $node->lft . ' AND ' . (int) $node->rgt);
 
         if (!$query->execute()) {
@@ -1342,9 +1342,9 @@ class Item extends Nested
         // Compress the left values.
         $query = $this->getQuery()
             ->update($this->getTableName())
-            ->set(array(
+            ->set([
                 'lft' => new Raw('lft - ' . (int) ($node->rgt - $node->lft + 1))
-            ))
+            ])
             ->where('lft', '>', (int) $node->rgt);
 
         if (!$query->execute()) {
@@ -1355,9 +1355,9 @@ class Item extends Nested
         // Compress the right values.
         $query = $this->getQuery()
             ->update($this->getTableName())
-            ->set(array(
+            ->set([
                 'rgt' => new Raw('rgt - ' . (int) ($node->rgt - $node->lft + 1))
-            ))
+            ])
             ->where('rgt', '>', (int) $node->rgt);
 
         if (!$query->execute()) {
@@ -1409,9 +1409,9 @@ class Item extends Nested
         // Shift left values.
         $query = $this->getQuery()
             ->update($this->getTableName())
-            ->set(array(
+            ->set([
                 'lft' => new Raw('lft + ' . (int) ($node->rgt - $node->lft + 1))
-            ))
+            ])
             ->where($repositionData->left_where['col'], $repositionData->left_where['op'], $repositionData->left_where['val']);
 
         if (!$query->execute()) {
@@ -1422,9 +1422,9 @@ class Item extends Nested
         // Shift right values.
         $query = $this->getQuery()
             ->update($this->getTableName())
-            ->set(array(
+            ->set([
                 'rgt' => new Raw('rgt + ' . (int) ($node->rgt - $node->lft + 1))
-            ))
+            ])
             ->where($repositionData->right_where['col'], $repositionData->right_where['op'], $repositionData->right_where['val']);
 
         if (!$query->execute()) {
@@ -1440,11 +1440,11 @@ class Item extends Nested
         // Move the nodes back into position in the tree using the calculated offsets.
         $query = $this->getQuery()
             ->update($this->getTableName())
-            ->set(array(
+            ->set([
                 'rgt'   => new Raw((int) $offset . ' - rgt'),
                 'lft'   => new Raw((int) $offset . ' - lft'),
                 'level' => new Raw('level + ' . (int) $levelOffset)
-            ))
+            ])
             ->where('lft', '<', 0);
 
         if (!$query->execute()) {
@@ -1457,9 +1457,9 @@ class Item extends Nested
             $query = $this->getQuery()
                 ->update($this->getTableName());
 
-            $query->set(array(
+            $query->set([
                     'parent_id' => (int) $repositionData->new_parent_id
-                ))
+                ])
                 ->whereEquals('id', (int) $node->id);
 
             if (!$query->execute()) {
@@ -1494,7 +1494,7 @@ class Item extends Nested
         // ordering column alone changed nothing. Within each parent, hand the
         // submitted siblings' current lft slots out in the order asked for,
         // then rebuild the tree (which orders children by lft).
-        $groups = array();
+        $groups = [];
         foreach ($pks as $i => $pk) {
             // Disabled order inputs aren't posted, so the arrays can differ
             if (!isset($order[$i])) {
@@ -1506,18 +1506,18 @@ class Item extends Nested
                 continue;
             }
 
-            $groups[(int) $model->get('parent_id')][] = array(
+            $groups[(int) $model->get('parent_id')][] = [
                 'id'    => (int) $model->get('id'),
                 'lft'   => (int) $model->get('lft'),
                 'order' => (int) $order[$i]
-            );
+            ];
         }
 
         $blank = self::blank();
         $db    = \App::get('db');
 
         foreach ($groups as $items) {
-            $slots = array();
+            $slots = [];
             foreach ($items as $item) {
                 $slots[] = $item['lft'];
             }
@@ -1657,7 +1657,7 @@ class Item extends Nested
             }
         }
 
-        return array($menuType, $parent);
+        return [$menuType, $parent];
     }
 
     /**
@@ -1709,7 +1709,7 @@ class Item extends Nested
 
         // Only the top of each selected subtree: a child whose ancestor is
         // also selected is copied as part of that ancestor
-        $tops = array();
+        $tops = [];
         foreach (array_unique(array_map('intval', (array) $pks)) as $pk) {
             $node = self::oneOrNew($pk);
             if (!$node->get('id')) {
@@ -1731,12 +1731,12 @@ class Item extends Nested
             }
         }
 
-        $newIds = array();
+        $newIds = [];
 
         foreach ($tops as $node) {
             // oldId => newId for this subtree, so a child is copied under the
             // copy of its parent
-            $map = array($node->get('parent_id') => $parentId);
+            $map = [$node->get('parent_id') => $parentId];
 
             // the node and its descendants, parents before children
             $subtree = self::all()
@@ -1869,7 +1869,7 @@ class Item extends Nested
 
                 $query = $this->getQuery()
                     ->update($this->getTableName())
-                    ->set(array('menutype' => $menuType))
+                    ->set(['menutype' => $menuType])
                     ->whereIn('id', $descendants);
 
                 if (!$query->execute()) {
@@ -1952,16 +1952,16 @@ class Item extends Nested
      *
      * @var  array
      */
-    protected static $incrementStyles = array(
-        'dash' => array(
+    protected static $incrementStyles = [
+        'dash' => [
             '#-(\d+)$#',
             '-%d'
-        ),
-        'default' => array(
-            array('#\((\d+)\)$#', '#\(\d+\)$#'),
-            array(' (%d)', '(%d)'),
-        ),
-    );
+        ],
+        'default' => [
+            ['#\((\d+)\)$#', '#\(\d+\)$#'],
+            [' (%d)', '(%d)'],
+        ],
+    ];
 
     /**
      * Method to change the title & alias.
@@ -1979,7 +1979,7 @@ class Item extends Nested
             $alias = self::increment($alias, 'dash');
         }
 
-        return array($title, $alias);
+        return [$title, $alias];
     }
 
     /**

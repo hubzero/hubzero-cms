@@ -47,7 +47,7 @@ class Database extends Store
      * @param   array  $options  Optional parameters.
      * @return  void
      */
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         if (!isset($options['database']) || !($options['database'] instanceof Database)) {
             $options['database'] = App::get('db');
@@ -118,11 +118,11 @@ class Database extends Store
             try {
                 $query = $this->connection->getQuery()
                     ->update('#__session')
-                    ->set(array(
+                    ->set([
                         'data' => $data,
                         'time' => (int) time(),
                         'ip'   => (string) Request::ip()
-                    ))
+                    ])
                     ->whereEquals('session_id', $id);
 
                 // Try to update the session data in the database table.
@@ -241,7 +241,7 @@ class Database extends Store
      * @param   array  $filters
      * @return  array
      */
-    public function all($filters = array())
+    public function all($filters = [])
     {
         $query = $this->connection->getQuery()
             ->select('session_id')
@@ -265,7 +265,7 @@ class Database extends Store
 
         if (isset($filters['client'])) {
             if (!is_array($filters['client'])) {
-                $filters['client'] = array($filters['client']);
+                $filters['client'] = [$filters['client']];
             }
 
             $query->whereIn('client_id', $filters['client']);

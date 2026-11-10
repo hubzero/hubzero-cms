@@ -51,7 +51,7 @@ $hideform = Request::getInt('hideform', 0);
 
             $k = 0;
             $i = 0;
-            $files = array(13,15,26,33,35,38);
+            $files = [13,15,26,33,35,38];
             $n = count($this->children);
             ?>
         <p><?php echo Lang::txt('COM_CONTRIBUTE_ATTACH_EDIT_TITLE_EXPLANATION'); ?></p>
@@ -97,7 +97,7 @@ $hideform = Request::getInt('hideform', 0);
                 $isFile = true;
                 if (
                     ($child->get('standalone') == 1) || ($child->get('type') == 12 || $child->get('type') == 11)
-                    || in_array($type, array('html', 'htm', 'php', 'asp', 'shtml'))
+                    || in_array($type, ['html', 'htm', 'php', 'asp', 'shtml'])
                     || strstr($url, '?')
                 ) {
                     $isFile = false;

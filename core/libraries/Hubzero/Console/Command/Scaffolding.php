@@ -24,14 +24,14 @@ class Scaffolding extends Base implements CommandInterface
      *
      * @var  array
      **/
-    private $replacements = array();
+    private $replacements = [];
 
     /**
      * Array of template files to parse
      *
      * @var  array
      **/
-    private $templateFiles = array();
+    private $templateFiles = [];
 
     /**
      * The type of scaffolding item that we're making
@@ -128,17 +128,17 @@ class Scaffolding extends Base implements CommandInterface
                  ->addLine('You can specify your name and email via:')
                  ->addLine(
                      'muse configuration set --user_name="John Doe"',
-                     array(
+                     [
                         'indentation' => '2',
                         'color'       => 'blue'
-                     )
+                     ]
                  )
                 ->addLine(
                     'muse configuration set --user_email=john.doe@gmail.com',
-                    array(
+                    [
                         'indentation' => '2',
                         'color'       => 'blue'
-                    )
+                    ]
                 )
                 ->addSpacer()
                 ->error("Error: failed to retrieve author name and/or email.");
@@ -263,7 +263,7 @@ class Scaffolding extends Base implements CommandInterface
      **/
     protected function addTemplateFile($filename, $destination, $fullPath = false)
     {
-        $this->templateFiles[] = array(
+        $this->templateFiles[] = [
             'path'        => ((!$fullPath) ? __DIR__ .
                 DS .
                 'Scaffolding' .
@@ -272,7 +272,7 @@ class Scaffolding extends Base implements CommandInterface
                 DS .
                 $filename : $filename),
             'destination' => $destination
-        );
+        ];
 
         return $this;
     }
@@ -437,7 +437,7 @@ class Scaffolding extends Base implements CommandInterface
      **/
     private function scanFolder($path)
     {
-        $files = array_diff(scandir($path), array('.', '..', '.DS_Store'));
+        $files = array_diff(scandir($path), ['.', '..', '.DS_Store']);
 
         if ($files && count($files) > 0) {
             foreach ($files as $file) {

@@ -20,16 +20,16 @@ class Migration20190221000000ComKb extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__kb_articles' => array(
+    public static $tables = [
+        '#__kb_articles' => [
             'created',
             'modified',
             'checked_out_time'
-        ),
-        '#__kb_comments' => array(
+        ],
+        '#__kb_comments' => [
             'created'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

@@ -137,11 +137,11 @@ $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . 
                     <?php if ($item->status != 7) { ?>
                         <td class="priority-4 voting">
                             <?php
-                                $view = new \Hubzero\Component\View(array(
+                                $view = new \Hubzero\Component\View([
                                     'base_path' => Component::path('com_wishlist') . DS . 'site',
                                     'name'      => 'wishlists',
                                     'layout'    => '_vote'
-                                ));
+                                ]);
                                 $view->set('option', 'com_wishlist')
                                      ->set('item', $item)
                                      ->set('listid', $this->wishlist->id)

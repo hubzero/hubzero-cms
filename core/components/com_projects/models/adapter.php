@@ -28,7 +28,7 @@ class Adapter extends Obj
             return false;
         }
 
-        $result = array();
+        $result = [];
 
         // exec call
         exec($call, $result);

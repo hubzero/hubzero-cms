@@ -30,7 +30,7 @@ class Asset
     {
         // If http is present in filename
         if (strpos($file, 'http') === 0) {
-            $includes = array($file);
+            $includes = [$file];
         } else {
             $root = rtrim(App::get('request')->root(true), '/');
 
@@ -47,14 +47,14 @@ class Asset
                 // Try to include files named filename.ext, filename_browser.ext, filename_browser_major.ext,
                 // filename_browser_major_minor.ext
                 // where major and minor are the browser version names
-                $potential = array(
+                $potential = [
                     $strip,
                     $strip . '_' . $browser,
                     $strip . '_' . $browser . '_' . $major,
                     $strip . '_' . $browser . '_' . $major . '_' . $minor
-                );
+                ];
             } else {
-                $potential = array($strip);
+                $potential = [$strip];
             }
 
             // If relative search in template directory or media directory
@@ -69,11 +69,11 @@ class Asset
                 $template = App::get('template')->template;
 
                 // Prepare array of files
-                $includes = array();
+                $includes = [];
 
                 // For each potential files
                 foreach ($potential as $strip) {
-                    $files = array();
+                    $files = [];
                     // Detect debug mode
                     if ($detect_debug && App::get('config')->get('debug')) {
                         $files[] = $strip . '-uncompressed.' . $ext;
@@ -180,7 +180,7 @@ class Asset
                 }
             } else {
             // If not relative and http is not present in filename
-                $includes = array();
+                $includes = [];
 
                 foreach ($potential as $strip) {
                     // Detect debug mode
@@ -266,7 +266,7 @@ class Asset
      */
     public static function stylesheet(
         $file,
-        $attribs = array(),
+        $attribs = [],
         $relative = false,
         $path_only = false,
         $detect_browser = true,
@@ -349,7 +349,7 @@ class Asset
     public static function icon($symbol, $ariahidden = true)
     {
         $symbol = preg_replace('/[^A-Za-z0-9_-]/', '', (string) $symbol);
-        $paths = array();
+        $paths = [];
         if (App::has('template')) {
             $paths[] = App::get('template')->path . '/html/icons/' . $symbol . '.svg';
         }
@@ -359,9 +359,9 @@ class Asset
 
         foreach ($paths as $path) {
             if (file_exists($path)) {
-                $atts = array(
+                $atts = [
                     'class="icn icn-' . $symbol . '"'
-                );
+                ];
 
                 if ($ariahidden) {
                     $atts[] = 'aria-hidden="true" focusable="false"';

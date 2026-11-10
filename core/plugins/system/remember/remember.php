@@ -36,7 +36,7 @@ class Remember extends Plugin
             $hash = App::hash('JLOGIN_REMEMBER');
 
             if ($str = Request::getString($hash, '', 'cookie', 1 | 2)) {
-                $credentials = array();
+                $credentials = [];
                 $goodCookie  = true;
 
                 // Create the encryption key, apply extra hardening using the user agent string.
@@ -86,7 +86,7 @@ class Remember extends Plugin
                     // We're only doing this for the site app, so we explicitly set the action here
                     $return = App::get('auth')->login(
                         $credentials,
-                        array('silent' => true, 'action' => 'core.login.site')
+                        ['silent' => true, 'action' => 'core.login.site']
                     );
 
                     if (!$return) {

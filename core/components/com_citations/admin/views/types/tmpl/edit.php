@@ -31,7 +31,7 @@ Html::behavior('keepalive');
 
 $this->js();
 
-$f = array(
+$f = [
     "cite"           => 'Cite Key',
     "ref_type"       => 'Ref Type',
     "date_submit"    => 'Date Submitted',
@@ -67,7 +67,7 @@ $f = array(
     "research_notes" => 'Research Notes',
     "language"       => 'Language',
     "label"          => 'Label'
-);
+];
 ?>
 
 <?php

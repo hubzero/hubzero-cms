@@ -531,7 +531,7 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
                                                 50,
                                                 10,
                                                 'responseanswer',
-                                                array('class' => 'form-control minimal')
+                                                ['class' => 'form-control minimal']
                                             );
                                             ?>
                                         </label>
@@ -647,7 +647,7 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
                         ->including(['creator', function ($creator) {
                             $creator->select('*');
                         }])
-                        ->whereIn('state', array(0, 3))
+                        ->whereIn('state', [0, 3])
                         ->rows();
                     ?>
                     <h3>

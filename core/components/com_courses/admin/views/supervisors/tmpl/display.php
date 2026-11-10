@@ -15,7 +15,7 @@ use Hubzero\Facades\User;
 defined('_HZEXEC_') or die();
 
 $course = \Components\Courses\Models\Course::getInstance($this->model->get('course_id'));
-$roles = $course->offering(0)->roles(array('alias' => '!student'));
+$roles = $course->offering(0)->roles(['alias' => '!student']);
 $offerings = $course->offerings();
 
 $this->js('managers.js');
@@ -46,7 +46,7 @@ $this->js('managers.js');
                         <?php } ?>
                         <?php
                         foreach ($offerings as $offering) {
-                            $oroles = $offering->roles(array('offering_id' => $offering->get('id')));
+                            $oroles = $offering->roles(['offering_id' => $offering->get('id')]);
                             if (!$oroles || !count($oroles)) {
                                 continue;
                             }
@@ -97,12 +97,12 @@ $this->js('managers.js');
             </thead>
             <tbody>
 <?php
-        $managers = $this->model->members(array(
+        $managers = $this->model->members([
             'student'     => 0,
             'course_id'   => $this->model->get('course_id'),
             'offering_id' => $this->model->get('id'),
             'section_id'  => $this->model->section()->get('id')
-        ), true);
+        ], true);
 
         $i = 0;
         foreach ($managers as $manager) {
@@ -162,7 +162,7 @@ $this->js('managers.js');
                     <?php } ?>
                     <?php
                     foreach ($offerings as $offering) {
-                        $oroles = $offering->roles(array('offering_id' => $offering->get('id')));
+                        $oroles = $offering->roles(['offering_id' => $offering->get('id')]);
                         if (!$oroles || !count($oroles)) {
                             continue;
                         }

@@ -96,7 +96,7 @@ class Grid
      *                           These pairs determine which values are displayed.
      * @return  string  The HTML code for the select tag
      */
-    public static function publishedOptions($config = array())
+    public static function publishedOptions($config = [])
     {
         return Builder\Grid::publishedOptions($config);
     }

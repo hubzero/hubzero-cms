@@ -27,7 +27,7 @@ if ($this->level == 0) {
             <?php
                 // get page details
                 $category = $this->categories->fetch('id', $page->get('category'));
-                $version  = $page->versions(array('limit' => 1))->first();
+                $version  = $page->versions(['limit' => 1])->first();
 
                 // page class
                 $cls = '';

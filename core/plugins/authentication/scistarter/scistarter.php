@@ -219,11 +219,11 @@ class Scistarter extends \Hubzero\Plugin\OauthClient
                 // If we have a real user, drop the authenticator cookie
                 if (isset($user) && is_object($user)) {
                     // Set cookie with login preference info
-                    $prefs = array(
+                    $prefs = [
                         'user_id'       => $user->get('id'),
                         'user_img'      => $user->picture(0, false),
                         'authenticator' => 'scistarter'
-                    );
+                    ];
 
                     $namespace = 'authenticator';
                     $lifetime  = time() + 365 * 24 * 60 * 60;
@@ -246,7 +246,7 @@ class Scistarter extends \Hubzero\Plugin\OauthClient
      * @param   array  $options
      * @return  void
      */
-    public function link($options = array())
+    public function link($options = [])
     {
         // Set up the config for the api instance
         $client = new Oauth();

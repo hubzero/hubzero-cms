@@ -43,9 +43,9 @@ class Type extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'type' => 'notempty'
-    );
+    ];
 
     /**
      * Registry

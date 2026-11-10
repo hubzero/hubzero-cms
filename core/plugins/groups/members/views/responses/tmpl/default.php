@@ -11,7 +11,7 @@ defined('_HZEXEC_') or die();
 
 // Always offer one empty row for adding a response
 $responses   = $this->responses;
-$responses[] = array('title' => '', 'text' => '');
+$responses[] = ['title' => '', 'text' => ''];
 
 $backUrl = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=members';
 if (count($this->users)) {

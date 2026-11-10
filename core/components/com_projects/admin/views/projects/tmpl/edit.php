@@ -128,7 +128,7 @@ if ($this->model->groupOwner()) {
                 <div class="input-wrap">
                     <label for="tags"><?php echo Lang::txt('COM_PROJECTS_TAGS'); ?>:</label>
                     <?php
-                    $tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->tags)));
+                    $tf = Event::trigger('hubzero.onGetMultiEntry', [['tags', 'tags', 'actags', '', $this->tags]]);
 
                     if (count($tf) > 0) {
                         echo $tf[0];
@@ -160,7 +160,7 @@ if ($this->model->groupOwner()) {
                     <label for="owned_by_user">
                         <?php echo Lang::txt('COM_PROJECTS_OWNER_LEAD'); ?>:
                         <select name="owned_by_user" class="block">
-                            <?php foreach ($this->model->team($filters = array('status' => 1), true) as $member) {  ?>
+                            <?php foreach ($this->model->team($filters = ['status' => 1], true) as $member) {  ?>
                                 <option value="<?php echo $member->userid; ?>" <?php if ($member->userid == $this->model->get('owned_by_user')) {
                                     echo 'selected="selected"';
                                                } ?>><?php echo $this->escape($member->fullname); ?> <?php if ($member->userid == $this->model->get('owned_by_user')) {
@@ -172,7 +172,7 @@ if ($this->model->groupOwner()) {
                 </div>
 
                 <?php if (!empty($groups)) {
-                    $used = array();
+                    $used = [];
                     ?>
                     <div class="input-wrap">
                         <label for="owned_by_group">

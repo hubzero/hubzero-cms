@@ -56,7 +56,7 @@ class Git
 
         // Save upstream branch name
         if (!isset($source)) {
-            $this->upstream = trim((string) $this->call('rev-parse', array('--abbrev-ref', '--symbolic-full-name', '@{u}')));
+            $this->upstream = trim((string) $this->call('rev-parse', ['--abbrev-ref', '--symbolic-full-name', '@{u}']));
 
             // A checkout at a tag, or on a branch that follows nothing, has no
             // upstream, and git says so on the same stream as the answer.
@@ -107,7 +107,7 @@ class Git
      **/
     public function getMechanismVersionName()
     {
-        $name = $this->call('rev-parse', array('--abbrev-ref', 'HEAD'));
+        $name = $this->call('rev-parse', ['--abbrev-ref', 'HEAD']);
         $name = trim($name);
 
         return $name;
@@ -121,7 +121,7 @@ class Git
     public function status()
     {
         // Use 'porcelain' argument for consistent formatting of output
-        $arguments = array('--porcelain');
+        $arguments = ['--porcelain'];
         $status    = $this->call('status', $arguments);
         $response  = '';
 
@@ -129,16 +129,16 @@ class Git
             $status = trim($status);
             $lines  = explode("\n", $status);
 
-            $response = array(
-                'added'     => array(),
-                'modified'  => array(),
-                'deleted'   => array(),
-                'renamed'   => array(),
-                'copied'    => array(),
-                'untracked' => array(),
-                'unmerged'  => array(),
-                'merged'    => array()
-            );
+            $response = [
+                'added'     => [],
+                'modified'  => [],
+                'deleted'   => [],
+                'renamed'   => [],
+                'copied'    => [],
+                'untracked' => [],
+                'unmerged'  => [],
+                'merged'    => []
+            ];
             foreach ($lines as $line) {
                 $line  = trim($line);
                 preg_match('/([A|D|M|U|R|C|?]{1,2})[ ]{1,2}([[:alnum:]_\-\.\/]*)/', $line, $parts);
@@ -200,7 +200,7 @@ class Git
         $format = '%an: %s',
         $count = false
     ) {
-        $args = array();
+        $args = [];
 
         // Count trumps all, just compute and return
         if ($count) {
@@ -245,10 +245,10 @@ class Git
             $args['length'] = '-' . ($length - $upcomingCount);
             $args['skip']   = '--skip=' . ((($start - $upcomingTotal) >= 0) ? ($start - $upcomingTotal) : 0);
             $currentLog     = $this->call('log', $args);
-            $currentLogs    = (!empty($currentLog)) ? explode("\n", $currentLog) : array();
+            $currentLogs    = (!empty($currentLog)) ? explode("\n", $currentLog) : [];
         }
 
-        $response = array();
+        $response = [];
 
         if ($upcomingCount > 0) {
             foreach ($upcomingLogs as $entry) {
@@ -275,7 +275,7 @@ class Git
     private function countLogs($installed = true, $upcoming = false, $search = null)
     {
         $total     = 0;
-        $countArgs = array('--count');
+        $countArgs = ['--count'];
 
         if (isset($search)) {
             $countArgs[] = '-i';
@@ -321,14 +321,14 @@ class Git
             $fetch = trim($this->call('fetch'));
 
             if (preg_match('/^(fatal|error):/mi', $fetch)) {
-                return array(
+                return [
                     'status'  => 'fatal',
                     'message' => 'fetch failed: ' . preg_replace('/\s+/', ' ', $fetch),
                     'raw'     => $fetch
-                );
+                ];
             }
 
-            $arguments = array();
+            $arguments = [];
 
             if (isset($source)) {
                 $arguments[] = $source;
@@ -365,7 +365,7 @@ class Git
             }
 
             $response  = trim($response);
-            $return    = array();
+            $return    = [];
 
             // Newer git puts hints before the line that says it refused, so
             // look for that line anywhere in what it said
@@ -390,19 +390,19 @@ class Git
             // be ignored here, so the log below compared HEAD to a stale tracking
             // ref and the caller reported "up to date". Surface it instead.
             if (preg_match('/^(fatal|error):/mi', $fetch)) {
-                return array('fetch failed: ' . preg_replace('/\s+/', ' ', $fetch));
+                return ['fetch failed: ' . preg_replace('/\s+/', ' ', $fetch)];
             }
 
             // Build arguments
-            $arguments = array(
+            $arguments = [
                 '--pretty=format:"%an: \"%s\" (%ar)"',
                 "HEAD..{$this->upstream}"
-            );
+            ];
 
             // Make call to get log differences between us and origin
             $log    = $this->call('log', $arguments);
             $log    = trim($log);
-            $return = array();
+            $return = [];
             $logs   = explode("\n", $log);
 
             if (!empty($log) && count($logs) > 0) {
@@ -426,10 +426,10 @@ class Git
     public function push($ref = 'master', $remote = 'origin', $remoteRef = null)
     {
         $ref      = (isset($remoteRef)) ? $ref . ':' . $remoteRef : $ref;
-        $response = $this->call('push', array($remote, $ref));
+        $response = $this->call('push', [$remote, $ref]);
 
         $response = trim($response);
-        $return   = array();
+        $return   = [];
 
         if (stripos($response, 'error: failed to push some refs') !== false) {
             $return['status']  = 'fatal';
@@ -495,7 +495,7 @@ class Git
     {
         $tagList        = $this->call('tag');
         $tags           = explode("\n", $tagList);
-        $rollbackPoints = array();
+        $rollbackPoints = [];
 
         foreach ($tags as $tag) {
             if (strstr($tag, 'cmsrollbackpoint-') !== false) {
@@ -505,7 +505,7 @@ class Git
 
         if (count($rollbackPoints) > 1) {
             for ($i = 0; $i < (count($rollbackPoints) - 1); $i++) {
-                $this->call('tag', array('-d', $rollbackPoints[$i]));
+                $this->call('tag', ['-d', $rollbackPoints[$i]]);
             }
         }
     }
@@ -517,7 +517,7 @@ class Git
      **/
     public function purgeStash()
     {
-        $this->call('stash', array('clear'));
+        $this->call('stash', ['clear']);
     }
 
     /**
@@ -531,12 +531,12 @@ class Git
         $tagname = 'cmsrollbackpoint-' . $rollbackPoint;
 
         // Make sure the tag exists first
-        if (substr($this->call('show', array($tagname)), 0, 5 == 'fatal')) {
+        if (substr($this->call('show', [$tagname]), 0, 5 == 'fatal')) {
             return false;
         }
 
         // Do a hard reset - this is destructive!
-        $this->call('reset', array('--hard', $tagname));
+        $this->call('reset', ['--hard', $tagname]);
 
         return true;
     }
@@ -549,7 +549,7 @@ class Git
      **/
     public function tag($tagname)
     {
-        $arguments = array($tagname);
+        $arguments = [$tagname];
 
         return $this->call('tag', $arguments);
     }
@@ -595,7 +595,7 @@ class Git
      * @param   array   $args  Arguments for the specific command
      * @return  string
      **/
-    private function call($cmd, $arguments = array())
+    private function call($cmd, $arguments = [])
     {
         $command  = "umask 0002 && {$this->baseCmd} {$cmd}" .
             ((!empty($arguments)) ? ' ' .

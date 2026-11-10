@@ -26,20 +26,20 @@ abstract class ContentAdministrator
     public static function featured($value, $i, $canChange = true)
     {
         // Array of image, task, title, action
-        $states = array(
-            0 => array(
+        $states = [
+            0 => [
                 'disabled.png',
                 'articles.featured',
                 'COM_CONTENT_UNFEATURED',
                 'COM_CONTENT_TOGGLE_TO_FEATURE'
-            ),
-            1 => array(
+            ],
+            1 => [
                 'featured.png',
                 'articles.unfeatured',
                 'COM_CONTENT_FEATURED',
                 'COM_CONTENT_TOGGLE_TO_UNFEATURE'
-            ),
-        );
+            ],
+        ];
         $state = Arr::getValue($states, (int) $value, $states[1]);
         $html  = Html::asset('image', 'admin/' . $state[0], Lang::txt($state[2]), null, true);
         if ($canChange) {

@@ -46,7 +46,7 @@ class Archive extends Obj
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         if (!isset($instances[$key])) {
@@ -64,13 +64,13 @@ class Archive extends Obj
      * @param   boolean  $boolean  Clear cached data?
      * @return  mixed
      */
-    public function imports($rtrn = 'list', $filters = array(), $clear = false)
+    public function imports($rtrn = 'list', $filters = [], $clear = false)
     {
         $model = Import::all();
 
         if (isset($filters['state']) && $filters['state']) {
             if (!is_array($filters['state'])) {
-                $filters['state'] = array($filters['state']);
+                $filters['state'] = [$filters['state']];
             }
             $filters['state'] = array_map('intval', $filters['state']);
 

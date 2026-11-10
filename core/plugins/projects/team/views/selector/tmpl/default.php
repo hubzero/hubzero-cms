@@ -15,7 +15,7 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$selected = array();
+$selected = [];
 if (count($this->authors) > 0) {
     foreach ($this->authors as $sel) {
         $selected[] = $sel->project_owner_id;
@@ -61,12 +61,12 @@ $this->props);
         <?php
             // Show files
             $view = new \Hubzero\Plugin\View(
-                array(
+                [
                     'folder'    => 'projects',
                     'element'   => 'team',
                     'name'      => 'selector',
                     'layout'    => 'selector'
-                )
+                ]
             );
             $view->option       = $this->option;
             $view->model        = $this->model;

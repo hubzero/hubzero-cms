@@ -50,7 +50,7 @@ class Quotas extends AdminController
     public function displayTask()
     {
         // Incoming
-        $filters = array(
+        $filters = [
             'search' => urldecode(Request::getState(
                 $this->_option . '.quotas.search',
                 'search',
@@ -76,7 +76,7 @@ class Quotas extends AdminController
                 'class_alias',
                 ''
             )
-        );
+        ];
 
         $cats  = Category::blank()->getTableName();
         $users = Member::blank()->getTableName();
@@ -130,7 +130,7 @@ class Quotas extends AdminController
 
         if (!$row) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
 
             // Get the single ID we're working with
             if (is_array($id)) {
@@ -146,9 +146,9 @@ class Quotas extends AdminController
             ->rows();
 
         $selected = '';
-        $options  = array(
+        $options  = [
             Html::select('option', '0', Lang::txt('COM_MEMBERS_QUOTA_CUSTOM'), 'value', 'text')
-        );
+        ];
 
         foreach ($categories as $class) {
             $options[] = Html::select('option', $class->get('id'), $class->get('alias'), 'value', 'text');
@@ -197,7 +197,7 @@ class Quotas extends AdminController
         Request::checkToken();
 
         // Incoming fields
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         // Load the profile
         $row = Quota::oneOrNew($fields['id']);
@@ -253,8 +253,8 @@ class Quotas extends AdminController
             Request::checkToken();
 
             // Incoming
-            $ids = Request::getArray('id', array());
-            $ids = (!is_array($ids) ? array($ids) : $ids);
+            $ids = Request::getArray('id', []);
+            $ids = (!is_array($ids) ? [$ids] : $ids);
             $i = 0;
 
             // Do we have any IDs?
@@ -307,7 +307,7 @@ class Quotas extends AdminController
     public function displayClassesTask()
     {
         // Incoming
-        $filters = array(
+        $filters = [
             'sort' => Request::getState(
                 $this->_option . '.classes.sort',
                 'filter_order',
@@ -318,7 +318,7 @@ class Quotas extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         // Get records
         $rows = Category::all()
@@ -355,7 +355,7 @@ class Quotas extends AdminController
 
         if (!$row) {
             // Incoming
-            $id = Request::getArray('id', array());
+            $id = Request::getArray('id', []);
 
             // Get the single ID we're working with
             if (is_array($id)) {
@@ -413,9 +413,9 @@ class Quotas extends AdminController
         Request::checkToken();
 
         // Incoming fields
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
-        $groups = array();
+        $groups = [];
         if (isset($fields['groups'])) {
             $groups = $fields['groups'];
             unset($fields['groups']);
@@ -458,8 +458,8 @@ class Quotas extends AdminController
         Request::checkToken();
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Do we have any IDs?
         if (!empty($ids)) {
@@ -514,12 +514,12 @@ class Quotas extends AdminController
 
         $class = Category::oneOrNew($class_id);
 
-        $return = array(
+        $return = [
             'soft_files'  => $class->get('soft_files'),
             'hard_files'  => $class->get('hard_files'),
             'soft_blocks' => $class->get('soft_blocks'),
             'hard_blocks' => $class->get('hard_blocks')
-        );
+        ];
 
         echo json_encode($return);
         exit();
@@ -538,17 +538,17 @@ class Quotas extends AdminController
             $id = Request::getInt('id');
         }
 
-        $info    = array();
+        $info    = [];
         $success = false;
         $used    = 0;
         $percent = 0;
 
-        $return = array(
+        $return = [
             'success' => $success,
             'info'    => $info,
             'used'    => $used,
             'percent' => $percent
-        );
+        ];
 
         $quota = Quota::oneOrNew($id);
         $user  = User::getInstance($quota->get('user_id'));
@@ -594,12 +594,12 @@ class Quotas extends AdminController
             }
         }
 
-        $return = array(
+        $return = [
             'success' => $success,
             'info'    => $info,
             'used'    => $used,
             'percent' => $percent
-        );
+        ];
 
         if ($returnType == 'json') {
             echo json_encode($return);
@@ -646,7 +646,7 @@ class Quotas extends AdminController
         }
 
         $lines   = explode("\n", $qfile);
-        $classes = array();
+        $classes = [];
         foreach ($lines as $line) {
             $line = trim($line);
             if (empty($line)) {

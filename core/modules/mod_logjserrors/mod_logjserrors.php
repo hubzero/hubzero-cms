@@ -35,8 +35,8 @@ class Logjserrors extends Module
             // A page re-rendered after some other form's POST runs this module
             // too, so only a report carrying every field the script below sends
             // is treated as one; anything else just renders the script.
-            $log = array();
-            foreach (array('message', 'file', 'line', 'url', 'navigator') as $k) {
+            $log = [];
+            foreach (['message', 'file', 'line', 'url', 'navigator'] as $k) {
                 if (!isset($_POST[$k]) || !is_scalar($_POST[$k])) {
                     $log = null;
                     break;

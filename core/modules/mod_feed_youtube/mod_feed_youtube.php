@@ -31,10 +31,10 @@ class FeedYoutube extends Module
         $limit = (int) $this->params->get('rssitems', 5);
 
         // Get RSS parsed object
-        $options = array(
+        $options = [
             'rssUrl'     => $this->params->get('rssurl', ''),
             'cache_time' => null
-        );
+        ];
 
         if (!$options['rssUrl']) {
             echo '<p class="warning">' . Lang::txt('MOD_FEED_YOUTUBE_ERROR_NO_URL') . '</p>';

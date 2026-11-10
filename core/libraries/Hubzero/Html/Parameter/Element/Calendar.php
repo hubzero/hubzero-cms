@@ -42,9 +42,9 @@ class Calendar extends Element
         $format = $node->attributes('format') ? $node->attributes('format') : '%Y-%m-%d';
         $class  = $node->attributes('class')  ? $node->attributes('class')  : 'inputbox';
 
-        return Input::calendar($name, $value, array(
+        return Input::calendar($name, $value, [
             'format' => $format,
             'class'  => $class
-        ));
+        ]);
     }
 }

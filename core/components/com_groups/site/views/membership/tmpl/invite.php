@@ -68,10 +68,10 @@ $this->css();
                         $inviteList = implode(', ', $this->invites);
                         $mc = Event::trigger(
                             'hubzero.onGetMultiEntry',
-                            array(array(
+                            [[
                                 'members', 'logins', 'acmembers',
                                 '', $inviteList
-                            ))
+                            ]]
                         );
                         if (count($mc) > 0) {
                             echo $mc[0];

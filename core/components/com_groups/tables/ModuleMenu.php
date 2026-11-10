@@ -31,7 +31,7 @@ class ModuleMenu extends Table
      *
      * @return  array
      */
-    public function getMenu($filters = array())
+    public function getMenu($filters = [])
     {
         if (!isset($filters['moduleid'])) {
             return;
@@ -49,10 +49,10 @@ class ModuleMenu extends Table
      * @param   array    $pages
      * @return  boolean
      */
-    public function createMenus($moduleid, $pages = array())
+    public function createMenus($moduleid, $pages = [])
     {
         // create array of values to insert
-        $values = array();
+        $values = [];
         foreach ($pages as $pageid) {
             $values[] = '(' . $this->_db->quote($moduleid) . ',' . $this->_db->quote($pageid) . ')';
         }

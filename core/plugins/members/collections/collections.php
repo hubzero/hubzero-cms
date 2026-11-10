@@ -45,12 +45,12 @@ class Collections extends Plugin
      */
     public function onMembersAreas($user, $member)
     {
-        $areas = array(
+        $areas = [
             'collections' => Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name)),
             'icon'        => 'f005',
             'icon-class' => 'icon-archive',
             'menu'        => $this->params->get('display_tab', 1)
-        );
+        ];
         return $areas;
     }
 
@@ -65,10 +65,10 @@ class Collections extends Plugin
      */
     public function onMembers($user, $member, $option, $areas)
     {
-        $arr = array(
+        $arr = [
             'html'     => '',
-            'metadata' => array()
-        );
+            'metadata' => []
+        ];
         $returnhtml = true;
 
         // Check if our area is in the array of areas we want to return results for
@@ -90,7 +90,7 @@ class Collections extends Plugin
         //are we returning html
         if ($returnhtml) {
             // This needs to be called to ensure scripts are pushed to the document
-            $foo = App::get('editor')->display('description', '', '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer'));
+            $foo = App::get('editor')->display('description', '', '', '', 35, 5, false, 'field_description', null, null, ['class' => 'minimal no-footer']);
 
             // Set some variables so other functions have access
             $this->option   = $option;
@@ -111,7 +111,7 @@ class Collections extends Plugin
                 $path = trim($path, '/');
                 $parts = explode('/', $path);
                 $start = false;
-                $bits = array();
+                $bits = [];
                 foreach ($parts as $p) {
                     if ($p == $this->_name) {
                         $start = true;
@@ -133,7 +133,7 @@ class Collections extends Plugin
                                 } else {
                                     Request::setVar('post', $bits[1]);
                                     if (isset($bits[2])) {
-                                        if (in_array($bits[2], array('post', 'vote', 'collect', 'remove', 'move', 'comment', 'savecomment', 'deletecomment'))) {
+                                        if (in_array($bits[2], ['post', 'vote', 'collect', 'remove', 'move', 'comment', 'savecomment', 'deletecomment'])) {
                                             $this->action = $bits[2];
                                         } else {
                                             $this->action = $bits[2] . $this->action;
@@ -275,9 +275,9 @@ class Collections extends Plugin
         }
 
         // Get a count of all the collections
-        $filters = array(
+        $filters = [
             'count' => true
-        );
+        ];
 
         if (!$this->model->collections($filters)) {
             $collection = $this->model->collection(0);
@@ -324,16 +324,16 @@ class Collections extends Plugin
         $view->model       = $this->model;
 
         // Filters for returning results
-        $view->filters = array();
+        $view->filters = [];
         $view->filters['limit'] = Request::getInt('limit', Config::get('list_limit'));
         $view->filters['start'] = Request::getInt('limitstart', 0);
 
-        $count = array(
+        $count = [
             'count'  => true
-        );
+        ];
 
         if (!$this->params->get('access-manage-collection')) {
-            $count['access'] = (User::isGuest() ? 0 : array(0, 1));
+            $count['access'] = (User::isGuest() ? 0 : [0, 1]);
             $view->filters['access'] = $count['access'];
         }
 
@@ -369,21 +369,21 @@ class Collections extends Plugin
         $view->model       = $this->model;
 
         // Filters for returning results
-        $view->filters = array();
+        $view->filters = [];
         $view->filters['limit'] = Request::getInt('limit', Config::get('list_limit'));
         $view->filters['start'] = Request::getInt('limitstart', 0);
 
-        $filters = array();
+        $filters = [];
         $filters['user_id'] = User::get('id');
         $filters['state']   = 1;
 
-        $count = array(
+        $count = [
             'count'  => true
-        );
+        ];
 
-        $filters = array();
+        $filters = [];
         if (!$this->params->get('access-manage-collection')) {
-            $filters['access'] = (User::isGuest() ? 0 : array(0, 1));
+            $filters['access'] = (User::isGuest() ? 0 : [0, 1]);
             $count['access'] = $filters['access'];
         }
 
@@ -419,21 +419,21 @@ class Collections extends Plugin
         $view->model       = $this->model;
 
         // Filters for returning results
-        $view->filters = array(
+        $view->filters = [
             'limit'   => Request::getInt('limit', Config::get('list_limit')),
             'start'   => Request::getInt('limitstart', 0),
             'search'  => Request::getString('search', ''),
             'state'   => 1,
             'user_id' => User::get('id')
-        );
+        ];
 
-        $count = array(
+        $count = [
             'count'  => true,
             'state'  => 1
-        );
+        ];
 
         if (!$this->params->get('access-manage-collection')) {
-            $view->filters['access'] = (User::isGuest() ? 0 : array(0, 1));
+            $view->filters['access'] = (User::isGuest() ? 0 : [0, 1]);
             $count['access']   = $view->filters['access'];
         }
 
@@ -469,7 +469,7 @@ class Collections extends Plugin
         $view->model      = $this->model;
 
         // Filters for returning results
-        $view->filters = array(
+        $view->filters = [
             'limit'         => Request::getInt('limit', Config::get('list_limit')),
             'start'         => Request::getInt('limitstart', 0),
             // user_id only joins #__collections_votes to mark what the VIEWER
@@ -479,7 +479,7 @@ class Collections extends Plugin
             'state'         => 1,
             'collection_id' => Request::getString('board', ''),
             'access'        => -1
-        );
+        ];
 
         $view->collection = $this->model->collection($view->filters['collection_id']);
         if (!$view->collection->exists()) {
@@ -499,18 +499,18 @@ class Collections extends Plugin
         }
 
         $view->filters['sort'] = Request::getWord('sort', $view->collection->get('sort'));
-        if (!in_array($view->filters['sort'], array('created', 'ordering'))) {
+        if (!in_array($view->filters['sort'], ['created', 'ordering'])) {
             $view->filters['sort'] = 'created';
         }
         $view->filters['sort_Dir'] = ($view->filters['sort'] == 'ordering' ? 'asc' : 'desc');
 
-        $count = array(
+        $count = [
             'count'  => true,
             'state'  => 1,
             'access' => -1
-        );
+        ];
         if (!$this->params->get('access-manage-collection')) {
-            $view->filters['access'] = (User::isGuest() ? 0 : array(0, 1));
+            $view->filters['access'] = (User::isGuest() ? 0 : [0, 1]);
             $count['access'] = $view->filters['access'];
         }
 
@@ -682,7 +682,7 @@ class Collections extends Plugin
         $view->option     = $this->option;
         $view->params     = $this->params;
 
-        $view->filters = array();
+        $view->filters = [];
         $view->filters['limit']       = Request::getInt('limit', Config::get('list_limit'));
         $view->filters['start']       = Request::getInt('limitstart', 0);
         // the viewer, for the Like/Unlike state (see _collection())
@@ -692,9 +692,9 @@ class Collections extends Plugin
         $view->filters['collection_id'] = Request::getString('board', '');
 
         // Filters for returning results
-        $count = array(
+        $count = [
             'count' => true
-        );
+        ];
         if (!$this->params->get('access-manage-collection')) {
             $count['access'] = 0;
         }
@@ -707,7 +707,7 @@ class Collections extends Plugin
 
         $view->following   = $this->model->following($count);
 
-        $view->filters['collection_id'] = $this->model->following(array(), 'collections');
+        $view->filters['collection_id'] = $this->model->following([], 'collections');
         $view->collection = \Components\Collections\Models\Collection::getInstance();
         if (count($view->filters['collection_id']) <= 0) {
             $view->filters['collection_id'][] = -1;
@@ -741,7 +741,7 @@ class Collections extends Plugin
             ->set('model', $this->model);
 
         // Filters for returning results
-        $view->filters = array(
+        $view->filters = [
             'limit'       => Request::getInt('limit', Config::get('list_limit')),
             'start'       => Request::getInt('limitstart', 0),
             'created_by'  => $this->member->get('id'),
@@ -752,16 +752,16 @@ class Collections extends Plugin
             'access'      => -1,
             'sort'        => 'created',
             'sort_Dir'    => 'desc'
-        );
+        ];
 
         // Filters for returning results
         //$filters = array();
-        $count = array(
+        $count = [
             'count' => true
-        );
+        ];
 
         if (!$this->params->get('access-manage-collection')) {
-            $view->filters['access'] = (User::isGuest() ? 0 : array(0, 1));
+            $view->filters['access'] = (User::isGuest() ? 0 : [0, 1]);
             $count['access'] = $view->filters['access'];
         }
 
@@ -991,7 +991,7 @@ class Collections extends Plugin
         }
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         if ($fields['id'] && !is_numeric($fields['id'])) {
             App::abort(404, Lang::txt('Post does not exist'));
@@ -1002,7 +1002,7 @@ class Collections extends Plugin
 
         // The post being edited, if any. A member may edit their own post, and
         // for a repost that post carries someone else's item.
-        $p = Request::getArray('post', array(), 'post');
+        $p = Request::getArray('post', [], 'post');
         $post = new \Components\Collections\Models\Post(isset($p['id']) ? intval($p['id']) : 0);
         if (
             $post->exists()
@@ -1039,7 +1039,7 @@ class Collections extends Plugin
             if ($files  = Request::getArray('fls', '', 'files')) {
                 $item->set('_files', $files);
             }
-            $item->set('_assets', Request::getArray('assets', array(), 'post'));
+            $item->set('_assets', Request::getArray('assets', [], 'post'));
             $item->set('_tags', trim(Request::getString('tags', '')));
             $item->set('state', 1);
             if (!$item->exists()) {
@@ -1081,7 +1081,7 @@ class Collections extends Plugin
         }
 
         // Create a post entry linking the item to the board
-        $p = Request::getArray('post', array(), 'post');
+        $p = Request::getArray('post', [], 'post');
 
         // The board is chosen from a select listing this member's own collections,
         // but the id arrives from the request: only post to a board the member owns
@@ -1135,12 +1135,12 @@ class Collections extends Plugin
                 'scope'       => 'collections.item',
                 'scope_id'    => $item->get('id'),
                 'description' => Lang::txt('PLG_MEMBERS_COLLECTIONS_ACTIVITY_POST_' . ($p['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($url) . '">' . htmlspecialchars((string) ($collection->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'collection_id' => $collection->get('id'),
                     'post_id'       => $post->get('id'),
                     'item_id'       => $post->get('item_id'),
                     'url'           => $url
-                )
+                ]
             ],
             'recipients' => [
                 ['collection', $collection->get('id')],
@@ -1317,11 +1317,11 @@ class Collections extends Plugin
                 'scope'       => 'collections.post',
                 'scope_id'    => $post->id,
                 'description' => Lang::txt('PLG_MEMBERS_COLLECTIONS_ACTIVITY_POST_CREATED', '<a href="' . Route::url($collection->link()) . '">' . htmlspecialchars((string) ($collection->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'collection_id' => $post->collection_id,
                     'item_id'       => $post->item_id,
                     'post_id'       => $post->id
-                )
+                ]
             ],
             'recipients' => [
                 ['collection', $collection_id],
@@ -1331,7 +1331,7 @@ class Collections extends Plugin
 
         // Display updated item stats if called via AJAX
         if ($no_html) {
-            echo Lang::txt('%s reposts', $post->getCount(array('item_id' => $post->get('item_id'), 'original' => 0)));
+            echo Lang::txt('%s reposts', $post->getCount(['item_id' => $post->get('item_id'), 'original' => 0]));
             exit;
         }
 
@@ -1396,11 +1396,11 @@ class Collections extends Plugin
                 'scope'       => 'collections.post',
                 'scope_id'    => $post->get('id'),
                 'description' => Lang::txt('PLG_MEMBERS_COLLECTIONS_ACTIVITY_POST_DELETED', '<a href="' . $route . '">' . htmlspecialchars((string) ($collection->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'collection_id' => $post->get('collection_id'),
                     'item_id'       => $post->get('item_id'),
                     'post_id'       => $post->get('id')
-                )
+                ]
             ],
             'recipients' => [
                 ['collection', $collection->get('id')],
@@ -1587,12 +1587,12 @@ class Collections extends Plugin
                 'scope'       => 'collections.item',
                 'scope_id'    => $item->get('id'),
                 'description' => Lang::txt('PLG_MEMBERS_COLLECTIONS_ACTIVITY_ITEM_DELETED', '<a href="' . $route . '">' . htmlspecialchars((string) ($item->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'collection_id' => $post->get('collection_id'),
                     'post_id'       => $post->get('id'),
                     'item_id'       => $item->get('id'),
                     'url'           => $route
-                )
+                ]
             ],
             'recipients' => [
                 ['collection', $post->get('collection_id')],
@@ -1624,7 +1624,7 @@ class Collections extends Plugin
         // Check for request forgeries
         Request::checkToken();
 
-        $comment = Request::getArray('comment', array(), 'post');
+        $comment = Request::getArray('comment', [], 'post');
 
         // Never allow the author to be set from the request
         unset($comment['created_by']);
@@ -1661,7 +1661,7 @@ class Collections extends Plugin
         // Instantiate a new comment object and pass it the data. Only the
         // form's own fields are bound: every other comment[] key is a column
         // (state, access, positive, negative, ...) the poster must not set.
-        $row = \Hubzero\Item\Comment::blank()->set(array_intersect_key($comment, array_flip(array('id', 'content', 'parent', 'anonymous'))));
+        $row = \Hubzero\Item\Comment::blank()->set(array_intersect_key($comment, array_flip(['id', 'content', 'parent', 'anonymous'])));
 
         // Pin what the comment hangs off, on both paths
         $row->set('item_type', 'collection');
@@ -1678,10 +1678,10 @@ class Collections extends Plugin
 
         // Log activity ($post is resolved above)
 
-        $recipients = array(
+        $recipients = [
             ['collection', $post->get('collection_id')],
             ['user', $comment->get('created_by')]
-        );
+        ];
         if ($comment->get('parent')) {
             $recipients[] = ['user', $comment->parent()->get('created_by')];
         }
@@ -1697,12 +1697,12 @@ class Collections extends Plugin
                 'scope'       => 'collections.comment',
                 'scope_id'    => $row->get('id'),
                 'description' => Lang::txt('PLG_MEMBERS_COLLECTIONS_ACTIVITY_COMMENT_' . (!empty($comment['id']) ? 'UPDATED' : 'CREATED'), $row->get('id'), '<a href="' . $url . '#c' . $row->get('id') . '">' . htmlspecialchars((string) ($title), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'collection_id' => $post->get('collection_id'),
                     'post_id'       => $post->get('id'),
                     'item_id'       => $post->get('item_id'),
                     'url'           => $url . '#c' . $comment->get('id')
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -1843,11 +1843,11 @@ class Collections extends Plugin
                 'scope'       => 'collections.item',
                 'scope_id'    => $post->item()->get('id'),
                 'description' => Lang::txt('PLG_MEMBERS_COLLECTIONS_ACTIVITY_ITEM_VOTED', '<a href="' . $url . '">' . htmlspecialchars((string) ($collection->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'collection_id' => $collection->get('id'),
                     'post_id'       => $post->get('id'),
                     'item_id'       => $post->item()->get('id')
-                )
+                ]
             ],
             'recipients' => [
                 ['collection', $collection->get('id')],
@@ -1964,7 +1964,7 @@ class Collections extends Plugin
         }
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
         $fields['id'] = isset($fields['id']) ? intval($fields['id']) : 0;
 
         // An EXISTING board has to be this one's already. bind() takes the id
@@ -2018,11 +2018,11 @@ class Collections extends Plugin
                 'scope'       => 'collections.collection',
                 'scope_id'    => $collection->get('id'),
                 'description' => Lang::txt('PLG_MEMBERS_COLLECTIONS_ACTIVITY_COLLECTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . $url . '">' . htmlspecialchars((string) ($collection->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title' => $collection->get('title'),
                     'id'    => $collection->get('id'),
                     'url'   => $url
-                )
+                ]
             ],
             'recipients' => [
                 ['collection', $collection->get('id')],
@@ -2121,11 +2121,11 @@ class Collections extends Plugin
                 'scope'       => 'collections.collection',
                 'scope_id'    => $collection->get('id'),
                 'description' => Lang::txt('PLG_MEMBERS_COLLECTIONS_ACTIVITY_COLLECTION_DELETED', '<a href="' . Route::url($collection->link()) . '">' . htmlspecialchars((string) ($collection->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title' => $collection->get('title'),
                     'id'    => $collection->get('id'),
                     'url'   => $collection->link()
-                )
+                ]
             ],
             'recipients' => [
                 ['collection', $collection->get('id')],
@@ -2208,9 +2208,9 @@ class Collections extends Plugin
 
                 $model = new \Components\Collections\Tables\Collection($db);
 
-                $entries = $model->find('list', array(
+                $entries = $model->find('list', [
                     'created_by' => $user['id']
-                ));
+                ]);
 
                 foreach ($entries as $entry) {
                     $entry = new \Components\Collections\Models\Collection($entry);
@@ -2250,9 +2250,9 @@ class Collections extends Plugin
 
                 $model = new \Components\Collections\Tables\Collection($db);
 
-                $entries = $model->find('list', array(
+                $entries = $model->find('list', [
                     'created_by' => $userId
-                ));
+                ]);
 
                 foreach ($entries as $entry) {
                     $entry = new \Components\Collections\Models\Collection($entry);

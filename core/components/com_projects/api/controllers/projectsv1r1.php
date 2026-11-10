@@ -79,7 +79,7 @@ class Projectsv1r1 extends ApiController
         $model = new Project();
 
         // Set filters
-        $filters = array(
+        $filters = [
             'limit'      => Request::getInt('limit', 20),
             'start'      => Request::getInt('start', 0),
             'sortby'     => Request::getWord('sort', 'title', 'post'),
@@ -87,7 +87,7 @@ class Projectsv1r1 extends ApiController
             'getowner'   => 1,
             'updates'    => 1,
             'mine'       => 1
-        );
+        ];
 
         $admin = false;
         if (User::authorise('core.admin', 'com_projects')) {
@@ -97,7 +97,7 @@ class Projectsv1r1 extends ApiController
         }
 
         $response = new stdClass();
-        $response->projects = array();
+        $response->projects = [];
         $response->total = $model->entries('count', $filters, $admin);
 
         if ($response->total) {

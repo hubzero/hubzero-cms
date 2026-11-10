@@ -176,7 +176,7 @@ class Migration20170901000000ComUsage extends Base
                 return;
             }
 
-            $tables = array(
+            $tables = [
                 'tops',
                 'topvals',
                 'regions',
@@ -184,7 +184,7 @@ class Migration20170901000000ComUsage extends Base
                 'classes',
                 'classvals',
                 'totalvals'
-            );
+            ];
 
             foreach ($tables as $table) {
                 if ($db->tableExists($table)) {

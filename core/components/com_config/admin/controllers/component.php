@@ -89,7 +89,7 @@ class Component extends AdminController
         // Initialise variables.
         $model  = new Models\Component();
         $form   = $model->getForm();
-        $data   = Request::getArray('hzform', array(), 'post');
+        $data   = Request::getArray('hzform', [], 'post');
         $id     = Request::getInt('id');
         $option = Request::getCmd('component');
 
@@ -169,11 +169,11 @@ class Component extends AdminController
         }
 
         // Attempt to save the configuration.
-        $data = array(
+        $data = [
             'params' => $return,
             'id'     => $id,
             'option' => $option
-        );
+        ];
         $return = $model->save($data);
 
         // Check the return value.

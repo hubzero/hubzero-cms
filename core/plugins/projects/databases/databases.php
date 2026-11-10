@@ -90,13 +90,13 @@ class Databases extends Plugin
     public function &onProjectAreas($alias = null)
     {
         // default areas returned to nothing
-        $area = array();
+        $area = [];
 
         // Check if plugin is restricted to certain projects
         // Check if plugin is restricted to certain projects
         $projects = $this->params->get('restricted')
             ? \Components\Projects\Helpers\Html::getParamArray($this->params->get('restricted'))
-            : array();
+            : [];
 
         if (!empty($projects) && $alias) {
             if (!in_array($alias, $projects)) {
@@ -109,13 +109,13 @@ class Databases extends Plugin
             return $area;
         }
 
-        $area = array(
+        $area = [
             'name' => 'databases',
             'title' => 'Databases',
             'submenu' => 'Assets',
             'show' => true,
             'icon' => 'f001'
-        );
+        ];
 
         return $area;
     }
@@ -139,7 +139,7 @@ class Databases extends Plugin
         $database = App::get('db');
 
         $objPD = new \Components\Projects\Tables\Database($database);
-        $total = $objPD->getItems($model->get('id'), array('count' => 1));
+        $total = $objPD->getItems($model->get('id'), ['count' => 1]);
 
         $counts['databases'] = $total;
 
@@ -194,14 +194,14 @@ class Databases extends Plugin
      * @param   string  $areas   Plugins to return data
      * @return  array   Return array of html
      */
-    public function onProject($model, $action = 'view', $areas = null, $params = array())
+    public function onProject($model, $action = 'view', $areas = null, $params = [])
     {
-        $arr = array(
+        $arr = [
             'html' => '',
             'metadata' => '',
             'message' => '',
             'error' => ''
-        );
+        ];
 
         // Get this area details
         $this->_area = $this->onProjectAreas();
@@ -268,7 +268,7 @@ class Databases extends Plugin
         if (!method_exists($this, $act_func)) {
             if ($raw_op) {
                 // nothing was produced for an unknown action
-                echo json_encode(array('status' => 'success', 'data' => array()));
+                echo json_encode(['status' => 'success', 'data' => []]);
                 exit();
             } else {
                 $act_func = 'act_list';
@@ -321,12 +321,12 @@ class Databases extends Plugin
 
         // Output HTML
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder' => 'projects',
                 'element' => 'databases',
                 'name' => 'selector',
                 'layout' => 'default'
-            )
+            ]
         );
 
         $view->publication = new \Components\Publications\Models\Publication($pid, null, $vid);
@@ -335,11 +335,11 @@ class Databases extends Plugin
         if (!$view->publication->exists()) {
             // Output error
             $view = new \Hubzero\Plugin\View(
-                array(
+                [
                     'folder' => 'projects',
                     'element' => 'files',
                     'name' => 'error'
-                )
+                ]
             );
 
             $view->title = '';
@@ -382,19 +382,19 @@ class Databases extends Plugin
 
         // Get databases to choose from
         $objPD = new \Components\Projects\Tables\Database($this->_database);
-        $view->items = $objPD->getItems($this->model->get('id'), array());
+        $view->items = $objPD->getItems($this->model->get('id'), []);
 
         // Get messages and errors
         if ($this->getError()) {
             $view->setError($this->getError());
         }
 
-        $arr = array(
+        $arr = [
             'html' => $view->loadTemplate(),
             'metadata' => '',
             'msg' => '',
             'referer' => ''
-        );
+        ];
 
         return $arr;
     }
@@ -428,11 +428,11 @@ class Databases extends Plugin
 
         // Output HTML
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder' => 'projects',
                 'element' => 'databases',
                 'name' => 'browser'
-            )
+            ]
         );
 
         // Get current attachments
@@ -442,7 +442,7 @@ class Databases extends Plugin
 
         $view->attachments = $pContent->getAttachments(
             $versionid,
-            $filters = array('role' => $role, 'type' => 'data')
+            $filters = ['role' => $role, 'type' => 'data']
         );
 
         // Output HTML
@@ -461,12 +461,12 @@ class Databases extends Plugin
             $view->setError($this->getError());
         }
 
-        $arr = array(
+        $arr = [
             'html' => $view->loadTemplate(),
             'metadata' => '',
             'msg' => '',
             'referer' => ''
-        );
+        ];
 
         return $arr;
     }
@@ -488,9 +488,9 @@ class Databases extends Plugin
         // Get database list
         $list = $objPD->getList($this->model->get('id'));
 
-        $list_u = array();
+        $list_u = [];
         foreach ($list as $l) {
-            $info = array();
+            $info = [];
 
             if ($l['source_dir'] != '') {
                 $file = $l['source_dir'] . DS . $l['source_file'];
@@ -512,18 +512,18 @@ class Databases extends Plugin
 
         // Output HTML
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder' => 'projects',
                 'element' => 'databases',
                 'name' => 'list'
-            )
+            ]
         );
         $view->model = $this->model;
         $view->option = $this->_option;
         $view->dataviewer = $this->dataviewer;
         $view->list = $list_u;
 
-        return array('html' => $view->loadTemplate());
+        return ['html' => $view->loadTemplate()];
     }
 
     /**
@@ -540,7 +540,7 @@ class Databases extends Plugin
             return;
         }
         // Set params
-        $params = array(
+        $params = [
             'subdir' => $this->subdir,
             'filter' => 'csv',
             'sortby' => Request::getString('sortby', 'name'),
@@ -551,7 +551,7 @@ class Databases extends Plugin
             'getPubConnections' => false,
             'versionTracking' => $this->model->params->get('versionTracking', '0'),
             'recursive' => true,
-        );
+        ];
 
         // Incoming
         $db_id = Request::getInt('db_id', false);
@@ -559,7 +559,7 @@ class Databases extends Plugin
         // Get project path
         $path = \Components\Projects\Helpers\Html::getProjectRepoPath($this->model->get('alias'));
 
-        $list = array();
+        $list = [];
         $error = false;
 
         if (file_exists($path) && is_dir($path)) {
@@ -574,22 +574,22 @@ class Databases extends Plugin
         // Get database list
         $used_files = $objPD->getUsedItems($this->model->get('id'));
 
-        $files = array();
+        $files = [];
         foreach ($list as $l) {
-            $files[$l->get('dirname', '/')][] = array(
+            $files[$l->get('dirname', '/')][] = [
                 'name' => $l->get('name'),
                 'hash' => $l->get('date')->toUnix(),
                 'date' => $l->get('date')
-            );
+            ];
         }
 
         // Output HTML
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder' => 'projects',
                 'element' => 'databases',
                 'name' => 'create'
-            )
+            ]
         );
 
         $view->model = $this->model;
@@ -612,7 +612,7 @@ class Databases extends Plugin
             $view->desc = $objPD->description;
         }
 
-        return array('html' => $view->loadTemplate());
+        return ['html' => $view->loadTemplate()];
     }
 
     /**
@@ -628,7 +628,7 @@ class Databases extends Plugin
         $dir = Request::getString('dir', '');
 
         if (!$file) {
-            echo json_encode(array('status' => 'failed', 'msg' => Lang::txt('PLG_PROJECTS_DATABASES_INVALID_FILE')));
+            echo json_encode(['status' => 'failed', 'msg' => Lang::txt('PLG_PROJECTS_DATABASES_INVALID_FILE')]);
             return;
         }
 
@@ -647,21 +647,21 @@ class Databases extends Plugin
             $repoReal === false || $targetReal === false
             || strpos($targetReal, $repoReal . DS) !== 0
         ) {
-            echo json_encode(array('status' => 'failed', 'msg' => Lang::txt('PLG_PROJECTS_DATABASES_INVALID_FILE')));
+            echo json_encode(['status' => 'failed', 'msg' => Lang::txt('PLG_PROJECTS_DATABASES_INVALID_FILE')]);
             return;
         }
 
         if (is_file($targetReal) && ($handle = fopen($targetReal, "r")) !== false) {
-            $table = array();
-            $dd = array();
+            $table = [];
+            $dd = [];
 
-            $sub_dirs = array();
-            $list = array();
+            $sub_dirs = [];
+            $list = [];
             // The directory itself came from the request too; only list inside
             // the project repository
             $dirReal = realpath($path);
             if ($dirReal === false || strpos($dirReal . DS, $repoReal . DS) !== 0) {
-                echo json_encode(array('status' => 'failed', 'msg' => Lang::txt('PLG_PROJECTS_DATABASES_INVALID_FILE')));
+                echo json_encode(['status' => 'failed', 'msg' => Lang::txt('PLG_PROJECTS_DATABASES_INVALID_FILE')]);
                 return;
             }
             chdir($dirReal);
@@ -673,13 +673,13 @@ class Databases extends Plugin
                 }
             }
 
-            $table['repo'] = array(
+            $table['repo'] = [
                 'prj_alias' => $this->model->get('alias'),
                 'wd' => trim($dir, '/'),
                 'base' => '/projects/' . $this->model->get('alias')
                     . '/files/?action=download&subdir=' . trim($dir, '/'),
                 'sub_dirs' => $sub_dirs
-            );
+            ];
 
             // Check if expert mode CSV
             $expert_mode = false;
@@ -700,9 +700,9 @@ class Databases extends Plugin
                 $handle = fopen($path . '/' . $file, "r");
                 $col_labels = fgetcsv($handle);
 
-                $type_info = array();
+                $type_info = [];
                 while ($r = fgetcsv($handle)) {
-                    $col_vals = array();
+                    $col_vals = [];
 
                     for ($i = 0; $i < count($col_labels); $i++) {
                         $val = isset($r[$i]) ? mb_convert_encoding(trim($r[$i]), "UTF-8") : '';
@@ -753,14 +753,14 @@ class Databases extends Plugin
                             $dd[$i]['align'] = 'left';
                     }
 
-                    $table['header'][] = array('sTitle' => $label, 'sClass' => $dd[$i]['align']);
+                    $table['header'][] = ['sTitle' => $label, 'sClass' => $dd[$i]['align']];
                     $dd[$i]['label'] = $label;
                     $dd[$i]['idx'] = $i;
                 }
             } else {
                 while ($r = fgetcsv($handle)) {
                     if ($count < $limit) {
-                        $col_vals = array();
+                        $col_vals = [];
 
                         for ($i = 0; $i < count($col_labels); $i++) {
                             $val = isset($r[$i]) ? mb_convert_encoding(trim($r[$i]), 'UTF-8') : '';
@@ -799,7 +799,7 @@ class Databases extends Plugin
                         }
                     }
 
-                    $table['header'][] = array('sTitle' => $label, 'sClass' => $dd[$i]['align']);
+                    $table['header'][] = ['sTitle' => $label, 'sClass' => $dd[$i]['align']];
                     $dd[$i]['label'] = $label;
                     $dd[$i]['idx'] = $i;
                 }
@@ -809,7 +809,7 @@ class Databases extends Plugin
             $table['rec_total'] = $count;
             $table['rec_display'] = $display_count;
 
-            echo json_encode(array('status' => 'success', 'data' => $table));
+            echo json_encode(['status' => 'success', 'data' => $table]);
         }
     }
 
@@ -899,13 +899,13 @@ class Databases extends Plugin
         $d = json_decode($dd, true);
 
         $db = $this->get_ds_db($this->model->get('id'));
-        $table = array();
+        $table = [];
 
         // Add new or Recreate
         $recreate = ($db_id != '') ? true : false;
 
         if (!$file) {
-            echo json_encode(array('status' => 'failed', 'msg' => Lang::txt('PLG_PROJECTS_DATABASES_INVALID_FILE')));
+            echo json_encode(['status' => 'failed', 'msg' => Lang::txt('PLG_PROJECTS_DATABASES_INVALID_FILE')]);
             return;
         }
 
@@ -940,7 +940,7 @@ class Databases extends Plugin
             $repoReal === false || $targetReal === false
             || strpos($targetReal, $repoReal . DS) !== 0
         ) {
-            echo json_encode(array('status' => 'failed', 'msg' => Lang::txt('PLG_PROJECTS_DATABASES_INVALID_FILE')));
+            echo json_encode(['status' => 'failed', 'msg' => Lang::txt('PLG_PROJECTS_DATABASES_INVALID_FILE')]);
             return;
         }
 
@@ -961,7 +961,7 @@ class Databases extends Plugin
                 $col_labels = fgetcsv($handle);
             }
 
-            $dd = array();
+            $dd = [];
 
             for ($i = 0; $i < count($col_labels); $i++) {
                 $label = trim($col_labels[$i]);
@@ -1020,10 +1020,10 @@ class Databases extends Plugin
             $db->query();
 
             $count = 0;
-            $vals = array();
+            $vals = [];
 
             while ($r = fgetcsv($handle)) {
-                $vals = array();
+                $vals = [];
                 for ($i = 0; $i < count($col_labels); $i++) {
                     $vals[] = (isset($r[$i]) && $r[$i] != '') ? $db->quote(trim($r[$i])) : 'NULL';
                 }
@@ -1110,7 +1110,7 @@ class Databases extends Plugin
         $url = str_replace($_SERVER['SCRIPT_URL'], '', $_SERVER['SCRIPT_URI'])
             . "/projects/" . $this->model->get('alias') . "/databases/";
 
-        echo json_encode(array('status' => 'success', 'data' => $url));
+        echo json_encode(['status' => 'success', 'data' => $url]);
 
         // Success message
         if (!empty($this->_msg)) {
@@ -1146,8 +1146,8 @@ class Databases extends Plugin
             $dir = ($objPD->source_dir != '') ? $objPD->source_dir . DS : '';
             $dd = json_decode($objPD->data_definition, true);
 
-            $header = array();
-            $field_list = array();
+            $header = [];
+            $field_list = [];
             foreach ($dd['cols'] as $field => $prop) {
                 $field_list[] = $field;
 
@@ -1163,7 +1163,7 @@ class Databases extends Plugin
                 );
             }
 
-            $header[2] = array('DATASTART');
+            $header[2] = ['DATASTART'];
 
             $path .= $dir;
 
@@ -1395,7 +1395,7 @@ class Databases extends Plugin
 
         $dd['table'] = $new_table;
 
-        $new_cols = array();
+        $new_cols = [];
         foreach ($dd['cols'] as $col => $prop) {
             $col = explode('.', $col);
             $new_cols[$new_table . '.' . $col[1]] = $prop;
@@ -1485,7 +1485,7 @@ class Databases extends Plugin
 // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function get_ds_db($id)
     {
-        $opt = array();
+        $opt = [];
 
         // Create database if it doesn't exist
         $sql = "CREATE DATABASE IF NOT EXISTS " . 'prj_db_' . $id;

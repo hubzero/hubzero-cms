@@ -21,7 +21,7 @@ class Guard
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_observers = array();
+    protected $_observers = [];
 
     /**
      * The state of the observable object
@@ -37,7 +37,7 @@ class Guard
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_methods = array();
+    protected $_methods = [];
 
     /**
      * The application implementation.
@@ -104,7 +104,7 @@ class Guard
 
             $this->_observers[] = $observer;
             end($this->_observers);
-            $methods = array($observer['event']);
+            $methods = [$observer['event']];
         } else {
             if (!($observer instanceof Guard)) {
                 return;
@@ -129,7 +129,7 @@ class Guard
             $method = strtolower($method);
 
             if (!isset($this->_methods[$method])) {
-                $this->_methods[$method] = array();
+                $this->_methods[$method] = [];
             }
 
             $this->_methods[$method][] = $key;
@@ -177,7 +177,7 @@ class Guard
      * @param   array   $options      Array holding user options.
      * @return  object  Response object with status variable filled in for last plugin or first successful plugin.
      */
-    public function authenticate($credentials, $options = array())
+    public function authenticate($credentials, $options = [])
     {
         // Get plugins
         $plugins = $this->app['plugin']->byType('authentication');
@@ -259,11 +259,11 @@ class Guard
      * @param   array   $options   list of options
      * @return  array   Results of authorisation
      */
-    public function authorise($response, $options = array())
+    public function authorise($response, $options = [])
     {
         // Get plugins in case they haven't been loaded already
         $this->app['plugin']->byType('user');
         $this->app['plugin']->byType('authentication');
-        return $this->app['dispatcher']->trigger('user.onUserAuthorisation', array($response, $options));
+        return $this->app['dispatcher']->trigger('user.onUserAuthorisation', [$response, $options]);
     }
 }

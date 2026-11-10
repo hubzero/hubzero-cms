@@ -119,16 +119,16 @@ class Media extends SiteController
         // Anonymous ticket submission uploads to a temporary (negative) ticket id.
         // Only attachments on a real ticket require a login.
         if ($ticket > 0 && User::isGuest()) {
-            echo json_encode(array('error' => Lang::txt('Must be logged in.')));
+            echo json_encode(['error' => Lang::txt('Must be logged in.')]);
             return;
         }
         // A real ticket may only receive attachments from someone who can act on it
         if (!$this->_mayAttachToTicket($ticket)) {
-            echo json_encode(array('error' => Lang::txt('JERROR_ALERTNOAUTHOR')));
+            echo json_encode(['error' => Lang::txt('JERROR_ALERTNOAUTHOR')]);
             return;
         }
         if (!$ticket) {
-            echo json_encode(array('error' => Lang::txt('COM_SUPPORT_NO_ID'), 'ticket' => $ticket));
+            echo json_encode(['error' => Lang::txt('COM_SUPPORT_NO_ID'), 'ticket' => $ticket]);
             return;
         }
 
@@ -151,12 +151,12 @@ class Media extends SiteController
             $file = $_FILES['qqfile']['name'];
             $size = (int) $_FILES['qqfile']['size'];
         } else {
-            $this->logUploadIssue('no file in request (no qqfile / missing CONTENT_LENGTH)', array(
+            $this->logUploadIssue('no file in request (no qqfile / missing CONTENT_LENGTH)', [
                 'ticket'  => $ticket,
                 'has_get' => isset($_GET['qqfile']) ? 1 : 0,
                 'has_files' => isset($_FILES['qqfile']) ? 1 : 0
-            ));
-            echo json_encode(array('error' => Lang::txt('File not found')));
+            ]);
+            echo json_encode(['error' => Lang::txt('File not found')]);
             return;
         }
 
@@ -164,28 +164,28 @@ class Media extends SiteController
         $path = PATH_APP . DS . trim($this->config->get('webpath', '/site/tickets'), DS) . DS . $ticket;
         if (!is_dir($path)) {
             if (!Filesystem::makeDirectory($path)) {
-                $this->logUploadIssue('could not create upload directory', array('ticket' => $ticket, 'path' => $path));
-                echo json_encode(array('error' => Lang::txt('Error uploading. Unable to create path.')));
+                $this->logUploadIssue('could not create upload directory', ['ticket' => $ticket, 'path' => $path]);
+                echo json_encode(['error' => Lang::txt('Error uploading. Unable to create path.')]);
                 return;
             }
         }
 
         if (!is_writable($path)) {
-            $this->logUploadIssue('upload directory not writable', array('ticket' => $ticket, 'path' => $path));
-            echo json_encode(array('error' => Lang::txt('Server error. Upload directory isn\'t writable.')));
+            $this->logUploadIssue('upload directory not writable', ['ticket' => $ticket, 'path' => $path]);
+            echo json_encode(['error' => Lang::txt('Server error. Upload directory isn\'t writable.')]);
             return;
         }
 
         //check to make sure we have a file and its not too big
         if ($size == 0) {
-            $this->logUploadIssue('reported file size is 0', array('ticket' => $ticket, 'stream' => $stream ? 1 : 0));
-            echo json_encode(array('error' => Lang::txt('File is empty')));
+            $this->logUploadIssue('reported file size is 0', ['ticket' => $ticket, 'stream' => $stream ? 1 : 0]);
+            echo json_encode(['error' => Lang::txt('File is empty')]);
             return;
         }
         if ($size > $sizeLimit) {
-            $this->logUploadIssue('file exceeds size limit', array('ticket' => $ticket, 'size' => $size, 'limit' => $sizeLimit));
+            $this->logUploadIssue('file exceeds size limit', ['ticket' => $ticket, 'size' => $size, 'limit' => $sizeLimit]);
             $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', Number::formatBytes($sizeLimit));
-            echo json_encode(array('error' => Lang::txt('File is too large. Max file upload size is %s', $max)));
+            echo json_encode(['error' => Lang::txt('File is too large. Max file upload size is %s', $max)]);
             return;
         }
 
@@ -209,12 +209,12 @@ class Media extends SiteController
         $allowed = array_values(array_filter(explode(',', $exts)));
 
         if (!in_array(strtolower($ext), $allowed)) {
-            $this->logUploadIssue('extension not in allowed list', array(
+            $this->logUploadIssue('extension not in allowed list', [
                 'ticket' => $ticket,
                 'file'   => $file,
                 'ext'    => ($ext === '' || $ext === null) ? '(none)' : $ext
-            ));
-            echo json_encode(array('error' => Lang::txt('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE')));
+            ]);
+            echo json_encode(['error' => Lang::txt('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE')]);
             return;
         }
 
@@ -242,45 +242,45 @@ class Media extends SiteController
             // which let a rejected file fall through and get saved anyway.
             Filesystem::delete($file);
 
-            $this->logUploadIssue('antivirus scan rejected file', array(
+            $this->logUploadIssue('antivirus scan rejected file', [
                 'ticket' => $ticket,
                 'file'   => $filename . '.' . $ext,
                 'size'   => $size
-            ));
+            ]);
 
-            echo json_encode(array(
+            echo json_encode([
                 'success' => false,
                 'error'   => Lang::txt('ATTACHMENT: File rejected because the anti-virus scan failed.')
-            ));
+            ]);
             return;
         }
 
         // Create database entry
         $asset = Attachment::blank();
-        $asset->set(array(
+        $asset->set([
             'id'          => 0,
             'ticket'      => $ticket,
             'comment_id'  => $comment,
             'filename'    => $filename . '.' . $ext,
             'description' => Request::getString('description', '')
-        ));
+        ]);
         if (!$asset->save()) {
-            $this->logUploadIssue('attachment DB record failed to save', array(
+            $this->logUploadIssue('attachment DB record failed to save', [
                 'ticket' => $ticket,
                 'file'   => $filename . '.' . $ext,
                 'error'  => $asset->getError()
-            ));
-            echo json_encode(array(
+            ]);
+            echo json_encode([
                 'success' => false,
                 'error'   => $asset->getError()
-            ));
+            ]);
             return;
         }
 
-        $view = new View(array(
+        $view = new View([
             'name'   => 'media',
             'layout' => '_asset'
-        ));
+        ]);
         $view->set('option', $this->_option);
         $view->set('controller', $this->_controller);
         $view->asset      = $asset;
@@ -313,14 +313,14 @@ class Media extends SiteController
         }
 
         // echo result
-        echo json_encode(array(
+        echo json_encode([
             'success'    => true,
             'file'       => $filename . '.' . $ext,
             'directory'  => str_replace(PATH_APP, '', $path),
             'ticket'     => $ticket,
             'comment_id' => $comment,
             'html'       => str_replace('>', '&gt;', $view->loadTemplate()) // Entities have to be encoded or IE 8 goes nuts
-        ));
+        ]);
     }
 
     /**
@@ -359,7 +359,7 @@ class Media extends SiteController
         }
 
         // Incoming file
-        $file = Request::getArray('upload', array(), 'files');
+        $file = Request::getArray('upload', [], 'files');
         if (empty($file) || !$file['name']) {
             $this->setError(Lang::txt('COM_SUPPORT_NO_FILE'));
             return $this->displayTask();
@@ -406,11 +406,11 @@ class Media extends SiteController
         $allowed = array_values(array_filter(explode(',', $exts)));
 
         if (!in_array(strtolower($ext), $allowed)) {
-            $this->logUploadIssue('extension not in allowed list', array(
+            $this->logUploadIssue('extension not in allowed list', [
                 'ticket' => $ticket,
                 'file'   => $file['name'],
                 'ext'    => ($ext === '' || $ext === null) ? '(none)' : $ext
-            ));
+            ]);
             $this->setError(Lang::txt('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE'));
             return $this->displayTask();
         }
@@ -429,10 +429,10 @@ class Media extends SiteController
             if (!Filesystem::isSafe($fle)) {
                 Filesystem::delete($fle);
 
-                $this->logUploadIssue('antivirus scan rejected file', array(
+                $this->logUploadIssue('antivirus scan rejected file', [
                     'ticket' => $ticket,
                     'file'   => $filename
-                ));
+                ]);
 
                 $this->setError(Lang::txt('ATTACHMENT: File rejected because the anti-virus scan failed.'));
                 echo $this->getError();
@@ -441,13 +441,13 @@ class Media extends SiteController
 
             // Create database entry
             $asset = Attachment::blank();
-            $asset->set(array(
+            $asset->set([
                 'id'          => 0,
                 'ticket'      => $ticket,
                 'comment_id'  => $comment,
                 'filename'    => $filename,
                 'description' => Request::getString('description', '')
-            ));
+            ]);
 
             if (!$asset->save()) {
                 $this->setError($asset->getError());
@@ -511,28 +511,28 @@ class Media extends SiteController
             // Temporary attachments (ticket <= 0) belong to a not-yet-submitted,
             // possibly anonymous, ticket. Real tickets need a login and ownership.
             if ($model->get('ticket') > 0 && User::isGuest()) {
-                echo json_encode(array('success' => false, 'error' => Lang::txt('Must be logged in.')));
+                echo json_encode(['success' => false, 'error' => Lang::txt('Must be logged in.')]);
                 return;
             }
             if (!$this->_mayManageAttachment($model)) {
-                echo json_encode(array('success' => false, 'error' => Lang::txt('JERROR_ALERTNOAUTHOR')));
+                echo json_encode(['success' => false, 'error' => Lang::txt('JERROR_ALERTNOAUTHOR')]);
                 return;
             }
 
             if (!$model->destroy()) {
-                echo json_encode(array(
+                echo json_encode([
                     'success' => false,
                     'error'   => $model->getError()
-                ));
+                ]);
                 return;
             }
         }
 
         //echo result
-        echo json_encode(array(
+        echo json_encode([
             'success' => true,
             'asset'   => $id
-        ));
+        ]);
     }
 
     /**
@@ -600,14 +600,14 @@ class Media extends SiteController
      * @param   array   $context  Extra key => value context
      * @return  void
      */
-    protected function logUploadIssue($reason, $context = array())
+    protected function logUploadIssue($reason, $context = [])
     {
-        $context = array_merge(array(
+        $context = array_merge([
             'guest'          => User::isGuest() ? 1 : 0,
             'content_length' => isset($_SERVER['CONTENT_LENGTH']) ? $_SERVER['CONTENT_LENGTH'] : '-',
-        ), $context);
+        ], $context);
 
-        $parts = array();
+        $parts = [];
         foreach ($context as $k => $v) {
             $parts[] = $k . '=' . $v;
         }

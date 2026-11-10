@@ -29,11 +29,11 @@ class Rule extends Relational
      *
      * @var array
      **/
-    protected $rules = array(
+    protected $rules = [
         'handler_id' => 'notempty|nonzero',
         'extension'  => 'notempty',
         'quantity'   => 'notempty'
-    );
+    ];
 
     /**
      * Defines the inverse relationship between a handler and a tool

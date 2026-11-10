@@ -13,7 +13,7 @@ use Hubzero\Facades\Route;
 defined('_HZEXEC_') or die();
 
 // build array of positions
-$positions = array();
+$positions = [];
 foreach ($this->modules as $module) {
     if (!in_array($module->get('position'), $positions) && $module->get('position') != '') {
         $positions[] = $module->get('position');
@@ -57,7 +57,7 @@ foreach ($this->modules as $module) {
                         </a>
 
                         <?php
-                            $pages = array();
+                            $pages = [];
                             $menus = $module->menu('list');
                         foreach ($menus as $menu) {
                             $pages[] = $menu->getPageTitle();

@@ -134,7 +134,7 @@ class Checkout extends ComponentController
     {
         $cart = new CurrentCart();
 
-        $errors = array();
+        $errors = [];
 
         $transaction = $cart->liftTransaction();
 
@@ -179,7 +179,7 @@ class Checkout extends ComponentController
             $eulaAccepted = Request::getBool('acceptEula', false, 'post');
 
             if (!$eulaAccepted) {
-                $errors[] = array(Lang::txt('COM_CART_MUST_ACCEPT_EULA'), 'error');
+                $errors[] = [Lang::txt('COM_CART_MUST_ACCEPT_EULA'), 'error'];
             } else {
                 // Save item's meta
                 $itemMeta = new \stdClass();
@@ -240,16 +240,16 @@ class Checkout extends ComponentController
 
         // Add the fields for the SKUs that require special notes
         $items = $transaction->items;
-        $noteFields = array();
+        $noteFields = [];
         foreach ($items as $item) {
             $info = $item['info'];
             if ($info->sCheckoutNotes) {
-                $noteFields[$info->sId] = array(
+                $noteFields[$info->sId] = [
                     'pName' => $info->pName,
                     'sSku' => $info->sSku,
                     'sCheckoutNotes' => $info->sCheckoutNotes,
                     'sCheckoutNotesRequired' => $info->sCheckoutNotesRequired
-                );
+                ];
             }
         }
         $this->view->noteFields = $noteFields;
@@ -262,13 +262,13 @@ class Checkout extends ComponentController
                 $itemNotes = Request::getString('notes-' . $sId, false, 'post');
                 if ($fieldInfo['sCheckoutNotesRequired']) {
                     if (!$itemNotes) {
-                        $errors[] = array(
+                        $errors[] = [
                             Lang::txt(
                                 'Please add Notes/Comments for '
                                 . $fieldInfo['pName'] . ', ' . $fieldInfo['sSku']
                             ),
                             'error'
-                        );
+                        ];
                     }
                 }
 
@@ -324,16 +324,16 @@ class Checkout extends ComponentController
         // initialize address set var
         $addressSet = false;
 
-        $params = $this->getParams(array('action', 'saId'));
+        $params = $this->getParams(['action', 'saId']);
 
-        $errors = array();
+        $errors = [];
 
         if (!empty($params) && !empty($params->action) && !empty($params->saId) && $params->action == 'select') {
             try {
                 $this->selectSavedShippingAddress($params->saId, $cart);
                 $addressSet = true;
             } catch (\Exception $e) {
-                $errors[] = array($e->getMessage(), 'error');
+                $errors[] = [$e->getMessage(), 'error'];
             }
         }
 
@@ -364,7 +364,7 @@ class Checkout extends ComponentController
                 $addressSet = true;
             } else {
                 foreach ($res->errors as $error) {
-                    $errors[] = array($error, 'error');
+                    $errors[] = [$error, 'error'];
                 }
             }
         }
@@ -520,7 +520,7 @@ class Checkout extends ComponentController
 
         if ($selected && $provider) {
             // Do whatever needed to do on the server side
-            $payments = Event::trigger('cart.onSelectedPayment', array($transaction, User::getInstance()));
+            $payments = Event::trigger('cart.onSelectedPayment', [$transaction, User::getInstance()]);
 
             $paymentResponse = false;
             foreach ($payments as $options) {
@@ -542,7 +542,7 @@ class Checkout extends ComponentController
                 ->display();
         } elseif ($submitted && $provider) {
             // Do whatever needed to do on the server side
-            $payments = Event::trigger('cart.onProcessPayment', array($transaction, User::getInstance()));
+            $payments = Event::trigger('cart.onProcessPayment', [$transaction, User::getInstance()]);
 
             $paymentResponse = false;
             foreach ($payments as $options) {

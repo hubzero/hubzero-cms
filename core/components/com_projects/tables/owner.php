@@ -73,7 +73,7 @@ class Owner extends Table
      * @param   array    $filters
      * @return  mixed    False or integer
      */
-    public function countOwners($projectid = null, $filters = array())
+    public function countOwners($projectid = null, $filters = [])
     {
         if ($projectid === null) {
             return false;
@@ -108,12 +108,12 @@ class Owner extends Table
      * @param   array   $groups
      * @return  mixed   False or array
      */
-    public function getInfo($projectid = null, $ids = array(), $groups = array())
+    public function getInfo($projectid = null, $ids = [], $groups = [])
     {
         if ($projectid === null) {
             return false;
         }
-        $info = array();
+        $info = [];
 
         if (count($ids) > 0) {
             $query  = "SELECT DISTINCT  o.*, x.name, x.username, x.picture, g.cn as groupname ";
@@ -164,7 +164,7 @@ class Owner extends Table
         }
         $get = $get_uids ? 'userid' : 'id';
 
-        $ids = array();
+        $ids = [];
         if (is_numeric($projectid)) {
             $query =  "SELECT " . $get . " FROM $this->_tbl WHERE projectid=" . $this->_db->quote($projectid);
             if ($role != 'all') {
@@ -361,7 +361,7 @@ class Owner extends Table
      * @param   array    $exclude
      * @return  object
      */
-    public function getConnected($projectid = null, $service = 'google', $exclude = array())
+    public function getConnected($projectid = null, $service = 'google', $exclude = [])
     {
         if ($projectid === null) {
             return false;
@@ -385,7 +385,7 @@ class Owner extends Table
         $this->_db->setQuery($query);
         $results =  $this->_db->loadObjectList();
 
-        $connected = array();
+        $connected = [];
         foreach ($results as $result) {
             $params = new \Hubzero\Config\Registry($result->params);
             $name   = $params->get($service . '_name', '');
@@ -406,7 +406,7 @@ class Owner extends Table
      * @param   array    $filters
      * @return  object
      */
-    public function getOwners($projectid = null, $filters = array())
+    public function getOwners($projectid = null, $filters = [])
     {
         if ($projectid === null) {
             return false;
@@ -559,12 +559,12 @@ class Owner extends Table
 
         // Does the project include any groups in its team?
         $groups = $this->getProjectGroups($projectid, 'o.groupid, o.native');
-        $array_groups_native = array();
+        $array_groups_native = [];
         $deleted = 0;
         $added = 0;
 
         if ($owned_by_group) {
-            $groups[] = (object) array('groupid' => $owned_by_group, 'native' => 1);
+            $groups[] = (object) ['groupid' => $owned_by_group, 'native' => 1];
         }
 
         if ($groups && count($groups) > 0) {
@@ -599,12 +599,12 @@ class Owner extends Table
             $members = $this->_db->loadObjectList();
 
             // Clean up arrays
-            $array_members = array();
-            $array_owners = array();
-            $array_owneringroups = array();
-            $owners_to_delete = array();
-            $owners_to_add = array();
-            $array_member_groups = array();
+            $array_members = [];
+            $array_owners = [];
+            $array_owneringroups = [];
+            $owners_to_delete = [];
+            $owners_to_add = [];
+            $array_member_groups = [];
 
             // Get all members from all groups
             if (!empty($members)) {
@@ -635,7 +635,7 @@ class Owner extends Table
             // Entire group membership is NOT kept in sync
             // Get members of all groups EXCEPT the the owning gorup
             if ($synced != 1) {
-                $where_groups = array();
+                $where_groups = [];
                 foreach ($groups as $ug) {
                     if ($ug->groupid == $owned_by_group) {
                         continue;
@@ -644,9 +644,9 @@ class Owner extends Table
                     $array_groups_native[$ug->groupid] = $ug->native;
                 }
                 // We need to reset some arrays
-                $members = array();
-                $array_members = array();
-                $array_member_groups = array();
+                $members = [];
+                $array_members = [];
+                $array_member_groups = [];
                 if (!empty($where_groups)) {
                     $query  = "SELECT DISTINCT m.uidNumber, m.gidNumber FROM `#__xgroups_members` AS m WHERE m.gidNumber IN (" . implode(',', $where_groups) . ")";
                     $this->_db->setQuery($query);
@@ -663,7 +663,7 @@ class Owner extends Table
             $owners_to_add = array_unique($owners_to_add);
 
             // Build list of group managers for role assignment
-            $array_group_managers = array();
+            $array_group_managers = [];
             foreach ($groups as $ug) {
                 $grp = \Hubzero\User\Group::getInstance($ug->groupid);
                 if ($grp) {
@@ -752,7 +752,7 @@ class Owner extends Table
      * @param   boolean  $all        if true delete all owners of a project
      * @return  mixed    false if errors, integer - number of deleted members
      */
-    public function removeOwners($projectid = null, $users = array(), $byownerid = 0, $remove = 0, $status = 2, $all = 0)
+    public function removeOwners($projectid = null, $users = [], $byownerid = 0, $remove = 0, $status = 2, $all = 0)
     {
         if ($projectid === null) {
             return false;
@@ -802,7 +802,7 @@ class Owner extends Table
      * @param   integer  $role       new role
      * @return  mixed    false if errors, integer - number of members with role changed
      */
-    public function reassignRole($projectid = null, $users = array(), $byownerid = 0, $role = 0)
+    public function reassignRole($projectid = null, $users = [], $byownerid = 0, $role = 0)
     {
         if ($projectid === null) {
             return false;
@@ -962,9 +962,9 @@ class Owner extends Table
         if ($projectid === null || !intval($projectid)) {
             return false;
         }
-        $owners = array();
+        $owners = [];
         $now = Date::toSql();
-        $added = array();
+        $added = [];
 
         // Individual user added
         if ($userid && is_numeric($userid)) {
@@ -1158,7 +1158,7 @@ class Owner extends Table
      * @param   date    $when
      * @return  mixed
      */
-    public function getTeamStats($exclude = array(), $get = 'total', $when = null)
+    public function getTeamStats($exclude = [], $get = 'total', $when = null)
     {
         if ($get == 'multiusers') {
             $query  = " SELECT DISTINCT p.userid, (SELECT COUNT(*) FROM $this->_tbl
@@ -1258,7 +1258,7 @@ class Owner extends Table
      * @param   boolean  $publicOnly
      * @return  array
      */
-    public function getTopTeamProjects($exclude = array(), $limit = 3, $publicOnly = false)
+    public function getTopTeamProjects($exclude = [], $limit = 3, $publicOnly = false)
     {
         $query  = " SELECT p.id, p.alias, p.title, p.picture, p.private, COUNT(T.id) as team ";
         $query .= " FROM #__projects AS p";

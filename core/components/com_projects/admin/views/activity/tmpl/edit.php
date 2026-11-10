@@ -86,10 +86,10 @@ $invalidMsg = $this->escape(
                         50,
                         15,
                         'field-description',
-                        array(
+                        [
                             'class' => 'required minimal no-footer',
                             'buttons' => false,
-                        )
+                        ]
                     );
                     ?>
                 </div>

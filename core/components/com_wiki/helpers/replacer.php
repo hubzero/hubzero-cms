@@ -23,6 +23,6 @@ class Replacer
      */
     public function cb()
     {
-        return array(&$this, 'replace');
+        return [&$this, 'replace'];
     }
 }

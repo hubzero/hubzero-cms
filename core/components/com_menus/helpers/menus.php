@@ -29,7 +29,7 @@ class Menus
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected static $_filter = array('option', 'view', 'layout');
+    protected static $_filter = ['option', 'view', 'layout'];
 
     /**
      * Gets a list of the actions that can be performed.
@@ -70,7 +70,7 @@ class Menus
 
         // Check if the link is in the form of index.php?...
         if (is_string($request)) {
-            $args = array();
+            $args = [];
             if (strpos($request, 'index.php') === 0) {
                 parse_str(parse_url(htmlspecialchars_decode($request), PHP_URL_QUERY), $args);
             } else {
@@ -122,8 +122,8 @@ class Menus
         $menuType = null,
         $parentId = 0,
         $mode = 0,
-        $published = array(),
-        $languages = array()
+        $published = [],
+        $languages = []
     ) {
         $db = App::get('db');
         $query = $db->getQuery();
@@ -208,10 +208,10 @@ class Menus
             }
 
             // Create a reverse lookup and aggregate the links.
-            $rlu = array();
+            $rlu = [];
             foreach ($menuTypes as &$type) {
                 $rlu[$type->menutype] = &$type;
-                $type->links = array();
+                $type->links = [];
             }
 
             // Loop through the list of menu links.
@@ -238,7 +238,7 @@ class Menus
      */
     public static function getAssociations($pk)
     {
-        $associations = array();
+        $associations = [];
 
         $db = App::get('db');
 

@@ -22,7 +22,7 @@ class Migration20160513140417ComMembers extends Base
      *
      * @var  array
      */
-    public static $moveToProfile = array(
+    public static $moveToProfile = [
         'orgtype',
         'organization',
         'countryresident',
@@ -33,27 +33,27 @@ class Migration20160513140417ComMembers extends Base
         'nativeTribe',
         'phone',
         'orcid'
-    );
+    ];
 
     /**
      * Multi-value Profile fields to move to new profiles table
      *
      * @var  array
      */
-    public static $moveToProfileMulti = array(
+    public static $moveToProfileMulti = [
         'disability',
         'edulevel',
         'hispanic',
         'race',
         'bio'
-    );
+    ];
 
     /**
      * Profile fields to move to users table
      *
      * @var  array
      */
-    public static $moveToUser = array(
+    public static $moveToUser = [
         'mailPreferenceOption' => 'sendMail',
         'usageAgreement' => 'usageAgreement',
         'emailConfirmed' => 'activation',
@@ -62,7 +62,7 @@ class Migration20160513140417ComMembers extends Base
         'homeDirectory' => 'homeDirectory',
         'loginShell' => 'loginShell',
         'ftpShell' => 'ftpShell'
-    );
+    ];
 
     /**
      * Up
@@ -116,7 +116,7 @@ class Migration20160513140417ComMembers extends Base
                     $schema->addColumn('#__user_profiles', 'access')->integer(10)->notNull()->default(0);
                 }
 
-                $fields = array();
+                $fields = [];
                 if ($schema->tableExists('#__user_profile_fields')) {
                     $fields = $this->db->getQuery(true)
                         ->select('*')

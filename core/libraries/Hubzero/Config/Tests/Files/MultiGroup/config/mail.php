@@ -5,7 +5,7 @@
  */
 
 // @codeCoverageIgnoreStart
-return array(
+return [
     'mailer' => 'smtp',
     'mailfrom' => 'noreply@example.com',
     'fromname' => 'Test Hub',
@@ -14,5 +14,5 @@ return array(
     'smtpauth' => '1',
     'smtpuser' => 'mailuser',
     'smtppass' => 'mailpass',
-);
+];
 // @codeCoverageIgnoreEnd

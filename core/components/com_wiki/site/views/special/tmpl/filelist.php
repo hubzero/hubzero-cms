@@ -24,11 +24,11 @@ Pathway::append(
 $database = App::get('db');
 
 $sort = strtolower(Request::getString('sort', 'created'));
-if (!in_array($sort, array('created', 'filename', 'description', 'created_by'))) {
+if (!in_array($sort, ['created', 'filename', 'description', 'created_by'])) {
     $sort = 'created';
 }
 $dir = strtoupper(Request::getString('dir', 'DESC'));
-if (!in_array($dir, array('ASC', 'DESC'))) {
+if (!in_array($dir, ['ASC', 'DESC'])) {
     $dir = 'DESC';
 }
 

@@ -24,10 +24,10 @@ class Anchor
      *
      * @var  array
      */
-    const ENTITY_ALIASES = array(
+    const ENTITY_ALIASES = [
         "\u{05E8}\u{05DC}\u{05DE}" => 'rlm',
         "\u{0631}\u{0644}\u{0645}" => 'rlm'
-    );
+    ];
 
     /**
      * Character references: a named entity, or a decimal or hexadecimal number
@@ -46,7 +46,7 @@ class Anchor
     {
         $id = urlencode(self::decodeReferences(strtr($heading, ' ', '_')));
 
-        return str_replace(array('%3A', '%'), array(':', '.'), $id);
+        return str_replace(['%3A', '%'], [':', '.'], $id);
     }
 
     /**

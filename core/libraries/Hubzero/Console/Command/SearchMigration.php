@@ -41,7 +41,7 @@ class SearchMigration extends Base implements CommandInterface
         $newComponents->save();
         $components = SearchComponent::all();
         if (!$this->arguments->getOpt('all')) {
-            $componentArgs = array();
+            $componentArgs = [];
             if ($this->arguments->getOpt('components')) {
                 $componentArgs = explode(',', $this->arguments->getOpt('components'));
                 $componentArgs = array_map('trim', $componentArgs);

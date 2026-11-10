@@ -125,12 +125,12 @@ class Dataselector extends Base
     public function drawItem($elementId, $manifest, $pub = null, $status = null, $master = null, $viewname = 'freeze')
     {
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => 'freeze',
                 'layout'  => 'dataselector'
-            )
+            ]
         );
 
         // Get attachment type model
@@ -215,12 +215,12 @@ class Dataselector extends Base
         );
 
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => 'blockelement',
                 'layout'  => 'dataselector'
-            )
+            ]
         );
 
         $view->type        = $manifest->params->type;

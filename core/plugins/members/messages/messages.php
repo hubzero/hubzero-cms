@@ -42,7 +42,7 @@ class Messages extends Plugin
     public function &onMembersAreas($user, $member)
     {
         //default areas returned to nothing
-        $areas = array();
+        $areas = [];
 
         //if this is the logged in user show them
         if ($user->get('id') == $member->get('id')) {
@@ -68,10 +68,10 @@ class Messages extends Plugin
     {
         $returnhtml = true;
 
-        $arr = array(
+        $arr = [
             'html' => '',
             'metadata' => ''
-        );
+        ];
 
         // Check if our area is in the array of areas we want to return results for
         if (is_array($areas)) {
@@ -156,7 +156,7 @@ class Messages extends Plugin
                     break;
             }
 
-            $filters = array(
+            $filters = [
                 'limit' => Request::getState(
                     $option . '.plugin.messages.limit',
                     'limit',
@@ -169,9 +169,9 @@ class Messages extends Plugin
                     0,
                     'int'
                 )
-            );
+            ];
 
-            $notifications = array(); //Notify::messages('plg_' . $this->_type . '_' . $this->_name);
+            $notifications = []; //Notify::messages('plg_' . $this->_type . '_' . $this->_name);
 
             $view = $this->view('default', 'default')
                 ->set('option', $option)
@@ -185,11 +185,11 @@ class Messages extends Plugin
         }
 
         //get meta
-        $arr['metadata'] = array();
+        $arr['metadata'] = [];
 
         //get the number of unread messages
         $recipient = \Hubzero\Message\Recipient::blank();
-        $inboxCount = $recipient->getMessagesCount($member->get('id'), array('state' => 0));
+        $inboxCount = $recipient->getMessagesCount($member->get('id'), ['state' => 0]);
         $unreadMessages = $recipient->getUnreadMessagesCount($member->get('id'));
 
         //return total message count
@@ -218,7 +218,7 @@ class Messages extends Plugin
     public function inbox($database, $option, $member)
     {
         // Filters for returning results
-        $filters = array(
+        $filters = [
             'limit' => Request::getState(
                 $option . '.plugin.messages.limit',
                 'limit',
@@ -233,7 +233,7 @@ class Messages extends Plugin
             ),
             'state' => 0,
             'filter' => Request::getString('filter', '')
-        );
+        ];
 
         $filters['filter'] = ($filters['filter'] ? 'com_' . $filters['filter'] : '');
 
@@ -269,7 +269,7 @@ class Messages extends Plugin
     public function archive($database, $option, $member)
     {
         // Filters for returning results
-        $filters = array(
+        $filters = [
             'limit' => Request::getState(
                 $option . '.plugin.messages.limit',
                 'limit',
@@ -284,7 +284,7 @@ class Messages extends Plugin
             ),
             'state' => 1,
             'filter' => Request::getString('filter', '')
-        );
+        ];
 
         $filters['filter'] = ($filters['filter'] ? 'com_' . $filters['filter'] : '');
 
@@ -320,7 +320,7 @@ class Messages extends Plugin
     public function trash($database, $option, $member)
     {
         // Filters for returning results
-        $filters = array(
+        $filters = [
             'limit' => Request::getState(
                 $option . '.plugin.messages.limit',
                 'limit',
@@ -335,7 +335,7 @@ class Messages extends Plugin
             ),
             'state' => 2,
             'filter' => Request::getString('filter', '')
-        );
+        ];
 
         $filters['filter'] = ($filters['filter'] ? 'com_' . $filters['filter'] : '');
 
@@ -371,7 +371,7 @@ class Messages extends Plugin
     public function sent($database, $option, $member)
     {
         // Filters for returning results
-        $filters = array(
+        $filters = [
             'limit' => Request::getState(
                 $option . '.plugin.messages.limit',
                 'limit',
@@ -385,7 +385,7 @@ class Messages extends Plugin
                 'int'
             ),
             'created_by' => $member->get('id')
-        );
+        ];
 
         $recipient = \Hubzero\Message\Message::blank();
 
@@ -429,13 +429,13 @@ class Messages extends Plugin
             return $view->loadTemplate();
         }
 
-        $settings = array();
+        $settings = [];
         foreach ($components as $component) {
-            $settings[$component->get('action')] = array();
+            $settings[$component->get('action')] = [];
         }
 
         // Fetch message methods
-        $notimethods = Event::trigger('xmessage.onMessageMethods', array());
+        $notimethods = Event::trigger('xmessage.onMessageMethods', []);
 
         // A var for storing the default notification method
         $default_method = null;
@@ -464,8 +464,8 @@ class Messages extends Plugin
                     $settings[$key]['ids']['internal'] = 0;
                     $settings[$key]['ids'][$default_method] = 0;
                 } else {
-                    $settings[$key]['methods'] = array();
-                    $settings[$key]['ids'] = array();
+                    $settings[$key]['methods'] = [];
+                    $settings[$key]['ids'] = [];
                 }
             }
         }
@@ -487,10 +487,10 @@ class Messages extends Plugin
     private function create($database, $option, $member)
     {
         // list of message to's
-        $tos = array();
+        $tos = [];
 
         // get members name and id
-        $mbrs = Request::getArray('to', array());
+        $mbrs = Request::getArray('to', []);
         foreach ($mbrs as $mbr) {
             $mem = User::getInstance($mbr);
             $tos[] = $mem->get('name') . ' (' . $mem->get('id') . ')';
@@ -560,7 +560,7 @@ class Messages extends Plugin
     {
         $limit = Request::getInt('limit', Config::get('list_limit'));
         $start = Request::getInt('limitstart', 0);
-        $mids = Request::getArray('mid', array());
+        $mids = Request::getArray('mid', []);
 
         if (count($mids) > 0) {
             // Check for request forgeries
@@ -621,7 +621,7 @@ class Messages extends Plugin
     {
         $limit = Request::getInt('limit', Config::get('list_limit'));
         $start = Request::getInt('limitstart', 0);
-        $mids = Request::getArray('mid', array());
+        $mids = Request::getArray('mid', []);
 
         if (count($mids) > 0) {
             // Check for request forgeries
@@ -676,7 +676,7 @@ class Messages extends Plugin
     {
         $limit = Request::getInt('limit', Config::get('list_limit'));
         $start = Request::getInt('limitstart', 0);
-        $mids = Request::getArray('mid', array());
+        $mids = Request::getArray('mid', []);
 
         if (count($mids) > 0) {
             // Check for request forgeries
@@ -756,7 +756,7 @@ class Messages extends Plugin
     {
         $limit = Request::getInt('limit', Config::get('list_limit'));
         $start = Request::getInt('limitstart', 0);
-        $mids = Request::getArray('mid', array());
+        $mids = Request::getArray('mid', []);
 
         if (count($mids) > 0) {
             // Check for request forgeries
@@ -805,7 +805,7 @@ class Messages extends Plugin
     {
         $limit = Request::getInt('limit', Config::get('list_limit'));
         $start = Request::getInt('limitstart', 0);
-        $ids = Request::getArray('mid', array());
+        $ids = Request::getArray('mid', []);
 
         if (count($ids) > 0) {
             // Check for request forgeries
@@ -855,7 +855,7 @@ class Messages extends Plugin
     {
         $limit = Request::getInt('limit', Config::get('list_limit'));
         $start = Request::getInt('limitstart', 0);
-        $ids = Request::getArray('mid', array());
+        $ids = Request::getArray('mid', []);
 
         if (count($ids) > 0) {
             // Check for request forgeries
@@ -904,8 +904,8 @@ class Messages extends Plugin
 
         // Incoming
         //$override = Request::getInt('override', 0);
-        $settings = Request::getArray('settings', array());
-        $ids = Request::getArray('ids', array());
+        $settings = Request::getArray('settings', []);
+        $ids = Request::getArray('ids', []);
 
         // Ensure we have data to work with
         if ($settings && count($settings) > 0) {
@@ -1016,7 +1016,7 @@ class Messages extends Plugin
         $mbrs = array_map("trim", explode(',', Request::getString('mbrs', '', 'post')));
 
         //array to hold members
-        $email_users = array();
+        $email_users = [];
 
         foreach ($mbrs as $mbr) {
             // User ID
@@ -1059,21 +1059,21 @@ class Messages extends Plugin
         }
 
         // Build the "from" data for the e-mail
-        $from = array();
+        $from = [];
         $from['name'] = $member->get('name');
         $from['email'] = $member->get('email');
 
         if (
             !Event::trigger(
                 'xmessage.onSendMessage',
-                array(
+                [
                 'member_message',
                 $subject,
                 $message,
                 $from,
                 $email_users,
                 $option
-                )
+                ]
             )
         ) {
             $this->setError(Lang::txt('PLG_MEMBERS_MESSAGES_ERROR_MSG_USER_FAILED'));
@@ -1097,7 +1097,7 @@ class Messages extends Plugin
      * @param  array  $ids         Option IDs
      * @return string
      */
-    public static function selectMethod($notimethods, $name, $values = array(), $ids = array())
+    public static function selectMethod($notimethods, $name, $values = [], $ids = [])
     {
         $out = '';
         $i = 0;

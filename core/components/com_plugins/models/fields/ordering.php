@@ -33,7 +33,7 @@ class Ordering extends Field
     protected function getInput()
     {
         // Initialize variables.
-        $html = array();
+        $html = [];
         $attr = '';
 
         // Initialize some field attributes.
@@ -78,7 +78,7 @@ class Ordering extends Field
     public static function genericordering($sql, $chop = '30')
     {
         $db = App::get('db');
-        $options = array();
+        $options = [];
         $db->setQuery($sql);
 
         $items = $db->loadObjectList();
@@ -130,7 +130,7 @@ class Ordering extends Field
 
         if (empty($neworder)) {
             $orders = self::genericordering($query);
-            $opts = array('list.attr' => $attribs, 'list.select' => (int) $selected);
+            $opts = ['list.attr' => $attribs, 'list.select' => (int) $selected];
             $html = Html::select('genericlist', $orders, $name, $opts);
         } else {
             if ($neworder > 0) {

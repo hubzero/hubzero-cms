@@ -111,16 +111,16 @@ class Resources extends SiteController
             // Get custom areas, add wrapper tags, and compile into fulltxt
             $type = $row->type;
 
-            $elements = new \Components\Resources\Models\Elements(array(), $type->customFields);
+            $elements = new \Components\Resources\Models\Elements([], $type->customFields);
             $schema = $elements->getSchema();
 
-            $fields = array();
+            $fields = [];
             foreach ($schema->fields as $field) {
                 $fields[$field->name] = $field;
             }
 
-            $nbtag = Request::getArray('nbtag', array());
-            $found = array();
+            $nbtag = Request::getArray('nbtag', []);
+            $found = [];
             foreach ($nbtag as $tagname => $tagcontent) {
                 $f = '';
 
@@ -190,7 +190,7 @@ class Resources extends SiteController
 
         // get authors
         $objA = new \Components\Tools\Tables\Author($this->database);
-        $authors = ($version == 'current') ? $objA->getToolAuthors($version, $row->id, $status['toolname']) : array();
+        $authors = ($version == 'current') ? $objA->getToolAuthors($version, $row->id, $status['toolname']) : [];
 
         // Tags
         $tags  = Request::getString('tags', '', 'post');
@@ -239,9 +239,9 @@ class Resources extends SiteController
 
         // Get all the tags on this resource
         $tags_men = $tagcloud->tags();
-        $mytagarray = array();
-        $fas = array($tagfa1, $tagfa2, $tagfa3, $tagfa4, $tagfa5, $tagfa6, $tagfa7, $tagfa8, $tagfa9, $tagfa10);
-        $fats = array();
+        $mytagarray = [];
+        $fas = [$tagfa1, $tagfa2, $tagfa3, $tagfa4, $tagfa5, $tagfa6, $tagfa7, $tagfa8, $tagfa9, $tagfa10];
+        $fats = [];
         if ($fa1) {
             $fats[$fa1] = $tagfa1;
         }
@@ -331,7 +331,7 @@ class Resources extends SiteController
      * @param   integer  $newtool    Updating for a new tool?
      * @return  boolean  True if no errors
      */
-    public function updatePage($rid, $status = array(), $published = 0, $newtool = 0)
+    public function updatePage($rid, $status = [], $published = 0, $newtool = 0)
     {
         if ($rid === null) {
             return false;
@@ -463,7 +463,7 @@ class Resources extends SiteController
             // Get the groups the user has access to
             $usersgroups = $this->_getUsersGroups($xgroups);
         } else {
-            $usersgroups = array();
+            $usersgroups = [];
         }
 
         // Get updated version
@@ -544,7 +544,7 @@ class Resources extends SiteController
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function _getUsersGroups($groups)
     {
-        $arr = array();
+        $arr = [];
         if (!empty($groups)) {
             foreach ($groups as $group) {
                 if ($group->regconfirmed) {

@@ -45,9 +45,9 @@ class Cluster extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'resid' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Return a formatted timestamp for timestamp date

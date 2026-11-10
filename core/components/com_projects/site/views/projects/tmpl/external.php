@@ -103,7 +103,7 @@ $this->css('theme' . $theme . '.css');
                         <?php } ?>
             <?php
             // Side blocks from plugins?
-            $sections = Event::trigger('projects.onProjectPublicList', array($this->model));
+            $sections = Event::trigger('projects.onProjectPublicList', [$this->model]);
 
             if (!empty($sections)) {
                 foreach ($sections as $section) {

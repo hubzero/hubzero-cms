@@ -25,7 +25,7 @@ class Migration20151006204314Core extends Base
 
         if (is_dir(PATH_APP . DS . 'migrations') && $schema->tableExists('#__migrations')) {
             // Get any migrations that have been moved to app
-            $exclude = array(".", "..", "index.html");
+            $exclude = [".", "..", "index.html"];
             $files   = array_diff(scandir(PATH_APP . DS . 'migrations'), $exclude);
 
             if ($files && count($files) > 0) {

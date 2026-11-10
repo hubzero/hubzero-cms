@@ -23,7 +23,7 @@ class Migration20261013000000ComMassmailPostfixUtc extends Base
      **/
     public function up()
     {
-        foreach (array('#__massmail_postfix_hourly', '#__massmail_postfix_daily') as $table) {
+        foreach (['#__massmail_postfix_hourly', '#__massmail_postfix_daily'] as $table) {
             if ($this->db->tableExists($table)) {
                 $this->db->setQuery("TRUNCATE TABLE `$table`;");
                 $this->db->query();

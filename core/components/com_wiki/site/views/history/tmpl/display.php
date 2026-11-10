@@ -115,7 +115,7 @@ $revisions = $this->page->versions()
                         $cls = 'even';
                         $total = $revisions->count();
 
-                        $lengths = array();
+                        $lengths = [];
                         foreach ($revisions as $revision) {
                             $lengths[] = $revision->get('length');
                         }

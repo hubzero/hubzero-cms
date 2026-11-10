@@ -22,11 +22,11 @@ abstract class EnGBLocalise
     public static function getPluralSuffixes($count)
     {
         if ($count == 0) {
-            $return =  array('0');
+            $return =  ['0'];
         } elseif ($count == 1) {
-            $return =  array('1');
+            $return =  ['1'];
         } else {
-            $return = array('MORE');
+            $return = ['MORE'];
         }
         return $return;
     }
@@ -38,11 +38,11 @@ abstract class EnGBLocalise
      */
     public static function getIgnoredSearchWords()
     {
-        $search_ignore = array(
+        $search_ignore = [
             'and',
             'in',
             'on'
-        );
+        ];
 
         return $search_ignore;
     }

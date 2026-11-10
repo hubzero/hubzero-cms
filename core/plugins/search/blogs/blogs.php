@@ -40,7 +40,7 @@ class Blogs extends Plugin
 
         $terms = $request->get_term_ar();
         $weight = '(match(be.title, be.content) against (\'' . join(' ', $terms['stemmed']) . '\'))';
-        $addtl_where = array();
+        $addtl_where = [];
         foreach ($terms['mandatory'] as $mand) {
             $addtl_where[] = "(be.title LIKE '%$mand%' OR be.content LIKE '%$mand%')";
         }
@@ -84,7 +84,7 @@ class Blogs extends Plugin
             return;
         }
 
-        $id_map = array();
+        $id_map = [];
         foreach ($rows as $idx => $row) {
             $id_map[$row->get('id')] = $idx;
         }
@@ -228,7 +228,7 @@ class Blogs extends Plugin
                 $record->hubtype = $type;
                 $record->title = $title;
                 $record->description = $description;
-                $record->author = array($author);
+                $record->author = [$author];
                 $record->tags = $tags;
                 $record->path = $path;
                 $record->access_level = $access_level;

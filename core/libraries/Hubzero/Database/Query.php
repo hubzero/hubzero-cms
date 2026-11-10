@@ -170,7 +170,7 @@ class Query
      *
      * @var  array
      **/
-    private $select = array(
+    private $select = [
         'select',
         'from',
         'join',
@@ -180,56 +180,56 @@ class Query
         'union',
         'order',
         'limit'
-    );
+    ];
 
     /**
      * The elements of a basic insert statement
      *
      * @var  array
      **/
-    private $insert = array(
+    private $insert = [
         'insert',
         'values'
-    );
+    ];
 
     /**
      * The elements of a basic update statement
      *
      * @var  array
      **/
-    private $update = array(
+    private $update = [
         'update',
         'set',
         'where'
-    );
+    ];
 
     /**
      * The elements of a basic delete statement
      *
      * @var  array
      **/
-    private $delete = array(
+    private $delete = [
         'delete',
         'where'
-    );
+    ];
 
     /**
      * The elements of an upsert statement
      *
      * @var  array
      **/
-    private $upsert = array(
+    private $upsert = [
         'upsert'
-    );
+    ];
 
     /**
      * The elements of an insertMany (bulk insert) statement
      *
      * @var  array
      **/
-    private $insertMany = array(
+    private $insertMany = [
         'insertMany'
-    );
+    ];
 
     /**
      * The query type to be performed
@@ -5123,7 +5123,7 @@ class Query
         // Clear bindings before building to prevent duplicates when buildQuery is called multiple times
         $this->syntax->clearBindings();
 
-        $pieces = array();
+        $pieces = [];
 
         // Loop through query elements
         foreach ($this->$type as $piece) {

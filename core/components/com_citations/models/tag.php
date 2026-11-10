@@ -43,20 +43,20 @@ class Tag extends Relational
      *
      * @var array
      **/
-    protected $rules = array(
+    protected $rules = [
         //'name'    => 'notempty',
         //'liaison' => 'notempty'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var array
      **/
-    public $always = array(
+    public $always = [
         //'name_normalized',
         //'asset_id'
-    );
+    ];
 
 
     /**

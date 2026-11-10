@@ -21,21 +21,21 @@ class Manager
      *
      * @var  array
      */
-    protected $setup = array();
+    protected $setup = [];
 
     /**
      * The array of created "loggers".
      *
      * @var  array
      */
-    protected $loggers = array();
+    protected $loggers = [];
 
     /**
      * The default config values
      *
      * @var  array
      */
-    protected $defaults = array(
+    protected $defaults = [
         'path'        => '',
         'file'        => '',
         'format'      => '',
@@ -43,7 +43,7 @@ class Manager
         'dateFormat'  => 'Y-m-d H:i:s',
         'permissions' => 0640,
         'dispatcher'  => null
-    );
+    ];
 
     /**
      * Create a new manager instance.
@@ -171,6 +171,6 @@ class Manager
      */
     public function __call($method, $parameters)
     {
-        return call_user_func_array(array($this->logger(), $method), $parameters);
+        return call_user_func_array([$this->logger(), $method], $parameters);
     }
 }

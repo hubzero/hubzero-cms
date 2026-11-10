@@ -25,7 +25,7 @@ $on = ($google['on'] || $dropbox['on']) ? 1 : 0;
 $creator = ($this->model->access('owner')) ? 1 : 0;
 
 $limited = $this->params->get('connectedProjects') ?
-\Components\Projects\Helpers\Html::getParamArray($this->params->get('connectedProjects')) : array();
+\Components\Projects\Helpers\Html::getParamArray($this->params->get('connectedProjects')) : [];
 
 $authorized = (empty($limited) || (!empty($limited) && in_array($this->model->get('alias'), $limited))) ? true : false;
 

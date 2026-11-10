@@ -61,9 +61,9 @@ class Todo extends Table
      * @param   integer  $id
      * @return  mixed    integer or null
      */
-    public function getTodos($projectid = null, $filters = array(), $id = 0)
+    public function getTodos($projectid = null, $filters = [], $id = 0)
     {
-        $projects = isset($filters['projects']) ? $filters['projects'] : array($projectid);
+        $projects = isset($filters['projects']) ? $filters['projects'] : [$projectid];
 
         if (empty($projects)) {
             return false;
@@ -159,7 +159,7 @@ class Todo extends Table
      * @param   array    $filters
      * @return  mixed    object or null
      */
-    public function getTodoLists($projectid = null, $filters = array())
+    public function getTodoLists($projectid = null, $filters = [])
     {
         if ($projectid == null) {
             return false;

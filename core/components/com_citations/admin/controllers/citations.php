@@ -53,7 +53,7 @@ class Citations extends AdminController
      */
     public function displayTask()
     {
-        $filters = array(
+        $filters = [
             // Get filters
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
@@ -70,13 +70,13 @@ class Citations extends AdminController
                 'search',
                 ''
             )),
-            'published' => array(0, 1),
+            'published' => [0, 1],
             'scope' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.scope',
                 'scope',
                 'all'
             ))
-        );
+        ];
 
         // Get records
         $rows = Citation::getFilteredRecords($filters)
@@ -110,7 +110,7 @@ class Citations extends AdminController
 
         if (!($row instanceof Citation)) {
             // Get request vars - expecting an array id[]=4232
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id) && !empty($id)) {
                 $id = $id[0];
             }
@@ -120,7 +120,7 @@ class Citations extends AdminController
 
         //if we have an id load that citation data
         if (!$row->isNew()) {
-            $assocs = array();
+            $assocs = [];
             foreach ($row->associations as $assoc) {
                 $assocs[] = $assoc;
             }
@@ -141,14 +141,14 @@ class Citations extends AdminController
             $row->set('uid', User::get('id'));
 
             // It's new - no associations to get
-            $assocs = array();
+            $assocs = [];
 
             // Array of sponsors - empty
-            $row_sponsors = array();
+            $row_sponsors = [];
 
             // Empty tags and badges arrays
-            $tags = array();
-            $badges = array();
+            $tags = [];
+            $badges = [];
 
             // Empty params object
             $params = new Registry('');
@@ -197,8 +197,8 @@ class Citations extends AdminController
         $state = $this->getTask() == 'publish' ? 1 : 0;
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $success = 0;
         foreach ($ids as $id) {
@@ -241,8 +241,8 @@ class Citations extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $success = 0;
         foreach ($ids as $id) {
@@ -282,8 +282,8 @@ class Citations extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $success = 0;
         foreach ($ids as $id) {
@@ -316,10 +316,10 @@ class Citations extends AdminController
      */
     public function statsTask()
     {
-        $filters = array(
+        $filters = [
             'scope'     => 'all',
-            'published' => array(0, 1)
-        );
+            'published' => [0, 1]
+        ];
 
         $stats = Citation::getYearlyStats($filters);
 
@@ -348,17 +348,17 @@ class Citations extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $citation = array_map('trim', Request::getArray('citation', array(), 'post'));
+        $citation = array_map('trim', Request::getArray('citation', [], 'post'));
         $exclude  = Request::getString('exclude', '', 'post');
         $rollover = Request::getInt("rollover", 0);
         $this->tags = Request::getString('tags', '');
         $this->badges = Request::getString('badges', '');
-        $this->sponsors = array_filter(Request::getArray('sponsors', array(), 'post'));
+        $this->sponsors = array_filter(Request::getArray('sponsors', [], 'post'));
         $citationId = !empty($citation['id']) ? $citation['id'] : null;
         unset($citation['id']);
 
         // Blank date fields post ''; strict SQL mode rejects '' for a datetime, so store NULL
-        foreach (array('created', 'date_submit', 'date_accept', 'date_publish') as $datefield) {
+        foreach (['created', 'date_submit', 'date_accept', 'date_publish'] as $datefield) {
             if (isset($citation[$datefield]) && $citation[$datefield] === '') {
                 $citation[$datefield] = null;
             }
@@ -388,8 +388,8 @@ class Citations extends AdminController
         $row->set('params', $cparams->toString());
 
         // Incoming associations
-        $assocParams = Request::getArray('assocs', array(), 'post');
-        $associations = array();
+        $assocParams = Request::getArray('assocs', [], 'post');
+        $associations = [];
         foreach ($assocParams as $assoc) {
             $assoc = array_map('trim', $assoc);
             $assocId = !empty($assoc['id']) ? $assoc['id'] : null;
@@ -408,7 +408,7 @@ class Citations extends AdminController
 
         // Trigger before save event
         $isNew  = $row->isNew();
-        $result = Event::trigger('onCitationBeforeSave', array(&$row, $isNew));
+        $result = Event::trigger('onCitationBeforeSave', [&$row, $isNew]);
 
         if (in_array(false, $result, true)) {
             Notify::error($row->getError());
@@ -428,7 +428,7 @@ class Citations extends AdminController
         $row->updateTags($this->badges, 'badge');
 
         // Trigger after save event
-        Event::trigger('onCitationAfterSave', array(&$row, $isNew));
+        Event::trigger('onCitationAfterSave', [&$row, $isNew]);
 
         Notify::success(Lang::txt('CITATION_SAVED', $row->id));
 
@@ -451,8 +451,8 @@ class Citations extends AdminController
         }
 
         // Incoming (we're expecting an array)
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $removed = 0;
 
@@ -466,7 +466,7 @@ class Citations extends AdminController
             }
 
             // Trigger before delete event
-            Event::trigger('onCitationAfterDelete', array($id));
+            Event::trigger('onCitationAfterDelete', [$id]);
 
             $removed++;
         }

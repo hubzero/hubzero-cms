@@ -2737,14 +2737,14 @@ class Migration20130924000005Core extends Base
                 ->loadObjectList();
 
             // Build list of extensions to exclude (i.e. they're no longer in the core)
-            $excludes = array(
+            $excludes = [
                 'com_sef',
                 'com_userpoints',
                 'com_hub',
                 'com_storefront',
                 'com_contribute',
                 'com_contribtool'
-            );
+            ];
 
             foreach ($results as $r) {
                 // See if we want to ignore the entry
@@ -2794,7 +2794,7 @@ class Migration20130924000005Core extends Base
             }
 
             // Look for any components we missed...(frontend?)
-            $components = array_diff(scandir(PATH_CORE . DS . 'components'), array(".", ".."));
+            $components = array_diff(scandir(PATH_CORE . DS . 'components'), [".", ".."]);
             foreach ($components as $c) {
                 if (!is_dir(PATH_CORE . DS . 'components' . DS . $c . DS . 'site')) {
                     continue;
@@ -2834,7 +2834,7 @@ class Migration20130924000005Core extends Base
             }
 
             // Look for any components we missed...(backend?)
-            $components = array_diff(scandir(PATH_CORE . DS . 'components'), array(".", ".."));
+            $components = array_diff(scandir(PATH_CORE . DS . 'components'), [".", ".."]);
             foreach ($components as $c) {
                 if (!is_dir(PATH_CORE . DS . 'components' . DS . $c . DS . 'admin')) {
                     continue;
@@ -2924,7 +2924,7 @@ class Migration20130924000005Core extends Base
             }
 
             // Migrate modules (site)
-            $modules = array_diff(scandir(PATH_CORE . DS . 'modules'), array(".", ".."));
+            $modules = array_diff(scandir(PATH_CORE . DS . 'modules'), [".", ".."]);
             foreach ($modules as $m) {
                 $query = $this->db->getQuery(true)
                     ->select('extension_id')
@@ -2965,7 +2965,7 @@ class Migration20130924000005Core extends Base
 
             // Migrate modules (admin)
             // @TODO: 2.0.0+ we can't differentiate admin modules at filesystem level
-            $modules = array_diff(scandir(PATH_CORE . DS . 'modules'), array(".", ".."));
+            $modules = array_diff(scandir(PATH_CORE . DS . 'modules'), [".", ".."]);
             foreach ($modules as $m) {
                 $query = $this->db->getQuery(true)
                     ->select('extension_id')
@@ -3007,7 +3007,7 @@ class Migration20130924000005Core extends Base
             // Migrate templates
             $templates = array_diff(
                 scandir(PATH_CORE . DS . 'templates'),
-                array(".", "..", "system")
+                [".", "..", "system"]
             );
             foreach ($templates as $t) {
                 $query = $this->db->getQuery(true)
@@ -3052,7 +3052,7 @@ class Migration20130924000005Core extends Base
             // @TODO: 2.0.0+ we can't differentiate admin templates at filesystem level
             $templates = array_diff(
                 scandir(PATH_CORE . DS . 'templates'),
-                array(".", "..", "system")
+                [".", "..", "system"]
             );
             foreach ($templates as $t) {
                 $query = $this->db->getQuery(true)
@@ -3109,7 +3109,7 @@ class Migration20130924000005Core extends Base
                         continue;
                     }
 
-                    $array = array();
+                    $array = [];
                     $ar    = explode("\n", $params);
 
                     foreach ($ar as $a) {

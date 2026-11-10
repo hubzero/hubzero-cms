@@ -162,7 +162,7 @@ class Project extends Model
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         if (is_object($oid)) {
@@ -824,28 +824,28 @@ class Project extends Model
     public function about($as = 'parsed', $shorten = 0)
     {
         $as = strtolower($as);
-        $options = array();
+        $options = [];
 
         switch ($as) {
             case 'parsed':
                 $content = $this->get('about.parsed', null);
 
                 if ($content === null) {
-                    $config = array(
+                    $config = [
                         'option'   => Request::getCmd('option', 'com_projects'),
                         'scope'    => $this->get('alias') . DS . 'notes',
                         'pagename' => 'projects',
                         'pageid'   => $this->get('id'),
                         'filepath' => $this->config('webpath'),
                         'domain'   => $this->get('alias')
-                    );
+                    ];
 
                     $content = (string) stripslashes($this->get('about', ''));
-                    $this->importPlugin('content')->trigger('onContentPrepare', array(
+                    $this->importPlugin('content')->trigger('onContentPrepare', [
                         'com_projects.project.about',
                         &$this,
                         &$config
-                    ));
+                    ]);
 
                     $this->set('about.parsed', (string) $this->get('about', ''));
                     $this->set('about', $content);
@@ -924,7 +924,7 @@ class Project extends Model
 
         // Array of reserved names (task names and default dirs)
         $reserved = explode(',', $this->config('reserved_names'));
-        $tasks    = array('start', 'setup', 'browse',
+        $tasks    = ['start', 'setup', 'browse',
             'intro', 'features', 'deleteimg',
             'reports', 'stats', 'view', 'edit',
             'suspend', 'reinstate', 'fixownership',
@@ -932,7 +932,7 @@ class Project extends Model
             'upload', 'img', 'verify', 'autocomplete',
             'showcount', 'preview', 'auth', 'public',
             'get', 'media'
-        );
+        ];
 
         if ($name) {
             $name = preg_replace('/ /', '', $name);
@@ -980,7 +980,7 @@ class Project extends Model
      */
     public function getGroupProperty($groups, $get = 'cn')
     {
-        $arr = array();
+        $arr = [];
         if (!empty($groups)) {
             foreach ($groups as $group) {
                 if ($group->regconfirmed) {
@@ -1043,7 +1043,7 @@ class Project extends Model
      * @param   boolean  $refresh
      * @return  object
      */
-    public function team($filters = array(), $refresh = false)
+    public function team($filters = [], $refresh = false)
     {
         if (!isset($this->_tblOwner)) {
             $this->_tblOwner = new Tables\Owner($this->_db);
@@ -1111,7 +1111,7 @@ class Project extends Model
      * @param   boolean  $admin    Admin?
      * @return  mixed
      */
-    public function entries($rtrn = 'list', $filters = array(), $admin = false)
+    public function entries($rtrn = 'list', $filters = [], $admin = false)
     {
         $showDeleted = $admin ? true : false;
         $setupComplete = $this->config()->get('confirm_step') ? 3 : 2;
@@ -1165,9 +1165,9 @@ class Project extends Model
         if ($activity) {
             $refid = $refid ? $refid : $this->get('id');
 
-            $recipients = array(
+            $recipients = [
                 ['user', User::get('id')]
-            );
+            ];
 
             if ($managers_only) {
                 $recipients[] = ['project_managers', $this->get('id')];
@@ -1344,7 +1344,7 @@ class Project extends Model
                 'scope'       => $scope,
                 'scope_id'    => $scope_id,
                 'description' => $activity,
-                'details'     => array(
+                'details'     => [
                     'title'       => $this->get('title'),
                     'url'         => ($url ? $url : Route::url($this->link())),
                     'class'       => $class,
@@ -1353,7 +1353,7 @@ class Project extends Model
                     'admin'       => $admin,
                     'referenceid' => $refid,
                     'projectid'   => $this->get('id')
-                )
+                ]
             ]);
 
             if (!$act->save()) {
@@ -1361,7 +1361,7 @@ class Project extends Model
             }
 
             $aid  = $act->get('id');
-            $sent = array();
+            $sent = [];
 
             // Do we have any recipients?
             foreach ($recipients as $receiver) {
@@ -1387,7 +1387,7 @@ class Project extends Model
 
             // Notify subscribers
             if ($aid && !User::isGuest() && !$this->isProvisioned()) {
-                Event::trigger('projects.onWatch', array($this, $class, array($aid), User::get('id')));
+                Event::trigger('projects.onWatch', [$this, $class, [$aid], User::get('id')]);
             }
             return $aid;
         }
@@ -1573,12 +1573,12 @@ class Project extends Model
 
         // Still no file? Let's use the default
         if (!$src) {
-            $deprecated = array(
+            $deprecated = [
                 'components/com_projects/site/assets/img/project.png',
                 'components/com_projects/assets/img/project.png',
                 'components/com_projects/site/assets/img/projects-large.gif',
                 'components/com_projects/assets/img/projects-large.gif'
-            );
+            ];
 
             $path = trim($this->config()->get('defaultpic', 'components/com_projects/site/assets/img/project.png'), DS);
 

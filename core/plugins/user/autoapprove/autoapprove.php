@@ -46,7 +46,7 @@ class Autoapprove extends Plugin
      * @param   array    $options  array holding options (remember, autoregister, group)
      * @return  boolean  True on success
      */
-    public function onLoginUser($user, $options = array())
+    public function onLoginUser($user, $options = [])
     {
         return $this->onUserLogin($user, $options);
     }
@@ -58,7 +58,7 @@ class Autoapprove extends Plugin
      * @param   array    $options  array holding options (remember, autoregister, group)
      * @return  boolean  True on success
      */
-    public function onUserLogin($user, $options = array())
+    public function onUserLogin($user, $options = [])
     {
         $userArr = User::getInstance()->toArray();
 

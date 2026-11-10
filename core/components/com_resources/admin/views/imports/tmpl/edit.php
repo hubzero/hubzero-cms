@@ -133,9 +133,9 @@ Toolbar::cancel();
             if (!is_object($hooks)) {
                 $hooks = new stdClass();
             }
-                $hooks->postparse   = (isset($hooks->postparse)) ? $hooks->postparse : array();
-                $hooks->postmap     = (isset($hooks->postmap)) ? $hooks->postmap : array();
-                $hooks->postconvert = (isset($hooks->postconvert)) ? $hooks->postconvert : array();
+                $hooks->postparse   = (isset($hooks->postparse)) ? $hooks->postparse : [];
+                $hooks->postmap     = (isset($hooks->postmap)) ? $hooks->postmap : [];
+                $hooks->postconvert = (isset($hooks->postconvert)) ? $hooks->postconvert : [];
             ?>
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELDSET_HOOKS'); ?></span></legend>

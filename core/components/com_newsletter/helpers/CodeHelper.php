@@ -32,10 +32,10 @@ class CodeHelper
 
         // Calculate and compare hash of hub, user, and campaign secrets to passed code:
         $database = App::get('db');
-        $vars = array(
+        $vars = [
                     $campaignId,
                     $username
-                );
+                ];
 
         $sql = "SELECT hash_access_code(?, ?)";
         $database->prepare($sql)->bind($vars)->execute();

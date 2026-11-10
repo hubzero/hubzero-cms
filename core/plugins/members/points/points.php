@@ -35,7 +35,7 @@ class Points extends Plugin
     public function &onMembersAreas($user, $member)
     {
         //default areas returned to nothing
-        $areas = array();
+        $areas = [];
 
         //if this is the logged in user show them
         if ($user->get('id') == $member->get('id')) {
@@ -72,10 +72,10 @@ class Points extends Plugin
             }
         }
 
-        $arr = array(
+        $arr = [
             'html'     => '',
             'metadata' => ''
-        );
+        ];
 
         $database = App::get('db');
         $tables = $database->getTableList();
@@ -108,7 +108,7 @@ class Points extends Plugin
 
         // Build the HTML meant for the "about" tab's metadata overview
         if ($returnmeta) {
-            $arr['metadata'] = array();
+            $arr['metadata'] = [];
 
             $points = $BTL->summary();
 

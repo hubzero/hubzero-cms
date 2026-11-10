@@ -84,7 +84,7 @@ class Browse extends \Hubzero\Component\SiteController
      */
     private function browseCollection($cId)
     {
-        $view = new \Hubzero\Component\View(array('name' => 'browse', 'layout' => 'collection'));
+        $view = new \Hubzero\Component\View(['name' => 'browse', 'layout' => 'collection']);
 
         // Get collection name
         $collection = $this->warehouse->getCollectionInfo($cId);
@@ -92,7 +92,7 @@ class Browse extends \Hubzero\Component\SiteController
 
         // Get the collection products
         $this->warehouse->addLookupCollection($cId);
-        $products = $this->warehouse->getProducts('rows', true, array('sort' => 'title'));
+        $products = $this->warehouse->getProducts('rows', true, ['sort' => 'title']);
 
         $view->cId = $cId;
         $view->collectionName = $collectionName;

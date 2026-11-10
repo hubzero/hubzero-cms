@@ -58,17 +58,17 @@ class Manage extends AdminController
      */
     public function displayTask()
     {
-        $this->view->filters = array(
+        $this->view->filters = [
             // Filters for getting a result count
             'limit'      => 'all',
-            'fields'     => array('COUNT(*)'),
+            'fields'     => ['COUNT(*)'],
             'authorized' => 'admin',
             // Incoming
-            'type'       => array(Request::getState(
+            'type'       => [Request::getState(
                 $this->_option . '.browse.type',
                 'type',
                 'all'
-            )),
+            )],
             'search'     => urldecode(Request::getState(
                 $this->_option . '.browse.search',
                 'search',
@@ -102,22 +102,22 @@ class Manage extends AdminController
             'approved'   => Request::getString('approved'),
             //'published'  => Request::getInt('published', 1),
             'created'    => Request::getString('created', '')
-        );
+        ];
         $this->view->filters['sortby'] = $this->view->filters['sort'] . ' ' . $this->view->filters['sort_Dir'];
 
         $canDo = \Components\Groups\Helpers\Permissions::getActions('group');
         if (!$canDo->get('core.admin')) {
             if ($this->view->filters['type'][0] == 'system' || $this->view->filters['type'][0] == "0" || $this->view->filters['type'][0] == null) {
-                $this->view->filters['type'] = array('all');
+                $this->view->filters['type'] = ['all'];
             }
 
             if ($this->view->filters['type'][0] == 'all') {
-                $this->view->filters['type'] = array(
+                $this->view->filters['type'] = [
                     //0,  No system groups
                     1,  // hub
                     2,  // project
                     3   // super
-                );
+                ];
             }
         }
 
@@ -143,10 +143,10 @@ class Manage extends AdminController
         );
         // In case limit has been changed, adjust limitstart accordingly
         $this->view->filters['start']  = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
-        $this->view->filters['fields'] = array('cn', 'description', 'published', 'gidNumber', 'type');
+        $this->view->filters['fields'] = ['cn', 'description', 'published', 'gidNumber', 'type'];
 
         // Get a list of all groups
-        $this->view->rows = array();
+        $this->view->rows = [];
         if ($this->view->total > 0) {
             if ($rows = Group::find($this->view->filters)) {
                 $this->view->rows = $rows;
@@ -175,7 +175,7 @@ class Manage extends AdminController
         Request::setVar('hidemainmenu', 1);
 
         // Incoming
-        $id = Request::getArray('id', array());
+        $id = Request::getArray('id', []);
 
         // Get the single ID we're working with
         if (is_array($id)) {
@@ -198,7 +198,7 @@ class Manage extends AdminController
             ->order('ordering', 'asc')
             ->rows();
 
-        $customAnswers = array();
+        $customAnswers = [];
         foreach ($customFields as $field) {
             $fieldName = $field->get('name');
             $customAnswers[$fieldName] = $field->collectGroupAnswers($group->get('gidNumber'));
@@ -223,7 +223,7 @@ class Manage extends AdminController
      */
     protected function _multiArrayMap($func, $arr)
     {
-        $newArr = array();
+        $newArr = [];
 
         foreach ($arr as $key => $value) {
             $newArr[$key] = (is_array($value) ? $this->_multiArrayMap($func, $value) : $func($value));
@@ -243,11 +243,11 @@ class Manage extends AdminController
         Request::checkToken();
 
         // Incoming
-        $g = Request::getArray('group', array(), 'post');
+        $g = Request::getArray('group', [], 'post');
         $g = $this->_multiArrayMap('trim', $g);
 
         $customFields = Field::all()->rows();
-        $customFieldForm = Request::getArray('customfields', array());
+        $customFieldForm = Request::getArray('customfields', []);
 
         // Instantiate a Group object
         $group = new Group();
@@ -359,8 +359,8 @@ class Manage extends AdminController
             $group->set('created', Date::toSql());
             $group->set('created_by', User::get('id'));
 
-            $group->add('managers', array(User::get('id')));
-            $group->add('members', array(User::get('id')));
+            $group->add('managers', [User::get('id')]);
+            $group->add('members', [User::get('id')]);
         }
         $group->set('description', $g['description']);
         $group->set('discoverability', $g['discoverability']);
@@ -388,7 +388,7 @@ class Manage extends AdminController
         // create home page
         if ($isNew) {
             // create page
-            $page = new Page(array(
+            $page = new Page([
                 'gidNumber' => $group->get('gidNumber'),
                 'parent'    => 0,
                 'lft'       => 1,
@@ -399,30 +399,30 @@ class Manage extends AdminController
                 'state'     => 1,
                 'privacy'   => 'default',
                 'home'      => 1
-            ));
+            ]);
             $page->store(false);
 
             // create page version
-            $version = new Page\Version(array(
+            $version = new Page\Version([
                 'pageid'     => $page->get('id'),
                 'version'    => 1,
                 'content'    => "<!-- {FORMAT:HTML} -->\n<p>[[Group.DefaultHomePage()]]</p>",
                 'created'    => Date::of('now')->toSql(),
                 'created_by' => User::get('id'),
                 'approved'   => 1
-            ));
+            ]);
             $version->store(false);
         }
 
         // Get plugins
-        Event::trigger('groups.onGroupAfterSave', array($before, $group));
+        Event::trigger('groups.onGroupAfterSave', [$before, $group]);
 
         // log edit
-        Log::log(array(
+        Log::log([
             'gidNumber' => $group->get('gidNumber'),
             'action'    => 'group_edited',
             'comments'  => 'edited by administrator'
-        ));
+        ]);
 
         // handle special groups
         if ($group->isSuperGroup()) {
@@ -473,7 +473,7 @@ class Manage extends AdminController
         $db->setQuery($query);
         $template = $db->loadObject();
         if ($template) {
-            foreach (array(PATH_APP, PATH_CORE) as $path) {
+            foreach ([PATH_APP, PATH_CORE] as $path) {
                 if (is_dir($path . DS . 'templates' . DS . $template->template . DS . 'super')) {
                     $srcTplPath = $path . DS . 'templates' . DS . $template->template . DS . 'super';
                     break;
@@ -563,11 +563,11 @@ class Manage extends AdminController
         }
 
         // log super group change
-        Log::log(array(
+        Log::log([
             'gidNumber' => $group->get('gidNumber'),
             'action'    => 'super_group_created',
             'comments'  => ''
-        ));
+        ]);
     }
 
     /**
@@ -602,10 +602,10 @@ class Manage extends AdminController
             Notify::error("Error requesting groups: " . $gitLabGroup['message']);
             return;
         } elseif (empty($gitLabGroup)) {
-            $gitLabGroup = $client->createGroup(array(
+            $gitLabGroup = $client->createGroup([
                 'name' => $groupName,
                 'path' => $groupName
-            ));
+            ]);
             // Possible error check here
         } elseif (count($gitLabGroup) > 1) {  // If search returns more than one match, return with error.
             Notify::error(Lang::txt('COM_GROUPS_GITLAB_GET_GROUPS_MORE_THAN_ONE') . $groupName);
@@ -626,7 +626,7 @@ class Manage extends AdminController
             Notify::error("Error requesting projects: " . $gitLabProject['message']);
             return;
         } elseif (empty($gitLabProject)) {
-            $gitLabProject = $client->createProject(array(
+            $gitLabProject = $client->createProject([
                 'namespace_id'           => $gitLabGroup['id'],
                 'name'                   => $projectName,
                 'description'            => $group->get('description'),
@@ -634,7 +634,7 @@ class Manage extends AdminController
                 'merge_requests_enabled' => true,
                 'wiki_enabled'           => true,
                 'snippets_enabled'       => true,
-            ));
+            ]);
             // Possible error check here
         } elseif ($gitLabProject) {  // search result must match hub group name to gitlab project name exactly or create new gitlab project
             foreach ($gitLabProject as $glproj) {
@@ -647,7 +647,7 @@ class Manage extends AdminController
             }
             // create project if doesnt exist
             if (empty($gitLabProject)) {
-                $gitLabProject = $client->createProject(array(
+                $gitLabProject = $client->createProject([
                     'namespace_id'           => $gitLabGroup['id'],
                     'name'                   => $projectName,
                     'description'            => $group->get('description'),
@@ -655,7 +655,7 @@ class Manage extends AdminController
                     'merge_requests_enabled' => true,
                     'wiki_enabled'           => true,
                     'snippets_enabled'       => true,
-                ));
+                ]);
                 // Possible error checking here
             }
         } else {
@@ -690,10 +690,10 @@ class Manage extends AdminController
 
         // protect master branch
         // allows only admins to accept Merge Requests
-        $protected = $client->protectBranch(array(
+        $protected = $client->protectBranch([
             'id'     => $gitLabProject['id'],
             'branch' => 'master'
-        ));
+        ]);
         if (array_key_exists('message', $protected)) {
             Notify::error("Error on branch protection: " . $protected['message']);
             return;
@@ -711,11 +711,11 @@ class Manage extends AdminController
         Request::checkToken();
 
         // Incoming
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
 
         // Get the single ID we're working with
         if (!is_array($ids)) {
-            $ids = array($ids);
+            $ids = [$ids];
         }
 
         // empty list?
@@ -730,8 +730,8 @@ class Manage extends AdminController
         }
 
         // vars to hold results of pull
-        $success = array();
-        $failed  = array();
+        $success = [];
+        $failed  = [];
 
         // loop through each group and pull code from repos
         foreach ($ids as $id) {
@@ -745,7 +745,7 @@ class Manage extends AdminController
 
             // make sure its a super group
             if (!$group->isSuperGroup()) {
-                $failed[] = array('group' => $group->get('cn'), 'message' => Lang::txt('COM_GROUPS_GITLAB_NOT_SUPER_GROUP'));
+                $failed[] = ['group' => $group->get('cn'), 'message' => Lang::txt('COM_GROUPS_GITLAB_NOT_SUPER_GROUP')];
                 continue;
             }
 
@@ -755,7 +755,7 @@ class Manage extends AdminController
             // make sure we have an upload path
             if (!is_dir($uploadPath)) {
                 if (!Filesystem::makeDirectory($uploadPath)) {
-                    $failed[] = array('group' => $group->get('cn'), 'message' => Lang::txt('COM_GROUPS_GITLAB_UPLOAD_PATH_DOESNT_EXIST'));
+                    $failed[] = ['group' => $group->get('cn'), 'message' => Lang::txt('COM_GROUPS_GITLAB_UPLOAD_PATH_DOESNT_EXIST')];
                     continue;
                 }
             }
@@ -765,7 +765,7 @@ class Manage extends AdminController
                 // only do stage setup on stage
                 $environment = strtolower(Config::get('application_env', 'development'));
                 if (substr($environment, 0, 7) != 'staging') {
-                    $failed[] = array('group' => $group->get('cn'), 'message' => Lang::txt('COM_GROUPS_GITLAB_NOT_MANAGED_BY_GIT'));
+                    $failed[] = ['group' => $group->get('cn'), 'message' => Lang::txt('COM_GROUPS_GITLAB_NOT_MANAGED_BY_GIT')];
                     continue;
                 }
 
@@ -785,7 +785,7 @@ class Manage extends AdminController
 
                 // if we didnt get both a matching project & group continue
                 if (!$gitlabGroup || !$gitlabProject) {
-                    $failed[] = array('group' => $group->get('cn'), 'message' => Lang::txt('COM_GROUPS_GITLAB_NOT_MANAGED_BY_GIT'));
+                    $failed[] = ['group' => $group->get('cn'), 'message' => Lang::txt('COM_GROUPS_GITLAB_NOT_MANAGED_BY_GIT')];
                     continue;
                 }
 
@@ -815,7 +815,7 @@ class Manage extends AdminController
             // PHP 8 warning (500) on Fetch. parse_url() leaves 'pass' out
             // when the URL carries no credentials.
             $remote   = explode(" ", (string) $output);
-            $remote   = isset($remote[1]) ? explode("\t", $remote[1]) : array();
+            $remote   = isset($remote[1]) ? explode("\t", $remote[1]) : [];
             $url_bits = isset($remote[1]) ? parse_url($remote[1]) : false;
             $gitLabKey = $client->get('token');
             if (
@@ -845,13 +845,13 @@ class Manage extends AdminController
             // did we succeed
             if ($output == '' || json_last_error() == JSON_ERROR_NONE) {
                 // code is up to date
-                $output = ($output == '') ? array(Lang::txt('COM_GROUPS_FETCH_CODE_UP_TO_DATE')) : $output;
+                $output = ($output == '') ? [Lang::txt('COM_GROUPS_FETCH_CODE_UP_TO_DATE')] : $output;
 
                 // add success message
-                $success[] = array('group' => $group->get('cn'), 'message' => $output);
+                $success[] = ['group' => $group->get('cn'), 'message' => $output];
             } else {
                 // add failed message
-                $failed[] = array('group' => $group->get('cn'), 'message' => $output);
+                $failed[] = ['group' => $group->get('cn'), 'message' => $output];
             }
         }
 
@@ -875,11 +875,11 @@ class Manage extends AdminController
         Request::checkToken();
 
         // Incoming
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
 
         // Get the single ID we're working with
         if (!is_array($ids)) {
-            $ids = array($ids);
+            $ids = [$ids];
         }
 
         // empty list?
@@ -889,8 +889,8 @@ class Manage extends AdminController
         }
 
         // vars to hold results of pull
-        $success = array();
-        $failed  = array();
+        $success = [];
+        $failed  = [];
 
         // loop through each group and pull code from repos
         foreach ($ids as $id) {
@@ -904,10 +904,10 @@ class Manage extends AdminController
 
             // make sure its a super group
             if (!$group->isSuperGroup()) {
-                $failed[] = array(
+                $failed[] = [
                     'group'   => $group->get('cn'),
                     'message' => Lang::txt('COM_GROUPS_GITLAB_NOT_SUPER_GROUP')
-                );
+                ];
                 continue;
             }
 
@@ -917,10 +917,10 @@ class Manage extends AdminController
             // make sure we have an upload path
             if (!is_dir($uploadPath)) {
                 if (!Filesystem::makeDirectory($uploadPath)) {
-                    $failed[] = array(
+                    $failed[] = [
                         'group'   => $group->get('cn'),
                         'message' => Lang::txt('COM_GROUPS_GITLAB_UPLOAD_PATH_DOESNT_EXIST')
-                    );
+                    ];
                     continue;
                 }
             }
@@ -958,16 +958,16 @@ class Manage extends AdminController
             // did we succeed
             if (preg_match("/Updating the repository.../uis", $output)) {
                 // add success message
-                $success[] = array(
+                $success[] = [
                     'group'   => $group->get('cn'),
                     'message' => $output
-                );
+                ];
             } else {
                 // add failed message
-                $failed[] = array(
+                $failed[] = [
                     'group'   => $group->get('cn'),
                     'message' => $output
-                );
+                ];
             }
         }
 
@@ -995,11 +995,11 @@ class Manage extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
 
         // Get the single ID we're working with
         if (!is_array($ids)) {
-            $ids = array($ids);
+            $ids = [$ids];
         }
 
         // Do we have any IDs?
@@ -1045,7 +1045,7 @@ class Manage extends AdminController
 
                 // Trigger the functions that delete associated content
                 // Should return logs of what was deleted
-                $logs = Event::trigger('groups.onGroupDelete', array($group));
+                $logs = Event::trigger('groups.onGroupDelete', [$group]);
                 if (count($logs) > 0) {
                     $log .= implode('', $logs);
                 }
@@ -1057,11 +1057,11 @@ class Manage extends AdminController
                 }
 
                 // log publishing
-                Log::log(array(
+                Log::log([
                     'gidNumber' => $group->get('gidNumber'),
                     'action'    => 'group_deleted',
                     'comments'  => $log
-                ));
+                ]);
             }
 
             Notify::success(Lang::txt('COM_GROUPS_REMOVED'));
@@ -1091,8 +1091,8 @@ class Manage extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Do we have any IDs?
         if (!empty($ids)) {
@@ -1139,14 +1139,14 @@ class Manage extends AdminController
                 $group->update();
 
                 // log publishing
-                Log::log(array(
+                Log::log([
                     'gidNumber' => $group->get('gidNumber'),
                     'action'    => 'group_' . $action,
                     'comments'  => $action . ' by administrator'
-                ));
+                ]);
 
                 // Get plugins
-                Event::trigger('groups.onGroupAfterSave', array($before, $group));
+                Event::trigger('groups.onGroupAfterSave', [$before, $group]);
 
                 $success++;
             }
@@ -1180,11 +1180,11 @@ class Manage extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
 
         // Get the single ID we're working with
         if (!is_array($ids)) {
-            $ids = array($ids);
+            $ids = [$ids];
         }
 
         $i = 0;
@@ -1207,11 +1207,11 @@ class Manage extends AdminController
                 $group->update();
 
                 // log publishing
-                Log::log(array(
+                Log::log([
                     'gidNumber' => $group->get('gidNumber'),
                     'action'    => 'group_approved',
                     'comments'  => 'approved by administrator'
-                ));
+                ]);
 
                 $i++;
             }
@@ -1245,11 +1245,11 @@ class Manage extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
 
         // Get the single ID we're working with
         if (!is_array($ids)) {
-            $ids = array($ids);
+            $ids = [$ids];
         }
 
         $i = 0;
@@ -1272,11 +1272,11 @@ class Manage extends AdminController
                 $group->update();
 
                 // log publishing
-                Log::log(array(
+                Log::log([
                     'gidNumber' => $group->get('gidNumber'),
                     'action'    => 'group_unapproved',
                     'comments'  => 'unapproved by administrator'
-                ));
+                ]);
 
                 $i++;
             }

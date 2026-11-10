@@ -41,8 +41,8 @@ class Report extends Relational
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 }

@@ -44,7 +44,7 @@ class Media extends Base
     public function doajaxuploadTask()
     {
         //allowed extensions for uplaod
-        $allowedExtensions = array('png', 'jpe', 'jpeg', 'jpg', 'gif');
+        $allowedExtensions = ['png', 'jpe', 'jpeg', 'jpg', 'gif'];
 
         //max upload size
         $sizeLimit = $this->config->get('maxAllowed', '40000000');
@@ -59,18 +59,18 @@ class Media extends Base
             $file = $_FILES['qqfile']['name'];
             $size = (int) $_FILES['qqfile']['size'];
         } else {
-            echo json_encode(array('error' => Lang::txt('Please select a file to upload')));
+            echo json_encode(['error' => Lang::txt('Please select a file to upload')]);
             return;
         }
 
         //check to make sure we have a file and its not too big
         if ($size == 0) {
-            echo json_encode(array('error' => Lang::txt('File is empty')));
+            echo json_encode(['error' => Lang::txt('File is empty')]);
             return;
         }
         if ($size > $sizeLimit) {
             $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
-            echo json_encode(array('error' => Lang::txt('File is too large. Max file upload size is ') . $max));
+            echo json_encode(['error' => Lang::txt('File is too large. Max file upload size is ') . $max]);
             return;
         }
 
@@ -80,7 +80,7 @@ class Media extends Base
         $ext      = $pathinfo['extension'] ?? '';
         if ($allowedExtensions && !in_array(strtolower($ext), $allowedExtensions)) {
             $these = implode(', ', $allowedExtensions);
-            echo json_encode(array('error' => Lang::txt('File has an invalid extension, it should be one of ' . $these . '.')));
+            echo json_encode(['error' => Lang::txt('File has an invalid extension, it should be one of ' . $these . '.')]);
             return;
         }
 
@@ -89,13 +89,13 @@ class Media extends Base
 
         // Check project exists
         if (!$this->model->exists()) {
-            echo json_encode(array('error' => Lang::txt('Error loading project')));
+            echo json_encode(['error' => Lang::txt('Error loading project')]);
             return;
         }
 
         // Make sure user is authorized (project manager)
         if (!$this->model->access('manager') && !($this->model->access('content') && $this->config->get('edit_description'))) {
-            echo json_encode(array('error' => Lang::txt('Unauthorized action')));
+            echo json_encode(['error' => Lang::txt('Unauthorized action')]);
             return;
         }
 
@@ -105,7 +105,7 @@ class Media extends Base
 
         if (!is_dir($path)) {
             if (!Filesystem::makeDirectory($path, 0755, true, true)) {
-                echo json_encode(array('error' => Lang::txt('COM_PROJECTS_UNABLE_TO_CREATE_UPLOAD_PATH')));
+                echo json_encode(['error' => Lang::txt('COM_PROJECTS_UNABLE_TO_CREATE_UPLOAD_PATH')]);
                 return;
             }
         }
@@ -124,7 +124,7 @@ class Media extends Base
             fclose($input);
 
             if (Helpers\Html::virusCheck($temp)) {
-                echo json_encode(array('error' => Lang::txt('Virus detected, refusing to upload')));
+                echo json_encode(['error' => Lang::txt('Virus detected, refusing to upload')]);
                 return;
             }
 
@@ -139,7 +139,7 @@ class Media extends Base
 
         // Perform the upload
         if (!is_file($path . DS . $file)) {
-            echo json_encode(array('error' => Lang::txt('COM_PROJECTS_ERROR_UPLOADING')));
+            echo json_encode(['error' => Lang::txt('COM_PROJECTS_ERROR_UPLOADING')]);
             return;
         } else {
             //resize image to max 200px and rotate in case user didnt before uploading
@@ -163,7 +163,7 @@ class Media extends Base
                         // PURR #1186, QUBES #618
                         // Ignore. Let's just move on.
                     } else {
-                        echo json_encode(array('error' => $e->getMessage()));
+                        echo json_encode(['error' => $e->getMessage()]);
                         return;
                     }
                 }
@@ -173,11 +173,11 @@ class Media extends Base
                     $hi->setImageType(IMAGETYPE_PNG);
                     $hi->save($path . DS . 'master.png');// $file);
                 } catch (\Exception $e) {
-                    echo json_encode(array('error' => $e->getMessage()));
+                    echo json_encode(['error' => $e->getMessage()]);
                     return;
                 }
             } else {
-                echo json_encode(array('error' => $hi->getError()));
+                echo json_encode(['error' => $hi->getError()]);
                 return;
             }
 
@@ -193,18 +193,18 @@ class Media extends Base
                 try {
                     $hi->save($path . DS . 'thumb.png');
                 } catch (\Exception $e) {
-                    echo json_encode(array('error' => $e->getMessage()));
+                    echo json_encode(['error' => $e->getMessage()]);
                     return;
                 }
             } else {
-                echo json_encode(array('error' => $hi->getError()));
+                echo json_encode(['error' => $hi->getError()]);
                 return;
             }
 
             // Save picture name
             $this->model->set('picture', $file);
             if (!$this->model->store()) {
-                echo json_encode(array('error' => $this->model->getError()));
+                echo json_encode(['error' => $this->model->getError()]);
                 return;
             } elseif (!$this->model->inSetup()) {
                 // Record activity
@@ -212,9 +212,9 @@ class Media extends Base
             }
         }
 
-        echo json_encode(array(
+        echo json_encode([
             'success' => true
-        ));
+        ]);
         return;
     }
 
@@ -234,7 +234,7 @@ class Media extends Base
         // Check if they are logged in
         if (User::isGuest()) {
             if ($ajax) {
-                echo json_encode(array('error' => Lang::txt('User login required')));
+                echo json_encode(['error' => Lang::txt('User login required')]);
                 return;
             }
             $this->_showError();
@@ -247,7 +247,7 @@ class Media extends Base
         if (!$this->model->exists() || !$hasAccess) {
             $this->setError(Lang::txt('COM_PROJECTS_ERROR_NO_ID'));
             if ($ajax) {
-                echo json_encode(array('error' => $this->getError()));
+                echo json_encode(['error' => $this->getError()]);
                 return;
             }
             $this->_showError();
@@ -261,7 +261,7 @@ class Media extends Base
         if (!$file) {
             $this->setError(Lang::txt('COM_PROJECTS_FILE_NOT_FOUND'));
             if ($ajax) {
-                echo json_encode(array('error' => $this->getError()));
+                echo json_encode(['error' => $this->getError()]);
                 return;
             }
             $this->_showError();
@@ -275,7 +275,7 @@ class Media extends Base
         if (!file_exists($path . DS . $file) or !$file) {
             $this->setError(Lang::txt('COM_PROJECTS_FILE_NOT_FOUND'));
             if ($ajax) {
-                echo json_encode(array('error' => $this->getError()));
+                echo json_encode(['error' => $this->getError()]);
                 return;
             }
         } else {
@@ -283,7 +283,7 @@ class Media extends Base
             if (!Filesystem::delete($path . DS . $file)) {
                 $this->setError(Lang::txt('COM_PROJECTS_UNABLE_TO_DELETE_FILE'));
                 if ($ajax) {
-                    echo json_encode(array('error' => $this->getError()));
+                    echo json_encode(['error' => $this->getError()]);
                     return;
                 }
                 $this->_showError();
@@ -297,7 +297,7 @@ class Media extends Base
                 if (!Filesystem::delete($path . DS . $curthumb)) {
                     $this->setError(Lang::txt('COM_PROJECTS_UNABLE_TO_DELETE_FILE'));
                     if ($ajax) {
-                        echo json_encode(array('error' => $this->getError()));
+                        echo json_encode(['error' => $this->getError()]);
                         return;
                     }
                     $this->_showError();
@@ -310,7 +310,7 @@ class Media extends Base
                 if (!Filesystem::delete($path . DS . 'master.png')) {
                     $this->setError(Lang::txt('COM_PROJECTS_UNABLE_TO_DELETE_FILE'));
                     if ($ajax) {
-                        echo json_encode(array('error' => $this->getError()));
+                        echo json_encode(['error' => $this->getError()]);
                         return;
                     }
                     $this->_showError();
@@ -324,7 +324,7 @@ class Media extends Base
                 if (!$this->model->store()) {
                     $this->setError($this->model->getError());
                     if ($ajax) {
-                        echo json_encode(array('error' => $this->model->getError()));
+                        echo json_encode(['error' => $this->model->getError()]);
                         return;
                     }
                     return;
@@ -333,12 +333,12 @@ class Media extends Base
         }
 
         if ($ajax && $this->getError()) {
-            echo json_encode(array('error' => $this->getError()));
+            echo json_encode(['error' => $this->getError()]);
             return;
         } elseif ($ajax) {
-            echo json_encode(array(
+            echo json_encode([
                 'success' => true
-            ));
+            ]);
             return;
         }
 

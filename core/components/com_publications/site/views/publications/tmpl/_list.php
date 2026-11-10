@@ -26,7 +26,7 @@ foreach ($this->results as $row) {
     // Get version authors
     $authors = $pa->getAuthors($row->version_id);
 
-    $info = array();
+    $info = [];
     $info[] = Date::of($row->published_up)->toLocal('d M Y');
     $info[] = $row->cat_name;
     $info[] = Lang::txt('COM_PUBLICATIONS_CONTRIBUTORS') . ': '

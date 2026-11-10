@@ -48,7 +48,7 @@ endif;
         $this->view('_topmenu', 'projects')
              ->set('model', $this->model)
              ->set('active', 'edit')
-             ->set('tabs', array())
+             ->set('tabs', [])
              ->set('option', $this->option)
              ->set('guest', false)
              ->set('publicView', false)
@@ -189,7 +189,7 @@ endif;
                             case 'info':
                             default:
                                 $fields = (isset($this->fields)) ? $this->fields : null;
-                                $data = (isset($this->data)) ? $this->data : array();
+                                $data = (isset($this->data)) ? $this->data : [];
 
                                 $this->view('_edit_info')
                                     ->set('config', $this->config)

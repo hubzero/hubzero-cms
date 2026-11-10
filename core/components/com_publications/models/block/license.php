@@ -68,22 +68,22 @@ class License extends Base
         if ($viewname == 'curator') {
             // Output HTML
             $view = new \Hubzero\Component\View(
-                array(
+                [
                     'name'      => 'curation',
                     'layout'    => 'block'
-                )
+                ]
             );
         } else {
             $name = $viewname == 'freeze' ? 'freeze' : 'draft';
 
             // Output HTML
             $view = new \Hubzero\Plugin\View(
-                array(
+                [
                     'folder'    => 'projects',
                     'element'   => 'publications',
                     'name'      => $name,
                     'layout'    => 'wrapper'
-                )
+                ]
             );
         }
 
@@ -114,12 +114,12 @@ class License extends Base
 
         // Output HTML
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'    => 'projects',
                 'element'   => 'publications',
                 'name'      => $name,
                 'layout'    => 'license'
-            )
+            ]
         );
 
         $view->pub      = $pub;
@@ -180,7 +180,7 @@ class License extends Base
         $license = Request::getInt('license', 0, 'post');
         $text    = \Hubzero\Utility\Sanitize::clean(Request::getString('license_text', '', 'post'));
         $agree   = Request::getInt('agree', 0, 'post');
-        $custom  = Request::getArray('substitute', array());
+        $custom  = Request::getArray('substitute', []);
 
         if ($license) {
             if (!$objL->load($license)) {
@@ -368,7 +368,7 @@ class License extends Base
 
         // Fall back
         if (!$manifest) {
-            $manifest = array(
+            $manifest = [
                 'name'          => 'license',
                 'label'         => 'License',
                 'title'         => 'Publication License',
@@ -377,14 +377,14 @@ class License extends Base
                 'about'         => 'It is important that you provide a license for your publication '
                     . 'stating your copyright and terms of use of your content.',
                 'adminTips'     => '',
-                'elements'      => array(),
-                'params'        => array(
+                'elements'      => [],
+                'params'        => [
                     'required' => 1,
                     'published_editing' => 0,
-                    'include' => array(),
-                    'exclude' => array()
-                )
-            );
+                    'include' => [],
+                    'exclude' => []
+                ]
+            ];
 
             return json_decode(json_encode($manifest), false);
         }

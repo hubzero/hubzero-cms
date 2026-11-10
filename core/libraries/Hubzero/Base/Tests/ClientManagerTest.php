@@ -21,12 +21,12 @@ class ClientManagerTest extends Basic
      *
      * @var  array
      */
-    protected $data = array(
+    protected $data = [
         'one'   => 'for the money',
         'two'   => 'for the show',
         'three' => 'to get ready',
         'four'  => 'to go'
-    );
+    ];
 
     /**
      * Test reset() and all()
@@ -95,11 +95,11 @@ class ClientManagerTest extends Basic
     {
         $clients = ClientManager::client();
 
-        $foo = array(
+        $foo = [
             'id' => 9,
             'name' => 'foo',
             'url' => 'foo'
-        );
+        ];
 
         $bar = new \stdClass();
         $bar->id = 10;

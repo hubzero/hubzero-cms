@@ -38,7 +38,7 @@ class ExpireInactiveTest extends Basic
 		$this->assertSame(12, Members::inactivityMonths(' 12 '));
 		$this->assertSame(1, Members::inactivityMonths('1'));
 
-		foreach (array('0', 0, '-1', '1.5', 'abc', '', null) as $bad)
+		foreach (['0', 0, '-1', '1.5', 'abc', '', null] as $bad)
 		{
 			$this->assertSame(0, Members::inactivityMonths($bad), var_export($bad, true) . ' must be refused');
 		}
@@ -64,7 +64,7 @@ class ExpireInactiveTest extends Basic
 		$xml    = simplexml_load_file($file);
 		$legacy = array_map('strval', $xml->xpath('/extension/params[@group="expireinactive"]/param/@name'));
 		$config = array_map('strval', $xml->xpath('/extension/config/fields/fieldset[@group="expireinactive"]/field/@name'));
-		$this->assertSame(array('members_expireinactive_months', 'members_expireinactive_exempt_group'), $legacy);
+		$this->assertSame(['members_expireinactive_months', 'members_expireinactive_exempt_group'], $legacy);
 		$this->assertSame($legacy, $config);
 	}
 
@@ -89,7 +89,7 @@ class ExpireInactiveTest extends Basic
 		// The install schema's '0000-00-00' defaults need a permissive mode
 		$db->exec("SET SESSION sql_mode = ''");
 
-		foreach (array('users', 'users_password', 'usergroups', 'user_usergroup_map') as $table)
+		foreach (['users', 'users_password', 'usergroups', 'user_usergroup_map'] as $table)
 		{
 			$db->exec('DROP TABLE IF EXISTS `jos_' . $table . '`');
 			$db->exec(str_replace('#__', 'jos_', self::schemaTable($table)));
@@ -100,33 +100,33 @@ class ExpireInactiveTest extends Basic
 		$zero      = '0000-00-00 00:00:00';
 
 		// id => [block, registerDate, lastvisitDate, password row: null or [shadowLastChange, shadowExpire]]
-		$users = array(
-			1  => array(0, '2015-01-01 00:00:00', '2026-10-15 00:00:00', array(16000, null)),        // visit after the cutoff
-			2  => array(0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', array(16000, null)),        // old visit
-			3  => array(0, '2019-01-01 00:00:00', $zero, array(null, null)),                         // never visited, old registration
-			4  => array(0, '2026-10-15 00:00:00', $zero, array(null, null)),                         // never visited, registered after the cutoff
-			5  => array(0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', array($cutoffDay + 10, null)), // old visit, recent password change
-			6  => array(1, '2015-01-01 00:00:00', '2020-01-01 00:00:00', array(16000, null)),        // blocked
-			7  => array(0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', array(16000, 1)),           // not yet reset
-			8  => array(0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', array(16000, 333)),         // already inactive
-			9  => array(0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', array(16000, 10957)),       // blocked marker
-			10 => array(0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', null),                      // no password row
-			11 => array(0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', array($cutoffDay, null)),   // password changed on the cutoff day
-			12 => array(0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', array(16000, null)),        // in the exempt group
-			13 => array(0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', null),                      // in the exempt group, no password row
-			14 => array(0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', array(16000, null)),        // in another group only
-		);
+		$users = [
+			1  => [0, '2015-01-01 00:00:00', '2026-10-15 00:00:00', [16000, null]],        // visit after the cutoff
+			2  => [0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', [16000, null]],        // old visit
+			3  => [0, '2019-01-01 00:00:00', $zero, [null, null]],                         // never visited, old registration
+			4  => [0, '2026-10-15 00:00:00', $zero, [null, null]],                         // never visited, registered after the cutoff
+			5  => [0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', [$cutoffDay + 10, null]], // old visit, recent password change
+			6  => [1, '2015-01-01 00:00:00', '2020-01-01 00:00:00', [16000, null]],        // blocked
+			7  => [0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', [16000, 1]],           // not yet reset
+			8  => [0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', [16000, 333]],         // already inactive
+			9  => [0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', [16000, 10957]],       // blocked marker
+			10 => [0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', null],                      // no password row
+			11 => [0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', [$cutoffDay, null]],   // password changed on the cutoff day
+			12 => [0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', [16000, null]],        // in the exempt group
+			13 => [0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', null],                      // in the exempt group, no password row
+			14 => [0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', [16000, null]],        // in another group only
+		];
 
 		$insertUser = $db->prepare("INSERT INTO jos_users (id, username, block, registerDate, lastvisitDate, params) VALUES (?, ?, ?, ?, ?, '')");
 		$insertPass = $db->prepare("INSERT INTO jos_users_password (user_id, passhash, shadowLastChange, shadowExpire) VALUES (?, '', ?, ?)");
 
 		foreach ($users as $id => $u)
 		{
-			$insertUser->execute(array($id, 'user' . $id, $u[0], $u[1], $u[2]));
+			$insertUser->execute([$id, 'user' . $id, $u[0], $u[1], $u[2]]);
 
 			if ($u[3] !== null)
 			{
-				$insertPass->execute(array($id, $u[3][0], $u[3][1]));
+				$insertPass->execute([$id, $u[3][0], $u[3][1]]);
 			}
 		}
 
@@ -141,9 +141,9 @@ class ExpireInactiveTest extends Basic
 			return $ids;
 		};
 
-		$this->assertSame(array(2, 3, 10, 14), $select('Service accounts'));
-		$this->assertSame(array(2, 3, 10, 12, 13, 14), $select(null), 'no exempt group: group members are selected too');
-		$this->assertSame(array(2, 3, 10, 12, 13, 14), $select('No such group'));
+		$this->assertSame([2, 3, 10, 14], $select('Service accounts'));
+		$this->assertSame([2, 3, 10, 12, 13, 14], $select(null), 'no exempt group: group members are selected too');
+		$this->assertSame([2, 3, 10, 12, 13, 14], $select('No such group'));
 	}
 
 	/**

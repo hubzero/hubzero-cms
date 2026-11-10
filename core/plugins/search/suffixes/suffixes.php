@@ -29,7 +29,7 @@ class Suffixes extends Plugin
      */
     public static function onSearchExpandTerms(&$terms)
     {
-        $add = array();
+        $add = [];
         foreach ($terms as $term) {
             // eg electric <-> electronic
             if (preg_match('/^(.*?)(on)?ic$/', $term, $match)) {

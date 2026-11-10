@@ -41,14 +41,14 @@ class Redis extends Store
      * @param   array  $options  Optional parameters.
      * @return  void
      */
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         if (!self::isAvailable()) {
             throw new Exception(Lang::txt('JLIB_SESSION_REDIS_EXTENSION_NOT_AVAILABLE'));
         }
 
         if (!array_key_exists('redis_key_prefix', $options)) {
-            $options['redis_key_prefix'] = array();
+            $options['redis_key_prefix'] = [];
         }
 
         $prefixes = $options['redis_key_prefix'];
@@ -113,7 +113,7 @@ class Redis extends Store
     #[\ReturnTypeWillChange]
     public function write($id, $data)
     {
-        $data = array(
+        $data = [
             'session_id' => $id,
             'client_id'  => App::get('client')->id,
             'guest'      => User::isGuest(),
@@ -123,7 +123,7 @@ class Redis extends Store
             'username'   => User::get('username'),
             'usertype'   => null,
             'ip'         => (string) Request::ip()
-        );
+        ];
 
         $saved = $this->database->hmset($this->key($id), $data);
 
@@ -175,15 +175,15 @@ class Redis extends Store
      * @param   array  $filters
      * @return  array
      */
-    public function all($filters = array())
+    public function all($filters = [])
     {
         // load all session keys
-        $result   = $this->database->scan(0, array('MATCH' => $this->prefix . '*'));
+        $result   = $this->database->scan(0, ['MATCH' => $this->prefix . '*']);
         $cursor   = $result[0];
         $sessions = $result[1];
 
         // var to hold distinct sessions
-        $distinct = array();
+        $distinct = [];
 
         // loop through all session keys and get data
         foreach ($sessions as $k => $v) {
@@ -203,7 +203,7 @@ class Redis extends Store
             if (isset($filters['client'])) {
                 // make sure is array
                 if (!is_array($filters['client'])) {
-                    $filters['client'] = array($filters['client']);
+                    $filters['client'] = [$filters['client']];
                 }
                 // check to make sure client is in what we want
                 if (!in_array($client, $filters['client'])) {

@@ -58,29 +58,29 @@ class Comment extends Relational
      *
      * @var  array
      */
-    protected $parsed = array(
+    protected $parsed = [
         'content'
-    );
+    ];
 
     /**
      * Fields and their validation criteria
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'content'  => 'notempty',
         'entry_id' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Return a formatted timestamp
@@ -130,7 +130,7 @@ class Comment extends Relational
      * @param   array  $filters  Filters to apply to query
      * @return  object
      */
-    public function replies($filters = array())
+    public function replies($filters = [])
     {
         if (!isset($filters['entry_id'])) {
             $filters['entry_id'] = $this->get('entry_id');
@@ -267,7 +267,7 @@ class Comment extends Relational
 
         $al = new Vote();
 
-        $vote = $al->automaticVote(array('vote' => $vote));
+        $vote = $al->automaticVote(['vote' => $vote]);
 
         if ($vote === 0) {
             $this->addError(Lang::txt('No vote provided'));
@@ -285,7 +285,7 @@ class Comment extends Relational
         // Has user voted before?
         $previous = $al->find($al->get('object_id'), $al->get('user_id'), $al->get('ip'), $al->get('type'));
         if ($previous->get('vote')) {
-            $voted = $al->automaticVote(array('vote' => $previous->get('vote')));
+            $voted = $al->automaticVote(['vote' => $previous->get('vote')]);
 
             // If the old vote is not the same as the new vote
             if ($voted != $vote) {
@@ -376,11 +376,11 @@ class Comment extends Relational
         $valid = parent::validate();
 
         if ($valid) {
-            $results = Event::trigger('content.onContentBeforeSave', array(
+            $results = Event::trigger('content.onContentBeforeSave', [
                 'com_kb.comment.content',
                 &$this,
                 $this->isNew()
-            ));
+            ]);
 
             foreach ($results as $result) {
                 if ($result === false) {

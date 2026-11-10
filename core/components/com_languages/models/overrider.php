@@ -48,9 +48,9 @@ class Overrider extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'constant' => 'notempty',
         'string'   => 'notempty',
         'file'     => 'notempty'
-    );
+    ];
 }

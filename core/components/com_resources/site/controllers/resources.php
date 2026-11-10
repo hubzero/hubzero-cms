@@ -45,7 +45,7 @@ class Resources extends SiteController
      * @param   array  $config  Optional configurations
      * @return  void
      */
-    public function __construct($config = array())
+    public function __construct($config = [])
     {
         $this->_base_path = dirname(__DIR__);
         if (isset($config['base_path'])) {
@@ -197,17 +197,17 @@ class Resources extends SiteController
         }
 
         // Incoming
-        $filters = array(
+        $filters = [
             'type'   => Request::getString('type', ''),
             'sortby' => Request::getCmd('sortby', $default_sort),
             'limit'  => Request::getInt('limit', Config::get('list_limit')),
             'start'  => Request::getInt('limitstart', 0),
             'search' => Request::getString('search', ''),
             'tag'    => trim(Request::getString('tag', '', 'request', 'none', 2)),
-            'tag_ignored' => array(),
+            'tag_ignored' => [],
             'access' => [0, 3]
-        );
-        if (!in_array($filters['sortby'], array('date', 'date_published', 'date_created', 'date_modified', 'title', 'rating', 'ranking', 'random'))) {
+        ];
+        if (!in_array($filters['sortby'], ['date', 'date_published', 'date_created', 'date_modified', 'title', 'rating', 'ranking', 'random'])) {
             App::abort(404, Lang::txt('Invalid sort value of "%s" used.', $filters['sortby']));
         }
 
@@ -219,7 +219,7 @@ class Resources extends SiteController
             $tagging = new Tags(0);
             $tags = $tagging->parseTags($filters['tag']);
             if (count($tags) > 5) {
-                $keep = array();
+                $keep = [];
                 foreach ($tags as $i => $tag) {
                     if ($i < 5) {
                         $keep[] = $tag;
@@ -427,7 +427,7 @@ class Resources extends SiteController
         }
         $search = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(Request::getString('toolsSearch', '')));
         // Set some filters
-        $filters = array(
+        $filters = [
             'tag'    => ($tag2 ? $tag2 : ''),
             'type'   => $activetype,
             'sortby' => $default_sort,
@@ -436,9 +436,9 @@ class Resources extends SiteController
             'now'    => Date::toSql(),
             'limit'  => 10,
             'start'  => 0,
-            'access' => array(0),
+            'access' => [0],
             'search' => $search,
-        );
+        ];
 
         if (!User::isGuest()) {
             $filters['access'][] = 1;
@@ -522,7 +522,7 @@ class Resources extends SiteController
         $level = Request::getInt('level', 0);
 
         // A container for info to pass to the HTML for the view
-        $bits = array();
+        $bits = [];
         $bits['supportedtag'] = $this->config->get('supportedtag');
 
         // Process the level
@@ -549,7 +549,7 @@ class Resources extends SiteController
                 $bits['tag']     = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(Request::getString('input', '')));
                 $bits['tag2']    = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(Request::getString('input2', '')));
                 $bits['sortby']  = Request::getWord('sortby', 'title');
-                $bits['filter']  = Request::getArray('filter', array('level0', 'level1', 'level2', 'level3', 'level4'));
+                $bits['filter']  = Request::getArray('filter', ['level0', 'level1', 'level2', 'level3', 'level4']);
                 $bits['ranking'] = $this->config->get('show_ranking');
 
                 if ($bits['tag'] == $bits['tag2']) {
@@ -560,7 +560,7 @@ class Resources extends SiteController
                 $bits['params'] = $this->config;
 
                 // Get extra filter options
-                $bits['filters'] = array();
+                $bits['filters'] = [];
                 if ($this->config->get('show_audience') && $bits['type'] == 7) {
                     $bits['filters'] = Level::all();
                 }
@@ -620,7 +620,7 @@ class Resources extends SiteController
                 }
 
                 // Get the sections
-                $bits['sections'] = Event::trigger('resources.onResources', array($model, $this->_option, array('about'), 'metadata'));
+                $bits['sections'] = Event::trigger('resources.onResources', [$model, $this->_option, ['about'], 'metadata']);
 
                 // Fill our container
                 $bits['resource'] = $model;
@@ -757,7 +757,7 @@ class Resources extends SiteController
     protected function preWatch()
     {
         //var to hold error messages
-        $errors = array();
+        $errors = [];
 
         //inlude the HUBpresenter library
 
@@ -788,7 +788,7 @@ class Resources extends SiteController
         if (!Filesystem::exists(PATH_APP . DS . $path)) {
             $this->setError(Lang::txt('Folder containing assets does not exist.'));
 
-            $return = array();
+            $return = [];
             $return['errors'] = $this->getErrors();
             $return['content_folder'] = $path;
             $return['content_url'] = '/resources/' . $resid . '/download';
@@ -824,7 +824,7 @@ class Resources extends SiteController
         } else {
             //get all files matching  /.mp4|.webs|.ogv|.m4v|.mp3/
             $media = Filesystem::files($media_path, '.mp4|.webm|.ogv|.m4v|.mp3|.ogg', false, false);
-            $ext = array();
+            $ext = [];
             foreach ($media as $m) {
                 $parts = explode('.', $m);
                 $ext[] = array_pop($parts);
@@ -840,7 +840,7 @@ class Resources extends SiteController
             $slides = Filesystem::files($slide_path, '', false, false);
 
             //array to hold slides with video clips
-            $slide_video = array();
+            $slide_video = [];
 
             //build array for checking slide video formats
             if ($slides && is_array($slides)) {
@@ -849,7 +849,7 @@ class Resources extends SiteController
                     $ext = array_pop($parts);
                     $name = implode('.', $parts);
 
-                    if (in_array($ext, array('mp4', 'm4v', 'webm', 'ogv'))) {
+                    if (in_array($ext, ['mp4', 'm4v', 'webm', 'ogv'])) {
                         $slide_video[$name][$ext] = $name . '.' . $ext;
                     }
                 }
@@ -868,7 +868,7 @@ class Resources extends SiteController
             }
         }
 
-        $return = array();
+        $return = [];
         $return['errors'] = $this->getErrors();
         $return['content_folder'] = $path;
         $return['content_url'] = '/resources/' . $resid . '/download';
@@ -953,19 +953,19 @@ class Resources extends SiteController
             //if we have no errors
             if (count($errors) > 0) {
                 // Instantiate a new view
-                $this->view = new \Hubzero\Component\View(array(
+                $this->view = new \Hubzero\Component\View([
                     'name'   => 'view',
                     'layout' => 'watch_error'
-                ));
+                ]);
                 $this->view->errors = $errors;
                 $this->view->display();
                 return;
             } else {
                 // Instantiate a new view
-                $this->view = new \Hubzero\Component\View(array(
+                $this->view = new \Hubzero\Component\View([
                     'name'   => 'view',
                     'layout' => 'watch'
-                ));
+                ]);
                 $this->view->set('option', $this->_option);
                 $this->view->config         = $this->config;
                 $this->view->database       = $this->database;
@@ -1093,10 +1093,10 @@ class Resources extends SiteController
         }
 
         // Instantiate a new view
-        $this->view = new \Hubzero\Component\View(array(
+        $this->view = new \Hubzero\Component\View([
             'name'   => 'view',
             'layout' => 'video'
-        ));
+        ]);
         $this->view->set('option', $this->_option);
         $this->view->config   = $this->config;
         $this->view->database = $this->database;
@@ -1175,8 +1175,8 @@ class Resources extends SiteController
         $manifest->presentation->width     = intval($attributes->get('width', 0));
         $manifest->presentation->height    = intval($attributes->get('height', 0));
         $manifest->presentation->duration  = intval($attributes->get('duration', 0));
-        $manifest->presentation->media     = array();
-        $manifest->presentation->subtitles = array();
+        $manifest->presentation->media     = [];
+        $manifest->presentation->subtitles = [];
 
         //get the videos
         $videos = Filesystem::files($path, '.mp4|.MP4|.ogv|.OGV|.webm|.WEBM');
@@ -1199,12 +1199,12 @@ class Resources extends SiteController
         $subtitles = Filesystem::files($path, '.srt|.SRT|.vtt|.VTT');
 
         // Map of ISO 639-1 language codes to display names
-        $langNames = array(
+        $langNames = [
             'en' => 'English', 'es' => 'Spanish', 'fr' => 'French',
             'de' => 'German', 'pt' => 'Portuguese', 'it' => 'Italian',
             'zh' => 'Chinese', 'ja' => 'Japanese', 'ko' => 'Korean',
             'ar' => 'Arabic', 'hi' => 'Hindi', 'ru' => 'Russian',
-        );
+        ];
 
         //add each subtitle to manifest
         foreach ($subtitles as $k => $subtitle) {
@@ -1376,9 +1376,9 @@ class Resources extends SiteController
         $tconfig = Component::params('com_tools');
 
         // Trigger the functions that return the areas we'll be using
-        $cats = Event::trigger('resources.onResourcesAreas', array(
+        $cats = Event::trigger('resources.onResourcesAreas', [
                 $this->model
-            ));
+            ]);
 
         // We need to do this here because we need some stats info to pass to the body
         /*if (isset($this->model->revision) && $this->model->revision)
@@ -1404,14 +1404,14 @@ class Resources extends SiteController
         }*/
 
         // Get the sections
-        $sections = Event::trigger('resources.onResources', array(
+        $sections = Event::trigger('resources.onResources', [
                 $this->model,
                 $this->_option,
-                array($tab),
+                [$tab],
                 'all',
-            ));
+            ]);
 
-        $available = array('play');
+        $available = ['play'];
 
         foreach ($cats as $cat) {
             $name = key($cat);
@@ -1431,11 +1431,11 @@ class Resources extends SiteController
                 $activechild = $this->activechild;
             }
 
-            $view = new \Hubzero\Component\View(array(
+            $view = new \Hubzero\Component\View([
                 'base_path' => $this->_base_path,
                 'name'      => 'view',
                 'layout'    => 'play'
-            ));
+            ]);
             $view->set('option', $this->_option);
             $view->config      = $this->config;
             $view->tconfig     = $tconfig;
@@ -1448,14 +1448,14 @@ class Resources extends SiteController
 
             $body = $view->loadTemplate();
 
-            $cats[] = array(
+            $cats[] = [
                 'play' => Lang::txt('COM_RESOURCES_PLAY')
-            );
-            $sections[] = array(
+            ];
+            $sections[] = [
                 'html'     => $body,
                 'metadata' => '',
                 'area'     => 'play'
-            );
+            ];
             $tab = 'play';
         } elseif ($this->_task == 'watch') {
             //test to make sure HUBpresenter is ready to go
@@ -1474,21 +1474,21 @@ class Resources extends SiteController
             //if we have no errors
             if (count($errors) > 0) {
                 // Instantiate a new view
-                $this->view = new \Hubzero\Component\View(array(
+                $this->view = new \Hubzero\Component\View([
                     'name'   => 'view',
                     'layout' => 'watch_error'
-                ));
+                ]);
                 $this->view->set('controller', $this->_controller);
                 $this->view->set('task', $this->_task);
                 $this->view->setErrors($errors);
                 $body = $this->view->loadTemplate();
             } else {
                 // Instantiate a new view
-                $view = new \Hubzero\Component\View(array(
+                $view = new \Hubzero\Component\View([
                     'base_path' => $this->_base_path,
                     'name'      => 'view',
                     'layout'    => 'watch'
-                ));
+                ]);
                 $view->set('config', $this->config);
                 //$view->tconfig        = $tconfig;
                 //$view->database       = $this->database;
@@ -1508,14 +1508,14 @@ class Resources extends SiteController
                 $body = $view->loadTemplate();
             }
 
-            $cats[] = array(
+            $cats[] = [
                 'watch' => Lang::txt('Watch Presentation')
-            );
-            $sections[] = array(
+            ];
+            $sections[] = [
                 'html'     => $body,
                 'metadata' => '',
                 'area'     => 'watch'
-            );
+            ];
             $tab = 'watch';
         }
 
@@ -1620,7 +1620,7 @@ class Resources extends SiteController
         }
 
         // Incoming
-        $filters = array();
+        $filters = [];
         if ($resource->get('type') == 2) {
             $filters['sortby'] = Request::getString('sortby', 'ordering');
         } else {
@@ -1628,7 +1628,7 @@ class Resources extends SiteController
         }
         // sortby goes into ORDER BY as a column name; only a column of the
         // children listing is one.
-        if (!in_array($filters['sortby'], array('ordering', 'ranking', 'title', 'created', 'publish_up', 'id'), true)) {
+        if (!in_array($filters['sortby'], ['ordering', 'ranking', 'title', 'created', 'publish_up', 'id'], true)) {
             $filters['sortby'] = ($resource->get('type') == 2) ? 'ordering' : 'ranking';
         }
         $filters['limit'] = Request::getInt('limit', 100);
@@ -1649,8 +1649,8 @@ class Resources extends SiteController
         $base = rtrim(Request::base(), '/');
 
         $title = $resource->title;
-        $feedtypes_abr = array(" ", "slides", "audio", "video", "sd_video", "hd_video");
-        $feedtypes_full = array(" & ", "Slides", "Audio", "Video", "SD full", "HD");
+        $feedtypes_abr = [" ", "slides", "audio", "video", "sd_video", "hd_video"];
+        $feedtypes_full = [" & ", "Slides", "Audio", "Video", "SD full", "HD"];
         $type = str_replace($feedtypes_abr, $feedtypes_full, $feedtype);
         $title = '[' . $type . '] ' . $title;
 
@@ -1665,9 +1665,9 @@ class Resources extends SiteController
 
         $rt = new Tags($resource->id);
         $rtags = $rt->tags();
-        $tagarray = array();
-        $categories = array();
-        $subcategories = array();
+        $tagarray = [];
+        $categories = [];
+        $subcategories = [];
         if ($rtags) {
             foreach ($rtags as $tag) {
                 if (substr($tag->get('tag'), 0, 6) == 'itunes') {
@@ -1756,7 +1756,7 @@ class Resources extends SiteController
                     return;
                 }
 
-                $relevant_logical_types_by_id = array();
+                $relevant_logical_types_by_id = [];
                 foreach ($queried_logical_types as $queried) {
                     $as_mnemonic = preg_replace('/[_-]/', ' ', $queried);
                     foreach ($all_logical_types as $logical_type) {
@@ -1783,8 +1783,8 @@ class Resources extends SiteController
                     ->ordered()
                     ->rows();
 
-                $podcasts = array();
-                $children = array();
+                $podcasts = [];
+                $children = [];
                 if ($grandchildren && count($grandchildren) > 0) {
                     foreach ($grandchildren as $grandchild) {
                         if (isset($relevant_logical_types_by_id[(int)$grandchild->get('logical_type')])) {
@@ -1974,7 +1974,7 @@ class Resources extends SiteController
             $d = false;
         }
 
-        $images = array();
+        $images = [];
 
         if ($d) {
             while (false !== ($entry = $d->read())) {
@@ -2032,7 +2032,7 @@ class Resources extends SiteController
         // of the group, so without a list any public method of any resources plugin
         // was callable from a URL (windowstools' command-line builder among
         // them). Only the triggers this component's own pages link to.
-        if (!in_array($trigger, array('invoke', 'onResourcesRecoms'), true)) {
+        if (!in_array($trigger, ['invoke', 'onResourcesRecoms'], true)) {
             echo '<p class="error">' . Lang::txt('COM_RESOURCES_NO_TRIGGER_FOUND') . '</p>';
             return;
         }
@@ -2040,7 +2040,7 @@ class Resources extends SiteController
         // Call the trigger
         $html = '';
 
-        $results = Event::trigger('resources.' . $trigger, array($this->_option));
+        $results = Event::trigger('resources.' . $trigger, [$this->_option]);
         if (is_array($results) && !empty($results)) {
             foreach ($results as $result) {
                 $html .= (is_array($result) ? $result['html'] : (string)$result);
@@ -2255,7 +2255,7 @@ class Resources extends SiteController
 
         // Set disposition to attachment unless we think the browser can inline the file
 
-        if (!in_array($ext, array('tiff', 'tif', 'jpg', 'jpeg', 'jpe', 'gif', 'png', 'pdf', 'htm', 'html', 'txt', 'json', 'xml', 'ogv', 'mp4', 'webm', 'ogg', 'mp3'))) {
+        if (!in_array($ext, ['tiff', 'tif', 'jpg', 'jpeg', 'jpe', 'gif', 'png', 'pdf', 'htm', 'html', 'txt', 'json', 'xml', 'ogv', 'mp4', 'webm', 'ogg', 'mp3'])) {
             $d = 'attachment';
         }
 
@@ -2490,7 +2490,7 @@ class Resources extends SiteController
             case 'bibtex':
             default:
                 $bibtex = new \Components\Citations\Helpers\BibTex();
-                $addarray = array();
+                $addarray = [];
                 $addarray['type']  = 'misc';
                 $addarray['cite']  = $this->config['sitename'] . $row->id;
                 $addarray['title'] = stripslashes($row->title);
@@ -2621,7 +2621,7 @@ class Resources extends SiteController
      * @param   object   $resource
      * @return  boolean  True if user has access
      */
-    protected function _authorize($contributorIDs = array(), $resource = null)
+    protected function _authorize($contributorIDs = [], $resource = null)
     {
         // Check if they are logged in
         if (User::isGuest()) {
@@ -2664,7 +2664,7 @@ class Resources extends SiteController
             $user = User::getInstance();
         }
 
-        $usersgroups = array();
+        $usersgroups = [];
 
         if (!$user->isGuest()) {
             // Check if they're a site admin

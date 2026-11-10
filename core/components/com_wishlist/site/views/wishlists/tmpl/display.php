@@ -395,7 +395,7 @@ if ($this->wishlist->get('id')) {
                     <?php
                         // Popular tags
                     if ($this->wishlist->get('category') == 'general') {
-                        $tags = $cloud->render('html', array(
+                        $tags = $cloud->render('html', [
                             'limit'    => $this->config->get('maxtags', 10),
                             'start'    => 0,
                             'sort'     => 'total',
@@ -404,7 +404,7 @@ if ($this->wishlist->get('id')) {
                             'scope_id' => 0,
                             'base'     => $base,
                             'filters'  => $this->filters
-                        ));
+                        ]);
 
                         if ($tags) {
                             ?>

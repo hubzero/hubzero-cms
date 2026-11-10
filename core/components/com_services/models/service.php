@@ -51,19 +51,19 @@ class Service extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'alias'    => 'notempty',
         'category' => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is updated
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'changed'
-    );
+    ];
 
     /**
      * Registry

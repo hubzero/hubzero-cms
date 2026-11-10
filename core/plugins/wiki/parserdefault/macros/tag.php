@@ -30,7 +30,7 @@ class Tag extends WikiMacro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['wiki'] = 'This macro will generate a link to a Tag.';
         $txt['html'] = '<p>This macro will generate a link to a Tag.</p>';
         return $txt['html'];

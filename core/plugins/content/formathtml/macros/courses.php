@@ -26,7 +26,7 @@ class Courses extends Macro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['html']  = '<p>Displays a list of published courses on the hub. Any of the parameters can be combined in one macro.</p>';
         $txt['html'] .= '<p>Examples:</p>';
         $txt['html'] .= '<ul>';
@@ -66,14 +66,14 @@ class Courses extends Macro
     private function getCourses()
     {
         // Filters for courses
-        $filters = array(
+        $filters = [
             'state'    => 1,
             'group'    => $this->getArg('group', ''),
             'tag'      => $this->getArg('tag', ''),
             'limit'    => $this->getArg('limit', 5),
             'sort'     => 'title',
             'sort_Dir' => 'ASC'
-        );
+        ];
 
         // make sure to replace group cname with group id
         if (isset($filters['group'])) {
@@ -101,7 +101,7 @@ class Courses extends Macro
      * @param  array  $courses  Courses list
      * @return string
      */
-    private function renderCourses($courses = array())
+    private function renderCourses($courses = [])
     {
         $html = '<div class="course-list">';
 
@@ -161,7 +161,7 @@ class Courses extends Macro
                 // do we have any instructors
                 // also make sure we dont want to hide instructors
                 if (count($instructors) > 0 && !(bool) $this->getArg('hideinstructors')) {
-                    $instr = array();
+                    $instr = [];
                     foreach ($instructors as $instructor) {
                         $profile = User::getInstance($instructor->get('user_id'));
                         if ($profile->get('id')) {

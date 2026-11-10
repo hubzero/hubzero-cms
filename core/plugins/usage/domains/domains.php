@@ -32,9 +32,9 @@ class Domains extends Plugin
      */
     public function onUsageAreas()
     {
-        return array(
+        return [
             'domains' => Lang::txt('PLG_USAGE_DOMAINS')
-        );
+        ];
     }
 
     /**
@@ -138,17 +138,17 @@ class Domains extends Plugin
             $monthtext   = date("F", mktime(0, 0, 0, $dtmonth, 1, $dtyear)) . ' ' . $dtyear;
             $yeartext    = 'Jan - ' . date("M", mktime(0, 0, 0, $dtmonth, 1, $dtyear)) . ' ' . $dtyear;
             $twelvetext  = date("M", mktime(0, 0, 0, $dtmonthnext, 1, $dtyear)) . ' ' . $dtyearprior . ' - ' . date("M", mktime(0, 0, 0, $dtmonth, 1, $dtyear)) . ' ' . $dtyear;
-            $period = array(
-                array('key' => 1,  'name' => $monthtext),
-                array('key' => 0,  'name' => $yeartext),
-                array('key' => 12, 'name' => $twelvetext)
-            );
+            $period = [
+                ['key' => 1,  'name' => $monthtext],
+                ['key' => 0,  'name' => $yeartext],
+                ['key' => 12, 'name' => $twelvetext]
+            ];
 
             // Process each different date/time periods/range...
-            $toplist = array();
+            $toplist = [];
             for ($pidx = 0; $pidx < count($period); $pidx++) {
                 // Calculate the total value for this toplist...
-                $toplistset = array();
+                $toplistset = [];
                 $sql = "SELECT topvals.name, topvals.value
 						FROM tops, topvals
 						WHERE tops.top = topvals.top
@@ -167,11 +167,11 @@ class Domains extends Plugin
                                 $formattedval = substr($formattedval, 0, $chopchar) . '+';
                             }
                         }
-                        array_push($toplistset, array($row->name, $row->value, $formattedval, sprintf("%0.1f%%", 100)));
+                        array_push($toplistset, [$row->name, $row->value, $formattedval, sprintf("%0.1f%%", 100)]);
                     }
                 }
                 if (!count($toplistset)) {
-                    array_push($toplistset, array('n/a', 0, 'n/a', 'n/a'));
+                    array_push($toplistset, ['n/a', 0, 'n/a', 'n/a']);
                 }
 
                 // Calculate the top X values for the toplist...
@@ -190,7 +190,7 @@ class Domains extends Plugin
                     foreach ($results as $row) {
                         if ($row->rank > 0 && (!$size || $row->rank <= $size)) {
                             while ($rank < $row->rank) {
-                                array_push($toplistset, array('n/a', 0, 'n/a', 'n/a'));
+                                array_push($toplistset, ['n/a', 0, 'n/a', 'n/a']);
                                 $rank++;
                             }
                             $formattedval = \Components\Usage\Helpers\Helper::valformat($row->value, $valfmt);
@@ -201,16 +201,16 @@ class Domains extends Plugin
                                 }
                             }
                             if ($toplistset[0][1] > 0) {
-                                array_push($toplistset, array($row->name, $row->value, $formattedval, sprintf("%0.1f%%", (100 * $row->value / $toplistset[0][1]))));
+                                array_push($toplistset, [$row->name, $row->value, $formattedval, sprintf("%0.1f%%", (100 * $row->value / $toplistset[0][1]))]);
                             } else {
-                                array_push($toplistset, array($row->name, $row->value, $formattedval, 'n/a'));
+                                array_push($toplistset, [$row->name, $row->value, $formattedval, 'n/a']);
                             }
                             $rank++;
                         }
                     }
                 }
                 while ($rank <= $size || $rank == 1) {
-                    array_push($toplistset, array('n/a', 0, 'n/a', 'n/a'));
+                    array_push($toplistset, ['n/a', 0, 'n/a', 'n/a']);
                     $rank++;
                 }
                 array_push($toplist, $toplistset);

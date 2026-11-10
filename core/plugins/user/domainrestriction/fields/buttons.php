@@ -17,7 +17,7 @@ class Buttons extends Field
 
     protected function getInput()
     {
-        $html   = array();
+        $html   = [];
         $html[] = '<ul>';
         $html[] = '<li><label> </label>';
         $html[] = '<fieldset class="radio">';

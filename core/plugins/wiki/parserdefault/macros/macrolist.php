@@ -25,7 +25,7 @@ class Macrolist extends WikiMacro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['wiki'] = 'Displays a list of all installed Wiki macros, including documentation if available. Optionally, the name of a specific macro can be provided as an argument. In that case, only the documentation for that macro will be rendered.';
         $txt['html'] = '<p>Displays a list of all installed Wiki macros, including documentation if available. Optionally, the name of a specific macro can be provided as an argument. In that case, only the documentation for that macro will be rendered.</p>';
         return $txt['html'];
@@ -37,7 +37,7 @@ class Macrolist extends WikiMacro
      *
      * @var  array
      */
-    protected $hidden = array('group', 'helloworld');
+    protected $hidden = ['group', 'helloworld'];
 
     /**
      * Generate macro output
@@ -48,7 +48,7 @@ class Macrolist extends WikiMacro
     {
         $path = dirname(__FILE__);
 
-        $entries = array();
+        $entries = [];
 
         // [[BR]] is handled by the parser itself, so it has no file here
         $entries['br'] = $this->entry('BR', '<p>Insert a line break.</p>');
@@ -105,7 +105,7 @@ class Macrolist extends WikiMacro
      */
     protected function files($path)
     {
-        $files = array();
+        $files = [];
 
         $iterator = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator($path, FilesystemIterator::SKIP_DOTS)

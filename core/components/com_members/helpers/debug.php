@@ -65,18 +65,18 @@ class Debug
      */
     public static function getActions($component = null)
     {
-        $actions = array();
+        $actions = [];
 
         // Try to get actions for the component
         if (!empty($component)) {
             $path = Component::path($component) . '/config/access.xml';
 
             $component_actions = \Hubzero\Access\Access::getActionsFromFile($path);
-            $component_actions ?: array();
+            $component_actions ?: [];
 
             if (!empty($component_actions)) {
                 foreach ($component_actions as &$action) {
-                    $actions[$action->title] = array($action->name, $action->description);
+                    $actions[$action->title] = [$action->name, $action->description];
                 }
             }
         }
@@ -93,10 +93,10 @@ class Debug
                         foreach ($fieldset->children() as $field) {
                             if ('rules' == (string) $field['name']) {
                                 foreach ($field->children() as $action) {
-                                    $actions[(string) $action['title']] = array(
+                                    $actions[(string) $action['title']] = [
                                         (string) $action['name'],
                                         (string) $action['description']
-                                    );
+                                    ];
                                 }
                                 break;
                                 break;
@@ -127,7 +127,7 @@ class Debug
     public static function getLevelsOptions()
     {
         // Build the filter options.
-        $options = array();
+        $options = [];
         $options[] = Html::select('option', '1', Lang::txt('COM_MEMBERS_OPTION_LEVEL_COMPONENT', 1));
         $options[] = Html::select('option', '2', Lang::txt('COM_MEMBERS_OPTION_LEVEL_CATEGORY', 2));
         $options[] = Html::select('option', '3', Lang::txt('COM_MEMBERS_OPTION_LEVEL_DEEPER', 3));

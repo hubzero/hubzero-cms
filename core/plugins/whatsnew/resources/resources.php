@@ -79,14 +79,14 @@ class Resources extends Plugin
 
         // Normalize the category names
         // e.g., "Oneline Presentations" -> "onlinepresentations"
-        $cats = array();
+        $cats = [];
         foreach ($this->cats as $cat) {
             $cats[$cat->alias] = $cat->type;
         }
 
-        $this->areas = array(
+        $this->areas = [
             'resources' => $cats
-        );
+        ];
 
         return $this->areas;
     }
@@ -101,7 +101,7 @@ class Resources extends Plugin
      * @param   array    $tagids      Array of tag IDs
      * @return  array
      */
-    public function onWhatsnew($period, $limit = 0, $limitstart = 0, $areas = null, $tagids = array())
+    public function onWhatsnew($period, $limit = 0, $limitstart = 0, $areas = null, $tagids = [])
     {
         if (is_array($areas) && $limit) {
             $ars = $this->onWhatsnewAreas();
@@ -110,27 +110,27 @@ class Resources extends Plugin
                 && !in_array($this->_name, $areas)
                 && !array_intersect($areas, array_keys($ars['resources']))
             ) {
-                return array();
+                return [];
             }
         }
 
         // Do we have a time period?
         if (!is_object($period)) {
-            return array();
+            return [];
         }
 
         // Build query
-        $filters = array(
+        $filters = [
             'startdate' => $period->cStartDate,
             'enddate' => $period->cEndDate,
             'sortby' => 'date'
-        );
+        ];
         if (count($tagids) > 0) {
             $filters['tags'] = $tagids;
         }
 
         $groups = \Hubzero\User\Helper::getGroups((int) User::get('id', 0), 'all');
-        $filters['usergroups'] = array();
+        $filters['usergroups'] = [];
 
         if (!empty($groups)) {
             foreach ($groups as $group) {
@@ -148,13 +148,13 @@ class Resources extends Plugin
 
         // Normalize the category names
         // e.g., "Oneline Presentations" -> "onlinepresentations"
-        $cats = array();
+        $cats = [];
         foreach ($categories as $category) {
-            $cats[$category->alias] = array();
+            $cats[$category->alias] = [];
             $cats[$category->alias]['id'] = $category->id;
         }
 
-        $access = array(0, 3);
+        $access = [0, 3];
         if (!User::isGuest()) {
             $access[] = 1;
         }
@@ -169,7 +169,7 @@ class Resources extends Plugin
                     $total += $l;
                 }
                 if ($total == 0) {
-                    return array();
+                    return [];
                 }
             }
 
@@ -223,7 +223,7 @@ class Resources extends Plugin
             $filters['select'] = 'count';
 
             // Get a count
-            $counts = array();
+            $counts = [];
             $ares = $this->onWhatsnewAreas();
             foreach ($ares as $area => $val) {
                 if (is_array($val)) {
@@ -288,15 +288,15 @@ class Resources extends Plugin
         // Get the component params and merge with resource params
         $config = Component::params('com_resources');
 
-        $view = new \Hubzero\Component\View(array(
+        $view = new \Hubzero\Component\View([
             'base_path' => Component::path('com_resources') . '/site',
             'name' => 'browse',
             'layout' => 'item'
-        ));
+        ]);
         $view->set('line', $row)
             ->set('option', 'com_resources')
             ->set('config', $config)
-            ->set('supported', array());
+            ->set('supported', []);
 
         return $view->loadTemplate();
     }

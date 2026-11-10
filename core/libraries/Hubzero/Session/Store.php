@@ -23,7 +23,7 @@ abstract class Store extends Obj implements SessionHandlerInterface
      *
      * @var  array
      */
-    protected static $instances = array();
+    protected static $instances = [];
 
     /**
      * Constructor
@@ -31,7 +31,7 @@ abstract class Store extends Obj implements SessionHandlerInterface
      * @param   array  $options  Optional parameters.
      * @return  void
      */
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         $this->register($options);
     }
@@ -43,7 +43,7 @@ abstract class Store extends Obj implements SessionHandlerInterface
      * @param   array   $options  Array of options
      * @return  object
      */
-    public static function getInstance($name = 'none', $options = array())
+    public static function getInstance($name = 'none', $options = [])
     {
         $name = strtolower(preg_replace('/[^A-Z_]/i', '', (string) $name));
 
@@ -67,7 +67,7 @@ abstract class Store extends Obj implements SessionHandlerInterface
      * @param   array  $options
      * @return  void
      */
-    public function register($options = array())
+    public function register($options = [])
     {
         // Use this object as the session handler
         // Pass $this directly since we implement SessionHandlerInterface
@@ -175,9 +175,9 @@ abstract class Store extends Obj implements SessionHandlerInterface
      * @param   array  $filters
      * @return  array
      */
-    public function all($filters = array())
+    public function all($filters = [])
     {
-        return array();
+        return [];
     }
 
     /**

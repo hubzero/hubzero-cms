@@ -30,13 +30,13 @@ class DocumentServiceProvider extends Middleware
             $type = $app['request']->getWord('format', $raw ? 'raw' : 'html');
             $type = ($type == 'none' ? 'raw' : $type);
 
-            $options = array(
+            $options = [
                 'charset'   => 'utf-8',
                 'lineend'   => 'unix',
                 'tab'       => "\t",
                 'language'  => $app['language']->getTag(),
                 'direction' => $app['language']->isRTL() ? 'rtl' : 'ltr'
-            );
+            ];
 
             $manager = new Manager();
             $manager->setType($type)
@@ -62,7 +62,7 @@ class DocumentServiceProvider extends Middleware
 
         $document = $this->app['document'];
 
-        $params = array();
+        $params = [];
 
         // Set meta tags
         if ($document->getType() == 'html') {
@@ -85,12 +85,12 @@ class DocumentServiceProvider extends Middleware
                 $response->headers->set('Status', '503 Service Temporarily Unavailable', 'true');
             }
 
-            $params = array(
+            $params = [
                 'template'  => $this->app['template']->template,
                 'file'      => $file . '.php',
                 'directory' => dirname($this->app['template']->path),
                 'params'    => $this->app['template']->params
-            );
+            ];
 
             // Path is <PATH>/[core|app]/templates
             $basepath = dirname(dirname($params['directory']));

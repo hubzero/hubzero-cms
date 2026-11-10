@@ -54,9 +54,9 @@ class Attachment extends Table
             return false;
         }
 
-        $result = array();
+        $result = [];
 
-        $filters = array('role' => $role);
+        $filters = ['role' => $role];
         $items = $this->getAttachments($versionid, $filters);
 
         if ($items) {
@@ -195,12 +195,12 @@ class Attachment extends Table
         $results = $this->_db->loadObjectList();
 
         if ($results) {
-            $attachments = array(
-                '1'        => array(),
-                '2'        => array(),
-                '3'        => array(),
-                'elements' => array()
-            );
+            $attachments = [
+                '1'        => [],
+                '2'        => [],
+                '3'        => [],
+                'elements' => []
+            ];
 
             foreach ($results as $result) {
                 // Sort by role
@@ -215,7 +215,7 @@ class Attachment extends Table
                 $elementId = $result->element_id ? $result->element_id : 1;
 
                 if (!isset($attachments['elements'][$elementId])) {
-                    $attachments['elements'][$elementId] = array();
+                    $attachments['elements'][$elementId] = [];
                 }
 
                 // Add to elements array
@@ -235,7 +235,7 @@ class Attachment extends Table
      * @param   array    $find
      * @return  object
      */
-    public function getConnections($vid = null, $find = array())
+    public function getConnections($vid = null, $find = [])
     {
         if (!$vid) {
             $vid = $this->publication_version_id;
@@ -263,7 +263,7 @@ class Attachment extends Table
      * @param   array    $filters
      * @return  object
      */
-    public function getAttachments($versionid, $filters = array())
+    public function getAttachments($versionid, $filters = [])
     {
         if ($versionid === null) {
             $versionid = $this->publication_version_id;
@@ -371,7 +371,7 @@ class Attachment extends Table
      * @param   string   $role
      * @return  mixed    object or FALSE
      */
-    public function deleteElementAttachment($vid = null, $find = array(), $elementId = 0, $type = 'file', $role = '')
+    public function deleteElementAttachment($vid = null, $find = [], $elementId = 0, $type = 'file', $role = '')
     {
         if (!$vid) {
             $vid = $this->publication_version_id;
@@ -413,7 +413,7 @@ class Attachment extends Table
      * @param   string   $role
      * @return  mixed    object or FALSE
      */
-    public function loadElementAttachment($vid = null, $find = array(), $elementId = 0, $type = 'file', $role = '')
+    public function loadElementAttachment($vid = null, $find = [], $elementId = 0, $type = 'file', $role = '')
     {
         if (!$vid) {
             $vid = $this->publication_version_id;
@@ -621,12 +621,12 @@ class Attachment extends Table
             return false;
         }
 
-        $pub = array(
+        $pub = [
             'id' => '',
             'title' => '',
             'version' => 'default',
             'version_label' => ''
-        );
+        ];
 
         $query  = "SELECT a.publication_id , v.title, v.version_number, v.version_label FROM $this->_tbl as a ";
         $query .= "JOIN #__publication_versions AS v ON v.id=a.publication_version_id  ";
@@ -663,7 +663,7 @@ class Attachment extends Table
             return false;
         }
 
-        $assoc = array();
+        $assoc = [];
 
         $query  = "SELECT a.path, a.publication_id , v.title, v.version_number, v.version_label FROM $this->_tbl as a ";
         $query .= "JOIN #__publication_versions AS v ON v.id=a.publication_version_id ";
@@ -678,7 +678,7 @@ class Attachment extends Table
 
         if ($result) {
             foreach ($result as $r) {
-                $pub = array();
+                $pub = [];
                 $pub['id']            = $r->publication_id;
                 $pub['title']         = $r->title;
                 $pub['version']       = $r->version_number;

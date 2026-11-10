@@ -116,10 +116,10 @@ $createdByVal = $this->escape(
                         50,
                         15,
                         'field-answer',
-                        array(
+                        [
                             'class' => 'required minimal no-footer',
                             'buttons' => false,
-                        )
+                        ]
                     );
                     ?>
                 </div>
@@ -223,7 +223,7 @@ $createdByVal = $this->escape(
                         'calendar',
                         'answer[created]',
                         $this->row->get('created', Date::toSql()),
-                        array('id' => 'field-created')
+                        ['id' => 'field-created']
                     );
                     ?>
                 </div>

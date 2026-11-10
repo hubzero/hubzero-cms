@@ -57,7 +57,7 @@ class DiffFormatter
     {
         $xi = $yi = 1;
         $block = false;
-        $context = array();
+        $context = [];
 
         $nlead = $this->leading_context_lines;
         $ntrail = $this->trailing_context_lines;
@@ -93,7 +93,7 @@ class DiffFormatter
                     $context = array_slice($context, count($context) - $nlead);
                     $x0 = $xi - count($context);
                     $y0 = $yi - count($context);
-                    $block = array();
+                    $block = [];
                     if ($context) {
                         $block[] = new DiffOpCopy($context);
                     }

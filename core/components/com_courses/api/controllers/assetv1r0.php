@@ -55,10 +55,10 @@ class Assetv1r0 extends base
         $handlers = $assetHandler->getHandlers();
 
         // Also check the PHP max post and upload values
-        $max = array(
+        $max = [
             'upload' => ini_get('upload_max_filesize'),
             'post'   => ini_get('post_max_size')
-        );
+        ];
 
         $max = array_map(
             function ($v) {
@@ -369,7 +369,7 @@ class Assetv1r0 extends base
 
         // If we're saving progress calculation var
         if ($progress = Request::getInt('progress_factors', false)) {
-            $asset->set('progress_factors', array('asset_id' => $asset->get('id'), 'section_id' => $this->course->offering()->section()->get('id')));
+            $asset->set('progress_factors', ['asset_id' => $asset->get('id'), 'section_id' => $this->course->offering()->section()->get('id')]);
         } elseif (Request::getInt('edit_progress_factors', false)) {
             $asset->set('section_id', $this->course->offering()->section()->get('id'));
             $asset->set('progress_factors', 'delete');
@@ -469,9 +469,9 @@ class Assetv1r0 extends base
             App::abort(500, 'Asset save failed');
         }
 
-        $files    = array();
+        $files    = [];
         $database = App::get('db');
-        $row = (object) array();
+        $row = (object) [];
 
         // If we're creating a new asset, we should also create a new asset association
         if (!$id) {
@@ -565,7 +565,7 @@ class Assetv1r0 extends base
         // Build the asset url
         $url = Route::url('index.php?option=com_courses&controller=offering&gid=' . $this->course->get('alias') . '&offering=' . $this->offering_alias . '&asset=' . $asset->get('id'));
 
-        $files = array(
+        $files = [
             'asset_id'       => $asset->get('id'),
             'asset_title'    => $asset->get('title'),
             'asset_type'     => $asset->get('type'),
@@ -575,10 +575,10 @@ class Assetv1r0 extends base
             'scope_id'       => (isset($row) && isset($row->scope_id)) ? $row->scope_id : '',
             'course_id'      => $this->course_id,
             'offering_alias' => Request::getCmd('offering', '')
-        );
+        ];
 
         // Set the status code
-        $status = ($id) ? array('code' => 200, 'text' => 'OK') : array('code' => 201, 'text' => 'Created');
+        $status = ($id) ? ['code' => 200, 'text' => 'OK'] : ['code' => 201, 'text' => 'Created'];
 
         // Return message
         $this->send(
@@ -586,7 +586,7 @@ class Assetv1r0 extends base
                 'asset_id'    => $asset->get('id'),
                 'asset_title' => $asset->get('title'),
                 'course_id'   => $this->course_id,
-                'files'       => array($files)
+                'files'       => [$files]
             ],
             ($id ? 200 : 201)
         );
@@ -807,7 +807,7 @@ class Assetv1r0 extends base
         $database           = App::get('db');
         $assetAssocationObj = new AssetAssociation($database);
 
-        $assets   = Request::getArray('asset', array());
+        $assets   = Request::getArray('asset', []);
         $scope_id = Request::getInt('scope_id', 0);
         $scope    = Request::getWord('scope', 'asset_group');
 
@@ -838,7 +838,7 @@ class Assetv1r0 extends base
             }
 
             // Save the asset group
-            if (!$assetAssocationObj->save(array('ordering' => $order))) {
+            if (!$assetAssocationObj->save(['ordering' => $order])) {
                 App::abort(500, 'Asset asssociation save failed');
             }
 

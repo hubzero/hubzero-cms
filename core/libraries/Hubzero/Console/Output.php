@@ -20,7 +20,7 @@ class Output
      *
      * @var  array
      **/
-    protected $response = array();
+    protected $response = [];
 
     /**
      * Track default indentation for lines
@@ -80,7 +80,7 @@ class Output
             }
 
             // Reset response
-            $this->response = array();
+            $this->response = [];
         }
     }
 
@@ -96,9 +96,9 @@ class Output
     {
         $this->formatLine($message, $styles);
 
-        $this->response[] = array(
+        $this->response[] = [
             'message' => $message
-        );
+        ];
 
         if ($this->isInteractive()) {
             $this->render($newLine);
@@ -132,7 +132,7 @@ class Output
      * @param   mixed   $styles     Array of custom styles or string containing predefined term (see formatLine() for posibilities)
      * @return  $this
      **/
-    public function addParagraph($paragraph, $styles = array())
+    public function addParagraph($paragraph, $styles = [])
     {
         // Sanitize the given text of new lines, double spaces, and tabs
         $paragraph = str_replace("\n", " ", $paragraph);
@@ -208,9 +208,9 @@ class Output
      **/
     public function addRaw($text)
     {
-        $this->response[] = array(
+        $this->response[] = [
             'message' => $text
-        );
+        ];
 
         if ($this->isInteractive()) {
             $this->render(true);
@@ -247,11 +247,11 @@ class Output
     {
         foreach ($lines as $key => $value) {
             if (is_array($value)) {
-                $this->addLine($key . ': [', array("indentation" => $indentation));
+                $this->addLine($key . ': [', ["indentation" => $indentation]);
                 $this->addRawFromAssocArray($value, $indentation + 1);
-                $this->addLine(']', array("indentation" => $indentation));
+                $this->addLine(']', ["indentation" => $indentation]);
             } else {
-                $this->addLine($key . ': ' . $value, array("indentation" => $indentation));
+                $this->addLine($key . ': ' . $value, ["indentation" => $indentation]);
             }
         }
     }
@@ -555,11 +555,11 @@ class Output
      **/
     private function formatLine(&$message, $styles)
     {
-        $style = array(
+        $style = [
             'format'      => '0',
             'color'       => '',
             'indentation' => $this->defaultIndentation
-        );
+        ];
 
         // If array, parse for individual style declarations
         if (is_array($styles) && count($styles) > 0) {
@@ -700,7 +700,7 @@ class Output
      **/
     private function translateColor($color)
     {
-        $colors = array(
+        $colors = [
             'black'  => '30',
             'red'    => '31',
             'green'  => '32',
@@ -709,7 +709,7 @@ class Output
             'purple' => '35',
             'cyan'   => '36',
             'white'  => '37'
-        );
+        ];
 
         return $colors[$color];
     }
@@ -722,11 +722,11 @@ class Output
      **/
     private function translateFormat($format)
     {
-        $formats = array(
+        $formats = [
             'normal'    => '0',
             'bold'      => '1',
             'underline' => '4'
-        );
+        ];
 
         return $formats[$format];
     }

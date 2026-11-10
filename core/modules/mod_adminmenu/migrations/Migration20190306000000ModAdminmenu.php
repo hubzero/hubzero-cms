@@ -21,7 +21,7 @@ class Migration20190306000000ModAdminmenu extends Base
      *
      * @var  array
      **/
-    public static $components = array(
+    public static $components = [
         'com_cache',
         'com_categories',
         'com_checkin',
@@ -42,7 +42,7 @@ class Migration20190306000000ModAdminmenu extends Base
         'com_system',
         'com_templates',
         'com_users'
-    );
+    ];
 
     /**
      * Up
@@ -50,7 +50,7 @@ class Migration20190306000000ModAdminmenu extends Base
     public function up()
     {
         if ($this->db->tableExists('#__menu')) {
-            $components = array();
+            $components = [];
             foreach (self::$components as $name) {
                 $components[] = $this->db->quote($name);
             }
@@ -73,7 +73,7 @@ class Migration20190306000000ModAdminmenu extends Base
     public function down()
     {
         if ($this->db->tableExists('#__menu')) {
-            $components = array();
+            $components = [];
             foreach (self::$components as $option) {
                 // Check for an admin menu entry...if it's not there, create it
                 $quotedOption = $this->db->quote($option);

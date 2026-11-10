@@ -298,7 +298,7 @@ $canEditAccess = !$this->page->exists()
             <label>
                 <?php echo Lang::txt('COM_WIKI_FIELD_TAGS'); ?>:
                 <?php
-                $tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags','', $tags)));
+                $tf = Event::trigger('hubzero.onGetMultiEntry', [['tags', 'tags', 'actags','', $tags]]);
                 if (count($tf) > 0) {
                     echo $tf[0];
                 } else {

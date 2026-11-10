@@ -26,7 +26,7 @@ class Iframe extends Macro
         // use host for example, that way  its not block
         $host = 'https://' . Request::getString('HTTP_HOST', '', 'server');
 
-        $txt = array();
+        $txt = [];
         $txt['wiki'] = 'Embeds an Iframe into the Page';
         $txt['html'] = '<p>Embeds an iframe into the page.</p>
 						<p>Examples:</p>

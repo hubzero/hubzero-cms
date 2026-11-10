@@ -37,7 +37,7 @@ class PublicUrl
      * @param   array   $schemes  Schemes allowed
      * @return  array|false  array(url, host, port, addresses, pins), or false when refused
      */
-    public static function check($url, $schemes = array('http', 'https'))
+    public static function check($url, $schemes = ['http', 'https'])
     {
         $url   = (string) $url;
         $parts = parse_url($url);
@@ -82,14 +82,14 @@ class PublicUrl
             . (isset($parts['path']) && $parts['path'] !== '' ? $parts['path'] : '/')
             . (isset($parts['query']) ? '?' . $parts['query'] : '');
 
-        return array(
+        return [
             'url'       => $fetch,
             'host'      => $host,
             'port'      => $port,
             'addresses' => $addresses,
             // An address literal has no name to re-point, and needs no pin
-            'pins'      => $literal ? array() : array(self::pin($host, $port, $addresses))
-        );
+            'pins'      => $literal ? [] : [self::pin($host, $port, $addresses)]
+        ];
     }
 
     /**

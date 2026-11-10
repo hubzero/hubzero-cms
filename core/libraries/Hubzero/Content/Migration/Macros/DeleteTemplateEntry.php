@@ -67,9 +67,9 @@ class DeleteTemplateEntry extends Macro
                     if ($id = $this->db->loadResult()) {
                         $query = $this->db->getQuery()
                             ->update('#__template_styles')
-                            ->set(array(
+                            ->set([
                                 'home' => 1
-                            ))
+                            ])
                             ->whereEquals('id', $id)
                             ->toString();
                         $this->db->setQuery($query);

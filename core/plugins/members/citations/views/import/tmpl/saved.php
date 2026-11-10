@@ -113,7 +113,7 @@ $base = $this->member->link() . '&active=citations';
                                 </td>
                             <?php endif; ?>
                             <td class="citation-container">
-                                <?php echo $cite->formatted(array(), $this->filters['search']); ?>
+                                <?php echo $cite->formatted([], $this->filters['search']); ?>
 
                                 <?php if ($rollover == 'yes' && $cite->abstract != '') : ?>
                                     <div class="citation-notes">

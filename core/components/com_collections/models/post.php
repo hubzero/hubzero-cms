@@ -65,7 +65,7 @@ class Post extends Base
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         if (is_numeric($oid) || is_string($oid)) {
@@ -285,27 +285,27 @@ class Post extends Base
     public function description($as = 'parsed', $shorten = 0)
     {
         $as = strtolower($as);
-        $options = array();
+        $options = [];
 
         switch ($as) {
             case 'parsed':
                 $content = $this->get('description.parsed', null);
                 if ($content === null) {
-                    $config = array(
+                    $config = [
                         'option'   => $this->get('option', Request::getCmd('option', 'com_collections')),
                         'scope'    => 'collections',
                         'pagename' => 'collections',
                         'pageid'   => 0,
                         'filepath' => '',
                         'domain'   => 'collection'
-                    );
+                    ];
 
                     $content = stripslashes((string) $this->get('description', ''));
-                    $this->importPlugin('content')->trigger('onContentPrepare', array(
+                    $this->importPlugin('content')->trigger('onContentPrepare', [
                         $this->_context,
                         &$this,
                         &$config
-                    ));
+                    ]);
 
                     $this->set('description.parsed', (string) $this->get('description', ''));
                     $this->set('description', $content);

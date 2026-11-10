@@ -60,11 +60,11 @@ class DiscoveryHelper
      * @param array $existingComponents Components that have already been discovered
      * @return array
      */
-    public static function getSearchableComponents($existingComponents = array())
+    public static function getSearchableComponents($existingComponents = [])
     {
         $componentList = self::getCompleteComponentList();
         $componentList = array_diff($componentList, $existingComponents);
-        $searchableComponents = array();
+        $searchableComponents = [];
         foreach ($componentList as $component) {
             if (self::getSearchableModel($component)) {
                 $searchableComponents[] = $component;
@@ -86,7 +86,7 @@ class DiscoveryHelper
             return false;
         }
         $models = scandir($modelPath);
-        $ormModels = array();
+        $ormModels = [];
         if (file_exists($ormModelPath)) {
             $ormModels = scandir($ormModelPath);
         }
@@ -98,7 +98,7 @@ class DiscoveryHelper
                 return $model;
             }
         });
-        $searchableModels = array();
+        $searchableModels = [];
         $searchableFlag = false;
         foreach ($models as $model) {
             $baseNameSpace = '\\Components\\' . ucfirst($component) . '\\Models\\';

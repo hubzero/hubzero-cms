@@ -38,7 +38,7 @@ class Related extends Plugin
             return '';
         }
 
-        $ids = array();
+        $ids = [];
         foreach ($instructors as $instructor) {
             $ids[] = (int) $instructor->get('user_id');
         }

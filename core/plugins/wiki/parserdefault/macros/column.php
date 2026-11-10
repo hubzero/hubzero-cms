@@ -38,7 +38,7 @@ class Column extends WikiMacro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['wiki'] = 'Allows content to be split into columns. This macro must first start with a '
             . 'declaration of the number of columns you want to use: Column(3). Then you must use the '
             . 'macro twice to indicate where a column starts and ends: Column(start) and Column(end). '
@@ -78,7 +78,7 @@ class Column extends WikiMacro
         if (trim($text) == 'start') {
             self::$_cursor++;
 
-            $cls = array('col');
+            $cls = ['col'];
 
             switch (self::$_columns) {
                 case 6:
@@ -104,13 +104,13 @@ class Column extends WikiMacro
                 $cls[] = 'omega';
             }
 
-            $atts = array();
+            $atts = [];
             if (!empty($attribs) && count($attribs) > 0) {
                 foreach ($attribs as $a) {
                     $a = preg_split('/=/', $a);
                     $key = strtolower(trim($a[0]));
                     if (
-                        !in_array($key, array('class', 'id', 'style', 'title', 'lang', 'dir', 'align', 'width', 'height', 'role', 'name', 'tabindex'), true)
+                        !in_array($key, ['class', 'id', 'style', 'title', 'lang', 'dir', 'align', 'width', 'height', 'role', 'name', 'tabindex'], true)
                         && !preg_match('/^(data|aria)-[a-z0-9\-]+$/', $key)
                     ) {
                         continue;

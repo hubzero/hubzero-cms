@@ -55,39 +55,39 @@ class Resources extends Plugin
      */
     public function onTagView($tags, $limit = 0, $limitstart = 0, $sort = '', $areas = null)
     {
-        $response = array(
+        $response = [
             'name'     => $this->_name,
             'title'    => Lang::txt('PLG_TAGS_RESOURCES'),
             'total'    => 0,
             'results'  => null,
             'sql'      => '',
-            'children' => array()
-        );
+            'children' => []
+        ];
 
         $database = App::get('db');
 
         foreach (\Components\Resources\Models\Type::getMajorTypes() as $category) {
-            $response['children'][$category->alias] = array(
+            $response['children'][$category->alias] = [
                 'name'     => $category->alias,
                 'title'    => $category->type,
                 'total'    => 0,
                 'results'  => null,
                 'sql'      => '',
                 'id'       => $category->id
-            );
+            ];
         }
 
         if (empty($tags)) {
             return $response;
         }
 
-        $ids = array();
+        $ids = [];
         foreach ($tags as $tag) {
             $ids[] = $tag->get('id');
         }
 
         // Build query
-        $filters = array();
+        $filters = [];
         $filters['tags'] = $ids;
         $filters['now'] = Date::toSql();
         $filters['sortby'] = ($sort) ? $sort : 'ranking';
@@ -155,7 +155,7 @@ class Resources extends Plugin
      * @param   array   $filters  Options for building the query
      * @return  string  SQL
      */
-    private function buildPluginQuery($filters = array())
+    private function buildPluginQuery($filters = [])
     {
         $database = App::get('db');
 
@@ -262,16 +262,16 @@ class Resources extends Plugin
         // Get the component params and merge with resource params
         $config = Component::params('com_resources');
 
-        $view = new \Hubzero\Component\View(array(
+        $view = new \Hubzero\Component\View([
             'base_path' => Component::path('com_resources') . '/site',
             'name'      => 'browse',
             'layout'    => 'item'
-        ));
+        ]);
 
         $view->set('line', $row)
             ->set('option', 'com_resources')
             ->set('config', $config)
-            ->set('supported', array());
+            ->set('supported', []);
 
         return $view->loadTemplate();
     }

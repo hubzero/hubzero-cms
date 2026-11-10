@@ -135,7 +135,7 @@ $this->css('create.css')
                 <?php
                 $tf = Event::trigger(
                     'hubzero.onGetMultiEntry',
-                    array(array('tags', 'tags', 'actags','',$recommended->getExistingTagsValueList()))
+                    [['tags', 'tags', 'actags','',$recommended->getExistingTagsValueList()]]
                 );
 
                 if (count($tf) > 0) {

@@ -54,10 +54,10 @@ class Helper
     public static function getSessionWithUserId($userid)
     {
         // get list of all sessions
-        $sessions = App::get('session')->getStore()->all(array(
+        $sessions = App::get('session')->getStore()->all([
             'guest'    => 0,
             'distinct' => 1
-        ));
+        ]);
 
         // see if any session matches our userid
         foreach ($sessions as $session) {
@@ -76,7 +76,7 @@ class Helper
      * @param   array  $filters  Filters to apply
      * @return  array
      */
-    public static function getAllSessions($filters = array())
+    public static function getAllSessions($filters = [])
     {
         return App::get('session')->getStore()->all($filters);
     }

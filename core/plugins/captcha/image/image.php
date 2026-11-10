@@ -209,7 +209,7 @@ class Image extends Plugin
             imagealphablending($font, true);
             $fontfile_width = imagesx($font);
             $fontfile_height = imagesy($font) - 1;
-            $font_metrics = array();
+            $font_metrics = [];
             $symbol = 0;
             $reading_symbol = false;
 
@@ -218,7 +218,7 @@ class Image extends Plugin
                 $transparent = (imagecolorat($font, $i, 0) >> 24) == 127;
 
                 if (!$reading_symbol && !$transparent) {
-                    $font_metrics[$alphabet[$symbol]] = array('start' => $i);
+                    $font_metrics[$alphabet[$symbol]] = ['start' => $i];
                     $reading_symbol = true;
                     continue;
                 }
@@ -401,7 +401,7 @@ class Image extends Plugin
         $md5_hash = md5(rand(0, 999));
 
         // We don't need a 32 character long string so we trim it down to 5
-        $security_code = str_replace(array("0", "O", "o"), array("p"), substr($md5_hash, 15, 5));
+        $security_code = str_replace(["0", "O", "o"], ["p"], substr($md5_hash, 15, 5));
 
         // Set the session to store the security code
         App::get('session')->set('securiy_code' . (Request::getInt('instanceNo') + 0), $security_code);
@@ -446,7 +446,7 @@ class Image extends Plugin
     private function _hexToRgb($hex)
     {
         $hex = preg_replace("/#/", '', $hex);
-        $color = array();
+        $color = [];
 
         if (strlen($hex) == 3) {
             // a 3-digit colour doubles each digit (#abc -> #aabbcc)

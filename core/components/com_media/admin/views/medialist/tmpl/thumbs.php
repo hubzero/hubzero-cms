@@ -30,8 +30,8 @@ $tmpl = Request::getCmd('tmpl', '');
         method="post" id="media-form-thumbs" name="media-form-thumbs">
         <div class="manager">
             <?php
-            $folders = array();
-            $files = array();
+            $folders = [];
+            $files = [];
 
             // Group files and folders
             foreach ($this->children as $child) :

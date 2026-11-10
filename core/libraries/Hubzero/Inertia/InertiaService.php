@@ -22,7 +22,7 @@ class InertiaService
      *
      * @var array
      */
-    protected $sharedProps = array();
+    protected $sharedProps = [];
 
     /**
      * Optional version resolver.
@@ -43,28 +43,28 @@ class InertiaService
      *
      * @var array
      */
-    protected $sentHeaders = array();
+    protected $sentHeaders = [];
 
     /**
      * Optional debug context entries for current request.
      *
      * @var array
      */
-    protected $debugContext = array();
+    protected $debugContext = [];
 
     /**
      * Profile timing data for current request.
      *
      * @var array
      */
-    protected $profile = array();
+    protected $profile = [];
 
     /**
      * Active profile timers keyed by label.
      *
      * @var array
      */
-    protected $profileTimers = array();
+    protected $profileTimers = [];
 
     /**
      * Tracks whether mutable request lifecycle APIs were used since last flush.
@@ -111,12 +111,12 @@ class InertiaService
      */
     public function page(string $component, array $props = []): array
     {
-        return array(
+        return [
             'component' => $component,
             'props'     => $props,
             'url'       => $this->url(),
             'version'   => $this->version()
-        );
+        ];
     }
 
     /**
@@ -127,7 +127,7 @@ class InertiaService
      * @param   string  $mountId
      * @return  string
      */
-    public function renderRootNode(string $component, array $props = array(), string $mountId = 'app'): string
+    public function renderRootNode(string $component, array $props = [], string $mountId = 'app'): string
     {
         // Go through the same merge render() does. Calling page() with the raw
         // props would ship an initial page without any shared prop, so a
@@ -228,20 +228,20 @@ class InertiaService
                 $this->debugContext['_warnings'] = isset($this->debugContext['_warnings'])
                     && is_array($this->debugContext['_warnings'])
                     ? $this->debugContext['_warnings']
-                    : array();
+                    : [];
                 $this->debugContext['_warnings'][] =
                     'flush() ignored: call flush() before profileStart/share/debugContext.';
             }
             return;
         }
 
-        $this->sharedProps = array();
+        $this->sharedProps = [];
         $this->versionResolver = null;
         $this->rootView = null;
-        $this->sentHeaders = array();
-        $this->debugContext = array();
-        $this->profile = array();
-        $this->profileTimers = array();
+        $this->sentHeaders = [];
+        $this->debugContext = [];
+        $this->profile = [];
+        $this->profileTimers = [];
         $this->lifecycleTouched = false;
     }
 
@@ -252,10 +252,10 @@ class InertiaService
     public function location(string $url): void
     {
         if ($this->isInertiaRequest()) {
-            $this->sendAndTerminate(409, array(
+            $this->sendAndTerminate(409, [
                 'X-Inertia' => 'true',
                 'X-Inertia-Location' => $url
-            ));
+            ]);
             return;
         }
 
@@ -273,14 +273,14 @@ class InertiaService
         if (
             $this->isInertiaRequest()
             && $status === 302
-            && in_array($method, array('POST', 'PUT', 'PATCH', 'DELETE'), true)
+            && in_array($method, ['POST', 'PUT', 'PATCH', 'DELETE'], true)
         ) {
             $status = 303;
         }
 
-        $this->sendAndTerminate($status, array(
+        $this->sendAndTerminate($status, [
             'Location' => $url
-        ));
+        ]);
     }
 
     /**
@@ -311,10 +311,10 @@ class InertiaService
             $encoded = '{}';
         }
 
-        $this->sendAndTerminate(200, array(
+        $this->sendAndTerminate(200, [
             'X-Inertia' => 'true',
             'Content-Type' => 'application/json; charset=utf-8'
-        ), $encoded);
+        ], $encoded);
     }
 
     /**
@@ -357,7 +357,7 @@ class InertiaService
      */
     protected function resolveSharedProps(): array
     {
-        $resolved = array();
+        $resolved = [];
 
         foreach ($this->sharedProps as $key => $value) {
             // Only a closure or an invokable object counts as a lazy prop.
@@ -399,7 +399,7 @@ class InertiaService
             return $props;
         }
 
-        $filtered = array();
+        $filtered = [];
         foreach ($keys as $key) {
             if (array_key_exists($key, $props)) {
                 $filtered[$key] = $props[$key];
@@ -414,17 +414,17 @@ class InertiaService
      */
     protected function addVaryInertia(): void
     {
-        $tokens = array();
+        $tokens = [];
 
         if (isset($this->sentHeaders['Vary'])) {
-            $tokens = array_merge($tokens, preg_split('/\s*,\s*/', (string) $this->sentHeaders['Vary']) ?: array());
+            $tokens = array_merge($tokens, preg_split('/\s*,\s*/', (string) $this->sentHeaders['Vary']) ?: []);
         }
 
         $response = \App::get('response');
         if ($response && isset($response->headers) && method_exists($response->headers, 'get')) {
             $existing = (string) $response->headers->get('Vary', '');
             if ($existing !== '') {
-                $tokens = array_merge($tokens, preg_split('/\s*,\s*/', $existing) ?: array());
+                $tokens = array_merge($tokens, preg_split('/\s*,\s*/', $existing) ?: []);
             }
         }
 
@@ -432,12 +432,12 @@ class InertiaService
             if (stripos($header, 'Vary:') === 0) {
                 $value = trim(substr($header, strlen('Vary:')));
                 if ($value !== '') {
-                    $tokens = array_merge($tokens, preg_split('/\s*,\s*/', $value) ?: array());
+                    $tokens = array_merge($tokens, preg_split('/\s*,\s*/', $value) ?: []);
                 }
             }
         }
 
-        $normalized = array();
+        $normalized = [];
         foreach ($tokens as $token) {
             $token = trim((string) $token);
             if ($token === '') {
@@ -497,7 +497,7 @@ class InertiaService
      */
     public function debugSnapshot(): array
     {
-        $incoming = array();
+        $incoming = [];
         foreach ($this->allIncomingHeaders() as $name => $value) {
             $lower = strtolower((string) $name);
             if (strpos($lower, 'x-inertia') === 0 || $lower === 'x-requested-with') {
@@ -505,12 +505,12 @@ class InertiaService
             }
         }
 
-        return array(
+        return [
             'incoming' => $incoming,
             'outgoing' => $this->sentHeaders,
             'context'  => array_merge($this->requestContext(), $this->debugContext),
             'request'  => $this->requestDetails(),
-        );
+        ];
     }
 
     /**
@@ -520,7 +520,7 @@ class InertiaService
      */
     public function requestDetails(): array
     {
-        return array(
+        return [
             'request' => $this->isInertiaRequest(),
             'version' => $this->requestHeaderValue('X-Inertia-Version'),
             'partial_component' => $this->requestHeaderValue('X-Inertia-Partial-Component'),
@@ -528,7 +528,7 @@ class InertiaService
             'partial_except' => $this->requestHeaderValue('X-Inertia-Partial-Except'),
             'error_bag' => $this->requestHeaderValue('X-Inertia-Error-Bag'),
             'reset' => $this->requestHeaderValue('X-Inertia-Reset'),
-        );
+        ];
     }
 
     /**
@@ -538,7 +538,7 @@ class InertiaService
      * @param   array  $options
      * @return  string
      */
-    public function renderDebugPanel(array $snapshot = array(), array $options = array()): string
+    public function renderDebugPanel(array $snapshot = [], array $options = []): string
     {
         if (!$this->isDebugEnabled()) {
             return '';
@@ -695,7 +695,7 @@ class InertiaService
      * @param   string|null  $body
      * @return  void
      */
-    protected function sendAndTerminate(int $status, array $headers = array(), ?string $body = null): void
+    protected function sendAndTerminate(int $status, array $headers = [], ?string $body = null): void
     {
         $this->setStatusCode($status);
 
@@ -751,10 +751,10 @@ class InertiaService
     {
         $request = \App::get('request');
         if (!$request) {
-            return array();
+            return [];
         }
 
-        $ctx = array();
+        $ctx = [];
         if (method_exists($request, 'getMethod')) {
             $ctx['method'] = (string) $request->getMethod();
         }
@@ -788,7 +788,7 @@ class InertiaService
             }
         }
 
-        return array();
+        return [];
     }
 
     /**

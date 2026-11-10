@@ -43,10 +43,10 @@ class Categories extends Plugin
         // Default to true if not a core extension
         $result = true;
 
-        $tableInfo = array (
-            'com_content'   => array('table_name' => '#__content'),
-            'com_newsfeeds' => array('table_name' => '#__newsfeeds')
-        );
+        $tableInfo =  [
+            'com_content'   => ['table_name' => '#__content'],
+            'com_newsfeeds' => ['table_name' => '#__newsfeeds']
+        ];
 
         // Now check to see if this is a known core extension
         if (isset($tableInfo[$extension])) {
@@ -135,7 +135,7 @@ class Categories extends Plugin
 
         // First element in tree is the current category, so we can skip that one
         unset($childCategoryTree[0]);
-        $childCategoryIds = array();
+        $childCategoryIds = [];
         foreach ($childCategoryTree as $node) {
             $childCategoryIds[] = $node->id;
         }

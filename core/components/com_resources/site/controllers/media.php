@@ -136,7 +136,7 @@ class Media extends SiteController
         // hub origin, not upload typing in general. An allow-list would be
         // better and is worth doing, but com_media's list is not the one to
         // borrow: it is a media-manager list, not a resource list.
-        $blockedExtensions = array('php', 'php3', 'php4', 'php5', 'php7', 'php8', 'phtml', 'pht', 'phar', 'phps', 'cgi', 'pl', 'asp', 'aspx', 'jsp', 'shtml', 'htaccess', 'htpasswd', 'html', 'htm', 'xhtml', 'xml');
+        $blockedExtensions = ['php', 'php3', 'php4', 'php5', 'php7', 'php8', 'phtml', 'pht', 'phar', 'phps', 'cgi', 'pl', 'asp', 'aspx', 'jsp', 'shtml', 'htaccess', 'htpasswd', 'html', 'htm', 'xhtml', 'xml'];
         if (in_array(strtolower((string) $ext), $blockedExtensions)) {
             $this->setError(Lang::txt('File type not allowed: %s', $ext));
             return $this->displayTask();
@@ -295,8 +295,8 @@ class Media extends SiteController
 
         $path = $row->filespace() . DS . 'media';
 
-        $folders = array();
-        $docs    = array();
+        $folders = [];
+        $docs    = [];
 
         if (is_dir($path)) {
             // Loop through all files and separate them into arrays of images, folders, and other
@@ -351,8 +351,8 @@ class Media extends SiteController
      */
     private function recursiveListDir($base)
     {
-        static $filelist = array();
-        static $dirlist  = array();
+        static $filelist = [];
+        static $dirlist  = [];
 
         if (is_dir($base)) {
             $dh = opendir($base);
@@ -414,7 +414,7 @@ class Media extends SiteController
 
         // Are we creating a new tracking record?
         if ($trackingInformation->isNew()) {
-            $trackingInformation->set(array(
+            $trackingInformation->set([
                 'user_id'                     => User::get('id'),
                 'session_id'                  => $session->getId(),
                 'ip_address'                  => $ipAddress,
@@ -428,7 +428,7 @@ class Media extends SiteController
                 'completed'                   => 0,
                 'total_views'                 => 1,
                 'total_viewing_time'          => 0
-            ));
+            ]);
         } else {
             // Get the amount of video watched from last tracking event
             $time_viewed = (int)$time - (int)$trackingInformation->get('current_position');
@@ -468,7 +468,7 @@ class Media extends SiteController
 
         // Save detailed tracking info
         if ($event == 'start' || $trackingInformationDetailed->isNew()) {
-            $trackingInformationDetailed->set(array(
+            $trackingInformationDetailed->set([
                 'user_id'                     => User::get('id'),
                 'session_id'                  => $session->getId(),
                 'ip_address'                  => $ipAddress,
@@ -480,7 +480,7 @@ class Media extends SiteController
                 'current_position_timestamp'  => Date::toSql(),
                 'farthest_position_timestamp' => Date::toSql(),
                 'completed'                   => 0
-            ));
+            ]);
         } else {
             // Set the new current position
             $trackingInformationDetailed->set('current_position', $time);

@@ -68,7 +68,7 @@ class Menu extends Relational
             Event::trigger($this->getTableName() . '_new', ['model' => $this]);
         }
 
-        Event::trigger('system.onContentSave', array($this->getTableName(), $this));
+        Event::trigger('system.onContentSave', [$this->getTableName(), $this]);
 
         return $result;
     }

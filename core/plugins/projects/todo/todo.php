@@ -73,13 +73,13 @@ class Todo extends Plugin
      */
     public function &onProjectAreas($alias = null)
     {
-        $area = array(
+        $area = [
             'name'    => 'todo',
             'title'   => Lang::txt('COM_PROJECTS_TAB_TODO'),
             'submenu' => null,
             'show'    => true,
             'icon'    => 'f08d'
-        );
+        ];
 
         return $area;
     }
@@ -96,12 +96,12 @@ class Todo extends Plugin
         $database = App::get('db');
 
         $objTD = new \Components\Projects\Tables\Todo($database);
-        $counts['todo'] = $objTD->getTodos($model->get('id'), $filters = array('count' => 1));
+        $counts['todo'] = $objTD->getTodos($model->get('id'), $filters = ['count' => 1]);
 
         if ($admin == 1) {
-            $counts['todos_completed'] = $objTD->getTodos($model->get('id'), $filters = array(
+            $counts['todos_completed'] = $objTD->getTodos($model->get('id'), $filters = [
                 'count' => 1,
-                'state' => 1));
+                'state' => 1]);
         }
 
         return $counts;
@@ -119,10 +119,10 @@ class Todo extends Plugin
     {
         $returnhtml = true;
 
-        $arr = array(
+        $arr = [
             'html'     => '',
             'metadata' => ''
-        );
+        ];
 
         // Get this area details
         $this->_area = $this->onProjectAreas();
@@ -213,21 +213,21 @@ class Todo extends Plugin
         $this->todo = new \Components\Projects\Models\Todo();
 
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'todo',
                 'name'    => 'mini'
-            )
+            ]
         );
 
         // Filters for returning results
-        $view->filters = array(
-            'projects' => array($model->get('id')),
+        $view->filters = [
+            'projects' => [$model->get('id')],
             'limit'    => $model->config()->get('sidebox_limit', 5),
             'start'    => 0,
             'sortby'   => 'due',
             'sortdir'  => 'ASC'
-        );
+        ];
 
         $view->items = $this->todo->entries('list', $view->filters);
         $view->model = $model;
@@ -253,12 +253,12 @@ class Todo extends Plugin
 
         // Output HTML
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'todo',
                 'name'    => 'view',
                 'layout'  => 'shared'
-            )
+            ]
         );
         $view->limit    = isset($filters['limit']) ? $filters['limit'] : 0;
         $view->filters  = $filters;
@@ -288,17 +288,17 @@ class Todo extends Plugin
 
         // Output HTML
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'todo',
                 'name'    => 'view',
                 'layout'  => $layout
-            )
+            ]
         );
 
         // Filters for returning results
-        $view->filters = array(
-            'projects'   => array($this->model->get('id')),
+        $view->filters = [
+            'projects'   => [$this->model->get('id')],
             'limit'      => Request::getInt('limit', $this->params->get('display_limit', 50)),
             'start'      => Request::getInt('limitstart', 0),
             'todolist'   => Request::getWord('list', ''),
@@ -308,7 +308,7 @@ class Todo extends Plugin
             'sortby'     => Request::getString('sortby', 'priority'),
             'sortdir'    => Request::getString('sortdir', 'ASC'),
             'layout'     => $layout
-        );
+        ];
 
         $view->option   = $this->_option;
         $view->database = $this->_database;
@@ -349,12 +349,12 @@ class Todo extends Plugin
         }
 
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => $this->_type,
                 'element' => $this->_name,
                 'name'    => 'item',
                 'layout'  => $layout
-            )
+            ]
         );
         $view->option = $this->option;
         $view->todo   = $this->todo;
@@ -363,7 +363,7 @@ class Todo extends Plugin
 
         // Get team members (to assign items to)
         $objO = $this->model->table('Owner');
-        $view->team = $objO->getOwners($this->model->get('id'), $tfilters = array('status' => 1));
+        $view->team = $objO->getOwners($this->model->get('id'), $tfilters = ['status' => 1]);
 
         if (isset($this->entry) && is_object($this->entry)) {
             $view->row = $this->entry;
@@ -405,7 +405,7 @@ class Todo extends Plugin
         $todoid    = Request::getInt('todoid', 0);
         $newlist   = Request::getString('newlist', '', 'post');
         $newcolor  = Request::getString('newcolor', '', 'post');
-        $todoColors = array('orange', 'lightblue', 'green', 'purple', 'blue', 'black', 'red', 'yellow', 'pink');
+        $todoColors = ['orange', 'lightblue', 'green', 'purple', 'blue', 'black', 'red', 'yellow', 'pink'];
         if (!in_array($listcolor, $todoColors)) {
             $listcolor = $listcolor == 'none' ? 'none' : '';
         }
@@ -693,7 +693,7 @@ class Todo extends Plugin
 
             if ($deleteall) {
                 // Get all to-do's on list
-                $todos = $objTD->getTodos($this->model->get('id'), $filters = array('todolist' => $list));
+                $todos = $objTD->getTodos($this->model->get('id'), $filters = ['todolist' => $list]);
                 if (count($todos) > 0) {
                     foreach ($todos as $todo) {
                         if ($objTD->loadTodo($this->model->get('id'), $todo->id)) {
@@ -754,7 +754,7 @@ class Todo extends Plugin
         // Incoming
         $newid = Request::getInt('newid', 0);
         $oldid = Request::getInt('oldid', 0);
-        $items = Request::getArray('item', array());
+        $items = Request::getArray('item', []);
 
         if ($newid && $oldid) {
             $objTD1 = new \Components\Projects\Tables\Todo($this->_database);

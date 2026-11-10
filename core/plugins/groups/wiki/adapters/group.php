@@ -22,11 +22,11 @@ class Group extends Base
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_segments = array(
+    protected $_segments = [
         'option' => 'com_groups',
         'cn'     => '',
         'active' => 'wiki'
-    );
+    ];
 
     /**
      * Constructor
@@ -121,12 +121,12 @@ class Group extends Base
      */
     public function routing($task = 'save')
     {
-        return array(
+        return [
             'option' => $this->_segments['option'],
             'cn'     => $this->_segments['cn'],
             'active' => $this->_segments['active'],
             'action' => $task
-        );
+        ];
     }
 
     /**

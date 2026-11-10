@@ -206,7 +206,7 @@ if (!$no_html) {
 
                             <label for="comment-content">
                                 <span class="label-text"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_COMMENTS'); ?></span>
-                                <?php echo $this->editor('comment[content]', '', 35, 5, 'comment-content', array('class' => 'minimal no-footer')); ?>
+                                <?php echo $this->editor('comment[content]', '', 35, 5, 'comment-content', ['class' => 'minimal no-footer']); ?>
                             </label>
 
                             <input type="hidden" name="comment[id]" value="0" />
@@ -335,7 +335,7 @@ if (!$no_html) {
     </div>
 </section>
 
-<?php if ($item->collections('list', array('collection_id' => $this->collection->get('id')))->total()) { ?>
+<?php if ($item->collections('list', ['collection_id' => $this->collection->get('id')])->total()) { ?>
     <section class="section post-collections">
         <h3><?php echo Lang::txt('COM_COLLECTIONS_ALSO_IN_THESE_COLLECTIONS'); ?></h3>
         <div id="posts">

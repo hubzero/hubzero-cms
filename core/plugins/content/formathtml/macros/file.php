@@ -35,7 +35,7 @@ class File extends Macro
      *
      * @var  array
      */
-    private $attr = array();
+    private $attr = [];
 
     /**
      * Returns description of macro, use, and accepted arguments
@@ -44,7 +44,7 @@ class File extends Macro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['wiki'] = 'This macro alternately generates a link to a file or embeds the file for display (only valid for CDF files and images). The first argument is the filename.';
         $txt['html'] = '<p>This macro alternately generates a link to a file or embeds the file for display (only valid for CDF files and images). The first argument is the filename.</p>
 			<ul>
@@ -94,20 +94,20 @@ class File extends Macro
         $args   = explode(',', $content);
         $file   = array_shift($args);
 
-        $this->attr   = array();
+        $this->attr   = [];
         $this->attr['href']  = '';
-        $this->attr['style'] = array();
+        $this->attr['style'] = [];
         $this->attr['details'] = true;
 
         // Get single attributes
         // EX: [[Image(myimage.png, nolink, right)]]
-        $argues = preg_replace_callback('/[, ](left|right|top|center|bottom|nodetails|[0-9]+(px|%|em)?)(?:[, ]|$)/i', array(&$this, 'parseSingleAttribute'), $content);
+        $argues = preg_replace_callback('/[, ](left|right|top|center|bottom|nodetails|[0-9]+(px|%|em)?)(?:[, ]|$)/i', [&$this, 'parseSingleAttribute'], $content);
         // Get quoted attribute/value pairs
         // EX: [[Image(myimage.png, desc="My description, contains, commas")]]
-        $argues = preg_replace_callback('/[, ](alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap|link|rel|details)=(?:["\'])([^"\']*)(?:["\'])/i', array(&$this, 'parseAttributeValuePair'), $content);
+        $argues = preg_replace_callback('/[, ](alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap|link|rel|details)=(?:["\'])([^"\']*)(?:["\'])/i', [&$this, 'parseAttributeValuePair'], $content);
         // Get non-quoted attribute/value pairs
         // EX: [[Image(myimage.png, width=100)]]
-        $argues = preg_replace_callback('/[, ](alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap|link|rel|details)=([^"\',]*)(?:[, ]|$)/i', array(&$this, 'parseAttributeValuePair'), $content);
+        $argues = preg_replace_callback('/[, ](alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap|link|rel|details)=([^"\',]*)(?:[, ]|$)/i', [&$this, 'parseAttributeValuePair'], $content);
 
         $attr = $this->attr;
 
@@ -185,14 +185,14 @@ class File extends Macro
         // Set width if just a pixel size is given
         // EX: [[File(myfile.jpg, width=120px)]]
         if (preg_match($size, $val, $matches) && $key != 'border') {
-            if ($matches[0] && in_array($key, array('width', 'height'))) {
+            if ($matches[0] && in_array($key, ['width', 'height'])) {
                 $this->attr['style'][$key] = $val;
                 //$this->attr[$key] = $val;
                 return;
             }
         }
 
-        if (is_numeric($val) && in_array($key, array('width', 'height'))) {
+        if (is_numeric($val) && in_array($key, ['width', 'height'])) {
             $this->attr['style'][$key] = $val . 'px';
             $this->attr[$key] = $val;
         }
@@ -234,7 +234,7 @@ class File extends Macro
                 $probe = preg_replace('/[\x00-\x20\x7f]+/', '', (string) $val);
                 if (
                     preg_match('/^([a-z][a-z0-9+.\-]*):/i', $probe, $m)
-                    && !in_array(strtolower($m[1]), array('http', 'https', 'mailto', 'ftp'))
+                    && !in_array(strtolower($m[1]), ['http', 'https', 'mailto', 'ftp'])
                 ) {
                     $this->attr['href'] = '';
                     return;
@@ -251,7 +251,7 @@ class File extends Macro
         }
         // Check for alignment, no key given
         // EX: [[File(myfile.jpg, left)]]
-        if (in_array($key, array('left', 'right', 'top', 'bottom', 'center'))) {
+        if (in_array($key, ['left', 'right', 'top', 'bottom', 'center'])) {
             if ($key == 'center') {
                 $this->attr['style']['display'] = 'block';
                 $this->attr['style']['margin-right'] = 'auto';
@@ -336,7 +336,7 @@ class File extends Macro
 
         // Check for alignment, no key given
         // EX: [[File(myfile.jpg, left)]]
-        if (in_array($key, array('left', 'right', 'top', 'bottom'))) {
+        if (in_array($key, ['left', 'right', 'top', 'bottom'])) {
             if ($key == 'center') {
                 $this->attr['style']['display'] = 'block';
                 $this->attr['style']['margin-right'] = 'auto';
@@ -433,7 +433,7 @@ class File extends Macro
      * @param   array  $attr Attributes to apply to the HTML
      * @return  string
      */
-    private function embed($file, $attr = array())
+    private function embed($file, $attr = [])
     {
         $ext = strtolower(Filesystem::extension($file));
 
@@ -530,7 +530,7 @@ class File extends Macro
                 if (in_array($ext, $this->imgs)) {
                     $styles = '';
                     if (count($attr['style']) > 0) {
-                        $s = array();
+                        $s = [];
                         foreach ($attr['style'] as $k => $v) {
                             $s[] = strtolower($k) . ':' . $v;
                         }
@@ -538,7 +538,7 @@ class File extends Macro
                     }
                     $attr['style'] = '';
 
-                    $attribs = array();
+                    $attribs = [];
                     foreach ($attr as $k => $v) {
                         $k = strtolower($k);
                         if ($k != 'href' && $k != 'rel' && $k != 'desc' && $v) {

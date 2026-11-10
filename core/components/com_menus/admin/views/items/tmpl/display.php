@@ -135,7 +135,7 @@ $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
                 <?php
                 echo Html::select(
                     'options',
-                    Html::grid('publishedOptions', array('archived' => false)),
+                    Html::grid('publishedOptions', ['archived' => false]),
                     'value',
                     'text',
                     $this->filters['published'],
@@ -242,7 +242,7 @@ $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
         <?php // Grid layout ?>
         <tbody>
         <?php
-        $originalOrders = array();
+        $originalOrders = [];
         $i = 0;
         foreach ($this->rows as $item) :
             $orderkey = array_search(
@@ -411,7 +411,7 @@ $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
                                     'image',
                                     $imgPath,
                                     $langTitle,
-                                    array('title' => $unsetTitle),
+                                    ['title' => $unsetTitle],
                                     true
                                 );
                                 ?>
@@ -421,7 +421,7 @@ $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
                             $langTitle = $item->get('language_title');
                             $imgPath = 'mod_languages/'
                                 . $item->get('image') . '.gif';
-                            echo Html::asset('image', $imgPath, $langTitle, array('title' => $langTitle), true);
+                            echo Html::asset('image', $imgPath, $langTitle, ['title' => $langTitle], true);
                             ?>
                         <?php endif; ?>
                     <?php endif; ?>

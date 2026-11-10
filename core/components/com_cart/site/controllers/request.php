@@ -34,7 +34,7 @@ class Request extends ComponentController
 
         // If pIds are posted, convert them to SKUs
         if (!empty($pIds)) {
-            $skus = array();
+            $skus = [];
 
             $warehouse = new \Components\Storefront\Models\Warehouse();
 
@@ -54,7 +54,7 @@ class Request extends ComponentController
         }
 
         // Initialize errors array
-        $errors = array();
+        $errors = [];
 
         if ($updateCartRequest && $skus) {
             // Turn off syncing to prevent redundant session update queries
@@ -77,7 +77,7 @@ class Request extends ComponentController
             $cart->getCartInfo(true);
 
             // Initialize errors array
-            $errors = array();
+            $errors = [];
 
             // Add coupon
             try {

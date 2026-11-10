@@ -69,7 +69,7 @@ class Manager extends Member
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         if (!isset($instances[$oid . '_' . $uid])) {

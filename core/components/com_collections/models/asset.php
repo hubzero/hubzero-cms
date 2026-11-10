@@ -76,7 +76,7 @@ class Asset extends Base
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         if (is_numeric($oid) || is_string($oid)) {
@@ -103,7 +103,7 @@ class Asset extends Base
     {
         $ext = strtolower(Filesystem::extension($this->get('filename')));
 
-        if (in_array($ext, array('jpg', 'jpe', 'jpeg', 'gif', 'png'))) {
+        if (in_array($ext, ['jpg', 'jpe', 'jpeg', 'gif', 'png'])) {
             return true;
         }
 
@@ -183,7 +183,7 @@ class Asset extends Base
     public function dimensions()
     {
         if (!$this->_dimensions) {
-            $this->_dimensions = array(0, 0);
+            $this->_dimensions = [0, 0];
 
             if ($this->isImage() && $this->exists()) {
                 $this->_dimensions = getimagesize($this->path());
@@ -425,7 +425,7 @@ class Asset extends Base
         $file = $this->get('filename');
         $ext  = Filesystem::extension($file);
 
-        $files = array();
+        $files = [];
         $files['original'] = $file;
         $files['thumb']    = Filesystem::name($file) . '_t.' . $ext;
         $files['medium']   = Filesystem::name($file) . '_m.' . $ext;

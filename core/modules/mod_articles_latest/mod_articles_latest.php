@@ -60,7 +60,7 @@ class ArticlesLatest extends Module
         $authorised = User::getAuthorisedViewLevels();
 
         // Category filter
-        $catids = $params->get('catid', array());
+        $catids = $params->get('catid', []);
         if (!empty($catids)) {
             $query->whereIn('catid', $catids);
         }

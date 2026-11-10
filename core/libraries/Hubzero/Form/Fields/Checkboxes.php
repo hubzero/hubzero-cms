@@ -74,7 +74,7 @@ class Checkboxes extends Field
     protected function getInput()
     {
         // Initialize variables.
-        $html = array();
+        $html = [];
 
         // Initialize some field attributes.
         $class = $this->element['class'] ? ' class="radio ' . (string) $this->element['class'] . '"' : ' class="radio"';
@@ -161,7 +161,7 @@ class Checkboxes extends Field
     protected function getOptions()
     {
         // Initialize variables.
-        $options = array();
+        $options = [];
 
         foreach ($this->element->children() as $option) {
             // Only add <option /> elements.

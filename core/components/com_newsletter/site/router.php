@@ -27,7 +27,7 @@ class Router extends Base
      */
     public function build(&$query)
     {
-        $segments = array();
+        $segments = [];
         $isReply = false;
 
         // Accommodate specifics from com_reply
@@ -72,7 +72,7 @@ class Router extends Base
 
         // com_newsletter tasks:
         if (!empty($query['task'])) {
-            if (in_array($query['task'], array('subscribe', 'unsubscribe', 'resendconfirmation'))) {
+            if (in_array($query['task'], ['subscribe', 'unsubscribe', 'resendconfirmation'])) {
                 $segments[] = $query['task'];
                 unset($query['task']);
             }
@@ -89,7 +89,7 @@ class Router extends Base
      */
     public function parse(&$segments)
     {
-        $vars = array();
+        $vars = [];
 
         $isReply = false;
 

@@ -44,8 +44,8 @@ class Database
      */
     public function __construct()
     {
-        $this->servers = (array) Config::get('redis_server', array());
-        $this->options = (array) Config::get('redis_server_options', array());
+        $this->servers = (array) Config::get('redis_server', []);
+        $this->options = (array) Config::get('redis_server_options', []);
 
         if (isset($this->options['cluster']) && $this->options['cluster']) {
             $this->clients = $this->createAggregateClient();
@@ -66,7 +66,7 @@ class Database
             $servers[$k] = (array) $server;
         }
 
-        return array('default' => new Client($servers, $this->options));
+        return ['default' => new Client($servers, $this->options)];
     }
 
     /**
@@ -76,7 +76,7 @@ class Database
      */
     protected function createSingleClients()
     {
-        $clients = array();
+        $clients = [];
 
         foreach ($this->servers as $key => $server) {
             $clients[$key] = new Client((array) $server, $this->options);
@@ -105,9 +105,9 @@ class Database
      * @param   array   $parameters
      * @return  mixed
      */
-    public function command($method, array $parameters = array())
+    public function command($method, array $parameters = [])
     {
-        return call_user_func_array(array($this->clients['default'], $method), $parameters);
+        return call_user_func_array([$this->clients['default'], $method], $parameters);
     }
 
     /**

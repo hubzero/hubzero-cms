@@ -24,7 +24,7 @@ class Twitter extends Macro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['wiki'] = "Embeds a Twitter Feed into the page";
         $txt['html'] = '<p>Embeds a Twitter Feed into the page. Can be a user feed(@hubzero), ' .
             'or a Twitter widget ID(see below), followed by a comma(,) and then the number of ' .
@@ -73,18 +73,18 @@ class Twitter extends Macro
         }
 
         // code for screename
-        $atts   = array();
+        $atts   = [];
         $atts[] = 'data-widget-id="346714310770302976"';
 
         // twitter does not allow numeric usernames, this must be a widget id
         if (is_numeric($screenName)) {
-            $atts = array('data-widget-id="' . $screenName . '"');
+            $atts = ['data-widget-id="' . $screenName . '"'];
             $screenName = '';
         }
 
         // pass already configured widget
         if ($widgetId) {
-            $atts = array('data-widget-id="' . $widgetId . '"');
+            $atts = ['data-widget-id="' . $widgetId . '"'];
         } else {
             // no widget id, set up the screen name to show tweets from
             $atts[] = 'href="https://twitter.com/' . $screenName . '"';

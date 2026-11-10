@@ -40,7 +40,7 @@ $this->css('jquery.ui.css', 'system');
 
         // load the plugin
         // fire plugin
-        $payment_options = Event::trigger('cart.onRenderPaymentOptions', array($this->transaction, User::getRoot()));
+        $payment_options = Event::trigger('cart.onRenderPaymentOptions', [$this->transaction, User::getRoot()]);
 
         //print_r($payment_options); die;
 

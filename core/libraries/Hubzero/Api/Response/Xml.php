@@ -74,11 +74,11 @@ class Xml
 
         $sp = (!empty($attributes)) ? ' ' : '';
 
-        if (in_array($element_type, array('object', 'a-array'))) {
+        if (in_array($element_type, ['object', 'a-array'])) {
             $xml_element_type = 'object';
-        } elseif (in_array($element_type, array('double', 'integer'))) {
+        } elseif (in_array($element_type, ['double', 'integer'])) {
             $xml_element_type = 'number';
-        } elseif (in_array($element_type, array('array', 'boolean', 'string'))) {
+        } elseif (in_array($element_type, ['array', 'boolean', 'string'])) {
             $xml_element_type = $element_type;
         } elseif ($element_type == 'NULL') {
             $xml_element_type = 'null';
@@ -187,7 +187,7 @@ class Xml
 
         $count = count($vals);
 
-        $stack = array();
+        $stack = [];
 
         $obj = null;
         $fatal = false;
@@ -198,9 +198,9 @@ class Xml
             if ($v['type'] == 'open') {
                 if ($v['attributes']['type'] == 'object') {
                     if (is_null($obj)) {
-                        array_push($stack, array(null,$obj));
+                        array_push($stack, [null,$obj]);
                     } elseif (is_array($obj) || is_object($obj)) {
-                        array_push($stack, array($v['tag'],$obj));
+                        array_push($stack, [$v['tag'],$obj]);
                     } else {
                         return false;
                     }
@@ -208,14 +208,14 @@ class Xml
                     $obj = new \stdClass();
                 } elseif ($v['attributes']['type'] == 'array') {
                     if (is_null($obj)) {
-                        array_push($stack, array(null,$obj));
+                        array_push($stack, [null,$obj]);
                     } elseif (is_array($obj) || is_object($obj)) {
-                        array_push($stack, array($v['tag'],$obj));
+                        array_push($stack, [$v['tag'],$obj]);
                     } else {
                         return false; // malformed input is a decode failure, not a process exit
                     }
 
-                    $obj = array();
+                    $obj = [];
                 } else {
                     die('invalid element');
                 }
@@ -235,7 +235,7 @@ class Xml
                 } elseif ($v['attributes']['type'] == 'null') {
                     $value = null;
                 } elseif ($v['attributes']['type'] == 'array') {
-                    $value = array();
+                    $value = [];
                 } elseif ($v['attributes']['type'] == 'object') {
                     $value = new \stdClass();
                 } else {

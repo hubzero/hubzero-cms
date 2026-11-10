@@ -56,10 +56,10 @@ class AclGroup extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'resource_id' => 'positive|nonzero',
         'group_id'    => 'positive|nonzero',
-    );
+    ];
 
     /**
      * Defines a belongs to one relationship between resource and user
@@ -93,7 +93,7 @@ class AclGroup extends Relational
         $sql = "SELECT r.id AS resource_id, g.gidNumber AS group_id, g.cn AS name "
             . "FROM `#__resources` AS r, `#__resource_acl_group` AS a, `#__xgroups` AS g "
             . "WHERE r.id=? AND a.resource_id=r.id AND g.gidNumber=a.group_id;";
-        $database->prepare($sql)->bind(array($resource_id));
+        $database->prepare($sql)->bind([$resource_id]);
         $aclgroups = $database->loadObjectList();
         return $aclgroups;
     }
@@ -101,8 +101,8 @@ class AclGroup extends Relational
     public static function removeGroups($resource_id, $list)
     {
         $database = App::get('db');
-        $binds = array();
-        $values = array();
+        $binds = [];
+        $values = [];
 
         $resource_id = intval($resource_id);
 
@@ -123,7 +123,7 @@ class AclGroup extends Relational
             $values[] = $item;
         }
 
-        if ($binds !== array()) {
+        if ($binds !== []) {
             $sql = "DELETE FROM #__resource_acl_group "
                 . "WHERE resource_id = ? AND group_id IN (" . implode(',', $binds) . ");";
             $database->prepare($sql)->bind($values);
@@ -136,7 +136,7 @@ class AclGroup extends Relational
     public static function addGroups($resource_id, $list)
     {
         $database = App::get('db');
-        $values = array();
+        $values = [];
 
         $resource_id = intval($resource_id);
 
@@ -154,7 +154,7 @@ class AclGroup extends Relational
             $values[] = '(' . $resource_id . ',' . $item . ')';
         }
 
-        if ($values !== array()) {
+        if ($values !== []) {
             $sql = "INSERT INTO #__resource_acl_group (resource_id, group_id) VALUES " . implode(',', $values) . ";";
             $database->setQuery($sql);
             $database->execute();

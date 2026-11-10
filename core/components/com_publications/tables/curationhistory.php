@@ -32,7 +32,7 @@ class CurationHistory extends Table
      * @param   integer  $vid  Publication Version ID
      * @return  mixed    False if error, Object on success
      */
-    public function getRecords($vid = null, $filters = array())
+    public function getRecords($vid = null, $filters = [])
     {
         if (!intval($vid)) {
             return false;

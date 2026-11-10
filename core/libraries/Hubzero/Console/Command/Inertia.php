@@ -51,7 +51,7 @@ class Inertia extends Base implements CommandInterface
         }
 
         $strict = (bool) $this->arguments->getOpt('strict', false);
-        $warnings = array();
+        $warnings = [];
 
         $files = $this->findTemplateFiles($path);
         foreach ($files as $file) {
@@ -104,7 +104,7 @@ class Inertia extends Base implements CommandInterface
      */
     protected function findTemplateFiles(string $root): array
     {
-        $files = array();
+        $files = [];
         $iter = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator($root, \FilesystemIterator::SKIP_DOTS)
         );
@@ -115,7 +115,7 @@ class Inertia extends Base implements CommandInterface
             }
 
             $ext = strtolower((string) $info->getExtension());
-            if (!in_array($ext, array('php', 'html', 'htm'), true)) {
+            if (!in_array($ext, ['php', 'html', 'htm'], true)) {
                 continue;
             }
 
@@ -134,7 +134,7 @@ class Inertia extends Base implements CommandInterface
      */
     protected function lintFile(string $file, string $contents): array
     {
-        $warnings = array();
+        $warnings = [];
         $lower = strtolower($contents);
 
         $hasInertiaBehavior = strpos($lower, "behavior('inertia") !== false
@@ -143,12 +143,12 @@ class Inertia extends Base implements CommandInterface
             || strpos($contents, 'Inertia::renderRootNode(') !== false
             || strpos($lower, 'data-page=') !== false;
         if ($hasInertiaBehavior && !$hasRootNode) {
-            $warnings[] = array(
+            $warnings[] = [
                 'file' => $file,
                 'line' => 1,
                 'message' => 'Template appears to use Inertia without a root mount'
                     . ' node (`inertiaRootNode` / `Inertia::renderRootNode`).'
-            );
+            ];
         }
 
         if (
@@ -167,12 +167,12 @@ class Inertia extends Base implements CommandInterface
                     preg_match('/(^|[?&])option=com_[^&]+(&|$)/i', $url)
                     && preg_match('/(^|[?&])task=[^&]+(&|$)/i', $url)
                 ) {
-                    $warnings[] = array(
+                    $warnings[] = [
                         'file' => $file,
                         'line' => $this->lineNumberFromOffset($contents, $offset),
                         'message' => 'Hardcoded component/task route found;'
                             . ' prefer Inertia/route helper generation.'
-                    );
+                    ];
                 }
             }
         }

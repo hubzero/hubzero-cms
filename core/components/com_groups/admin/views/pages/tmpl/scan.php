@@ -54,7 +54,7 @@ $action = Route::url(
 
     <?php
         unset($this->issues->count);
-        $severe = $elevated = $minor = array();
+        $severe = $elevated = $minor = [];
     foreach ($this->issues as $lang => $languageIssues) {
         foreach ($languageIssues as $type => $languageIssue) {
             foreach ($languageIssue as $line => $issue) {

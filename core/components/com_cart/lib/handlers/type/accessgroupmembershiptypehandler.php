@@ -53,7 +53,7 @@ class AccessGroupMembershipTypeHandler extends TypeHandler
             $table = \Hubzero\Facades\User::getInstance($userId);
 
             // Trigger the onAfterStoreUser event
-            \Hubzero\Facades\Event::trigger('user.onUserAfterSave', array($table->toArray(), false, true, null));
+            \Hubzero\Facades\Event::trigger('user.onUserAfterSave', [$table->toArray(), false, true, null]);
         } catch (\Exception $e) {
             // Error
             return false;

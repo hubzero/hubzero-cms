@@ -50,7 +50,7 @@ class Account extends Plugin
     public function &onMembersAreas($user, $member)
     {
         // Default areas returned to nothing
-        $areas = array();
+        $areas = [];
 
         // If this is the logged in user show them
         if ($user->get('id') == $member->get('id')) {
@@ -87,10 +87,10 @@ class Account extends Plugin
             }
         }
 
-        $arr = array(
+        $arr = [
             'html' => '',
-            'metadata' => array()
-        );
+            'metadata' => []
+        ];
 
         // Initialize a few things (needed for view and metadata)
         $this->member = $member;
@@ -188,8 +188,8 @@ class Account extends Plugin
         $view->hzalaccounts  = \Hubzero\Auth\Link::find_by_user_id($this->user->get('id'));
 
         // Put the used domains into an array with details available from the providers (if applicable)
-        $view->domains_used = array();
-        $view->domain_names = array();
+        $view->domains_used = [];
+        $view->domain_names = [];
         if ($view->hzalaccounts) {
             \Plugin::import('authentication');
 
@@ -205,7 +205,7 @@ class Account extends Plugin
 
                 $className = 'plg' . $plugin->type . $plugin->name;
 
-                $details = array();
+                $details = [];
 
                 if (class_exists($className)) {
                     if (method_exists($className, 'getInfo')) {
@@ -213,7 +213,7 @@ class Account extends Plugin
                     }
                 }
 
-                $view->domains_used[] = array('name' => $authenticators['auth_domain_name'], 'details' => $details);
+                $view->domains_used[] = ['name' => $authenticators['auth_domain_name'], 'details' => $details];
                 $view->domain_names[] = $authenticators['auth_domain_name'];
 
                 // Increment index
@@ -222,7 +222,7 @@ class Account extends Plugin
         }
 
         // Get unused domains
-        $view->domains_unused = array();
+        $view->domains_unused = [];
         foreach ($view->domains_avail as $domain) {
             if ($domain->name != 'hubzero' && !in_array($domain->name, $view->domain_names)) {
                 $view->domains_unused[] = $domain;
@@ -260,7 +260,7 @@ class Account extends Plugin
             ->rows();
 
         // Get the password rule descriptions
-        $view->password_rules = array();
+        $view->password_rules = [];
         foreach ($password_rules as $rule) {
             if (!empty($rule['description'])) {
                 $view->password_rules[] = $rule['description'];
@@ -271,7 +271,7 @@ class Account extends Plugin
         $view->option        = $this->option;
         $view->member        = $this->member;
         $view->params        = $this->params;
-        $view->notifications = array();
+        $view->notifications = [];
 
         // Set any errors
         $view->setErrors($this->getErrors());
@@ -350,19 +350,19 @@ class Account extends Plugin
 
         // Create the view
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'members',
                 'element' => 'account',
                 'name'    => 'setlocalpassword',
                 'layout'  => 'confirmtoken'
-            )
+            ]
         );
         $view->option = $this->option;
         $view->id     = $this->user->get('id');
 
         // Blank form request (no data submitted)
         if (empty($change)) {
-            $view->notifications = array();
+            $view->notifications = [];
             return $view->loadTemplate();
         }
 
@@ -387,12 +387,12 @@ class Account extends Plugin
         // Verify the token
         if (!$row = $this->getToken()) {
             // Oops, user doesn't have a token set in the db (or their account is blocked)
-            $view->notifications = array(
-                array(
+            $view->notifications = [
+                [
                     'type' => 'error',
                     'message' => Lang::txt('You must be logged in to access this area.')
-                )
-            );
+                ]
+            ];
 
             return $view->loadTemplate();
         }
@@ -477,12 +477,12 @@ class Account extends Plugin
 
         // Create the view
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'members',
                 'element' => 'account',
                 'name'    => 'setlocalpassword',
                 'layout'  => 'setlocalpass'
-            )
+            ]
         );
 
         // Add a few more variables to the view
@@ -495,7 +495,7 @@ class Account extends Plugin
             ->rows();
 
         // Get the password rule descriptions
-        $view->password_rules = array();
+        $view->password_rules = [];
         foreach ($password_rules as $rule) {
             if (!empty($rule['description'])) {
                 $view->password_rules[] = $rule['description'];
@@ -504,7 +504,7 @@ class Account extends Plugin
 
         // Blank form request (no data submitted)
         if (empty($change)) {
-            $view->notifications = array();
+            $view->notifications = [];
             return $view->loadTemplate();
         }
 
@@ -512,13 +512,13 @@ class Account extends Plugin
         Request::checkToken();
 
         // Fire the onBeforeStoreUser trigger
-        Event::trigger('user.onBeforeStoreUser', array($this->user->toArray(), false));
+        Event::trigger('user.onBeforeStoreUser', [$this->user->toArray(), false]);
 
         // Validate the password against password rules
         if (!empty($password1)) {
             $msg = \Hubzero\Password\Rule::verify($password1, $password_rules, $this->user->get('username'));
         } else {
-            $msg = array();
+            $msg = [];
         }
 
         // Verify password
@@ -534,7 +534,7 @@ class Account extends Plugin
 
         // Were there any errors?
         if ($this->getError()) {
-            $change = array();
+            $change = [];
             $change['_missing']['password'] = $this->getError();
 
             if (!empty($msg) && $passrules) {
@@ -560,7 +560,7 @@ class Account extends Plugin
         }
 
         // Fire the onAfterStoreUser trigger
-        Event::trigger('user.onAfterStoreUser', array($this->user->toArray(), false, null, $this->getError()));
+        Event::trigger('user.onAfterStoreUser', [$this->user->toArray(), false, null, $this->getError()]);
 
         // Flush the variables from the session
         User::setState($this->option . 'token', null);
@@ -568,10 +568,10 @@ class Account extends Plugin
         // Redirect
         if (Request::getInt('no_html', 0)) {
             echo json_encode(
-                array(
+                [
                     "success" => true,
                     "redirect" => Route::url($this->member->link() . '&active=account')
-                )
+                ]
             );
             exit();
         } else {
@@ -659,13 +659,13 @@ class Account extends Plugin
             $message_style = 'error';
         }
 
-        return array(
+        return [
             'diff'          => $diff,
             'warning'       => $hzup->shadowWarning,
             // New passwords get the hub's default lifetime, not this user's current one
             'max'           => \Component::params('com_members')->get('shadowMax', $hzup->shadowMax),
             'message_style' => $message_style
-        );
+        ];
     }
 
     /**
@@ -1007,7 +1007,7 @@ class Account extends Plugin
             ->whereEquals('enabled', 1)
             ->rows();
 
-        $pw_rules = array();
+        $pw_rules = [];
 
         // Get the password rule descriptions
         foreach ($password_rules as $rule) {
@@ -1023,7 +1023,7 @@ class Account extends Plugin
         if (!empty($pw)) {
             $msg = \Hubzero\Password\Rule::verify($pw, $password_rules, $this->member->get('username'));
         } else {
-            $msg = array();
+            $msg = [];
         }
 
         // Iterate through the rules and add the appropriate classes (passed/error)

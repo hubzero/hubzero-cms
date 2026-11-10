@@ -20,7 +20,7 @@ class Groups
      *
      * @var  array
      */
-    private static $possibleCols = array();
+    private static $possibleCols = [];
 
     /**
      * Database connection
@@ -57,7 +57,7 @@ class Groups
      */
     public function getAllGroups()
     {
-        $groups = array();
+        $groups = [];
         self::$dbh->setQuery(
             'SELECT group_id, hours, irl.field
 			FROM `#__incremental_registration_groups` irg
@@ -67,10 +67,10 @@ class Groups
         );
         foreach (self::$dbh->loadAssocList() as $row) {
             if (!isset($groups[$row['group_id']])) {
-                $groups[$row['group_id']] = array(
+                $groups[$row['group_id']] = [
                     'hours' => $row['hours'],
-                    'cols'  => array()
-                );
+                    'cols'  => []
+                ];
             }
             $groups[$row['group_id']]['cols'][] = $row['field'];
         }
@@ -100,7 +100,7 @@ class Groups
         $cols = self::$dbh->loadAssocList();
         // no data we want, don't bother
         if (!$cols) {
-            return array();
+            return [];
         }
 
         self::$dbh->setQuery('SELECT coalesce((SELECT opted_out FROM `#__profile_completion_awards` WHERE user_id = ' . $uid . '), 0)');
@@ -114,18 +114,18 @@ class Groups
             if ((int) self::$dbh->loadResult() === 1) {
                 self::$dbh->setQuery('SELECT hours FROM `#__incremental_registration_popover_recurrence` WHERE idx = ' . ($times - 1));
                 if (self::$dbh->loadResult() === null) {
-                    return array();
+                    return [];
                 }
             }
 
             self::$dbh->setQuery('SELECT (unix_timestamp() - unix_timestamp(last_bothered))/60/60 > (SELECT coalesce((SELECT hours FROM `#__incremental_registration_popover_recurrence` WHERE idx = ' . ($times - 1) . '), (SELECT hours FROM `#__incremental_registration_popover_recurrence` ORDER BY idx DESC LIMIT 1))) FROM `#__profile_completion_awards` WHERE user_id = ' . $uid);
             // opt-out period is in effect
             if (!self::$dbh->loadResult()) {
-                return array();
+                return [];
             }
         }
 
-        $colNames = array();
+        $colNames = [];
         $wantRace = false;
         $wantDisability = false;
         foreach ($cols as $col) {
@@ -134,7 +134,7 @@ class Groups
 
         self::$dbh->setQuery('SELECT profile_key, profile_value FROM `#__user_profiles` WHERE user_id = ' . $uid . ' AND profile_key IN (' . implode(', ', $colNames) . ')');
         $data = self::$dbh->loadAssocList();
-        $profile = array();
+        $profile = [];
         foreach ($data as $datum) {
             $profile[$datum['profile_key']] = $datum['profile_value'];
         }
@@ -144,7 +144,7 @@ class Groups
             $profile[$key] = $datum;
         }
 
-        $neededCols = array();
+        $neededCols = [];
         $nonUS = false;
         foreach ($cols as $col) {
             // Was the field found in the results?

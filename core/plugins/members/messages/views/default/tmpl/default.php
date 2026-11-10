@@ -16,47 +16,47 @@ use Hubzero\Facades\Route;
 defined('_HZEXEC_') or die();
 
 //section links
-$sections = array(
-    array(
+$sections = [
+    [
         'name' => 'inbox',
         'title' => Lang::txt('PLG_MEMBERS_MESSAGES_INBOX'),
         'link' => Route::url($this->member->link() . '&active=messages&task=inbox&limit=' . $this->filters['limit'] .
         '&limitstart=0')
-    ),
-    array(
+    ],
+    [
         'name' => 'sent',
         'title' => Lang::txt('PLG_MEMBERS_MESSAGES_SENT'),
         'link' => Route::url($this->member->link() . '&active=messages&task=sent&limit=' . $this->filters['limit'] .
         '&limitstart=0')
-    ),
-    array(
+    ],
+    [
         'name' => 'archive',
         'title' => Lang::txt('PLG_MEMBERS_MESSAGES_ARCHIVE'),
         'link' => Route::url($this->member->link() . '&active=messages&task=archive&limit=' . $this->filters['limit'] .
         '&limitstart=0')
-    ),
-    array(
+    ],
+    [
         'name' => 'trash',
         'title' => Lang::txt('PLG_MEMBERS_MESSAGES_TRASH'),
         'link' => Route::url($this->member->link() . '&active=messages&task=trash&limit=' . $this->filters['limit'] .
         '&limitstart=0')
-    ),
-    array(
+    ],
+    [
         'name' => 'new',
         'title' => Lang::txt('PLG_MEMBERS_MESSAGES_COMPOSE'),
         'link' => Route::url($this->member->link() . '&active=messages&task=new&limit=' . $this->filters['limit'] .
         '&limitstart=0')
-    )
-);
+    ]
+];
 
 //option links
-$options = array(
-    array(
+$options = [
+    [
         'name'  => 'settings',
         'title' => Lang::txt('PLG_MEMBERS_MESSAGES_SETTINGS'),
         'link'  => Route::url($this->member->link() . '&active=messages&task=settings')
-    )
-);
+    ]
+];
 
 //no html?
 $no_html = Request::getInt("no_html", 0);

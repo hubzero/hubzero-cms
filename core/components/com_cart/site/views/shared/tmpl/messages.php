@@ -13,7 +13,7 @@ $errors = $this->getError();
 
 if (!empty($errors)) {
     if (!is_array($errors)) {
-        $errors = array($errors);
+        $errors = [$errors];
     }
 
     echo '<div class="messages errors">';

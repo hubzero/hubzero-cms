@@ -114,9 +114,9 @@ Document::setTitle(Lang::txt('COM_KB'));
                     // may read is skipped, and on a new knowledge base
                     // that is every category - which left the word
                     // "Categories" printed over nothing at all.
-                    $shown = array();
+                    $shown = [];
 
-                    $categories = $this->archive->categories(array('state' => 1, 'access' => User::getAuthorisedViewLevels()));
+                    $categories = $this->archive->categories(['state' => 1, 'access' => User::getAuthorisedViewLevels()]);
 
                     foreach ($categories as $row) {
                         $articles = $row->articles()
@@ -131,7 +131,7 @@ Document::setTitle(Lang::txt('COM_KB'));
                             continue;
                         }
 
-                        $shown[] = array($row, $articles);
+                        $shown[] = [$row, $articles];
                     }
 
                     if ($shown) {

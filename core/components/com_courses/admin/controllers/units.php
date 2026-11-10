@@ -50,7 +50,7 @@ class Units extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->filters = array(
+        $this->view->filters = [
             'offering' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.offering',
                 'offering',
@@ -79,7 +79,7 @@ class Units extends AdminController
                 0,
                 'int'
             )
-        );
+        ];
 
         $this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->filters['offering']);
         if (!$this->view->offering->exists()) {
@@ -121,7 +121,7 @@ class Units extends AdminController
 
         if (!is_object($model)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
 
             // Get the single ID we're working with
             if (is_array($id)) {
@@ -162,7 +162,7 @@ class Units extends AdminController
         Request::checkToken();
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         // Instantiate a Course object
         $model = \Components\Courses\Models\Unit::getInstance($fields['id']);
@@ -270,8 +270,8 @@ class Units extends AdminController
         Request::checkToken();
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $num = 0;
 
@@ -327,8 +327,8 @@ class Units extends AdminController
         $state = $this->_task == 'publish' ? 1 : 0;
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for an ID
         $url = 'index.php?option=' . $this->_option
@@ -384,8 +384,8 @@ class Units extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        $id = Request::getArray('id', array(0), 'post');
-        \Hubzero\Utility\Arr::toInteger($id, array(0));
+        $id = Request::getArray('id', [0], 'post');
+        \Hubzero\Utility\Arr::toInteger($id, [0]);
 
         $uid = $id[0];
         $inc = ($this->_task == 'orderup' ? -1 : 1);

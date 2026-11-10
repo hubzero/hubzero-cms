@@ -16,7 +16,7 @@ defined('_HZEXEC_') or die();
 $this->css()
      ->js();
 
-if (in_array($this->filters['reviewer'], array('sponsored', 'sensitive'))) {
+if (in_array($this->filters['reviewer'], ['sponsored', 'sensitive'])) {
     $this->css('reviewers')
          ->css('jquery.fancybox.css', 'system');
 }
@@ -78,7 +78,7 @@ $total = $this->model->entries('count', $this->filters);
                             <?php /*<option value="public" <?php echo ($this->filters['filterby'] == 'public') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_PUBLIC'); ?></option>
                             <option value="open" <?php echo ($this->filters['filterby'] == 'open') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_OPEN'); ?></option>*/ ?>
                             <option value="archived" <?php echo ($this->filters['filterby'] == 'archived') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_ARCHIVED'); ?></option>
-                            <?php if (in_array($this->filters['reviewer'], array('sponsored', 'sensitive'))) { ?>
+                            <?php if (in_array($this->filters['reviewer'], ['sponsored', 'sensitive'])) { ?>
                                 <option value="pending" <?php echo ($this->filters['filterby'] == 'pending') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_PENDING'); ?></option>
                             <?php } ?>
                         </select>
@@ -117,7 +117,7 @@ $total = $this->model->entries('count', $this->filters);
                 if (User::isGuest()) {
                     echo '<p class="noresults">' . Lang::txt('COM_PROJECTS_NO_PROJECTS_FOUND') . ' ' . Lang::txt('COM_PROJECTS_PLEASE') . ' <a href="' . Route::url('index.php?option=' . $this->option . '&task=browse&action=login') . '">' . Lang::txt('COM_PROJECTS_LOGIN') . '</a> ' . Lang::txt('COM_PROJECTS_TO_VIEW_PRIVATE_PROJECTS') . '</p>';
                 } else {
-                    if (in_array($this->filters['reviewer'], array('sponsored', 'sensitive'))) {
+                    if (in_array($this->filters['reviewer'], ['sponsored', 'sensitive'])) {
                         $txt = $this->filters['filterby'] == 'pending'
                         ? Lang::txt('COM_PROJECTS_NO_REVIEWER_PROJECTS_FOUND_PENDING')
                         : Lang::txt('COM_PROJECTS_NO_REVIEWER_PROJECTS_FOUND_ALL');

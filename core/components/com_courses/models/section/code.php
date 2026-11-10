@@ -78,7 +78,7 @@ class Code extends Base
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         $key = 0;

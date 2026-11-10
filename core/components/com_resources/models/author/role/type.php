@@ -43,10 +43,10 @@ class Type extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'role_id' => 'positive|nonzero',
         'type_id' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Get associated role

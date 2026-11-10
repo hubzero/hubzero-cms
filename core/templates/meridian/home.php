@@ -26,7 +26,7 @@ defined('_HZEXEC_') or die();
  * hub sees before anyone has built a front page at all.
  */
 
-$bands = array('home-1', 'home-2', 'home-3');
+$bands = ['home-1', 'home-2', 'home-3'];
 
 ?>
 <?php if (!$this->countModules(implode(' or ', $bands))) : ?>

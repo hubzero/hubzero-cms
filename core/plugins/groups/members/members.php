@@ -82,13 +82,13 @@ class Members extends Plugin
      */
     public function &onGroupAreas()
     {
-        $area = array(
+        $area = [
             'name' => 'members',
             'title' => Lang::txt('PLG_GROUPS_MEMBERS'),
             'default_access' => $this->params->get('plugin_access', 'members'),
             'display_menu_tab' => $this->params->get('display_tab', 1),
             'icon' => 'f007'
-        );
+        ];
         return $area;
     }
 
@@ -111,10 +111,10 @@ class Members extends Plugin
         $active = 'members';
 
         // The output array we're returning
-        $arr = array(
+        $arr = [
             'html' => '',
-            'metadata' => array()
-        );
+            'metadata' => []
+        ];
 
         // Get this area details
         $this_area = $this->onGroupAreas();
@@ -241,7 +241,7 @@ class Members extends Plugin
 
                 $view->q = Request::getString('q', '');
                 $view->filter = Request::getWord('filter', '');
-                if (!in_array($view->filter, array('members', 'managers', 'invitees', 'pending'))) {
+                if (!in_array($view->filter, ['members', 'managers', 'invitees', 'pending'])) {
                     $view->filter = '';
                 }
                 $view->role_filter = Request::getInt('role_filter', '');
@@ -269,7 +269,7 @@ class Members extends Plugin
                     && \Hubzero\User\Group\Membership::supported();
                 $view->expirations = $view->expiration_enabled
                     ? \Hubzero\User\Group\Membership::termsFor($group->get('gidNumber'))
-                    : array();
+                    : [];
 
                 // The same predicate the action enforces, so the link cannot be
                 // offered where the action would refuse it. Kept separate from
@@ -290,11 +290,11 @@ class Members extends Plugin
                         foreach ($view->current_inviteemails as $ie) {
                             $view->groupusers[] = $ie;
                         }
-                        $view->managers = array();
+                        $view->managers = [];
                         break;
                     case 'pending':
                         $view->groupusers = ($view->q) ? $group->search('applicants', $view->q) : $group->get('applicants');
-                        $view->managers   = array();
+                        $view->managers   = [];
                         break;
                     case 'managers':
                         $view->groupusers = ($view->q) ? $group->search('managers', $view->q) : $group->get('managers');
@@ -313,7 +313,7 @@ class Members extends Plugin
                         } elseif ($view->role_filter) {
                             $view->groupusers = \Hubzero\User\Group\Helper::search_roles($group, $view->role_filter);
                         } else {
-                            $view->groupusers = array();
+                            $view->groupusers = [];
                             $view->prompt_filter = true;
                         }
                         $view->managers   = $group->get('managers');
@@ -323,12 +323,12 @@ class Members extends Plugin
                 //if we dont want to display system users
                 //filter values through callback above and then reset array keys
                 if ($this->display_system_users == 'no' && is_array($view->groupusers)) {
-                    $view->groupusers = array_map(array($this, "isSystemUser"), $view->groupusers);
+                    $view->groupusers = array_map([$this, "isSystemUser"], $view->groupusers);
                     $view->groupusers = array_values(array_filter($view->groupusers));
                 }
 
                 if (!$view->groupusers) {
-                    $view->groupusers = array();
+                    $view->groupusers = [];
                 }
 
                 // sort users before display
@@ -379,8 +379,8 @@ class Members extends Plugin
     private function sortAlphabetically($userIds)
     {
         // get each users name
-        $users = array();
-        $emails = array();
+        $users = [];
+        $emails = [];
         foreach ($userIds as $k => $userid) {
             $profile = User::getInstance($userid);
             if ($profile->get('id')) {
@@ -475,14 +475,14 @@ class Members extends Plugin
         // Note: we use two different lists to avoid situations where the user is already a member but somehow an applicant too.
         // Recording the list of applicants for removal separate allows for removing the duplicate entry from the applicants list
         // without trying to add them to the members list (which they already belong to).
-        $users = array();
-        $applicants = array();
+        $users = [];
+        $applicants = [];
 
         // Get all normal members (non-managers) of this group
         $members = $this->group->get('members');
 
         // Incoming array of users to promote
-        $mbrs = Request::getArray('users', array());
+        $mbrs = Request::getArray('users', []);
 
         foreach ($mbrs as $mbr) {
             // Retrieve user's account info
@@ -519,10 +519,10 @@ class Members extends Plugin
                 $users[] = $uid;
 
                 // Log activity
-                $recipients = array(
+                $recipients = [
                     ['group', $this->group->get('gidNumber')],
                     ['user', $uid]
-                );
+                ];
                 foreach ($this->group->get('managers') as $recipient) {
                     $recipients[] = ['user', $recipient];
                 }
@@ -537,10 +537,10 @@ class Members extends Plugin
                             '<a href="' . Route::url('index.php?option=com_members&id=' . $uid)  . '">' . $targetuser->get('name') . '</a>',
                             '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>'
                         ),
-                        'details'     => array(
+                        'details'     => [
                             'user_id'  => $uid,
                             'group_id' => $this->group->get('gidNumber')
-                        )
+                        ]
                     ],
                     'recipients' => $recipients
                 ]);
@@ -562,11 +562,11 @@ class Members extends Plugin
         $this->group->update();
 
         // log invites
-        \Components\Groups\Models\Log::log(array(
+        \Components\Groups\Models\Log::log([
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'membership_approved',
             'comments'  => $users
-        ));
+        ]);
     }
 
     /**
@@ -593,13 +593,13 @@ class Members extends Plugin
 
         // Set a flag for emailing any changes made
         $admchange = '';
-        $users = array();
+        $users = [];
 
         // Get all managers of this group
         $managers = $this->group->get('managers');
 
         // Incoming array of users to promote
-        $mbrs = Request::getArray('users', array());
+        $mbrs = Request::getArray('users', []);
 
         foreach ($mbrs as $mbr) {
             // Retrieve user's account info
@@ -628,10 +628,10 @@ class Members extends Plugin
                 $users[] = $uid;
 
                 // Log activity
-                $recipients = array(
+                $recipients = [
                     ['group', $this->group->get('gidNumber')],
                     ['user', $uid]
-                );
+                ];
                 foreach ($this->group->get('managers') as $recipient) {
                     $recipients[] = ['user', $recipient];
                 }
@@ -646,10 +646,10 @@ class Members extends Plugin
                             '<a href="' . Route::url('index.php?option=com_members&id=' . $uid)  . '">' . $targetuser->get('name') . '</a>',
                             '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>'
                         ),
-                        'details'     => array(
+                        'details'     => [
                             'user_id'  => $uid,
                             'group_id' => $this->group->get('gidNumber')
-                        )
+                        ]
                     ],
                     'recipients' => $recipients
                 ]);
@@ -665,11 +665,11 @@ class Members extends Plugin
         $this->group->update();
 
         // log promotions
-        \Components\Groups\Models\Log::log(array(
+        \Components\Groups\Models\Log::log([
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'membership_promoted',
             'comments'  => $users
-        ));
+        ]);
 
         $start  = Request::getInt('limitstart', 0);
         $limit  = Request::getInt('limit', 25);
@@ -716,10 +716,10 @@ class Members extends Plugin
 
         // Set a flag for emailing any changes made
         $admchange = '';
-        $users = array();
+        $users = [];
 
         // Incoming array of users to demote
-        $mbrs = Request::getArray('users', array());
+        $mbrs = Request::getArray('users', []);
 
         foreach ($mbrs as $mbr) {
             // Retrieve user's account info
@@ -734,10 +734,10 @@ class Members extends Plugin
                 $users[] = $targetuser->get('id');
 
                 // Log activity
-                $recipients = array(
+                $recipients = [
                     ['group', $this->group->get('gidNumber')],
                     ['user', $targetuser->get('id')]
-                );
+                ];
                 foreach ($this->group->get('managers') as $recipient) {
                     $recipients[] = ['user', $recipient];
                 }
@@ -752,10 +752,10 @@ class Members extends Plugin
                             '<a href="' . Route::url('index.php?option=com_members&id=' . $targetuser->get('id')) . '">' . $targetuser->get('name') . '</a>',
                             '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>'
                         ),
-                        'details'     => array(
+                        'details'     => [
                             'user_id'  => $targetuser->get('id'),
                             'group_id' => $this->group->get('gidNumber')
-                        )
+                        ]
                     ],
                     'recipients' => $recipients
                 ]);
@@ -777,11 +777,11 @@ class Members extends Plugin
         $this->group->update();
 
         // log invites
-        \Components\Groups\Models\Log::log(array(
+        \Components\Groups\Models\Log::log([
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'membership_demoted',
             'comments'  => $users
-        ));
+        ]);
 
         $start  = Request::getInt("limitstart", 0);
         $limit  = Request::getInt("limit", 25);
@@ -837,7 +837,7 @@ class Members extends Plugin
 
         Document::setTitle(Lang::txt(strtoupper($this->name)) . ': ' . $this->group->get('description') . ': ' . Lang::txt('PLG_GROUPS_MEMBERS_EXPIRATION'));
 
-        $users = Request::getArray('users', array());
+        $users = Request::getArray('users', []);
         $users = array_values(array_filter(array_map('intval', (array) $users)));
 
         $view = $this->view('default', 'expiration');
@@ -847,7 +847,7 @@ class Members extends Plugin
         $view->users      = $users;
         $view->filter     = Request::getWord('filter', 'members');
         $view->maxDays    = (int) Component::params('com_groups')->get('membership_max_term_days', 0);
-        $view->current    = array();
+        $view->current    = [];
 
         foreach ($users as $uid) {
             $view->current[$uid] = \Hubzero\User\Group\Membership::expiresFor($this->group->get('gidNumber'), $uid);
@@ -873,7 +873,7 @@ class Members extends Plugin
 
         Request::checkToken();
 
-        $users = Request::getArray('users', array());
+        $users = Request::getArray('users', []);
         $users = array_values(array_filter(array_map('intval', (array) $users)));
 
         $mode    = Request::getWord('mode', 'set');
@@ -960,7 +960,7 @@ class Members extends Plugin
         $view->option = $this->_option;
         $view->group = $this->group;
         $view->authorized = $this->authorized;
-        $view->users = Request::getArray('users', array());
+        $view->users = Request::getArray('users', []);
 
         foreach ($this->getErrors() as $error) {
             $view->setError($error);
@@ -1000,11 +1000,11 @@ class Members extends Plugin
 
         // Set a flag for emailing any changes made
         $admchange = '';
-        $users_mem = array();
-        $users_man = array();
+        $users_mem = [];
+        $users_man = [];
 
         // Incoming array of users to remove
-        $mbrs = Request::getArray('users', array());
+        $mbrs = Request::getArray('users', []);
 
         // Figure out how many managers are being deleted
         $intersect = array_intersect($managers, $mbrs);
@@ -1038,10 +1038,10 @@ class Members extends Plugin
                 \Components\Groups\Models\Member\Role::destroyByUserAndGroup($uid, $this->group->get('gidNumber'));
 
                 // Log activity
-                $recipients = array(
+                $recipients = [
                     ['group', $this->group->get('gidNumber')],
                     ['user', $uid]
-                );
+                ];
                 foreach ($this->group->get('managers') as $recipient) {
                     $recipients[] = ['user', $recipient];
                 }
@@ -1056,10 +1056,10 @@ class Members extends Plugin
                             '<a href="' . Route::url('index.php?option=com_members&id=' . $uid) . '">' . $targetuser->get('name') . '</a>',
                             '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>'
                         ),
-                        'details'     => array(
+                        'details'     => [
                             'user_id'  => $uid,
                             'group_id' => $this->group->get('gidNumber')
-                        )
+                        ]
                     ],
                     'recipients' => $recipients
                 ]);
@@ -1085,11 +1085,11 @@ class Members extends Plugin
         $this->group->update();
 
         // log invites
-        \Components\Groups\Models\Log::log(array(
+        \Components\Groups\Models\Log::log([
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'membership_removed',
             'comments'  => $users_mem
-        ));
+        ]);
 
         App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members'));
     }
@@ -1141,7 +1141,7 @@ class Members extends Plugin
         $view->option = $this->_option;
         $view->group = $this->group;
         $view->authorized = $this->authorized;
-        $view->users = Request::getArray('users', array());
+        $view->users = Request::getArray('users', []);
         $view->responses = $this->getDenyResponses();
 
         foreach ($this->getErrors() as $error) {
@@ -1160,16 +1160,16 @@ class Members extends Plugin
     {
         $params = new \Hubzero\Config\Registry($this->group->get('params'));
 
-        $responses = array();
-        foreach ((array) $params->get('deny_responses', array()) as $response) {
+        $responses = [];
+        foreach ((array) $params->get('deny_responses', []) as $response) {
             // Stored as a JSON list, so entries read back as objects
             $response = (array) $response;
 
             if (isset($response['text']) && trim($response['text']) !== '') {
-                $responses[] = array(
+                $responses[] = [
                     'title' => isset($response['title']) ? (string) $response['title'] : '',
                     'text'  => (string) $response['text']
-                );
+                ];
             }
         }
 
@@ -1197,7 +1197,7 @@ class Members extends Plugin
         $view->authorized = $this->authorized;
         $view->responses = is_array($responses) ? $responses : $this->getDenyResponses();
         // Users on their way to being denied, so saving can return to that form
-        $view->users = Request::getArray('users', array());
+        $view->users = Request::getArray('users', []);
 
         foreach ($this->getErrors() as $error) {
             $view->setError($error);
@@ -1219,8 +1219,8 @@ class Members extends Plugin
 
         Request::checkToken();
 
-        $responses = array();
-        foreach (Request::getArray('responses', array(), 'post') as $response) {
+        $responses = [];
+        foreach (Request::getArray('responses', [], 'post') as $response) {
             if (!is_array($response)) {
                 continue;
             }
@@ -1237,10 +1237,10 @@ class Members extends Plugin
                 $title = mb_strimwidth(preg_replace('/\s+/', ' ', $text), 0, 60, '...');
             }
 
-            $responses[] = array(
+            $responses[] = [
                 'title' => $title,
                 'text'  => $text
-            );
+            ];
         }
 
         $params = new \Hubzero\Config\Registry($this->group->get('params'));
@@ -1266,7 +1266,7 @@ class Members extends Plugin
 
         $url = 'index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&active=members';
 
-        $users = array_filter(array_map('intval', Request::getArray('users', array(), 'post')));
+        $users = array_filter(array_map('intval', Request::getArray('users', [], 'post')));
         if (count($users)) {
             $url .= '&action=deny&users[]=' . implode('&users[]=', $users);
         } else {
@@ -1308,10 +1308,10 @@ class Members extends Plugin
         $admchange = '';
 
         // An array for the users we're going to deny
-        $users = array();
+        $users = [];
 
         // Incoming array of users to demote
-        $mbrs = Request::getArray('users', array());
+        $mbrs = Request::getArray('users', []);
 
         foreach ($mbrs as $mbr) {
             // Retrieve user's account info
@@ -1331,10 +1331,10 @@ class Members extends Plugin
                 $users[] = $targetuser->get('id');
 
                 // Log activity
-                $recipients = array(
+                $recipients = [
                     ['group', $this->group->get('gidNumber')],
                     ['user', $targetuser->get('id')]
-                );
+                ];
                 foreach ($this->group->get('managers') as $recipient) {
                     $recipients[] = ['user', $recipient];
                 }
@@ -1349,10 +1349,10 @@ class Members extends Plugin
                             '<a href="' . Route::url('index.php?option=com_members&id=' . $targetuser->get('id')) . '">' . $targetuser->get('name') . '</a>',
                             '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>'
                         ),
-                        'details'     => array(
+                        'details'     => [
                             'user_id'  => $targetuser->get('id'),
                             'group_id' => $this->group->get('gidNumber')
-                        )
+                        ]
                     ],
                     'recipients' => $recipients
                 ]);
@@ -1371,11 +1371,11 @@ class Members extends Plugin
         $this->group->update();
 
         // log invites
-        \Components\Groups\Models\Log::log(array(
+        \Components\Groups\Models\Log::log([
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'membership_denied',
             'comments'  => $users
-        ));
+        ]);
     }
 
     /**
@@ -1401,7 +1401,7 @@ class Members extends Plugin
         $view->option = $this->_option;
         $view->group = $this->group;
         $view->authorized = $this->authorized;
-        $view->users = Request::getArray('users', array());
+        $view->users = Request::getArray('users', []);
         if ($this->getError()) {
             $view->setError($this->getError());
         }
@@ -1435,11 +1435,11 @@ class Members extends Plugin
         $database = App::get('db');
 
         // An array for the users we're going to deny
-        $users = array();
-        $user_emails = array();
+        $users = [];
+        $user_emails = [];
 
         // Incoming array of users to demote
-        $mbrs = Request::getArray('users', array(), 'post');
+        $mbrs = Request::getArray('users', [], 'post');
 
         // Set a flag for emailing any changes made
         $admchange = '';
@@ -1463,10 +1463,10 @@ class Members extends Plugin
                     $users[] = $targetuser->get('id');
 
                     // Log activity
-                    $recipients = array(
+                    $recipients = [
                         ['group', $this->group->get('gidNumber')],
                         ['user', $targetuser->get('id')]
-                    );
+                    ];
                     foreach ($this->group->get('managers') as $recipient) {
                         $recipients[] = ['user', $recipient];
                     }
@@ -1481,10 +1481,10 @@ class Members extends Plugin
                                 '<a href="' . Route::url('index.php?option=com_members&id=' . $targetuser->get('id')) . '">' . $targetuser->get('name') . '</a>',
                                 '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>'
                             ),
-                            'details'     => array(
+                            'details'     => [
                                 'user_id'  => $targetuser->get('id'),
                                 'group_id' => $this->group->get('gidNumber')
-                            )
+                            ]
                         ],
                         'recipients' => $recipients
                     ]);
@@ -1513,11 +1513,11 @@ class Members extends Plugin
         }
 
         // log invites
-        \Components\Groups\Models\Log::log(array(
+        \Components\Groups\Models\Log::log([
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'membership_invite_cancelled',
             'comments'  => array_merge($users, $user_emails)
-        ));
+        ]);
 
         App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&filter=invitees'), '', '', true);
     }
@@ -1581,14 +1581,14 @@ class Members extends Plugin
      */
     private function reorderroles()
     {
-        $response = array('success' => false);
+        $response = ['success' => false];
 
         if (!$this->canManageRoles()) {
             $response['message'] = Lang::txt('PLG_GROUPS_MEMBERS_ROLE_ORDER_NOT_AUTHORIZED');
         } elseif (!App::get('session')->checkToken('post', true)) {
             $response['message'] = Lang::txt('JINVALID_TOKEN');
         } else {
-            $ids = array_values(array_filter(array_map('intval', Request::getArray('roles', array(), 'post'))));
+            $ids = array_values(array_filter(array_map('intval', Request::getArray('roles', [], 'post'))));
 
             // Nothing usable to order by. Saying so beats reporting success
             // for a list the browser is still showing but nobody stored.
@@ -1650,11 +1650,11 @@ class Members extends Plugin
             ->set('option', $this->_option)
             ->set('group', $this->group)
             ->set('authorized', $this->authorized)
-            ->set('available_permissions', array(
+            ->set('available_permissions', [
                 'group.invite' => Lang::txt('PLG_GROUPS_MEMBERS_ROLE_GROUPINVITE'),
                 'group.edit'   => Lang::txt('PLG_GROUPS_MEMBERS_ROLE_GROUPEDIT'),
                 'group.pages'  => Lang::txt('PLG_GROUPS_MEMBERS_ROLE_GROUPPAGES')
-            ));
+            ]);
 
         $view->setErrors($this->getErrors());
 
@@ -1677,10 +1677,10 @@ class Members extends Plugin
         Request::checkToken();
 
         // get request vars
-        $fields = Request::getArray('role', array());
+        $fields = Request::getArray('role', []);
         $fields['id']          = isset($fields['id']) ? (int) $fields['id'] : 0;
         $fields['gidNumber']   = $this->group->get('gidNumber');
-        $fields['permissions'] = json_encode(isset($fields['permissions']) ? $fields['permissions'] : array());
+        $fields['permissions'] = json_encode(isset($fields['permissions']) ? $fields['permissions'] : []);
 
         // An id in the posted form makes save() an UPDATE of that row, and
         // gidNumber is overwritten just above -- so without this a manager of one
@@ -1707,9 +1707,9 @@ class Members extends Plugin
         }
 
         // Log activity
-        $recipients = array(
+        $recipients = [
             ['group', $this->group->get('gidNumber')]
-        );
+        ];
         foreach ($this->group->get('managers') as $recipient) {
             $recipients[] = ['user', $recipient];
         }
@@ -1724,10 +1724,10 @@ class Members extends Plugin
                     $role->get('name'),
                     '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>'
                 ),
-                'details'     => array(
+                'details'     => [
                     'role_id'  => $role->get('id'),
                     'group_id' => $this->group->get('gidNumber')
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -1779,9 +1779,9 @@ class Members extends Plugin
 
         // Log activity
         if (!$this->getError()) {
-            $recipients = array(
+            $recipients = [
                 ['group', $this->group->get('gidNumber')]
-            );
+            ];
             foreach ($this->group->get('managers') as $recipient) {
                 $recipients[] = ['user', $recipient];
             }
@@ -1796,10 +1796,10 @@ class Members extends Plugin
                         $role->get('name'),
                         '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>'
                     ),
-                    'details'     => array(
+                    'details'     => [
                         'role_id'  => $role->get('id'),
                         'group_id' => $this->group->get('gidNumber')
-                    )
+                    ]
                 ],
                 'recipients' => $recipients
             ]);
@@ -2051,10 +2051,10 @@ class Members extends Plugin
         }
 
         // Build the "from" data for the e-mail
-        $from = array(
+        $from = [
             'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->name)),
             'email' => Config::get('mailfrom')
-        );
+        ];
 
         // create message object
         $message = new \Hubzero\Mail\Message();
@@ -2086,10 +2086,10 @@ class Members extends Plugin
         $reason = Request::getString('reason', '', 'post');
 
         // Build the "from" info for e-mails
-        $from = array(
+        $from = [
             'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->name)),
             'email' => Config::get('mailfrom')
-        );
+        ];
 
         //create the subject
         $subject = Lang::txt('PLG_GROUPS_MESSAGES_SUBJECT_INVITATION_CANCELLED');

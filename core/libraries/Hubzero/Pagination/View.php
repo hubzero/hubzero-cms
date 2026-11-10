@@ -38,7 +38,7 @@ class View extends AbstractView
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function __construct($config = array())
+    public function __construct($config = [])
     {
         parent::__construct($config);
 
@@ -69,7 +69,7 @@ class View extends AbstractView
         $type = strtolower($type);
 
         // Clear out the prior search dirs
-        $this->_path[$type] = array();
+        $this->_path[$type] = [];
 
         // Actually add the user-specified directories
         $this->addPath($type, $path);

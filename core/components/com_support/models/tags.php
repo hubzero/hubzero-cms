@@ -34,10 +34,10 @@ class Tags extends Cloud
      * @param   boolean  $clear    Clear cached data?
      * @return  string
      */
-    public function render($rtrn = 'html', $filters = array(), $clear = false)
+    public function render($rtrn = 'html', $filters = [], $clear = false)
     {
         if (strtolower($rtrn) == 'linkedlist') {
-            $bits = array();
+            $bits = [];
             foreach ($this->tags('list', $filters, $clear) as $tag) {
                 $bits[] = '<a' . ($tag->get('admin') ?  ' class="admin"' : '') . ' href="' . Route::url('index.php?option=com_support&task=tickets&find=tag:' . $tag->get('tag')) . '">' . htmlspecialchars(stripslashes((string) $tag->get('raw_tag')), ENT_COMPAT, 'UTF-8') . '</a>';
             }
@@ -66,7 +66,7 @@ class Tags extends Cloud
             $id = implode(',', $id);
         }
 
-        $where = array();
+        $where = [];
         $where[] = "rt.objectid IN ($id)";
         $where[] = "rt.tbl=" . $db->quote($this->_scope);
 
@@ -92,7 +92,7 @@ class Tags extends Cloud
     public function append($tag)
     {
         if (!isset($this->_cache['tags'])) {
-            $this->_cache['tags'] = new ItemList(array());
+            $this->_cache['tags'] = new ItemList([]);
         }
 
         if (!$tag) {

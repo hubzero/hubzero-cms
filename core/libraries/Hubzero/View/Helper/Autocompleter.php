@@ -42,13 +42,13 @@ class Autocompleter extends AbstractHelper
         $type = 'multi',
         $dsabl = false
     ) {
-        if (!in_array($what, array('tags', 'members', 'groups'))) {
+        if (!in_array($what, ['tags', 'members', 'groups'])) {
             throw new \InvalidArgumentException(__METHOD__ .
                 '(); ' .
                 Lang::txt('Autocompleter for "%s" not supported.', $what));
         }
 
-        $id = ($id ?: str_replace(array('[', ']'), '', $name));
+        $id = ($id ?: str_replace(['[', ']'], '', $name));
 
         switch ($type) {
             case 'multi':
@@ -69,9 +69,9 @@ class Autocompleter extends AbstractHelper
 
         $results = Event::trigger(
             'hubzero.' . $event,
-            array(
-                array($what, $name, $id, $class, $value, $size, $wsel, $type, $dsabl)
-            )
+            [
+                [$what, $name, $id, $class, $value, $size, $wsel, $type, $dsabl]
+            ]
         );
 
         if (count($results) > 0) {

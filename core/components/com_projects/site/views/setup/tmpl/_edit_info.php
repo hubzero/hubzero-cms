@@ -58,7 +58,7 @@ defined('_HZEXEC_') or die();
                 35,
                 25,
                 'about',
-                array('class' => 'form-control minimal no-footer')
+                ['class' => 'form-control minimal no-footer']
             ); ?>
         </label>
     </div>
@@ -90,7 +90,7 @@ defined('_HZEXEC_') or die();
             . DS
             . 'fields');
 
-        $form = new Hubzero\Form\Form('description', array('control' => 'description'));
+        $form = new Hubzero\Form\Form('description', ['control' => 'description']);
         $form->load($xml);
 
         $data = new stdClass();

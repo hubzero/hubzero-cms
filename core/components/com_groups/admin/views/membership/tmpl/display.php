@@ -213,7 +213,7 @@ $expirationPastDue = \Hubzero\User\Group\Membership::supported()
                         <span class="roles">
                             <?php
                             //echo Lang::txt('COM_GROUPS_ROLES') . ': ';
-                            $r = array();
+                            $r = [];
                             foreach ($roles as $role) :
                                 $r[] = '<span class="role">' . $this->escape($role['name']) . ' <a href="' . Route::url('index.php?option=com_groups&controller=roles&task=unassign&gid=' . $this->filters['gid'] . '&id=' . $row->uidNumber . '&roleid=' . $role['id'] . '&return=' . $this->controller) . '" title="' . Lang::txt('COM_GROUPS_UNASSIGN_ROLE') . '">x</a></span>';
                             endforeach;

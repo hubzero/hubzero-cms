@@ -26,7 +26,7 @@ class Blog extends Plugin
      */
     private function canHandle($category)
     {
-        if (in_array($category, array('blog', 'blogcomment'))) {
+        if (in_array($category, ['blog', 'blogcomment'])) {
             return true;
         }
         return false;

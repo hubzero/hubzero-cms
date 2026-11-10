@@ -100,7 +100,7 @@ class Results extends SiteController
 
         // Get the active category
         if ($area) {
-            $activeareas = array($area);
+            $activeareas = [$area];
         } else {
             $limit = 5;
             $activeareas = $areas;
@@ -112,12 +112,12 @@ class Results extends SiteController
         // Get the search result totals
         $totals = Event::trigger(
             'whatsnew.onWhatsnew',
-            array(
+            [
                 $p,
                 0,
                 0,
                 $activeareas
-            )
+            ]
         );
 
         $limit = ($limit == 0) ? 'all' : $limit;
@@ -125,18 +125,18 @@ class Results extends SiteController
         // Get the search results
         $results = Event::trigger(
             'whatsnew.onWhatsnew',
-            array(
+            [
                 $p,
                 $limit,
                 $start,
                 $activeareas
-            )
+            ]
         );
 
         // Get the total results found (sum of all categories)
         $i = 0;
         $total = 0;
-        $cats = array();
+        $cats = [];
         foreach ($areas as $c => $t) {
             $cats[$i]['category'] = $c;
 
@@ -145,7 +145,7 @@ class Results extends SiteController
                 // They do - do some processing
                 $cats[$i]['title'] = ucfirst($c);
                 $cats[$i]['total'] = 0;
-                $cats[$i]['_sub']  = array();
+                $cats[$i]['_sub']  = [];
                 $z = 0;
                 // Loop through each sub-category
                 foreach ($t as $s => $st) {
@@ -199,7 +199,7 @@ class Results extends SiteController
         );
 
         // Build some options for the time period <select>
-        $periodlist = array();
+        $periodlist = [];
         $periodlist[] = Html::select('option', 'week', Lang::txt('COM_WHATSNEW_OPT_WEEK'));
         $periodlist[] = Html::select('option', 'month', Lang::txt('COM_WHATSNEW_OPT_MONTH'));
         $periodlist[] = Html::select('option', 'quarter', Lang::txt('COM_WHATSNEW_OPT_QUARTER'));
@@ -294,7 +294,7 @@ class Results extends SiteController
 
         // Get the active category
         if ($area) {
-            $activeareas = array($area);
+            $activeareas = [$area];
         } else {
             $limit = 5;
             $activeareas = $areas;
@@ -306,16 +306,16 @@ class Results extends SiteController
         // Fetch results
         $results = Event::trigger(
             'whatsnew.onWhatsnew',
-            array(
+            [
                 $p,
                 $limit,
                 $start,
                 $activeareas
-            )
+            ]
         );
 
         // Run through the array of arrays returned from plugins and find the one that returned results
-        $rows = array();
+        $rows = [];
         if ($results) {
             foreach ($results as $result) {
                 if (is_array($result) && !empty($result)) {
@@ -435,7 +435,7 @@ class Results extends SiteController
         // Do we already have an array of areas?
         if (!isset($this->searchareas) || empty($this->searchareas)) {
             // No - so we'll need to get it
-            $areas = array();
+            $areas = [];
 
             // Trigger the functions that return the areas we'll be searching
             $searchareas = Event::trigger('whatsnew.onWhatsnewAreas');

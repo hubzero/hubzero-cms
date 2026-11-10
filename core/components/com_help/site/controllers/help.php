@@ -51,10 +51,10 @@ class Help extends SiteController
             $pages[] = Finder::pages($component);
 
             //display page
-            $view = with(new View(array(
+            $view = with(new View([
                     'name'   => $this->_controller,
                     'layout' => 'index'
-                )))
+                ]))
                 ->set('option', $this->_option)
                 ->set('controller', $this->_controller)
                 ->set('layoutExt', $this->layoutExt)

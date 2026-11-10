@@ -102,7 +102,7 @@ class Modulelayout extends Field
                 App::abort(500, $db->getErrorMsg());
             }
 
-            $paths = array(PATH_APP, PATH_CORE);
+            $paths = [PATH_APP, PATH_CORE];
 
             foreach ($paths as $path) {
                 if (is_dir($path . '/modules/' . $module)) {
@@ -114,10 +114,10 @@ class Modulelayout extends Field
             $module_path = Util::normalizePath($path . '/modules/' . $module . '/tmpl');
 
             // Prepare array of component layouts
-            $module_layouts = array();
+            $module_layouts = [];
 
             // Prepare the grouped list
-            $groups = array();
+            $groups = [];
 
             // Add the layout options from the module path.
             if (
@@ -125,10 +125,10 @@ class Modulelayout extends Field
                 ($module_layouts = App::get('filesystem')->files($module_path, '^[^_]*\.php$'))
             ) {
                 // Create the group for the module
-                $groups['_'] = array();
+                $groups['_'] = [];
                 $groups['_']['id'] = $this->id . '__';
                 $groups['_']['text'] = $lang->txt('JOPTION_FROM_MODULE');
-                $groups['_']['items'] = array();
+                $groups['_']['items'] = [];
 
                 foreach ($module_layouts as $file) {
                     // Add an option to the module group
@@ -173,10 +173,10 @@ class Modulelayout extends Field
 
                         if (count($files)) {
                             // Create the group for the template
-                            $groups[$template->element] = array();
+                            $groups[$template->element] = [];
                             $groups[$template->element]['id'] = $this->id . '_' . $template->element;
                             $groups[$template->element]['text'] = $lang->txt('JOPTION_FROM_TEMPLATE', $template->name);
-                            $groups[$template->element]['items'] = array();
+                            $groups[$template->element]['items'] = [];
 
                             foreach ($files as $file) {
                                 // Add an option to the template group
@@ -201,21 +201,21 @@ class Modulelayout extends Field
             $attr = $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
 
             // Prepare HTML code
-            $html = array();
+            $html = [];
 
             // Compute the current selected values
-            $selected = array($this->value);
+            $selected = [$this->value];
 
             // Add a grouped list
             $html[] = Dropdown::groupedlist(
                 $groups,
                 $this->name,
-                array(
+                [
                     'id'          => $this->id,
                     'group.id'    => 'id',
                     'list.attr'   => $attr,
                     'list.select' => $selected
-                )
+                ]
             );
 
             return implode($html);

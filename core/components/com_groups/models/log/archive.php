@@ -49,7 +49,7 @@ class Archive extends Model
     {
         static $instances;
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
         if (!isset($instances[$key])) {
             $instances[$key] = new self();
@@ -65,7 +65,7 @@ class Archive extends Model
      * @param   boolean $boolean Clear cached data?
      * @return  object
      */
-    public function logs($rtrn = 'list', $filters = array(), $clear = false)
+    public function logs($rtrn = 'list', $filters = [], $clear = false)
     {
         switch (strtolower($rtrn)) {
             case 'list':

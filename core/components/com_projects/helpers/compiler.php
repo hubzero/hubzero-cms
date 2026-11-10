@@ -40,7 +40,7 @@ class Compiler extends Obj
             $tex   = $ext == 'tex' ? 1 : 0;
         }
 
-        if ($mimeType && in_array($mimeType, array('application/x-tex', 'text/x-tex'))) {
+        if ($mimeType && in_array($mimeType, ['application/x-tex', 'text/x-tex'])) {
             $tex = 1;
         }
 
@@ -54,24 +54,24 @@ class Compiler extends Obj
      */
     public static function getFormatsArray()
     {
-        $formats = array (
-            'application' => array (
+        $formats =  [
+            'application' =>  [
                 'application/pdf'
-            ),
-            'images' => array (
+            ],
+            'images' =>  [
                 'image/jpeg',
                 'image/jpg',
                 'image/png',
                 'image/x-png',
                 'image/gif'
-            ),
-            'text' => array (
+            ],
+            'text' =>  [
                 'text/plain',
                 'text/css',
                 'text/x-tex',
                 'text/html'
-            )
-        );
+            ]
+        ];
 
         return $formats;
     }

@@ -235,13 +235,13 @@ class Mailinglists extends SiteController
         //make sure its not private or already deleted
         if (!$mailinglist->private && !$mailinglist->deleted) {
             $subscription = Email::blank()
-                ->set(array(
+                ->set([
                     'id'         => $sid,
                     'mid'        => $list,
                     'email'      => $email,
                     'status'     => 'inactive',
                     'date_added' => Date::toSql()
-                ));
+                ]);
 
             //mail confirmation email and save subscription
             if (Helper::sendMailinglistConfirmationEmail($email, $mailinglist, false)) {
@@ -267,7 +267,7 @@ class Mailinglists extends SiteController
         Request::checkToken();
 
         //get request vars
-        $lists = Request::getArray('lists', array(), 'post');
+        $lists = Request::getArray('lists', [], 'post');
 
         //get email
         if (User::isGuest()) {
@@ -290,7 +290,7 @@ class Mailinglists extends SiteController
             ->whereEquals('deleted', 0)
             ->rows();
 
-        $keys = array();
+        $keys = [];
         foreach ($mylists as $mylist) {
             $keys[] = $mylist->id;
         }
@@ -305,12 +305,12 @@ class Mailinglists extends SiteController
                 //make sure its not private or already deleted
                 if (!$mailinglist->private && !$mailinglist->deleted) {
                     $subscription = Email::blank()
-                        ->set(array(
+                        ->set([
                             'mid'        => $list,
                             'email'      => $email,
                             'status'     => 'inactive',
                             'date_added' => Date::toSql()
-                        ));
+                        ]);
 
                     //mail confirmation email and save subscription
                     if (Helper::sendMailinglistConfirmationEmail($email, $mailinglist, false)) {
@@ -400,11 +400,11 @@ class Mailinglists extends SiteController
         //is the mailing list to the default hub mailing list?
         if ($mailing->lid == '-1') {
             $mailinglist = Mailinglist::blank()
-                ->set(array(
+                ->set([
                     'id' => -1,
                     'name' => 'HUB Members',
                     'description' => Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_DEFAULTLIST')
-                ));
+                ]);
         } else {
             //load mailing list
             $mailinglist = Mailinglist::oneOrFail($mailing->lid);

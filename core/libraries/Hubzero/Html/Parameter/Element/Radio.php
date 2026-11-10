@@ -36,7 +36,7 @@ class Radio extends Element
      */
     public function fetchElement($name, $value, &$node, $control_name)
     {
-        $options = array();
+        $options = [];
         foreach ($node->children() as $option) {
             $val  = (string) $option['value'];
             $text = (string) $option;

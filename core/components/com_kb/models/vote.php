@@ -48,20 +48,20 @@ class Vote extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'vote'      => 'notempty',
         'object_id' => 'positive|nonzero',
         'type'      => 'notempty',
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'vote'
-    );
+    ];
 
     /**
      * Normalize a vote

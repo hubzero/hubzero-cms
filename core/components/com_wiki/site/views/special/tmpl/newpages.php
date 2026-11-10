@@ -21,18 +21,18 @@ Pathway::append(
 );
 
 $sort = strtolower(Request::getString('sort', 'created'));
-if (!in_array($sort, array('created', 'title', 'summary', 'created_by'))) {
+if (!in_array($sort, ['created', 'title', 'summary', 'created_by'])) {
     $sort = 'created';
 }
 $dir = strtoupper(Request::getString('dir', 'DESC'));
-if (!in_array($dir, array('ASC', 'DESC'))) {
+if (!in_array($dir, ['ASC', 'DESC'])) {
     $dir = 'DESC';
 }
 
 $limit = Request::getInt('limit', Config::get('list_limit'));
 $start = Request::getInt('limitstart', 0);
 
-$filters = array('state' => array(0, 1));
+$filters = ['state' => [0, 1]];
 
 if ($space = Request::getString('namespace', '')) {
     $filters['namespace'] = urldecode($space);

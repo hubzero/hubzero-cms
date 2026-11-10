@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
     /*
     |--------------------------------------------------------------------------
     | Search Engine Friendly URLs
@@ -70,4 +70,4 @@ return array(
     |
     */
     'sitename_pagetitles' => '0',
-);
+];

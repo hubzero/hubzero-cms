@@ -71,13 +71,13 @@ class Messages extends Plugin
      */
     public function &onGroupAreas()
     {
-        $area = array(
+        $area = [
             'name' => 'messages',
             'title' => Lang::txt('PLG_GROUPS_MESSAGES'),
             'default_access' => $this->params->get('plugin_access', 'members'),
             'display_menu_tab' => $this->params->get('display_tab', 1),
             'icon' => '2709'
-        );
+        ];
         return $area;
     }
 
@@ -100,9 +100,9 @@ class Messages extends Plugin
         $active = 'messages';
 
         // The output array we're returning
-        $arr = array(
+        $arr = [
             'html' => ''
-        );
+        ];
 
         //get this area details
         $this_area = $this->onGroupAreas();
@@ -203,11 +203,11 @@ class Messages extends Plugin
         Document::setTitle($pageTitle);
 
         // Filters for returning results
-        $filters = array(
+        $filters = [
             'limit'    => Request::getInt('limit', 10),
             'start'    => Request::getInt('limitstart', 0),
             'group_id' => $this->group->get('gidNumber')
-        );
+        ];
 
         // Instantiate our message object
         $database = App::get('db');
@@ -342,7 +342,7 @@ class Messages extends Plugin
 
         $view->member_roles = $member_roles;
         $view->members = $members;
-        $view->users = Request::getArray('users', array('all'));
+        $view->users = Request::getArray('users', ['all']);
         $view->no_html = Request::getInt('no_html', 0);
 
         foreach ($this->getErrors() as $error) {
@@ -378,7 +378,7 @@ class Messages extends Plugin
         $message = Lang::txt('PLG_GROUPS_MESSAGES_FROM_GROUP', $this->group->get('cn'));
 
         // Incoming array of users to message
-        $mbrs = Request::getArray('users', array(0), 'post');
+        $mbrs = Request::getArray('users', [0], 'post');
         switch ($mbrs[0]) {
             case 'invitees':
                 $mbrs = $this->group->get('invitees');
@@ -405,7 +405,7 @@ class Messages extends Plugin
 
                 // Collects the members of any roles addressed (an empty role
                 // otherwise left this unset)
-                $members = array();
+                $members = [];
 
                 foreach ($mbrs as $mbr) {
                     if (strstr($mbr, '_')) {
@@ -450,7 +450,7 @@ class Messages extends Plugin
         }
 
         // get all group members
-        $recipients = array();
+        $recipients = [];
         foreach ((array) $mbrs as $mbr) {
             if (($profile = User::getInstance($mbr)) && $profile->get('email')) {
                 $recipients[$profile->get('email')] = $profile->get('name');
@@ -470,10 +470,10 @@ class Messages extends Plugin
         }
 
         // define from details
-        $from = array(
+        $from = [
             'name'  => $this->group->get('description') . " Group on " . Config::get("fromname"),
             'email' => Config::get("mailfrom")
-        );
+        ];
 
         // create url
         $sef = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn'));
@@ -495,17 +495,17 @@ class Messages extends Plugin
 
         // set message details and send
         $message->setSubject($subject)
-                ->setFrom(array($from['email'] => $from['name']))
+                ->setFrom([$from['email'] => $from['name']])
                 ->addPart($plain, 'text/plain');
 
         // Send one at a time, and count: send() logs a transport failure and
         // returns false, and an empty recipient list sends nothing at all -
         // either way the sender was told it worked
         $sent   = 0;
-        $failed = array();
+        $failed = [];
         foreach ($recipients as $email => $name) {
             try {
-                if ($message->setTo(array($email => $name))->send()) {
+                if ($message->setTo([$email => $name])->send()) {
                     $sent++;
                     continue;
                 }
@@ -544,11 +544,11 @@ class Messages extends Plugin
         // Log the action
         if ($action) {
             // log invites
-            \Components\Groups\Models\Log::log(array(
+            \Components\Groups\Models\Log::log([
                 'gidNumber' => $this->group->get('gidNumber'),
                 'action'    => $action,
-                'comments'  => array(User::get('id'))
-            ));
+                'comments'  => [User::get('id')]
+            ]);
         }
 
         // Determine if we're returning HTML or not

@@ -32,23 +32,23 @@ class Projects extends Plugin
         $obj = new \stdClass();
         $obj->plugin = 'projects';
 
-        $obj->events = array(
-            array(
+        $obj->events = [
+            [
                 'name'   => 'computeStats',
                 'label'  => Lang::txt('PLG_CRON_PROJECTS_LOG_STATS'),
                 'params' => ''
-            ),
-            array(
+            ],
+            [
                 'name'   => 'googleSync',
                 'label'  => Lang::txt('PLG_CRON_PROJECTS_SYNC_GDRIVE'),
                 'params' => ''
-            ),
-            array(
+            ],
+            [
                 'name'   => 'gitGc',
                 'label'  => Lang::txt('PLG_CRON_PROJECTS_GITGC'),
                 'params' => ''
-            )
-        );
+            ]
+        ];
 
         return $obj;
     }
@@ -91,7 +91,7 @@ class Projects extends Plugin
         // Get all projects
         $obj = new \Components\Projects\Tables\Project($database);
         $projects = $obj->getRecords(
-            array('active' => true),
+            ['active' => true],
             'admin',
             0,
             0,
@@ -123,7 +123,7 @@ class Projects extends Plugin
             $obj->saveParam($project->id, 'google_sync_lock', '');
 
             // Plugin params
-            $plugin_params = array(
+            $plugin_params = [
                 $project,
                 'com_projects',
                 true,
@@ -131,8 +131,8 @@ class Projects extends Plugin
                 null,
                 null,
                 'sync',
-                array('files')
-            );
+                ['files']
+            ];
 
             $sections = Event::trigger('projects.onProject', $plugin_params);
         }
@@ -159,7 +159,7 @@ class Projects extends Plugin
         // for filterby=active)
         $projects = array_map(function ($p) {
             return $p->alias;
-        }, (array) $obj->getRecords(array('filterby' => 'active'), 'admin', 0, 1));
+        }, (array) $obj->getRecords(['filterby' => 'active'], 'admin', 0, 1));
 
         if (!$projects) {
             return true;

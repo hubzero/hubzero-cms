@@ -185,7 +185,7 @@ $this->view('_title')
                                 35,
                                 25,
                                 'field-about',
-                                array('class' => 'form-control minimal no-footer')
+                                ['class' => 'form-control minimal no-footer']
                             ); ?>
                         </label>
                     </div>

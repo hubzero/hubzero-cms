@@ -30,7 +30,7 @@ defined('_HZEXEC_') or die();
     $attributes = $attribs->get('attributes', '');
 if ($attributes) {
     $a = explode(',', $attributes);
-    $bits = array();
+    $bits = [];
     if ($a && is_array($a)) {
         foreach ($a as $b) {
             if (strstr($b, ':')) {
@@ -52,10 +52,10 @@ if ($attributes) {
     $width  = (intval($width) > 0) ? intval($width) : 0;
     $height = (intval($height) > 0) ? intval($height) : 0;
 
-    $videos = array('mp4');
-    $audios = array('mp3');
-    $images = array('png', 'jpeg', 'jpe', 'jpg', 'gif', 'bmp');
-    $files  = array('pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pages', 'ai', 'psd', 'tiff', 'dxf', 'eps', 'ps', 'ttf', 'xps', 'zip', 'rar', 'svg');
+    $videos = ['mp4'];
+    $audios = ['mp3'];
+    $images = ['png', 'jpeg', 'jpe', 'jpg', 'gif', 'bmp'];
+    $files  = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pages', 'ai', 'psd', 'tiff', 'dxf', 'eps', 'ps', 'ttf', 'xps', 'zip', 'rar', 'svg'];
 
     $UrlPtn  = "(?:https?:|mailto:|ftp:|gopher:|news:|file:)" . "(?:[^ |\\/\"\']*\\/)*[^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]";
 

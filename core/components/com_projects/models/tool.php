@@ -113,7 +113,7 @@ class Tool extends Model
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         if (!isset($instances[$oid])) {
@@ -139,7 +139,7 @@ class Tool extends Model
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         if (!isset($instances[$oid])) {
@@ -224,7 +224,7 @@ class Tool extends Model
      * @param   array  $filters
      * @return  array
      */
-    public function history($filters = array())
+    public function history($filters = [])
     {
         // Get log model
         $log = $this->log($this->get('id'), $this->get('name'));
@@ -395,9 +395,9 @@ class Tool extends Model
      * @param   boolean  $admin
      * @return  array
      */
-    public function entries($rtrn = 'list', $filters = array(), $admin = false)
+    public function entries($rtrn = 'list', $filters = [], $admin = false)
     {
-        $results = array();
+        $results = [];
 
         switch (strtolower($rtrn)) {
             case 'count':
@@ -416,7 +416,7 @@ class Tool extends Model
                         $results[$key] = self::mapInstance($result);
                     }
                 } else {
-                    $results = array();
+                    $results = [];
                 }
 
                 return new ItemList($results);
@@ -484,7 +484,7 @@ class Tool extends Model
 
         // Array of reserved names (task names and default dirs)
         $reserved = explode(',', $this->_config->get('reserved_names'));
-        $tasks    = array('temp', 'toolname', 'register');
+        $tasks    = ['temp', 'toolname', 'register'];
 
         if ($name) {
             $name = preg_replace('/ /', '', $name);

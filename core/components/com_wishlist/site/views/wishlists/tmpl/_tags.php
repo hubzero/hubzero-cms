@@ -20,7 +20,7 @@ if (!$this->tags->count()) {
     $max_font_size = 1.8;
 
 if ($this->config->get('show_sizes', 0) == 1) {
-    $retarr = array();
+    $retarr = [];
     foreach ($tags as $tag) {
         $retarr[$tag->raw_tag] = $tag->count;
     }
@@ -38,8 +38,8 @@ if ($this->config->get('show_sizes', 0) == 1) {
 }
 
     // build HTML
-    $tll = array();
-    $lst = array();
+    $tll = [];
+    $lst = [];
 foreach ($this->tags as $tag) {
     $class = '';
     switch ($tag->get('admin')) {
@@ -79,7 +79,7 @@ foreach ($this->tags as $tag) {
                 $lst[] = $tag->get('tag');
             }
         } else {
-            $lst = array($tag->get('tag'));
+            $lst = [$tag->get('tag')];
         }
 
         $append = '&tags=' . $tag->get('tag');

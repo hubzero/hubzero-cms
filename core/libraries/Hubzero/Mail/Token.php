@@ -171,6 +171,6 @@ class Token
         // unpack the original values, no need to strip padding or hash
         // we'll just unpack what we need
         $arr = unpack("N3", $decrypted);
-        return array($arr[1], $arr[2], $arr[3]);
+        return [$arr[1], $arr[2], $arr[3]];
     }
 }

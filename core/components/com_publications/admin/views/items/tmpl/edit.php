@@ -46,7 +46,7 @@ $database = App::get('db');
 $rt = $this->model->category();
 
 // Parse data
-$data = array();
+$data = [];
 preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->model->get('metadata', ''), $matches, PREG_SET_ORDER);
 if (count($matches) > 0) {
     foreach ($matches as $match) {
@@ -71,7 +71,7 @@ $params = $this->model->params;
 
 // Available panels and default config
 $typeParams = $this->model->masterType()->_params;
-$panels = array(
+$panels = [
     'authors'   => $typeParams->get('show_authors', 2),
     'audience'  => $typeParams->get('show_audience', 0),
     'gallery'   => $typeParams->get('show_gallery', 1),
@@ -80,7 +80,7 @@ $panels = array(
     'notes'     => $typeParams->get('show_notes', 1),
     'metadata'  => $typeParams->get('show_metadata', 1),
     'submitter' => $typeParams->get('show_submitter', 0)
-);
+];
 
 ?>
 
@@ -130,7 +130,7 @@ $panels = array(
                 <legend><span><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_NOTES'); ?></span></legend>
                 <div class="input-wrap">
                     <label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_NOTES'); ?>:</label>
-                    <?php echo $this->editor('release_notes', $this->escape(stripslashes($this->model->get('release_notes', ''))), '20', '10', 'notes', array('class' => 'minimal no-footer')); ?>
+                    <?php echo $this->editor('release_notes', $this->escape(stripslashes($this->model->get('release_notes', ''))), '20', '10', 'notes', ['class' => 'minimal no-footer']); ?>
                 </div>
             </fieldset>
             <fieldset class="adminform">
@@ -153,7 +153,7 @@ $panels = array(
 
                 <div class="input-wrap">
                     <?php
-                    $tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->model->getTagsForEditing(0, 0, true))));
+                    $tf = Event::trigger('hubzero.onGetMultiEntry', [['tags', 'tags', 'actags', '', $this->model->getTagsForEditing(0, 0, true)]]);
                     if (count($tf) > 0) {
                         echo $tf[0];
                     } else { ?>

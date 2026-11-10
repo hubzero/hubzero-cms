@@ -71,7 +71,7 @@ class Todo extends Model
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         if (is_object($oid)) {
@@ -96,7 +96,7 @@ class Todo extends Model
      * @param   mixed    $filters
      * @return  array
      */
-    public function getListName($projectid = null, $filters = array())
+    public function getListName($projectid = null, $filters = [])
     {
         $color = is_array($filters) ? $filters['todolist'] : $filters;
         return $this->_tbl->getListName($projectid, $color);
@@ -140,9 +140,9 @@ class Todo extends Model
      * @param   array   $filters
      * @return  array
      */
-    public function entries($rtrn = 'list', $filters = array())
+    public function entries($rtrn = 'list', $filters = [])
     {
-        $results = array();
+        $results = [];
 
         switch (strtolower($rtrn)) {
             case 'count':
@@ -158,7 +158,7 @@ class Todo extends Model
                         $results[$key] = new Entry($result);
                     }
                 } else {
-                    $results = array();
+                    $results = [];
                 }
                 return new \Hubzero\Base\ItemList($results);
             break;

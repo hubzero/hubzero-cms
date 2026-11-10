@@ -44,7 +44,7 @@ class Hosttypes extends AdminController
     public function displayTask()
     {
         // Get filters
-        $filters = array(
+        $filters = [
             // Sorting
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
@@ -69,7 +69,7 @@ class Hosttypes extends AdminController
                 0,
                 'int'
             )
-        );
+        ];
         // In case limit has been changed, adjust limitstart accordingly
         $filters['limit'] = ($filters['limit'] == 'all') ? 0 : $filters['limit'];
         $filters['start'] = ($filters['limit'] != 0
@@ -171,7 +171,7 @@ class Hosttypes extends AdminController
         // Get the middleware database
         $mwdb = Utils::getMWDBO();
 
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         $row = new Hosttype($mwdb);
 
@@ -240,7 +240,7 @@ class Hosttypes extends AdminController
         Request::checkToken();
 
         // Incoming
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
 
         $removed = 0;
 

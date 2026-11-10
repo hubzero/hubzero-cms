@@ -6,8 +6,8 @@ if (!class_exists('ConfigGetter', false)) {
     {
         public function getConfig()
         {
-            $config = array(
-                'app' => array(
+            $config = [
+                'app' => [
                     'application_env' => 'development',
                     'editor' => 'ckeditor',
                     'list_limit' => '25',
@@ -20,21 +20,21 @@ if (!class_exists('ConfigGetter', false)) {
                     'sef_groups' => '0',
                     'feed_limit' => '10',
                     'feed_email' => 'author',
-                ),
-                'seo' => array(
+                ],
+                'seo' => [
                     'sef' => '1',
                     'sef_groups' => '0',
                     'sef_rewrite' => '1',
                     'sef_suffix' => '0',
                     'unicodeslugs' => '0',
                     'sitename_pagetitles' => '0',
-                ),
-            );
+                ],
+            ];
 
             return $config;
         }
     }
 }
 
-return array(new ConfigGetter(), 'getConfig');
+return [new ConfigGetter(), 'getConfig'];
 // @codeCoverageIgnoreEnd

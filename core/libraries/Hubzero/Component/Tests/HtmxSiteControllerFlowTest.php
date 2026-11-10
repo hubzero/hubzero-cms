@@ -213,7 +213,7 @@ namespace Hubzero\Component\Tests {
                 HtmxFlowAppStub::reset();
             }
 
-            \App::set('request', new HtmxFlowRequestStub(array('HX-Request' => 'true')));
+            \App::set('request', new HtmxFlowRequestStub(['HX-Request' => 'true']));
             \App::set('response', new HtmxFlowResponseStub());
             \App::set('app', new HtmxFlowContainerStub());
         }

@@ -27,7 +27,7 @@ class Slider extends Macro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['wiki'] = "Creates a slider with the images passed in.";
         $txt['html'] = '<p>Creates a slider with the images passed in. ' .
             'Enter uploaded image names seperated by commas.</p>
@@ -87,7 +87,7 @@ class Slider extends Macro
         $slides = array_map('trim', explode(',', $content));
 
         //array for checked slides
-        $final_slides = array();
+        $final_slides = [];
 
         //check each passed in slide
         foreach ($slides as $slide) {

@@ -76,9 +76,9 @@ class BillBoards extends AdminController
 
         if (!isset($billboard) || !is_object($billboard)) {
             // Incoming - expecting an array
-            $cid = Request::getArray('cid', array(0));
+            $cid = Request::getArray('cid', [0]);
             if (!is_array($cid)) {
-                $cid = array($cid);
+                $cid = [$cid];
             }
             $uid = $cid[0];
 
@@ -123,7 +123,7 @@ class BillBoards extends AdminController
         }
 
         // Incoming, make sure to allow HTML to pass through
-        $data = Request::getArray('billboard', array(), 'post');
+        $data = Request::getArray('billboard', [], 'post');
         $data['id'] = isset($data['id']) ? (int) $data['id'] : 0;
 
         // The form never posts these. background_img is set from the upload
@@ -169,7 +169,7 @@ class BillBoards extends AdminController
             // already requires an administrator.
             $billboard_image['name'] = basename(str_replace('\\', '/', (string) $billboard_image['name']));
             $imgExt = strtolower(pathinfo($billboard_image['name'], PATHINFO_EXTENSION));
-            if (!in_array($imgExt, array('jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'), true)) {
+            if (!in_array($imgExt, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'], true)) {
                 Notify::error(Lang::txt('COM_BILLBOARDS_ERROR_FILE_MOVE_FAILED'));
                 return $this->editTask($billboard);
             }
@@ -237,8 +237,8 @@ class BillBoards extends AdminController
         }
 
         // Initialize variables
-        $cid   = Request::getArray('cid', array(), 'post');
-        $order = Request::getArray('order', array(), 'post');
+        $cid   = Request::getArray('cid', [], 'post');
+        $order = Request::getArray('order', [], 'post');
 
         // Make sure we have something to work with
         if (empty($cid)) {
@@ -282,9 +282,9 @@ class BillBoards extends AdminController
         }
 
         // Incoming (expecting an array)
-        $ids = Request::getArray('cid', array());
+        $ids = Request::getArray('cid', []);
         if (!is_array($ids)) {
-            $ids = array($ids);
+            $ids = [$ids];
         }
 
         $i = 0;
@@ -351,9 +351,9 @@ class BillBoards extends AdminController
         }
 
         // Incoming (we're expecting an array)
-        $ids = Request::getArray('cid', array());
+        $ids = Request::getArray('cid', []);
         if (!is_array($ids)) {
-            $ids = array($ids);
+            $ids = [$ids];
         }
 
         $publish = $this->getTask() == 'publish' ? 1 : 0;

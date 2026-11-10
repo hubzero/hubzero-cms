@@ -32,7 +32,7 @@ class Resources extends Macro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['wiki'] = 'This macro will insert a linked title to a resource. ' .
             'It can be passed wither an ID or alias.';
         $txt['html'] = '<p>This macro will insert a linked title to a resource. ' .
@@ -47,7 +47,7 @@ class Resources extends Macro
      */
     public function render()
     {
-        $this->linkLog = array();
+        $this->linkLog = [];
 
         $et = $this->args;
 
@@ -91,13 +91,13 @@ class Resources extends Macro
             // Build and return the link
             $link = $r->link();
 
-            $this->linkLog[] = array(
+            $this->linkLog[] = [
                 'link'     => '[[Resource(' . $et . ')]]',
                 'url'      => $link,
                 'page_id'  => $this->pageid,
                 'scope'    => 'resource',
                 'scope_id' => $r[0]
-            );
+            ];
 
             if ($nolink) {
                 // Same sink as the linked branch below, reached by
@@ -128,7 +128,7 @@ class Resources extends Macro
 
         $alias = strtolower($alias);
         $d = @dir(PATH_APP . $path . DS . $alias);
-        $images = array();
+        $images = [];
 
         if ($d) {
             while (false !== ($entry = $d->read())) {

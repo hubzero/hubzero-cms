@@ -54,12 +54,12 @@ class Orcid extends SiteController
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_services = array(
+    protected $_services = [
         'public'  => 'pub.orcid.org',
         'publicsandbox'  => 'pub.sandbox.orcid.org',
         'members' => 'api.orcid.org',
         'sandbox' => 'api.sandbox.orcid.org'
-    );
+    ];
 
     /**
      * OAuth tokens
@@ -67,10 +67,10 @@ class Orcid extends SiteController
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_oauthToken = array(
+    protected $_oauthToken = [
         'members' => 'https://orcid.org/oauth/token',
         'sandbox' => 'https://sandbox.orcid.org/oauth/token'
-    );
+    ];
 
     /**
      * Recursively parse XML
@@ -104,7 +104,7 @@ class Orcid extends SiteController
     {
         $srv = $this->config->get('orcid_service', 'members');
         $url = Request::scheme() . '://' . $this->_services[$srv] . '/v2.0/' . $orcid . '/person';
-        $header = array('Accept: application/vnd.orcid+xml');
+        $header = ['Accept: application/vnd.orcid+xml'];
         $header[] = 'Authorization: Bearer ' . $token;
 
         $initedCurl = curl_init();
@@ -136,15 +136,15 @@ class Orcid extends SiteController
             $root = '';
         }
 
-        $name = array();
+        $name = [];
 
         if (!empty($root)) {
             foreach ($root->children() as $child) {
                 if ($child->getName() == 'name') {
-                    $name = array(
+                    $name = [
                         'given-names' => (string)$child->{'given-names'},
                         'family-name' => (string)$child->{'family-name'}
-                    );
+                    ];
                     break;
                 }
             }
@@ -160,12 +160,12 @@ class Orcid extends SiteController
      */
     private function parseTree($root)
     {
-        $records = array();
+        $records = [];
 
         foreach ($root->children() as $child) {
             if ($child->getName() == 'result') {
                 foreach ($child->children() as $search_res) {
-                    $fields = array();
+                    $fields = [];
                     foreach ($search_res->children() as $profile) {
                         if (($profile->getName() == 'path')) {
                             $fields[$profile->getName()] = $profile->__toString();
@@ -200,7 +200,7 @@ class Orcid extends SiteController
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $oauthToken);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Accept: application/json']);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -231,7 +231,7 @@ class Orcid extends SiteController
         $url = Request::scheme() . '://' . $this->_services[$srv] . '/v2.0/search/?q=';
         $tkn = $this->_accessToken;
 
-        $bits = array();
+        $bits = [];
 
         if ($fname) {
             $bits[] = 'given-names:' . $fname;
@@ -247,7 +247,7 @@ class Orcid extends SiteController
 
         $url .= implode('+AND+', $bits);
 
-        $header = array('Accept: application/vnd.orcid+xml');
+        $header = ['Accept: application/vnd.orcid+xml'];
         if ($srv != 'public') {
             $header[] = 'Authorization: Bearer ' . $tkn;
         }
@@ -289,10 +289,10 @@ class Orcid extends SiteController
      */
     private function format($records, $callbackPrefix)
     {
-        $view = new \Hubzero\Component\View(array(
+        $view = new \Hubzero\Component\View([
             'name'   => $this->_controller,
             'layout' => 'results'
-        ));
+        ]);
         $view->records = $records;
         $view->callbackPrefix = $callbackPrefix;
 
@@ -307,7 +307,7 @@ class Orcid extends SiteController
      */
     private function httpParseHeaders($header)
     {
-        $retVal = array();
+        $retVal = [];
         $fields = explode("\r\n", preg_replace('/\x0D\x0A[\x09\x20]+/', ' ', $header));
         foreach ($fields as $field) {
             if (preg_match('/([^:]+): (.+)/m', $field, $match)) {
@@ -320,7 +320,7 @@ class Orcid extends SiteController
                 );
 
                 if (isset($retVal[$match[1]])) {
-                    $retVal[$match[1]] = array($retVal[$match[1]], $match[2]);
+                    $retVal[$match[1]] = [$retVal[$match[1]], $match[2]];
                 } else {
                     $retVal[$match[1]] = trim($match[2]);
                 }
@@ -361,7 +361,7 @@ class Orcid extends SiteController
         $last_name   = Request::getString('lname', '');
         $returnOrcid = Request::getInt('return', 0);
         $isRegister  = $returnOrcid == 1;
-        $records = array();
+        $records = [];
         $ins_option = $this->config->get('orcid_institution_field_option');
 
         $ins_name = $this->config->get('orcid_user_institution_name');
@@ -372,11 +372,11 @@ class Orcid extends SiteController
         }
 
         // The default option is searching by first name and last name.
-        $defSearch = array();
+        $defSearch = [];
         // The configurable option is searching by first name, last name, and instituation name
-        $optSearch = array();
+        $optSearch = [];
 
-        $firstNameSearch = $lastNameSearch = $firstNameOptSearch = $lastNameOptSearch = array();
+        $firstNameSearch = $lastNameSearch = $firstNameOptSearch = $lastNameOptSearch = [];
 
         // Get ORCID record public access token
         $token = $this->getAccessToken();
@@ -566,11 +566,11 @@ class Orcid extends SiteController
         $initedCurl = curl_init($url);
         curl_setopt($initedCurl, CURLOPT_POST, 1);
         curl_setopt($initedCurl, CURLOPT_FOLLOWLOCATION, true);
-        $headers = array(
+        $headers = [
             'Accept: application/xml',
             'Content-Type: application/vdn.orcid+xml',
             'Authorization: Bearer ' . $tkn
-        );
+        ];
         curl_setopt($initedCurl, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($initedCurl, CURLOPT_POSTFIELDS, "$xml_data");
         curl_setopt($initedCurl, CURLOPT_MAXREDIRS, 3);
@@ -580,7 +580,7 @@ class Orcid extends SiteController
         curl_close($initedCurl);
         $parsed_response = $this->httpParseHeaders($curl_response);
 
-        $pathComponents = array();
+        $pathComponents = [];
         if (isset($parsed_response['Location'])) {
             $parsed_url = parse_url($parsed_response['Location']);
             $pathComponents = explode('/', trim($parsed_url['path'], '/'));
@@ -658,7 +658,7 @@ class Orcid extends SiteController
             $ch = curl_init();
             //Set cURL options
             curl_setopt($ch, CURLOPT_URL, $oauthToken);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
+            curl_setopt($ch, CURLOPT_HTTPHEADER, ['Accept: application/json']);
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -747,7 +747,7 @@ class Orcid extends SiteController
                 Session::set('orcid', $this->_userOrcidID);
             }
         }
-        $view = new \Hubzero\Component\View(array('name' => 'orcid', 'layout' => 'redirect'));
+        $view = new \Hubzero\Component\View(['name' => 'orcid', 'layout' => 'redirect']);
         $view->set('userName', $this->_userName)->set('userORCID', $this->_userOrcidID);
         $view->display();
     }
@@ -760,7 +760,7 @@ class Orcid extends SiteController
     public function permissionTask()
     {
         $code = Request::getString('code');
-        $view = new \Hubzero\Component\View(array('name' => 'orcid', 'layout' => 'redirect'));
+        $view = new \Hubzero\Component\View(['name' => 'orcid', 'layout' => 'redirect']);
 
         if ($code) {
             $srv = $this->config->get('orcid_service', 'members');

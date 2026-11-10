@@ -112,7 +112,7 @@ if (!$no_html) {
                 </ul>
             <?php endif; ?>
             <?php
-            $results = Event::trigger('members.onMemberProfile', array($this->profile));
+            $results = Event::trigger('members.onMemberProfile', [$this->profile]);
             $results = implode("\n", $results);
 
             if ($results) {
@@ -174,7 +174,7 @@ if (!$no_html) {
                                         $option['text'] = $option['title'];
                                     }
 
-                                    $attribs = array();
+                                    $attribs = [];
                                     foreach ($option as $key => $val) {
                                         if ($key == 'text') {
                                             continue;
@@ -305,7 +305,7 @@ if (!$no_html) {
                 $notificationHtml .= '<p class="error">' . implode('<br />', $this->getErrors()) . '</p>';
             }
 
-                $results = array();
+                $results = [];
                 $notifications = Notify::messages('com_members.profile');
             foreach ($notifications as $notification) {
                 $results[] = $notification['message'];

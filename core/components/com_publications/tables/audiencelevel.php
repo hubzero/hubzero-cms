@@ -34,7 +34,7 @@ class AudienceLevel extends Table
      * @param   array    $return_array  Return as array?
      * @return  array
      */
-    public function getLevels($numlevels = 4, $levels = array(), $return_array = 1)
+    public function getLevels($numlevels = 4, $levels = [], $return_array = 1)
     {
         $sql  = "SELECT label, title, description FROM $this->_tbl ";
         $sql .= $numlevels == 4 ? " WHERE label != 'level5' " : "";

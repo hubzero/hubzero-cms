@@ -38,7 +38,7 @@ class Offline extends Plugin
         $view = $this->view('default', 'payment')
             ->set('url', Route::url('index.php?option=com_cart&controller=checkout/confirm'));
 
-        $payment = array();
+        $payment = [];
         $payment['options'] = $view->loadTemplate();
         $payment['title'] = $this->params->get('title', 'Offline');
 
@@ -67,7 +67,7 @@ class Offline extends Plugin
             ->set('user', $user)
             ->set('transaction', $transaction);
 
-        $payment = array();
+        $payment = [];
         $payment['status'] = 'ok';
         $payment['paymentInfo'] = 'Offline testing payment provider';
         $payment['response'] = $view->loadTemplate();
@@ -95,7 +95,7 @@ class Offline extends Plugin
         $customData = explode('-', $postData['custom']);
         $tId = $customData[1];
 
-        $response = array();
+        $response = [];
         $response['status'] = 'ok';
 
         if (!$tId) {
@@ -120,7 +120,7 @@ class Offline extends Plugin
             $response['msg'] = $message;
 
             $response['tInfo'] = $tInfo;
-            $response['payment'] = array('Offline', false);
+            $response['payment'] = ['Offline', false];
         }
 
         return $response;
@@ -138,7 +138,7 @@ class Offline extends Plugin
             return false;
         }
 
-        $response = array();
+        $response = [];
         $response['verificationVar'] = 'custom';
         return $response;
     }

@@ -115,7 +115,7 @@ $this->js();
             </fieldset>
         </div>
         <div class="col span5">
-            <?php echo Html::sliders('start', 'language-sliders-' . $this->item->lang_code, array('useCookie' => 1)); ?>
+            <?php echo Html::sliders('start', 'language-sliders-' . $this->item->lang_code, ['useCookie' => 1]); ?>
 
             <?php echo Html::sliders('panel', Lang::txt('JGLOBAL_FIELDSET_METADATA_OPTIONS'), 'metadata'); ?>
                 <fieldset class="panelform">

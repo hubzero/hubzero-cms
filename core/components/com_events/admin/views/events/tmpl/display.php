@@ -144,7 +144,7 @@ for ($i = 0, $n = count($this->rows); $i < $n; $i++) {
                         }
                     }
 
-                    $pages = $p->getCount(array('event_id' => $row->id));
+                    $pages = $p->getCount(['event_id' => $row->id]);
 
                     if ($times) {
                         ?>

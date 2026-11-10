@@ -31,7 +31,7 @@ class Collections extends AdminController
     public function displayTask()
     {
         // Get filters
-        $this->view->filters = array(
+        $this->view->filters = [
             // Get sorting variables
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
@@ -56,7 +56,7 @@ class Collections extends AdminController
                 0,
                 'int'
             )
-        );
+        ];
 
         $obj = new Archive();
 
@@ -104,7 +104,7 @@ class Collections extends AdminController
             $this->view->task = 'edit';
         } else {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
 
             if (is_array($id) && !empty($id)) {
                 $id = $id[0];
@@ -149,7 +149,7 @@ class Collections extends AdminController
         Request::checkToken();
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         // Get the collection
         $collection = new Collection($fields['cId']);
@@ -206,9 +206,9 @@ class Collections extends AdminController
                 Request::setVar('hidemainmenu', 1);
 
                 // Incoming
-                $id = Request::getArray('id', array(0));
+                $id = Request::getArray('id', [0]);
                 if (!is_array($id) && !empty($id)) {
-                    $id = array($id);
+                    $id = [$id];
                 }
 
                 $this->view->cId = $id;
@@ -227,7 +227,7 @@ class Collections extends AdminController
                 Request::checkToken();
 
                 // Incoming
-                $cIds = Request::getArray('cId', array(0));
+                $cIds = Request::getArray('cId', [0]);
 
                 // Make sure we have IDs to work with
                 if (empty($cIds)) {
@@ -306,8 +306,8 @@ class Collections extends AdminController
      */
     public function stateTask($state = 0)
     {
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for an ID
         if (count($ids) < 1) {

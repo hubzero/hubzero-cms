@@ -90,12 +90,12 @@ class Membersv1r0 extends ApiController
         }
 
         // var to hold return
-        $response = array();
+        $response = [];
 
         // add members
         if (in_array('members', $list)) {
             foreach ($members as $k => $member) {
-                $members[$k] = array('uidNumber' => $member);
+                $members[$k] = ['uidNumber' => $member];
             }
             $response['members'] = $members;
         }
@@ -103,7 +103,7 @@ class Membersv1r0 extends ApiController
         // add managers
         if (in_array('managers', $list)) {
             foreach ($managers as $k => $manager) {
-                $managers[$k] = array('uidNumber' => $manager);
+                $managers[$k] = ['uidNumber' => $manager];
             }
             $response['managers'] = $managers;
         }
@@ -116,7 +116,7 @@ class Membersv1r0 extends ApiController
         // add invitees
         if ($manages && in_array('invitees', $list)) {
             foreach ($invitees as $k => $invitee) {
-                $invitees[$k] = array('uidNumber' => $invitee);
+                $invitees[$k] = ['uidNumber' => $invitee];
             }
             $response['invitees'] = $invitees;
         }
@@ -124,7 +124,7 @@ class Membersv1r0 extends ApiController
         // add applicants
         if ($manages && in_array('applicants', $list)) {
             foreach ($applicants as $k => $applicant) {
-                $applicants[$k] = array('uidNumber' => $applicant);
+                $applicants[$k] = ['uidNumber' => $applicant];
             }
             $response['applicants'] = $applicants;
         }

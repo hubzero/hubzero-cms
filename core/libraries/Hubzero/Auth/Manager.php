@@ -53,7 +53,7 @@ class Manager
      * @param   array    $options      Array('remember' => boolean)
      * @return  boolean  True on success.
      */
-    public function login($credentials, $options = array())
+    public function login($credentials, $options = [])
     {
         $guard = new Guard($this->app);
 
@@ -64,15 +64,15 @@ class Manager
             // this permits authentication plugins blocking the user
             $authorisations = $guard->authorise($response, $options);
 
-            $denied_states = array(
+            $denied_states = [
                 Status::EXPIRED,
                 Status::DENIED
-            );
+            ];
 
             foreach ($authorisations as $authorisation) {
                 if (in_array($authorisation->status, $denied_states)) {
                     // Trigger onUserAuthorisationFailure Event.
-                    $this->app['dispatcher']->trigger('user.onUserAuthorisationFailure', array((array) $authorisation));
+                    $this->app['dispatcher']->trigger('user.onUserAuthorisationFailure', [(array) $authorisation]);
 
                     // If silent is set, just return false.
                     if (isset($options['silent']) && $options['silent']) {
@@ -97,7 +97,7 @@ class Manager
             }
 
             // OK, the credentials are authenticated and user is authorised.  Lets fire the onLogin event.
-            $results = $this->app['dispatcher']->trigger('user.onUserLogin', array((array) $response, $options));
+            $results = $this->app['dispatcher']->trigger('user.onUserLogin', [(array) $response, $options]);
 
             // If any of the user plugins did not successfully complete the login routine
             // then the whole method fails.
@@ -133,7 +133,7 @@ class Manager
         }
 
         // Trigger onUserLoginFailure Event.
-        $this->app['dispatcher']->trigger('user.onUserLoginFailure', array((array) $response));
+        $this->app['dispatcher']->trigger('user.onUserLoginFailure', [(array) $response]);
 
         // If silent is set, just return false.
         if (isset($options['silent']) && $options['silent']) {
@@ -155,7 +155,7 @@ class Manager
      * @param   array    $options
      * @return  boolean
      */
-    public function logout($userid = null, $options = array())
+    public function logout($userid = null, $options = [])
     {
         // Get a user object
         $user = ($userid ? User::getInstance($userid) : User::getInstance());
@@ -170,7 +170,7 @@ class Manager
         }
 
         // OK, the credentials are built. Lets fire the onLogout event.
-        $results = $this->app['dispatcher']->trigger('user.onUserLogout', array($parameters, $options));
+        $results = $this->app['dispatcher']->trigger('user.onUserLogout', [$parameters, $options]);
 
         // Check if any of the plugins failed. If none did, success.
         if (!in_array(false, $results, true)) {
@@ -184,7 +184,7 @@ class Manager
         }
 
         // Trigger onUserLoginFailure Event.
-        $this->app['dispatcher']->trigger('user.onUserLogoutFailure', array($parameters));
+        $this->app['dispatcher']->trigger('user.onUserLogoutFailure', [$parameters]);
 
         return false;
     }

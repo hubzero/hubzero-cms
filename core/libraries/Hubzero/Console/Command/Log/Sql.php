@@ -20,14 +20,14 @@ class Sql extends Base
      *
      * @var  array
      **/
-    protected static $fields = array(
+    protected static $fields = [
         'timestamp'     => true,
         'file'          => true,
         'line'          => true,
         'type'          => true,
         'time'          => true,
         'query'         => true
-    );
+    ];
 
     /**
      * If dates/times are present, how are they formatted

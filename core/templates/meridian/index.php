@@ -49,7 +49,7 @@ $tplStyle  = $tplAccent->properties();
 
 $tplRadius = $this->params->get('cornerStyle', '');
 
-if (in_array($tplRadius, array('0', '8', '18'), true)) {
+if (in_array($tplRadius, ['0', '8', '18'], true)) {
     $tplStyle['--hub-radius'] = $tplRadius . 'px';
 }
 
@@ -105,11 +105,11 @@ if ($isFrontPage) {
 }
 
 $browser = new \Hubzero\Browser\Detector();
-$cls = array(
+$cls = [
     $this->direction,
     $browser->name(),
     $browser->name() . $browser->major()
-);
+];
 
 $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 ?>

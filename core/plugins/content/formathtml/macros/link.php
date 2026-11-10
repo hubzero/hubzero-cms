@@ -29,7 +29,7 @@ class Link extends Macro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['wiki'] = "Embed a link.
 
 Examples:

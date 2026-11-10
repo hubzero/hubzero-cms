@@ -34,7 +34,7 @@ class Get extends SiteController
         $stamp = Request::getString('s', '');
 
         // Clean up stamp value (only numbers and letters)
-        $regex  = array('/[^a-zA-Z0-9]/');
+        $regex  = ['/[^a-zA-Z0-9]/'];
         $stamp  = preg_replace($regex, '', $stamp);
 
         // Load item reference
@@ -47,7 +47,7 @@ class Get extends SiteController
         }
 
         // Can only serve files or notes at the moment
-        if (!in_array($objSt->type, array('files', 'notes', 'publications'))) {
+        if (!in_array($objSt->type, ['files', 'notes', 'publications'])) {
             App::redirect(
                 $route
             );
@@ -55,7 +55,7 @@ class Get extends SiteController
         }
 
         // Serve requested item
-        $content = Event::trigger('projects.serve', array($objSt->type, $objSt->projectid, $objSt->reference));
+        $content = Event::trigger('projects.serve', [$objSt->type, $objSt->projectid, $objSt->reference]);
 
         // Output
         foreach ($content as $out) {

@@ -47,7 +47,7 @@ class Languages extends AdminController
      */
     public function displayTask()
     {
-        $filters = array(
+        $filters = [
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'filter_search',
@@ -76,7 +76,7 @@ class Languages extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         $query = Language::all();
 
@@ -137,7 +137,7 @@ class Languages extends AdminController
 
         // Incoming
         if (!is_object($row)) {
-            $id = Request::getArray('lang_id', array(0));
+            $id = Request::getArray('lang_id', [0]);
             if (is_array($id)) {
                 $id = (!empty($id) ? intval($id[0]) : 0);
             }
@@ -170,7 +170,7 @@ class Languages extends AdminController
         }
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
         $fields = array_map('trim', $fields);
 
         // Initiate extended database class
@@ -214,8 +214,8 @@ class Languages extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $i = 0;
 
@@ -260,8 +260,8 @@ class Languages extends AdminController
         // Incoming
         $section = Request::getInt('section_id', 0);
 
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $state = ($this->getTask() == 'publish' ? Language::STATE_PUBLISHED : Language::STATE_UNPUBLISHED);
 

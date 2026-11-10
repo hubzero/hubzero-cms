@@ -204,7 +204,7 @@ $this->css()
                     break;
             endswitch;
 
-            $groups = array();
+            $groups = [];
             foreach ($row->accessgroups as $agroup) :
                 // A mapping to an access group that no longer exists has no title to show
                 if ($accessgroup = $this->accessgroups->seek($agroup->get('group_id'))) :

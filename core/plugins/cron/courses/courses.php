@@ -32,18 +32,18 @@ class Courses extends Plugin
 
         $obj = new \stdClass();
         $obj->plugin = $this->_name;
-        $obj->events = array(
-            array(
+        $obj->events = [
+            [
                 'name'   => 'syncPassportBadgeStatus',
                 'label'  => Lang::txt('PLG_CRON_COURSES_SYNC_PASSPORT_BADGE_STATUS'),
                 'params' => ''
-            ),
-            array(
+            ],
+            [
                 'name'   => 'emailInstructorDigest',
                 'label'  => Lang::txt('PLG_CRON_COURSES_EMAIL_INSTRUCTOR_DIGEST'),
                 'params' => 'emaildigest'
-            ),
-        );
+            ],
+        ];
 
         return $obj;
     }
@@ -77,7 +77,7 @@ class Courses extends Plugin
                 }
 
                 $students = $course->students();
-                $emails   = array();
+                $emails   = [];
 
                 if ($students && count($students) > 0) {
                     foreach ($students as $student) {
@@ -136,10 +136,10 @@ class Courses extends Plugin
         Lang::load('com_courses') ||
         Lang::load('com_courses', Component::path('com_courses') . '/site');
 
-        $from = array(
+        $from = [
             'name'  => Config::get('sitename') . ' ' . Lang::txt('COM_COURSES'),
             'email' => Config::get('mailfrom')
-        );
+        ];
 
         $subject = Lang::txt('COM_COURSES') . ': ' . Lang::txt('COM_COURSES_SUBJECT_EMAIL_DIGEST');
 
@@ -153,7 +153,7 @@ class Courses extends Plugin
         $coursesObj = new \Components\Courses\Models\Courses();
 
         if ($course_id) {
-            $courses = array($coursesObj->course($course_id));
+            $courses = [$coursesObj->course($course_id)];
         } else {
             $courses = $coursesObj->courses();
         }
@@ -164,9 +164,9 @@ class Courses extends Plugin
                     continue;
                 }
 
-                $mailed      = array();
+                $mailed      = [];
                 $managers    = $course->managers();
-                $enrollments = $course->students(array('count' => true));
+                $enrollments = $course->students(['count' => true]);
                 $offerings   = $course->offerings();
 
                 if (isset($offerings) && count($offerings) > 0) {
@@ -206,7 +206,7 @@ class Courses extends Plugin
                                     ->limit(100)
                                     ->rows();
                                 $posts_cnt  = $posts->count();
-                                $latest     = array();
+                                $latest     = [];
                                 $latest_cnt = 0;
 
                                 if (isset($posts) && $posts_cnt > 0) {
@@ -221,11 +221,11 @@ class Courses extends Plugin
                                     $latest_cnt = count($latest);
                                 }
 
-                                $eview = new \Hubzero\Mail\View(array(
+                                $eview = new \Hubzero\Mail\View([
                                     'base_path' => Component::path('com_courses') . '/site',
                                     'name'      => 'emails',
                                     'layout'    => 'digest_plain'
-                                ));
+                                ]);
                                 $eview->option      = 'com_courses';
                                 $eview->controller  = 'courses';
                                 $eview->delimiter   = '~!~!~!~!~!~!~!~!~!~!';

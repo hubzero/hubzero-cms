@@ -66,8 +66,8 @@ class Slideshow extends Module
             }
         }
 
-        $images = array();
-        $files = Filesystem::files(PATH_APP . DS . $image_dir, '.', false, true, array());
+        $images = [];
+        $files = Filesystem::files(PATH_APP . DS . $image_dir, '.', false, true, []);
         if (count($files) == 0) {
             $image_dir = 'modules/mod_slideshow/assets/flash/images';
         }

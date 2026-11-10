@@ -48,7 +48,7 @@ class Stack
     public function __construct($core)
     {
         $this->position = 0;
-        $this->layers   = array($core);
+        $this->layers   = [$core];
     }
 
     /**

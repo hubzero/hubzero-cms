@@ -44,7 +44,7 @@ class Locations extends AdminController
     public function displayTask()
     {
         // Get filters
-        $this->view->filters = array(
+        $this->view->filters = [
             'zone' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.zone',
                 'zone',
@@ -67,7 +67,7 @@ class Locations extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         if ($this->view->filters['tmpl'] == 'component') {
             $this->view->setLayout('component');
@@ -158,7 +158,7 @@ class Locations extends AdminController
         Request::checkToken();
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
         $tmpl   = Request::getCmd('tmpl', '');
 
         $row = new Middleware\Location($fields['id']);
@@ -243,7 +243,7 @@ class Locations extends AdminController
         Request::checkToken(['get', 'post']);
 
         // Incoming
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
 
         if (count($ids) > 0) {
             // Loop through each ID

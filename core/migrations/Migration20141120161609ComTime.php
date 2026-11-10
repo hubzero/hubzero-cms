@@ -44,7 +44,7 @@ class Migration20141120161609ComTime extends Base
             if ($results && count($results) > 0) {
                 $total = count($results);
                 $i     = 0;
-                $this->callback('progress', 'init', array('Updating existing start dates to include time:'));
+                $this->callback('progress', 'init', ['Updating existing start dates to include time:']);
 
                 foreach ($results as $result) {
                     $date = with(
@@ -59,7 +59,7 @@ class Migration20141120161609ComTime extends Base
 
                     $i++;
                     $progress = round($i / $total * 100);
-                    $this->callback('progress', 'setProgress', array($progress));
+                    $this->callback('progress', 'setProgress', [$progress]);
                 }
 
                 $this->callback('progress', 'done');
@@ -81,7 +81,7 @@ class Migration20141120161609ComTime extends Base
             if ($results && count($results) > 0) {
                 $total = count($results);
                 $i     = 0;
-                $this->callback('progress', 'init', array('Adding end dates based on record duration:'));
+                $this->callback('progress', 'init', ['Adding end dates based on record duration:']);
 
                 foreach ($results as $result) {
                     $date = date('Y-m-d H:i:s', strtotime($result->date) + $result->time * 3600);
@@ -94,7 +94,7 @@ class Migration20141120161609ComTime extends Base
 
                     $i++;
                     $progress = round($i / $total * 100);
-                    $this->callback('progress', 'setProgress', array($progress));
+                    $this->callback('progress', 'setProgress', [$progress]);
                 }
 
                 $this->callback('progress', 'done');

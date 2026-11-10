@@ -31,7 +31,7 @@ class Manager
      *
      * @var  array
      */
-    protected $stores = array();
+    protected $stores = [];
 
     /**
      * The array of custom creators
@@ -39,7 +39,7 @@ class Manager
      * @var  array
      *
      */
-    public $customCreators = array();
+    public $customCreators = [];
 
     /**
      * Create a new Cache manager instance.
@@ -124,7 +124,7 @@ class Manager
      */
     protected function getConfig($name)
     {
-        $config = $this->app['config']->get($name, array());
+        $config = $this->app['config']->get($name, []);
 
         // A group set at runtime through dot-notation comes back as an
         // object; resolve() indexes the config as an array
@@ -209,7 +209,7 @@ class Manager
      */
     public function __call($method, $parameters)
     {
-        return call_user_func_array(array($this->storage(), $method), $parameters);
+        return call_user_func_array([$this->storage(), $method], $parameters);
     }
 
     /**
@@ -240,7 +240,7 @@ class Manager
             }
 
             // Our class exists, so now we just need to know if it passes it's test method
-            if (call_user_func_array(array($class, 'isAvailable'), array())) {
+            if (call_user_func_array([$class, 'isAvailable'], [])) {
                 // Connector names should not have file extensions
                 $stores[] = str_ireplace('.php', '', $type);
             }

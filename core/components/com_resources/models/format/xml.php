@@ -25,7 +25,7 @@ class XML extends Base
      * @param   array   $options  Options used by the formatter.
      * @return  string  XML formatted string.
      */
-    public function objectToString($object, $options = array())
+    public function objectToString($object, $options = [])
     {
         // Initialise variables.
         $rootName = (isset($options['name']))     ? $options['name']     : 'registry';
@@ -59,7 +59,7 @@ class XML extends Base
      * @param   array   $options  Options used by the formatter.
      * @return  object  Data object.
      */
-    public function stringToObject($data, $options = array())
+    public function stringToObject($data, $options = [])
     {
         // Initialize variables.
         $obj = new stdClass();
@@ -99,7 +99,7 @@ class XML extends Base
                 return (float) $value;
             break;
             case 'array':
-                $value = array();
+                $value = [];
                 foreach ($node->children() as $child) {
                     $value[(string) $child['name']] = $this->getValueFromNode($child);
                 }

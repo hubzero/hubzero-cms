@@ -45,7 +45,7 @@ class Pages extends AdminController
     public function displayTask()
     {
         // Get filters
-        $filters = array(
+        $filters = [
             'event_id' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.event_id',
                 'event_id',
@@ -68,7 +68,7 @@ class Pages extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         $event = \Components\Events\Models\Orm\Event::oneOrFail($filters['event_id']);
 
@@ -110,7 +110,7 @@ class Pages extends AdminController
 
         if (!is_object($row)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id) && !empty($id)) {
                 $id = $id[0];
             }
@@ -152,7 +152,7 @@ class Pages extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
         $fields['event_id'] = Request::getInt('event_id');
 
         // Bind incoming data to object
@@ -160,7 +160,7 @@ class Pages extends AdminController
 
         // Trigger before save event
         $isNew  = $row->isNew();
-        $result = Event::trigger('onEventsBeforeSavePage', array(&$row, $isNew));
+        $result = Event::trigger('onEventsBeforeSavePage', [&$row, $isNew]);
 
         if (in_array(false, $result, true)) {
             Notify::error($row->getError());
@@ -174,7 +174,7 @@ class Pages extends AdminController
         }
 
         // Trigger after save event
-        Event::trigger('onEventsAfterSavePage', array(&$row, $isNew));
+        Event::trigger('onEventsAfterSavePage', [&$row, $isNew]);
 
         Notify::success(Lang::txt('COM_EVENTS_PAGE_SAVED'));
 
@@ -201,8 +201,8 @@ class Pages extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $removed = 0;
 
@@ -216,7 +216,7 @@ class Pages extends AdminController
             }
 
             // Trigger before delete event
-            Event::trigger('onEventsAfterDeletePage', array($id));
+            Event::trigger('onEventsAfterDeletePage', [$id]);
 
             $removed++;
         }
@@ -261,7 +261,7 @@ class Pages extends AdminController
         Request::checkToken(['get', 'post']);
 
         // Incoming
-        $id = Request::getArray('id', array(0));
+        $id = Request::getArray('id', [0]);
         $id = $id[0];
         $pid = Request::getInt('event_id', 0);
 

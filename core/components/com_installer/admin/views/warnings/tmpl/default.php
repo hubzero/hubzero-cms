@@ -28,7 +28,7 @@ Document::setTitle(Lang::txt('COM_INSTALLER_TITLE_' . $this->getName()));
         if (!count($this->messages)) {
             echo '<p class="nowarning">' . Lang::txt('COM_INSTALLER_MSG_WARNINGS_NONE') . '</p>';
         } else {
-            echo Html::sliders('start', 'warning-sliders', array('useCookie' => 1));
+            echo Html::sliders('start', 'warning-sliders', ['useCookie' => 1]);
             foreach ($this->messages as $message) {
                 echo Html::sliders('panel', $message['message'], str_replace(' ', '', $message['message']));
                 echo '<div class="warning">' . $message['description'] . '</div>';

@@ -169,9 +169,9 @@ class Guide extends Plugin
                 // Drop cookie
                 $lifetime = time() + 365 * 24 * 60 * 60;
 
-                \Hubzero\Utility\Cookie::bake('plugin.courses.guide', $lifetime, array(
+                \Hubzero\Utility\Cookie::bake('plugin.courses.guide', $lifetime, [
                     'first_visit' => Date::of()->toSql()
-                ));
+                ]);
             }
         }
         $member->set('first_visit', Date::of()->toSql());

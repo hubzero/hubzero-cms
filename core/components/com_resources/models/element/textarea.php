@@ -38,7 +38,7 @@ class Textarea extends Base
         $rows = isset($element->rows) ? $element->rows : 6;
         $cols = isset($element->cols) ? $element->cols : 50;
 
-        $cls = array();
+        $cls = [];
         if (isset($element->class)) {
             $cls[] = $element->class;
         }
@@ -49,7 +49,7 @@ class Textarea extends Base
 
         $editorName = $control_name . '[' . $name . ']';
         $editorId = $control_name . '-' . $name;
-        $editorOpts = array('class' => implode(' ', $cls));
+        $editorOpts = ['class' => implode(' ', $cls)];
         $editor = App::get('editor')->display(
             $editorName,
             $value,

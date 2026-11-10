@@ -59,7 +59,7 @@ class Finder
      */
     public static function dirs($extra = null)
     {
-        $dirs = array();
+        $dirs = [];
 
         if ($extra === null || $extra === '') {
             $extra = getenv('HUBZERO_FLAVORS') ?: null;
@@ -114,13 +114,13 @@ class Finder
             return $this->flavors;
         }
 
-        $defined = array();
+        $defined = [];
 
         foreach ($this->dirs as $dir) {
-            $files = array();
+            $files = [];
 
-            foreach (array('json', 'yml', 'yaml') as $extension) {
-                $files = array_merge($files, glob($dir . DIRECTORY_SEPARATOR . '*.' . $extension) ?: array());
+            foreach (['json', 'yml', 'yaml'] as $extension) {
+                $files = array_merge($files, glob($dir . DIRECTORY_SEPARATOR . '*.' . $extension) ?: []);
             }
 
             // Within a directory, files are read in name order
@@ -136,10 +136,10 @@ class Finder
             }
         }
 
-        $this->flavors = array();
+        $this->flavors = [];
 
         foreach (array_keys($defined) as $name) {
-            $this->flavors[$name] = $this->resolve($name, $defined, array());
+            $this->flavors[$name] = $this->resolve($name, $defined, []);
         }
 
         ksort($this->flavors);

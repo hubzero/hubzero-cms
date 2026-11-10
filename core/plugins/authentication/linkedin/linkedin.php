@@ -127,10 +127,10 @@ class Linkedin extends \Hubzero\Plugin\OauthClient
      */
     public function display($view, $tpl)
     {
-        $params = array(
+        $params = [
             'scope' => ['r_liteprofile', 'r_emailaddress'],
             'redirect_uri' => $this->getReturnUrl()
-        );
+        ];
 
         $loginUrl = $this->provider->getAuthorizationUrl($params);
 
@@ -165,9 +165,9 @@ class Linkedin extends \Hubzero\Plugin\OauthClient
         $state = Request::getVar('state', null);
 
         if ($code == null) {
-            $authUrl = $this->provider->getAuthorizationUrl(array(
+            $authUrl = $this->provider->getAuthorizationUrl([
                 'scope' => ['r_liteprofile', 'r_emailaddress']
-            ));
+            ]);
 
             Session::set('oauth2state', $this->provider->getState(), $this->name);
 
@@ -186,7 +186,7 @@ class Linkedin extends \Hubzero\Plugin\OauthClient
 
         $token = $this->provider->getAccessToken(
             'authorization_code',
-            array('code' => Request::getString('code'))
+            ['code' => Request::getString('code')]
         );
 
         Session::clear('oauth2state', $this->name);
@@ -254,11 +254,11 @@ class Linkedin extends \Hubzero\Plugin\OauthClient
 
             // If we have a real user, drop the authenticator cookie
             if (isset($user) && is_object($user)) {
-                $prefs = array(
+                $prefs = [
                     'user_id'       => $user->get('id'),
                     'user_img'      => $owner->getImageUrl(),
                     'authenticator' => $this->name,
-                );
+                ];
 
                 $namespace = 'authenticator';
                 $lifetime  = time() + 365 * 24 * 60 * 60;
@@ -277,15 +277,15 @@ class Linkedin extends \Hubzero\Plugin\OauthClient
      * @param   array  $options
      * @return  void
      */
-    public function link($options = array())
+    public function link($options = [])
     {
         $code = Request::getVar('code', null);
         $state = Request::getVar('state', null);
 
         if ($code == null) {
-            $authUrl = $this->provider->getAuthorizationUrl(array(
+            $authUrl = $this->provider->getAuthorizationUrl([
                 'scope' => ['r_liteprofile', 'r_emailaddress']
-            ));
+            ]);
 
             Session::set('oauth2state', $this->provider->getState(), $this->name);
 
@@ -303,7 +303,7 @@ class Linkedin extends \Hubzero\Plugin\OauthClient
 
         $token = $this->provider->getAccessToken(
             'authorization_code',
-            array('code' => Request::getString('code'))
+            ['code' => Request::getString('code')]
         );
 
         Session::clear('oauth2state', $this->name);

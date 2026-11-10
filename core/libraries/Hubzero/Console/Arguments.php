@@ -197,7 +197,7 @@ class Arguments
      * @param   array   $paths      Optional paths to load from
      * @return  void
      **/
-    public static function registerNamespace($namespace, $paths = array())
+    public static function registerNamespace($namespace, $paths = [])
     {
         self::$commandNamespaces[$namespace] = (array)$paths;
     }

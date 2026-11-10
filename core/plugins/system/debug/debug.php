@@ -157,7 +157,7 @@ class Debug extends Plugin
 
         if (!empty($filterGroups)) {
             $userGroups = User::getAuthorisedGroups();
-            $userGroups = (is_array($userGroups) ? $userGroups : array());
+            $userGroups = (is_array($userGroups) ? $userGroups : []);
 
             if (!array_intersect($filterGroups, $userGroups)) {
                 echo $contents;
@@ -358,7 +358,7 @@ class Debug extends Plugin
      * @param   array   $errors  Errors occured during execution
      * @return  string
      */
-    protected function display($item, array $errors = array())
+    protected function display($item, array $errors = [])
     {
         $title = Lang::txt('PLG_DEBUG_' . strtoupper($item));
 
@@ -400,25 +400,25 @@ class Debug extends Plugin
 			<dt class="key">$_GET</dt>
 			<dd class="value">
 				<span id="debug-get-short" data-section="get" class="debug-toggle open">
-				' . \Hubzero\Utility\Str::truncate(strip_tags($get), 100, array('exact' => true)) . '</span>
+				' . \Hubzero\Utility\Str::truncate(strip_tags($get), 100, ['exact' => true]) . '</span>
 				<span id="debug-get-full" data-section="get" class="debug-toggle">' . nl2br($get) . '</span>
 			</dd>
 			<dt class="key">$_POST</dt>
 			<dd class="value">
 				<span id="debug-post-short" data-section="post" class="debug-toggle open">
-				' . \Hubzero\Utility\Str::truncate(strip_tags($post), 100, array('exact' => true)) . '</span>
+				' . \Hubzero\Utility\Str::truncate(strip_tags($post), 100, ['exact' => true]) . '</span>
 				<span id="debug-post-full" data-section="post" class="debug-toggle">' . nl2br($post) . '</span>
 			</dd>
 			<dt class="key">$_COOKIE</dt>
 			<dd class="value">
 				<span id="debug-cookies-short" data-section="cookies" class="debug-toggle open">
-				' . \Hubzero\Utility\Str::truncate(strip_tags($cookies), 100, array('exact' => true)) . '</span>
+				' . \Hubzero\Utility\Str::truncate(strip_tags($cookies), 100, ['exact' => true]) . '</span>
 				<span id="debug-cookies-full" data-section="cookies" class="debug-toggle">' . nl2br($cookies) . '</span>
 			</dd>
 			<dt class="key">$_SERVER</dt>
 			<dd class="value">
 				<span id="debug-server-short" data-section="server" class="debug-toggle open">
-				' . \Hubzero\Utility\Str::truncate(strip_tags($server), 100, array('exact' => true)) . '</span>
+				' . \Hubzero\Utility\Str::truncate(strip_tags($server), 100, ['exact' => true]) . '</span>
 				<span id="debug-server-full" data-section="server" class="debug-toggle">' . nl2br($server) . '</span>
 			</dd>
 		</dl>';
@@ -448,7 +448,7 @@ class Debug extends Plugin
     protected function _arr($arr)
     {
         $html = 'Array( ' . "\n";
-        $a = array();
+        $a = [];
         foreach ($arr as $key => $val) {
             if (is_array($val)) {
                 $a[] = "\t" . '<code class="ky">' . htmlentities($key, ENT_COMPAT, 'UTF-8')
@@ -608,8 +608,8 @@ class Debug extends Plugin
                     . ': ' . $db->getTimer() . ' seconds</h4></div>';
         $html .= '<ol>';
 
-        $selectQueryTypeTicker = array();
-        $otherQueryTypeTicker  = array();
+        $selectQueryTypeTicker = [];
+        $otherQueryTypeTicker  = [];
 
         foreach ($log as $k => $sql) {
             // Start Query Type Ticker Additions
@@ -837,7 +837,7 @@ class Debug extends Plugin
 
         ksort($orphans, SORT_STRING);
 
-        $guesses = array();
+        $guesses = [];
 
         foreach ($orphans as $key => $occurance) {
             if (is_array($occurance) && isset($occurance[0])) {
@@ -845,7 +845,7 @@ class Debug extends Plugin
                 $file = ($info['file']) ? $info['file'] : '';
 
                 if (!isset($guesses[$file])) {
-                    $guesses[$file] = array();
+                    $guesses[$file] = [];
                 }
 
                 // Prepare the key
@@ -910,7 +910,7 @@ class Debug extends Plugin
         $sql = htmlspecialchars($sql, ENT_QUOTES);
         $sql = preg_replace($newlineKeywords, '<br />&#160;&#160;\\0', $sql);
 
-        $regex = array(
+        $regex = [
 
             // Tables are identified by the prefix
             '/(=)/'
@@ -924,7 +924,7 @@ class Debug extends Plugin
             '/(' . App::get('db')->getPrefix() . '[a-z_0-9]+)/'
             => '<span class="dbgTable">$1</span>'
 
-        );
+        ];
 
         $sql = preg_replace(array_keys($regex), array_values($regex), $sql);
         $sql = str_replace('*', '<b class="dbgStar">*</b>', $sql);
@@ -972,17 +972,17 @@ class Debug extends Plugin
         }
 
         // This method is only called once per request
-        App::get('log')->register('profile', array(
+        App::get('log')->register('profile', [
             'file'       => 'cmsprofile.log',
             'level'      => 'info',
             'format'     => "%datetime% %message%\n",
             'dateFormat' => "Y-m-d\TH:i:s.uP"
-        ));
+        ]);
         $logger = App::get('log')->logger('profile');
 
         $hubname    = isset($_SERVER['SERVER_NAME'])  ? $_SERVER['SERVER_NAME']  : 'unknown';
         $uri        = Request::path();
-        $uri        = strtr($uri, array(" " => "%20"));
+        $uri        = strtr($uri, [" " => "%20"]);
         $ip         = isset($_SERVER['REMOTE_ADDR'])  ? $_SERVER['REMOTE_ADDR']  : 'unknown';
         $query      = isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : 'unknown';
         $memory     = memory_get_usage(true);
@@ -996,12 +996,12 @@ class Debug extends Plugin
 
         // Now log post data if applicable
         if (Request::method() == 'POST' && App::get('config')->get('log_post_data', false)) {
-            App::get('log')->register('post', array(
+            App::get('log')->register('post', [
                 'file'       => 'cmspost.log',
                 'level'      => 'info',
                 'format'     => "%datetime% %message%\n",
                 'dateFormat' => "Y-m-d\TH:i:s.uP"
-            ));
+            ]);
             $logger = App::get('log')->logger('post');
 
             $post     = json_encode($_POST);

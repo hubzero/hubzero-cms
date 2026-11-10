@@ -52,31 +52,31 @@ class Version extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'page_id'  => 'positive|nonzero',
         'version'  => 'positive',
         'pagetext' => 'notempty'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'version',
         'length'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Generates automatic owned by field value
@@ -187,7 +187,7 @@ class Version extends Relational
         // inline TOC on pages that have no explicit [[TableOfContents]] macro.
         $tocSettings = Parser::tocSettings($page->get('scope'), $page->get('scope_id'));
 
-        $wikiconfig = array(
+        $wikiconfig = [
             'option'        => ($option ?: Request::getCmd('option')),
             'scope'         => $page->get('path'), // $route . $page->get('path'),
             'pagename'      => $page->get('pagename'),
@@ -199,7 +199,7 @@ class Version extends Relational
             'loglinks'      => true,
             'automatic_toc' => $tocSettings['mode'],
             'toc_threshold' => $tocSettings['threshold']
-        );
+        ];
 
         $parser = Parser::getInstance();
 

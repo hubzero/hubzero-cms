@@ -34,7 +34,7 @@ class Tags extends Cloud
      * @param      integer $admin     Admin flag
      * @return     array
      */
-    public function getTagsForIds($ids = array(), $admin = 0)
+    public function getTagsForIds($ids = [], $admin = 0)
     {
         $tt = Tag::blank();
         $tj = Objct::blank();
@@ -63,11 +63,11 @@ class Tags extends Cloud
         $db = App::get('db');
         $db->setQuery($sql);
 
-        $tags = array();
+        $tags = [];
         if ($items = $db->loadObjectList()) {
             foreach ($items as $item) {
                 if (!isset($tags[$item->objectid])) {
-                    $tags[$item->objectid] = array();
+                    $tags[$item->objectid] = [];
                 }
                 $tags[$item->objectid][] = $item;
             }
@@ -84,7 +84,7 @@ class Tags extends Cloud
     public function append($tag)
     {
         if (!($this->_cache['tags.list'] instanceof ItemList)) {
-            $this->_cache['tags.list'] = new ItemList(array());
+            $this->_cache['tags.list'] = new ItemList([]);
         }
 
         if (!$tag) {

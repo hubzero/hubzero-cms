@@ -80,7 +80,7 @@ class Category extends Relational
      * @param   array    $filters  Filters to apply to query
      * @return  object
      */
-    public function children($filters = array())
+    public function children($filters = [])
     {
         $categories = self::blank()->whereEquals('parent_id', $this->get('id'));
 
@@ -141,7 +141,7 @@ class Category extends Relational
 
         \Hubzero\Form\Form::addFieldPath(__DIR__ . '/fields');
 
-        $form = new \Hubzero\Form\Form('category', array('control' => 'fields'));
+        $form = new \Hubzero\Form\Form('category', ['control' => 'fields']);
 
         if (!$form->loadFile($file, false, '//form')) {
             $this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));

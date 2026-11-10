@@ -66,7 +66,7 @@ class Listfilter extends Filter
             $multifacet->createQuery(
                 $queryName,
                 $optionQuery,
-                array('exclude' => $filterField . '_type', 'include' => 'child_type')
+                ['exclude' => $filterField . '_type', 'include' => 'child_type']
             );
         }
     }
@@ -81,7 +81,7 @@ class Listfilter extends Filter
     public function applyFilters($query, $selectedFilters)
     {
         $filterField = strtolower($this->get('field'));
-        $selectedValues = isset($selectedFilters[$filterField]) ? $selectedFilters[$filterField] : array();
+        $selectedValues = isset($selectedFilters[$filterField]) ? $selectedFilters[$filterField] : [];
         $filterOptions = $this->options->fieldsByKey('value');
         $selectedValues = array_intersect($selectedValues, $filterOptions);
         if (empty($selectedValues)) {
@@ -89,7 +89,7 @@ class Listfilter extends Filter
         }
         $queryName = ucfirst($filterField) . '_' . $this->get('id');
         $facetString = '(' . $filterField . ':("' . implode('" OR "', $selectedValues) . '"))';
-        $query->addFilter($queryName, $facetString, array(strtolower($filterField) . '_type', 'filter_type'));
+        $query->addFilter($queryName, $facetString, [strtolower($filterField) . '_type', 'filter_type']);
         return true;
     }
 }

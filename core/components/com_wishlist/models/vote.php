@@ -56,21 +56,21 @@ class Vote extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'referenceid' => 'positive|nonzero',
         'category'    => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'voted',
         'voter',
         'ip'
-    );
+    ];
 
     /**
      * Generates automatic voted field value

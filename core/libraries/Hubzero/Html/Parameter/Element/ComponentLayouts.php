@@ -33,7 +33,7 @@ class ComponentLayouts extends Select
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getOptions(&$node)
     {
-        $options = array();
+        $options = [];
         $path1 = null;
         $path2 = null;
 

@@ -27,7 +27,7 @@ class Router extends Base
      */
     public function build(&$query)
     {
-        $segments = array();
+        $segments = [];
 
         if (!empty($query['id'])) {
             if (substr($query['id'], 0, 1) == '-') {
@@ -80,7 +80,7 @@ class Router extends Base
      */
     public function parse(&$segments)
     {
-        $vars = array();
+        $vars = [];
 
         if (empty($segments)) {
             return $vars;
@@ -167,7 +167,7 @@ class Router extends Base
             }
         }
         if (isset($segments[1])) {
-            $userTasks = array(
+            $userTasks = [
                 'edit',
                 'changepassword',
                 'raiselimit',
@@ -179,17 +179,17 @@ class Router extends Base
                 'ajaxuploadsave',
                 'getfileatts',
                 'promo-opt-out'
-            );
+            ];
             if (in_array($segments[1], $userTasks)) {
                 $vars['task'] = $segments[1];
-                $mediaTasks = array(
+                $mediaTasks = [
                     'deleteimg',
                     'upload',
                     'ajaxupload',
                     'doajaxupload',
                     'ajaxuploadsave',
                     'getfileatts'
-                );
+                ];
                 if (in_array($segments[1], $mediaTasks)) {
                     $vars['controller'] = 'media';
                 }

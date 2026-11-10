@@ -54,10 +54,10 @@ class Component extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'component' => 'notempty',
         'action'    => 'notempty'
-    );
+    ];
 
     /**
      * Sets up additional custom rules
@@ -83,13 +83,13 @@ class Component extends Relational
      *
      * @return  object
      */
-    public function getRecords($filters = array())
+    public function getRecords($filters = [])
     {
         $entries = $this->recordsQuery($filters);
         $c = $entries->getTableName();
 
         // sort by one of the list's columns, component by default
-        $sort = isset($filters['sort']) && in_array($filters['sort'], array('id', 'component', 'action', 'title')) ? $filters['sort'] : 'component';
+        $sort = isset($filters['sort']) && in_array($filters['sort'], ['id', 'component', 'action', 'title']) ? $filters['sort'] : 'component';
         $dir  = isset($filters['sort_Dir']) && strtolower($filters['sort_Dir']) == 'desc' ? 'desc' : 'asc';
 
         if (!empty($filters['limit'])) {
@@ -107,7 +107,7 @@ class Component extends Relational
      * @param   array  $filters
      * @return  integer
      */
-    public function getCount($filters = array())
+    public function getCount($filters = [])
     {
         return $this->recordsQuery($filters)->total();
     }
@@ -118,7 +118,7 @@ class Component extends Relational
      * @param   array   $filters
      * @return  object
      */
-    private function recordsQuery($filters = array())
+    private function recordsQuery($filters = [])
     {
         $entries = self::all();
 

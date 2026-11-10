@@ -45,7 +45,7 @@ class Migration20140528145010ComRegister extends Base
                 $query->update('#__extensions')
                     ->where('extension_id', '=', $data['extension_id']);
 
-                $vals = array();
+                $vals = [];
                 foreach ($data as $key => $val) {
                     if ($key == 'extension_id') {
                         continue;

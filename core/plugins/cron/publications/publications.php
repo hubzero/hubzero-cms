@@ -33,38 +33,38 @@ class Publications extends Plugin
         $obj = new \stdClass();
         $obj->plugin = 'publications';
 
-        $obj->events = array(
-            array(
+        $obj->events = [
+            [
                 'name'   => 'sendAuthorStats',
                 'label'  => Lang::txt('PLG_CRON_PUBLICATIONS_SEND_STATS'),
                 'params' => 'authorstats'
-            ),
-            array(
+            ],
+            [
                 'name'   => 'rollUserStats',
                 'label'  => Lang::txt('PLG_CRON_PUBLICATIONS_ROLL_STATS'),
                 'params' => ''
-            ),
-            array(
+            ],
+            [
                 'name'   => 'runMkAip',
                 'label'  => Lang::txt('PLG_CRON_PUBLICATIONS_ARCHIVE'),
                 'params' => ''
-            ),
-            array(
+            ],
+            [
                 'name'   => 'issueMasterDoi',
                 'label'  => Lang::txt('PLG_CRON_PUBLICATIONS_MASTER_DOI'),
                 'params' => ''
-            ),
-            array(
+            ],
+            [
                 'name'   => 'updateFtpLinks',
                 'label'  => Lang::txt('PLG_CRON_PUBLICATIONS_UPDATE_FTP_LINKS'),
                 'params' => 'ftplinkdates'
-            ),
-            array(
+            ],
+            [
                 'name'   => 'buildPublicationBundles',
                 'label'  => Lang::txt('PLG_CRON_PUBLICATIONS_BUILD_BUNDLES'),
                 'params' => ''
-            )
-        );
+            ]
+        ];
         return $obj;
     }
 
@@ -126,16 +126,16 @@ class Publications extends Plugin
         }
 
         // Set email config
-        $from = array(
+        $from = [
             'name'      => Config::get('fromname') . ' ' . Lang::txt('Publications'),
             'email'     => Config::get('mailfrom'),
             'multipart' => md5(date('U'))
-        );
+        ];
 
         $subject = Lang::txt('Monthly Publication Usage Report');
 
         $i = 0;
-        $mailed = array();
+        $mailed = [];
         foreach ($authors as $author) {
             // Get the user's account
             $user = User::getInstance($author->user_id);
@@ -160,11 +160,11 @@ class Publications extends Plugin
 
             // Plain text
             $eview = new \Hubzero\Mail\View(
-                array(
+                [
                     'base_path' => __DIR__,
                     'name'      => 'emails',
                     'layout'    => 'stats_plain'
-                )
+                ]
             );
             $eview->option     = 'com_publications';
             $eview->controller = 'publications';
@@ -223,7 +223,7 @@ class Publications extends Plugin
         // Get log model
         $modelLog = new \Components\Publications\Models\Log();
 
-        $filters = array();
+        $filters = [];
         $filters['sortby'] = 'date';
         $filters['limit']  = 0;
         $filters['start']  = 0;
@@ -330,11 +330,11 @@ class Publications extends Plugin
         // Email update to admins
         if ($counter > 0 && $aipGroup) {
             // Set email config
-            $from = array(
+            $from = [
                 'name'      => Config::get('fromname') . ' ' . Lang::txt('Publications'),
                 'email'     => Config::get('mailfrom'),
                 'multipart' => md5(date('U'))
-            );
+            ];
 
             $admins = \Components\Projects\Helpers\Html::getGroupMembers($aipGroup);
 
@@ -456,7 +456,7 @@ class Publications extends Plugin
             ->where('#__publication_versions.published_down', '<=', $today, 'AND', 1)
             ->rows();
         $publicationParams = Component::params('com_publications');
-        $typeBlackList = array();
+        $typeBlackList = [];
         $typeBlackList = explode(',', $publicationParams->get('sftptypeblacklist'));
         $typeBlackList = array_filter($typeBlackList, 'trim');
         foreach ($versions as $version) {

@@ -68,9 +68,9 @@ class Publications extends Plugin
      */
     public function onMembersContributionsAreas()
     {
-        $areas = array(
+        $areas = [
             'publications' => Lang::txt('PLG_MEMBERS_PUBLICATIONS')
-        );
+        ];
 
         return $areas;
     }
@@ -114,33 +114,33 @@ class Publications extends Plugin
                 && !in_array($this->_name, $areas)
                 && !array_intersect($areas, array_keys($ars))
             ) {
-                return array();
+                return [];
             }
         }
 
         // Do we have a member ID?
         if ($member instanceof \Hubzero\User\User) {
             if (!$member->get('id')) {
-                return array();
+                return [];
             } else {
                 $uidNumber = $member->get('id');
             }
         } else {
             if (!$member->uidNumber) {
-                return array();
+                return [];
             } else {
                 $uidNumber = $member->uidNumber;
             }
         }
 
         // Build query
-        $filters = array(
+        $filters = [
             'author'        => $uidNumber,
             'notauthorrole' => 'submitter',
             'sortby'        => $sort,
-            'usergroups'    => array(),
+            'usergroups'    => [],
             'published'     => \Components\Publications\Models\Orm\Version::STATE_PUBLISHED
-        );
+        ];
 
         if ($filters['sortby'] == 'date') {
             $filters['sortby'] = 'created';
@@ -153,7 +153,7 @@ class Publications extends Plugin
         // we want to restrict what they can see
         if (User::get('id') != $member->get('id')) {
             //$filters['published'] = 1;
-            $filters['access'] = array(0, 3);
+            $filters['access'] = [0, 3];
             if (!User::isGuest()) {
                 $filters['access'][] = 1;
             }
@@ -170,9 +170,9 @@ class Publications extends Plugin
 
         // Normalize the category names
         // e.g., "Oneline Presentations" -> "onlinepresentations"
-        $cats = array();
+        $cats = [];
         foreach ($categories as $category) {
-            $cats[$category->alias] = array();
+            $cats[$category->alias] = [];
             $cats[$category->alias]['id'] = $category->id;
         }
 
@@ -202,7 +202,7 @@ class Publications extends Plugin
      * @param  array $filters
      * @return object
      */
-    public static function allWithFilters($filters = array())
+    public static function allWithFilters($filters = [])
     {
         $database = App::get('db');
 
@@ -232,7 +232,7 @@ class Publications extends Plugin
             $tg = \Components\Tags\Models\Tag::blank()->getTableName();
 
             // (the publications Tags helper has no parse(); normalise each tag the way the tag model does)
-            $tags = array();
+            $tags = [];
             foreach (array_filter(array_map('trim', explode(',', (string) $filters['tag']))) as $t) {
                 $tags[] = \Components\Tags\Models\Tag::blank()->normalize($t);
             }
@@ -279,7 +279,7 @@ class Publications extends Plugin
                         break;
                     case 'all':
                     default:
-                        $filters['access'] = array(0, 1, 2, 3, 4);
+                        $filters['access'] = [0, 1, 2, 3, 4];
                         break;
                 }
             }
@@ -358,11 +358,11 @@ class Publications extends Plugin
         $thedate = Date::of($thedate)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 
         $view = new \Hubzero\Component\View(
-            array(
+            [
             'base_path' => Component::path('com_publications') . '/site',
             'name'      => 'browse',
             'layout'    => 'item'
-            )
+            ]
         );
         $view->set('line', $row)
             ->set('option', 'com_publications')

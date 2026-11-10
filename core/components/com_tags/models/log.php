@@ -54,22 +54,22 @@ class Log extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'action'  => 'notempty',
         'tag_id'  => 'positive|nonzero',
         'user_id' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'timestamp',
         'user_id',
         'actorid'
-    );
+    ];
 
     /**
      * Generates automatic timestamp field value

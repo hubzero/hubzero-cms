@@ -84,7 +84,7 @@ class Helper
 
         //make sure we have a list of groups
         if (count($groupList) < 1) {
-            return array();
+            return [];
         }
 
         //query to get groups
@@ -95,7 +95,7 @@ class Helper
 				AND g.published=1
 				AND g.approved=1
 				AND g.discoverability=0
-				AND g.cn IN (" . implode(',', array_map(array($database, 'quote'), $groupList)) . ")";
+				AND g.cn IN (" . implode(',', array_map([$database, 'quote'], $groupList)) . ")";
 
         $database->setQuery($sql);
         if (!$database->getError()) {
@@ -118,10 +118,10 @@ class Helper
         $database = App::get('db');
 
         //turn users tag string into array
-        $mytags = ($usertags != '') ? array_map('trim', explode(',', $usertags)) : array();
+        $mytags = ($usertags != '') ? array_map('trim', explode(',', $usertags)) : [];
 
         //users groups
-        $mygroups = array();
+        $mygroups = [];
         if (is_array($usergroups)) {
             foreach ($usergroups as $ug) {
                 $mygroups[] = $ug->gidNumber;
@@ -275,11 +275,11 @@ class Helper
 
         // Trigger the functions that return the areas we'll be using
         //then add overview to array
-        $hub_group_plugins = Event::trigger('groups.onGroupAreas', array());
-        array_unshift($hub_group_plugins, array('name' => 'overview', 'title' => 'Overview', 'default_access' => 'anyone'));
+        $hub_group_plugins = Event::trigger('groups.onGroupAreas', []);
+        array_unshift($hub_group_plugins, ['name' => 'overview', 'title' => 'Overview', 'default_access' => 'anyone']);
 
         //array to store plugin preferences when after retrieved from db
-        $active_group_plugins = array();
+        $active_group_plugins = [];
 
         //get the group plugin preferences
         //returns array of tabs and their access level (ex. [overview] => 'anyone', [messages] => 'registered')
@@ -299,8 +299,8 @@ class Helper
 
         //array to store final group plugin preferences
         //array of acceptable access levels
-        $group_plugin_access = array();
-        $acceptable_levels = array('nobody', 'anyone', 'registered', 'members');
+        $group_plugin_access = [];
+        $acceptable_levels = ['nobody', 'anyone', 'registered', 'members'];
 
         //if we have already set some
         if ($active_group_plugins) {
@@ -344,7 +344,7 @@ class Helper
      * @param   string  $cname
      * @return  object  Database Object
      */
-    public static function getDbo($config = array(), $cname = '')
+    public static function getDbo($config = [], $cname = '')
     {
         // empty instance of db
         $db = App::get('db');

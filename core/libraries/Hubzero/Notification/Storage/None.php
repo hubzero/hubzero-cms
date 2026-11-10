@@ -36,7 +36,7 @@ class None implements MessageStore
      */
     public function retrieve($domain)
     {
-        return array();
+        return [];
     }
 
     /**

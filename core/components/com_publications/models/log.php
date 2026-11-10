@@ -52,8 +52,8 @@ class Log extends Model
      */
     public function parseLog($pubLog = null, $logFile = null, $type = 'view', $category = 'unique')
     {
-        $ips = array();
-        $filtered = array();
+        $ips = [];
+        $filtered = [];
         $unique = 0;
         $all = 0;
 
@@ -109,12 +109,12 @@ class Log extends Model
             return false;
         }
 
-        $stats = array('unique' => array(), 'filtered' => array());
-        $types = ($type == 'all') ? array('view', 'primary') : array($type);
+        $stats = ['unique' => [], 'filtered' => []];
+        $types = ($type == 'all') ? ['view', 'primary'] : [$type];
 
         // Get all public versions
         $row  = new Tables\Version($this->_db);
-        $versions = $row->getVersions($pid, $filters = array('public' => 1));
+        $versions = $row->getVersions($pid, $filters = ['public' => 1]);
 
         if (!$versions) {
             return $stats;
@@ -145,10 +145,10 @@ class Log extends Model
                         continue;
                     }
                     if (!isset($stats['unique'][$type])) {
-                        $stats['unique'][$type] = array();
+                        $stats['unique'][$type] = [];
                     }
                     if (!isset($stats['filtered'][$type])) {
-                        $stats['filtered'][$type] = array();
+                        $stats['filtered'][$type] = [];
                     }
                     if (!isset($stats['unique'][$type][$mo])) {
                         $stats['unique'][$type][$mo] = 0;

@@ -44,39 +44,39 @@ class Tag extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'raw_tag' => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'tag',
         'modified',
         'modified_by'
-    );
+    ];
 
     /**
      * Fields to be parsed
      *
      * @var array
      */
-    protected $parsed = array(
+    protected $parsed = [
         'description'
-    );
+    ];
 
     /**
      * Generates automatic modified field value
@@ -120,7 +120,7 @@ class Tag extends Relational
      */
     public function normalize($tag)
     {
-        $transliterationTable = array(
+        $transliterationTable = [
             'á' => 'a', 'Á' => 'A', 'à' => 'a', 'À' => 'A', 'ă' => 'a', 'Ă' => 'A', 'â' => 'a', 'Â' => 'A', 'å' => 'a', 'Å' => 'A', 'ã' => 'a', 'Ã' => 'A', 'ą' => 'a', 'Ą' => 'A', 'ā' => 'a', 'Ā' => 'A', 'ä' => 'ae', 'Ä' => 'AE', 'æ' => 'ae', 'Æ' => 'AE',
             'ḃ' => 'b', 'Ḃ' => 'B',
             'ć' => 'c', 'Ć' => 'C', 'ĉ' => 'c', 'Ĉ' => 'C', 'č' => 'c', 'Č' => 'C', 'ċ' => 'c', 'Ċ' => 'C', 'ç' => 'c', 'Ç' => 'C',
@@ -167,7 +167,7 @@ class Tag extends Relational
             'Ы' => 'y', 'ь' => '', 'Ь' => '',
             'э' => 'e', 'Э' => 'e', 'ю' => 'ju',
             'Ю' => 'ju', 'я' => 'ja', 'Я' => 'ja'
-        );
+        ];
 
         $tag = str_replace(array_keys($transliterationTable), array_values($transliterationTable), $tag == null ? '' : $tag);
         return strtolower(preg_replace("/[^a-zA-Z0-9]/", '', $tag));
@@ -257,7 +257,7 @@ class Tag extends Relational
      */
     public function transformSubstitutes()
     {
-        $subs = array();
+        $subs = [];
 
         foreach ($this->substitutes()->rows() as $sub) {
             $subs[] = $sub->get('raw_tag');
@@ -404,7 +404,7 @@ class Tag extends Relational
         $result = $this->save();
 
         if ($result) {
-            $arr = array('object_id' => $to->get('id'), 'tagger_id' => $tagger);
+            $arr = ['object_id' => $to->get('id'), 'tagger_id' => $tagger];
             $log = Log::blank();
             $log->set('tag_id', $this->get('id'));
             $log->set('action', 'tag_removed');
@@ -460,7 +460,7 @@ class Tag extends Relational
         $result = $this->save();
 
         if ($result) {
-            $arr = array('object_id' => $to->get('id'), 'tagger_id' => $tagger);
+            $arr = ['object_id' => $to->get('id'), 'tagger_id' => $tagger];
             $log = Log::blank();
             $log->set('tag_id', $this->get('id'));
             $log->set('action', 'tag_added');
@@ -564,7 +564,7 @@ class Tag extends Relational
     public function saveSubstitutions($tag_string = '')
     {
         // Get the old list of substitutions
-        $subs = array();
+        $subs = [];
         foreach ($this->substitutes()->rows() as $sub) {
             $subs[$sub->get('tag')] = $sub;
         }
@@ -574,7 +574,7 @@ class Tag extends Relational
         $raw_tags = trim($tag_string);
         $raw_tags = preg_split("/(,|;)/", $raw_tags);
 
-        $tags = array();
+        $tags = [];
         foreach ($raw_tags as $raw_tag) {
             $nrm = $this->normalize($raw_tag);
 

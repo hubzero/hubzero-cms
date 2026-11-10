@@ -232,7 +232,7 @@ class Offering extends Base
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         $key = 0;
@@ -326,7 +326,7 @@ class Offering extends Base
      * @param      mixed $idx Index value
      * @return     array
      */
-    public function sections($filters = array(), $clear = false)
+    public function sections($filters = [], $clear = false)
     {
         if (!isset($filters['offering_id'])) {
             $filters['offering_id'] = (int) $this->get('id');
@@ -349,7 +349,7 @@ class Offering extends Base
                     $results[$key] = new Section($result);
                 }
             } else {
-                $results = array();
+                $results = [];
             }
 
             $this->_sections = new Iterator($results);
@@ -399,7 +399,7 @@ class Offering extends Base
      * @param      mixed $idx Index value
      * @return     array
      */
-    public function units($filters = array(), $clear = false)
+    public function units($filters = [], $clear = false)
     {
         if (!isset($filters['offering_id'])) {
             $filters['offering_id'] = (int) $this->get('id');
@@ -425,7 +425,7 @@ class Offering extends Base
                     $results[$key] = new Unit($result);
                 }
             } else {
-                $results = array();
+                $results = [];
             }
 
             $this->_units = new Iterator($results);
@@ -483,7 +483,7 @@ class Offering extends Base
      * @param      boolean $clear   Force a new dataset?
      * @return     mixed
      */
-    public function managers($filters = array(), $clear = false)
+    public function managers($filters = [], $clear = false)
     {
         if (!isset($filters['course_id'])) {
             $filters['course_id'] = (int) $this->get('course_id');
@@ -505,7 +505,7 @@ class Offering extends Base
         if (!isset($this->_managers) || !is_array($this->_managers) || $clear) {
             $tbl = new Tables\Member($this->_db);
 
-            $results = array();
+            $results = [];
 
             if (($data = $tbl->find($filters))) {
                 foreach ($data as $key => $result) {
@@ -609,7 +609,7 @@ class Offering extends Base
      * @param      array $filters Filters to apply
      * @return     object \Components\Courses\Models\Iterator
      */
-    public function assets($filters = array())
+    public function assets($filters = [])
     {
         if (!($this->_assets instanceof \Traversable)) {
             if (!isset($filters['asset_scope_id'])) {
@@ -621,12 +621,12 @@ class Offering extends Base
 
             $tbl = new Tables\Asset($this->_db);
 
-            if (($results = $tbl->find(array('w' => $filters)))) {
+            if (($results = $tbl->find(['w' => $filters]))) {
                 foreach ($results as $key => $result) {
                     $results[$key] = new Asset($result);
                 }
             } else {
-                $results = array();
+                $results = [];
             }
 
             $this->_assets = new Iterator($results);
@@ -640,7 +640,7 @@ class Offering extends Base
      *
      * @return     boolean
      */
-    public function students($filters = array(), $clear = false)
+    public function students($filters = [], $clear = false)
     {
         $filters['student'] = 1;
 
@@ -694,16 +694,16 @@ class Offering extends Base
      * @param      boolean $clear   Force a new dataset?
      * @return     mixed
      */
-    public function members($filters = array(), $clear = false)
+    public function members($filters = [], $clear = false)
     {
         if (!isset($filters['course_id'])) {
             $filters['course_id'] = (int) $this->get('course_id');
         }
         if (!isset($filters['offering_id'])) {
-            $filters['offering_id'] = array(0, (int) $this->get('id'));
+            $filters['offering_id'] = [0, (int) $this->get('id')];
         }
         if (!isset($filters['section_id'])) {
-            $filters['section_id'] = array(0, (int) $this->section()->get('id'));
+            $filters['section_id'] = [0, (int) $this->section()->get('id')];
         }
         if (!isset($filters['sort'])) {
             $filters['sort'] = 'student ASC, section_id ASC, offering_id';
@@ -721,7 +721,7 @@ class Offering extends Base
         if (!isset($this->_members) || !is_array($this->_members) || $clear) {
             $tbl = new Tables\Member($this->_db);
 
-            $results = array();
+            $results = [];
 
             if (($data = $tbl->find($filters))) {
                 $mdl = '\\Components\\Courses\\Models\\Member';
@@ -752,7 +752,7 @@ class Offering extends Base
      */
     public function membership($user_id = 0)
     {
-        $filters = array();
+        $filters = [];
         if (!isset($filters['course_id'])) {
             $filters['course_id'] = (int) $this->get('course_id');
         }
@@ -776,7 +776,7 @@ class Offering extends Base
         if (!isset($this->_membership[$user_id]) || !is_array($this->_membership[$user_id])) {
             $tbl = new Tables\Member($this->_db);
 
-            $results = array();
+            $results = [];
 
             if (($results = $tbl->find($filters))) {
                 foreach ($results as $key => $result) {
@@ -806,10 +806,10 @@ class Offering extends Base
      * @param      boolean $clear   Force a new dataset?
      * @return     mixed
      */
-    public function roles($filters = array(), $clear = false)
+    public function roles($filters = [], $clear = false)
     {
         if (!isset($filters['offering_id'])) {
-            $filters['offering_id'] = array(0, (int) $this->get('id'));  // 0 = default roles
+            $filters['offering_id'] = [0, (int) $this->get('id')];  // 0 = default roles
         }
 
         if (isset($filters['count']) && $filters['count']) {
@@ -821,7 +821,7 @@ class Offering extends Base
             $tbl = new Tables\Role($this->_db);
 
             if (!($results = $tbl->find($filters))) {
-                $results = array();
+                $results = [];
             }
 
             $this->_roles = $results;
@@ -868,7 +868,7 @@ class Offering extends Base
      * @param      mixed $idx Index value
      * @return     array
      */
-    public function pages($filters = array(), $reload = false)
+    public function pages($filters = [], $reload = false)
     {
         if (!isset($filters['offering_id'])) {
             $filters['offering_id'] = (int) $this->get('id');
@@ -889,7 +889,7 @@ class Offering extends Base
         if (!isset($this->_pages) || !is_array($this->_pages) || $reload) {
             $tbl = new Tables\Page($this->_db);
 
-            $results = array();
+            $results = [];
 
             if (($data = $tbl->find($filters))) {
                 foreach ($data as $key => $result) {
@@ -954,7 +954,7 @@ class Offering extends Base
             $this->importPlugin('courses');
 
             $course = Course::getInstance($this->get('course_id'));
-            $this->_plugins = $this->trigger('onCourse', array($course, $this, true));
+            $this->_plugins = $this->trigger('onCourse', [$course, $this, true]);
         }
 
         if ($name !== null) {
@@ -991,10 +991,10 @@ class Offering extends Base
      * @param     array $value List of IDs or usernames
      * @return    void
      */
-    public function add($data = array(), $role_id = 'student')
+    public function add($data = [], $role_id = 'student')
     {
         if (!is_array($data)) {
-            $data = array($data);
+            $data = [$data];
         }
 
         $role = new Tables\Role($this->_db);
@@ -1035,10 +1035,10 @@ class Offering extends Base
      * @param     array $value List of IDs or usernames
      * @return    void
      */
-    public function remove($data = array())
+    public function remove($data = [])
     {
         if (!is_array($data)) {
-            $data = array($data);
+            $data = [$data];
         }
         if (count($data) > 0) {
             $this->members();
@@ -1142,7 +1142,7 @@ class Offering extends Base
         }
 
         $this->importPlugin('courses')
-             ->trigger('onOfferingSave', array($this));
+             ->trigger('onOfferingSave', [$this]);
 
         if ($isNew) {
             $this->log($this->get('id'), $this->_scope, 'create');
@@ -1159,21 +1159,21 @@ class Offering extends Base
     public function delete()
     {
         // Remove pages
-        foreach ($this->pages(array('active' => array(0, 1)), true) as $page) {
+        foreach ($this->pages(['active' => [0, 1]], true) as $page) {
             if (!$page->delete()) {
                 $this->setError($page->getError());
             }
         }
 
         // Remove announcements
-        foreach ($this->announcements(array('section_id' => -1, 'state' => -1)) as $announcement) {
+        foreach ($this->announcements(['section_id' => -1, 'state' => -1]) as $announcement) {
             if (!$announcement->delete()) {
                 $this->setError($announcement->getError());
             }
         }
 
         // Remove any units
-        foreach ($this->units(array('section_id' => -1), true) as $unit) {
+        foreach ($this->units(['section_id' => -1], true) as $unit) {
             if (!$unit->delete()) {
                 $this->setError($unit->getError());
             }
@@ -1190,7 +1190,7 @@ class Offering extends Base
         $value = parent::delete();
 
         $this->importPlugin('courses')
-             ->trigger('onOfferingDelete', array($this));
+             ->trigger('onOfferingDelete', [$this]);
 
         return $value;
     }
@@ -1228,14 +1228,14 @@ class Offering extends Base
 
         if ($deep) {
             // Copy pages
-            foreach ($this->pages(array('offering_id' => $o_id, 'active' => array(0, 1)), true) as $page) {
+            foreach ($this->pages(['offering_id' => $o_id, 'active' => [0, 1]], true) as $page) {
                 if (!$page->copy($this->get('course_id'), $this->get('id'))) {
                     $this->setError($page->getError());
                 }
             }
 
             // Copy units
-            foreach ($this->units(array('offering_id' => $o_id, 'section_id' => -1), true) as $unit) {
+            foreach ($this->units(['offering_id' => $o_id, 'section_id' => -1], true) as $unit) {
                 if (!$unit->copy($this->get('id'))) {
                     $this->setError($unit->getError());
                 }
@@ -1272,11 +1272,11 @@ class Offering extends Base
                     } else {
                         // Copy asset associations
                         $tbl = new Tables\AssetAssociation($this->_db);
-                        $findParams = array(
+                        $findParams = [
                             'scope_id' => $o_id,
                             'scope' => 'offering',
                             'asset_id' => $oldAssetId
-                        );
+                        ];
                         foreach ($tbl->find($findParams) as $aa) {
                             $tbl->bind($aa);
                             $tbl->id = 0;
@@ -1327,9 +1327,9 @@ class Offering extends Base
 
                 $course = Course::getInstance($this->get('course_id'));
 
-                $data = $this->trigger('onCourseEnrollLink', array(
+                $data = $this->trigger('onCourseEnrollLink', [
                     $course, $this, $this->section()
-                ));
+                ]);
                 if ($data && count($data) > 0) {
                     $link = implode('', $data);
                 } else {

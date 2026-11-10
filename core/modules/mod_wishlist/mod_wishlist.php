@@ -46,14 +46,14 @@ class Wishlist extends Module
         }
         $this->wishlist = $wishlist;
 
-        $queries = array(
+        $queries = [
             'granted'   => 1,
             'pending'   => "0 AND accepted=0",
             'accepted'  => "0 AND accepted=1",
             'rejected'  => 3,
             'withdrawn' => 4,
             'removed'   => 2
-        );
+        ];
 
         $database = \Hubzero\Facades\App::get('db');
 

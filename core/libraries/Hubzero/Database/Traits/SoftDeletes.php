@@ -238,7 +238,7 @@ trait SoftDeletes
         $this->set($column, $now);
 
         // Trigger event before soft delete
-        Event::trigger('system.onContentSoftDelete', array($this->getTableName(), $this));
+        Event::trigger('system.onContentSoftDelete', [$this->getTableName(), $this]);
 
         // Perform the update using getQuery() which always returns a fresh query
         $result = $this->getQuery()
@@ -307,7 +307,7 @@ trait SoftDeletes
             $this->fireModelEvent('deleted', false);
 
             // Existing HubZero system event
-            Event::trigger('system.onContentDestroy', array($this->getTableName(), $this));
+            Event::trigger('system.onContentDestroy', [$this->getTableName(), $this]);
         }
 
         // Cast to bool for consistent return type
@@ -339,7 +339,7 @@ trait SoftDeletes
         $column = $this->getDeletedAtColumn();
 
         // Trigger existing HubZero event before restore
-        Event::trigger('system.onContentRestore', array($this->getTableName(), $this));
+        Event::trigger('system.onContentRestore', [$this->getTableName(), $this]);
 
         // Update the model's deleted_at attribute to null
         $this->set($column, null);

@@ -63,7 +63,7 @@ abstract class AbstractCache extends Basic
             ['key3', 'value3', null],
             ['key4', true, null],
             ['key5', false, null],
-            ['key6', array(), null],
+            ['key6', [], null],
             ['key7', new \DateTime('now', new \DateTimeZone('UTC')), null],
         ];
     }

@@ -57,7 +57,7 @@ $this->css()
         <div class="form-group">
             <label for="entry_content">
                 <?php echo Lang::txt('PLG_GROUPS_BLOG_FIELD_CONTENT'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
-                <?php echo $this->editor('entry[content]', $this->escape($this->entry->get('content')), 50, 30, 'entry_content', array('class' => 'form-control')); ?>
+                <?php echo $this->editor('entry[content]', $this->escape($this->entry->get('content')), 50, 30, 'entry_content', ['class' => 'form-control']); ?>
             </label>
             <?php if ($this->task == 'save' && !$this->entry->get('content')) { ?>
                 <p class="error"><?php echo Lang::txt('PLG_GROUPS_BLOG_ERROR_PROVIDE_CONTENT'); ?></p>

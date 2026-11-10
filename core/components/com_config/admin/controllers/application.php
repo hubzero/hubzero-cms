@@ -105,7 +105,7 @@ class Application extends AdminController
         // Initialise variables.
         $model = new Models\Application();
         $form  = $model->getForm();
-        $data  = Request::getArray('hzform', array(), 'post');
+        $data  = Request::getArray('hzform', [], 'post');
 
         // Validate the posted data.
         $return = $model->validate($form, $data);
@@ -136,7 +136,7 @@ class Application extends AdminController
 
         // 'other' is passed as a separate array because form validation
         // above will strip it out,
-        $other = Request::getArray('hzother', array(), 'post');
+        $other = Request::getArray('hzother', [], 'post');
         $data  = array_merge($return, $other);
 
         // If user specified 'reset', generate and save a new Hub secret:

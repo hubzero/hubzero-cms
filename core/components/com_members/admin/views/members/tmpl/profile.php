@@ -26,7 +26,7 @@ Toolbar::cancel();
 Toolbar::divider();
 Toolbar::help('profile');
 
-$elements = array();
+$elements = [];
 
 foreach ($this->fields as $field) {
     $element = new stdClass();
@@ -61,7 +61,7 @@ foreach ($this->fields as $field) {
     $options = $field->options;
 
     if ($options->count()) {
-        $element->field_options->options = array();
+        $element->field_options->options = [];
         foreach ($options as $option) {
             $opt = new stdClass();
             $opt->field_id = (int)$option->get('id');
@@ -104,7 +104,7 @@ $this->css('formbuilder.css')
     var fb = null,
         accesses = [
             <?php
-            $levels = array();
+            $levels = [];
             foreach (Html::access('assetgroups') as $level) {
                 $levels[] = '{"value":' . $level->value . ',"text":"' . $this->escape($level->text) . '"}';
             }

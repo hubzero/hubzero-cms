@@ -97,7 +97,7 @@ class Source extends AdminController
             App::abort(403, Lang::txt('JERROR_CORE_ACTION_NOT_PERMITTED'));
         }
 
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         // Never let the source filename walk out of the template directory
         if (strpos((string) (isset($fields['filename']) ? $fields['filename'] : ''), '..') !== false) {

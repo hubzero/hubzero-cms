@@ -42,7 +42,7 @@ class Activity extends Plugin
      */
     public function &onMembersAreas($user, $member)
     {
-        $areas = array();
+        $areas = [];
 
         if ($user->get('id') == $member->get('id')) {
             $areas['activity'] = Lang::txt('PLG_MEMBERS_ACTIVITY');
@@ -67,10 +67,10 @@ class Activity extends Plugin
     {
         $returnhtml = true;
 
-        $arr = array(
+        $arr = [
             'html'     => '',
-            'metadata' => array()
-        );
+            'metadata' => []
+        ];
 
         // Check if our area is in the array of areas we want to return results for
         if (is_array($areas)) {
@@ -89,7 +89,7 @@ class Activity extends Plugin
             $action = Request::getCmd('action', 'feed');
 
             // Without e-mail digests there are no digest settings to show or save
-            if (!$this->params->get('email_digests') && in_array($action, array('settings', 'savesettings'))) {
+            if (!$this->params->get('email_digests') && in_array($action, ['settings', 'savesettings'])) {
                 $action = 'feed';
             }
 
@@ -116,7 +116,7 @@ class Activity extends Plugin
             }
         }
 
-        $arr['metadata'] = array();
+        $arr['metadata'] = [];
 
         // Get the number of unread messages
         $unread = \Hubzero\Activity\Recipient::all()
@@ -146,7 +146,7 @@ class Activity extends Plugin
             ->order('scope', 'asc')
             ->rows()
             ->toArray();
-        $categories = array();
+        $categories = [];
         foreach ($scopes as $scope) {
             $cat = explode('.', $scope['scope']);
 
@@ -160,21 +160,21 @@ class Activity extends Plugin
         }
 
         // Incoming filters
-        $filters = array(
+        $filters = [
             'filter' => Request::getWord('filter'),
             'search' => Request::getString('q'),
             'scope'  => Request::getWord('scope'),
             'created_by' => Request::getWord('created_by'),
             'limit'  => Request::getInt('limit', Config::get('list_limit')),
             'start'  => Request::getInt('start', 0)
-        );
+        ];
 
         // Validate filters
         if (!in_array($filters['filter'], ['starred'])) {
             $filters['filter'] = '';
         }
 
-        if (!in_array($filters['created_by'], array('me', 'notme'))) {
+        if (!in_array($filters['created_by'], ['me', 'notme'])) {
             $filters['created_by'] = '';
         }
 
@@ -501,7 +501,7 @@ class Activity extends Plugin
         Request::checkToken();
 
         // Incoming
-        $settings = Request::getArray('settings', array(), 'post');
+        $settings = Request::getArray('settings', [], 'post');
         $settings['scope']    = 'user';
         $settings['scope_id'] = $this->member->get('id');
 

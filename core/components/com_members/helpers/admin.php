@@ -43,7 +43,7 @@ class Admin
             $path = dirname(__DIR__) . '/config/access.xml';
 
             $actions = \Hubzero\Access\Access::getActionsFromFile($path);
-            $actions ?: array();
+            $actions ?: [];
 
             foreach ($actions as $action) {
                 self::$actions->set($action->name, User::authorise($action->name, 'com_members'));
@@ -61,7 +61,7 @@ class Admin
     public static function getStateOptions()
     {
         // Build the filter options.
-        $options = array();
+        $options = [];
         $options[] = Html::select('option', '0', Lang::txt('JENABLED'));
         $options[] = Html::select('option', '1', Lang::txt('JDISABLED'));
 
@@ -76,7 +76,7 @@ class Admin
     public static function getActiveOptions()
     {
         // Build the filter options.
-        $options = array();
+        $options = [];
         $options[] = Html::select('option', '0', Lang::txt('COM_MEMBERS_ACTIVATED'));
         $options[] = Html::select('option', '1', Lang::txt('COM_MEMBERS_UNACTIVATED'));
 
@@ -91,7 +91,7 @@ class Admin
     public static function getApprovedOptions()
     {
         // Build the filter options.
-        $options = array();
+        $options = [];
         $options[] = Html::select('option', '0', Lang::txt('COM_MEMBERS_UNAPPROVED'));
         $options[] = Html::select('option', '1', Lang::txt('COM_MEMBERS_APPROVED_MANUALLY'));
         $options[] = Html::select('option', '2', Lang::txt('COM_MEMBERS_APPROVED_AUTOMATICALLY'));
@@ -153,7 +153,7 @@ class Admin
      */
     public static function getRangeOptions()
     {
-        $options = array(
+        $options = [
             Html::select('option', 'today', Lang::txt('COM_MEMBERS_OPTION_RANGE_TODAY')),
             Html::select('option', 'past_week', Lang::txt('COM_MEMBERS_OPTION_RANGE_PAST_WEEK')),
             Html::select('option', 'past_1month', Lang::txt('COM_MEMBERS_OPTION_RANGE_PAST_1MONTH')),
@@ -161,7 +161,7 @@ class Admin
             Html::select('option', 'past_6month', Lang::txt('COM_MEMBERS_OPTION_RANGE_PAST_6MONTH')),
             Html::select('option', 'past_year', Lang::txt('COM_MEMBERS_OPTION_RANGE_PAST_YEAR')),
             Html::select('option', 'post_year', Lang::txt('COM_MEMBERS_OPTION_RANGE_POST_YEAR')),
-        );
+        ];
         return $options;
     }
 
@@ -180,7 +180,7 @@ class Admin
         $readonly = false
     ) {
         // Initialize variables.
-        $html = array();
+        $html = [];
         $link = Route::url('index.php?option=com_members&controller=members&task=modal&tmpl=component&field=' . $id);
 
         // Initialize some field attributes.
@@ -194,7 +194,7 @@ class Admin
         Html::behavior('modal', 'a.modal_' . $id);
 
         // Build the script.
-        $script = array();
+        $script = [];
         $script[] = '	function jSelectUser_' . $id . '(id, title) {';
         $script[] = '		var old_id = document.getElementById("' . $id . '_id").value;';
         $script[] = '		if (old_id != id) {';

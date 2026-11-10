@@ -62,7 +62,7 @@ class Archive extends Obj
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         $key = $scope . '_' . $scope_id;
@@ -80,7 +80,7 @@ class Archive extends Obj
      * @param   array   $filters  Filters to apply to data retrieval
      * @return  object
      */
-    public function entries($filters = array())
+    public function entries($filters = [])
     {
         if (!isset($filters['scope'])) {
             $filters['scope'] = (string) $this->get('scope');
@@ -97,10 +97,10 @@ class Archive extends Obj
                 $comment
                     ->select('id')
                     ->select('entry_id')
-                    ->whereIn('state', array(
+                    ->whereIn('state', [
                         Comment::STATE_PUBLISHED,
                         Comment::STATE_FLAGGED
-                    ));
+                    ]);
             }]);
 
         if ($filters['scope']) {
@@ -110,7 +110,7 @@ class Archive extends Obj
 
         if (isset($filters['state'])) {
             if (!is_array($filters['state'])) {
-                $filters['state'] = array($filters['state']);
+                $filters['state'] = [$filters['state']];
             }
             $results->whereIn('state', $filters['state']);
         }
@@ -172,9 +172,9 @@ class Archive extends Obj
      * @return  array   An array of values returned by the methods called on the objects in the data set.
      * @since   1.3.1
      */
-    public function __call($method, $arguments = array())
+    public function __call($method, $arguments = [])
     {
-        $callback = array($this->_adapter(), $method);
+        $callback = [$this->_adapter(), $method];
 
         if (is_callable($callback)) {
             return call_user_func_array($callback, $arguments);
@@ -239,7 +239,7 @@ class Archive extends Obj
             if (User::isGuest()) {
                 $this->config()->set('access-check-done', true);
             } else {
-                foreach (array('admin', 'manage', 'delete', 'edit', 'edit-state', 'edit-own') as $option) {
+                foreach (['admin', 'manage', 'delete', 'edit', 'edit-state', 'edit-own'] as $option) {
                     $this->config()->set(
                         'access-' . $option . '-entry',
                         User::authorise('core.' . ($option == 'admin' ? 'admin' : 'manage'), $this->get('id'))

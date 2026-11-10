@@ -33,7 +33,7 @@ class Events extends GroupMacro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['html']  = '<p>Displays group events.</p>';
         $txt['html'] .= '<p>Examples:</p>
                             <ul>
@@ -60,9 +60,9 @@ class Events extends GroupMacro
         $args = $this->getArgs();
 
         //array of filters
-        $filters = array(
+        $filters = [
             'limit' => (isset($args[0]) && is_numeric($args[0])) ? $args[0] : 3
-        );
+        ];
 
         //get group events
         $events =  $this->getGroupEvents($this->group, $filters);
@@ -87,7 +87,7 @@ class Events extends GroupMacro
      * @param      array  $filters
      * @return     array
      */
-    private function getGroupEvents($group, $filters = array())
+    private function getGroupEvents($group, $filters = [])
     {
         //instantiate database
         $database = App::get('db');

@@ -55,7 +55,7 @@ class Activity extends AdminController
      */
     public function displayTask()
     {
-        $filters = array(
+        $filters = [
             'state' => Request::getState(
                 $this->_option . '.projects.' . $this->_controller . '.state',
                 'state',
@@ -93,9 +93,9 @@ class Activity extends AdminController
                 'filter_order_Dir',
                 'DESC'
             )
-        );
+        ];
 
-        if (!in_array($filters['sort_Dir'], array('ASC', 'DESC'))) {
+        if (!in_array($filters['sort_Dir'], ['ASC', 'DESC'])) {
             $filters['sort_Dir'] = 'ASC';
         }
 
@@ -108,7 +108,7 @@ class Activity extends AdminController
             ->select($r . '.*')
             ->including('log')
             ->join($l, $l . '.id', $r . '.log_id')
-            ->whereIn($r . '.scope', array('project', 'project_managers'))
+            ->whereIn($r . '.scope', ['project', 'project_managers'])
             ->whereEquals($r . '.state', \Hubzero\Activity\Recipient::STATE_PUBLISHED);
 
         if ($filters['state'] >= 0) {
@@ -174,7 +174,7 @@ class Activity extends AdminController
 
         if (!is_object($row)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id) && !empty($id)) {
                 $id = $id[0];
             }
@@ -213,20 +213,20 @@ class Activity extends AdminController
         }
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         // Initiate extended database class
         $activity = \Hubzero\Activity\Log::oneOrNew($fields['id'])->set($fields);
 
         // Incoming
-        $rfields = Request::getArray('recipient', array(), 'post');
+        $rfields = Request::getArray('recipient', [], 'post');
 
         // Initiate extended database class
         $recipient = \Hubzero\Activity\Recipient::oneOrNew($rfields['id'])->set($rfields);
 
         // Trigger before save event
         $isNew  = $recipient->isNew();
-        $result = Event::trigger('projects.onProjectBeforeSaveActivity', array(&$recipient, $isNew));
+        $result = Event::trigger('projects.onProjectBeforeSaveActivity', [&$recipient, $isNew]);
 
         if (in_array(false, $result, true)) {
             Notify::error($recipient->getError());
@@ -245,7 +245,7 @@ class Activity extends AdminController
         }
 
         // Trigger after save event
-        Event::trigger('projects.onProjectAfterSaveActivity', array(&$recipient, $isNew));
+        Event::trigger('projects.onProjectAfterSaveActivity', [&$recipient, $isNew]);
 
         // Notify of success
         Notify::success(Lang::txt('COM_PROJECTS_ITEM_SAVED'));
@@ -274,8 +274,8 @@ class Activity extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $removed = 0;
 
@@ -289,7 +289,7 @@ class Activity extends AdminController
             }
 
             // Trigger before delete event
-            Event::trigger('projects.onProjectAfterDeleteActivity', array($id));
+            Event::trigger('projects.onProjectAfterDeleteActivity', [$id]);
 
             $removed++;
         }
@@ -317,8 +317,8 @@ class Activity extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $published = \Hubzero\Activity\Recipient::STATE_PUBLISHED;
         $unpublished = \Hubzero\Activity\Recipient::STATE_UNPUBLISHED;
@@ -368,8 +368,8 @@ class Activity extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $i = 0;
 
@@ -391,7 +391,7 @@ class Activity extends AdminController
             }
 
             // Allow plugins to respond to changes
-            Event::trigger('projects.onProjectAfterSaveActivity', array($entry));
+            Event::trigger('projects.onProjectAfterSaveActivity', [$entry]);
 
             $i++;
         }

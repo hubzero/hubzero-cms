@@ -33,11 +33,11 @@ class Recommendations extends Plugin
      */
     public function onPublicationSub($publication, $option, $miniview = 0)
     {
-        $arr = array(
+        $arr = [
             'html'    => '',
             'metadata' => '',
             'name'    => 'recommendations'
-        );
+        ];
 
         // Check if our area is in the array of areas we want to return results for
         if (!$publication->category()->_params->get('plg_recommendations', 1)) {

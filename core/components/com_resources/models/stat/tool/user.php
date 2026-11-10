@@ -43,9 +43,9 @@ class User extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'resid' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Defines a belongs to one relationship between entry and resource

@@ -67,7 +67,7 @@ class Curation extends Obj
      *
      * @var  object
      */
-    public $_blocks = array();
+    public $_blocks = [];
 
     /**
      * Total blocks
@@ -81,7 +81,7 @@ class Curation extends Obj
      *
      * @var  object
      */
-    public $_block = array();
+    public $_block = [];
 
     /**
      * Current block name
@@ -137,7 +137,7 @@ class Curation extends Obj
      */
     private function _setBlocks($manifest = null, $masterManifest = null)
     {
-        $blocks = array();
+        $blocks = [];
 
         if ($masterManifest) {
             $masterManifest = json_decode($masterManifest);
@@ -287,7 +287,7 @@ class Curation extends Obj
             return false;
         }
 
-        $customFields = array();
+        $customFields = [];
 
         // Get blocks model
         $blocksModel = new Blocks($this->_db);
@@ -302,13 +302,13 @@ class Curation extends Obj
                         continue;
                     }
 
-                    $customFields['fields'][] = array(
+                    $customFields['fields'][] = [
                         'default'  => '',
                         'name'     => $element->params->aliasmap,
                         'label'    => $element->label,
                         'type'     => $element->params->input,
                         'required' => $element->params->required
-                    );
+                    ];
                 }
             }
         }
@@ -332,7 +332,7 @@ class Curation extends Obj
         // Get blocks model
         $blocksModel = new Blocks($this->_db);
 
-        $elements = array();
+        $elements = [];
 
         // Find all blocks of the same parent
         foreach ($this->_blocks as $blockId => $block) {
@@ -926,7 +926,7 @@ class Curation extends Obj
             return $activeId;
         }
 
-        $remaining = array();
+        $remaining = [];
         $start     = 0;
         foreach ($this->_blocks as $id => $block) {
             if (isset($block->active) && $block->active == 0) {
@@ -964,7 +964,7 @@ class Curation extends Obj
             return $activeId;
         }
 
-        $remaining = array();
+        $remaining = [];
         $start     = 0;
         foreach ($this->_blocks as $id => $block) {
             if (isset($block->active) && $block->active == 0) {
@@ -1001,7 +1001,7 @@ class Curation extends Obj
             return $activeId;
         }
 
-        $remaining = array();
+        $remaining = [];
         $start     = 0;
         foreach ($this->_blocks as $id => $block) {
             if (isset($block->active) && $block->active == 0) {
@@ -1139,7 +1139,7 @@ class Curation extends Obj
             return $activeId;
         }
 
-        $remaining = array();
+        $remaining = [];
         $start     = 0;
         if ($this->_blocks->$blockId->elements) {
             foreach ($this->_blocks->$blockId->elements as $id => $element) {
@@ -1180,7 +1180,7 @@ class Curation extends Obj
             return $activeId;
         }
 
-        $remaining = array();
+        $remaining = [];
         $start     = 0;
         if ($this->_blocks->$blockId->elements) {
             foreach ($this->_blocks->$blockId->elements as $id => $element) {
@@ -1496,7 +1496,7 @@ class Curation extends Obj
             return false;
         }
 
-        $review = array();
+        $review = [];
 
         if (!isset($this->_tbl)) {
             $this->_tbl = new Tables\Curation($this->_db);
@@ -1526,7 +1526,7 @@ class Curation extends Obj
      * @param   array  $filters
      * @return  mixed  Object or false
      */
-    public function getHistory($filters = array())
+    public function getHistory($filters = [])
     {
         if (empty($this->_pub)) {
             return false;
@@ -2015,23 +2015,23 @@ class Curation extends Obj
     public function movedSourceAttachments()
     {
         if (empty($this->_pub) || empty($this->_pub->_project) || empty($this->_pub->version_id)) {
-            return array();
+            return [];
         }
 
         $repo = $this->_pub->_project->repo();
         if (!$repo) {
-            return array();
+            return [];
         }
 
         $repoPath = $repo->get('path');
         if (!$repoPath || !is_dir($repoPath)) {
-            return array();
+            return [];
         }
 
         $objPA = new Tables\Attachment($this->_db);
-        $files = $objPA->getAttachments($this->_pub->version_id, array('type' => 'file'));
+        $files = $objPA->getAttachments($this->_pub->version_id, ['type' => 'file']);
 
-        $moved = array();
+        $moved = [];
 
         if ($files) {
             foreach ($files as $file) {
@@ -2314,7 +2314,7 @@ class Curation extends Obj
                     $objPA = new Tables\Attachment($this->_db);
                     if (
                         is_file($galleryPath . DS . $shot->srcfile)
-                        && !$objPA->loadElementAttachment($pub->version_id, array('path' => $shot->filename), $element->id, 'file', $element->manifest->params->role)
+                        && !$objPA->loadElementAttachment($pub->version_id, ['path' => $shot->filename], $element->id, 'file', $element->manifest->params->role)
                     ) {
                         $objPA = new Tables\Attachment($this->_db);
                         $objPA->publication_id         = $pub->id;
@@ -2397,7 +2397,7 @@ class Curation extends Obj
         foreach ($pub->_curationModel->_progress->blocks as $blockId => $block) {
             $parentBlock = $blocksModel->getBlockProperty($block->name, '_parentname');
 
-            if (in_array($parentBlock, array('content', 'authors'))) {
+            if (in_array($parentBlock, ['content', 'authors'])) {
                 $blocksModel->transferData($parentBlock, $block->manifest, $pub, $old, $new);
             }
         }
@@ -2461,12 +2461,12 @@ class Curation extends Obj
         }
 
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => 'draft',
                 'layout'  => 'statusbar'
-            )
+            ]
         );
         $view->pub       = $this->_pub;
         $view->progress  = $this->_progress;

@@ -30,7 +30,7 @@ class Types extends AdminController
      */
     public function displayTask()
     {
-        $this->view->filters = array(
+        $this->view->filters = [
             // Get paging variables
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
@@ -55,7 +55,7 @@ class Types extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         // Instantiate an object
         $jt = new Type($this->database);
@@ -66,28 +66,28 @@ class Types extends AdminController
 
         // Load default types if none found
         if (!$this->view->total) {
-            $default = array(
-                array(
+            $default = [
+                [
                     'id' => 0,
                     'category' => ucfirst(Lang::txt('COM_JOBS_CATEGORY_FULLTIME'))
-                ),
-                array(
+                ],
+                [
                     'id' => 0,
                     'category' => ucfirst(Lang::txt('COM_JOBS_CATEGORY_PARTTIME'))
-                ),
-                array(
+                ],
+                [
                     'id' => 0,
                     'category' => ucfirst(Lang::txt('COM_JOBS_CATEGORY_CONTRACT'))
-                ),
-                array(
+                ],
+                [
                     'id' => 0,
                     'category' => ucfirst(Lang::txt('COM_JOBS_CATEGORY_INTERNSHIP'))
-                ),
-                array(
+                ],
+                [
                     'id' => 0,
                     'category' => ucfirst(Lang::txt('COM_JOBS_CATEGORY_TEMPORARY'))
-                )
-            );
+                ]
+            ];
 
             foreach ($default as $d) {
                 if (!$jt->bind($d)) {
@@ -127,7 +127,7 @@ class Types extends AdminController
 
         if (!is_object($row)) {
             // Incoming (expecting an array)
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             $id = (is_array($id)) ? $id[0] : $id;
 
             // Load the object
@@ -184,8 +184,8 @@ class Types extends AdminController
         Request::checkToken();
 
         // Incoming (expecting an array)
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Ensure we have an ID to work with
         if (empty($ids)) {

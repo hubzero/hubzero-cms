@@ -20,11 +20,11 @@ class Migration20190221000000ComDeveloper extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__developer_access_tokens' => array(
+    public static $tables = [
+        '#__developer_access_tokens' => [
             'expires'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

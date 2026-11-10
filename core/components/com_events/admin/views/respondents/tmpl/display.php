@@ -99,7 +99,7 @@ Toolbar::cancel();
         </tbody>
     </table>
 
-    <?php $id = Request::getArray('id', array()); ?>
+    <?php $id = Request::getArray('id', []); ?>
     <input type="hidden" name="event" value="<?php echo $this->escape(is_array($id) ? implode(',', $id) : $id); ?>" />
     <input type="hidden" name="id[]" value="<?php echo $this->escape(is_array($id) ? implode(',', $id) : $id); ?>" />
 

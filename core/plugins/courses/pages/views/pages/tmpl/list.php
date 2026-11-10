@@ -72,7 +72,7 @@ if (!$no_html) { ?>
 
                     foreach ($this->docs as $path => $name) {
                         $ext = Filesystem::extension($name);
-                        $type = (in_array($ext, array('jpg', 'jpe', 'jpeg', 'gif', 'png')) ? 'Image' : 'File');
+                        $type = (in_array($ext, ['jpg', 'jpe', 'jpeg', 'gif', 'png']) ? 'Image' : 'File');
                         ?>
                     <tr class="row-group start">
                         <td width="100%">

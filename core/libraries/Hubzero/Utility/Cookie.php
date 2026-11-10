@@ -26,7 +26,7 @@ class Cookie
      * @param  (array)  $data      - data to be saved in cookie
      * @return void
      **/
-    public static function bake($namespace, $lifetime, $data = array())
+    public static function bake($namespace, $lifetime, $data = [])
     {
         $hash   = App::hash(App::get('client')->name . ':' . $namespace);
 
@@ -69,7 +69,7 @@ class Cookie
 
         if ($str = App::get('request')->getString($hash, '', 'cookie')) {
             $sstr   = $crypt->decrypt($str);
-            $cookie = @unserialize($sstr, array('allowed_classes' => false));
+            $cookie = @unserialize($sstr, ['allowed_classes' => false]);
 
             // A cookie baked under another secret, or plain garbage, does not
             // unserialize; (object) false is an empty but truthy object whose

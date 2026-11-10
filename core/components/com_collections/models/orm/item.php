@@ -44,28 +44,28 @@ class Item extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'type' => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Fields to be parsed
      *
      * @var  array
      */
-    protected $parsed = array(
+    protected $parsed = [
         'description'
-    );
+    ];
 
     /**
      * Return a formatted timestamp for created date
@@ -153,7 +153,7 @@ class Item extends Relational
         if ($this->isNew()) {
             switch (strtolower($as)) {
                 case 'array':
-                    return array();
+                    return [];
                 break;
 
                 case 'string':
@@ -167,7 +167,7 @@ class Item extends Relational
 
         $tags = new Tags($this->get('id'));
 
-        return $tags->render($as, array('admin' => $admin));
+        return $tags->render($as, ['admin' => $admin]);
     }
 
     /**

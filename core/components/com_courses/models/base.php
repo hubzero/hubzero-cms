@@ -49,11 +49,11 @@ abstract class Base extends Model
      * @var array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public static $_section_keys = array(
+    public static $_section_keys = [
         //'section_id',
         'publish_up',
         'publish_down'
-    );
+    ];
 
     /**
      * Registry

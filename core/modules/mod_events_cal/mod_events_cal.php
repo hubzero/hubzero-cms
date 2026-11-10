@@ -121,7 +121,7 @@ class EventsCal extends Module
         }
 
         // An array of the names of the days of the week
-        $day_name = array(
+        $day_name = [
             Lang::txt('EVENTS_CAL_LANG_SUNDAYSHORT'),
             Lang::txt('EVENTS_CAL_LANG_MONDAYSHORT'),
             Lang::txt('EVENTS_CAL_LANG_TUESDAYSHORT'),
@@ -129,7 +129,7 @@ class EventsCal extends Module
             Lang::txt('EVENTS_CAL_LANG_THURSDAYSHORT'),
             Lang::txt('EVENTS_CAL_LANG_FRIDAYSHORT'),
             Lang::txt('EVENTS_CAL_LANG_SATURDAYSHORT')
-        );
+        ];
 
         $this->content = '';
 

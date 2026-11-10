@@ -109,6 +109,6 @@ if ($this->pub->state == 5 || $this->pub->state == 0 || !$this->pub->project()->
     // how to finish, everywhere but on the Review step where the button is.
     // The Review tab is always listed above; the page itself only offers the
     // button once every required field is filled.
-    if (in_array($this->pub->state, array(\Components\Publications\Models\Publication::STATE_DRAFT, \Components\Publications\Models\Publication::STATE_WORKED)) && $active != 'review') { ?>
+    if (in_array($this->pub->state, [\Components\Publications\Models\Publication::STATE_DRAFT, \Components\Publications\Models\Publication::STATE_WORKED]) && $active != 'review') { ?>
         <p class="warning progress-notice"><?php echo Lang::txt($this->pub->isWorked() ? 'PLG_PROJECTS_PUBLICATIONS_PROGRESS_NOTICE_RESUBMIT' : 'PLG_PROJECTS_PUBLICATIONS_PROGRESS_NOTICE'); ?></p>
     <?php } ?>

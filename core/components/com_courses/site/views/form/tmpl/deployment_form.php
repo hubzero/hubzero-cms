@@ -58,10 +58,10 @@ $this->css('jquery.ui.css', 'system');
     </fieldset>
     <fieldset>
         <?php
-            $resultPages = array(
+            $resultPages = [
                 'open' => $this->dep->getResultsOpen(),
                 'closed' => $this->dep->getResultsClosed()
-            );
+            ];
             ?>
         <h3>Results</h3>
         <p>While the form is open, show users:<br />

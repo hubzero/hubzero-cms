@@ -131,7 +131,7 @@ trait MassPrunable
             }
 
             // Fire a single "mass-pruning" system event (optional hook point)
-            Event::trigger('system.onMassPrune', array($instance->getTableName(), $query));
+            Event::trigger('system.onMassPrune', [$instance->getTableName(), $query]);
 
             // Execute the bulk delete in batches and return count
             return $instance->pruneInBatches($query, $chunkSize);

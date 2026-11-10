@@ -56,11 +56,11 @@ class Editors extends Element
         return Builder\Select::genericlist(
             $editors,
             $control_name . '[' . $name . ']',
-            array(
+            [
                 'id'          => $control_name . $name,
                 'list.attr'   => 'class="inputbox"',
                 'list.select' => $value
-            )
+            ]
         );
     }
 }

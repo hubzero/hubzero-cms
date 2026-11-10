@@ -55,7 +55,7 @@ class Assetgroups extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->filters = array(
+        $this->view->filters = [
             'unit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.unit',
                 'unit',
@@ -84,7 +84,7 @@ class Assetgroups extends AdminController
                 0,
                 'int'
             )
-        );
+        ];
 
         $this->view->unit = \Components\Courses\Models\Unit::getInstance($this->view->filters['unit']);
         if (!$this->view->unit->exists()) {
@@ -99,9 +99,9 @@ class Assetgroups extends AdminController
         $rows = $this->view->unit->assetgroups(null, $this->view->filters);
 
         // establish the hierarchy of the menu
-        $children = array(
-            0 => array()
-        );
+        $children = [
+            0 => []
+        ];
 
         $levellimit = ($this->view->filters['limit'] == 0) ? 500 : $this->view->filters['limit'];
 
@@ -112,7 +112,7 @@ class Assetgroups extends AdminController
         }
 
         // second pass - get an indent list of the items
-        $list = $this->treeRecurse(0, '', array(), $children, max(0, $levellimit - 1));
+        $list = $this->treeRecurse(0, '', [], $children, max(0, $levellimit - 1));
 
         $this->view->total = count($list);
 
@@ -180,7 +180,7 @@ class Assetgroups extends AdminController
 
         if (!is_object($model)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
 
             // Get the single ID we're working with
             if (is_array($id)) {
@@ -203,9 +203,9 @@ class Assetgroups extends AdminController
         $rows = $this->view->unit->assetgroups();
 
         // establish the hierarchy of the menu
-        $children = array(
-            0 => array()
-        );
+        $children = [
+            0 => []
+        ];
 
         $levellimit = 500;
 
@@ -216,7 +216,7 @@ class Assetgroups extends AdminController
         }
 
         // second pass - get an indent list of the items
-        $this->view->assetgroups = $this->treeRecurse(0, '', array(), $children, max(0, $levellimit - 1));
+        $this->view->assetgroups = $this->treeRecurse(0, '', [], $children, max(0, $levellimit - 1));
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -240,8 +240,8 @@ class Assetgroups extends AdminController
         Request::checkToken();
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
-        $task = Request::getArray('task', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
+        $task = Request::getArray('task', [], 'post');
 
         // Instantiate a Course object
         $model = new \Components\Courses\Models\Assetgroup($fields['id']);
@@ -252,7 +252,7 @@ class Assetgroups extends AdminController
             return;
         }
 
-        $p = new \Hubzero\Config\Registry(Request::getArray('params', array(), 'post'));
+        $p = new \Hubzero\Config\Registry(Request::getArray('params', [], 'post'));
 
         $model->set('params', $p->toString());
 
@@ -280,7 +280,7 @@ class Assetgroups extends AdminController
     public function copyTask()
     {
         // Incoming
-        $id = Request::getArray('id', array());
+        $id = Request::getArray('id', []);
 
         // Get the single ID we're working with
         if (is_array($id)) {
@@ -329,8 +329,8 @@ class Assetgroups extends AdminController
         Request::checkToken();
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $num = 0;
 
@@ -374,8 +374,8 @@ class Assetgroups extends AdminController
         $state = $this->_task == 'publish' ? 1 : 0;
 
         // Incoming
-        $ids = Request::getArray('id', array(0));
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', [0]);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for an ID
         if (count($ids) < 1) {
@@ -433,8 +433,8 @@ class Assetgroups extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        $id = Request::getArray('id', array(0), 'post');
-        \Hubzero\Utility\Arr::toInteger($id, array(0));
+        $id = Request::getArray('id', [0], 'post');
+        \Hubzero\Utility\Arr::toInteger($id, [0]);
 
         $uid = $id[0];
         $inc = ($this->_task == 'orderup' ? -1 : 1);
@@ -449,7 +449,7 @@ class Assetgroups extends AdminController
         //$unit = \Components\Courses\Models\Unit::getInstance(Request::getInt('unit', 0));
         //$ags = $unit->assetgroups(null, array('parent' => $row->parent));
 
-        if (($ags = $row->find(array('w' => array('parent' => $row->parent, 'unit_id' => $row->unit_id))))) {
+        if (($ags = $row->find(['w' => ['parent' => $row->parent, 'unit_id' => $row->unit_id]]))) {
             foreach ($ags as $ag) {
                 $a = new \Components\Courses\Models\Assetgroup($ag);
                 $a->store();
@@ -492,7 +492,7 @@ class Assetgroups extends AdminController
         Request::setVar('hidemainmenu', 1);
 
         // Incoming Id
-        $id = Request::getArray('id', array());
+        $id = Request::getArray('id', []);
 
         // Get the single ID we're working with
         if (is_array($id)) {
@@ -528,19 +528,19 @@ class Assetgroups extends AdminController
         $this->view->course = \Components\Courses\Models\Course::getInstance($courseId);
 
         // ------------- ASSETS -------------
-        $this->view->filters = array(
+        $this->view->filters = [
             'tmpl' => 'component',
             'asset_scope' => 'asset_group',
             'asset_scope_id' => $scopeId,
             'course_id' => $courseId,
             'limit' => Config::get('list_limit'),
             'start' => 0
-        );
+        ];
 
         $tbl = new Tables\Asset($this->database);
-        $assetRows = $tbl->find(array(
+        $assetRows = $tbl->find([
             'w' => $this->view->filters
-        ));
+        ]);
 
         $this->view->assetrows = $assetRows;
         $this->view->assetsCount = count($assetRows);
@@ -551,9 +551,9 @@ class Assetgroups extends AdminController
         $rows = $this->view->unit->assetgroups();
 
         // Establish the hierarchy of the menu
-        $children = array(
-            0 => array()
-        );
+        $children = [
+            0 => []
+        ];
 
         $levellimit = 500;
 
@@ -564,7 +564,7 @@ class Assetgroups extends AdminController
         }
 
         // 2nd pass - get an indent list of the items
-        $this->view->assetgroups = $this->treeRecurse(0, '', array(), $children, max(0, $levellimit - 1));
+        $this->view->assetgroups = $this->treeRecurse(0, '', [], $children, max(0, $levellimit - 1));
 
         // ------------- OUTPUT TO HTML -------------
         $this->view

@@ -40,10 +40,10 @@ class SessionClassGroup extends Relational
      *
      * @var  array
      **/
-    protected $rules = array(
+    protected $rules = [
         'class_id' => 'positive|nonzero',
         'group_id' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Get relationship to sessionclass

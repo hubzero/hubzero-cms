@@ -49,7 +49,7 @@ trait UsesHtmxDebug
      * @param   array  $options
      * @return  string
      */
-    protected function htmxDebugBar(array $snapshot = array(), array $options = array()): string
+    protected function htmxDebugBar(array $snapshot = [], array $options = []): string
     {
         return Htmx::renderDebugPanel($snapshot, $options);
     }

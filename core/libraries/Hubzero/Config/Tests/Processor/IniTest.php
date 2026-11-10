@@ -104,10 +104,10 @@ sitename_pagetitles=0';
         $data->seo->sitename_pagetitles = 0;
 
         $this->obj = $data;
-        $this->arr = array(
+        $this->arr = [
             'app' => (array) $data->app,
             'seo' => (array) $data->seo
-        );
+        ];
 
         $this->processor = new Ini();
 
@@ -161,8 +161,8 @@ sitename_pagetitles=0';
             'test.ini');
 
         // parse_ini_file with INI_SCANNER_RAW returns all values as strings
-        $expected = array(
-            'app' => array(
+        $expected = [
+            'app' => [
                 'application_env' => 'development',
                 'editor' => 'ckeditor',
                 'list_limit' => '25',
@@ -178,16 +178,16 @@ sitename_pagetitles=0';
                 'gzip' => 'true',
                 'unicodeslugs' => 'false',
                 'version' => '2.2',
-            ),
-            'seo' => array(
+            ],
+            'seo' => [
                 'sef' => '1',
                 'sef_groups' => '0',
                 'sef_rewrite' => '1',
                 'sef_suffix' => '0',
                 'unicodeslugs' => '0',
                 'sitename_pagetitles' => '0',
-            ),
-        );
+            ],
+        ];
 
         $this->assertEquals($expected, $result);
     }
@@ -234,22 +234,22 @@ sitename_pagetitles=0';
     public function testStringToObject()
     {
         // Test that an object is returned as-is
-        $result = $this->processor->stringToObject($this->obj, array('processSections' => true));
+        $result = $this->processor->stringToObject($this->obj, ['processSections' => true]);
 
         $this->assertEquals($this->obj, $result);
 
         // Test that an empty string returns an empty stdClass object
-        $result = $this->processor->stringToObject('', array('processSections' => true));
+        $result = $this->processor->stringToObject('', ['processSections' => true]);
 
         $this->assertEquals(new stdClass(), $result);
 
         // Test that a string gets converted as expected
-        $result = $this->processor->stringToObject($this->str, array('processSections' => true));
+        $result = $this->processor->stringToObject($this->str, ['processSections' => true]);
 
         $this->assertEquals($this->obj, $result);
 
         // Test that a string gets converted as expected
-        $result = $this->processor->stringToObject($this->str, array('processSections' => false));
+        $result = $this->processor->stringToObject($this->str, ['processSections' => false]);
 
         $data = new stdClass();
         $data->application_env = "development";

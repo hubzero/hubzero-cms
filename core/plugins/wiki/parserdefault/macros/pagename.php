@@ -22,7 +22,7 @@ class PageName extends WikiMacro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['wiki'] = "Accepts either 'alias' or 'title' as arg. Returns either the alias (default if no args given) "
             . "or title" . "\n"
             . "of the current page.";

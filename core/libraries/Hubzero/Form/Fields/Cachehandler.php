@@ -32,7 +32,7 @@ class Cachehandler extends Select
     protected function getOptions()
     {
         // Initialize variables.
-        $options = array();
+        $options = [];
 
         // Convert to name => name array.
         foreach (Manager::getStores() as $store) {

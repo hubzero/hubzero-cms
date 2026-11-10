@@ -24,11 +24,11 @@ class Project extends Base
      *
      * @var  array
      */
-    protected $_segments = array(
+    protected $_segments = [
         'option' => 'com_projects',
         'alias' => '',
         'active' => 'notes'
-    );
+    ];
 
     /**
      * Constructor
@@ -127,12 +127,12 @@ class Project extends Base
      */
     public function routing($task = 'save')
     {
-        return array(
+        return [
             'option' => $this->_segments['option'],
             'alias' => $this->_segments['alias'],
             'active' => $this->_segments['active'],
             'action' => $task
-        );
+        ];
     }
 
     /**

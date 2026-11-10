@@ -33,7 +33,7 @@ abstract class Result
      *
      * @var array
      */
-    private static $types = array();
+    private static $types = [];
 
     /**
      * Description for 'excerpt'
@@ -60,8 +60,8 @@ abstract class Result
     protected $date;
     protected $contributors;
     protected $contributor_ids;
-    protected $children = array();
-    protected $weight_log = array();
+    protected $children = [];
+    protected $weight_log = [];
 
     /**
      * Where the result points
@@ -282,7 +282,7 @@ abstract class Result
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_links()
     {
-        $links = array($this->get_link());
+        $links = [$this->get_link()];
         foreach ($this->children as $child) {
             $links = array_merge($links, $child->get_links());
         }
@@ -554,7 +554,7 @@ abstract class Result
     {
         $this->highlight_regex = $regex;
         $hl = "#$regex#ims";
-        foreach (array('title', 'author', 'excerpt') as $key) {
+        foreach (['title', 'author', 'excerpt'] as $key) {
             if (!empty($this->$key)) {
                 $hlkey = "{$key}_highlighted";
                 $this->$hlkey = preg_replace($hl, '<span class="highlight">$1</span>', $this->$key);

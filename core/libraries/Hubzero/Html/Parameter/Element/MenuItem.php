@@ -90,30 +90,30 @@ class MenuItem extends Element
 
         // Establish the hierarchy of the menu
         // TODO: use node model
-        $children = array();
+        $children = [];
 
         if ($menuItems) {
             // First pass - collect children
             foreach ($menuItems as $v) {
                 $pt = $v->parent_id;
-                $list = @$children[$pt] ? $children[$pt] : array();
+                $list = @$children[$pt] ? $children[$pt] : [];
                 array_push($list, $v);
                 $children[$pt] = $list;
             }
         }
 
         // Second pass - get an indent list of the items
-        $list = Builder\Menu::treerecurse(0, '', array(), $children, 9999, 0, 0);
+        $list = Builder\Menu::treerecurse(0, '', [], $children, 9999, 0, 0);
 
         // Assemble into menutype groups
         $n = count($list);
-        $groupedList = array();
+        $groupedList = [];
         foreach ($list as $k => $v) {
             $groupedList[$v->menutype][] = &$list[$k];
         }
 
         // Assemble menu items to the array
-        $options = array();
+        $options = [];
         $options[] = Select::option('', App::get('language')->txt('JOPTION_SELECT_MENU_ITEM'));
 
         foreach ($menuTypes as $type) {
@@ -130,7 +130,7 @@ class MenuItem extends Element
 
                     // If menutype is changed but item is not saved yet, use the new type in the list
                     if (Request::getString('option', '', 'get') == 'com_menus') {
-                        $currentItemArray = Request::getVar('cid', array(0), '', 'array');
+                        $currentItemArray = Request::getVar('cid', [0], '', 'array');
                         $currentItemId    = (int) $currentItemArray[0];
                         $currentItemType  = Request::getString('type', $item->type, 'get');
                         if ($currentItemId == $item->id && $currentItemType != $item->type) {
@@ -148,11 +148,11 @@ class MenuItem extends Element
         return Select::genericlist(
             $options,
             $control_name . '[' . $name . ']',
-            array(
+            [
                 'id' => $control_name . $name,
                 'list.attr' => 'class="inputbox"',
                 'list.select' => $value
-            )
+            ]
         );
     }
 }

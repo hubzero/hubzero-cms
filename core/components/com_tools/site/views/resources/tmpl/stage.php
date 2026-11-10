@@ -12,13 +12,13 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$this->stages = array(
+$this->stages = [
     Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_DESCRIPTION'),
     Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_CONTRIBUTORS'),
     Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_ATTACHMENTS'),
     Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_TAGS'),
     Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_FINALIZE')
-);
+];
 $key = $this->stage - 1;
 $stageEditTip = ($this->version == 'dev')
     ? Lang::txt('COM_TOOLS_CONTRIBTOOL_TIP_NEXT_TOOL_RELEASE')

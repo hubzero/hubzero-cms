@@ -201,7 +201,7 @@ class Commentsv1r0 extends ApiController
             $obj = $obj->whereEquals('ticket', $ticketId);
         }
 
-        $filters = array(
+        $filters = [
             'limit'      => Request::getInt('limit', 25),
             'start'      => Request::getInt('limitstart', 0),
             'search'     => Request::getString('search', ''),
@@ -213,7 +213,7 @@ class Commentsv1r0 extends ApiController
             'type'       => Request::getInt('type', 0),
             'status'     => strtolower(Request::getWord('status', '')),
             'tag'        => Request::getWord('tag', ''),
-        );
+        ];
 
         // (opened/closed filters were computed here with a _toTimestamp()
         // this class never defined -- a fatal on every call -- and, like the
@@ -222,7 +222,7 @@ class Commentsv1r0 extends ApiController
         $response = new stdClass();
         $response->success  = true;
         $response->total    = 0;
-        $response->comments = array();
+        $response->comments = [];
 
         // Get a list of all statuses
         $statuses = \Components\Support\Models\Status::all()->rows();
@@ -233,7 +233,7 @@ class Commentsv1r0 extends ApiController
         $response->total = $obj->copy()->total();
 
         if ($response->total) {
-            $sort = in_array($filters['sort'], array('created', 'id')) ? $filters['sort'] : 'created';
+            $sort = in_array($filters['sort'], ['created', 'id']) ? $filters['sort'] : 'created';
             $dir  = $filters['sortdir'] == 'ASC' ? 'asc' : 'desc';
 
             $rows = $obj
@@ -360,12 +360,12 @@ class Commentsv1r0 extends ApiController
 
         if ($ticket->get('owner')) {
             // (owner() and config() below were Table-era accessors the model no longer has)
-            $comment->addTo(array(
+            $comment->addTo([
                 'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_OWNER'),
                 'name'  => $ticket->assignee->get('name'),
                 'email' => $ticket->assignee->get('email'),
                 'id'    => $ticket->assignee->get('id')
-            ));
+            ]);
         }
 
         // Add any CCs to the e-mail list
@@ -386,20 +386,20 @@ class Commentsv1r0 extends ApiController
 
             $subject = Lang::txt('COM_SUPPORT_EMAIL_SUBJECT_TICKET_COMMENT', $ticket->get('id'));
 
-            $from = array(
+            $from = [
                 'name'      => Lang::txt('COM_SUPPORT_EMAIL_FROM', Config::get('sitename')),
                 'email'     => Config::get('mailfrom'),
                 'multipart' => md5(date('U'))
-            );
+            ];
 
-            $message = array();
+            $message = [];
 
             // Plain text email
-            $eview = new \Hubzero\Mail\View(array(
+            $eview = new \Hubzero\Mail\View([
                 'base_path' => dirname(dirname(__DIR__)) . '/site',
                 'name'      => 'emails',
                 'layout'    => 'comment_plain'
-            ));
+            ]);
             $eview->option     = 'com_support';
             $eview->controller = 'tickets';
             $eview->comment    = $comment;
@@ -422,7 +422,7 @@ class Commentsv1r0 extends ApiController
                 }
 
                 // Get the user's email address
-                if (!Event::trigger('xmessage.onSendMessage', array('support_reply_submitted', $subject, $message, $from, array($to['id']), 'com_support'))) {
+                if (!Event::trigger('xmessage.onSendMessage', ['support_reply_submitted', $subject, $message, $from, [$to['id']], 'com_support'])) {
                     // not notified: an API controller has no error bag, so say so
                     // in the log rather than losing it
                     Log::warning(Lang::txt(
@@ -442,10 +442,10 @@ class Commentsv1r0 extends ApiController
                 if ($allowEmailResponses) {
                     $token = $encryptor->buildEmailToken(1, 1, -9999, $ticket->get('id'));
 
-                    $email = array(
+                    $email = [
                         $to['email'],
                         'htc-' . $token . strstr(Config::get('mailfrom'), '@')
-                    );
+                    ];
 
                     // In this case each item in email in an array, 1- To, 2:reply to address
                     \Components\Support\Helpers\Utilities::sendEmail($email[0], $subject, $message, $from, $email[1]);

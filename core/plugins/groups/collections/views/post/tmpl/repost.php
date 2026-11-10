@@ -113,7 +113,7 @@ $formAction = Route::url(
             <label for="field_description">
                 <?php echo Lang::txt('Add a description'); ?>
 <?php
-$editorAttrs = array('class' => 'form-control minimal no-footer');
+$editorAttrs = ['class' => 'form-control minimal no-footer'];
 echo $this->editor(
     'description',
     '',

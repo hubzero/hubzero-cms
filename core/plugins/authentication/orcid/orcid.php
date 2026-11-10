@@ -267,11 +267,11 @@ class Orcid extends \Hubzero\Plugin\OauthClient
 
                 // If we have a real user, drop the authenticator cookie
                 // Set cookie with login preference info
-                $prefs = array(
+                $prefs = [
                     'user_id'       => $hzal->user_id,
                     'user_img'      => null,
                     'authenticator' => 'orcid'
-                );
+                ];
 
                 $namespace = 'authenticator';
                 $lifetime  = time() + 365 * 24 * 60 * 60;
@@ -304,7 +304,7 @@ class Orcid extends \Hubzero\Plugin\OauthClient
      * @param   array  $options
      * @return  void
      */
-    public function link($options = array())
+    public function link($options = [])
     {
         // Set up the config for the ORCID api instance
         $oauth = new \Orcid\Oauth();

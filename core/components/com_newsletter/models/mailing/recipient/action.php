@@ -41,10 +41,10 @@ class Action extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'action'    => 'notempty',
         'mailingid' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Defines a belongs to one relationship between mailing and recipient

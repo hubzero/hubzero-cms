@@ -48,7 +48,7 @@ class Articles extends AdminController
     public function displayTask()
     {
         // Get filters
-        $filters = array(
+        $filters = [
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
@@ -76,17 +76,17 @@ class Articles extends AdminController
                 0,
                 'int'
             )
-        );
+        ];
 
         // ordered() treats a dotted sort as relationship.field and stores
         // whatever it is given in the session, so confine both to the
         // columns the grid offers and re-store anything else as the default
-        if (!in_array($filters['sort'], array('title', 'state', 'access', 'id'), true)) {
+        if (!in_array($filters['sort'], ['title', 'state', 'access', 'id'], true)) {
             $filters['sort'] = 'title';
             User::setState($this->_option . '.' . $this->_controller . '.sort', $filters['sort']);
         }
         $filters['sort_Dir'] = strtoupper((string) $filters['sort_Dir']);
-        if (!in_array($filters['sort_Dir'], array('ASC', 'DESC'), true)) {
+        if (!in_array($filters['sort_Dir'], ['ASC', 'DESC'], true)) {
             $filters['sort_Dir'] = 'ASC';
             User::setState($this->_option . '.' . $this->_controller . '.sortdir', $filters['sort_Dir']);
         }
@@ -142,7 +142,7 @@ class Articles extends AdminController
 
         if (!is_object($row)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id) && !empty($id)) {
                 $id = $id[0];
             }
@@ -201,18 +201,18 @@ class Articles extends AdminController
         }
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         // Initiate extended database class
         $row = Article::oneOrNew($fields['id'])->set($fields);
 
         // Get parameters
-        $params = Request::getArray('params', array(), 'post');
+        $params = Request::getArray('params', [], 'post');
 
         $p = $row->param();
 
         if (is_array($params)) {
-            $txt = array();
+            $txt = [];
             foreach ($params as $k => $v) {
                 $p->set($k, $v);
             }
@@ -257,8 +257,8 @@ class Articles extends AdminController
 
         // Incoming
         $cid = Request::getInt('cid', 0);
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $i = 0;
 
@@ -301,8 +301,8 @@ class Articles extends AdminController
 
         // Incoming
         $cid = Request::getInt('cid', 0);
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for an ID
         if (count($ids) < 1) {
@@ -345,7 +345,7 @@ class Articles extends AdminController
      */
     public function cancelTask()
     {
-        $filters = Request::getArray('filters', array());
+        $filters = Request::getArray('filters', []);
 
         if (isset($filters['id']) && $filters['id']) {
             // Bind the posted data to the article object and check it in

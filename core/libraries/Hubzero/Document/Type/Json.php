@@ -31,7 +31,7 @@ class Json extends Base
      * @param   array  $options  Associative array of options
      * @return  void
      */
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         parent::__construct($options);
 
@@ -49,7 +49,7 @@ class Json extends Base
      * @param   array    $params  Associative array of attributes
      * @return  object   The rendered data
      */
-    public function render($cache = false, $params = array())
+    public function render($cache = false, $params = [])
     {
         App::get('response')->headers->set('Cache-Control', 'no-cache', false);
         App::get('response')->headers->set('Pragma', 'no-cache');

@@ -26,7 +26,7 @@ class Mytodos extends Module
      */
     public function display()
     {
-        $this->rows = array();
+        $this->rows = [];
 
         // Find the user's most recent to do items
         if (!User::isGuest()) {

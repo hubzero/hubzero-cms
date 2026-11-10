@@ -47,13 +47,13 @@ class Team extends AdminController
     public function displayTask()
     {
         // Incoming
-        $filters = array(
+        $filters = [
             'project' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.project',
                 'project',
                 ''
             )
-        );
+        ];
 
         // Ensure we have a group ID
         if (!$filters['project']) {
@@ -100,10 +100,10 @@ class Team extends AdminController
             'int'
         );
 
-        if (!in_array($filters['sortdir'], array('ASC', 'DESC'))) {
+        if (!in_array($filters['sortdir'], ['ASC', 'DESC'])) {
             $filters['sortdir'] = 'ASC';
         }
-        if (!in_array($filters['sortby'], array('group', 'added', 'date', 'role', 'name', 'status'))) {
+        if (!in_array($filters['sortby'], ['group', 'added', 'date', 'role', 'name', 'status'])) {
             $filters['sortby'] = 'name';
         }
 
@@ -193,8 +193,8 @@ class Team extends AdminController
         // Result collectors
         $m_added = 0; // count of individual members added
         $g_added = 0; // count of members from new group
-        $uids    = array(); // ids/emails of added people
-        $invalid = array(); // collector for invalid names
+        $uids    = []; // ids/emails of added people
+        $invalid = []; // collector for invalid names
 
         // Setup stage?
         $setup = $this->model->inSetup();
@@ -283,13 +283,13 @@ class Team extends AdminController
         $model = new Project($project_id);
 
         //$ids   = Request::getArray('id', array());
-        $roles = Request::getArray('role', array());
+        $roles = Request::getArray('role', []);
 
         // Instantiate project owner
         $objO = $model->table('Owner');
 
         foreach ($roles as $id => $role) {
-            $checked = array($id);
+            $checked = [$id];
             //$role = (isset($roles[$id]) ? $roles[$id] : 0);
 
             // Changing role(s)
@@ -302,7 +302,7 @@ class Team extends AdminController
                 $remaining = array_diff($all, $checked);
 
                 if (!$remaining && count($all) > 0) {
-                    $left = array_diff($checked, array($all[0])); // leave one manager
+                    $left = array_diff($checked, [$all[0]]); // leave one manager
 
                     Notify::error(Lang::txt('PLG_PROJECTS_TEAM_OWNERS_REASSIGN_NOMANAGERS'));
                 }
@@ -336,7 +336,7 @@ class Team extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $checked = Request::getArray('id', array());
+        $checked = Request::getArray('id', []);
         //$groups  = Request::getArray('group', array());
         $project_id = Request::getInt('project', 0);
 
@@ -362,7 +362,7 @@ class Team extends AdminController
             }
         } else {
             if (count($all) > 0) {
-                $left = array_diff($checked, array($all[0])); // leave one manager
+                $left = array_diff($checked, [$all[0]]); // leave one manager
                 $deleted = $objO->removeOwners($this->model->get('id'), $left, 1);
             }
 

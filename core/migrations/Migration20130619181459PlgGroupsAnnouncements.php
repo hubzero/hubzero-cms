@@ -42,10 +42,10 @@ class Migration20130619181459PlgGroupsAnnouncements extends Base
                 ->execute();
         }
 
-        $params = array(
+        $params = [
             'plugin_access' => 'members',
             'display_tab'   => 1
-        );
+        ];
 
         $this->addPluginEntry('groups', 'announcements', 1, $params);
 

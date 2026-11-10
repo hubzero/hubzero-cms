@@ -44,7 +44,7 @@ class Manager extends Obj
      *
      * @var  array
      */
-    protected $data = array();
+    protected $data = [];
 
     /**
      * Group total
@@ -66,7 +66,7 @@ class Manager extends Obj
      * @param   array  $config  An array of configuration options
      * @return  void
      */
-    public function __construct($config = array())
+    public function __construct($config = [])
     {
         parent::__construct();
 
@@ -137,7 +137,7 @@ class Manager extends Obj
                 'filter_order',
                 'group'
             );
-            if (!in_array($value, array('group', 'count', 'size'))) {
+            if (!in_array($value, ['group', 'count', 'size'])) {
                 $value = 'group';
             }
             $this->state->set('list.ordering', $value);
@@ -148,7 +148,7 @@ class Manager extends Obj
                 'filter_order_Dir',
                 'asc'
             );
-            if (!in_array(strtoupper($value), array('ASC', 'DESC', ''))) {
+            if (!in_array(strtoupper($value), ['ASC', 'DESC', ''])) {
                 $value = 'asc';
             }
             $this->state->set('list.direction', $value);
@@ -168,7 +168,7 @@ class Manager extends Obj
     public function data()
     {
         if (empty($this->data)) {
-            $this->data = array();
+            $this->data = [];
 
             $cache = $this->cache();
             $data  = $cache->all();

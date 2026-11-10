@@ -67,7 +67,7 @@ class Members extends AdminController
     public function displayTask()
     {
         // Get filters
-        $filters = array(
+        $filters = [
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
@@ -121,7 +121,7 @@ class Members extends AdminController
                 'range',
                 ''
             )
-        );
+        ];
 
         // Build query
         $entries = Member::all();
@@ -283,7 +283,7 @@ class Members extends AdminController
 
         if (!$user) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
 
             // Get the single ID we're working with
             if (is_array($id)) {
@@ -298,14 +298,14 @@ class Members extends AdminController
 
         // Get password rules
         // Get the password rule descriptions
-        $password_rules = array();
+        $password_rules = [];
         foreach (\Hubzero\Password\Rule::all()->whereEquals('enabled', 1)->rows() as $rule) {
             if (!empty($rule['description'])) {
                 $password_rules[] = $rule['description'];
             }
         }
 
-        $tabs = Event::trigger('members.onUserEdit', array($user));
+        $tabs = Event::trigger('members.onUserEdit', [$user]);
 
         // Output the HTML
         $this->view
@@ -339,7 +339,7 @@ class Members extends AdminController
         }
 
         // Incoming profile edits
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         // Load the profile
         $user = Member::oneOrNew(isset($fields['id']) ? (int) $fields['id'] : 0);
@@ -399,7 +399,7 @@ class Members extends AdminController
                     $newUsertype = Accessgroup::oneByTitle('Registered')->get('id');
                 }
 
-                $user->set('accessgroups', array($newUsertype));
+                $user->set('accessgroups', [$newUsertype]);
             }
 
             // Check that username is filled
@@ -429,11 +429,11 @@ class Members extends AdminController
         $user->set('givenName', $givenTrimmed);
         $user->set('middleName', $middleTrimmed);
         $user->set('surname', $surTrimmed);
-        $name = array(
+        $name = [
             $givenTrimmed,
             $middleTrimmed,
             $surTrimmed
-        );
+        ];
         $name = implode(' ', $name);
         $name = \Hubzero\Utility\Sanitize::cleanProperName($name);
 
@@ -464,7 +464,7 @@ class Members extends AdminController
             // Check that at least one of our new groups is Super Admin
             $stillSuperAdmin = false;
 
-            foreach ((array) (isset($fields['accessgroups']) ? $fields['accessgroups'] : array()) as $group) {
+            foreach ((array) (isset($fields['accessgroups']) ? $fields['accessgroups'] : []) as $group) {
                 $stillSuperAdmin = ($stillSuperAdmin ? $stillSuperAdmin : Access::checkGroup($group, 'core.admin'));
             }
 
@@ -481,8 +481,8 @@ class Members extends AdminController
         }
 
         // Save profile data
-        $profile = Request::getArray('profile', array(), 'post');
-        $access  = Request::getArray('profileaccess', array(), 'post');
+        $profile = Request::getArray('profile', [], 'post');
+        $access  = Request::getArray('profileaccess', [], 'post');
 
         // Querying the organization id on ror.org.
         // If RoR Api is turned off because of failed API or if key doesn't exist, don't retrieve list from Api.
@@ -703,12 +703,12 @@ class Members extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $ids    = array_filter(array_map('intval', (array) Request::getArray('id', array(), 'post')));
-        $batch  = (array) Request::getArray('batch', array(), 'post');
+        $ids    = array_filter(array_map('intval', (array) Request::getArray('id', [], 'post')));
+        $batch  = (array) Request::getArray('batch', [], 'post');
         $gid    = isset($batch['group_id']) ? (int) $batch['group_id'] : 0;
         $action = isset($batch['group_action']) ? (string) $batch['group_action'] : '';
 
-        if (empty($ids) || !$gid || !in_array($action, array('add', 'del', 'set'))) {
+        if (empty($ids) || !$gid || !in_array($action, ['add', 'del', 'set'])) {
             Notify::warning(Lang::txt('COM_MEMBERS_BATCH_NO_SELECTION'));
             return $this->cancelTask();
         }
@@ -776,8 +776,8 @@ class Members extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Do we have any IDs?
         $i = 0;
@@ -809,7 +809,7 @@ class Members extends AdminController
                     continue;
                 }
 
-                Event::trigger('user.onUserAfterDelete', array($data, true, $this->getError()));
+                Event::trigger('user.onUserAfterDelete', [$data, true, $this->getError()]);
 
                 $i++;
             }
@@ -844,8 +844,8 @@ class Members extends AdminController
         $state = ($this->getTask() == 'confirm' ? 1 : 0);
 
         // Incoming user ID
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Do we have an ID?
         if (empty($ids)) {
@@ -909,8 +909,8 @@ class Members extends AdminController
         $state = ($this->getTask() == 'approve' ? 1 : 0);
 
         // Incoming user ID
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Do we have an ID?
         if (empty($ids)) {
@@ -1025,11 +1025,11 @@ class Members extends AdminController
         );
 
         // Compute the mail body.
-        $eview = new \Hubzero\Mail\View(array(
+        $eview = new \Hubzero\Mail\View([
             'base_path' => dirname(dirname(__DIR__)) . DS . 'site',
             'name'      => 'emails',
             'layout'    => 'approved_plain'
-        ));
+        ]);
         $eview->option     = $this->_option;
         $eview->controller = $this->_controller;
         $eview->config     = $this->config;
@@ -1119,8 +1119,8 @@ class Members extends AdminController
         }
 
         // Incoming user ID
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // No Id, throw up a warning
         if (empty($ids)) {
@@ -1141,7 +1141,7 @@ class Members extends AdminController
 
             // Can't rely on any order the plugins run in. Setting the deletion profile key in controller before calling the plugins
             $insert_UserProfileWithStatus_Query = "INSERT INTO `#__user_profiles` (`user_id`, `profile_key`, `profile_value`) values (?, 'deletion', 'marked')";
-            $this->runInsertQuery($insert_UserProfileWithStatus_Query, array($id));
+            $this->runInsertQuery($insert_UserProfileWithStatus_Query, [$id]);
 
             // Running the plugin with all deletions
             $result = Event::trigger('user.onUserDeidentify', $id);
@@ -1187,8 +1187,8 @@ class Members extends AdminController
         $state = ($this->getTask() == 'block' ? 1 : 0);
 
         // Incoming user ID
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Do we have an ID?
         if (empty($ids)) {
@@ -1292,11 +1292,11 @@ class Members extends AdminController
             return;
         }
 
-        $filters = array(
+        $filters = [
             'limit'  => 20,
             'start'  => 0,
             'search' => strtolower(trim(Request::getString('value', '')))
-        );
+        ];
 
         // Fetch results
         $entries = Member::all()
@@ -1315,12 +1315,12 @@ class Members extends AdminController
             ->rows();
 
         // Output search results in JSON format
-        $json = array();
+        $json = [];
 
         foreach ($rows as $row) {
-            $obj = array();
+            $obj = [];
             $obj['id']      = $row->get('id');
-            $obj['name']    = str_replace(array("\n", "\r", '\\'), '', $row->get('name'));
+            $obj['name']    = str_replace(["\n", "\r", '\\'], '', $row->get('name'));
             $obj['picture'] = $row->picture();
 
             $json[] = $obj;
@@ -1380,7 +1380,7 @@ class Members extends AdminController
     {
 
         // Get filters
-        $filters = array(
+        $filters = [
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.debug.search',
                 'search',
@@ -1413,7 +1413,7 @@ class Members extends AdminController
                 'filter_component',
                 ''
             )
-        );
+        ];
 
         if ($filters['level_end'] > 0 && $filters['level_end'] < $filters['level_start']) {
             $filters['level_end'] = $filters['level_start'];
@@ -1458,7 +1458,7 @@ class Members extends AdminController
         $assets->clear();
 
         foreach ($data as $key => $asset) {
-            $checks = array();
+            $checks = [];
 
             foreach ($actions as $action) {
                 $name  = $action[0];
@@ -1555,7 +1555,7 @@ class Members extends AdminController
             ->rows();
 
         // Collect old fields
-        $oldFields = array();
+        $oldFields = [];
         foreach ($fields as $oldField) {
             $oldFields[$oldField->get('id')] = $oldField;
         }
@@ -1574,7 +1574,7 @@ class Members extends AdminController
             }
 
             $field = ($field ?: Field::oneOrNew($fid));
-            $field->set(array(
+            $field->set([
                 'type'          => (string) $element->field_type,
                 'label'         => (string) $element->label,
                 'name'          => (string) $element->name,
@@ -1594,7 +1594,7 @@ class Members extends AdminController
                 'max'           => (isset($element->field_options->max) ? (int) $element->field_options->max : 0),
                 'default_value' => (isset($element->field_options->value) ? (string) $element->field_options->value : ''),
                 'placeholder'   => (isset($element->field_options->placeholder) ? (string) $element->field_options->placeholder : '')
-            ));
+            ]);
 
             if ($field->get('type') == 'dropdown') {
                 $field->set('type', 'select');
@@ -1609,7 +1609,7 @@ class Members extends AdminController
             }
 
             // Collect old options
-            $oldOptions = array();
+            $oldOptions = [];
             foreach ($field->options as $oldOption) {
                 $oldOptions[$oldOption->get('id')] = $oldOption;
             }
@@ -1629,7 +1629,7 @@ class Members extends AdminController
                         unset($oldOptions[$oid]);
                     }
 
-                    $dependents = array();
+                    $dependents = [];
                     if (isset($opt->dependents)) {
                         $dependents = explode(',', trim($opt->dependents));
                         $dependents = array_map('trim', $dependents);
@@ -1641,14 +1641,14 @@ class Members extends AdminController
                     }
 
                     $option = ($option ?: Option::oneOrNew($oid));
-                    $option->set(array(
+                    $option->set([
                         'field_id'   => $field->get('id'),
                         'label'      => (string) $opt->label,
                         'value'      => (isset($opt->value)   ? (string) $opt->value : ''),
                         'checked'    => (isset($opt->checked) ? (int) $opt->checked : 0),
                         'ordering'   => ($k + 1),
                         'dependents' => json_encode($dependents)
-                    ));
+                    ]);
 
                     if (!$option->save()) {
                         Notify::error($option->getError());
@@ -1706,7 +1706,7 @@ class Members extends AdminController
             ->whereEquals('enabled', 1)
             ->rows();
 
-        $pw_rules = array();
+        $pw_rules = [];
 
         // Get the password rule descriptions
         foreach ($password_rules as $rule) {
@@ -1722,7 +1722,7 @@ class Members extends AdminController
         if (!empty($pw)) {
             $msg = \Hubzero\Password\Rule::verify($pw, $password_rules, $userid);
         } else {
-            $msg = array();
+            $msg = [];
         }
 
         $html = '';
@@ -1774,7 +1774,7 @@ class Members extends AdminController
             $words = array_values(array_filter($words, function ($w) {
                 return $w !== '';
             }));
-            $parts = array();
+            $parts = [];
             foreach ($words as $i => $word) {
                 $suffix = ($i === count($words) - 1) ? '*' : '';
                 $parts[] = 'names.value:' . $word . $suffix;

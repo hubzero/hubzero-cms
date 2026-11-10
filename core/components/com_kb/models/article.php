@@ -50,41 +50,41 @@ class Article extends Relational implements \Hubzero\Search\Searchable
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'title'    => 'notempty',
         'category' => 'positive|nonzero',
         'fulltxt'  => 'notempty'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      **/
-    public $always = array(
+    public $always = [
         'alias',
         'modified',
         'modified_by'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Fields to be parsed
      *
      * @var  array
      **/
-    protected $parsed = array(
+    protected $parsed = [
         'fulltxt'
-    );
+    ];
 
     /**
      * Base URL
@@ -262,7 +262,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
         if (!$this->get('id')) {
             switch (strtolower($as)) {
                 case 'array':
-                    return array();
+                    return [];
                 break;
 
                 case 'string':
@@ -276,7 +276,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 
         $cloud = new Tags($this->get('id'));
 
-        return $cloud->render($as, array('admin' => $admin));
+        return $cloud->render($as, ['admin' => $admin]);
     }
 
     /**
@@ -386,11 +386,11 @@ class Article extends Relational implements \Hubzero\Search\Searchable
         }
 
         // The phrase, else whichever of its words comes first
-        $terms    = array($needle);
+        $terms    = [$needle];
         $position = mb_stripos($text, $needle, 0, 'UTF-8');
 
         if ($position === false) {
-            $terms = array();
+            $terms = [];
 
             foreach (array_unique(preg_split('/ /', $needle)) as $word) {
                 $at = mb_stripos($text, $word, 0, 'UTF-8');
@@ -477,7 +477,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 
         $al = new Vote();
 
-        $vote = $al->automaticVote(array('vote' => $vote));
+        $vote = $al->automaticVote(['vote' => $vote]);
 
         if ($vote === 0) {
             $this->addError(Lang::txt('No vote provided'));
@@ -495,7 +495,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
         // Has user voted before?
         $previous = $al->find($al->get('object_id'), $al->get('user_id'), $al->get('ip'), $al->get('type'));
         if ($previous->get('vote')) {
-            $voted = $al->automaticVote(array('vote' => $previous->get('vote')));
+            $voted = $al->automaticVote(['vote' => $previous->get('vote')]);
 
             // If the old vote is not the same as the new vote
             if ($voted != $vote) {
@@ -631,7 +631,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 
         \Hubzero\Form\Form::addFieldPath(__DIR__ . '/fields');
 
-        $form = new \Hubzero\Form\Form('article', array('control' => 'fields'));
+        $form = new \Hubzero\Form\Form('article', ['control' => 'fields']);
 
         if (!$form->loadFile($file, false, '//form')) {
             $this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));

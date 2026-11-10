@@ -33,7 +33,7 @@ class Citations extends Plugin
      */
     public function &onResourcesAreas($model)
     {
-        $areas = array();
+        $areas = [];
 
         if (
             $model->type->params->get('plg_citations')
@@ -56,11 +56,11 @@ class Citations extends Plugin
      */
     public function onResources($model, $option, $areas, $rtrn = 'all')
     {
-        $arr = array(
+        $arr = [
             'area'     => $this->_name,
             'html'     => '',
             'metadata' => ''
-        );
+        ];
 
         // Check if our area is in the array of areas we want to return results for
         if (is_array($areas)) {
@@ -95,11 +95,11 @@ class Citations extends Plugin
         if ($rtrn == 'all' || $rtrn == 'html') {
             // Instantiate a view
             $view = new \Hubzero\Plugin\View(
-                array(
+                [
                     'folder'  => $this->_type,
                     'element' => $this->_name,
                     'name'    => 'browse'
-                )
+                ]
             );
 
             // Pass the view some info
@@ -118,11 +118,11 @@ class Citations extends Plugin
         // Are we returning metadata?
         if ($rtrn == 'all' || $rtrn == 'metadata') {
             $view = new \Hubzero\Plugin\View(
-                array(
+                [
                     'folder'  => $this->_type,
                     'element' => $this->_name,
                     'name'    => 'metadata'
-                )
+                ]
             );
             $view->url = Route::url($model->link() . '&active=citations');
             $view->citations = $citations;

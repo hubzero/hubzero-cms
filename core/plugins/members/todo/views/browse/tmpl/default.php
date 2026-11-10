@@ -23,14 +23,14 @@ $this->css('jquery.datepicker.css', 'system')
     ->js()
     ->js('jquery.timepicker', 'system');
 
-$filters = array('projects' => $this->projects);
+$filters = ['projects' => $this->projects];
 $url = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active=todo';
 
-$cfilters = array(
+$cfilters = [
     'mine'  => 1,
     'active' => 1,
     'editor' => 1
-);
+];
 
 ?>
 <h3 class="section-header">
@@ -70,13 +70,13 @@ if ($isOwnerNoProjects || $noTodoEntries) { ?>
         // Get shared todo items from blog plugin
         $results = Event::trigger(
             'projects.onShared',
-            array(
+            [
             'todo',
             $this->model,
             $this->projects,
             $this->member->get('id'),
             $this->filters
-            )
+            ]
         );
         echo implode("\n", $results);
         ?>

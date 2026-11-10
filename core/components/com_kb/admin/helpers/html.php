@@ -25,7 +25,7 @@ class Html
      */
     public static function categories($categories, $val, $name, $id = null, $atts = null)
     {
-        $selectId = $id ? $id : str_replace(array('[', ']'), '', $name);
+        $selectId = $id ? $id : str_replace(['[', ']'], '', $name);
         $out  = '<select name="' . $name . '" id="' . $selectId . '"' . ($atts ? ' ' . $atts : '') . '>';
         $out .= '<option value="">' . Lang::txt('COM_KB_SELECT_CATEGORY') . '</option>';
         foreach ($categories as $category) {

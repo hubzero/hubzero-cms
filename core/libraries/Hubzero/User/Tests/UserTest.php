@@ -26,16 +26,16 @@ class UserTest extends Basic
 	public function testNewAccountWithBadValuesIsRefused()
 	{
 		$this->assertCount(1, User::identityErrors(
-			array('username' => 'milanfar@ucsc.edu', 'homeDirectory' => '/home/nanohub/milanfar'),
-			array()
+			['username' => 'milanfar@ucsc.edu', 'homeDirectory' => '/home/nanohub/milanfar'],
+			[]
 		));
 		$this->assertCount(1, User::identityErrors(
-			array('username' => 'milanfar', 'homeDirectory' => '/home/nanohub/mil anfar'),
-			array()
+			['username' => 'milanfar', 'homeDirectory' => '/home/nanohub/mil anfar'],
+			[]
 		));
 		$this->assertCount(2, User::identityErrors(
-			array('username' => 'a b', 'homeDirectory' => '/home/nanohub/a b'),
-			array()
+			['username' => 'a b', 'homeDirectory' => '/home/nanohub/a b'],
+			[]
 		));
 	}
 
@@ -46,9 +46,9 @@ class UserTest extends Basic
 	 */
 	public function testNewAccountWithGoodValuesIsAccepted()
 	{
-		$this->assertSame(array(), User::identityErrors(
-			array('username' => 'milanfar', 'homeDirectory' => '/home/nanohub/milanfar'),
-			array()
+		$this->assertSame([], User::identityErrors(
+			['username' => 'milanfar', 'homeDirectory' => '/home/nanohub/milanfar'],
+			[]
 		));
 	}
 
@@ -60,13 +60,13 @@ class UserTest extends Basic
 	 */
 	public function testPlaceholderAccountIsAccepted()
 	{
-		$this->assertSame(array(), User::identityErrors(
-			array('username' => '-123', 'homeDirectory' => ''),
-			array()
+		$this->assertSame([], User::identityErrors(
+			['username' => '-123', 'homeDirectory' => ''],
+			[]
 		));
-		$this->assertSame(array(), User::identityErrors(
-			array('username' => '-123', 'homeDirectory' => ''),
-			array('username' => '-123', 'homeDirectory' => '')
+		$this->assertSame([], User::identityErrors(
+			['username' => '-123', 'homeDirectory' => ''],
+			['username' => '-123', 'homeDirectory' => '']
 		));
 	}
 
@@ -77,9 +77,9 @@ class UserTest extends Basic
 	 */
 	public function testDeidentifiedAccountIsAccepted()
 	{
-		$this->assertSame(array(), User::identityErrors(
-			array('username' => 'anonUsername_123', 'homeDirectory' => ''),
-			array('username' => 'anonUsername_123', 'homeDirectory' => '')
+		$this->assertSame([], User::identityErrors(
+			['username' => 'anonUsername_123', 'homeDirectory' => ''],
+			['username' => 'anonUsername_123', 'homeDirectory' => '']
 		));
 	}
 
@@ -91,9 +91,9 @@ class UserTest extends Basic
 	 */
 	public function testUnchangedLegacyValuesAreAccepted()
 	{
-		$legacy = array('username' => 'milanfar@ucsc.edu', 'homeDirectory' => '/home/nanohub/milanfar@ucsc.edu');
+		$legacy = ['username' => 'milanfar@ucsc.edu', 'homeDirectory' => '/home/nanohub/milanfar@ucsc.edu'];
 
-		$this->assertSame(array(), User::identityErrors($legacy, $legacy));
+		$this->assertSame([], User::identityErrors($legacy, $legacy));
 	}
 
 	/**
@@ -103,14 +103,14 @@ class UserTest extends Basic
 	 */
 	public function testChangedBadValuesAreRefused()
 	{
-		$old = array('username' => 'milanfar', 'homeDirectory' => '/home/nanohub/milanfar');
+		$old = ['username' => 'milanfar', 'homeDirectory' => '/home/nanohub/milanfar'];
 
 		$this->assertCount(1, User::identityErrors(
-			array('username' => 'milanfar@ucsc.edu', 'homeDirectory' => '/home/nanohub/milanfar'),
+			['username' => 'milanfar@ucsc.edu', 'homeDirectory' => '/home/nanohub/milanfar'],
 			$old
 		));
 		$this->assertCount(1, User::identityErrors(
-			array('username' => 'milanfar', 'homeDirectory' => '/home/nanohub/../etc'),
+			['username' => 'milanfar', 'homeDirectory' => '/home/nanohub/../etc'],
 			$old
 		));
 	}
@@ -124,8 +124,8 @@ class UserTest extends Basic
 	public function testChangedToEmptyHomeIsRefused()
 	{
 		$this->assertCount(1, User::identityErrors(
-			array('username' => 'milanfar', 'homeDirectory' => ''),
-			array('username' => 'milanfar', 'homeDirectory' => '/home/nanohub/milanfar')
+			['username' => 'milanfar', 'homeDirectory' => ''],
+			['username' => 'milanfar', 'homeDirectory' => '/home/nanohub/milanfar']
 		));
 	}
 }

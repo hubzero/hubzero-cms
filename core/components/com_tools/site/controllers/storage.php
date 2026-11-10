@@ -154,10 +154,10 @@ class Storage extends SiteController
             $this->exceeded = $exceeded;
             $this->getDiskUsage();
 
-            $view = new \Hubzero\Component\View(array(
+            $view = new \Hubzero\Component\View([
                 'name'   => $this->_controller,
                 'layout' => 'diskusage'
-            ));
+            ]);
             $view->set('option', $this->_option);
             $view->amt       = $this->percent;
             $view->du        = '';
@@ -210,7 +210,7 @@ class Storage extends SiteController
 
         $degree = Request::getString('degree', 'default');
 
-        $info = array();
+        $info = [];
         $msg = '';
 
         $fp = stream_socket_client($shost, $errno, $errstr, 30);
@@ -426,7 +426,7 @@ class Storage extends SiteController
             return;
         }
 
-        Request::checkToken(array('get', 'post'));
+        Request::checkToken(['get', 'post']);
 
         // Incoming directory (this should be a path built from a resource ID and its creation year/month)
         $listdir = urldecode(Request::getString('listdir', ''));
@@ -479,7 +479,7 @@ class Storage extends SiteController
             return;
         }
 
-        Request::checkToken(array('get', 'post'));
+        Request::checkToken(['get', 'post']);
 
         // Incoming directory (this should be a path built from a resource ID and its creation year/month)
         $listdir = urldecode(Request::getString('listdir', ''));
@@ -525,7 +525,7 @@ class Storage extends SiteController
         // Build the path
         $path = $this->_buildUploadPath($listdir);
 
-        $dirtree = array();
+        $dirtree = [];
         $subdir = $listdir;
 
         if ($subdir) {
@@ -534,8 +534,8 @@ class Storage extends SiteController
             $dirtree = explode(DS, $subdir);
         }
 
-        $folders = array();
-        $docs    = array();
+        $folders = [];
+        $docs    = [];
 
         if (is_dir($path)) {
             // Loop through all files and separate them into arrays of docs and folders

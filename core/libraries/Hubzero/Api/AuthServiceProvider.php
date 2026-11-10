@@ -40,7 +40,7 @@ class AuthServiceProvider extends Middleware
 
         // If CLI then we have to gather all query, post and header values
         // into params for Oauth_Provider's constructor.
-        $params = array();
+        $params = [];
 
         if ($this->app->runningInConsole()) {
             $queryvars = $this->app['request']->get('queryvars');

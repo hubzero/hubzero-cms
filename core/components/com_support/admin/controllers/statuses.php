@@ -43,7 +43,7 @@ class Statuses extends AdminController
     public function displayTask()
     {
         // Get paging variables
-        $filters = array(
+        $filters = [
             'open' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.open',
                 'open',
@@ -61,7 +61,7 @@ class Statuses extends AdminController
                 'filter_order_Dir',
                 'DESC'
             )
-        );
+        ];
 
         // Fetch results
         $entries = Status::all();
@@ -100,7 +100,7 @@ class Statuses extends AdminController
 
         if (!is_object($row)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             $id = (is_array($id) ? $id[0] : $id);
 
             // Initiate database class and load info
@@ -132,7 +132,7 @@ class Statuses extends AdminController
         }
 
         // Trim and addslashes all posted items
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         // Initiate class and bind posted items to database fields
         $row = Status::oneOrNew($fields['id'])->set($fields);
@@ -168,8 +168,8 @@ class Statuses extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for an ID
         if (count($ids) < 1) {

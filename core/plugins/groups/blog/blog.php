@@ -70,13 +70,13 @@ class Blog extends Plugin
      */
     public function &onGroupAreas()
     {
-        $area = array(
+        $area = [
             'name' => $this->_name,
             'title' => Lang::txt('PLG_GROUPS_BLOG'),
             'default_access' => $this->params->get('plugin_access', 'members'),
             'display_menu_tab' => $this->params->get('display_tab', 1),
             'icon' => 'f075'
-        );
+        ];
         return $area;
     }
 
@@ -99,10 +99,10 @@ class Blog extends Plugin
         $active = $this->_name;
 
         // The output array we're returning
-        $arr = array(
+        $arr = [
             'html'     => '',
-            'metadata' => array()
-        );
+            'metadata' => []
+        ];
 
         //get this area details
         $this_area = $this->onGroupAreas();
@@ -231,12 +231,12 @@ class Blog extends Plugin
             }
         }
 
-        $filters = array(
+        $filters = [
             'scope'    => 'group',
             'scope_id' => $group->get('gidNumber'),
             'state'    => 1,
             'access'   => User::getAuthorisedViewLevels()
-        );
+        ];
 
         // Build the HTML meant for the "profile" tab's metadata overview
         $arr['metadata']['count'] = $this->model->entries($filters)->total();
@@ -316,7 +316,7 @@ class Blog extends Plugin
             $blog = '/groups/' . $this->group->get('cn') . '/blog';
 
             if ($path == $blog) {
-                $path = array();
+                $path = [];
                 return $path;
             }
 
@@ -324,7 +324,7 @@ class Blog extends Plugin
             $path = explode('/', $path);
             $path = array_map('urldecode', $path);
 
-            $paths = array();
+            $paths = [];
             $start = false;
             foreach ($path as $bit) {
                 if ($bit == 'groups' && !$start) {
@@ -353,7 +353,7 @@ class Blog extends Plugin
     private function _browse()
     {
         // Filters for returning results
-        $filters = array(
+        $filters = [
             'year'       => Request::getInt('year', 0),
             'month'      => Request::getInt('month', 0),
             'scope'      => 'group',
@@ -362,7 +362,7 @@ class Blog extends Plugin
             'authorized' => false,
             'state'      => 1,
             'access'     => User::getAuthorisedViewLevels()
-        );
+        ];
 
         // See what information we can get from the path
         $path = Request::path();
@@ -420,7 +420,7 @@ class Blog extends Plugin
         }
 
         // Filters for returning results
-        $filters = array(
+        $filters = [
             'limit'      => Request::getInt('limit', Config::get('list_limit')),
             'start'      => Request::getInt('limitstart', 0),
             'year'       => Request::getInt('year', 0),
@@ -430,7 +430,7 @@ class Blog extends Plugin
             'search'     => Request::getString('search', ''),
             'created_by' => Request::getInt('author', 0),
             'state'      => 1
-        );
+        ];
 
         $path = Request::path();
         if (strstr($path, '/')) {
@@ -571,7 +571,7 @@ class Blog extends Plugin
         }
 
         // Filters for returning results
-        $filters = array(
+        $filters = [
             'limit'      => 10,
             'start'      => 0,
             'scope'      => 'group',
@@ -579,7 +579,7 @@ class Blog extends Plugin
             'created_by' => 0,
             'state'      => 1,
             'access'     => User::getAuthorisedViewLevels()
-        );
+        ];
 
         if (
             $this->authorized == 'member'
@@ -592,7 +592,7 @@ class Blog extends Plugin
             $filters['authorized'] = false;
         }
 
-        Event::trigger('blog.onBlogView', array($row));
+        Event::trigger('blog.onBlogView', [$row]);
 
         $view = $this->view('default', 'entry')
             ->set('option', $this->option)
@@ -694,7 +694,7 @@ class Blog extends Plugin
         // Check for request forgeries
         Request::checkToken();
 
-        $entry = Request::getArray('entry', array(), 'post');
+        $entry = Request::getArray('entry', [], 'post');
 
         if (isset($entry['publish_up']) && $entry['publish_up'] != '') {
             $entry['publish_up']   = Date::of($entry['publish_up'], Config::get('offset'))->toSql();
@@ -763,7 +763,7 @@ class Blog extends Plugin
         }
 
         // Record the activity
-        $recipients = array(['group', $this->group->get('gidNumber')]);
+        $recipients = [['group', $this->group->get('gidNumber')]];
 
         if (!in_array($row->get('created_by'), $this->group->get('managers'))) {
             $recipients[] = ['user', $row->get('created_by')];
@@ -779,10 +779,10 @@ class Blog extends Plugin
                 'scope'       => 'blog.entry',
                 'scope_id'    => $row->get('id'),
                 'description' => Lang::txt('PLG_GROUPS_BLOG_ACTIVITY_ENTRY_' . ($entry['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($row->link()) . '">' . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title' => $row->get('title'),
                     'url'   => Route::url($row->link())
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -864,7 +864,7 @@ class Blog extends Plugin
         }
 
         // Record the activity
-        $recipients = array(['group', $this->group->get('gidNumber')]);
+        $recipients = [['group', $this->group->get('gidNumber')]];
 
         if (!in_array($entry->get('created_by'), $this->group->get('managers'))) {
             $recipients[] = ['user', $entry->get('created_by')];
@@ -880,10 +880,10 @@ class Blog extends Plugin
                 'scope'       => 'blog.entry',
                 'scope_id'    => $id,
                 'description' => Lang::txt('PLG_GROUPS_BLOG_ACTIVITY_ENTRY_DELETED', $entry->get('title')),
-                'details'     => array(
+                'details'     => [
                     'title' => $entry->get('title'),
                     'url'   => Route::url($entry->link())
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -920,7 +920,7 @@ class Blog extends Plugin
         Request::checkToken();
 
         // Incoming
-        $data = Request::getArray('comment', array(), 'post');
+        $data = Request::getArray('comment', [], 'post');
 
         // Instantiate a new comment object and pass it the data
         $cid = isset($data['id']) ? (int) $data['id'] : 0;
@@ -964,7 +964,7 @@ class Blog extends Plugin
         // Record the activity
         $entry = \Components\Blog\Models\Entry::oneOrFail($comment->get('entry_id'));
 
-        $recipients = array(['group', $this->group->get('gidNumber')]);
+        $recipients = [['group', $this->group->get('gidNumber')]];
 
         if (!in_array($comment->get('created_by'), $this->group->get('managers'))) {
             $recipients[] = ['user', $comment->get('created_by')];
@@ -987,11 +987,11 @@ class Blog extends Plugin
                 'scope_id'    => $comment->get('id'),
                 'anonymous'   => $comment->get('anonymous', 0),
                 'description' => Lang::txt('PLG_GROUPS_BLOG_ACTIVITY_COMMENT_' . ($data['id'] ? 'UPDATED' : 'CREATED'), $comment->get('id'), '<a href="' . Route::url($entry->link() . '#c' . $comment->get('id')) . '">' . htmlspecialchars((string) ($entry->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title'    => $entry->get('title'),
                     'entry_id' => $entry->get('id'),
                     'url'      => $entry->link() . '#c' . $comment->get('id')
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -1052,7 +1052,7 @@ class Blog extends Plugin
         }
 
         // Record the activity
-        $recipients = array(['group', $this->group->get('gidNumber')]);
+        $recipients = [['group', $this->group->get('gidNumber')]];
 
         if (!in_array($comment->get('created_by'), $this->group->get('managers'))) {
             $recipients[] = ['user', $comment->get('created_by')];
@@ -1070,11 +1070,11 @@ class Blog extends Plugin
                 'scope'       => 'blog.entry.comment',
                 'scope_id'    => $comment->get('id'),
                 'description' => Lang::txt('PLG_GROUPS_BLOG_ACTIVITY_COMMENT_DELETED', $comment->get('id'), '<a href="' . Route::url($entry->link()) . '">' . htmlspecialchars((string) ($entry->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title'    => $entry->get('title'),
                     'entry_id' => $entry->get('id'),
                     'url'      => $entry->link()
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -1134,7 +1134,7 @@ class Blog extends Plugin
         $row = \Hubzero\Plugin\Params::oneByPluginOrNew($this->group->get('gidNumber'), $this->_type, $this->_name);
 
         // Get parameters
-        $params = new \Hubzero\Config\Registry(Request::getArray('params', array(), 'post'));
+        $params = new \Hubzero\Config\Registry(Request::getArray('params', [], 'post'));
         $row->set('params', $params->toString());
 
         // Store new content
@@ -1144,7 +1144,7 @@ class Blog extends Plugin
         }
 
         // Record the activity
-        $recipients = array(['group', $this->group->get('gidNumber')]);
+        $recipients = [['group', $this->group->get('gidNumber')]];
         foreach ($this->group->get('managers') as $recipient) {
             $recipients[] = ['user', $recipient];
         }

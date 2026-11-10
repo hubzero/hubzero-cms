@@ -36,7 +36,7 @@ $this->css()
 
         $closeddata = '';
         if ($this->closedmonths) {
-            $c = array();
+            $c = [];
             foreach ($this->closedmonths as $year => $data) {
                 foreach ($data as $k => $v) {
                     $top = ($v > $top) ? $v : $top;
@@ -52,7 +52,7 @@ $this->css()
 
         $openeddata = '';
         if ($this->openedmonths) {
-            $o = array();
+            $o = [];
             foreach ($this->openedmonths as $year => $data) {
                 foreach ($data as $k => $v) {
                     $top = ($v > $top) ? $v : $top;

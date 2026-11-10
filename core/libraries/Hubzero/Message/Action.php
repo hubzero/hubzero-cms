@@ -52,9 +52,9 @@ class Action extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'element' => 'notempty'
-    );
+    ];
 
     /**
      * Get records for specific type, element, component, and user

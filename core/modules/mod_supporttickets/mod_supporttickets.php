@@ -45,10 +45,10 @@ class Supporttickets extends Module
 
         $st = new Ticket($database);
 
-        $types = array(
-            'common' => array()
+        $types = [
+            'common' => []
             //'mine'   => $sq->getMine()
-        );
+        ];
         $queries = Query::allCommon()->rows();
 
         if (count($queries) <= 0) {
@@ -88,8 +88,8 @@ class Supporttickets extends Module
         $month = $date->toLocal('m');
 
         $this->year = $year;
-        $this->opened = array();
-        $this->closed = array();
+        $this->opened = [];
+        $this->closed = [];
 
         // First ticket
         $first = (int) $database->getQuery()
@@ -115,13 +115,13 @@ class Supporttickets extends Module
             ->order('created', 'asc')
             ->fetch();
 
-        $open = array();
+        $open = [];
         $this->opened['open']       = 0;
         $this->opened['new']        = 0;
         $this->opened['unassigned'] = 0;
         foreach ($openTickets as $o) {
             if (!isset($open[$o->year])) {
-                $open[$o->year] = array();
+                $open[$o->year] = [];
             }
             if (!isset($open[$o->year][$o->month])) {
                 $open[$o->year][$o->month] = 0;
@@ -154,7 +154,7 @@ class Supporttickets extends Module
             ->fetch();
 
         $this->opened['closed'] = 0;
-        $closedTickets = array();
+        $closedTickets = [];
         foreach ($clsd as $closed) {
             if (!isset($closedTickets[$closed->ticket])) {
                 $closedTickets[$closed->ticket] = $closed;
@@ -165,10 +165,10 @@ class Supporttickets extends Module
             }
         }
         $this->closedTickets = $closedTickets;
-        $closed = array();
+        $closed = [];
         foreach ($closedTickets as $o) {
             if (!isset($closed[$o->year])) {
-                $closed[$o->year] = array();
+                $closed[$o->year] = [];
             }
             if (!isset($closed[$o->year][$o->month])) {
                 $closed[$o->year][$o->month] = 0;
@@ -180,11 +180,11 @@ class Supporttickets extends Module
         // Group data by year and gather some info for each user
         $y = date("Y");
         $y++;
-        $this->closedmonths = array();
-        $this->openedmonths = array();
+        $this->closedmonths = [];
+        $this->openedmonths = [];
         for ($k = $first, $n = $y; $k < $n; $k++) {
-            $this->closedmonths[$k] = array();
-            $this->openedmonths[$k] = array();
+            $this->closedmonths[$k] = [];
+            $this->openedmonths[$k] = [];
 
             for ($i = 1; $i <= 12; $i++) {
                 if ($k == $year && $i > $month) {

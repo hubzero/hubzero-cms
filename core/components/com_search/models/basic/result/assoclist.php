@@ -22,7 +22,7 @@ class AssocList extends Assoc implements Iterator, Countable
      *
      * @var array
      */
-    private $rows = array();
+    private $rows = [];
 
     /**
      * Description for 'pos'
@@ -66,7 +66,7 @@ class AssocList extends Assoc implements Iterator, Countable
      */
     public function __construct($rows, $plugin = null)
     {
-        $this->rows = is_array($rows) ? $rows : array($rows);
+        $this->rows = is_array($rows) ? $rows : [$rows];
         $scale = 1;
         foreach ($this->rows as $idx => &$row) {
             if (!($row instanceof SearchResult)) {

@@ -39,7 +39,7 @@ class ItemList extends \Hubzero\Base\ItemList
      */
     public function lists($key, $default = null)
     {
-        $results = array();
+        $results = [];
         foreach ($this->_data as $data) {
             array_push($results, $data->get($key));
         }

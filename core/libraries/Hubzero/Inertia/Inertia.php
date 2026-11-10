@@ -153,7 +153,7 @@ class Inertia
      * @param   array  $options
      * @return  string
      */
-    public static function renderDebugPanel(array $snapshot = array(), array $options = array()): string
+    public static function renderDebugPanel(array $snapshot = [], array $options = []): string
     {
         return self::service()->renderDebugPanel($snapshot, $options);
     }

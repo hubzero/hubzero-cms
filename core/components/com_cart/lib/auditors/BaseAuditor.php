@@ -29,9 +29,9 @@ class BaseAuditor
         // Set up the default empty ok response
         $this->response = new \stdClass();
         $this->response->status = 'ok';
-        $this->response->messages = array();
-        $this->response->notices = array();
-        $this->response->errors = array();
+        $this->response->messages = [];
+        $this->response->notices = [];
+        $this->response->errors = [];
     }
 
     public function setSku($sId)

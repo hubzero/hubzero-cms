@@ -69,7 +69,7 @@ class Authors extends SiteController
         // internal callers go through saveAuthors() directly.
         Request::checkToken();
 
-        return $this->saveAuthors(0, array(), 1);
+        return $this->saveAuthors(0, [], 1);
     }
 
     /**
@@ -84,7 +84,7 @@ class Authors extends SiteController
      * @param   integer  $show        Display author list when done?
      * @return  void
      */
-    public function saveAuthors($id = 0, $authorsNew = array(), $show = 1)
+    public function saveAuthors($id = 0, $authorsNew = [], $show = 1)
     {
         // Incoming resource ID
         if (!$id) {
@@ -224,16 +224,16 @@ class Authors extends SiteController
                             'scope'       => 'resource',
                             'scope_id'    => $resource->get('id'),
                             'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_AUTHOR_ADDED', $name, '<a href="' . Route::url('index.php?option=com_resources&id=' . $resource->get('id')) . '">' . htmlspecialchars((string) ($resource->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                            'details'     => array(
+                            'details'     => [
                                 'title' => $resource->get('title'),
                                 'url'   => Route::url('index.php?option=com_resources&id=' . $resource->get('id'))
-                            )
+                            ]
                         ],
-                        'recipients' => array(
+                        'recipients' => [
                             ['resource', $resource->get('id')],
                             ['user', $resource->get('created_by')],
                             ['user', $authorid]
-                        )
+                        ]
                     ]);
                 }
             }
@@ -285,16 +285,16 @@ class Authors extends SiteController
                             'scope'       => 'resource',
                             'scope_id'    => $resource->get('id'),
                             'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_AUTHOR_REMOVED', $author->get('name'), '<a href="' . Route::url('index.php?option=com_resources&id=' . $resource->get('id')) . '">' . htmlspecialchars((string) ($resource->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                            'details'     => array(
+                            'details'     => [
                                 'title' => $resource->get('title'),
                                 'url'   => Route::url('index.php?option=com_resources&id=' . $resource->get('id'))
-                            )
+                            ]
                         ],
-                        'recipients' => array(
+                        'recipients' => [
                             ['resource', $resource->get('id')],
                             ['user', $resource->get('created_by')],
                             ['user', $author->get('authorid')]
-                        )
+                        ]
                     ]);
                 }
             }
@@ -315,7 +315,7 @@ class Authors extends SiteController
         Request::checkToken();
 
         // Incoming
-        $ids = Request::getArray('authors', array(), 'post');
+        $ids = Request::getArray('authors', [], 'post');
         $pid = Request::getInt('pid', 0);
 
         // Ensure we have a resource ID ($pid) to work with

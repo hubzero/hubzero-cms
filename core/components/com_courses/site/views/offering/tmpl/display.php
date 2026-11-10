@@ -66,12 +66,12 @@ if (!$no_html && $tmpl != 'component') :
 <?php endif; ?>
 
 <?php if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) {
-    $view = new \Hubzero\Plugin\View(array(
+    $view = new \Hubzero\Plugin\View([
         'folder'  => 'courses',
         'element' => 'outline',
         'name'    => 'shared',
         'layout'  => '_not_enrolled'
-    ));
+    ]);
 
     $view->set('course', $this->course)
          ->set('option', 'com_courses')

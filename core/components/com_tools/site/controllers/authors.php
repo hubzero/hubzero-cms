@@ -80,7 +80,7 @@ class Authors extends SiteController
         // internal callers go through saveAuthors() directly.
         Request::checkToken();
 
-        return $this->saveAuthors(0, array(), 1);
+        return $this->saveAuthors(0, [], 1);
     }
 
     /**
@@ -95,7 +95,7 @@ class Authors extends SiteController
      * @param   integer  $show        Display author list when done?
      * @return  void
      */
-    public function saveAuthors($id = 0, $authorsNew = array(), $show = 1)
+    public function saveAuthors($id = 0, $authorsNew = [], $show = 1)
     {
         // Incoming resource ID
         $fromRequest = false;
@@ -292,7 +292,7 @@ class Authors extends SiteController
         Request::checkToken();
 
         // Incoming
-        $ids = Request::getArray('authors', array(), 'post');
+        $ids = Request::getArray('authors', [], 'post');
         $pid = Request::getInt('pid', 0);
 
         // Ensure we have a resource ID ($pid) to work with

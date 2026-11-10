@@ -43,12 +43,12 @@ class MediaHelper
         $format = strtolower(Filesystem::extension($file['name']));
 
         // Media file names should never have executable extensions buried in them.
-        $executable = array(
+        $executable = [
             'php', 'js', 'exe', 'phtml', 'java', 'perl', 'py', 'asp', 'dll', 'go',
             'ade', 'adp', 'bat', 'chm', 'cmd', 'com', 'cpl', 'hta', 'ins', 'isp',
             'jse', 'lib', 'mde', 'msc', 'msp', 'mst', 'pif', 'scr', 'sct', 'shb',
             'sys', 'vb', 'vbe', 'vbs', 'vxd', 'wsc', 'wsf', 'wsh'
-        );
+        ];
 
         $explodedFileName = explode('.', $file['name']);
 
@@ -124,7 +124,7 @@ class MediaHelper
         if (!User::authorise('core.admin')) {
             $xss_check = Filesystem::read($file['tmp_name'], false, 256);
 
-            $html_tags = array(
+            $html_tags = [
                 'abbr', 'acronym', 'address', 'applet', 'area', 'audioscope', 'base', 'basefont', 'bdo', 'bgsound',
                 'big', 'blackface', 'blink', 'blockquote', 'body', 'bq', 'br', 'button', 'caption', 'center', 'cite',
                 'code', 'col', 'colgroup', 'comment', 'custom', 'dd', 'del', 'dfn', 'dir', 'div', 'dl', 'dt', 'em',
@@ -136,7 +136,7 @@ class MediaHelper
                 'sidebar', 'small', 'spacer', 'span', 'strike', 'strong', 'style', 'sub', 'sup', 'table', 'tbody', 'td',
                 'textarea', 'tfoot', 'th', 'thead', 'title', 'tr', 'tt', 'ul', 'var', 'wbr', 'xml', 'xmp', '!DOCTYPE',
                 '!--'
-            );
+            ];
 
             foreach ($html_tags as $tag) {
                 // A tag is '<tagname ', so we need to add < and a space or '<tagname>'
@@ -192,7 +192,7 @@ class MediaHelper
         $width  = round($width * $percentage);
         $height = round($height * $percentage);
 
-        return array($width, $height);
+        return [$width, $height];
     }
 
     /**
@@ -229,7 +229,7 @@ class MediaHelper
             $d->close();
         }
 
-        return array($total_file, $total_dir);
+        return [$total_file, $total_dir];
     }
 
     /**
@@ -277,7 +277,7 @@ class MediaHelper
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public static function _buildFolderTree($folders, $parent_id = 0, $path = '')
     {
-        $branch = array();
+        $branch = [];
         foreach ($folders as $folder) {
             if ($folder['parent'] == $parent_id) {
                 $folder['path'] = ($path == '') ? $folder['name'] : $path . '/' . $folder['name'];

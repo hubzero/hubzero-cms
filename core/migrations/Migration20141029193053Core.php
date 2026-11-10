@@ -20,10 +20,10 @@ class Migration20141029193053Core extends Base
      **/
     public function up()
     {
-        $styles = array(
+        $styles = [
             'flavor'   => '',
             'template' => 'hubbasic2013'
-        );
+        ];
 
         $this->addTemplateEntry('welcome', 'welcome', 0, 1, 0, $styles);
     }

@@ -26,11 +26,11 @@ class Message extends Renderer
      * @param   string  $content  Not used.
      * @return  string  The output of the script
      */
-    public function render($name, $params = array (), $content = null)
+    public function render($name, $params = [], $content = null)
     {
         // Initialise variables.
-        $buffer = array();
-        $lists  = array();
+        $buffer = [];
+        $lists  = [];
 
         // Get the message queue
         $messages = App::get('notification')->messages();

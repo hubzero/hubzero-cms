@@ -38,10 +38,10 @@ class Vote extends Table
      */
     public function loadByBulletin($item_id = null, $user_id = null)
     {
-        $fields = array(
+        $fields = [
             'item_id' => (int) $item_id,
             'user_id' => (int) $user_id
-        );
+        ];
 
         return parent::load($fields);
     }
@@ -73,12 +73,12 @@ class Vote extends Table
      * @param   array    $filters  Filters to construct query from
      * @return  integer
      */
-    public function getLikes($filters = array())
+    public function getLikes($filters = [])
     {
         $query = "SELECT COUNT(*) FROM $this->_tbl AS v
 				INNER JOIN `#__collections_posts` AS s ON s.item_id=v.item_id";
 
-        $where = array();
+        $where = [];
 
         if (isset($filters['user_id']) && $filters['user_id']) {
             $where[] = "v.user_id=" . $this->_db->quote(intval($filters['user_id']));
@@ -106,12 +106,12 @@ class Vote extends Table
      * @param   array    $filters  Filters to construct query from
      * @return  integer
      */
-    public function getDislikes($filters = array())
+    public function getDislikes($filters = [])
     {
         $query = "SELECT COUNT(*) FROM $this->_tbl AS v
 				INNER JOIN `#__collections_posts` AS s ON s.item_id=v.item_id";
 
-        $where = array();
+        $where = [];
 
         if (isset($filters['user_id']) && $filters['user_id']) {
             $where[] = "v.user_id=" . $this->_db->quote(intval($filters['user_id']));

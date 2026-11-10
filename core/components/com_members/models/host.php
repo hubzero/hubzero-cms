@@ -52,10 +52,10 @@ class Host extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'host'      => 'notempty',
         'uidNumber' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Get parent member
@@ -95,7 +95,7 @@ class Host extends Relational
      */
     public static function destroyByHost($host)
     {
-        $host = (is_array($host) ? $host : array($host));
+        $host = (is_array($host) ? $host : [$host]);
 
         $blank = self::blank();
 
@@ -118,7 +118,7 @@ class Host extends Relational
      */
     public static function destroyByUser($user_id)
     {
-        $user_id = (is_array($user_id) ? $user_id : array($user_id));
+        $user_id = (is_array($user_id) ? $user_id : [$user_id]);
 
         $blank = self::blank();
 
@@ -163,12 +163,12 @@ class Host extends Relational
             ->whereEquals('uidNumber', $user_id)
             ->rows();
 
-        $existing = array();
+        $existing = [];
         foreach ($entries as $entry) {
             $existing[] = $entry->get('host');
         }
 
-        $hosts = (is_array($hosts) ? $hosts : array($hosts));
+        $hosts = (is_array($hosts) ? $hosts : [$hosts]);
 
         $blank = self::blank();
 
@@ -182,10 +182,10 @@ class Host extends Relational
 
             $query = $blank->getQuery()
                 ->insert($blank->getTableName())
-                ->values(array(
+                ->values([
                     'uidNumber' => $user_id,
                     'host'      => $host
-                ));
+                ]);
 
             if (!$query->execute()) {
                 return false;

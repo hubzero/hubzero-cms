@@ -33,7 +33,7 @@ class Collections extends Plugin
         $weight = '(match(p.description) AGAINST (\'' . $stemmed . '\') '
             . '+ match(i.title, i.description) AGAINST (\'' . $stemmed . '\'))';
 
-        $addtl_where = array();
+        $addtl_where = [];
         foreach ($terms['mandatory'] as $mand) {
             $addtl_where[] = "(p.description LIKE '%$mand%' OR i.title LIKE '%$mand%' OR i.description LIKE '%$mand%')";
         }
@@ -120,7 +120,7 @@ class Collections extends Plugin
                     WHERE #__tags_object.objectid = {$id} AND #__tags_object.tbl = 'collection';";
                 $tags = $db->setQuery($sql2)->query()->loadColumn();
                 */
-                $tags = array();
+                $tags = [];
 
                 if ($row->object_type == 'member') {
                     $path = '/members/' . $row->object_id . '/collections/' . $row->alias;
@@ -170,7 +170,7 @@ class Collections extends Plugin
                 $record->hubtype = $type;
                 $record->title = $title;
                 $record->description = $description;
-                $record->author = array($author);
+                $record->author = [$author];
                 $record->tags = $tags;
                 $record->path = $path;
                 $record->access_level = $access_level;

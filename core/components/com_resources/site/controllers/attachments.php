@@ -66,12 +66,12 @@ class Attachments extends SiteController
         if (!$pid && !empty($resourceTitle)) {
             $parentResource = Entry::blank();
             $type = Request::getInt('type');
-            $parentResource->set(array(
+            $parentResource->set([
                 'title' => $resourceTitle,
                 'standalone' => 1,
                 'published' => 2,
                 'type' => $type
-            ));
+            ]);
             if (!$parentResource->save()) {
                 $this->setError($parentResource->getError());
                 return $this->displayTask();
@@ -108,7 +108,7 @@ class Attachments extends SiteController
         $parentRow = Entry::oneOrNew($pid);
         if ($resource->isNew()) {
             // Create new record
-            $resource->set(array(
+            $resource->set([
                 'title'        => 'A link',
                 'introtext'    => 'A link',
                 'created'      => Date::toSql(),
@@ -120,7 +120,7 @@ class Attachments extends SiteController
                 'group_owner'  => $parentRow->get('group_owner', ''),
                 'path'         => 'http://', // make sure no path is specified just yet
                 'type'         =>  11
-            ));
+            ]);
 
             // Save record
             if (!$resource->save()) {
@@ -154,28 +154,28 @@ class Attachments extends SiteController
         if (!$pid && !empty($resourceTitle)) {
             $parentResource = Entry::blank();
             $type = Request::getInt('type');
-            $parentResource->set(array(
+            $parentResource->set([
                 'title' => $resourceTitle,
                 'standalone' => 1,
                 'published' => 2,
                 'type' => $type
-            ));
+            ]);
             if (!$parentResource->save()) {
-                echo json_encode(array(
+                echo json_encode([
                     'success'   => false,
                     'errors'    => $parentResource->getErrors(),
                     'file'      => 'http://',
                     'directory' => '',
                     'parent'    => $pid,
                     'id'        => 0
-                ));
+                ]);
                 exit();
             }
             $pid = $parentResource->get('id');
             $createdHere = true;
         }
         if (!$pid) {
-            echo json_encode(array('error' => Lang::txt('COM_RESOURCES_NO_ID')));
+            echo json_encode(['error' => Lang::txt('COM_RESOURCES_NO_ID')]);
             exit();
         }
 
@@ -184,7 +184,7 @@ class Attachments extends SiteController
         if (!$createdHere) {
             $parentAuth = Entry::oneOrFail($pid);
             if (!$parentAuth->access('edit') && !$parentAuth->access('edit-own')) {
-                echo json_encode(array('error' => Lang::txt('JERROR_ALERTNOAUTHOR')));
+                echo json_encode(['error' => Lang::txt('JERROR_ALERTNOAUTHOR')]);
                 exit();
             }
         }
@@ -208,7 +208,7 @@ class Attachments extends SiteController
         $parentRow = Entry::oneOrNew($pid);
         if ($resource->isNew()) {
             // Create new record
-            $resource->set(array(
+            $resource->set([
                 'title'        => 'A link',
                 'introtext'    => 'A link',
                 'created'      => Date::toSql(),
@@ -220,59 +220,59 @@ class Attachments extends SiteController
                 'group_owner'  => $parentRow->get('group_owner', ''),
                 'path'         => Request::getString('url', 'http://'),
                 'type'         => 11
-            ));
+            ]);
 
             // Clean and validate path
-            $resource->path = str_replace(array('|', '\\', '{', '}', '^'), array('%7C', '%5C', '%7B', '%7D', '%5E'), $resource->path);
+            $resource->path = str_replace(['|', '\\', '{', '}', '^'], ['%7C', '%5C', '%7B', '%7D', '%5E'], $resource->path);
 
             if (!Validate::url($resource->path)) {
-                echo json_encode(array(
+                echo json_encode([
                     'success'   => false,
-                    'errors'    => array(Lang::txt('Link provided is not a valid URL.')),
+                    'errors'    => [Lang::txt('Link provided is not a valid URL.')],
                     'file'      => $resource->path,
                     'directory' => '',
                     'parent'    => $pid,
                     'id'        => 0
-                ));
+                ]);
                 exit();
             }
 
             // Save record
             if (!$resource->save()) {
-                echo json_encode(array(
+                echo json_encode([
                     'success'   => false,
                     'errors'    => $resource->getErrors(),
                     'file'      => 'http://',
                     'directory' => '',
                     'parent'    => $pid,
                     'id'        => 0
-                ));
+                ]);
                 exit();
             }
         }
         $parentResource = Entry::one($pid);
         // Create new parent/child association
         if (!$resource->makeChildOf($pid)) {
-            echo json_encode(array(
+            echo json_encode([
                 'success'   => false,
                 'errors'    => $resource->getErrors(),
                 'file'      => $resource->path,
                 'directory' => '',
                 'parent'    => $pid,
                 'id'        => $resource->id
-            ));
+            ]);
             exit();
         }
         // Output results
-        echo json_encode(array(
+        echo json_encode([
             'success'   => true,
-            'errors'    => array(),
+            'errors'    => [],
             'file'      => $resource->path,
             'directory' => '',
             'parent'    => $pid,
             'id'        => $resource->id,
             'message'   => Lang::txt('COM_RESOURCES_ADD_CHILD_SUCCESS', $parentResource->title)
-        ));
+        ]);
         exit();
     }
 
@@ -287,14 +287,14 @@ class Attachments extends SiteController
         // Ensure we have an ID to work with
         $pid = strtolower(Request::getInt('pid', 0));
         if (!$pid) {
-            echo json_encode(array('error' => Lang::txt('COM_RESOURCES_NO_ID')));
+            echo json_encode(['error' => Lang::txt('COM_RESOURCES_NO_ID')]);
             return;
         }
 
         // Must be able to edit the parent resource
         $parentAuth = Entry::oneOrFail($pid);
         if (!$parentAuth->access('edit') && !$parentAuth->access('edit-own')) {
-            echo json_encode(array('error' => Lang::txt('JERROR_ALERTNOAUTHOR')));
+            echo json_encode(['error' => Lang::txt('JERROR_ALERTNOAUTHOR')]);
             return;
         }
 
@@ -313,22 +313,22 @@ class Attachments extends SiteController
             $file = $_FILES['qqfile']['name'];
             $size = (int) $_FILES['qqfile']['size'];
         } else {
-            echo json_encode(array('error' => Lang::txt('File not found')));
+            echo json_encode(['error' => Lang::txt('File not found')]);
             return;
         }
 
         //check to make sure we have a file and its not too big
         if ($size == 0) {
-            echo json_encode(array(
+            echo json_encode([
                 'error' => Lang::txt('File is empty')
-            ));
+            ]);
             return;
         }
         if ($size > $sizeLimit) {
             $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', Number::formatBytes($sizeLimit));
-            echo json_encode(array(
+            echo json_encode([
                 'error' => Lang::txt('File is too large. Max file upload size is %s', $max)
-            ));
+            ]);
             return;
         }
 
@@ -346,9 +346,9 @@ class Attachments extends SiteController
         // Contributors upload archives, source and media of many types, so block
         // only server-executable extensions and the markup types the download
         // handler serves inline (a stored HTML file would run in the hub origin)
-        $blockedExtensions = array('php', 'php3', 'php4', 'php5', 'php7', 'php8', 'phtml', 'pht', 'phar', 'phps', 'cgi', 'pl', 'asp', 'aspx', 'jsp', 'shtml', 'htaccess', 'htpasswd', 'html', 'htm', 'xhtml', 'xml');
+        $blockedExtensions = ['php', 'php3', 'php4', 'php5', 'php7', 'php8', 'phtml', 'pht', 'phar', 'phps', 'cgi', 'pl', 'asp', 'aspx', 'jsp', 'shtml', 'htaccess', 'htpasswd', 'html', 'htm', 'xhtml', 'xml'];
         if (in_array(strtolower((string) $ext), $blockedExtensions)) {
-            echo json_encode(array('error' => Lang::txt('File type not allowed: %s', $ext)));
+            echo json_encode(['error' => Lang::txt('File type not allowed: %s', $ext)]);
             return;
         }
         /*while (file_exists($path . DS . $filename . '.' . $ext))
@@ -360,7 +360,7 @@ class Attachments extends SiteController
         // public until someone edits them a second time
         $parentRow = Entry::oneOrNew($pid);
         // Instantiate a new resource object
-        $resource = Entry::blank()->set(array(
+        $resource = Entry::blank()->set([
             'title'        => $filename . '.' . $ext,
             'introtext'    => $filename . '.' . $ext,
             'created'      => Date::toSql(),
@@ -372,11 +372,11 @@ class Attachments extends SiteController
             'group_owner'  => $parentRow->get('group_owner', ''),
             'path'         => '', // make sure no path is specified just yet
             'type'         => $this->_getChildType($filename . '.' . $ext)
-        ));
+        ]);
 
         // Setup videos to auto-play in hub
         if ($this->config->get('file_video_html5', 1)) {
-            if (in_array($ext, array('mp4', 'webm', 'ogv'))) {
+            if (in_array($ext, ['mp4', 'webm', 'ogv'])) {
                 $resource->type = 41; // Video type
             }
         }
@@ -385,17 +385,17 @@ class Attachments extends SiteController
         $parent = Entry::oneOrFail($pid);
 
         if ($parent->hasChild($filename)) {
-            echo json_encode(array(
+            echo json_encode([
                 'error' => Lang::txt('A file with this name and type appears to already exist.')
-            ));
+            ]);
             return;
         }
 
         // Store new content
         if (!$resource->save()) {
-            echo json_encode(array(
+            echo json_encode([
                 'error' => $resource->getError()
-            ));
+            ]);
             return;
         }
 
@@ -404,17 +404,17 @@ class Attachments extends SiteController
 
         if (!is_dir($path)) {
             if (!Filesystem::makeDirectory($path)) {
-                echo json_encode(array(
+                echo json_encode([
                     'error' => Lang::txt('Error uploading. Unable to create path.')
-                ));
+                ]);
                 return;
             }
         }
 
         if (!is_writable($path)) {
-            echo json_encode(array(
+            echo json_encode([
                 'error' => Lang::txt('Server error. Upload directory isn\'t writable.')
-            ));
+            ]);
             return;
         }
 
@@ -438,13 +438,13 @@ class Attachments extends SiteController
 
         // Create new parent/child association
         if (!$resource->makeChildOf($pid)) {
-            echo json_encode(array(
+            echo json_encode([
                 'success'   => false,
                 'errors'    => $resource->getErrors(),
                 'file'      => $filename . '.' . $ext,
                 'directory' => '',
                 'parent'    => $pid
-            ));
+            ]);
             return;
         }
 
@@ -457,13 +457,13 @@ class Attachments extends SiteController
 
             $this->setError(Lang::txt('File rejected because the anti-virus scan failed.'));
 
-            echo json_encode(array(
+            echo json_encode([
                 'success'   => false,
                 'errors'    => $this->getErrors(),
                 'file'      => $filename . '.' . $ext,
                 'directory' => str_replace(PATH_APP, '', $path),
                 'parent'    => $pid
-            ));
+            ]);
             return;
         }
 
@@ -478,13 +478,13 @@ class Attachments extends SiteController
         $this->textifier($file, $resource->get('id'));
 
         // Output results
-        echo json_encode(array(
+        echo json_encode([
             'success'   => true,
             'errors'    => $this->getErrors(),
             'file'      => $filename . '.' . $ext,
             'directory' => str_replace(PATH_APP, '', $path),
             'parent'    => $pid
-        ));
+        ]);
     }
 
     /**
@@ -618,7 +618,7 @@ class Attachments extends SiteController
         // Contributors upload archives, source and media of many types, so block
         // only server-executable extensions and the markup types the download
         // handler serves inline (a stored HTML file would run in the hub origin)
-        $blockedExtensions = array('php', 'php3', 'php4', 'php5', 'php7', 'php8', 'phtml', 'pht', 'phar', 'phps', 'cgi', 'pl', 'asp', 'aspx', 'jsp', 'shtml', 'htaccess', 'htpasswd', 'html', 'htm', 'xhtml', 'xml');
+        $blockedExtensions = ['php', 'php3', 'php4', 'php5', 'php7', 'php8', 'phtml', 'pht', 'phar', 'phps', 'cgi', 'pl', 'asp', 'aspx', 'jsp', 'shtml', 'htaccess', 'htpasswd', 'html', 'htm', 'xhtml', 'xml'];
         if (in_array(strtolower((string) $ext), $blockedExtensions)) {
             $this->setError(Lang::txt('File type not allowed: %s', $ext));
             return $this->displayTask($pid);
@@ -633,7 +633,7 @@ class Attachments extends SiteController
         // public until someone edits them a second time
         $parentRow = Entry::oneOrNew($pid);
         // Instantiate a new resource object
-        $resource = Entry::blank()->set(array(
+        $resource = Entry::blank()->set([
             'title'        => $file['name'],
             'introtext'    => $file['name'],
             'created'      => Date::toSql(),
@@ -645,7 +645,7 @@ class Attachments extends SiteController
             'group_owner'  => $parentRow->get('group_owner', ''),
             'path'         => '', // make sure no path is specified just yet
             'type'         => $this->_getChildType($file['name'])
-        ));
+        ]);
 
         // File already exists
         $parent = Entry::oneOrFail($pid);
@@ -877,7 +877,7 @@ class Attachments extends SiteController
 
         // Set value
         $access = Request::getInt('access', 0);
-        if (!in_array($access, array(0, 1))) {
+        if (!in_array($access, [0, 1])) {
             $access = 0;
         }
 

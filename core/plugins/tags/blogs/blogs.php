@@ -39,13 +39,13 @@ class Blogs extends Plugin
      */
     public function onTagView($tags, $limit = 0, $limitstart = 0, $sort = '', $areas = null)
     {
-        $response = array(
+        $response = [
             'name'    => $this->_name,
             'title'   => Lang::txt('PLG_TAGS_BLOGS'),
             'total'   => 0,
             'results' => null,
             'sql'     => ''
-        );
+        ];
 
         if (empty($tags)) {
             return $response;
@@ -53,7 +53,7 @@ class Blogs extends Plugin
 
         $database = App::get('db');
 
-        $ids = array();
+        $ids = [];
         foreach ($tags as $tag) {
             $ids[] = $tag->get('id');
         }
@@ -79,7 +79,7 @@ class Blogs extends Plugin
 
             // Generate list of active hub groups we are a member of.
 
-            $gs = array();
+            $gs = [];
 
             if (is_array($ugs)) {
                 foreach ($ugs as $g) {
@@ -141,11 +141,11 @@ class Blogs extends Plugin
         $row->scope_id = $row->data2;
         $row->content  = $row->ftext;
 
-        $view = new \Hubzero\Plugin\View(array(
+        $view = new \Hubzero\Plugin\View([
             'folder'  => 'tags',
             'element' => 'blogs',
             'name'    => 'result'
-        ));
+        ]);
         $view->entry = \Components\Blog\Models\Entry::blank();
         $view->entry->set(get_object_vars($row));
 

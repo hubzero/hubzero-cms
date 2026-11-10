@@ -107,7 +107,7 @@ $this->css();
                     35,
                     5,
                     'field_description',
-                    array('class' => 'form-control minimal no-footer')
+                    ['class' => 'form-control minimal no-footer']
                 );
                 ?>
             </label>

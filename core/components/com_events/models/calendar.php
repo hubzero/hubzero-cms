@@ -94,7 +94,7 @@ class Calendar extends Model
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         if (!isset($instances[$key])) {
@@ -112,7 +112,7 @@ class Calendar extends Model
      * @param      boolean  $clear    Clear cached data?
      * @return     mixed
      */
-    public function events($rtrn = 'list', $filters = array(), $clear = false)
+    public function events($rtrn = 'list', $filters = [], $clear = false)
     {
         switch (strtolower($rtrn)) {
             case 'count':
@@ -126,7 +126,7 @@ class Calendar extends Model
             case 'repeating':
                 if (!($this->_events_repeating instanceof ItemList) || $clear) {
                     // var to hold repeating data
-                    $repeats = array();
+                    $repeats = [];
 
                     // add repeating filters
                     $filters['repeating'] = true;
@@ -242,12 +242,12 @@ class Calendar extends Model
         }
 
         // get current events
-        $currentEvents = $this->events('list', array(
+        $currentEvents = $this->events('list', [
             'scope'       => $this->get('scope'),
             'scope_id'    => $this->get('scope_id'),
             'calendar_id' => $this->get('id'),
-            'state'       => array(1)
-        ));
+            'state'       => [1]
+        ]);
 
         //build calendar url
         $calendarUrl = str_replace('webcal', 'http', $this->get('url'));

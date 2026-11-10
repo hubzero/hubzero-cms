@@ -28,7 +28,7 @@ class Helper extends Obj
      * @param   string   $element    Element
      * @return  boolean  True if no errors
      */
-    public function takeAction($type, $uids = array(), $component = '', $element = null)
+    public function takeAction($type, $uids = [], $component = '', $element = null)
     {
         // Do we have the proper bits?
         if (!$element || !$component || !$type) {
@@ -83,8 +83,8 @@ class Helper extends Obj
         $type,
         $subject,
         $message,
-        $from = array(),
-        $to = array(),
+        $from = [],
+        $to = [],
         $component = '',
         $element = null,
         $description = '',
@@ -158,7 +158,7 @@ class Helper extends Obj
                     foreach ($methods as $method) {
                         $action = strtolower($method->method);
 
-                        if (!Event::trigger('xmessage.onMessage', array($from, $xmessage, $user, $action))) {
+                        if (!Event::trigger('xmessage.onMessage', [$from, $xmessage, $user, $action])) {
                             $this->setError(Lang::txt('Unable to message user %s with method %s', $uid, $action));
                         }
                     }

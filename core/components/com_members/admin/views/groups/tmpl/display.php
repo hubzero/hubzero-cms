@@ -77,13 +77,13 @@ $canDo = (User::authorise('core.admin', 'com_groups') || User::authorise('core.m
                 $members    = \Hubzero\User\Helper::getGroups($this->id, 'members');
                 $managers   = \Hubzero\User\Helper::getGroups($this->id, 'managers');
 
-                $applicants = (is_array($applicants)) ? $applicants : array();
-                $invitees   = (is_array($invitees)) ? $invitees : array();
-                $members    = (is_array($members)) ? $members : array();
-                $managers   = (is_array($managers)) ? $managers : array();
+                $applicants = (is_array($applicants)) ? $applicants : [];
+                $invitees   = (is_array($invitees)) ? $invitees : [];
+                $members    = (is_array($members)) ? $members : [];
+                $managers   = (is_array($managers)) ? $managers : [];
 
                 $groups = array_merge($applicants, $invitees);
-                $managerids = array();
+                $managerids = [];
                 foreach ($managers as $manager) {
                     $groups[] = $manager;
                     $managerids[] = $manager->cn;

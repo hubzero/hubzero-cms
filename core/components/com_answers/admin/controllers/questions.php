@@ -49,7 +49,7 @@ class Questions extends AdminController
     public function displayTask()
     {
         // Filters
-        $filters = array(
+        $filters = [
             'tag' => Request::getstate(
                 $this->_option . '.' . $this->_controller . '.tag',
                 'tag',
@@ -77,7 +77,7 @@ class Questions extends AdminController
                 'filter_order_Dir',
                 'DESC'
             )
-        );
+        ];
 
         $records = Question::all()
             ->including(['creator', function ($creator) {
@@ -132,7 +132,7 @@ class Questions extends AdminController
         // Load object
         if (!is_object($row)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             $id = is_array($id) ? $id[0] : $id;
 
             $row = Question::oneOrNew($id);
@@ -163,7 +163,7 @@ class Questions extends AdminController
         }
 
         // Incoming data
-        $fields = Request::getArray('question', array(), 'post');
+        $fields = Request::getArray('question', [], 'post');
         $tags = null;
         if (isset($fields['tags'])) {
             $tags = $fields['tags'];
@@ -184,7 +184,7 @@ class Questions extends AdminController
 
         // Trigger before save event
         $isNew  = $row->isNew();
-        $result = Event::trigger('onQuestionBeforeSave', array(&$row, $isNew));
+        $result = Event::trigger('onQuestionBeforeSave', [&$row, $isNew]);
 
         if (in_array(false, $result, true)) {
             Notify::error($row->getError());
@@ -201,7 +201,7 @@ class Questions extends AdminController
         $row->tag($tags, User::get('id'));
 
         // Trigger after save event
-        Event::trigger('onQuestionAfterSave', array(&$row, $isNew));
+        Event::trigger('onQuestionAfterSave', [&$row, $isNew]);
 
         // Display success message
         Notify::success(Lang::txt('COM_ANSWERS_QUESTION_SAVED'));
@@ -229,8 +229,8 @@ class Questions extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         if (count($ids) <= 0) {
             return $this->cancelTask();
@@ -248,7 +248,7 @@ class Questions extends AdminController
             }
 
             // Trigger after delete event
-            Event::trigger('onQuestionAfterDelete', array($id));
+            Event::trigger('onQuestionAfterDelete', [$id]);
 
             $success++;
         }
@@ -275,8 +275,8 @@ class Questions extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $publish = ($this->_task == 'close') ? 1 : 0;
 

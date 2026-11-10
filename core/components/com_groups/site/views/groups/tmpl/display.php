@@ -99,7 +99,7 @@ foreach ($this->notifications as $notification) {
                 <h3><?php echo Lang::txt('COM_GROUPS_INTRO_MY_GROUPS_TITLE'); ?></h3>
 
                 <div class="groups-container">
-                    <?php $mygroups_members = (isset($this->mygroups['members'])) ? $this->mygroups['members'] : array(); ?>
+                    <?php $mygroups_members = (isset($this->mygroups['members'])) ? $this->mygroups['members'] : []; ?>
                     <?php if (!count($mygroups_members)) : ?>
                         <div class="results-none">
                             <p><?php echo Lang::txt('COM_GROUPS_BROWSE_NO_GROUPS'); ?></p>

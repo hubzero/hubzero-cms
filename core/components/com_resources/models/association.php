@@ -50,19 +50,19 @@ class Association extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'parent_id' => 'positive|nonzero',
         'child_id'  => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'ordering'
-    );
+    ];
 
     /**
      * Get a record by its relationship
@@ -213,7 +213,7 @@ class Association extends Relational
             ->order('id', 'asc')
             ->rows();
 
-        $counters = array();
+        $counters = [];
         foreach ($rows as $row) {
             $g = (int) $row->get('grouping');
             $counters[$g] = isset($counters[$g]) ? $counters[$g] + 1 : 1;

@@ -43,15 +43,15 @@ class Whosonline extends Module
     public function displaySite()
     {
         // Get all sessions
-        $sessions = SessionHelper::getAllSessions(array(
+        $sessions = SessionHelper::getAllSessions([
             'distinct' => 1,
             'client'   => 0
-        ));
+        ]);
 
         // Vars to hold guests & logged in members
         $this->guestCount    = 0;
         $this->loggedInCount = 0;
-        $this->loggedInList  = array();
+        $this->loggedInList  = [];
 
         // Get guest and logged in counts/list
         foreach ($sessions as $session) {
@@ -80,10 +80,10 @@ class Whosonline extends Module
         }
 
         // get active sessions (users online)
-        $this->rows = SessionHelper::getAllSessions(array(
+        $this->rows = SessionHelper::getAllSessions([
             'guest'    => 0,
             'distinct' => 1
-        ));
+        ]);
 
         // Get the view
         require $this->getLayoutPath('default_admin');

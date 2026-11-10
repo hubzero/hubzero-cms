@@ -30,7 +30,7 @@ class Migration20140529192810ComCourses extends Base
             ->whereIsNull('caa.id')
             ->loadObjectList();
 
-        $ordering = array();
+        $ordering = [];
 
         if ($results && count($results) > 0) {
             foreach ($results as $result) {

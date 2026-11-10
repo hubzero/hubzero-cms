@@ -43,31 +43,31 @@ class Answer extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'field_id' => 'positive|nonzero',
         'group_id' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'ordering',
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'modified',
         'modified_by'
-    );
+    ];
 
     /**
      * Has external data been loaded?

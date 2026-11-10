@@ -266,7 +266,7 @@ class Session extends Table
         $query .= " FROM $mv->_tbl AS v
 					JOIN $this->_tbl AS s ON v.sessnum = s.sessnum";
 
-        $where = array();
+        $where = [];
         if (isset($filters['username']) && $filters['username'] != '') {
             $where[] = "v.viewuser=" . $this->_db->quote($filters['username']);
         }
@@ -289,7 +289,7 @@ class Session extends Table
         if (!isset($filters['sort_Dir']) || $filters['sort_Dir'] == '') {
             $filters['sort_Dir'] = 'DESC';
         }
-        if (!in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC'))) {
+        if (!in_array(strtoupper($filters['sort_Dir']), ['ASC', 'DESC'])) {
             $filters['sort_Dir'] = 'DESC';
         }
 
@@ -312,7 +312,7 @@ class Session extends Table
      * @param   array   $filters  Filters to determien hwo to build query
      * @return  integer
      */
-    public function getAllCount($filters = array())
+    public function getAllCount($filters = [])
     {
         $filters['limit']  = 0;
         $filters['count']  = true;
@@ -328,7 +328,7 @@ class Session extends Table
      * @param   array  $filters  Filters to determien hwo to build query
      * @return  array
      */
-    public function getAllRecords($filters = array())
+    public function getAllRecords($filters = [])
     {
         $this->_db->setQuery($this->buildQuery($filters));
         return $this->_db->loadObjectList();

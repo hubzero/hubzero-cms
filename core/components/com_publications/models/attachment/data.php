@@ -43,7 +43,7 @@ class Data extends Base
      *
      * @var  array
      */
-    protected $_connector = array('object_name', 'object_revision');
+    protected $_connector = ['object_name', 'object_revision'];
 
     /**
      * Get configs
@@ -195,7 +195,7 @@ class Data extends Base
             $class .= $disabled ? ' link_disabled' : '';
             $title = $configs->title ? $configs->title : Lang::txt('Go to data');
 
-            $options = array();
+            $options = [];
 
             if (file_exists($pub->bundlePath()) && $pub->base == 'databases') {
                 $show = new \stdClass();
@@ -275,7 +275,7 @@ class Data extends Base
             }
 
             // New database instance - need to clone again and get a new version number
-            $result    = Event::trigger('projects.clone_database', array($pAttach->object_name, $pub->_project, $newConfigs->servePath));
+            $result    = Event::trigger('projects.clone_database', [$pAttach->object_name, $pub->_project, $newConfigs->servePath]);
             $dbVersion = $result && isset($result[0]) ? $result[0] : null;
 
             // Failed to clone
@@ -354,7 +354,7 @@ class Data extends Base
      * @param   array    $toAttach
      * @return  boolean
      */
-    public function save($element, $elementId, $pub, $blockParams, $toAttach = array())
+    public function save($element, $elementId, $pub, $blockParams, $toAttach = [])
     {
         // Incoming selections
         if (empty($toAttach)) {
@@ -437,7 +437,7 @@ class Data extends Base
         if (
             $objPA->loadElementAttachment(
                 $pub->version_id,
-                array('object_name' => $database_name),
+                ['object_name' => $database_name],
                 $elementId,
                 $this->_name,
                 $element->role
@@ -469,13 +469,13 @@ class Data extends Base
         }
 
         if ($new) {
-            $result = Event::trigger('projects.clone_database', array($database_name, $pub->_project, $configs->servePath));
+            $result = Event::trigger('projects.clone_database', [$database_name, $pub->_project, $configs->servePath]);
             $dbVersion = $result && isset($result[0]) ? $result[0] : null;
         } else {
             $rtime = $objPA->modified ? strtotime($objPA->modified) : null;
             if ($objPA->object_id != $objData->id || strtotime($objData->updated) > $rtime) {
                 // New database instance - need to clone again and get a new version number
-                $result             = Event::trigger('projects.clone_database', array($database_name, $pub->_project, $configs->servePath));
+                $result             = Event::trigger('projects.clone_database', [$database_name, $pub->_project, $configs->servePath]);
                 $dbVersion          = $result && isset($result[0]) ? $result[0] : null;
                 $objPA->modified_by = $uid;
                 $objPA->modified    = Date::toSql();
@@ -534,7 +534,7 @@ class Data extends Base
 
         // Remove link
         if (!$this->getError()) {
-            $result = Event::trigger('projects.remove_database', array($row->object_name, $pub->_project, $row->object_revision));
+            $result = Event::trigger('projects.remove_database', [$row->object_name, $pub->_project, $row->object_revision]);
 
             $row->delete();
 
@@ -663,12 +663,12 @@ class Data extends Base
     {
         // Output HTML
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => 'attachments',
                 'layout'  => $this->_name
-            )
+            ]
         );
         $view->data   = $data;
         $view->params = $params;
@@ -730,7 +730,7 @@ class Data extends Base
         }
 
         // Add data files
-        $dataFiles = array();
+        $dataFiles = [];
         if (is_dir($configs->dataPath)) {
             $dataFiles = Filesystem::files($configs->dataPath, '.', true, true);
         }
@@ -802,7 +802,7 @@ class Data extends Base
         $list .= '</li>';
 
         // Add data files
-        $dataFiles = array();
+        $dataFiles = [];
         if (is_dir($configs->dataPath)) {
             $dataFiles = Filesystem::files($configs->dataPath, '.', true, true);
         }
@@ -852,8 +852,8 @@ class Data extends Base
         // Get data definition
         $dd = json_decode($objPD->data_definition, true);
 
-        $files   = array();
-        $columns = array();
+        $files   = [];
+        $columns = [];
 
         foreach ($dd['cols'] as $colname => $col) {
             if (isset($col['linktype']) && $col['linktype'] == "repofiles") {

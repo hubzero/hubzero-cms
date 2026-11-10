@@ -33,7 +33,7 @@ $max = $this->maxDays > 0 ? Date::of('now')->modify('+' . $this->maxDays . ' day
         <legend><?php echo Lang::txt('PLG_GROUPS_MEMBERS_EXPIRATION'); ?></legend>
 
         <?php
-        $names = array();
+        $names = [];
         foreach ($this->users as $user) {
             $u = User::getInstance($user);
             $label = is_object($u) && $u->get('name') ? $u->get('name') : $user;
@@ -69,7 +69,7 @@ $max = $this->maxDays > 0 ? Date::of('now')->modify('+' . $this->maxDays . ' day
             <?php echo Lang::txt('PLG_GROUPS_MEMBERS_EXPIRATION_EXTEND'); ?>
             <select name="extend_days" id="extend_days">
                 <option value="0"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_EXPIRATION_EXTEND_NONE'); ?></option>
-                <?php foreach (array(30, 90, 180, 365) as $days) : ?>
+                <?php foreach ([30, 90, 180, 365] as $days) : ?>
                     <?php if ($this->maxDays > 0 && $days > $this->maxDays) {
                         continue;
                     } ?>

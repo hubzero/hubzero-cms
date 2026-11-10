@@ -47,7 +47,7 @@ class Download
      * @var array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_formatters = array();
+    protected $_formatters = [];
 
     /**
      * Mime type

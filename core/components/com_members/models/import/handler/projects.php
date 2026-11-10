@@ -28,10 +28,10 @@ class Projects extends Obj
      */
     public function sample()
     {
-        return array(
+        return [
             'header'  => 'projects',
             'content' => 'projectalias;projectalias;projectalias'
-        );
+        ];
     }
 
     /**
@@ -111,7 +111,7 @@ class Projects extends Obj
         $pids = $tbl->getUserProjectIds($id);
 
         // Add user to specified groups
-        $added = array();
+        $added = [];
         foreach ($record->projects as $pid) {
             $project = new Project($pid);
 

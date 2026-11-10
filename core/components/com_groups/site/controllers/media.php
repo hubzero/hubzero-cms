@@ -99,11 +99,11 @@ class Media extends Base
         // to the `layout` word when `task` is absent, so reading `task` alone lets
         // ?layout=deletefile reach deletefileTask() with this gate skipped.
         $mtask = strtolower(Request::getCmd('task', Request::getWord('layout', '')));
-        $writeTasks = array(
+        $writeTasks = [
             'upload', 'ajaxupload', 'editorupload', 'doupload', 'domovefile', 'dorenamefile',
             'deletefile', 'savefolder', 'dorenamefolder', 'domovefolder',
             'deletefolder', 'extractfile'
-        );
+        ];
         if (in_array($mtask, $writeTasks) && !$this->authorized) {
             $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
         }
@@ -127,7 +127,7 @@ class Media extends Base
         // Strip control characters, normalise separators, and drop any segment
         // that would climb out.
         $rel = preg_replace('#\p{C}+#u', '', (string) $rel);
-        $out = array();
+        $out = [];
         foreach (explode('/', str_replace('\\', '/', $rel)) as $seg) {
             if ($seg === '' || $seg === '.' || $seg === '..') {
                 continue;
@@ -185,7 +185,7 @@ class Media extends Base
         }*/
 
         // get view notifications
-        $this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
+        $this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : [];
         $this->view->group         = $this->group;
 
         //display view
@@ -222,7 +222,7 @@ class Media extends Base
      */
     private function _buildFolderTree($folders, $parent_id = 0)
     {
-        $branch = array();
+        $branch = [];
         foreach ($folders as $folder) {
             if ($folder['parent'] == $parent_id) {
                 $children = $this->_buildFolderTree($folders, $folder['id']);
@@ -335,8 +335,8 @@ class Media extends Base
         $this->view->setLayout('filelist');
 
         //get request vars
-        $this->view->folders = array();
-        $this->view->files   = array();
+        $this->view->folders = [];
+        $this->view->files   = [];
         $this->view->type    = \Hubzero\Utility\Sanitize::paranoid(Request::getWord('type', ''));
         $this->view->relpath = Request::getString('path', '/');
 
@@ -366,9 +366,9 @@ class Media extends Base
                 foreach ($files as $k => $file) {
                     $fileInfo = pathinfo($file);
                     $ext      = isset($fileInfo['extension']) ? strtolower($fileInfo['extension']) : '';
-                    if ($this->view->type == 'images' && !in_array($ext, array('jpg','jpeg','png','gif','bmp','tiff'))) {
+                    if ($this->view->type == 'images' && !in_array($ext, ['jpg','jpeg','png','gif','bmp','tiff'])) {
                         unset($files[$k]);
-                    } elseif ($this->view->type == 'files' && in_array($ext, array('jpg','jpeg','png','gif','bmp','tiff'))) {
+                    } elseif ($this->view->type == 'files' && in_array($ext, ['jpg','jpeg','png','gif','bmp','tiff'])) {
                         unset($files[$k]);
                     }
                 }
@@ -390,7 +390,7 @@ class Media extends Base
         $this->view->path    = $this->path;
 
         // get view notifications
-        $this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
+        $this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : [];
 
         //display view
         $this->view
@@ -465,11 +465,11 @@ class Media extends Base
         }
 
         // return to editor
-        echo json_encode(array(
+        echo json_encode([
             'uploaded' => ($message) ? 0 : 1,
             'url'      => ($message) ? '' : $url,
-            'error'    => array('message' => $message)
-        ));
+            'error'    => ['message' => $message]
+        ]);
         die();
     }
 
@@ -661,23 +661,23 @@ class Media extends Base
         //make sure upload directory is writable
         if (!is_dir($uploadDirectory)) {
             if (!Filesystem::makeDirectory($uploadDirectory)) {
-                echo json_encode(array('error' => Lang::txt('COM_GROUPS_MEDIA_UNABLE_TO_CREATE_UPLOAD_PATH')));
+                echo json_encode(['error' => Lang::txt('COM_GROUPS_MEDIA_UNABLE_TO_CREATE_UPLOAD_PATH')]);
                 return;
             }
         }
         if (!is_writable($uploadDirectory)) {
-            echo json_encode(array('error' => Lang::txt('COM_GROUPS_MEDIA_PATH_NOT_WRITABLE')));
+            echo json_encode(['error' => Lang::txt('COM_GROUPS_MEDIA_PATH_NOT_WRITABLE')]);
             return;
         }
 
         //check to make sure we have a file and its not too big
         if ($size == 0) {
-            echo json_encode(array('error' => Lang::txt('COM_GROUPS_MEDIA_FILE_EMPTY')));
+            echo json_encode(['error' => Lang::txt('COM_GROUPS_MEDIA_FILE_EMPTY')]);
             return;
         }
         if ($size > $sizeLimit) {
             $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
-            echo json_encode(array('error' => Lang::txt('COM_GROUPS_MEDIA_FILE_TOO_BIG', $max)));
+            echo json_encode(['error' => Lang::txt('COM_GROUPS_MEDIA_FILE_TOO_BIG', $max)]);
             return;
         }
 
@@ -687,7 +687,7 @@ class Media extends Base
         $ext = $pathinfo['extension'] ?? '';
         if ($allowedExtensions && !in_array(strtolower($ext), $allowedExtensions)) {
             $these = implode(', ', $allowedExtensions);
-            echo json_encode(array('error' => Lang::txt('COM_GROUPS_MEDIA_INVALID_FILE', $these)));
+            echo json_encode(['error' => Lang::txt('COM_GROUPS_MEDIA_INVALID_FILE', $these)]);
             return;
         }
 
@@ -732,7 +732,7 @@ class Media extends Base
                 unlink($file);
 
                 //inform user
-                echo json_encode(array('error' => Lang::txt('COM_GROUPS_MEDIA_FILE_CONTAINS_VIRUS')));
+                echo json_encode(['error' => Lang::txt('COM_GROUPS_MEDIA_FILE_CONTAINS_VIRUS')]);
                 return;
             }
         }
@@ -746,10 +746,10 @@ class Media extends Base
             $reviewers = array_unique(array_filter(array_map('trim', explode(',', $reviewers))));
 
             if (!empty($reviewers)) {
-                $from = array(
+                $from = [
                     'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name)),
                     'email' => Config::get('mailfrom')
-                );
+                ];
 
                 $subject = Lang::txt('COM_GROUPS_ACTIVITY_UPLOAD_FILE_NOTICE', Config::get('sitename'));
 
@@ -778,7 +778,7 @@ class Media extends Base
         }
 
         //return success
-        echo json_encode(array('success' => true));
+        echo json_encode(['success' => true]);
         return;
     }
 
@@ -957,7 +957,7 @@ class Media extends Base
         // Incoming file
         $file = $this->_containRelativePath(trim(Request::getString('file', '', 'get')));
 
-        $adapter = \Hubzero\Filesystem\Manager::adapter('local', array('path' => $this->path));
+        $adapter = \Hubzero\Filesystem\Manager::adapter('local', ['path' => $this->path]);
         $archive = \Hubzero\Filesystem\File::fromPath($file, $adapter);
 
         // Get base path
@@ -1034,7 +1034,7 @@ class Media extends Base
 
         // Find the uploads directory and rebase the tree
         if ($protected === true) {
-            $protectedDir = array();
+            $protectedDir = [];
             foreach ($folderTree as $leaf) {
                 if ($leaf['name'] == 'uploads') {
                     array_push($protectedDir, $leaf);
@@ -1309,10 +1309,10 @@ class Media extends Base
     private function logActivity($action, $item, $isFile = true)
     {
         // Buld recipients list
-        $recipients = array(
+        $recipients = [
             ['group', $this->group->get('gidNumber')],
             ['user', User::get('id')]
-        );
+        ];
         foreach ($this->group->get('managers') as $recipient) {
             $recipients[] = ['user', $recipient];
         }
@@ -1320,12 +1320,12 @@ class Media extends Base
         // Gather details
         $url = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn'));
 
-        $details = array(
+        $details = [
             'title'     => $this->group->get('description'),
             'url'       => $url,
             'cn'        => $this->group->get('cn'),
             'gidNumber' => $this->group->get('gidNumber')
-        );
+        ];
         $key = $isFile ? 'file' : 'folder';
 
         $details[$key] = $item;

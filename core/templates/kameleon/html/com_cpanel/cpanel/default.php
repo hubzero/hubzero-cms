@@ -17,7 +17,7 @@ defined('_HZEXEC_') or die();
 Toolbar::title(Lang::txt('COM_CPANEL'), 'cpanel');
 Toolbar::help('cpanel');
 
-$attr = array('style' => 'cpanel');
+$attr = ['style' => 'cpanel'];
 ?>
 <div class="hero width-100">
     <?php

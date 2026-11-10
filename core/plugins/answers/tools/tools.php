@@ -40,7 +40,7 @@ class Tools extends Plugin
 
             $TA = new \Components\Tools\Tables\Author($db);
             $tools = $TA->getToolContributions(User::get('id'));
-            $mytooltags = array();
+            $mytooltags = [];
             if ($tools) {
                 foreach ($tools as $tool) {
                     $mytooltags[] = 'tool' . $tool->toolname;
@@ -70,7 +70,7 @@ class Tools extends Plugin
             return;
         }
 
-        $recipients = array();
+        $recipients = [];
 
         $db = App::get('db');
         $TA = new \Components\Tools\Tables\Author($db);

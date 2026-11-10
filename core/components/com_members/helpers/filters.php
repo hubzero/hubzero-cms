@@ -27,7 +27,7 @@ class Filters
     public static function getFilters($namespace)
     {
         // Process query filters
-        $q = (array)Request::getArray('q', array());
+        $q = (array)Request::getArray('q', []);
 
         // Turn search into array of results, if not already
         $search = Request::getString('search', '');
@@ -40,11 +40,11 @@ class Filters
             // Only allow alphabetical characters for search
             $search = preg_replace("/[^a-zA-Z]/", '', $search);
 
-            $q[] = array(
+            $q[] = [
                 'field'    => 'name',
                 'operator' => 'like',
                 'value'    => $search
-            );
+            ];
         }
 
         // Translate operators and augment query filters with human-friendly text
@@ -52,12 +52,12 @@ class Filters
 
         $tags = Request::getString('tags', '');
 
-        return array(
+        return [
             'search' => $search,
             'q'      => $query,
             'tags'   => $tags,
             'sortby' => strtolower(Request::getWord('sortby', 'surname'))
-        );
+        ];
     }
 
     /**
@@ -66,15 +66,15 @@ class Filters
      * @param   array  $exclude  An array of columns to exclude
      * @return  array
      */
-    public static function getFieldNames($exclude = array())
+    public static function getFieldNames($exclude = [])
     {
         // Get the field names
-        $columns = array();
+        $columns = [];
 
-        $columns[] = array(
+        $columns[] = [
             'raw'   => 'name',
             'human' => Lang::txt('COM_MEMBERS_FIELD_NAME')
-        );
+        ];
 
         $fields = Field::all()
             ->whereIn('action_browse', User::getAuthorisedViewLevels())
@@ -87,10 +87,10 @@ class Filters
                 continue;
             }
 
-            $columns[] = array(
+            $columns[] = [
                 'raw'   => $field->get('name'),
                 'human' => $field->get('label')
-            );
+            ];
         }
 
         return $columns;
@@ -125,7 +125,7 @@ class Filters
      *
      * @param   array  $q  Query arguments
      */
-    public static function filtersMap($q = array())
+    public static function filtersMap($q = [])
     {
         // Initialize variables
         $filters   = [];
@@ -143,11 +143,11 @@ class Filters
                         continue;
                     }
 
-                    $val = array(
+                    $val = [
                         'field' => $key,
                         'operator' => 'e',
                         'value' => $val
-                    );
+                    ];
                 }
 
                 if (!isset($val['field']) || !isset($val['operator']) || !isset($val['value'])) {
@@ -188,7 +188,7 @@ class Filters
             // Just so I don't have to keep writing $val->val
             $value = $val->val;
 
-            $x            = array();
+            $x            = [];
             $x['value']   = $value;
             $x['display'] = $value;
 

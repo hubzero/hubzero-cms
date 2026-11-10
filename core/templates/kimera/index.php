@@ -46,14 +46,14 @@ $browser = new \Hubzero\Browser\Detector();
 // Figure out if this page is a home page
 $isFrontPage = $menu->isHome();
 
-$cls = array(
+$cls = [
     'no-js',
     $browser->name(),
     $browser->name() . $browser->major(),
     $this->direction,
     $this->params->get('header', 'light'),
     ($isFrontPage ? 'home' : '')
-);
+];
 
 // Prepend site name to document title
 if ($this->getTitle() != Config::get('sitename')) {

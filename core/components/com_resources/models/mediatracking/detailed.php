@@ -54,12 +54,12 @@ class Detailed extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'object_id'   => 'positive|nonzero',
         'object_type' => 'notempty',
         'session_id'  => 'notempty',
         'ip_address'  => 'notempty'
-    );
+    ];
 
     /**
      * Get a record by its doi

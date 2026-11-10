@@ -40,7 +40,7 @@ class Html
      */
     public static function bsize($s)
     {
-        foreach (array('', 'K', 'M', 'G') as $i => $k) {
+        foreach (['', 'K', 'M', 'G'] as $i => $k) {
             if ($s < 1024) {
                 break;
             }

@@ -36,7 +36,7 @@ $formId = 'hubForm' . (($this->no_html) ? '-ajax' : '');
             <?php
                 $u = User::getInstance($this->uid);
 
-                $current_roles = array();
+                $current_roles = [];
                 $roles = Components\Groups\Helpers\Permissions::getGroupMemberRoles(
                     $u->get('id'),
                     $this->group->get('gidNumber')

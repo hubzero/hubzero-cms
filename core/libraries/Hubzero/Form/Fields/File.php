@@ -32,7 +32,7 @@ class File extends Field
     protected function getInput()
     {
         // Initialize some field attributes.
-        $attributes = array(
+        $attributes = [
             'type'         => 'file',
             'name'         => $this->name,
             'id'           => $this->id,
@@ -41,9 +41,9 @@ class File extends Field
             'class'        => ($this->element['class']     ? (string) $this->element['class']  : ''),
             'disabled'     => ((string) $this->element['disabled'] == 'true'    ? 'disabled' : ''),
             'onchange'     => ($this->element['onchange']  ? (string) $this->element['onchange'] : '')
-        );
+        ];
 
-        $attr = array();
+        $attr = [];
         foreach ($attributes as $key => $value) {
             if ($key != 'value' && !$value) {
                 continue;

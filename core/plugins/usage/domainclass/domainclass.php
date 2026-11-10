@@ -32,9 +32,9 @@ class Domainclass extends Plugin
      */
     public function onUsageAreas()
     {
-        return array(
+        return [
             'domainclass' => Lang::txt('PLG_USAGE_DOMAINCLASS')
-        );
+        ];
     }
 
     /**
@@ -96,18 +96,18 @@ class Domainclass extends Plugin
             $monthtext   = date("F", mktime(0, 0, 0, $dtmonth, 1, $dtyear)) . ' ' . $dtyear;
             $yeartext    = "Jan - " . date("M", mktime(0, 0, 0, $dtmonth, 1, $dtyear)) . ' ' . $dtyear;
             $twelvetext  = date("M", mktime(0, 0, 0, $dtmonthnext, 1, $dtyear)) . ' ' . $dtyearprior . ' - ' . date("M", mktime(0, 0, 0, $dtmonth, 1, $dtyear)) . ' ' . $dtyear;
-            $period = array(
-                array('key' => 1,  'name' => $monthtext),
-                array('key' => 0,  'name' => $yeartext),
-                array('key' => 12, 'name' => $twelvetext)
-            );
+            $period = [
+                ['key' => 1,  'name' => $monthtext],
+                ['key' => 0,  'name' => $yeartext],
+                ['key' => 12, 'name' => $twelvetext]
+            ];
 
             // Process each different date/time periods/range...
             $maxrank = 0;
-            $classlist = array();
+            $classlist = [];
             for ($pidx = 0; $pidx < count($period); $pidx++) {
                 // Calculate the total value for this classlist...
-                $classlistset = array();
+                $classlistset = [];
                 $sql = "SELECT classvals.name, classvals.value
 						FROM classes, classvals
 						WHERE classes.class = classvals.class
@@ -126,11 +126,11 @@ class Domainclass extends Plugin
                                 $formattedval = substr($formattedval, 0, $chopchar) . '+';
                             }
                         }
-                        array_push($classlistset, array($row->name, $row->value, $formattedval, sprintf("%0.1f%%", 100)));
+                        array_push($classlistset, [$row->name, $row->value, $formattedval, sprintf("%0.1f%%", 100)]);
                     }
                 }
                 if (!count($classlistset)) {
-                    array_push($classlistset, array('n/a', 0, 'n/a', 'n/a'));
+                    array_push($classlistset, ['n/a', 0, 'n/a', 'n/a']);
                 }
 
                 // Calculate the class values for the classlist...
@@ -149,7 +149,7 @@ class Domainclass extends Plugin
                     foreach ($results as $row) {
                         if ($row->rank > 0 && (!$size || $row->rank <= $size)) {
                             while ($rank < $row->rank) {
-                                array_push($classlistset, array('n/a', 0, 'n/a', 'n/a'));
+                                array_push($classlistset, ['n/a', 0, 'n/a', 'n/a']);
                                 $rank++;
                             }
                             $formattedval = \Components\Usage\Helpers\Helper::valformat($row->value, $valfmt);
@@ -160,16 +160,16 @@ class Domainclass extends Plugin
                                 }
                             }
                             if ($classlistset[0][1] > 0) {
-                                array_push($classlistset, array($row->name, $row->value, $formattedval, sprintf("%0.1f%%", (100 * $row->value / $classlistset[0][1]))));
+                                array_push($classlistset, [$row->name, $row->value, $formattedval, sprintf("%0.1f%%", (100 * $row->value / $classlistset[0][1]))]);
                             } else {
-                                array_push($classlistset, array($row->name, $row->value, $formattedval, 'n/a'));
+                                array_push($classlistset, [$row->name, $row->value, $formattedval, 'n/a']);
                             }
                             $rank++;
                         }
                     }
                 }
                 while ($rank <= $size || $rank == 1) {
-                    array_push($classlistset, array('n/a', 0, 'n/a', 'n/a'));
+                    array_push($classlistset, ['n/a', 0, 'n/a', 'n/a']);
                     $rank++;
                 }
                 array_push($classlist, $classlistset);

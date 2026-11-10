@@ -38,14 +38,14 @@ class Opensearch extends Base
      *
      * @var  object
      */
-    private $images = array();
+    private $images = [];
 
     /**
      * The url collection
      *
      * @var  array
      */
-    private $urls = array();
+    private $urls = [];
 
     /**
      * Class constructor
@@ -53,7 +53,7 @@ class Opensearch extends Base
      * @param   array  $options  Associative array of options
      * @return  void
      */
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         parent::__construct($options);
 
@@ -72,7 +72,7 @@ class Opensearch extends Base
 
         // Add the favicon as the default image
         // Try to find a favicon by checking the template and root folder
-        $dirs = array(App::get('template')->path, PATH_ROOT);
+        $dirs = [App::get('template')->path, PATH_ROOT];
 
         foreach ($dirs as $dir) {
             if (file_exists($dir . DS . 'favicon.ico')) {
@@ -99,7 +99,7 @@ class Opensearch extends Base
      * @param   array    $params  Associative array of attributes
      * @return  The rendered data
      */
-    public function render($cache = false, $params = array())
+    public function render($cache = false, $params = [])
     {
         $xml = new \DOMDocument('1.0', 'utf-8');
         $xml->formatOutput = true;

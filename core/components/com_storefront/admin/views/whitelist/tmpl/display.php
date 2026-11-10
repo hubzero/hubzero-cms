@@ -45,7 +45,7 @@ App::get('document')->addScriptDeclaration(
 		$(\'a[data-title="Add Users"]\').removeClass(\'modal\').addClass(\'specialPop\');
 	});'
 );
-Behavior::modal('a.specialPop', array('onHide' => '\\function() { refreshMe(); }'));
+Behavior::modal('a.specialPop', ['onHide' => '\\function() { refreshMe(); }']);
 
 ?>
 <script type="text/javascript">

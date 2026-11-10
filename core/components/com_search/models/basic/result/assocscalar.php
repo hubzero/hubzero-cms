@@ -75,7 +75,7 @@ class AssocScalar extends SearchResult
             self::$tag_weight_modifier = Set::get_tag_weight_modifier();
         }
 
-        self::assert_keys(array('title', 'description', 'link'), $row);
+        self::assert_keys(['title', 'description', 'link'], $row);
         foreach ($row as $key => $val) {
             // NULL columns stay NULL (weight === null is tested below)
             $this->$key = is_array($val) ? array_map('stripslashes', array_map('strip_tags', $val)) : (is_null($val) ? null : stripslashes(strip_tags($val)));
@@ -103,8 +103,8 @@ class AssocScalar extends SearchResult
             $this->adjust_weight($this->tag_count * self::$tag_weight_modifier, 'tag count of ' . $this->tag_count);
         }
 
-        $this->contributors = $this->contributors ? array_unique(is_array($this->contributors) ? $this->contributors : preg_split("#\n#", $row['contributors'])) : array();
-        $this->contributor_ids = $this->contributor_ids ? array_unique(is_array($this->contributor_ids) ? $this->contributor_ids : preg_split("#\n#", $row['contributor_ids'])) : array();
+        $this->contributors = $this->contributors ? array_unique(is_array($this->contributors) ? $this->contributors : preg_split("#\n#", $row['contributors'])) : [];
+        $this->contributor_ids = $this->contributor_ids ? array_unique(is_array($this->contributor_ids) ? $this->contributor_ids : preg_split("#\n#", $row['contributor_ids'])) : [];
 
         if ($this->date && $this->date != '0000-00-00 00:00:00') {
             $this->date = strtotime($row['date']);

@@ -55,20 +55,20 @@ class Comment extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'page_id' => 'positive|nonzero',
         'ctext'   => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Defines a belongs to one relationship between comment and user
@@ -131,7 +131,7 @@ class Comment extends Relational
      * @param   array   $filters  Filters to apply to query
      * @return  object
      */
-    public function replies($filters = array())
+    public function replies($filters = [])
     {
         $replies = self::blank()
             ->including(['creator', function ($creator) {
@@ -149,14 +149,14 @@ class Comment extends Relational
 
         if (isset($filters['state'])) {
             if (!is_array($filters['state'])) {
-                $filters['state'] = array($filters['state']);
+                $filters['state'] = [$filters['state']];
             }
             $replies->whereIn('state', $filters['state']);
         }
 
         if (isset($filters['access'])) {
             if (!is_array($filters['access'])) {
-                $filters['access'] = array($filters['access']);
+                $filters['access'] = [$filters['access']];
             }
             $replies->whereIn('access', $filters['access']);
         }
@@ -184,7 +184,7 @@ class Comment extends Relational
     public function content($as = 'parsed', $shorten = 0)
     {
         $as = strtolower($as);
-        $options = array();
+        $options = [];
 
         switch ($as) {
             case 'parsed':
@@ -194,19 +194,19 @@ class Comment extends Relational
 
                 $parser = Parser::getInstance();
 
-                $parsed = $parser->parse(stripslashes($this->get('ctext')), array(
+                $parsed = $parser->parse(stripslashes($this->get('ctext')), [
                     'option'   => Request::getCmd('option', 'com_wiki'),
                     'scope'    => Request::getString('scope'),
                     'pagename' => Request::getString('pagename'),
                     'pageid'   => $this->get('page_id'),
                     'filepath' => '',
                     'domain'   => Request::getString('group', '')
-                ));
+                ]);
 
                 $this->set('chtml', $parsed);
 
                 if ($shorten) {
-                    $content = Str::truncate($this->get('chtml'), $shorten, array('html' => true));
+                    $content = Str::truncate($this->get('chtml'), $shorten, ['html' => true]);
                     return $content;
                 }
 
@@ -311,11 +311,11 @@ class Comment extends Relational
         $valid = parent::validate();
 
         if ($valid) {
-            $results = Event::trigger('content.onContentBeforeSave', array(
+            $results = Event::trigger('content.onContentBeforeSave', [
                 'com_wiki.comment.ctext',
                 &$this,
                 $this->isNew()
-            ));
+            ]);
 
             foreach ($results as $result) {
                 if ($result === false) {

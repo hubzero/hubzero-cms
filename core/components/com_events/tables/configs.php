@@ -34,7 +34,7 @@ class Configs
      *
      * @var  array
      */
-    private $_data = array();
+    private $_data = [];
 
     /**
      * Constructor
@@ -97,7 +97,7 @@ class Configs
             }
         }
 
-        $fields = array();
+        $fields = [];
         if (trim($this->fields) != '') {
             $fs = explode("\n", trim($this->fields));
             foreach ($fs as $f) {
@@ -114,7 +114,7 @@ class Configs
      */
     public function loadDefaults()
     {
-        $config = array(
+        $config = [
             'adminmail' => '',
             'starday' => '0',
             'mailview' => 'NO',
@@ -130,7 +130,7 @@ class Configs
             'defColor' => '',
             'calForceCatColorEventForm' => 'NO',
             'fields' => ''
-        );
+        ];
         foreach ($config as $p => $v) {
             $this->_db->setQuery(
                 "INSERT INTO $this->_tbl (param, value) VALUES ("

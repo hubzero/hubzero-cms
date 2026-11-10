@@ -33,7 +33,7 @@ class Members extends GroupMacro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['html']  = '<p>Displays group members.</p>';
         $txt['html'] .= '<p>Examples:</p>
                             <ul>
@@ -60,9 +60,9 @@ class Members extends GroupMacro
         $args = $this->getArgs();
 
         //array of filters
-        $filters = array(
+        $filters = [
             'limit' => (count($args) == 1 && is_numeric($args[0])) ? $args[0] : 12
-        );
+        ];
 
         // get members
         $members = $this->getGroupMembers($this->group, $filters);
@@ -95,7 +95,7 @@ class Members extends GroupMacro
      * @param      array  $filters
      * @return     array
      */
-    private function getGroupMembers($group, $filters = array())
+    private function getGroupMembers($group, $filters = [])
     {
         // get members from group
         $members = $group->get('members');

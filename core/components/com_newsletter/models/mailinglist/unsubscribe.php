@@ -41,10 +41,10 @@ class Unsubscribe extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'email' => 'notempty',
         'mid'   => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Defines a belongs to one relationship between mailinglist and mailing

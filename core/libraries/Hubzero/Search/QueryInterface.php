@@ -49,7 +49,7 @@ interface QueryInterface
      * @access public
      * @return void
      */
-    public function addFilter($name, $query = array());
+    public function addFilter($name, $query = []);
 
     /**
      * addFacet - Adds a facet to the query object.
@@ -59,7 +59,7 @@ interface QueryInterface
      * @access public
      * @return void
      */
-    public function addFacet($name, $query = array());
+    public function addFacet($name, $query = []);
 
     /**
      * getFacetCount

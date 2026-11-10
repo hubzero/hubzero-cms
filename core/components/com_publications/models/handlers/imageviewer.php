@@ -49,17 +49,17 @@ class ImageViewer extends Base
      * @param   array  $savedConfig
      * @return  void
      */
-    public function getConfig($savedConfig = array())
+    public function getConfig($savedConfig = [])
     {
         // Defaults
-        $configs = array(
+        $configs = [
             'name'   => 'imageviewer',
             'label'  => 'Image Gallery',
             'title'  => 'Viewer for image files',
             'about'  => 'Selected images will be viewed together in a slideshow',
-            'params' => array(
-                'allowed_ext'  => array('gif', 'jpg', 'png', 'bmp', 'jpeg'),
-                'required_ext' => array(),
+            'params' => [
+                'allowed_ext'  => ['gif', 'jpg', 'png', 'bmp', 'jpeg'],
+                'required_ext' => [],
                 'min_allowed'  => 1,
                 'max_allowed'  => 1000,
                 'thumbSuffix'  => '_tn',
@@ -70,8 +70,8 @@ class ImageViewer extends Base
                 'masterHeight' => '400',
                 'defaultThumb' => '/core/components/com_publications/site/assets/img/resource_thumb.gif',
                 'enforced'     => 0
-            )
-        );
+            ]
+        ];
 
         $this->_config = json_decode(json_encode($this->_parent->parseConfig($this->_name, $configs, $savedConfig)), false);
         return $this->_config;
@@ -271,11 +271,11 @@ class ImageViewer extends Base
         }
 
         if ($i > 0) {
-            $view = new \Hubzero\Component\View(array(
+            $view = new \Hubzero\Component\View([
                 'base_path' => Component::path('com_publications') . DS . 'site',
                 'name'      => 'view',
                 'layout'    => '_gallery',
-            ));
+            ]);
 
             $view->content  = $html;
             return $view->loadTemplate();
@@ -421,12 +421,12 @@ class ImageViewer extends Base
 
         // Output HTML
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => 'attachments',
                 'layout'  => $layout
-            )
+            ]
         );
         $view->data   = $data;
         $view->config = $this->_config;
@@ -502,21 +502,21 @@ class ImageViewer extends Base
         $modelAttach = new \Components\Publications\Models\Attachments($database);
 
         // Get image files
-        $images = array();
+        $images = [];
 
         // Get metadata
-        $meta = array();
+        $meta = [];
         if ($editor->get('configured')) {
             // Do we have a metadata file?
             // If file found, load metadata from file
         }
 
         // Draw images
-        $view = new \Hubzero\Component\View(array(
+        $view = new \Hubzero\Component\View([
             'base_path' => Component::path('com_publications') . DS . 'site',
             'name'      => 'handlers',
             'layout'    => 'imagegallery',
-        ));
+        ]);
         return $view->loadTemplate();
     }
 

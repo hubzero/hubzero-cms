@@ -41,20 +41,20 @@ class Subscription extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'user_id'  => 'positive|nonzero',
         'scope'    => 'notempty',
         'scope_id' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created'
-    );
+    ];
 
     /**
      * Load a record by scope and scope ID

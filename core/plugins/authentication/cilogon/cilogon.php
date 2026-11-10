@@ -141,9 +141,9 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
         $returnUrl = Request::getString('return', '');
         $provider = $this->cilogon();
 
-        $authParams = array(
+        $authParams = [
             'scope' => ['openid', 'email', 'profile', 'org.cilogon.userinfo']
-        );
+        ];
 
         // Optionally restrict logins to specific identity providers. When a
         // single IdP is configured, pre-select it so CILogon skips its provider
@@ -176,7 +176,7 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
      */
     public function onUserAuthenticate($credentials, $options, &$response)
     {
-        $responseArr = array();
+        $responseArr = [];
 
         try {
             $storedState = Session::get('state', null, 'cilogon');
@@ -194,7 +194,7 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
             //array('scope' => ['openid','email','profile','org.cilogon.userinfo'],
             //'code' => Request::getString('code')));
 
-            $token = $this->cilogon()->getAccessToken('authorization_code', array('code' => Request::getString('code')));
+            $token = $this->cilogon()->getAccessToken('authorization_code', ['code' => Request::getString('code')]);
         } catch (\Exception $e) {
             $response->status = \Hubzero\Auth\Status::FAILURE;
             $response->error_message = Lang::txt('PLG_AUTHENTICATION_CILOGON_ERROR_RETRIEVING_PROFILE', $e->getMessage());
@@ -273,10 +273,10 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
             // If we have a real user, drop the authenticator cookie
             if (isset($user) && is_object($user)) {
                 // Set cookie with login preference info
-                $prefs = array(
+                $prefs = [
                     'user_id'       => $user->get('id'),
                     'authenticator' => 'cilogon'
-                );
+                ];
 
                 $namespace = 'authenticator';
                 $lifetime  = time() + 365 * 24 * 60 * 60;
@@ -295,7 +295,7 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
      * @param   array  $options
      * @return  void
      */
-    public function link($options = array())
+    public function link($options = [])
     {
         try {
                 $storedState = Session::get('state', null, 'cilogon');

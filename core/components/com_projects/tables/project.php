@@ -58,7 +58,7 @@ class Project extends Table
      * @param   integer  $setup_complete
      * @return  string
      */
-    public function buildQuery($filters = array(), $admin = false, $uid = 0, $showall = 0, $setup_complete = 3)
+    public function buildQuery($filters = [], $admin = false, $uid = 0, $showall = 0, $setup_complete = 3)
     {
         // Process filters
         $mine     = isset($filters['mine']) && $filters['mine'] == 1 ? 1 : 0;
@@ -172,7 +172,7 @@ class Project extends Table
                     $query .= " AND (p.owned_by_user != " . $this->_db->quote($uid) . " OR p.owned_by_group != 0) ";
                 }
             } else {
-                $access = array();
+                $access = [];
                 if (!User::isGuest()) {
                     $access[] = 2;
                 }
@@ -186,7 +186,7 @@ class Project extends Table
                 } else {
                     if ($filterby == 'public') {
                         //$privacy = " AND p.private = 0 ";
-                        $access = array(4);
+                        $access = [4];
                     } else if ($filterby == 'open') {
                         //$privacy = " AND p.private < 0 ";
                         $access[] = 1;
@@ -263,7 +263,7 @@ class Project extends Table
 
         if (isset($filters['access']) && !empty($filters['access'])) {
             if (!is_array($filters['access'])) {
-                $filters['access'] = array($filters['access']);
+                $filters['access'] = [$filters['access']];
             }
             $query .= " AND p.access IN (" . implode(',', $filters['access']) . ")";
         }
@@ -282,7 +282,7 @@ class Project extends Table
 
         // Include
         if (!empty($filters['include'])) {
-            $tquery = array();
+            $tquery = [];
             foreach ($filters['include'] as $ex) {
                 $tquery[] = $this->_db->quote($ex);
             }
@@ -371,7 +371,7 @@ class Project extends Table
      * @param   integer  $setup_complete
      * @return  integer
      */
-    public function getCount($filters = array(), $admin = false, $uid = 0, $showall = 0, $setup_complete = 3)
+    public function getCount($filters = [], $admin = false, $uid = 0, $showall = 0, $setup_complete = 3)
     {
         $filters['count'] = true;
         $admin = $admin == 'admin' ? true : false;
@@ -393,7 +393,7 @@ class Project extends Table
      * @param   integer  $setup_complete
      * @return  object
      */
-    public function getRecords($filters = array(), $admin = false, $uid = 0, $showall = 0, $setup_complete = 3)
+    public function getRecords($filters = [], $admin = false, $uid = 0, $showall = 0, $setup_complete = 3)
     {
         $filters['count'] = false;
         $admin    = $admin == 'admin' ? true : false;
@@ -449,7 +449,7 @@ class Project extends Table
      */
     public function getProjectsByTag($tag = 'test', $include = true, $get = 'id')
     {
-        $ids = array();
+        $ids = [];
 
         $get    = $get == 'id' ? 'id' : 'alias';
         $query  = "SELECT DISTINCT p.$get, ";
@@ -481,7 +481,7 @@ class Project extends Table
      * @param   integer  $setup_complete
      * @return  object
      */
-    public function getGroupProjects($groupid = 0, $uid = 0, $filters = array(), $setup_complete = 3)
+    public function getGroupProjects($groupid = 0, $uid = 0, $filters = [], $setup_complete = 3)
     {
         $query  = "SELECT DISTINCT p.*, IFNULL(o.role, 0) as role, o.id as owner, o.added as since, o.status as confirmed ";
         $query .= ", x.name as authorname, g.cn as groupcn, g.description as groupname ";
@@ -493,7 +493,7 @@ class Project extends Table
         $query .=  " JOIN #__users as x ON x.id=p.created_by_user ";
         $query .=  " LEFT JOIN #__xgroups as g ON g.gidNumber=p.owned_by_group ";
 
-        if (isset($filters['filterby']) && in_array($filters['filterby'], array('active', 'archived'))) {
+        if (isset($filters['filterby']) && in_array($filters['filterby'], ['active', 'archived'])) {
             if ($filters['filterby'] == 'archived') {
                 $query .=  " WHERE p.id=po.projectid AND p.state=3 AND po.status=1 AND po.groupid=" . (int) $groupid;
             } else if ($filters['filterby'] == 'active') {
@@ -562,7 +562,7 @@ class Project extends Table
      */
     public function getUserProjectIds($uid = 0, $active = 1, $include_provisioned = 0)
     {
-        $ids = array();
+        $ids = [];
 
         if ($uid) {
             $query  = "SELECT DISTINCT p.id ";
@@ -595,7 +595,7 @@ class Project extends Table
      */
     public function getGroupProjectIds($groupid = 0, $uid = 0, $active = 1)
     {
-        $ids = array();
+        $ids = [];
 
         if ($groupid) {
             // Reworked to only pull IDs of projects a user has access to.
@@ -638,10 +638,10 @@ class Project extends Table
      * @param   integer  $uid
      * @return  integer
      */
-    public function getUpdateCount($projects = array(), $uid = 0)
+    public function getUpdateCount($projects = [], $uid = 0)
     {
         if (!empty($projects) && $uid != 0) {
-            $tquery = array();
+            $tquery = [];
             foreach ($projects as $project) {
                 $tquery[] = $this->_db->quote($project);
             }

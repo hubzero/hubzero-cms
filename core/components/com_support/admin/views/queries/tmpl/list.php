@@ -68,7 +68,7 @@ if (count($this->folders) > 0) { ?>
                         );
                         $ticketCount = \Components\Support\Models\Ticket::countWithQuery(
                             $query,
-                            array()
+                            []
                         );
                         ?>
                         <a class="query" href="<?php echo $queryUrl; ?>">

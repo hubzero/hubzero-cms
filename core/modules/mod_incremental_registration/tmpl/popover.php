@@ -563,7 +563,7 @@ defined('_HZEXEC_') or die();
                 <?php if (isset($row['race'])) : ?>
                     <?php
                     $race = isset($_POST['race'])
-                        ? $_POST['race'] : array();
+                        ? $_POST['race'] : [];
                     ?>
                     <li>
                             <?php

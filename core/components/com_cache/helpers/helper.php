@@ -26,7 +26,7 @@ class Helper
      */
     public static function getClientOptions()
     {
-        $items = array();
+        $items = [];
 
         foreach (ClientManager::client() as $client) {
             $item = new stdClass();

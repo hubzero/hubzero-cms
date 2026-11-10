@@ -268,7 +268,7 @@ $permalinkTxt = Lang::txt('COM_WISHLIST_PERMALINK');
                                     35,
                                     4,
                                     $editorId,
-                                    array('class' => 'form-control minimal no-footer')
+                                    ['class' => 'form-control minimal no-footer']
                                 );
                                 ?>
                             </label>
@@ -301,10 +301,10 @@ $permalinkTxt = Lang::txt('COM_WISHLIST_PERMALINK');
         <?php
         if ($this->depth < $this->wish->config()->get('comments_depth', 3)) {
             $comments = $this->comment->replies()
-                ->whereIn('state', array(
+                ->whereIn('state', [
                     Components\Wishlist\Models\Comment::STATE_PUBLISHED,
                     Components\Wishlist\Models\Comment::STATE_FLAGGED
-                ))
+                ])
                 ->rows();
 
             $this->view('_list')

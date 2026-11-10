@@ -66,13 +66,13 @@ class Team extends Plugin
      */
     public function &onProjectAreas($alias = null)
     {
-        $area = array(
+        $area = [
             'name'    => 'team',
             'title'   => Lang::txt('PLG_PROJECTS_TEAM_TAB_TEAM'),
             'submenu' => null,
             'show'    => true,
             'icon'    => 'f042'
-        );
+        ];
 
         return $area;
     }
@@ -85,9 +85,9 @@ class Team extends Plugin
      */
     public function &onProjectCount($model)
     {
-        $counts = array(
-            'team' => count($model->team(array(), true))
-        );
+        $counts = [
+            'team' => count($model->team([], true))
+        ];
 
         return $counts;
     }
@@ -104,10 +104,10 @@ class Team extends Plugin
     {
         $returnhtml = true;
 
-        $arr = array(
+        $arr = [
             'html'     => '',
             'metadata' => ''
-        );
+        ];
 
         // Get this area details
         $this->_area = $this->onProjectAreas();
@@ -224,11 +224,11 @@ class Team extends Plugin
         }
 
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'team',
                 'name'    => 'mini'
-            )
+            ]
         );
         $view->team  = $team;
         $view->model = $model;
@@ -251,16 +251,16 @@ class Team extends Plugin
         }
 
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'team',
                 'name'    => 'view',
                 'layout'  => 'horizontal'
-            )
+            ]
         );
 
         // Get team
-        $view->team  = $model->team($filters = array('status' => 1));
+        $view->team  = $model->team($filters = ['status' => 1]);
         $view->model = $model;
         return $view->loadTemplate();
     }
@@ -278,11 +278,11 @@ class Team extends Plugin
 
         // Output HTML
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'team',
                 'name'    => $layout
-            )
+            ]
         );
 
         $view->total = count($this->model->team());
@@ -293,10 +293,10 @@ class Team extends Plugin
         $view->filters['sortby']  = strtolower(Request::getWord('sortby', 'name'));
         $view->filters['sortdir'] = strtoupper(Request::getWord('sortdir', 'ASC'));
         $view->filters['status']  = Request::getString('status', 'active');
-        if (!in_array($view->filters['sortdir'], array('ASC', 'DESC'))) {
+        if (!in_array($view->filters['sortdir'], ['ASC', 'DESC'])) {
             $view->filters['sortdir'] = 'ASC';
         }
-        if (!in_array($view->filters['sortby'], array('group', 'added', 'date', 'role', 'name', 'status'))) {
+        if (!in_array($view->filters['sortby'], ['group', 'added', 'date', 'role', 'name', 'status'])) {
             $view->filters['sortby'] = 'name';
         }
         if (!$edit) {
@@ -347,21 +347,21 @@ class Team extends Plugin
 
         // Output HTML
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => $this->_name,
                 'name'    => 'edit',
                 'layout'  => 'choose'
-            )
+            ]
         );
 
-        $view->filters = array();
+        $view->filters = [];
         $view->filters['sortby']  = strtolower(Request::getWord('sortby', 'name'));
         $view->filters['sortdir'] = strtoupper(Request::getWord('sortdir', 'ASC'));
-        if (!in_array($view->filters['sortdir'], array('ASC', 'DESC'))) {
+        if (!in_array($view->filters['sortdir'], ['ASC', 'DESC'])) {
             $view->filters['sortdir'] = 'ASC';
         }
-        if (!in_array($view->filters['sortby'], array('role', 'name'))) {
+        if (!in_array($view->filters['sortby'], ['role', 'name'])) {
             $view->filters['sortby'] = 'name';
         }
 
@@ -404,19 +404,19 @@ class Team extends Plugin
 
         // Parse props for curation
         $parts   = explode('-', $props);
-        $block   = (isset($parts[0]) && in_array($parts[0], array('content', 'extras'))) ? $parts[0] : 'authors';
+        $block   = (isset($parts[0]) && in_array($parts[0], ['content', 'extras'])) ? $parts[0] : 'authors';
         $step    = (isset($parts[1]) && is_numeric($parts[1]) && $parts[1] > 0) ? $parts[1] : 1;
 
         $layout = $this->_task == 'newauthor' || $this->model->isProvisioned() ? 'newauthor' : 'default';
 
         // Output HTML
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'team',
                 'name'    => 'selector',
                 'layout'  => $layout
-            )
+            ]
         );
 
         $view->publication = new \Components\Publications\Models\Publication($pid, null, $vid);
@@ -427,11 +427,11 @@ class Team extends Plugin
 
             // Output error
             $view = new \Hubzero\Plugin\View(
-                array(
+                [
                     'folder'  => 'projects',
                     'element' => 'files',
                     'name'    => 'error'
-                )
+                ]
             );
 
             $view->title  = '';
@@ -470,9 +470,9 @@ class Team extends Plugin
         $view->authors = $pa->getAuthors($vid);
 
         // Exclude any owners?
-        $view->exclude = array();
+        $view->exclude = [];
 
-        $view->mc = Event::trigger('hubzero.onGetSingleEntry', array(array('members', 'uid', 'uid')));
+        $view->mc = Event::trigger('hubzero.onGetSingleEntry', [['members', 'uid', 'uid']]);
 
         $view->option   = $this->model->isProvisioned() ? 'com_publications' : $this->_option;
         $view->database = $this->_database;
@@ -516,10 +516,10 @@ class Team extends Plugin
         $m_added   = 0; // count of individual members added
         $m_invited = 0; // count of individuals invited
         $g_added   = 0; // count of members from new group
-        $uids      = array(); // ids/emails of added people
-        $names     = array(); // names/emails of added people
-        $invalid   = array(); // collector for invalid names
-        $sent      = array();
+        $uids      = []; // ids/emails of added people
+        $names     = []; // names/emails of added people
+        $invalid   = []; // collector for invalid names
+        $sent      = [];
 
         // Setup stage?
         $setup = $this->model->inSetup();
@@ -762,8 +762,8 @@ class Team extends Plugin
         }
 
         // Incoming
-        $checked = Request::getArray('owner', array());
-        $groups  = Request::getArray('group', array());
+        $checked = Request::getArray('owner', []);
+        $groups  = Request::getArray('group', []);
 
         // Are we setting up project?
         $setup = $this->model->inSetup() ? 1 : 0;
@@ -775,18 +775,18 @@ class Team extends Plugin
             // Get owners info from owner id(s)
             $selected = $objO->getInfo($this->model->get('id'), $checked, $groups);
         } else {
-            $selected = array();
+            $selected = [];
             $this->setError(Lang::txt('PLG_PROJECTS_TEAM_ERROR_NOONE_TO_DELETE'));
         }
 
         if ($this->_task == 'delete') {
             // Output HTML
             $view = new \Hubzero\Plugin\View(
-                array(
+                [
                     'folder'  => 'projects',
                     'element' => 'team',
                     'name'    => 'delete'
-                )
+                ]
             );
 
             $view->selected = $selected;
@@ -815,7 +815,7 @@ class Team extends Plugin
                 }
             } else {
                 if (count($all) > 0) {
-                    $left = array_diff($checked, array($all[0])); // leave one manager
+                    $left = array_diff($checked, [$all[0]]); // leave one manager
                     $deleted = $objO->removeOwners($this->model->get('id'), $left, 1);
                 }
                 $this->setError(Lang::txt('PLG_PROJECTS_TEAM_OWNERS_DELETE_NOMANAGERS'));
@@ -859,7 +859,7 @@ class Team extends Plugin
             $owner->set('status', 1);
             $owner->set('added', Date::of()->toSql());
             if ($owner->save()) {
-                $ownerEmail = array();
+                $ownerEmail = [];
                 $ownerEmail[] = $owner->user->get('email');
                 $subject = Lang::txt('COM_PROJECTS_EMAIL_MEMBERSHIPREQUEST_ACCEPTED');
                 $message = '';
@@ -891,11 +891,11 @@ class Team extends Plugin
             $owner = \Components\Projects\Models\Orm\Owner::oneByProjectAndUser($projectId, $ownerId);
             if ($confirm != 1) {
                 $view = new \Hubzero\Plugin\View(
-                    array(
+                    [
                         'folder'  => 'projects',
                         'element' => 'team',
                         'name'    => 'memberrequest'
-                    )
+                    ]
                 );
 
                 $view->option = $this->_option;
@@ -921,7 +921,7 @@ class Team extends Plugin
             }
             $owner->set('params', $params->toString());
             if ($owner->save()) {
-                $ownerEmail = array();
+                $ownerEmail = [];
                 $ownerEmail[] = $owner->user->get('email');
                 $subject = Lang::txt('PLG_PROJECTS_TEAM_MEMBERSHIP_DENIED');
                 $message = $owner->params->get('denyMessage');
@@ -969,7 +969,7 @@ class Team extends Plugin
         if ($confirm) {
             // The group must be one the owner belongs to (the choices the form offers)
             if ($group && $group != $this->model->get('owned_by_group')) {
-                $allowed = array();
+                $allowed = [];
                 foreach (\Hubzero\User\Helper::getGroups($user, 'members', 1) as $g) {
                     $allowed[] = $g->gidNumber;
                 }
@@ -1013,11 +1013,11 @@ class Team extends Plugin
         } else {
             // Output HTML
             $view = new \Hubzero\Plugin\View(
-                array(
+                [
                     'folder'  => 'projects',
                     'element' => 'team',
                     'name'    => 'changeowner'
-                )
+                ]
             );
 
             // Get groups project owner belongs to
@@ -1073,7 +1073,7 @@ class Team extends Plugin
             // Check for request forgeries
             Request::checkToken();
 
-            $deleted = $objO->removeOwners($this->model->get('id'), array($this->_uid));
+            $deleted = $objO->removeOwners($this->model->get('id'), [$this->_uid]);
             if ($deleted) {
                 $this->_msg = Lang::txt('PLG_PROJECTS_TEAM_MEMBER_QUIT_SUCCESS');
 
@@ -1093,11 +1093,11 @@ class Team extends Plugin
         } else {
             // Output HTML
             $view = new \Hubzero\Plugin\View(
-                array(
+                [
                     'folder'  => 'projects',
                     'element' => 'team',
                     'name'    => 'quit'
-                )
+                ]
             );
 
             $view->group       = $this->model->groupOwner('id');
@@ -1137,13 +1137,13 @@ class Team extends Plugin
             App::abort(403, Lang::txt('ALERTNOTAUTH'));
         }
         // Incoming
-        $checked = Request::getArray('owner', array());
-        $groups  = Request::getArray('group', array());
+        $checked = Request::getArray('owner', []);
+        $groups  = Request::getArray('group', []);
         $owner   = Request::getString('owner', '');
         $role    = Request::getInt('role', 0);
 
         if ($owner) {
-            $checked = array($owner);
+            $checked = [$owner];
         }
 
         // Are we setting up project?
@@ -1156,18 +1156,18 @@ class Team extends Plugin
             // Get owners info from owner id(s)
             $selected = $objO->getInfo($this->model->get('id'), $checked, $groups);
         } else {
-            $selected = array();
+            $selected = [];
             $this->setError(Lang::txt('PLG_PROJECTS_TEAM_ERROR_NOONE_TO_REASSIGN_ROLE'));
         }
 
         if ($this->_task == 'changerole') {
             // Output HTML
             $view = new \Hubzero\Plugin\View(
-                array(
+                [
                     'folder'  => 'projects',
                     'element' => 'team',
                     'name'    => 'role'
-                )
+                ]
             );
 
             $view->selected = $selected;
@@ -1189,7 +1189,7 @@ class Team extends Plugin
                 $all = $objO->getIds($this->model->get('id'), 1);
                 $remaining = array_diff($all, $checked);
                 if (!$remaining && count($all) > 0) {
-                    $left = array_diff($checked, array($all[0])); // leave one manager
+                    $left = array_diff($checked, [$all[0]]); // leave one manager
                     $this->setError(Lang::txt('PLG_PROJECTS_TEAM_OWNERS_REASSIGN_NOMANAGERS'));
                 }
             }
@@ -1246,11 +1246,11 @@ class Team extends Plugin
         }
 
         // Set up email config
-        $from = array(
+        $from = [
             'name'      => Config::get('sitename') . ' ' . Lang::txt(strtoupper($option)),
             'email'     => Config::get('mailfrom'),
             'multipart' => md5(date('U'))
-        );
+        ];
 
         // Email message subject
         if ($model->isProvisioned()) {
@@ -1271,11 +1271,11 @@ class Team extends Plugin
         }
 
         // Message body
-        $eview = new \Hubzero\Mail\View(array(
+        $eview = new \Hubzero\Mail\View([
             'base_path' => Component::path('com_projects') . DS . 'site',
             'name'      => 'emails',
             'layout'    => 'invite_plain'
-        ));
+        ]);
 
         $eview->option  = $option;
         $eview->project = $model;

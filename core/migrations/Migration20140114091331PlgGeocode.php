@@ -27,7 +27,7 @@ class Migration20140114091331PlgGeocode extends Base
             ->count();
 
         if (!$count) {
-            $plugins = array(
+            $plugins = [
                 'arcgisonline',
                 'baidu',
                 'bingmaps',
@@ -55,7 +55,7 @@ class Migration20140114091331PlgGeocode extends Base
                 'openstreetmap',
                 'tomtom',
                 'yandex'
-            );
+            ];
 
             foreach ($plugins as $plugin) {
                 $enabled = 0;

@@ -26,7 +26,7 @@ class Admin extends SiteController
 {
     private $_toolid = 0;
     private $_admin = 0;
-    private $_messages = array();
+    private $_messages = [];
 
     /**
      * Add a message
@@ -514,13 +514,13 @@ class Admin extends SiteController
                 $newlabel   = ($latestdoi) ? (intval($latestdoi) + 1) : 1;
 
                 // Collect metadata
-                $metadata = array(
+                $metadata = [
                     'targetURL' => $url,
                     'title'     => htmlspecialchars(stripslashes($status['title'])),
                     'version'   => $status['version'],
                     'abstract'  => htmlspecialchars(stripslashes($status['description'])),
                     'license'   => $status['license']
-                );
+                ];
 
                 // Get authors
                 $objA = new \Components\Tools\Tables\Author($this->database);
@@ -534,14 +534,14 @@ class Admin extends SiteController
                     $objDOI = \Components\Resources\Models\Doi::oneByResource($status['resourceid'], $status['revision']);
                     if (!$objDOI->get('id')) {
                         $objDOI = \Components\Resources\Models\Doi::blank()
-                            ->set(array(
+                            ->set([
                                 'local_revision' => $status['revision'],
                                 'doi_label' => $newlabel,
                                 'rid' => $status['resourceid'],
                                 'alias' => $status['toolname'],
                                 'versionid' => 0,
                                 'doi' => $doiSuccess
-                            ));
+                            ]);
                         if ($objDOI->save()) {
                             $this->setMessage(Lang::txt('COM_TOOLS_SUCCESS_DOI_CREATED') . ' ' . $doiSuccess);
                         } else {
@@ -575,13 +575,13 @@ class Admin extends SiteController
             $new       = ($currentid) ? 0 : 1;
             $devid     = $hztv_dev->id;
 
-            $exportmap = array(
+            $exportmap = [
                 '@OPEN'  => null,
                 '@GROUP' => null,
                 '@US'    => 'us',
                 '@PU'    => 'pu',
                 '@D1'    => 'd1'
-            );
+            ];
 
             $new_hztv = \Components\Tools\Models\Version::createInstance($status['toolname'], $newtool);
             $new_hztv->toolname      = $status['toolname'];
@@ -825,19 +825,19 @@ class Admin extends SiteController
 
         switch ($codeaccess) {
             case '@OPEN':
-                $hztrac->add_user_permission(0, array(
+                $hztrac->add_user_permission(0, [
                     'BROWSER_VIEW',
                     'LOG_VIEW',
                     'FILE_VIEW'
-                ));
+                ]);
                 break;
 
             case '@DEV':
-                $hztrac->remove_user_permission(0, array(
+                $hztrac->remove_user_permission(0, [
                     'BROWSER_VIEW',
                     'LOG_VIEW',
                     'FILE_VIEW'
-                ));
+                ]);
                 break;
 
             default:
@@ -847,21 +847,21 @@ class Admin extends SiteController
 
         switch ($wikiaccess) {
             case '@OPEN':
-                $hztrac->add_user_permission(0, array(
+                $hztrac->add_user_permission(0, [
                     'WIKI_VIEW',
                     'MILESTONE_VIEW',
                     'ROADMAP_VIEW',
                     'SEARCH_VIEW'
-                ));
+                ]);
                 break;
 
             case '@DEV':
-                $hztrac->remove_user_permission(0, array(
+                $hztrac->remove_user_permission(0, [
                     'WIKI_VIEW',
                     'MILESTONE_VIEW',
                     'ROADMAP_VIEW',
                     'SEARCH_VIEW'
-                ));
+                ]);
                 break;
 
             default:

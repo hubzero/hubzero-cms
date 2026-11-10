@@ -57,7 +57,7 @@ class Blog extends Table
      * @param   integer  $id
      * @return  mixed
      */
-    public function getEntries($projectid = null, $filters = array(), $id = 0)
+    public function getEntries($projectid = null, $filters = [], $id = 0)
     {
         if ($projectid === null) {
             return false;
@@ -103,7 +103,7 @@ class Blog extends Table
      * @param   integer  $id
      * @return  string
      */
-    private function buildQuery($projectid = 0, $filters = array(), $id = 0)
+    private function buildQuery($projectid = 0, $filters = [], $id = 0)
     {
         if (!$projectid) {
             return false;
@@ -148,7 +148,7 @@ class Blog extends Table
      * @param   array    $filters
      * @return  integer
      */
-    public function getCount($projectid = 0, $filters = array())
+    public function getCount($projectid = 0, $filters = [])
     {
         if (!$projectid) {
             return false;

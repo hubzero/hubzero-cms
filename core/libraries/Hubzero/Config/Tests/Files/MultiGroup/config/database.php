@@ -5,7 +5,7 @@
  */
 
 // @codeCoverageIgnoreStart
-return array(
+return [
     'driver' => 'pdo',
     'host' => 'localhost',
     'port' => '3306',
@@ -14,5 +14,5 @@ return array(
     'db' => 'hubzero_db',
     'dbprefix' => 'jos_',
     'dbtype' => 'mysql',
-);
+];
 // @codeCoverageIgnoreEnd

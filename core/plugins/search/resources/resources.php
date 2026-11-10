@@ -39,8 +39,8 @@ class Resources extends Plugin
 
         $database = App::get('db');
 
-        $groups = array_map(array($database, 'escape'), $authz->get_group_names());
-        $viewlevels = implode(',', (User::isGuest() ? array(0, 3) : array(0, 1, 3)));
+        $groups = array_map([$database, 'escape'], $authz->get_group_names());
+        $viewlevels = implode(',', (User::isGuest() ? [0, 3] : [0, 1, 3]));
 
         if ($groups) {
             $group_list = '(\'' . join('\', \'', $groups) . '\')';
@@ -53,7 +53,7 @@ class Resources extends Plugin
         $term_parser = $request->get_terms();
         $terms = $request->get_term_ar();
 
-        $quoted_terms = array();
+        $quoted_terms = [];
         foreach ($terms['optional'] as $idx => $term) {
             if ($term_parser->is_quoted($idx)) {
                 foreach ($terms['stemmed'] as $sidx => $stem) {
@@ -65,7 +65,7 @@ class Resources extends Plugin
             }
         }
 
-        $tag_map = array();
+        $tag_map = [];
         foreach ($request->get_tagged_ids('resources') as $id) {
             if (array_key_exists($id, $tag_map)) {
                 ++$tag_map[$id];
@@ -82,7 +82,7 @@ class Resources extends Plugin
                 . "OR r.`fulltxt` LIKE '%$term%' THEN 1 ELSE 0 END)";
         }
 
-        $addtl_where = array();
+        $addtl_where = [];
         foreach ($terms['mandatory'] as $mand) {
             $addtl_where[] = "(r.title LIKE '%$mand%' OR r.introtext LIKE '%$mand%' "
                 . "OR r.`fulltxt` LIKE '%$mand%')";
@@ -131,12 +131,12 @@ class Resources extends Plugin
         );
         $assoc = $sql->to_associative();
 
-        $id_assoc = array();
+        $id_assoc = [];
         foreach ($assoc as $row) {
             $id_assoc[$row->get('id')] = $row;
         }
 
-        $placed = array();
+        $placed = [];
         if (!$quoted_terms) {
             // Find ids of tagged resources that did not match regular fulltxt searching
             foreach ($assoc as $row) {
@@ -211,10 +211,10 @@ class Resources extends Plugin
         }
         */
         $sorter = new ResourceChildSorter($placed);
-        $rows = array();
+        $rows = [];
         foreach ($id_assoc as $id => $row) {
             if (!array_key_exists((int)$id, $placed)) {
-                $row->sort_children(array($sorter, 'sort'));
+                $row->sort_children([$sorter, 'sort']);
                 $rows[] = $row;
             }
         }
@@ -279,8 +279,8 @@ class Resources extends Plugin
                 $sql1 = "SELECT name, authorid  FROM #__author_assoc WHERE subid={$id} AND subtable='resources';";
                 $authorList = $db->setQuery($sql1)->query()->loadAssocList();
 
-                $owners = array();
-                $authors = array();
+                $owners = [];
+                $authors = [];
                 foreach ($authorList as $author) {
                     if ($author['authorid'] > 0) {
                         array_push($owners, $author['authorid']);

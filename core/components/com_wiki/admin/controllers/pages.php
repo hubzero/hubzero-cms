@@ -47,7 +47,7 @@ class Pages extends AdminController
      */
     public function displayTask()
     {
-        $filters = array(
+        $filters = [
             // Sorting
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
@@ -87,7 +87,7 @@ class Pages extends AdminController
                 0,
                 'int'
             )
-        );
+        ];
 
         $scopes = Page::all()
             ->select('scope')
@@ -179,7 +179,7 @@ class Pages extends AdminController
 
         if (!is_object($row)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id) && !empty($id)) {
                 $id = $id[0];
             }
@@ -218,7 +218,7 @@ class Pages extends AdminController
         }
 
         // Incoming
-        $fields = Request::getArray('page', array(), 'post');
+        $fields = Request::getArray('page', [], 'post');
         $fields = array_map('trim', $fields);
 
         $authors = $fields['authors'];
@@ -230,7 +230,7 @@ class Pages extends AdminController
         $page = Page::oneOrNew($fields['id'])->set($fields);
 
         // Get parameters
-        $params = Request::getArray('params', array(), 'post');
+        $params = Request::getArray('params', [], 'post');
         if (is_array($params)) {
             $pparams = new \Hubzero\Config\Registry($page->get('params'));
             $pparams->merge($params);
@@ -240,7 +240,7 @@ class Pages extends AdminController
 
         // Trigger before save event
         $isNew  = $page->isNew();
-        $result = Event::trigger('wiki.onWikiBeforeSave', array(&$page, $isNew));
+        $result = Event::trigger('wiki.onWikiBeforeSave', [&$page, $isNew]);
 
         if (in_array(false, $result, true)) {
             Notify::error($page->getError());
@@ -261,7 +261,7 @@ class Pages extends AdminController
         $page->tag($tags);
 
         // Trigger after save event
-        Event::trigger('wiki.onWikiAfterSave', array(&$page, $isNew));
+        Event::trigger('wiki.onWikiAfterSave', [&$page, $isNew]);
 
         // Notify of success
         Notify::success(Lang::txt('COM_WIKI_PAGE_SAVED'));
@@ -288,8 +288,8 @@ class Pages extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array(0));
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', [0]);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         if (count($ids) <= 0) {
             App::redirect(
@@ -342,7 +342,7 @@ class Pages extends AdminController
                         }
 
                         // Trigger after delete event
-                        Event::trigger('wiki.onWikiAfterDelete', array($id));
+                        Event::trigger('wiki.onWikiAfterDelete', [$id]);
 
                         $i++;
                     }

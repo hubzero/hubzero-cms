@@ -30,7 +30,7 @@ class Hidden extends Field
     protected function getInput()
     {
         // Initialize some field attributes.
-        $attributes = array(
+        $attributes = [
             'type'         => 'hidden',
             'value'        => htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8'),
             'name'         => $this->name,
@@ -39,9 +39,9 @@ class Hidden extends Field
             'autocomplete' => ((string) $this->element['autocomplete'] == 'off' ? 'off'      : ''),
             'disabled'     => ((string) $this->element['disabled'] == 'true'    ? 'disabled' : ''),
             'onchange'     => ($this->element['onchange']  ? (string) $this->element['onchange'] : '')
-        );
+        ];
 
-        $attr = array();
+        $attr = [];
         foreach ($attributes as $key => $value) {
             if ($key != 'value' && !$value) {
                 continue;

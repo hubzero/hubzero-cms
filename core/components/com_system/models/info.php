@@ -57,7 +57,7 @@ class Info extends Obj
     public function getPhpSettings()
     {
         if (is_null($this->php_settings)) {
-            $this->php_settings = array();
+            $this->php_settings = [];
             $this->php_settings['safe_mode'] = false;
             $this->php_settings['display_errors']     = ini_get('display_errors') == '1';
             $this->php_settings['short_open_tag']     = ini_get('short_open_tag') == '1';
@@ -85,9 +85,9 @@ class Info extends Obj
     {
         if (is_null($this->config)) {
             $config = Config::toArray();
-            $this->config = array();
+            $this->config = [];
 
-            $blur = array('host', 'user', 'password', 'ftp_user', 'ftp_pass', 'smtpuser', 'smtppass', 'secret');
+            $blur = ['host', 'user', 'password', 'ftp_user', 'ftp_pass', 'smtpuser', 'smtppass', 'secret'];
 
             foreach ($config as $section => $data) {
                 if (is_array($data)) {
@@ -134,7 +134,7 @@ class Info extends Obj
                 $sf = getenv('SERVER_SOFTWARE');
             }
 
-            $this->info = array();
+            $this->info = [];
             $this->info['php']         = php_uname();
             $this->info['dbversion']   = $db->getVersion();
             $this->info['dbcollation'] = $db->getCollation();
@@ -186,7 +186,7 @@ class Info extends Obj
     public function getDirectory()
     {
         if (is_null($this->directories)) {
-            $this->directories = array();
+            $this->directories = [];
 
             $cparams = Component::params('com_media');
 
@@ -247,10 +247,10 @@ class Info extends Obj
      */
     private function addDirectory($name, $path, $message = '')
     {
-        $this->directories[$name] = array(
+        $this->directories[$name] = [
             'writable' => is_writable($path),
             'message'  => $message
-        );
+        ];
     }
 
     /**

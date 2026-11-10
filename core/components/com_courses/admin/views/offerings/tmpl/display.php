@@ -111,25 +111,25 @@ Html::behavior('tooltip');
         $i = 0;
         $k = 0;
         foreach ($this->rows as $row) {
-            $units    = $row->units(array('count' => true));
+            $units    = $row->units(['count' => true]);
             $students = 0;
 
             $s = $row->sections();
             if ($s->total() >  0) {
-                $sids = array();
+                $sids = [];
                 foreach ($s as $section) {
                     $sids[] = $section->get('id');
                 }
 
-                $students = $row->members(array(
+                $students = $row->members([
                                 'count' => true,
                                 'student' => 1,
                                 'section_id' => $sids
-                            ));
+                            ]);
             }
 
-            $pages    = $row->pages(array('count' => true, 'active' => array(0, 1)));
-            $sections = $row->sections(array('count' => true));
+            $pages    = $row->pages(['count' => true, 'active' => [0, 1]]);
+            $sections = $row->sections(['count' => true]);
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>

@@ -52,18 +52,18 @@ class Notifier
      * @param   array    $options
      * @return  array    Error messages, empty when everything went out
      */
-    public static function ticketUpdated(Ticket $ticket, Comment $comment, Ticket $before, array $options = array())
+    public static function ticketUpdated(Ticket $ticket, Comment $comment, Ticket $before, array $options = [])
     {
-        $options = array_merge(array(
+        $options = array_merge([
             'email_submitter' => false,
             'email_owner'     => false,
             'email_terse'     => false,
             'option'          => 'com_support',
             'controller'      => 'tickets',
             'acl'             => null,
-        ), $options);
+        ], $options);
 
-        $errors = array();
+        $errors = [];
         $config = Component::params('com_support');
 
         // The API and the command line do not load a component's strings
@@ -72,7 +72,7 @@ class Notifier
 
         // Listeners first (Slack and the like), so they hear about every
         // update, whether or not anyone is e-mailed
-        Event::trigger('support.onTicketUpdate', array($ticket, $comment));
+        Event::trigger('support.onTicketUpdate', [$ticket, $comment]);
 
         // Nothing anyone needs to hear about
         if (
@@ -88,12 +88,12 @@ class Notifier
             // A ticket can be submitted without a (valid) account, so fall
             // back to the address stored on the ticket itself
             if ($ticket->submitter->get('id')) {
-                $comment->addTo(array(
+                $comment->addTo([
                     'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_SUBMITTER'),
                     'name'  => $ticket->submitter->get('name', $ticket->get('name')),
                     'email' => $ticket->submitter->get('email', $ticket->get('email')),
                     'id'    => $ticket->submitter->get('id')
-                ));
+                ]);
             } elseif ($ticket->get('email')) {
                 $comment->addTo($ticket->get('email'));
             }
@@ -101,21 +101,21 @@ class Notifier
 
         if ($options['email_owner']) {
             if ($before->get('owner') && $ticket->get('owner') != $before->get('owner')) {
-                $comment->addTo(array(
+                $comment->addTo([
                     'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_PRIOR_OWNER'),
                     'name'  => $before->assignee->get('name'),
                     'email' => $before->assignee->get('email'),
                     'id'    => $before->assignee->get('id')
-                ));
+                ]);
             }
 
             if ($ticket->get('owner')) {
-                $comment->addTo(array(
+                $comment->addTo([
                     'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_OWNER'),
                     'name'  => $ticket->assignee->get('name'),
                     'email' => $ticket->assignee->get('email'),
                     'id'    => $ticket->assignee->get('id')
-                ));
+                ]);
             } elseif ($ticket->get('group_id')) {
                 $group = \Hubzero\User\Group::getInstance($ticket->get('group_id'));
 
@@ -127,12 +127,12 @@ class Notifier
                             continue;
                         }
 
-                        $comment->addTo(array(
+                        $comment->addTo([
                             'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_GROUPMANAGER'),
                             'name'  => $manager->get('name'),
                             'email' => $manager->get('email'),
                             'id'    => $manager->get('id')
-                        ));
+                        ]);
                     }
                 }
             }
@@ -153,9 +153,9 @@ class Notifier
         }
         $acl->setUser(User::get('id'));
 
-        $recipients = array(
-            array('support.tickets', 1)
-        );
+        $recipients = [
+            ['support.tickets', 1]
+        ];
 
         if (count($comment->to())) {
             $allowEmailResponses = $config->get('email_processing') && !$options['email_terse'];
@@ -170,21 +170,21 @@ class Notifier
 
             $subject = Lang::txt('COM_SUPPORT_EMAIL_SUBJECT_TICKET_COMMENT', $ticket->get('id'));
 
-            $from = array(
+            $from = [
                 'name'      => Lang::txt('COM_SUPPORT_EMAIL_FROM', Config::get('sitename')),
                 'email'     => Config::get('mailfrom'),
                 'multipart' => md5(date('U'))  // Html email
-            );
+            ];
 
             // The e-mail layouts live with the site views, wherever the
             // caller is running (site, admin or API)
             $config->set('email_terse', (int) $options['email_terse']);
 
-            $eview = new MailView(array(
+            $eview = new MailView([
                 'base_path' => dirname(__DIR__) . DS . 'site',
                 'name'      => 'emails',
                 'layout'    => 'comment_plain'
-            ));
+            ]);
             $eview->option     = $options['option'];
             $eview->controller = $options['controller'];
             $eview->comment    = $comment;
@@ -192,7 +192,7 @@ class Notifier
             $eview->config     = $config;
             $eview->delimiter  = ($allowEmailResponses ? '~!~!~!~!~!~!~!~!~!~!' : '');
 
-            $message = array();
+            $message = [];
             $message['plaintext'] = $eview->loadTemplate(false);
             $message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
 
@@ -200,7 +200,7 @@ class Notifier
             $message['multipart'] = $eview->loadTemplate();
             $message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
-            $message['attachments'] = array();
+            $message['attachments'] = [];
             if (!$options['email_terse']) {
                 foreach ($comment->attachments as $attachment) {
                     if ($attachment->size() < 2097152) {
@@ -211,7 +211,7 @@ class Notifier
 
             // Hub accounts get a message through the message system
             foreach ($comment->to('ids') as $to) {
-                $recipients[] = array('user', $to['id']);
+                $recipients[] = ['user', $to['id']];
 
                 if ($allowEmailResponses) {
                     $token = $encryptor->buildEmailToken(1, 1, $to['id'], $ticket->get('id'));
@@ -220,7 +220,7 @@ class Notifier
 
                 // The handler answers true when sent, false or an error string
                 // otherwise; a non-empty array of failures is not success
-                $sent = Event::trigger('xmessage.onSendMessage', array('support_reply_submitted', $subject, $message, $from, array($to['id']), $options['option']));
+                $sent = Event::trigger('xmessage.onSendMessage', ['support_reply_submitted', $subject, $message, $from, [$to['id']], $options['option']]);
                 $failed = empty($sent);
                 foreach ((array) $sent as $result) {
                     if ($result !== true) {
@@ -273,21 +273,21 @@ class Notifier
             ? Lang::txt('COM_SUPPORT_ACTIVITY_COMMENT_CREATED', $comment->get('id'), $label)
             : Lang::txt('COM_SUPPORT_ACTIVITY_TICKET_UPDATED', $label);
 
-        Event::trigger('system.logActivity', array(
-            'activity' => array(
+        Event::trigger('system.logActivity', [
+            'activity' => [
                 'action'      => 'created',
                 'scope'       => 'support.ticket.comment',
                 'scope_id'    => $comment->get('id'),
                 'description' => $desc,
-                'details'     => array(
+                'details'     => [
                     'id'      => $ticket->get('id'),
                     'summary' => $ticket->get('summary'),
                     'url'     => $link,
                     'comment' => $comment->get('id')
-                )
-            ),
+                ]
+            ],
             'recipients' => $recipients
-        ));
+        ]);
 
         return $errors;
     }

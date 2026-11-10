@@ -35,7 +35,7 @@ class DefaultRouter extends Base
      */
     public function build(&$query)
     {
-        $segments = array();
+        $segments = [];
 
         if (isset($query['controller']) && preg_match("/^[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*$/", (string) $query['controller']) == 1) {
             $segments[] = (string) $query['controller'];
@@ -63,7 +63,7 @@ class DefaultRouter extends Base
      */
     public function parse(&$segments)
     {
-        $vars = array();
+        $vars = [];
 
         if (isset($segments[0])) {
             $vars['controller'] = (string) $segments[0];

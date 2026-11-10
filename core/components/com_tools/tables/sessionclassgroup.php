@@ -56,15 +56,15 @@ class SessionClassGroup extends Table
      * @return  string  Database query
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildQuery($filters = array())
+    protected function _buildQuery($filters = [])
     {
         $query = "FROM $this->_tbl AS qcg";
 
-        $where = array();
+        $where = [];
 
         if (isset($filters['group_id'])) {
             if (!is_array($filters['group_id'])) {
-                $filters['group_id'] = array($filters['group_id']);
+                $filters['group_id'] = [$filters['group_id']];
             }
             $filters['group_id'] = array_map('intval', $filters['group_id']);
 
@@ -73,7 +73,7 @@ class SessionClassGroup extends Table
 
         if (isset($filters['class_id'])) {
             if (!is_array($filters['class_id'])) {
-                $filters['class_id'] = array($filters['class_id']);
+                $filters['class_id'] = [$filters['class_id']];
             }
             $filters['class_id'] = array_map('intval', $filters['class_id']);
 
@@ -95,7 +95,7 @@ class SessionClassGroup extends Table
      * @param   array   $filters
      * @return  mixed
      */
-    public function find($what = '', $filters = array())
+    public function find($what = '', $filters = [])
     {
         $what = strtolower(trim($what));
 

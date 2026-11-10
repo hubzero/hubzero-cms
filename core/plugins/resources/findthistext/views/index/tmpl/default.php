@@ -14,7 +14,7 @@ defined('_HZEXEC_') or die();
 $this->css();
 
 // parse the custom fields out of the resource
-$resourceFields = array();
+$resourceFields = [];
 preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->model->fulltxt, $matches, PREG_SET_ORDER);
 if (count($matches) > 0) {
     foreach ($matches as $match) {
@@ -56,10 +56,10 @@ if (count($matches) > 0) {
                         $image = "<img src=\"{$this->openurl->icon}\" alt=\"\" />";
 
                         // add field data to local library link
-                        $fields   = array('doi','isbn','issn');
-                        $linkData = array(
+                        $fields   = ['doi','isbn','issn'];
+                        $linkData = [
                             'title' => $this->model->title
-                        );
+                        ];
                         foreach ($fields as $field) {
                             if (isset($resourceFields[$field]) && $resourceFields[$field] != '') {
                                 $linkData[$field] = $resourceFields[$field];

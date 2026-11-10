@@ -13,7 +13,7 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$cls = array('publication');
+$cls = ['publication'];
 
 switch ($this->line->get('master_access')) :
     case 1:
@@ -31,7 +31,7 @@ switch ($this->line->get('master_access')) :
         break;
 endswitch;
 
-$info = array();
+$info = [];
 if ($this->thedate) :
     $info[] = $this->thedate;
 endif;
@@ -54,7 +54,7 @@ if (!$this->line->hasImage()) :
     $moreClasses = ' generic';
 endif;
 
-$extras = Event::trigger('publications.onPublicationsList', array($this->line));
+$extras = Event::trigger('publications.onPublicationsList', [$this->line]);
 ?>
 <li class="<?php echo implode(' ', $cls); ?>">
     <div class="pub-thumb<?php echo $moreClasses; ?>">

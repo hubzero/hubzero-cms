@@ -76,7 +76,7 @@ class GradeBook extends Base
         if (is_null($member_id)) {
             $members = $this->course->offering()->section()->members();
 
-            $member_id = array();
+            $member_id = [];
 
             foreach ($members as $m) {
                 $member_id[] = $m->get('id');
@@ -84,10 +84,10 @@ class GradeBook extends Base
         }
 
         // Get the grades themselves
-        $filters = array('member_id' => $member_id, 'scope' => $scope);
+        $filters = ['member_id' => $member_id, 'scope' => $scope];
         $results = $this->fetchGrades($filters);
 
-        $grades = array();
+        $grades = [];
 
         // Restructure data
         foreach ($results as $grade) {
@@ -99,17 +99,17 @@ class GradeBook extends Base
             }
             if ($grade->scope == 'asset') {
                 if ($grade->override) {
-                    $grades[$grade->member_id]['assets'][$grade->scope_id] = array(
+                    $grades[$grade->member_id]['assets'][$grade->scope_id] = [
                         'score'    => $grade->override,
                         'date'     => $grade->override_recorded,
                         'override' => true
-                    );
+                    ];
                 } else {
-                    $grades[$grade->member_id]['assets'][$grade->scope_id] = array(
+                    $grades[$grade->member_id]['assets'][$grade->scope_id] = [
                         'score'    => $grade->score,
                         'date'     => $grade->score_recorded,
                         'override' => false
-                    );
+                    ];
                 }
             }
         }
@@ -126,14 +126,14 @@ class GradeBook extends Base
     public function summaryStats($section = true)
     {
         // Get the grades themselves
-        $filters = array('scope' => 'asset', 'course_id' => $this->course->get('course_id'));
+        $filters = ['scope' => 'asset', 'course_id' => $this->course->get('course_id')];
 
         if ($section) {
             $filters['section_id'] = $this->course->offering()->section()->get('id');
         }
 
         $results = $this->fetchGrades($filters);
-        $grades  = array();
+        $grades  = [];
 
         // Restructure data
         foreach ($results as $r) {
@@ -145,7 +145,7 @@ class GradeBook extends Base
         }
 
         // Compute stats
-        $stats = array();
+        $stats = [];
         foreach ($grades as $asset_id => $grade) {
             $stats[$asset_id]['responses'] = count($grade);
             $stats[$asset_id]['average']   = (count($grade) > 0) ? round(array_sum($grade) / count($grade), 2) : null;
@@ -189,10 +189,10 @@ class GradeBook extends Base
             ? $sectionParams->get('progress_calculation')
             : $progress_calculation;
 
-        $filters = array(
+        $filters = [
             'section_id' => $this->course->offering()->section()->get('id'),
             'member_id'  => $member_id
-        );
+        ];
 
         $dbo = App::get('db');
 
@@ -201,18 +201,18 @@ class GradeBook extends Base
             case 'forms':
             case 'graded':
                 // Get count of graded items taken
-                $filters = array('member_id' => $member_id, 'scope' => 'asset', 'graded' => true);
+                $filters = ['member_id' => $member_id, 'scope' => 'asset', 'graded' => true];
                 $grades  = $this->fetchGrades($filters);
 
-                $views = array();
+                $views = [];
                 foreach ($grades as $g) {
                     if (!is_null($g->score) || !is_null($g->override)) {
-                        $views[] = (object)array(
+                        $views[] = (object)[
                             'member_id'    => $g->member_id,
                             'grade_weight' => $g->grade_weight,
                             'unit_id'      => $g->unit_id,
                             'asset_id'     => $g->scope_id
-                        );
+                        ];
                     }
                 }
                 break;
@@ -242,14 +242,14 @@ class GradeBook extends Base
                 break;
         }
 
-        $progress = array();
+        $progress = [];
 
         // Restructure array
         foreach ($views as $v) {
             $progress[$v->member_id][$v->unit_id][$v->asset_id] = 1;
         }
 
-        $counts = array();
+        $counts = [];
 
         // Calculate unit completion percentage for each student
         // Note: this is not their score, but rather, simply how many items within the unit they have viewed/completed
@@ -258,14 +258,14 @@ class GradeBook extends Base
                 if (!isset($counts[$unit_id])) {
                     // Get the assets
                     $asset = new Tables\Asset($dbo);
-                    $filters = array(
-                        'w' => array(
+                    $filters = [
+                        'w' => [
                             'course_id'   => $this->course->get('id'),
                             'unit_id'     => $unit_id,
                             'state'       => 1,
                             'asset_scope' => 'asset_group'
-                        )
-                    );
+                        ]
+                    ];
 
                     switch ($progress_calculation) {
                         // Support legacy label of 'forms', as well as new, more accurate label of 'graded'
@@ -306,17 +306,17 @@ class GradeBook extends Base
      **/
     public function views($member_id)
     {
-        $filters = array(
+        $filters = [
             'section_id' => $this->course->offering()->section()->get('id'),
             'member_id'  => $member_id
-        );
+        ];
 
         // Get the asset views
         $database   = App::get('db');
         $assetViews = new Tables\AssetViews($database);
         $results    = $assetViews->find($filters);
 
-        $views = array();
+        $views = [];
 
         if ($results && count($results) > 0) {
             foreach ($results as $result) {
@@ -365,7 +365,7 @@ class GradeBook extends Base
         } else {
             // Pull all offering members
             $members = $course->offering()->students();
-            $member_id = array();
+            $member_id = [];
 
             // Get member id's for refresh filter
             foreach ($members as $member) {
@@ -374,7 +374,7 @@ class GradeBook extends Base
         }
 
         // Get our units and track which units have grades that might need to be cleared
-        $unit_ids = array();
+        $unit_ids = [];
         $units    = $course->offering()->units();
 
         foreach ($units as $unit) {
@@ -386,10 +386,10 @@ class GradeBook extends Base
         $gradePolicy = new GradePolicies($section->get('grade_policy_id'), $section->get('id'));
 
         // Calculate course grades, start by getting all grades
-        $filters = array('member_id' => $member_id, 'scope' => 'asset', 'graded' => true);
+        $filters = ['member_id' => $member_id, 'scope' => 'asset', 'graded' => true];
         $results = $this->fetchGrades($filters);
-        $grades  = array();
-        $scores  = array();
+        $grades  = [];
+        $scores  = [];
 
         foreach ($results as $grade) {
             if (is_null($grade->score) && is_null($grade->override)) {
@@ -397,10 +397,10 @@ class GradeBook extends Base
             }
 
             // Check for overrides
-            $gradeData = array(
+            $gradeData = [
                 'score' => $grade->override ? $grade->override : $grade->score,
                 'weighting' => $grade->grade_weight
-            );
+            ];
             $grades[$grade->member_id][$grade->unit_id][$grade->scope_id] = $gradeData;
         }
 
@@ -488,13 +488,13 @@ class GradeBook extends Base
                     $examPart = $unitScores['exam_score'] * $gradePolicy->get('exam_weight');
                     $quizPart = $unitScores['quiz_score'] * $gradePolicy->get('quiz_weight');
                     $hwPart = $unitScores['homework_score'] * $gradePolicy->get('homework_weight');
-                    $numerator = array_sum(array($examPart, $quizPart, $hwPart));
+                    $numerator = array_sum([$examPart, $quizPart, $hwPart]);
 
-                    $denominator = array_sum(array(
+                    $denominator = array_sum([
                         $unitScores['exam_weight'],
                         $unitScores['quiz_weight'],
                         $unitScores['homework_weight']
-                    ));
+                    ]);
 
                     if ($denominator) {
                         $unitScores['unit_weighted'] = $numerator / $denominator;
@@ -543,13 +543,13 @@ class GradeBook extends Base
                 $examPart = $memberScores['course_exam_score'] * $gradePolicy->get('exam_weight');
                 $quizPart = $memberScores['course_quiz_score'] * $gradePolicy->get('quiz_weight');
                 $hwPart = $memberScores['course_homework_score'] * $gradePolicy->get('homework_weight');
-                $numerator = array_sum(array($examPart, $quizPart, $hwPart));
+                $numerator = array_sum([$examPart, $quizPart, $hwPart]);
 
-                $denominator = array_sum(array(
+                $denominator = array_sum([
                     $memberScores['course_exam_weight'],
                     $memberScores['course_quiz_weight'],
                     $memberScores['course_homework_weight']
-                ));
+                ]);
 
                 if ($denominator) {
                     $scores[$member_id]['course_weighted'] = $numerator / $denominator;
@@ -597,8 +597,8 @@ class GradeBook extends Base
             return false;
         }
 
-        $passing = array();
-        $filters = array('scope' => 'course', 'scope_id' => $this->course->get('id'));
+        $passing = [];
+        $filters = ['scope' => 'course', 'scope_id' => $this->course->get('id')];
 
         // Get a grade policy object
         $sectionObj = $this->course->offering()->section();
@@ -689,8 +689,8 @@ class GradeBook extends Base
         // section and the grades to whoever was asked about. Held flat, the
         // first caller's grades answered for everyone after them, so a report
         // that walks a class measured the whole class against one student.
-        static $assets = array();
-        static $grades = array();
+        static $assets = [];
+        static $grades = [];
 
         // Get a grade policy object
         $section = $this->course->offering()->section();
@@ -705,30 +705,30 @@ class GradeBook extends Base
             // Get the graded assets
             $asset  = new Tables\Asset(App::get('db'));
             $found  = $asset->find(
-                array(
-                    'w' => array(
+                [
+                    'w' => [
                         'course_id'   => $this->course->get('id'),
                         'section_id'  => $this->course->offering()->section()->get('id'),
                         'offering_id' => $this->course->offering()->get('id'),
                         'graded'      => true,
                         'state'       => 1,
                         'asset_scope' => 'asset_group'
-                    ),
+                    ],
                     'order_by'  => 'title',
                     'order_dir' => 'ASC'
-                )
+                ]
             );
 
             // Get gradebook auxiliary assets
             $auxiliary = $asset->findByScope(
                 'offering',
                 $this->course->offering()->get('id'),
-                array(
+                [
                     'asset_type'    => 'gradebook',
                     'asset_subtype' => 'auxiliary',
                     'graded'        => true,
                     'state'         => 1
-                )
+                ]
             );
 
             $assets[$assetKey] = array_merge($found, $auxiliary);
@@ -737,8 +737,8 @@ class GradeBook extends Base
         $sectionAssets = $assets[$assetKey];
 
         // Get totals by type
-        $totals = array('exam' => 0, 'quiz' => 0, 'homework' => 0);
-        $counts = array();
+        $totals = ['exam' => 0, 'quiz' => 0, 'homework' => 0];
+        $counts = [];
 
         if ($sectionAssets && count($sectionAssets) > 0) {
             foreach ($sectionAssets as $asset) {
@@ -750,7 +750,7 @@ class GradeBook extends Base
 
         if (!isset($grades[$gradeKey])) {
             // Get count of graded items taken
-            $filters = array('member_id' => $member_id, 'scope' => 'asset', 'graded' => true);
+            $filters = ['member_id' => $member_id, 'scope' => 'asset', 'graded' => true];
             $grades[$gradeKey] = $this->fetchGrades($filters);
         }
 
@@ -770,13 +770,13 @@ class GradeBook extends Base
         $quiz_weight     = $gradePolicy->get('quiz_weight');
         $homework_weight = $gradePolicy->get('homework_weight');
 
-        $return = array();
+        $return = [];
 
         if (isset($counts)) {
             if (!is_null($member_id) && !is_array($member_id)) {
                 $member_id = (array)$member_id;
             } else {
-                $member_id = array();
+                $member_id = [];
                 foreach ($this->course->offering()->section()->members() as $m) {
                     $member_id[] = $m->get('id');
                 }
@@ -861,7 +861,7 @@ class GradeBook extends Base
                             . '/courses/badge/' . $sb->get('id')
                             . '/validation/' . $badge->get('validation_token');
                         $data->evidenceUrl = $evidenceUrl;
-                        $users              = array();
+                        $users              = [];
                         $users[]            = User::getInstance($user_id)->get('email');
 
                         // Publish assertion
@@ -879,14 +879,14 @@ class GradeBook extends Base
      *
      * @return array
      **/
-    private function fetchGrades($filters = array())
+    private function fetchGrades($filters = [])
     {
         static $grades;
         $key = serialize($filters);
 
         if (!isset($grades[$key])) {
-            $asset_ids = array();
-            $units_map = array();
+            $asset_ids = [];
+            $units_map = [];
 
             if ($this->course->offering()->assets() && count($this->course->offering()->assets()) > 0) {
                 foreach ($this->course->offering()->assets() as $a) {

@@ -22,7 +22,7 @@ $this->js('highlighter/shCore.js')
 
             $parser = new cebe\markdown\GithubMarkdown();
 
-            $output = array();
+            $output = [];
 
             if (isset($contents->worksheets)) :
                 foreach ($contents->worksheets as $worksheet) :

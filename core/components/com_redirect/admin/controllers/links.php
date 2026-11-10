@@ -55,7 +55,7 @@ class Links extends AdminController
      */
     public function displayTask()
     {
-        $filters = array(
+        $filters = [
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
@@ -82,7 +82,7 @@ class Links extends AdminController
                 'filter_order_Dir',
                 'desc'
             )
-        );
+        ];
 
         $entries = Link::all();
 
@@ -160,7 +160,7 @@ class Links extends AdminController
 
         if (!is_object($row)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id) && !empty($id)) {
                 $id = $id[0];
             }
@@ -193,7 +193,7 @@ class Links extends AdminController
         }
 
         // Initialise variables.
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         // The save2copy task needs to be handled slightly differently.
         if ($this->getTask() == 'save2copy') {
@@ -248,7 +248,7 @@ class Links extends AdminController
         }
 
         // Initialise variables.
-        $ids     = Request::getArray('id', array(), '');
+        $ids     = Request::getArray('id', [], '');
         $newUrl  = Request::getString('new_url');
         $comment = Request::getString('comment');
 
@@ -298,14 +298,14 @@ class Links extends AdminController
         }
 
         // Get items to publish from the request.
-        $ids = Request::getArray('id', array(), '');
-        $data = array(
+        $ids = Request::getArray('id', [], '');
+        $data = [
             'publish'   => 1,
             'unpublish' => 0,
             'archive'   => 2,
             'trash'     => -2,
             'report'    => -3
-        );
+        ];
 
         $value = \Hubzero\Utility\Arr::getValue($data, $this->_task, 0, 'int');
 
@@ -359,7 +359,7 @@ class Links extends AdminController
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
 
-        $ids = Request::getArray('id', array(), '');
+        $ids = Request::getArray('id', [], '');
 
         if (empty($ids)) {
             Notify::error(Lang::txt('COM_REDIRECT_NO_ITEM_SELECTED'));

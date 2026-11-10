@@ -93,7 +93,7 @@ class Member extends Base
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         if (!isset($instances[$oid . '_' . $uid . '_' . $sid])) {
@@ -182,7 +182,7 @@ class Member extends Base
     public function generateToken()
     {
         // Characters available for token generation (digits only)
-        $chars = array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+        $chars = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
         $sn = '';
         $max = count($chars) - 1;
         for ($i = 0; $i < 20; $i++) {

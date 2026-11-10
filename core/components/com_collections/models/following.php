@@ -82,7 +82,7 @@ class Following extends Model
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         $key = $oid . '_' . $following_type . '_' . $follower_id . '_' . $follower_type;
@@ -155,20 +155,20 @@ class Following extends Model
         switch ($what) {
             case 'following':
                 if ($value === null) {
-                    $value = $this->_tbl->count(array(
+                    $value = $this->_tbl->count([
                         'follower_type' => $this->get('following_type'),
                         'follower_id'   => $this->get('following_id')
-                    ));
+                    ]);
                     $this->set($what, $value);
                 }
                 break;
 
             case 'followers':
                 if ($value === null) {
-                    $value = $this->_tbl->count(array(
+                    $value = $this->_tbl->count([
                         'following_type' => $this->get('following_type'),
                         'following_id'   => $this->get('following_id')
-                    ));
+                    ]);
                     $this->set($what, $value);
                 }
                 break;
@@ -176,7 +176,7 @@ class Following extends Model
             case 'collections':
                 if ($value === null && $this->get('following_type') != 'collection') {
                     $model = Collection::getInstance($this->get('following_type'), $this->get('following_id'));
-                    $value = $model->collections(array('count'));
+                    $value = $model->collections(['count']);
                     $this->set($what, $value);
                 }
                 break;
@@ -185,11 +185,11 @@ class Following extends Model
                 if ($value === null) {
                     if ($this->get('following_type') != 'collection') {
                         $model = Archive::getInstance($this->get('following_type'), $this->get('following_id'));
-                        $value = $model->posts(array('count'));
+                        $value = $model->posts(['count']);
                         $this->set($what, $value);
                     } else {
                         $model = Collection::getInstance($this->get('following_id'));
-                        $value = $model->posts(array('count'));
+                        $value = $model->posts(['count']);
                         $this->set($what, $value);
                     }
                 }

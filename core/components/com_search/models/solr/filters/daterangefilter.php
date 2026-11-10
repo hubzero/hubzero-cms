@@ -63,7 +63,7 @@ class Daterangefilter extends Filter
     public function applyFilters($query, $selectedFilters)
     {
         $filterField = strtolower($this->get('field'));
-        $selectedValues = isset($selectedFilters[$filterField]) ? $selectedFilters[$filterField] : array();
+        $selectedValues = isset($selectedFilters[$filterField]) ? $selectedFilters[$filterField] : [];
         if (empty($selectedValues)) {
             return false;
         }
@@ -90,7 +90,7 @@ class Daterangefilter extends Filter
             $enddate = '*';
         }
         $facetString = '(' . $filterField . ':[' . $startdate . ' TO ' . $enddate . '])';
-        $query->addFilter($queryName, $facetString, array(strtolower($filterField) . '_type'));
+        $query->addFilter($queryName, $facetString, [strtolower($filterField) . '_type']);
         return true;
     }
 }

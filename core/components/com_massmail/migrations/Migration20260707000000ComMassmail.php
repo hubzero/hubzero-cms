@@ -120,7 +120,7 @@ class Migration20260707000000ComMassmail extends Base
     {
         $this->deleteComponentEntry('massmail');
 
-        foreach (array('#__massmail_recipients', '#__massmail_attachments', '#__massmail_mailings', '#__massmail_status') as $table) {
+        foreach (['#__massmail_recipients', '#__massmail_attachments', '#__massmail_mailings', '#__massmail_status'] as $table) {
             if ($this->db->tableExists($table)) {
                 $this->db->setQuery("DROP TABLE `$table`;");
                 $this->db->query();

@@ -27,11 +27,11 @@ defined('_HZEXEC_') or die();
                 <dd><ul>
                         <?php foreach ($list as $item) : ?>
                             <?php
-                            $itemData = array(
+                            $itemData = [
                             'id' => $this->recordId,
                             'title' => $item->title,
                             'request' => $item->request
-                            );
+                            ];
                             $encoded = base64_encode(json_encode($itemData));
                             $descTitle = Lang::txt($item->description);
                             ?>
@@ -56,7 +56,7 @@ defined('_HZEXEC_') or die();
                     <li>
                         <?php
                         $urlData = base64_encode(json_encode(
-                            array('id' => $this->recordId, 'title' => 'url')
+                            ['id' => $this->recordId, 'title' => 'url']
                         ));
                         $urlDesc = Lang::txt('COM_MENUS_TYPE_EXTERNAL_URL_DESC');
                         ?>
@@ -69,7 +69,7 @@ defined('_HZEXEC_') or die();
                     <li>
                         <?php
                         $aliasData = base64_encode(json_encode(
-                            array('id' => $this->recordId, 'title' => 'alias')
+                            ['id' => $this->recordId, 'title' => 'alias']
                         ));
                         $aliasDesc = Lang::txt('COM_MENUS_TYPE_ALIAS_DESC');
                         ?>
@@ -82,7 +82,7 @@ defined('_HZEXEC_') or die();
                     <li>
                         <?php
                         $sepData = base64_encode(json_encode(
-                            array('id' => $this->recordId, 'title' => 'separator')
+                            ['id' => $this->recordId, 'title' => 'separator']
                         ));
                         $sepDesc = Lang::txt('COM_MENUS_TYPE_SEPARATOR_DESC');
                         ?>
@@ -95,7 +95,7 @@ defined('_HZEXEC_') or die();
                     <li>
                         <?php
                         $noneData = base64_encode(json_encode(
-                            array('id' => $this->recordId, 'title' => 'none')
+                            ['id' => $this->recordId, 'title' => 'none']
                         ));
                         $noneDesc = Lang::txt('COM_MENUS_TYPE_NONE_DESC');
                         ?>

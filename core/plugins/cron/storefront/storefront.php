@@ -31,13 +31,13 @@ class Storefront extends Plugin
 
         $obj = new \stdClass();
         $obj->plugin = $this->_name;
-        $obj->events = array(
-            array(
+        $obj->events = [
+            [
                 'name'   => 'emailPublishDownNotifications',
                 'label'  => Lang::txt('PLG_CRON_STOREFRONT_EMAIL_PUBLISH_DOWN_NOTIFICATIONS'),
                 'params' => 'emailPublishDownNotifications'
-            ),
-        );
+            ],
+        ];
 
         return $obj;
     }
@@ -52,7 +52,7 @@ class Storefront extends Plugin
     {
         // Get the notification days
         $params = $job->params;
-        $days = array();
+        $days = [];
         if (
             is_object($params) &&
             ($params->get('publish_down_notification1') || $params->get('publish_down_notification2'))
@@ -94,7 +94,7 @@ class Storefront extends Plugin
         $skus = $db->loadObjectList('sId');
 
         // Build an index of all SKU notifications that should potentially be sent
-        $notificationsIndex = array();
+        $notificationsIndex = [];
         $affectedSkus = '0';
         foreach ($skus as $sku) {
             $skuAffected = false;
@@ -133,7 +133,7 @@ class Storefront extends Plugin
         }
 
         // Go through all remaining $notificationsIndex and build the SKU information array
-        $skusInfo = array();
+        $skusInfo = [];
         foreach ($notificationsIndex as $k => $notify) {
             $notify = $notify['notifyDays'];
             // each day value
@@ -157,7 +157,7 @@ class Storefront extends Plugin
         $products = $db->loadObjectList('pId');
 
         // Build an index of all Product notifications that should potentially be sent
-        $notificationsIndex = array();
+        $notificationsIndex = [];
         $affectedProducts = '0';
         foreach ($products as $product) {
             $productAffected = false;
@@ -195,7 +195,7 @@ class Storefront extends Plugin
         }
 
         // Go through all remaining $notificationsIndex and build the Product information array
-        $productsInfo = array();
+        $productsInfo = [];
         foreach ($notificationsIndex as $k => $notify) {
             $notify = $notify['notifyDays'];
             // each day value
@@ -230,11 +230,11 @@ class Storefront extends Plugin
             return;
         }
 
-        $eview = new \Hubzero\Component\View(array(
+        $eview = new \Hubzero\Component\View([
             'base_path' => Component::path('com_storefront') . DS . 'site',
             'name'      => 'emails',
             'layout'    => 'publish_down_notification'
-        ));
+        ]);
         $eview->set('option', 'com_storefront');
         $eview->skus     = $skusInfo;
         $eview->products = $productsInfo;
@@ -288,7 +288,7 @@ class Storefront extends Plugin
                     $values .= ',';
                 }
 
-                $meta = serialize(array('publish_down' => $info['publish_down'], 'days' => $day));
+                $meta = serialize(['publish_down' => $info['publish_down'], 'days' => $day]);
 
                 $values .= "('{$scope}', {$id}, NOW(), '{$meta}')";
             }

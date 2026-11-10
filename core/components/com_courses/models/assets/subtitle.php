@@ -31,10 +31,10 @@ class Subtitle extends Handler
      *
      * @var array
      **/
-    protected static $info = array(
+    protected static $info = [
         'action_message' => 'Add to HUBpresenter Video',
-        'responds_to'    => array('srt'),
-    );
+        'responds_to'    => ['srt'],
+    ];
 
     /**
      * Create method for this handler
@@ -55,7 +55,7 @@ class Subtitle extends Handler
             $filename = $pathinfo['filename'];
             $ext      = $pathinfo['extension'];
         } else {
-            return array('error' => 'No files provided');
+            return ['error' => 'No files provided'];
         }
 
         // @FIXME: should these come from the global settings, or should they be courses specific
@@ -68,12 +68,12 @@ class Subtitle extends Handler
 
         // Check to make sure we have a file and its not too big
         if ($size == 0) {
-            return array('error' => 'File is empty');
+            return ['error' => 'File is empty'];
         }
         if ($size > $sizeLimit) {
             $formatted = \Hubzero\Utility\Number::formatBytes($sizeLimit);
             $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', $formatted);
-            return array('error' => "File is too large. Max file upload size is $max");
+            return ['error' => "File is too large. Max file upload size is $max"];
         }
 
         // get request vars
@@ -92,7 +92,7 @@ class Subtitle extends Handler
             if (
                 $asset->get('type') == 'video'
                 && $asset->get('subtype') == 'video'
-                && in_array($asset->get('state'), array(0,1))
+                && in_array($asset->get('state'), [0,1])
                 && strpos($asset->get('url'), 'zip')
             ) {
                 $hubpresenter = $asset;
@@ -102,7 +102,7 @@ class Subtitle extends Handler
 
         // make sure we have asset
         if ($hubpresenter === null) {
-            return array('error' => 'Unable to locate html5 video or hubpresenter asset to attach subtitle file to.');
+            return ['error' => 'Unable to locate html5 video or hubpresenter asset to attach subtitle file to.'];
         }
 
         // build path to asset
@@ -118,13 +118,13 @@ class Subtitle extends Handler
         // Scan for viruses
         if (!Filesystem::isSafe($_FILES['files']['tmp_name'][0])) {
             // Scan failed, return an error
-            return array('error' => 'File rejected because the anti-virus scan failed.');
+            return ['error' => 'File rejected because the anti-virus scan failed.'];
         }
 
         // move file
         if (!$move = move_uploaded_file($_FILES['files']['tmp_name'][0], $target_path)) {
             // Move failed, delete asset and association and return an error
-            return array('error' => 'Move file failed');
+            return ['error' => 'Move file failed'];
         }
 
         // get json file
@@ -135,9 +135,9 @@ class Subtitle extends Handler
         $manifest = json_decode($manifest);
 
         // make sure we have a subtitles section
-        $currentSubtitles = array();
+        $currentSubtitles = [];
         if (!isset($manifest->presentation->subtitles)) {
-            $manifest->presentation->subtitles = array();
+            $manifest->presentation->subtitles = [];
         } else {
             foreach ($manifest->presentation->subtitles as $subtitle) {
                 $currentSubtitles[] = $subtitle->source;
@@ -179,7 +179,7 @@ class Subtitle extends Handler
         }
 
         // trim transcript and replace add slide markers
-        $transcript = str_replace(array("\r\n", "\n"), array('',''), $transcript);
+        $transcript = str_replace(["\r\n", "\n"], ['',''], $transcript);
         $transcript = preg_replace("/\\[([^\\]]*)\\]/ux", "\n\n[$1]", $transcript);
 
         // add title to transcript
@@ -198,7 +198,7 @@ class Subtitle extends Handler
 
         // Save the asset
         if (!$assetObj->save($this->asset)) {
-            return array('error' => 'Asset save failed');
+            return ['error' => 'Asset save failed'];
         }
 
         // Create asset assoc object
@@ -209,7 +209,7 @@ class Subtitle extends Handler
 
         // Save the asset association
         if (!$assocObj->save($this->assoc)) {
-            return array('error' => 'Asset association save failed');
+            return ['error' => 'Asset association save failed'];
         }
 
         // Get courses config
@@ -223,11 +223,11 @@ class Subtitle extends Handler
         // Make sure upload directory exists and is writable
         if (!is_dir($uploadDirectory)) {
             if (!Filesystem::makeDirectory($uploadDirectory)) {
-                return array('error' => 'Server error. Unable to create upload directory');
+                return ['error' => 'Server error. Unable to create upload directory'];
             }
         }
         if (!is_writable($uploadDirectory)) {
-            return array('error' => 'Server error. Upload directory isn\'t writable');
+            return ['error' => 'Server error. Upload directory isn\'t writable'];
         }
 
         // Get the final file path
@@ -247,7 +247,7 @@ class Subtitle extends Handler
         );
 
         // build return info
-        $return_info = array(
+        $return_info = [
             'asset_id'       => $this->assoc['asset_id'],
             'asset_title'    => $this->asset['title'],
             'asset_type'     => $this->asset['type'],
@@ -259,10 +259,10 @@ class Subtitle extends Handler
             'asset_ext'      => 'txt',
             'upload_path'    => $uploadDirectory,
             'target_path'    => $transcript_target_path
-        );
+        ];
 
         // Return info
-        return array('assets' => $return_info);
+        return ['assets' => $return_info];
     }
 
     /**
@@ -278,7 +278,7 @@ class Subtitle extends Handler
         define('SRT_STATE_BLANK', 3);
 
         $lines   = file($file);
-        $subs    = array();
+        $subs    = [];
         $state   = SRT_STATE_SUBNUMBER;
         $subNum  = 0;
         $subText = '';

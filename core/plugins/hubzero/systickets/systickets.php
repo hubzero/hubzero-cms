@@ -31,7 +31,7 @@ class Systickets extends Plugin
         $response = new \stdClass();
         $response->name  = 'tickets';
         $response->label = 'Support Tickets';
-        $response->data  = array();
+        $response->data  = [];
 
         $database = App::get('db');
 

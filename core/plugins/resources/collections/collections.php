@@ -58,7 +58,7 @@ class Collections extends Plugin
             $resources->whereEquals('created_by', User::get('id'), 1);
             // Get the groups the user has access to
             $xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'all');
-            $usersgroups = array();
+            $usersgroups = [];
             if (!empty($xgroups)) {
                 foreach ($xgroups as $group) {
                     if ($group->regconfirmed) {

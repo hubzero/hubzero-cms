@@ -30,7 +30,7 @@ class Wiki extends AbstractComponent
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
         // Instantiate controller
-        $controller = new $controllerName(array('name' => 'wiki'));
+        $controller = new $controllerName(['name' => 'wiki']);
         $controller->execute();
     }
 }

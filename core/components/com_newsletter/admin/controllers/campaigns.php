@@ -47,7 +47,7 @@ class Campaigns extends AdminController
      */
     public function displayTask()
     {
-        $filters = array(
+        $filters = [
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
@@ -63,7 +63,7 @@ class Campaigns extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         $campaigns = Campaign::all();
 
@@ -105,7 +105,7 @@ class Campaigns extends AdminController
         // Load or create object
         if (!is_object($row)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             $id = is_array($id) ? $id[0] : $id;
 
             $row = Campaign::oneOrNew($id);
@@ -144,7 +144,7 @@ class Campaigns extends AdminController
         }
 
         // Incoming data from edit form
-        $fields = Request::getArray('campaign', array(), 'post');
+        $fields = Request::getArray('campaign', [], 'post');
 
         // Initiate model
         $row = Campaign::oneOrNew($fields['id'])->set($fields);
@@ -165,7 +165,7 @@ class Campaigns extends AdminController
 
         // did we have params
         // if so, it's a request to reset the secret
-        $p = Request::getArray('params', array(), 'post');
+        $p = Request::getArray('params', [], 'post');
 
         if (!empty($p)) {
             // set new secret if indicated
@@ -213,7 +213,7 @@ class Campaigns extends AdminController
         }
 
         // get the request vars
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
 
         $success = 0;
 

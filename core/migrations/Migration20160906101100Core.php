@@ -26,7 +26,7 @@ class Migration20160906101100Core extends Base
         $schema->dropIndex('#__xprofiles_bio', 'jos_xprofiles_bio_bio_ftidx');
         $schema->addIndex('#__xprofiles', 'idx_username', 'username');
         $schema->dropIndex('#__xprofiles', 'username');
-        $schema->addFulltextIndex('#__xprofiles', 'ftidx_givenName_surname', array('givenName', 'surname'));
+        $schema->addFulltextIndex('#__xprofiles', 'ftidx_givenName_surname', ['givenName', 'surname']);
         $schema->dropIndex('#__xprofiles', 'author');
         $schema->addFulltextIndex('#__xprofiles', 'ftidx_name', 'name');
         $schema->dropIndex('#__xprofiles', 'jos_xprofiles_name_ftidx');
@@ -39,10 +39,10 @@ class Migration20160906101100Core extends Base
         $schema->addFulltextIndex(
             '#__xgroups',
             'ftidx_cn_description_public_desc',
-            array('cn', 'description', 'public_desc')
+            ['cn', 'description', 'public_desc']
         );
         $schema->dropIndex('#__xgroups', 'jos_xgroups_cn_description_public_desc_ftidx');
-        $schema->addFulltextIndex('#__wishlist_item', 'ftidx_subject_about', array('subject', 'about'));
+        $schema->addFulltextIndex('#__wishlist_item', 'ftidx_subject_about', ['subject', 'about']);
         $schema->dropIndex('#__wishlist_item', 'jos_wishlist_item_subject_about_ftidx');
         $schema->dropIndex('#__wishlist_item', 'jos_wishlist_item_wishlist_idx');
         $schema->addFulltextIndex('#__wishlist_implementation', 'ftidx_pagetext', 'pagetext');
@@ -51,7 +51,7 @@ class Migration20160906101100Core extends Base
         $schema->dropIndex('#__wiki_versions', 'pagetext');
         $schema->addFulltextIndex('#__wiki_pages', 'ftidx_title', 'title');
         $schema->dropIndex('#__wiki_pages', 'title');
-        $schema->addIndex('#__wiki_links', 'idx_scope_scope_id', array('scope', 'scope_id'));
+        $schema->addIndex('#__wiki_links', 'idx_scope_scope_id', ['scope', 'scope_id']);
         $schema->dropIndex('#__wiki_links', 'idx_scoped');
         $schema->addUniqueIndex('#__wiki_formulas', 'uidx_inputhash', 'inputhash');
         $schema->dropIndex('#__wiki_formulas', 'inputhash');
@@ -96,13 +96,13 @@ class Migration20160906101100Core extends Base
         $schema->dropIndex('#__tool', 'toolname');
         $schema->addIndex('#__stats_topvals', 'idx_top', 'top');
         $schema->dropIndex('#__stats_topvals', 'top');
-        $schema->addIndex('#__stats_topvals', 'idx_top_rank', array('top', 'rank'));
+        $schema->addIndex('#__stats_topvals', 'idx_top_rank', ['top', 'rank']);
         $schema->dropIndex('#__stats_topvals', 'top_2');
-        $schema->addIndex('#__stats_topvals', 'idx_top_datetime', array('top', 'datetime'));
+        $schema->addIndex('#__stats_topvals', 'idx_top_datetime', ['top', 'datetime']);
         $schema->dropIndex('#__stats_topvals', 'top_3');
-        $schema->addIndex('#__stats_topvals', 'idx_top_datetime_rank', array('top', 'datetime', 'rank'));
+        $schema->addIndex('#__stats_topvals', 'idx_top_datetime_rank', ['top', 'datetime', 'rank']);
         $schema->dropIndex('#__stats_topvals', 'top_4');
-        $schema->addIndex('#__stats_topvals', 'idx_top_datetime_period', array('top', 'datetime', 'period'));
+        $schema->addIndex('#__stats_topvals', 'idx_top_datetime_period', ['top', 'datetime', 'period']);
         $schema->dropIndex('#__stats_topvals', 'top_5');
         $schema->addIndex('#__session_geo', 'idx_userid', 'userid');
         $schema->dropIndex('#__session_geo', 'userid');
@@ -178,7 +178,7 @@ class Migration20160906101100Core extends Base
         $schema->dropIndex('#__metrics_ipgeo_cache', 'lookup_datetime');
         $schema->addFulltextIndex('#__kb_articles', 'ftidx_title', 'title');
         $schema->dropIndex('#__kb_articles', 'title');
-        $schema->addFulltextIndex('#__kb_articles', 'ftidx_title_params_fulltxt', array('title', 'params', 'fulltxt'));
+        $schema->addFulltextIndex('#__kb_articles', 'ftidx_title_params_fulltxt', ['title', 'params', 'fulltxt']);
         $schema->dropIndex('#__kb_articles', 'introtext');
         $schema->addFulltextIndex('#__kb_articles', 'ftidx_params', 'params');
         $schema->dropIndex('#__kb_articles', 'fulltxt');
@@ -190,13 +190,13 @@ class Migration20160906101100Core extends Base
         $schema->dropIndex('#__incremental_registration_groups', 'id');
         $schema->addPrimaryKey('#__incremental_registration_group_label_rel', 'id');
         $schema->dropIndex('#__incremental_registration_group_label_rel', 'id');
-        $schema->addFulltextIndex('#__forum_posts', 'ftidx_comment_title', array('comment', 'title'));
+        $schema->addFulltextIndex('#__forum_posts', 'ftidx_comment_title', ['comment', 'title']);
         $schema->dropIndex('#__forum_posts', 'comment_title_fidx');
         $schema->addFulltextIndex('#__forum_posts', 'ftidx_comment', 'comment');
         $schema->dropIndex('#__forum_posts', 'question');
-        $schema->addIndex('#__forum_posts', 'idx_scope_scope_id', array('scope', 'scope_id'));
-        $schema->addIndex('#__forum_categories', 'idx_scope_scope_id', array('scope', 'scope_id'));
-        $schema->addIndex('#__forum_attachments', 'idx_filename_post_id', array('filename', 'post_id'));
+        $schema->addIndex('#__forum_posts', 'idx_scope_scope_id', ['scope', 'scope_id']);
+        $schema->addIndex('#__forum_categories', 'idx_scope_scope_id', ['scope', 'scope_id']);
+        $schema->addIndex('#__forum_attachments', 'idx_filename_post_id', ['filename', 'post_id']);
         $schema->addPrimaryKey('#__focus_areas', 'id');
         $schema->dropIndex('#__focus_areas', 'id');
         $schema->addPrimaryKey('#__focus_area_resource_type_rel', 'id');
@@ -205,7 +205,7 @@ class Migration20160906101100Core extends Base
         $schema->dropIndex('#__events', 'title');
         $schema->addFulltextIndex('#__events', 'ftidx_content', 'content');
         $schema->dropIndex('#__events', 'content');
-        $schema->addFulltextIndex('#__events', 'ftidx_title_content', array('title', 'content'));
+        $schema->addFulltextIndex('#__events', 'ftidx_title_content', ['title', 'content']);
         $schema->dropIndex('#__events', 'jos_events_title_content_ftidx');
         $schema->addUniqueIndex('#__document_text_data', 'uidx_hash', 'hash');
         $schema->dropIndex('#__document_text_data', 'jos_document_text_data_hash_uidx');
@@ -254,17 +254,17 @@ class Migration20160906101100Core extends Base
         $schema->addFulltextIndex(
             '#__content',
             'ftidx_title_introtext_fulltext',
-            array('title', 'introtext', 'fulltext')
+            ['title', 'introtext', 'fulltext']
         );
-        $schema->addFulltextIndex('#__content', 'ftidx_introtext_fulltext', array('introtext', 'fulltext'));
+        $schema->addFulltextIndex('#__content', 'ftidx_introtext_fulltext', ['introtext', 'fulltext']);
         $schema->addFulltextIndex('#__content', 'ftidx_title', 'title');
         $schema->dropIndex('#__content', 'jos_content_state_idx');
         $schema->dropIndex('#__content', 'title');
         $schema->dropIndex('#__content', 'introtext');
         $schema->dropIndex('#__content', 'jos_content_title_introtext_fulltext_ftidx');
-        $schema->addIndex('#__collections_votes', 'idx_item_id_user_id', array('item_id', 'user_id'));
+        $schema->addIndex('#__collections_votes', 'idx_item_id_user_id', ['item_id', 'user_id']);
         $schema->dropIndex('#__collections_votes', 'idx_item_user');
-        $schema->addIndex('#__collections', 'idx_object_type_object_id', array('object_type', 'object_id'));
+        $schema->addIndex('#__collections', 'idx_object_type_object_id', ['object_type', 'object_id']);
         $schema->dropIndex('#__collections', 'idx_objectified');
         $schema->addIndex('#__collections', 'idx_created_by', 'created_by');
         $schema->dropIndex('#__collections', 'idx_createdby');

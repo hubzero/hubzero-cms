@@ -47,7 +47,7 @@ class Tool
      *
      * @var array
      */
-    private $version = array();
+    private $version = [];
 
     /**
      * Description for 'registered'
@@ -104,7 +104,7 @@ class Tool
      * @var array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_list_keys = array('version');
+    private $_list_keys = ['version'];
 
     /**
      * Description for '_updateAll'
@@ -120,11 +120,11 @@ class Tool
      * @var array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected static $_propertyattrmap = array(
+    protected static $_propertyattrmap = [
         'toolname' => 'toolName',
         'title' => 'cn',
         'version' => 'member'
-    );
+    ];
 
     /**
      * Description for '_updatedkeys'
@@ -132,7 +132,7 @@ class Tool
      * @var array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_updatedkeys = array();
+    private $_updatedkeys = [];
 
     /**
      * Constructor
@@ -152,7 +152,7 @@ class Tool
     {
         $cvars = get_class_vars(__CLASS__);
 
-        $this->_updatedkeys = array();
+        $this->_updatedkeys = [];
 
         foreach ($cvars as $key => $value) {
             if ($key[0] != '_') {
@@ -161,13 +161,13 @@ class Tool
                 if (!in_array($key, $this->_list_keys)) {
                     $this->$key = null;
                 } else {
-                    $this->$key = array();
+                    $this->$key = [];
                 }
             }
         }
 
         $this->_updateAll = false;
-        $this->_updatedkeys = array();
+        $this->_updatedkeys = [];
     }
 
     /**
@@ -201,7 +201,7 @@ class Tool
      */
     public function toArray()
     {
-        $result = array();
+        $result = [];
 
         if (true) {
             foreach (self::$_propertyattrmap as $key => $value) {
@@ -378,7 +378,7 @@ class Tool
             $this->__get('version');
         }
 
-        $this->_updatedkeys = array();
+        $this->_updatedkeys = [];
 
         return true;
     }
@@ -492,7 +492,7 @@ class Tool
             $list = $this->__get($property);
 
             if (!is_null($list) && !is_array($list)) {
-                $list = array($list);
+                $list = [$list];
             }
 
             if (is_array($list) && count($list) > 0) {
@@ -686,7 +686,7 @@ class Tool
                 $db = App::get('db');
 
                 if (is_object($db)) {
-                    if (in_array($property, array('version'))) {
+                    if (in_array($property, ['version'])) {
                         $aux_table = "#__tool_" . $property;
 
                         $query = "SELECT instance FROM $aux_table AS aux WHERE aux.toolid=" .
@@ -700,8 +700,8 @@ class Tool
                     $result = $db->loadColumn();
 
                     if ($result !== false) {
-                        $this->$property = (isset($result[0])) ? $result : array();
-                        $this->_updatedkeys = array_diff($this->_updatedkeys, array($property));
+                        $this->$property = (isset($result[0])) ? $result : [];
+                        $this->_updatedkeys = array_diff($this->_updatedkeys, [$property]);
                     }
                 }
             }
@@ -740,7 +740,7 @@ class Tool
         }
 
         if (in_array($property, $this->_list_keys)) {
-            $this->$property = array_values(array_unique(array_diff((array) $value, array(''))));
+            $this->$property = array_values(array_unique(array_diff((array) $value, [''])));
         } else {
             $this->$property = $value;
         }
@@ -791,7 +791,7 @@ class Tool
             die();
         }
 
-        $this->_updatedkeys = array_diff($this->_updatedkeys, array($property));
+        $this->_updatedkeys = array_diff($this->_updatedkeys, [$property]);
 
         unset($this->$property);
     }
@@ -863,7 +863,7 @@ class Tool
      * @param     array $value Parameter description (if any) ...
      * @return   void
      */
-    public function add($key = null, $value = array())
+    public function add($key = null, $value = [])
     {
         $this->__set($key, array_merge($this->__get($key), (array) $value));
     }
@@ -877,7 +877,7 @@ class Tool
      * @param     array $value Parameter description (if any) ...
      * @return   void
      */
-    public function remove($key = null, $value = array())
+    public function remove($key = null, $value = [])
     {
         $this->__set($key, array_diff($this->__get($key), (array) $value));
     }
@@ -1035,7 +1035,7 @@ class Tool
      * @param     boolean $admin Parameter description (if any) ...
      * @return   string Return description (if any) ...
      */
-    protected static function buildQueryLimit($filters = array(), $admin = false)
+    protected static function buildQueryLimit($filters = [], $admin = false)
     {
         if (!isset($filters['start']) && !isset($filters['limit'])) {
             return '';
@@ -1070,16 +1070,16 @@ class Tool
      * @param     boolean $admin Parameter description (if any) ...
      * @return   mixed Return description (if any) ...
      */
-    protected static function buildQuerySort($filters = array(), $admin = false)
+    protected static function buildQuerySort($filters = [], $admin = false)
     {
         if (!isset($filters['sortby'])) {
             return ' ORDER BY toolname ';
         }
 
         if (
-            in_array($filters['sortby'], array('id ASC', 'id DESC', 'toolname ASC',
+            in_array($filters['sortby'], ['id ASC', 'id DESC', 'toolname ASC',
             'toolname DESC', 'title ASC', 'title DESC', 'versions ASC', 'versions DESC',
-            'state_changed ASC', 'state_changed DESC', 'registered ASC', 'registered DESC'))
+            'state_changed ASC', 'state_changed DESC', 'registered ASC', 'registered DESC'])
         ) {
             return " ORDER BY " . $filters['sortby'] . " ";
         }
@@ -1096,7 +1096,7 @@ class Tool
      * @param     boolean $admin Parameter description (if any) ...
      * @return   string Return description (if any) ...
      */
-    protected static function buildQuerySearch($filters = array(), $admin = false)
+    protected static function buildQuerySearch($filters = [], $admin = false)
     {
         $db = App::get('db');
 
@@ -1147,7 +1147,7 @@ class Tool
      * @param   boolean  $admin
      * @return  string
      */
-    protected static function buildQueryState($filters = array(), $admin = false)
+    protected static function buildQueryState($filters = [], $admin = false)
     {
         $sql = '';
 
@@ -1169,7 +1169,7 @@ class Tool
      * @param     boolean $admin Parameter description (if any) ...
      * @return   string Return description (if any) ...
      */
-    protected static function buildQuery($filters = array(), $admin = false)
+    protected static function buildQuery($filters = [], $admin = false)
     {
         return ' FROM #__tool AS t ';
     }
@@ -1183,7 +1183,7 @@ class Tool
      * @param     boolean $admin Parameter description (if any) ...
      * @return   object Return description (if any) ...
      */
-    public static function getToolCount($filters = array(), $admin = false)
+    public static function getToolCount($filters = [], $admin = false)
     {
         $db = App::get('db');
 
@@ -1204,7 +1204,7 @@ class Tool
      * @param   boolean  $admin
      * @return  array
      */
-    public static function getToolSummaries($filters = array(), $admin = false)
+    public static function getToolSummaries($filters = [], $admin = false)
     {
         $db = App::get('db');
 
@@ -1231,7 +1231,7 @@ class Tool
      * @param     boolean $admin Parameter description (if any) ...
      * @return    array
      */
-    public function getToolVersionSummaries($filters = array(), $admin = false)
+    public function getToolVersionSummaries($filters = [], $admin = false)
     {
         // id  instance  version revision state
 
@@ -1340,7 +1340,7 @@ class Tool
 
         $result = $db->loadResult();
 
-        if ($result || (in_array($tool['toolname'], array('test', 'shortname', 'hub', 'tool')) && !$id)) {
+        if ($result || (in_array($tool['toolname'], ['test', 'shortname', 'hub', 'tool']) && !$id)) {
             $err['toolname'] = Lang::txt('COM_TOOLS_ERR_TOOLNAME_EXISTS');
         } elseif ((!preg_match('#^[a-zA-Z0-9]{3,15}$#', $tool['toolname']) || is_numeric($tool['toolname'])) && !$id) {
             $err['toolname'] = Lang::txt('COM_TOOLS_ERR_TOOLNAME');
@@ -1604,16 +1604,16 @@ class Tool
 			ORDER BY r.alias, (r.published=1) DESC, r.id, v.revision DESC"
         );
 
-        $tools = array();
+        $tools = [];
         foreach ((array) $db->loadObjectList() as $row) {
             if (!isset($tools[$row->alias])) {
-                $tools[$row->alias] = (object) array(
+                $tools[$row->alias] = (object) [
                     'id'        => $row->id,
                     'alias'     => $row->alias,
                     'published' => $row->published,
                     'access'    => $row->toolaccess,
-                    'revisions' => array()
-                );
+                    'revisions' => []
+                ];
             }
 
             $tool = $tools[$row->alias];
@@ -1677,7 +1677,7 @@ class Tool
      * @param   array   $groups
      * @return  array
      */
-    public static function getToolGroups($toolid, $groups = array())
+    public static function getToolGroups($toolid, $groups = [])
     {
         $db = App::get('db');
 
@@ -1826,7 +1826,7 @@ class Tool
      * @param   boolean  $admin   Admin access?
      * @return  array
      */
-    public static function getTools($filters = array(), $admin = false)
+    public static function getTools($filters = [], $admin = false)
     {
         $db = App::get('db');
         $filter = self::xbuildQuery($filters, $admin);

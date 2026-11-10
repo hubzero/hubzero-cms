@@ -134,9 +134,9 @@ class Ticketsv2r0 extends ApiController
 
         $response = new StdClass();
         $response->total = $total->total();
-        $response->tickets = array();
+        $response->tickets = [];
         foreach ($rows as $row) {
-            $temp = array();
+            $temp = [];
             $temp['id'] = $row->get('id');
             $temp['name'] = $row->get('name');
             $temp['login'] = $row->get('login');
@@ -368,10 +368,10 @@ class Ticketsv2r0 extends ApiController
         $response->submitter_id = $submitter->get('id');
         $response->group_id = $ticket->get('group_id');
 
-        $props = array(
+        $props = [
             'status', 'created', 'severity', 'os', 'browser',
             'ip', 'hostname', 'uas', 'referrer', 'open', 'closed'
-        );
+        ];
         foreach ($props as $prop) {
             $response->$prop = $ticket->get($prop);
         }

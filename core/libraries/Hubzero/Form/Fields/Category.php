@@ -57,7 +57,7 @@ class Category extends Select
 
         // Initialise variables.
 
-        $options   = array();
+        $options   = [];
         $extension = $this->
             element['extension'] ? (string) $this->
             element['extension'] : (string) $this->
@@ -72,7 +72,7 @@ class Category extends Select
             // Filter over published state or not depending upon if it is present.
 
             if ($published) {
-                $options = Cat::options($extension, array('filter.published' => explode(',', $published)));
+                $options = Cat::options($extension, ['filter.published' => explode(',', $published)]);
             } else {
                 $options = Cat::options($extension);
             }

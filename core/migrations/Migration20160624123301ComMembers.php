@@ -43,7 +43,7 @@ class Migration20160624123301ComMembers extends Base
                 }
             }
             if ($users && $members) {
-                $params = array(
+                $params = [
                     'allowUserRegistration' => 1,
                     'new_usertype' => 2,
                     'guest_usergroup' => 1,
@@ -60,7 +60,7 @@ class Migration20160624123301ComMembers extends Base
                     'reset_time' => 1,
                     'login_attempts_limit' => 10,
                     'login_attempts_timeframe' => 1
-                );
+                ];
 
                 foreach ($params as $param => $dflt) {
                     $members->set($param, $users->get('param', $dflt));

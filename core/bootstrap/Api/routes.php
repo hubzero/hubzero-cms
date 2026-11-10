@@ -162,7 +162,7 @@ $router->rules('parse')->append('version', function ($uri) {
     }
 
     // Normalize version
-    $calc = array();
+    $calc = [];
     if (strpos($version, '.') !== false) {
         $versionParts = array_map('trim', explode('.', $version));
         $calc['major'] = $versionParts[0];

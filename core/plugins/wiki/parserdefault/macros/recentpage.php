@@ -28,7 +28,7 @@ class RecentPage extends WikiMacro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
 
         $txt['wiki'] = Lang::txt('PLG_WIKI_PARSERDEFAULT_MACRO_RECENT_PAGE') . "\n\n" .
                         Lang::txt('PLG_WIKI_PARSERDEFAULT_MACRO_ARGUMENTS') . "\n\n" .
@@ -95,7 +95,7 @@ class RecentPage extends WikiMacro
         if ($rows) {
             foreach ($rows as $row) {
                 $txt = strip_tags((string) $row->version->get('pagehtml'));
-                $txt = str_replace(array("\n", "\r", "\t", '   '), ' ', $txt);
+                $txt = str_replace(["\n", "\r", "\t", '   '], ' ', $txt);
                 $txt = trim($txt);
 
                 $html .= '<div';

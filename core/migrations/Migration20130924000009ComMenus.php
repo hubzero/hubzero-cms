@@ -354,7 +354,7 @@ class Migration20130924000009ComMenus extends Base
                         continue;
                     }
 
-                    $array = array();
+                    $array = [];
                     $ar    = explode("\n", $params);
 
                     foreach ($ar as $a) {

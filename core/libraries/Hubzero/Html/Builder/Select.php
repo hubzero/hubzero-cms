@@ -23,8 +23,8 @@ class Select
      *
      * @var  array
      */
-    protected static $optionDefaults = array(
-        'option' => array(
+    protected static $optionDefaults = [
+        'option' => [
             'option.attr' => null,
             'option.disable' => 'disable',
             'option.id' => null,
@@ -34,8 +34,8 @@ class Select
             'option.label.toHtml' => true,
             'option.text' => 'text',
             'option.text.toHtml' => true
-        )
-    );
+        ]
+    ];
 
     /**
      * Generates a yes/no radio list.
@@ -50,10 +50,10 @@ class Select
      */
     public static function booleanlist($name, $attribs = null, $selected = null, $yes = 'JYES', $no = 'JNO', $id = false)
     {
-        $arr = array(
+        $arr = [
             self::option('0', Lang::txt($no)),
             self::option('1', Lang::txt($yes))
-        );
+        ];
         return self::radiolist($arr, $name, $attribs, 'value', 'text', (int) $selected, $id);
     }
 
@@ -83,7 +83,7 @@ class Select
     public static function genericlist($data, $name, $attribs = null, $optKey = 'value', $optText = 'text', $selected = null, $idtag = false, $translate = false)
     {
         // Set default options
-        $options = array('id' => false);
+        $options = ['id' => false];
 
         if (is_array($attribs) && func_num_args() == 3) {
             // Assume we have an options array
@@ -112,7 +112,7 @@ class Select
         }
 
         $id = $options['id'] !== false ? $options['id'] : $name;
-        $id = str_replace(array('[', ']'), '', $id);
+        $id = str_replace(['[', ']'], '', $id);
 
         $html  = '<select' . ($id !== '' ? ' id="' . $id . '"' : '') . ' name="' . $name . '"' . $attribs . '>';
         $html .= self::options($data, $options);
@@ -147,16 +147,16 @@ class Select
      * @return  string  HTML for the select list
      * @throws  Exception If a group has unprocessable contents.
      */
-    public static function groupedlist($data, $name, $options = array())
+    public static function groupedlist($data, $name, $options = [])
     {
         // Set default options and overwrite with anything passed in
         $options = array_merge(
-            array(
+            [
                 'group.items' => 'items',
                 'group.label' => 'text',
                 'group.label.toHtml' => true,
                 'id' => false
-            ),
+            ],
             $options
         );
 
@@ -179,7 +179,7 @@ class Select
         }
 
         $id = $options['id'] !== false ? $options['id'] : $name;
-        $id = str_replace(array('[', ']'), '', $id);
+        $id = str_replace(['[', ']'], '', $id);
 
         // Disable groups in the options.
         $options['groups'] = false;
@@ -251,10 +251,10 @@ class Select
     public static function integerlist($start, $end, $inc, $name, $attribs = null, $selected = null, $format = '')
     {
         // Set default options
-        $options = array(
+        $options = [
             'option.format' => '',
             'id' => null
-        );
+        ];
 
         if (is_array($attribs) && func_num_args() == 5) {
             // Assume we have an options array
@@ -272,7 +272,7 @@ class Select
         $end   = intval($end);
         $inc   = intval($inc);
 
-        $data = array();
+        $data = [];
         for ($i = $start; $i <= $end; $i += $inc) {
             $data[$i] = $format ? sprintf($format, $i) : $i;
         }
@@ -346,7 +346,7 @@ class Select
      */
     public static function option($value, $text = '', $optKey = 'value', $optText = 'text', $disable = false)
     {
-        $options = array(
+        $options = [
             'attr'           => null,
             'disable'        => false,
             'option.attr'    => null,
@@ -354,7 +354,7 @@ class Select
             'option.key'     => 'value',
             'option.label'   => null,
             'option.text'    => 'text'
-        );
+        ];
 
         if (is_array($optKey)) {
             // Merge in caller's options
@@ -435,11 +435,11 @@ class Select
     {
         $options = array_merge(
             self::$optionDefaults['option'],
-            array(
+            [
                 'groups' => true,
                 'list.select' => null,
                 'list.translate' => false
-            )
+            ]
         );
 
         if (is_array($optKey)) {
@@ -678,7 +678,7 @@ class Select
                 $options[] = self::option($items[$i - 1]->value + 1, ($items[$i - 1]->value + 1) . ' ' . Lang::txt('JOPTION_ORDER_LAST'));
             }
 
-            $html = self::genericlist($options, $name, array('list.attr' => $attribs, 'list.select' => (int) $selected));
+            $html = self::genericlist($options, $name, ['list.attr' => $attribs, 'list.select' => (int) $selected]);
         } else {
             if ($neworder > 0) {
                 $text = Lang::txt('JGLOBAL_NEWITEMSLAST_DESC');

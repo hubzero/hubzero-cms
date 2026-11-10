@@ -84,13 +84,13 @@ class Page extends Model
      * @param   array   $opt
      * @return  object  \Hubzero\Base\ItemList
      */
-    public function versions($opt = array())
+    public function versions($opt = [])
     {
         if (!isset($this->_versions)) {
-            $options = array_merge(array(
+            $options = array_merge([
                 'pageid'  => $this->get('id', -1),
                 'orderby' => 'version DESC',
-            ), $opt);
+            ], $opt);
 
             $pageVersionArchive = new Page\Version\Archive();
             $this->_versions = $pageVersionArchive->versions('list', $options);
@@ -203,13 +203,13 @@ class Page extends Model
             // make sure we dont already have a page with the same alias
             // get group pages
             $pageArchive = Page\Archive::getInstance();
-            $aliases = $pageArchive->pages('list', array(
+            $aliases = $pageArchive->pages('list', [
                 'gidNumber' => $group->get('gidNumber'),
-                'state'     => array(0,1),
+                'state'     => [0,1],
                 'depth'     => $this->get('depth')
-            ));
+            ]);
 
-            $aliasUrls = array();
+            $aliasUrls = [];
             foreach ($aliases as $aliasObj) {
                 $aliasUrls[] = $aliasObj->url();
             }
@@ -328,12 +328,12 @@ class Page extends Model
     {
         // load pages that are decendants of this page
         $archive  = new Page\Archive();
-        $children = $archive->pages('list', array(
+        $children = $archive->pages('list', [
             'gidNumber' => $this->get('gidNumber'),
             'left'      => $this->get('lft'),
             'right'     => $this->get('rgt'),
             'orderby'   => 'lft ASC'
-        ));
+        ]);
 
         return $children;
     }

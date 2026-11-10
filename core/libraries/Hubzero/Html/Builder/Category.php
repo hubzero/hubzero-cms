@@ -22,7 +22,7 @@ class Category
      *
      * @var    array
      */
-    protected static $items = array();
+    protected static $items = [];
 
     /**
      * Returns an array of categories for the given extension.
@@ -32,7 +32,7 @@ class Category
      *                              published and unpublished categories are returned.
      * @return  array
      */
-    public static function options($extension, $config = array('filter.published' => array(0, 1)))
+    public static function options($extension, $config = ['filter.published' => [0, 1]])
     {
         $hash = md5($extension . '.' . serialize($config));
 
@@ -66,7 +66,7 @@ class Category
             $items = $db->loadObjectList();
 
             // Assemble the list options.
-            self::$items[$hash] = array();
+            self::$items[$hash] = [];
 
             foreach ($items as &$item) {
                 $repeat = ($item->level - 1 >= 0) ? $item->level - 1 : 0;
@@ -86,7 +86,7 @@ class Category
      *                              and unpublished categories are returned.
      * @return  array   Categories for the extension
      */
-    public static function categories($extension, $config = array('filter.published' => array(0, 1)))
+    public static function categories($extension, $config = ['filter.published' => [0, 1]])
     {
         $hash = md5($extension . '.' . serialize($config));
 
@@ -121,7 +121,7 @@ class Category
             $items = $db->loadObjectList();
 
             // Assemble the list options.
-            self::$items[$hash] = array();
+            self::$items[$hash] = [];
 
             foreach ($items as &$item) {
                 $repeat = ($item->level - 1 >= 0) ? $item->level - 1 : 0;

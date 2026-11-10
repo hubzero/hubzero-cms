@@ -96,7 +96,7 @@ $rows = $this->model->entries('list', $this->filters);
                 // Display List of items
                 $this->view('_list')
                      ->set('rows', $rows)
-                     ->set('filters', array())
+                     ->set('filters', [])
                      ->set('option', $this->option)
                      ->display();
                 ?>

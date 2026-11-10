@@ -23,13 +23,13 @@ $this->css()
 
 $base = 'index.php?option=' . $this->option . '&task=browse';
 
-$searches = array();
-$filters = array();
+$searches = [];
+$filters = [];
 foreach ($this->fields as $field) {
     if ($field->get('type') == 'hidden' || $field->get('type') == 'number') {
         continue;
     }
-    if (in_array($field->get('type'), array('text', 'textarea', 'orcid', 'address'))) {
+    if (in_array($field->get('type'), ['text', 'textarea', 'orcid', 'address'])) {
         $searches[] = $field;
     } else {
         $filters[] = $field;
@@ -60,7 +60,7 @@ foreach ($this->fields as $field) {
                         <?php foreach ($filters as $field) : ?>
                             <div class="form-group">
                                 <?php
-                                $value = array();
+                                $value = [];
                                 foreach ($this->filters['q'] as $i => $q) {
                                     if ($q['field'] == $field->get('name')) {
                                         if (is_array($q['value'])) {
@@ -166,10 +166,10 @@ foreach ($this->fields as $field) {
         <div class="subject">
             <?php if (!empty($this->filters['q'])) : ?>
                 <?php
-                $qs = array();
+                $qs = [];
                 foreach ($this->filters['q'] as $i => $q) :
                     if (is_array($q['value'])) {
-                        $qs[$i] = array();
+                        $qs[$i] = [];
                         foreach ($q['value'] as $key => $val) {
                             $qs[$i][] = '&q[' . $q['field'] . '][]=' . $val;
                         }
@@ -257,7 +257,7 @@ foreach ($this->fields as $field) {
                                 case 1:
                                     // Get the groups the visiting user
                                     $xgroups = User::groups();
-                                    $usersgroups = array();
+                                    $usersgroups = [];
                                     if (!empty($xgroups)) {
                                         foreach ($xgroups as $group) {
                                             if ($group->regconfirmed) {
@@ -326,7 +326,7 @@ foreach ($this->fields as $field) {
                                         // Get the groups of the profile
                                         $pgroups = Hubzero\User\Helper::getGroups($row->get('id'), 'all', 1); //$row->groups();
                                         // Get the groups the user has access to
-                                        $profilesgroups = array();
+                                        $profilesgroups = [];
                                         if (!empty($pgroups)) {
                                             foreach ($pgroups as $group) {
                                                 if ($group->regconfirmed) {
@@ -354,14 +354,14 @@ foreach ($this->fields as $field) {
                                 }
                             }
 
-                            $results = Event::trigger('members.onMemberProfile', array($row));
+                            $results = Event::trigger('members.onMemberProfile', [$row]);
                             $extras = implode("\n", $results);
                             ?>
                             <?php
                                 // [a11y] unique label with org + member ID to disambiguate same-name members (SC 2.4.4)
                                 $_org = '';
                             foreach ($this->fields as $_f) {
-                                if (in_array($_f->get('name'), array('org', 'organization'))) {
+                                if (in_array($_f->get('name'), ['org', 'organization'])) {
                                     $_org = trim(stripslashes($row->get($_f->get('name'))));
                                     break;
                                 }
@@ -385,7 +385,7 @@ foreach ($this->fields as $field) {
                                         </a>
                                         <?php foreach ($this->fields as $c) { ?>
                                             <?php
-                                            if (!in_array($c->get('name'), array('org', 'organization'))) {
+                                            if (!in_array($c->get('name'), ['org', 'organization'])) {
                                                 continue;
                                             }
 
@@ -401,7 +401,7 @@ foreach ($this->fields as $field) {
                                     <div class="result-snippet">
                                         <?php foreach ($this->fields as $c) { ?>
                                             <?php
-                                            if (in_array($c->get('name'), array('name', 'org', 'organization'))) {
+                                            if (in_array($c->get('name'), ['name', 'org', 'organization'])) {
                                                 continue;
                                             }
 

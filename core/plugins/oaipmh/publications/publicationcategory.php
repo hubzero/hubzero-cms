@@ -35,7 +35,7 @@ class Publicationcategory extends Select
      */
     protected function getOptions()
     {
-        $options = array();
+        $options = [];
 
         $options[] =  Html::select('option', '0', Lang::txt('All'));
 

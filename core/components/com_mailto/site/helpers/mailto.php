@@ -29,7 +29,7 @@ abstract class Mailto
         self::cleanHashes();
 
         $session = App::get('session');
-        $mailto_links = $session->get('com_mailto.links', array());
+        $mailto_links = $session->get('com_mailto.links', []);
         if (!isset($mailto_links[$hash])) {
             $mailto_links[$hash] = new stdClass();
         }
@@ -53,7 +53,7 @@ abstract class Mailto
 
         self::cleanHashes();
 
-        $mailto_links = App::get('session')->get('com_mailto.links', array());
+        $mailto_links = App::get('session')->get('com_mailto.links', []);
 
         if (isset($mailto_links[$hash])) {
             $retval = $mailto_links[$hash]->link;
@@ -76,7 +76,7 @@ abstract class Mailto
         if (!$cleaned) {
             $past = time() - $lifetime;
             $session = App::get('session');
-            $mailto_links = $session->get('com_mailto.links', array());
+            $mailto_links = $session->get('com_mailto.links', []);
             foreach ($mailto_links as $index => $link) {
                 if ($link->expiry < $past) {
                     unset($mailto_links[$index]);

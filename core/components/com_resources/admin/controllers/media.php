@@ -70,7 +70,7 @@ class Media extends AdminController
             }
 
             // Incoming file
-            $file = Request::getArray('upload', array(), 'files');
+            $file = Request::getArray('upload', [], 'files');
             if (empty($file['name'])) {
                 $this->setError(Lang::txt('COM_RESOURCES_ERROR_NO_FILE'));
                 return $this->displayTask();
@@ -85,7 +85,7 @@ class Media extends AdminController
             // download handler serves inline (the same rule as resource attachments
             // and site media uploads); archives are ordinary files here and are only
             // unpacked by batch mode below
-            $blockedExtensions = array('php', 'php3', 'php4', 'php5', 'php7', 'php8', 'phtml', 'pht', 'phar', 'phps', 'cgi', 'pl', 'asp', 'aspx', 'jsp', 'shtml', 'htaccess', 'htpasswd', 'html', 'htm', 'xhtml', 'xml');
+            $blockedExtensions = ['php', 'php3', 'php4', 'php5', 'php7', 'php8', 'phtml', 'pht', 'phar', 'phps', 'cgi', 'pl', 'asp', 'aspx', 'jsp', 'shtml', 'htaccess', 'htpasswd', 'html', 'htm', 'xhtml', 'xml'];
             if (in_array(strtolower((string) $ext), $blockedExtensions)) {
                 $this->setError(Lang::txt('File type not allowed: %s', $ext));
                 return $this->displayTask();
@@ -289,7 +289,7 @@ class Media extends AdminController
         // Get list of directories
         $dirs = $this->recursiveListDir($path);
 
-        $folders   = array();
+        $folders   = [];
         $folders[] = Html::select('option', '/');
         if ($dirs) {
             foreach ($dirs as $dir) {
@@ -341,8 +341,8 @@ class Media extends AdminController
         // Build the path
         $path = Utilities::buildUploadPath($listdir, $subdir);
 
-        $folders = array();
-        $docs    = array();
+        $folders = [];
+        $docs    = [];
 
         if (is_dir($path)) {
             // Loop through all files and separate them into arrays of images, folders, and other
@@ -361,7 +361,7 @@ class Media extends AdminController
                 }
 
                 if ($file->isFile()) {
-                    if (in_array(strtolower($name), array('cvs', '.svn', '.git', '.ds_store'))) {
+                    if (in_array(strtolower($name), ['cvs', '.svn', '.git', '.ds_store'])) {
                         continue;
                     }
 
@@ -392,8 +392,8 @@ class Media extends AdminController
      */
     private function recursiveListDir($base)
     {
-        static $filelist = array();
-        static $dirlist  = array();
+        static $filelist = [];
+        static $dirlist  = [];
 
         if (is_dir($base)) {
             $dh = opendir($base);

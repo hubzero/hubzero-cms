@@ -27,7 +27,7 @@ if (!$this->ajax) {
 $color = $this->row->get('color');
 $lists = $this->todo->getLists($this->model->get('id'));
 
-$used = array();
+$used = [];
 if (!empty($lists)) {
     foreach ($lists as $list) {
         $used[] = $list->color;

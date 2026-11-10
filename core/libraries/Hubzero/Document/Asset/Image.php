@@ -27,7 +27,7 @@ class Image extends File
      *
      * @var  array
      */
-    private $handles = array('png', 'gif', 'jpg', 'jpeg', 'jpe');
+    private $handles = ['png', 'gif', 'jpg', 'jpeg', 'jpe'];
 
     /**
      * File extension

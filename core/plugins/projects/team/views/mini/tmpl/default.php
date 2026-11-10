@@ -18,15 +18,15 @@ defined('_HZEXEC_') or die();
 
 $this->css();
 
-$show = array();
-$sorting = array();
-$online = array();
+$show = [];
+$sorting = [];
+$online = [];
 
 // get all sessions
-$sessions = \Hubzero\Session\Helper::getAllSessions(array(
+$sessions = \Hubzero\Session\Helper::getAllSessions([
     'guest' => 0,
     'distinct' => 1
-));
+]);
 
 // Determine if there is anything worth showing
 foreach ($this->team as $member) {

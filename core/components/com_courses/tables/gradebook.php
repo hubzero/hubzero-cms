@@ -57,7 +57,7 @@ class GradeBook extends Table
      * @return     string SQL
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildQuery($filters = array())
+    protected function _buildQuery($filters = [])
     {
         $query  = " FROM $this->_tbl AS gb";
         $query .= " LEFT JOIN `#__courses_assets` ca ON gb.scope_id = ca.id";
@@ -66,23 +66,23 @@ class GradeBook extends Table
             $query .= " LEFT JOIN `#__courses_members` cm ON gb.member_id = cm.id";
         }
 
-        $where = array();
+        $where = [];
 
         if (isset($filters['asset_id']) && $filters['asset_id']) {
             if (!is_array($filters['asset_id'])) {
-                $filters['asset_id'] = array($filters['asset_id']);
+                $filters['asset_id'] = [$filters['asset_id']];
             }
             $where[] = "ca.id IN (" . implode(',', $filters['asset_id']) . ")";
         }
         if (isset($filters['member_id']) && $filters['member_id']) {
             if (!is_array($filters['member_id'])) {
-                $filters['member_id'] = array($filters['member_id']);
+                $filters['member_id'] = [$filters['member_id']];
             }
             $where[] = "member_id IN (" . implode(',', $filters['member_id']) . ")";
         }
         if (isset($filters['scope']) && $filters['scope']) {
             if (!is_array($filters['scope'])) {
-                $filters['scope'] = array($filters['scope']);
+                $filters['scope'] = [$filters['scope']];
             }
             $where[] = "gb.scope IN ('" . implode('\',\'', $filters['scope']) . "')";
         }
@@ -91,7 +91,7 @@ class GradeBook extends Table
         }
         if (isset($filters['scope_id']) && $filters['scope_id']) {
             if (!is_array($filters['scope_id'])) {
-                $filters['scope_id'] = array($filters['scope_id']);
+                $filters['scope_id'] = [$filters['scope_id']];
             }
             $where[] = "gb.scope_id IN (" . implode(',', $filters['scope_id']) . ")";
         }
@@ -116,7 +116,7 @@ class GradeBook extends Table
      * @param      array $filters Filters to construct query from
      * @return     array
      */
-    public function find($filters = array(), $key = null)
+    public function find($filters = [], $key = null)
     {
         $query = "SELECT gb.*, ca.grade_weight" . $this->_buildQuery($filters);
 
@@ -130,35 +130,35 @@ class GradeBook extends Table
      * @param      array $filters Filters to construct query from
      * @return     array
      */
-    public function passing($filters = array(), $key = null)
+    public function passing($filters = [], $key = null)
     {
         $query = "SELECT gb.member_id, score";
         $query .= " FROM $this->_tbl AS gb";
         $query .= " LEFT JOIN `#__courses_members` cm ON cm.id = gb.member_id";
 
-        $where = array();
+        $where = [];
 
         if (isset($filters['member_id']) && $filters['member_id']) {
             if (!is_array($filters['member_id'])) {
-                $filters['member_id'] = array($filters['member_id']);
+                $filters['member_id'] = [$filters['member_id']];
             }
             $where[] = "gb.member_id IN (" . implode(',', $filters['member_id']) . ")";
         }
         if (isset($filters['scope']) && $filters['scope']) {
             if (!is_array($filters['scope'])) {
-                $filters['scope'] = array($filters['scope']);
+                $filters['scope'] = [$filters['scope']];
             }
             $where[] = "gb.scope IN ('" . implode('\',\'', $filters['scope']) . "')";
         }
         if (isset($filters['scope_id']) && $filters['scope_id']) {
             if (!is_array($filters['scope_id'])) {
-                $filters['scope_id'] = array($filters['scope_id']);
+                $filters['scope_id'] = [$filters['scope_id']];
             }
             $where[] = "gb.scope_id IN (" . implode(',', $filters['scope_id']) . ")";
         }
         if (isset($filters['section_id']) && $filters['section_id']) {
             if (!is_array($filters['section_id'])) {
-                $filters['section_id'] = array($filters['section_id']);
+                $filters['section_id'] = [$filters['section_id']];
             }
             $where[] = "cm.section_id IN (" . implode(',', $filters['section_id']) . ")";
         }
@@ -188,8 +188,8 @@ class GradeBook extends Table
             }
         } else {
             // Pull all section members
-            $members = $course->offering()->section()->members(array('student' => 1));
-            $member_id = array();
+            $members = $course->offering()->section()->members(['student' => 1]);
+            $member_id = [];
 
             // Get member id's for refresh filter
             foreach ($members as $member) {
@@ -204,14 +204,14 @@ class GradeBook extends Table
         // Get the assets
         $asset  = new Asset($this->_db);
         $assets = $asset->find(
-            array(
-                'w' => array(
+            [
+                'w' => [
                     'course_id'   => $course->get('id'),
                     'section_id'  => $course->offering()->section()->get('id'),
                     'offering_id' => $course->offering()->get('id'),
                     'asset_type'  => 'form'
-                )
-            )
+                ]
+            ]
         );
 
         // Query for existing data
@@ -220,14 +220,14 @@ class GradeBook extends Table
         $this->_db->setQuery($query);
         $results = $this->_db->loadObjectList();
 
-        $existing_grades = array();
+        $existing_grades = [];
         foreach ($results as $r) {
-            $existing_grades[$r->member_id . '.' . $r->scope_id] = array('id' => $r->id, 'score' => $r->score);
+            $existing_grades[$r->member_id . '.' . $r->scope_id] = ['id' => $r->id, 'score' => $r->score];
         }
 
-        $inserts = array();
-        $updates = array();
-        $deletes = array();
+        $inserts = [];
+        $updates = [];
+        $deletes = [];
 
         if (count($assets) > 0) {
             foreach ($assets as $asset) {
@@ -360,9 +360,9 @@ class GradeBook extends Table
      */
     public function saveGrades($data, $course_id)
     {
-        $values          = array();
-        $member_ids      = array();
-        $existing_grades = array();
+        $values          = [];
+        $member_ids      = [];
+        $existing_grades = [];
 
         if (!empty($data)) {
             // Get member id's
@@ -378,12 +378,12 @@ class GradeBook extends Table
 
             foreach ($results as $r) {
                 $key = $r->member_id . '.' . $r->scope . '.' . $r->scope_id;
-                $existing_grades[$key] = array('id' => $r->id, 'score' => $r->score);
+                $existing_grades[$key] = ['id' => $r->id, 'score' => $r->score];
             }
         }
 
-        $inserts = array();
-        $updates = array();
+        $inserts = [];
+        $updates = [];
 
         foreach ($data as $member_id => $member) {
             foreach ($member['units'] as $unit_id => $unit) {

@@ -24,7 +24,7 @@ class Request
     private $terms;
     private $term_ar;
     private $tags;
-    private $object_tags = array();
+    private $object_tags = [];
 
     /**
      * Short description for 'get_terms'
@@ -72,7 +72,7 @@ class Request
      */
     public function get_tagged_ids($tbl)
     {
-        return array_key_exists($tbl, $this->object_tags) ? $this->object_tags[$tbl] : array();
+        return array_key_exists($tbl, $this->object_tags) ? $this->object_tags[$tbl] : [];
     }
 
     /**
@@ -85,7 +85,7 @@ class Request
      */
     public function get_tag_ids_by_table($tbl)
     {
-        return array_key_exists($tbl, $this->object_tags) ? $this->object_tags[$tbl] : array();
+        return array_key_exists($tbl, $this->object_tags) ? $this->object_tags[$tbl] : [];
     }
 
     /**
@@ -97,12 +97,12 @@ class Request
     public function __construct($terms)
     {
         $this->terms = $terms;
-        $this->term_ar = array(
+        $this->term_ar = [
             'mandatory' => $this->terms->get_mandatory_chunks(),
             'optional'  => $this->terms->get_optional_chunks(),
             'forbidden' => $this->terms->get_forbidden_chunks(),
             'stemmed'   => $this->terms->get_stemmed_chunks()
-        );
+        ];
         $this->load_tags();
     }
 
@@ -120,7 +120,7 @@ class Request
         $stemmed = $dbh->escape(join(' ', $this->term_ar['stemmed']));
         $weight = 'match(t.raw_tag, t.description) against (\'' . $stemmed . '\')';
 
-        $addtl_where = array();
+        $addtl_where = [];
         foreach ($this->term_ar['mandatory'] as $mand) {
             $mand = $dbh->escape($mand);
             $addtl_where[] = "(t.raw_tag LIKE '%$mand%' OR t.tag LIKE '%$mand%' OR t.description LIKE '%$mand%')";
@@ -147,7 +147,7 @@ class Request
         );
         $this->tags = $tags->to_associative();
 
-        $tag_ids = array();
+        $tag_ids = [];
         foreach ($this->tags as $tag) {
             $tag_ids[] = $tag->get('id');
         }
@@ -159,7 +159,7 @@ class Request
             );
             foreach ($dbh->loadAssocList() as $row) {
                 if (!array_key_exists($row['tbl'], $this->object_tags)) {
-                    $this->object_tags[$row['tbl']] = array();
+                    $this->object_tags[$row['tbl']] = [];
                 }
                 $this->object_tags[$row['tbl']][] = $row['objectid'];
             }

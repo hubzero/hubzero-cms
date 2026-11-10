@@ -18,7 +18,7 @@ use Hubzero\Facades\User;
  */
 class D1 extends Plugin
 {
-    public function onLoginUser($user, $options = array())
+    public function onLoginUser($user, $options = [])
     {
         return $this->onUserLogin($user, $options);
     }
@@ -30,7 +30,7 @@ class D1 extends Plugin
      * @param   array  $options  holding options (remember, autoregister, group)
      * @return  bool
      */
-    public function onUserLogin($user, $options = array())
+    public function onUserLogin($user, $options = [])
     {
         if (!($uid = $this->userId($user))) {
             return true;

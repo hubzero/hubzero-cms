@@ -169,7 +169,7 @@ class Attachments extends SiteController
 
         // Refuse server-executable extensions and the markup types a download
         // handler would serve inline -- the same rule as the tool media upload
-        $blockedExtensions = array('php', 'php3', 'php4', 'php5', 'php7', 'php8', 'phtml', 'pht', 'phar', 'phps', 'cgi', 'pl', 'asp', 'aspx', 'jsp', 'shtml', 'htaccess', 'htpasswd', 'html', 'htm', 'xhtml', 'xml');
+        $blockedExtensions = ['php', 'php3', 'php4', 'php5', 'php7', 'php8', 'phtml', 'pht', 'phar', 'phps', 'cgi', 'pl', 'asp', 'aspx', 'jsp', 'shtml', 'htaccess', 'htpasswd', 'html', 'htm', 'xhtml', 'xml'];
         if (in_array(strtolower((string) $ext), $blockedExtensions)) {
             $this->setError(Lang::txt('COM_TOOLS_INCORRECT_FILE_TYPE'));
             return $this->displayTask($pid);
@@ -182,7 +182,7 @@ class Attachments extends SiteController
         }
 
         // Instantiate a new resource object
-        $row = Entry::blank()->set(array(
+        $row = Entry::blank()->set([
             'title'        => $file['name'],
             'introtext'    => $file['name'],
             'created'      => Date::toSql(),
@@ -193,7 +193,7 @@ class Attachments extends SiteController
             'access'       => 0,
             'path'         => '', // make sure no path is specified just yet
             'type'         => $this->_getChildType($file['name'])
-        ));
+        ]);
 
         // Store new content
         if (!$row->save()) {

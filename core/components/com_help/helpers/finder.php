@@ -55,14 +55,14 @@ class Finder
         $pluginPath = Plugin::path($name, $plugin);
         $pluginPage = $pluginPath ? $pluginPath . DS . 'help' . DS . $lang . DS . $file : '';
 
-        $paths = array(
+        $paths = [
             // Template overrides
             $tmpl . DS . 'html' . DS . 'plg_' . $name . '_' . $plugin . DS . 'help' . DS . $lang . DS . $file,
             $tmpl . DS . 'html' . DS . $component . DS . 'help' . DS . $lang . DS . $page . '.' . self::$ext
-        );
+        ];
         $paths = array_merge($paths, $extension
-            ? array($pluginPage, $componentPage)
-            : array($componentPage, $pluginPage));
+            ? [$pluginPage, $componentPage]
+            : [$componentPage, $pluginPage]);
 
         foreach ($paths as $path) {
             if ($path && file_exists($path)) {
@@ -110,18 +110,18 @@ class Finder
         if ($name == '') {
             $name = str_replace('com_', '', $component);
 
-            return array(
+            return [
                 'name'   => ucfirst($name),
                 'option' => $component,
-                'pages'  => array()
-            );
+                'pages'  => []
+            ];
         }
 
         // Path to help pages
         $helpPagesPath = self::path($component) . DS . 'help' . DS . Lang::getTag();
 
         // Make sure directory exists
-        $pages = array();
+        $pages = [];
         if (is_dir($helpPagesPath)) {
             // Get help pages for this component
             $pages = Filesystem::files($helpPagesPath, '.' . self::$ext);
@@ -132,10 +132,10 @@ class Finder
         }, $pages);
 
         // Return pages
-        return array(
+        return [
             'name'   => $name,
             'option' => $component,
             'pages'  => $pages
-        );
+        ];
     }
 }

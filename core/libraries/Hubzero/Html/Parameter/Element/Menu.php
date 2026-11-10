@@ -47,7 +47,7 @@ class Menu extends Element
         return Builder\Select::genericlist(
             $options,
             $control_name . '[' . $name . ']',
-            array('id' => $control_name . $name, 'list.attr' => 'class="inputbox"', 'list.select' => $value)
+            ['id' => $control_name . $name, 'list.attr' => 'class="inputbox"', 'list.select' => $value]
         );
     }
 }

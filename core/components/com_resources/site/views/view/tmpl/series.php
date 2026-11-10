@@ -85,7 +85,7 @@ if ($mode != 'preview') {
                 <?php
                 // Private/Public resource access check
                 if (!$this->model->access('view-all')) {
-                    $ghtml = array();
+                    $ghtml = [];
                     foreach ($this->model->groups as $allowedgroup) {
                         $groupUrl = Route::url(
                             'index.php?option=com_groups&cn='
@@ -277,7 +277,7 @@ if ($mode != 'preview') {
             <?php
             $asideContent = '';
             // Show related content
-            $out = Event::trigger('resources.onResourcesSub', array($this->model, $this->option, 1));
+            $out = Event::trigger('resources.onResourcesSub', [$this->model, $this->option, 1]);
             if (count($out) > 0) {
                 foreach ($out as $ou) {
                     if (isset($ou['html'])) {
@@ -302,14 +302,14 @@ if ($mode != 'preview') {
     // Show course listings under 'about' tab
     if ($this->tab == 'about' && $ccount > 0) {
         // Build the results
-        $sortbys = array(
+        $sortbys = [
             'date'       => Lang::txt('COM_RESOURCES_DATE_OLDEST_FIRST'),
             'date_desc'  => Lang::txt('COM_RESOURCES_DATE_NEWEST_FIRST'),
             'users_desc' => Lang::txt('COM_RESOURCES_NUMBER_OF_USERS'),
             'title'      => Lang::txt('COM_RESOURCES_TITLE'),
             'author'     => Lang::txt('COM_RESOURCES_AUTHOR'),
             'ordering'   => Lang::txt('COM_RESOURCES_ORDERING')
-        );
+        ];
         if ($this->model->params->get('show_ranking')) {
             $sortbys['ranking'] = Lang::txt('Ranking');
         }
@@ -317,12 +317,12 @@ if ($mode != 'preview') {
         $defaultsort = $this->model->params->get('sort_children', 'ordering');
         $defaultsort = ($this->model->params->get('show_ranking')) ? 'ranking' : $defaultsort;
 
-        $filters = array(
+        $filters = [
             'sortby' => Request::getWord('sortby', $defaultsort),
             'limit'  => Request::getInt('limit', 0),
             'start'  => Request::getInt('limitstart', 0),
             'id'     => $this->model->id
-        );
+        ];
 
         if (!isset($sortbys[$filters['sortby']])) {
             $filters['sortby'] = $defaultsort;

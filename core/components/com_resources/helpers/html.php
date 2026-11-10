@@ -32,10 +32,10 @@ class Html
      * @param   array   $disallowed  List of styles to remove
      * @return  string  HTML
      */
-    public static function stripStyles($content, $disallowed = array())
+    public static function stripStyles($content, $disallowed = [])
     {
         if (empty($disallowed)) {
-            $disallowed = array(
+            $disallowed = [
                 // Font specific
                 'font-family',
                 'font-variant',
@@ -76,13 +76,13 @@ class Html
                 'background-size',
                 'box-shadow',
                 'cursor',
-            );
+            ];
         }
 
         $content = preg_replace_callback(
             '/<[^>]+style[\x00-\x20]*=[\`\'\"]*([^\`\'\"]+)[\`\'\"]*[^>]*>/i',
             function ($match) use ($content, $disallowed) {
-                $properties = array();
+                $properties = [];
 
                 $declarations = explode(';', $match[1]);
                 $declarations = array_map('trim', $declarations);
@@ -121,7 +121,7 @@ class Html
     public static function selectAccess($as, $value, $name = 'access')
     {
         $as = explode(',', $as);
-        $html  = '<select name="' . $name . '" id="field-' . str_replace(array('[',']'), '', $name) . '">' . "\n";
+        $html  = '<select name="' . $name . '" id="field-' . str_replace(['[',']'], '', $name) . '">' . "\n";
         for ($i = 0, $n = count($as); $i < $n; $i++) {
             $html .= "\t" . '<option value="' . $i . '"';
             if ($value == $i) {
@@ -144,7 +144,7 @@ class Html
      */
     public static function selectGroup($groups, $value, $name = 'group_owner', $class = '')
     {
-        $html  = '<select class="' . $class . '" name="fields[' . $name . ']" id="field-' . str_replace(array('[',']'), '', $name) . '"';
+        $html  = '<select class="' . $class . '" name="fields[' . $name . ']" id="field-' . str_replace(['[',']'], '', $name) . '"';
         if (!$groups) {
             $html .= ' disabled="disabled"';
         }
@@ -188,7 +188,7 @@ class Html
         if ($skip) {
             $skips = explode(',', $skip);
         } else {
-            $skips = array();
+            $skips = [];
         }
         foreach ($arr as $anode) {
             if (!in_array($anode->id, $skips)) {
@@ -314,8 +314,8 @@ class Html
 
         $html  = '';
         $supln = '<ul class="supdocln">' . "\n";
-        $supli = array();
-        $shown = array();
+        $supli = [];
+        $shown = [];
 
         if ($children) {
             foreach ($children as $child) {
@@ -337,7 +337,7 @@ class Html
                 $doctitle = $params->get('title', $title);
 
                 // Things we want to highlight
-                $toShow = array('User Guide', 'Syllabus', 'iTunes', 'iTunes U', 'Audio', 'Video', 'Slides', 'YouTube', 'Vimeo');
+                $toShow = ['User Guide', 'Syllabus', 'iTunes', 'iTunes U', 'Audio', 'Video', 'Slides', 'YouTube', 'Vimeo'];
 
                 $url = self::processPath($option, $child, $publication->id);
                 $extra = '';
@@ -591,7 +591,7 @@ class Html
      */
     public static function isLegacyPlayableVideo($item)
     {
-        if (!in_array($item->type->alias, array('quicktime', 'player'))) {
+        if (!in_array($item->type->alias, ['quicktime', 'player'])) {
             return false;
         }
 
@@ -741,7 +741,7 @@ class Html
                 // Get current users groups
                 $xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'members');
                 $ingroup = false;
-                $groups = array();
+                $groups = [];
                 if ($xgroups) {
                     foreach ($xgroups as $xgroup) {
                         $groups[] = $xgroup->cn;
@@ -867,15 +867,15 @@ class Html
                     default:
                         $linkAction = 0;
 
-                        $mediatypes = array('elink','quicktime','presentation','presentation_audio','breeze','quiz','player','video_stream','video','hubpresenter');
-                        $downtypes = array('thesis','handout','manual','software_download');
+                        $mediatypes = ['elink','quicktime','presentation','presentation_audio','breeze','quiz','player','video_stream','video','hubpresenter'];
+                        $downtypes = ['thesis','handout','manual','software_download'];
 
                         if (in_array($lt->alias, $downtypes)) {
                             $mesg  = Lang::txt('COM_RESOURCES_DOWNLOAD');
                             $class = 'download';
                         } elseif (in_array($firstChild->type->alias, $mediatypes)) {
                             $mesg  = Lang::txt('COM_RESOURCES_VIEW_PRESENTATION');
-                            $mediatypes = array('flash_paper','breeze','32','26');
+                            $mediatypes = ['flash_paper','breeze','32','26'];
                             if (in_array($firstChild->get('type'), $mediatypes)) {
                                 $class = 'play';
                             }
@@ -919,7 +919,7 @@ class Html
                     if ($firstChild->access == 3) {
                         // Get the groups the user has access to
                         $xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'all');
-                        $usersgroups = array();
+                        $usersgroups = [];
                         if (!empty($xgroups)) {
                             foreach ($xgroups as $group) {
                                 if ($group->regconfirmed) {
@@ -941,7 +941,7 @@ class Html
                             if (User::isGuest()) {
                                 $html .= Lang::txt('COM_RESOURCES_ERROR_MUST_BE_LOGGED_IN', base64_encode(Request::path()));
                             } else {
-                                $ghtml = array();
+                                $ghtml = [];
                                 foreach ($allowedgroups as $allowedgroup) {
                                     $ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
                                 }
@@ -1106,11 +1106,11 @@ class Html
      */
     public static function primaryButton($class, $href, $msg, $xtra = '', $title = '', $action = '', $disabled = false, $pop = '')
     {
-        $view = new \Hubzero\Component\View(array(
+        $view = new \Hubzero\Component\View([
             'base_path' => Component::path('com_resources') . DS . 'site',
             'name'   => 'view',
             'layout' => '_primary'
-        ));
+        ]);
         $view->set('option', 'com_resources')
             ->set('disabled', $disabled)
             ->set('class', $class)

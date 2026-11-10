@@ -115,7 +115,7 @@ class Version extends Model
     public function content($as = 'parsed', $shorten = 0)
     {
         $as = strtolower($as);
-        $options = array();
+        $options = [];
 
         switch ($as) {
             case 'parsed':
@@ -128,7 +128,7 @@ class Version extends Model
                     $basePath = Component::params('com_groups')->get('uploadpath');
 
                     // Build config
-                    $config = array(
+                    $config = [
                         'option'         => Request::getCmd('option', 'com_groups'),
                         'scope'          => '',
                         'pagename'       => $group->get('cn'),
@@ -136,14 +136,14 @@ class Version extends Model
                         'filepath'       => $basePath . DS . $group->get('gidNumber') . DS . 'uploads',
                         'domain'         => $group->get('cn'),
                         'alt_macro_path' => PATH_APP . $basePath . DS . $group->get('gidNumber') . DS . 'macros'
-                    );
+                    ];
 
                     $content = stripslashes($this->get('content'));
-                    $this->importPlugin('content')->trigger('onContentPrepare', array(
+                    $this->importPlugin('content')->trigger('onContentPrepare', [
                         $this->_context,
                         &$this,
                         &$config
-                    ));
+                    ]);
 
                     $this->set('content_parsed', $this->get('content'));
                     $this->set('content', $content);
@@ -181,12 +181,12 @@ class Version extends Model
     public static function purify($content, $trustedContent = false)
     {
         // array to hold options
-        $options = array();
+        $options = [];
 
         // Create array of custom filters
-        $filters = array(
+        $filters = [
             new \Components\Groups\Helpers\Filters\GroupInclude()
-        );
+        ];
 
         // Is this trusted content
         if ($trustedContent) {

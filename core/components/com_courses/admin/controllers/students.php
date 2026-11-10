@@ -32,7 +32,7 @@ class Students extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->filters = array(
+        $this->view->filters = [
             'offering' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.offering',
                 'offering',
@@ -61,7 +61,7 @@ class Students extends AdminController
                 0,
                 'int'
             )
-        );
+        ];
 
         $this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->filters['offering']);
         $this->view->filters['offering_id'] = $this->view->filters['offering'];
@@ -160,7 +160,7 @@ class Students extends AdminController
 
         if (!is_object($model)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
 
             // Get the single ID we're working with
             if (is_array($id)) {
@@ -210,13 +210,13 @@ class Students extends AdminController
         Request::checkToken();
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         if (strstr($fields['user_id'], ',')) {
             $user_ids = explode(',', $fields['user_id']);
             $user_ids = array_map('trim', $user_ids);
         } else {
-            $user_ids = array($fields['user_id']);
+            $user_ids = [$fields['user_id']];
         }
 
         $offering = Request::getInt('offering', 0);
@@ -315,8 +315,8 @@ class Students extends AdminController
         Request::checkToken();
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $offering_id = Request::getInt('offering', 0);
         $section_id  = Request::getInt('section', 0);
@@ -384,7 +384,7 @@ class Students extends AdminController
      */
     public function csvTask()
     {
-        $this->view->filters = array(
+        $this->view->filters = [
             'offering' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.offering',
                 'offering',
@@ -395,7 +395,7 @@ class Students extends AdminController
                 'section',
                 0
             )
-        );
+        ];
 
         $this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->filters['offering']);
         $this->view->filters['offering_id'] = $this->view->filters['offering'];

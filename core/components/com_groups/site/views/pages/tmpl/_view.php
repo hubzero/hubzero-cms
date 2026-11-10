@@ -26,7 +26,7 @@ $displayAuthor   = $groupParams->get('page_author', $this->config->get('page_aut
 // take page setting if we have one
 if (
     $this->page->get('comments') !== null
-    && in_array($this->page->get('comments'), array(0, 1, 2))
+    && in_array($this->page->get('comments'), [0, 1, 2])
 ) {
     $displayComments = $this->page->get('comments');
 }
@@ -165,7 +165,7 @@ if (
     <div id="page-comments">
         <?php
             // get experts
-            $experts = array();
+            $experts = [];
         foreach ($this->group->get('members') as $member) {
             // get each members roles
             $roles = Components\Groups\Helpers\Permissions::getGroupMemberRoles($member, $this->group->get('gidNumber'));
@@ -210,12 +210,12 @@ if (
             $params->set('access-vote-comment', 1);
         }
 
-            $params = array(
+            $params = [
                 $this->page,
                 'com_groups',
                 $this->page->url() . '#page-comments',
                 $params
-            );
+            ];
 
             $comments = Event::trigger('hubzero.onAfterDisplayContent', $params);
             echo implode("\n", $comments);

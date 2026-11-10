@@ -69,13 +69,13 @@ class Announcements extends Plugin
      */
     public function &onGroupAreas()
     {
-        $area = array(
+        $area = [
             'name'             => $this->_name,
             'title'            => Lang::txt('COM_GROUPS_ANNOUNCEMENTS'),
             'default_access'   => $this->params->get('plugin_access', 'members'),
             'display_menu_tab' => $this->params->get('display_tab', 1),
             'icon'             => 'f095'
-        );
+        ];
         return $area;
     }
 
@@ -150,10 +150,10 @@ class Announcements extends Plugin
         $active = 'announcements';
 
         // The output array we're returning
-        $arr = array(
+        $arr = [
             'html' => '',
-            'metadata' => array()
-        );
+            'metadata' => []
+        ];
 
         // Get this area details
         $this_area = $this->onGroupAreas();
@@ -265,12 +265,12 @@ class Announcements extends Plugin
     private function _list()
     {
         //build array of filters
-        $filters = array(
+        $filters = [
             'search'   => strtolower(Request::getString('q', '')),
             'scope'    => 'group',
             'scope_id' => $this->group->get('gidNumber'),
             'state'    => 1
-        );
+        ];
 
         // Find announcements
         $model = \Hubzero\Item\Announcement::all()
@@ -375,7 +375,7 @@ class Announcements extends Plugin
         }
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
         $fields = array_map('trim', $fields);
 
         // Email announcement
@@ -465,7 +465,7 @@ class Announcements extends Plugin
         $url = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name;
 
         // Record the activity
-        $recipients = array(['group', $this->group->get('gidNumber')]);
+        $recipients = [['group', $this->group->get('gidNumber')]];
 
         foreach ($this->group->get('managers') as $recipient) {
             $recipients[] = ['user', $recipient];
@@ -477,12 +477,12 @@ class Announcements extends Plugin
                 'scope'       => 'announcement',
                 'scope_id'    => $model->get('id'),
                 'description' => Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ACTIVITY_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($url) . '">' . \Hubzero\Utility\Str::truncate(strip_tags($model->get('content')), 70) . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'url'   => Route::url($url),
                     'id'    => $this->group->get('gidNumber'),
                     'alias' => $this->group->get('cn'),
                     'title' => $this->group->get('description')
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -551,7 +551,7 @@ class Announcements extends Plugin
         $url = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name;
 
         // Record the activity
-        $recipients = array(['group', $this->group->get('gidNumber')]);
+        $recipients = [['group', $this->group->get('gidNumber')]];
 
         foreach ($this->group->get('managers') as $recipient) {
             $recipients[] = ['user', $recipient];
@@ -563,12 +563,12 @@ class Announcements extends Plugin
                 'scope'       => 'announcement',
                 'scope_id'    => $model->get('id'),
                 'description' => Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ACTIVITY_DELETED', '<a href="' . Route::url($url) . '">' . \Hubzero\Utility\Str::truncate(strip_tags($model->get('content')), 70) . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'url'   => Route::url($url),
                     'id'    => $this->group->get('gidNumber'),
                     'alias' => $this->group->get('cn'),
                     'title' => $this->group->get('description')
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -591,7 +591,7 @@ class Announcements extends Plugin
     public static function send($announcement, $group)
     {
         // Get all group members
-        $groupMembers = array();
+        $groupMembers = [];
         foreach ($group->get('members') as $member) {
             if ($profile = User::getInstance($member)) {
                 // Skip invalid emails
@@ -621,11 +621,11 @@ class Announcements extends Plugin
         || $lang->load($extension, PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'announcements', null, false, true);
 
         // Create view object
-        $eview = new \Hubzero\Mail\View(array(
+        $eview = new \Hubzero\Mail\View([
             'base_path' => __DIR__,
             'name'      => 'email',
             'layout'    => 'announcement_plain'
-        ));
+        ]);
 
         // Plain text
         $eview->set('announcement', $announcement);
@@ -638,10 +638,10 @@ class Announcements extends Plugin
         $html = str_replace("\n", "\r\n", $html);
 
         // Set from address
-        $from = array(
+        $from = [
             'name'  => Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EMAIL_NAME', Config::get('sitename')),
             'email' => Config::get('mailfrom')
-        );
+        ];
 
         // Define subject
         $subject = Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EMAIL_SUBJECT', $group->get('description'));
@@ -680,12 +680,12 @@ class Announcements extends Plugin
         }
 
         // Build array of filters
-        $filters = array(
+        $filters = [
             'search'   => strtolower(Request::getString('q', '')),
             'scope'    => 'group',
             'scope_id' => $group->get('gidNumber'),
             'state'    => \Hubzero\Item\Announcement::STATE_PUBLISHED
-        );
+        ];
 
         // Find announcements
         $model = \Hubzero\Item\Announcement::all()
@@ -734,7 +734,7 @@ class Announcements extends Plugin
         }
 
         // Incoming data
-        $fields = array(
+        $fields = [
             'id'           => 0,
             'scope'        => 'group',
             'scope_id'     => $group->get('gidNumber'),
@@ -747,7 +747,7 @@ class Announcements extends Plugin
             'priority'     => Request::getInt('priority', 0, 'post'),
             'publish_up'   => Request::getString('publish_up', '', 'post'),
             'publish_down' => Request::getString('publish_down', '', 'post'),
-        );
+        ];
 
         // Format publish up
         if (isset($fields['publish_up']) && $fields['publish_up'] != '' && $fields['publish_up'] != '0000-00-00 00:00:00') {
@@ -833,7 +833,7 @@ class Announcements extends Plugin
         }
 
         // Incoming data
-        $fields = array(
+        $fields = [
             'id'           => $id,
             'scope'        => 'group',
             'scope_id'     => $group->get('gidNumber'),
@@ -846,7 +846,7 @@ class Announcements extends Plugin
             'publish_down' => Request::getString('publish_down', $model->get('publish_down'), 'post'),
             'created'      => $model->get('created'),
             'created_by'   => $model->get('created_by'),
-        );
+        ];
 
         // Format publish up
         if (isset($fields['publish_up']) && $fields['publish_up'] != '' && $fields['publish_up'] != '0000-00-00 00:00:00') {

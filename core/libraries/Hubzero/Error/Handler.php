@@ -106,7 +106,7 @@ class Handler
      */
     protected function registerErrorHandler()
     {
-        set_error_handler(array($this, 'handleError'));
+        set_error_handler([$this, 'handleError']);
     }
 
     /**
@@ -116,7 +116,7 @@ class Handler
      */
     protected function registerExceptionHandler()
     {
-        set_exception_handler(array($this, 'handleException'));
+        set_exception_handler([$this, 'handleException']);
     }
 
     /**
@@ -126,7 +126,7 @@ class Handler
      */
     protected function registerShutdownHandler()
     {
-        register_shutdown_function(array($this, 'handleShutdown'));
+        register_shutdown_function([$this, 'handleShutdown']);
     }
 
     private function _loglevel($error_level)
@@ -164,7 +164,7 @@ class Handler
      * @param   array   $context
      * @throws  \ErrorException
      */
-    public function handleError($level, $message, $file = '', $line = 0, $context = array())
+    public function handleError($level, $message, $file = '', $line = 0, $context = [])
     {
         $trace = (new \Exception())->getTraceAsString();
         $trace = "    " . str_replace("\n", "\n    ", $trace);
@@ -244,7 +244,7 @@ class Handler
         if (!is_null($error)) {
             extract($error);
 
-            if (!in_array($type, array(E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE))) {
+            if (!in_array($type, [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE])) {
                 return;
             }
 

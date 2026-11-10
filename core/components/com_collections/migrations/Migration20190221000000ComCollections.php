@@ -20,27 +20,27 @@ class Migration20190221000000ComCollections extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__collections' => array(
+    public static $tables = [
+        '#__collections' => [
             'created'
-        ),
-        '#__collections_assets' => array(
+        ],
+        '#__collections_assets' => [
             'created'
-        ),
-        '#__collections_following' => array(
+        ],
+        '#__collections_following' => [
             'created'
-        ),
-        '#__collections_items' => array(
+        ],
+        '#__collections_items' => [
             'created',
             'modified'
-        ),
-        '#__collections_posts' => array(
+        ],
+        '#__collections_posts' => [
             'created'
-        ),
-        '#__collections_votes' => array(
+        ],
+        '#__collections_votes' => [
             'created'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

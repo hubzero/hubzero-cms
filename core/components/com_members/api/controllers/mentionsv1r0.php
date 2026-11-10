@@ -46,7 +46,7 @@ class Mentionsv1r0 extends ApiController
 
         $rows = $entries->rows();
 
-        $response = array();
+        $response = [];
         foreach ($rows as $entry) {
             $obj = new stdClass();
             $obj->id        = $entry->get('id');
@@ -92,7 +92,7 @@ class Mentionsv1r0 extends ApiController
         $search = Request::getString('search', '');
         $searchInput = preg_quote(strtolower($search), '~');
 
-        $response = array();
+        $response = [];
 
         foreach ($mergedMemberIds as $userId) {
             $user = User::getInstance($userId);
@@ -102,7 +102,7 @@ class Mentionsv1r0 extends ApiController
 
             // Case-sensitive, use preg_grep as it matches a pattern
             // (email is not part of the response, so it is not searched either)
-            $os = array(strtolower($userName), strtolower($name));
+            $os = [strtolower($userName), strtolower($name)];
 
             $obj = new stdClass();
             $obj->id        = $user->get('id');

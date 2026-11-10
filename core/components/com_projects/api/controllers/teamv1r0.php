@@ -104,15 +104,15 @@ class Teamv1r0 extends ApiController
     public function listTask()
     {
         $response = new stdClass();
-        $filters = array(
+        $filters = [
             'limit'   => Request::getInt('limit', 0, 'post'),
             'start'   => Request::getInt('limitstart', 0, 'post'),
             'sortby'  => Request::getString('sortby', 'name', 'post'),
             'sortdir' => Request::getString('sortdir', 'ASC', 'post'),
             'status'  => 'active'
-        );
+        ];
         $response->count   = count($this->model->team());
-        $response->team    = array();
+        $response->team    = [];
         $response->project = $this->model->get('alias');
 
         $team = $this->model->team($filters, true);

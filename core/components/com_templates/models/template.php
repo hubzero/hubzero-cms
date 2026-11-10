@@ -58,19 +58,19 @@ class Template extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'name'    => 'notempty',
         'element' => 'notempty'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'element'
-    );
+    ];
 
     /**
      * Config registry for params
@@ -167,7 +167,7 @@ class Template extends Relational
                         return $this->xmldata;
                     }
 
-                    $meta = array();
+                    $meta = [];
                     $meta['legacy']       = ($xml->getName() == 'mosinstall' || $xml->getName() == 'install');
                     $meta['name']         = (string) $xml->name;
 
@@ -218,7 +218,7 @@ class Template extends Relational
     public function files()
     {
         // Initialise variables.
-        $result = array();
+        $result = [];
 
         if ($this->get('extension_id')) {
             //$client = \Hubzero\Base\ClientManager::client($this->get('client_id'));
@@ -227,11 +227,11 @@ class Template extends Relational
 
             // Check if the template path exists.
             if (is_dir($path)) {
-                $result['main'] = array();
-                $result['clo']  = array();
-                $result['html'] = array();
+                $result['main'] = [];
+                $result['clo']  = [];
+                $result['html'] = [];
 
-                $main = array(
+                $main = [
                     'index.php',
                     'error.php',
                     'print.php',
@@ -239,7 +239,7 @@ class Template extends Relational
                     'offline.php',
                     'group.php',
                     'email.php'
-                );
+                ];
 
                 $files = Filesystem::files($path, '\.css|\.php|\.less|\.js|\.scss$', true, true);
 

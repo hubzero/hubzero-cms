@@ -69,14 +69,14 @@ class Questionsv1r0 extends ApiController
      */
     public function listTask()
     {
-        $filters = array(
+        $filters = [
             'limit'      => Request::getInt('limit', 25),
             'start'      => Request::getInt('limitstart', 0),
             'search'     => Request::getString('search', ''),
             'state'      => Request::getInt('state', -1),
             'sort'       => Request::getWord('sort', 'created'),
             'sort_Dir'   => strtoupper(Request::getWord('sortDir', 'DESC'))
-        );
+        ];
 
         $records = Question::all();
 
@@ -99,7 +99,7 @@ class Questionsv1r0 extends ApiController
             ->rows();
 
         $response = new stdClass();
-        $response->questions = array();
+        $response->questions = [];
         $response->total     = $rows->count();
 
         if ($response->total) {
@@ -209,7 +209,7 @@ class Questionsv1r0 extends ApiController
 
         $manager = User::authorise('core.manage', 'com_answers');
 
-        $fields = array(
+        $fields = [
             'email'      => Request::getInt('email', 0, 'post'),
             'anonymous'  => Request::getInt('anonymous', 0, 'post'),
             'subject'    => Request::getString('subject', null, 'post', 'none', 2),
@@ -228,7 +228,7 @@ class Questionsv1r0 extends ApiController
             // site path places.
             'state'      => ($manager ? Request::getInt('state', 0, 'post') : 0),
             'reward'     => ($manager ? Request::getInt('reward', 0, 'post') : 0)
-        );
+        ];
 
         $row = new Question();
 
@@ -382,7 +382,7 @@ class Questionsv1r0 extends ApiController
 
         $manager = User::authorise('core.manage', 'com_answers');
 
-        $fields = array(
+        $fields = [
             'email'      => Request::getInt('email', $row->get('email')),
             'anonymous'  => Request::getInt('anonymous', $row->get('anonymous')),
             'subject'    => Request::getString('subject', $row->get('subject')),
@@ -391,7 +391,7 @@ class Questionsv1r0 extends ApiController
             'created_by' => $row->get('created_by'),
             'state'      => ($manager ? Request::getInt('state', $row->get('state')) : $row->get('state')),
             'reward'     => ($manager ? Request::getInt('reward', $row->get('reward')) : $row->get('reward'))
-        );
+        ];
 
         if (!$row->set($fields)) {
             throw new Exception(Lang::txt('COM_ANSWERS_ERROR_BINDING_DATA'), 422);
@@ -433,8 +433,8 @@ class Questionsv1r0 extends ApiController
     {
         $this->requiresAuthentication();
 
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         if (count($ids) <= 0) {
             throw new Exception(Lang::txt('COM_ANSWERS_ERROR_MISSING_ID'), 500);

@@ -19,25 +19,25 @@ $logger     = \Components\Groups\Models\Log\Archive::getInstance();
 //parse the logs
 $group_edits = $logger->logs(
     'list',
-    array('gidNumber' => $this->group->get('gidNumber'), 'action' => 'group_edited'),
+    ['gidNumber' => $this->group->get('gidNumber'), 'action' => 'group_edited'],
     true
 )->count();
-$membership_requests = $logger->logs('list', array('gidNumber' => $this->group->get('gidNumber'), 'action' =>
-'membership_requested'), true)->count();
-$membership_accepted = $logger->logs('list', array('gidNumber' => $this->group->get('gidNumber'), 'action' =>
-'membership_approved'), true)->count();
-$membership_denied = $logger->logs('list', array('gidNumber' => $this->group->get('gidNumber'), 'action' =>
-'membership_denied'), true)->count();
-$membership_cancelled = $logger->logs('list', array('gidNumber' => $this->group->get('gidNumber'), 'action' =>
-'membership_cancelled'), true)->count();
-$invites_sent = $logger->logs('list', array('gidNumber' => $this->group->get('gidNumber'), 'action' =>
-'membership_invites_sent'), true)->count();
-$invites_accepted = $logger->logs('list', array('gidNumber' => $this->group->get('gidNumber'), 'action' =>
-'membership_invite_accepted'), true)->count();
-$promotions = $logger->logs('list', array('gidNumber' => $this->group->get('gidNumber'), 'action' =>
-'membership_promoted'), true)->count();
-$demotions = $logger->logs('list', array('gidNumber' => $this->group->get('gidNumber'), 'action' =>
-'membership_demoted'), true)->count();
+$membership_requests = $logger->logs('list', ['gidNumber' => $this->group->get('gidNumber'), 'action' =>
+'membership_requested'], true)->count();
+$membership_accepted = $logger->logs('list', ['gidNumber' => $this->group->get('gidNumber'), 'action' =>
+'membership_approved'], true)->count();
+$membership_denied = $logger->logs('list', ['gidNumber' => $this->group->get('gidNumber'), 'action' =>
+'membership_denied'], true)->count();
+$membership_cancelled = $logger->logs('list', ['gidNumber' => $this->group->get('gidNumber'), 'action' =>
+'membership_cancelled'], true)->count();
+$invites_sent = $logger->logs('list', ['gidNumber' => $this->group->get('gidNumber'), 'action' =>
+'membership_invites_sent'], true)->count();
+$invites_accepted = $logger->logs('list', ['gidNumber' => $this->group->get('gidNumber'), 'action' =>
+'membership_invite_accepted'], true)->count();
+$promotions = $logger->logs('list', ['gidNumber' => $this->group->get('gidNumber'), 'action' =>
+'membership_promoted'], true)->count();
+$demotions = $logger->logs('list', ['gidNumber' => $this->group->get('gidNumber'), 'action' =>
+'membership_demoted'], true)->count();
 ?>
 <h3 class="heading"><?php echo Lang::txt('USAGE'); ?></h3>
 

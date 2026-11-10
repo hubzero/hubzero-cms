@@ -95,11 +95,11 @@ class Note extends \Components\Wiki\Models\Book
         $objSt = new Tables\Stamp($this->_db);
 
         // Build reference for latest revision of page
-        $reference = array(
+        $reference = [
             'pageid'   => $page->get('id'),
             'pagename' => $page->get('pagename'),
             'revision' => null
-        );
+        ];
 
         // Check valid stamp
         $objSt->checkStamp($this->_project_id, json_encode($reference), 'notes');
@@ -165,7 +165,7 @@ class Note extends \Components\Wiki\Models\Book
             return $this->_db->loadObjectList();
         }
 
-        return array();
+        return [];
     }
 
     /**

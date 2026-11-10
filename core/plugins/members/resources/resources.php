@@ -79,14 +79,14 @@ class Resources extends Plugin
 
         // Normalize the category names
         // e.g., "Oneline Presentations" -> "onlinepresentations"
-        $cats = array();
+        $cats = [];
         foreach ($categories as $category) {
             $cats[$category->alias] = $category->type;
         }
 
-        $areas = array(
+        $areas = [
             'resources' => $cats
-        );
+        ];
         $this->_areas = $areas;
         return $areas;
     }
@@ -126,33 +126,33 @@ class Resources extends Plugin
                 && !in_array($this->_name, $areas)
                 && !array_intersect($areas, array_keys($ars['resources']))
             ) {
-                return array();
+                return [];
             }
         }
 
         // Do we have a member ID?
         if ($member instanceof \Hubzero\User\User) {
             if (!$member->get('id')) {
-                return array();
+                return [];
             } else {
                 $uidNumber = $member->get('id');
             }
         } else {
             if (!$member->uidNumber) {
-                return array();
+                return [];
             } else {
                 $uidNumber = $member->uidNumber;
             }
         }
 
         // Build query
-        $filters = array(
+        $filters = [
             'author'        => $uidNumber,
             'sortby'        => $sort,
-            'usergroups'    => array(),
+            'usergroups'    => [],
             'standalone'    => 1,
             'published'     => 1
-        );
+        ];
 
         if ($filters['sortby'] == 'date') {
             $filters['sortby'] = 'created';
@@ -188,7 +188,7 @@ class Resources extends Plugin
             $filters['notauthorrole'] = 'submitter';
 
             //$filters['published'] = 1;
-            $filters['access'] = array(0, 3);
+            $filters['access'] = [0, 3];
             if (!\Hubzero\Facades\User::isGuest()) {
                 $filters['access'][] = 1;
             }
@@ -202,9 +202,9 @@ class Resources extends Plugin
 
         // Normalize the category names
         // e.g., "Oneline Presentations" -> "onlinepresentations"
-        $cats = array();
+        $cats = [];
         foreach ($categories as $category) {
-            $cats[$category->alias] = array();
+            $cats[$category->alias] = [];
             $cats[$category->alias]['id'] = $category->id;
         }
 
@@ -217,7 +217,7 @@ class Resources extends Plugin
                 }
             }
             if ($total == 0) {
-                return array();
+                return [];
             }
 
             $filters['limit'] = $limit;
@@ -251,7 +251,7 @@ class Resources extends Plugin
             return $rows;
         } else {
             // Get a count
-            $counts = array();
+            $counts = [];
             $ares = $this->onMembersContributionsAreas();
             foreach ($ares as $area => $val) {
                 if (is_array($val)) {
@@ -286,7 +286,7 @@ class Resources extends Plugin
      * @param   array  $filters
      * @return  object
      */
-    public static function allWithFilters($filters = array())
+    public static function allWithFilters($filters = [])
     {
         $query = \Components\Resources\Models\Entry::all();
 
@@ -373,7 +373,7 @@ class Resources extends Plugin
                         break;
                     case 'all':
                     default:
-                        $filters['access'] = array(0, 1, 2, 3, 4);
+                        $filters['access'] = [0, 1, 2, 3, 4];
                         break;
                 }
             }
@@ -421,15 +421,15 @@ class Resources extends Plugin
         // Get the component params and merge with resource params
         $config = Component::params('com_resources');
 
-        $view = new \Hubzero\Component\View(array(
+        $view = new \Hubzero\Component\View([
             'base_path' => Component::path('com_resources') . '/site',
             'name'      => 'browse',
             'layout'    => 'item'
-        ));
+        ]);
         $view->set('line', $row)
             ->set('option', 'com_resources')
             ->set('config', $config)
-            ->set('supported', array());
+            ->set('supported', []);
 
         return $view->loadTemplate();
     }

@@ -46,21 +46,21 @@ class Ticket extends Relational
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'summary'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'owner',
         'group_id',
         'target_date'
-    );
+    ];
 
     /**
      * Tag cloud
@@ -377,7 +377,7 @@ class Ticket extends Relational
             $this->_tags = new Tags($this->get('id'));
         }
 
-        return $this->_tags->render($as, array('admin' => $admin));
+        return $this->_tags->render($as, ['admin' => $admin]);
     }
 
     /**
@@ -651,7 +651,7 @@ class Ticket extends Relational
      * @param   array    $filters
      * @return  integer
      */
-    public static function countWithQuery($query, $filters = array())
+    public static function countWithQuery($query, $filters = [])
     {
         if (!$query || $query->isNew()) {
             return 0;
@@ -718,10 +718,10 @@ class Ticket extends Relational
      * @param   array    $filters
      * @return  array
      */
-    public static function allWithQuery($query, $filters = array())
+    public static function allWithQuery($query, $filters = [])
     {
         if (!$query || $query->isNew()) {
-            return array();
+            return [];
         }
 
         if (!is_string($query)) {

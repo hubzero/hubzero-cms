@@ -54,14 +54,14 @@ class Sessionsv1r0 extends ApiController
         $supportedtagusage = $resource_tags->getTagUsage($supportedtag, 'alias');
 
         //create list of tools
-        $t = array();
+        $t = [];
         foreach ($tools as $k => $tool) {
             $t[$tool->alias]['alias']       = $tool->alias;
             $t[$tool->alias]['published']       = $tool->published;
             $t[$tool->alias]['access'] = $tool->access;
             $versions = trim($tool->versions);
             if ($versions == '') {
-                $versions = array();
+                $versions = [];
             } else {
                 $versions = explode(',', $versions);
                 $versions = array_map(function ($item) {
@@ -118,7 +118,7 @@ class Sessionsv1r0 extends ApiController
         $supportedtagusage = $resource_tags->getTagUsage($supportedtag, 'alias');
 
         //create list of tools
-        $t = array();
+        $t = [];
         foreach ($tools as $k => $tool) {
             if (isset($t[$tool->alias])) {
                 $t[$tool->alias]['versions'][] = $tool->revision;
@@ -128,7 +128,7 @@ class Sessionsv1r0 extends ApiController
             $t[$tool->alias]['alias']       = $tool->alias;
             $t[$tool->alias]['title']       = $tool->title;
             $t[$tool->alias]['description'] = $tool->description;
-            $t[$tool->alias]['versions']    = array($tool->revision);
+            $t[$tool->alias]['versions']    = [$tool->revision];
             $t[$tool->alias]['supported']   = (in_array($tool->alias, $supportedtagusage)) ? 1 : 0;
         }
 
@@ -250,10 +250,10 @@ class Sessionsv1r0 extends ApiController
         // get tool status
 
         $hztt = new \Components\Tools\Tables\Tool($database);
-        $status = array();
+        $status = [];
         $hztt->getToolStatus($tool_info->toolid, $this->_option, $status, $version);
         if (!isset($status['hostreq'])) {
-            $hostreq = array();
+            $hostreq = [];
         } else {
             $hostreq = trim($status['hostreq']);
 
@@ -650,7 +650,7 @@ class Sessionsv1r0 extends ApiController
         $preferences->loadByUser($result->get('uidNumber'));
         if (!$preferences || !$preferences->id) {
             $scls = new \Components\Tools\Tables\SessionClass($database);
-            $default = $scls->find('one', array('alias' => 'default'));
+            $default = $scls->find('one', ['alias' => 'default']);
             $preferences->user_id  = $result->get('uidNumber');
             $preferences->class_id = $default->id;
             $preferences->jobs     = ($default->jobs ? $default->jobs : 3);
@@ -667,7 +667,7 @@ class Sessionsv1r0 extends ApiController
         Plugin::import('mw', $app->name);
 
         // Trigger any events that need to be called before session invoke
-        Event::trigger('mw.onBeforeSessionInvoke', array($app->toolname, $app->version));
+        Event::trigger('mw.onBeforeSessionInvoke', [$app->toolname, $app->version]);
 
         // We've passed all checks so let's actually start the session
         $status = \Components\Tools\Helpers\Utils::middleware(
@@ -693,7 +693,7 @@ class Sessionsv1r0 extends ApiController
         $app->sess = $output->session;
 
         // Trigger any events that need to be called after session invoke
-        Event::trigger('mw.onAfterSessionInvoke', array($app->toolname, $app->version));
+        Event::trigger('mw.onAfterSessionInvoke', [$app->toolname, $app->version]);
 
         // Get a count of the number of sessions of this specific tool
         $appcount = $ms->getCount($result->get('username'), $app->name);
@@ -855,7 +855,7 @@ class Sessionsv1r0 extends ApiController
         $preferences = new \Components\Tools\Tables\Preferences($database);
         $preferences->loadByUser($profile->get('id'));
         if (!$preferences || !$preferences->id) {
-            $default = $preferences->find('one', array('alias' => 'default'));
+            $default = $preferences->find('one', ['alias' => 'default']);
             $preferences->user_id  = $profile->get('id');
             $preferences->class_id = $default->id;
             $preferences->jobs     = $default->jobs;
@@ -934,10 +934,10 @@ class Sessionsv1r0 extends ApiController
             throw new Exception(Lang::txt('Tool invocation failed'), 500);
         }
 
-        $this->send(array(
+        $this->send([
             'success' => true,
             'session' => $output->session
-        ));
+        ]);
     }
 
     /**
@@ -1018,12 +1018,12 @@ class Sessionsv1r0 extends ApiController
             $runFile = (isset($matches[1])) ? $matches[1] : '';
         }
 
-        $this->send(array(
+        $this->send([
             'success'  => true,
             'status'   => $parsed,
             'finished' => $finished,
             'run_file' => $runFile
-        ));
+        ]);
     }
 
     /**
@@ -1094,10 +1094,10 @@ class Sessionsv1r0 extends ApiController
 
         $output = file_get_contents($outputFile);
 
-        $this->send(array(
+        $this->send([
             'success' => true,
             'output'  => $output
-        ));
+        ]);
     }
 
     /**
@@ -1173,7 +1173,7 @@ class Sessionsv1r0 extends ApiController
         Plugin::import('mw', $app->name);
 
         // Trigger any events that need to be called before session start
-        Event::trigger('mw.onBeforeSessionStart', array($toolname, $tv->revision));
+        Event::trigger('mw.onBeforeSessionStart', [$toolname, $tv->revision]);
 
         // Call the view command
         $status = \Components\Tools\Helpers\Utils::middleware($command, $output);
@@ -1191,7 +1191,7 @@ class Sessionsv1r0 extends ApiController
         \Components\Tools\Helpers\Utils::setWeberAuthCookie($output);
 
         // Trigger any events that need to be called after session start
-        Event::trigger('mw.onAfterSessionStart', array($toolname, $tv->revision));
+        Event::trigger('mw.onAfterSessionStart', [$toolname, $tv->revision]);
 
         //add the session id to the result
         $output->session = $sessionid;
@@ -1251,7 +1251,7 @@ class Sessionsv1r0 extends ApiController
         }
 
         $mode = strtolower(Request::getWord('mode', 'vnc'));
-        if (!in_array($mode, array('vnc', 'redirect'))) {
+        if (!in_array($mode, ['vnc', 'redirect'])) {
             $mode = 'vnc';
         }
 
@@ -1267,11 +1267,11 @@ class Sessionsv1r0 extends ApiController
         $row   = new \Components\Tools\Tables\Session($mwdb);
         $alive = $row->load($sess, $username);
 
-        $steps = array(
+        $steps = [
             'session' => 'wait',
             'token'   => 'wait',
             'display' => ($mode == 'vnc' ? 'wait' : 'na')
-        );
+        ];
 
         // A live session row exists only while the session is alive; once it
         // ends the row is removed and a sessionlog row remains. That difference
@@ -1284,13 +1284,13 @@ class Sessionsv1r0 extends ApiController
             );
             $exited = ((int) $mwdb->loadResult() > 0);
 
-            $this->send(array(
+            $this->send([
                 'session' => $sess,
                 'state'   => ($exited ? 'exited' : 'starting'),
                 'ready'   => false,
                 'exited'  => $exited,
                 'steps'   => $steps
-            ));
+            ]);
             return;
         }
 
@@ -1320,7 +1320,7 @@ class Sessionsv1r0 extends ApiController
             if ($dstatus === 'broken') {
                 $steps['display'] = 'broken';
                 $state = 'display_broken';
-            } else if (in_array($dstatus, array('used', 'ready'))) {
+            } else if (in_array($dstatus, ['used', 'ready'])) {
                 $steps['display'] = 'pass';
                 $displayReady = true;
             }
@@ -1355,7 +1355,7 @@ class Sessionsv1r0 extends ApiController
             }
         }
 
-        $this->send(array(
+        $this->send([
             'session'     => $sess,
             'state'       => $state,
             'ready'       => $ready,
@@ -1363,7 +1363,7 @@ class Sessionsv1r0 extends ApiController
             'dispnum'     => $dispnum,
             'host_status' => $hostStatus,
             'steps'       => $steps
-        ));
+        ]);
     }
 
     /**
@@ -1434,7 +1434,7 @@ class Sessionsv1r0 extends ApiController
             }
         }
 
-        $this->send(array(
+        $this->send([
             'session'           => $sess,
             'timeout'           => $timeout,
             'hardTimeout'       => $hardTimeout,
@@ -1445,7 +1445,7 @@ class Sessionsv1r0 extends ApiController
             'expires_at'        => ($expiry !== null ? gmdate('Y-m-d H:i:s', $expiry) : null),
             'expires_epoch'     => $expiry,
             'seconds_remaining' => ($expiry !== null ? max(0, $expiry - time()) : null)
-        ));
+        ]);
     }
 
     /**
@@ -1491,23 +1491,23 @@ class Sessionsv1r0 extends ApiController
         Plugin::import('mw', $ms->get('appname'));
 
         // Trigger any events that need to be called before session stop
-        Event::trigger('mw.onBeforeSessionStop', array($ms->get('appname')));
+        Event::trigger('mw.onBeforeSessionStop', [$ms->get('appname')]);
 
         //run command to stop session
         $status = \Components\Tools\Helpers\Utils::middleware("stop " . (int)$sessionid, $out);
 
         // Trigger any events that need to be called after session stop
-        Event::trigger('mw.onAfterSessionStop', array($ms->get('appname')));
+        Event::trigger('mw.onAfterSessionStop', [$ms->get('appname')]);
 
         // was the session stopped successfully
         if ($status) {
             $object = new stdClass();
-            $object->session = array(
+            $object->session = [
                 'session' => $sessionid,
                 'status'  => 'stopped',
                 'output' => $out,
                 'stopped' => with(new Date())->toSql()
-            );
+            ];
 
             $this->send($object);
         } else {
@@ -1515,12 +1515,12 @@ class Sessionsv1r0 extends ApiController
             // upon failure to figure out what the middleware did, just return the status that was given
             // even though it generally stops the session anyway
             $object = new stdClass();
-            $object->session = array(
+            $object->session = [
                 'session' => $sessionid,
                 'status' => $status,
                 'output' => $out,
                 'time' => with(new Date())->toSql()
-            );
+            ];
             $this->send($object);
         }
     }
@@ -1564,11 +1564,11 @@ class Sessionsv1r0 extends ApiController
         //make sure we didnt have error disconnecting
         if (!$mv->getError()) {
             $object = new stdClass();
-            $object->session = array(
+            $object->session = [
                 'session'      => $sessionid,
                 'status'       => 'disconnected',
                 'disconnected' => with(new Date())->toSql()
-            );
+            ];
 
             $this->send($object);
         }
@@ -1606,15 +1606,15 @@ class Sessionsv1r0 extends ApiController
         $path = DS . $com_tools_params->get('storagepath', 'webdav' . DS . 'home') . DS . $result->get('username');
 
         // get a list of files
-        $files = array();
+        $files = [];
         //$files = Filesystem::files($path, '.', true, true, array('.svn', 'CVS'));
 
         // return result
         $object = new stdClass();
-        $object->storage = array(
+        $object->storage = [
             'quota' => $disk_usage,
             'files' => $files
-        );
+        ];
 
         $this->send($object);
     }
@@ -1652,13 +1652,13 @@ class Sessionsv1r0 extends ApiController
         }
 
         // list of acceptable purge degrees
-        $accepted_degrees = array(
+        $accepted_degrees = [
             'default' => 'Minimally',
             'olderthan1' => 'Older than 1 Day',
             'olderthan7' => 'Older than 7 Days',
             'olderthan30' => 'Older than 30 Days',
             'all' => 'All'
-        );
+        ];
 
         // check to make sure we have a degree
         if ($degree == '' || !in_array($degree, array_keys($accepted_degrees))) {
@@ -1666,7 +1666,7 @@ class Sessionsv1r0 extends ApiController
         }
 
         // var to hold purge info
-        $purge_info = array();
+        $purge_info = [];
 
         // open stream to purge files
         if (!$fp = stream_socket_client($storage_host, $error_num, $error_str, 30)) {
@@ -1686,7 +1686,7 @@ class Sessionsv1r0 extends ApiController
         if (in_array('Success.', $purge_info)) {
             // return result
             $object = new stdClass();
-            $object->purge = array('degree' => $accepted_degrees[$degree], 'success' => 1);
+            $object->purge = ['degree' => $accepted_degrees[$degree], 'success' => 1];
 
             $this->send($object);
         }
@@ -1769,11 +1769,11 @@ class Sessionsv1r0 extends ApiController
             escapeshellarg($private_ip) .
             " --ipsec-use-default-psk";
 
-        $descriptorspec = array(
-            0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
-            1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
-            2 => array("pipe", "w")   // stderr is a pipe that the child with write to
-        );
+        $descriptorspec = [
+            0 => ["pipe", "r"],  // stdin is a pipe that the child will read from
+            1 => ["pipe", "w"],  // stdout is a pipe that the child will write to
+            2 => ["pipe", "w"]   // stderr is a pipe that the child with write to
+        ];
 
         $process = proc_open($command, $descriptorspec, $pipes, "/", null);
 
@@ -1798,19 +1798,19 @@ class Sessionsv1r0 extends ApiController
             $output = strstr($output, '{');
             $joutput = json_decode($output);
 
-            $object = array(
+            $object = [
                 'fileserver'   => '128.46.19.124',
                 'username'     => $username,
                 'session'      => $sessionid,
                 'ipsec_ip1'    => $public_ip,
                 'ipsec_ip2'    => $private_ip,
                 'smb_username' => 'smb-' . $sessionid
-            );
+            ];
 
             // no JSON back (helper missing or failed): report no password rather than a 500
             $object['smb_password'] = (is_object($joutput) && isset($joutput->smb_password)) ? $joutput->smb_password : null;
         } else {
-            $object = array(
+            $object = [
                 'fileserver'     => '128.46.19.124',
                 'username'       => $username,
                 'session'        => $sessionid,
@@ -1819,7 +1819,7 @@ class Sessionsv1r0 extends ApiController
                 'ipsec_password' => null,
                 'smb_username'   => 'smb-' . $sessionid,
                 'smb_password'   => null
-            );
+            ];
         }
         $this->send($object);
     }

@@ -26,12 +26,12 @@ $sortAppend .= '&sortdir=' . urlencode($sortbyDir);
 
 $lists = $this->todo->getLists($this->model->get('id'));
 
-$colors = array(
+$colors = [
     'orange', 'lightblue', 'green',
     'purple', 'blue', 'black',
     'red', 'yellow', 'pink'
-);
-$used = array();
+];
+$used = [];
 if (!empty($lists)) {
     foreach ($lists as $list) {
         $used[] = $list->color;

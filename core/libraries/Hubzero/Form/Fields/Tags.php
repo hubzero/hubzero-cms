@@ -32,7 +32,7 @@ class Tags extends Text
     protected function getInput()
     {
         // Initialize variables.
-        $attributes = array(
+        $attributes = [
             'type'         => 'text',
             'value'        => htmlspecialchars($this->value == null ? '' : $this->value, ENT_COMPAT, 'UTF-8'),
             'name'         => $this->name,
@@ -42,18 +42,18 @@ class Tags extends Text
             'class'        => ($this->element['class']     ? (string) $this->element['class']  : ''),
             'readonly'     => ((string) $this->element['readonly'] == 'true'    ? 'readonly' : ''),
             'disabled'     => ((string) $this->element['disabled'] == 'true'    ? 'disabled' : '')
-        );
+        ];
 
         Behavior::framework(true);
 
         $results = App::get('dispatcher')->trigger(
             'hubzero.onGetMultiEntry',
-            array(
-                array('tags',
+            [
+                ['tags',
                     $this->name,
                     $this->id,
-                    $attributes['class'], $this->value, null, null, 'multi', ($attributes['disabled'] ? true : null))
-            )
+                    $attributes['class'], $this->value, null, null, 'multi', ($attributes['disabled'] ? true : null)]
+            ]
         );
 
         if (count($results) > 0) {

@@ -88,7 +88,7 @@ class Impact extends Plugin
     public function &onMembersAreas($user, $member)
     {
         //default areas returned to nothing
-        $areas = array();
+        $areas = [];
 
         //if this is the logged in user show them
         if (
@@ -134,10 +134,10 @@ class Impact extends Plugin
             }
         }
 
-        $arr = array(
+        $arr = [
             'html' => '',
             'metadata' => ''
-        );
+        ];
 
         if ($returnhtml) {
             $this->_option = $option;
@@ -154,7 +154,7 @@ class Impact extends Plugin
         }
 
         //get meta
-        $arr['metadata'] = array();
+        $arr['metadata'] = [];
         $arr['metadata']['count'] = $this->_stats ? count($this->_stats) : 0;
 
         return $arr;
@@ -200,13 +200,13 @@ class Impact extends Plugin
      */
     public function &onMembersContributionsAreas()
     {
-        $areas = array();
+        $areas = [];
 
         //if ($this->params->get('contributions', 0) == 1)
         //{
-        $areas = array(
+        $areas = [
             'impact' => Lang::txt('PLG_MEMBERS_IMPACT_PUBLICATIONS')
-        );
+        ];
         //}
 
         $this->areas = $areas;
@@ -251,21 +251,21 @@ class Impact extends Plugin
                 && !in_array($this->_name, $areas)
                 && !array_intersect($areas, array_keys($this->onMembersContributionsAreas()))
             ) {
-                return array();
+                return [];
             }
         }
 
         // Do we have a member ID?
         if ($member instanceof \Hubzero\User\User) {
             if (!$member->get('id')) {
-                return array();
+                return [];
             } else {
                 $uidNumber = $member->get('id');
                 $username = $member->get('username');
             }
         } else {
             if (!$member->uidNumber) {
-                return array();
+                return [];
             } else {
                 $uidNumber = $member->uidNumber;
                 $username = $member->username;
@@ -277,12 +277,12 @@ class Impact extends Plugin
         $objP = new \Components\Publications\Tables\Publication($database);
 
         // Build query
-        $filters = array(
+        $filters = [
             'sortby' => $sort,
             'limit' => $limit,
             'start' => $limitstart,
             'author' => $uidNumber
-        );
+        ];
 
         if (!$limit) {
             if (!$this->params->get('contributions')) {
@@ -293,7 +293,7 @@ class Impact extends Plugin
             return $results;
         } else {
             if (!$this->params->get('contributions')) {
-                return array();
+                return [];
             }
 
             $rows = $objP->getRecords($filters);

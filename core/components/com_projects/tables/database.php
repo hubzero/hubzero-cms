@@ -55,7 +55,7 @@ class Database extends Table
      * @param   boolean  $skipPublished
      * @return  mixed    object, integer or null
      */
-    public function getItems($projectid = null, $filters = array(), $skipPublished = false)
+    public function getItems($projectid = null, $filters = [], $skipPublished = false)
     {
         if ($projectid == null) {
             return false;

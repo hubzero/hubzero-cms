@@ -43,19 +43,19 @@ class Preference extends Relational
      *
      * @var array
      */
-    protected $rules = array(
+    protected $rules = [
         'preferences' => 'notempty',
         'uidNumber'   => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var array
      */
-    public $always = array(
+    public $always = [
         'modified'
-    );
+    ];
 
     /**
      * Registry

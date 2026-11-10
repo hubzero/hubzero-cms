@@ -137,7 +137,7 @@ $this->css();
                             35,
                             10,
                             'field-question',
-                            array('class' => 'form-control')
+                            ['class' => 'form-control']
                         );
                         ?>
                     </label>

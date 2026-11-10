@@ -53,7 +53,7 @@ if (function_exists('mbstring')) {
 
 $formAction = Route::url('index.php?option=' . $this->option);
 $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
-$editorOpts = array('class' => 'minimal no-footer', 'buttons' => false);
+$editorOpts = ['class' => 'minimal no-footer', 'buttons' => false];
 ?>
 
 <?php
@@ -1075,7 +1075,7 @@ if ($this->getError()) {
                 <?php if ($this->config->get('citation_allow_tags', 'no') == 'yes') : ?>
                     <div class="input-wrap">
                         <?php
-                            $t = array();
+                            $t = [];
                         foreach ($this->tags as $tag) {
                             $t[] = stripslashes($tag ?? '');
                         }
@@ -1093,7 +1093,7 @@ if ($this->getError()) {
                 <?php if ($this->config->get('citation_allow_badges', 'no') == 'yes') : ?>
                     <div class="input-wrap">
                         <?php
-                            $b = array();
+                            $b = [];
                         foreach ($this->badges as $badge) {
                             $b[] = stripslashes($badge ?? '');
                         }

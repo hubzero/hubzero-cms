@@ -20,11 +20,11 @@ defined('_HZEXEC_') or die();
 $base = $this->member->link() . '&active=blog';
 
 $first = $this->archive->entries(
-    array(
+    [
         'state'    => 1,
         'scope'    => $this->filters['scope'],
         'scope_id' => $this->filters['scope_id']
-    )
+    ]
 )
     ->order('publish_up', 'asc')
     ->limit(1)
@@ -207,10 +207,10 @@ $noEntries = !$rows->count();
                                                 $comments = $row->comments()
                                                     ->whereIn(
                                                         'state',
-                                                        array(
+                                                        [
                                                         Components\Blog\Models\Comment::STATE_PUBLISHED,
                                                         Components\Blog\Models\Comment::STATE_FLAGGED
-                                                        )
+                                                        ]
                                                     )
                                                     ->count();
                                                 echo Lang::txts('PLG_MEMBERS_BLOG_NUM_COMMENTS', $comments); ?>
@@ -309,7 +309,7 @@ $noEntries = !$rows->count();
 
                                 $start = intval(substr($first->get('publish_up'), 0, 4));
                                 $now = date("Y");
-                                $m = array(
+                                $m = [
                                     'JANUARY',
                                     'FEBRUARY',
                                     'MARCH',
@@ -322,7 +322,7 @@ $noEntries = !$rows->count();
                                     'OCTOBER',
                                     'NOVEMBER',
                                     'DECEMBER'
-                                );
+                                ];
                                 ?>
                             <?php for ($i = $now, $n = $start; $i >= $n; $i--) : ?>
                                 <li>
@@ -370,10 +370,10 @@ $noEntries = !$rows->count();
                     <?php
 
                     $popular = $this->archive->entries(
-                        array(
+                        [
                             'state'  => $this->filters['state'],
                             'access' => $this->filters['access']
-                        )
+                        ]
                     )
                         ->order('hits', 'desc')
                         ->limit(5)

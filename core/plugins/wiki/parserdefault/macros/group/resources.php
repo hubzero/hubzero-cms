@@ -31,7 +31,7 @@ class Resources extends GroupMacro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['html']  = '<p>Displays group resources.</p>';
         $txt['html'] .= '<p>Examples:</p>'
             . '<ul>'
@@ -101,7 +101,7 @@ class Resources extends GroupMacro
     private function getResources($type = 'all', $limit = 5)
     {
         // Build query
-        $filters = array();
+        $filters = [];
         $filters['now'] = date('Y-m-d H:i:s', time() + 0 * 60 * 60);
         $filters['sortby'] = 'date';
         $filters['group'] = $this->group->get('cn');
@@ -116,12 +116,12 @@ class Resources extends GroupMacro
 
         // Normalize the category names
         // e.g., "Oneline Presentations" -> "onlinepresentations"
-        $cats = array();
+        $cats = [];
         foreach ($categories as $category) {
             $normalized = preg_replace("/[^a-zA-Z0-9]/", '', $category->type);
             $normalized = strtolower($normalized);
 
-            $cats[$normalized] = array();
+            $cats[$normalized] = [];
             $cats[$normalized]['id'] = $category->id;
         }
 

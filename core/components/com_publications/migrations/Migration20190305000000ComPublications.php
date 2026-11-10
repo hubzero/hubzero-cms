@@ -20,23 +20,23 @@ class Migration20190305000000ComPublications extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__publication_audience' => array(
+    public static $tables = [
+        '#__publication_audience' => [
             'created'
-        ),
-        '#__publication_curation_history' => array(
+        ],
+        '#__publication_curation_history' => [
             'created'
-        ),
-        '#__publication_curation_versions' => array(
+        ],
+        '#__publication_curation_versions' => [
             'created'
-        ),
-        '#__publication_logs' => array(
+        ],
+        '#__publication_logs' => [
             'modified'
-        ),
-        '#__publication_ratings' => array(
+        ],
+        '#__publication_ratings' => [
             'created'
-        ),
-        '#__publication_versions' => array(
+        ],
+        '#__publication_versions' => [
             'created',
             'published_up',
             'published_down',
@@ -44,15 +44,15 @@ class Migration20190305000000ComPublications extends Base
             'accepted',
             'archived',
             'submitted'
-        ),
-        '#__publications' => array(
+        ],
+        '#__publications' => [
             'created',
             'checked_out_time'
-        ),
+        ],
         //'#__publication_stats' => array(
         //  'datetime'
         //),
-    );
+    ];
 
     /**
      * Up

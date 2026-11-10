@@ -47,7 +47,7 @@ class Stats extends Module
     public static function &getList(&$params)
     {
         $db    = \Hubzero\Facades\App::get('db');
-        $rows  = array();
+        $rows  = [];
 
         $serverinfo = $params->get('serverinfo');
         $siteinfo   = $params->get('siteinfo');

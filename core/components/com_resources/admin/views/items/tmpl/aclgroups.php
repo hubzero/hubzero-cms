@@ -13,7 +13,7 @@ defined('_HZEXEC_') or die();
 
 $this->js('acl.js');
 
-$aclgroupIDs = array();
+$aclgroupIDs = [];
 ?>
 
 

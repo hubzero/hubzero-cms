@@ -29,13 +29,13 @@ class Users extends Plugin
 
         $obj = new \stdClass();
         $obj->plugin = $this->_name;
-        $obj->events = array(
-            array(
+        $obj->events = [
+            [
                 'name'   => 'cleanAuthTempAccounts',
                 'label'  => Lang::txt('PLG_CRON_USERS_REMOVE_TEMP_ACCOUNTS'),
                 'params' => ''
-            )
-        );
+            ]
+        ];
 
         return $obj;
     }

@@ -69,22 +69,22 @@ class Description extends Base
         if ($viewname == 'curator') {
             // Output HTML
             $view = new \Hubzero\Component\View(
-                array(
+                [
                     'name'      => 'curation',
                     'layout'    => 'block'
-                )
+                ]
             );
         } else {
             $name = $viewname == 'freeze' ? 'freeze' : 'draft';
 
             // Output HTML
             $view = new \Hubzero\Plugin\View(
-                array(
+                [
                     'folder'    => 'projects',
                     'element'   => 'publications',
                     'name'      => $name,
                     'layout'    => 'wrapper'
-                )
+                ]
             );
         }
 
@@ -149,10 +149,10 @@ class Description extends Base
         $collapse = $this->_manifest->params->collapse_elements == 0 ? 0 : 1;
 
         // Incoming
-        $nbtags = Request::getArray('nbtag', array());
+        $nbtags = Request::getArray('nbtag', []);
 
         // Parse metadata
-        $data = array();
+        $data = [];
         preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $pub->metadata ? $pub->metadata : '', $matches, PREG_SET_ORDER);
         if (count($matches) > 0) {
             foreach ($matches as $match) {
@@ -353,13 +353,13 @@ class Description extends Base
      */
     public function getElementManifest()
     {
-        $manifest = array (
+        $manifest =  [
             'name'      => 'metadata',
             'type'      => 'metadata',
             'label'     => 'Metadata',
             'about'     => '<p>Please fill out metadata</p>',
             'adminTips' => '',
-            'params'    => array (
+            'params'    =>  [
                 'required'      => 0,
                 'aliasmap'      => 'meta',
                 'field'         => 'metadata',
@@ -369,8 +369,8 @@ class Description extends Base
                 'maxlength'     => '3000',
                 'cols'          => '50',
                 'rows'          => '6'
-            )
-        );
+            ]
+        ];
         return json_decode(json_encode($manifest), false);
     }
 
@@ -387,7 +387,7 @@ class Description extends Base
 
         // Fall back
         if (!$manifest) {
-            $manifest = array(
+            $manifest = [
                 'name'          => 'description',
                 'label'         => 'Description',
                 'title'         => 'Publication Description',
@@ -395,15 +395,15 @@ class Description extends Base
                 'draftTagline'  => 'Here is what\'s required:',
                 'about'         => '',
                 'adminTips'     => '',
-                'elements'  => array(
-                    1 => array (
+                'elements'  => [
+                    1 =>  [
                         'name'      => 'metadata',
                         'type'      => 'metadata',
                         'label'     => 'Publication Title',
                         'about'     => '<p>Pick a descriptive yet concise publication title that will '
                             . 'quickly tell users about its content.</p>',
                         'adminTips' => '',
-                        'params'    => array (
+                        'params'    =>  [
                             'required'      => 1,
                             'aliasmap'      => 'title',
                             'field'         => 'title',
@@ -411,15 +411,15 @@ class Description extends Base
                             'placeholder'   => 'Type publication title',
                             'default'       => 'Untitled Draft',
                             'maxlength'     => '255'
-                        )
-                    ),
-                    2 => array (
+                        ]
+                    ],
+                    2 =>  [
                         'name'      => 'metadata',
                         'type'      => 'metadata',
                         'label'     => 'Publication Abstract',
                         'about'     => '<p>Provide a short (max 255 characters) abstract for your publication</p>',
                         'adminTips' => '',
-                        'params'    => array (
+                        'params'    =>  [
                             'required'      => 1,
                             'aliasmap'      => 'abstract',
                             'field'         => 'abstract',
@@ -429,15 +429,15 @@ class Description extends Base
                             'maxlength'     => '255',
                             'cols'          => '50',
                             'rows'          => '3'
-                        )
-                    ),
-                    3 => array (
+                        ]
+                    ],
+                    3 =>  [
                         'name'      => 'metadata',
                         'type'      => 'metadata',
                         'label'     => 'Publication Description',
                         'about'     => '<p>Describe your publication in detail</p>',
                         'adminTips' => '',
-                        'params'    => array (
+                        'params'    =>  [
                             'required'      => 1,
                             'aliasmap'      => 'description',
                             'field'         => 'description',
@@ -447,17 +447,17 @@ class Description extends Base
                             'maxlength'     => '3000',
                             'cols'          => '50',
                             'rows'          => '6'
-                        )
-                    )
-                ),
-                'params' => array('required' => 1, 'published_editing' => 0, 'collapse_elements' => 1)
-            );
+                        ]
+                    ]
+                ],
+                'params' => ['required' => 1, 'published_editing' => 0, 'collapse_elements' => 1]
+            ];
 
             if ($new == true) {
                 $manifest['label']        = 'Metadata';
                 $manifest['title']        = 'Publication Metadata';
                 $manifest['draftHeading'] = 'Provide some metadata';
-                $manifest['elements']     = array(1 => $this->getElementManifest());
+                $manifest['elements']     = [1 => $this->getElementManifest()];
             }
 
             return json_decode(json_encode($manifest), false);

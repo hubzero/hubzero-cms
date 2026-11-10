@@ -52,8 +52,8 @@ class TokenCount extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'good_count' => 'positive|nonzero',
         'bad_count'  => 'positive|nonzero'
-    );
+    ];
 }

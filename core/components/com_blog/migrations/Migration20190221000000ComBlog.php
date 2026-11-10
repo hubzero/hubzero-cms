@@ -20,17 +20,17 @@ class Migration20190221000000ComBlog extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__blog_entries' => array(
+    public static $tables = [
+        '#__blog_entries' => [
             'created',
             'publish_up',
             'publish_down'
-        ),
-        '#__blog_comments' => array(
+        ],
+        '#__blog_comments' => [
             'created',
             'modified'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

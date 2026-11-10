@@ -68,14 +68,14 @@ class Articles extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $ids = Request::getArray('cid', array());
+        $ids = Request::getArray('cid', []);
 
         if (empty($ids)) {
             Notify::error(Lang::txt('JGLOBAL_NO_ITEM_SELECTED'));
             return $this->cancelTask();
         }
 
-        $batchOptions = Request::getArray('batch', array());
+        $batchOptions = Request::getArray('batch', []);
 
         if (empty($batchOptions['category_id'])) {
             Notify::error(Lang::txt('COM_CONTENT_BATCH_NO_CATEGORY_SELECTED'));
@@ -95,11 +95,11 @@ class Articles extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $params = array(
+        $params = [
             'catid'    => $batchOptions['category_id'],
             'access'   => isset($batchOptions['assetgroup_id']) ? $batchOptions['assetgroup_id'] : null,
             'language' => isset($batchOptions['language_id']) ? $batchOptions['language_id'] : null
-        );
+        ];
         $params = array_filter($params);
 
         $articles = Article::all()->whereIn('id', $ids)->rows();
@@ -145,7 +145,7 @@ class Articles extends AdminController
         if ($layout = Request::getString('layout')) {
             $this->context .= '.' . $layout;
         }
-        $filters = array(
+        $filters = [
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'filter_search',
@@ -187,10 +187,10 @@ class Articles extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         // Only the columns the list headings offer
-        if (!in_array($filters['sort'], array('title', 'state', 'a.featured', 'catid', 'ordering', 'access_level', 'created_by', 'created', 'hits', 'language', 'id'), true)) {
+        if (!in_array($filters['sort'], ['title', 'state', 'a.featured', 'catid', 'ordering', 'access_level', 'created_by', 'created', 'hits', 'language', 'id'], true)) {
             $filters['sort'] = 'title';
         }
         $filters['sort_Dir'] = (strtolower((string) $filters['sort_Dir']) == 'desc' ? 'DESC' : 'ASC');
@@ -200,17 +200,17 @@ class Articles extends AdminController
             ->select('`#__content`.*')
             ->join('#__languages', 'language', 'lang_code', 'left outer');
 
-        $filterableFields = array(
+        $filterableFields = [
             'category_id' => 'catid',
             'access' => 'access'
-        );
+        ];
         foreach ($filterableFields as $index => $column) {
             if (isset($filters[$index]) && $filters[$index] != '') {
                 $articles->whereEquals($column, $filters[$index]);
             }
         }
 
-        $searchableFields = array('title', 'alias');
+        $searchableFields = ['title', 'alias'];
         if (!empty($filters['search'])) {
             $firstSearch = array_shift($searchableFields);
             $articles->whereLike($firstSearch, $filters['search'], 1);
@@ -240,7 +240,7 @@ class Articles extends AdminController
             ->paginated('limitstart', 'limit')
             ->rows();
 
-        $itemsArray = array();
+        $itemsArray = [];
         foreach ($items as $item) {
             $itemsArray[] = $item;
         }
@@ -249,8 +249,8 @@ class Articles extends AdminController
 
         $this->view
             ->set('pagination', $items->pagination)
-            ->set('authors', array())
-            ->set('f_levels', array())
+            ->set('authors', [])
+            ->set('f_levels', [])
             ->set('filters', $filters)
             ->set('items', $itemsArray)
             ->setLayout($layout)
@@ -267,7 +267,7 @@ class Articles extends AdminController
         if ($layout = Request::getString('layout')) {
             $this->context .= '.' . $layout;
         }
-        $filters = array(
+        $filters = [
             'search' => Request::getState(
                 $this->_option . '.featured.search',
                 'filter_search',
@@ -309,10 +309,10 @@ class Articles extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         // Only the columns the list headings offer
-        if (!in_array($filters['sort'], array('ordering', 'a.title', 'a.state', 'a.catid', 'fp.ordering', 'a.access', 'a.created_by', 'a.created', 'a.hits', 'a.language', 'a.id'), true)) {
+        if (!in_array($filters['sort'], ['ordering', 'a.title', 'a.state', 'a.catid', 'fp.ordering', 'a.access', 'a.created_by', 'a.created', 'a.hits', 'a.language', 'a.id'], true)) {
             $filters['sort'] = 'ordering';
         }
         $filters['sort_Dir'] = (strtolower((string) $filters['sort_Dir']) == 'desc' ? 'DESC' : 'ASC');
@@ -387,15 +387,15 @@ class Articles extends AdminController
             ->paginated('limitstart', 'limit')
             ->rows();
 
-        $itemsArray = array();
+        $itemsArray = [];
         foreach ($items as $item) {
             $itemsArray[] = $item;
         }
 
         $this->view
             ->set('pagination', $items->pagination)
-            ->set('authors', array())
-            ->set('f_levels', array())
+            ->set('authors', [])
+            ->set('f_levels', [])
             ->set('filters', $filters)
             ->set('items', $itemsArray)
             ->setLayout('featured')
@@ -449,7 +449,7 @@ class Articles extends AdminController
 
         Request::setVar('hidemainmenu', 1);
 
-        $newTasks = array('save2new', 'save2copy');
+        $newTasks = ['save2new', 'save2copy'];
         $task = in_array($this->_task, $newTasks) ? 'add' : $this->_task;
 
         // Upon "saving to copy" or "save to new", blank out alias, update created and published up date to now
@@ -489,7 +489,7 @@ class Articles extends AdminController
         }
 
         // Incoming data
-        $items = Request::getArray('fields', array(), 'post');
+        $items = Request::getArray('fields', [], 'post');
 
         $articleId = Request::getInt('id');
 
@@ -626,7 +626,7 @@ class Articles extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $ordering = Request::getArray('order', array());
+        $ordering = Request::getArray('order', []);
 
         if (!Article::saveorder($ordering)) {
             Notify::error(Lang::txt('COM_CONTENT_ORDERING_ERROR'));
@@ -646,24 +646,24 @@ class Articles extends AdminController
     {
         Request::checkToken();
 
-        $states = array(
-            'publish' => array(
+        $states = [
+            'publish' => [
                 'value' => '1',
                 'lang' => 'COM_CONTENT_N_ITEMS_PUBLISHED'
-            ),
-            'unpublish' => array(
+            ],
+            'unpublish' => [
                 'value' => '0',
                 'lang' => 'COM_CONTENT_N_ITEMS_UNPUBLISHED'
-            ),
-            'archive' => array(
+            ],
+            'archive' => [
                 'value' => '2',
                 'lang' => 'COM_CONTENT_N_ITEMS_ARCHIVED'
-            ),
-            'trash' => array(
+            ],
+            'trash' => [
                 'value' => '-2',
                 'lang' => 'COM_CONTENT_N_ITEMS_TRASHED'
-            )
-        );
+            ]
+        ];
 
         $state = $states[$this->getTask()];
 

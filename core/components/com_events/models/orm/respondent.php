@@ -36,30 +36,30 @@ class Respondent extends Relational
      *
      * @var array
      **/
-    protected $rules = array(
+    protected $rules = [
         'event_id' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'alias',
         'modified',
         'modified_by'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Defines a belongs to one relationship between page and event

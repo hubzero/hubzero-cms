@@ -95,7 +95,7 @@ class Local implements AdapterInterface
      */
     public function delete($path)
     {
-        $paths = is_array($path) ? $path : array($path);
+        $paths = is_array($path) ? $path : [$path];
 
         $success = true;
 
@@ -187,7 +187,7 @@ class Local implements AdapterInterface
      */
     public function find($paths, $file)
     {
-        $paths = is_array($paths) ? $paths : array($paths);
+        $paths = is_array($paths) ? $paths : [$paths];
 
         foreach ($paths as $path) {
             $fullname = $path . DS . $file;
@@ -370,9 +370,9 @@ class Local implements AdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function listContents($path, $filter = '.', $recursive = false, $full = false, $exclude = array('.svn', '.git', 'CVS', '.DS_Store', '__MACOSX'))
+    public function listContents($path, $filter = '.', $recursive = false, $full = false, $exclude = ['.svn', '.git', 'CVS', '.DS_Store', '__MACOSX'])
     {
-        $result = array();
+        $result = [];
 
         if (!is_dir($path)) {
             return $result;
@@ -407,11 +407,11 @@ class Local implements AdapterInterface
      */
     protected function normalizeFileInfo(SplFileInfo $file, $base = null)
     {
-        $normalized = array(
+        $normalized = [
             'type'      => $file->getType(),
             'path'      => ($base ? substr($file->getPathname(), strlen($base)) : $file->getPathname()),
             'timestamp' => $file->getMTime()
-        );
+        ];
 
         if ($normalized['type'] === 'file') {
             $normalized['size'] = $file->getSize();

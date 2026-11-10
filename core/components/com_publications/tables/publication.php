@@ -92,7 +92,7 @@ class Publication extends Table
      * @param   bool   $admin
      * @return  query  string
      */
-    public function buildQuery($filters = array(), $admin = false)
+    public function buildQuery($filters = [], $admin = false)
     {
         $now = Date::toSql();
         $groupby = '';
@@ -103,7 +103,7 @@ class Publication extends Table
 
         $project  = isset($filters['project']) && intval($filters['project']) ? intval($filters['project']) : "";
         $dev      = isset($filters['dev']) && $filters['dev'] == 1 ? 1 : 0;
-        $projects = isset($filters['projects']) && !empty($filters['projects']) ? array_map('intval', (array) $filters['projects']) : array();
+        $projects = isset($filters['projects']) && !empty($filters['projects']) ? array_map('intval', (array) $filters['projects']) : [];
         $mine     = isset($filters['mine']) && $filters['mine'] ? $filters['mine'] : 0;
         $featured = isset($filters['featured']) && $filters['featured'] ? 1 : 0;
         $sortby   = isset($filters['sortby']) ? $filters['sortby'] : 'title';
@@ -138,7 +138,7 @@ class Publication extends Table
 
             if (isset($filters['status']) && $filters['status'] != 'all') {
                 if (is_array($filters['status'])) {
-                    $squery = implode(',', array_map(array($this->_db, 'quote'), $filters['status']));
+                    $squery = implode(',', array_map([$this->_db, 'quote'], $filters['status']));
                     $query .= " AND (V.state IN (" . $squery . ")) ";
                 } else {
                     $query .= " AND V.state=" . intval($filters['status']);
@@ -233,7 +233,7 @@ class Publication extends Table
         }
         if (isset($filters['search']) && $filters['search'] != '') {
                 $componentParams = Component::params('com_publications');
-                $words = array();
+                $words = [];
                 $ws = explode(' ', $filters['search']);
             foreach ($ws as $w) {
                 $w = trim($w);
@@ -368,7 +368,7 @@ class Publication extends Table
      * @param   boolean  $admin
      * @return  object
      */
-    public function getCount($filters = array(), $admin = false)
+    public function getCount($filters = [], $admin = false)
     {
         $filters['count'] = 1;
         $query = $this->buildQuery($filters, $admin);
@@ -387,7 +387,7 @@ class Publication extends Table
      * @param   boolean  $admin
      * @return  object
      */
-    public function getRecords($filters = array(), $admin = false)
+    public function getRecords($filters = [], $admin = false)
     {
         $sql  = "SELECT V.*, C.id as id, C.category, C.project_id, C.access as master_access,
 				C.checked_out, C.checked_out_time, C.rating as master_rating,
@@ -439,7 +439,7 @@ class Publication extends Table
             return $this->_db->loadResult();
         } else {
             $result = $this->_db->loadObjectList();
-            return $result ? $result[0] : array();
+            return $result ? $result[0] : [];
         }
     }
 
@@ -574,7 +574,7 @@ class Publication extends Table
      * @param   string  $when
      * @return  mixed
      */
-    public function getPubStats($validProjects = array(), $get = 'total', $when = null)
+    public function getPubStats($validProjects = [], $get = 'total', $when = null)
     {
         if (empty($validProjects)) {
             return null;

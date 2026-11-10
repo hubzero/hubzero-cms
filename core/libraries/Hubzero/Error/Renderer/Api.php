@@ -61,7 +61,7 @@ class Api implements RendererInterface
         $content->code    = $status;
 
         if (false && $this->debug) {
-            $content->trace = array();
+            $content->trace = [];
 
             $backtrace = $error->getTrace();
 

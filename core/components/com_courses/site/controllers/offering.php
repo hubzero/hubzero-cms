@@ -214,15 +214,15 @@ class Offering extends SiteController
         // If an active area was specified
         // check that it's a valid plugin
         if ($active = Request::getCmd('active')) {
-            $plugins = Event::trigger('courses.onCourse', array(
+            $plugins = Event::trigger('courses.onCourse', [
                 $this->course,
                 $this->course->offering(),
                 true
-            ));
+            ]);
 
             // A hub with no course plugins answering never enters the loop,
             // and the check below reads the list either way
-            $available = array();
+            $available = [];
 
             foreach ($plugins as $plugin) {
                 $available[] = $plugin->get('name');
@@ -233,10 +233,10 @@ class Offering extends SiteController
         }
 
         // Trigger the functions that return the areas we'll be using
-        $plugins = Event::trigger('courses.onCourse', array(
+        $plugins = Event::trigger('courses.onCourse', [
             $this->course,
             $this->course->offering()
-        ));
+        ]);
 
         $this->view->course        = $this->course;
         $this->view->config        = $this->config;
@@ -383,9 +383,9 @@ class Offering extends SiteController
         if ($enrolled) {
             $link = $offering->link();
 
-            $data = Event::trigger('courses.onCourseEnrolled', array(
+            $data = Event::trigger('courses.onCourseEnrolled', [
                 $this->course, $offering, $offering->section()
-            ));
+            ]);
             if ($data && count($data) > 0) {
                 $link = implode('', $data);
             }
@@ -528,7 +528,7 @@ class Offering extends SiteController
         $hasMet = $prerequisites->hasMet('asset', $assetId);
         if (!$canManageAsset && !$hasMet) {
             $prereqs      = $prerequisites->get('asset', $assetId);
-            $requirements = array();
+            $requirements = [];
             foreach ($prereqs as $pre) {
                 $reqAsset = new Models\Asset($pre['scope_id']);
                 $requirements[] = $reqAsset->get('title');

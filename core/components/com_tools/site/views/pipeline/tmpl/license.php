@@ -17,14 +17,14 @@ $open             = ($this->code == '@OPEN') ? 1 : 0;
 $this->codeaccess = ($this->code == '@OPEN') ? 'open' : 'closed';
 $newstate         = ($this->action == 'confirm') ? 'Approved' :  $this->status['state'];
 
-$codeChoices = array(
+$codeChoices = [
     '@OPEN' => Lang::txt('COM_TOOLS_OPEN_SOURCE'),
     '@DEV'  => Lang::txt('COM_TOOLS_CLOSED_SOURCE')
-);
+];
 
-$licenseChoices = array(
+$licenseChoices = [
     '0' => Lang::txt('Choose a template')
-);
+];
 
 if ($this->licenses) {
     foreach ($this->licenses as $l) {

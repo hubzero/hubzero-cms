@@ -57,11 +57,11 @@ class User extends \Hubzero\Database\Relational
      * @var    array
      * @since  2.1.0
      */
-    protected $rules = array(
+    protected $rules = [
         'name'     => 'notempty',
         'email'    => 'notempty',
         'username' => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
@@ -69,11 +69,11 @@ class User extends \Hubzero\Database\Relational
      * @var    array
      * @since  2.1.0
      */
-    public $initiate = array(
+    public $initiate = [
         'registerDate',
         'registerIP',
         'access'
-    );
+    ];
 
     /**
      * A cached switch for if this user has root access rights.
@@ -129,7 +129,7 @@ class User extends \Hubzero\Database\Relational
      * @var    array
      * @since  2.1.0
      */
-    public static $pictureResolvers = array();
+    public static $pictureResolvers = [];
 
     /**
      * Serializes the model data for storage
@@ -349,7 +349,7 @@ class User extends \Hubzero\Database\Relational
      */
     public static function identityErrors(array $new, array $old)
     {
-        $errors = array();
+        $errors = [];
 
         $username = isset($new['username']) ? (string) $new['username'] : '';
         $homeDir  = isset($new['homeDirectory']) ? (string) $new['homeDirectory'] : '';
@@ -433,13 +433,13 @@ class User extends \Hubzero\Database\Relational
         static $groups;
 
         if (!isset($groups)) {
-            $groups = array(
-                'applicants' => array(),
-                'invitees'   => array(),
-                'members'    => array(),
-                'managers'   => array(),
-                'all'        => array()
-            );
+            $groups = [
+                'applicants' => [],
+                'invitees'   => [],
+                'members'    => [],
+                'managers'   => [],
+                'all'        => []
+            ];
             $all = Helper::getGroups($this->get('id'), 'all', 1);
 
             if ($all) {
@@ -464,7 +464,7 @@ class User extends \Hubzero\Database\Relational
         }
 
         if ($role) {
-            return (isset($groups[$role])) ? $groups[$role] : array();
+            return (isset($groups[$role])) ? $groups[$role] : [];
         }
 
         return $groups;
@@ -542,7 +542,7 @@ class User extends \Hubzero\Database\Relational
             $key = 'id';
         }
 
-        if (is_string($key) && in_array($key, array('givenName','middleName','surname','name'))) {
+        if (is_string($key) && in_array($key, ['givenName','middleName','surname','name'])) {
             $value = \Hubzero\Utility\Sanitize::cleanProperName($value);
         }
 
@@ -630,7 +630,7 @@ class User extends \Hubzero\Database\Relational
                     $this->guest = false;
 
                     $data = App::get('user')->getInstance()->toArray();
-                    Event::trigger('user.onUserLogin', array($data));
+                    Event::trigger('user.onUserLogin', [$data]);
                 }
             } catch (Exception $e) {
                 // something likely went wrong with the jwt
@@ -756,18 +756,18 @@ class User extends \Hubzero\Database\Relational
         }
 
         $link = str_replace(
-            array(
+            [
                 '{ID}',
                 '{USERNAME}',
                 '{EMAIL}',
                 '{NAME}'
-            ),
-            array(
+            ],
+            [
                 $this->get('id'),
                 $this->get('username'),
                 $this->get('email'),
                 str_replace(' ', '+', $this->get('name'))
-            ),
+            ],
             self::$linkBase
         );
 
@@ -833,7 +833,7 @@ class User extends \Hubzero\Database\Relational
 
         $query = $this->getQuery()
             ->update($this->getTableName())
-            ->set(array('lastvisitDate' => $timestamp->toSql()))
+            ->set(['lastvisitDate' => $timestamp->toSql()])
             ->whereEquals('id', $this->get('id'));
 
         return $query->execute();
@@ -915,7 +915,7 @@ class User extends \Hubzero\Database\Relational
 
         $allCategories = $db->loadObjectList('id');
 
-        $allowedCategories = array();
+        $allowedCategories = [];
 
         foreach ($allCategories as $category) {
             if ($this->authorise($action, $category->asset_name)) {
@@ -935,7 +935,7 @@ class User extends \Hubzero\Database\Relational
     public function getAuthorisedViewLevels()
     {
         if (is_null($this->authLevels)) {
-            $this->authLevels = array();
+            $this->authLevels = [];
         }
 
         if (empty($this->_authLevels)) {
@@ -954,7 +954,7 @@ class User extends \Hubzero\Database\Relational
     public function getAuthorisedGroups()
     {
         if (is_null($this->authGroups)) {
-            $this->authGroups = array();
+            $this->authGroups = [];
         }
 
         if (empty($this->authGroups)) {
@@ -1043,14 +1043,14 @@ class User extends \Hubzero\Database\Relational
         try {
             $oldUser = self::oneOrNew($this->get('id'));
 
-            $errors = self::identityErrors($data, $isNew ? array() : $oldUser->toArray());
+            $errors = self::identityErrors($data, $isNew ? [] : $oldUser->toArray());
 
             if (!empty($errors)) {
                 throw new Exception(implode(' ', $errors));
             }
 
             // Trigger the onUserBeforeSave event.
-            $result = Event::trigger('user.onUserBeforeSave', array($oldUser->toArray(), $isNew, $data));
+            $result = Event::trigger('user.onUserBeforeSave', [$oldUser->toArray(), $isNew, $data]);
 
             if (in_array(false, $result, true)) {
                 // Plugin will have to raise its own error or throw an exception.
@@ -1086,7 +1086,7 @@ class User extends \Hubzero\Database\Relational
             $this->syncAccountExpiry($isNew ? false : (bool) $oldUser->get('block'));
 
             // Fire the onUserAfterSave event
-            Event::trigger('user.onUserAfterSave', array($data, $isNew, $result, $this->getError()));
+            Event::trigger('user.onUserAfterSave', [$data, $isNew, $result, $this->getError()]);
 
             $this->purgeCache();
         } catch (Exception $e) {
@@ -1108,7 +1108,7 @@ class User extends \Hubzero\Database\Relational
         $data = $this->toArray();
 
         // Trigger the onUserBeforeDelete event
-        Event::trigger('user.onUserBeforeDelete', array($data));
+        Event::trigger('user.onUserBeforeDelete', [$data]);
 
         // Remove associated data
         if ($this->reputation->get('id')) {
@@ -1132,7 +1132,7 @@ class User extends \Hubzero\Database\Relational
 
         if ($result) {
             // Trigger the onUserAfterDelete event
-            Event::trigger('user.onUserAfterDelete', array($data, true, $this->getError()));
+            Event::trigger('user.onUserAfterDelete', [$data, true, $this->getError()]);
         }
 
         return $result;

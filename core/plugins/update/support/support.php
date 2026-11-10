@@ -47,13 +47,13 @@ class Support extends Plugin
         $upd .= ", t.`status`=" . $database->quote($status);
         $upd .= ", t.`closed`=" . $database->quote(Date::toSql());
 
-        $where = array();
+        $where = [];
 
         $where[] = "t.`type`=0";
         $where[] = "t.`open`=1";
 
         // Gather a list of statuses
-        $statuses = array();
+        $statuses = [];
         if (is_numeric($this->params->get('support_ticket_state1'))) {
             $statuses[] = $this->params->get('support_ticket_state1');
         }
@@ -209,7 +209,7 @@ class Support extends Plugin
         $message_id = $this->params->get('support_ticket_message');
 
         // Get a list of tickets before we update them
-        $tickets = array();
+        $tickets = [];
         if ($message_id) {
             $database->setQuery($slc);
             $tickets = $database->loadObjectList();
@@ -231,11 +231,11 @@ class Support extends Plugin
 
             // Make sure we have a message to send
             if ($message->message) {
-                $from = array(
+                $from = [
                     'name' => Config::get('sitename') . ' ' . Lang::txt('COM_SUPPORT'),
                     'email' => Config::get('mailfrom'),
                     'multipart' => md5(date('U'))
-                );
+                ];
 
                 // Set mail additional args (mail return path - used for bounces)
                 if ($host = Request::getString('HTTP_HOST', '', 'server')) {
@@ -244,7 +244,7 @@ class Support extends Plugin
 
                 $subject = Lang::txt('COM_SUPPORT') . ': ' . Lang::txt('COM_SUPPORT_TICKETS');
 
-                $mailed = array();
+                $mailed = [];
 
                 $comment = \Components\Support\Models\Comment::blank();
                 $comment->set('created', Date::toSql());
@@ -291,11 +291,11 @@ class Support extends Plugin
                     $comment->changelog()->diff($old, $row);
                     $comment->set('ticket', $row->get('id'));
 
-                    $eview = new \Hubzero\Mail\View(array(
+                    $eview = new \Hubzero\Mail\View([
                         'base_path' => Component::path('com_support') . DS . 'site',
                         'name' => 'emails',
                         'layout' => 'comment_plain'
-                    ));
+                    ]);
                     $eview->option = 'com_support';
                     $eview->controller = 'tickets';
                     $eview->delimiter = '~!~!~!~!~!~!~!~!~!~!';

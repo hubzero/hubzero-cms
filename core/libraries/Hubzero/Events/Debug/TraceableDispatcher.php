@@ -62,13 +62,13 @@ class TraceableDispatcher implements DispatcherInterface
         $this->dispatcher = $dispatcher;
         $this->stopwatch = $stopwatch;
         $this->logger = $logger;
-        $this->called = array();
+        $this->called = [];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addListener($listener, $events = array())
+    public function addListener($listener, $events = [])
     {
         $this->dispatcher->addListener($listener, $events);
     }
@@ -100,7 +100,7 @@ class TraceableDispatcher implements DispatcherInterface
     /**
      * {@inheritdoc}
      */
-    public function trigger($event, $args = array())
+    public function trigger($event, $args = [])
     {
         if (!($event instanceof Event)) {
             $event = new Event($event);
@@ -155,7 +155,7 @@ class TraceableDispatcher implements DispatcherInterface
      */
     public function getCalledListeners()
     {
-        $called = array();
+        $called = [];
 
         foreach ($this->called as $eventName => $listeners) {
             foreach ($listeners as $listener) {
@@ -176,14 +176,14 @@ class TraceableDispatcher implements DispatcherInterface
             $allListeners = $this->getListeners();
         } catch (\Exception $e) {
             if (null !== $this->logger) {
-                $this->logger->info(sprintf('An exception was thrown while getting the uncalled listeners (%s)', $e->getMessage()), array('exception' => $e));
+                $this->logger->info(sprintf('An exception was thrown while getting the uncalled listeners (%s)', $e->getMessage()), ['exception' => $e]);
             }
 
             // unable to retrieve the uncalled listeners
-            return array();
+            return [];
         }
 
-        $notCalled = array();
+        $notCalled = [];
         foreach ($allListeners as $eventName => $listeners) {
             foreach ($listeners as $listener) {
                 $called = false;
@@ -216,7 +216,7 @@ class TraceableDispatcher implements DispatcherInterface
      */
     public function __call($method, $arguments)
     {
-        return call_user_func_array(array($this->dispatcher, $method), $arguments);
+        return call_user_func_array([$this->dispatcher, $method], $arguments);
     }
 
     /**
@@ -328,15 +328,15 @@ class TraceableDispatcher implements DispatcherInterface
      */
     private function getListenerInfo($listener, $event)
     {
-        $info = array(
+        $info = [
             'event' => $event,
-        );
+        ];
 
         if ($listener instanceof \Closure) {
-            $info += array(
+            $info += [
                 'type'   => 'Closure',
                 'pretty' => 'closure',
-            );
+            ];
         } elseif (is_string($listener)) {
             try {
                 $r = new \ReflectionFunction($listener);
@@ -346,20 +346,20 @@ class TraceableDispatcher implements DispatcherInterface
                 $file = null;
                 $line = null;
             }
-            $info += array(
+            $info += [
                 'type'     => 'Function',
                 'function' => $listener,
                 'file'     => $file,
                 'line'     => $line,
                 'pretty'   => $listener,
-            );
+            ];
         } elseif (is_array($listener) || (is_object($listener))) { // && is_callable($listener)))
             if ($listener instanceof WrappedListener) {
                 $listener = $listener->getWrappedListener();
             }
 
             if (!is_array($listener)) {
-                $listener = array($listener, $event);
+                $listener = [$listener, $event];
             }
 
             $class = is_object($listener[0]) ? get_class($listener[0]) : $listener[0];
@@ -371,14 +371,14 @@ class TraceableDispatcher implements DispatcherInterface
                 $file = null;
                 $line = null;
             }
-            $info += array(
+            $info += [
                 'type'   => 'Method',
                 'class'  => $class,
                 'method' => $listener[1],
                 'file'   => $file,
                 'line'   => $line,
                 'pretty' => $class . '::' . $listener[1],
-            );
+            ];
         }
 
         return $info;

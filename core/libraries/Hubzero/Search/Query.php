@@ -101,7 +101,7 @@ class Query
      * @param   string  $tag
      * @return  object
      */
-    public function addFilter($name, $query = array(), $tag = 'root_type')
+    public function addFilter($name, $query = [], $tag = 'root_type')
     {
         $this->adapter->addFilter($name, $query, $tag);
         return $this;
@@ -114,7 +114,7 @@ class Query
      * @param   array   $query  The query array with a indexes of name, operator, and value
      * @return  object
      */
-    public function addFacet($name, $query = array())
+    public function addFacet($name, $query = [])
     {
         $this->adapter->addFacet($name, $query);
         return $this;

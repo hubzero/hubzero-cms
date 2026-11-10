@@ -68,9 +68,9 @@ class Registration
      */
     public function clear()
     {
-        $this->_registration = array();
+        $this->_registration = [];
         $this->normalize();
-        $this->_missing = array();
+        $this->_missing = [];
         $this->_invalid = false;
         $this->_checked = true;
     }
@@ -106,7 +106,7 @@ class Registration
         $this->_registration['sendEmail'] = null;
         $this->_registration['captcha'] = null;
         $this->_registration['orcid'] = null;
-        $this->_registration['_profile'] = array();
+        $this->_registration['_profile'] = [];
     }
 
     /**
@@ -124,9 +124,9 @@ class Registration
         //
         // TODO: more cleanup
 
-        $name = Request::getArray('name', array(), 'post');
+        $name = Request::getArray('name', [], 'post');
         if (!is_array($name)) {
-            $name = array();
+            $name = [];
         }
         if ($name) {
             $name['first']  = preg_replace('/\s+/', ' ', trim($name['first']));
@@ -159,7 +159,7 @@ class Registration
         $this->_registration['sendEmail'] = Request::getString('sendEmail', '0', 'post');
 
         // Incoming profile edits
-        $profile = Request::getArray('profile', array(), 'post', 'none', 2);
+        $profile = Request::getArray('profile', [], 'post', 'none', 2);
 
         // Compile profile data
         foreach ($profile as $key => $data) {
@@ -369,7 +369,7 @@ class Registration
      * @param   integer  $id
      * @return  boolean
      */
-    public function check($task = 'create', $id = 0, $field_to_check = array())
+    public function check($task = 'create', $id = 0, $field_to_check = [])
     {
         $sitename = Config::get('sitename');
 
@@ -383,8 +383,8 @@ class Registration
             $task = 'proxycreate';
         }
 
-        $this->_missing = array();
-        $this->_invalid = array();
+        $this->_missing = [];
+        $this->_invalid = [];
 
         $registrationUsername = $this->registrationField('registrationUsername', 'RROO', $task);
         $registrationPassword = $this->registrationField('registrationPassword', 'RRHH', $task);
@@ -760,7 +760,7 @@ class Registration
             }
         }
 
-        $seen = array();
+        $seen = [];
 
         for ($i = 0; $i < strlen($password); $i++) {
             $char = substr($password, $i, 1);

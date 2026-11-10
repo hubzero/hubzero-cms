@@ -30,7 +30,7 @@ class Widget extends Field
      */
     protected function getInput()
     {
-        $html = array();
+        $html = [];
         $html[] = '<ul>';
         $html[] = '<li>';
         $html[] = '<label for="' . $this->id . '"> </label>';

@@ -114,7 +114,7 @@ if (
                         )
                     ) {
                         $prereqs      = $prerequisites->get('asset', $used_asset->get('id'));
-                        $requirements = array();
+                        $requirements = [];
                         foreach ($prereqs as $pre) {
                             $reqAsset = new \Components\Courses\Models\Asset($pre['scope_id']);
                             $requirements[] = $reqAsset->get('title');
@@ -173,7 +173,7 @@ if (
 
                 <ul class="lecture-assets">
                     <?php
-                    $exams = array();
+                    $exams = [];
                     // Are there any assets?
                     if ($lecture->assets()->total()) {
                         // Loop through the assets
@@ -305,11 +305,11 @@ if (
 
     <?php
         // Trigger event
-        $results = Event::trigger('courses.onCourseAfterLecture', array(
+        $results = Event::trigger('courses.onCourseAfterLecture', [
             $this->course,
             $unit,
             $lecture
-        ));
+        ]);
         // Output results
         echo implode("\n", $results);
     ?>

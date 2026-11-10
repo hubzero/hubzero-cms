@@ -130,18 +130,18 @@ class RapidContact extends Module
         $this->error = '';
         $this->replacement = '';
 
-        $this->posted = array(
+        $this->posted = [
             'name'    => '',
             'email'   => '',
             'subject' => '',
             'message' => ''
-        );
+        ];
 
         if (isset($_POST['rp'])) {
             // Check for request forgeries
             Request::checkToken();
 
-            $this->posted = Request::getArray('rp', array(), 'post');
+            $this->posted = Request::getArray('rp', [], 'post');
 
             // Make sure input is of the correct type.
             foreach ($this->posted as $key => $val) {

@@ -18,7 +18,7 @@ if ($this->showNone != '') {
     $html .= '>' . $this->showNone . '</option>' . "\n";
 }
 
-$skips = array();
+$skips = [];
 
 foreach ($this->categories as $anode) {
     if (!in_array($anode->id, $skips)) {

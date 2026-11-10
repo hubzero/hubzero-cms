@@ -46,10 +46,10 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'type'  => 'notempty',
         'title' => 'notempty'
-    );
+    ];
 
     /**
      * Separate badges?
@@ -65,7 +65,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
      * @param   boolean  $admin
      * @return  object   Citation
      */
-    public static function getFilteredRecords($filters = array(), $admin = false)
+    public static function getFilteredRecords($filters = [], $admin = false)
     {
         $records = self::all();
 
@@ -112,7 +112,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
         }
 
         if (!isset($filters['published'])) {
-            $filters['published'] = array(1);
+            $filters['published'] = [1];
         }
 
         $records->whereIn('published', $filters['published']);
@@ -125,7 +125,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
         }
 
         if (!empty($filters['filter'])) {
-            $filterValues = array('nonaff' => 0, 'aff' => 1);
+            $filterValues = ['nonaff' => 0, 'aff' => 1];
             $records->whereEquals('affiliated', $filterValues[$filters['filter']]);
         }
 
@@ -153,7 +153,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
             $records->filterBySearch($searchQuery, 1);
 
             $records->orWhereRelatedHas('relatedAuthors', function ($author) use ($searchQuery) {
-                $authorFields = array('givenName', 'surname', 'author');
+                $authorFields = ['givenName', 'surname', 'author'];
                 $query = 'MATCH(' . implode(',', $authorFields) . ') AGAINST (? IN BOOLEAN MODE)';
                 $author->whereRaw($query, (array) $searchQuery);
                 return $author;
@@ -192,8 +192,8 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 
         // Geography / affiliation narrowing still operates on the relational
         // author records only.
-        $authorFields = array_intersect_key($filters, array('geo' => '', 'aff' => ''));
-        $maxOptions = array('geo' => 4, 'aff' => 3);
+        $authorFields = array_intersect_key($filters, ['geo' => '', 'aff' => '']);
+        $maxOptions = ['geo' => 4, 'aff' => 3];
         $authorFields = array_filter($authorFields);
         foreach ($maxOptions as $filter => $max) {
             if (isset($authorFields[$filter])) {
@@ -231,7 +231,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
      * @param   array  $searchableFields
      * @return  $this
      */
-    public function filterBySearch($term, $depth = 0, $searchableFields = array('title', 'isbn', 'doi', 'abstract', 'author', 'publisher','keywords'))
+    public function filterBySearch($term, $depth = 0, $searchableFields = ['title', 'isbn', 'doi', 'abstract', 'author', 'publisher','keywords'])
     {
         if (is_array($term)) {
             $searchTerms = array_intersect_key($term, array_flip($searchableFields));
@@ -256,12 +256,12 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
      */
     public function filterByReftype($filters)
     {
-        $refTypes = array(
-            'research' => array('R', 'N', 'S'),
-            'education' => array('E'),
-            'cyberinfrastructure' => array('C', 'A', 'HD', 'I'),
-            'eduresearch' => array('research', 'education')
-        );
+        $refTypes = [
+            'research' => ['R', 'N', 'S'],
+            'education' => ['E'],
+            'cyberinfrastructure' => ['C', 'A', 'HD', 'I'],
+            'eduresearch' => ['research', 'education']
+        ];
 
         if (isset($filters['reftype']) && is_array($filters['reftype'])) {
             $filters['reftype'] = array_filter($filters['reftype'], function ($ref) {
@@ -280,7 +280,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
                 }
                 $firstQuery = $refKeys[0];
                 $query = '(';
-                $queryBindings = array();
+                $queryBindings = [];
                 foreach ($refKeys as $reftype) {
                     // Skip filter values not in the known reference types
                     // (callers can pass arbitrary keys via the request).
@@ -289,7 +289,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
                     }
 
                     $combination = false;
-                    $excludes = array();
+                    $excludes = [];
                     switch ($reftype) {
                         case 'research':
                             $excludes = $refTypes['education'];
@@ -365,10 +365,10 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
      * @param array $filters contains all the values included for filtering the results returned
      * @return Citation object
      */
-    public static function getYearlyStats($filters = array())
+    public static function getYearlyStats($filters = [])
     {
-        $publishState = empty($filters['published']) ? array(1) : $filters['published'];
-        $publishState = !is_array($publishState) ? array($publishState) : $publishState;
+        $publishState = empty($filters['published']) ? [1] : $filters['published'];
+        $publishState = !is_array($publishState) ? [$publishState] : $publishState;
         $scope = empty($filters['scope']) ? 'hub' : $filters['scope'];
 
         $citations = self::all()
@@ -413,8 +413,8 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
             ->get('year');
         $earliestYear = $earliestYear ?: date('Y');
 
-        $groupCitations = array();
-        $affiliations = array('non-affiliate' => 0, 'affiliate' => 0);
+        $groupCitations = [];
+        $affiliations = ['non-affiliate' => 0, 'affiliate' => 0];
         $affiliationLabels = array_keys($affiliations);
 
         for ($i = date('Y'); $i >= $earliestYear; $i--) {
@@ -497,7 +497,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
             ->select('owners.userid')
             ->join('#__project_owners as owners', '#__publications.project_id', 'owners.projectid');
 
-        $ownerIds = array();
+        $ownerIds = [];
         foreach ($owners->rows() as $owner) {
             $ownerIds[] = $owner->userid;
         }
@@ -594,7 +594,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
     public function updateTags($tags, $label = '', $strength = 1)
     {
         $currentTags = $this->tags()->whereEquals('#__tags_object.label', $label)->rows();
-        $currentTagKeys = array();
+        $currentTagKeys = [];
         foreach ($currentTags as $obj) {
             $currentTagKeys[] = $obj->get('tag');
         }
@@ -668,7 +668,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
      * @param   string  $highlight
      * @return  object
      */
-    public function formatted($config = array('format' => 'apa'), $highlight = null)
+    public function formatted($config = ['format' => 'apa'], $highlight = null)
     {
         if ($this->isNew()) {
             return '';
@@ -707,14 +707,14 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
         }
 
         // var to hold COinS data
-        $coins_data = array(
+        $coins_data = [
             "ctx_ver=Z39.88-2004",
             "rft_val_fmt=info:ofi/fmt:kev:mtx:{$c_type}",
             "rfr_id=info:sid/{$hub_url}:{$hub_name}"
-        );
+        ];
 
         // array to hold replace vals
-        $replace_values = array();
+        $replace_values = [];
 
         $template = $this->template;
 
@@ -731,7 +731,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
         }
 
         // get the template keys
-        $template_keys =  array(
+        $template_keys =  [
             "type" => "{TYPE}",
             "cite" => "{CITE KEY}",
             "ref_type" => "{REF TYPE}",
@@ -768,10 +768,10 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
             "month" => "{MONTH}",
             "search_string" => "{SECONDARY LINK}",
             "sec_cnt" => "{SECONDARY COUNT}"
-        );
+        ];
 
         // Values used by COINs
-        $coins_keys = array(
+        $coins_keys = [
             'title'        => 'rft.atitle',
             'journaltitle' => 'rft.jtitle',
             'date_publish' => 'rft.date',
@@ -784,7 +784,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
             'author'       => 'rft.au',
             'url'          => 'rft_id',
             'doi'          => 'rft_id=info:doi/'
-        );
+        ];
 
             // form the formatted citation
         foreach ($template_keys as $k => $v) {
@@ -830,7 +830,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
                 }
 
                 if ($k == 'author') {
-                    $a = array();
+                    $a = [];
 
                     $auth = '';
                     if (isset($this->$k) && $this->$k) {
@@ -981,7 +981,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
         $pattern = "/\s/s";
         $cite = preg_replace($pattern, ' ', $cite);
         // Strip empty punctuation inside
-        $b = array(
+        $b = [
             "''" => '',
             '""' => '',
             '()' => '',
@@ -998,14 +998,14 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
             'doi:.' => '',
             '(DOI:).' => '',
             '(DOI: )' => ''
-        );
+        ];
 
         foreach ($b as $k => $i) {
             $cite = str_replace($k, $i, $cite);
         }
 
         // Strip empty punctuation from the start
-        $c = array(
+        $c = [
             "' ",
             '" ',
             '(',
@@ -1016,7 +1016,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
             '! ',
             ': ',
             '; '
-        );
+        ];
 
         foreach ($c as $k) {
             if (substr($cite, 0, 2) == $k) {
@@ -1031,8 +1031,8 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
         }
 
         // percent encode chars
-        $chars      = array('%', ' ', '/', ':', '"', '\'', '&amp;');
-        $replace    = array("%20", "%20", "%2F", "%3A", "%22", "%27", "%26");
+        $chars      = ['%', ' ', '/', ':', '"', '\'', '&amp;'];
+        $replace    = ["%20", "%20", "%2F", "%3A", "%22", "%27", "%26"];
         $coins_data = str_replace($chars, $replace, implode('&', $coins_data));
 
         $cite = preg_replace('/, :/', ':', $cite);
@@ -1083,7 +1083,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
      * @param   array   $openurl   Data to append
      * @return  string
      */
-    public function citationDetails($openurl = array())
+    public function citationDetails($openurl = [])
     {
         $details  = '';
 
@@ -1217,7 +1217,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
         $text  = $openurl['text'];
         $icon  = $openurl['icon'];
         $link  = $openurl['link'];
-        $query = array();
+        $query = [];
 
         // citation type
         $citation_type = $citation->relatedType()->get('type');
@@ -1353,9 +1353,9 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
             return false;
         }
 
-        $this->sponsors()->sync(array());
-        $this->updateTags(array());
-        $this->updateTags(array(), 'badge');
+        $this->sponsors()->sync([]);
+        $this->updateTags([]);
+        $this->updateTags([], 'badge');
 
         return true;
     }
@@ -1377,7 +1377,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
             ->rows();
 
         if ($authors->count()) {
-            $convertedAuthors = array();
+            $convertedAuthors = [];
             foreach ($authors as $author) {
                 $lastName   = $author->get('surname', '');
                 $firstName  = $author->get('givenName', '');

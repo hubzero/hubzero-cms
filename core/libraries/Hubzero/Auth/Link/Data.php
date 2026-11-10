@@ -53,19 +53,19 @@ class Data extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'link_id'    => 'positive|nonzero',
         'domain_key' => 'notempty'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      **/
-    public $always = array(
+    public $always = [
         'modified'
-    );
+    ];
 
     /**
      * Generates automatic modified field value

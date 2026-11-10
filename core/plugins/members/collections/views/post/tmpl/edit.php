@@ -24,13 +24,13 @@ if (!$this->entry->exists()) {
 }
 
 //tag editor
-$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $item->tags('string'))));
+$tf = Event::trigger('hubzero.onGetMultiEntry', [['tags', 'tags', 'actags', '', $item->tags('string')]]);
 
 $type = 'file'; //strtolower(Request::getWord('type', $item->get('type')));
 if (!$type) {
     $type = 'file';
 }
-if ($type && !in_array($type, array('file', 'image', 'text', 'link'))) {
+if ($type && !in_array($type, ['file', 'image', 'text', 'link'])) {
     $type = 'link';
 }
 
@@ -154,9 +154,9 @@ $this->css()
                     <label for="field_description">
                         <?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FIELD_DESCRIPTION'); ?>
                         <?php if ($this->entry->get('original')) { ?>
-                            <?php echo $this->editor('fields[description]', $this->escape(stripslashes($item->description('raw'))), 35, 5, 'field_description', array('class' => 'form-control minimal no-footer')); ?>
+                            <?php echo $this->editor('fields[description]', $this->escape(stripslashes($item->description('raw'))), 35, 5, 'field_description', ['class' => 'form-control minimal no-footer']); ?>
                         <?php } else { ?>
-                            <?php echo $this->editor('post[description]', $this->escape(stripslashes($this->entry->description('raw'))), 35, 5, 'field_description', array('class' => 'form-control minimal no-footer')); ?>
+                            <?php echo $this->editor('post[description]', $this->escape(stripslashes($this->entry->description('raw'))), 35, 5, 'field_description', ['class' => 'form-control minimal no-footer']); ?>
                         <?php } ?>
                     </label>
                 </div>

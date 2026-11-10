@@ -37,7 +37,7 @@ class Javascript extends AbstractRenderer
 
         $messages = $this->getMessages();
 
-        $output = array();
+        $output = [];
         $output[] = '<script type="text/javascript">';
         $output[] = 'if (!window.console) console = {};';
         $output[] = 'console.log   = console.log   || function(){};';

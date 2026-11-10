@@ -83,7 +83,7 @@ class Projects extends AdminController
         $this->view->premiumQuota = Helpers\Html::convertSize(floatval($this->config->get('premiumQuota', 30)), 'GB', 'b');
 
         // Get filters
-        $this->view->filters = array(
+        $this->view->filters = [
             'limit' => Request::getState(
                 $this->_option . '.projects.limit',
                 'limit',
@@ -132,9 +132,9 @@ class Projects extends AdminController
             'getowner'   => 1,
             'activity'   => 1,
             'quota'      => Request::getString('quota', 'all', 'post')
-        );
+        ];
 
-        if (!in_array($this->view->filters['filterby'], array('setting_up_in_progress', 'active', 'deleted', 'archived', 'rejected', 'pending_approval'))) {
+        if (!in_array($this->view->filters['filterby'], ['setting_up_in_progress', 'active', 'deleted', 'archived', 'rejected', 'pending_approval'])) {
             $this->view->filters['filterby'] = '';
         }
 
@@ -222,7 +222,7 @@ class Projects extends AdminController
         Request::setVar('hidemainmenu', 1);
 
         // Incoming project ID
-        $id = Request::getArray('id', array(0));
+        $id = Request::getArray('id', [0]);
         if (is_array($id)) {
             $id = (!empty($id) ? intval($id[0]) : 0);
         }
@@ -248,7 +248,7 @@ class Projects extends AdminController
         $this->view->types = $objT->getTypes();
 
         // Get activity counts
-        $counts = Event::trigger('projects.onProjectCount', array($model, 1));
+        $counts = Event::trigger('projects.onProjectCount', [$model, 1]);
         $counts = Helpers\Html::getCountArray($counts);
         $counts['activity'] = \Hubzero\Activity\Recipient::all()
             ->whereEquals('scope', 'project')
@@ -307,7 +307,7 @@ class Projects extends AdminController
         // Get project params
         $this->view->params = $model->params;
 
-        $content = Event::trigger('projects.diskspace', array($model, 'local', 'admin'));
+        $content = Event::trigger('projects.diskspace', [$model, 'local', 'admin']);
         $this->view->diskusage = isset($content[0])  ? $content[0] : '';
 
         // Set any errors
@@ -465,7 +465,7 @@ class Projects extends AdminController
         // Re-sync the project's login (pr-<alias>) group to the new state so SFTP
         // (projfs) access is revoked on delete and restored on reinstate -- the same
         // fix as the site-side changestate (ticket 2802).
-        if (in_array($action, array('delete', 'reinstate'), true)) {
+        if (in_array($action, ['delete', 'reinstate'], true)) {
             $model->table('Owner')->sysGroup(
                 $model->get('alias'),
                 $this->config->get('group_prefix', 'pr-')
@@ -480,7 +480,7 @@ class Projects extends AdminController
         $cloud->setTags($tags, User::get('id'), 1);
 
         // Save params
-        $incoming = Request::getArray('params', array());
+        $incoming = Request::getArray('params', []);
         if (!empty($incoming)) {
             foreach ($incoming as $key => $value) {
                 if ($key == 'quota' || $key == 'pubQuota') {
@@ -508,12 +508,12 @@ class Projects extends AdminController
         $this->_changeOwnership();
 
         // Allow plugins to respond to changes
-        Event::trigger('projects.onProjectAfterSave', array($this->model));
+        Event::trigger('projects.onProjectAfterSave', [$this->model]);
 
         // Send message
         if ($this->config->get('messaging', 0) && $sendmail && count($managers) > 0) {
             // Email config
-            $from = array();
+            $from = [];
             $from['name']  = Config::get('sitename') . ' ' . Lang::txt('COM_PROJECTS');
             $from['email'] = Config::get('mailfrom');
 
@@ -521,17 +521,17 @@ class Projects extends AdminController
             $from['multipart'] = md5(date('U'));
 
             // Message body
-            $eview = new \Hubzero\Mail\View(array(
+            $eview = new \Hubzero\Mail\View([
                 'name'   => 'emails',
                 'layout' => 'admin_plain'
-            ));
+            ]);
             $eview->option  = $this->_option;
             $eview->subject = $subject;
             $eview->action  = $action;
             $eview->project = $model;
             $eview->message = $message;
 
-            $body = array();
+            $body = [];
             $body['plaintext'] = $eview->loadTemplate(false);
             $body['plaintext'] = str_replace("\n", "\r\n", $body['plaintext']);
 
@@ -541,7 +541,7 @@ class Projects extends AdminController
             $body['multipart'] = str_replace("\n", "\r\n", $body['multipart']);
 
             // Send HUB message
-            Event::trigger('xmessage.onSendMessage', array('projects_admin_notice', $subject, $body, $from, $managers, $this->_option));
+            Event::trigger('xmessage.onSendMessage', ['projects_admin_notice', $subject, $body, $from, $managers, $this->_option]);
         }
 
         Notify::message($this->_message, 'success');
@@ -645,8 +645,8 @@ class Projects extends AdminController
 
         // Incoming
         $private = ($this->getTask() == 'accesspublic' ? 0 : 1);
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for an ID
         if (count($ids) < 1) {
@@ -674,7 +674,7 @@ class Projects extends AdminController
             }
 
             // Allow plugins to respond to changes
-            Event::trigger('projects.onProjectAfterSave', array($model));
+            Event::trigger('projects.onProjectAfterSave', [$model]);
 
             $i++;
         }
@@ -701,8 +701,8 @@ class Projects extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $i = 0;
 
@@ -726,7 +726,7 @@ class Projects extends AdminController
                 }
 
                 // Allow plugins to respond to changes
-                Event::trigger('projects.onProjectAfterSave', array($model));
+                Event::trigger('projects.onProjectAfterSave', [$model]);
 
                 $i++;
             }
@@ -755,8 +755,8 @@ class Projects extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $i = 0;
 
@@ -780,7 +780,7 @@ class Projects extends AdminController
                 }
 
                 // Allow plugins to respond to changes
-                Event::trigger('projects.onProjectAfterSave', array($model));
+                Event::trigger('projects.onProjectAfterSave', [$model]);
 
                 $i++;
             }
@@ -809,8 +809,8 @@ class Projects extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $i = 0;
 
@@ -832,7 +832,7 @@ class Projects extends AdminController
             }
 
             // Allow plugins to respond to changes
-            Event::trigger('projects.onProjectAfterSave', array($model));
+            Event::trigger('projects.onProjectAfterSave', [$model]);
 
             $i++;
         }
@@ -1037,10 +1037,10 @@ class Projects extends AdminController
         }
 
         $repo = new \Components\Projects\Models\Repo($project, 'local');
-        $params = array(
+        $params = [
             'path' => $repo->get('path'),
             'adv'  => true
-        );
+        ];
         $repo->call('optimize', $params);
 
         Notify::success(Lang::txt('Git repo optimized'));
@@ -1171,7 +1171,7 @@ class Projects extends AdminController
             ->rows();
 
         // Collect old fields
-        $oldFields = array();
+        $oldFields = [];
         foreach ($fields as $oldField) {
             $oldFields[$oldField->get('id')] = $oldField;
         }
@@ -1190,7 +1190,7 @@ class Projects extends AdminController
             }
 
             $field = ($field ?: Field::oneOrNew($fid));
-            $field->set(array(
+            $field->set([
                 'type'          => (string) $element->field_type,
                 'label'         => (string) $element->label,
                 'name'          => (string) $element->name,
@@ -1202,7 +1202,7 @@ class Projects extends AdminController
                 'action_create' => (isset($element->create) ? (int) $element->create : 1),
                 'action_update' => (isset($element->update) ? (int) $element->update : 1),
                 'action_edit'   => (isset($element->edit)   ? (int) $element->edit   : 1)
-            ));
+            ]);
 
             if ($field->get('type') == 'dropdown') {
                 $field->set('type', 'select');
@@ -1217,7 +1217,7 @@ class Projects extends AdminController
             }
 
             // Collect old options
-            $oldOptions = array();
+            $oldOptions = [];
             foreach ($field->options as $oldOption) {
                 $oldOptions[$oldOption->get('id')] = $oldOption;
             }
@@ -1237,7 +1237,7 @@ class Projects extends AdminController
                         unset($oldOptions[$oid]);
                     }
 
-                    $dependents = array();
+                    $dependents = [];
                     if (isset($opt->dependents)) {
                         $dependents = explode(',', trim($opt->dependents));
                         $dependents = array_map('trim', $dependents);
@@ -1249,14 +1249,14 @@ class Projects extends AdminController
                     }
 
                     $option = ($option ?: Option::oneOrNew($oid));
-                    $option->set(array(
+                    $option->set([
                         'field_id'   => $field->get('id'),
                         'label'      => (string) $opt->label,
                         'value'      => (isset($opt->value)   ? (string) $opt->value : ''),
                         'checked'    => (isset($opt->checked) ? (int) $opt->checked : 0),
                         'ordering'   => ($k + 1),
                         'dependents' => json_encode($dependents)
-                    ));
+                    ]);
 
                     if (!$option->save()) {
                         Notify::error($option->getError());

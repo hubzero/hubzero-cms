@@ -31,13 +31,13 @@ class FilesystemServiceProvider extends ServiceProvider
     {
         $this->app['filesystem'] = function ($app) {
             if ($app['config']->get('ftp_enable')) {
-                $adapter = new Ftp(array(
+                $adapter = new Ftp([
                     'host'     => $app['config']->get('ftp_host'),
                     'port'     => $app['config']->get('ftp_port'),
                     'username' => $app['config']->get('ftp_user'),
                     'password' => $app['config']->get('ftp_pass'),
                     'root'     => $app['config']->get('ftp_root'),
-                ));
+                ]);
             } else {
                 $adapter = new Local($app['config']->get(
                     'virus_scanner',

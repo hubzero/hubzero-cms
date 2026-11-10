@@ -57,7 +57,7 @@ class Wishes extends AdminController
     public function displayTask()
     {
         // Get filters
-        $filters = array(
+        $filters = [
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
@@ -103,7 +103,7 @@ class Wishes extends AdminController
                 0,
                 'int'
             )
-        );
+        ];
 
         $wishlist = Wishlist::oneOrNew($filters['wishlist']);
 
@@ -131,10 +131,10 @@ class Wishes extends AdminController
                     break;
                 case 'accepted':
                     $model
-                        ->whereIn('status', array(
+                        ->whereIn('status', [
                             Wish::WISH_STATE_OPEN,
                             Wish::WISH_STATE_ACCEPTED
-                        ))
+                        ])
                         ->whereEquals('accepted', 1);
                     break;
                 case 'pending':
@@ -212,7 +212,7 @@ class Wishes extends AdminController
 
         if (!is_object($row)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
 
             if (is_array($id) && !empty($id)) {
                 $id = $id[0];
@@ -238,8 +238,8 @@ class Wishes extends AdminController
         $none->id = '-1';
         $none->name = Lang::txt('COM_WISHLIST_SELECT');
 
-        $ownerassignees = array();
-        $ownerassignees[-1] = array();
+        $ownerassignees = [];
+        $ownerassignees[-1] = [];
         $ownerassignees[-1][] = $none;
 
         $assignees = null;
@@ -250,7 +250,7 @@ class Wishes extends AdminController
                 $none->id = '0';
                 $none->name = Lang::txt('COM_WISHLIST_NONE');
 
-                $ownerassignees[$list->id] = array();
+                $ownerassignees[$list->id] = [];
                 $ownerassignees[$list->id][] = $none;
 
                 $owners = $list->getOwners($this->admingroup);
@@ -301,7 +301,7 @@ class Wishes extends AdminController
         }
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
         $fields = array_map('trim', $fields);
 
         // Keep tags for saving
@@ -318,7 +318,7 @@ class Wishes extends AdminController
 
         // Trigger before save event
         $isNew  = $row->isNew();
-        $result = Event::trigger('wishlist.onWishlistBeforeSaveWish', array(&$row, $isNew));
+        $result = Event::trigger('wishlist.onWishlistBeforeSaveWish', [&$row, $isNew]);
 
         if (in_array(false, $result, true)) {
             Notify::error($row->getError());
@@ -334,7 +334,7 @@ class Wishes extends AdminController
         // Set tags
         $row->tag($tags, User::get('id'));
 
-        $plan = Request::getArray('plan', array(), 'post');
+        $plan = Request::getArray('plan', [], 'post');
         $plan['wishid'] = ($plan['wishid'] ? $plan['wishid'] : $row->get('id'));
 
         $create_revision = isset($plan['create_revision']) ? $plan['create_revision'] : 0;
@@ -358,7 +358,7 @@ class Wishes extends AdminController
         }
 
         // Trigger after save event
-        Event::trigger('wishlist.onWishlistAfterSaveWish', array(&$row, $isNew));
+        Event::trigger('wishlist.onWishlistAfterSaveWish', [&$row, $isNew]);
 
         Notify::success(Lang::txt('COM_WISHLIST_WISH_SAVED'));
 
@@ -385,8 +385,8 @@ class Wishes extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Do we have any IDs?
         $removed = 0;
@@ -401,7 +401,7 @@ class Wishes extends AdminController
                 }
 
                 // Trigger after delete event
-                Event::trigger('wishlist.onWishlistAfterDeleteWish', array($id));
+                Event::trigger('wishlist.onWishlistAfterDeleteWish', [$id]);
 
                 $removed++;
             }
@@ -481,8 +481,8 @@ class Wishes extends AdminController
 
         // Incoming
         $cid = Request::getInt('cid', 0);
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for an ID
         if (count($ids) < 1) {

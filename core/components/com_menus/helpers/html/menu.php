@@ -40,12 +40,12 @@ class HtmlMenu
         if (empty(self::$menus)) {
             $items = \Components\Menus\Models\Menu::all()->order('title', 'asc')->rows();
 
-            $menus = array();
+            $menus = [];
             foreach ($items as $item) {
-                $menus[] = array(
+                $menus[] = [
                     'value' => $item->menutype,
                     'text'  => $item->title
-                );
+                ];
             }
             self::$menus = $menus;
         }
@@ -59,7 +59,7 @@ class HtmlMenu
      * @param   array  $config  An array of configuration options.
      * @return  array
      */
-    public static function menuitems($config = array())
+    public static function menuitems($config = [])
     {
         if (empty(self::$items)) {
             $menus = \Components\Menus\Models\Menu::all()
@@ -82,7 +82,7 @@ class HtmlMenu
                 if (is_numeric($config['published'])) {
                     $query->whereEquals('published', (int) $config['published']);
                 } elseif ($config['published'] === '') {
-                    $query->whereIn('published', array(0, 1));
+                    $query->whereIn('published', [0, 1]);
                 }
             }
 
@@ -91,10 +91,10 @@ class HtmlMenu
             $items = $query->rows();
 
             // Collate menu items based on menutype
-            $lookup = array();
+            $lookup = [];
             foreach ($items as $item) {
                 if (!isset($lookup[$item->menutype])) {
-                    $lookup[$item->menutype] = array();
+                    $lookup[$item->menutype] = [];
                 }
                 // Not &$item. foreach reuses one variable, so a reference to
                 // it makes every entry an alias of the last row read - which is
@@ -105,7 +105,7 @@ class HtmlMenu
 
                 $item->text = str_repeat('- ', $item->level) . $item->text;
             }
-            self::$items = array();
+            self::$items = [];
 
             foreach ($menus as $menu) {
                 // Start group:
@@ -138,7 +138,7 @@ class HtmlMenu
      * @param   array   $config    An array of options for the control.
      * @return  string
      */
-    public static function menuitemlist($name, $selected = null, $attribs = null, $config = array())
+    public static function menuitemlist($name, $selected = null, $attribs = null, $config = [])
     {
         static $count;
 
@@ -148,12 +148,12 @@ class HtmlMenu
             'genericlist',
             $options,
             $name,
-            array(
+            [
                 'id' => isset($config['id']) ? $config['id'] : 'assetgroups_' . ++$count,
                 'list.attr' => (is_null($attribs) ? 'class="inputbox" size="1"' : $attribs),
                 'list.select' => (int) $selected,
                 'list.translate' => false
-            )
+            ]
         );
     }
 
@@ -182,10 +182,10 @@ class HtmlMenu
                 'genericlist',
                 $order,
                 'ordering',
-                array(
+                [
                     'list.attr' => 'class="inputbox" size="1"',
                     'list.select' => intval($row->ordering)
-                )
+                ]
             );
         } else {
             $ordering = '<input type="hidden" name="ordering" value="' . $row->ordering . '" />'
@@ -216,26 +216,26 @@ class HtmlMenu
             ->rows();
 
         if (!$mitems) {
-            $mitems = array();
+            $mitems = [];
         }
 
         $mitems_temp = $mitems;
 
         // Establish the hierarchy of the menu
-        $children = array();
+        $children = [];
         // First pass - collect children
         foreach ($mitems as $v) {
             $pt = $v->parent_id;
-            $list = @$children[$pt] ? $children[$pt] : array();
+            $list = @$children[$pt] ? $children[$pt] : [];
             array_push($list, $v);
             $children[$pt] = $list;
         }
 
         // Second pass - get an indent list of the items
-        $list = self::treeRecurse(intval($mitems->first()->parent_id), '', array(), $children, 9999, 0, 0);
+        $list = self::treeRecurse(intval($mitems->first()->parent_id), '', [], $children, 9999, 0, 0);
 
         // Code that adds menu name to Display of Page(s)
-        $mitems = array();
+        $mitems = [];
         if ($all | $unassigned) {
             $mitems[] = Html::select('option', '<OPTGROUP>', Lang::txt('JOPTION_MENUS'));
 
@@ -306,7 +306,7 @@ class HtmlMenu
 
                 $list[$id] = $v;
                 $list[$id]->treename = "$indent$txt";
-                $list[$id]->children = count($children[$id] ?? array());
+                $list[$id]->children = count($children[$id] ?? []);
 
                 $list = self::treeRecurse($id, $indent . $spacer, $list, $children, $maxlevel, $level + 1, $type);
             }

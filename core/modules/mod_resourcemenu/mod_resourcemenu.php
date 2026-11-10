@@ -38,11 +38,11 @@ class Resourcemenu extends Module
         // Get the search result totals
         $results = Event::trigger(
             'content.onPrepareContent',
-            array(
+            [
                 '',
                 $obj,
                 $this->params
-            )
+            ]
         );
 
         $this->html = $obj->text;

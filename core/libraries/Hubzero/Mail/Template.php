@@ -26,7 +26,7 @@ class Template extends Html
      * @param   array    $params   Associative array of attributes
      * @return  The rendered data
      */
-    public function render($caching = false, $params = array())
+    public function render($caching = false, $params = [])
     {
         if (!isset($params['template'])) {
             // Mail from the admin, the API or the command line has no active site

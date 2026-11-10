@@ -42,10 +42,10 @@ class Author extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'user_id' => 'positive|nonzero',
         'page_id' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Defines a belongs to one relationship between task and liaison
@@ -81,7 +81,7 @@ class Author extends Relational
         }
 
         // Get the list of existing authors
-        $ids = array();
+        $ids = [];
 
         $existing = self::all()
             ->whereEquals('page_id', (int)$page_id)
@@ -92,7 +92,7 @@ class Author extends Relational
 
         $err = null;
 
-        $auths = array();
+        $auths = [];
 
         // Turn the comma-separated string of authors into an array and loop through it
         if ($authors) {

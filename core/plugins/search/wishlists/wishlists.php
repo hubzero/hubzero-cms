@@ -30,7 +30,7 @@ class Wishlists extends Plugin
         $terms = $request->get_term_ar();
         $weight = 'match(wli.subject, wli.about) against(\'' . join(' ', $terms['stemmed']) . '\')';
 
-        $addtl_where = array();
+        $addtl_where = [];
         foreach ($terms['mandatory'] as $mand) {
             $addtl_where[] = "(wli.subject LIKE '%$mand%' OR wli.about LIKE '%$mand%')";
         }
@@ -163,7 +163,7 @@ class Wishlists extends Plugin
                 $record->hubtype      = $type;
                 $record->title        = $title;
                 $record->description  = $description;
-                $record->author       = array($author);
+                $record->author       = [$author];
                 $record->tags         = $tags;
                 $record->path         = $path;
                 $record->access_level = $access_level;

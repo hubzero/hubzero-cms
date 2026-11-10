@@ -24,10 +24,10 @@ class Form extends Content
      *
      * @var array
      **/
-    protected static $info = array(
+    protected static $info = [
             'action_message' => 'Create a quiz/exam',
-            'responds_to'    => array('pdf')
-        );
+            'responds_to'    => ['pdf']
+        ];
 
     /**
      * Create method for this handler
@@ -47,7 +47,7 @@ class Form extends Content
             $filename = $pathinfo['filename'];
             $ext      = $pathinfo['extension'];
         } else {
-            return array('error' => 'No files provided');
+            return ['error' => 'No files provided'];
         }
 
         // Instantiate form object
@@ -57,7 +57,7 @@ class Form extends Content
         if (!$pdf->hasErrors()) {
             $pdf->renderPageImages();
         } else {
-            return array('error' => $pdf->getErrors());
+            return ['error' => $pdf->getErrors()];
         }
 
         // Grab the newly created form id
@@ -84,7 +84,7 @@ class Form extends Content
 
         // Check for errors in response
         if (array_key_exists('error', $return)) {
-            return array('error' => $return['error']);
+            return ['error' => $return['error']];
         } else {
             // Set the asset id on the form
             $pdf->setAssetId($return['assets']['asset_id']);
@@ -143,11 +143,11 @@ class Form extends Content
 
 							var data = " .
                                 json_encode(
-                                    array(
-                                        'assets' => array(
+                                    [
+                                        'assets' => [
                                             $return['assets']
-                                        )
-                                    )
+                                        ]
+                                    ]
                                 ) . ";
 
 							data.assets[0].asset_title = title;
@@ -158,7 +158,7 @@ class Form extends Content
 				});";
         }
 
-        return array('js' => $js);
+        return ['js' => $js];
     }
 
     /**
@@ -175,7 +175,7 @@ class Form extends Content
 
         // Make sure we got a proper object
         if (!is_object($form)) {
-            return array('error' => "Asset " . $asset->get('id') . " is not associated with a valid form.");
+            return ['error' => "Asset " . $asset->get('id') . " is not associated with a valid form."];
         }
 
         $gid = Request::getString('course_id');
@@ -209,6 +209,6 @@ class Form extends Content
 				}
 			});";
 
-        return array('type' => 'js', 'value' => $js);
+        return ['type' => 'js', 'value' => $js];
     }
 }

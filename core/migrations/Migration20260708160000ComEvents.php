@@ -35,12 +35,12 @@ class Migration20260708160000ComEvents extends Base
      *
      * @var  array
      */
-    protected $actions = array(
+    protected $actions = [
         'core.create'     => 'Author',
         'core.edit'       => 'Editor',
         'core.edit.state' => 'Publisher',
         'core.edit.own'   => 'Author',
-    );
+    ];
 
     /**
      * Resolve a user group id by its title.
@@ -73,7 +73,7 @@ class Migration20260708160000ComEvents extends Base
         }
 
         $rules = json_decode($asset->rules, true);
-        $asset->rules = is_array($rules) ? $rules : array();
+        $asset->rules = is_array($rules) ? $rules : [];
 
         return $asset;
     }
@@ -116,7 +116,7 @@ class Migration20260708160000ComEvents extends Base
                 continue;
             }
 
-            $rules[$action] = array((string) $group => 0);
+            $rules[$action] = [(string) $group => 0];
         }
 
         $this->saveRules($asset->id, $rules);
@@ -143,8 +143,8 @@ class Migration20260708160000ComEvents extends Base
                 continue;
             }
 
-            if (isset($rules[$action]) && $rules[$action] === array((string) $group => 0)) {
-                $rules[$action] = array();
+            if (isset($rules[$action]) && $rules[$action] === [(string) $group => 0]) {
+                $rules[$action] = [];
             }
         }
 

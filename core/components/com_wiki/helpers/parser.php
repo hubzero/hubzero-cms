@@ -68,7 +68,7 @@ class Parser extends Obj
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         $signature = serialize($parser);
@@ -87,7 +87,7 @@ class Parser extends Obj
      * @param   boolean  $getnew
      * @return  void
      */
-    public function initialise($config = array(), $getnew = false)
+    public function initialise($config = [], $getnew = false)
     {
         // Check if parser is already loaded
         if (is_null($this->parser)) {
@@ -114,7 +114,7 @@ class Parser extends Obj
      */
     public function toc($text, $config, $depth = 0)
     {
-        $this->load(array(), $config, true);
+        $this->load([], $config, true);
         $parser = $this->parser->onGetWikiParser($config, true);
 
         return $parser->toc($text, true, $depth);
@@ -143,13 +143,13 @@ class Parser extends Obj
                 }
                 if (ctype_digit($arg)) {
                     $depth = (int) $arg;
-                } elseif (in_array(strtolower($arg), array('here', 'inline', 'sidebar', 'off'), true)) {
+                } elseif (in_array(strtolower($arg), ['here', 'inline', 'sidebar', 'off'], true)) {
                     $mode = strtolower($arg);
                 }
             }
         }
 
-        return array('mode' => $mode, 'depth' => $depth);
+        return ['mode' => $mode, 'depth' => $depth];
     }
 
     /**
@@ -188,11 +188,11 @@ class Parser extends Obj
         $mode      = Settings::get('automatic_toc', 'inline', $domain, $domain_id);
         $threshold = (int) Settings::get('toc_threshold', 4, $domain, $domain_id);
 
-        if (!in_array($mode, array('inline', 'sidebar', 'off'), true)) {
+        if (!in_array($mode, ['inline', 'sidebar', 'off'], true)) {
             $mode = 'inline';
         }
 
-        return array('mode' => $mode, 'threshold' => max(1, $threshold));
+        return ['mode' => $mode, 'threshold' => max(1, $threshold)];
     }
 
     /**
@@ -205,7 +205,7 @@ class Parser extends Obj
      * @param   array   $params     Params for the plugin
      * @return  void
      */
-    public function parse($text, $config, $fullparse = true, $getnew = false, $params = array())
+    public function parse($text, $config, $fullparse = true, $getnew = false, $params = [])
     {
         if (!$this->name) {
             return nl2br($text);
@@ -239,7 +239,7 @@ class Parser extends Obj
      * @param   bool   $getnew   Tells initialise() to create new parser or not
      * @return  void
      */
-    private function load($config = array(), $pconfig = array(), $getnew = false)
+    private function load($config = [], $pconfig = [], $getnew = false)
     {
         // Check if editor is already loaded
         if (!$getnew && !is_null($this->parser)) {

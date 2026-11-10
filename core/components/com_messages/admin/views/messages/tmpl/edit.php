@@ -36,15 +36,15 @@ Toolbar::help('JHELP_COMPONENTS_MESSAGING_WRITE');
         <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_MESSAGES_FIELD_USER_ID_TO_DESC'); ?>">
             <label for="field-user_id_to"><?php echo Lang::txt('COM_MESSAGES_FIELD_USER_ID_TO_LABEL'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
             <?php
-            $mc = Event::trigger('hubzero.onGetSingleEntry', array(
-                array(
+            $mc = Event::trigger('hubzero.onGetSingleEntry', [
+                [
                     'members',   // The component to call
                     'fields[user_id_to]',        // Name of the input field
                     'field-user_id_to', // ID of the input field
                     'required',          // CSS class(es) for the input field
                     '' // The value of the input field
-                )
-            ));
+                ]
+            ]);
             if (count($mc) > 0) {
                 echo $mc[0];
             } else { ?>

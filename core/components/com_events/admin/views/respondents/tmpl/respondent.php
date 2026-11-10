@@ -73,7 +73,7 @@ $resp = $this->resp;
                 <th><?php echo Lang::txt('COM_EVENTS_RESPONDANT_RACE'); ?></th>
                 <td>
                     <?php
-                    $r = array();
+                    $r = [];
                     foreach ($races as $race) {
                         $r[] = $this->escape($race->race . ($race->tribal_affiliation ? ' (' . $race->tribal_affiliation . ')' : ''));
                     }

@@ -32,7 +32,7 @@ class User extends Base implements CommandInterface
      *
      * @var  array
      **/
-    const WEB_ACCOUNTS = array('apache', 'www-data', 'nginx');
+    const WEB_ACCOUNTS = ['apache', 'www-data', 'nginx'];
 
     /**
      * Default (required) command
@@ -104,15 +104,15 @@ class User extends Base implements CommandInterface
         $dbo    = App::get('db');
         $tables = $dbo->getTableList();
         $prefix = $dbo->getPrefix();
-        $fields = array(
+        $fields = [
             'created_by', 'modified_by', 'reviewed_by', 'user_id', 'userid', 'authorid', 'checked_out', 'uid',
             'uidNumber', 'created_user_id', 'modified_user_id', 'object_id', 'follower_id', 'following_id',
             'sent_by', 'redeemed_by', 'userid', 'creator_id', 'addedBy', 'editedBy', 'user_id_to', 'user_id_from',
             'commenter', 'uploaded_by', 'posted_by', 'assigned_to', 'closed_by', 'owned_by_user', 'created_by_user',
             'ran_by', 'foreign_key', 'taggerid', 'actor_id', 'voter', 'proposed_by', 'granted_by', 'assigned',
             'approved_by', 'action_by', 'authorid'
-        );
-        $unames = array(
+        ];
+        $unames = [
             $prefix . 'event_registration.username',
             //$prefix . 'resource_stats_clusters.username',
             //$prefix . 'resource_stats_tools_users.user',
@@ -124,20 +124,20 @@ class User extends Base implements CommandInterface
             $prefix . 'tool.registered_by',
             $prefix . 'tool_version.released_by',
             $prefix . 'wiki_page.authors'
-        );
-        $excludes = array(
+        ];
+        $excludes = [
             $prefix . 'xprofiles',
             $prefix . 'session_log',
             $prefix . 'session',
             $prefix . 'users_quotas'
-        );
-        $constraints = array(
+        ];
+        $constraints = [
             $prefix . 'collections.object_id'              => "AND `object_type` = 'member'",
             $prefix . 'collections_following.follower_id'  => "AND `follower_type` = 'member'",
             $prefix . 'collections_following.following_id' => "AND `following_type` = 'member'",
             $prefix . 'support_acl_aros.foreign_key'       => "AND `model` = 'user'",
             $prefix . 'support_acl_aros.alias'             => "AND `model` = 'user'"
-        );
+        ];
 
         // First, make sure we were given valid user ids
         if (!$suser->get('id') || !$duser->get('id')) {
@@ -442,7 +442,7 @@ class User extends Base implements CommandInterface
         $user->set('homeDirectory', \Hubzero\User\User::defaultHomeDirectory($username));
         $user->set('loginShell', '/bin/bash');
         $user->set('ftpShell', '/usr/lib/sftp-server');
-        $user->set('accessgroups', array($group));
+        $user->set('accessgroups', [$group]);
         $user->set('registerDate', Date::of('now')->toSql());
         $user->set('registerIP', '127.0.0.1');
         $user->set('access', (int) Component::params('com_members')->get('privacy', 1));

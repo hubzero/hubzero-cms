@@ -76,7 +76,7 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
                 </td>
                 <td align="left">
                     <?php
-                    $groups = array();
+                    $groups = [];
                     foreach ($row->accessgroups as $agroup) {
                         $groups[] = $this->escape($this->accessgroups->seek($agroup->get('group_id'))->get('title'));
                     }

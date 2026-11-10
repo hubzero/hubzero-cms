@@ -41,19 +41,19 @@ class Description extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'description_key' => 'notempty',
         'project_id'      => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'ordering'
-    );
+    ];
 
     /**
      * Get parent project
@@ -109,7 +109,7 @@ class Description extends Relational
      */
     public static function collect($data)
     {
-        $arr = array();
+        $arr = [];
 
         foreach ($data as $description) {
             if (!isset($arr[$description->get('description_key')])) {
@@ -117,7 +117,7 @@ class Description extends Relational
             } else {
                 $values = $arr[$description->get('description_key')];
                 if (!is_array($values)) {
-                    $values = array($values);
+                    $values = [$values];
                 }
                 $values[] = $description->get('description_value');
 

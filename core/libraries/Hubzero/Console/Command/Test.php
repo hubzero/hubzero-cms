@@ -88,9 +88,9 @@ class Test extends Base implements CommandInterface
 
         // We want to stream the output, so set up what we need to do that
         $descriptorspec = [
-            0 => array("pipe", "r"),
-            1 => array("pipe", "w"),
-            2 => array("pipe", "w")
+            0 => ["pipe", "r"],
+            1 => ["pipe", "w"],
+            2 => ["pipe", "w"]
         ];
 
         $process = proc_open($cmd, $descriptorspec, $pipes);
@@ -119,7 +119,7 @@ class Test extends Base implements CommandInterface
     {
         $tests = [];
 
-        $nodes = array(
+        $nodes = [
             ['lib', dirname(dirname(__DIR__))],
             ['core', PATH_CORE . DS . 'templates'],
             ['app', PATH_APP . DS . 'templates'],
@@ -127,7 +127,7 @@ class Test extends Base implements CommandInterface
             ['app', PATH_APP . DS . 'components'],
             ['core', PATH_CORE . DS . 'modules'],
             ['app', PATH_APP . DS . 'modules']
-        );
+        ];
 
         foreach ($nodes as $node) {
             if (!file_exists($node[1])) {
@@ -153,10 +153,10 @@ class Test extends Base implements CommandInterface
         }
 
         // Plugins have one extra level of directories
-        $nodes = array(
+        $nodes = [
             ['core', PATH_CORE . DS . 'plugins'],
             ['app', PATH_APP . DS . 'plugins']
-        );
+        ];
 
         foreach ($nodes as $node) {
             if (!file_exists($node[1])) {

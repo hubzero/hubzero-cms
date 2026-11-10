@@ -97,7 +97,7 @@ class SafePathTest extends Basic
 			return;
 		}
 
-		foreach (array_diff(scandir($path), array('.', '..')) as $item)
+		foreach (array_diff(scandir($path), ['.', '..']) as $item)
 		{
 			$this->remove($path . DS . $item);
 		}
@@ -235,7 +235,7 @@ class SafePathTest extends Basic
 	 */
 	public function testRejectsTraversal()
 	{
-		$paths = array(
+		$paths = [
 			'..',
 			'../victim',
 			'data/../../victim',
@@ -243,7 +243,7 @@ class SafePathTest extends Basic
 			'./victim',
 			'..' . DS . '..' . DS . 'etc',
 			"data\0/victim"
-		);
+		];
 
 		foreach ($paths as $relative)
 		{
@@ -363,7 +363,7 @@ class SafePathTest extends Basic
 		$this->assertTrue(SafePath::write($path, ''));
 		$this->assertEquals('', file_get_contents($path));
 
-		$this->assertEquals(array(), glob($dir . DS . '.keys.*'));
+		$this->assertEquals([], glob($dir . DS . '.keys.*'));
 	}
 
 	/**

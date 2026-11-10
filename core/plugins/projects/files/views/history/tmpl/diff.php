@@ -37,19 +37,19 @@ $endPath = ' &raquo; <span class="subheader"><a href="' . $this->url . '/?action
     $rev1Parts = array_pad(explode('@', (string) $this->params['rev1']), 3, '');
     $rev2Parts = array_pad(explode('@', (string) $this->params['rev2']), 3, '');
 
-    $old = array(
+    $old = [
         'rev'   => $rev1Parts[0],
         'hash'  => $rev1Parts[1],
         'fpath' => $rev1Parts[2],
         'val'   => urlencode($this->params['rev1'])
-    );
+    ];
 
-    $new = array(
+    $new = [
         'rev'   => $rev2Parts[0],
         'hash'  => $rev2Parts[1],
         'fpath' => $rev2Parts[2],
         'val'   => urlencode($this->params['rev2'])
-    );
+    ];
     ?>
 
 <form id="<?php echo $this->ajax ? 'hubForm-ajax' : 'plg-form'; ?>" method="get" action="<?php echo $this->url; ?>">

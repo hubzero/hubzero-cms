@@ -53,7 +53,7 @@ class Adminlogin extends Module
                 $basic = true;
             } else {
                 $display = $pparams->get('display_name', ucfirst($p->name));
-                $authenticators[$p->name] = array('name' => $p->name, 'display' => $display);
+                $authenticators[$p->name] = ['name' => $p->name, 'display' => $display];
             }
         }
 

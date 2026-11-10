@@ -35,14 +35,14 @@ class Featuredmember extends Module
         $this->row = null;
 
         // Randomly choose one
-        $filters = array(
+        $filters = [
             'limit'      => 1,
             'show'       => trim($this->params->get('show', '')),
             'start'      => 0,
             'sortby'     => $database->sqlRand(),
             'search'     => '',
             'authorized' => false
-        );
+        ];
         if ($min = $this->params->get('min_contributions')) {
             $filters['contributions'] = $min;
         }

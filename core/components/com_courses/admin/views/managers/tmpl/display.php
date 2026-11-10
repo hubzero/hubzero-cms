@@ -16,7 +16,7 @@ defined('_HZEXEC_') or die();
 
 $this->js('managers.js');
 
-$roles = $this->course->offering(0)->roles(array('alias' => '!student'));
+$roles = $this->course->offering(0)->roles(['alias' => '!student']);
 $offerings = $this->course->offerings();
 ?>
 <?php if ($this->getError()) { ?>
@@ -45,7 +45,7 @@ $offerings = $this->course->offerings();
                         <?php } ?>
                         <?php
                         foreach ($offerings as $offering) {
-                            $oroles = $offering->roles(array('offering_id' => $offering->get('id')));
+                            $oroles = $offering->roles(['offering_id' => $offering->get('id')]);
                             if (!$oroles || !count($oroles)) {
                                 continue;
                             }
@@ -94,7 +94,7 @@ $offerings = $this->course->offerings();
             </thead>
             <tbody>
 <?php
-        $managers = $this->course->managers(array(), true);
+        $managers = $this->course->managers([], true);
 if (count($managers) > 0) {
     $i = 0;
     foreach ($managers as $manager) {
@@ -153,7 +153,7 @@ if (count($managers) > 0) {
                 <?php } ?>
                 <?php
                 foreach ($offerings as $offering) {
-                    $oroles = $offering->roles(array('offering_id' => $offering->get('id')));
+                    $oroles = $offering->roles(['offering_id' => $offering->get('id')]);
                     if (!$oroles || !count($oroles)) {
                         continue;
                     }

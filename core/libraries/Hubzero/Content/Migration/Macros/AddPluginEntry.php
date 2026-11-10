@@ -65,7 +65,7 @@ class AddPluginEntry extends Macro
 
         $query = $this->db->getQuery()
             ->insert('#__extensions')
-            ->values(array(
+            ->values([
                 'name'           => $name,
                 'type'           => 'plugin',
                 'element'        => $element,
@@ -81,7 +81,7 @@ class AddPluginEntry extends Macro
                 'checked_out'    => 0,
                 'ordering'       => $ordering,
                 'state'          => 0
-            ))
+            ])
             ->toString();
         $this->db->setQuery($query);
         if (!$this->db->query()) {

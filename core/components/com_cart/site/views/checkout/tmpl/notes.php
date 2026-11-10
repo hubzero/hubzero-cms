@@ -19,7 +19,7 @@ $this->css();
 
 <?php
 if (!empty($this->notifications)) {
-    $view = new \Hubzero\Component\View(array('name' => 'shared', 'layout' => 'notifications'));
+    $view = new \Hubzero\Component\View(['name' => 'shared', 'layout' => 'notifications']);
     $view->notifications = $this->notifications;
     $view->display();
 }

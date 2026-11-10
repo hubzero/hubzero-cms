@@ -24,14 +24,14 @@ use Hubzero\Facades\User;
 class ResourceMapGenerator
 {
     // Add namespaces as needed
-    private $xmlNamespace = array(
+    private $xmlNamespace = [
         'xmlns:dc'      => 'http://purl.org/dc/elements/1.1/',
         'xmlns:dcterms' => 'http://purl.org/dc/terms/',
         'xmlns:ore'     => 'http://www.openarchives.org/ore/terms/',
         'xmlns:rdf'     => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
         'xmlns:exif'    => 'http://www.w3.org/2003/12/exif/ns#',
         'xmlns:foaf'    => 'http://xmlns.com/foaf/0.1/'
-    );
+    ];
 
     // URL of the component
     private $componentURL = '';
@@ -55,13 +55,13 @@ class ResourceMapGenerator
     private $date_published;
 
     // List of children this resource has
-    private $children = array();
+    private $children = [];
 
     // Aggregates which resources; compiled from $children
-    private $aggregates = array();
+    private $aggregates = [];
 
     // Parents of this resources
-    private $aggregatedBy = array();
+    private $aggregatedBy = [];
 
     // List of all types of the resource
     private $types;
@@ -173,11 +173,11 @@ class ResourceMapGenerator
 
         $type_id = $pub->category;
         $typesData = new \Components\Publications\Tables\Category($database);
-        $allTypes = $typesData->getCategories(array(
+        $allTypes = $typesData->getCategories([
             'state' => 'all'
-        ));
+        ]);
 
-        $this->types = array();
+        $this->types = [];
         foreach ($allTypes as $type) {
             $types[$type->id] = $type->name;
         }

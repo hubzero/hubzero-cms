@@ -209,7 +209,7 @@ $time = $this->time;
         45,
         5,
         'field-introtext',
-        array('buttons' => false)
+        ['buttons' => false]
     );
     ?>
 </div>
@@ -222,7 +222,7 @@ $time = $this->time;
         45,
         15,
         'field-fulltxt',
-        array('buttons' => false)
+        ['buttons' => false]
     );
     ?>
 </div>

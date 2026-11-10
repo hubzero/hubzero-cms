@@ -62,10 +62,10 @@ class Module extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'title'    => 'notempty',
         'position' => 'notempty'
-    );
+    ];
 
     /**
      * Get params as a Registry object

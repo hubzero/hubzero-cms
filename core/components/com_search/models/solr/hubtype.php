@@ -37,20 +37,20 @@ class HubType extends Relational
      *
      * @var  array
      **/
-    protected $rules = array(
+    protected $rules = [
         //'type'  => 'notempty',
         //'title' => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      **/
-    public $initiate = array(
+    public $initiate = [
         'created_by',
         'created'
-    );
+    ];
 
     /**
      * Get structure for a type

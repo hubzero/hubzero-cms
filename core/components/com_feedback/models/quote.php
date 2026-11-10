@@ -57,9 +57,9 @@ class Quote extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'quote' => 'notempty'
-    );
+    ];
 
     /**
      * Return user
@@ -148,7 +148,7 @@ class Quote extends Relational
      */
     public function files()
     {
-        $files = array();
+        $files = [];
 
         if (!$this->get('id')) {
             return $files;

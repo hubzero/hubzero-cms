@@ -106,11 +106,11 @@ class Collection extends Table
             return false;
         }
 
-        $fields = array(
+        $fields = [
             'object_id'   => intval($object_id),
             'object_type' => trim($object_type),
             'is_default'  => 1
-        );
+        ];
 
         return parent::load($fields);
     }
@@ -126,7 +126,7 @@ class Collection extends Table
     {
         Lang::load('com_collections');
 
-        $result = array(
+        $result = [
             'id'          => 0,
             'title'       => Lang::txt('COM_COLLECTIONS_DEFAULT_TITLE'),
             'description' => Lang::txt('COM_COLLECTIONS_DEFAULT_DESC'),
@@ -135,7 +135,7 @@ class Collection extends Table
             'is_default'  => 1,
             'created_by'  => $object_id,
             'access'      => 4 // Private by default
-        );
+        ];
         if (!$result['created_by']) {
             $result['created_by'] = User::get('id');
         }
@@ -223,7 +223,7 @@ class Collection extends Table
      * @return  string  SQL
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildQuery($filters = array())
+    protected function _buildQuery($filters = [])
     {
         $query  = " FROM $this->_tbl AS b";
         $query .= " INNER JOIN `#__collections_items` AS im ON im.type="
@@ -239,7 +239,7 @@ class Collection extends Table
                 . $this->_db->quote('group');
         }
 
-        $where = array();
+        $where = [];
 
         if (isset($filters['item_id']) && $filters['item_id']) {
             $query .= " INNER JOIN #__collections_posts AS p ON p.collection_id=b.id";
@@ -302,7 +302,7 @@ class Collection extends Table
      * @param   array   $filters
      * @return  mixed
      */
-    public function find($what = '', $filters = array())
+    public function find($what = '', $filters = [])
     {
         $what = strtolower(trim($what));
 
@@ -392,7 +392,7 @@ class Collection extends Table
      * @param   array    $filters  Filters to construct query from
      * @return  integer
      */
-    public function getCount($filters = array())
+    public function getCount($filters = [])
     {
         return $this->find('count', $filters);
     }
@@ -403,7 +403,7 @@ class Collection extends Table
      * @param   array  $filters  Filters to construct query from
      * @return  array
      */
-    public function getRecords($filters = array())
+    public function getRecords($filters = [])
     {
         return $this->find('list', $filters);
     }

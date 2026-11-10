@@ -30,16 +30,16 @@ $data = new Hubzero\Config\Registry(
 // Create a new form
 Hubzero\Form\Form::addFieldPath(Component::path('com_members') . DS . 'models' . DS . 'fields');
 
-$form = new Hubzero\Form\Form('profile', array('control' => 'profile'));
+$form = new Hubzero\Form\Form('profile', ['control' => 'profile']);
 $form->load($xml);
 $form->bind($data);
 
-$fields = array();
+$fields = [];
 foreach ($profiles as $profile) {
     if (isset($fields[$profile->get('profile_key')])) {
         $values = $fields[$profile->get('profile_key')]->get('profile_value');
         if (!is_array($values)) {
-            $values = array($values);
+            $values = [$values];
         }
         $values[] = $profile->get('profile_value');
 
@@ -156,11 +156,11 @@ foreach ($profiles as $profile) {
                 <?php echo Lang::txt('COM_MEMBERS_PROFILE_EMAILUPDATES'); ?>
                 <select name="sendEmail" id="sendEmail" class="input-select">';
                     <?php
-                    $options = array(
+                    $options = [
                         '-1' => Lang::txt('COM_MEMBERS_PROFILE_EMAILUPDATES_OPT_SELECT'),
                         '1'  => Lang::txt('COM_MEMBERS_PROFILE_EMAILUPDATES_OPT_YES'),
                         '0'  => Lang::txt('COM_MEMBERS_PROFILE_EMAILUPDATES_OPT_NO')
-                    );
+                    ];
                     foreach ($options as $key => $value) {
                         $sel = ($key == $this->profile->get('sendEmail')) ? 'selected="1"' : '';
                         echo '<option ' . $sel . ' value="' . $key . '">' . $value . '</option>';

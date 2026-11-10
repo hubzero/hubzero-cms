@@ -33,7 +33,7 @@ class Redirect extends Plugin
 
         if (App::isSite()) {
             // Set the error handler for E_ERROR to be the class handleError method.
-            set_exception_handler(array(static::class, 'handleError'));
+            set_exception_handler([static::class, 'handleError']);
         }
     }
 
@@ -63,7 +63,7 @@ class Redirect extends Plugin
 
         // Get the full current URI.
         $uri = \Hubzero\Utility\Uri::getInstance();
-        $current = $uri->toString(array('scheme', 'host', 'port', 'path', 'query', 'fragment'));
+        $current = $uri->toString(['scheme', 'host', 'port', 'path', 'query', 'fragment']);
 
         // Attempt to ignore idiots.
         if (
@@ -84,7 +84,7 @@ class Redirect extends Plugin
 
             // If no published redirect was found try with the server-relative URL
             if (!$link->get('id') || !$link->isPublished()) {
-                $currRel = $uri->toString(array('path', 'query', 'fragment'));
+                $currRel = $uri->toString(['path', 'query', 'fragment']);
                 $currRel = '/' . trim($currRel, '/');
 
                 $link = \Components\Redirect\Models\Link::all()

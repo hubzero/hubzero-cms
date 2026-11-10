@@ -72,7 +72,7 @@ class Archive extends Obj
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         if (!isset($instances[$key])) {
@@ -90,11 +90,11 @@ class Archive extends Obj
      * @param      boolean $boolean Clear cached data?
      * @return     mixed
      */
-    public function pages($rtrn = 'list', $filters = array(), $clear = false)
+    public function pages($rtrn = 'list', $filters = [], $clear = false)
     {
         switch (strtolower($rtrn)) {
             case 'alias':
-                $aliases = array();
+                $aliases = [];
                 if ($results = $this->pages('list', $filters, true)) {
                     foreach ($results as $result) {
                         $aliases[] = $result->get('alias');
@@ -103,7 +103,7 @@ class Archive extends Obj
                 return $aliases;
             break;
             case 'unapproved':
-                $unapproved = array();
+                $unapproved = [];
                 if ($results = $this->pages('list', $filters, true)) {
                     foreach ($results as $k => $result) {
                         // get current version
@@ -122,7 +122,7 @@ class Archive extends Obj
                 return new ItemList($unapproved);
             break;
             case 'tree':
-                $tree = array();
+                $tree = [];
                 if ($results = $this->pages('list', $filters, $clear)) {
                     $tree = $this->buildTree($results);
                 }
@@ -151,7 +151,7 @@ class Archive extends Obj
      * @param      array   $filters     Filters passed to pages() method
      * @return     mixed
      */
-    public function reset($key = 'home', $value = 0, $filters = array())
+    public function reset($key = 'home', $value = 0, $filters = [])
     {
         // get list of pages
         $pages = $this->pages('list', $filters);
@@ -172,16 +172,16 @@ class Archive extends Obj
     private function buildTree($pages)
     {
         // vars to hold the tree array
-        $tmpTree = array();
-        $tree    = array();
+        $tmpTree = [];
+        $tree    = [];
 
         // first loop organizes by parent
         foreach ($pages as $page) {
             if (!isset($tmpTree[$page->get('parent')])) {
-                $tmpTree[$page->get('parent')] = array();
+                $tmpTree[$page->get('parent')] = [];
             }
             if (!isset($tmpTree[$page->get('id')])) {
-                $tmpTree[$page->get('id')] = array();
+                $tmpTree[$page->get('id')] = [];
             }
 
             // add our page to the parent array

@@ -52,9 +52,9 @@ class Notify extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'uid' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Defines a belongs to one relationship between entry and user

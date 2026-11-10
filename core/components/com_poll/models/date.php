@@ -41,10 +41,10 @@ class Date extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'vote_id' => 'positive|nonzero',
         'poll_id' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Defines a belongs to one relationship between option and poll

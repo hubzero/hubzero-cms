@@ -221,7 +221,7 @@ $this->css()
                         $cls = 'even';
 
                         $i = 0;
-                        $statuses = array();
+                        $statuses = [];
                         foreach ($this->rows as $row) {
                             // Was there any activity on this item?
                             $lastcomment = $row->comments()
@@ -273,7 +273,7 @@ $this->css()
                                         <?php } ?>
                                     </p>
                                     <p>
-                                        <a class="ticket-content" title="<?php echo $this->escape(str_replace(array('<br />', '&amp;'), array('', '&'), $row->content)); ?>" href="<?php echo Route::url($row->link() . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
+                                        <a class="ticket-content" title="<?php echo $this->escape(str_replace(['<br />', '&amp;'], ['', '&'], $row->content)); ?>" href="<?php echo Route::url($row->link() . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
                                             <?php echo $row->content ? \Hubzero\Utility\Str::truncate(strip_tags($row->content), 200) : Lang::txt('COM_SUPPORT_NO_CONTENT_FOUND'); ?>
                                         </a>
                                     </p>

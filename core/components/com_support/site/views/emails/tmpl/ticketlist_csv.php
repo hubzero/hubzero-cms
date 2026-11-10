@@ -15,7 +15,7 @@ defined('_HZEXEC_') or die();
 
 $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id=';
 
-$cells = array();
+$cells = [];
 $cells[] = '"Number"';
 $cells[] = '"Issue"';
 $cells[] = '"Created"';
@@ -43,7 +43,7 @@ if (isset($this->tickets) && count($this->tickets) > 0) {
 
         $sef = Route::url($base . $ticket->id);
 
-        $cells = array();
+        $cells = [];
         $cells[] = '"#' . addslashes($ticket->id) . '"';
         $cells[] = '"' . addslashes($ticket->summary) . '"';
         $cells[] = '"' . addslashes($ticket->created) . '"';

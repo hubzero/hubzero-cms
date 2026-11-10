@@ -47,7 +47,7 @@ class Messages extends AdminController
      */
     public function displayTask()
     {
-        $filters = array(
+        $filters = [
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
@@ -70,7 +70,7 @@ class Messages extends AdminController
                 'filter_order_Dir',
                 'desc'
             )
-        );
+        ];
 
         $entries = Message::all()
             ->including(['from', function ($from) {
@@ -90,7 +90,7 @@ class Messages extends AdminController
         if ($filters['state']) {
             $entries->whereEquals('state', (int)$filters['state']);
         } else {
-            $entries->whereIn('state', array(0, 1));
+            $entries->whereIn('state', [0, 1]);
         }
 
         // Get records
@@ -155,7 +155,7 @@ class Messages extends AdminController
 
         if (!is_object($row)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id) && !empty($id)) {
                 $id = $id[0];
             }
@@ -194,7 +194,7 @@ class Messages extends AdminController
         }
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post', 'none', 2);
+        $fields = Request::getArray('fields', [], 'post', 'none', 2);
 
         // Initiate extended database class
         $row = Message::oneOrNew($fields['message_id'])->set($fields);
@@ -234,8 +234,8 @@ class Messages extends AdminController
         $state = $this->_task == 'publish' ? Message::STATE_PUBLISHED : Message::STATE_UNPUBLISHED;
 
         // Incoming
-        $ids = Request::getArray('id', array(0));
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', [0]);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Loop through all the IDs
         $success = 0;
@@ -290,7 +290,7 @@ class Messages extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
 
         $removed = 0;
 

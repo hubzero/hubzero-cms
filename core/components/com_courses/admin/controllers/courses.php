@@ -46,7 +46,7 @@ class Courses extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->filters = array(
+        $this->view->filters = [
             'search' => urldecode(trim(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
@@ -81,7 +81,7 @@ class Courses extends AdminController
                 'filter_order_Dir',
                 'ASC'
             ))
-        );
+        ];
 
         // In case limit has been changed, adjust limitstart accordingly
         $limit = $this->view->filters['limit'];
@@ -118,7 +118,7 @@ class Courses extends AdminController
 
         if (!is_object($row)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id) && !empty($id)) {
                 $id = $id[0];
             }
@@ -156,7 +156,7 @@ class Courses extends AdminController
         Request::checkToken();
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
         $fields = array_map('trim', $fields);
 
         // Initiate extended database class
@@ -200,7 +200,7 @@ class Courses extends AdminController
     public function copyTask()
     {
         // Incoming
-        $id = Request::getArray('id', array());
+        $id = Request::getArray('id', []);
 
         // Get the single ID we're working with
         if (is_array($id)) {
@@ -245,8 +245,8 @@ class Courses extends AdminController
         Request::checkToken();
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $num = 0;
 
@@ -303,8 +303,8 @@ class Courses extends AdminController
         $state = $this->_task == 'publish' ? 1 : 0;
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Do we have any IDs?
         $num = 0;

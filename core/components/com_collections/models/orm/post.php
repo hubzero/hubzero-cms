@@ -46,31 +46,31 @@ class Post extends Relational implements \Hubzero\Search\Searchable
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'title'       => 'notempty',
         'object_type' => 'notempty',
         'object_id'   => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by',
         'ordering'
-    );
+    ];
 
     /**
      * Fields to be parsed
      *
      * @var array
      */
-    protected $parsed = array(
+    protected $parsed = [
         'description'
-    );
+    ];
 
     /**
      * Generates automatic ordering field value
@@ -253,7 +253,7 @@ class Post extends Relational implements \Hubzero\Search\Searchable
      */
     public function getAccessLevel()
     {
-        $accessLevel = array();
+        $accessLevel = [];
         $accessLevel[] = $this->collection->access;
         if ($this->collection->object_type == 'group') {
             $group = \Hubzero\User\Group::getInstance($this->collection->object_id);

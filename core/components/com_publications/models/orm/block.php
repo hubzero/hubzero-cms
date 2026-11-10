@@ -28,27 +28,27 @@ class Block extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'label' => 'notempty'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'block'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'ordering'
-    );
+    ];
 
     /**
      * Configuration registry

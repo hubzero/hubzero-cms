@@ -38,7 +38,7 @@ class Tags extends Cloud
             $bunch = $this->_parse($tag);
         }
 
-        $tags = array();
+        $tags = [];
         if ($remove) {
             foreach ($bunch as $t) {
                 if ($remove == $t) {
@@ -61,12 +61,12 @@ class Tags extends Cloud
      * @param   boolean $clear   Clear cached data?
      * @return  string
      */
-    public function render($rtrn = 'html', $filters = array(), $clear = false)
+    public function render($rtrn = 'html', $filters = [], $clear = false)
     {
         switch (strtolower($rtrn)) {
             case 'string':
                 if (!isset($this->_cache['tags_string']) || $clear) {
-                    $tags = array();
+                    $tags = [];
                     foreach ($this->tags('list', $filters, $clear) as $tag) {
                         $tags[] = $tag->get('raw_tag');
                     }
@@ -83,11 +83,11 @@ class Tags extends Cloud
             case 'html':
             default:
                 if (!isset($this->_cache['tags_cloud']) || $clear) {
-                    $view = new \Hubzero\Component\View(array(
+                    $view = new \Hubzero\Component\View([
                         'base_path' => dirname(__DIR__) . DS . 'site',
                         'name'      => 'wishlists',
                         'layout'    => '_tags'
-                    ));
+                    ]);
                     if (isset($filters['filters'])) {
                         $view->base    = $filters['base'];
                         $view->filters = $filters['filters'];

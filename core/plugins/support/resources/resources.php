@@ -26,7 +26,7 @@ class Resources extends Plugin
      */
     private function canHandle($category)
     {
-        if (in_array($category, array('review', 'reviewcomment'))) {
+        if (in_array($category, ['review', 'reviewcomment'])) {
             return true;
         }
         return false;

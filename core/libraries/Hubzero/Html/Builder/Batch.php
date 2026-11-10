@@ -23,7 +23,7 @@ class Batch
     public static function access()
     {
         // Create the batch selector to change an access level on a selection list.
-        $lines = array(
+        $lines = [
             '<label id="batch-access-lbl" for="batch-access" class="hasTip" title="' .
                 Lang::txt('JLIB_HTML_BATCH_ACCESS_LABEL') .
                 '::' .
@@ -35,12 +35,12 @@ class Batch
                 'batch[assetgroup_id]',
                 '',
                 'class="inputbox"',
-                array(
+                [
                     'title' => Lang::txt('JLIB_HTML_BATCH_NOCHANGE'),
                     'id'    => 'batch-access'
-                )
+                ]
             )
-        );
+        ];
 
         return implode("\n", $lines);
     }
@@ -54,13 +54,13 @@ class Batch
     public static function item($extension)
     {
         // Create the copy/move options.
-        $options = array(
+        $options = [
             Select::option('c', Lang::txt('JLIB_HTML_BATCH_COPY')),
             Select::option('m', Lang::txt('JLIB_HTML_BATCH_MOVE'))
-        );
+        ];
 
         // Create the batch selector to change select the category by which to move or copy.
-        $lines = array(
+        $lines = [
             '<label id="batch-choose-action-lbl" for="batch-choose-action">',
             Lang::txt('JLIB_HTML_BATCH_MENU_LABEL'),
             '</label>',
@@ -71,7 +71,7 @@ class Batch
             '</select>',
             Select::radiolist($options, 'batch[move_copy]', '', 'value', 'text', 'm'),
             '</fieldset>'
-        );
+        ];
 
         return implode("\n", $lines);
     }
@@ -84,7 +84,7 @@ class Batch
     public static function language()
     {
         // Create the batch selector to change the language on a selection list.
-        $lines = array(
+        $lines = [
             '<label id="batch-language-lbl" for="batch-language" class="hasTip" title="' .
                 Lang::txt('JLIB_HTML_BATCH_LANGUAGE_LABEL') .
                 '::' .
@@ -96,7 +96,7 @@ class Batch
             '<option value="">' . Lang::txt('JLIB_HTML_BATCH_LANGUAGE_NOCHANGE') . '</option>',
             Select::options(Contentlanguage::existing(true, true), 'value', 'text'),
             '</select>'
-        );
+        ];
 
         return implode("\n", $lines);
     }
@@ -130,7 +130,7 @@ class Batch
         $items = $db->loadObjectList();
 
         // Create the batch selector to select a user on a selection list.
-        $lines = array(
+        $lines = [
             '<label id="batch-user-lbl" for="batch-user" class="hasTip" title="' .
                 Lang::txt('JLIB_HTML_BATCH_USER_LABEL') .
                 '::' .
@@ -143,7 +143,7 @@ class Batch
             $optionNo,
             Select::options($items, 'value', 'text'),
             '</select>'
-        );
+        ];
 
         return implode("\n", $lines);
     }

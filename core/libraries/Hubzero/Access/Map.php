@@ -52,10 +52,10 @@ class Map extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'user_id'  => 'positive|nonzero',
         'group_id' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Defines a relationship to the User/Group Map
@@ -105,7 +105,7 @@ class Map extends Relational
      */
     public static function destroyByGroup($group_id)
     {
-        $group_id = (is_array($group_id) ? $group_id : array($group_id));
+        $group_id = (is_array($group_id) ? $group_id : [$group_id]);
 
         $blank = self::blank();
 
@@ -128,7 +128,7 @@ class Map extends Relational
      */
     public static function destroyByUser($user_id)
     {
-        $user_id = (is_array($user_id) ? $user_id : array($user_id));
+        $user_id = (is_array($user_id) ? $user_id : [$user_id]);
 
         $blank = self::blank();
 
@@ -157,12 +157,12 @@ class Map extends Relational
             ->whereEquals('user_id', $user_id)
             ->rows();
 
-        $existing = array();
+        $existing = [];
         foreach ($entries as $entry) {
             $existing[] = $entry->get('group_id');
         }
 
-        $group_id = (is_array($group_id) ? $group_id : array($group_id));
+        $group_id = (is_array($group_id) ? $group_id : [$group_id]);
 
         $blank = self::blank();
 
@@ -178,10 +178,10 @@ class Map extends Relational
 
             $query = $blank->getQuery()
                 ->insert($blank->getTableName())
-                ->values(array(
+                ->values([
                     'user_id'  => $user_id,
                     'group_id' => $group
-                ));
+                ]);
 
             if (!$query->execute()) {
                 return false;
@@ -200,7 +200,7 @@ class Map extends Relational
      */
     public static function removeUserFromGroup($user_id, $group_id)
     {
-        $group_id = (is_array($group_id) ? $group_id : array($group_id));
+        $group_id = (is_array($group_id) ? $group_id : [$group_id]);
 
         $blank = self::blank();
 

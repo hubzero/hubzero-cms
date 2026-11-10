@@ -56,7 +56,7 @@ class Utilities
         if (is_array($contents)) {
             if (isset($contents['attachments'])) {
                 if (!is_array($contents['attachments'])) {
-                    $contents['attachments'] = array($contents['attachments']);
+                    $contents['attachments'] = [$contents['attachments']];
                 }
                 foreach ($contents['attachments'] as $path) {
                     if (preg_match("/\.(bmp|gif|jpg|jpe|jpeg|png)$/i", $path)) {
@@ -136,7 +136,7 @@ class Utilities
             $s = array_map('trim', $s);
         }*/
 
-        return array('critical', 'major', 'normal', 'minor');
+        return ['critical', 'major', 'normal', 'minor'];
     }
 
     /**
@@ -147,7 +147,7 @@ class Utilities
     public static function getFilters()
     {
         // Query filters defaults
-        $filters = array();
+        $filters = [];
         $filters['search']     = '';
         $filters['status']     = 'open';
         $filters['type']       = 0;
@@ -205,18 +205,18 @@ class Utilities
                     }
                     break;
                 case 'status':
-                    $allowed = array('open', 'closed', 'all', 'waiting', 'new');
+                    $allowed = ['open', 'closed', 'all', 'waiting', 'new'];
                     if (!in_array($pieces[1], $allowed)) {
                         $pieces[1] = $filters[$pieces[0]];
                     }
                     break;
                 case 'type':
-                    $allowed = array(
+                    $allowed = [
                         'submitted' => 0,
                         'automatic' => 1,
                         'none'      => 2,
                         'tool'      => 3
-                    );
+                    ];
                     if (in_array($pieces[1], $allowed)) {
                         $pieces[1] = $allowed[$pieces[1]];
                     } else {
@@ -234,7 +234,7 @@ class Utilities
                     }
                     break;
                 case 'severity':
-                    $allowed = array('critical', 'major', 'normal', 'minor', 'trivial');
+                    $allowed = ['critical', 'major', 'normal', 'minor', 'trivial'];
                     if (!in_array($pieces[1], $allowed)) {
                         $pieces[1] = $filters[$pieces[0]];
                     }
@@ -256,7 +256,7 @@ class Utilities
      */
     public static function calculateAverageLife($data = null)
     {
-        $lifetime = array();
+        $lifetime = [];
 
         if ($data && is_array($data)) {
             $count = 0;
@@ -274,7 +274,7 @@ class Utilities
             $hours   = floor(($difference - $days * 60 * 60 * 24) / 60 / 60);
             $minutes = floor(($difference - $days * 60 * 60 * 24 - $hours * 60 * 60) / 60);
 
-            $lifetime = array($days, $hours, $minutes);
+            $lifetime = [$days, $hours, $minutes];
         }
         return $lifetime;
     }

@@ -60,7 +60,7 @@ class Media extends Field
             Behavior::modal();
 
             // Build the script.
-            $script = array();
+            $script = [];
             $script[] = '	function jInsertFieldValue(value, id) {';
             $script[] = '		var old_value = $("#" + id).val();';
             $script[] = '		if (old_value != value) {';
@@ -107,7 +107,7 @@ class Media extends Field
         }
 
         // Initialize variables.
-        $html = array();
+        $html = [];
         $attr = '';
 
         // Initialize some field attributes.
@@ -187,9 +187,9 @@ class Media extends Field
             case 'tooltip':
             default:
                 $showAsTooltip = true;
-                $options = array(
+                $options = [
                     'onShow' => 'jMediaRefreshPreviewTip',
-                );
+                ];
                 Behavior::tooltip('.hasTipPreview', $options);
                 break;
         }
@@ -201,11 +201,11 @@ class Media extends Field
                 $src = '';
             }
 
-            $attr = array(
+            $attr = [
                 'id'    => $this->id . '_preview',
                 'class' => 'media-preview',
                 'style' => 'max-width:160px; max-height:100px;'
-            );
+            ];
             $img = Asset::image($src, $lang->txt('JLIB_FORM_MEDIA_PREVIEW_ALT'), $attr);
             $previewImg = '<div id="' .
                 $this->id .
@@ -225,7 +225,7 @@ class Media extends Field
             //$html[] = '<div class="media-preview fltlft">';
             if ($showAsTooltip) {
                 $tooltip = $previewImgEmpty . $previewImg;
-                $options = array(
+                $options = [
                     'title' => htmlspecialchars(
                         $lang->txt('JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE'),
                         ENT_COMPAT,
@@ -233,7 +233,7 @@ class Media extends Field
                     ),
                     'text'  => htmlspecialchars($lang->txt('JLIB_FORM_MEDIA_PREVIEW_TIP_TITLE'), ENT_COMPAT, 'UTF-8'),
                     'class' => 'hasTipPreview'
-                );
+                ];
                 $html[] = '<span class="' .
                     $options['class'] .
                     '" title="' .

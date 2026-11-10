@@ -17,7 +17,7 @@ defined('_HZEXEC_') or die();
 
 
 // Parse data
-$data = array();
+$data = [];
 preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->pub->metadata ? $this->pub->metadata : '', $matches, PREG_SET_ORDER);
 if (count($matches) > 0) {
     foreach ($matches as $match) {
@@ -134,7 +134,7 @@ if ($coming) {
                 $shorten = ($aboutText && strlen($aboutText) > 200) ? 1 : 0;
 
             if ($shorten) {
-                $about = \Hubzero\Utility\Str::truncate($aboutText, 200, array('html' => true));
+                $about = \Hubzero\Utility\Str::truncate($aboutText, 200, ['html' => true]);
                 $about .= ' <a href="#more-' . $elName . '" class="more-content">'
                             . Lang::txt('PLG_PROJECTS_PUBLICATIONS_READ_MORE') . ' &raquo;</a>';
                 $about .= ' <div class="hidden">';
@@ -164,7 +164,7 @@ if ($coming) {
                         $classes .= ' no-footer ';
                         $classes .= $editorImages == 1 ? 'images ' : '';
                         $classes .= $editorMacros == 1 ? 'macros ' : '';
-                        $output .= App::get('editor')->display($field, $value, '', '', $cols, $rows, false, 'pub-' . $elName, null, null, array('class' => $classes));
+                        $output .= App::get('editor')->display($field, $value, '', '', $cols, $rows, false, 'pub-' . $elName, null, null, ['class' => $classes]);
                         break;
 
                     case 'textarea':

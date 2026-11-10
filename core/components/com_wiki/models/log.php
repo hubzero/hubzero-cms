@@ -43,19 +43,19 @@ class Log extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'page_id' => 'positive|nonzero',
         'user_id' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'timestamp'
-    );
+    ];
 
     /**
      * Generates automatic owned by field value

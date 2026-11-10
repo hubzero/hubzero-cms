@@ -46,10 +46,10 @@ class Coursesv1r0 extends base
      */
     public function listTask()
     {
-        $filters = array(
+        $filters = [
             'limit' => Request::getInt('limit', 25),
             'start' => Request::getInt('limitstart', 0)
-        );
+        ];
 
         // Search API hooks
         $admin = false;
@@ -63,7 +63,7 @@ class Coursesv1r0 extends base
         $total   = $courses->getCount();
         $courses = $courses->getRecords($filters);
 
-        $records = array();
+        $records = [];
         foreach ($courses as $course) {
             if ($admin == true && isset($searchable)) {
                 $entry = new stdClass();
@@ -78,12 +78,12 @@ class Coursesv1r0 extends base
                 $managers = $model->managers();
                 $instructors = $model->instructors();
 
-                $owners = array();
+                $owners = [];
                 foreach ($managers as $manager) {
                     array_push($owners, $manager->get('user_id'));
                 }
 
-                $authors = array();
+                $authors = [];
                 foreach ($instructors as $instructor) {
                     array_push($owners, $instructor->get('user_id'));
                     if ($instructor->get('name') != '') {

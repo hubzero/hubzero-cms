@@ -215,13 +215,13 @@ class TrailTest extends Basic
      **/
     public function testIterator()
     {
-        $items = array(
+        $items = [
             new Item('Crumb 1', 'index.php?option=com_lorem'),
             new Item('Crumb 2', 'index.php?option=com_ipsum'),
             new Item('Crumb 3', 'index.php?option=com_foo'),
             new Item('Crumb 4', 'index.php?option=com_bar'),
             new Item('Crumb 5', 'index.php?option=com_mollum')
-        );
+        ];
 
         $pathway = new Trail();
         foreach ($items as $item) {

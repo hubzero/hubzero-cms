@@ -139,7 +139,7 @@ if ($this->comment->isReported()) {
 
                         <label for="comment_<?php echo $this->comment->get('id'); ?>_content">
                             <span class="label-text"><?php echo Lang::txt('COM_KB_ENTER_COMMENTS'); ?></span>
-                            <?php echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'minimal no-footer')); ?>
+                            <?php echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', ['class' => 'minimal no-footer']); ?>
                         </label>
 
                         <label class="comment-anonymous-label" for="comment_<?php echo $this->comment->get('id'); ?>_anonymous">
@@ -159,10 +159,10 @@ if ($this->comment->isReported()) {
         <?php
         if ($this->depth < $this->article->param('comments_depth', 3)) {
             $comments = $this->comment->replies()
-                ->whereIn('state', array(
+                ->whereIn('state', [
                     Components\Kb\Models\Comment::STATE_PUBLISHED,
                     Components\Kb\Models\Comment::STATE_FLAGGED
-                ))
+                ])
                 ->rows();
 
             $this->view('_list')

@@ -41,7 +41,7 @@ class Search extends Plugin
 
         if ($ormGroup) {
             $table = $ormGroup->getTableName();
-            Event::trigger('search.onAddIndex', array($table, $ormGroup));
+            Event::trigger('search.onAddIndex', [$table, $ormGroup]);
         }
     }
 }

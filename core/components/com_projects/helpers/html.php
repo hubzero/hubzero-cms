@@ -110,10 +110,10 @@ class Html extends Obj
     public static function timeDifference($difference)
     {
         // Set the periods of time
-        $periods = array('sec', 'min', 'hr', 'day', 'week', 'month', 'year', 'decade');
+        $periods = ['sec', 'min', 'hr', 'day', 'week', 'month', 'year', 'decade'];
 
         // Set the number of seconds per period
-        $lengths = array(1, 60, 3600, 86400, 604800, 2630880, 31570560, 315705600);
+        $lengths = [1, 60, 3600, 86400, 604800, 2630880, 31570560, 315705600];
 
         // Determine which period we should use, based on the number of seconds lapsed.
         // If the difference divided by the seconds is more than 1, we use that. Eg 1 year / 1 decade = 0.1, so we move on
@@ -166,7 +166,7 @@ class Html extends Obj
     public static function makeSafeDir($path)
     {
         $ds = (DS == '\\') ? '\\' . DS : DS;
-        $regex = array('#[^A-Za-z0-9:\_\-' . $ds . ' ]#');
+        $regex = ['#[^A-Za-z0-9:\_\-' . $ds . ' ]#'];
         return preg_replace($regex, '', $path);
     }
 
@@ -321,7 +321,7 @@ class Html extends Obj
      */
     public static function getEmoIcons()
     {
-        $icons = array(
+        $icons = [
             ':)'    =>  'happy',
             ':-)'   =>  'grin',
             ':D'    =>  'laugh',
@@ -348,7 +348,7 @@ class Html extends Obj
             '^_^'   =>  'squint',
             '-_-'   =>  'squint',
             '3:)'   =>  'devil'
-        );
+        ];
 
         return $icons;
     }
@@ -516,7 +516,7 @@ class Html extends Obj
             $array = explode(',', $param);
             return array_map('trim', $array);
         }
-        return array();
+        return [];
     }
 
     /**
@@ -525,9 +525,9 @@ class Html extends Obj
      * @param   string  $param
      * @return  array
      */
-    public static function getCountArray($array = array())
+    public static function getCountArray($array = [])
     {
-        $counts = array();
+        $counts = [];
         if (!empty($array)) {
             foreach ($array as $a) {
                 if (!empty($a)) {
@@ -898,7 +898,7 @@ class Html extends Obj
      */
     public static function getSuggestions($model)
     {
-        $suggestions = array();
+        $suggestions = [];
 
         $goto   = '&alias=' . $model->get('alias');
         $option = 'com_projects';
@@ -906,11 +906,11 @@ class Html extends Obj
 
         // Adding a picture
         if ($model->access('owner') && !$model->get('picture')) {
-            $suggestions[] = array(
+            $suggestions[] = [
                 'class' => 's-picture',
                 'text'  => Lang::txt('COM_PROJECTS_WELCOME_ADD_THUMB'),
                 'url'   => Route::url('index.php?option=' . $option . $goto . '&task=edit')
-            );
+            ];
         }
 
         // Adding grant information
@@ -918,20 +918,20 @@ class Html extends Obj
             $model->access('owner') && $model->config()->get('grantinfo')
             && !$model->params->get('grant_title', '')
         ) {
-            $suggestions[] = array(
+            $suggestions[] = [
                 'class' => 's-about',
                 'text'  => Lang::txt('COM_PROJECTS_WELCOME_ADD_GRANT_INFO'),
                 'url'   => Route::url('index.php?option=' . $option . $goto . '&task=edit&active=settings')
-            );
+            ];
         }
 
         // Adding about text
         if ($model->access('owner') && !$model->get('about') && $model->isPublic()) {
-            $suggestions[] = array(
+            $suggestions[] = [
                 'class' => 's-about',
                 'text'  => Lang::txt('COM_PROJECTS_WELCOME_ADD_ABOUT'),
                 'url'   => Route::url('index.php?option=' . $option . $goto . '&task=edit')
-            );
+            ];
         }
 
         // File upload
@@ -939,38 +939,38 @@ class Html extends Obj
             $text = $model->access('owner')
                 ? Lang::txt('COM_PROJECTS_WELCOME_UPLOAD_FILES')
                 : Lang::txt('COM_PROJECTS_WELCOME_SHARE_FILES');
-            $suggestions[] = array(
+            $suggestions[] = [
                 'class' => 's-files',
                 'text'  => $text,
                 'url'   => Route::url('index.php?option=' . $option . $goto . '&active=files')
-            );
+            ];
         }
 
         // Inviting others
         if ($model->access('manager')) {
-            $suggestions[] = array(
+            $suggestions[] = [
                 'class' => 's-team',
                 'text'  => Lang::txt('COM_PROJECTS_WELCOME_INVITE_USERS'),
                 'url'   => Route::url('index.php?option=' . $option . $goto . '&task=edit&active=team')
-            );
+            ];
         }
 
         // Todo items
         if (Plugin::isEnabled('projects', 'todo')) {
-            $suggestions[] = array(
+            $suggestions[] = [
                 'class' => 's-todo',
                 'text'  => Lang::txt('COM_PROJECTS_WELCOME_ADD_TODO'),
                 'url'   => Route::url('index.php?option=' . $option . $goto . '&active=todo')
-            );
+            ];
         }
 
         // Notes
         if (Plugin::isEnabled('projects', 'notes')) {
-            $suggestions[] = array(
+            $suggestions[] = [
                 'class' => 's-notes',
                 'text'  => Lang::txt('COM_PROJECTS_WELCOME_START_NOTE'),
                 'url'   => Route::url('index.php?option=' . $option . $goto . '&active=notes')
-            );
+            ];
         }
 
         return $suggestions;
@@ -1018,7 +1018,7 @@ class Html extends Obj
      */
     public static function getGroupMembers($groupname)
     {
-        $team = array();
+        $team = [];
         if ($groupname) {
             $group = \Hubzero\User\Group::getInstance($groupname);
             if ($group && $group->get('gidNumber')) {
@@ -1040,7 +1040,7 @@ class Html extends Obj
     public static function getPluginNames(&$plugins)
     {
         // Make sure we have name and title
-        $names = array();
+        $names = [];
         for ($i = 0, $n = count($plugins); $i <= $n; $i++) {
             if (empty($plugins[$i]) || !isset($plugins[$i]['name'])) {
                 unset($plugins[$i]);
@@ -1060,7 +1060,7 @@ class Html extends Obj
     public static function getTabs(&$plugins)
     {
         // Make sure we have name and title
-        $tabs = array();
+        $tabs = [];
         for ($i = 0, $n = count($plugins); $i <= $n; $i++) {
             if (empty($plugins[$i]) || !isset($plugins[$i]['name'])) {
                 unset($plugins[$i]);
@@ -1163,7 +1163,7 @@ class Html extends Obj
      * @param   string  $reviewer
      * @return  void
      */
-    public static function sendHUBMessage($option, $project, $addressees = array(), $subject = '', $component = '', $layout = 'admin', $message = '', $reviewer = '')
+    public static function sendHUBMessage($option, $project, $addressees = [], $subject = '', $component = '', $layout = 'admin', $message = '', $reviewer = '')
     {
         if (!$layout || !$subject || !$component || empty($addressees)) {
             return false;
@@ -1175,7 +1175,7 @@ class Html extends Obj
         }
 
         // Set up email config
-        $from = array();
+        $from = [];
         $from['name']  = Config::get('sitename') . ' ' . Lang::txt('COM_PROJECTS');
         $from['email'] = Config::get('mailfrom');
 
@@ -1183,11 +1183,11 @@ class Html extends Obj
         $from['multipart'] = md5(date('U'));
 
         // Message body
-        $eview = new \Hubzero\Mail\View(array(
+        $eview = new \Hubzero\Mail\View([
             'base_path' => dirname(__DIR__) . DS . 'site',
             'name'      => 'emails',
             'layout'    => $layout . '_plain'
-        ));
+        ]);
 
         $eview->option   = $option;
         $eview->project  = $project;
@@ -1195,7 +1195,7 @@ class Html extends Obj
         $eview->reviewer = $reviewer;
         $eview->subject  = $subject;
 
-        $body = array();
+        $body = [];
         $body['plaintext'] = $eview->loadTemplate(false);
         $body['plaintext'] = str_replace("\n", "\r\n", $body['plaintext']);
 
@@ -1207,14 +1207,14 @@ class Html extends Obj
         // Send HUB message
         Event::trigger(
             'xmessage.onSendMessage',
-            array(
+            [
                 $component,
                 $subject,
                 $body,
                 $from,
                 $addressees,
                 $option
-            )
+            ]
         );
     }
 

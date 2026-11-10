@@ -29,9 +29,9 @@ class Collection extends Relational
      *
      * @var array
      **/
-    protected $rules = array(
+    protected $rules = [
         'name' => 'notempty'
-    );
+    ];
 
     /**
      * Defines a one to many relationship with billboards

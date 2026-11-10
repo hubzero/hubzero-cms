@@ -48,7 +48,7 @@ class Styles extends AdminController
     public function displayTask()
     {
         // Incoming
-        $filters = array(
+        $filters = [
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'filter_search',
@@ -74,7 +74,7 @@ class Styles extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         $model = Style::all();
 
@@ -181,7 +181,7 @@ class Styles extends AdminController
         // Load a tag object if one doesn't already exist
         if (!($style instanceof Style)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
 
             if (is_array($id) && !empty($id)) {
                 $id = $id[0];
@@ -202,11 +202,11 @@ class Styles extends AdminController
         // Load the template's language file for style editing labels
         Lang::load('tpl_' . $template, $base . '/templates/' . $template, null, false, true);
 
-        $paths   = array();
+        $paths   = [];
         $paths[] = $base . '/templates/' . $template . '/config/config.xml';
         $paths[] = $base . '/templates/' . $template . '/templateDetails.xml';
 
-        $form = new Form('style', array('control' => 'fields'));
+        $form = new Form('style', ['control' => 'fields']);
 
         foreach ($paths as $file) {
             $file = Filesystem::cleanPath($file);
@@ -220,7 +220,7 @@ class Styles extends AdminController
             }
         }
 
-        $data = array();
+        $data = [];
         $data['params'] = with(new \Hubzero\Config\Registry($style->get('params')))->toArray();
 
         $form->bind($data);
@@ -251,7 +251,7 @@ class Styles extends AdminController
             App::abort(403, Lang::txt('JERROR_CORE_ACTION_NOT_PERMITTED'));
         }
 
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         $style = Style::oneOrNew(intval($fields['id']))->set($fields);
 
@@ -262,7 +262,7 @@ class Styles extends AdminController
 
         $result = Event::trigger(
             'extension.onExtensionBeforeSave',
-            array('com_templates.style', $style, ($fields['id'] ? false : true))
+            ['com_templates.style', $style, ($fields['id'] ? false : true)]
         );
 
         if (in_array(false, $result, true)) {
@@ -277,7 +277,7 @@ class Styles extends AdminController
         }
 
         if (User::authorise('core.edit', 'com_menus') && $style->get('client_id') == 0) {
-            $assigned = Request::getArray('assigned', array(), 'post');
+            $assigned = Request::getArray('assigned', [], 'post');
 
             $n  = 0;
             $db = App::get('db');
@@ -288,10 +288,10 @@ class Styles extends AdminController
                 // Update the mapping for menu items that this style IS assigned to.
                 $query = $db->getQuery()
                     ->update('#__menu')
-                    ->set(array('template_style_id' => (int) $style->get('id')))
+                    ->set(['template_style_id' => (int) $style->get('id')])
                     ->whereIn('id', $assigned)
                     ->where('template_style_id', '!=', (int) $style->get('id'))
-                    ->whereIn('checked_out', array(0, (int) User::get('id')));
+                    ->whereIn('checked_out', [0, (int) User::get('id')]);
 
                 $db->setQuery($query->toString());
                 $db->query();
@@ -302,12 +302,12 @@ class Styles extends AdminController
             // If unassigned then all existing maps will be removed.
             $query = $db->getQuery()
                 ->update('#__menu')
-                ->set(array('template_style_id' => 0));
+                ->set(['template_style_id' => 0]);
             if (!empty($assigned)) {
                 $query->whereRaw('id', 'NOT IN (' . implode(',', $assigned) . ')');
             }
             $query->whereEquals('template_style_id', (int) $style->get('id'));
-            $query->whereIn('checked_out', array(0, (int) User::get('id')));
+            $query->whereIn('checked_out', [0, (int) User::get('id')]);
 
             $db->setQuery($query->toString());
             $db->query();
@@ -324,7 +324,7 @@ class Styles extends AdminController
         // Trigger the onExtensionAfterSave event.
         Event::trigger(
             'extension.onExtensionAfterSave',
-            array('com_templates.style', $style, ($fields['id'] ? false : true))
+            ['com_templates.style', $style, ($fields['id'] ? false : true)]
         );
 
         Notify::success(Lang::txt('COM_TEMPLATES_STYLE_SAVE_SUCCESS'));
@@ -351,8 +351,8 @@ class Styles extends AdminController
             App::abort(403, Lang::txt('JERROR_CORE_DELETE_NOT_PERMITTED'));
         }
 
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $i = 0;
 
@@ -389,7 +389,7 @@ class Styles extends AdminController
      */
     public function setDefaultTask()
     {
-        $id = Request::getArray('id', array(0));
+        $id = Request::getArray('id', [0]);
         $id = is_array($id) ? $id[0] : $id;
 
         if ($id) {
@@ -422,8 +422,8 @@ class Styles extends AdminController
             App::abort(403, Lang::txt('JERROR_CORE_ACTION_NOT_PERMITTED'));
         }
 
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $i = 0;
 
@@ -458,6 +458,6 @@ class Styles extends AdminController
         Cache::clean('com_templates');
         Cache::clean('_system');
 
-        Event::trigger('system.onCleanCache', array($group, $client_id));
+        Event::trigger('system.onCleanCache', [$group, $client_id]);
     }
 }

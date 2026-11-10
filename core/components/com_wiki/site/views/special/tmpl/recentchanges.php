@@ -21,11 +21,11 @@ Pathway::append(
 );
 
 $dir = strtoupper(Request::getString('dir', 'DESC'));
-if (!in_array($dir, array('ASC', 'DESC'))) {
+if (!in_array($dir, ['ASC', 'DESC'])) {
     $dir = 'DESC';
 }
 
-$filters = array('state' => array(0, 1));
+$filters = ['state' => [0, 1]];
 
 if ($space = Request::getString('namespace', '')) {
     $filters['namespace'] = urldecode($space);

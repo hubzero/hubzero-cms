@@ -51,12 +51,12 @@ class HtmlIcon
      * @param   array   $attribs  Not used??
      * @return  string  The HTML for the article edit icon.
      */
-    public static function email($article, $params, $attribs = array())
+    public static function email($article, $params, $attribs = [])
     {
         $output = '';
 
         if (class_exists('\Components\Mailto\Site\Helpers\Mailto')) {
-            $base     = \Hubzero\Utility\Uri::getInstance()->toString(array('scheme', 'host', 'port'));
+            $base     = \Hubzero\Utility\Uri::getInstance()->toString(['scheme', 'host', 'port']);
             $template = App::get('template')->template;
             $articleRoute = \Components\Content\Site\Helpers\Route::getArticleRoute(
                 $article->slug,
@@ -90,7 +90,7 @@ class HtmlIcon
      * @param   array   $attribs  Not used??
      * @return  string  The HTML for the article edit icon.
      */
-    public static function edit($article, $params, $attribs = array())
+    public static function edit($article, $params, $attribs = [])
     {
         // Initialise variables.
         $userId = User::get('id');
@@ -163,7 +163,7 @@ class HtmlIcon
      * @return  string
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public static function print_popup($article, $params, $attribs = array())
+    public static function print_popup($article, $params, $attribs = [])
     {
         $url  = \Components\Content\Site\Helpers\Route::getArticleRoute(
             $article->slug,
@@ -195,7 +195,7 @@ class HtmlIcon
      * @return  string
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    public static function print_screen($article, $params, $attribs = array())
+    public static function print_screen($article, $params, $attribs = [])
     {
         $text = Lang::txt('JGLOBAL_ICON_SEP') . '&#160;' . Lang::txt('JGLOBAL_PRINT')
             . '&#160;' . Lang::txt('JGLOBAL_ICON_SEP');

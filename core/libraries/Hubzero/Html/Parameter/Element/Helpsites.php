@@ -42,11 +42,11 @@ class Helpsites extends Element
         return Builder\Select::genericlist(
             $helpsites,
             $control_name . '[' . $name . ']',
-            array(
+            [
                 'id' => $control_name . $name,
                 'list.attr' => 'class="inputbox"',
                 'list.select' => $value
-            )
+            ]
         );
     }
 
@@ -59,7 +59,7 @@ class Helpsites extends Element
      */
     public static function createSiteList($pathToXml, $selected = null)
     {
-        $list = array();
+        $list = [];
         $xml = false;
 
         if (!empty($pathToXml)) {
@@ -75,7 +75,7 @@ class Helpsites extends Element
             $option['value'] = 'https://help.hubzero.org/documentation';
             $list[] = $option;
         } else {
-            $option = array();
+            $option = [];
 
             foreach ($xml->sites->site as $site) {
                 $option['text']  = (string) $site;

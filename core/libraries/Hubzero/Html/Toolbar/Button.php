@@ -66,12 +66,12 @@ abstract class Button extends Obj
     {
         // Initialise some variables
         $html   = null;
-        $cls    = array();
+        $cls    = [];
         if (isset($definition[9])) {
             $cls = array_pop($definition);
         }
-        $id     = call_user_func_array(array(&$this, 'fetchId'), $definition);
-        $action = call_user_func_array(array(&$this, 'fetchButton'), $definition);
+        $id     = call_user_func_array([&$this, 'fetchId'], $definition);
+        $action = call_user_func_array([&$this, 'fetchButton'], $definition);
 
         // Build id attribute
         if ($id) {

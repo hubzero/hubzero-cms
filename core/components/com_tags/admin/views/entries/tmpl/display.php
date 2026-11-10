@@ -129,7 +129,7 @@ Toolbar::help('entries');
                 $state = 1;
             }
             */
-            $calt = array("User", "Admin", "Core")[$row->get('admin')];
+            $calt = ["User", "Admin", "Core"][$row->get('admin')];
             $rowId = $row->get('id');
             $rowEditUrl = Route::url(
                 'index.php?option=' . $this->option

@@ -43,7 +43,7 @@ class RegexlikeReplacer extends Replacer
      */
     public function replace($matches)
     {
-        $pairs = array();
+        $pairs = [];
         foreach ($matches as $i => $match) {
             $pairs["\$$i"] = $match;
         }

@@ -67,7 +67,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
                         <?php
                             $instructors = $course->instructors();
                         if (count($instructors) > 0) {
-                            $names = array();
+                            $names = [];
                             foreach ($instructors as $i) {
                                 $instructor = User::getInstance($i->get('user_id'));
 

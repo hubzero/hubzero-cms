@@ -114,7 +114,7 @@ class Unit extends Base
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         if (!isset($instances[$oid . '_' . $offering_id])) {
@@ -195,7 +195,7 @@ class Unit extends Base
      * @param   array $filters Filters to apply to results query
      * @return  void
      */
-    public function resetAssetgroups($idx = null, $filters = array())
+    public function resetAssetgroups($idx = null, $filters = [])
     {
         $this->assetgroups = $this->_assetgroups;
         return $this->assetgroups($idx, $filters);
@@ -211,7 +211,7 @@ class Unit extends Base
      * @param   array $filters Filters to apply to results query
      * @return  array
      */
-    public function assetgroups($idx = null, $filters = array())
+    public function assetgroups($idx = null, $filters = [])
     {
         if (!isset($filters['unit_id'])) {
             $filters['unit_id'] = (int) $this->get('id');
@@ -222,8 +222,8 @@ class Unit extends Base
 
         if (!isset($this->assetgroups) || !($this->assetgroups instanceof \Traversable)) {
             $tbl = new Tables\AssetGroup($this->_db);
-            if (($results = $tbl->find(array('w' => $filters)))) {
-                $list = array();
+            if (($results = $tbl->find(['w' => $filters]))) {
+                $list = [];
 
                 // First pass - collect children
                 foreach ($results as $v) {
@@ -249,7 +249,7 @@ class Unit extends Base
 
                 $res = array_values($list);
             } else {
-                $res = array();
+                $res = [];
             }
             $this->assetgroups = new Iterator($res);
         }
@@ -382,7 +382,7 @@ class Unit extends Base
      * @param   array $filters Filters to apply
      * @return  object \Components\Courses\Models\Iterator
      */
-    public function assets($filters = array())
+    public function assets($filters = [])
     {
         if (!isset($this->_assets) || !($this->_assets instanceof \Traversable)) {
             if (!isset($filters['asset_scope_id'])) {
@@ -397,12 +397,12 @@ class Unit extends Base
 
             $tbl = new Tables\Asset($this->_db);
 
-            if (($results = $tbl->find(array('w' => $filters)))) {
+            if (($results = $tbl->find(['w' => $filters]))) {
                 foreach ($results as $key => $result) {
                     $results[$key] = new Asset($result);
                 }
             } else {
-                $results = array();
+                $results = [];
             }
 
             $this->_assets = new Iterator($results);
@@ -443,7 +443,7 @@ class Unit extends Base
 
         if ($value) {
             $this->importPlugin('courses')
-                 ->trigger('onUnitSave', array($this));
+                 ->trigger('onUnitSave', [$this]);
         }
 
         return $value;
@@ -480,7 +480,7 @@ class Unit extends Base
         }
 
         $this->importPlugin('courses')
-             ->trigger('onUnitDelete', array($this));
+             ->trigger('onUnitDelete', [$this]);
 
         // Remove this record from the database and log the event
         return parent::delete();
@@ -520,7 +520,7 @@ class Unit extends Base
             // Copy assets
             $tbl = new Tables\AssetAssociation($this->_db);
             //foreach ($this->assets(array('asset_scope_id' => $u_id)) as $asset)
-            foreach ($tbl->find(array('scope_id' => $u_id, 'scope' => 'unit')) as $asset) {
+            foreach ($tbl->find(['scope_id' => $u_id, 'scope' => 'unit']) as $asset) {
                 $tbl->bind($asset);
                 $tbl->id = 0;
                 $tbl->scope_id = $this->get('id');
@@ -531,7 +531,7 @@ class Unit extends Base
             }
 
             // Copy asset groups
-            foreach ($this->assetgroups(null, array('unit_id' => $u_id, 'parent' => 0)) as $assetgroup) {
+            foreach ($this->assetgroups(null, ['unit_id' => $u_id, 'parent' => 0]) as $assetgroup) {
                 if (!$assetgroup->copy($this->get('id'), $deep)) {
                     $this->setError($assetgroup->getError());
                 }

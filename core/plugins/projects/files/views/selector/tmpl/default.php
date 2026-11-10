@@ -57,11 +57,11 @@ $req .= ':';
 
 $this->req = $req;
 // Get folder array
-$subdirOptions = array();
-$subdirOptions[] = array('path' => '', 'label' => 'home directory');
+$subdirOptions = [];
+$subdirOptions[] = ['path' => '', 'label' => 'home directory'];
 if ($this->folders) {
     foreach ($this->folders as $folder) {
-        $subdirOptions[] = array('path' => $folder->get('localPath'), 'label' => $folder->get('localPath'));
+        $subdirOptions[] = ['path' => $folder->get('localPath'), 'label' => $folder->get('localPath')];
     }
 }
 

@@ -42,7 +42,7 @@ class View extends AbstractView
      * @param   array  $config  A named configuration array for object construction.
      * @return  void
      */
-    public function __construct($config = array())
+    public function __construct($config = [])
     {
         // Set the override path
         //
@@ -58,14 +58,14 @@ class View extends AbstractView
                 $config['override_path'] = App::get('template')->path;
             }
         } elseif (!array_key_exists('override_root', $config)) {
-            $config['override_root'] = $config['override_path'] ? array($config['override_path'] . '/html') : array();
+            $config['override_root'] = $config['override_path'] ? [$config['override_path'] . '/html'] : [];
         }
         $this->_overridePath = $config['override_path'];
 
         // Template override roots, highest priority first (this constructor
         // does not go through the base one, which would otherwise set them)
         if (!array_key_exists('override_root', $config)) {
-            $config['override_root'] = array();
+            $config['override_root'] = [];
 
             foreach (\Hubzero\Template\Overrides::roots() as $root) {
                 $config['override_root'][] = $root . '/html';
@@ -209,7 +209,7 @@ class View extends AbstractView
         $type = strtolower($type);
 
         // Clear out the prior search dirs
-        $this->_path[$type] = array();
+        $this->_path[$type] = [];
 
         // Actually add the user-specified directories
         $this->addPath($type, $path);
@@ -240,12 +240,12 @@ class View extends AbstractView
             return $layout;
         }
 
-        $view = new self(array(
+        $view = new self([
             'folder'  => $this->_folder,
             'element' => $this->_element,
             'name'    => ($name ? $name : $this->_name),
             'layout'  => $layout
-        ));
+        ]);
         $view->set('folder', $this->_folder)
              ->set('element', $this->_element);
 

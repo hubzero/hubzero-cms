@@ -27,19 +27,19 @@ class Type extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'type'  => 'notempty',
         'alias' => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
-    );
+    ];
 
     /**
      * Get last order

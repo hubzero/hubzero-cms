@@ -23,7 +23,7 @@ class FootNote extends Macro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['wiki'] = 'Add a footnote, or explicitly display collected footnotes ' .
             'when no args (footnote text) are given.';
         $txt['html'] = '<p>Add a footnote, or explicitly display collected footnotes ' .
@@ -42,8 +42,8 @@ class FootNote extends Macro
 
         if (!is_object($wm)) {
             $wm = new \stdClass();
-            $wm->footnotes = array();
-            $wm->footnotes_notes = array();
+            $wm->footnotes = [];
+            $wm->footnotes_notes = [];
             $wm->footnotes_count = 0;
         }
 
@@ -78,9 +78,9 @@ class FootNote extends Macro
             $footnote = new \stdClass();
             $footnote->content = $note;
             $footnote->id      = 'fnref-' . $i;
-            $footnote->refs    = array(
+            $footnote->refs    = [
                 'fndef-' . $i
-            );
+            ];
 
             $wm->footnotes_notes[] = $note;
             $wm->footnotes[] = $footnote;
@@ -88,10 +88,10 @@ class FootNote extends Macro
             return '<sup id="fndef-' . $i . '"><a href="#fnref-' . $i . '">' .
                 '&#91;' . $i . '&#93;</a></sup>';
         } else {
-            $letters = array(
+            $letters = [
                 'A','B','C','D','E','F','G','H','I','J','K','L','M',
                 'N','O','P','Q','R','S','T','U','V','W','X','Y','Z'
-            );
+            ];
 
             $html  = '<ol class="footnotes">';
             foreach ($wm->footnotes as $i => $footnote) {

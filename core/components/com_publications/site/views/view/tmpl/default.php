@@ -236,7 +236,7 @@ if ($this->publication->access('view-all')) {
             <div class="aside extracontent">
             <?php
             // Show related content
-            $out = Event::trigger('publications.onPublicationSub', array($this->publication, $this->option, 1));
+            $out = Event::trigger('publications.onPublicationSub', [$this->publication, $this->option, 1]);
             if (count($out) > 0) {
                 foreach ($out as $ou) {
                     if (isset($ou['html'])) {

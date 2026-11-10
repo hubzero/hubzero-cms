@@ -55,7 +55,7 @@ class DataviewList
         }
 
 
-        $files = array();
+        $files = [];
         if (is_dir($path_php)) {
             $files = scandir($path_php);
         }

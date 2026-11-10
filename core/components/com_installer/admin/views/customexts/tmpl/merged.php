@@ -59,7 +59,7 @@ Html::behavior('tooltip');
                         <td>
                             <strong>Extension: <?php echo $item['extension']; ?></strong>
                             <hr />
-                            <pre><?php echo implode('<br>', is_array($item['message']) ? $item['message'] : array($item['message'])); ?></pre>
+                            <pre><?php echo implode('<br>', is_array($item['message']) ? $item['message'] : [$item['message']]); ?></pre>
                         </td>
                     </tr>
                 <?php endforeach; ?>

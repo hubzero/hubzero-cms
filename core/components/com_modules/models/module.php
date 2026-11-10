@@ -60,20 +60,20 @@ class Module extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'title'    => 'notempty',
         'position' => 'notempty'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'publish_up',
         'publish_down'
-    );
+    ];
 
     /**
      * The path to the installed files
@@ -128,7 +128,7 @@ class Module extends Relational
     public function transformXml()
     {
         if (is_null($this->manifest)) {
-            $paths = array();
+            $paths = [];
 
             if (substr($this->get('module'), 0, 4) == 'mod_') {
                 $paths[] = $this->path() . DS . substr($this->get('module'), 4) . '.xml';
@@ -200,13 +200,13 @@ class Module extends Relational
 
         Form::addFieldPath(__DIR__ . '/fields');
 
-        $form = new Form('module', array('control' => 'fields'));
+        $form = new Form('module', ['control' => 'fields']);
 
         if (!$form->loadFile($file, false, '//form')) {
             $this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
         }
 
-        $paths = array();
+        $paths = [];
 
         $paths[] = $this->path() . DS . 'config' . DS . 'config.xml';
 
@@ -253,7 +253,7 @@ class Module extends Relational
             $title = self::increment($title);
         }
 
-        return array($title);
+        return [$title];
     }
 
     /**
@@ -271,16 +271,16 @@ class Module extends Relational
      */
     protected static function increment($string, $style = 'default', $n = 0)
     {
-        $incrementStyles = array(
-            'dash' => array(
+        $incrementStyles = [
+            'dash' => [
                 '#-(\d+)$#',
                 '-%d'
-            ),
-            'default' => array(
-                array('#\((\d+)\)$#', '#\(\d+\)$#'),
-                array(' (%d)', '(%d)'),
-            ),
-        );
+            ],
+            'default' => [
+                ['#\((\d+)\)$#', '#\(\d+\)$#'],
+                [' (%d)', '(%d)'],
+            ],
+        ];
 
         $styleSpec = isset($incrementStyles[$style]) ? $incrementStyles[$style] : $incrementStyles['default'];
 
@@ -348,7 +348,7 @@ class Module extends Relational
             $this->path = '';
 
             if ($module = $this->get('module')) {
-                $paths = array();
+                $paths = [];
 
                 if (substr($module, 0, 4) == 'mod_') {
                     $path = '/modules/' . substr($module, 4) . '/' . substr($module, 4) . '.php';
@@ -606,10 +606,10 @@ class Module extends Relational
             // and other menu items resulting in a module being displayed twice.
             if ($assignment === 0) {
                 // assign new module to `all` menu item associations
-                $menu = Menu::blank()->set(array(
+                $menu = Menu::blank()->set([
                     'moduleid' => $this->get('id'),
                     'menuid'   => 0
-                ));
+                ]);
 
                 if (!$menu->save()) {
                     $this->addError('Failed saving: ' . $menu->getError());
@@ -620,12 +620,12 @@ class Module extends Relational
                 $sign = $assignment < 0 ? -1 : +1;
 
                 // Preprocess the assigned array.
-                $tuples = array();
+                $tuples = [];
                 foreach ($assigned as &$pk) {
-                    $menu = Menu::blank()->set(array(
+                    $menu = Menu::blank()->set([
                         'moduleid' => $this->get('id'),
                         'menuid'   => ((int) $pk * $sign)
-                    ));
+                    ]);
 
                     if (!$menu->save()) {
                         $this->addError('More failed: ' . $menu->getError());

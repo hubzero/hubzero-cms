@@ -44,7 +44,7 @@ class Posts extends AdminController
     public function displayTask()
     {
         // Get filters
-        $filters = array(
+        $filters = [
             'collection_id' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.collection_id',
                 'collection_id',
@@ -82,7 +82,7 @@ class Posts extends AdminController
                 'access',
                 '-1'
             )
-        );
+        ];
 
         $model = Post::all()
             ->including(['creator', function ($creator) {
@@ -152,7 +152,7 @@ class Posts extends AdminController
 
         if (!is_object($row)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
 
             if (is_array($id)) {
                 $id = (!empty($id) ? $id[0] : 0);
@@ -186,7 +186,7 @@ class Posts extends AdminController
         }
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post', 'none', 2);
+        $fields = Request::getArray('fields', [], 'post', 'none', 2);
 
         // Initiate model
         $row = Post::oneOrNew($fields['id'])->set($fields);
@@ -225,8 +225,8 @@ class Posts extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
         $i = 0;
 
         if (count($ids) > 0) {

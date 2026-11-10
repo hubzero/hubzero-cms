@@ -30,14 +30,14 @@ class Record extends \Hubzero\Content\Import\Model\Record
      *
      * @var  array
      */
-    private $_profile = array();
+    private $_profile = [];
 
     /**
      * Handlers instances container
      *
      * @var  array
      */
-    protected static $handlers = array();
+    protected static $handlers = [];
 
     /**
      * Cached map of profile field name => default access level
@@ -54,7 +54,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
      * @param   string  $mode     Operation mode (update|patch)
      * @return  void
      */
-    public function __construct($raw, $options = array(), $mode = 'UPDATE')
+    public function __construct($raw, $options = [], $mode = 'UPDATE')
     {
         // store our incoming data
         $this->raw      = $raw;
@@ -63,16 +63,16 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
         // Core objects
         //$this->_user    = User::getInstance();
-        $this->_profile = array();
+        $this->_profile = [];
 
         // Create objects
         $this->record = new stdClass();
         $this->record->entry = new \Components\Members\Models\Member();
-        $this->record->tags  = array();
+        $this->record->tags  = [];
 
         // Messages
-        $this->record->errors  = array();
-        $this->record->notices = array();
+        $this->record->errors  = [];
+        $this->record->notices = [];
 
         // bind data
         $this->bind();
@@ -117,8 +117,8 @@ class Record extends \Hubzero\Content\Import\Model\Record
         $xregistration->loadProfile($this->record->entry);
 
         // Check that required fields were filled in properly
-        if (!$xregistration->check('edit', $this->record->entry->get('id'), array())) {
-            $skip = array();
+        if (!$xregistration->check('edit', $this->record->entry->get('id'), [])) {
+            $skip = [];
 
             if (!empty($xregistration->_missing)) {
                 foreach ($xregistration->_missing as $key => $missing) {
@@ -141,7 +141,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
             }
         }
 
-        $keys = array();
+        $keys = [];
         if ($this->_mode == 'PATCH') {
             foreach ($this->_profile as $k => $p) {
                 if (!$p) {
@@ -172,7 +172,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
             ->ordered()
             ->rows();
 
-        $form = new \Hubzero\Form\Form('profile', array('control' => 'profile'));
+        $form = new \Hubzero\Form\Form('profile', ['control' => 'profile']);
         $form->load(\Components\Members\Models\Profile\Field::toXml($fields, 'edit'));
         $form->bind(new \Hubzero\Config\Registry($this->_profile));
 
@@ -300,7 +300,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
         //
         // This will split a string based on delimiter(s) and turn the
         // values into an array.
-        foreach (array('disability', 'race', 'hispanic') as $key) {
+        foreach (['disability', 'race', 'hispanic'] as $key) {
             if (isset($this->raw->$key)) {
                 // In PATCH mode, skip fields with no values
                 if ($this->_mode == 'PATCH' && (!isset($this->_profile[$key]) || !$this->_profile[$key])) {
@@ -321,11 +321,11 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
         // If we have the individual name parts but not the combined whole...
         if (($this->record->entry->get('givenName') || $this->record->entry->get('surname')) && !$this->record->entry->get('name')) {
-            $name = array(
+            $name = [
                 $this->record->entry->get('givenName'),
                 $this->record->entry->get('middleName'),
                 $this->record->entry->get('surname')
-            );
+            ];
             $this->record->entry->set('name', implode(' ', $name));
         }
 
@@ -371,7 +371,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
     private function _profileFieldAccess()
     {
         if (self::$fieldAccess === null) {
-            self::$fieldAccess = array();
+            self::$fieldAccess = [];
 
             $fields = \Components\Members\Models\Profile\Field::all()
                 ->where('action_create', '!=', \Components\Members\Models\Profile\Field::STATE_HIDDEN)
@@ -482,7 +482,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
             }
 
             $this->record->entry->set('id', 0);
-            $this->record->entry->set('accessgroups', array($newUsertype));
+            $this->record->entry->set('accessgroups', [$newUsertype]);
             $this->record->entry->set('registerDate', $d->toSql());
             $this->record->entry->set('password', $this->raw->password);
             if (!$this->record->entry->get('loginShell')) {
@@ -508,7 +508,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
             // profile entry, so imported accounts had public/registered fields
             // wrongly set to private (ticket 370). Existing accounts keep their
             // current per-field access on re-import.
-            $access = $isNew ? $this->_profileFieldAccess() : array();
+            $access = $isNew ? $this->_profileFieldAccess() : [];
 
             if (!$this->record->entry->saveProfile($this->_profile, $access)) {
                 throw new Exception($this->record->entry->getError());
@@ -521,11 +521,11 @@ class Record extends \Hubzero\Content\Import\Model\Record
         }
 
         if ($isNew && $this->_options['emailnew'] == 1) {
-            $eview = new \Hubzero\Component\View(array(
+            $eview = new \Hubzero\Component\View([
                 'base_path' => dirname(dirname(__DIR__)) . DS . 'site',
                 'name'      => 'emails',
                 'layout'    => 'confirm'
-            ));
+            ]);
             $eview->set('option', 'com_members');
             $eview->set('controller', 'register');
             $eview->sitename     = Config::get('sitename');
@@ -583,7 +583,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
                 array_push($this->record->notices, $error);
             }
 
-            $handler->setErrors(array());
+            $handler->setErrors([]);
         }
     }
 
@@ -601,7 +601,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
                 array_push($this->record->notices, $error);
             }
 
-            $handler->setErrors(array());
+            $handler->setErrors([]);
         }
     }
 

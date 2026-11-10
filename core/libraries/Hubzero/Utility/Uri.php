@@ -84,14 +84,14 @@ class Uri
      *
      * @var  array
      */
-    protected $vars = array();
+    protected $vars = [];
 
     /**
      * An array of URI instances.
      *
      * @var  array
      */
-    protected static $instances = array();
+    protected static $instances = [];
 
     /**
      * Constructor.
@@ -173,13 +173,13 @@ class Uri
 
                 // Extra cleanup to remove invalid chars in the URL to prevent injections through the Host header
                 $_SERVER['REQUEST_URI'] = str_replace(
-                    array("'", '"', '<', '>'),
-                    array('%27','%22','%3C','%3E'),
+                    ["'", '"', '<', '>'],
+                    ['%27','%22','%3C','%3E'],
                     $_SERVER['REQUEST_URI']
                 );
                 $theURI = str_replace(
-                    array("'", '"', '<', '>'),
-                    array('%27','%22','%3C','%3E'),
+                    ["'", '"', '<', '>'],
+                    ['%27','%22','%3C','%3E'],
                     $theURI
                 );
             } else {
@@ -203,10 +203,10 @@ class Uri
      */
     public function root($pathonly = false, $path = null)
     {
-        $prefix = $this->toString(array('scheme', 'host', 'port'));
+        $prefix = $this->toString(['scheme', 'host', 'port']);
 
         if (!isset($path)) {
-            $path = rtrim($this->toString(array('path')), '/\\');
+            $path = rtrim($this->toString(['path']), '/\\');
         }
 
         return $pathonly === false ? $prefix . $path . '/' : $path;
@@ -237,7 +237,7 @@ class Uri
             $parts['query'] = str_replace('&amp;', '&', $parts['query']);
         }
 
-        $data = array('scheme', 'user', 'pass', 'host', 'port', 'path', 'query', 'fragment');
+        $data = ['scheme', 'user', 'pass', 'host', 'port', 'path', 'query', 'fragment'];
         foreach ($data as $part) {
             $this->$part = isset($parts[$part]) ? $parts[$part] : null;
         }
@@ -256,7 +256,7 @@ class Uri
      * @param   array   $parts  An array specifying the parts to render.
      * @return  string  The rendered URI string.
      */
-    public function toString($parts = array('scheme', 'user', 'pass', 'host', 'port', 'path', 'query', 'fragment'))
+    public function toString($parts = ['scheme', 'user', 'pass', 'host', 'port', 'path', 'query', 'fragment'])
     {
         // Make sure the query is created
         $query = $this->getQuery();

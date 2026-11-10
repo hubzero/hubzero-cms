@@ -23,7 +23,7 @@ class Children extends WikiMacro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['wiki'] = 'Inserts an alphabetic list of all sub-pages (children) of the current page into the output. '
             . 'Accepts two parameters:' . "\n"
             . ' * \'\'\'depth: how deep to mine for pages. Default is one level.' . "\n"

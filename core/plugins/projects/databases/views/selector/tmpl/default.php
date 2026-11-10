@@ -27,7 +27,7 @@ $attachments = isset($attachments['elements'][$this->element]) ? $attachments['e
 $attachments = $attModel->getElementAttachments($this->element, $attachments, $params->type);
 
 // Get preselected items
-$selected = array();
+$selected = [];
 if ($attachments) {
     foreach ($attachments as $attach) {
         $selected[] = $attach->object_name;

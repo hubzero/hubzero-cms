@@ -47,13 +47,13 @@ class ArgumentsTest extends Basic
         self::$home     = sys_get_temp_dir() . DS . 'muse_' . bin2hex(random_bytes(6));
 
         mkdir(self::$home, 0700, true);
-        file_put_contents(self::$home . DS . '.muse', json_encode(array(
-            'aliases' => array(
+        file_put_contents(self::$home . DS . '.muse', json_encode([
+            'aliases' => [
                 'env'  => 'environment',
                 't'    => 'test::run',
                 'inst' => 'repository:package::install'
-            )
-        )));
+            ]
+        ]));
 
         putenv('HOME=' . self::$home);
     }

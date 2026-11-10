@@ -32,7 +32,7 @@ class Groupedlist extends Field
     protected function getGroups()
     {
         // Initialize variables.
-        $groups = array();
+        $groups = [];
         $label = 0;
 
         foreach ($this->element->children() as $element) {
@@ -41,7 +41,7 @@ class Groupedlist extends Field
                 case 'option':
                     // Initialize the group if necessary.
                     if (!isset($groups[$label])) {
-                        $groups[$label] = array();
+                        $groups[$label] = [];
                     }
 
                     // Create a new option object based on the <option /> element.
@@ -74,7 +74,7 @@ class Groupedlist extends Field
 
                     // Initialize the group if necessary.
                     if (!isset($groups[$label])) {
-                        $groups[$label] = array();
+                        $groups[$label] = [];
                     }
 
                     // Iterate through the children and build an array of options.
@@ -136,7 +136,7 @@ class Groupedlist extends Field
     protected function getInput()
     {
         // Initialize variables.
-        $html = array();
+        $html = [];
         $attr = '';
 
         // Initialize some field attributes.
@@ -156,12 +156,12 @@ class Groupedlist extends Field
             $html[] = Dropdown::groupedlist(
                 $groups,
                 null,
-                array(
+                [
                     'list.attr' => $attr, 'id' => $this->
                         id, 'list.select' => $this->
                         value, 'group.items' => null, 'option.key.toHtml' => false,
                     'option.text.toHtml' => false
-                )
+                ]
             );
             $html[] = '<input type="hidden" name="' .
                 $this->name .
@@ -173,12 +173,12 @@ class Groupedlist extends Field
             $html[] = Dropdown::groupedlist(
                 $groups,
                 $this->name,
-                array(
+                [
                     'list.attr' => $attr, 'id' => $this->
                         id, 'list.select' => $this->
                         value, 'group.items' => null, 'option.key.toHtml' => false,
                     'option.text.toHtml' => false
-                )
+                ]
             );
         }
 

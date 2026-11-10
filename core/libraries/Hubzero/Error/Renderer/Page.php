@@ -84,11 +84,11 @@ class Page implements RendererInterface
 
             $data = $this->document->render(
                 false,
-                array(
+                [
                     'template'  => $template->template,
                     'directory' => dirname($template->path),
                     'debug'     => $this->debug
-                )
+                ]
             );
 
             // Failsafe to get the error displayed.

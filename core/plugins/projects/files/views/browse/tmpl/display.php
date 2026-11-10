@@ -324,17 +324,17 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
                 // Report usage only with current files and not with history
                 $dirsize = $this->repo->call(
                     'getDiskUsage',
-                    $params = array(
+                    $params = [
                         'working' => true,
                         'history' => false,
                         'git' => $this->fileparams->get('disk_usage')
-                    )
+                    ]
                 );
             } else {
                 // Original Code
                 $dirsize = $this->repo->call(
                     'getDiskUsage',
-                    $params = array( 'git' => $this->fileparams->get('disk_usage'))
+                    $params = [ 'git' => $this->fileparams->get('disk_usage')]
                 );
             }
 

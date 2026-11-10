@@ -29,18 +29,18 @@ class Newsletter extends Plugin
 
         $obj = new \stdClass();
         $obj->plugin = $this->_name;
-        $obj->events = array(
-            array(
+        $obj->events = [
+            [
                 'name'   => 'processMailings',
                 'label'  => Lang::txt('PLG_CRON_NEWSLETTER_PROCESS_QUEUE'),
                 'params' => 'processmailings'
-            ),
-            array(
+            ],
+            [
                 'name'   => 'processIps',
                 'label'  => Lang::txt('PLG_CRON_NEWSLETTER_IP_ADDRESSES_TO_LOCATION'),
                 'params' => 'processips'
-            )
-        );
+            ]
+        ];
 
         return $obj;
     }
@@ -57,7 +57,7 @@ class Newsletter extends Plugin
 
         // needed vars
         $limit     = 25;
-        $processed = array();
+        $processed = [];
 
         // do we have a param defined limit
         $params = $job->params;
@@ -121,18 +121,18 @@ class Newsletter extends Plugin
                 switch ($parts[0]) {
                     case 'From':
                         if (preg_match("/\\\"([^\"]*)\\\"\\s<([^>]*)>/ux", $parts[1], $matches)) {
-                            $message->setFrom(array($matches[2] => $matches[1]));
+                            $message->setFrom([$matches[2] => $matches[1]]);
                         }
                         break;
                     case 'Reply-To':
                         if (preg_match("/\\\"([^\"]*)\\\"\\s<([^>]*)>/ux", $parts[1], $matches)) {
-                            $message->setReplyTo(array($matches[2] => $matches[1]));
+                            $message->setReplyTo([$matches[2] => $matches[1]]);
                         }
                         break;
                     case 'Importance':
                     case 'X-Priority':
                     case 'X-MSMail-Priority':
-                        $priority = (isset($parts[1]) && in_array($parts[1], array(1, 2, 3, 4, 5))) ? $parts[1] : 3;
+                        $priority = (isset($parts[1]) && in_array($parts[1], [1, 2, 3, 4, 5])) ? $parts[1] : 3;
                         $message->setPriority($priority);
                         break;
                     default:

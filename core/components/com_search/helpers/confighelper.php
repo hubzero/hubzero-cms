@@ -31,7 +31,7 @@ class ConfigHelper
 
         if ($name == '') {
             $configFiles = Filesystem::listContents($baseDir);
-            $config = array();
+            $config = [];
 
             foreach ($configFiles as $file) {
                 if (Filesystem::extension($baseDir . $file['path']) == 'php') {
@@ -140,7 +140,7 @@ class ConfigHelper
         $text = str_replace("\r", '', $text);
         $text = preg_replace('/<p>\s*?(\[\[[^\]]+\]\])\s*?<\/p>/i', "\n$1\n", $text);
         $text = preg_replace('/<p>(\[\[[^\]]+\]\])\n/i', "$1\n<p>", $text);
-        $matches = array();
+        $matches = [];
         preg_match_all('/\[\[(?P<macroname>[\w.]+)(\]\]|\((?P<macroargs>.*)\)\]\])/U', $text, $matches);
 
         // Copy the original string

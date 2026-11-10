@@ -85,19 +85,19 @@ class Callback extends SiteController
         }
 
         $url = 'https://github.com/login/oauth/access_token';
-        $fields = array(
+        $fields = [
             'client_id'     => $pparams->get('app_key'),
             'client_secret' => $pparams->get('app_secret'),
             'code'          => $code,
             'state'         => $state
-        );
+        ];
         $ch = curl_init();
 
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, count($fields));
         curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Accept: application/json']);
 
         $result = curl_exec($ch);
 

@@ -38,22 +38,22 @@ class DataStore extends Base
      * @param   array   $savedConfig
      * @return  object
      */
-    public function getConfig($savedConfig = array())
+    public function getConfig($savedConfig = [])
     {
         // Defaults
-        $configs = array(
+        $configs = [
             'name'   => 'datastore',
             'label'  => 'Data Viewer',
             'title'  => 'Interactive data explorer',
             'about'  => 'Selected CSV file will be viewed as a database',
-            'params' => array(
-                'allowed_ext'  => array('csv'),
-                'required_ext' => array('csv'),
+            'params' => [
+                'allowed_ext'  => ['csv'],
+                'required_ext' => ['csv'],
                 'min_allowed'  => 1,
                 'max_allowed'  => 1,
                 'enforced'     => 0
-            )
-        );
+            ]
+        ];
 
         $parsedConfig = $this->_parent->parseConfig($this->_name, $configs, $savedConfig);
         $this->_config = json_decode(json_encode($parsedConfig), false);

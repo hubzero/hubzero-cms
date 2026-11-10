@@ -56,7 +56,7 @@ class Archive extends Model
      * @param      boolean $boolean Clear cached data?
      * @return     mixed
      */
-    public function versions($rtrn = 'list', $filters = array(), $clear = false)
+    public function versions($rtrn = 'list', $filters = [], $clear = false)
     {
         $tbl = new Tables\PageVersion($this->_db);
 

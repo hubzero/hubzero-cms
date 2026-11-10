@@ -96,7 +96,7 @@ class Newsletters extends AdminController
         $dependency = $this->dependencyCheck();
 
         // Filters
-        $filters = array(
+        $filters = [
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
@@ -124,7 +124,7 @@ class Newsletters extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         $records = Newsletter::all()
             ->including(['template', function ($template) {
@@ -178,7 +178,7 @@ class Newsletters extends AdminController
         // Load object
         if (!is_object($row)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             $id = is_array($id) ? $id[0] : $id;
 
             $row = Newsletter::oneOrNew($id);
@@ -224,13 +224,13 @@ class Newsletters extends AdminController
         }
 
         // Incoming data
-        $fields = Request::getArray('newsletter', array(), 'post');
+        $fields = Request::getArray('newsletter', [], 'post');
 
         // Initiate model
         $row = Newsletter::oneOrNew($fields['id'])->set($fields);
 
         // did we have params
-        $p = Request::getArray('params', array(), 'post');
+        $p = Request::getArray('params', [], 'post');
 
         if (!empty($p)) {
             // load previous params
@@ -293,7 +293,7 @@ class Newsletters extends AdminController
         }
 
         // Get the request vars
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
 
         // Make sure we have ids
         $success = 0;
@@ -336,7 +336,7 @@ class Newsletters extends AdminController
         }
 
         // Get the request vars
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
 
         // Make sure we have ids
         $success = 0;
@@ -384,8 +384,8 @@ class Newsletters extends AdminController
         $publish = $this->getTask() == 'publish' ? Newsletter::STATE_PUBLISHED : Newsletter::STATE_UNPUBLISHED;
 
         // Get the request vars
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Make sure we have ids
         $success = 0;
@@ -452,7 +452,7 @@ class Newsletters extends AdminController
     public function sendTestTask()
     {
         // Get the request vars
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
         $id = (isset($ids[0])) ? $ids[0] : 0;
 
         // Make sure we have an id
@@ -490,8 +490,8 @@ class Newsletters extends AdminController
         }
 
         //vars needed for test sending
-        $goodEmails = array();
-        $badEmails  = array();
+        $goodEmails = [];
+        $badEmails  = [];
 
         // Get request vars
         $emails       = Request::getString('emails', '');
@@ -549,7 +549,7 @@ class Newsletters extends AdminController
     public function sendNewsletterTask()
     {
         // get the request vars
-        $ids = Request::getArray("id", array());
+        $ids = Request::getArray("id", []);
         $id = (isset($ids[0])) ? $ids[0] : null;
 
         // make sure we have an id
@@ -639,7 +639,7 @@ class Newsletters extends AdminController
             $newsletter,
             $htmlContent,
             $plainContent,
-            array(),
+            [],
             $mailinglistId,
             $sendingTest = false
         );
@@ -680,13 +680,13 @@ class Newsletters extends AdminController
         // add recipients at 10000 at a time
 
         // array of filters
-        $filters = array(
+        $filters = [
             'lid'    => $mailinglistId,
             'status' => 'active',
             'limit'  => 10000,
             'start'  => 0,
             'select' => 'email'
-        );
+        ];
         $left = $count;
         while ($left >= 0) {
             // get emails
@@ -723,13 +723,13 @@ class Newsletters extends AdminController
         // handle guest users for the default list
         if (!isset($mailinglist)) {
             // array of filters
-            $filters = array(
+            $filters = [
                 'lid'    => $mailinglistId,
                 'status' => 'active',
                 'limit'  => 10000,
                 'start'  => 0,
                 'select' => 'email'
-            );
+            ];
             $left = $count2;
             while ($left >= 0) {
                 // get emails
@@ -860,18 +860,18 @@ class Newsletters extends AdminController
                     switch ($parts[0]) {
                         case 'From':
                             if (preg_match("/\\\"([^\"]*)\\\"\\s<([^>]*)>/ux", $parts[1], $matches)) {
-                                $message->setFrom(array($matches[2] => $matches[1]));
+                                $message->setFrom([$matches[2] => $matches[1]]);
                             }
                             break;
                         case 'Reply-To':
                             if (preg_match("/\\\"([^\"]*)\\\"\\s<([^>]*)>/ux", $parts[1], $matches)) {
-                                $message->setReplyTo(array($matches[2] => $matches[1]));
+                                $message->setReplyTo([$matches[2] => $matches[1]]);
                             }
                             break;
                         case 'Importance':
                         case 'X-Priority':
                         case 'X-MSMail-Priority':
-                            $priority = (isset($parts[1]) && in_array($parts[1], array(1,2,3,4,5))) ? $parts[1] : 3;
+                            $priority = (isset($parts[1]) && in_array($parts[1], [1,2,3,4,5])) ? $parts[1] : 3;
                             $message->setPriority($priority);
                             break;
                         default:
@@ -924,7 +924,7 @@ class Newsletters extends AdminController
 
         // Create mailing object
         $mailing = Mailing::blank()
-            ->set(array(
+            ->set([
                 'nid'        => $newsletter->id,
                 'lid'        => $newsletterMailinglist,
                 'subject'    => $mailSubject,
@@ -934,7 +934,7 @@ class Newsletters extends AdminController
                 'args'       => $mailArgs,
                 'tracking'   => $newsletter->tracking,
                 'date'       => $scheduledDate
-            ));
+            ]);
 
         // Save mailing object
         if (!$mailing->save()) {
@@ -963,12 +963,12 @@ class Newsletters extends AdminController
         // create new record for each email
         foreach ($emails as $email) {
             $insert = Recipient::blank()
-                ->set(array(
+                ->set([
                     'mid'        => $mailing->id,
                     'email'      => (is_array($email) ? $email['email'] : $email),
                     'status'     => 'queued',
                     'date_added' => $date
-                ));
+                ]);
 
             if (!$insert->save()) {
                 Notify::error($insert->getError());

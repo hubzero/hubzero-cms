@@ -93,7 +93,7 @@ $this->css('introduction.css', 'system')
 // heading was printed over nothing: a hub that has declined the sample data
 // has no categories at all, and its resources page offered the word
 // "Categories" and then a blank half-screen.
-$categories = array();
+$categories = [];
 
 foreach ($this->categories as $category) {
     if (!$category->state) {

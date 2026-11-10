@@ -23,7 +23,7 @@ class Activity extends Plugin
      * @param   array  $recipients
      * @return  void
      */
-    public function logActivity($activity, $recipients = array())
+    public function logActivity($activity, $recipients = [])
     {
         if (!App::isSite() && !App::isApi()) {
             return;

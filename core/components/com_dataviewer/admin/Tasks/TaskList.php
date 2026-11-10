@@ -22,7 +22,7 @@ class TaskList
 
 
         $base = DvConfig::$conf['dir_base'];
-        $arry = array();
+        $arry = [];
         $list = `cd $base; ls ./*/database.json`;
 
         $list = explode("\n", $list ? $list : '');

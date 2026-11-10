@@ -27,8 +27,8 @@ $current->month = date("m");
 $viewshighest = 0;
 $downhighest = 0;
 
-$views = array();
-$downloads = array();
+$views = [];
+$downloads = [];
 $totalDownloads = $this->totalDownloads;
 $totalViews = $this->totalViews;
 
@@ -75,7 +75,7 @@ $this->js('flot/jquery.colorhelpers.min.js', 'system')
      ->js('canvas2image.js')
      ->js('jquery.flot.saveAsImage.js');
 
-$heights = array();
+$heights = [];
 ?>
 <h3 id="plg-usage-header">
     <?php echo Lang::txt('PLG_PUBLICATIONS_USAGE'); ?>

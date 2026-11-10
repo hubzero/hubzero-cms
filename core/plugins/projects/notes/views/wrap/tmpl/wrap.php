@@ -33,7 +33,7 @@ $showSidePanel = ($this->task == 'view' or $this->task == 'page' or $this->task 
 $notes = $this->note->getNotes();
 
 // Get page parent notes (for breadcrumbs)
-$parentNotes = array(); //$this->note->getParentNotes($this->scope);
+$parentNotes = []; //$this->note->getParentNotes($this->scope);
 if ($page->path && trim($page->path)) {
     $parentNotes = explode('/', trim($page->path));
 }
@@ -56,7 +56,7 @@ if ($this->task == 'new') {
     $bcrumb .= ' &raquo; <span class="subheader"><a href="' . Route::url($page->link()) . '">' . $this->escape($page->get('title')) . '</a></span>';
 }
 
-$tasks = array( 'edit', 'history', 'comments', 'delete', 'compare', 'addcomment', 'renamepage' );
+$tasks = [ 'edit', 'history', 'comments', 'delete', 'compare', 'addcomment', 'renamepage' ];
 if ($this->task != 'view' && in_array($this->task, $tasks)) {
     $bcrumb .= ' &raquo; <span class="subheader">' . Lang::txt('COM_PROJECTS_NOTES_TASK_' . strtoupper($this->task)) . '</span> ';
 }

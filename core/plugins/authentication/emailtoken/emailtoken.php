@@ -117,11 +117,11 @@ class Emailtoken extends Plugin
         $response->error_message = '';
 
         // Set cookie with login preference info
-        $prefs = array(
+        $prefs = [
             'user_id'       => $user->get('id'),
             'user_img'      => $user->picture(0, false),
             'authenticator' => 'emailtoken'
-        );
+        ];
 
         $namespace = 'authenticator';
         $lifetime  = time() + 365 * 24 * 60 * 60;
@@ -205,7 +205,7 @@ class Emailtoken extends Plugin
                 $result = false;
             } else {
                 // Check to see if fail2ban-client is installed
-                $output = array();
+                $output = [];
                 exec('which fail2ban-client', $output);
                 if (!empty($output)) {
                     $path = $output[0];

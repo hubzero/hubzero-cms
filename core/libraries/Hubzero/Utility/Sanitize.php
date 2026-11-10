@@ -26,7 +26,7 @@ class Sanitize
      * @param   array   $allowed  An array of additional characters that are not to be removed.
      * @return  string  Sanitized string
      */
-    public static function paranoid($string, $allowed = array())
+    public static function paranoid($string, $allowed = [])
     {
         $allow = null;
         if (!empty($allowed)) {
@@ -39,7 +39,7 @@ class Sanitize
             return preg_replace("/[^{$allow}a-zA-Z0-9]/", '', $string);
         }
 
-        $cleaned = array();
+        $cleaned = [];
         foreach ($string as $key => $clean) {
             $cleaned[$key] = preg_replace("/[^{$allow}a-zA-Z0-9]/", '', $clean);
         }
@@ -73,11 +73,11 @@ class Sanitize
      */
     public static function stripImages($str)
     {
-        $preg = array(
+        $preg = [
             '/(<a[^>]*>)(<img[^>]+alt=")([^"]*)("[^>]*>)(<\/a>)/i' => '$1$3$5<br />',
             '/(<img[^>]+alt=")([^"]*)("[^>]*>)/i' => '$2<br />',
             '/<img[^>]*>/i' => ''
-        );
+        ];
 
         return preg_replace(array_keys($preg), array_values($preg), $str);
     }
@@ -178,8 +178,8 @@ class Sanitize
         $string = preg_replace($regex, '', $string);
 
         $string = str_replace(
-            array('&amp;',     '&lt;',     '&gt;'),
-            array('&amp;amp;', '&amp;lt;', '&amp;gt;'),
+            ['&amp;',     '&lt;',     '&gt;'],
+            ['&amp;amp;', '&amp;lt;', '&amp;gt;'],
             $string
         );
         // Fix &entitiy\n;
@@ -238,7 +238,7 @@ class Sanitize
      */
     public static function cleanMsChar($text, $quotesOnly = false)
     {
-        $y = array(
+        $y = [
             "\x7f" => '',
             "\x80" => '&#8364;',
             "\x81" => '',
@@ -266,15 +266,15 @@ class Sanitize
             "\x9d" => '',
             "\x9e" => '&#382;',
             "\x9f" => '&#376;',
-        );
-        $x = array(
+        ];
+        $x = [
             "\x82" => '\'',
             "\x84" => '"',
             "\x91" => '\'',
             "\x92" => '\'',
             "\x93" => '"',
             "\x94" => '"'
-        );
+        ];
         if (!$quotesOnly) {
             $x = $y + $x;
         }
@@ -684,15 +684,15 @@ class Sanitize
         }
 
         return preg_replace(
-            array('/[^\P{C}\s]/u',
+            ['/[^\P{C}\s]/u',
                 '/:/u',
                 '/</u',
                 '/>/u',
                 '/&/u',
                 '/\s+/u',
                 '/(^\s+|\s+$)/u',
-            ),
-            array(
+            ],
+            [
                 '',
                 '-',
                 '[',
@@ -700,7 +700,7 @@ class Sanitize
                 ' & ',
                 ' ',
                 '',
-            ),
+            ],
             $source
         );
     }

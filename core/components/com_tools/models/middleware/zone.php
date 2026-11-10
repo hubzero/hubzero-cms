@@ -32,11 +32,11 @@ class Zone extends Base
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_cache = array(
+    private $_cache = [
         'locations.count' => null,
         'locations.list'  => null,
         'locations.one'   => null
-    );
+    ];
 
     /**
      * Returns a reference to a zone model
@@ -49,7 +49,7 @@ class Zone extends Base
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         if (!isset($instances[$oid])) {
@@ -66,7 +66,7 @@ class Zone extends Base
      * @param      array  $filters Filters to apply to query
      * @return     mixed Returns an integer or array depending upon format chosen
      */
-    public function locations($rtrn = 'list', $filters = array(), $clear = false)
+    public function locations($rtrn = 'list', $filters = [], $clear = false)
     {
         $tbl = new \Components\Tools\Tables\ZoneLocations($this->_db);
 
@@ -91,7 +91,7 @@ class Zone extends Base
                             $results[$key] = new Location($result);
                         }
                     } else {
-                        $results = array();
+                        $results = [];
                     }
                     $this->_cache['locations.list'] = new ItemList($results);
                 }

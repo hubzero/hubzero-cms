@@ -65,7 +65,7 @@ class Editor extends Obj
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         $signature = serialize($editor);
@@ -114,7 +114,7 @@ class Editor extends Obj
      * @param   array    $params  Associative array of editor parameters
      * @return  mixed
      */
-    public function display($name, $id, $html, $cls, $col, $row, $params = array())
+    public function display($name, $id, $html, $cls, $col, $row, $params = [])
     {
         // Return a standard textarea if no editor is found
         if (!$this->name) {
@@ -203,11 +203,11 @@ class Editor extends Obj
     {
         $this->load();
 
-        $args = array(
+        $args = [
             'name'  => $editor,
             'html'  => $html,
             'event' => 'onSetEditorContent'
-        );
+        ];
 
         $return = '';
         $results[] = $this->editor->update($args);
@@ -225,7 +225,7 @@ class Editor extends Obj
      * @param   array  $config  Associative array of editor config parameters
      * @return  void
      */
-    private function load($config = array())
+    private function load($config = [])
     {
         // Check if editor is already loaded
         if (!is_null($this->editor)) {

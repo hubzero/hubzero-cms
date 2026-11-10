@@ -196,7 +196,7 @@ $dateModifiedString = $dateModified->format('Y-m-d H:i:s');
                     <?php endif; ?>
                 </tbody>
             </table>
-            <?php echo Html::sliders('start', 'content-sliders-' . $this->item->id, array('useCookie' => 1)); ?>
+            <?php echo Html::sliders('start', 'content-sliders-' . $this->item->id, ['useCookie' => 1]); ?>
             <?php // Do not show the publishing options if the edit form is configured not to. ?>
             <?php if ($params['show_publishing_options'] || ($params['show_publishing_options'] = '' && !empty($editoroptions))) : ?>
                 <?php echo Html::sliders('panel', Lang::txt('COM_CONTENT_FIELDSET_PUBLISHING'), 'publishing-details');?>

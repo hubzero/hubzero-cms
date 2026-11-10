@@ -21,7 +21,7 @@ class Migration20160309190540ComNewsletter extends Base
      **/
     public function up()
     {
-        $elements = array('event', 'feedaggregator', 'resource');
+        $elements = ['event', 'feedaggregator', 'resource'];
         foreach ($elements as $element) {
             $this->addPluginEntry('newsletter', $element);
         }
@@ -32,7 +32,7 @@ class Migration20160309190540ComNewsletter extends Base
      **/
     public function down()
     {
-        $elements = array('event', 'feedaggregator', 'resource');
+        $elements = ['event', 'feedaggregator', 'resource'];
         foreach ($elements as $element) {
             $this->deletePluginEntry('newsletter', $element);
         }

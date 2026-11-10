@@ -57,14 +57,14 @@ class Document extends Obj
      *
      * @var  array
      */
-    public $allowed_tags = array('module','modules','stylesheet','script');
+    public $allowed_tags = ['module','modules','stylesheet','script'];
 
     /**
      * Tags
      *
      * @var  array
      */
-    private $_tags       = array();
+    private $_tags       = [];
 
     /**
      * Parse Document Content
@@ -92,11 +92,11 @@ class Document extends Obj
                 unset($attribs['type']);
                 $params = $attribs;
 
-                $this->_tags[$matches[0][$i]] = array(
+                $this->_tags[$matches[0][$i]] = [
                     'type'   => $type,
                     'name'   => $name,
                     'params' => $params
-                );
+                ];
             }
         }
 
@@ -112,8 +112,8 @@ class Document extends Obj
     public function render()
     {
         // vars to hold replace values
-        $replace = array();
-        $with    = array();
+        $replace = [];
+        $with    = [];
 
         // loop through all includes and render
         foreach ($this->_tags as $tag => $props) {
@@ -125,7 +125,7 @@ class Document extends Obj
         $this->set('document', str_replace($replace, $with, $this->get('document')));
 
         // reset tags
-        $this->_tags = array();
+        $this->_tags = [];
 
         //return this for chainability
         return $this;
@@ -151,7 +151,7 @@ class Document extends Obj
      *
      * @return  string
      */
-    private function getBuffer($tag, $type = null, $name = null, $params = array())
+    private function getBuffer($tag, $type = null, $name = null, $params = [])
     {
         // make sure we have type
         // make sure this type is in allowed tags

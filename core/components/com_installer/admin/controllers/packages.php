@@ -32,11 +32,11 @@ class Packages extends AdminController
     public function execute()
     {
         if (!is_file(PATH_APP . '/composer.json')) {
-            $view = new \Hubzero\Component\View(array(
+            $view = new \Hubzero\Component\View([
                 'base_path' => dirname(__DIR__),
                 'name'      => 'warnings',
                 'layout'    => 'composer'
-            ));
+            ]);
             $view->display();
             return;
         }
@@ -52,7 +52,7 @@ class Packages extends AdminController
     public function displayTask()
     {
         // Paging
-        $filters = array(
+        $filters = [
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
@@ -76,13 +76,13 @@ class Packages extends AdminController
                 'filter_order_Dir',
                 'DESC'
             )
-        );
+        ];
 
         try {
             $packages = ComposerHelper::getLocalPackages();
         } catch (\Exception $e) {
             Notify::error($e->getMessage());
-            $packages = array();
+            $packages = [];
         }
 
         // Output the HTML
@@ -115,7 +115,7 @@ class Packages extends AdminController
             $versions = ComposerHelper::findRemotePackages($packageName, '*');
             $installedPackage = ComposerHelper::findLocalPackage($packageName);
         } catch (\Exception $e) {
-            $versions = array();
+            $versions = [];
             $installedPackage = null;
             $this->setError($e->getMessage());
         }
@@ -173,7 +173,7 @@ class Packages extends AdminController
         try {
             $availablePackages = ComposerHelper::getAvailablePackages();
         } catch (\Exception $e) {
-            $availablePackages = array();
+            $availablePackages = [];
 
             $this->setError($e->getMessage());
         }
@@ -197,12 +197,12 @@ class Packages extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $packages = Request::getArray('packages', array());
+        $packages = Request::getArray('packages', []);
 
         foreach ($packages as $package) {
             ComposerHelper::removePackage($package);
 
-            Event::trigger('onPackageAfterDelete', array($package));
+            Event::trigger('onPackageAfterDelete', [$package]);
         }
 
         $this->cancelTask();

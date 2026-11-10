@@ -63,8 +63,8 @@ class Redirect extends SiteController
         $url =  Request::getString("id", ""); //base64_encode('https://www.google.com/')
 
         $params = Component::params('com_redirect');
-        $whitelist = isset($params["delay_whitelist"]) ? explode(",", $params["delay_whitelist"]) : array();
-        $blacklist = isset($params["delay_blacklist"]) ? explode(",", $params["delay_blacklist"]) : array();
+        $whitelist = isset($params["delay_whitelist"]) ? explode(",", $params["delay_whitelist"]) : [];
+        $blacklist = isset($params["delay_blacklist"]) ? explode(",", $params["delay_blacklist"]) : [];
         $enabled = isset($params["delay_enabled"]) ? $params["delay_enabled"] : "DISABLED";
         $time  = isset($params["delay_seconds"]) ? $params["delay_seconds"] : 10;
         $url = base64_decode($url, true);
@@ -85,7 +85,7 @@ class Redirect extends SiteController
         // default, so a check placed after it would never run there -- and the
         // disabled path hands the URL straight to App::redirect(). Refuse to
         // the site root rather than a Host header the caller controls.
-        if (is_array($host) && isset($host['scheme']) && !in_array(strtolower($host['scheme']), array('http', 'https'))) {
+        if (is_array($host) && isset($host['scheme']) && !in_array(strtolower($host['scheme']), ['http', 'https'])) {
             App::redirect(Request::root());
             return;
         }

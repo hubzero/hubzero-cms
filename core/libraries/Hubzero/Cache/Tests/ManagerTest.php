@@ -47,10 +47,10 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
         foreach ($config as $key => $value) {
             $app['config']->set($key, $value);
         }
-        $app['config']->set('foo', array(
+        $app['config']->set('foo', [
             'hash'      => '',
             'cachebase' => ''
-        ));
+        ]);
 
         $this->cache = new Manager($app);
     }

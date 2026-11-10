@@ -55,7 +55,7 @@ class Archive extends Model
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         if (!isset($instances[$key])) {
@@ -73,7 +73,7 @@ class Archive extends Model
      * @param      boolean $clear Clear cached data?
      * @return     mixed
      */
-    public function calendars($rtrn = 'list', $filters = array(), $clear = false)
+    public function calendars($rtrn = 'list', $filters = [], $clear = false)
     {
         switch (strtolower($rtrn)) {
             case 'list':
@@ -120,12 +120,12 @@ class Archive extends Model
             }
 
             // get calendar events
-            $rawEvents = $eventsCalendar->events('list', array(
+            $rawEvents = $eventsCalendar->events('list', [
                 'scope'       => $scope,
                 'scope_id'    => $scope_id,
                 'calendar_id' => $calendarId,
-                'state'       => array(1)
-            ));
+                'state'       => [1]
+            ]);
 
             // merge with full events list
             $events = $events->merge($rawEvents);

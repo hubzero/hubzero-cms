@@ -52,7 +52,7 @@ class Migration20260915180000ComponentRoutesPublished extends Base
             ->whereEquals('m.published', 0)
             ->fetch();
 
-        $ids = array();
+        $ids = [];
 
         foreach ($rows as $row) {
             $ids[] = (int) (is_object($row) ? $row->id : $row['id']);

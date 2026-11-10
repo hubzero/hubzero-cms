@@ -35,7 +35,7 @@ class Resourcetype extends Select
      */
     protected function getOptions()
     {
-        $options   = array();
+        $options   = [];
         $options[] =  Html::select('option', '0', Lang::txt('All'));
 
         $types = Type::getMajorTypes();

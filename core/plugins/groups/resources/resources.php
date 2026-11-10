@@ -87,13 +87,13 @@ class Resources extends Plugin
      */
     public function &onGroupAreas()
     {
-        $area = array(
+        $area = [
             'name'             => 'resources',
             'title'            => Lang::txt('PLG_GROUPS_RESOURCES'),
             'default_access'   => $this->params->get('plugin_access', 'members'),
             'display_menu_tab' => $this->params->get('display_tab', 1),
             'icon'             => 'f02d'
-        );
+        ];
         return $area;
     }
 
@@ -117,10 +117,10 @@ class Resources extends Plugin
         $active = 'resources';
 
         // The output array we're returning
-        $arr = array(
+        $arr = [
             'html' => '',
-            'metadata' => array()
-        );
+            'metadata' => []
+        ];
 
         //get this area details
         $this_area = $this->onGroupAreas();
@@ -176,15 +176,15 @@ class Resources extends Plugin
 
         // Incoming paging vars
         $sort = Request::getString('sort', 'date');
-        if (!in_array($sort, array('date', 'title', 'ranking', 'rating'))) {
+        if (!in_array($sort, ['date', 'title', 'ranking', 'rating'])) {
             $sort = 'date';
         }
         $sortdir = Request::getString('sortdir', 'asc');
-        if (!in_array($sortdir, array('asc', 'desc'))) {
+        if (!in_array($sortdir, ['asc', 'desc'])) {
             $sortdir = 'asc';
         }
         $access = Request::getString('access', 'all');
-        if (!in_array($access, array('all', 'public', 'protected', 'private', 'shared'))) {
+        if (!in_array($access, ['all', 'public', 'protected', 'private', 'shared'])) {
             $access = 'all';
         }
 
@@ -203,7 +203,7 @@ class Resources extends Plugin
         // Get the active category
         $area = Request::getWord('area', 'resources');
         if ($area) {
-            $activeareas = array($area);
+            $activeareas = [$area];
         } else {
             $limit = 5;
             $activeareas = $rareas;
@@ -225,12 +225,12 @@ class Resources extends Plugin
             $access,
             $activeareas
         );
-        $totals = array($ts);
+        $totals = [$ts];
 
         // Get the total results found (sum of all categories)
         $i = 0;
         $total = 0;
-        $cats = array();
+        $cats = [];
         foreach ($rareas as $c => $t) {
             $cats[$i]['category'] = $c;
 
@@ -239,7 +239,7 @@ class Resources extends Plugin
                 // They do - do some processing
                 $cats[$i]['title'] = ucfirst($c);
                 $cats[$i]['total'] = 0;
-                $cats[$i]['_sub']  = array();
+                $cats[$i]['_sub']  = [];
                 $z = 0;
                 // Loop through each sub-category
                 foreach ($t as $s => $st) {
@@ -283,7 +283,7 @@ class Resources extends Plugin
             $activeareas,
             $sortdir
         );
-        $results = array($r);
+        $results = [$r];
 
         // Build the output
         switch ($return) {
@@ -307,7 +307,7 @@ class Resources extends Plugin
                     // Instantiate the controller and have it execute
                     $controllerPath = Component::path('com_resources') . DS . 'site';
                     $newtest = new \Components\Resources\Site\Controllers\Resources(
-                        array('base_path' => $controllerPath)
+                        ['base_path' => $controllerPath]
                     );
                     $newtest->execute();
 
@@ -407,7 +407,7 @@ class Resources extends Plugin
     private function getResourceIDs($gid = null)
     {
         if (!$gid) {
-            return array();
+            return [];
         }
         $database = App::get('db');
 
@@ -437,7 +437,7 @@ class Resources extends Plugin
 
         // Normalize the category names
         // e.g., "Oneline Presentations" -> "onlinepresentations"
-        $cats = array();
+        $cats = [];
         foreach ($categories as $category) {
             $normalized = preg_replace("/[^a-zA-Z0-9]/", '', $category->type);
             $normalized = strtolower($normalized);
@@ -445,9 +445,9 @@ class Resources extends Plugin
             $cats[$normalized] = $category->type;
         }
 
-        $areas = array(
+        $areas = [
             'resources' => $cats
-        );
+        ];
         $this->_areas = $areas;
         return $areas;
     }
@@ -474,17 +474,17 @@ class Resources extends Plugin
                 && !in_array($this->_name, $areas)
                 && !array_intersect($areas, array_keys($ars['resources']))
             ) {
-                return array();
+                return [];
             }
         }
 
         // Do we have a member ID?
         if (!$group->get('cn')) {
-            return array();
+            return [];
         }
 
         // Build query
-        $filters = array();
+        $filters = [];
         $filters['now'] = Date::toSql();
         $filters['sortby'] = ($sort == 'date' ? 'created' : $sort);
         $filters['sortdir'] = $sortdir;
@@ -501,7 +501,7 @@ class Resources extends Plugin
         }
 
         $filters['authorized'] = $authorized;
-        $filters['published'] = array(1);
+        $filters['published'] = [1];
 
         // Get categories
         $categories = $this->_cats;
@@ -511,12 +511,12 @@ class Resources extends Plugin
 
         // Normalize the category names
         // e.g., "Oneline Presentations" -> "onlinepresentations"
-        $cats = array();
+        $cats = [];
         foreach ($categories as $category) {
             $normalized = preg_replace("/[^a-zA-Z0-9]/", '', $category->type);
             $normalized = strtolower($normalized);
 
-            $cats[$normalized] = array();
+            $cats[$normalized] = [];
             $cats[$normalized]['id'] = $category->id;
         }
 
@@ -529,7 +529,7 @@ class Resources extends Plugin
                 }
             }
             if ($total == 0) {
-                return array();
+                return [];
             }
 
             $filters['select'] = 'records';
@@ -565,7 +565,7 @@ class Resources extends Plugin
             }
 
             // Did we get any results?
-            $results = array();
+            $results = [];
 
             if ($rows) {
                 // Loop through the results and set each item's HREF
@@ -592,7 +592,7 @@ class Resources extends Plugin
             $filters['select'] = 'count';
 
             // Get a count
-            $counts = array();
+            $counts = [];
             $ares = $this->getResourcesAreas();
             foreach ($ares as $area => $val) {
                 if (is_array($val)) {
@@ -629,7 +629,7 @@ class Resources extends Plugin
      * @param   array  $filters
      * @return  object
      */
-    public static function allWithFilters($filters = array())
+    public static function allWithFilters($filters = [])
     {
         $query = Entry::all();
 
@@ -710,7 +710,7 @@ class Resources extends Plugin
                         break;
                     case 'all':
                     default:
-                        $filters['access'] = array(0, 1, 2, 3, 4);
+                        $filters['access'] = [0, 1, 2, 3, 4];
                         break;
                 }
             }

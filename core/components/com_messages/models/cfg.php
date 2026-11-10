@@ -53,19 +53,19 @@ class Cfg extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'cfg_name' => 'notempty',
         'cfg_value' => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'user_id'
-    );
+    ];
 
     /**
      * Generates automatic created by field value

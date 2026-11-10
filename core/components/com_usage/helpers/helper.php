@@ -132,17 +132,17 @@ class Helper
             $startMonth  = date("M", mktime(0, 0, 0, $dtmonthnext, 1, $dtyear));
             $endMonth    = date("M", mktime(0, 0, 0, $dtmonth, 1, $dtyear));
             $twelvetext  = $startMonth . ' ' . $dtyearprior . ' - ' . $endMonth . ' ' . $dtyear;
-            $period = array(
-                array('key' => 1,  'name' => $monthtext),
-                array('key' => 0,  'name' => $yeartext),
-                array('key' => 12, 'name' => $twelvetext)
-            );
+            $period = [
+                ['key' => 1,  'name' => $monthtext],
+                ['key' => 0,  'name' => $yeartext],
+                ['key' => 12, 'name' => $twelvetext]
+            ];
 
             // Process each different date/time periods/range...
-            $toplist = array();
+            $toplist = [];
             for ($pidx = 0; $pidx < count($period); $pidx++) {
                 // Calculate the total value for this toplist...
-                $toplistset = array();
+                $toplistset = [];
                 $sql = "SELECT topvals.name, topvals.value
 						FROM tops, topvals
 						WHERE tops.top = topvals.top
@@ -162,11 +162,11 @@ class Helper
                                 $formattedval = substr($formattedval, 0, $chopchar) . '+';
                             }
                         }
-                        array_push($toplistset, array($row->name, $row->value, $formattedval, sprintf("%0.1f%%", 100)));
+                        array_push($toplistset, [$row->name, $row->value, $formattedval, sprintf("%0.1f%%", 100)]);
                     }
                 }
                 if (!count($toplistset)) {
-                    array_push($toplistset, array('n/a', 0, 'n/a', 'n/a'));
+                    array_push($toplistset, ['n/a', 0, 'n/a', 'n/a']);
                 }
 
                 // Calculate the top X values for the toplist...
@@ -186,7 +186,7 @@ class Helper
                     foreach ($results as $row) {
                         if ($row->rank > 0 && (!$size || $row->rank <= $size)) {
                             while ($rank < $row->rank) {
-                                array_push($toplistset, array('n/a', 0, 'n/a', 'n/a'));
+                                array_push($toplistset, ['n/a', 0, 'n/a', 'n/a']);
                                 $rank++;
                             }
                             $formattedval = self::valformat($row->value, $valfmt);
@@ -200,17 +200,17 @@ class Helper
                                 $percent = sprintf("%0.1f%%", (100 * $row->value / $toplistset[0][1]));
                                 array_push(
                                     $toplistset,
-                                    array($row->name, $row->value, $formattedval, $percent)
+                                    [$row->name, $row->value, $formattedval, $percent]
                                 );
                             } else {
-                                array_push($toplistset, array($row->name, $row->value, $formattedval, 'n/a'));
+                                array_push($toplistset, [$row->name, $row->value, $formattedval, 'n/a']);
                             }
                             $rank++;
                         }
                     }
                 }
                 while ($rank <= $size || $rank == 1) {
-                    array_push($toplistset, array('n/a', 0, 'n/a', 'n/a'));
+                    array_push($toplistset, ['n/a', 0, 'n/a', 'n/a']);
                     $rank++;
                 }
                 array_push($toplist, $toplistset);
@@ -625,12 +625,12 @@ class Helper
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public static function seldate_valuedescsortkey(&$arr, $date)
     {
-        $reversealpha = array(
+        $reversealpha = [
             ',' => '',  '.' => '',  'A' => 'Z', 'B' => 'Y', 'C' => 'X', 'D' => 'W', 'E' => 'V',
             'F' => 'U', 'G' => 'T', 'H' => 'S', 'I' => 'R', 'J' => 'Q', 'K' => 'P', 'L' => 'O',
             'M' => 'N', 'N' => 'M', 'O' => 'L', 'P' => 'K', 'Q' => 'J', 'R' => 'I', 'S' => 'H',
             'T' => 'G', 'U' => 'F', 'V' => 'E', 'W' => 'D', 'X' => 'C', 'Y' => 'B', 'Z' => 'A'
-        );
+        ];
         $dmax = 0;
         $tmax = 0;
         for ($i = 0; $i < count($arr); $i++) {

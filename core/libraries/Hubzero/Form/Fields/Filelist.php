@@ -34,7 +34,7 @@ class Filelist extends Select
     protected function getOptions()
     {
         // Initialize variables.
-        $options = array();
+        $options = [];
 
         // Initialize some field attributes.
         $filter = (string) $this->element['filter'];

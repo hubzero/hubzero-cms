@@ -219,7 +219,7 @@ class Permissions extends Obj
      * @param   boolean $clear   Force a new dataset?
      * @return  mixed
      */
-    public function managers($filters = array(), $clear = false)
+    public function managers($filters = [], $clear = false)
     {
         if (!isset($filters['course_id'])) {
             $filters['course_id'] = (int) $this->get('course_id');
@@ -241,7 +241,7 @@ class Permissions extends Obj
         if (!isset($this->_managers) || !is_array($this->_managers) || $clear) {
             $tbl = new Tables\Member($this->_db);
 
-            $results = array();
+            $results = [];
 
             if (($data = $tbl->find($filters))) {
                 foreach ($data as $key => $result) {
@@ -338,7 +338,7 @@ class Permissions extends Obj
      * @param   boolean $clear   Force a new dataset?
      * @return  mixed
      */
-    public function students($filters = array(), $clear = false)
+    public function students($filters = [], $clear = false)
     {
         if (!isset($filters['course_id'])) {
             $filters['course_id'] = (int) $this->get('course_id');
@@ -360,7 +360,7 @@ class Permissions extends Obj
         if (!isset($this->_students) || !is_array($this->_students) || $clear) {
             $tbl = new Tables\Member($this->_db);
 
-            $results = array();
+            $results = [];
 
             if (($data = $tbl->find($filters))) {
                 foreach ($data as $key => $result) {
@@ -386,10 +386,10 @@ class Permissions extends Obj
     private function calculate()
     {
         // List of actions
-        $actions = array(
+        $actions = [
             'admin', 'manage', 'create', 'delete',
             'edit', 'edit-state', 'edit-own', 'view'
-        );
+        ];
 
         // Are they an admin?
         if (

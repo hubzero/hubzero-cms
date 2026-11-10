@@ -35,7 +35,7 @@ class Iterator implements \Countable, \Iterator
      * @var array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_data = array();
+    private $_data = [];
 
     /**
      * Constructor

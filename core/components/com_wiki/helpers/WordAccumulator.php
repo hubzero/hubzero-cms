@@ -38,7 +38,7 @@ class WordAccumulator
      */
     public function __construct()
     {
-        $this->_lines = array();
+        $this->_lines = [];
         $this->_line = '';
         $this->_group = '';
         $this->_tag = '';

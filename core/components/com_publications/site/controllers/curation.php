@@ -82,7 +82,7 @@ class Curation extends SiteController
         $assigned = Request::getInt('assigned', 0);
 
         // Build query
-        $filters = array();
+        $filters = [];
         $filters['limit']         = Request::getInt('limit', 25);
         $filters['start']         = Request::getInt('limitstart', 0);
         $filters['sortby']        = Request::getString('t_sortby', 'submitted');
@@ -95,7 +95,7 @@ class Curation extends SiteController
         }
 
         $filters['dev']     = 1; // get dev versions
-        $filters['status']  = array(5, 7); // submitted/pending
+        $filters['status']  = [5, 7]; // submitted/pending
         $filters['curator'] = $assigned || $authorized == false ? 'owner' : null;
         $this->view->filters = $filters;
 
@@ -391,7 +391,7 @@ class Curation extends SiteController
 
                     Helpers\Html::notify(
                         $this->_pub,
-                        array($owner),
+                        [$owner],
                         Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED_SUBJECT'),
                         $message
                     );
@@ -606,7 +606,7 @@ class Curation extends SiteController
 
                             $params = Component::params('com_publications');
                             $address = $params->get('curatorreplyto');
-                            $from = array();
+                            $from = [];
                             $from['name']  = Config::get('sitename') . ' ' . Lang::txt('COM_PUBLICATIONS');
 
                             if (empty($address)) {
@@ -615,11 +615,11 @@ class Curation extends SiteController
                                 $from['email'] = $address;
                             }
 
-                            $eview = new \Hubzero\Mail\View(array(
+                            $eview = new \Hubzero\Mail\View([
                                 'base_path' => dirname(__DIR__),
                                 'name'      => 'emails',
                                 'layout'    => '_html'
-                            ));
+                            ]);
 
                             $eview->publication = $this->_pub;
                             $eview->message     = $message;
@@ -730,18 +730,18 @@ class Curation extends SiteController
         $element = (isset($parts[2]) && is_numeric($parts[2]) && $parts[2] > 0) ? $parts[2] : 0;
 
         if (!$block || !$step) {
-            echo json_encode(array(
+            echo json_encode([
                 'success' => 0,
                 'error'   => Lang::txt('Error parsing publication manifest')
-            ));
+            ]);
             return;
         }
 
         if ($action == 'fail' && !$review) {
-            echo json_encode(array(
+            echo json_encode([
                 'success' => 0,
                 'error'   => Lang::txt('Please explain why the item requires changes')
-            ));
+            ]);
             return;
         }
 
@@ -750,19 +750,19 @@ class Curation extends SiteController
 
         // If publication not found, raise error
         if (!$this->_pub) {
-            echo json_encode(array(
+            echo json_encode([
                 'success' => 0,
                 'error'   => Lang::txt('Error loading publication')
-            ));
+            ]);
             return;
         }
 
         // Check authorization
         if (!$this->_pub->access('curator')) {
-            echo json_encode(array(
+            echo json_encode([
                 'success' => 0,
                 'error'  => Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED')
-            ));
+            ]);
             return;
         }
 
@@ -784,17 +784,17 @@ class Curation extends SiteController
 
         // Save curation
         if ($this->_pub->_curationModel->saveUpdate($data, $element, $block, $this->_pub, $step)) {
-            echo json_encode(array(
+            echo json_encode([
                 'success' => 1,
                 'error'   => $this->getError(),
                 'notice'  => $notice
-            ));
+            ]);
         } else {
-            echo json_encode(array(
+            echo json_encode([
                 'success' => 0,
                 'error'   => Lang::txt('There was a problem saving curation item'),
                 'notice'  => ''
-            ));
+            ]);
         }
     }
 
@@ -866,13 +866,13 @@ class Curation extends SiteController
 
         // No authors – send to publication creator
         if (count($authors) == 0) {
-            $authors = array($pub->created_by);
+            $authors = [$pub->created_by];
         }
 
         // New version released?
         if ($status == 1 && $pub->get('version_number') > 1) {
             // Notify subscribers
-            Event::trigger('publications.onWatch', array($pub));
+            Event::trigger('publications.onWatch', [$pub]);
         }
 
         // Make sure there are no duplicates
@@ -895,7 +895,7 @@ class Curation extends SiteController
      * @param   integer  $curator
      * @return  mixed    False if no access, string if has access
      */
-    protected function _authorize($curatorgroups = array(), $curator = 0)
+    protected function _authorize($curatorgroups = [], $curator = 0)
     {
         // Check if they are logged in
         if (User::isGuest()) {

@@ -25,7 +25,7 @@ class RouterServiceProvider extends Middleware
     public function register()
     {
         $this->app['router'] = function ($app) {
-            return new Manager($app, array(PATH_CORE, PATH_APP));
+            return new Manager($app, [PATH_CORE, PATH_APP]);
         };
     }
 

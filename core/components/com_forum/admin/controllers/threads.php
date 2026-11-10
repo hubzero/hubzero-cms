@@ -56,7 +56,7 @@ class Threads extends AdminController
     public function displayTask()
     {
         // Filters
-        $filters = array(
+        $filters = [
             'state' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.state',
                 'state',
@@ -101,7 +101,7 @@ class Threads extends AdminController
                 'scopeinfo',
                 ''
             )
-        );
+        ];
         if (strstr($filters['scopeinfo'], ':')) {
             $bits = explode(':', $filters['scopeinfo']);
             $filters['scope']    = $bits[0];
@@ -131,7 +131,7 @@ class Threads extends AdminController
         }
 
         // Get sections
-        $sections = array();
+        $sections = [];
         if ($filters['scopeinfo']) {
             $sections = Section::all()
                 ->whereEquals('scope', $filters['scope'])
@@ -141,14 +141,14 @@ class Threads extends AdminController
         }
 
         // Get categories
-        $categories = array();
+        $categories = [];
         if ($filters['section_id']) {
             $categories = Category::all()
                 ->whereEquals('section_id', $filters['section_id'])
                 ->rows();
 
             if (!$filters['category_id'] || $filters['category_id'] <= 0) {
-                $filters['category_id'] = array();
+                $filters['category_id'] = [];
                 foreach ($categories as $cat) {
                     $filters['category_id'][] = $cat->id;
                 }
@@ -215,7 +215,7 @@ class Threads extends AdminController
     public function threadTask()
     {
         // Filters
-        $filters = array(
+        $filters = [
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
@@ -261,29 +261,29 @@ class Threads extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         // Get the categories
-        $categories = array();
+        $categories = [];
         foreach (Category::all()->rows() as $c) {
             if (!isset($cateories[$c->section_id])) {
-                $cateories[$c->section_id] = array();
+                $cateories[$c->section_id] = [];
             }
             $cateories[$c->section_id][] = $c;
             asort($cateories[$c->section_id]);
         }
 
         // Get the sections
-        $sections = array();
+        $sections = [];
         foreach (Section::all()->rows() as $s) {
             $ky = $s->scope . ' (' . $s->scope_id . ')';
             if ($s->scope == 'site') {
                 $ky = '[ site ]';
             }
             if (!isset($sections[$ky])) {
-                $sections[$ky] = array();
+                $sections[$ky] = [];
             }
-            $s->categories = (isset($cateories[$s->id])) ? $cateories[$s->id] : array();
+            $s->categories = (isset($cateories[$s->id])) ? $cateories[$s->id] : [];
             $sections[$ky][] = $s;
             asort($sections[$ky]);
         }
@@ -351,7 +351,7 @@ class Threads extends AdminController
         $parent = Request::getInt('parent', 0);
 
         if (!is_object($post)) {
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id)) {
                 $id = intval($id[0]);
             }
@@ -377,10 +377,10 @@ class Threads extends AdminController
         // Get the category
         $category = Category::oneOrNew($post->get('category_id'));
 
-        $categories = array();
+        $categories = [];
         foreach (Category::all()->rows() as $c) {
             if (!isset($categories[$c->section_id])) {
-                $categories[$c->section_id] = array();
+                $categories[$c->section_id] = [];
             }
             $categories[$c->section_id][] = $c;
             asort($categories[$c->section_id]);
@@ -390,24 +390,24 @@ class Threads extends AdminController
         $section = Section::oneOrNew($category->get('section_id'));
 
         // Get the sections for this group
-        $sections = array();
+        $sections = [];
         foreach (Section::all()->rows() as $s) {
             $ky = $s->scope . ' (' . $s->scope_id . ')';
             if ($s->scope == 'site') {
                 $ky = '[ site ]';
             }
             if (!isset($sections[$ky])) {
-                $sections[$ky] = array();
+                $sections[$ky] = [];
             }
-            $s->categories = (isset($categories[$s->id])) ? $categories[$s->id] : array();
+            $s->categories = (isset($categories[$s->id])) ? $categories[$s->id] : [];
             $sections[$ky][] = $s;
             asort($sections[$ky]);
         }
 
-        User::setState('com_forum.edit.thread.data', array(
+        User::setState('com_forum.edit.thread.data', [
             'id'       => $post->get('id'),
             'asset_id' => $post->get('asset_id')
-        ));
+        ]);
 
         $form = $post->getForm();
 
@@ -441,7 +441,7 @@ class Threads extends AdminController
         User::setState('com_forum.edit.thread.data', null);
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post', 'none', 2);
+        $fields = Request::getArray('fields', [], 'post', 'none', 2);
         $fields = array_map('trim', $fields);
 
         $fields['sticky']    = (isset($fields['sticky']))    ? $fields['sticky']    : 0;
@@ -468,7 +468,7 @@ class Threads extends AdminController
         $post->set('scope_id', $category->get('scope_id'));
 
         // Bind the rules.
-        $data = Request::getArray('data', array(), 'post');
+        $data = Request::getArray('data', [], 'post');
         // Only from someone the form shows the rules to (core.admin); a posted
         // one is dropped.
         if (
@@ -541,7 +541,7 @@ class Threads extends AdminController
         }
 
         // Incoming file
-        $file = Request::getArray('upload', array(), 'files');
+        $file = Request::getArray('upload', [], 'files');
 
         if (!$file || !isset($file['name']) || !$file['name']) {
             if ($attachment->get('id')) {
@@ -582,8 +582,8 @@ class Threads extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Loop through each ID
         $i = 0;
@@ -623,8 +623,8 @@ class Threads extends AdminController
         $state = $this->getTask() == 'publish' ? Post::STATE_PUBLISHED : Post::STATE_UNPUBLISHED;
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Loop through each record
         $i = 0;
@@ -673,8 +673,8 @@ class Threads extends AdminController
         // Incoming
         $sticky = Request::getInt('sticky', 0);
 
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Loop through each record
         $i = 0;
@@ -723,8 +723,8 @@ class Threads extends AdminController
         // Incoming
         $access = Request::getInt('access', 0);
 
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Loop through each record
         $i = 0;
@@ -757,7 +757,7 @@ class Threads extends AdminController
      */
     public function cancelTask()
     {
-        $fields = Request::getArray('fields', array());
+        $fields = Request::getArray('fields', []);
         $thread = 0;
         if (isset($fields['thread']) && $fields['thread']) {
             $thread = $fields['thread'];

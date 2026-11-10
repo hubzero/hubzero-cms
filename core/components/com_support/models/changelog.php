@@ -54,16 +54,16 @@ class Changelog extends Obj
             } else {
                 $this->format = 'html';
 
-                $log = array(
-                    'changes'       => array(),
-                    'notifications' => array(),
-                    'cc'            => array()
-                );
+                $log = [
+                    'changes'       => [],
+                    'notifications' => [],
+                    'cc'            => []
+                ];
 
                 $data = preg_replace("/\n\t\r/i", '', $data);
-                $data = str_replace(array('<ul class="changes">', '</ul>'), '', $data);
-                $data = str_replace(array('<ul class="changelog">', '</ul>'), '', $data);
-                $data = str_replace(array('<ul class=email-in-log>', '</ul>'), '', $data);
+                $data = str_replace(['<ul class="changes">', '</ul>'], '', $data);
+                $data = str_replace(['<ul class="changelog">', '</ul>'], '', $data);
+                $data = str_replace(['<ul class=email-in-log>', '</ul>'], '', $data);
                 $data = explode('</li>', $data);
                 $data = array_map('trim', $data);
 
@@ -75,33 +75,33 @@ class Changelog extends Obj
                     }
                     $item = str_replace('<li>', '', $item);
 
-                    $obj = array(
+                    $obj = [
                         'field'  => '',
                         'before' => '',
                         'after'  => ''
-                    );
+                    ];
                     if (preg_match('/Comment submitted via email from (.+)/i', $item, $matches)) {
-                        $obj = array(
+                        $obj = [
                             'role'    => 'commenter',
                             'name'    => Lang::txt('COM_SUPPORT_NONE'),
                             'address' => trim($matches[1])
-                        );
+                        ];
                     }
                     if (preg_match('/E\-mailed ticket ([^ ]+) (.+)/i', $item, $matches)) {
-                        $obj = array(
+                        $obj = [
                             'role'    => trim($matches[1]),
                             'name'    => Lang::txt('COM_SUPPORT_NONE'),
                             'address' => trim($matches[2])
-                        );
+                        ];
                     }
                     if (preg_match('/<strong>(.*?)<\/strong>/i', $item, $matches)) {
                         $matches[1] = trim($matches[1]);
                         if ($matches[1] == 'cc') {
-                            $obj = array(
+                            $obj = [
                                 'role'    => $matches[1],
                                 'name'    => '',
                                 'address' => ''
-                            );
+                            ];
                         } else {
                             $obj['field'] = $matches[1];
                         }
@@ -136,13 +136,13 @@ class Changelog extends Obj
         }
 
         if (!isset($this->log['changes'])) {
-            $this->log['changes'] = array();
+            $this->log['changes'] = [];
         }
         if (!isset($this->log['notifications'])) {
-            $this->log['notifications'] = array();
+            $this->log['notifications'] = [];
         }
         if (!isset($this->log['cc'])) {
-            $this->log['cc'] = array();
+            $this->log['cc'] = [];
         }
 
         $this->normalize();
@@ -180,9 +180,9 @@ class Changelog extends Obj
      */
     private function normalize()
     {
-        foreach (array('changes', 'notifications') as $type) {
+        foreach (['changes', 'notifications'] as $type) {
             if (!isset($this->log[$type]) || !is_array($this->log[$type])) {
-                $this->log[$type] = array();
+                $this->log[$type] = [];
                 continue;
             }
 
@@ -194,7 +194,7 @@ class Changelog extends Obj
         }
 
         if (!isset($this->log['cc']) || !is_array($this->log['cc'])) {
-            $this->log['cc'] = array();
+            $this->log['cc'] = [];
         }
     }
 
@@ -234,7 +234,7 @@ class Changelog extends Obj
      */
     public function render()
     {
-        $clog = array();
+        $clog = [];
         foreach ($this->log as $type => $log) {
             if (is_array($log) && count($log) > 0) {
                 if ($type == 'cc') {

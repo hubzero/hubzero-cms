@@ -31,7 +31,7 @@ class MenuParent extends Select
     protected function getOptions()
     {
         // Initialize variables.
-        $options = array();
+        $options = [];
 
         $db = App::get('db');
         $query = $db->getQuery();

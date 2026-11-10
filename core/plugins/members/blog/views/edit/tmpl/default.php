@@ -18,7 +18,7 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->entry->tags('string'))));
+$tf = Event::trigger('hubzero.onGetMultiEntry', [['tags', 'tags', 'actags', '', $this->entry->tags('string')]]);
 
 if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0000-00-00 00:00:00') {
     $this->entry->set('publish_down', '');
@@ -61,7 +61,7 @@ $this->css('jquery.datepicker.css', 'system')
             <div class="form-group">
                 <label for="entrycontent">
                     <?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_CONTENT'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-                    <?php echo $this->editor('entry[content]', $this->entry->get('content'), 50, 30, 'entrycontent', array('class' => 'form-control')); ?>
+                    <?php echo $this->editor('entry[content]', $this->entry->get('content'), 50, 30, 'entrycontent', ['class' => 'form-control']); ?>
                 </label>
                 <?php if ($this->task == 'save' && !$this->entry->get('content')) { ?>
                     <p class="error"><?php echo Lang::txt('PLG_MEMBERS_BLOG_ERROR_PROVIDE_CONTENT'); ?></p>

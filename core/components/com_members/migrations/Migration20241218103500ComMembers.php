@@ -75,8 +75,8 @@ class Migration20241218103500ComMembers extends Base
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function cleanInvaldChars_ProperNames()
     {
-        foreach (array('#__users', '#__xprofiles') as $table) {
-            foreach (array('name','givenName','middleName','surname') as $field) {
+        foreach (['#__users', '#__xprofiles'] as $table) {
+            foreach (['name','givenName','middleName','surname'] as $field) {
                 $query = "UPDATE $table SET $field=REPLACE($field,':','-') WHERE $field LIKE '%:%'";
                 $this->db->setQuery($query);
                 $this->db->execute();

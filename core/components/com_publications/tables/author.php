@@ -193,7 +193,7 @@ class Author extends Table
         $results = $this->_db->loadObjectList();
 
         if ($return_uid_array) {
-            $uids = array();
+            $uids = [];
             if ($results) {
                 foreach ($results as $entry) {
                     if ($get_uids == 1) {
@@ -285,7 +285,7 @@ class Author extends Table
         }
 
         if ($return_uid_array) {
-            $uids = array();
+            $uids = [];
             if ($results) {
                 foreach ($results as $entry) {
                     if ($get_uids == 1) {
@@ -360,7 +360,7 @@ class Author extends Table
         // Bulk-load member profile rows for every distinct user_id in
         // the result set. Single SELECT against the same table the
         // Member ORM model reads from (#__xprofiles).
-        $userIds = array();
+        $userIds = [];
         foreach ($authors as $a) {
             if (!empty($a->user_id)) {
                 $userIds[(int) $a->user_id] = true;
@@ -372,7 +372,7 @@ class Author extends Table
         // relation tables, so reading from the model is more robust
         // than hand-rolling a join here. One IN-query replaces N
         // per-row Member::oneOrNew() calls.
-        $memberMap = array();
+        $memberMap = [];
         if (!empty($userIds)) {
             $members = \Components\Members\Models\Member::all()
                 ->whereIn('id', array_keys($userIds))
@@ -394,7 +394,7 @@ class Author extends Table
         // when a row's user_id has no matching member record (the per-row
         // getAuthors() got the same effect because Member::oneOrNew()
         // returned a blank model with empty fields).
-        $byVersion = array();
+        $byVersion = [];
         foreach ($authors as $a) {
             $a->p_name         = '';
             $a->username       = '';
@@ -431,7 +431,7 @@ class Author extends Table
             }
             $vid = (int) $a->publication_version_id;
             if (!isset($byVersion[$vid])) {
-                $byVersion[$vid] = array();
+                $byVersion[$vid] = [];
             }
             $byVersion[$vid][] = $a;
         }

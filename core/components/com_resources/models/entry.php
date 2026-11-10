@@ -65,33 +65,33 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'title' => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by',
         'footertext'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      **/
-    public $always = array(
+    public $always = [
         'alias',
         'modified',
         'modified_by',
         'fulltxt',
         'introtext'
-    );
+    ];
 
     /**
      * Path to filespace
@@ -282,13 +282,13 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
         $db = App::get('db');
 
         $sql = "SELECT g.cn FROM #__resource_acl_group AS a, #__xgroups AS g WHERE resource_id = ? AND a.group_id = g.gidNumber";
-        $db->prepare($sql)->bind(array( $this->get('id')));
+        $db->prepare($sql)->bind([ $this->get('id')]);
         $result = $db->loadColumn();
 
         if ($result) {
             $allowedgroups = $result;
         } else {
-            $allowedgroups = array();
+            $allowedgroups = [];
         }
 
         $groupOwner = $this->get('group_owner', '');
@@ -310,13 +310,13 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
         $db = App::get('db');
 
         $sql = "SELECT user_id FROM #__resource_acl_user WHERE resource_id = ?;";
-        $db->prepare($sql)->bind(array( $this->get('id')));
+        $db->prepare($sql)->bind([ $this->get('id')]);
         $result = $db->loadColumn();
 
         if ($result) {
             $allowedusers = $result;
         } else {
-            $allowedusers = array();
+            $allowedusers = [];
         }
 
         return $allowedusers;
@@ -373,7 +373,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      */
     public function authorsList($solr = false)
     {
-        $names = array();
+        $names = [];
 
         foreach ($this->authors()->order('ordering', 'asc')->rows() as $contributor) {
             if (strtolower($contributor->get('role') ?? '') == 'submitter') {
@@ -405,7 +405,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      */
     public function contributors($idx = null)
     {
-        $contributors = array();
+        $contributors = [];
 
         if ($idx == 'tool') {
             if ($this->isTool() && $this->revision == 'dev') {
@@ -447,7 +447,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
                 $idx = ltrim($idx, '!');
             }
 
-            $res = array();
+            $res = [];
             foreach ($contributors as $contributor) {
                 if ($op == 'is') {
                     if ($contributor->get('role') == $idx) {
@@ -604,7 +604,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
         }
 
         // Make sure the resource is published and standalone
-        if (in_array($this->get('published'), array(self::STATE_UNPUBLISHED, self::STATE_PENDING, self::STATE_DRAFT, self::STATE_TRASHED, self::STATE_DRAFT_INTERNAL))) {
+        if (in_array($this->get('published'), [self::STATE_UNPUBLISHED, self::STATE_PENDING, self::STATE_DRAFT, self::STATE_TRASHED, self::STATE_DRAFT_INTERNAL])) {
             return false;
         }
 
@@ -637,7 +637,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     {
         if ($group) {
             if (!is_array($group)) {
-                $group = array($group);
+                $group = [$group];
             }
 
             if (in_array($this->get('group_owner'), $group)) {
@@ -835,7 +835,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
         $raw = $db->loadResult();
         $content = stripslashes((string) ($raw ?: $this->get('fulltxt')));
         $content = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $content);
-        $content = str_replace(array('="/site/', '="site/'), '="/app/site/', $content);
+        $content = str_replace(['="/site/', '="site/'], '="/app/site/', $content);
 
         $content = Html::content('prepare', $content);
 
@@ -851,7 +851,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      */
     public function fields()
     {
-        $data = array();
+        $data = [];
 
         preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->get('fulltxt'), $matches, PREG_SET_ORDER);
         if (count($matches) > 0) {
@@ -864,7 +864,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
         $schema = $elements->getSchema();
         if (is_object($schema)) {
             if (!isset($schema->fields) || !is_array($schema->fields)) {
-                $schema->fields = array();
+                $schema->fields = [];
             }
             foreach ($schema->fields as $field) {
                 if (isset($data[$field->name])) {
@@ -1042,7 +1042,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
         $cloud = new Tags($this->get('id'));
 
         if ($as == 'list') {
-            $tags = array();
+            $tags = [];
             foreach ($cloud->tags() as $tag) {
                 array_push($tags, $tag->tag);
             }
@@ -1190,7 +1190,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
         }
 
         if (!$this->isTool()) {
-            $author_ids = array();
+            $author_ids = [];
             foreach ($this->authors as $author) {
                 $author_ids[] = $author->get('authorid');
             }
@@ -1226,7 +1226,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
         }
 
         // If logged in and resource is published and public or registered
-        if (in_array($this->get('access'), array(0,1))) {
+        if (in_array($this->get('access'), [0,1])) {
             // Allow view access
             $this->params->set('access-view-resource', true);
             $this->params->set('access-view-all-resource', true);
@@ -1237,7 +1237,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
             return;
         }
 
-        if (in_array($this->get('access'), array(3,4))) {
+        if (in_array($this->get('access'), [3,4])) {
             if ($this->get('access') == 3) {
                 $this->params->set('access-view-resource', true);
             }
@@ -1246,7 +1246,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 
             $xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'all');
 
-            $usersgroups = array();
+            $usersgroups = [];
 
             if (!empty($xgroups)) {
                 foreach ($xgroups as $group) {
@@ -1301,7 +1301,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 
             $db = App::get('db');
 
-            $revisions = array();
+            $revisions = [];
             $tv = new \Components\Tools\Tables\Version($db);
             $tv->getToolVersions('', $revisions, $this->get('alias'));
 
@@ -1425,7 +1425,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      * @param   array  $filters
      * @return  object
      */
-    public static function allWithFilters($filters = array())
+    public static function allWithFilters($filters = [])
     {
         $query = self::all();
 
@@ -1512,7 +1512,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
                         break;
                     case 'all':
                     default:
-                        $filters['access'] = array(0, 1, 2, 3, 4);
+                        $filters['access'] = [0, 1, 2, 3, 4];
                         break;
                 }
             }
@@ -1608,13 +1608,13 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
         $db = App::get('db');
 
         $sql = "SELECT g.cn FROM #__resource_acl_group AS a, #__xgroups AS g WHERE resource_id = ? AND a.group_id = g.gidNumber";
-        $db->prepare($sql)->bind(array( $this->get('id')));
+        $db->prepare($sql)->bind([ $this->get('id')]);
         $result = $db->loadArray();
 
         if ($result) {
             $allowedgroups = $result;
         } else {
-            $allowedgroups = array();
+            $allowedgroups = [];
         }
 
         $groupOwner = $this->get('group_owner', '');
@@ -1686,20 +1686,20 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
                 $title = $tag->get('raw_tag', '');
                 $description = $tag->get('tag', '');
                 $label = $tag->get('label', '');
-                $obj->tags[] = array(
+                $obj->tags[] = [
                     'id' => 'tag-' . $tag->id,
                     'title' => $title,
                     'description' => $description,
                     'access_level' => $tag->admin == 0 ? 'public' : 'private',
                     'type' => 'resource-tag',
                     'badge_b' => $label == 'badge' ? true : false
-                );
+                ];
             }
         } else {
-            $obj->tags[] = array(
+            $obj->tags[] = [
                 'id' => '',
                 'title' => ''
-            );
+            ];
         }
 
         $fields = $this->fields();

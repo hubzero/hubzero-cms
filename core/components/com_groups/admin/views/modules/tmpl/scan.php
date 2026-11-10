@@ -52,7 +52,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
 
     <?php
         unset($this->issues->count);
-        $severe = $elevated = $minor = array();
+        $severe = $elevated = $minor = [];
     foreach ($this->issues as $lang => $languageIssues) {
         foreach ($languageIssues as $type => $languageIssue) {
             foreach ($languageIssue as $line => $issue) {

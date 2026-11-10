@@ -37,7 +37,7 @@ Toolbar::custom('manage', 'config', 'config', 'COM_GROUPS_MANAGE', false);
 $this->css();
 
 // include modal for raw version links
-Html::behavior('modal', 'a.version, a.preview', array('handler' => 'iframe', 'fullScreen' => true));
+Html::behavior('modal', 'a.version, a.preview', ['handler' => 'iframe', 'fullScreen' => true]);
 ?>
 
 <?php require_once dirname(dirname(__DIR__)) . DS . 'pages' . DS . 'tmpl' . DS . 'menu.php'; ?>
@@ -149,7 +149,7 @@ Html::behavior('modal', 'a.version, a.preview', array('handler' => 'iframe', 'fu
                     </a><br />
                     <span class="hint">
                         <?php
-                            $pages = array();
+                            $pages = [];
                             $menus = $module->menu('list');
                         foreach ($menus as $menu) {
                             $pages[] = $menu->getPageTitle();

@@ -36,7 +36,7 @@ class ClientManager
     {
         // Only create the array if it does not exist
         if (self::$_clients === null) {
-            self::$_clients = array();
+            self::$_clients = [];
 
             $dirIterator = new \DirectoryIterator(__DIR__ . DIRECTORY_SEPARATOR . 'Client');
             foreach ($dirIterator as $file) {

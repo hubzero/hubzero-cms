@@ -37,7 +37,7 @@ class Share extends Plugin
      */
     public function &onResourcesAreas($model)
     {
-        static $area = array();
+        static $area = [];
 
         if (!$model->type->params->get('plg_share')) {
             return $area;
@@ -61,11 +61,11 @@ class Share extends Plugin
             return;
         }
 
-        $arr = array(
+        $arr = [
             'area'     => $this->_name,
             'html'     => '',
             'metadata' => ''
-        );
+        ];
 
         $sef = Route::url($model->link());
         $url = Request::base() . ltrim($sef, '/');
@@ -84,11 +84,11 @@ class Share extends Plugin
                         'scope'       => 'resource',
                         'scope_id'    => $model->id,
                         'description' => Lang::txt('PLG_RESOURCES_SHARE_ENTRY_SHARED', '<a href="' . $sef . '">' . htmlspecialchars((string) ($model->title), ENT_QUOTES, 'UTF-8') . '</a>', $sharewith),
-                        'details'     => array(
+                        'details'     => [
                             'with'  => $sharewith,
                             'title' => $model->title,
                             'url'   => $sef
-                        )
+                        ]
                     ],
                     'recipients' => [
                         ['resource', $model->id], // The resource itself

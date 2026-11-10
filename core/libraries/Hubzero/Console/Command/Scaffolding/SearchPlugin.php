@@ -133,9 +133,9 @@ class SearchPlugin extends Scaffolding
 				so that it can make sure the migration is running in interactive
 				mode and everything is properly set up. The examples indicate
 				proper use of each method.',
-                array(
+                [
                     'indentation' => 2
-                )
+                ]
             )
             ->addSpacer()
             ->addArgument(

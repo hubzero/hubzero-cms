@@ -32,9 +32,9 @@ class Recommendations extends Plugin
      */
     public function &onResourcesSubAreas($resource)
     {
-        $areas = array(
+        $areas = [
             'recommendations' => Lang::txt('PLG_RESOURCES_RECOMMENDATIONS')
-        );
+        ];
         return $areas;
     }
 
@@ -48,11 +48,11 @@ class Recommendations extends Plugin
      */
     public function onResourcesSub($resource, $option, $miniview = 0)
     {
-        $arr = array(
+        $arr = [
             'area'     => $this->_name,
             'html'     => '',
             'metadata' => ''
-        );
+        ];
 
         // Get some needed libraries
 

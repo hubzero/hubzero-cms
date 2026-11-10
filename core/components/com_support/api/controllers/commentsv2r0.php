@@ -106,9 +106,9 @@ class Commentsv2r0 extends ApiController
 
         $response = new stdClass();
         $response->total = $comments->count();
-        $response->comments = array();
+        $response->comments = [];
         foreach ($comments->rows() as $row) {
-            $temp = array();
+            $temp = [];
             $changelog = json_decode($row->changelog);
             $temp['id'] = $row->id;
             $temp['comment'] = $row->comment;
@@ -247,8 +247,8 @@ class Commentsv2r0 extends ApiController
             throw new Exception(Lang::txt('Not authorized'), 403);
         }
 
-        $changes = array();
-        $fields = $canUpdate ? ['group_id', 'owner', 'severity', 'status', 'target_date', 'category'] : array();
+        $changes = [];
+        $fields = $canUpdate ? ['group_id', 'owner', 'severity', 'status', 'target_date', 'category'] : [];
         foreach ($fields as $index) {
             // (a truthiness test dropped status 0, so a ticket could never be
             // closed through this call)
@@ -300,7 +300,7 @@ class Commentsv2r0 extends ApiController
                         $temp->after = $new_owner->get('username');
                     }
                     // the id columns take ints (status=closed would otherwise reach the INT column)
-                    $ticket->set($index, in_array($index, array('status', 'owner', 'group_id')) ? (int) $val : $val);
+                    $ticket->set($index, in_array($index, ['status', 'owner', 'group_id']) ? (int) $val : $val);
                     $changes[] = $temp;
                 }
             }

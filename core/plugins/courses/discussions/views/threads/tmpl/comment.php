@@ -151,7 +151,7 @@ if ($this->lecture) {
 
                             <label for="comment_<?php echo $this->comment->get('id'); ?>_reply">
                                 <span class="label-text"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?></span>
-                                <?php echo $this->editor('fields[comment]', '', 35, 5, 'comment_' . $this->comment->get('id') . '_reply', array('class' => 'minimal no-footer')); ?>
+                                <?php echo $this->editor('fields[comment]', '', 35, 5, 'comment_' . $this->comment->get('id') . '_reply', ['class' => 'minimal no-footer']); ?>
                             </label>
 
                             <label class="upload-label" for="comment-<?php echo $this->comment->get('id'); ?>-file">

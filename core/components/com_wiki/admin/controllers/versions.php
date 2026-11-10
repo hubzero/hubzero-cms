@@ -46,7 +46,7 @@ class Versions extends AdminController
      */
     public function displayTask()
     {
-        $filters = array(
+        $filters = [
             // Sorting
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
@@ -70,7 +70,7 @@ class Versions extends AdminController
                 0,
                 'int'
             )
-        );
+        ];
 
         $page = Page::oneOrNew(intval($filters['pageid']));
 
@@ -126,7 +126,7 @@ class Versions extends AdminController
 
         if (!is_object($row)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id) && !empty($id)) {
                 $id = $id[0];
             }
@@ -173,7 +173,7 @@ class Versions extends AdminController
         }
 
         // Incoming
-        $revision = Request::getArray('revision', array(), 'post');
+        $revision = Request::getArray('revision', [], 'post');
         $revision = array_map('trim', $revision);
 
         // Initiate extended database class
@@ -192,7 +192,7 @@ class Versions extends AdminController
         $parser = Parser::getInstance();
         $version->set('pagehtml', $parser->parse(
             $version->get('pagetext'),
-            array(
+            [
                 'option'   => $this->_option,
                 'scope'    => $page->get('scope'),
                 'scope_id' => $page->get('scope_id'),
@@ -200,12 +200,12 @@ class Versions extends AdminController
                 'pagename' => $page->get('pagename'),
                 'pageid'   => $page->get('id'),
                 'filepath' => ''
-            )
+            ]
         ));
 
         // Trigger before save event
         $isNew  = $version->isNew();
-        $result = Event::trigger('wiki.onWikiBeforeSaveVersion', array(&$version, $isNew));
+        $result = Event::trigger('wiki.onWikiBeforeSaveVersion', [&$version, $isNew]);
 
         if (in_array(false, $result, true)) {
             Notify::error($version->getError());
@@ -236,7 +236,7 @@ class Versions extends AdminController
         }
 
         // Trigger after save event
-        Event::trigger('wiki.onWikiAfterSaveVersion', array(&$version, $isNew));
+        Event::trigger('wiki.onWikiAfterSaveVersion', [&$version, $isNew]);
 
         // Set the success message
         Notify::success(Lang::txt('COM_WIKI_REVISION_SAVED'));
@@ -265,8 +265,8 @@ class Versions extends AdminController
 
         $pageid = Request::getInt('pageid', 0);
 
-        $ids = Request::getArray('id', array(0));
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', [0]);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         if (count($ids) <= 0) {
             Notify::warning(Lang::txt('COM_WIKI_ERROR_MISSING_ID'));
@@ -336,7 +336,7 @@ class Versions extends AdminController
                     }
 
                     // Trigger after delete event
-                    Event::trigger('wiki.onWikiAfterDeleteVersion', array($id));
+                    Event::trigger('wiki.onWikiAfterDeleteVersion', [$id]);
 
                     $i++;
                 }

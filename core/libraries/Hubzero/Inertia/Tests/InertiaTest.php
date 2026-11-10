@@ -220,7 +220,7 @@ namespace Hubzero\Inertia\Tests {
             $this->headers['Vary'] = 'X-Inertia';
         }
 
-        protected function sendAndTerminate(int $status, array $headers = array(), ?string $body = null): void
+        protected function sendAndTerminate(int $status, array $headers = [], ?string $body = null): void
         {
             if ($this->terminated) {
                 return;
@@ -317,7 +317,7 @@ namespace Hubzero\Inertia\Tests {
             $service->profileStart('phase');
             $service->flush();
 
-            $context = $service->debugSnapshot()['context'] ?? array();
+            $context = $service->debugSnapshot()['context'] ?? [];
 
             $this->assertArrayHasKey('_warnings', $context);
             $this->assertContains(
@@ -700,11 +700,11 @@ namespace Hubzero\Inertia\Tests {
 
             $response = \App::get('response');
             $headers = $response->headers->headers;
-            $this->assertDebugHeaderContains($headers, 'X-Hubzero-Inertia-Debug', array(
+            $this->assertDebugHeaderContains($headers, 'X-Hubzero-Inertia-Debug', [
                 '"outgoing"',
                 '"branch":"inertia"',
                 '"task":"app"'
-            ));
+            ]);
             $this->assertInertiaVaryHeader($response);
             $this->assertInertiaStatus($response, 200);
         }
@@ -749,7 +749,7 @@ namespace Hubzero\Inertia\Tests {
 
             $response = \App::get('response');
             $headers = $response->headers->headers;
-            $this->assertDebugHeaderContains($headers, 'X-Hubzero-Inertia-Profile', array('page.render'));
+            $this->assertDebugHeaderContains($headers, 'X-Hubzero-Inertia-Profile', ['page.render']);
         }
 
         #[Test]
@@ -775,12 +775,12 @@ namespace Hubzero\Inertia\Tests {
             $this->assertArrayHasKey('request', Inertia::requestDetails());
             $this->assertArrayHasKey('facade.render', Inertia::profileSnapshot());
             $this->assertStringContainsString('hz-inertia-debug-panel', Inertia::renderDebugPanel());
-            $this->assertSame('1', Inertia::preserveDebugParam(array())['inertia_debug']);
+            $this->assertSame('1', Inertia::preserveDebugParam([])['inertia_debug']);
             $this->assertStringContainsString('name="inertia_debug"', Inertia::renderDebugHiddenInput());
 
             $headers = \App::get('response')->headers->headers;
-            $this->assertDebugHeaderContains($headers, 'X-Hubzero-Inertia-Debug', array('"outgoing"'));
-            $this->assertDebugHeaderContains($headers, 'X-Hubzero-Inertia-Profile', array('facade.render'));
+            $this->assertDebugHeaderContains($headers, 'X-Hubzero-Inertia-Debug', ['"outgoing"']);
+            $this->assertDebugHeaderContains($headers, 'X-Hubzero-Inertia-Profile', ['facade.render']);
         }
     }
 }

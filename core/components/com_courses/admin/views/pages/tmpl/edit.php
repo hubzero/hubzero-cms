@@ -87,7 +87,7 @@ $this->js();
                         50,
                         30,
                         'field-content',
-                        array('class' => 'required')
+                        ['class' => 'required']
                     );
                     ?>
                 </div>

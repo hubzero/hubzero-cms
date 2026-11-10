@@ -41,12 +41,12 @@ class Db
     public static function getResults($sql, &$dd)
     {
         $link = isset($dd['db']) ? static::getDb($dd['db']) : static::getDb();
-        $res = array(
-            'data'  => array(),
+        $res = [
+            'data'  => [],
             'total' => 0,
             'found' => 0,
             'sql'   => $sql,
-        );
+        ];
 
         $link->setQuery($sql);
         $data = $link->loadAssocList();
@@ -81,7 +81,7 @@ class Db
                 . " WHERE Table_name=" . $link->quote($dd['table']);
             $link->setQuery($sql);
             $result = $link->loadAssocList();
-            $col_info = array();
+            $col_info = [];
             if ($result) {
                 foreach ($result as $rec) {
                     $col_info[$rec['DB_column_name']] = json_decode($rec['Column_info'], true);
@@ -96,11 +96,11 @@ class Db
                     $dd['cols'][$dd['table'] . '.' . $rec['Field']] = $col_info[$rec['Field']];
                 } else {
                     $label = ucwords(str_replace('_', ' ', $rec['Field']));
-                    $dd['cols'][$dd['table'] . '.' . $rec['Field']] = array('label' => $label);
+                    $dd['cols'][$dd['table'] . '.' . $rec['Field']] = ['label' => $label];
                 }
             }
         } elseif (isset($dd['col_info']) && $dd['col_info'] == 'override') {
-            $tables = array();
+            $tables = [];
             foreach ($dd['cols'] as $id => $prop) {
                 $table = explode('.', $id);
                 $table = $table[0];
@@ -117,7 +117,7 @@ class Db
             $link->setQuery($sql);
             $result = $link->loadAssocList();
 
-            $col_info = array();
+            $col_info = [];
             if ($result) {
                 foreach ($result as $rec) {
                     $col_info[$rec['col']] = json_decode($rec['Column_info'], true);
@@ -141,7 +141,7 @@ class Db
                 }
             }
         } elseif (isset($dd['col_info']) && $dd['col_info'] == 'soft_override') {
-            $tables = array();
+            $tables = [];
             foreach ($dd['cols'] as $id => $prop) {
                 $table = explode('.', $id);
                 $table = $table[0];
@@ -158,7 +158,7 @@ class Db
             $link->setQuery($sql);
             $result = $link->loadAssocList();
 
-            $col_info = array();
+            $col_info = [];
             if ($result) {
                 foreach ($result as $rec) {
                     $col_info[$rec['col']] = json_decode($rec['Column_info'], true);
@@ -183,9 +183,9 @@ class Db
             }
         }
 
-        $cols = array();
-        $cols_vis = array();
-        $cols_sql = array();
+        $cols = [];
+        $cols_vis = [];
+        $cols_sql = [];
 
         foreach ($dd['cols'] as $id => $conf) {
             if (isset($conf['field_type']) && $conf['field_type'] === 'point') {
@@ -240,7 +240,7 @@ class Db
         if (isset($dd['join'])) {
             foreach ($dd['join'] as $j) {
                 $type = isset($j['type']) ? $j['type'] : 'LEFT JOIN';
-                $con = array();
+                $con = [];
                 foreach ($j['fields'] as $f1 => $f2) {
                     if ($f1 == 'raw') {
                         $con[] = $f2;
@@ -253,8 +253,8 @@ class Db
             }
         }
 
-        $where_filter = array();
-        $having_filter = array();
+        $where_filter = [];
+        $having_filter = [];
 
         // Column filter
         for ($i = 0; $i < count($cols_vis); $i++) {
@@ -267,23 +267,23 @@ class Db
             if ($searchable === 'true' && $search_str !== '') {
                 $colExpr = '`' . $col_id . '`';
                 if ($col['aggr']) {
-                    $having_filter[$col_id] = array(
+                    $having_filter[$col_id] = [
                         'val' => $search_str,
                         'col' => $colExpr,
                         'fieldtype' => $fieldtype
-                    );
+                    ];
                 } elseif ($col['raw']) {
-                    $where_filter[$col_id] = array(
+                    $where_filter[$col_id] = [
                         'val' => $search_str,
                         'col' => $col['expr'],
                         'fieldtype' => $fieldtype
-                    );
+                    ];
                 } else {
-                    $where_filter[$col_id] = array(
+                    $where_filter[$col_id] = [
                         'val' => $search_str,
                         'col' => $col_id,
                         'fieldtype' => $fieldtype
-                    );
+                    ];
                 }
             }
         }
@@ -307,29 +307,29 @@ class Db
                 $colExpr = '`' . $col_id . '`';
 
                 if ($col['aggr']) {
-                    $having_filter[$col_id] = array(
+                    $having_filter[$col_id] = [
                         'val' => $filter_str,
                         'col' => $colExpr,
                         'fieldtype' => $fieldtype,
                         'filtered_view' => true,
                         'filter_type' => $filter_type
-                    );
+                    ];
                 } elseif ($col['raw']) {
-                    $where_filter[$col_id] = array(
+                    $where_filter[$col_id] = [
                         'val' => $filter_str,
                         'col' => $col['expr'],
                         'fieldtype' => $fieldtype,
                         'filtered_view' => true,
                         'filter_type' => $filter_type
-                    );
+                    ];
                 } else {
-                    $where_filter[$col_id] = array(
+                    $where_filter[$col_id] = [
                         'val' => $filter_str,
                         'col' => $col_id,
                         'fieldtype' => $fieldtype,
                         'filtered_view' => true,
                         'filter_type' => $filter_type
-                    );
+                    ];
                 }
             }
         }
@@ -338,13 +338,13 @@ class Db
         $having_str = '';
 
         if (count($where_filter) > 0) {
-            $where_filter_arr = array();
+            $where_filter_arr = [];
             foreach ($where_filter as $key => $val) {
             // number/datetime/numrange values are placed into the SQL by this builder
             // (it adds the quotes itself), so allow at most one leading operator and
             // then a plain number, date or "a to b" range - nothing else
                 if (
-                    in_array($val['fieldtype'], array('number', 'datetime', 'numrange'), true)
+                    in_array($val['fieldtype'], ['number', 'datetime', 'numrange'], true)
                     && !preg_match('/^\s*(<=|>=|<|>|!=|=|!)?\s*[0-9a-z.,:\/ +-]*$/i', (string) $val['val'])
                 ) {
                     continue;
@@ -430,7 +430,7 @@ class Db
                 } else {
                     $v_arr = explode(' ', $val['val']);
                     if (count($v_arr) > 1) {
-                        $list = array();
+                        $list = [];
                         foreach ($v_arr as $v) {
                             $list[] = $val['col'] . " LIKE '%" . $v . "%'";
                         }
@@ -451,13 +451,13 @@ class Db
         }
 
         if (count($having_filter) > 0) {
-            $having_filter_arr = array();
+            $having_filter_arr = [];
             foreach ($having_filter as $key => $val) {
             // number/datetime/numrange values are placed into the SQL by this builder
             // (it adds the quotes itself), so allow at most one leading operator and
             // then a plain number, date or "a to b" range - nothing else
                 if (
-                    in_array($val['fieldtype'], array('number', 'datetime', 'numrange'), true)
+                    in_array($val['fieldtype'], ['number', 'datetime', 'numrange'], true)
                     && !preg_match('/^\s*(<=|>=|<|>|!=|=|!)?\s*[0-9a-z.,:\/ +-]*$/i', (string) $val['val'])
                 ) {
                     continue;
@@ -539,7 +539,7 @@ class Db
                 } else {
                     $v_arr = explode(' ', $val['val']);
                     if (count($v_arr) > 1) {
-                        $list = array();
+                        $list = [];
                         foreach ($v_arr as $v) {
                             $list[] = $val['col'] . " LIKE '%" . $v . "%'";
                         }
@@ -560,8 +560,8 @@ class Db
         }
 
         // Full search
-        $where_search = array();
-        $having_search = array();
+        $where_search = [];
+        $having_search = [];
 
         $search_str = $escLink->escape(Request::getString('sSearch', ''));
         if ($search_str != '') {
@@ -601,7 +601,7 @@ class Db
 
         if (isset($dd['where']) && isset($dd['single'])) {
             $where_str = ' WHERE ';
-            $where = array();
+            $where = [];
             foreach ($dd['where'] as $w) {
                 if (isset($w['raw'])) {
                     $where[] = $w['raw'];
@@ -630,7 +630,7 @@ class Db
                 $where_str .= " AND (";
             }
 
-            $where = array();
+            $where = [];
             foreach ($dd['where'] as $w) {
                 if (isset($w['field']) && isset($w['value'])) {
                     $where[] = $w['field'] . "='" . $w['value'] . "'";
@@ -660,7 +660,7 @@ class Db
                 $having_str .= " AND (";
             }
 
-            $having = array();
+            $having = [];
             foreach ($dd['having'] as $h) {
                 if (isset($h['field']) && isset($h['value'])) {
                     $having[] = $h['field'] . "='" . $h['value'] . "'";
@@ -675,7 +675,7 @@ class Db
 
         $sql .= $having_str;
 
-        $order = array();
+        $order = [];
 
         $sorting = Request::getVar('iSortCol_0', false);
         if ($sorting !== false && count($cols_vis) > 0) {
@@ -745,7 +745,7 @@ class Db
         if (isset($dd['join'])) {
             foreach ($dd['join'] as $j) {
                 $type = isset($j['type']) ? $j['type'] : 'LEFT JOIN';
-                $con = array();
+                $con = [];
                 foreach ($j['fields'] as $f1 => $f2) {
                     if ($f1 == 'raw') {
                         $con[] = $f2;
@@ -767,7 +767,7 @@ class Db
             // the definition's own.
             $escLink = isset($dd['db']) ? static::get_db($dd['db']) : static::get_db();
             $where_str = ' WHERE ';
-            $where = array();
+            $where = [];
             foreach ($dd['where'] as $w) {
                 if (isset($w['field']) && isset($w['value'])) {
                     $field = implode('.', array_map(function ($p) {
@@ -794,7 +794,7 @@ class Db
         $having_str = '';
         if (isset($dd['having'])) {
             $having_str = ' HAVING ';
-            $having = array();
+            $having = [];
             foreach ($dd['having'] as $h) {
                 if (isset($h['field']) && isset($h['value'])) {
                     $having[] = $h['field'] . "='" . $h['value'] . "'";

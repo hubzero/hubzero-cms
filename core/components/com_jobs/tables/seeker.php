@@ -103,7 +103,7 @@ class Seeker extends Table
         $seekers = $this->getSeekers($filters, $uid, $excludeme, $admin, 1);
 
         // Exclude duplicates
-        $array = array();
+        $array = [];
         foreach ($seekers as $seeker) {
             $array[] = $seeker->uid;
         }
@@ -138,7 +138,7 @@ class Seeker extends Table
         // determine relevance to search keywords
         if ($filters['search'] && !$count) {
             $words   = explode(',', $filters['search']);
-            $s = array();
+            $s = [];
             foreach ($words as $word) {
                 if (trim($word) != '') {
                     $s[] = trim($word);
@@ -215,7 +215,7 @@ class Seeker extends Table
 
         // Exclude duplicates
         if ($filters['filterby'] == 'applied') {
-            $uids = array();
+            $uids = [];
             foreach ($seekers as $i => $seeker) {
                 if (!in_array($seeker->uid, $uids)) {
                     $uids[] = $seeker->uid;

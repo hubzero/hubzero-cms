@@ -21,11 +21,11 @@ class Migration20190305000000ImportHooks extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__import_hooks' => array(
+    public static $tables = [
+        '#__import_hooks' => [
             'created'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

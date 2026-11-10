@@ -37,13 +37,13 @@ class Courses extends Plugin
      */
     public function onTagView($tags, $limit = 0, $limitstart = 0, $sort = '', $areas = null)
     {
-        $response = array(
+        $response = [
             'name'    => $this->_name,
             'title'   => Lang::txt('PLG_TAGS_COURSES'),
             'total'   => 0,
             'results' => null,
             'sql'     => ''
-        );
+        ];
 
         if (empty($tags)) {
             return $response;
@@ -51,7 +51,7 @@ class Courses extends Plugin
 
         $database = App::get('db');
 
-        $ids = array();
+        $ids = [];
         foreach ($tags as $tag) {
             $ids[] = $tag->get('id');
         }
@@ -114,11 +114,11 @@ class Courses extends Plugin
         $course->set('blurb', $row->itext);
         $course->set('description', $row->ftext);
 
-        $view = new \Hubzero\Plugin\View(array(
+        $view = new \Hubzero\Plugin\View([
             'folder'  => 'tags',
             'element' => 'courses',
             'name'    => 'result'
-        ));
+        ]);
         $view->set('course', $course);
 
         return $view->loadTemplate();

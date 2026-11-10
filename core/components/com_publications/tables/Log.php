@@ -41,7 +41,7 @@ class Log extends Table
      */
     public function checkBotIp($ip)
     {
-        static $known = array();
+        static $known = [];
 
         $ip = \Hubzero\Utility\Ip::normalize($ip);
 
@@ -51,7 +51,7 @@ class Log extends Table
 
         if (!isset($known[$ip])) {
             if (count($known) >= 10000) {
-                $known = array();
+                $known = [];
             }
 
             $known[$ip] = $this->isBotIp($ip);
@@ -71,7 +71,7 @@ class Log extends Table
     {
         // Check by hostname
         $hostname = gethostbyaddr($ip);
-        $bots = array(
+        $bots = [
             'feedfetcher',
             'msnbot',
             'gsa-crawler',
@@ -89,7 +89,7 @@ class Log extends Table
             'robot',
             'fetch',
             'findlinks'
-        );
+        ];
         // With no reverse DNS, gethostbyaddr() gives the address back, and an
         // IPv6 address can spell a bot word ('feed' in 2001:db8:feed::1)
         if ($hostname && $hostname !== $ip) {
@@ -173,7 +173,7 @@ class Log extends Table
         static $networks = null;
 
         if ($networks === null) {
-            $networks = array();
+            $networks = [];
 
             $this->_db->setQuery("SELECT filter FROM $metrics_db.exclude_list WHERE type='ip' AND filter LIKE '%:%'");
 
@@ -588,7 +588,7 @@ class Log extends Table
      * @param   string  $filter   Tag name to match
      * @return  void
      */
-    public function getCustomStats($from = null, $to = null, $exclude = array(), $filter = null)
+    public function getCustomStats($from = null, $to = null, $exclude = [], $filter = null)
     {
         // Parse dates
         $parts = explode('-', $from);

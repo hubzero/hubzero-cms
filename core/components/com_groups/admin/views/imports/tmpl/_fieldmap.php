@@ -47,7 +47,7 @@ if ($this->import->get('id')) { ?>
                         >
                             <option value=""><?php echo Lang::txt('COM_GROUPS_UNKNOWN'); ?></option>
                             <?php
-                            $columns = array(
+                            $columns = [
                                 'gidNumber',
                                 'cn',
                                 'description',
@@ -66,7 +66,7 @@ if ($this->import->get('id')) { ?>
                                 'managers',
                                 //'projects',
                                 'tags'
-                            );
+                            ];
                             ?>
                             <optgroup label="<?php echo Lang::txt('COM_GROUPS_IMPORT_FIELDS_DETAILS'); ?>">
                                 <?php foreach ($columns as $column) : ?>

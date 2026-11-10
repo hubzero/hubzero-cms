@@ -58,11 +58,11 @@ if ($isFrontPage) {
 }
 
 $browser = new \Hubzero\Browser\Detector();
-$cls = array(
+$cls = [
     $this->direction,
     $browser->name(),
     $browser->name() . $browser->major()
-);
+];
 
 $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 ?>

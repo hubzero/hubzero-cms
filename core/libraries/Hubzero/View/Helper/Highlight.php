@@ -24,7 +24,7 @@ class Highlight extends AbstractHelper
      * @return  string
      * @throws  \InvalidArgumentException If no text was passed
      */
-    public function __invoke($text = null, $phrase = null, $options = array())
+    public function __invoke($text = null, $phrase = null, $options = [])
     {
         if (null === $text) {
             throw new \InvalidArgumentException(__METHOD__ . '(); No text passed.');

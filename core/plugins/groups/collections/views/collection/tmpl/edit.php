@@ -38,7 +38,7 @@ $titleFieldError = ($this->task == 'save' && !$this->entry->get('title'))
 $titleLabel = Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_TITLE');
 $requiredLabel = Lang::txt('JREQUIRED');
 
-$editorArgs = array('class' => 'form-control minimal no-footer');
+$editorArgs = ['class' => 'form-control minimal no-footer'];
 $descriptionEditor = $this->editor(
     'fields[description]',
     $this->escape(stripslashes($this->entry->description('raw'))),
@@ -114,7 +114,7 @@ $orderingLabel = Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_SORT_ORDERING');
                 <?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_TAGS'); ?>
                 <?php
                 $tags = ($this->entry->get('id') ? $this->entry->item()->tags('string') : '');
-                $tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $tags)));
+                $tf = Event::trigger('hubzero.onGetMultiEntry', [['tags', 'tags', 'actags', '', $tags]]);
                 $tf = implode('', $tf);
                 if ($tf) {
                     echo $tf;

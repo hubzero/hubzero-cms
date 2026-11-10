@@ -85,11 +85,11 @@ class License extends Table
      * @return  string  SQL
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildQuery($filters = array())
+    protected function _buildQuery($filters = [])
     {
         $query  = "FROM $this->_tbl AS c";
 
-        $where = array();
+        $where = [];
         if (isset($filters['state'])) {
             $where[] = "c.state=" . $this->_db->quote($filters['state']);
         }
@@ -112,7 +112,7 @@ class License extends Table
      * @param   array  $filters  Filters to build query from
      * @return  array
      */
-    public function getCount($filters = array())
+    public function getCount($filters = [])
     {
         $filters['limit'] = 0;
 
@@ -128,7 +128,7 @@ class License extends Table
      * @param   array  $filters  Filters to build query from
      * @return  array
      */
-    public function getRecords($filters = array())
+    public function getRecords($filters = [])
     {
         $query  = "SELECT c.*";
         $query .= $this->_buildQuery($filters);
@@ -155,7 +155,7 @@ class License extends Table
      * @param   array   $filters  Filters to build query from
      * @return  object
      */
-    public function getLicenses($filters = array())
+    public function getLicenses($filters = [])
     {
         $sortby  = isset($filters['sortby']) && $filters['sortby'] != '' ? $filters['sortby'] : 'ordering';
 
@@ -180,8 +180,8 @@ class License extends Table
             return false;
         }
 
-        $include = isset($manifest->params->include) ? $manifest->params->include : array();
-        $exclude = isset($manifest->params->exclude) ? $manifest->params->exclude : array();
+        $include = isset($manifest->params->include) ? $manifest->params->include : [];
+        $exclude = isset($manifest->params->exclude) ? $manifest->params->exclude : [];
 
         $query = "SELECT * FROM $this->_tbl WHERE active=1 ";
         if ($include && !empty($include)) {

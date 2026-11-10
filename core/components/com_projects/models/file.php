@@ -26,7 +26,7 @@ class File extends Obj
      *
      * @var  array
      */
-    private $_data = array();
+    private $_data = [];
 
     /**
      * Constructor
@@ -379,7 +379,7 @@ class File extends Obj
     public function isSupportedImage()
     {
         $mime = $this->getMimeType();
-        if (in_array($mime, array('image/jpeg', 'image/gif', 'image/png'))) {
+        if (in_array($mime, ['image/jpeg', 'image/gif', 'image/png'])) {
             return true;
         }
         return false;

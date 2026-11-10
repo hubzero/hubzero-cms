@@ -47,7 +47,7 @@ class Entries extends AdminController
     public function displayTask()
     {
         // Incoming
-        $filters = array(
+        $filters = [
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
@@ -68,7 +68,7 @@ class Entries extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         $model = Tag::all();
 
@@ -149,7 +149,7 @@ class Entries extends AdminController
         // Load a tag object if one doesn't already exist
         if (!is_object($tag)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id) && !empty($id)) {
                 $id = $id[0];
             }
@@ -183,7 +183,7 @@ class Entries extends AdminController
         }
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         $subs = '';
         if (isset($fields['substitutions'])) {
@@ -201,7 +201,7 @@ class Entries extends AdminController
 
         // Trigger before save event
         $isNew  = $row->isNew();
-        $result = Event::trigger('tags.onTagBeforeSave', array(&$row, $isNew));
+        $result = Event::trigger('tags.onTagBeforeSave', [&$row, $isNew]);
 
         if (in_array(false, $result, true)) {
             Notify::error($row->getError());
@@ -220,7 +220,7 @@ class Entries extends AdminController
         }
 
         // Trigger after save event
-        Event::trigger('tags.onTagAfterSave', array(&$row, $isNew));
+        Event::trigger('tags.onTagAfterSave', [&$row, $isNew]);
 
         // Notify of success
         Notify::success(Lang::txt('COM_TAGS_TAG_SAVED'));
@@ -248,8 +248,8 @@ class Entries extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Make sure we have an ID
         if (empty($ids)) {
@@ -262,7 +262,7 @@ class Entries extends AdminController
             $id = intval($id);
 
             // Trigger before delete event
-            Event::trigger('tags.onTagDelete', array($id));
+            Event::trigger('tags.onTagDelete', [$id]);
 
             // Remove the tag
             $tag = Tag::oneOrFail($id);
@@ -309,8 +309,8 @@ class Entries extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $step = Request::getInt('step', 1);
         $step = ($step) ? $step : 1;
@@ -329,7 +329,7 @@ class Entries extends AdminController
             case 1:
                 Request::setVar('hidemainmenu', 1);
 
-                $tags = array();
+                $tags = [];
 
                 // Loop through the IDs of the tags we want to merge
                 foreach ($ids as $id) {
@@ -354,7 +354,7 @@ class Entries extends AdminController
                 if ($ind) {
                     $ids = explode(',', $ind);
                 } else {
-                    $ids = array();
+                    $ids = [];
                 }
 
                 // Incoming
@@ -427,8 +427,8 @@ class Entries extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $step = Request::getInt('step', 1);
         $step = ($step) ? $step : 1;
@@ -447,7 +447,7 @@ class Entries extends AdminController
             case 1:
                 Request::setVar('hidemainmenu', 1);
 
-                $tags = array();
+                $tags = [];
 
                 // Loop through the IDs of the tags we want to merge
                 foreach ($ids as $id) {
@@ -472,7 +472,7 @@ class Entries extends AdminController
                 if ($ind) {
                     $ids = explode(',', $ind);
                 } else {
-                    $ids = array();
+                    $ids = [];
                 }
 
                 // Incoming
@@ -524,8 +524,8 @@ class Entries extends AdminController
      */
     public function calculateTask()
     {
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Make sure we have an ID
         if (empty($ids)) {

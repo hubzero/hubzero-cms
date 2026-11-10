@@ -62,7 +62,7 @@ class Migration20260602000000ComCron extends Base
             return;
         }
 
-        foreach (array('pid_host', 'pid_started', 'pid') as $field) {
+        foreach (['pid_host', 'pid_started', 'pid'] as $field) {
             if ($this->db->tableHasField('#__cron_jobs', $field)) {
                 $query = "ALTER TABLE `#__cron_jobs` DROP COLUMN `$field`";
                 $this->db->setQuery($query);

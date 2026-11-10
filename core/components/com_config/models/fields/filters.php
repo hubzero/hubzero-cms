@@ -36,7 +36,7 @@ class Filters extends Field
         // Get the available user groups.
         $groups = $this->getUserGroups();
         // Build the form control.
-        $html = array();
+        $html = [];
 
         // Open the table.
         $html[] = '<table id="filter-config">';
@@ -70,11 +70,11 @@ class Filters extends Field
 
         foreach ($groups as $group) {
             if (!isset($this->value[$group->value])) {
-                $this->value[$group->value] = array(
+                $this->value[$group->value] = [
                     'filter_type' => 'BL',
                     'filter_tags' => '',
                     'filter_attributes' => ''
-                );
+                ];
             }
             $group_filter = $this->value[$group->value];
 

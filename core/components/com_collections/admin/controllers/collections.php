@@ -46,7 +46,7 @@ class Collections extends AdminController
     public function displayTask()
     {
         // Get filters
-        $filters = array(
+        $filters = [
             'object_type' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.object_type',
                 'object_type',
@@ -77,7 +77,7 @@ class Collections extends AdminController
                 'access',
                 '-1'
             )
-        );
+        ];
 
         $model = Collection::all();
 
@@ -144,7 +144,7 @@ class Collections extends AdminController
 
         if (!is_object($row)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
 
             if (is_array($id)) {
                 $id = (!empty($id) ? $id[0] : 0);
@@ -183,7 +183,7 @@ class Collections extends AdminController
         }
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         // Initiate extended database class
         $row = Collection::oneOrNew($fields['id'])->set($fields);
@@ -219,8 +219,8 @@ class Collections extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
         $i = 0;
 
         if (count($ids) > 0) {
@@ -339,8 +339,8 @@ class Collections extends AdminController
         // Incoming
         $state = $this->getTask() == 'publish' ? Collection::STATE_PUBLISHED : Collection::STATE_UNPUBLISHED;
 
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for a resource
         if (count($ids) < 1) {

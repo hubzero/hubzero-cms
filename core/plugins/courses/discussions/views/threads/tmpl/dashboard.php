@@ -23,7 +23,7 @@ $database = App::get('db');
 
 $base = $this->course->offering()->link();
 
-$instructors = array();
+$instructors = [];
 
 $inst = $this->course->instructors();
 if (count($inst) > 0) {
@@ -195,7 +195,7 @@ if (count($inst) > 0) {
                             <label for="field_comment">
                                 <span class="label-text"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?></span>
                                 <?php
-                                echo $this->editor('fields[comment]', '', 35, 5, 'field_comment', array('class' => 'minimal no-footer'));
+                                echo $this->editor('fields[comment]', '', 35, 5, 'field_comment', ['class' => 'minimal no-footer']);
                                 ?>
                             </label>
 

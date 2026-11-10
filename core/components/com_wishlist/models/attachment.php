@@ -59,20 +59,20 @@ class Attachment extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'wish'     => 'nonzero',
         'filename' => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by'
-    );
+    ];
 
     /**
      * Load a record by wish and filename
@@ -230,7 +230,7 @@ class Attachment extends Relational
     public function dimensions()
     {
         if (!$this->dimensions) {
-            $this->dimensions = array(0, 0);
+            $this->dimensions = [0, 0];
 
             if ($this->isImage() && $this->exists()) {
                 $this->dimensions = getimagesize($this->link('file'));

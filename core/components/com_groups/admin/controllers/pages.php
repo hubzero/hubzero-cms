@@ -64,11 +64,11 @@ class Pages extends AdminController
     {
         // get group pages
         $pageArchive = Page\Archive::getInstance();
-        $this->view->pages = $pageArchive->pages('list', array(
+        $this->view->pages = $pageArchive->pages('list', [
             'gidNumber' => $this->group->get('gidNumber'),
-            'state'     => array(0, 1, 2),
+            'state'     => [0, 1, 2],
             'orderby'   => 'lft ASC'
-        ));
+        ]);
 
         // get page approvers
         $approvers = $this->config->get('approvers', '');
@@ -79,11 +79,11 @@ class Pages extends AdminController
         if (in_array(User::get('username'), $approvers)) {
             // get group pages
             $pageArchive = Page\Archive::getInstance();
-            $this->view->needsAttention = $pageArchive->pages('unapproved', array(
+            $this->view->needsAttention = $pageArchive->pages('unapproved', [
                 'gidNumber' => $this->group->get('gidNumber'),
-                'state'     => array(0, 1),
+                'state'     => [0, 1],
                 'orderby'   => 'lft ASC'
-            ));
+            ]);
         }
 
         // pass vars to view
@@ -114,7 +114,7 @@ class Pages extends AdminController
     public function editTask()
     {
         // get request vars
-        $id = Request::getArray('id', array(0));
+        $id = Request::getArray('id', [0]);
         $id = (is_array($id) ? $id[0] : $id);
 
         // get the page & version objects
@@ -124,18 +124,18 @@ class Pages extends AdminController
 
         // get a list of all pages for creating module menu
         $pageArchive = Page\Archive::getInstance();
-        $this->view->pages = $pageArchive->pages('list', array(
+        $this->view->pages = $pageArchive->pages('list', [
             'gidNumber' => $this->group->get('gidNumber'),
-            'state'     => array(0, 1),
+            'state'     => [0, 1],
             'orderby'   => 'lft ASC'
-        ));
+        ]);
 
         // get page categories
         $categoryArchive = new Page\Category\Archive();
-        $this->view->categories = $categoryArchive->categories('list', array(
+        $this->view->categories = $categoryArchive->categories('list', [
             'gidNumber' => $this->group->get('gidNumber'),
             'orderby'   => 'title'
-        ));
+        ]);
 
         // pass vars to view
         $this->view->group = $this->group;
@@ -165,8 +165,8 @@ class Pages extends AdminController
         Request::checkToken();
 
         // Get the page vars being posted
-        $page    = Request::getArray('page', array(), 'post');
-        $version = Request::getArray('pageversion', array(), 'post');
+        $page    = Request::getArray('page', [], 'post');
+        $version = Request::getArray('pageversion', [], 'post');
 
         // are we updating or creating a new page
         $task = ($page['id']) ? 'update' : 'create';
@@ -299,11 +299,11 @@ class Pages extends AdminController
         }
 
         // log edit
-        Log::log(array(
+        Log::log([
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'group_page_saved',
-            'comments'  => array('page' => $page, 'version' => $version)
-        ));
+            'comments'  => ['page' => $page, 'version' => $version]
+        ]);
 
         App::redirect(
             Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
@@ -327,7 +327,7 @@ class Pages extends AdminController
         }
 
         // get request vars
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
 
         // delete each module
         foreach ($ids as $pageid) {
@@ -362,11 +362,11 @@ class Pages extends AdminController
         }
 
         // log change
-        Log::log(array(
+        Log::log([
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'group_page_deleted',
             'comments'  => $ids
-        ));
+        ]);
 
         //inform user & redirect
         App::redirect(
@@ -432,9 +432,9 @@ class Pages extends AdminController
             if (!isset($issues->$lang)) {
                 $issues->$lang = new stdClass();
             }
-            $issues->$lang->severe   = ($severe != '') ? preg_grep("/$severe/i", $content) : array();
-            $issues->$lang->elevated = ($elevated != '') ? preg_grep("/$elevated/i", $content) : array();
-            $issues->$lang->minor    = ($minor != '') ? preg_grep("/$minor/i", $content) : array();
+            $issues->$lang->severe   = ($severe != '') ? preg_grep("/$severe/i", $content) : [];
+            $issues->$lang->elevated = ($elevated != '') ? preg_grep("/$elevated/i", $content) : [];
+            $issues->$lang->minor    = ($minor != '') ? preg_grep("/$minor/i", $content) : [];
 
             // add to issues count
             $issues->count += count($issues->$lang->severe) + count($issues->$lang->elevated) + count($issues->$lang->minor);
@@ -577,7 +577,7 @@ class Pages extends AdminController
         }
 
         //get request vars
-        $page = Request::getArray('page', array(), 'post');
+        $page = Request::getArray('page', [], 'post');
 
         // load page
         $groupPage = new Page($page['id']);
@@ -627,7 +627,7 @@ class Pages extends AdminController
         }
 
         //get request vars
-        $page = Request::getArray('page', array(), 'post');
+        $page = Request::getArray('page', [], 'post');
 
         // load page
         $groupPage = new Page($page['id']);
@@ -669,7 +669,7 @@ class Pages extends AdminController
         }
 
         //get request vars
-        $page = Request::getArray('page', array(), 'post');
+        $page = Request::getArray('page', [], 'post');
 
         // load page
         $groupPage = new Page($page['id']);
@@ -753,11 +753,11 @@ class Pages extends AdminController
         Helpers\Pages::sendApprovedNotification('page', $page);
 
         // log approval
-        Log::log(array(
+        Log::log([
             'gidNumber' => $this->group->get('gidNumber'),
             'action'    => 'group_page_approved',
-            'comments'  => array($page->get('id'))
-        ));
+            'comments'  => [$page->get('id')]
+        ]);
 
         // inform user and redirect
         App::redirect(

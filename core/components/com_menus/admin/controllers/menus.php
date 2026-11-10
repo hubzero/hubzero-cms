@@ -45,7 +45,7 @@ class Menus extends AdminController
     public function displayTask()
     {
         // Get filters
-        $filters = array(
+        $filters = [
             'parent_id' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.parent_id',
                 'filter_parent_id',
@@ -62,7 +62,7 @@ class Menus extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         $query = Menu::all()
             ->group('id')
@@ -112,7 +112,7 @@ class Menus extends AdminController
 
         if (!is_object($row)) {
             // Incoming
-            $id = Request::getArray('cid', array(0));
+            $id = Request::getArray('cid', [0]);
             if (is_array($id) && !empty($id)) {
                 $id = $id[0];
             }
@@ -149,7 +149,7 @@ class Menus extends AdminController
         }
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
         $cid = Request::getInt('cid', 0, 'post');
 
         // Initiate extended database class
@@ -157,7 +157,7 @@ class Menus extends AdminController
 
         // Trigger before save event
         $isNew  = $row->isNew();
-        $result = Event::trigger('onMenuBeforeSave', array(&$row, $isNew));
+        $result = Event::trigger('onMenuBeforeSave', [&$row, $isNew]);
 
         if (in_array(false, $result, true)) {
             Notify::error($row->getError());
@@ -171,7 +171,7 @@ class Menus extends AdminController
         }
 
         // Trigger after save event
-        Event::trigger('onMenuAfterSave', array(&$row, $isNew));
+        Event::trigger('onMenuAfterSave', [&$row, $isNew]);
 
         // Notify of success
         Notify::success(Lang::txt('COM_MENUS_MENU_SAVE_SUCCESS'));
@@ -205,7 +205,7 @@ class Menus extends AdminController
         }
 
         // Get items to remove from the request.
-        $ids = Request::getArray('cid', array());
+        $ids = Request::getArray('cid', []);
 
         // Make sure the item ids are integers
         \Hubzero\Utility\Arr::toInteger($ids);
@@ -220,7 +220,7 @@ class Menus extends AdminController
                 $model = Menu::oneOrFail(intval($id));
 
                 // Trigger before delete event
-                Event::trigger('onMenuBeforeDelete', array('com_menus.menu', $model->getTableName()));
+                Event::trigger('onMenuBeforeDelete', ['com_menus.menu', $model->getTableName()]);
 
                 // Attempt to delete the record
                 $menuType = $model->get('menutype');
@@ -235,7 +235,7 @@ class Menus extends AdminController
                 }
 
                 // Trigger after delete event
-                Event::trigger('onMenuAfterDelete', array('com_menus.menu', $model->getTableName()));
+                Event::trigger('onMenuAfterDelete', ['com_menus.menu', $model->getTableName()]);
 
                 $success++;
             }

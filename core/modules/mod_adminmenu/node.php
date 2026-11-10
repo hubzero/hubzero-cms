@@ -30,7 +30,7 @@ class Node extends Obj
      * @var    array
      * @since  2.1.13
      */
-    protected $children = array();
+    protected $children = [];
 
     /**
      * Node Title
@@ -93,9 +93,9 @@ class Node extends Obj
         if (!empty($link) && $link !== '#') {
             $params = with(new \Hubzero\Utility\Uri($link))->getQuery(true);
 
-            $parts = array();
+            $parts = [];
             foreach ($params as $name => $value) {
-                $parts[] = str_replace(array('.', '_'), '-', $value);
+                $parts[] = str_replace(['.', '_'], '-', $value);
             }
 
             $this->id = implode('-', $parts);

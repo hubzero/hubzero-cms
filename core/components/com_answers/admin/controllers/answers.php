@@ -51,7 +51,7 @@ class Answers extends AdminController
     public function displayTask()
     {
         // Filters
-        $filters = array(
+        $filters = [
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
@@ -80,7 +80,7 @@ class Answers extends AdminController
                 'filter_order_Dir',
                 'DESC'
             )
-        );
+        ];
 
         $records = Response::all()
             ->including(['creator', function ($creator) {
@@ -136,7 +136,7 @@ class Answers extends AdminController
         Request::setVar('hidemainmenu', 1);
 
         if (!is_object($row)) {
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             $id = (is_array($id) && !empty($id)) ? $id[0] : $id;
 
             $row = Response::oneOrNew($id);
@@ -173,7 +173,7 @@ class Answers extends AdminController
         }
 
         // Incoming
-        $fields = Request::getArray('answer', array(), 'post');
+        $fields = Request::getArray('answer', [], 'post');
 
         // Initiate extended database class
         $row = Response::oneOrNew(intval($fields['id']))->set($fields);
@@ -184,7 +184,7 @@ class Answers extends AdminController
 
         // Trigger before save event
         $isNew  = $row->isNew();
-        $result = Event::trigger('onAnswerBeforeSave', array(&$row, $isNew));
+        $result = Event::trigger('onAnswerBeforeSave', [&$row, $isNew]);
 
         if (in_array(false, $result, true)) {
             Notify::error($row->getError());
@@ -198,7 +198,7 @@ class Answers extends AdminController
         }
 
         // Trigger after save event
-        Event::trigger('onAnswerAfterSave', array(&$row, $isNew));
+        Event::trigger('onAnswerAfterSave', [&$row, $isNew]);
 
         // Display success message
         Notify::success(Lang::txt('COM_ANSWERS_ANSWER_SAVED'));
@@ -226,8 +226,8 @@ class Answers extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         if (count($ids) <= 0) {
             return $this->cancelTask();
@@ -243,7 +243,7 @@ class Answers extends AdminController
             }
 
             // Trigger after delete event
-            Event::trigger('onAnswerAfterDelete', array($id));
+            Event::trigger('onAnswerAfterDelete', [$id]);
 
             $success++;
         }
@@ -274,8 +274,8 @@ class Answers extends AdminController
 
         // Incoming
         $qid = Request::getInt('qid', 0);
-        $id  = Request::getArray('id', array());
-        $id  = !is_array($id) ? array($id) : $id;
+        $id  = Request::getArray('id', []);
+        $id  = !is_array($id) ? [$id] : $id;
 
         $publish = ($this->_task == 'accept') ? 1 : 0;
 
@@ -334,7 +334,7 @@ class Answers extends AdminController
         }
 
         // Incoming
-        $answer = Request::getArray('answer', array());
+        $answer = Request::getArray('answer', []);
 
         // Reset some values
         $model = Response::oneOrFail(intval($answer['id']));

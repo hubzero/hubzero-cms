@@ -70,8 +70,8 @@ class Migration20261104170100ComTools extends Base
         }
 
         // New columns beside the old; a run that stopped after this is resumed
-        $add = array();
-        foreach (array('ipFROM_hex', 'ipTO_hex') as $column) {
+        $add = [];
+        foreach (['ipFROM_hex', 'ipTO_hex'] as $column) {
             if (!isset($fields[$column])) {
                 $add[] = 'ADD `' . $column . '` ' . self::COLUMN;
             }

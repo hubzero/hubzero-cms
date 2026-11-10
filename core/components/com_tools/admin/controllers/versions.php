@@ -47,7 +47,7 @@ class Versions extends AdminController
     public function displayTask()
     {
         // Get Filters
-        $filters       = array();
+        $filters       = [];
         $filters['id'] = Request::getState(
             $this->_option . '.' . $this->_controller . '.versions.id',
             'id',
@@ -195,7 +195,7 @@ class Versions extends AdminController
         Request::checkToken();
 
         // Incoming instance ID
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         // Do we have an ID?
         if (!$fields['version']) {
@@ -240,7 +240,7 @@ class Versions extends AdminController
 
         $row->hostreq = (is_array($row->hostreq) && !empty($row->hostreq) ? explode(',', $row->hostreq[0]) : []);
 
-        $hostreq = array();
+        $hostreq = [];
         foreach ($row->hostreq as $req) {
             if (!empty($req)) {
                 $hostreq[] = trim($req);
@@ -259,7 +259,7 @@ class Versions extends AdminController
             && substr($row->instance, -4) != '_dev'
         ) {
             // Save DOI data
-            $dois = Request::getArray('doi', array(), 'post');
+            $dois = Request::getArray('doi', [], 'post');
 
             if ($dois['doi']) {
                 if (!$dois['rid']) {

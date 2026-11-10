@@ -26,7 +26,7 @@ class PdfFormDeployment
      *
      * @var array
      **/
-    private static $resultViews = array('confirmation', 'score', 'details');
+    private static $resultViews = ['confirmation', 'score', 'details'];
 
     /**
      * Deployment ID
@@ -110,7 +110,7 @@ class PdfFormDeployment
      *
      * @var array
      **/
-    private $errors = array();
+    private $errors = [];
 
     /**
      * Process form
@@ -119,7 +119,7 @@ class PdfFormDeployment
      **/
     public static function forForm($formId)
     {
-        $rv = array();
+        $rv = [];
 
         $dbh = self::getDbh();
         $dbh->setQuery(
@@ -242,7 +242,7 @@ class PdfFormDeployment
      **/
     public function getRespondent($member_id, $attempt = 1)
     {
-        static $resp = array();
+        static $resp = [];
 
         if ($attempt > $this->getAllowedAttempts()) {
             return false;
@@ -490,7 +490,7 @@ class PdfFormDeployment
     {
         $randomBytes = openssl_random_pseudo_bytes(self::CRUMB_LEN + 1);
         $encoded = substr(base64_encode($randomBytes), 0, self::CRUMB_LEN);
-        $this->crumb = str_replace(array('/', '+'), array('-', '-'), $encoded);
+        $this->crumb = str_replace(['/', '+'], ['-', '-'], $encoded);
     }
 
     /**
@@ -505,34 +505,34 @@ class PdfFormDeployment
         if (!$checked) {
             $checked = true;
             if ($this->endTime && !strtotime($this->endTime)) {
-                $this->errors['endTime'] = array('Invalid end time');
+                $this->errors['endTime'] = ['Invalid end time'];
             }
             if ($this->startTime && !strtotime($this->startTime)) {
-                $this->errors['startTime'] = array('Invalid start time');
+                $this->errors['startTime'] = ['Invalid start time'];
             }
             if ($this->timeLimit != '' && (($this->timeLimit != (int)$this->timeLimit) || $this->timeLimit <= 0)) {
-                $this->errors['timeLimit'] = array('Expected a positive, nonzero, integer number of minutes');
+                $this->errors['timeLimit'] = ['Expected a positive, nonzero, integer number of minutes'];
             }
             if (!$update && $this->endTime && strtotime($this->endTime) <= strtotime(Date::of('now'))) {
                 if (!isset($this->errors['endTime'])) {
-                    $this->errors['endTime'] = array();
+                    $this->errors['endTime'] = [];
                 }
                 $this->errors['endTime'][] = 'The deployment would already be expired with this end time';
             }
             if ($this->endTime && $this->startTime && strtotime($this->endTime) <= strtotime($this->startTime)) {
                 if (!isset($this->errors['endTime'])) {
-                    $this->errors['endTime'] = array();
+                    $this->errors['endTime'] = [];
                 }
                 $this->errors['endTime'][] = 'The end time must be after the start time';
             }
             if ($this->resultsOpen && !in_array($this->resultsOpen, self::$resultViews)) {
-                $this->errors['resultsOpen'] = array('Invalid selection');
+                $this->errors['resultsOpen'] = ['Invalid selection'];
             }
             if ($this->resultsClosed && !in_array($this->resultsClosed, self::$resultViews)) {
-                $this->errors['resultsClosed'] = array('Invalid selection');
+                $this->errors['resultsClosed'] = ['Invalid selection'];
             }
             if ($this->allowedAttempts <= 0) {
-                $this->errors['allowedAttempts'] = array('Number of attempts cannot be less than 1');
+                $this->errors['allowedAttempts'] = ['Number of attempts cannot be less than 1'];
             }
         }
 
@@ -546,7 +546,7 @@ class PdfFormDeployment
      **/
     public function getErrors($field)
     {
-        return isset($this->errors[$field]) ? $this->errors[$field] : array();
+        return isset($this->errors[$field]) ? $this->errors[$field] : [];
     }
 
     /**
@@ -558,7 +558,7 @@ class PdfFormDeployment
     {
         $dep = new self();
         $dep->formId = $fid;
-        foreach (array('resultsOpen', 'resultsClosed', 'timeLimit', 'allowedAttempts') as $key) {
+        foreach (['resultsOpen', 'resultsClosed', 'timeLimit', 'allowedAttempts'] as $key) {
             if (!isset($data[$key])) {
                 App::abort(422, 'expected a value to be supplied for ' . $key);
                 return;

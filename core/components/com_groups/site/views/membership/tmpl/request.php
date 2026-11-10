@@ -52,7 +52,7 @@ defined('_HZEXEC_') or die();
                 <label for="reason">
                     <?php echo Lang::txt('COM_GROUPS_JOIN_REASON'); ?>
                     <!--textarea name="reason" id="reason" rows="10" cols="50"></textarea-->
-                    <?php echo $this->editor('reason', "", 10, 10, 'reason', array('class' => 'form-control minimal no-footer')); ?>
+                    <?php echo $this->editor('reason', "", 10, 10, 'reason', ['class' => 'form-control minimal no-footer']); ?>
                 </label>
                 <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                 <input type="hidden" name="controller" value="membership" />

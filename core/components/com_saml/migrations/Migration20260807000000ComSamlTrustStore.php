@@ -79,7 +79,7 @@ class Migration20260807000000ComSamlTrustStore extends Base
      **/
     public function down()
     {
-        foreach (array('#__saml_service_providers', '#__saml_sessions') as $table) {
+        foreach (['#__saml_service_providers', '#__saml_sessions'] as $table) {
             if ($this->db->tableExists($table)) {
                 $this->db->setQuery("DROP TABLE IF EXISTS `" . $table . "`;");
                 $this->db->query();

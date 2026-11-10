@@ -150,7 +150,7 @@ class Geo extends Base
     public function toHtmlTag($tag, $value, $prefix = 'nb:')
     {
         // array to hold date parts
-        $parts = array();
+        $parts = [];
 
         // case value to array (in case object)
         $value = array_filter((array) $value);

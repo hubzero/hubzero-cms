@@ -105,7 +105,7 @@ if ($mode != 'preview') {
                 <div class="col span4 omega launcharea">
                     <?php
                     if (!$this->model->access('view-all')) {
-                        $ghtml = array();
+                        $ghtml = [];
                         foreach ($this->model->groups as $allowedgroup) {
                             $ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
                         }
@@ -179,7 +179,7 @@ if ($mode != 'preview') {
             <?php
             // Show related content
             $asideContent = '';
-            $out = Event::trigger('resources.onResourcesSub', array($this->model, $this->option, 1));
+            $out = Event::trigger('resources.onResourcesSub', [$this->model, $this->option, 1]);
             if (count($out) > 0) {
                 foreach ($out as $ou) {
                     if (isset($ou['html'])) {

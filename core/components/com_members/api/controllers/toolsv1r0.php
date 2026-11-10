@@ -86,9 +86,9 @@ class Toolsv1r0 extends ApiController
         $cmd = "/bin/sh " . Component::path('com_tools') . "/scripts/mw screenshot " . escapeshellarg($result->get('username')) . " 2>&1 </dev/null";
         exec($cmd, $results, $status);
 
-        $results = array();
+        $results = [];
         foreach ($sessions as $session) {
-            $r = array(
+            $r = [
                 'id'         => $session->sessnum,
                 'app'        => $session->appname,
                 'name'       => $session->sessname,
@@ -96,29 +96,29 @@ class Toolsv1r0 extends ApiController
                 'accessed'   => $session->accesstime,
                 'owner'      => ($result->get('username') == $session->username) ? 1 : 0,
                 'ready-only' => ($session->readonly == 'No') ? 0 : 1
-            );
+            ];
             $results[] = $r;
         }
 
         // Make sure we have an acceptable ordering
-        $accepted_ordering = array('id_asc', 'id_desc', 'started_asc', 'started_desc', 'accessed_asc', 'accessed_desc');
+        $accepted_ordering = ['id_asc', 'id_desc', 'started_asc', 'started_desc', 'accessed_asc', 'accessed_desc'];
         if (in_array($order, $accepted_ordering)) {
             switch ($order) {
                 case 'id_asc':
                     break;
                 case 'id_desc':
-                    usort($results, array($this, "id_sort_desc"));
+                    usort($results, [$this, "id_sort_desc"]);
                     break;
                 case 'started_asc':
                     break;
                 case 'started_desc':
-                    usort($results, array($this, "started_date_sort_desc"));
+                    usort($results, [$this, "started_date_sort_desc"]);
                     break;
                 case 'accessed_asc':
-                    usort($results, array($this, "accessed_date_sort_asc"));
+                    usort($results, [$this, "accessed_date_sort_asc"]);
                     break;
                 case 'accessed_desc':
-                    usort($results, array($this, "accessed_date_sort_desc"));
+                    usort($results, [$this, "accessed_date_sort_desc"]);
                     break;
             }
         }
@@ -241,7 +241,7 @@ class Toolsv1r0 extends ApiController
         $database->setQuery($sql);
         $recent_tools = $database->loadObjectList();
 
-        $r = array();
+        $r = [];
         foreach ($recent_tools as $k => $recent) {
             $r[$k]['alias'] = $recent->alias;
             $r[$k]['title'] = $recent->title;

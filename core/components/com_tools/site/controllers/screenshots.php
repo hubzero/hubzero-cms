@@ -354,7 +354,7 @@ class Screenshots extends SiteController
 
         $version = Request::getString('version', 'dev');
         $title = preg_replace('/\s+/', ' ', Request::getString('title', ''));
-        $allowed = array('.gif', '.jpg', '.png', '.bmp');
+        $allowed = ['.gif', '.jpg', '.png', '.bmp'];
         $changing_version = Request::getInt('changing_version', 0);
         if ($changing_version) {
             // reload screen
@@ -676,7 +676,7 @@ class Screenshots extends SiteController
         Log::debug(__FUNCTION__ . "() $src");
 
         // do we have files to transfer?
-        $files = Filesystem::files($src, '.', false, true, array());
+        $files = Filesystem::files($src, '.', false, true, []);
 
         Log::debug(__FUNCTION__ . "() " . implode(',', $files));
 

@@ -69,7 +69,7 @@ $this->css('course.css')
                     <?php echo Lang::txt('COM_COURSES_FIELD_TAGS'); ?>
 
                     <?php
-                    $tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->course->tags('string'))));
+                    $tf = Event::trigger('hubzero.onGetMultiEntry', [['tags', 'tags', 'actags','', $this->course->tags('string')]]);
                     if (count($tf) > 0) {
                         echo implode("\n", $tf);
                     } else { ?>

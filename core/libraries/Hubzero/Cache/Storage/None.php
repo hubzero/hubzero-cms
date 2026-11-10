@@ -18,7 +18,7 @@ class None implements StorageInterface
      *
      * @var string
      */
-    protected $options = array();
+    protected $options = [];
 
     /**
      * Create a new file cache store instance.
@@ -26,7 +26,7 @@ class None implements StorageInterface
      * @param   array  $options
      * @return  void
      */
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
         $this->options = array_merge($this->options, $options);
 
@@ -150,7 +150,7 @@ class None implements StorageInterface
      */
     public function all()
     {
-        return array();
+        return [];
     }
 
     /**

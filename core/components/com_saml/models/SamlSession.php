@@ -61,9 +61,9 @@ class SamlSession extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'session_index' => 'notempty'
-    );
+    ];
 
     /**
      * Has an AuthnRequest from this SP already been answered?

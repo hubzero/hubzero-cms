@@ -41,10 +41,10 @@ class Digest extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'scope'    => 'notempty',
         'scope_id' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Load a record by scope and scope ID

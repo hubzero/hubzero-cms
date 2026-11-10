@@ -41,7 +41,7 @@ class Address extends Field
     protected function getInput()
     {
         // Initialize variables.
-        $html = array();
+        $html = [];
 
         // Initialize some field attributes.
         $class = ' class="radio addresses-' . $this->id;
@@ -56,7 +56,7 @@ class Address extends Field
         $found = false;
 
         $values = $this->value;
-        $values = is_array($values) ? $values : array($values);
+        $values = is_array($values) ? $values : [$values];
 
         $lang = App::get('language');
 
@@ -67,7 +67,7 @@ class Address extends Field
             }
 
             if (!$value || json_last_error() !== JSON_ERROR_NONE) {
-                $value = array();
+                $value = [];
                 $value['address1']  = '';
                 $value['address2']  = '';
                 $value['postal']    = '';
@@ -226,10 +226,10 @@ class Address extends Field
     protected function getOptions()
     {
         // Initialize variables.
-        $options = array();
+        $options = [];
 
         if (!self::$countries) {
-            self::$countries = array();
+            self::$countries = [];
 
             $countries = Geocode::countries();
 

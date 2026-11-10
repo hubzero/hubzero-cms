@@ -41,7 +41,7 @@ $cType      = $mTypeParts[0];
 
 if ($attributes) {
     $a = explode(',', $attributes);
-    $bits = array();
+    $bits = [];
     if ($a && is_array($a)) {
         foreach ($a as $b) {
             if (strstr($b, ':')) {
@@ -55,13 +55,13 @@ if ($attributes) {
 }
 
 // Formats that can be previewed via Google viewer
-$docs = array(
+$docs = [
     'pdf', 'doc', 'docx', 'xls', 'xlsx',
     'ppt', 'pptx', 'pages', 'ai',
     'psd', 'tiff', 'dxf', 'eps', 'ps', 'ttf', 'xps', 'svg'
-);
+];
 
-$html5video = array("mp4","m4v","webm","ogv");
+$html5video = ["mp4","m4v","webm","ogv"];
 
 $token = '';
 

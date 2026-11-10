@@ -45,7 +45,7 @@ $formUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $th
         $c = '';
         $top = 0;
         if ($this->data) {
-            $c = array();
+            $c = [];
 
             foreach ($this->data as $k => $v) {
                 $top = $v > $top ? $v : $top;

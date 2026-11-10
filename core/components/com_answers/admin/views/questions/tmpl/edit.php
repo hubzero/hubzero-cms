@@ -133,10 +133,10 @@ $createdByVal = $this->row->get('created_by', User::get('id'));
                         50,
                         15,
                         'field-question',
-                        array(
+                        [
                             'class' => 'minimal no-footer',
                             'buttons' => false,
-                        )
+                        ]
                     );
                     ?>
                 </div>
@@ -225,7 +225,7 @@ $createdByVal = $this->row->get('created_by', User::get('id'));
                         'calendar',
                         'question[created]',
                         $this->row->get('created', Date::toSql()),
-                        array('id' => 'field-created')
+                        ['id' => 'field-created']
                     );
                     ?>
                 </div>

@@ -23,11 +23,11 @@ $user = User::getInstance();
 $unknown  = true;
 $name     = '';
 $usertype = Lang::txt('COM_SUPPORT_UNKNOWN');
-$notify   = array();
+$notify   = [];
 
 if ($this->row->get('login')) {
     if ($this->row->get('name')) {
-        $gids = array();
+        $gids = [];
         foreach (User::getInstance($this->row->submitter->get('id'))->accessgroups() as $g) {
             $gids[] = $g->group_id;
         }
@@ -62,7 +62,7 @@ if ($this->row->comments->count() > 0) {
     $this->row->comments->rewind();
 }
 
-$cc = array();
+$cc = [];
 
 $no_html = Request::getInt('no_html', 0);
 if (!$no_html) {
@@ -361,7 +361,7 @@ if (!$no_html) {
 
                 <div class="ticket-content">
                     <?php
-                    $results = Event::trigger('support.onTicketComment', array($this->row));
+                    $results = Event::trigger('support.onTicketComment', [$this->row]);
                     echo implode("\n", $results);
                     ?>
                     <fieldset>
@@ -370,7 +370,7 @@ if (!$no_html) {
                                 <select name="messages" id="comment-field-template">
                                     <option value="custom"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_CUSTOM'); ?></option>
                                     <?php
-                                    $hi = array();
+                                    $hi = [];
                                     foreach ($this->lists['messages'] as $message) {
                                         ?>
                                         <option value="m<?php echo $message->id; ?>"><?php echo $this->escape(stripslashes($message->title)); ?></option>
@@ -458,15 +458,15 @@ if (!$no_html) {
                         <div class="input-wrap">
                             <label for="comment-field-message">
                                 <?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_SEND_EMAIL_CC'); ?> <?php
-                                $mc = Event::trigger('hubzero.onGetMultiEntry', array(
-                                    array(
+                                $mc = Event::trigger('hubzero.onGetMultiEntry', [
+                                    [
                                         'members',   // The component to call
                                         'cc',        // Name of the input field
                                         'comment-field-message', // ID of the input field
                                         '',          // CSS class(es) for the input field
                                         implode(', ', $cc) // The value of the input field
-                                    )
-                                ));
+                                    ]
+                                ]);
                                 if (count($mc) > 0) {
                                     echo '<span class="hint">' . Lang::txt('COM_SUPPORT_TICKET_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS_AUTOCOMPLETE') . '</span>' . $mc[0];
                                 } else {
@@ -502,7 +502,7 @@ if (!$no_html) {
                         <label for="tags">
                             <?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_TAGS'); ?>
                             <?php
-                            $tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->row->tags('string'))));
+                            $tf = Event::trigger('hubzero.onGetMultiEntry', [['tags', 'tags', 'actags', '', $this->row->tags('string')]]);
 
                             if (count($tf) > 0) {
                                 echo $tf[0];
@@ -525,7 +525,7 @@ if (!$no_html) {
                                         }
                                     }
 
-                                    $gc = Event::trigger('hubzero.onGetSingleEntryWithSelect', array(array('groups', 'ticket[group_id]', 'acgroup','', $group,'','owner')));
+                                    $gc = Event::trigger('hubzero.onGetSingleEntryWithSelect', [['groups', 'ticket[group_id]', 'acgroup','', $group,'','owner']]);
                                     if (count($gc) > 0) {
                                         echo $gc[0];
                                     } else { ?>
@@ -566,7 +566,7 @@ if (!$no_html) {
 
                     <div class="input-wrap">
                         <label for="target_date"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_TARGET_DATE'); ?></label>
-                        <?php echo Html::input('calendar', 'ticket[target_date]', ($this->row->get('target_date') && $this->row->get('target_date') != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->get('target_date'))->toLocal('Y-m-d H:i:s')) : ''), array('id' => 'field-target_date')); ?>
+                        <?php echo Html::input('calendar', 'ticket[target_date]', ($this->row->get('target_date') && $this->row->get('target_date') != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->get('target_date'))->toLocal('Y-m-d H:i:s')) : ''), ['id' => 'field-target_date']); ?>
                     </div>
 
                     <div class="grid">

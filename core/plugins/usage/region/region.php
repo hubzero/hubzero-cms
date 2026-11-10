@@ -32,9 +32,9 @@ class Region extends Plugin
      */
     public function onUsageAreas()
     {
-        return array(
+        return [
             'region' => Lang::txt('PLG_USAGE_REGION')
-        );
+        ];
     }
 
     /**
@@ -96,18 +96,18 @@ class Region extends Plugin
             $monthtext   = date("F", mktime(0, 0, 0, $dtmonth, 1, $dtyear)) . ' ' . $dtyear;
             $yeartext    = 'Jan - ' . date("M", mktime(0, 0, 0, $dtmonth, 1, $dtyear)) . ' ' . $dtyear;
             $twelvetext  = date("M", mktime(0, 0, 0, $dtmonthnext, 1, $dtyear)) . ' ' . $dtyearprior . ' - ' . date("M", mktime(0, 0, 0, $dtmonth, 1, $dtyear)) . ' ' . $dtyear;
-            $period = array(
-                array('key' => 1,  'name' => $monthtext),
-                array('key' => 0,  'name' => $yeartext),
-                array('key' => 12, 'name' => $twelvetext)
-            );
+            $period = [
+                ['key' => 1,  'name' => $monthtext],
+                ['key' => 0,  'name' => $yeartext],
+                ['key' => 12, 'name' => $twelvetext]
+            ];
 
             // Process each different date/time periods/range...
             $maxrank = 0;
-            $regionlist = array();
+            $regionlist = [];
             for ($pidx = 0; $pidx < count($period); $pidx++) {
                 // Calculate the total value for this regionlist...
-                $regionlistset = array();
+                $regionlistset = [];
                 $sql = "SELECT regionvals.name, regionvals.value
 						FROM regions, regionvals
 						WHERE regions.region = regionvals.region
@@ -126,11 +126,11 @@ class Region extends Plugin
                                 $formattedval = substr($formattedval, 0, $chopchar) . '+';
                             }
                         }
-                        array_push($regionlistset, array($row->name, $row->value, $formattedval, sprintf("%0.1f%%", 100)));
+                        array_push($regionlistset, [$row->name, $row->value, $formattedval, sprintf("%0.1f%%", 100)]);
                     }
                 }
                 if (!count($regionlistset)) {
-                    array_push($regionlistset, array("n/a", 0, "n/a", "n/a"));
+                    array_push($regionlistset, ["n/a", 0, "n/a", "n/a"]);
                 }
 
                 // Calculate the region values for the regionlist...
@@ -149,7 +149,7 @@ class Region extends Plugin
                     foreach ($results as $row) {
                         if ($row->rank > 0 && (!$size || $row->rank <= $size)) {
                             while ($rank < $row->rank) {
-                                array_push($regionlistset, array('n/a', 0, 'n/a', 'n/a'));
+                                array_push($regionlistset, ['n/a', 0, 'n/a', 'n/a']);
                                 $rank++;
                             }
                             $formattedval = \Components\Usage\Helpers\Helper::valformat($row->value, $valfmt);
@@ -160,16 +160,16 @@ class Region extends Plugin
                                 }
                             }
                             if ($regionlistset[0][1] > 0) {
-                                array_push($regionlistset, array($row->name, $row->value, $formattedval, sprintf("%0.1f%%", (100 * $row->value / $regionlistset[0][1]))));
+                                array_push($regionlistset, [$row->name, $row->value, $formattedval, sprintf("%0.1f%%", (100 * $row->value / $regionlistset[0][1]))]);
                             } else {
-                                array_push($regionlistset, array($row->name, $row->value, $formattedval, 'n/a'));
+                                array_push($regionlistset, [$row->name, $row->value, $formattedval, 'n/a']);
                             }
                             $rank++;
                         }
                     }
                 }
                 while ($rank <= $size || $rank == 1) {
-                    array_push($regionlistset, array('n/a', 0, 'n/a', 'n/a'));
+                    array_push($regionlistset, ['n/a', 0, 'n/a', 'n/a']);
                     $rank++;
                 }
                 array_push($regionlist, $regionlistset);

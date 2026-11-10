@@ -72,7 +72,7 @@ class Wishlists extends SiteController
         if ($this->_list_title && strcasecmp(trim($this->_list_title), trim($this->_title)) !== 0) {
             $this->_title .= ' - ' . $this->_list_title;
         }
-        if ($this->_task && in_array($this->_task, array('settings', 'add'))) {
+        if ($this->_task && in_array($this->_task, ['settings', 'add'])) {
             $this->_title .= ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
         }
         Document::setTitle($this->_title);
@@ -286,10 +286,10 @@ class Wishlists extends SiteController
                     break;
                 case 'accepted':
                     $entries
-                        ->whereIn('status', array(
+                        ->whereIn('status', [
                             Wish::WISH_STATE_OPEN,
                             Wish::WISH_STATE_ACCEPTED
-                        ))
+                        ])
                         ->whereEquals('accepted', 1);
                     break;
                 case 'pending':
@@ -660,7 +660,7 @@ class Wishlists extends SiteController
             return;
         }
 
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         // The settings form posts title, description and public; the list is
         // the one whose manage right was checked above, and what it is a list
@@ -860,18 +860,18 @@ class Wishlists extends SiteController
             // to wish assignee
             $subject = Lang::txt(strtoupper($this->_option)) . ', ' . Lang::txt('COM_WISHLIST_WISH') . ' #' . $wishid . ' ' . Lang::txt('COM_WISHLIST_MSG_HAS_BEEN_ASSIGNED_TO_YOU');
 
-            $from = array(
+            $from = [
                 'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option)),
                 'email' => Config::get('mailfrom')
-            );
+            ];
 
-            $message = array();
+            $message = [];
 
             // Plain text email
-            $eview = new \Hubzero\Mail\View(array(
+            $eview = new \Hubzero\Mail\View([
                 'name'   => 'emails',
                 'layout' => 'wish_plain'
-            ));
+            ]);
             $eview->option     = $this->_option;
             $eview->controller = $this->_controller;
             $eview->wish       = $objWish;
@@ -888,7 +888,7 @@ class Wishlists extends SiteController
             $message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
             // Send message
-            if (!Event::trigger('xmessage.onSendMessage', array('wishlist_wish_assigned', $subject, $message, $from, array($objWish->get('assigned')), $this->_option))) {
+            if (!Event::trigger('xmessage.onSendMessage', ['wishlist_wish_assigned', $subject, $message, $from, [$objWish->get('assigned')], $this->_option])) {
                 $this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MSG_ASSIGNEE'));
             }
         }
@@ -1026,7 +1026,7 @@ class Wishlists extends SiteController
         }
 
         // trim and addslashes all posted items
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         $existingId = isset($fields['id']) ? (int) $fields['id'] : 0;
         $row = Wish::oneOrNew($existingId);
@@ -1053,8 +1053,8 @@ class Wishlists extends SiteController
         // Non-managers may only set descriptive fields
         if (!$canManage) {
             foreach (
-                array('status', 'assigned', 'ranking', 'private', 'proposed_by',
-                'granted', 'granted_by', 'granted_vid', 'accepted') as $k
+                ['status', 'assigned', 'ranking', 'private', 'proposed_by',
+                'granted', 'granted_by', 'granted_vid', 'accepted'] as $k
             ) {
                 unset($fields[$k]);
             }
@@ -1167,18 +1167,18 @@ class Wishlists extends SiteController
             $this->_list_title = $wishlist->get('title');
 
             $subject = Lang::txt(strtoupper($this->_option)) . ', ' . Lang::txt('COM_WISHLIST_NEW_WISH') . ' ' . Lang::txt('COM_WISHLIST_FOR') . ' ' . $this->_list_title . ' ' . Lang::txt('from') . ' ' . $name;
-            $from = array(
+            $from = [
                 'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option)),
                 'email' => Config::get('mailfrom')
-            );
+            ];
 
-            $message = array();
+            $message = [];
 
             // Plain text email
-            $eview = new \Hubzero\Mail\View(array(
+            $eview = new \Hubzero\Mail\View([
                 'name'   => 'emails',
                 'layout' => 'wish_plain'
-            ));
+            ]);
             $eview->option     = $this->_option;
             $eview->controller = $this->_controller;
             $eview->wish       = $row;
@@ -1196,7 +1196,7 @@ class Wishlists extends SiteController
 
             $owners = $wishlist->getOwners();
 
-            if (!Event::trigger('xmessage.onSendMessage', array('wishlist_new_wish', $subject, $message, $from, $owners['individuals'], $this->_option))) {
+            if (!Event::trigger('xmessage.onSendMessage', ['wishlist_new_wish', $subject, $message, $from, $owners['individuals'], $this->_option])) {
                 $this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MESSAGE_OWNERS'));
             }
         }
@@ -1214,21 +1214,21 @@ class Wishlists extends SiteController
                 'scope'       => 'wishlist.wish',
                 'scope_id'    => $row->get('id'),
                 'description' => Lang::txt('COM_WISHLIST_ACTIVITY_WISH_' . ($wishid ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($row->link('permalink')) . '">' . htmlspecialchars((string) ($row->get('subject')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'subject'    => $row->get('subject'),
                     'url'      => Route::url($row->link('permalink'))
-                )
+                ]
             ],
-            'recipients' => array(
+            'recipients' => [
                 ['wishlist.' . $wishlist->get('category'), $wishlist->get('referenceid')],
                 ['user', $row->get('proposed_by')]
-            )
+            ]
         ]);
 
         $saved = $wishid ? 2 : 3;
 
         App::redirect(
-            Route::url($row->link('permalink', array('saved' => $saved)))
+            Route::url($row->link('permalink', ['saved' => $saved]))
         );
     }
 
@@ -1350,18 +1350,18 @@ class Wishlists extends SiteController
                 // to wish assignee
                 $subject2 = Lang::txt(strtoupper($this->_option)) . ', ' . Lang::txt('COM_WISHLIST_WISH') . ' #' . $wish->get('id') . ' ' . Lang::txt('COM_WISHLIST_HAS_BEEN') . ' ' . Lang::txt('COM_WISHLIST_MSG_ASSIGNED_TO_YOU');
 
-                $from = array(
+                $from = [
                     'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option)),
                     'email' => Config::get('mailfrom')
-                );
+                ];
 
-                $message = array();
+                $message = [];
 
                 // Plain text email
-                $eview = new \Hubzero\Mail\View(array(
+                $eview = new \Hubzero\Mail\View([
                     'name'   => 'emails',
                     'layout' => 'wish_plain'
-                ));
+                ]);
                 $eview->option     = $this->_option;
                 $eview->controller = $this->_controller;
                 $eview->wish       = $wish;
@@ -1388,7 +1388,7 @@ class Wishlists extends SiteController
             if (!$wish->save()) {
                 App::abort(500, $wish->getError());
             } else if ($this->_task == 'editwish') {
-                if (!Event::trigger('xmessage.onSendMessage', array('wishlist_status_changed', $subject1, $message, $from, array($wish->get('proposed_by')), $this->_option))) {
+                if (!Event::trigger('xmessage.onSendMessage', ['wishlist_status_changed', $subject1, $message, $from, [$wish->get('proposed_by')], $this->_option])) {
                     $this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MSG_AUTHOR'));
                 }
 
@@ -1397,7 +1397,7 @@ class Wishlists extends SiteController
                     && $wish->get('proposed_by') != $wish->get('assigned')
                     && $status == 'accepted'
                 ) {
-                    if (!Event::trigger('xmessage.onSendMessage', array('wishlist_wish_assigned', $subject2, $message, $from, array($wish->get('assigned')), $this->_option))) {
+                    if (!Event::trigger('xmessage.onSendMessage', ['wishlist_wish_assigned', $subject2, $message, $from, [$wish->get('assigned')], $this->_option])) {
                         $this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MSG_ASSIGNEE'));
                     }
                 }
@@ -1432,7 +1432,7 @@ class Wishlists extends SiteController
         }
 
         // some transfer options
-        $options = array();
+        $options = [];
         $options['keepplan']     = Request::getInt('keepplan', 0);
         $options['keepcomments'] = Request::getInt('keepcomments', 0);
         $options['keepstatus']   = Request::getInt('keepstatus', 0);
@@ -1463,12 +1463,12 @@ class Wishlists extends SiteController
 
         if ($category == 'question' or $category == 'ticket') {
             // move to a question or a ticket
-            Event::trigger('support.transferItem', array(
+            Event::trigger('support.transferItem', [
                     'wish',
                     $wishid,
                     $category,
                     $options
-                ));
+                ]);
         } else {
             // moving to another list
             $oldlist = Wishlist::oneOrFail($listid);
@@ -1547,18 +1547,18 @@ class Wishlists extends SiteController
                 $subject1 = Lang::txt(strtoupper($this->_option)) . ', ' . Lang::txt('COM_WISHLIST_NEW_WISH') . ' ' . Lang::txt('COM_WISHLIST_FOR') . ' ' . $newtitle . ' ' . Lang::txt('COM_WISHLIST_FROM') . ' ' . $name . ' - ' . Lang::txt('COM_WISHLIST_TRANSFERRED');
                 $subject2 = Lang::txt(strtoupper($this->_option)) . ', ' . Lang::txt('COM_WISHLIST_YOUR_WISH') . ' #' . $wishid . ' ' . Lang::txt('COM_WISHLIST_WISH_TRANSFERRED_TO_DIFFERENT_LIST');
 
-                $from = array(
+                $from = [
                     'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option)),
                     'email' => Config::get('mailfrom')
-                );
+                ];
 
-                $message = array();
+                $message = [];
 
                 // Plain text email
-                $eview = new \Hubzero\Mail\View(array(
+                $eview = new \Hubzero\Mail\View([
                     'name'   => 'emails',
                     'layout' => 'wish_plain'
-                ));
+                ]);
                 $eview->option     = $this->_option;
                 $eview->controller = $this->_controller;
                 $eview->wish       = $wish;
@@ -1577,11 +1577,11 @@ class Wishlists extends SiteController
 
                 $owners = $newlist->getOwners();
 
-                if (!Event::trigger('xmessage.onSendMessage', array('wishlist_new_wish', $subject1, $message, $from, $owners['individuals'], $this->_option))) {
+                if (!Event::trigger('xmessage.onSendMessage', ['wishlist_new_wish', $subject1, $message, $from, $owners['individuals'], $this->_option])) {
                     $this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MESSAGE_OWNERS'));
                 }
 
-                if (!Event::trigger('xmessage.onSendMessage', array('support_item_transferred', $subject2, $message, $from, array($wish->get('proposed_by')), $this->_option))) {
+                if (!Event::trigger('xmessage.onSendMessage', ['support_item_transferred', $subject2, $message, $from, [$wish->get('proposed_by')], $this->_option])) {
                     $this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MSG_AUTHOR'));
                 }
             }
@@ -1732,15 +1732,15 @@ class Wishlists extends SiteController
                 'scope'       => 'wishlist.wish',
                 'scope_id'    => $wish->get('id'),
                 'description' => Lang::txt('COM_WISHLIST_ACTIVITY_WISH_DELETED', '<a href="' . Route::url($wish->link('permalink')) . '">' . htmlspecialchars((string) ($wish->get('subject')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'subject' => $wish->get('subject'),
                     'url'     => Route::url($wish->link('permalink'))
-                )
+                ]
             ],
-            'recipients' => array(
+            'recipients' => [
                 ['wishlist.' . $wishlist->get('category'), $wishlist->get('referenceid')],
                 ['user', $wish->get('proposed_by')]
-            )
+            ]
         ]);
 
         // go back to the wishlist
@@ -1830,16 +1830,16 @@ class Wishlists extends SiteController
                 'scope'       => 'wishlist.wish',
                 'scope_id'    => $wish->get('id'),
                 'description' => Lang::txt('COM_WISHLIST_ACTIVITY_WISH_VOTED', '<a href="' . Route::url($wish->link()) . '">' . htmlspecialchars((string) ($wish->get('subject')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'subject' => $wish->get('subject'),
                     'url'     => Route::url($wish->link())
-                )
+                ]
             ],
-            'recipients' => array(
+            'recipients' => [
                 ['wishlist.' . $wishlist->get('category'), $wishlist->get('referenceid')],
                 ['user', $wish->get('proposed_by')],
                 ['user', User::get('id')]
-            )
+            ]
         ]);
 
         App::redirect(
@@ -1894,7 +1894,7 @@ class Wishlists extends SiteController
         }
 
         if ($id && $category) {
-            $fields = Request::getArray('comment', array(), 'post');
+            $fields = Request::getArray('comment', [], 'post');
 
             // The wish has to be on the list that was named; both ids come from
             // the request and nothing above tied them together.
@@ -1995,10 +1995,10 @@ class Wishlists extends SiteController
             $subject = Lang::txt(strtoupper($this->_option)) . ', ' . Lang::txt('COM_WISHLIST_MSG_COMENT_POSTED_YOUR_WISH') . ' #' . $wishid . ' ' . Lang::txt('COM_WISHLIST_BY') . ' ' . $name;
 
             // email components
-            $from = array(
+            $from = [
                 'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option)),
                 'email' => Config::get('mailfrom')
-            );
+            ];
 
             // for the wish owner
             $subject1 = Lang::txt(strtoupper($this->_option)) . ', ' . $name . ' ' . Lang::txt('COM_WISHLIST_MSG_COMMENTED_YOUR_WISH') . ' #' . $wishid;
@@ -2012,13 +2012,13 @@ class Wishlists extends SiteController
             // for others included in the conversation thread.
             $subject4 = Lang::txt(strtoupper($this->_option)) . ', ' . $name . ' ' . Lang::txt('COM_WISHLIST_MSG_COMMENTED_AFTER_YOU') . ' #' . $wishid;
 
-            $message = array();
+            $message = [];
 
             // Plain text email
-            $eview = new \Hubzero\Mail\View(array(
+            $eview = new \Hubzero\Mail\View([
                 'name'   => 'emails',
                 'layout' => 'comment_plain'
-            ));
+            ]);
             $eview->option     = $this->_option;
             $eview->controller = $this->_controller;
             $eview->wish       = $objWish;
@@ -2035,13 +2035,13 @@ class Wishlists extends SiteController
             $message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
             // collect ids of people who were already emailed
-            $contacted = array();
+            $contacted = [];
 
             if ($objWish->get('proposed_by') != $row->get('created_by')) {
                 $contacted[] = $objWish->get('proposed_by');
 
                 // send message to wish owner
-                if (!Event::trigger('xmessage.onSendMessage', array('wishlist_comment_posted', $subject1, $message, $from, array($objWish->get('proposed_by')), $this->_option))) {
+                if (!Event::trigger('xmessage.onSendMessage', ['wishlist_comment_posted', $subject1, $message, $from, [$objWish->get('proposed_by')], $this->_option])) {
                     $this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MSG_AUTHOR'));
                 }
             } // -- end send to wish author
@@ -2054,7 +2054,7 @@ class Wishlists extends SiteController
                 $contacted[] = $objWish->get('assigned');
 
                 // send message to person to who wish is assigned
-                if (!Event::trigger('xmessage.onSendMessage', array('wishlist_comment_posted', $subject2, $message, $from, array($objWish->get('assigned')), $this->_option))) {
+                if (!Event::trigger('xmessage.onSendMessage', ['wishlist_comment_posted', $subject2, $message, $from, [$objWish->get('assigned')], $this->_option])) {
                     $this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MSG_ASSIGNEE'));
                 }
             } // -- end send message to person to who wish is assigned
@@ -2069,14 +2069,14 @@ class Wishlists extends SiteController
                     && !in_array($parent->get('created_by'), $contacted)
                 ) {
                     $contacted[] = $parent->get('created_by');
-                    if (!Event::trigger('xmessage.onSendMessage', array('wishlist_comment_thread', $subject3, $message, $from, array($parent->get('created_by')), $this->_option))) {
+                    if (!Event::trigger('xmessage.onSendMessage', ['wishlist_comment_thread', $subject3, $message, $from, [$parent->get('created_by')], $this->_option])) {
                         $this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MSG_COMMENTOR'));
                     }
                 }
             }
 
             // get all users who commented
-            $commentors = array();
+            $commentors = [];
             foreach ($objWish->comments as $comment) {
                 $commentors[] = $comment->get('created_by');
             }
@@ -2084,7 +2084,7 @@ class Wishlists extends SiteController
             $comm = array_unique($comm);
 
             if (count($comm) > 0) {
-                if (!Event::trigger('xmessage.onSendMessage', array('wishlist_comment_thread', $subject4, $message, $from, $comm, $this->_option))) {
+                if (!Event::trigger('xmessage.onSendMessage', ['wishlist_comment_thread', $subject4, $message, $from, $comm, $this->_option])) {
                     $this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MSG_COMMENTOR'));
                 }
             }
@@ -2096,16 +2096,16 @@ class Wishlists extends SiteController
                     'scope'       => 'wishlist.comment',
                     'scope_id'    => $row->get('id'),
                     'description' => Lang::txt('COM_WISHLIST_ACTIVITY_COMMENT_CREATED', $row->get('id'), '<a href="' . Route::url($objWish->link()) . '">' . htmlspecialchars((string) ($objWish->get('subject')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                    'details'     => array(
+                    'details'     => [
                         'wish'    => $objWish->get('id'),
                         'url'     => Route::url($objWish->link())
-                    )
+                    ]
                 ],
-                'recipients' => array(
+                'recipients' => [
                     ['wishlist.' . $category, $id],
                     ['user', $objWish->get('proposed_by')],
                     ['user', $row->get('created_by')]
-                )
+                ]
             ]);
         } // -- end if id & category
 
@@ -2166,15 +2166,15 @@ class Wishlists extends SiteController
                 'scope'       => 'wishlist.comment',
                 'scope_id'    => $row->get('id'),
                 'description' => Lang::txt('COM_WISHLIST_ACTIVITY_COMMENT_DELETED', $row->get('id'), '<a href="' . Route::url($wish->link()) . '">' . htmlspecialchars((string) ($wish->get('subject')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'id'  => $row->get('id'),
                     'url' => Route::url($wish->link())
-                )
+                ]
             ],
-            'recipients' => array(
+            'recipients' => [
                 ['wishlist.' . $wishlist->get('category'), $wishlist->get('referenceid')],
                 ['user', $row->get('created_by')]
-            )
+            ]
         ]);
 
         // Go back to the page
@@ -2296,7 +2296,7 @@ class Wishlists extends SiteController
     public function getFilters($admin = 0)
     {
         // Query filters defaults
-        $filters = array();
+        $filters = [];
         $filters['sortby']   = Request::getWord('sortby', '');
         $filters['filterby'] = Request::getWord('filterby', 'all');
         $filters['search']   = Request::getString('search', '');
@@ -2309,11 +2309,11 @@ class Wishlists extends SiteController
             $filters['sortby'] = ($filters['sortby']) ? $filters['sortby'] : $default;
         }
 
-        if (!in_array($filters['sortby'], array('date', 'submitter', 'feedback', 'ranking', 'bonus'))) {
+        if (!in_array($filters['sortby'], ['date', 'submitter', 'feedback', 'ranking', 'bonus'])) {
             $filters['sortby'] = 'date';
         }
 
-        if (!in_array($filters['filterby'], array('all', 'open', 'accepted', 'rejected', 'granted', 'submitter', 'public', 'private'))) {
+        if (!in_array($filters['filterby'], ['all', 'open', 'accepted', 'rejected', 'granted', 'submitter', 'public', 'private'])) {
             $filters['filterby'] = 'all';
         }
 
@@ -2416,7 +2416,7 @@ class Wishlists extends SiteController
         }
 
         // Incoming file
-        $file = Request::getArray('upload', array(), 'files');
+        $file = Request::getArray('upload', [], 'files');
         if (!isset($file['name']) || !$file['name']) {
             $this->setError(Lang::txt('COM_WISHLIST_ERROR_NO_FILE'));
             return '';
@@ -2427,11 +2427,11 @@ class Wishlists extends SiteController
         $file['name'] = str_replace(' ', '_', $file['name']);
 
         // Create an attachment entry
-        $attachment = Attachment::blank()->set(array(
+        $attachment = Attachment::blank()->set([
             'description' => Request::getString('description', ''),
             'wish'        => $listdir,
             'filename'    => $file['name']
-        ));
+        ]);
 
         // Get media config
         $mediaConfig = Component::params('com_media');
@@ -2543,7 +2543,7 @@ class Wishlists extends SiteController
      * @param   array  $due     Array to populate
      * @return  array
      */
-    public function convertTime($rawnum, $due = array())
+    public function convertTime($rawnum, $due = [])
     {
         $rawnum = round(floatval($rawnum));
         switch ($rawnum) {

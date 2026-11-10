@@ -48,8 +48,8 @@ $tmpl = Request::getCmd('tmpl', '');
                 <tbody>
                     <?php
                     // Group files and folders
-                    $folders = array();
-                    $files = array();
+                    $folders = [];
+                    $files = [];
                     foreach ($this->children as $child) :
                         if ($child['type'] == 'dir') :
                             $folders[] = $child;

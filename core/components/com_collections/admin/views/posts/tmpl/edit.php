@@ -127,10 +127,10 @@ $validationMsg = $this->escape(
                         35,
                         10,
                         'field-description',
-                        array(
+                        [
                             'class' => 'minimal no-footer',
                             'buttons' => false,
-                        )
+                        ]
                     );
                     ?>
                 </div>

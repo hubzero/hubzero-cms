@@ -52,10 +52,10 @@ class Map extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'aco_id' => 'positive|nonzero',
         'aro_id' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Defines a belongs to one relationship between comment and user

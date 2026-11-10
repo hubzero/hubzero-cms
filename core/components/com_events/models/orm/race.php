@@ -43,9 +43,9 @@ class Race extends Relational
      *
      * @var array
      **/
-    protected $rules = array(
+    protected $rules = [
         'respondent_id' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Defines a belongs to one relationship between page and event

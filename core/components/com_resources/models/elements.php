@@ -40,7 +40,7 @@ class Elements
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_elements = array();
+    protected $_elements = [];
 
     /**
      * Directories, where element types can be stored
@@ -48,7 +48,7 @@ class Elements
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_elementPath = array();
+    protected $_elementPath = [];
 
     /**
      * Registry Object
@@ -205,7 +205,7 @@ class Elements
         static $instances;
 
         if (!isset($instances)) {
-            $instances = array();
+            $instances = [];
         }
 
         if (empty($instances[$id])) {
@@ -249,7 +249,7 @@ class Elements
      * @param   mixed    $options  Options used by the formatter
      * @return  boolean  True on success
      */
-    public function loadFile($file, $format = 'JSON', $options = array())
+    public function loadFile($file, $format = 'JSON', $options = [])
     {
         // Get the contents of the file
         $data = Filesystem::read($file);
@@ -265,7 +265,7 @@ class Elements
      * @param   mixed    $options  Options used by the formatter
      * @return  boolean  True on success
      */
-    public function loadString($data, $format = 'JSON', $options = array())
+    public function loadString($data, $format = 'JSON', $options = [])
     {
         // Load a string into the given namespace [or default namespace if not given]
         $handler = Format::getInstance($format);
@@ -293,7 +293,7 @@ class Elements
             // Legacy support
             if ((substr($setup, 0, 1) != '{') && (substr($setup, -1, 1) != '}')) {
                 $obj = new stdClass();
-                $obj->fields = array();
+                $obj->fields = [];
 
                 $fs = explode("\n", trim($setup));
                 foreach ($fs as $f) {
@@ -314,7 +314,7 @@ class Elements
                 $this->_schema[$group] = $obj;
             } else {
                 $handler = Format::getInstance('JSON');
-                if ($obj = $handler->stringToObject($setup, array())) {
+                if ($obj = $handler->stringToObject($setup, [])) {
                     $this->_schema[$group] = $obj;
                 }
             }
@@ -405,7 +405,7 @@ class Elements
      * @param   mixed   $options  Parameters used by the formatter, see formatters for more info
      * @return  string  Namespace in string format
      */
-    public function toString($format = 'JSON', $options = array())
+    public function toString($format = 'JSON', $options = [])
     {
         // Return a namespace in a given format
         $handler = Format::getInstance($format);
@@ -424,7 +424,7 @@ class Elements
         $schema = $this->getSchema();
 
         // var to hold html nodes
-        $html = array();
+        $html = [];
 
         // if we have schema
         if (isset($schema->fields) && is_array($schema->fields)) {
@@ -504,7 +504,7 @@ class Elements
      */
     protected function asArray($data)
     {
-        $array = array();
+        $array = [];
 
         foreach (get_object_vars((object) $data) as $k => $v) {
             if (is_object($v)) {
@@ -532,7 +532,7 @@ class Elements
 
         $fields = $this->getElements($name);
 
-        $html = array();
+        $html = [];
 
         /*if ($description = $this->_schema[$group]->description)
         {
@@ -594,7 +594,7 @@ class Elements
             return false;
         }
 
-        $results = array();
+        $results = [];
         foreach ($this->_schema[$group]->fields as $element) {
             $result = $this->getElement($element, $name, $group);
             $results[$result->name] = $result;
@@ -631,7 +631,7 @@ class Elements
             return false;
         }
 
-        $results = array();
+        $results = [];
         foreach ($this->_schema[$group]->fields as $element) {
             $results[] = $this->getElement($element, $name, $group);
         }
@@ -741,7 +741,7 @@ class Elements
             if (isset($this->_elementPath)) {
                 $dirs = $this->_elementPath;
             } else {
-                $dirs = array();
+                $dirs = [];
             }
 
             $source = str_replace('_', DS, $type) . '.php';

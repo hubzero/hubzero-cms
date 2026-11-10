@@ -80,7 +80,7 @@ class Solr extends Plugin
                     $method = 'delete';
                 }
                 if ($modelIndex) {
-                    Event::trigger('search.sendSolrRequest', array($modelIndex, $method));
+                    Event::trigger('search.sendSolrRequest', [$modelIndex, $method]);
                 }
 
                 if ($message && $message != "OK") {
@@ -117,7 +117,7 @@ class Solr extends Plugin
                     $modelIndexId = $indexResultModel->searchId();
                     $index->delete($modelIndexId);
                     $method = 'delete';
-                    Event::trigger('search.sendSolrRequest', array($indexResultModel->searchResult(), $method));
+                    Event::trigger('search.sendSolrRequest', [$indexResultModel->searchResult(), $method]);
                 }
             }
         }

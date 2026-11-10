@@ -114,8 +114,8 @@ function modChrome_sliders($module, &$params, &$attribs)
         if ($params->get('automatic_title', '0') == '0') {
             echo Html::sliders('panel', $module->title, 'module' . $module->id);
         } elseif (method_exists('mod' . $module->name . 'Helper', 'getTitle')) {
-            $callback = array('mod' . $module->name . 'Helper', 'getTitle');
-            $title = call_user_func_array($callback, array($params, $module));
+            $callback = ['mod' . $module->name . 'Helper', 'getTitle'];
+            $title = call_user_func_array($callback, [$params, $module]);
             echo Html::sliders('panel', $title, 'module' . $module->id);
         } else {
             echo Html::sliders('panel', Lang::txt('MOD_' . $module->name . '_TITLE'), 'module' . $module->id);
@@ -134,8 +134,8 @@ function modChrome_tabs($module, &$params, &$attribs)
         if ($params->get('automatic_title', '0') == '0') {
             echo Html::tabs('panel', $module->title, 'module' . $module->id);
         } elseif (method_exists('mod' . $module->name . 'Helper', 'getTitle')) {
-            $callback = array('mod' . $module->name . 'Helper', 'getTitle');
-            $title = call_user_func_array($callback, array($params));
+            $callback = ['mod' . $module->name . 'Helper', 'getTitle'];
+            $title = call_user_func_array($callback, [$params]);
             echo Html::tabs('panel', $title, 'module' . $module->id);
         } else {
             echo Html::tabs('panel', Lang::txt('MOD_' . $module->name . '_TITLE'), 'module' . $module->id);

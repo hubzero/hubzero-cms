@@ -37,7 +37,7 @@ abstract class Base extends Obj
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_segments = array();
+    protected $_segments = [];
 
     /**
      * Constructor
@@ -86,7 +86,7 @@ abstract class Base extends Obj
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _build(array $segments)
     {
-        $bits = array();
+        $bits = [];
         foreach ($segments as $key => $param) {
             $bits[] = $key . '=' . $param;
         }

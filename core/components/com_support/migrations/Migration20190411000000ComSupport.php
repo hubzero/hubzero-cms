@@ -20,11 +20,11 @@ class Migration20190411000000ComSupport extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__support_tickets' => array(
+    public static $tables = [
+        '#__support_tickets' => [
             'target_date'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

@@ -87,7 +87,7 @@ class Activity extends Table
      * @param   array    $projects
      * @return  mixed    object or integer or false
      */
-    public function getActivities($projectid = null, $filters = array(), $count = 0, $uid = 0, $projects = array())
+    public function getActivities($projectid = null, $filters = [], $count = 0, $uid = 0, $projects = [])
     {
         if (!$projectid && empty($projects)) {
             return false;
@@ -379,7 +379,7 @@ class Activity extends Table
      * @param   boolean  $publicOnly
      * @return  array
      */
-    public function getTopActiveProjects($exclude = array(), $limit = 3, $publicOnly = false)
+    public function getTopActiveProjects($exclude = [], $limit = 3, $publicOnly = false)
     {
         $query  = " SELECT p.id, p.alias, p.title, p.picture, p.private, COUNT(PA.id) as activity ";
         $query .= " FROM #__projects AS p";
@@ -415,7 +415,7 @@ class Activity extends Table
      * @param   string  $get
      * @return  mixed
      */
-    public function getActivityStats($validProjects = array(), $get = 'total')
+    public function getActivityStats($validProjects = [], $get = 'total')
     {
         if (empty($validProjects)) {
             return null;

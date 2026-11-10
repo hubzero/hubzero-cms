@@ -28,28 +28,28 @@ class Sql
      *
      * @var  array
      */
-    protected $columns = array();
+    protected $columns = [];
 
     /**
      * Columns that may not be null, per table
      *
      * @var  array
      */
-    protected $required = array();
+    protected $required = [];
 
     /**
      * Column sets each table says are unique
      *
      * @var  array
      */
-    protected $uniques = array();
+    protected $uniques = [];
 
     /**
      * Rows per table
      *
      * @var  array
      */
-    protected $rows = array();
+    protected $rows = [];
 
     /**
      * Read a file into this
@@ -72,7 +72,7 @@ class Sql
             }
 
             if (preg_match('/^TRUNCATE `([^`]+)`/i', $line, $m)) {
-                $this->rows[$this->name($m[1])] = array();
+                $this->rows[$this->name($m[1])] = [];
                 continue;
             }
 
@@ -111,16 +111,16 @@ class Sql
 
         $body = $this->body($path, $first);
 
-        $this->columns[$table] = array();
-        $this->required[$table] = array();
-        $this->uniques[$table] = array();
+        $this->columns[$table] = [];
+        $this->required[$table] = [];
+        $this->uniques[$table] = [];
 
         foreach ($body as $line) {
             // A key the schema says is unique, so the rows can be held to it
             // A column in a key may carry a prefix length - `saAddress`(100) -
             // whose closing bracket is not the end of the list.
             if (preg_match('/^(?:UNIQUE KEY|PRIMARY KEY)\s*(?:`[^`]+`)?\s*\(((?:[^()]|\(\d+\))+)\)/i', trim($line), $k)) {
-                $columns = array();
+                $columns = [];
 
                 foreach (explode(',', $k[1]) as $column) {
                     // An index may name a prefix length; the column is the name
@@ -146,7 +146,7 @@ class Sql
             }
         }
 
-        $this->rows[$table] = isset($this->rows[$table]) ? $this->rows[$table] : array();
+        $this->rows[$table] = isset($this->rows[$table]) ? $this->rows[$table] : [];
     }
 
     /**
@@ -158,7 +158,7 @@ class Sql
      */
     protected function body($path, $first)
     {
-        static $files = array();
+        static $files = [];
 
         if (!isset($files[$path])) {
             $files[$path] = file($path, FILE_IGNORE_NEW_LINES);
@@ -167,10 +167,10 @@ class Sql
         $at = array_search($first, $files[$path], true);
 
         if ($at === false) {
-            return array();
+            return [];
         }
 
-        $body = array();
+        $body = [];
 
         for ($i = $at + 1, $n = count($files[$path]); $i < $n; $i++) {
             if (substr(trim($files[$path][$i]), 0, 1) === ')') {
@@ -196,16 +196,16 @@ class Sql
         $values = $this->values($payload);
 
         if ($named) {
-            $columns = array();
+            $columns = [];
 
             foreach (explode(',', trim($named, '() ')) as $column) {
                 $columns[] = trim(trim($column), '` ');
             }
         } else {
-            $columns = isset($this->columns[$table]) ? $this->columns[$table] : array();
+            $columns = isset($this->columns[$table]) ? $this->columns[$table] : [];
         }
 
-        $row = array('#columns' => count($columns), '#values' => count($values));
+        $row = ['#columns' => count($columns), '#values' => count($values)];
 
         foreach ($values as $i => $value) {
             if (isset($columns[$i])) {
@@ -233,7 +233,7 @@ class Sql
      */
     protected function displace($table, array $row)
     {
-        $keys = isset($this->uniques[$table]) ? $this->uniques[$table] : array();
+        $keys = isset($this->uniques[$table]) ? $this->uniques[$table] : [];
 
         if (!$keys || empty($this->rows[$table])) {
             return;
@@ -269,7 +269,7 @@ class Sql
      */
     protected function values($payload)
     {
-        $out   = array();
+        $out   = [];
         $buf   = '';
         $in    = false;
         $depth = 0;
@@ -338,13 +338,13 @@ class Sql
         if (strlen($raw) > 1 && $raw[0] === "'") {
             $raw = substr($raw, 1, -1);
 
-            return strtr($raw, array(
+            return strtr($raw, [
                 "\\'"  => "'",
                 '\\"'  => '"',
                 '\\r'  => "\r",
                 '\\n'  => "\n",
                 '\\\\' => '\\',
-            ));
+            ]);
         }
 
         return $raw;
@@ -392,7 +392,7 @@ class Sql
     {
         $table = $this->name($table);
 
-        return isset($this->columns[$table]) ? $this->columns[$table] : array();
+        return isset($this->columns[$table]) ? $this->columns[$table] : [];
     }
 
     /**
@@ -405,7 +405,7 @@ class Sql
     {
         $table = $this->name($table);
 
-        return isset($this->required[$table]) ? $this->required[$table] : array();
+        return isset($this->required[$table]) ? $this->required[$table] : [];
     }
 
     /**
@@ -424,7 +424,7 @@ class Sql
     {
         $table = $this->name($table);
 
-        return isset($this->uniques[$table]) ? $this->uniques[$table] : array();
+        return isset($this->uniques[$table]) ? $this->uniques[$table] : [];
     }
 
     /**
@@ -437,7 +437,7 @@ class Sql
     {
         $table = $this->name($table);
 
-        return isset($this->rows[$table]) ? $this->rows[$table] : array();
+        return isset($this->rows[$table]) ? $this->rows[$table] : [];
     }
 
     /**
@@ -449,7 +449,7 @@ class Sql
      */
     public function where($table, array $where)
     {
-        $found = array();
+        $found = [];
 
         foreach ($this->rows($table) as $row) {
             foreach ($where as $column => $value) {

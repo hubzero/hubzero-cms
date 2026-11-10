@@ -27,7 +27,7 @@ if (!$this->app->sess) {
     if (!$engine) {
         $engine = strtolower($this->params->get('vnc_engine', 'modern'));
     }
-    if (!in_array($engine, array('legacy', 'modern', 'vanilla'))) {
+    if (!in_array($engine, ['legacy', 'modern', 'vanilla'])) {
         $engine = 'modern';
     }
 

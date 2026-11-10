@@ -121,7 +121,7 @@ class Loader
     public function byPosition($position)
     {
         $position = strtolower($position);
-        $result   = array();
+        $result   = [];
 
         $modules = $this->all();
 
@@ -167,7 +167,7 @@ class Loader
     public function position($position, $style = 'none')
     {
         if (!is_array($style)) {
-            $style = array('style' => $style);
+            $style = ['style' => $style];
         }
 
         $contents = '';
@@ -188,7 +188,7 @@ class Loader
     public function name($name, $style = 'none')
     {
         if (!is_array($style)) {
-            $style = array('style' => $style);
+            $style = ['style' => $style];
         }
 
         return $this->render(
@@ -221,7 +221,7 @@ class Loader
      * @param   array   $attribs  An array of attributes for the module (probably from the XML).
      * @return  string  The HTML content of the module output.
      */
-    public function render($module, $attribs = array())
+    public function render($module, $attribs = [])
     {
         static $chrome;
 
@@ -291,7 +291,7 @@ class Loader
 
         // Load the module chrome functions
         if (!$chrome) {
-            $chrome = array();
+            $chrome = [];
         }
 
         include_once PATH_CORE . '/templates/system/html/modules.php';
@@ -368,7 +368,7 @@ class Loader
         // first. Naming a template ('template:layout') asks for that one
         // alone; otherwise the supergroup template, inside a supergroup's
         // pages, outranks the site template as it does for views and assets.
-        $roots = $explicit ? array($path . '/' . $template) : Overrides::roots();
+        $roots = $explicit ? [$path . '/' . $template] : Overrides::roots();
 
         $base = dirname($this->path($module));
 
@@ -414,7 +414,7 @@ class Loader
         if (!$this->app->has('cache.store') || !($cache = $this->app['cache.store'])) {
             $cache = new \Hubzero\Cache\Storage\None();
         }
-        $cacheid = 'com_modules.' . md5(serialize(array($Itemid, $groups, $clientId, $lang)));
+        $cacheid = 'com_modules.' . md5(serialize([$Itemid, $groups, $clientId, $lang]));
 
         if (!($clean = $cache->get($cacheid))) {
             $db = $this->app['db'];
@@ -452,7 +452,7 @@ class Loader
 
             // Filter by language
             if ($this->app->isSite() && $this->app->get('language.filter')) {
-                $query->whereIn('m.language', array($lang, '*'));
+                $query->whereIn('m.language', [$lang, '*']);
             }
 
             $query
@@ -462,7 +462,7 @@ class Loader
             // Set the query
             $db->setQuery($query->toString());
             $modules = $db->loadObjectList();
-            $clean = array();
+            $clean = [];
 
             if ($db->getErrorNum()) {
                 $this->app['notification']->error(
@@ -474,7 +474,7 @@ class Loader
 
             // Apply negative selections and eliminate duplicates
             $negId = $Itemid ? -(int) $Itemid : false;
-            $dupes = array();
+            $dupes = [];
             for ($i = 0, $n = count($modules); $i < $n; $i++) {
                 $module = &$modules[$i];
 
@@ -555,7 +555,7 @@ class Loader
         // module cache is set in seconds, global cache in minutes, setLifeTime works in minutes
         $cache->setLifeTime($moduleparams->get('cache_time', $this->app['config']->get('cachetime') * 60) / 60);
 
-        $wrkaroundoptions = array('nopathway' => 1, 'nohead' => 0, 'nomodules' => 1, 'modulemode' => 1, 'mergehead' => 1);
+        $wrkaroundoptions = ['nopathway' => 1, 'nohead' => 0, 'nomodules' => 1, 'modulemode' => 1, 'mergehead' => 1];
 
         $wrkarounds = true;
         $view_levels = md5(serialize($this->app['user']->getInstance()->getAuthorisedViewLevels()));
@@ -563,7 +563,7 @@ class Loader
         switch ($cacheparams->cachemode) {
             case 'id':
                 $ret = $cache->get(
-                    array($cacheparams->class, $cacheparams->method),
+                    [$cacheparams->class, $cacheparams->method],
                     $cacheparams->methodparams,
                     $cacheparams->modeparams,
                     $wrkarounds,
@@ -583,9 +583,9 @@ class Loader
                         }
                     }
                 }
-                $secureid = md5(serialize(array($safeuri, $cacheparams->method, $moduleparams)));
+                $secureid = md5(serialize([$safeuri, $cacheparams->method, $moduleparams]));
                 $ret = $cache->get(
-                    array($cacheparams->class, $cacheparams->method),
+                    [$cacheparams->class, $cacheparams->method],
                     $cacheparams->methodparams,
                     $module->id . $view_levels . $secureid,
                     $wrkarounds,
@@ -595,7 +595,7 @@ class Loader
 
             case 'static':
                 $ret = $cache->get(
-                    array($cacheparams->class, $cacheparams->method),
+                    [$cacheparams->class, $cacheparams->method],
                     $cacheparams->methodparams,
                     $module->module . md5(serialize($cacheparams->methodparams)),
                     $wrkarounds,
@@ -605,7 +605,7 @@ class Loader
 
             case 'oldstatic': // provided for backward compatibility, not really usefull
                 $ret = $cache->get(
-                    array($cacheparams->class, $cacheparams->method),
+                    [$cacheparams->class, $cacheparams->method],
                     $cacheparams->methodparams,
                     $module->id . $view_levels,
                     $wrkarounds,
@@ -616,7 +616,7 @@ class Loader
             case 'itemid':
             default:
                 $ret = $cache->get(
-                    array($cacheparams->class, $cacheparams->method),
+                    [$cacheparams->class, $cacheparams->method],
                     $cacheparams->methodparams,
                     $module->id . $view_levels . Request::getInt('Itemid', 0),
                     $wrkarounds,
@@ -707,12 +707,12 @@ class Loader
         $prefixed   = $module;
         $unprefixed = substr($module, 4);
 
-        $paths = array(
+        $paths = [
             PATH_APP . DS . 'modules' . DS . $unprefixed . DS . $unprefixed . '.php',
             PATH_APP . DS . 'modules' . DS . $prefixed . DS . $prefixed . '.php',
             PATH_CORE . DS . 'modules' . DS . $unprefixed . DS . $unprefixed . '.php',
             PATH_CORE . DS . 'modules' . DS . $prefixed . DS . $prefixed . '.php'
-        );
+        ];
 
         foreach ($paths as $path) {
             if (file_exists($path)) {

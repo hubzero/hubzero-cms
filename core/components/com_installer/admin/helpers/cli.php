@@ -25,7 +25,7 @@ class Cli
         static $version = null;
 
         if (!isset($version)) {
-            $version = self::call('', 'repository', array('--version'));
+            $version = self::call('', 'repository', ['--version']);
         }
 
         return $version;
@@ -41,7 +41,7 @@ class Cli
         static $mechanism = null;
 
         if (!isset($mechanism)) {
-            $mechanism = self::call('', 'repository', array('--mechanism'));
+            $mechanism = self::call('', 'repository', ['--mechanism']);
         }
 
         return $mechanism;
@@ -71,7 +71,7 @@ class Cli
      **/
     public static function log($length = null, $start = null, $search = null, $upcoming = false, $installed = true, $count = false, $source = null)
     {
-        $args = array();
+        $args = [];
 
         if (isset($length)) {
             $args[] = '--length=' . (int)$length;
@@ -111,7 +111,7 @@ class Cli
      **/
     public static function update($dryRun = true, $allowNonFf = false, $source = null, $autoPushRef = null)
     {
-        $args = array();
+        $args = [];
         if (!$dryRun) {
             $args[] = '-f';
         }
@@ -138,7 +138,7 @@ class Cli
      **/
     public static function rollback()
     {
-        return self::call('rollback', 'repository', array('-f'));
+        return self::call('rollback', 'repository', ['-f']);
     }
 
     /**
@@ -153,9 +153,9 @@ class Cli
      **/
     public static function migration($dryRun = true, $ignoreDates = false, $file = null, $dir = 'up', $folder = null)
     {
-        $args = array();
+        $args = [];
 
-        if (in_array($dir, array('up', 'down'))) {
+        if (in_array($dir, ['up', 'down'])) {
             $args[] = '-d=' . $dir;
         }
         if (!$dryRun) {
@@ -187,17 +187,17 @@ class Cli
      * @param   array   $args  the command arguments
      * @return  array   array('output' => string, 'status' => int exit code)
      **/
-    public static function callWithStatus($cmd, $task = 'repository', $args = array())
+    public static function callWithStatus($cmd, $task = 'repository', $args = [])
     {
-        $lines  = array();
+        $lines  = [];
         $status = 1;
 
         exec(self::command($cmd, $task, $args), $lines, $status);
 
-        return array(
+        return [
             'output' => implode("\n", $lines),
             'status' => (int) $status
-        );
+        ];
     }
 
     /**
@@ -208,7 +208,7 @@ class Cli
      * @param   array   $args  the command arguments
      * @return  string
      **/
-    public static function call($cmd, $task = 'repository', $args = array())
+    public static function call($cmd, $task = 'repository', $args = [])
     {
         return shell_exec(self::command($cmd, $task, $args));
     }

@@ -54,7 +54,7 @@ Toolbar::cancel();
         <?php endif; ?>
         <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_STORY_HINT1'); ?>">
             <label for="field-story"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_STORY'); ?>:</label>
-            <?php echo $this->editor("story[story]", $this->escape($this->story->story), 50, 10, 'field-story', array('full_paths' => true)); ?>
+            <?php echo $this->editor("story[story]", $this->escape($this->story->story), 50, 10, 'field-story', ['full_paths' => true]); ?>
             <span class="hint"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_STORY_HINT1'); ?></span>
             <span class="hint"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_STORY_HINT2'); ?></span>
         </div>

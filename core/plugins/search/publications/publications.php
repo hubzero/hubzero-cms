@@ -40,7 +40,7 @@ class Publications extends Plugin
 
         $database = App::get('db');
 
-        $groups = array_map(array($database, 'escape'), $authz->get_group_names());
+        $groups = array_map([$database, 'escape'], $authz->get_group_names());
         $viewlevels = implode(',', User::getAuthorisedViewLevels());
 
         /*if ($groups)
@@ -56,7 +56,7 @@ class Publications extends Plugin
 
         $term_parser = $request->get_terms();
         $terms = $request->get_term_ar();
-        $quoted_terms = array();
+        $quoted_terms = [];
         foreach ($terms['optional'] as $idx => $term) {
             if ($term_parser->is_quoted($idx)) {
                 foreach ($terms['stemmed'] as $sidx => $stem) {
@@ -68,7 +68,7 @@ class Publications extends Plugin
             }
         }
 
-        $tag_map = array();
+        $tag_map = [];
         foreach ($request->get_tagged_ids('publications') as $id) {
             if (array_key_exists($id, $tag_map)) {
                 ++$tag_map[$id];
@@ -87,7 +87,7 @@ class Publications extends Plugin
                 . "OR v.abstract LIKE '%$term%' THEN 1 ELSE 0 END)";
         }
 
-        $addtl_where = array();
+        $addtl_where = [];
         foreach ($terms['mandatory'] as $mand) {
             $addtl_where[] = "(v.title LIKE '%$mand%' OR v.description LIKE '%$mand%' "
                 . "OR v.abstract LIKE '%$mand%')";
@@ -155,12 +155,12 @@ class Publications extends Plugin
         );
         $assoc = $sql->to_associative();
 
-        $id_assoc = array();
+        $id_assoc = [];
         foreach ($assoc as $row) {
             $id_assoc[$row->get('id')] = $row;
         }
 
-        $placed = array();
+        $placed = [];
         if (!$quoted_terms) {
             // Find ids of tagged resources that did not match regular fulltext searching
             foreach ($assoc as $row) {
@@ -210,10 +210,10 @@ class Publications extends Plugin
         }
 
         $sorter = new PublicationChildSorter($placed);
-        $rows = array();
+        $rows = [];
         foreach ($id_assoc as $id => $row) {
             if (!array_key_exists((int)$id, $placed)) {
-                $row->sort_children(array($sorter, 'sort'));
+                $row->sort_children([$sorter, 'sort']);
                 $rows[] = $row;
             }
         }
@@ -303,13 +303,13 @@ class Publications extends Plugin
 						AND `#__tags_object`.tbl = 'publications';";
                     $tags = $db->setQuery($sql2)->query()->loadColumn();
                 } else {
-                    $authors = array();
-                    $tags = array();
+                    $authors = [];
+                    $tags = [];
                 }
 
                 // @TODO: PHP 5.5 includes array_column()
-                $owners = array();
-                $authorNames = array();
+                $owners = [];
+                $authorNames = [];
                 if (isset($authors) && !empty($authors)) {
                     foreach ($authors as $author) {
                         array_push($owners, $author['user_id']);

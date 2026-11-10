@@ -87,7 +87,7 @@ $this->js();
                         50,
                         15,
                         'field-body',
-                        array('class' => 'minimal no-footer')
+                        ['class' => 'minimal no-footer']
                     );
                     ?>
                     <?php echo $val; ?>
@@ -149,7 +149,7 @@ $this->js();
                         'calendar',
                         'fields[review_time]',
                         $reviewVal,
-                        array('id' => 'field-review_time')
+                        ['id' => 'field-review_time']
                     );
                     ?>
                 </div>

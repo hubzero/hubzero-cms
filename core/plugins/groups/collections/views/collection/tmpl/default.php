@@ -25,7 +25,7 @@ if (!$this->collection->get('layout')) {
     $this->collection->set('layout', 'grid');
 }
 $viewas = Request::getWord('viewas', $this->collection->get('layout'));
-if (!in_array($viewas, array('grid', 'list'))) {
+if (!in_array($viewas, ['grid', 'list'])) {
     $viewas = 'grid';
 }
 ?>

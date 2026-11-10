@@ -31,7 +31,7 @@ $type = 'file'; //strtolower(Request::getWord('type', $item->get('type')));
 if (!$type) {
     $type = 'file';
 }
-if ($type && !in_array($type, array('file', 'image', 'text', 'link'))) {
+if ($type && !in_array($type, ['file', 'image', 'text', 'link'])) {
     $type = 'link';
 }
 
@@ -171,9 +171,9 @@ if (!$dir) {
                     <label for="field_description">
                         <?php echo Lang::txt('COM_COLLECTIONS_FIELD_DESCRIPTION'); ?>
                     <?php if ($this->entry->get('original')) { ?>
-                        <?php echo $this->editor('fields[description]', $this->escape(stripslashes($item->description('raw'))), 35, 5, 'field_description', array('class' => 'minimal no-footer')); ?>
+                        <?php echo $this->editor('fields[description]', $this->escape(stripslashes($item->description('raw'))), 35, 5, 'field_description', ['class' => 'minimal no-footer']); ?>
                     <?php } else { ?>
-                        <?php echo $this->editor('post[description]', $this->escape(stripslashes($this->entry->description('raw'))), 35, 5, 'field_description', array('class' => 'minimal no-footer')); ?>
+                        <?php echo $this->editor('post[description]', $this->escape(stripslashes($this->entry->description('raw'))), 35, 5, 'field_description', ['class' => 'minimal no-footer']); ?>
                     <?php } ?>
                     </label>
                 <?php if ($this->task == 'save' && !$item->get('description')) { ?>

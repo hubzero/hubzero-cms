@@ -69,7 +69,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
                 <ol class="results">
                 <?php foreach ($this->results as $res) : ?>
                     <li>
-                        <?php $before = Event::trigger('search.onBeforeSearchRender' . ucfirst($res->get_plugin()), array($res)); ?>
+                        <?php $before = Event::trigger('search.onBeforeSearchRender' . ucfirst($res->get_plugin()), [$res]); ?>
                         <p class="title"><a href="<?php echo $res->get_link(); ?>"><?php echo $this->escape($res->get_highlighted_title()); ?></a></p>
                         <div class="summary">
                             <?php if ($res->has_metadata()) : ?>
@@ -122,7 +122,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
                         <?php
                             $last_type = null;
                         if (($children = $res->get_children())) :
-                            $ctypec = array();
+                            $ctypec = [];
                             foreach ($children as $child) {
                                 if (($section = $child->get_section())) {
                                     if (!array_key_exists($section, $ctypec)) {

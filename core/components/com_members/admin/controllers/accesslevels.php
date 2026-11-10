@@ -48,7 +48,7 @@ class Accesslevels extends AdminController
     public function displayTask()
     {
         // Incoming
-        $filters = array(
+        $filters = [
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
@@ -64,7 +64,7 @@ class Accesslevels extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         $entries = Viewlevel::all();
 
@@ -96,9 +96,9 @@ class Accesslevels extends AdminController
         if (!$row) {
             // Incoming: the toolbar's Edit posts the checked rows as cid[],
             // the title links pass id
-            $id = Request::getArray('cid', array());
+            $id = Request::getArray('cid', []);
             if (empty($id)) {
-                $id = Request::getArray('id', array());
+                $id = Request::getArray('id', []);
             }
 
             // Get the single ID we're working with
@@ -143,7 +143,7 @@ class Accesslevels extends AdminController
         }
 
         // Incoming password blacklist edits
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         if (isset($fields['rules']) && is_array($fields['rules'])) {
             $fields['rules'] = array_map('intval', $fields['rules']);
@@ -169,7 +169,7 @@ class Accesslevels extends AdminController
         }
 
         // Fall through to edit form
-        if (in_array($this->getTask(), array('apply', 'save2new', 'save2copy'))) {
+        if (in_array($this->getTask(), ['apply', 'save2new', 'save2copy'])) {
             return $this->editTask($row);
         }
 
@@ -192,15 +192,15 @@ class Accesslevels extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('cid', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('cid', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $i = 0;
 
         // Do we have any IDs?
         if (!empty($ids)) {
             // Populate the list once.
-            $levelsInUse = array();
+            $levelsInUse = [];
 
             $db = App::get('db');
 

@@ -52,20 +52,20 @@ class Transaction extends Relational
      *
      * @public array
      */
-    protected $rules = array(
+    protected $rules = [
         'uid'      => 'positive|nonzero',
         'type'     => 'notempty',
         'category' => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @public array
      */
-    public $initiate = array(
+    public $initiate = [
         'created'
-    );
+    ];
 
     /**
      * Get a history of transactions for a user

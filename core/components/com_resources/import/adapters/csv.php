@@ -23,7 +23,7 @@ class Csv implements \Components\Resources\Import\Interfaces\Adapter
      * Array to hold processed data
      * @var array
      */
-    private $data = array();
+    private $data = [];
 
     /**
      * Integer to hold count
@@ -39,7 +39,7 @@ class Csv implements \Components\Resources\Import\Interfaces\Adapter
      */
     public static function accepts($mime)
     {
-        $acceptable = array('text/plain', 'text/csv', 'application/vnd.ms-excel');
+        $acceptable = ['text/plain', 'text/csv', 'application/vnd.ms-excel'];
         return in_array($mime, $acceptable);
     }
 

@@ -23,7 +23,7 @@ class JSON extends Base
      * @param   array   $options  Options used by the formatter.
      * @return  string  JSON formatted string.
      */
-    public function objectToString($object, $options = array())
+    public function objectToString($object, $options = [])
     {
         return json_encode($object);
     }
@@ -37,11 +37,11 @@ class JSON extends Base
      * @param   array   $options  Options used by the formatter.
      * @return  object  Data object.
      */
-    public function stringToObject($data, $options = array('processSections' => false))
+    public function stringToObject($data, $options = ['processSections' => false])
     {
         // Fix legacy API.
         if (is_bool($options)) {
-            $options = array('processSections' => $options);
+            $options = ['processSections' => $options];
         }
 
         $data = trim($data);

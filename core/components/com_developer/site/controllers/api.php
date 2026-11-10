@@ -144,7 +144,7 @@ class Api extends SiteController
      */
     private function getUserTokens()
     {
-        $tokens = array();
+        $tokens = [];
 
         if (!User::isGuest()) {
             // Ensure model is loaded

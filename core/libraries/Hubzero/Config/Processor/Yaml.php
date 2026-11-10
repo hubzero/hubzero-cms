@@ -42,7 +42,7 @@ class Yaml extends Base
      */
     public function getSupportedExtensions()
     {
-        return array('yaml', 'yml');
+        return ['yaml', 'yml'];
     }
 
     /**
@@ -61,10 +61,10 @@ class Yaml extends Base
                 return SymfonyYaml::parseFile($path);
             } catch (SymfonyYamlException $e) {
                 throw new ParseException(
-                    array(
+                    [
                         'message' => 'Error parsing YAML file: ' . $path,
                         'file' => $path,
-                    )
+                    ]
                 );
             }
         }
@@ -73,10 +73,10 @@ class Yaml extends Base
 
         if ($data === false) {
             throw new ParseException(
-                array(
+                [
                     'message' => 'Error parsing YAML file: ' . $path,
                     'file' => $path,
-                )
+                ]
             );
         }
 
@@ -119,7 +119,7 @@ class Yaml extends Base
      * @param   array   $options  Options used by the formatter.
      * @return  string  YAML formatted string.
      */
-    public function objectToString($object, $options = array())
+    public function objectToString($object, $options = [])
     {
         if (is_string($object)) {
             return $object;
@@ -140,7 +140,7 @@ class Yaml extends Base
      */
     protected function asArray($data)
     {
-        $array = array();
+        $array = [];
 
         foreach (get_object_vars((object) $data) as $k => $v) {
             if (is_object($v)) {
@@ -160,7 +160,7 @@ class Yaml extends Base
      * @param   array   $options  Options used by the formatter.
      * @return  object  Data object.
      */
-    public function stringToObject($data, $options = array())
+    public function stringToObject($data, $options = [])
     {
         if (is_object($data)) {
             return $data;
@@ -173,9 +173,9 @@ class Yaml extends Base
                 $parsed = SymfonyYaml::parse($data);
             } catch (SymfonyYamlException $e) {
                 throw new ParseException(
-                    array(
+                    [
                         'message' => 'Error parsing YAML',
-                    )
+                    ]
                 );
             }
         } else {
@@ -184,9 +184,9 @@ class Yaml extends Base
 
         if ($parsed === false) {
             throw new ParseException(
-                array(
+                [
                     'message' => 'Error parsing YAML',
-                )
+                ]
             );
         }
 

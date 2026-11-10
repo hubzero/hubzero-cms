@@ -20,7 +20,7 @@ class Csv
      *
      * @var array
      */
-    private static $field_ordering = array(
+    private static $field_ordering = [
         'name' => 0,
         'email' => 1,
         'telephone' => 2,
@@ -41,7 +41,7 @@ class Csv
         'fax' => 17,
         'title' => 18,
         'registered' => 19 // folded into previous entries
-    );
+    ];
 
     /**
      * Short description for 'fieldSorter'
@@ -71,7 +71,7 @@ class Csv
             return '';
         }
         if (strpos($val, "\n") !== false || strpos($val, ',') !== false) {
-            return '"' . str_replace(array('\\', '"'), array('\\\\', '""'), $val) . '"';
+            return '"' . str_replace(['\\', '"'], ['\\\\', '""'], $val) . '"';
         }
 
         return $val;
@@ -87,7 +87,7 @@ class Csv
      */
     public static function quoteRow($vals)
     {
-        return implode(',', array_map(array('\Components\Events\Helpers\Csv', 'quote'), $vals)) . "\n";
+        return implode(',', array_map(['\Components\Events\Helpers\Csv', 'quote'], $vals)) . "\n";
     }
 
     /**
@@ -103,16 +103,16 @@ class Csv
     {
         $database = App::get('db');
         $ee = new \Components\Events\Tables\Event($database);
-        $fields = array(
+        $fields = [
             'name', 'registered', 'affiliation', 'email', 'telephone',
             'arrival', 'departure', 'disability', 'dietary', 'dinner'
-        );
+        ];
 
         header('Content-type: text/comma-separated-values');
         header('Content-disposition: attachment; filename="eventrsvp.csv"');
 
         // Output header
-        usort($fields, array('\Components\Events\Helpers\Csv', 'fieldSorter'));
+        usort($fields, ['\Components\Events\Helpers\Csv', 'fieldSorter']);
         echo self::quoteRow(array_map('ucfirst', $fields));
 
         // Output rows
@@ -123,9 +123,9 @@ class Csv
             if (!$respondent->get('first_name')) {
                 $respondent->set('first_name', '[unknown]');
             }
-            $row = array(
+            $row = [
                 $respondent->last_name . ', ' . $respondent->first_name
-            );
+            ];
 
             foreach ($fields as $field) {
                 switch ($field) {

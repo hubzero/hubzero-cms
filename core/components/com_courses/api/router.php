@@ -23,7 +23,7 @@ class Router extends Base
      */
     public function build(&$query)
     {
-        $segments = array();
+        $segments = [];
 
         if (!empty($query['controller'])) {
             $segments[] = $query['controller'];
@@ -56,7 +56,7 @@ class Router extends Base
                 $vars['controller'] = 'passport';
                 $vars['task']       = 'badge';
             } else {
-                if (in_array($segments[0], array('list', 'read', 'update', 'create', 'delete'))) {
+                if (in_array($segments[0], ['list', 'read', 'update', 'create', 'delete'])) {
                     $vars['controller'] = 'courses';
                     $vars['task']       = $segments[0];
                 } else {

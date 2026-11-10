@@ -38,7 +38,7 @@ class DayOfMonthField extends AbstractField
         if ($month == 2) {
             return (bool) $date->format('L') ? 29 : 28;
         } else {
-            $dates = array(
+            $dates = [
                 1  => 31,
                 3  => 31,
                 4  => 30,
@@ -50,7 +50,7 @@ class DayOfMonthField extends AbstractField
                 10 => 31,
                 11 => 30,
                 12 => 31
-            );
+            ];
 
             return $dates[$month];
         }
@@ -77,7 +77,7 @@ class DayOfMonthField extends AbstractField
 
         $lastDayOfMonth = self::getLastDayOfMonth($target);
 
-        foreach (array(-1, 1, -2, 2) as $i) {
+        foreach ([-1, 1, -2, 2] as $i) {
             $adjusted = $targetDay + $i;
             if ($adjusted > 0 && $adjusted <= $lastDayOfMonth) {
                 $target->setDate($currentYear, $currentMonth, $adjusted);

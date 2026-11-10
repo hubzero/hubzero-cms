@@ -64,7 +64,7 @@ class Entries extends SiteController
     public function displayTask()
     {
         // Filters for returning results
-        $filters = array(
+        $filters = [
             'year'       => Request::getInt('year', 0),
             'month'      => Request::getInt('month', 0),
             'scope'      => $this->config->get('show_from', 'site'),
@@ -73,7 +73,7 @@ class Entries extends SiteController
             'authorized' => false,
             'state'      => 1,
             'access'     => User::getAuthorisedViewLevels()
-        );
+        ];
 
         if ($filters['year'] > date("Y")) {
             $filters['year'] = 0;
@@ -132,7 +132,7 @@ class Entries extends SiteController
         }
 
         // Filters for returning results
-        $filters = array(
+        $filters = [
             'limit'      => 10,
             'start'      => 0,
             'scope'      => 'site',
@@ -140,7 +140,7 @@ class Entries extends SiteController
             'authorized' => false,
             'state'      => Entry::STATE_PUBLISHED,
             'access'     => User::getAuthorisedViewLevels()
-        );
+        ];
 
         if (!User::isGuest()) {
             if ($this->config->get('access-manage-component')) {
@@ -152,10 +152,10 @@ class Entries extends SiteController
         if (Session::get('newsubmission.blog')) {
             // Unset the new submission session flag
             Session::set('newsubmission.blog');
-            Event::trigger('content.onAfterContentSubmission', array('Blog'));
+            Event::trigger('content.onAfterContentSubmission', ['Blog']);
         }
 
-        Event::trigger('blog.onBlogView', array($row));
+        Event::trigger('blog.onBlogView', [$row]);
 
         // Output HTML
         $this->view
@@ -243,7 +243,7 @@ class Entries extends SiteController
         // Check for request forgeries
         Request::checkToken();
 
-        $fields = Request::getArray('entry', array(), 'post', 'none', 2);
+        $fields = Request::getArray('entry', [], 'post', 'none', 2);
 
         // Make sure we don't want to turn off comments
         //$fields['allow_comments'] = (isset($fields['allow_comments'])) ? 1 : 0;
@@ -287,7 +287,7 @@ class Entries extends SiteController
 
         // Trigger before save event
         $isNew  = $row->isNew();
-        $result = Event::trigger('onBlogBeforeSave', array(&$row, $isNew));
+        $result = Event::trigger('onBlogBeforeSave', [&$row, $isNew]);
 
         if (in_array(false, $result, true)) {
             Notify::error($row->getError());
@@ -307,7 +307,7 @@ class Entries extends SiteController
         }
 
         // Trigger after save event
-        Event::trigger('onBlogAfterSave', array(&$row, $isNew));
+        Event::trigger('onBlogAfterSave', [&$row, $isNew]);
 
         // Log activity
         Event::trigger('system.logActivity', [
@@ -316,10 +316,10 @@ class Entries extends SiteController
                 'scope'       => 'blog.entry',
                 'scope_id'    => $row->get('id'),
                 'description' => Lang::txt('COM_BLOG_ACTIVITY_ENTRY_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($row->link()) . '">' . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title' => $row->get('title'),
                     'url'   => Route::url($row->link())
-                )
+                ]
             ],
             'recipients' => [
                 $row->get('created_by')
@@ -409,10 +409,10 @@ class Entries extends SiteController
                 'scope'       => 'blog.entry',
                 'scope_id'    => $id,
                 'description' => Lang::txt('COM_BLOG_ACTIVITY_ENTRY_DELETED', '<a href="' . Route::url($entry->link()) . '">' . htmlspecialchars((string) ($entry->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title' => $entry->get('title'),
                     'url'   => Route::url($entry->link())
-                )
+                ]
             ],
             'recipients' => [
                 $entry->get('created_by')
@@ -447,7 +447,7 @@ class Entries extends SiteController
         $doc->link = Route::url('index.php?option=' . $this->_option);
 
         // Incoming
-        $filters = array(
+        $filters = [
             'year'       => Request::getInt('year', 0),
             'month'      => Request::getInt('month', 0),
             'scope'      => $this->config->get('show_from', 'site'),
@@ -456,7 +456,7 @@ class Entries extends SiteController
             'authorized' => false,
             'state'      => 1,
             'access'     => User::getAuthorisedViewLevels()
-        );
+        ];
 
         if ($filters['year'] > date("Y")) {
             $filters['year'] = 0;
@@ -539,7 +539,7 @@ class Entries extends SiteController
         Request::checkToken();
 
         // Incoming
-        $data = Request::getArray('comment', array(), 'post', 'none', 2);
+        $data = Request::getArray('comment', [], 'post', 'none', 2);
 
         // comment[id], comment[entry_id], comment[parent], comment[created_by]
         // and comment[state] are all hidden inputs, and oneOrNew() resolves
@@ -582,7 +582,7 @@ class Entries extends SiteController
 
         // Trigger before save event
         $isNew  = $comment->isNew();
-        $result = Event::trigger('onBlogCommentBeforeSave', array(&$comment, $isNew));
+        $result = Event::trigger('onBlogCommentBeforeSave', [&$comment, $isNew]);
 
         if (in_array(false, $result, true)) {
             $this->setError($comment->getError());
@@ -596,12 +596,12 @@ class Entries extends SiteController
         }
 
         // Trigger after save event
-        Event::trigger('onBlogCommentAfterSave', array(&$comment, $isNew));
+        Event::trigger('onBlogCommentAfterSave', [&$comment, $isNew]);
 
         // Log the activity
         $entry = Entry::oneOrFail($comment->get('entry_id'));
 
-        $recipients = array($comment->get('created_by'));
+        $recipients = [$comment->get('created_by')];
         if ($comment->get('created_by') != $entry->get('created_by')) {
             $recipients[] = $entry->get('created_by');
         }
@@ -616,11 +616,11 @@ class Entries extends SiteController
                 'scope_id'    => $comment->get('id'),
                 'anonymous'   => $comment->get('anonymous', 0),
                 'description' => Lang::txt('COM_BLOG_ACTIVITY_COMMENT_' . ($data['id'] ? 'UPDATED' : 'CREATED'), $comment->get('id'), '<a href="' . Route::url($entry->link() . '#c' . $comment->get('id')) . '">' . htmlspecialchars((string) ($entry->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title'    => $entry->get('title'),
                     'entry_id' => $entry->get('id'),
                     'url'      => $entry->link()
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -679,7 +679,7 @@ class Entries extends SiteController
         // Log the activity
         $entry = Entry::oneOrFail($comment->get('entry_id'));
 
-        $recipients = array($comment->get('created_by'));
+        $recipients = [$comment->get('created_by')];
         if ($comment->get('created_by') != $entry->get('created_by')) {
             $recipients[] = $entry->get('created_by');
         }
@@ -690,11 +690,11 @@ class Entries extends SiteController
                 'scope'       => 'blog.entry.comment',
                 'scope_id'    => $comment->get('id'),
                 'description' => Lang::txt('COM_BLOG_ACTIVITY_COMMENT_DELETED', $comment->get('id'), '<a href="' . Route::url($entry->link()) . '">' . htmlspecialchars((string) ($entry->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title'    => $entry->get('title'),
                     'entry_id' => $entry->get('id'),
                     'url'      => $entry->link()
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -751,7 +751,7 @@ class Entries extends SiteController
         $doc->copyright   = Lang::txt('COM_BLOG_RSS_COPYRIGHT', date("Y"), Config::get('sitename'));
 
         $rows = $this->entry->comments()
-            ->whereIn('state', array(1, 3))
+            ->whereIn('state', [1, 3])
             ->ordered()
             ->rows();
 
@@ -796,7 +796,7 @@ class Entries extends SiteController
 
         $doc->addItem($item);
 
-        $replies = $row->replies()->whereIn('state', array(1, 3));
+        $replies = $row->replies()->whereIn('state', [1, 3]);
 
         if ($replies->count() > 0) {
             foreach ($replies as $reply) {

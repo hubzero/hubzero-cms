@@ -48,7 +48,7 @@ defined('_HZEXEC_') or die();
 
 $loginmodule = \Components\Login\Models\Login::getLoginModule('mod_adminlogin');
 
-echo Module::render($loginmodule, array('style' => 'rounded', 'id' => 'section-box'));
+echo Module::render($loginmodule, ['style' => 'rounded', 'id' => 'section-box']);
 
 
 // Get any other modules in the login position.
@@ -58,6 +58,6 @@ $modules = Module::byPosition('login');
 foreach ($modules as $module) {
     // Render the login modules
     if ($module->module != 'mod_adminlogin') {
-        echo Module::render($module, array('style' => 'rounded', 'id' => 'section-box'));
+        echo Module::render($module, ['style' => 'rounded', 'id' => 'section-box']);
     }
 }

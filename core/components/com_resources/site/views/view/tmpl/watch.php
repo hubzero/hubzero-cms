@@ -34,10 +34,10 @@ if (!is_object($presentation)) {
     $presentation = new stdClass();
 }
 if (!isset($presentation->slides)) {
-    $presentation->slides = array();
+    $presentation->slides = [];
 }
 if (!isset($presentation->media)) {
-    $presentation->media = array();
+    $presentation->media = [];
 }
 if (!isset($presentation->placeholder)) {
     $presentation->placeholder = null;
@@ -86,7 +86,7 @@ if ($parent && $parent->id && ($parent->type->get('type') == 'Series' || $parent
     $children = null;
 }
 
-$lectureAuthors = array();
+$lectureAuthors = [];
 if ($parent && $parent->id) {
     //get the contributors for the resource
     $sql = "SELECT authorid, role, name FROM `#__author_assoc` "
@@ -100,7 +100,7 @@ if ($parent && $parent->id) {
 }
 
 //get the author names from ids
-$a = array();
+$a = [];
 
 if (!empty($lectureAuthors)) {
     foreach ($lectureAuthors as $la) {
@@ -120,11 +120,11 @@ if (!empty($lectureAuthors)) {
 
 //check to see if already have subtitles
 if (!isset($presentation->subtitles)) {
-    $presentation->subtitles = array();
+    $presentation->subtitles = [];
 }
 
 // make sure source is full path to assets folder
-$subFiles = array();
+$subFiles = [];
 foreach ($presentation->subtitles as $k => $subtitle) {
     if (!strpos($subtitle->source, DS)) {
         $subtitle->source_url = $content_url . DS . $subtitle->source;
@@ -444,14 +444,14 @@ $presentation->subtitles = array_values($presentation->subtitles);
                                 $source = $media->source;
 
                                 //is this the mp4 (need for flash)
-                            if (in_array($media->type, array('mp4','m4v'))) {
+                            if (in_array($media->type, ['mp4','m4v'])) {
                                 $mp4 = $media->source;
                             }
 
                                 //if were playing local files
                             if (substr($media->source, 0, 4) != 'http') {
                                 $source = $content_url . DS . $source;
-                                if (in_array($media->type, array('mp4','m4v'))) {
+                                if (in_array($media->type, ['mp4','m4v'])) {
                                     $mp4 = $content_url . DS . $mp4;
                                 }
                             }

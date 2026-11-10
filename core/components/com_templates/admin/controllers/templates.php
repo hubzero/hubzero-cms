@@ -44,7 +44,7 @@ class Templates extends AdminController
     public function displayTask()
     {
         // Incoming
-        $filters = array(
+        $filters = [
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'filter_search',
@@ -65,7 +65,7 @@ class Templates extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         $model = Template::all()
             ->whereEquals('type', 'template');
@@ -120,7 +120,7 @@ class Templates extends AdminController
         Request::setVar('hidemainmenu', 1);
 
         // Incoming
-        $id = Request::getArray('id', array(0));
+        $id = Request::getArray('id', [0]);
 
         if (is_array($id) && !empty($id)) {
             $id = $id[0];

@@ -69,7 +69,7 @@ class Jobsv1r0 extends ApiController
     public function listTask()
     {
         // get POST data
-        $filters = array();
+        $filters = [];
         $filters['limit'] = Request::getInt('limit', 25);
         $filters['start'] = Request::getInt('start', 0);
         $filters['search'] = Request::getString('search', '');
@@ -112,7 +112,7 @@ class Jobsv1r0 extends ApiController
         $database = App::get('db');
 
         $obj = new \Components\Jobs\Tables\Job($database);
-        $filters = array();
+        $filters = [];
         $job = $obj->get_opening($jid = null, $uid = null, $admin = null, $jobcode = $jobCode);
 
         // Create object with records property

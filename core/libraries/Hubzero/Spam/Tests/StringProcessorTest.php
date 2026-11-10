@@ -49,7 +49,7 @@ class StringProcessorTest extends Basic
         $this->assertEquals($result, $expected);
 
         // Test aggressive flag
-        $processor = new NativeStringProcessor(array('aggressive' => true));
+        $processor = new NativeStringProcessor(['aggressive' => true]);
         $result    = $processor->prepare($text);
         $expected  = "curabiturfooatblanditup.ertempusporttitor."
             . "loremipsumdolorsitametconsecteturadipiscingelit.";
@@ -59,7 +59,7 @@ class StringProcessorTest extends Basic
         // Test ASCII conversion flag
         $text = " Curabitur foo @ blandit ùp......er tempus porttitor[dot]\n"
             . "Lorem ipsum dölor sit \tamet, cönsectetur & adipiscing élit.";
-        $processor = new NativeStringProcessor(array('ascii_conversion' => true));
+        $processor = new NativeStringProcessor(['ascii_conversion' => true]);
         $result    = $processor->prepare($text);
         $expected  = "curabitur foo @ blandit up......er tempus porttitor[dot]"
             . "lorem ipsum dolor sit amet, consectetur & adipiscing elit.";

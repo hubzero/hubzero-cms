@@ -140,9 +140,9 @@ class Reviews extends Plugin
             // Set comments to viewable
             $this->params->set('access-view-' . $assetType, true);
 
-            $actions = array(
+            $actions = [
                 'admin', 'manage', 'edit', 'edit-own', 'create', 'delete'
-            );
+            ];
 
             $yearFormat  = "Y";
             $monthFormat = "m";
@@ -335,10 +335,10 @@ class Reviews extends Plugin
             ->whereEquals('item_type', $this->obj_type)
             ->whereEquals('item_id', $this->obj->get('id'))
             ->whereEquals('parent', 0)
-            ->whereIn('state', array(
+            ->whereIn('state', [
                 \Components\Courses\Models\Comment::STATE_PUBLISHED,
                 \Components\Courses\Models\Comment::STATE_FLAGGED
-            ))
+            ])
             ->limit($this->params->get('display_limit', 25))
             ->ordered()
             ->rows();
@@ -364,7 +364,7 @@ class Reviews extends Plugin
         Request::checkToken();
 
         // Incoming
-        $comment = Request::getArray('comment', array(), 'post');
+        $comment = Request::getArray('comment', [], 'post');
 
         // Resolve the row before anything is bound onto it.
         //

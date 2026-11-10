@@ -98,7 +98,7 @@ if ($this->message) { ?>
     $db->setQuery($sql);
     $results = $db->loadObjectList();
 
-    $visits = array();
+    $visits = [];
 
     if ($results) {
         //$visits[] = "[new Date('2000/01/01'),0]";
@@ -132,7 +132,7 @@ if ($this->message) { ?>
     $db->setQuery($sql);
     $results = $db->loadObjectList();
 
-    $downloads = array();
+    $downloads = [];
 
     if ($results) {
         foreach ($results as $result) {
@@ -169,8 +169,8 @@ if ($this->message) { ?>
 
             <div class="grid">
                 <?php
-                $residence    = array();
-                $organization = array();
+                $residence    = [];
+                $organization = [];
 
                 $sql = "SELECT value, valfmt FROM summary_user_vals WHERE rowid="
                     . $db->quote(1)
@@ -206,61 +206,61 @@ if ($this->message) { ?>
 
                         switch ($i) {
                             case 3:
-                                $residence[] = array(
+                                $residence[] = [
                                     'column' => 'US',
                                     'value'  => $row->value,
                                     'color'  => 'rgba(19, 164, 164, 0.7)'
-                                );
+                                ];
                                 break;
                             case 4:
-                                $residence[] = array(
+                                $residence[] = [
                                     'column' => 'Asia',
                                     'value'  => $row->value,
                                     'color'  => 'rgba(222, 176, 88, 0.7)'
-                                );
+                                ];
                                 break;
                             case 5:
-                                $residence[] = array(
+                                $residence[] = [
                                     'column' => 'Europe',
                                     'value'  => $row->value,
                                     'color'  => 'rgba(233, 95, 87, 0.7)'
-                                );
+                                ];
                                 break;
                             case 6:
-                                $residence[] = array(
+                                $residence[] = [
                                     'column' => 'Other',
                                     'value'  => $row->value,
                                     'color'  => 'rgba(124, 145, 64, 0.7)'
-                                );
+                                ];
                                 break;
 
                             case 8:
-                                $organization[] = array(
+                                $organization[] = [
                                     'column' => 'Education',
                                     'value'  => $row->value,
                                     'color'  => 'rgba(19, 164, 164, 0.7)'
-                                );
+                                ];
                                 break;
                             case 9:
-                                $organization[] = array(
+                                $organization[] = [
                                     'column' => 'Industry',
                                     'value'  => $row->value,
                                     'color'  => 'rgba(222, 176, 88, 0.7)'
-                                );
+                                ];
                                 break;
                             case 10:
-                                $organization[] = array(
+                                $organization[] = [
                                     'column' => 'Government',
                                     'value'  => $row->value,
                                     'color'  => 'rgba(233, 95, 87, 0.7)'
-                                );
+                                ];
                                 break;
                             case 11:
-                                $organization[] = array(
+                                $organization[] = [
                                     'column' => 'Other',
                                     'value'  => $row->value,
                                     'color'  => 'rgba(124, 145, 64, 0.7)'
-                                );
+                                ];
                                 break;
                             break;
 
@@ -336,8 +336,8 @@ if ($this->message) { ?>
 
             <div class="grid">
                 <?php
-                $residence = array();
-                $organization = array();
+                $residence = [];
+                $organization = [];
 
                 $sql = "SELECT value, valfmt FROM summary_user_vals WHERE rowid="
                     . $db->quote(4)
@@ -373,61 +373,61 @@ if ($this->message) { ?>
 
                         switch ($i) {
                             case 3:
-                                $residence[] = array(
+                                $residence[] = [
                                     'column' => 'US',
                                     'value'  => $row->value,
                                     'color'  => 'rgba(19, 164, 164, 0.7)'
-                                );
+                                ];
                                 break;
                             case 4:
-                                $residence[] = array(
+                                $residence[] = [
                                     'column' => 'Asia',
                                     'value'  => $row->value,
                                     'color'  => 'rgba(222, 176, 88, 0.7)'
-                                );
+                                ];
                                 break;
                             case 5:
-                                $residence[] = array(
+                                $residence[] = [
                                     'column' => 'Europe',
                                     'value'  => $row->value,
                                     'color'  => 'rgba(233, 95, 87, 0.7)'
-                                );
+                                ];
                                 break;
                             case 6:
-                                $residence[] = array(
+                                $residence[] = [
                                     'column' => 'Other',
                                     'value'  => $row->value,
                                     'color'  => 'rgba(124, 145, 64, 0.7)'
-                                );
+                                ];
                                 break;
 
                             case 8:
-                                $organization[] = array(
+                                $organization[] = [
                                     'column' => 'Education',
                                     'value'  => $row->value,
                                     'color'  => 'rgba(19, 164, 164, 0.7)'
-                                );
+                                ];
                                 break;
                             case 9:
-                                $organization[] = array(
+                                $organization[] = [
                                     'column' => 'Industry',
                                     'value'  => $row->value,
                                     'color'  => 'rgba(222, 176, 88, 0.7)'
-                                );
+                                ];
                                 break;
                             case 10:
-                                $organization[] = array(
+                                $organization[] = [
                                     'column' => 'Government',
                                     'value'  => $row->value,
                                     'color'  => 'rgba(233, 95, 87, 0.7)'
-                                );
+                                ];
                                 break;
                             case 11:
-                                $organization[] = array(
+                                $organization[] = [
                                     'column' => 'Other',
                                     'value'  => $row->value,
                                     'color'  => 'rgba(124, 145, 64, 0.7)'
-                                );
+                                ];
                                 break;
                             break;
 
@@ -509,7 +509,7 @@ if ($this->message) { ?>
             $currentSimuser->value = 0;
             $currentSimuser->datetime = $datetime;
 
-            $simusers = array();
+            $simusers = [];
 
             $db->setQuery(
                 "SELECT *
@@ -544,7 +544,7 @@ if ($this->message) { ?>
             $currentSimjob->value = 0;
             $currentSimjob->datetime = $datetime;
 
-            $simjobs = array();
+            $simjobs = [];
 
             $db->setQuery(
                 "SELECT *

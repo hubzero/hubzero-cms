@@ -26,7 +26,7 @@ class Migration20140502184454Core extends Base
         if ($schema->tableExists('migrations') && !$schema->tableExists('#__migrations')) {
             $schema->renameTable('migrations', '#__migrations');
 
-            $this->callback('migration', 'setTableName', array('#__migrations'));
+            $this->callback('migration', 'setTableName', ['#__migrations']);
         }
     }
 
@@ -40,7 +40,7 @@ class Migration20140502184454Core extends Base
         if (!$schema->tableExists('migrations') && $schema->tableExists('#__migrations')) {
             $schema->renameTable('#__migrations', 'migrations');
 
-            $this->callback('migration', 'setTableName', array('migrations'));
+            $this->callback('migration', 'setTableName', ['migrations']);
         }
     }
 }

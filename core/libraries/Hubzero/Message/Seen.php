@@ -52,10 +52,10 @@ class Seen extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'mid' => 'positive|nonzero',
         'uid' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Defines a belongs to one relationship between entry and message

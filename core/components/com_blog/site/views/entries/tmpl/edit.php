@@ -82,7 +82,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
                         echo ' class="fieldWithErrors"';
                                              } ?>>
                         <?php echo Lang::txt('COM_BLOG_FIELD_CONTENT'); ?> <span class="required"><?php echo Lang::txt('COM_BLOG_REQUIRED'); ?></span>
-                        <?php echo $this->editor('entry[content]', $this->escape($this->entry->content('raw')), 50, 40, 'entrycontent', array('class' => 'form-control')); ?>
+                        <?php echo $this->editor('entry[content]', $this->escape($this->entry->content('raw')), 50, 40, 'entrycontent', ['class' => 'form-control']); ?>
                     </label>
                     <?php if ($this->task == 'save' && !$this->entry->get('content')) { ?>
                         <p class="error"><?php echo Lang::txt('COM_BLOG_ERROR_PROVIDE_CONTENT'); ?></p>

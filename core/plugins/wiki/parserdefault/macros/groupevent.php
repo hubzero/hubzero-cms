@@ -26,7 +26,7 @@ class GroupEvent extends WikiMacro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['wiki'] = 'Displays group events';
         $txt['html'] = '<p>Displays group events.</p>';
         $txt['html'] = '<p>Examples:</p>'
@@ -79,10 +79,10 @@ class GroupEvent extends WikiMacro
         }
 
         //array of filters
-        $filters = array(
+        $filters = [
             'id' => (isset($arg['id'])) ? $arg['id'] : null,
             'limit' => (isset($arg['number'])) ? $arg['number'] : 3
-        );
+        ];
 
         //get group events
         $events =  $this->getGroupEvents($group, $filters);
@@ -112,7 +112,7 @@ class GroupEvent extends WikiMacro
      * @param       array  $filters  Array of filters
      * @return      array
      */
-    private function getGroupEvents($group, $filters = array())
+    private function getGroupEvents($group, $filters = [])
     {
         //instantiate database
         $database = App::get('db');

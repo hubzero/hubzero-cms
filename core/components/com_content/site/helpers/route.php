@@ -30,7 +30,7 @@ abstract class Route
      *
      * @var  array
      */
-    protected static $lang_lookup = array();
+    protected static $lang_lookup = [];
 
     /**
      * Get category route
@@ -42,9 +42,9 @@ abstract class Route
      */
     public static function getArticleRoute($id, $catid = 0, $language = 0)
     {
-        $needles = array(
-            'article' => array((int) $id)
-        );
+        $needles = [
+            'article' => [(int) $id]
+        ];
 
         // Create the link
         $link = 'index.php?option=com_content&view=article&id=' . $id;
@@ -93,7 +93,7 @@ abstract class Route
         if ($id < 1 || !($category instanceof Node)) {
             $link = '';
         } else {
-            $needles = array();
+            $needles = [];
 
             $link = 'index.php?option=com_content&view=category&id=' . $id;
 
@@ -165,7 +165,7 @@ abstract class Route
 
         // Prepare the reverse lookup array.
         if (!isset(self::$lookup[$language])) {
-            self::$lookup[$language] = array();
+            self::$lookup[$language] = [];
 
             $component = Component::load('com_content');
 
@@ -174,7 +174,7 @@ abstract class Route
                 if (isset($item->query) && isset($item->query['view']) && $item->language == $language) {
                     $view = $item->query['view'];
                     if (!isset(self::$lookup[$language][$view])) {
-                        self::$lookup[$language][$view] = array();
+                        self::$lookup[$language][$view] = [];
                     }
                     if (isset($item->query['id'])) {
                         self::$lookup[$language][$view][$item->query['id']] = $item->id;

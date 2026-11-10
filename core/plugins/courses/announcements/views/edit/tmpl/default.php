@@ -47,7 +47,7 @@ $this->css('jquery.datepicker.css', 'system')
                     35,
                     5,
                     'field_content',
-                    array('class' => 'minimal no-footer')
+                    ['class' => 'minimal no-footer']
                 );
                 ?>
             </label>

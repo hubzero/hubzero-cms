@@ -87,22 +87,22 @@ class Pluginsv1r0 extends ApiController
             throw new Exception(Lang::txt('You are not authorized to access this group.'), 403);
         }
 
-        $filters = array(
+        $filters = [
             'limit' => Request::getInt('limit', 25),
             'start' => Request::getInt('limitstart', 0)
-        );
+        ];
 
         $data = Event::trigger(
             'groups.onGroupsApiList',
-            array(
+            [
                 $group,
                 $active,
                 $filters['start'],
                 $filters['limit']
-            )
+            ]
         );
 
-        $response = array();
+        $response = [];
 
         foreach ($data as $i => $datum) {
             if (!$datum) {
@@ -169,10 +169,10 @@ class Pluginsv1r0 extends ApiController
         // Call the active plugin
         $data = Event::trigger(
             'groups.onGroupsApiCreate',
-            array(
+            [
                 $group,
                 $active
-            )
+            ]
         );
 
         $response = null;
@@ -257,11 +257,11 @@ class Pluginsv1r0 extends ApiController
         // Call the active plugin
         $data = Event::trigger(
             'groups.onGroupsApiRead',
-            array(
+            [
                 $group,
                 $active,
                 $id
-            )
+            ]
         );
 
         $response = null;
@@ -346,11 +346,11 @@ class Pluginsv1r0 extends ApiController
         // Call the active plugin
         $data = Event::trigger(
             'groups.onGroupsApiUpdate',
-            array(
+            [
                 $group,
                 $active,
                 $id
-            )
+            ]
         );
 
         $response = null;
@@ -435,11 +435,11 @@ class Pluginsv1r0 extends ApiController
         // Call the active plugin
         Event::trigger(
             'groups.onGroupsApiDelete',
-            array(
+            [
                 $group,
                 $active,
                 $id
-            )
+            ]
         );
 
         $this->send(null, 204);

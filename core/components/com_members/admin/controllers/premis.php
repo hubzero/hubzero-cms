@@ -117,7 +117,7 @@ class Premis extends AdminController
             $skipLines = 1;
             $row = 0;
 
-            $report = array();
+            $report = [];
             $ok = 0;
             $fail = 0;
 
@@ -125,7 +125,7 @@ class Premis extends AdminController
 
             if (($handle = fopen($filename, "r")) !== false) {
                 while (($data = fgetcsv($handle, 1000, ",")) !== false) {
-                    $line = array();
+                    $line = [];
 
                     $num = count($data);
                     $row++;

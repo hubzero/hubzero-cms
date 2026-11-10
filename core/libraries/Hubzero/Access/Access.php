@@ -23,35 +23,35 @@ class Access
      *
      * @public array
      */
-    protected static $viewLevels = array();
+    protected static $viewLevels = [];
 
     /**
      * Array of rules for the asset
      *
      * @public array
      */
-    protected static $assetRules = array();
+    protected static $assetRules = [];
 
     /**
      * Array of user groups.
      *
      * @public array
      */
-    protected static $userGroups = array();
+    protected static $userGroups = [];
 
     /**
      * Array of user group paths.
      *
      * @public array
      */
-    protected static $userGroupPaths = array();
+    protected static $userGroupPaths = [];
 
     /**
      * Array of cached groups by user.
      *
      * @public array
      */
-    protected static $groupsByUser = array();
+    protected static $groupsByUser = [];
 
     /**
      * Method for clearing static caches.
@@ -60,11 +60,11 @@ class Access
      */
     public static function clearStatics()
     {
-        self::$viewLevels     = array();
-        self::$assetRules     = array();
-        self::$userGroups     = array();
-        self::$userGroupPaths = array();
-        self::$groupsByUser   = array();
+        self::$viewLevels     = [];
+        self::$assetRules     = [];
+        self::$userGroups     = [];
+        self::$userGroupPaths = [];
+        self::$groupsByUser   = [];
     }
 
     /**
@@ -145,7 +145,7 @@ class Access
     {
         // Preload all groups
         if (empty(self::$userGroups)) {
-            self::$userGroups = array();
+            self::$userGroups = [];
 
             $groups = Group::all()
                 ->order('lft', 'asc')
@@ -157,12 +157,12 @@ class Access
 
         // Make sure groupId is valid
         if (!array_key_exists($groupId, self::$userGroups)) {
-            return array();
+            return [];
         }
 
         // Get parent groups and leaf group
         if (!isset(self::$userGroupPaths[$groupId])) {
-            self::$userGroupPaths[$groupId] = array();
+            self::$userGroupPaths[$groupId] = [];
 
             foreach (self::$userGroups as $group) {
                 if (
@@ -220,7 +220,7 @@ class Access
         // Get the root even if the asset is not found and in recursive mode
         if (empty($result) && $recursive) {
             $result = Asset::oneOrFail(Asset::getRootId());
-            $result = array($result->get('rules'));
+            $result = [$result->get('rules')];
         }
 
         // Instantiate and return the Rules object for the asset rules.
@@ -249,7 +249,7 @@ class Access
         if (!isset(self::$groupsByUser[$storeId])) {
             // Guest user (if only the actually assigned group is requested)
             if (empty($userId) && !$recursive) {
-                $result = array(Component::params('com_members')->get('guest_usergroup', 1));
+                $result = [Component::params('com_members')->get('guest_usergroup', 1)];
             } else {
             // Registered user and guest if all groups are requested
                 $db = App::get('db');
@@ -280,7 +280,7 @@ class Access
                     $result = $db->loadColumn($titles ? 1 : 0);
 
                     if (empty($result)) {
-                        $result = array($titles ? 'Public' : '1');
+                        $result = [$titles ? 'Public' : '1'];
                     } else {
                         $result = array_unique($result);
                     }
@@ -288,7 +288,7 @@ class Access
                     $result = $db->loadAssocList();
 
                     if (empty($result)) {
-                        $result = array( array('1','Public') );
+                        $result = [ ['1','Public'] ];
                     } else {
                         $result = array_unique($result, SORT_REGULAR);
                     }
@@ -355,7 +355,7 @@ class Access
         }
 
         // Initialise the authorised array.
-        $authorised = array(1);
+        $authorised = [1];
 
         // Find the authorised levels.
         foreach (self::$viewLevels as $level => $rule) {
@@ -417,7 +417,7 @@ class Access
         }
 
         // Initialise the actions array
-        $actions = array();
+        $actions = [];
 
         // Get the elements from the xpath
         $elements = $data->xpath($xpath . 'action[@name][@title][@description]');
@@ -426,11 +426,11 @@ class Access
         if (!empty($elements)) {
             foreach ($elements as $action) {
                 // Add the action to the actions array
-                $actions[] = (object) array(
+                $actions[] = (object) [
                     'name'        => (string) $action['name'],
                     'title'       => (string) $action['title'],
                     'description' => (string) $action['description']
-                );
+                ];
             }
         }
 

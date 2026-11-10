@@ -57,7 +57,7 @@ class Items extends AdminController
     public function displayTask()
     {
         // Get filters
-        $filters = array(
+        $filters = [
             'parent_id' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.parent_id',
                 'filter_parent_id',
@@ -101,7 +101,7 @@ class Items extends AdminController
                 'filter_order_Dir',
                 'asc'
             )
-        );
+        ];
 
         $menuType = Request::getString('menutype', null);
 
@@ -205,7 +205,7 @@ class Items extends AdminController
         if (is_numeric($published)) {
             $query->whereEquals($a . '.published', (int) $published);
         } elseif ($published === '') {
-            $query->whereIn($a . '.published', array(0, 1));
+            $query->whereIn($a . '.published', [0, 1]);
         }
 
         // Filter by search in title, alias or id
@@ -262,7 +262,7 @@ class Items extends AdminController
             ->paginated('limitstart', 'limit')
             ->rows();
 
-        $ordering = array();
+        $ordering = [];
         $lang = App::get('language');
 
         // Preprocess the list of items to find ordering divisions.
@@ -367,7 +367,7 @@ class Items extends AdminController
         }
 
         // Levels filter.
-        $options = array();
+        $options = [];
         $options[] = Html::select('option', '1', Lang::txt('J1'));
         $options[] = Html::select('option', '2', Lang::txt('J2'));
         $options[] = Html::select('option', '3', Lang::txt('J3'));
@@ -420,7 +420,7 @@ class Items extends AdminController
 
         if (!is_object($row)) {
             // Incoming
-            $id = Request::getArray('cid', array(0));
+            $id = Request::getArray('cid', [0]);
             if (is_array($id) && !empty($id)) {
                 $id = $id[0];
             }
@@ -440,10 +440,10 @@ class Items extends AdminController
             $row->checkout();
         }
 
-        $data = User::getState('com_menus.edit.item.data', array());
+        $data = User::getState('com_menus.edit.item.data', []);
         if (!empty($data)) {
             $row->set($data);
-            User::setState('com_menus.edit.item.data', array());
+            User::setState('com_menus.edit.item.data', []);
         }
 
         if ($type = Request::getState('com_menus.edit.item.type', 'type')) {
@@ -470,7 +470,7 @@ class Items extends AdminController
         switch ($row->get('type')) {
             case 'alias':
                 $row->set('component_id', 0);
-                $args = array();
+                $args = [];
 
                 parse_str(parse_url($row->get('link'), PHP_URL_QUERY), $args);
                 break;
@@ -483,7 +483,7 @@ class Items extends AdminController
 
             case 'url':
                 $row->set('component_id', 0);
-                $args = array();
+                $args = [];
 
                 $url = parse_url($row->get('link', ''), PHP_URL_QUERY);
                 parse_str($url == null ? '' : $url, $args);
@@ -496,7 +496,7 @@ class Items extends AdminController
 
                 // Ensure the integrity of the component_id field is maintained,
                 // particularly when changing the menu item type.
-                $args = array();
+                $args = [];
                 $url = parse_url($row->get('link', ''), PHP_URL_QUERY);
                 parse_str($url == null ? '' : $url, $args);
 
@@ -526,14 +526,14 @@ class Items extends AdminController
 
         if ($row->get('type') == 'alias') {
             // Note that all request arguments become reserved parameter names.
-            $args = array();
+            $args = [];
             parse_str(parse_url($row->get('link'), PHP_URL_QUERY), $args);
             $params = array_merge($params, $args);
         }
 
         if ($row->get('type') == 'url') {
             // Note that all request arguments become reserved parameter names.
-            $args = array();
+            $args = [];
             $url = parse_url($row->get('link', ''), PHP_URL_QUERY);
             parse_str($url == null ? '' : $url, $args);
             $params = array_merge($params, $args);
@@ -547,7 +547,7 @@ class Items extends AdminController
             if (!$row->isNew()) {
                 $row->set('associations', MenusHelper::getAssociations($row->get('id')));
             } else {
-                $row->set('associations', array());
+                $row->set('associations', []);
             }
         }
 
@@ -582,7 +582,7 @@ class Items extends AdminController
         }
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         // Initiate extended database class
         $row = Item::oneOrNew($fields['id']);
@@ -599,7 +599,7 @@ class Items extends AdminController
             && !empty($fields['request'])
         ) {
             // Parse the submitted link arguments.
-            $args = array();
+            $args = [];
             parse_str(parse_url($fields['link'], PHP_URL_QUERY), $args);
 
             // Merge in the user supplied request arguments.
@@ -622,7 +622,7 @@ class Items extends AdminController
             $row->set('alias', $row->get('alias') . '_copy');
         }
 
-        $result = Event::trigger('onMenuBeforeSaveItem', array(&$row, $isNew));
+        $result = Event::trigger('onMenuBeforeSaveItem', [&$row, $isNew]);
 
         if (in_array(false, $result, true)) {
             Notify::error($row->getError());
@@ -643,7 +643,7 @@ class Items extends AdminController
         }
 
         // Trigger after save event
-        Event::trigger('onMenuAfterSaveItem', array(&$row, $isNew));
+        Event::trigger('onMenuAfterSaveItem', [&$row, $isNew]);
 
         // Notify of success
         Notify::success(Lang::txt('COM_MENUS_SAVE_SUCCESS'));
@@ -692,8 +692,8 @@ class Items extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('cid', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('cid', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for an ID
         if (count($ids) < 1) {
@@ -760,7 +760,7 @@ class Items extends AdminController
         }
 
         // Incoming
-        $ids = Request::getVar('cid', array(), 'post');
+        $ids = Request::getVar('cid', [], 'post');
 
         foreach ($ids as $id) {
             $model = Item::oneOrFail(intval($id));
@@ -786,7 +786,7 @@ class Items extends AdminController
         }
 
         // Incoming
-        $id = Request::getArray('cid', array());
+        $id = Request::getArray('cid', []);
         if (is_array($id)) {
             $id = (!empty($id) ? $id[0] : 0);
         }
@@ -858,8 +858,8 @@ class Items extends AdminController
         }
 
         // Get the input
-        $pks   = Request::getArray('cid', array(), 'post');
-        $order = Request::getArray('order', array(), 'post');
+        $pks   = Request::getArray('cid', [], 'post');
+        $order = Request::getArray('order', [], 'post');
 
         // Sanitize the input
         \Hubzero\Utility\Arr::toInteger($pks);
@@ -898,8 +898,8 @@ class Items extends AdminController
         }
 
         // Get items to publish from the request.
-        $cid   = Request::getArray('cid', array(), '');
-        $data  = array('setDefault' => 1, 'unsetDefault' => 0);
+        $cid   = Request::getArray('cid', [], '');
+        $data  = ['setDefault' => 1, 'unsetDefault' => 0];
         $task  = $this->getTask();
         $value = \Hubzero\Utility\Arr::getValue($data, $task, 0, 'int');
 
@@ -932,7 +932,7 @@ class Items extends AdminController
     public function setTypeTask()
     {
         // Get the posted values from the request.
-        $data = Request::getArray('fields', array(), 'post');
+        $data = Request::getArray('fields', [], 'post');
         $recordId = Request::getInt('id');
 
         // Get the type.
@@ -942,7 +942,7 @@ class Items extends AdminController
         $title = isset($type->title) ? $type->title : null;
         $recordId = isset($type->id) ? $type->id : 0;
 
-        if (!in_array($title, array('alias', 'separator', 'url', 'none'))) {
+        if (!in_array($title, ['alias', 'separator', 'url', 'none'])) {
             $title = 'component';
         }
 
@@ -995,8 +995,8 @@ class Items extends AdminController
         }
 
         // Incoming
-        $ids = Request::getVar('cid', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getVar('cid', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $success = 0;
 
@@ -1005,7 +1005,7 @@ class Items extends AdminController
             $model = Item::oneOrFail(intval($id));
 
             // Trigger before delete event
-            Event::trigger('onMenuBeforeDeleteItem', array('com_menues.item', $model->getTableName()));
+            Event::trigger('onMenuBeforeDeleteItem', ['com_menues.item', $model->getTableName()]);
 
             // Attempt to delete the record
             if (!$model->destroy()) {
@@ -1014,7 +1014,7 @@ class Items extends AdminController
             }
 
             // Trigger after delete event
-            Event::trigger('onMenuAfterDeleteItem', array('com_menus.item', $model->getTableName()));
+            Event::trigger('onMenuAfterDeleteItem', ['com_menus.item', $model->getTableName()]);
 
             $success++;
         }
@@ -1037,7 +1037,7 @@ class Items extends AdminController
     public function cancelTask()
     {
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         // Initiate extended database class
         if (isset($fields['id']) && $fields['id']) {
@@ -1054,7 +1054,7 @@ class Items extends AdminController
 
         $menutype = Request::getString('menutype');
 
-        $append   = array();
+        $append   = [];
         $append[] = ($menutype ? '&menutype=' . $menutype : '');
 
         $append = implode('', $append);
@@ -1083,11 +1083,11 @@ class Items extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $vars = Request::getArray('batch', array());
-        $pks  = Request::getArray('cid', array());
+        $vars = Request::getArray('batch', []);
+        $pks  = Request::getArray('cid', []);
 
         // Build an array of item contexts to check
-        $contexts = array();
+        $contexts = [];
         foreach ($pks as $id) {
             $contexts[$id] = $this->_option . '.item.' . $id;
         }

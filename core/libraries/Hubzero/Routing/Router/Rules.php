@@ -22,7 +22,7 @@ class Rules implements Countable, Iterator
      *
      * @var  array
      */
-    protected $data = array();
+    protected $data = [];
 
     /**
      * Constructor
@@ -30,7 +30,7 @@ class Rules implements Countable, Iterator
      * @param   array  $data  Array of data
      * @return  void
      */
-    public function __construct(array $data = array())
+    public function __construct(array $data = [])
     {
         foreach ($data as $key => $value) {
             $this->data[$key] = $this->close($value);
@@ -48,7 +48,7 @@ class Rules implements Countable, Iterator
         if (!($value instanceof Closure)) {
             $value = function ($uri) use ($value) {
                 if (is_callable($value)) {
-                    return call_user_func_array($value, array($uri));
+                    return call_user_func_array($value, [$uri]);
                 }
                 return $value;
             };
@@ -86,7 +86,7 @@ class Rules implements Countable, Iterator
             unset($this->data[$key]);
         }
 
-        $data = array($key => $this->close($value));
+        $data = [$key => $this->close($value)];
 
         $this->data = $data + $this->data;
 
@@ -109,7 +109,7 @@ class Rules implements Countable, Iterator
             unset($this->data[$key]);
         }
 
-        $data = array();
+        $data = [];
         foreach ($this->data as $k => $v) {
             if ($idx == $k) {
                 $data[$key] = $this->close($value);
@@ -141,7 +141,7 @@ class Rules implements Countable, Iterator
             unset($this->data[$key]);
         }
 
-        $data = array();
+        $data = [];
         foreach ($this->data as $k => $v) {
             $data[$k] = $v;
             if ($idx == $k) {
@@ -236,7 +236,7 @@ class Rules implements Countable, Iterator
      */
     public function clear()
     {
-        $this->data = array();
+        $this->data = [];
 
         return $this;
     }

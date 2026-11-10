@@ -55,7 +55,7 @@ class Languages extends Module
         $menu = App::get('menu');
 
         // Get menu home items
-        $homes = array();
+        $homes = [];
         foreach ($menu->getMenu() as $item) {
             if ($item->home) {
                 $homes[$item->language] = $item;
@@ -65,7 +65,7 @@ class Languages extends Module
         // Load associations
         $config = App::get('config');
         $assoc = $config->get('menu_associations', 0);
-        $associations = array();
+        $associations = [];
         if ($assoc) {
             $active = $menu->getActive();
             if ($active) {

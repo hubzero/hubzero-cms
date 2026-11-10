@@ -263,7 +263,7 @@ foreach ($this->rows as $row) {
                             . " WHERE `exclude`=0 AND `pId`=" . $db->quote($row->pId);
                         $db->setQuery($sql);
                         $accessgroups = $db->loadColumn();
-                        $ag = array();
+                        $ag = [];
                         foreach ($accessgroups as $access) {
                             if (array_key_exists($access, $this->ag)) {
                                 $ag[] = $this->ag[$access];
@@ -276,7 +276,7 @@ foreach ($this->rows as $row) {
                             . " WHERE `exclude`=1 AND `pId`=" . $db->quote($row->pId);
                         $db->setQuery($sql);
                         $accessgroups = $db->loadColumn();
-                        $ag = array();
+                        $ag = [];
                         foreach ($accessgroups as $access) {
                             if (array_key_exists($access, $this->ag)) {
                                 $ag[] = $this->ag[$access];

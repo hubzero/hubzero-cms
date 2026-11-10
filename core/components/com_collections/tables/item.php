@@ -82,9 +82,9 @@ class Item extends Table
      */
     public function loadByDescription($oid = null)
     {
-        $fields = array(
+        $fields = [
             'description' => trim((string) $oid)
-        );
+        ];
 
         return parent::load($fields);
     }
@@ -97,9 +97,9 @@ class Item extends Table
      */
     public function loadByTitle($oid = null)
     {
-        $fields = array(
+        $fields = [
             'title' => trim((string) $oid)
-        );
+        ];
 
         return parent::load($fields);
     }
@@ -112,10 +112,10 @@ class Item extends Table
      */
     public function loadType($object_id = null, $object_type = null)
     {
-        $fields = array(
+        $fields = [
             'object_id' => (int) $object_id,
             'type'      => (string) $object_type
-        );
+        ];
 
         return parent::load($fields);
     }
@@ -128,7 +128,7 @@ class Item extends Table
      * @param   array  $filters
      * @return  mixed
      */
-    public function find($what = '', $filters = array())
+    public function find($what = '', $filters = [])
     {
         $what = strtolower(trim($what));
 
@@ -215,7 +215,7 @@ class Item extends Table
      * @return  string  SQL
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildQuery($filters = array())
+    protected function _buildQuery($filters = [])
     {
         $query  = " FROM $this->_tbl AS b";
         $query .= " INNER JOIN #__collections_posts AS s ON s.item_id=b.id";
@@ -229,7 +229,7 @@ class Item extends Table
                 . "AND v.user_id=" . $this->_db->quote($filters['user_id']);
         }
 
-        $where = array();
+        $where = [];
 
         if (isset($filters['collection_id']) && $filters['collection_id']) {
             if (is_array($filters['collection_id'])) {
@@ -280,7 +280,7 @@ class Item extends Table
      * @param   array    $filters  Filters to construct query from
      * @return  integer
      */
-    public function getCount($filters = array())
+    public function getCount($filters = [])
     {
         return $this->find('count', $filters);
     }
@@ -291,7 +291,7 @@ class Item extends Table
      * @param   array  $filters  Filters to construct query from
      * @return  array
      */
-    public function getRecords($filters = array())
+    public function getRecords($filters = [])
     {
         return $this->find('list', $filters);
     }
@@ -357,7 +357,7 @@ class Item extends Table
      * @param   array    $filters  Filters to construct query from
      * @return  integer
      */
-    public function getLikes($filters = array())
+    public function getLikes($filters = [])
     {
         if (isset($filters['object_id'])) {
             $query = "SELECT positive FROM `$this->_tbl` "
@@ -378,7 +378,7 @@ class Item extends Table
      * @param   array    $filters  Filters to construct query from
      * @return  integer
      */
-    public function getDislikes($filters = array())
+    public function getDislikes($filters = [])
     {
         if (isset($filters['object_id'])) {
             $query = "SELECT negative FROM `$this->_tbl` "
@@ -399,7 +399,7 @@ class Item extends Table
      * @param   array  $filters  Filters to construct query from
      * @return  array
      */
-    public function getTrending($filters = array())
+    public function getTrending($filters = [])
     {
         $filters['collection_id'] = 0;
         $query = "SELECT b.*, u.name, s.created AS posted, s.created_by AS poster, "

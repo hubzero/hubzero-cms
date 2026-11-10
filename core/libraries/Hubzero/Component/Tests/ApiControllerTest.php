@@ -17,10 +17,10 @@ class ApiControllerTest extends TestCase
     #[Test]
     public function apiControllerNeverParticipatesInInertiaProtocol(): void
     {
-        $controller = new DummyApiController(new Response(), array(
+        $controller = new DummyApiController(new Response(), [
             'name' => 'example',
             'controller' => 'dummy'
-        ));
+        ]);
 
         $this->assertFalse($controller->inspectInertiaState());
         $this->assertFalse($controller->inspectHtmxState());

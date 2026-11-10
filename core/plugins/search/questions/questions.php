@@ -130,11 +130,11 @@ class Questions extends Plugin
 			ORDER BY q_created, r_created"
         );
 
-        $questions = array();
-        $seen_answers = array();
+        $questions = [];
+        $seen_answers = [];
         foreach ($dbh->loadAssocList() as $row) {
             if (!array_key_exists($row['qid'], $questions)) {
-                $questions[$row['qid']] = new \Components\Search\Models\Basic\Result\AssocScalar(array(
+                $questions[$row['qid']] = new \Components\Search\Models\Basic\Result\AssocScalar([
                     'title'           => $row['subject'],
                     'description'     => $row['question'],
                     'section'         => 'Questions',
@@ -143,11 +143,11 @@ class Questions extends Plugin
                     'weight'          => $row['qweight'],
                     'contributors'    => $row['qcontributors'],
                     'contributor_ids' => $row['qcontributor_ids']
-                ));
+                ]);
             }
             if (!array_key_exists($row['qid'] . '-' . $row['rid'], $seen_answers) && $row['answer']) {
                 $contributorName = $row['rcontributors'] ? $row['rcontributors'] : 'Anonymous';
-                $questions[$row['qid']]->add_child(new \Components\Search\Models\Basic\Result\AssocScalar(array(
+                $questions[$row['qid']]->add_child(new \Components\Search\Models\Basic\Result\AssocScalar([
                     'title'           => $contributorName . ', ' . $row['r_created'],
                     'description'     => $row['answer'],
                     'section'         => 'Questions',
@@ -156,18 +156,18 @@ class Questions extends Plugin
                     'weight'          => $row['rweight'],
                     'contributors'    => $row['rcontributors'],
                     'contributor_ids' => $row['rcontributor_ids']
-                )));
+                ]));
                 //$questions[$row['qid']]->add_weight($row['rweight']/5);
                 $seen_answers[$row['qid'] . '-' . $row['rid']] = 1;
             }
         }
-        usort($questions, array(static::class, 'sort_by_weight'));
+        usort($questions, [static::class, 'sort_by_weight']);
         $maxWeight = 0;
         foreach ($questions as $question) {
             $maxWeight = max($maxWeight, $question->get_weight());
         }
         foreach ($questions as $question) {
-            $question->sort_children(array(static::class, 'sort_by_date'));
+            $question->sort_children([static::class, 'sort_by_date']);
             $question->scale_weight($maxWeight, 'normalizing within plugin');
             $results->add($question);
         }
@@ -266,7 +266,7 @@ class Questions extends Plugin
                 $record->hubtype = $type;
                 $record->title = $title;
                 $record->description = $description;
-                $record->author = array($author);
+                $record->author = [$author];
                 $record->tags = $tags;
                 $record->path = $path;
                 $record->access_level = $access_level;

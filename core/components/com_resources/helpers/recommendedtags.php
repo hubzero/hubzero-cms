@@ -13,23 +13,23 @@ use Hubzero\Facades\App;
 
 class RecommendedTags
 {
-    private $tags = array();
-    private $existing_tags = array();
-    private $existing_map = array();
-    private $focus_areas = array();
-    private $focus_areas_map = array();
-    private $fa_properties = array();
-    private $existing_fa_map = array();
+    private $tags = [];
+    private $existing_tags = [];
+    private $existing_map = [];
+    private $focus_areas = [];
+    private $focus_areas_map = [];
+    private $fa_properties = [];
+    private $existing_fa_map = [];
 
     const ENDORSED_TAG = 2;
     const REGULAR_TAG  = 1;
 
-    public function __construct($rid, $existing, $opts = array())
+    public function __construct($rid, $existing, $opts = [])
     {
-        $opts = array_merge(array(
+        $opts = array_merge([
             'min_len' => 4,
             'count'   => 20
-        ), $opts);
+        ], $opts);
 
         $dbh = App::get('db');
 
@@ -71,7 +71,7 @@ class RecommendedTags
 			FROM #__tags t
 			LEFT JOIN #__tags_object to1 ON to1.tbl = \'tags\' AND to1.objectid = t.id AND to1.label = \'label\' AND to1.tagid = (SELECT id FROM #__tags WHERE tag = \'endorsed\')');
 
-        $tags = array();
+        $tags = [];
         foreach ($dbh->loadAssocList() as $row) {
             $tags[\Hubzero\Utility\Inflector::singularize($row['raw_tag'])] = $row['is_endorsed'] ? self::ENDORSED_TAG : self::REGULAR_TAG;
             $tags[\Hubzero\Utility\Inflector::pluralize($row['raw_tag'])] = $row['is_endorsed'] ? self::ENDORSED_TAG : self::REGULAR_TAG;
@@ -91,21 +91,21 @@ class RecommendedTags
         }
 
         $stemmer = new EnglishStemmer();
-        $freq = array();
-        $last = array();
+        $freq = [];
+        $last = [];
         foreach ($words as $idx => $word) {
             if (self::is_stop_word($word, $opts['min_len'])) {
                 continue;
             }
-            $stems = array(array($stemmer->stem($word), strtolower($word)));
+            $stems = [[$stemmer->stem($word), strtolower($word)]];
             if (isset($words[$idx + 1]) && !self::is_stop_word($words[$idx + 1], $opts['min_len'])) {
-                $stems[] = array($stems[0][0] . ' ' . $stemmer->stem($words[$idx + 1]), strtolower($word) . ' ' . strtolower($words[$idx + 1]));
+                $stems[] = [$stems[0][0] . ' ' . $stemmer->stem($words[$idx + 1]), strtolower($word) . ' ' . strtolower($words[$idx + 1])];
             }
             if (isset($words[$idx + 2]) && !self::is_stop_word($words[$idx + 2], $opts['min_len'])) {
-                $stems[] = array(
+                $stems[] = [
                     $stems[0][0] . ' ' . $stemmer->stem($words[$idx + 1]) . ' ' . $stemmer->stem($words[$idx + 2]),
                     \Hubzero\Utility\Inflector::singularize(strtolower($word)) . ' ' . strtolower($words[$idx + 1]) . ' ' . strtolower($words[$idx + 2])
-                );
+                ];
             }
             foreach ($stems as $set_idx => $set) {
                 list($stem, $word) = $set;
@@ -113,7 +113,7 @@ class RecommendedTags
                     continue;
                 }
                 if (!isset($freq[$stem])) {
-                    $freq[$stem] = array('text' => $word, 'count' => 0);
+                    $freq[$stem] = ['text' => $word, 'count' => 0];
                 } else {
                     $freq[$stem]['count'] += ($idx - $last[$stem]) / $word_count * ($set_idx + 1);
                 }
@@ -122,7 +122,7 @@ class RecommendedTags
         }
 
         foreach ($freq as $stem => $def) {
-            foreach (array($stem, $def['text']) as $text) {
+            foreach ([$stem, $def['text']] as $text) {
                 if (isset($tags[$text])) {
                     $freq[$stem]['count'] += $tags[$text] === self::ENDORSED_TAG ? 3 : 1.5;
                     break;
@@ -137,7 +137,7 @@ class RecommendedTags
 
     private static function is_stop_word($word, $word_min_len)
     {
-        static $stop_words = array(
+        static $stop_words = [
             "a" =>       true, "able" =>    true, "about" =>     true, "across" =>    true, "after" =>   true,
             "akin" =>    true, "all" =>     true, "almost" =>    true, "also" =>      true, "am" =>      true,
             "among" =>   true, "an" =>      true, "and" =>       true, "any" =>       true, "are" =>     true,
@@ -167,7 +167,7 @@ class RecommendedTags
             "you" =>     true, "your" =>    true, "one" =>       true, "two" =>       true, "three" =>   true,
             "four" =>    true, "five" =>    true, "six" =>       true, "seven" =>     true, "eight" =>   true,
             "nine" =>    true, "ten" =>     true
-        );
+        ];
         return isset($stop_words[$word]) || strlen($word) < $word_min_len;
     }
 
@@ -185,7 +185,7 @@ class RecommendedTags
     }
     public function get_existing_tags_value_list()
     {
-        static $val_list = array();
+        static $val_list = [];
         if (!$val_list) {
             foreach ($this->existing_tags as $tag) {
                 $val_list[] = str_replace('"', '&quot;', str_replace(',', '&#44;', $tag));

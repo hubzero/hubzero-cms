@@ -62,7 +62,7 @@ class Editor extends Obj
      *
      * @var  array
      */
-    protected static $instances = array();
+    protected static $instances = [];
 
     /**
      * Constructor
@@ -184,7 +184,7 @@ class Editor extends Obj
      * @param   array    $params   Associative array of editor parameters.
      * @return  string
      */
-    public function display($name, $html, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = array())
+    public function display($name, $html, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = [])
     {
         $this->asset  = $asset;
         $this->author = $author;
@@ -297,7 +297,7 @@ class Editor extends Obj
      */
     public function getButtons($editor, $buttons = true)
     {
-        $result = array();
+        $result = [];
 
         if (is_bool($buttons) && !$buttons) {
             return $result;
@@ -333,7 +333,7 @@ class Editor extends Obj
      * @param   array  $config  Associative array of editor config paramaters
      * @return  mixed
      */
-    protected function load($config = array())
+    protected function load($config = [])
     {
         // Check whether editor is already loaded
         if (!is_null($this->editor)) {

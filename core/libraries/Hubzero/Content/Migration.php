@@ -108,14 +108,14 @@ class Migration
             $this->addSearchPath(PATH_CORE)
                  ->addSearchPath(PATH_APP);
 
-            $nodes = array(
+            $nodes = [
                 PATH_CORE . DS . 'templates',
                 PATH_APP . DS . 'templates',
                 PATH_CORE . DS . 'components',
                 PATH_APP . DS . 'components',
                 PATH_CORE . DS . 'modules',
                 PATH_APP . DS . 'modules'
-            );
+            ];
 
             foreach ($nodes as $base) {
                 if (!is_dir($base)) {
@@ -140,10 +140,10 @@ class Migration
             }
 
             // Plugins have one extra level of directories
-            $nodes = array(
+            $nodes = [
                 PATH_CORE . DS . 'plugins',
                 PATH_APP . DS . 'plugins'
-            );
+            ];
 
             foreach ($nodes as $base) {
                 if (!is_dir($base)) {
@@ -304,7 +304,7 @@ class Migration
     public function find($extension = null, $file = null)
     {
         // Exclude certain thiings from our search
-        $exclude = array(".", "..");
+        $exclude = [".", ".."];
         $files   = [];
         $ext     = '';
 
@@ -497,7 +497,7 @@ class Migration
                         // The last check is to make sure that the previous run we see was a success
                         // If we don't have a status line (which is an implicit success),
                         // or we do have a status and it was a success, then we can reasonably skip this entry
-                        if (!$hasStatus || in_array($row->status, array('success', 'warning'))) {
+                        if (!$hasStatus || in_array($row->status, ['success', 'warning'])) {
                             continue;
                         }
                     }
@@ -512,7 +512,7 @@ class Migration
                     } elseif ($row && $row->direction == $direction) {
                     // If the last run was the same direction as is currently being run, we shouldn't run it again
                         // Lastly, check status as well
-                        if (!$hasStatus || in_array($row->status, array('success', 'warning'))) {
+                        if (!$hasStatus || in_array($row->status, ['success', 'warning'])) {
                             if ($dryrun) {
                                 $this->log("Would ignore {$direction}() {$scope}/{$file}");
                                 continue;
@@ -782,7 +782,7 @@ class Migration
      **/
     private function fireHooks($timing)
     {
-        $exclude = array('.', '..');
+        $exclude = ['.', '..'];
         $hooks   = [];
 
         foreach ($this->searchPaths as $path) {
@@ -883,13 +883,13 @@ class Migration
             $date = new \Hubzero\Utility\Date();
 
             // Create our object to insert
-            $obj = (object) array(
+            $obj = (object) [
                 'file'      => $file,
                 'hash'      => $hash,
                 'direction' => $direction,
                 'date'      => $date->toSql(),
                 'action_by' => (php_sapi_name() == 'cli') ? (function_exists('posix_geteuid') ? (posix_getpwuid(posix_geteuid())['name'] ?? get_current_user()) : get_current_user()) : User::get('id')
-            );
+            ];
 
             if ($this->db->tableHasField($this->get('tbl_name'), 'scope')) {
                 $obj->scope = $scope;
@@ -1454,7 +1454,7 @@ class Migration
      **/
     public function log($message, $type = null)
     {
-        $this->log[] = array('message' => $message, 'type' => $type);
+        $this->log[] = ['message' => $message, 'type' => $type];
 
         if (!$this->ignoreCallbacks && isset($this->callbacks['message']) && is_callable($this->callbacks['message'])) {
             $this->callbacks['message']($message, $type);

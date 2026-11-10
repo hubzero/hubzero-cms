@@ -118,20 +118,20 @@ class Publicationsv1r0 extends ApiController
         $pub = new \Components\Publications\Models\Publication();
 
         // Filters for returning results
-        $filters = array(
+        $filters = [
             'project'       => $this->model->get('id'),
             'limit'         => Request::getInt('limit', 25),
             'limitstart'    => Request::getInt('limitstart', 0),
             'sortby'        => Request::getWord('sortby', 'title', 'post'),
             'sortdir'       => strtoupper(Request::getWord('sortdir', 'ASC')),
             'ignore_access' => 1
-        );
+        ];
         $published = Request::getInt('published', '0', 'post');
         if (!$published) {
             $filters['dev'] = 1;
         }
 
-        $response->publications = array();
+        $response->publications = [];
         $response->total        = $pub->entries('count', $filters);
         $response->project      = $this->model->get('alias');
 

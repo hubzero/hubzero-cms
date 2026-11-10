@@ -67,7 +67,7 @@ class Media extends SiteController
      * @param   array  $config  Optional configurations
      * @return  void
      */
-    public function __construct($config = array())
+    public function __construct($config = [])
     {
         if (!isset($config['scope'])) {
             $config['scope'] = 'site';
@@ -184,14 +184,14 @@ class Media extends SiteController
     {
         // Check if they're logged in
         if (User::isGuest()) {
-            echo json_encode(array('error' => Lang::txt('COM_WIKI_WARNING_LOGIN')));
+            echo json_encode(['error' => Lang::txt('COM_WIKI_WARNING_LOGIN')]);
             return;
         }
 
         // Ensure we have an ID to work with
         $listdir = Request::getInt('listdir', 0);
         if (!$listdir) {
-            echo json_encode(array('error' => Lang::txt('COM_WIKI_NO_ID')));
+            echo json_encode(['error' => Lang::txt('COM_WIKI_NO_ID')]);
             return;
         }
         $this->_requirePageEdit($listdir);
@@ -206,7 +206,7 @@ class Media extends SiteController
             $file = $_FILES['qqfile']['name'];
             $size = (int) $_FILES['qqfile']['size'];
         } else {
-            echo json_encode(array('error' => Lang::txt('COM_WIKI_ERROR_NO_FILE')));
+            echo json_encode(['error' => Lang::txt('COM_WIKI_ERROR_NO_FILE')]);
             return;
         }
 
@@ -217,19 +217,19 @@ class Media extends SiteController
 
         if (!is_dir($path)) {
             if (!Filesystem::makeDirectory($path)) {
-                echo json_encode(array('error' => Lang::txt('COM_WIKI_ERROR_UNABLE_TO_CREATE_DIRECTORY')));
+                echo json_encode(['error' => Lang::txt('COM_WIKI_ERROR_UNABLE_TO_CREATE_DIRECTORY')]);
                 return;
             }
         }
 
         if (!is_writable($path)) {
-            echo json_encode(array('error' => Lang::txt('COM_WIKI_ERROR_DIRECTORY_NOT_WRITABLE')));
+            echo json_encode(['error' => Lang::txt('COM_WIKI_ERROR_DIRECTORY_NOT_WRITABLE')]);
             return;
         }
 
         // check to make sure we have a file and its not too big
         if ($size == 0) {
-            echo json_encode(array('error' => Lang::txt('COM_WIKI_ERROR_NO_FILE')));
+            echo json_encode(['error' => Lang::txt('COM_WIKI_ERROR_NO_FILE')]);
             return;
         }
 
@@ -242,7 +242,7 @@ class Media extends SiteController
 
         if ($size > $sizeLimit) {
             $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', Number::formatBytes($sizeLimit));
-            echo json_encode(array('error' => Lang::txt('COM_WIKI_ERROR_FILE_TOO_LARGE', $max)));
+            echo json_encode(['error' => Lang::txt('COM_WIKI_ERROR_FILE_TOO_LARGE', $max)]);
             return;
         }
 
@@ -266,7 +266,7 @@ class Media extends SiteController
 
         if (!empty($allowed) && !in_array(strtolower($ext), $allowed)) {
             $error = Lang::txt('COM_WIKI_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed));
-            echo json_encode(array('error' => $error));
+            echo json_encode(['error' => $error]);
             return;
         }
 
@@ -291,7 +291,7 @@ class Media extends SiteController
         if (!Filesystem::isSafe($file)) {
             Filesystem::delete($file);
 
-            echo json_encode(array('error' => Lang::txt('File rejected because the anti-virus scan failed.')));
+            echo json_encode(['error' => Lang::txt('File rejected because the anti-virus scan failed.')]);
             return;
         }
 
@@ -307,11 +307,11 @@ class Media extends SiteController
         }
 
         //echo result
-        echo json_encode(array(
+        echo json_encode([
             'success'   => true,
             'file'      => $filename . '.' . $ext,
             'directory' => str_replace(PATH_APP, '', $path)
-        ));
+        ]);
     }
 
     /**
@@ -572,8 +572,8 @@ class Media extends SiteController
 
         $path = $attachment->filespace() . DS . $listdir;
 
-        $folders = array();
-        $docs    = array();
+        $folders = [];
+        $docs    = [];
 
         if (is_dir($path)) {
             // Loop through all files and separate them into arrays of images, folders, and other

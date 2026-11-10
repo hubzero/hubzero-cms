@@ -41,7 +41,7 @@ if ($oparams->get('store_price', false)) {
     $price = 'only $' . $oparams->get('store_price');
 }
 
-$filters = array();
+$filters = [];
 if ($isManager) {
     $filters['state'] = -1;
 }
@@ -93,10 +93,10 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
         <div class="outline-head">
             <?php
                 // Trigger event
-                $results = Event::trigger('courses.onCourseBeforeOutline', array(
+                $results = Event::trigger('courses.onCourseBeforeOutline', [
                     $course,
                     $offering
-                ));
+                ]);
 
                 // Output results
                 echo implode("\n", $results);
@@ -105,7 +105,7 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
                 $memberId = $this->member->get('id');
                 $progress = ($memberId)
                     ? $offering->gradebook()->progress($memberId)
-                    : array();
+                    : [];
             if (is_null($this->member->get('section_id'))) {
                 $this->member->set('section_id', $section->get('id'));
             }
@@ -115,7 +115,7 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
 
     <?php
     // Build array of unit titles
-    $unitTitles = array();
+    $unitTitles = [];
     foreach ($offeringUnits as $unit) {
         $unitTitles[$unit->get('id')] = $unit->get('title');
     }
@@ -280,7 +280,7 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
                                                 <ul class="asset-list">
                                                 <?php
                                                 $play = '';
-                                                $found = array();
+                                                $found = [];
 
                                                 if ($ag->assets()->total()) {
                                                     // Loop through the assets
@@ -348,7 +348,7 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
                                                                 $info  = "This item has prerequisites"
                                                                     . " that have not yet been met."
                                                                     . " Begin by completing: ";
-                                                                $items = array();
+                                                                $items = [];
                                                                 $assetPrereqs = $prerequisites->get(
                                                                     'asset',
                                                                     $a->get('id')
@@ -630,10 +630,10 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
 
     <?php
         // Trigger event
-        $results = Event::trigger('onCourseAfterOutline', array(
+        $results = Event::trigger('onCourseAfterOutline', [
             $course,
             $offering
-        ));
+        ]);
         // Output results
         echo implode("\n", $results);
     ?>

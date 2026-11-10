@@ -117,7 +117,7 @@ class Pagenavigation extends Plugin
             $case_when .= $query->charLength('a.alias');
             $case_when .= ' THEN ';
             $a_id = $query->castAsChar('a.id');
-            $case_when .= $query->concatenate(array($a_id, 'a.alias'), ':');
+            $case_when .= $query->concatenate([$a_id, 'a.alias'], ':');
             $case_when .= ' ELSE ';
             $case_when .= $a_id . ' END as slug';
 
@@ -125,7 +125,7 @@ class Pagenavigation extends Plugin
             $case_when1 .= $query->charLength('cc.alias');
             $case_when1 .= ' THEN ';
             $c_id = $query->castAsChar('cc.id');
-            $case_when1 .= $query->concatenate(array($c_id, 'cc.alias'), ':');
+            $case_when1 .= $query->concatenate([$c_id, 'cc.alias'], ':');
             $case_when1 .= ' ELSE ';
             $case_when1 .= $c_id . ' END as catslug';
             $query->select('a.id, a.language,' . $case_when . ',' . $case_when1);
@@ -146,7 +146,7 @@ class Pagenavigation extends Plugin
 
             // This check needed if incorrect Itemid is given resulting in an incorrect result.
             if (!is_array($list)) {
-                $list = array();
+                $list = [];
             }
 
             reset($list);

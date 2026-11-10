@@ -14,7 +14,7 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$selected = array();
+$selected = [];
 if (count($this->authors) > 0) {
     foreach ($this->authors as $sel) {
         $selected[] = $sel->project_owner_id;

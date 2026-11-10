@@ -6,9 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-return array(
+return [
     // Base Services
     'Bootstrap\Files\Providers\EventServiceProvider',
     'Bootstrap\Files\Providers\AuthServiceProvider',
     'Bootstrap\Files\Providers\FileServiceProvider',
-);
+];

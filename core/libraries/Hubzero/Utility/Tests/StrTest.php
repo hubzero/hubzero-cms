@@ -26,20 +26,20 @@ class StrTest extends Basic
         $fieldStr = '<field description="Duis mollis, est non commodo luctus." '
             . 'default=0 height=55 width="35" type = "list">';
 
-        $strings = array(
-            'a href="http://hubzero.org" title="HUBzero"' => array(
+        $strings = [
+            'a href="http://hubzero.org" title="HUBzero"' => [
                 'href'  => 'http://hubzero.org',
                 'title' => 'HUBzero'
-            ),
-            $fieldStr => array(
+            ],
+            $fieldStr => [
                 'description' => 'Duis mollis, est non commodo luctus.',
                 //'default'     => '0',
                 //'height'      => '55',
                 'width'       => '35',
                 'type'        => 'list'
-            ),
-            'Sed posuere consectetur est at lobortis.' => array()
-        );
+            ],
+            'Sed posuere consectetur est at lobortis.' => []
+        ];
 
         foreach ($strings as $string => $pairs) {
             $result = Str::parseAttributes($string);
@@ -101,14 +101,14 @@ class StrTest extends Basic
     public function testSplitCamel()
     {
         $start = 'ThisTextIsCamelCase';
-        $end   = array('This', 'Text', 'Is', 'Camel', 'Case');
+        $end   = ['This', 'Text', 'Is', 'Camel', 'Case'];
 
         $result = Str::splitCamel($start);
 
         $this->assertEquals($result, $end);
 
         $start = 'ThisTextisCamelCase';
-        $end   = array('This', 'Textis', 'Camel', 'Case');
+        $end   = ['This', 'Textis', 'Camel', 'Case'];
 
         $result = Str::splitCamel($start);
 
@@ -126,21 +126,21 @@ class StrTest extends Basic
 
         $this->assertTrue(Str::contains($string, 'purus sit amet'), 'String does not contain given value.');
 
-        $strings = array(
+        $strings = [
             'lorem ipsum',
             'mattis Cras',
             'mattis consectetur'
-        );
+        ];
 
         $this->assertTrue(Str::contains($string, $strings), 'String does not contain given value.');
 
         $this->assertFalse(Str::contains($string, 'felis euismod'), 'String does not contain given value.');
 
-        $strings = array(
+        $strings = [
             'Donec id',
             'elit non mi',
             'porta gravida.'
-        );
+        ];
 
         $this->assertFalse(Str::contains($string, $strings), 'String does not contain given value.');
     }
@@ -162,21 +162,21 @@ class StrTest extends Basic
             'String does not start with given value.'
         );
 
-        $strings = array(
+        $strings = [
             'mattis consectetur',
             'Cras',
             'amet fermentum.'
-        );
+        ];
 
         $this->assertTrue(Str::startsWith($string, $strings), 'String does not start with given value.');
 
         $this->assertFalse(Str::startsWith($string, 'consectetur purus'), 'String does not start with given value.');
 
-        $strings = array(
+        $strings = [
             'cras mattis',
             'consectetur purus',
             'amet fermentum.'
-        );
+        ];
 
         $this->assertFalse(Str::startsWith($string, $strings), 'String does not start with given value.');
     }
@@ -192,21 +192,21 @@ class StrTest extends Basic
 
         $this->assertTrue(Str::endsWith($string, 'sit amet fermentum.'), 'String does not end with given value.');
 
-        $strings = array(
+        $strings = [
             'Cras mattis',
             'consectetur purus',
             'amet fermentum.'
-        );
+        ];
 
         $this->assertTrue(Str::endsWith($string, $strings), 'String does not end with given value.');
 
         $this->assertFalse(Str::endsWith($string, 'consectetur purus'), 'String does not end with given value.');
 
-        $strings = array(
+        $strings = [
             'Cras mattis',
             'consectetur purus',
             'amet fermentum'
-        );
+        ];
 
         $this->assertFalse(Str::endsWith($string, $strings), 'String does not end with given value.');
     }
@@ -275,7 +275,7 @@ class StrTest extends Basic
     public function testTail()
     {
         $string = 'Cras mattis consectetur purus sit amet fermentum.';
-        $options = array();
+        $options = [];
 
         $result = Str::tail($string, 200, $options);
 
@@ -304,14 +304,14 @@ class StrTest extends Basic
      **/
     public function testInsert()
     {
-        $result = Str::insert(':name is :age years old.', array('name' => 'Bob', 'age' => '65'));
+        $result = Str::insert(':name is :age years old.', ['name' => 'Bob', 'age' => '65']);
 
         $this->assertEquals($result, 'Bob is 65 years old.');
-        $result = Str::insert('*name is *age years old.', array('name' => 'Bob',
-            'age' => '65'), array('before' => '*'));
+        $result = Str::insert('*name is *age years old.', ['name' => 'Bob',
+            'age' => '65'], ['before' => '*']);
         $this->assertEquals($result, 'Bob is 65 years old.');
-        $result = Str::insert('*name* is *age* years *old.', array('name' => 'Bob',
-            'age' => '65'), array('before' => '*', 'after' => '*'));
+        $result = Str::insert('*name* is *age* years *old.', ['name' => 'Bob',
+            'age' => '65'], ['before' => '*', 'after' => '*']);
         $this->assertEquals($result, 'Bob is 65 years *old.');
     }
 
@@ -400,22 +400,22 @@ class StrTest extends Basic
 
         $this->assertEquals($result, 'Cras mattis consectetur...');
 
-        $result = Str::truncate($str, 30, array('ellipsis' => '!!!'));
+        $result = Str::truncate($str, 30, ['ellipsis' => '!!!']);
 
         $this->assertEquals($result, 'Cras mattis consectetur!!!');
 
-        $result = Str::truncate($str, 30, array('exact' => true));
+        $result = Str::truncate($str, 30, ['exact' => true]);
 
         $this->assertEquals($result, 'Cras mattis consectetur pur...');
         $this->assertEquals(strlen($result), 30);
 
         $str = '<p>Cras <strong>mattis</strong> consectetur purus sit amet fermentum.</p>';
 
-        $result = Str::truncate($str, 30, array('html' => true));
+        $result = Str::truncate($str, 30, ['html' => true]);
 
         $this->assertEquals($result, '<p>Cras <strong>mattis</strong> consectetur purus…</p>');
 
-        $result = Str::truncate($str, 30, array('html' => true, 'exact' => true));
+        $result = Str::truncate($str, 30, ['html' => true, 'exact' => true]);
 
         $this->assertEquals($result, '<p>Cras <strong>mattis</strong> consectetur purus…</p>');
     }

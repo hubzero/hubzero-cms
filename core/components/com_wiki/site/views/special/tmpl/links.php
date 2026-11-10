@@ -23,12 +23,12 @@ Pathway::append(
 
 // Sorting
 $sort = strtolower(Request::getString('sort', 'title'));
-if (!in_array($sort, array('timestamp', 'title'))) :
+if (!in_array($sort, ['timestamp', 'title'])) :
     $sort = 'timestamp';
 endif;
 
 $dir = strtoupper(Request::getString('dir', 'DESC'));
-if (!in_array($dir, array('ASC', 'DESC'))) :
+if (!in_array($dir, ['ASC', 'DESC'])) :
     $dir = 'DESC';
 endif;
 

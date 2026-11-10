@@ -41,7 +41,7 @@ $this->model->fulltxt = str_replace(
 // Parse for <nb:field> tags
 $type = $this->model->type;
 
-$data = array();
+$data = [];
 preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->model->fulltxt, $matches, PREG_SET_ORDER);
 if (count($matches) > 0) {
     foreach ($matches as $match) {
@@ -142,7 +142,7 @@ $maintext = $this->model->description;
             $citations = '';
             if (is_object($schema)) {
                 if (!isset($schema->fields) || !is_array($schema->fields)) {
-                    $schema->fields = array();
+                    $schema->fields = [];
                 }
                 foreach ($schema->fields as $field) {
                     if (isset($data[$field->name])) {
@@ -186,7 +186,7 @@ $maintext = $this->model->description;
                     $cite->date     = Date::toSql();
                     $cite->url      = '';
                     $cite->type     = '';
-                    $authors = array();
+                    $authors = [];
                     $contributors = ($this->model->isTool() ? $this->model->contributors('tool') :
                     $this->model->contributors('!submitter'));
                     if ($contributors) {
@@ -296,11 +296,11 @@ $maintext = $this->model->description;
             <div class="resource-content">
                 <div id="submitterlist">
                     <?php
-                    $view = new \Hubzero\Component\View(array(
+                    $view = new \Hubzero\Component\View([
                         'base_path' => Component::path('com_resources') . DS . 'site',
                         'name'      => 'view',
                         'layout'    => '_submitters',
-                    ));
+                    ]);
                     $view->set('option', $this->option);
                     $view->contributors = $this->model->contributors('submitter');
                     $view->badges       = $this->plugin->get('badges', 0);
@@ -316,11 +316,11 @@ $maintext = $this->model->description;
                 <h3><?php echo Lang::txt('PLG_RESOURCES_ABOUT_TAGS'); ?></h3>
                 <div class="resource-content">
                     <?php
-                    $view = new Hubzero\Component\View(array(
+                    $view = new Hubzero\Component\View([
                         'base_path' => Component::path('com_tags') . '/site',
                         'name'      => 'tags',
                         'layout'    => '_cloud'
-                    ));
+                    ]);
                     $view->set('config', Component::params('com_tags'));
                     $view->set('tags', $this->tags);
                     $view->display();

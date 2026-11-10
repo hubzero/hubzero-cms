@@ -30,7 +30,7 @@ class Categories extends AdminController
      */
     public function displayTask()
     {
-        $this->view->filters = array(
+        $this->view->filters = [
             // Get paging variables
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
@@ -55,7 +55,7 @@ class Categories extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         // Instantiate an object
         $jc = new Category($this->database);
@@ -79,7 +79,7 @@ class Categories extends AdminController
         Request::checkToken();
 
         // Incoming
-        $order = Request::getArray('order', array(), 'post');
+        $order = Request::getArray('order', [], 'post');
         Arr::toInteger($order);
 
         // Instantiate an object
@@ -118,7 +118,7 @@ class Categories extends AdminController
 
         if (!is_object($row)) {
             // Incoming (expecting an array)
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             $id = (is_array($id)) ? $id[0] : $id;
 
             // Load the object
@@ -175,8 +175,8 @@ class Categories extends AdminController
         Request::checkToken();
 
         // Incoming (expecting an array)
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Ensure we have an ID to work with
         if (empty($ids)) {

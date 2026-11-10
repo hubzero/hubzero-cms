@@ -28,7 +28,7 @@ class Timezone extends Groupedlist
      *
      * @var  array
      */
-    protected static $zones = array(
+    protected static $zones = [
         'Africa',
         'America',
         'Antarctica',
@@ -39,7 +39,7 @@ class Timezone extends Groupedlist
         'Europe',
         'Indian',
         'Pacific'
-    );
+    ];
 
     /**
      * Method to get the time zone field option groups.
@@ -49,7 +49,7 @@ class Timezone extends Groupedlist
     protected function getGroups()
     {
         // Initialize variables.
-        $groups = array();
+        $groups = [];
 
         $keyField = $this->element['key_field'] ? (string) $this->element['key_field'] : 'id';
         $keyValue = $this->form->getValue($keyField);
@@ -76,7 +76,7 @@ class Timezone extends Groupedlist
             if (in_array($group, self::$zones)) {
                 // Initialize the group if necessary.
                 if (!isset($groups[$group])) {
-                    $groups[$group] = array();
+                    $groups[$group] = [];
                 }
 
                 // Only add options where a locale exists.

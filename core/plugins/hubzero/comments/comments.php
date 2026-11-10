@@ -328,10 +328,10 @@ class Comments extends Plugin
         $comments->whereEquals('item_type', $this->obj_type)
             ->whereEquals('item_id', $this->obj_id)
             ->whereEquals('parent', 0)
-            ->whereIn('state', array(
+            ->whereIn('state', [
                 \Plugins\Hubzero\Comments\Models\Comment::STATE_PUBLISHED,
                 \Plugins\Hubzero\Comments\Models\Comment::STATE_FLAGGED
-            ))
+            ])
             ->limit($this->params->get('display_limit', 25))
             ->ordered()
             ->paginated();
@@ -357,7 +357,7 @@ class Comments extends Plugin
         Request::checkToken();
 
         // Incoming
-        $comment = Request::getArray('comment', array(), 'post');
+        $comment = Request::getArray('comment', [], 'post');
 
         // Instantiate a comment object
         $cid = isset($comment['id']) ? (int) $comment['id'] : 0;
@@ -398,7 +398,7 @@ class Comments extends Plugin
         // whole array let a poster fabricate vote counts, hide a reply behind a
         // higher access level, or clear the STATE_FLAGGED that "report abuse"
         // sets on their own comment.
-        $fields = array('content', 'anonymous');
+        $fields = ['content', 'anonymous'];
         if ($__isNew) {
             $fields[] = 'parent';
         }
@@ -451,7 +451,7 @@ class Comments extends Plugin
             );
         }
 
-        $upload = Request::getArray('comment_file', array(), 'files');
+        $upload = Request::getArray('comment_file', [], 'files');
 
         if (!empty($upload) && $upload['name']) {
             if ($upload['error']) {

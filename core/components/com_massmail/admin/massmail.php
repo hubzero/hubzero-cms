@@ -29,10 +29,10 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) 
 }
 
 // Component submenu
-$menuItems = array(
+$menuItems = [
     'status'   => \Lang::txt('COM_MASSMAIL_DASHBOARD'),
     'mailings' => \Lang::txt('COM_MASSMAIL_MAILINGS')
-);
+];
 foreach ($menuItems as $k => $v) {
     $active = (\Request::getCmd('controller', 'status') == $k);
     \Submenu::addEntry($v, \Route::url('index.php?option=com_massmail&controller=' . $k), $active);

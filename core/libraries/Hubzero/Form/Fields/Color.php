@@ -38,7 +38,7 @@ class Color extends Field
         $this->value = '#' . ltrim($this->value, '#');
 
         // Initialize some field attributes.
-        $attributes = array(
+        $attributes = [
             'type'         => 'text',
             'value'        => htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8'),
             'name'         => $this->name,
@@ -50,7 +50,7 @@ class Color extends Field
             'readonly'     => ((string) $this->element['readonly'] == 'true'    ? 'readonly' : ''),
             'disabled'     => ((string) $this->element['disabled'] == 'true'    ? 'disabled' : ''),
             'onchange'     => ($this->element['onchange']  ? (string) $this->element['onchange'] : '')
-        );
+        ];
 
         if (!$attributes['disabled']) {
             Behavior::colorpicker();
@@ -58,7 +58,7 @@ class Color extends Field
             $attributes['class'] .= ' input-colorpicker';
         }
 
-        $attr = array();
+        $attr = [];
         foreach ($attributes as $key => $val) {
             if (!$val) {
                 continue;

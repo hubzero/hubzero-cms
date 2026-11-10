@@ -340,7 +340,7 @@ class Migration20130829203107ComProjects extends Base
         // Add FULLTEXT index for project_microblog (using helper for SQLite compatibility)
         $schema->addFulltextIndex('#__project_microblog', 'title', 'blogentry');
 
-        $componentParams = array(
+        $componentParams = [
             "component_on" => "0",
             "grantinfo" => "0",
             "confirm_step" => "0",
@@ -381,8 +381,8 @@ class Migration20130829203107ComProjects extends Base
             "use_alias" => "1",
             "documentation" => "/projects/features",
             "dbcheck" => "1"
-        );
-        $filesParams = array(
+        ];
+        $filesParams = [
             "maxUpload" => "104857600",
             "maxDownload" => "1048576",
             "reservedNames" => "google , dropbox, shared, temp",
@@ -397,7 +397,7 @@ class Migration20130829203107ComProjects extends Base
             "latex" => "1",
             "texpath" => "/usr/bin/",
             "gspath" => "/usr/bin/"
-        );
+        ];
 
         $this->addComponentEntry('Projects', 'com_projects', 1, $componentParams);
 

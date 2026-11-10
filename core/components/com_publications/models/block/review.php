@@ -72,12 +72,12 @@ class Review extends Base
 
             // Output HTML
             $view = new \Hubzero\Plugin\View(
-                array(
+                [
                     'folder'    => 'projects',
                     'element'   => 'publications',
                     'name'      => $name,
                     'layout'    => 'wrapper'
-                )
+                ]
             );
         }
 
@@ -105,12 +105,12 @@ class Review extends Base
 
         // Output HTML
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'    => 'projects',
                 'element'   => 'publications',
                 'name'      => $name,
                 'layout'    => 'review'
-            )
+            ]
         );
 
         \Hubzero\Document\Assets::addComponentStylesheet('com_projects', 'css/calendar');
@@ -166,7 +166,7 @@ class Review extends Base
 
         // Fall back
         if (!$manifest) {
-            $manifest = array(
+            $manifest = [
                 'name'          => 'review',
                 'label'         => 'Review',
                 'title'         => 'Publication Review',
@@ -174,9 +174,9 @@ class Review extends Base
                 'draftTagline'  => 'Here is your publication at a glance:',
                 'about'         => '',
                 'adminTips'     => '',
-                'elements'      => array(),
-                'params'        => array(  'required' => 1, 'published_editing' => 0 )
-            );
+                'elements'      => [],
+                'params'        => [  'required' => 1, 'published_editing' => 0 ]
+            ];
 
             return json_decode(json_encode($manifest), false);
         }

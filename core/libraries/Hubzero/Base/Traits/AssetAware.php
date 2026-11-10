@@ -31,15 +31,15 @@ trait AssetAware
      * @param   array   $attributes  Attributes
      * @return  object
      */
-    public function css($stylesheet = '', $extension = null, $attributes = array())
+    public function css($stylesheet = '', $extension = null, $attributes = [])
     {
         $extension = $extension ?: $this->detectExtensionName();
 
-        $attr = array_merge(array(
+        $attr = array_merge([
             'type'    => 'text/css',
             'media'   => null,
-            'attribs' => array()
-        ), $attributes);
+            'attribs' => []
+        ], $attributes);
 
         $asset = new Stylesheet($extension, $stylesheet);
 
@@ -64,15 +64,15 @@ trait AssetAware
      * @param   array   $attributes  Attributes
      * @return  object
      */
-    public function js($asset = '', $extension = null, $attributes = array())
+    public function js($asset = '', $extension = null, $attributes = [])
     {
         $extension = $extension ?: $this->detectExtensionName();
 
-        $attr = array_merge(array(
+        $attr = array_merge([
             'type'  => 'text/javascript',
             'defer' => false,
             'async' => false
-        ), $attributes);
+        ], $attributes);
 
         $asset = new Javascript($extension, $asset);
 

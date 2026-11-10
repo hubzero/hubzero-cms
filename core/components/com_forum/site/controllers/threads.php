@@ -72,19 +72,19 @@ class Threads extends SiteController
         }
         if (isset($section)) {
             Pathway::append(
-                Str::truncate(stripslashes($section->get('title')), 100, array('exact' => true)),
+                Str::truncate(stripslashes($section->get('title')), 100, ['exact' => true]),
                 'index.php?option=' . $this->_option . '&section=' . $section->get('alias')
             );
         }
         if (isset($category)) {
             Pathway::append(
-                Str::truncate(stripslashes($category->get('title')), 100, array('exact' => true)),
+                Str::truncate(stripslashes($category->get('title')), 100, ['exact' => true]),
                 'index.php?option=' . $this->_option . '&section=' . $section->get('alias') . '&category=' . $category->get('alias')
             );
         }
         if (isset($thread) && $thread->get('id')) {
             Pathway::append(
-                '#' . $thread->get('id') . ' - ' . Str::truncate(stripslashes($thread->get('title')), 100, array('exact' => true)),
+                '#' . $thread->get('id') . ' - ' . Str::truncate(stripslashes($thread->get('title')), 100, ['exact' => true]),
                 'index.php?option=' . $this->_option . '&section=' . $section->get('alias') . '&category=' . $category->get('alias') . '&thread=' . $thread->get('id')
             );
         }
@@ -102,13 +102,13 @@ class Threads extends SiteController
     {
         $this->_title = Lang::txt(strtoupper($this->_option));
         if (isset($section)) {
-            $this->_title .= ': ' . Str::truncate(stripslashes($section->get('title')), 100, array('exact' => true));
+            $this->_title .= ': ' . Str::truncate(stripslashes($section->get('title')), 100, ['exact' => true]);
         }
         if (isset($category)) {
-            $this->_title .= ': ' . Str::truncate(stripslashes($category->get('title')), 100, array('exact' => true));
+            $this->_title .= ': ' . Str::truncate(stripslashes($category->get('title')), 100, ['exact' => true]);
         }
         if (isset($thread) && $thread->get('id')) {
-            $this->_title .= ': #' . $thread->get('id') . ' - ' . Str::truncate(stripslashes($thread->get('title')), 100, array('exact' => true));
+            $this->_title .= ': #' . $thread->get('id') . ' - ' . Str::truncate(stripslashes($thread->get('title')), 100, ['exact' => true]);
         }
 
         Document::setTitle($this->_title);
@@ -122,7 +122,7 @@ class Threads extends SiteController
     public function displayTask()
     {
         // Incoming
-        $filters = array(
+        $filters = [
             'limit'    => Request::getInt('limit', 25),
             'start'    => Request::getInt('limitstart', 0),
             'section'  => Request::getCmd('section', ''),
@@ -131,7 +131,7 @@ class Threads extends SiteController
             'thread'   => Request::getInt('thread', 0),
             'state'    => Post::STATE_PUBLISHED,
             'access'   => User::getAuthorisedViewLevels()
-        );
+        ];
 
         // Section
         $section = Section::all()
@@ -179,7 +179,7 @@ class Threads extends SiteController
             );
         }
 
-        $filters['state'] = array(1, 3);
+        $filters['state'] = [1, 3];
 
         // Get authorization
         $this->_authorize('category', $category->get('id'));
@@ -353,17 +353,17 @@ class Threads extends SiteController
 
         // Incoming
         $section = Request::getString('section', '');
-        $fields  = Request::getArray('fields', array(), 'post', 'none', 2);
+        $fields  = Request::getArray('fields', [], 'post', 'none', 2);
         $fields  = array_map('trim', $fields);
 
         // Only the columns the edit form offers are bindable; set() copies every
         // key it is handed, and lft/rgt/hits/last_activity/asset_id are the
         // model's to maintain (a posted lft/rgt corrupts the nested set).
-        $fields = array_intersect_key($fields, array_flip(array(
+        $fields = array_intersect_key($fields, array_flip([
             'id', 'title', 'comment', 'category_id', 'access', 'anonymous',
             'parent', 'thread', 'state', 'sticky', 'closed',
             'scope', 'scope_id', 'scope_sub_id', 'object_id'
-        )));
+        ]));
 
         $fields['sticky']    = (isset($fields['sticky']))    ? $fields['sticky']    : 0;
         $fields['closed']    = (isset($fields['closed']))    ? $fields['closed']    : 0;
@@ -390,7 +390,7 @@ class Threads extends SiteController
         // reach the model's own "comment cannot be empty" check instead. Only
         // anchors the mention editor wrote carry a numeric data-user-id; an
         // ordinary hyperlink has none and must not become a blank Bcc entry.
-        $mentionEmailList = array();
+        $mentionEmailList = [];
         if (isset($fields['comment']) && trim($fields['comment']) !== '') {
             $domComment = new DOMDocument();
             $domComment->loadHTML($fields['comment'], LIBXML_NOERROR | LIBXML_NOWARNING);
@@ -555,11 +555,11 @@ class Threads extends SiteController
         $url = 'index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category->get('alias') . '&thread=' . $post->get('thread') . '#c' . $post->get('id');
 
         // Record the activity
-        $recipients = array(
+        $recipients = [
             ['forum.site', 1],
             ['forum.section', $category->get('section_id')],
             ['user', $post->get('created_by')]
-        );
+        ];
         $type = 'thread';
         $desc = Lang::txt(
             'COM_FORUM_ACTIVITY_' . strtoupper($type) . '_' . ($fields['id'] ? 'UPDATED' : 'CREATED'),
@@ -615,10 +615,10 @@ class Threads extends SiteController
                 'scope_id'    => $post->get('id'),
                 'anonymous'   => $post->get('anonymous', 0),
                 'description' => $desc,
-                'details'     => array(
+                'details'     => [
                     'thread' => $post->get('thread'),
                     'url'    => Route::url($url)
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -638,7 +638,7 @@ class Threads extends SiteController
      */
     public function emailToAllMentionedUsers($emails, $comment, $url, $postAuthor)
     {
-        $from = array();
+        $from = [];
         $from['name']  = Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name));
         $from['email'] = Config::get('mailfrom');
 
@@ -646,11 +646,11 @@ class Threads extends SiteController
 
         // BUILDING THE EMAIL TEMPLATE
         $dirTemplate = dirname(dirname(__DIR__));
-        $eView = new \Hubzero\Mail\View(array(
+        $eView = new \Hubzero\Mail\View([
             'base_path' => $dirTemplate . DS . 'site',
             'name'   => 'emails',
             'layout' => 'mentions_html'
-        ));
+        ]);
 
         $eView->comment = $comment;
         $eView->commentNoTags = strip_tags($comment);
@@ -779,15 +779,15 @@ class Threads extends SiteController
                 'scope'       => 'forum.' . $type,
                 'scope_id'    => $post->get('id'),
                 'description' => $desc,
-                'details'     => array(
+                'details'     => [
                     'thread' => $post->get('thread'),
                     'url'    => Route::url($url)
-                )
+                ]
             ],
-            'recipients' => array(
+            'recipients' => [
                 ['forum.site', 1],
                 ['user', $post->get('created_by')]
-            )
+            ]
         ]);
 
         // Redirect to main listing
@@ -898,7 +898,7 @@ class Threads extends SiteController
         }
 
         // Incoming file
-        $file = Request::getArray('upload', array(), 'files');
+        $file = Request::getArray('upload', [], 'files');
         if (!$file || !isset($file['name']) || !$file['name']) {
             if ($attachment->get('id')) {
                 // Only updating the description

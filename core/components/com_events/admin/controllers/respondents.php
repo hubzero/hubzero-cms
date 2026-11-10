@@ -33,7 +33,7 @@ class Respondents extends AdminController
     public function displayTask()
     {
         // Incoming
-        $ids = Request::getArray('id', array(0));
+        $ids = Request::getArray('id', [0]);
         $id = $ids[0];
 
         if (!$id) {
@@ -44,7 +44,7 @@ class Respondents extends AdminController
         }
 
         // Get filters
-        $filters = array(
+        $filters = [
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
@@ -61,7 +61,7 @@ class Respondents extends AdminController
                 'filter_order_Dir',
                 'DESC'
             )
-        );
+        ];
 
         $event = Event::oneOrFail($id);
 
@@ -103,11 +103,11 @@ class Respondents extends AdminController
      */
     public function downloadTask()
     {
-        $filters = array(
+        $filters = [
             'event_id' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.event_id',
                 'id',
-                array()
+                []
             ),
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
@@ -125,7 +125,7 @@ class Respondents extends AdminController
                 'filter_order_Dir',
                 'DESC'
             )
-        );
+        ];
 
         $query = Respondent::all();
 
@@ -137,7 +137,7 @@ class Respondents extends AdminController
 
         if ($filters['event_id']) {
             if (!is_array($filters['event_id'])) {
-                $filters['event_id'] = array($filters['event_id']);
+                $filters['event_id'] = [$filters['event_id']];
             }
             if (!empty($filters['event_id'])) {
                 $query->whereIn('event_id', $filters['event_id']);
@@ -167,8 +167,8 @@ class Respondents extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('rid', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('rid', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $removed = 0;
 
@@ -182,7 +182,7 @@ class Respondents extends AdminController
             }
 
             // Trigger before delete event
-            \Event::trigger('onEventsAfterDeleteRespondent', array($id));
+            \Event::trigger('onEventsAfterDeleteRespondent', [$id]);
 
             $removed++;
         }

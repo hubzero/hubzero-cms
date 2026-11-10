@@ -43,30 +43,30 @@ class Note extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'user_id' => 'positive|nonzero',
         'body'    => 'notempty'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created_user_id',
         'created_time'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $always = array(
+    public $always = [
         'modified_time',
         'modified_user_id'
-    );
+    ];
 
     /**
      * Get parent member

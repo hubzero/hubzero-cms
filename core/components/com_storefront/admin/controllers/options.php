@@ -32,7 +32,7 @@ class Options extends AdminController
     public function displayTask()
     {
         // Get filters
-        $this->view->filters = array(
+        $this->view->filters = [
             // Get sorting variables
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
@@ -57,7 +57,7 @@ class Options extends AdminController
                 0,
                 'int'
             )
-        );
+        ];
 
         // Get option group ID
         $ogId = Request::getInt('ogId', 0);
@@ -118,7 +118,7 @@ class Options extends AdminController
             $this->view->task = 'edit';
         } else {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
 
             if (is_array($id) && !empty($id)) {
                 $id = $id[0];
@@ -138,7 +138,7 @@ class Options extends AdminController
         // Get option group's info
         $ogId = $row->getOptionGroupId();
         $warehouse = new Warehouse();
-        $ogInfo = $warehouse->getOptionGroups('list', $filters = array('ids' => $ogId));
+        $ogInfo = $warehouse->getOptionGroups('list', $filters = ['ids' => $ogId]);
         $this->view->ogInfo = $ogInfo[0];
 
         // Set any errors
@@ -174,7 +174,7 @@ class Options extends AdminController
         Request::checkToken() or exit('Invalid Token');
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         $obj = new Archive();
         // Save option
@@ -223,9 +223,9 @@ class Options extends AdminController
                 Request::setVar('hidemainmenu', 1);
 
                 // Incoming
-                $id = Request::getArray('id', array(0));
+                $id = Request::getArray('id', [0]);
                 if (!is_array($id) && !empty($id)) {
-                    $id = array($id);
+                    $id = [$id];
                 }
                 $this->view->oId = $id;
                 $this->view->ogId = $ogId;
@@ -244,7 +244,7 @@ class Options extends AdminController
                 Request::checkToken();
 
                 // Incoming
-                $oIds = Request::getArray('oId', array());
+                $oIds = Request::getArray('oId', []);
 
                 // Make sure we have ID(s) to work with
                 if (empty($oIds)) {
@@ -265,7 +265,7 @@ class Options extends AdminController
                 if ($delete) {
                     // Do the delete
                     $obj = new Archive();
-                    $warnings = array();
+                    $warnings = [];
 
                     foreach ($oIds as $oId) {
                         // Delete option
@@ -343,8 +343,8 @@ class Options extends AdminController
      */
     public function stateTask($state = 0)
     {
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $ogId = Request::getInt('ogId', 0);
 
@@ -367,7 +367,7 @@ class Options extends AdminController
         foreach ($ids as $oId) {
             // Save option
             try {
-                $obj->updateOption($oId, array('state' => $state));
+                $obj->updateOption($oId, ['state' => $state]);
             } catch (\Exception $e) {
                 Notify::error($e->getMessage());
                 return;
@@ -403,7 +403,7 @@ class Options extends AdminController
      */
     public function cancelTask()
     {
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
         $ogId = $fields['ogId'];
 
         // Set the redirect

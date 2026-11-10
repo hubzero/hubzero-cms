@@ -104,7 +104,7 @@ class Helper
             $member = Profile::getInstance($member);
         }
 
-        $paths = array();
+        $paths = [];
 
         $apppath = trim(substr(PATH_APP, strlen(PATH_ROOT)), DS) . '/site/members';
 

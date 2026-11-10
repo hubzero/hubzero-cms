@@ -38,7 +38,7 @@ class Tools extends Obj
     public function getApplicationTools()
     {
         $dh = @opendir('/opt/trac/tools');
-        $dirs = array();
+        $dirs = [];
 
         if (empty($dh)) {
             return $dirs;
@@ -63,15 +63,15 @@ class Tools extends Obj
     public function forgeTools(array $dirs)
     {
         if (!count($dirs)) {
-            return array();
+            return [];
         }
 
                 $database = App::get('db');
 
-        $names = array_map(array($database, 'quote'), $dirs);
+        $names = array_map([$database, 'quote'], $dirs);
 
-        $stalled   = array(Orm\Tool::STATUS_INSTALLED, Orm\Tool::STATUS_UPDATED, Orm\Tool::STATUS_APPROVED);
-        $listable  = array_merge($stalled, array(Orm\Tool::STATUS_PUBLISHED));
+        $stalled   = [Orm\Tool::STATUS_INSTALLED, Orm\Tool::STATUS_UPDATED, Orm\Tool::STATUS_APPROVED];
+        $listable  = array_merge($stalled, [Orm\Tool::STATUS_PUBLISHED]);
 
         // One row per version; whether a published, non-private standalone
         // tool resource exists for the tool's alias rides along
@@ -89,7 +89,7 @@ class Tools extends Obj
 			ORDER BY v.toolname ASC, (v.state=1) DESC, v.revision DESC, v.id DESC"
         );
 
-        $tools = array();
+        $tools = [];
         foreach ((array) $database->loadObjectList() as $row) {
             // The first row per tool is its newest published version,
             // or failing that its newest development version

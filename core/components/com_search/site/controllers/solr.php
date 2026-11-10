@@ -42,7 +42,7 @@ class Solr extends SiteController
         $pattern = '/([+\-!(){}[\]^"~*?:\\/]|&&|\|\|)/';
         $escaped = preg_replace($pattern, '\\\\$1', $term);
 
-        $reserved = array('AND', 'OR', 'NOT');
+        $reserved = ['AND', 'OR', 'NOT'];
         foreach ($reserved as $word) {
             $escaped = preg_replace('/\b' . $word . '\b/i', '\\\\' . $word, $escaped);
         }
@@ -62,7 +62,7 @@ class Solr extends SiteController
         $query = new \Hubzero\Search\Query($config);
         $boostQueryHelper = new BoostQueryHelper();
 
-        $childTerms = Request::getArray('childTerms', array());
+        $childTerms = Request::getArray('childTerms', []);
         $terms = Request::getString('terms', '');
         $limit = Request::getInt('limit', Config::get('list_limit'));
         $start = Request::getInt('start', 0);
@@ -109,7 +109,7 @@ class Solr extends SiteController
             ->rows();
         foreach ($searchComponents as $searchComponent) {
             $componentQuery = $searchComponent->getSearchQuery('hubtype');
-            $multifacet->createQuery($searchComponent->getQueryName(), $componentQuery, array('exclude' => 'filter_type', 'include' => 'child_type'));
+            $multifacet->createQuery($searchComponent->getQueryName(), $componentQuery, ['exclude' => 'filter_type', 'include' => 'child_type']);
         }
 
         $queryTerms = $this->solrEscape($terms);
@@ -156,7 +156,7 @@ class Solr extends SiteController
             // Add a type
             $urlQuery .= '&type=' . $type;
         } else {
-            $hubTypes = array();
+            $hubTypes = [];
             $hubTypeQuery = '';
             foreach ($searchComponents as $component) {
                 $searchNamespace = $component->getSearchNamespace();
@@ -188,7 +188,7 @@ class Solr extends SiteController
         if (isset($locationFilter)) {
             $query->addFilter('BoundingBox', $locationFilter, 'root_type');
         }
-        $query->fields(array('*', $childFilter));
+        $query->fields(['*', $childFilter]);
 
         // Build the reset of the query string
         $urlQuery .= '&limit=' . $limit;
@@ -214,11 +214,11 @@ class Solr extends SiteController
 
         $results  = $query->getResults();
         $numFound = $query->getNumFound();
-        $facetResult = array();
+        $facetResult = [];
         if (isset($query->resultsFacetSet) && $query->resultsFacetSet) {
             $facetResult = $query->resultsFacetSet->getFacet('hubtypes');
         }
-        $facetCounts = array();
+        $facetCounts = [];
         if (!empty($facetResult)) {
             foreach ($facetResult as $facet => $count) {
                 $facetCounts[$facet] = $count;
@@ -263,7 +263,7 @@ class Solr extends SiteController
 
         // Set the document title
         Document::setTitle($terms ? Lang::txt('COM_SEARCH_RESULTS_FOR', $this->view->escape($terms)) : Lang::txt('COM_SEARCH'));
-        $viewOverrides = array();
+        $viewOverrides = [];
         foreach ($searchComponents as $component) {
             if (!$viewOverride = $component->getViewOverride()) {
                 continue;
@@ -297,18 +297,18 @@ class Solr extends SiteController
      */
     private function formatResults($results, $terms)
     {
-        $highlightOptions = array(
+        $highlightOptions = [
             'format' => '<strong>\1</strong>',
             'html'   => false,
             'regex'  => "|%s|iu"
-        );
+        ];
 
-        $snippetFields = array('description', 'fulltext', 'abstract');
+        $snippetFields = ['description', 'fulltext', 'abstract'];
 
         // Format the results for the view
         foreach ($results as &$result) {
             // Event for special formatting
-            $override = Event::trigger('search.onFormatResult', array($result['hubtype'], &$result, $terms, $highlightOptions));
+            $override = Event::trigger('search.onFormatResult', [$result['hubtype'], &$result, $terms, $highlightOptions]);
 
             // Only allow one override per result
             if (count($override) == 1) {
@@ -335,7 +335,7 @@ class Solr extends SiteController
                 // Do some filtering. A line break in the source is the space
                 // between two words, so it becomes one rather than nothing -
                 // "took four\nof us" was coming out as "took fourof us".
-                $snippet = str_replace(array("<br/>", "<br />", "<br>"), ' ', $snippet);
+                $snippet = str_replace(["<br/>", "<br />", "<br>"], ' ', $snippet);
                 $snippet = preg_replace('/\s+/u', ' ', $snippet);
                 $snippet = \Hubzero\Utility\Str::excerpt($snippet, $terms, $radius = 500, $ellipsis = '…');
                 $snippet = \Hubzero\Utility\Str::highlight($snippet, $terms, $highlightOptions);

@@ -237,8 +237,8 @@ class IpTest extends Basic
      **/
     public function testResolveLiteral()
     {
-        $this->assertEquals(array('2001:db8::1'), \Hubzero\Utility\Ip::resolve('[2001:DB8::1]'));
-        $this->assertEquals(array('192.0.2.7'), \Hubzero\Utility\Ip::resolve('192.0.2.7'));
-        $this->assertEquals(array(), \Hubzero\Utility\Ip::resolve(''));
+        $this->assertEquals(['2001:db8::1'], \Hubzero\Utility\Ip::resolve('[2001:DB8::1]'));
+        $this->assertEquals(['192.0.2.7'], \Hubzero\Utility\Ip::resolve('192.0.2.7'));
+        $this->assertEquals([], \Hubzero\Utility\Ip::resolve(''));
     }
 }

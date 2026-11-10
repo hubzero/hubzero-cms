@@ -52,12 +52,12 @@ class Threadsv1r0 extends ApiController
      */
     public function sectionsTask()
     {
-        $filters = array(
+        $filters = [
             'scope'      => Request::getWord('scope', 'site'),
             'scope_id'   => Request::getInt('scope_id', 0),
             'state'      => Section::STATE_PUBLISHED,
             'access'     => User::getAuthorisedViewLevels()
-        );
+        ];
 
         if ($filters['scope'] == 'group') {
             $group = \Hubzero\User\Group::getInstance($filters['scope_id']);
@@ -70,12 +70,12 @@ class Threadsv1r0 extends ApiController
         $model = new Manager($filters['scope'], $filters['scope_id']);
 
         $response = new stdClass();
-        $response->sections = array();
+        $response->sections = [];
 
-        $sections = $model->sections(array(
+        $sections = $model->sections([
                 'state'  => $filters['state'],
                 'access' => User::getAuthorisedViewLevels()
-            ))
+            ])
             ->ordered()
             ->rows();
 
@@ -171,7 +171,7 @@ class Threadsv1r0 extends ApiController
      */
     public function categoriesTask()
     {
-        $filters = array(
+        $filters = [
             'limit'      => Request::getInt('limit', 25),
             'start'      => Request::getInt('limitstart', 0),
             'section_id' => Request::getInt('section', 0),
@@ -181,7 +181,7 @@ class Threadsv1r0 extends ApiController
             'state'      => Category::STATE_PUBLISHED,
             'closed'     => Request::getVar('closed', null),
             'access'     => User::getAuthorisedViewLevels()
-        );
+        ];
 
         if ($filters['scope'] == 'group') {
             $group = \Hubzero\User\Group::getInstance($filters['scope_id']);
@@ -194,7 +194,7 @@ class Threadsv1r0 extends ApiController
         $forum = new Manager($filters['scope'], $filters['scope_id']);
 
         $response = new stdClass();
-        $response->categories = array();
+        $response->categories = [];
 
         if ($filters['section_id']) {
             // Make sure the section exists and is available
@@ -223,7 +223,7 @@ class Threadsv1r0 extends ApiController
                 ->whereIn('access', $filters['access'])
                 ->rows();
 
-            $filters['section_id'] = array();
+            $filters['section_id'] = [];
 
             foreach ($sections as $section) {
                 $filters['section_id'][] = $section->get('id');
@@ -367,7 +367,7 @@ class Threadsv1r0 extends ApiController
      */
     public function listTask()
     {
-        $filters = array(
+        $filters = [
             'limit'       => Request::getInt('limit', 25),
             'start'       => Request::getInt('limitstart', 0),
             'section_id'  => Request::getInt('section', 0),
@@ -380,7 +380,7 @@ class Threadsv1r0 extends ApiController
             'scope_id'    => Request::getInt('scope_id', 0),
             'state'       => Post::STATE_PUBLISHED,
             'access'      => User::getAuthorisedViewLevels()
-        );
+        ];
         $filters['threads'] = (!$filters['threads'] || $filters['threads'] == 'false') ? false : true;
 
         if ($filters['scope'] == 'group') {
@@ -427,7 +427,7 @@ class Threadsv1r0 extends ApiController
                     ->whereIn('access', $filters['access'])
                     ->rows();
 
-                $filters['category_id'] = array();
+                $filters['category_id'] = [];
 
                 foreach ($categories as $category) {
                     $filters['category_id'][] = $category->get('id');
@@ -468,7 +468,7 @@ class Threadsv1r0 extends ApiController
             ->rows();
 
         $response = new stdClass();
-        $response->threads = array();
+        $response->threads = [];
         $response->total   = $threads->count();
 
         if ($response->total) {
@@ -631,7 +631,7 @@ class Threadsv1r0 extends ApiController
     {
         $this->requiresAuthentication();
 
-        $fields = array(
+        $fields = [
             'category_id'    => Request::getInt('category_id', 0, 'post'),
             'title'          => Request::getString('title', null, 'post', 'none', 2),
             'comment'        => Request::getString('comment', null, 'post', 'none', 2),
@@ -647,7 +647,7 @@ class Threadsv1r0 extends ApiController
             'thread'         => Request::getInt('thread', 0, 'post'),
             'closed'         => Request::getInt('closed', 0, 'post'),
             'hits'           => Request::getInt('hits', 0, 'post'),
-        );
+        ];
 
         if (!$fields['category_id']) {
             throw new Exception(Lang::txt('COM_FORUM_ERROR_CATEGORY_ID_MISSING'), 400);
@@ -740,11 +740,11 @@ class Threadsv1r0 extends ApiController
         $base = rtrim(Request::base(), '/');
         $url  = str_replace('/api', '', $base . '/' . ltrim(Route::url($row->link()), '/'));
 
-        $recipients = array(
+        $recipients = [
             ['forum.site', 1],
             ['forum.section', $category->get('section_id')],
             ['user', $row->get('created_by')]
-        );
+        ];
         $type = 'thread';
         $desc = Lang::txt(
             'COM_FORUM_ACTIVITY_' . strtoupper($type) . '_CREATED',
@@ -787,10 +787,10 @@ class Threadsv1r0 extends ApiController
                 'scope_id'    => $row->get('id'),
                 'anonymous'   => $row->get('anonymous', 0),
                 'description' => $desc,
-                'details'     => array(
+                'details'     => [
                     'thread' => $row->get('thread'),
                     'url'    => $url
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -912,7 +912,7 @@ class Threadsv1r0 extends ApiController
     {
         $find = strtolower(Request::getWord('find', 'results'));
 
-        $filters = array(
+        $filters = [
             'limit'        => Request::getInt('limit', Config::get('list_limit', 25)),
             'start'        => Request::getInt('limitstart', 0),
             'section'      => Request::getCmd('section', ''),
@@ -926,7 +926,7 @@ class Threadsv1r0 extends ApiController
             'start_at'     => Request::getString('start_at', ''),
             'sticky'       => false,
             'access'       => User::getAuthorisedViewLevels()
-        );
+        ];
 
         // Only published posts the caller may see, as listTask() does. Without
         // the access filter every post in a private group forum came back to
@@ -1000,9 +1000,9 @@ class Threadsv1r0 extends ApiController
                 if ($filters['start_id']) {
                     $filters['limit'] = Request::getInt('limit', Config::get('list_limit'));
 
-                    $children = array(
-                        0 => array()
-                    );
+                    $children = [
+                        0 => []
+                    ];
 
                     $levellimit = ($filters['limit'] == 0) ? 500 : $filters['limit'];
 
@@ -1010,7 +1010,7 @@ class Threadsv1r0 extends ApiController
                         $v->set('created', with(new Date($v->get('created')))->format('Y-m-d\TH:i:s\Z'));
 
                         $pt      = $v->get('parent');
-                        $list    = isset($children[$pt]) ? $children[$pt] : array();
+                        $list    = isset($children[$pt]) ? $children[$pt] : [];
                         array_push($list, $v);
                         $children[$pt] = $list;
                     }
@@ -1022,10 +1022,10 @@ class Threadsv1r0 extends ApiController
                         ->whereEquals('parent', 0)
                         ->row();
 
-                    $list = $this->treeRecurse($post->get('id'), '', array(), $children, max(0, $levellimit - 1));
+                    $list = $this->treeRecurse($post->get('id'), '', [], $children, max(0, $levellimit - 1));
 
                     $inc = false;
-                    $newlist = array();
+                    $newlist = [];
                     foreach ($list as $l) {
                         if ($l->id == $filters['start_id']) {
                             $inc = true;
@@ -1042,8 +1042,8 @@ class Threadsv1r0 extends ApiController
             // Shape each post the way listTask() shapes a thread: a Rows object
             // serialises to {} (so the read returned nothing unless start_id
             // built an array), and raw rows would expose every column
-            $posts = array();
-            foreach (($rows ?: array()) as $row) {
+            $posts = [];
+            foreach (($rows ?: []) as $row) {
                 $obj = new stdClass();
                 $obj->id          = $row->get('id');
                 $obj->title       = $row->get('title');
@@ -1103,7 +1103,7 @@ class Threadsv1r0 extends ApiController
 
                 $list[$id] = $v;
                 $list[$id]->treename = "$indent$txt";
-                $list[$id]->children = count($children[$id] ?? array());
+                $list[$id]->children = count($children[$id] ?? []);
 
                 $list = $this->treeRecurse($id, $indent . $spacer, $list, $children, $maxlevel, $level + 1, $type);
             }

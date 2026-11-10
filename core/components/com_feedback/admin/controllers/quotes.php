@@ -45,7 +45,7 @@ class Quotes extends AdminController
     public function displayTask()
     {
         // Incoming
-        $filters = array(
+        $filters = [
             'search' => urldecode(Request::getState(
                 $this->_option . '.search',
                 'search',
@@ -62,7 +62,7 @@ class Quotes extends AdminController
                 'filter_order_Dir',
                 'DESC'
             )
-        );
+        ];
 
         $record = Quote::all();
 
@@ -100,7 +100,7 @@ class Quotes extends AdminController
 
         if (!is_object($row)) {
             // Incoming ID
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             $id = (is_array($id) ? $id[0] : $id);
 
             // Initiate database class and load info
@@ -142,7 +142,7 @@ class Quotes extends AdminController
         }
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         // Initiate model and bind the incoming data to it
         $row = Quote::oneOrNew($fields['id'])->set($fields);
@@ -161,7 +161,7 @@ class Quotes extends AdminController
 
         if (is_dir($path)) {
             // Remove pictures that were marked for deletion
-            $existing = Request::getArray('existingPictures', array(), 'post');
+            $existing = Request::getArray('existingPictures', [], 'post');
             $pictures = Filesystem::files($path);
 
             foreach ($pictures as $picture) {
@@ -214,8 +214,8 @@ class Quotes extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for an ID
         if (!count($ids)) {

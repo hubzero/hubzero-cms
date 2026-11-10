@@ -38,14 +38,14 @@ class Latestblog extends Module
         $this->feedlink  = $this->params->get('feedlink', 'yes');
         $this->limit     = $this->params->get('limit', 5);
 
-        $filters = array(
+        $filters = [
             'limit'    => $this->params->get('limit', 5),
             'start'    => 0,
             'scope'    => $this->params->get('blog', 'site'),
             'scope_id' => 0,
             'state'    => 1,
             'access'   => User::getAuthorisedViewLevels()
-        );
+        ];
         if ($filters['scope'] == 'both' || $filters['scope'] == 'group') {
             // Since some groups May have private entries, we need to up the limit to try and catch more
             $filters['limit'] = ($filters['limit'] * 5);
@@ -59,7 +59,7 @@ class Latestblog extends Module
             ->ordered()
             ->rows();
 
-        $posts = array();
+        $posts = [];
 
         foreach ($rows as $k => $gf) {
             if ($this->params->get('blog', 'site') == 'group' || $this->params->get('blog', 'site') == 'both') {

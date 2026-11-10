@@ -83,13 +83,13 @@ class View
         if (!isset(self::$_sections)) {
             // Trigger the functions that return the areas we'll be using
             // then add overview to array
-            $sections = Event::trigger('groups.onGroupAreas', array());
-            array_unshift($sections, array(
+            $sections = Event::trigger('groups.onGroupAreas', []);
+            array_unshift($sections, [
                 'name'             => 'overview',
                 'title'            => 'Overview',
                 'default_access'   => 'anyone',
                 'display_menu_tab' => true
-            ));
+            ]);
 
             //set instance variable
             self::$_sections = $sections;
@@ -112,10 +112,10 @@ class View
         $authorized = self::authorize($group);
 
         //get before group content
-        $beforeGroupContent = Event::trigger('groups.onBeforeGroup', array(
+        $beforeGroupContent = Event::trigger('groups.onBeforeGroup', [
             $group,
             $authorized
-        ));
+        ]);
 
         //return any before content
         return $beforeGroupContent;
@@ -150,7 +150,7 @@ class View
             $limit = ($limit == 0) ? 'all' : $limit;
 
             // Get the sections
-            $sectionsContent = Event::trigger('groups.onGroup', array(
+            $sectionsContent = Event::trigger('groups.onGroup', [
                     $group,
                     'com_groups',
                     $authorized,
@@ -158,12 +158,12 @@ class View
                     $start,
                     $action,
                     $pluginAccess,
-                    array($tab)
-                ));
+                    [$tab]
+                ]);
 
             // Push the overview content to the array of sections we're going to output
             // Empty now, gets set later so we can have some needed vars for super groups
-            array_unshift($sectionsContent, array('html' => '', 'metadata' => ''));
+            array_unshift($sectionsContent, ['html' => '', 'metadata' => '']);
 
             //set instance var
             self::$_sections_content = $sectionsContent;
@@ -192,11 +192,11 @@ class View
         $active = strtolower(Request::getString('active', 'overview'));
         if ($tab == 'overview' && $tab != $active) {
             $pageArchive = Archive::getInstance();
-            $pages = $pageArchive->pages('list', array(
+            $pages = $pageArchive->pages('list', [
                 'gidNumber' => $group->get('gidNumber'),
-                'state'     => array(0,1),
+                'state'     => [0,1],
                 'orderby'   => 'lft ASC'
-            ));
+            ]);
 
             // fetch the active page
             $activePage = Pages::getActivePage($group, $pages);
@@ -226,20 +226,20 @@ class View
     public static function displaySections($group, $classOrId = 'id="page_menu"')
     {
         // create view object
-        $view = new \Hubzero\Component\View(array(
+        $view = new \Hubzero\Component\View([
             'base_path' => dirname(__DIR__) . '/site',
             'name'   => 'groups',
             'layout' => '_menu'
-        ));
+        ]);
 
         // get group pages if any
         // only get published items that arent set as the home page
         $pageArchive = Archive::getInstance();
-        $pages = $pageArchive->pages('tree', array(
+        $pages = $pageArchive->pages('tree', [
             'gidNumber' => $group->get('gidNumber'),
-            'state'     => array(1),
+            'state'     => [1],
             'orderby'   => 'lft ASC'
-        ), true);
+        ], true);
 
         // pass vars to view
         $view->group           = $group;
@@ -331,11 +331,11 @@ class View
     public static function displaySectionsContent($group, $overviewSection = null)
     {
         // create view object
-        $view = new \Hubzero\Component\View(array(
+        $view = new \Hubzero\Component\View([
             'base_path' => dirname(__DIR__) . '/site',
             'name'   => 'groups',
             'layout' => '_content'
-        ));
+        ]);
 
         // need objects
         $content    = '';
@@ -408,11 +408,11 @@ class View
     public static function displayToolbar($group, $classOrId = 'id="group_options"', $displayLogoutLink = false)
     {
         // create view object
-        $view = new \Hubzero\Component\View(array(
+        $view = new \Hubzero\Component\View([
             'base_path' => dirname(__DIR__) . '/site',
             'name'   => 'groups',
             'layout' => '_toolbar'
-        ));
+        ]);
 
         // pass vars to view
         $view->group      = $group;
@@ -433,7 +433,7 @@ class View
     public static function getPageTemplates($group)
     {
         // array to hold page templates
-        $pageTemplates = array();
+        $pageTemplates = [];
 
         // make sure we only get templates for super groups
         if (!$group->isSuperGroup()) {
@@ -523,7 +523,7 @@ class View
 
         // make sure it was a success
         if ($info['http_code'] != '200') {
-            return array();
+            return [];
         }
 
         // load html through dom document object
@@ -542,7 +542,7 @@ class View
         $ss = $domDocumentXml->xpath('//link[@rel="stylesheet"]');
 
         // array to hold stylesheets for ckeditor
-        $stylesheets = array();
+        $stylesheets = [];
         foreach ($ss as $s) {
             if ($s->attributes()->media == 'print') {
                 continue;
@@ -635,13 +635,13 @@ class View
         $document = App::get('document');
         $document->addStylesheet('/core/plugins/system/debug/assets/css/debug.css');
         $document->addStylesheet('/core/components/com_groups/site/assets/css/groups.css');
-        $document->setBuffer($errorTemplate, array('type' => 'component', 'name' => ''));
-        $fullTemplate = $document->render(false, array(
+        $document->setBuffer($errorTemplate, ['type' => 'component', 'name' => '']);
+        $fullTemplate = $document->render(false, [
             'template'  => 'system',
             'file'      => 'group.php',
             'directory' => PATH_CORE . DS . 'templates',
             'baseurl'   => rtrim(Request::root(true), '/') . '/core'
-        ));
+        ]);
 
         // echo to screen
         $response = App::get('response');
@@ -673,11 +673,11 @@ class View
         }
 
         // create view object
-        $view = new \Hubzero\Component\View(array(
+        $view = new \Hubzero\Component\View([
             'base_path' => dirname(__DIR__) . '/site',
             'name'   => 'pages',
             'layout' => '_view_login'
-        ));
+        ]);
 
         // if super group add super group folder
         // to available paths
@@ -722,7 +722,7 @@ class View
         define('JPATH_GROUPCOMPONENT', $templateComponentFolder);
 
         // Call plugin to capture super group component route segments
-        Event::trigger('onBeforeRenderSuperGroupComponent', array());
+        Event::trigger('onBeforeRenderSuperGroupComponent', []);
 
         // include and render component
         ob_start();
@@ -731,11 +731,11 @@ class View
         ob_end_clean();
 
         // create view object
-        $view = new \Hubzero\Component\View(array(
+        $view = new \Hubzero\Component\View([
             'base_path' => dirname(__DIR__) . '/site',
             'name'   => 'pages',
             'layout' => '_view_component'
-        ));
+        ]);
 
         // if super group add super group folder
         // to available paths
@@ -825,11 +825,11 @@ class View
         $phpPageContent = $eval();
 
         // create view object
-        $view = new \Hubzero\Component\View(array(
+        $view = new \Hubzero\Component\View([
             'base_path' => dirname(__DIR__) . '/site',
             'name'   => 'pages',
             'layout' => '_view_php'
-        ));
+        ]);
 
         // if super group add super group folder
         // to available paths

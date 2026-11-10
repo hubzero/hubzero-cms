@@ -80,7 +80,7 @@ class Utils
      */
     public static function getDiskUsage($username)
     {
-        $info = array();
+        $info = [];
 
         $config = Component::params('com_tools');
         $host = $config->get('storagehost');
@@ -210,7 +210,7 @@ class Utils
      * @param      array $newarray Parameter description (if any) ...
      * @return     array Return description (if any) ...
      */
-    public static function transform($array, $label, $newarray = array())
+    public static function transform($array, $label, $newarray = [])
     {
         if (count($array) > 0) {
             foreach ($array as $a) {
@@ -234,7 +234,7 @@ class Utils
      * @param      array $logins Parameter description (if any) ...
      * @return     array Return description (if any) ...
      */
-    public static function getLogins($uids, $logins = array())
+    public static function getLogins($uids, $logins = [])
     {
         if (is_array($uids)) {
             foreach ($uids as $uid) {
@@ -336,7 +336,7 @@ class Utils
 
         // Check if the user is in any groups for this app
         $ingroup = false;
-        $groups = array();
+        $groups = [];
         $indevgroup = false;
         if ($xgroups) {
             foreach ($xgroups as $xgroup) {
@@ -440,7 +440,7 @@ class Utils
         $country = \Hubzero\Geocode\Geocode::ipcountry($ip);
 
         //if we dont know the users location and its a restricted to we have to deny access
-        if (empty($country) && in_array($export_control, array('us', 'd1', 'pu'))) {
+        if (empty($country) && in_array($export_control, ['us', 'd1', 'pu'])) {
             $export_access->valid = 0;
             $export_access->error->message = Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_UNKNOWN');
             Log::debug("mw::_getToolExportControl($export_control) FAILED location export control check");

@@ -82,10 +82,10 @@ $this->css()
                 </dd>
             <?php if ($this->row->get('allow_comments')) {
                     $comments = $this->row->comments()
-                        ->whereIn('state', array(
+                        ->whereIn('state', [
                             Components\Blog\Models\Comment::STATE_PUBLISHED,
                             Components\Blog\Models\Comment::STATE_FLAGGED
-                        ))
+                        ])
                         ->count();
                 ?>
                 <dd class="comments">
@@ -125,10 +125,10 @@ $this->css()
         <div class="container blog-popular-entries">
             <h4><?php echo Lang::txt('PLG_MEMBERS_BLOG_POPULAR_ENTRIES'); ?></h4>
             <?php
-            $filters = array(
-                'state' => array(Components\Blog\Models\Entry::STATE_PUBLISHED),
+            $filters = [
+                'state' => [Components\Blog\Models\Entry::STATE_PUBLISHED],
                 'access' => User::getAuthorisedViewLevels()
-            );
+            ];
             if (User::get('id') == $this->member->get('id')) {
                 $filters['state'][] = Components\Blog\Models\Entry::STATE_UNPUBLISHED;
                 unset($filters['access']);
@@ -165,10 +165,10 @@ $this->css()
                 ->including(['creator', function ($creator) {
                     $creator->select('*');
                 }])
-                ->whereIn('state', array(
+                ->whereIn('state', [
                     Components\Blog\Models\Comment::STATE_PUBLISHED,
                     Components\Blog\Models\Comment::STATE_FLAGGED
-                ))
+                ])
                 ->whereEquals('parent', 0)
                 ->ordered()
                 ->rows();
@@ -206,10 +206,10 @@ $this->css()
                     <?php
                         $replyto = $this->row->comments()
                             ->whereEquals('id', Request::getInt('reply', 0))
-                            ->whereIn('state', array(
+                            ->whereIn('state', [
                                 Components\Blog\Models\Comment::STATE_PUBLISHED,
                                 Components\Blog\Models\Comment::STATE_FLAGGED
-                            ))
+                            ])
                             ->row();
 
                     if ($replyto->get('id')) {
@@ -238,7 +238,7 @@ $this->css()
                         <?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_COMMENTS'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
                         <?php
                         if (!User::isGuest()) {
-                            echo $this->editor('comment[content]', '', 40, 15, 'commentcontent', array('class' => 'minimal no-footer'));
+                            echo $this->editor('comment[content]', '', 40, 15, 'commentcontent', ['class' => 'minimal no-footer']);
                         } else {
                             ?>
                         <p class="warning">

@@ -44,7 +44,7 @@ class Authors extends AdminController
     public function displayTask()
     {
         // Get filters
-        $filters = array(
+        $filters = [
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
@@ -61,7 +61,7 @@ class Authors extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         // Get records
         $model = Author::all();
@@ -95,7 +95,7 @@ class Authors extends AdminController
 
         if (!is_array($rows)) {
             // Incoming
-            $authorid = Request::getArray('id', array(0));
+            $authorid = Request::getArray('id', [0]);
             if (is_array($authorid)) {
                 $authorid = (!empty($authorid) ? $authorid[0] : 0);
             }
@@ -141,7 +141,7 @@ class Authors extends AdminController
         }
 
         // Incoming
-        $fields   = Request::getArray('fields', array(), 'post');
+        $fields   = Request::getArray('fields', [], 'post');
         $authorid = Request::getInt('authorid', 0);
         $id       = Request::getInt('id', 0);
 
@@ -149,7 +149,7 @@ class Authors extends AdminController
             return $this->cancelTask();
         }
 
-        $rows = array();
+        $rows = [];
 
         if (is_array($fields)) {
             foreach ($fields as $fieldset) {

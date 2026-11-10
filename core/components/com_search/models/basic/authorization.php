@@ -33,7 +33,7 @@ class Authorization
     public function __construct()
     {
         if (User::isGuest()) {
-            $this->groups = array();
+            $this->groups = [];
             return;
         }
 
@@ -88,7 +88,7 @@ class Authorization
 				WHERE xm.uidNumber = ' . $this->uid
             );
 
-            $this->groups = array();
+            $this->groups = [];
             foreach ($dbh->loadAssocList() as $row) {
                 $this->groups[$row['gidNumber']] = $row['cn'];
             }

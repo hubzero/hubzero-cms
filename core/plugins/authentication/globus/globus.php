@@ -122,7 +122,7 @@ class Globus extends \Hubzero\Plugin\OauthClient
     {
         $returnUrl = Request::getString('return', '');
         $provider = $this->globus();
-        $loginUrl = $provider->getAuthorizationUrl(array('scope' => ['openid', 'email', 'profile']));
+        $loginUrl = $provider->getAuthorizationUrl(['scope' => ['openid', 'email', 'profile']]);
         Session::set('state', $provider->getState(), 'globus');
         Session::set('returnUrl', $returnUrl, 'globus');
         // Redirect to the login URL
@@ -146,7 +146,7 @@ class Globus extends \Hubzero\Plugin\OauthClient
                 throw new \Exception('Mismatched state');
             }
             Session::clear('state', 'globus');
-            $token = $this->globus()->getAccessToken('authorization_code', array('code' => Request::getString('code')));
+            $token = $this->globus()->getAccessToken('authorization_code', ['code' => Request::getString('code')]);
         } catch (\Exception $e) {
             $response->status = \Hubzero\Auth\Status::FAILURE;
             $response->error_message = Lang::txt('PLG_AUTHENTICATION_GLOBUS_ERROR_RETRIEVING_PROFILE', $e->getMessage());
@@ -204,10 +204,10 @@ class Globus extends \Hubzero\Plugin\OauthClient
             // If we have a real user, drop the authenticator cookie
             if (isset($user) && is_object($user)) {
                 // Set cookie with login preference info
-                $prefs = array(
+                $prefs = [
                     'user_id'       => $user->get('id'),
                     'authenticator' => 'globus'
-                );
+                ];
 
                 $namespace = 'authenticator';
                 $lifetime  = time() + 365 * 24 * 60 * 60;
@@ -226,7 +226,7 @@ class Globus extends \Hubzero\Plugin\OauthClient
      * @param   array  $options
      * @return  void
      */
-    public function link($options = array())
+    public function link($options = [])
     {
         try {
                 $storedState = Session::get('state', null, 'globus');

@@ -65,7 +65,7 @@ trait InteractsWithInertiaResponses
     {
         $headers = isset($response->headers->headers) && is_array($response->headers->headers)
             ? $response->headers->headers
-            : array();
+            : [];
 
         $this->assertArrayHasKey($header, $headers, 'Expected Inertia header missing: ' . $header);
 

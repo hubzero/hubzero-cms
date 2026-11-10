@@ -38,7 +38,7 @@ class Handler extends Plugin
      * @param   integer  $element
      * @return  boolean  True if no errors
      */
-    public function onTakeAction($type, $uids = array(), $component = '', $element = null)
+    public function onTakeAction($type, $uids = [], $component = '', $element = null)
     {
         // Do we have the proper bits?
         if (!$element || !$component || !$type) {
@@ -95,8 +95,8 @@ class Handler extends Plugin
         $type,
         $subject,
         $message,
-        $from = array(),
-        $to = array(),
+        $from = [],
+        $to = [],
         $component = '',
         $element = null,
         $description = '',
@@ -119,10 +119,10 @@ class Handler extends Plugin
             $daily_limit = intval($this->params->get('daily_limit', 100));
 
             // First, let's see if they've surpassed their daily limit for sending messages
-            $filters = array(
+            $filters = [
                 'created_by'  => User::get('id'),
                 'daily_limit' => $daily_limit
-            );
+            ];
 
             $number_sent = $xmessage->getSentMessagesCount($filters);
 
@@ -209,7 +209,7 @@ class Handler extends Plugin
             // Get all the sender's groups
             if ($mconfig->get('user_messaging', 1) == 1 && !$bypassGroupsCheck) {
                 $xgroups = User::groups('all');
-                $usersgroups = array();
+                $usersgroups = [];
                 if (!empty($xgroups)) {
                     foreach ($xgroups as $group) {
                         if ($group->regconfirmed) {
@@ -244,7 +244,7 @@ class Handler extends Plugin
                     && ($type == 'member_message' || $type == 'group_message')
                 ) {
                     $pgroups = \Hubzero\User\Helper::getGroups($user->get('id'), 'all', 1);
-                    $profilesgroups = array();
+                    $profilesgroups = [];
                     if (!empty($pgroups)) {
                         foreach ($pgroups as $group) {
                             if ($group->regconfirmed) {
@@ -271,7 +271,7 @@ class Handler extends Plugin
                                 $this->setError($recipient->getError());
                             }
                         } else {
-                            if (!Event::trigger('onMessage', array($from, $xmessage, $user, $action))) {
+                            if (!Event::trigger('onMessage', [$from, $xmessage, $user, $action])) {
                                 $this->setError(Lang::txt(
                                     'PLG_XMESSAGE_HANDLER_ERROR_UNABLE_TO_MESSAGE',
                                     $uid,
@@ -296,7 +296,7 @@ class Handler extends Plugin
                         }
 
                         // Use the Default in the case the user has no methods
-                        if (!Event::trigger('onMessage', array($from, $xmessage, $user, $d))) {
+                        if (!Event::trigger('onMessage', [$from, $xmessage, $user, $d])) {
                             $this->setError(Lang::txt('PLG_XMESSAGE_HANDLER_ERROR_UNABLE_TO_MESSAGE', $uid, $d));
                         }
                     }

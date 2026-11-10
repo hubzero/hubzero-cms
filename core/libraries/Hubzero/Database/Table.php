@@ -118,7 +118,7 @@ abstract class Table extends \stdClass
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_errors = array();
+    protected $_errors = [];
 
     /**
      * Magic method to convert the object to a string gracefully.
@@ -349,7 +349,7 @@ abstract class Table extends \stdClass
      * @param   array   $config  An optional array of configuration values for the Table object.
      * @return  mixed   A Table object if found or boolean false if one could not be found.
      */
-    public static function getInstance($type, $prefix = 'Table', $config = array())
+    public static function getInstance($type, $prefix = 'Table', $config = [])
     {
         // Sanitize and prepare the table class name.
         $type = preg_replace('/[^A-Z0-9_\.-]/i', '', $type);
@@ -397,7 +397,7 @@ abstract class Table extends \stdClass
 
         // If the internal paths have not been initialised, do so with the base table path.
         if (!isset($_paths)) {
-            $_paths = array(__DIR__ . '/table');
+            $_paths = [__DIR__ . '/table'];
         }
 
         // Convert the passed path(s) to add to an array.
@@ -574,7 +574,7 @@ abstract class Table extends \stdClass
      * @param   mixed    $ignore  An optional array or space separated list of properties to ignore while binding.
      * @return  boolean  True on success.
      */
-    public function bind($src, $ignore = array())
+    public function bind($src, $ignore = [])
     {
         // If the source value is not an array or object return false.
         if (!is_object($src) && !is_array($src)) {
@@ -628,10 +628,10 @@ abstract class Table extends \stdClass
                 return true;
             }
 
-            $keys = array($keyName => $keyValue);
+            $keys = [$keyName => $keyValue];
         } elseif (!is_array($keys)) {
             // Load by primary key.
-            $keys = array($this->_tbl_key => $keys);
+            $keys = [$this->_tbl_key => $keys];
         }
 
         if ($reset) {
@@ -731,7 +731,7 @@ abstract class Table extends \stdClass
             return false;
         }
 
-        Event::trigger('system.onContentSave', array($this->getTableName(), $this));
+        Event::trigger('system.onContentSave', [$this->getTableName(), $this]);
 
         // If the table is not set to track assets return true.
         if (!$this->_trackAssets) {
@@ -787,9 +787,9 @@ abstract class Table extends \stdClass
 
             $query = $this->_db->getQuery();
             $query->update($this->_tbl);
-            $query->set(array(
+            $query->set([
                 'asset_id' => (int) $this->asset_id
-            ));
+            ]);
             $query->whereEquals($k, (int) $this->$k);
             $this->_db->setQuery($query->toString());
 
@@ -949,10 +949,10 @@ abstract class Table extends \stdClass
         // Check the row out by primary key.
         $query = $this->_db->getQuery();
         $query->update($this->_tbl);
-        $query->set(array(
+        $query->set([
             'checked_out' => (int) $userId,
             'checked_out_time' => $time
-        ));
+        ]);
         $query->whereEquals($this->_tbl_key, $pk);
         $this->_db->setQuery($query->toString());
 
@@ -1011,10 +1011,10 @@ abstract class Table extends \stdClass
         // Check the row in by primary key.
         $query = $this->_db->getQuery();
         $query->update($this->_tbl);
-        $query->set(array(
+        $query->set([
             'checked_out' => $data['checked_out'],
             'checked_out_time' => $data['checked_out_time']
-        ));
+        ]);
         $query->whereEquals($this->_tbl_key, $pk);
         $this->_db->setQuery($query->toString());
 
@@ -1060,9 +1060,9 @@ abstract class Table extends \stdClass
         // Check the row in by primary key.
         $query = $this->_db->getQuery();
         $query->update($this->_tbl);
-        $query->set(array(
+        $query->set([
             'hits' => new \Hubzero\Database\Value\Raw('(hits + 1)')
-        ));
+        ]);
         $query->whereEquals($this->_tbl_key, $pk);
         $this->_db->setQuery($query->toString());
 
@@ -1231,9 +1231,9 @@ abstract class Table extends \stdClass
                     // Update the row ordering field.
                     $query = $this->_db->getQuery();
                     $query->update($this->_tbl);
-                    $query->set(array(
+                    $query->set([
                         'ordering' => ($i + 1)
-                    ));
+                    ]);
                     $query->whereEquals($this->_tbl_key, $row->$k);
                     $this->_db->setQuery($query->toString());
 
@@ -1310,7 +1310,7 @@ abstract class Table extends \stdClass
             // Update the ordering field for this instance to the row's ordering value.
             $query = $this->_db->getQuery();
             $query->update($this->_tbl);
-            $query->set(array('ordering' => (int) $row->ordering));
+            $query->set(['ordering' => (int) $row->ordering]);
             $query->whereEquals($this->_tbl_key, $this->$k);
             $this->_db->setQuery($query->toString());
 
@@ -1327,7 +1327,7 @@ abstract class Table extends \stdClass
             // Update the ordering field for the row to this instance's ordering value.
             $query = $this->_db->getQuery();
             $query->update($this->_tbl);
-            $query->set(array('ordering' => (int) $this->ordering));
+            $query->set(['ordering' => (int) $this->ordering]);
             $query->whereEquals($this->_tbl_key, $row->$k);
             $this->_db->setQuery($query->toString());
 
@@ -1347,7 +1347,7 @@ abstract class Table extends \stdClass
             // Update the ordering field for this instance.
             $query = $this->_db->getQuery();
             $query->update($this->_tbl);
-            $query->set(array('ordering' => (int) $this->ordering));
+            $query->set(['ordering' => (int) $this->ordering]);
             $query->whereEquals($this->_tbl_key, $this->$k);
             $this->_db->setQuery($query->toString());
 
@@ -1389,7 +1389,7 @@ abstract class Table extends \stdClass
         // If there are no primary keys set check to see if the instance key is set.
         if (empty($pks)) {
             if ($this->$k) {
-                $pks = array($this->$k);
+                $pks = [$this->$k];
             } else {
             // Nothing to set publishing state on, return false.
                 $e = new Exception('No rows selected');
@@ -1402,7 +1402,7 @@ abstract class Table extends \stdClass
         // Update the publishing state for rows with the given primary keys.
         $query = $this->_db->getQuery();
         $query->update($this->_tbl);
-        $query->set(array('published' => (int) $state));
+        $query->set(['published' => (int) $state]);
 
         // Determine if there is checkin support for the table.
         if (property_exists($this, 'checked_out') || property_exists($this, 'checked_out_time')) {
@@ -1496,7 +1496,7 @@ abstract class Table extends \stdClass
                 return false;
             }
 
-            $msg = array();
+            $msg = [];
             $i = 0;
 
             foreach ($joins as $table) {
@@ -1531,7 +1531,7 @@ abstract class Table extends \stdClass
     public function toXML($mapKeysToText = false)
     {
         // Initialise variables.
-        $xml = array();
+        $xml = [];
         $map = $mapKeysToText ? ' mapkeystotext="true"' : '';
 
         // Open root node.

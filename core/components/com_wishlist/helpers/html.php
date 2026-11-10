@@ -114,8 +114,8 @@ class Html
             return Lang::txt('No date provided');
         }
 
-        $periods = array('second', 'minute', 'hour', 'day', 'week', 'month', 'year', 'decade');
-        $lengths = array('60', '60', '24', '7', '4.35', '12', '10');
+        $periods = ['second', 'minute', 'hour', 'day', 'week', 'month', 'year', 'decade'];
+        $lengths = ['60', '60', '24', '7', '4.35', '12', '10'];
 
         $now = time();
         $unix_date = strtotime($date);

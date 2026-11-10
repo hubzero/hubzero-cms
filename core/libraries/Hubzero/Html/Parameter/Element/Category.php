@@ -58,9 +58,9 @@ class Category extends Element
         return Builder\Select::genericlist(
             Builder\Category::options($extension),
             $control_name . '[' . $name . ']',
-            array(
+            [
                 'class' => $class
-            ),
+            ],
             'value',
             'text',
             (int) $value,

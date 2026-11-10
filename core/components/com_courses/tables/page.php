@@ -81,11 +81,11 @@ class Page extends Table
      * @param  array $filters
      * @return $query database query
      */
-    private function buildQuery($filters = array())
+    private function buildQuery($filters = [])
     {
         $query = " FROM $this->_tbl AS r";
 
-        $where = array();
+        $where = [];
         if (isset($filters['course_id'])) {
             $where[] = "r.`course_id`=" . $this->_db->quote($filters['course_id']);
         }
@@ -139,7 +139,7 @@ class Page extends Table
      * @param  array $filters
      * @return object Return course units
      */
-    public function count($filters = array())
+    public function count($filters = [])
     {
         $query  = "SELECT COUNT(DISTINCT r.`url`) ";
         $query .= $this->buildQuery($filters);
@@ -155,7 +155,7 @@ class Page extends Table
      * @param      boolean $active Parameter description (if any) ...
      * @return     array
      */
-    public function find($filters = array())
+    public function find($filters = [])
     {
         $sql = "SELECT r.*" . $this->buildQuery($filters);
 

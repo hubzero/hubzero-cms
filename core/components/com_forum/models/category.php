@@ -48,34 +48,34 @@ class Category extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'title'      => 'notempty',
         'section_id' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      **/
-    public $always = array(
+    public $always = [
         'alias',
         'modified',
         'modified_by',
         'scope',
         'asset_id'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'created_by',
         'ordering'
-    );
+    ];
 
     /**
      * ACL asset rules
@@ -324,11 +324,11 @@ class Category extends Relational
         $valid = parent::validate();
 
         if ($valid) {
-            $results = Event::trigger('content.onContentBeforeSave', array(
+            $results = Event::trigger('content.onContentBeforeSave', [
                 'com_forum.category.description',
                 &$this,
                 $this->isNew()
-            ));
+            ]);
 
             foreach ($results as $result) {
                 if ($result === false) {
@@ -434,13 +434,13 @@ class Category extends Relational
      * @param   array   $data
      * @return  object
      */
-    public function getForm($data = array())
+    public function getForm($data = [])
     {
         $name = strtolower($this->getModelName());
         $file = __DIR__ . '/forms/' . $name . '.xml';
         $file = Filesystem::cleanPath($file);
 
-        $form = new Form('com_forum.' . $name, array('control' => 'data'));
+        $form = new Form('com_forum.' . $name, ['control' => 'data']);
 
         if (!$form->loadFile($file, false, '//form')) {
             $this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));

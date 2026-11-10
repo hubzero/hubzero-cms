@@ -45,7 +45,7 @@ class Sessions extends AdminController
     public function displayTask()
     {
         // Get filters
-        $filters = array(
+        $filters = [
             'username' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.username',
                 'username',
@@ -85,7 +85,7 @@ class Sessions extends AdminController
                 0,
                 'int'
             )
-        );
+        ];
 
         // In case limit has been changed, adjust limitstart accordingly
         $filters['limit'] = ($filters['limit'] == 'all') ? 0 : $filters['limit'];
@@ -128,8 +128,8 @@ class Sessions extends AdminController
         Request::checkToken(['get', 'post']);
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $stopped = 0;
 
@@ -146,7 +146,7 @@ class Sessions extends AdminController
                 }
 
                 // Trigger any events that need to be called before session stop
-                Event::trigger('mw.onBeforeSessionStop', array($row->appname));
+                Event::trigger('mw.onBeforeSessionStop', [$row->appname]);
 
                 // Stop the session
                 $status = Utils::middleware("stop $id", $output);
@@ -161,7 +161,7 @@ class Sessions extends AdminController
                 }
 
                 // Trigger any events that need to be called after session stop
-                Event::trigger('mw.onAfterSessionStop', array($row->appname));
+                Event::trigger('mw.onAfterSessionStop', [$row->appname]);
 
                 $stopped++;
             }
@@ -182,10 +182,10 @@ class Sessions extends AdminController
     public function classesTask()
     {
         // Incoming
-        $filters = array(
+        $filters = [
             'limit' => Request::getState($this->_option . '.classes.limit', 'limit', Config::get('list_limit'), 'int'),
             'start' => Request::getState($this->_option . '.classes.limitstart', 'limitstart', 0, 'int')
-        );
+        ];
 
         $obj = new Tables\SessionClass($this->database);
 
@@ -221,7 +221,7 @@ class Sessions extends AdminController
 
         if (!$id) {
             // Incoming
-            $id = Request::getArray('id', array());
+            $id = Request::getArray('id', []);
 
             // Get the single ID we're working with
             if (is_array($id)) {
@@ -252,7 +252,7 @@ class Sessions extends AdminController
         Request::checkToken();
 
         // Incoming fields
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         // Load the profile
         $row = new Tables\SessionClass($this->database);
@@ -302,8 +302,8 @@ class Sessions extends AdminController
         Request::checkToken();
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Do we have any IDs?
         if (!empty($ids)) {

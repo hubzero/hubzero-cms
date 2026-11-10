@@ -62,12 +62,12 @@ class Links extends Plugin
      */
     public function &onProjectAreas($alias = null)
     {
-        $area = array(
+        $area = [
             'name'    => 'links',
             'title'   => 'Links',
             'submenu' => null,
             'show'    => false
-        );
+        ];
 
         return $area;
     }
@@ -110,11 +110,11 @@ class Links extends Plugin
         // Model
         $this->model = $model;
 
-        $tasks = array(
+        $tasks = [
             'browser', 'select' , 'parseurl',
             'parsedoi', 'addcitation', 'deletecitation',
             'newcite', 'editcite', 'savecite'
-        );
+        ];
 
         // Publishing?
         if (in_array($this->_task, $tasks)) {
@@ -167,10 +167,10 @@ class Links extends Plugin
                     break;
             }
 
-            $arr = array(
+            $arr = [
                 'html'     => $html,
                 'metadata' => ''
-            );
+            ];
 
             return $arr;
         }
@@ -281,7 +281,7 @@ class Links extends Plugin
     public function savecite()
     {
         // Incoming
-        $cite    = Request::getArray('cite', array(), 'post');
+        $cite    = Request::getArray('cite', [], 'post');
         $vid     = Request::getInt('vid', 0);
         $pid     = Request::getInt('pid', 0);
         $version = Request::getString('version', 'dev');
@@ -498,7 +498,7 @@ class Links extends Plugin
 
                     // Hub types don't match library types
                     // Trying to match the best we can
-                    $validTypes = array();
+                    $validTypes = [];
                     foreach ($types as $type) {
                         if ($type['type'] == $dType) {
                             $citation->set('type', $type['id']);
@@ -593,12 +593,12 @@ class Links extends Plugin
 
         // Output HTML
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'links',
                 'name'    => 'selector',
                 'layout'  => $layout
-            )
+            ]
         );
 
         $view->publication = new \Components\Publications\Models\Publication($pid, null, $vid);
@@ -607,11 +607,11 @@ class Links extends Plugin
         if (!$view->publication->exists()) {
             // Output error
             $view = new \Hubzero\Plugin\View(
-                array(
+                [
                     'folder'  => 'projects',
                     'element' => 'files',
                     'name'    => 'error'
-                )
+                ]
             );
 
             $view->title  = '';
@@ -679,12 +679,12 @@ class Links extends Plugin
 
         // Output HTML
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'links',
                 'name'    => 'selector',
                 'layout'  => 'edit'
-            )
+            ]
         );
 
         // Load classes
@@ -708,11 +708,11 @@ class Links extends Plugin
         if ($this->getError()) {
             // Output error
             $view = new \Hubzero\Plugin\View(
-                array(
+                [
                     'folder'  => 'projects',
                     'element' => 'files',
                     'name'    => 'error'
-                )
+                ]
             );
 
             $view->title  = '';
@@ -758,11 +758,11 @@ class Links extends Plugin
 
         // Output HTML
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'links',
                 'name'    => 'browser'
-            )
+            ]
         );
 
         // Get current attachments
@@ -770,7 +770,7 @@ class Links extends Plugin
         $role  = $primary ? '1' : '0';
         $other = $primary ? '0' : '1';
 
-        $view->attachments = $pContent->getAttachments($versionid, $filters = array('role' => $role, 'type' => 'link'));
+        $view->attachments = $pContent->getAttachments($versionid, $filters = ['role' => $role, 'type' => 'link']);
 
         // Output HTML
         $view->option    = $this->_option;
@@ -820,7 +820,7 @@ class Links extends Plugin
     {
         // Incoming
         $url = $url ? $url : urldecode(Request::getString('url', $url));
-        $output = array('rtype' => 'url', 'message' => '');
+        $output = ['rtype' => 'url', 'message' => ''];
 
         if (!$url) {
             $output['error'] = Lang::txt('PLG_PROJECTS_LINKS_EMPTY_URL');
@@ -863,7 +863,7 @@ class Links extends Plugin
             }
 
             if ($citation == false && is_object($data)) {
-                $output['data'] = array();
+                $output['data'] = [];
                 foreach ($data as $key => $value) {
                     $output['data'][$key] = $value;
                 }
@@ -886,7 +886,7 @@ class Links extends Plugin
                 return json_encode($output);
             }
 
-            $options = array(
+            $options = [
                 CURLOPT_RETURNTRANSFER => true,     // return web page
                 CURLOPT_HEADER         => false,    // don't return headers
                 CURLOPT_FOLLOWLOCATION => false,    // redirects are validated hop by hop below
@@ -895,7 +895,7 @@ class Links extends Plugin
                 CURLOPT_CONNECTTIMEOUT => 5,        // timeout on connect
                 CURLOPT_TIMEOUT        => 5,        // timeout on response
                 CURLOPT_PROTOCOLS      => CURLPROTO_HTTP | CURLPROTO_HTTPS,
-            );
+            ];
 
             $content  = false;
             $finalUrl = $url;
@@ -965,7 +965,7 @@ class Links extends Plugin
 
                 //Get all images found on this page
                 $jpgs = $html->find('img[src$=jpg],img[src$=png]');
-                $images = array();
+                $images = [];
 
                 if ($jpgs) {
                     foreach ($jpgs as $jpg) {
@@ -1064,7 +1064,7 @@ class Links extends Plugin
     {
         // Include metadata model
 
-        $format = in_array($format, array('apa', 'ieee')) ? $format : 'apa';
+        $format = in_array($format, ['apa', 'ieee']) ? $format : 'apa';
 
         $ch  = curl_init();
         $url = 'https://doi.org/doi:' . $doi;
@@ -1077,17 +1077,17 @@ class Links extends Plugin
             curl_setopt(
                 $ch,
                 CURLOPT_HTTPHEADER,
-                array (
+                [
                 "Accept: text/x-bibliography; style=" . $format
-                )
+                ]
             );
         } else {
             curl_setopt(
                 $ch,
                 CURLOPT_HTTPHEADER,
-                array (
+                [
                 "Accept: application/x-datacite+xml;q=0.9, application/citeproc+json;q=1.0"
-                )
+                ]
             );
         }
 

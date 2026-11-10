@@ -38,7 +38,7 @@ class Privatetext extends GroupMacro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['html']  = '<p>Display private content. Note: Content wrapped in this macro will ' .
             '<strong>only</strong> be displayed to logged-in members of the group.</p>';
         $txt['html'] .= '<p>Examples:</p>
@@ -69,7 +69,7 @@ class Privatetext extends GroupMacro
             return;
         }
 
-        if (in_array($arg, array('start', 'open', 'begin'))) {
+        if (in_array($arg, ['start', 'open', 'begin'])) {
             $this->open = true;
 
             return '<private>';
@@ -92,7 +92,7 @@ class Privatetext extends GroupMacro
             $text = preg_replace('/<private>(.*?)<\/private>/iusm', '', $text);
         }
 
-        $text = str_replace(array('<private>', '</private>'), '', $text);
+        $text = str_replace(['<private>', '</private>'], '', $text);
 
         return $text;
     }

@@ -13,11 +13,11 @@ use Hubzero\Facades\Lang;
 defined('_HZEXEC_') or die();
 
 // Create the copy/move options.
-$options = array(
+$options = [
     Html::select('option', 'add', Lang::txt('COM_MEMBERS_BATCH_ADD')),
     Html::select('option', 'del', Lang::txt('COM_MEMBERS_BATCH_DELETE')),
     Html::select('option', 'set', Lang::txt('COM_MEMBERS_BATCH_SET'))
-);
+];
 
 ?>
 <fieldset class="batch">

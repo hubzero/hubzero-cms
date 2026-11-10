@@ -29,7 +29,7 @@ class Anchor extends Macro
      */
     public function description()
     {
-        $txt = array();
+        $txt = [];
         $txt['wiki'] = 'Inserts an anchor into a page.';
         $txt['html'] = '<p>Inserts an anchor into a page.</p>';
         return $txt['html'];

@@ -106,7 +106,7 @@ class Recipients
         }
 
         // --- Members of one or more groups -----------------------------------
-        $gids = isset($spec['groups']) ? self::resolveGroups($spec['groups']) : array();
+        $gids = isset($spec['groups']) ? self::resolveGroups($spec['groups']) : [];
         if ($gids) {
             $in = implode(',', $gids);
             $db->setQuery(
@@ -121,7 +121,7 @@ class Recipients
         }
 
         // --- Specific users ---------------------------------------------------
-        $uids = isset($spec['users']) ? self::resolveUsers($spec['users']) : array();
+        $uids = isset($spec['users']) ? self::resolveUsers($spec['users']) : [];
         if ($uids) {
             $in = implode(',', $uids);
             $db->setQuery(
@@ -139,9 +139,9 @@ class Recipients
         // hard and opt-out filters apply to it exactly as if the user had been
         // picked by id, so typing an address can't reach someone the picker
         // would have excluded. Only addresses with no account are sent as typed.
-        $emails = self::validEmails(isset($spec['emails']) ? $spec['emails'] : array());
+        $emails = self::validEmails(isset($spec['emails']) ? $spec['emails'] : []);
         if ($emails) {
-            $in = implode(',', array_map(array($db, 'quote'), $emails));
+            $in = implode(',', array_map([$db, 'quote'], $emails));
 
             $db->setQuery(
                 "INSERT IGNORE INTO `#__massmail_recipients` (mailing_id, uid, email, name, status)
@@ -179,7 +179,7 @@ class Recipients
      */
     protected static function validEmails($emails)
     {
-        $out = array();
+        $out = [];
         foreach ((array) $emails as $em) {
             $em = strtolower(trim((string) $em));
             if ($em !== '' && filter_var($em, FILTER_VALIDATE_EMAIL)) {
@@ -207,7 +207,7 @@ class Recipients
         // Condition that selects the account-based recipients (all, groups, and
         // specific users combined). Counted as DISTINCT emails so overlaps between
         // the sources collapse -- matching what expand() actually queues.
-        $conds = array();
+        $conds = [];
         if (!empty($spec['all'])) {
             $conds[] = '1=1';
         } else {
@@ -238,7 +238,7 @@ class Recipients
         $raw      = self::validEmails($spec['emails']);
         $rawCount = count($raw);
         if ($rawCount) {
-            $in = implode(',', array_map(array($db, 'quote'), $raw));
+            $in = implode(',', array_map([$db, 'quote'], $raw));
 
             // Addresses with an account that the filters exclude: not sent.
             $db->setQuery(
@@ -273,26 +273,26 @@ class Recipients
     public static function normalizeSpec($spec)
     {
         if (!is_array($spec)) {
-            return array('all' => false, 'groups' => array(), 'users' => array(), 'emails' => array());
+            return ['all' => false, 'groups' => [], 'users' => [], 'emails' => []];
         }
 
         // Legacy: one selected type carried the meaning.
         if (isset($spec['type'])) {
             $t = $spec['type'];
-            return array(
+            return [
                 'all'    => ($t === 'all'),
-                'groups' => ($t === 'group') ? (array) (isset($spec['groups']) ? $spec['groups'] : array()) : array(),
-                'users'  => ($t === 'user')  ? (array) (isset($spec['users'])  ? $spec['users']  : array()) : array(),
-                'emails' => ($t === 'email') ? (array) (isset($spec['emails']) ? $spec['emails'] : array()) : array(),
-            );
+                'groups' => ($t === 'group') ? (array) (isset($spec['groups']) ? $spec['groups'] : []) : [],
+                'users'  => ($t === 'user')  ? (array) (isset($spec['users'])  ? $spec['users']  : []) : [],
+                'emails' => ($t === 'email') ? (array) (isset($spec['emails']) ? $spec['emails'] : []) : [],
+            ];
         }
 
-        return array(
+        return [
             'all'    => !empty($spec['all']),
-            'groups' => isset($spec['groups']) ? (array) $spec['groups'] : array(),
-            'users'  => isset($spec['users'])  ? (array) $spec['users']  : array(),
-            'emails' => isset($spec['emails']) ? (array) $spec['emails'] : array(),
-        );
+            'groups' => isset($spec['groups']) ? (array) $spec['groups'] : [],
+            'users'  => isset($spec['users'])  ? (array) $spec['users']  : [],
+            'emails' => isset($spec['emails']) ? (array) $spec['emails'] : [],
+        ];
     }
 
     /**
@@ -306,12 +306,12 @@ class Recipients
     {
         $tokens = array_filter(array_map('trim', (array) $tokens), 'strlen');
         if (!$tokens) {
-            return array();
+            return [];
         }
 
         $db    = \App::get('db');
-        $ids   = array();
-        $names = array();
+        $ids   = [];
+        $names = [];
         foreach ($tokens as $t) {
             if (ctype_digit((string) $t)) {
                 $ids[] = (int) $t;
@@ -320,7 +320,7 @@ class Recipients
             }
         }
 
-        $where = array();
+        $where = [];
         if ($ids) {
             $where[] = 'gidNumber IN (' . implode(',', $ids) . ')';
         }
@@ -328,7 +328,7 @@ class Recipients
             $where[] = 'cn IN (' . implode(',', $names) . ')';
         }
         if (!$where) {
-            return array();
+            return [];
         }
 
         $db->setQuery("SELECT gidNumber FROM `#__xgroups` WHERE " . implode(' OR ', $where));
@@ -346,12 +346,12 @@ class Recipients
     {
         $tokens = array_filter(array_map('trim', (array) $tokens), 'strlen');
         if (!$tokens) {
-            return array();
+            return [];
         }
 
         $db    = \App::get('db');
-        $ids   = array();
-        $names = array();
+        $ids   = [];
+        $names = [];
         foreach ($tokens as $t) {
             if (ctype_digit((string) $t)) {
                 $ids[] = (int) $t;
@@ -360,7 +360,7 @@ class Recipients
             }
         }
 
-        $where = array();
+        $where = [];
         if ($ids) {
             $where[] = 'id IN (' . implode(',', $ids) . ')';
         }
@@ -368,7 +368,7 @@ class Recipients
             $where[] = 'username IN (' . implode(',', $names) . ')';
         }
         if (!$where) {
-            return array();
+            return [];
         }
 
         $db->setQuery("SELECT id FROM `#__users` WHERE " . implode(' OR ', $where));
@@ -387,14 +387,14 @@ class Recipients
     {
         $gids = self::resolveGroups($tokens);
         if (!$gids) {
-            return array();
+            return [];
         }
 
         $db = \App::get('db');
         $db->setQuery("SELECT gidNumber, cn, description FROM `#__xgroups` WHERE gidNumber IN (" . implode(',', $gids) . ") ORDER BY cn ASC");
-        $out = array();
+        $out = [];
         foreach ((array) $db->loadObjectList() as $g) {
-            $out[] = array('token' => $g->cn, 'label' => (trim((string) $g->description) !== '' ? $g->description : $g->cn));
+            $out[] = ['token' => $g->cn, 'label' => (trim((string) $g->description) !== '' ? $g->description : $g->cn)];
         }
         return $out;
     }
@@ -410,16 +410,16 @@ class Recipients
     {
         $ids = self::resolveUsers($tokens);
         if (!$ids) {
-            return array();
+            return [];
         }
 
         $db = \App::get('db');
         $db->setQuery("SELECT id, username, name FROM `#__users` WHERE id IN (" . implode(',', $ids) . ") ORDER BY name ASC");
-        $out = array();
+        $out = [];
         foreach ((array) $db->loadObjectList() as $u) {
             $name  = trim((string) $u->name);
             $label = $name !== '' ? ($name . ' (' . $u->username . ')') : $u->username;
-            $out[] = array('token' => (int) $u->id, 'label' => $label);
+            $out[] = ['token' => (int) $u->id, 'label' => $label];
         }
         return $out;
     }

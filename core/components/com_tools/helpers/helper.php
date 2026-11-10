@@ -88,7 +88,7 @@ class Helper
      * @param   array   $newarray
      * @return  array
      */
-    public static function transform($array, $label, $newarray = array())
+    public static function transform($array, $label, $newarray = [])
     {
         if (count($array) > 0) {
             foreach ($array as $a) {
@@ -110,7 +110,7 @@ class Helper
      * @param   array  $logins
      * @return  arra
      */
-    public static function getLogins($uids, $logins = array())
+    public static function getLogins($uids, $logins = [])
     {
         if (is_array($uids)) {
             foreach ($uids as $uid) {

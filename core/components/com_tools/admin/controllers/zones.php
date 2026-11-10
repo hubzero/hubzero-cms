@@ -51,7 +51,7 @@ class Zones extends AdminController
     public function displayTask()
     {
         // Get filters
-        $this->view->filters = array(
+        $this->view->filters = [
             'zone' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.zone',
                 'zone',
@@ -86,7 +86,7 @@ class Zones extends AdminController
                 0,
                 'int'
             )
-        );
+        ];
 
         // In case limit has been changed, adjust limitstart accordingly
         $this->view->filters['start'] = ($this->view->filters['limit'] != 0
@@ -161,8 +161,8 @@ class Zones extends AdminController
         Request::checkToken();
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
-        $params = Request::getArray('zoneparams', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
+        $params = Request::getArray('zoneparams', [], 'post');
         $row    = new Middleware\Zone($fields['id']);
 
         $fields['params'] = json_encode($params);
@@ -258,7 +258,7 @@ class Zones extends AdminController
         Request::checkToken();
 
         // Incoming
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
 
         $mwdb = Utils::getMWDBO();
 
@@ -331,7 +331,7 @@ class Zones extends AdminController
         // Ensure we have an ID to work with
         $id = Request::getInt('id', 0);
         if (!$id) {
-            echo json_encode(array('error' => Lang::txt('COM_TOOLS_ERROR_MISSING_ID')));
+            echo json_encode(['error' => Lang::txt('COM_TOOLS_ERROR_MISSING_ID')]);
             return;
         }
 
@@ -341,12 +341,12 @@ class Zones extends AdminController
         $path = $zone->logo('path');
 
         if (!$path) {
-            echo json_encode(array('error' => $this->getError()));
+            echo json_encode(['error' => $this->getError()]);
             return;
         }
 
         // allowed extensions for uplaod
-        $allowedExtensions = array('png','jpeg','jpg','gif');
+        $allowedExtensions = ['png','jpeg','jpg','gif'];
 
         // max upload size
         $sizeLimit = $this->config->get('maxAllowed', 40000000);
@@ -361,25 +361,25 @@ class Zones extends AdminController
             $file = $_FILES['qqfile']['name'];
             $size = (int) $_FILES['qqfile']['size'];
         } else {
-            echo json_encode(array('error' => Lang::txt('COM_TOOLS_ERROR_NO_FILE')));
+            echo json_encode(['error' => Lang::txt('COM_TOOLS_ERROR_NO_FILE')]);
             return;
         }
 
         if (!is_dir($path)) {
             if (!Filesystem::makeDirectory($path)) {
-                echo json_encode(array('error' => Lang::txt('COM_TOOLS_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH')));
+                echo json_encode(['error' => Lang::txt('COM_TOOLS_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH')]);
                 return;
             }
         }
 
         if (!is_writable($path)) {
-            echo json_encode(array('error' => Lang::txt('COM_TOOLS_ERROR_DIRECTORY_NOT_WRITABLE')));
+            echo json_encode(['error' => Lang::txt('COM_TOOLS_ERROR_DIRECTORY_NOT_WRITABLE')]);
             return;
         }
 
         // check to make sure we have a file and its not too big
         if ($size == 0) {
-            echo json_encode(array('error' => Lang::txt('COM_TOOLS_ERROR_EMPTY_FILE')));
+            echo json_encode(['error' => Lang::txt('COM_TOOLS_ERROR_EMPTY_FILE')]);
             return;
         }
         if ($size > $sizeLimit) {
@@ -388,7 +388,7 @@ class Zones extends AdminController
                 '$1',
                 \Hubzero\Utility\Number::formatBytes($sizeLimit)
             );
-            echo json_encode(array('error' => Lang::txt('COM_TOOLS_ERROR_FILE_TOO_LARGE', $max)));
+            echo json_encode(['error' => Lang::txt('COM_TOOLS_ERROR_FILE_TOO_LARGE', $max)]);
             return;
         }
 
@@ -403,7 +403,7 @@ class Zones extends AdminController
 
         $ext = isset($pathinfo['extension']) ? $pathinfo['extension'] : '';
         if (!in_array(strtolower($ext), $allowedExtensions)) {
-            echo json_encode(array('error' => Lang::txt('COM_TOOLS_ERROR_INVALID_FILE_TYPE')));
+            echo json_encode(['error' => Lang::txt('COM_TOOLS_ERROR_INVALID_FILE_TYPE')]);
             return;
         }
 
@@ -430,7 +430,7 @@ class Zones extends AdminController
             // Remove old image
             if (file_exists($path . DS . $curfile)) {
                 if (!Filesystem::delete($path . DS . $curfile)) {
-                    echo json_encode(array('error' => Lang::txt('COM_TOOLS_ERROR_UNABLE_TO_DELETE_FILE')));
+                    echo json_encode(['error' => Lang::txt('COM_TOOLS_ERROR_UNABLE_TO_DELETE_FILE')]);
                     return;
                 }
             }
@@ -438,7 +438,7 @@ class Zones extends AdminController
 
         $zone->set('picture', $filename . '.' . $ext);
         if (!$zone->store()) {
-            echo json_encode(array('error' => $zone->getError()));
+            echo json_encode(['error' => $zone->getError()]);
             return;
         }
 
@@ -446,7 +446,7 @@ class Zones extends AdminController
         list($width, $height, $type, $attr) = getimagesize($file);
 
         //echo result
-        echo json_encode(array(
+        echo json_encode([
             'success'   => true,
             'file'      => $filename . '.' . $ext,
             'directory' => str_replace(PATH_APP, '', $path),
@@ -454,7 +454,7 @@ class Zones extends AdminController
             'size'      => \Hubzero\Utility\Number::formatBytes($this_size),
             'width'     => $width,
             'height'    => $height
-        ));
+        ]);
     }
 
     /**
@@ -511,7 +511,7 @@ class Zones extends AdminController
         $file['name'] = str_replace(' ', '_', $file['name']);
 
         // Restrict to image types, as the ajax upload path does
-        $allowedExtensions = array('png', 'jpeg', 'jpg', 'gif');
+        $allowedExtensions = ['png', 'jpeg', 'jpg', 'gif'];
         if (!in_array(strtolower(Filesystem::extension($file['name'])), $allowedExtensions)) {
             $this->setError(Lang::txt('COM_TOOLS_ERROR_INVALID_FILE_TYPE'));
             $this->pictureTask('', $id);
@@ -558,7 +558,7 @@ class Zones extends AdminController
         // Ensure we have an ID to work with
         $id = Request::getInt('id', 0);
         if (!$id) {
-            echo json_encode(array('error' => Lang::txt('COM_TOOLS_ERROR_MISSING_ID')));
+            echo json_encode(['error' => Lang::txt('COM_TOOLS_ERROR_MISSING_ID')]);
             return;
         }
 
@@ -567,7 +567,7 @@ class Zones extends AdminController
         // Build the path
         $path = $zone->logo('path');
         if (!$path) {
-            echo json_encode(array('error' => $this->getError()));
+            echo json_encode(['error' => $this->getError()]);
             return;
         }
 
@@ -578,7 +578,7 @@ class Zones extends AdminController
         } else {
             // Attempt to delete the file
             if (!Filesystem::delete($path . DS . $file)) {
-                echo json_encode(array('error' => Lang::txt('COM_TOOLS_ERROR_UNABLE_TO_DELETE_FILE')));
+                echo json_encode(['error' => Lang::txt('COM_TOOLS_ERROR_UNABLE_TO_DELETE_FILE')]);
                 return;
             }
         }
@@ -586,12 +586,12 @@ class Zones extends AdminController
         // Instantiate a model, change some info and save
         $zone->set('picture', '');
         if (!$zone->store()) {
-            echo json_encode(array('error' => $zone->getError()));
+            echo json_encode(['error' => $zone->getError()]);
             return;
         }
 
         //echo result
-        echo json_encode(array(
+        echo json_encode([
             'success'   => true,
             'file'      => '',
             'directory' => str_replace(PATH_APP, '', $path),
@@ -599,7 +599,7 @@ class Zones extends AdminController
             'size'      => 0,
             'width'     => 0,
             'height'    => 0
-        ));
+        ]);
     }
 
     /**

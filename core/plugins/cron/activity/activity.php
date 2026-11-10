@@ -31,13 +31,13 @@ class Activity extends Plugin
 
         $obj = new \stdClass();
         $obj->plugin = $this->_name;
-        $obj->events = array(
-            array(
+        $obj->events = [
+            [
                 'name'   => 'emailMemberDigest',
                 'label'  => Lang::txt('PLG_CRON_ACTIVITY_EMAIL_MEMBER_DIGEST'),
                 'params' => 'emailmemberdigest'
-            ),
-        );
+            ],
+        ];
 
         return $obj;
     }
@@ -71,13 +71,13 @@ class Activity extends Plugin
         // 2 = digest daily
         // 3 = digest weekly
         // 4 = digest monthly
-        $intervals = array(
+        $intervals = [
             0 => 'none',
             1 => 'now',
             2 => 'day',
             3 => 'week',
             4 => 'month'
-        );
+        ];
 
         // Check frequency (this plugin should run early every morning)
         // If daily, run every day
@@ -165,11 +165,11 @@ class Activity extends Plugin
             return false;
         }
 
-        $eview = new \Hubzero\Mail\View(array(
+        $eview = new \Hubzero\Mail\View([
             'base_path' => PATH_CORE . DS . 'plugins' . DS . 'members' . DS . 'activity',
             'name'      => 'emails',
             'layout'    => 'digest_plain'
-        ));
+        ]);
         $eview->member   = $user;
         $eview->rows     = $posts;
         $eview->interval = $interval;

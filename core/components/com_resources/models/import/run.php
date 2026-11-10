@@ -46,19 +46,19 @@ class Run extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'import_id' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'ran_at',
         'ran_by'
-    );
+    ];
 
     /**
      * Generates automatic ran at field value

@@ -20,14 +20,14 @@ class Migration20190221000000ComCitations extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__citations' => array(
+    public static $tables = [
+        '#__citations' => [
             'created',
             'date_submit',
             'date_accept',
             'date_publish'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

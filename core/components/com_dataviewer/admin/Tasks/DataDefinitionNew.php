@@ -45,7 +45,7 @@ class DataDefinitionNew
         $jdb = \Hubzero\Database\Driver::getInstance($db_conf['database_ro']);
 
 
-        $dd = array();
+        $dd = [];
         $dd['table'] = $table;
         $dd['title'] = $title;
 
@@ -63,7 +63,7 @@ class DataDefinitionNew
 
             $colKey = $dd['table'] . '.' . $col['Field'];
             $label = ucwords(str_replace('_', ' ', $col['Field']));
-            $dd['cols'][$colKey] = array('label' => $label);
+            $dd['cols'][$colKey] = ['label' => $label];
         }
 
 
@@ -73,7 +73,7 @@ class DataDefinitionNew
         // the quote itself need escaping (addslashes would also leave a stray
         // backslash before every double quote in the title)
         $sq = function ($s) {
-            return str_replace(array('\\', "'"), array('\\\\', "\\'"), (string) $s);
+            return str_replace(['\\', "'"], ['\\\\', "\\'"], (string) $s);
         };
         $dd_text .= "\t" . '$dd[\'title\'] = \'' . $sq($title) . '\';' . "\n";
         $dd_text .= "\t" . '$dd[\'table\'] = \'' . $sq($dd['table']) . '\';' . "\n";

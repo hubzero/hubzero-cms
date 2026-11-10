@@ -24,10 +24,10 @@ class WhosOnline extends AdminController
     public function displayTask()
     {
         // get all sessions
-        $this->view->rows = SessionHelper::getAllSessions(array(
+        $this->view->rows = SessionHelper::getAllSessions([
             'guest'    => 0,
             'distinct' => 1
-        ));
+        ]);
 
         // Output the HTML
         $this->view->display();

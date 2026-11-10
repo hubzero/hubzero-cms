@@ -45,7 +45,7 @@ class Notes extends AdminController
     public function displayTask()
     {
         // Incoming
-        $filters = array(
+        $filters = [
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
@@ -79,7 +79,7 @@ class Notes extends AdminController
                 'filter_order_Dir',
                 'DESC'
             )
-        );
+        ];
 
         $entries = Note::all()
             ->including(['member', function ($member) {
@@ -136,7 +136,7 @@ class Notes extends AdminController
 
         if (!$row) {
             // Incoming
-            $id = Request::getArray('id', array());
+            $id = Request::getArray('id', []);
 
             // Get the single ID we're working with
             if (is_array($id)) {
@@ -170,7 +170,7 @@ class Notes extends AdminController
         Request::checkToken();
 
         // Incoming password blacklist edits
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         // Load the record
         $row = Note::oneOrNew($fields['id'])->set($fields);
@@ -203,8 +203,8 @@ class Notes extends AdminController
         Request::checkToken();
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $i = 0;
 

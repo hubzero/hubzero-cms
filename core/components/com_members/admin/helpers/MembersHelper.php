@@ -92,7 +92,7 @@ class MembersHelper
         Submenu::addEntry(
             Lang::txt('COM_MEMBERS_MENU_REGISTRATION'),
             Route::url('index.php?option=com_members&controller=registration'),
-            (in_array($controllerName, array('registration', 'organizations', 'employers', 'incremental', 'premis')))
+            (in_array($controllerName, ['registration', 'organizations', 'employers', 'incremental', 'premis']))
         );
 
         if ($canDo->get('core.admin')) {

@@ -103,9 +103,9 @@ class Enrollment extends AdminController
 
         $managers = $course->get('managers');
 
-        $mbrs = Request::getArray('users', array(0), 'post');
+        $mbrs = Request::getArray('users', [0], 'post');
 
-        $users = array();
+        $users = [];
         foreach ($mbrs as $mbr) {
             // Retrieve user's account info
             $targetuser = User::getInstance($mbr);

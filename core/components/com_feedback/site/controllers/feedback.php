@@ -57,7 +57,7 @@ class Feedback extends SiteController
                 'index.php?option=' . $this->_option
             );
         }
-        if ($this->_task && in_array($this->_task, array('story', 'poll', 'sendstory', 'suggestions'))) {
+        if ($this->_task && in_array($this->_task, ['story', 'poll', 'sendstory', 'suggestions'])) {
             Pathway::append(
                 Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
                 'index.php?option=' . $this->_option . '&task=' . $this->_task
@@ -74,7 +74,7 @@ class Feedback extends SiteController
     protected function _buildTitle()
     {
         $this->_title = Lang::txt(strtoupper($this->_option));
-        if ($this->_task && in_array($this->_task, array('story', 'poll', 'sendstory', 'suggestions'))) {
+        if ($this->_task && in_array($this->_task, ['story', 'poll', 'sendstory', 'suggestions'])) {
             $this->_title .= ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
         }
 
@@ -155,10 +155,10 @@ class Feedback extends SiteController
         }
 
         // Incoming
-        $quote = array(
+        $quote = [
             'long'  => Request::getString('quote', '', 'post'),
             'short' => Request::getString('short_quote', '', 'post')
-        );
+        ];
 
         // Set page title
         $this->_buildTitle();
@@ -228,11 +228,11 @@ class Feedback extends SiteController
 
         Request::checkToken();
 
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         // Only the story form's own fields; everything else on the row (notes,
         // admin_rating, short_quote, notable_quote, ...) is set by an admin
-        $fields = array_intersect_key($fields, array_flip(array('fullname', 'org', 'quote', 'publish_ok', 'contact_ok')));
+        $fields = array_intersect_key($fields, array_flip(['fullname', 'org', 'quote', 'publish_ok', 'contact_ok']));
         $fields = array_map('trim', array_filter($fields, 'is_scalar'));
 
         $fields['user_id'] = User::get('id');
@@ -271,7 +271,7 @@ class Feedback extends SiteController
             return $this->storyTask($row);
         }
 
-        $addedPictures = array();
+        $addedPictures = [];
 
         $path = $row->filespace() . DS . $row->get('id');
         if (!is_dir($path)) {
@@ -352,7 +352,7 @@ class Feedback extends SiteController
     {
         // Check if they're logged in
         if (User::isGuest()) {
-            echo json_encode(array('error' => Lang::txt('COM_FEEDBACK_STORY_LOGIN')));
+            echo json_encode(['error' => Lang::txt('COM_FEEDBACK_STORY_LOGIN')]);
             return;
         }
 
@@ -373,7 +373,7 @@ class Feedback extends SiteController
             $file = $_FILES['qqfile']['name'];
             $size = (int) $_FILES['qqfile']['size'];
         } else {
-            echo json_encode(array('error' => Lang::txt('COM_FEEDBACK_ERROR_FILE_NOT_FOUND')));
+            echo json_encode(['error' => Lang::txt('COM_FEEDBACK_ERROR_FILE_NOT_FOUND')]);
             return;
         }
 
@@ -382,25 +382,25 @@ class Feedback extends SiteController
 
         if (!is_dir($path)) {
             if (!Filesystem::makeDirectory($path)) {
-                echo json_encode(array('error' => Lang::txt('COM_FEEDBACK_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH')));
+                echo json_encode(['error' => Lang::txt('COM_FEEDBACK_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH')]);
                 return;
             }
         }
 
         if (!is_writable($path)) {
-            echo json_encode(array('error' => Lang::txt('COM_FEEDBACK_ERROR_UPLOAD_PATH_IS_NOT_WRITABLE')));
+            echo json_encode(['error' => Lang::txt('COM_FEEDBACK_ERROR_UPLOAD_PATH_IS_NOT_WRITABLE')]);
             return;
         }
 
         // Check to make sure we have a file and its not too big
         if ($size == 0) {
-            echo json_encode(array('error' => Lang::txt('COM_FEEDBACK_ERROR_EMPTY_FILE')));
+            echo json_encode(['error' => Lang::txt('COM_FEEDBACK_ERROR_EMPTY_FILE')]);
             return;
         }
 
         if ($size > $sizeLimit) {
             $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', Number::formatBytes($sizeLimit));
-            echo json_encode(array('error' => Lang::txt('COM_FEEDBACK_ERROR_FILE_TOO_LARGE', $max)));
+            echo json_encode(['error' => Lang::txt('COM_FEEDBACK_ERROR_FILE_TOO_LARGE', $max)]);
             return;
         }
 
@@ -425,7 +425,7 @@ class Feedback extends SiteController
 
         if (!empty($allowed) && !in_array(strtolower($ext), $allowed)) {
             $errorMsg = Lang::txt('COM_FEEDBACK_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed));
-            echo json_encode(array('error' => $errorMsg));
+            echo json_encode(['error' => $errorMsg]);
             return;
         }
 
@@ -447,20 +447,20 @@ class Feedback extends SiteController
 
         if (!Filesystem::isSafe($file)) {
             if (Filesystem::delete($file)) {
-                echo json_encode(array(
+                echo json_encode([
                     'success' => false,
                     'error'  => Lang::txt('COM_FEEDBACK_ERROR_FILE_FAILED_VIRUS_SCAN')
-                ));
+                ]);
                 return;
             }
         }
 
         // Output result
-        echo json_encode(array(
+        echo json_encode([
             'success'    => true,
             'file'       => $filename . '.' . $ext,
             'directory'  => str_replace(PATH_ROOT, '', $path),
-        ));
+        ]);
     }
 
     /**

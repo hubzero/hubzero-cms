@@ -20,9 +20,9 @@ class Migration20190306000000ComWhatsnew extends Base
      *
      * @var  array
      **/
-    public static $components = array(
+    public static $components = [
         'com_whatsnew'
-    );
+    ];
 
     /**
      * Up
@@ -30,7 +30,7 @@ class Migration20190306000000ComWhatsnew extends Base
     public function up()
     {
         if ($this->db->tableExists('#__menu')) {
-            $components = array();
+            $components = [];
             foreach (self::$components as $name) {
                 $components[] = $this->db->quote($name);
             }
@@ -52,7 +52,7 @@ class Migration20190306000000ComWhatsnew extends Base
     public function down()
     {
         if ($this->db->tableExists('#__menu')) {
-            $components = array();
+            $components = [];
             foreach (self::$components as $option) {
                 // Check for an admin menu entry...if it's not there, create it
                 $query = "SELECT `id` FROM `#__menu` WHERE `menutype` = 'main' AND `title` = "

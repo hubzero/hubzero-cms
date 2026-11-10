@@ -37,13 +37,13 @@ class Memberoptions extends Plugin
      */
     public function &onGroupAreas()
     {
-        $area = array(
+        $area = [
             'name' => 'memberoptions',
             'title' => Lang::txt('GROUP_MEMBEROPTIONS'),
             'default_access' => 'registered',
             'display_menu_tab' => $this->params->get('display_tab', 0),
             'icon' => '2699'
-        );
+        ];
 
         return $area;
     }
@@ -64,9 +64,9 @@ class Memberoptions extends Plugin
     public function onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)
     {
         // The output array we're returning
-        $arr = array(
+        $arr = [
             'html' => ''
-        );
+        ];
 
         $user = User::getInstance();
         $this->group = $group;
@@ -143,12 +143,12 @@ class Memberoptions extends Plugin
             $user->get('id'),
             'receive-forum-email'
         );
-        $row->set(array(
+        $row->set([
             'userid'      => $user->get('id'),
             'gidNumber'   => $group->get('gidNumber'),
             'optionname'  => 'receive-forum-email',
             'optionvalue' => $recvEmailOptionValue
-        ));
+        ]);
 
         // Store content
         if (!$row->save()) {
@@ -157,7 +157,7 @@ class Memberoptions extends Plugin
         }
 
         if (Request::getInt('no_html')) {
-            echo json_encode(array('success' => true));
+            echo json_encode(['success' => true]);
             exit();
         }
 

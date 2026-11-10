@@ -402,7 +402,7 @@ $formAction = Route::url(
                     break;
             }
 
-            $pages = $p->count(array('gidNumber' => $row->gidNumber));
+            $pages = $p->count(['gidNumber' => $row->gidNumber]);
 
             //get group invite emails
             $inviteemails = \Hubzero\User\Group\InviteEmail::all()

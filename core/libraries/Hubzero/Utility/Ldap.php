@@ -19,24 +19,24 @@ class Ldap
      *
      * @var  array
      */
-    private static $errors = array(
+    private static $errors = [
         'errors'   => true,
-        'fatal'    => array(),
-        'warnings' => array()
-    );
+        'fatal'    => [],
+        'warnings' => []
+    ];
 
     /**
      * Success messages
      *
      * @var  array
      */
-    private static $success = array(
+    private static $success = [
         'success'   => true,
         'added'     => 0,
         'deleted'   => 0,
         'modified'  => 0,
         'unchanged' => 0
-    );
+    ];
 
     /**
      * Get the list of errors
@@ -269,10 +269,10 @@ class Ldap
             $filter = '(uidNumber=' . $user_id . ')';
         }
 
-        $reqattr = array(
+        $reqattr = [
             'uidNumber','uid','cn','gidNumber','homeDirectory','loginShell','userPassword','shadowLastChange',
             'shadowMin','shadowMax','shadowWarning','shadowInactive','shadowExpire','shadowFlag', 'host'
-        );
+        ];
 
         $entry = ldap_search($conn, $dn, $filter, $reqattr, 0, 0, 0);
         $count = ($entry) ? ldap_count_entries($conn, $entry) : 0;
@@ -281,14 +281,14 @@ class Ldap
         if (!empty($dbinfo) && ($count <= 0)) {
             $dn = "uid=" . $dbinfo['uid'] . ",ou=users," . $hubLDAPBaseDN;
 
-            $entry = array();
+            $entry = [];
             $entry['objectclass'][] = 'top';
             $entry['objectclass'][] = 'account';  // MUST uid
             $entry['objectclass'][] = 'posixAccount'; // MUST cn,gidNumber,homeDirectory,uidNumber
             $entry['objectclass'][] = 'shadowAccount';
 
             foreach ($dbinfo as $key => $value) {
-                if (is_array($value) && $value != array()) {
+                if (is_array($value) && $value != []) {
                     $entry[$key] = $value;
                 } elseif (!is_array($value) && $value != '') {
                     $entry[$key] = $value;
@@ -363,17 +363,17 @@ class Ldap
         // Otherwise update the ldap entry
 
         if (!empty($ldapinfo['host']) && !is_array($ldapinfo['host'])) {
-            $ldapinfo['host'] = array($ldapinfo['host']);
+            $ldapinfo['host'] = [$ldapinfo['host']];
         }
 
-        $entry = array();
+        $entry = [];
 
         foreach ($dbinfo as $key => $value) {
             if ($ldapinfo[$key] != $dbinfo[$key]) {
                 if ($dbinfo[$key] === null) {
-                    $entry[$key] = array();
+                    $entry[$key] = [];
                 } else {
-                    $entry[$key] = is_array($dbinfo[$key]) ? $dbinfo[$key] : array($dbinfo[$key]);
+                    $entry[$key] = is_array($dbinfo[$key]) ? $dbinfo[$key] : [$dbinfo[$key]];
                 }
             }
         }
@@ -413,7 +413,7 @@ class Ldap
         // is a required field.
 
         if (empty($entry['gidNumber'])) {
-            $entry['gidNumber'] = array(3000);
+            $entry['gidNumber'] = [3000];
         }
 
         // Now do the modify
@@ -481,7 +481,7 @@ class Ldap
             $filter = '(objectclass=*)';
         }
 
-        $reqattr = array('gidNumber','cn','description','memberUid');
+        $reqattr = ['gidNumber','cn','description','memberUid'];
 
         $entry = ldap_search($conn, $dn, $filter, $reqattr, 0, 0, 0);
         $count = ($entry) ? ldap_count_entries($conn, $entry) : 0;
@@ -490,12 +490,12 @@ class Ldap
         if (!empty($dbinfo) && ($count <= 0)) {
             $dn = "cn=" . $dbinfo['cn'] . ",ou=groups," . $hubLDAPBaseDN;
 
-            $entry = array();
+            $entry = [];
             $entry['objectclass'][] = 'top';
             $entry['objectclass'][] = 'posixGroup';
 
             foreach ($dbinfo as $key => $value) {
-                if (is_array($value) && $value != array()) {
+                if (is_array($value) && $value != []) {
                     $entry[$key] = $value;
                 } elseif (!is_array($value) && $value != '') {
                     $entry[$key] = $value;
@@ -561,16 +561,16 @@ class Ldap
         }
 
         // Otherwise update the ldap entry
-        $entry = array();
+        $entry = [];
 
         if (!empty($ldapinfo['memberUid']) && !is_array($ldapinfo['memberUid'])) {
-            $ldapinfo['memberUid'] = array($ldapinfo['memberUid']);
+            $ldapinfo['memberUid'] = [$ldapinfo['memberUid']];
         }
 
         foreach ($dbinfo as $key => $value) {
             if ($ldapinfo[$key] != $dbinfo[$key]) {
                 if ($dbinfo[$key] === null) {
-                    $entry[$key] = array();
+                    $entry[$key] = [];
                 } else {
                     $entry[$key] = $dbinfo[$key];
                 }
@@ -628,7 +628,7 @@ class Ldap
      */
     public static function addGroupMemberships($group, $members)
     {
-        self::changeGroupMemberships($group, $members, array());
+        self::changeGroupMemberships($group, $members, []);
     }
 
     /**
@@ -640,7 +640,7 @@ class Ldap
      */
     public static function removeGroupMemberships($group, $members)
     {
-        self::changeGroupMemberships($group, array(), $members);
+        self::changeGroupMemberships($group, [], $members);
     }
 
     /**
@@ -675,7 +675,7 @@ class Ldap
             $filter = '(objectclass=*)';
         }
 
-        $reqattr = array('gidNumber','cn');
+        $reqattr = ['gidNumber','cn'];
 
         $entry = ldap_search($conn, $dn, $filter, $reqattr, 0, 0, 0);
 
@@ -715,7 +715,7 @@ class Ldap
         }
 
         if (!empty($add)) {
-            $add = array_map(array($db, "Quote"), $add);
+            $add = array_map([$db, "Quote"], $add);
             $addin = implode(",", $add);
 
             if (!empty($addin)) {
@@ -724,7 +724,7 @@ class Ldap
                 $add = $db->loadColumn();
             }
 
-            $adds = array();
+            $adds = [];
 
             foreach ($add as $memberUid) {
                 $adds['memberUid'][] = $memberUid;
@@ -733,13 +733,13 @@ class Ldap
             if (ldap_mod_add($conn, $dn, $adds) == false) {
                 // if bulk add fails, try individual
                 foreach ($add as $memberUid) {
-                    ldap_mod_add($conn, $dn, array('memberUid' => $memberUid));
+                    ldap_mod_add($conn, $dn, ['memberUid' => $memberUid]);
                 }
             }
         }
 
         if (!empty($delete)) {
-            $delete = array_map(array($db, "Quote"), $delete);
+            $delete = array_map([$db, "Quote"], $delete);
             $deletein = implode(",", $delete);
 
             if (!empty($deletein)) {
@@ -748,7 +748,7 @@ class Ldap
                 $delete = $db->loadColumn();
             }
 
-            $deletes = array();
+            $deletes = [];
 
             foreach ($delete as $memberUid) {
                 $deletes['memberUid'][] = $memberUid;
@@ -853,9 +853,9 @@ class Ldap
         $dn = "ou=groups," . $hubLDAPBaseDN;
         $filter = '(objectclass=hubGroup)';
 
-        $sr = ldap_search($conn, $dn, $filter, array('gid','cn'), 0, 0, 0);
+        $sr = ldap_search($conn, $dn, $filter, ['gid','cn'], 0, 0, 0);
 
-        $gids = array();
+        $gids = [];
 
         if ($sr !== false) {
             if (ldap_count_entries($conn, $sr) !== false) {
@@ -904,7 +904,7 @@ class Ldap
             $dn = "cn=$row," .  "ou=groups," . $hubLDAPBaseDN;
 
             // Added this search because the delete will error on a delete of a non existent object
-            $sr = ldap_search($conn, "ou=groups," . $hubLDAPBaseDN, "cn=$row", array('cn'), 0, 0, 0);
+            $sr = ldap_search($conn, "ou=groups," . $hubLDAPBaseDN, "cn=$row", ['cn'], 0, 0, 0);
             if (($sr !== false) and ldap_count_entries($conn, $sr) == 1) {
                 $result = ldap_delete($conn, $dn);
 
@@ -923,9 +923,9 @@ class Ldap
         $dn = "ou=groups," . $hubLDAPBaseDN;
         $filter = '(&(objectclass=posixGroup)(gidNumber>=1000))';
 
-        $sr = ldap_search($conn, $dn, $filter, array('cn'), 0, 0, 0);
+        $sr = ldap_search($conn, $dn, $filter, ['cn'], 0, 0, 0);
 
-        $gids = array();
+        $gids = [];
 
         if ($sr !== false) {
             if (ldap_count_entries($conn, $sr) !== false) {
@@ -980,9 +980,9 @@ class Ldap
         $dn = "ou=users," . $hubLDAPBaseDN;
         $filter = '(objectclass=hubAccount)';
 
-        $sr = ldap_search($conn, $dn, $filter, array('uid'), 0, 0, 0);
+        $sr = ldap_search($conn, $dn, $filter, ['uid'], 0, 0, 0);
 
-        $uids = array();
+        $uids = [];
 
         if ($sr !== false) {
             if (ldap_count_entries($conn, $sr) !== false) {
@@ -1052,9 +1052,9 @@ class Ldap
         $dn = "ou=users," . $hubLDAPBaseDN;
         $filter = '(&(objectclass=posixAccoiunt)(uidNumber>=1000))';
 
-        $sr = ldap_search($conn, $dn, $filter, array('uid'), 0, 0, 0);
+        $sr = ldap_search($conn, $dn, $filter, ['uid'], 0, 0, 0);
 
-        $uids = array();
+        $uids = [];
 
         if ($sr !== false) {
             if (ldap_count_entries($conn, $sr) !== false) {

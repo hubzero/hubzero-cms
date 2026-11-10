@@ -192,7 +192,7 @@ $this->css()
                     $st = new \Components\Support\Models\Tags();
 
                 // Collect all the IDs
-                    $ids = array();
+                    $ids = [];
                     if ($this->rows) {
                         foreach ($this->rows as $row) {
                             $ids[] = $row->id;
@@ -200,7 +200,7 @@ $this->css()
                     }
 
                 // Pull out the last activity date for all the IDs
-                    $lastactivities = array();
+                    $lastactivities = [];
                     if (count($ids)) {
                         $alltags = $st->checkTags($ids);
                     }
@@ -208,7 +208,7 @@ $this->css()
                     $tid = Request::getInt('ticket', 0);
 
                     $tsformat = $database->getDateFormat();
-                    $statuses = array();
+                    $statuses = [];
 
                     if (count($this->rows) > 0) {
                         $i = 0;

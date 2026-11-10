@@ -18,7 +18,7 @@ $this->css();
 // get whos online summary
 $siteUserCount  = 0;
 $adminUserCount = 0;
-$found = array();
+$found = [];
 foreach ($this->rows as $i => $row) :
     if ($row->userid && in_array($row->client_id . '.' . $row->userid, $found)) :
         unset($this->rows[$i]);

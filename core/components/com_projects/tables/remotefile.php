@@ -43,7 +43,7 @@ class RemoteFile extends Table
             return false;
         }
 
-        $locals = array('paths' => array(), 'ids' => array());
+        $locals = ['paths' => [], 'ids' => []];
 
         $query  = "SELECT local_path, local_dirpath, remote_id, synced, type,
 					remote_editing as converted, remote_parent, remote_format,
@@ -61,7 +61,7 @@ class RemoteFile extends Table
 
         if ($results) {
             foreach ($results as $result) {
-                $item = array(
+                $item = [
                     'type'      => $result->type,
                     'remote_id' => $result->remote_id,
                     'path'      => $result->local_path,
@@ -72,7 +72,7 @@ class RemoteFile extends Table
                     'synced'    => $result->synced,
                     'original'  => $result->original_path,
                     'modified'  => $result->remote_modified
-                );
+                ];
 
                 $locals['paths'][$result->local_path] = $item;
                 $locals['ids'][$result->remote_id] = $item;
@@ -134,7 +134,7 @@ class RemoteFile extends Table
         $this->_db->setQuery($query);
         $results = $this->_db->loadObjectList();
 
-        $files = array();
+        $files = [];
         if ($results) {
             foreach ($results as $result) {
                 $files[$result->local_path] = $result;
@@ -228,8 +228,8 @@ class RemoteFile extends Table
         $projectid = null,
         $service = 'google',
         $uid = 0,
-        $item = array(),
-        $connections = array()
+        $item = [],
+        $connections = []
     ) {
         if (!$projectid || empty($item)) {
             return false;
@@ -309,8 +309,8 @@ class RemoteFile extends Table
         $type = 'file',
         $id = null,
         $filename = null,
-        $local = array(),
-        $remote = array()
+        $local = [],
+        $remote = []
     ) {
         if (!$projectid || (!$id && !$filename)) {
             return false;

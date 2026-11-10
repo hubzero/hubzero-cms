@@ -50,10 +50,10 @@ class Member extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'gidNumber' => 'positive|nonzero',
         'uidNumber' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Defines a belongs to one relationship between user and entry

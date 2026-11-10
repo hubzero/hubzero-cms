@@ -143,7 +143,7 @@ class Members extends Plugin
         $stemmed = join(' ', $terms['stemmed']);
         $weight = "(u.name LIKE '" . $stemmed . "' OR p.profile_value LIKE '" . $stemmed . "')";
 
-        $addtl_where = array();
+        $addtl_where = [];
         foreach ($terms['mandatory'] as $mand) {
             $addtl_where[] = "(u.name LIKE '%$mand%' OR p.profile_value LIKE '%$mand%')";
         }
@@ -187,8 +187,8 @@ class Members extends Plugin
         }
 
         $terms = $request->get_term_ar();
-        $addtl_where = array();
-        foreach (array($terms['mandatory'], $terms['optional']) as $pos) {
+        $addtl_where = [];
+        foreach ([$terms['mandatory'], $terms['optional']] as $pos) {
             foreach ($pos as $term) {
                 $addtl_where[] = "(u.name LIKE '%$term%')";
             }
@@ -225,7 +225,7 @@ class Members extends Plugin
 				CASE WHEN c.alias THEN concat('/', c.alias) ELSE '' END
 			)";
 
-        $resp = array();
+        $resp = [];
         foreach ($assoc as $row) {
             $query = "SELECT
 					CASE WHEN aa.subtable = 'resources' THEN
@@ -281,7 +281,7 @@ class Members extends Plugin
             $work = new \Components\Search\Models\Basic\Result\Sql($query);
             $work_assoc = $work->to_associative();
 
-            $added = array();
+            $added = [];
             foreach ($work_assoc as $wrow) {
                 $link = $wrow->get_link();
                 if (array_key_exists($link, $added)) {
@@ -291,7 +291,7 @@ class Members extends Plugin
                 $row->add_weight(1);
                 $added[$link] = 1;
             }
-            $row->sort_children(array(ContributionSorter::class, 'sort'));
+            $row->sort_children([ContributionSorter::class, 'sort']);
 
             $workp = new \Components\Search\Models\Basic\Result\Sql(
                 "SELECT
@@ -322,11 +322,11 @@ class Members extends Plugin
                 $row->add_weight(1);
                 $added[$link] = 1;
             }
-            $row->sort_children(array(ContributionSorter::class, 'sort'));
+            $row->sort_children([ContributionSorter::class, 'sort']);
 
             $resp[] = $row;
         }
-        usort($resp, array(ContributionSorter::class, 'sort_weight'));
+        usort($resp, [ContributionSorter::class, 'sort_weight']);
         foreach ($resp as $row) {
             $results->add($row);
         }

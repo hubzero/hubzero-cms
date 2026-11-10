@@ -42,14 +42,14 @@ class Permissions
             $assetName .= '.' . (int) $assetId;
         }
 
-        $actions = array(
+        $actions = [
             'core.admin',
             'core.manage',
             'core.create',
             'core.edit',
             'core.edit.state',
             'core.delete'
-        );
+        ];
 
         $result = new Obj();
 

@@ -62,7 +62,7 @@ class Detector implements DetectorInterface
      * @param   array  $options
      * @return  void
      */
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
         if (isset($options['maxLinkAllowed'])) {
             $this->setMaxLinkAllowed($options['maxLinkAllowed']);
@@ -171,11 +171,11 @@ class Detector implements DetectorInterface
         $parsed['host'] = preg_replace('/^www\.(.+\.)/i', '$1', $parsed['host']);
 
         // The 3 major blacklists
-        $blacklists = array(
+        $blacklists = [
             'zen.spamhaus.org',
             'multi.surbl.org',
             'black.uribl.com',
-        );
+        ];
 
         // Check against each black list, exit if blacklisted
         foreach ($blacklists as $i => $blacklist) {
@@ -204,7 +204,7 @@ class Detector implements DetectorInterface
     {
         // We only need the text
         $text = strip_tags($data['text']);
-        $text = str_replace(array('&amp;', '&nbsp;'), array('&', ' '), $text);
+        $text = str_replace(['&amp;', '&nbsp;'], ['&', ' '], $text);
         $text = html_entity_decode($text);
 
         preg_match_all(self::URL_REGEX, $text, $matches);

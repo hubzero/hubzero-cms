@@ -21,7 +21,7 @@ class INI extends Base
   *
   * @var  array
   */
-    protected static $cache = array();
+    protected static $cache = [];
 
     /**
      * Converts an object into an INI formatted string
@@ -33,11 +33,11 @@ class INI extends Base
      * @param   array   $options  Options used by the formatter.
      * @return  string  INI formatted string.
      */
-    public function objectToString($object, $options = array())
+    public function objectToString($object, $options = [])
     {
         // Initialize variables.
-        $local  = array();
-        $global = array();
+        $local  = [];
+        $global = [];
 
         // Iterate over the object to set the properties.
         foreach (get_object_vars($object) as $key => $value) {
@@ -67,7 +67,7 @@ class INI extends Base
      * @param   mixed   $options  An array of options used by the formatter, or a boolean setting to process sections.
      * @return  object  Data object.
      */
-    public function stringToObject($data, $options = array())
+    public function stringToObject($data, $options = [])
     {
         // Initialise options.
         if (is_array($options)) {
@@ -195,7 +195,7 @@ class INI extends Base
 
             case 'string':
                 // Sanitize any CRLF characters..
-                $string = '"' . str_replace(array("\r\n", "\n"), '\\n', $value) . '"';
+                $string = '"' . str_replace(["\r\n", "\n"], '\\n', $value) . '"';
                 break;
         }
 

@@ -23,7 +23,7 @@ class StubbedServiceProvider extends ServiceProvider
 	 *
 	 * @var  array
 	 */
-	public $groups = array();
+	public $groups = [];
 
 	/**
 	 * @param   string   $cn
@@ -49,7 +49,7 @@ class StubbedServiceProvider extends ServiceProvider
 	 *
 	 * @var  array
 	 */
-	public $canonical = array();
+	public $canonical = [];
 
 	/**
 	 * @param   string  $cn
@@ -65,7 +65,7 @@ class StubbedServiceProvider extends ServiceProvider
 	 *
 	 * @var  array
 	 */
-	public $confirmed = array();
+	public $confirmed = [];
 
 	/**
 	 * @param   integer  $userId
@@ -136,18 +136,18 @@ class ServiceProviderTest extends Basic
 
 		// Configured and readable
 		$this->assertEquals(
-			array('staff'),
+			['staff'],
 			ServiceProvider::blank()->set('allowed_groups', '["staff"]')->allowedGroups()
 		);
 
 		// Configured but unreadable — an empty list matches nobody, so a
 		// corrupted restriction denies rather than opening the SP up
 		$this->assertEquals(
-			array(),
+			[],
 			ServiceProvider::blank()->set('allowed_groups', 'not json')->allowedGroups()
 		);
 		$this->assertEquals(
-			array(),
+			[],
 			ServiceProvider::blank()->set('allowed_groups', '["  "]')->allowedGroups()
 		);
 	}
@@ -174,7 +174,7 @@ class ServiceProviderTest extends Basic
 	public function testGuestNeverAdmittedToRestrictedSp()
 	{
 		$sp = StubbedServiceProvider::blank()->set('allowed_groups', '["staff"]');
-		$sp->groups = array('staff' => array(42));
+		$sp->groups = ['staff' => [42]];
 
 		$this->assertFalse($sp->userCanAccess(new StubUser(0)));
 		$this->assertFalse($sp->userCanAccess(null));
@@ -189,7 +189,7 @@ class ServiceProviderTest extends Basic
 	public function testMemberOfAnyListedGroupIsAdmitted()
 	{
 		$sp = StubbedServiceProvider::blank()->set('allowed_groups', '["staff","faculty"]');
-		$sp->groups = array('staff' => array(7), 'faculty' => array(42));
+		$sp->groups = ['staff' => [7], 'faculty' => [42]];
 
 		// Member of the second group only
 		$this->assertTrue($sp->userCanAccess(new StubUser(42)));
@@ -209,7 +209,7 @@ class ServiceProviderTest extends Basic
 	public function testUnresolvableGroupsAdmitNobody()
 	{
 		$sp = StubbedServiceProvider::blank()->set('allowed_groups', '["deleted-group"]');
-		$sp->groups = array();
+		$sp->groups = [];
 
 		$this->assertFalse($sp->userCanAccess(new StubUser(42)));
 	}
@@ -223,7 +223,7 @@ class ServiceProviderTest extends Basic
 	public function testCorruptRestrictionFailsClosed()
 	{
 		$sp = StubbedServiceProvider::blank()->set('allowed_groups', 'not json');
-		$sp->groups = array('staff' => array(42));
+		$sp->groups = ['staff' => [42]];
 
 		$this->assertFalse($sp->userCanAccess(new StubUser(42)));
 	}
@@ -238,12 +238,12 @@ class ServiceProviderTest extends Basic
 	public function testAllowedPolicyReleasesTheGatesPassed()
 	{
 		$sp = StubbedServiceProvider::blank()->set('allowed_groups', '["staff","faculty"]');
-		$sp->groups = array('staff' => array(42), 'faculty' => array(7, 42));
-		$sp->confirmed = array('staff', 'faculty', 'knitting-club');
+		$sp->groups = ['staff' => [42], 'faculty' => [7, 42]];
+		$sp->confirmed = ['staff', 'faculty', 'knitting-club'];
 
-		$this->assertEquals(array('staff', 'faculty'), $sp->releasedGroups(new StubUser(42)));
-		$this->assertEquals(array('faculty'), $sp->releasedGroups(new StubUser(7)));
-		$this->assertEquals(array(), $sp->releasedGroups(new StubUser(99)));
+		$this->assertEquals(['staff', 'faculty'], $sp->releasedGroups(new StubUser(42)));
+		$this->assertEquals(['faculty'], $sp->releasedGroups(new StubUser(7)));
+		$this->assertEquals([], $sp->releasedGroups(new StubUser(99)));
 	}
 
 	/**
@@ -256,15 +256,15 @@ class ServiceProviderTest extends Basic
 	public function testAllowedPolicyReleasesNothingWithoutRestriction()
 	{
 		$sp = StubbedServiceProvider::blank()->set('allowed_groups', null);
-		$sp->confirmed = array('staff');
+		$sp->confirmed = ['staff'];
 
-		$this->assertEquals(array(), $sp->releasedGroups(new StubUser(42)));
+		$this->assertEquals([], $sp->releasedGroups(new StubUser(42)));
 
 		// A restriction that cannot be read must not open this up either
 		$sp = StubbedServiceProvider::blank()->set('allowed_groups', 'not json');
-		$sp->confirmed = array('staff');
+		$sp->confirmed = ['staff'];
 
-		$this->assertEquals(array(), $sp->releasedGroups(new StubUser(42)));
+		$this->assertEquals([], $sp->releasedGroups(new StubUser(42)));
 	}
 
 	/**
@@ -277,9 +277,9 @@ class ServiceProviderTest extends Basic
 	public function testAllPolicyReleasesConfirmedMembership()
 	{
 		$sp = StubbedServiceProvider::blank()->set('allowed_groups', '["staff"]');
-		$sp->confirmed = array('staff', 'knitting-club');
+		$sp->confirmed = ['staff', 'knitting-club'];
 
-		$this->assertEquals(array('staff', 'knitting-club'), $sp->releasedGroups(new StubUser(42), 'all'));
+		$this->assertEquals(['staff', 'knitting-club'], $sp->releasedGroups(new StubUser(42), 'all'));
 	}
 
 	/**
@@ -291,12 +291,12 @@ class ServiceProviderTest extends Basic
 	public function testGuestReleasesNoGroups()
 	{
 		$sp = StubbedServiceProvider::blank()->set('allowed_groups', '["staff"]');
-		$sp->groups = array('staff' => array(0));
-		$sp->confirmed = array('staff');
+		$sp->groups = ['staff' => [0]];
+		$sp->confirmed = ['staff'];
 
-		$this->assertEquals(array(), $sp->releasedGroups(new StubUser(0)));
-		$this->assertEquals(array(), $sp->releasedGroups(new StubUser(0), 'all'));
-		$this->assertEquals(array(), $sp->releasedGroups(null));
+		$this->assertEquals([], $sp->releasedGroups(new StubUser(0)));
+		$this->assertEquals([], $sp->releasedGroups(new StubUser(0), 'all'));
+		$this->assertEquals([], $sp->releasedGroups(null));
 	}
 
 	/**
@@ -309,10 +309,10 @@ class ServiceProviderTest extends Basic
 	public function testAllowedPolicyReleasesTheGroupsOwnCn()
 	{
 		$sp = StubbedServiceProvider::blank()->set('allowed_groups', '["1234","Staff","staff"]');
-		$sp->groups = array('1234' => array(42), 'Staff' => array(42), 'staff' => array(42));
-		$sp->canonical = array('1234' => 'faculty', 'Staff' => 'staff');
+		$sp->groups = ['1234' => [42], 'Staff' => [42], 'staff' => [42]];
+		$sp->canonical = ['1234' => 'faculty', 'Staff' => 'staff'];
 
-		$this->assertEquals(array('faculty', 'staff'), $sp->releasedGroups(new StubUser(42)));
+		$this->assertEquals(['faculty', 'staff'], $sp->releasedGroups(new StubUser(42)));
 	}
 
 	/**
@@ -324,7 +324,7 @@ class ServiceProviderTest extends Basic
 	public function testMembershipIsLookedUpOncePerGroup()
 	{
 		$sp = StubbedServiceProvider::blank()->set('allowed_groups', '["staff","faculty"]');
-		$sp->groups = array('faculty' => array(42));
+		$sp->groups = ['faculty' => [42]];
 		$user = new StubUser(42);
 
 		$this->assertTrue($sp->userCanAccess($user));

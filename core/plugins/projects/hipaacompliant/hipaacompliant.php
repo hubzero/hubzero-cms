@@ -72,7 +72,7 @@ class Hipaacompliant extends Plugin
             }
 
             if ($compliant == 2) {
-                if (!$pub->group_owner || !in_array($pub->access, array(4, 5))) {
+                if (!$pub->group_owner || !in_array($pub->access, [4, 5])) {
                     App::redirect(
                         Route::url($pub->link('editbase')),
                         Lang::txt(

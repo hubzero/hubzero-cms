@@ -65,7 +65,7 @@ class Initialcon implements Resolver
      * @param   array  $config
      * @return  void
      */
-    public function __construct($config = array())
+    public function __construct($config = [])
     {
         if (array_key_exists('pictureSize', $config)) {
             $this->pictureSize = $config['pictureSize'];

@@ -207,7 +207,7 @@ class Ticketsv2r1 extends ApiController
         }
 
         if ($severity = Request::getWord('severity', null)) {
-            if (in_array($severity, array('minor', 'normal', 'major', 'critical'))) {
+            if (in_array($severity, ['minor', 'normal', 'major', 'critical'])) {
                 $tickets->whereEquals('severity', $severity);
             }
         }
@@ -256,11 +256,11 @@ class Ticketsv2r1 extends ApiController
         $total = clone $tickets;
 
         $sort = Request::getWord('sort', 'created');
-        if (!in_array($sort, array('id', 'type', 'created', 'closed', 'status', 'open', 'owner', 'severity', 'target_date', 'name', 'login', 'email'))) {
+        if (!in_array($sort, ['id', 'type', 'created', 'closed', 'status', 'open', 'owner', 'severity', 'target_date', 'name', 'login', 'email'])) {
             $sort = 'created';
         }
         $sort_dir = Request::getWord('sort_Dir', 'desc');
-        if (!in_array($sort_dir, array('asc', 'desc'))) {
+        if (!in_array($sort_dir, ['asc', 'desc'])) {
             $sort_dir = 'desc';
         }
 
@@ -271,7 +271,7 @@ class Ticketsv2r1 extends ApiController
 
         $response = new stdClass();
         $response->total = $total->total();
-        $response->tickets = array();
+        $response->tickets = [];
         foreach ($rows as $row) {
             $temp = $row->toArray();
 
@@ -441,7 +441,7 @@ class Ticketsv2r1 extends ApiController
 
         //setting more optional values
         $severity = Request::getWord('severity', 'normal');
-        if (!in_array($severity, array('minor', 'normal', 'major', 'critical'))) {
+        if (!in_array($severity, ['minor', 'normal', 'major', 'critical'])) {
             $severity = 'normal';
         }
         $ticket->set('severity', $severity);
@@ -538,7 +538,7 @@ class Ticketsv2r1 extends ApiController
         $response->submitter_id = $submitter->get('id');
         $response->group_id = $ticket->get('group_id');
 
-        foreach (array('status', 'created', 'severity', 'os', 'browser', 'ip', 'hostname', 'uas', 'referrer', 'open', 'closed') as $prop) {
+        foreach (['status', 'created', 'severity', 'os', 'browser', 'ip', 'hostname', 'uas', 'referrer', 'open', 'closed'] as $prop) {
             $response->$prop = $ticket->get($prop);
         }
 

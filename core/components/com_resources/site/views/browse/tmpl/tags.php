@@ -105,7 +105,7 @@ $this->css()
             <div class="subject">
                 <h3><?php echo Lang::txt('COM_RESOURCES_TOP_RATED'); ?></h3>
                 <?php
-                $supported = array();
+                $supported = [];
 
                 if ($this->supportedtag) {
                     $rt = new \Components\Resources\Helpers\Tags(0);

@@ -30,7 +30,7 @@ class Number extends Field
     protected function getInput()
     {
         // Initialize some field attributes.
-        $attributes = array(
+        $attributes = [
             'type'         => 'number',
             'value'        => htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8'),
             'name'         => $this->name,
@@ -43,9 +43,9 @@ class Number extends Field
             'readonly'     => ((string) $this->element['readonly'] == 'true' ? 'readonly' : null),
             'disabled'     => ((string) $this->element['disabled'] == 'true' ? 'disabled' : null),
             'onchange'     => ($this->element['onchange']  ? (string) $this->element['onchange'] : null)
-        );
+        ];
 
-        $attr = array();
+        $attr = [];
         foreach ($attributes as $key => $value) {
             if ($key != 'value' && $key != 'min' && !$value) {
                 continue;

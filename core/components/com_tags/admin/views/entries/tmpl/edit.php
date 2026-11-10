@@ -113,7 +113,7 @@ $invalidMsg      = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                     50,
                     4,
                     'field-description',
-                    array('class' => 'minimal', 'buttons' => false)
+                    ['class' => 'minimal', 'buttons' => false]
                 );
                 ?>
             </div>

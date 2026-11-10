@@ -32,7 +32,7 @@ class Mailings extends AdminController
      */
     public function displayTask()
     {
-        $filters = array(
+        $filters = [
             'search' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
@@ -48,7 +48,7 @@ class Mailings extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         $mailings = Mailing::all()
             ->including(['newsletter', function ($newsletter) {
@@ -97,7 +97,7 @@ class Mailings extends AdminController
     public function trackingTask()
     {
         // Get request vars
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
         $id = (isset($ids)) ? $ids[0] : 0;
 
         // Instantiate newsletter mailing object
@@ -149,7 +149,7 @@ class Mailings extends AdminController
             ->whereEquals('action', 'click')
             ->rows();
 
-        $clicks = array();
+        $clicks = [];
         foreach ($clcks as $click) {
             // Get click action
             $clickAction = json_decode($click->action_vars);
@@ -186,7 +186,7 @@ class Mailings extends AdminController
             $mailingId = Request::getInt('mailingid', 0);
         }
 
-        $states = array(
+        $states = [
             "alabama" => 'al',
             "alaska" => 'ak',
             "arizona" => 'az',
@@ -237,7 +237,7 @@ class Mailings extends AdminController
             "west virginia" => 'wv',
             "wisconsin" => 'wi',
             "wyoming" => 'wy'
-        );
+        ];
 
         // Get opens
         $opens = Action::all()
@@ -246,8 +246,8 @@ class Mailings extends AdminController
             ->rows();
 
         // Get country and state data
-        $countryGeo = array();
-        $statesGeo  = array();
+        $countryGeo = [];
+        $statesGeo  = [];
         foreach ($opens as $open) {
             $country = ($open->countrySHORT) ? strtolower($open->countrySHORT) : 'undetermined';
             $state = 'undetermined';
@@ -260,10 +260,10 @@ class Mailings extends AdminController
         }
 
         // Build return data
-        $geo = array(
+        $geo = [
             'country' => $countryGeo,
             'state'   => $statesGeo
-        );
+        ];
 
         if ($no_html) {
             echo json_encode($geo);
@@ -281,7 +281,7 @@ class Mailings extends AdminController
     public function stopTask()
     {
         // Get request vars
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
         $id = (isset($ids)) ? $ids[0] : null;
 
         // Instantiate newsletter mailing object

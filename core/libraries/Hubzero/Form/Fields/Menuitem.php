@@ -31,16 +31,16 @@ class Menuitem extends Groupedlist
     protected function getGroups()
     {
         // Initialize variables.
-        $groups = array();
+        $groups = [];
 
         // Initialize some field attributes.
         $menuType  = (string) $this->element['menu_type'];
-        $published = $this->element['published'] ? explode(',', (string) $this->element['published']) : array();
-        $disable   = $this->element['disable'] ? explode(',', (string) $this->element['disable']) : array();
-        $language  = $this->element['language'] ? explode(',', (string) $this->element['language']) : array();
+        $published = $this->element['published'] ? explode(',', (string) $this->element['published']) : [];
+        $disable   = $this->element['disable'] ? explode(',', (string) $this->element['disable']) : [];
+        $language  = $this->element['language'] ? explode(',', (string) $this->element['language']) : [];
 
         // Get the menu items.
-        $items = array();
+        $items = [];
         if (class_exists('\\Components\\Menus\\Helpers\\Menus')) {
             $items = \Components\Menus\Helpers\Menus::getMenuLinks($menuType, 0, 0, $published, $language);
         }
@@ -48,7 +48,7 @@ class Menuitem extends Groupedlist
         // Build group for a specific menu type.
         if ($menuType) {
             // Initialize the group.
-            $groups[$menuType] = array();
+            $groups[$menuType] = [];
 
             // Build the options array.
             foreach ($items as $link) {
@@ -62,7 +62,7 @@ class Menuitem extends Groupedlist
             // Build the groups arrays.
             foreach ($items as $menu) {
                 // Initialize the group.
-                $groups[$menu->menutype] = array();
+                $groups[$menu->menutype] = [];
 
                 // Build the options array.
                 foreach ($menu->links as $link) {

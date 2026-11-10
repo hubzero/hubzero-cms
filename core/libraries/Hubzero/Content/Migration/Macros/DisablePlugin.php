@@ -36,9 +36,9 @@ class DisablePlugin extends Macro
 
             $query = $this->db->getQuery()
                 ->update($table)
-                ->set(array(
+                ->set([
                     $field => $enabled
-                ))
+                ])
                 ->whereEquals('folder', $folder)
                 ->whereEquals('element', $element)
                 ->toString();

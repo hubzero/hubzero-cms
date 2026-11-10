@@ -54,10 +54,10 @@ class FormReport extends Model
         $results = $db->loadObjectList();
 
         // Build array of questions/versions map
-        $question_ids = array();
-        $question_vs  = array();
-        $questions    = array();
-        $answers      = array();
+        $question_ids = [];
+        $question_vs  = [];
+        $questions    = [];
+        $answers      = [];
         if ($results && count($results) > 0) {
             foreach ($results as $r) {
                 $question_ids[] = $r->id;
@@ -70,7 +70,7 @@ class FormReport extends Model
                 }
 
                 // Store a mapping of question id to question label computed above
-                $questions[$r->id] = array('qidx' => $question_vs[$r->version], 'version' => $r->version);
+                $questions[$r->id] = ['qidx' => $question_vs[$r->version], 'version' => $r->version];
 
                 // Now grab all of the answers for each question
                 $query = "SELECT `id` FROM `#__courses_form_answers` "
@@ -97,11 +97,11 @@ class FormReport extends Model
             . "ORDER BY `respondent_id` ASC";
         $db->setQuery($query);
         $results = $db->loadObjectList();
-        $output  = array();
+        $output  = [];
 
         if ($results && count($results) > 0) {
             if ($include_headers) {
-                $fields = array();
+                $fields = [];
 
                 for ($i = 1; $i <= max($question_vs); $i++) {
                     $fields[] = $i;
@@ -115,13 +115,13 @@ class FormReport extends Model
                 $output['headers'] = $fields;
             }
 
-            $respondents       = array();
+            $respondents       = [];
 
             foreach ($results as $response) {
-                $respondents[$response->respondent_id][$questions[$response->question_id]['qidx']] = array(
+                $respondents[$response->respondent_id][$questions[$response->question_id]['qidx']] = [
                     'question_id' => $response->question_id,
                     'answer'      => (isset($answers[$response->answer_id])) ? $answers[$response->answer_id] : '--'
-                );
+                ];
             }
 
             foreach ($respondents as $respondent_id => $response) {
@@ -143,7 +143,7 @@ class FormReport extends Model
 
                 $name    = User::getInstance($aux->user_id)->get('name');
                 $attempt = $aux->attempt;
-                $fields  = array();
+                $fields  = [];
 
                 foreach ($response as $k => $v) {
                     $version    = $questions[$v['question_id']]['version'];
@@ -195,8 +195,8 @@ class FormReport extends Model
         // Build array of questions/versions map
         $question_id  = 1;
         $version_id   = 1;
-        $questions    = array();
-        $question_ids = array();
+        $questions    = [];
+        $question_ids = [];
         $high_letter  = 97;
         if ($results && count($results) > 0) {
             foreach ($results as $r) {
@@ -222,7 +222,7 @@ class FormReport extends Model
                     $letter = null;
 
                     foreach ($ans as $a) {
-                        $answers[$a->id] = array('label' => self::getNextLetter($letter), 'correct' => $a->correct);
+                        $answers[$a->id] = ['label' => self::getNextLetter($letter), 'correct' => $a->correct];
                         $letter          = $answers[$a->id]['label'];
 
                         if (ord($letter) > $high_letter) {
@@ -243,7 +243,7 @@ class FormReport extends Model
         $results = $db->loadObjectList();
 
         if ($results && count($results) > 0) {
-            $counts = array();
+            $counts = [];
 
             foreach ($results as $response) {
                 // We only want data for students, so check that first

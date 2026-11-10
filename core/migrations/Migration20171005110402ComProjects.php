@@ -23,9 +23,9 @@ class Migration20171005110402ComProjects extends Base
     {
         $schema = $this->db->schema();
 
-        $newids = array();
-        $blgids = array();
-        $tdoids = array();
+        $newids = [];
+        $blgids = [];
+        $tdoids = [];
 
         if (
             $schema->tableExists('#__activity_logs')

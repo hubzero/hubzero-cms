@@ -41,7 +41,7 @@ class Whitelist extends AdminController
         $this->view->sku = $sku;
 
         // Get filters
-        $this->view->filters = array(
+        $this->view->filters = [
             // Get sorting variables
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
@@ -66,7 +66,7 @@ class Whitelist extends AdminController
                 0,
                 'int'
             )
-        );
+        ];
 
         // Get record count
         $this->view->filters['return'] = 'count';
@@ -106,7 +106,7 @@ class Whitelist extends AdminController
         Request::checkToken();
 
         // Incoming
-        $ids = Request::getArray('id', array());
+        $ids = Request::getArray('id', []);
         $sId = Request::getInt('sId');
 
         RestrictionsHelper::removeUsers($ids);
@@ -156,7 +156,7 @@ class Whitelist extends AdminController
         $users = Request::getString('users', '');
 
         $users = explode(',', $users);
-        $noHubUserMatch = array();
+        $noHubUserMatch = [];
         $matched = 0;
         foreach ($users as $user) {
             $user = trim($user);

@@ -18,11 +18,11 @@ if (count($this->activities) > 0) { ?>
     <div class="activity-items" id="activity-feed">
         <?php
         // get all sessions
-        $online = array();
-        $sessions = \Hubzero\Session\Helper::getAllSessions(array(
+        $online = [];
+        $sessions = \Hubzero\Session\Helper::getAllSessions([
             'guest' => 0,
             'distinct' => 1
-        ));
+        ]);
         if ($sessions) {
             // see if any session matches our userid
             foreach ($sessions as $session) {

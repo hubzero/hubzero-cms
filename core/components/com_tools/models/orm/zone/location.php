@@ -42,18 +42,18 @@ class Location extends Relational
      *
      * @var  array
      **/
-    protected $rules = array(
+    protected $rules = [
         'zone_id' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatic fields, set on every save; automaticIpFrom() sets ipTO too
      *
      * @var  array
      **/
-    public $always = array(
+    public $always = [
         'ipFROM'
-    );
+    ];
 
     /**
      * Sets up additional custom rules
@@ -65,7 +65,7 @@ class Location extends Relational
         $this->addRule('state', function ($data) {
             $data['state'] = strtolower($data['state']);
 
-            return (in_array($data['state'], array('up', 'down')) ? false : Lang::txt('Invalid state provided.'));
+            return (in_array($data['state'], ['up', 'down']) ? false : Lang::txt('Invalid state provided.'));
         });
 
         // No range at all is allowed, as by the table class: a location by

@@ -22,10 +22,10 @@ class Migration20261012210000ComSupportUtf8mb4 extends Base
      *
      * @var  array
      **/
-    protected $tables = array(
+    protected $tables = [
         '#__support_tickets',
         '#__support_comments'
-    );
+    ];
 
     /**
      * Up

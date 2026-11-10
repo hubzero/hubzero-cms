@@ -35,7 +35,7 @@ class Migration20180828000000ComMembers extends Base
                 ->order('profile_key', 'ASC')
                 ->loadObjectList();
 
-            $delete = array();
+            $delete = [];
 
             foreach ($rows as $i => $row) {
                 $dupes = explode(',', $row->duplicates);

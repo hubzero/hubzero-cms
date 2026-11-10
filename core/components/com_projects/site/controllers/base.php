@@ -170,7 +170,7 @@ class Base extends SiteController
     {
         // Need to be project creator
         $view = new \Hubzero\Component\View(
-            array('name' => 'error', 'layout' => $layout)
+            ['name' => 'error', 'layout' => $layout]
         );
         $view->error = $this->getError();
         $view->title = $this->title;
@@ -246,7 +246,7 @@ class Base extends SiteController
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildPathway()
     {
-        $group_tasks = array('start', 'setup', 'view');
+        $group_tasks = ['start', 'setup', 'view'];
         $group       = isset($this->group) ? $this->group : null;
         $active      = isset($this->active) ? $this->active : null;
 
@@ -431,7 +431,7 @@ class Base extends SiteController
             return false;
         }
 
-        $message = array();
+        $message = [];
 
         // Get project
         if (empty($this->model) || !$this->model->exists()) {
@@ -439,7 +439,7 @@ class Base extends SiteController
         }
 
         // Set up email config
-        $from = array();
+        $from = [];
         $from['name']  = Config::get('sitename') . ' ' . Lang::txt('COM_PROJECTS');
         $from['email'] = Config::get('mailfrom');
 
@@ -455,10 +455,10 @@ class Base extends SiteController
         $subject_pending = Lang::txt('COM_PROJECTS_EMAIL_SUBJECT_INVITE') . ' ' . $this->model->get('alias');
 
         // Message body
-        $eview = new \Hubzero\Mail\View(array(
+        $eview = new \Hubzero\Mail\View([
             'name'   => 'emails',
             'layout' => 'invite_plain'
-        ));
+        ]);
         $eview->option    = $this->_option;
         $eview->project   = $this->model;
         $eview->delimiter = '';
@@ -488,14 +488,14 @@ class Base extends SiteController
                 // Send HUB message
                 Event::trigger(
                     'xmessage.onSendMessage',
-                    array(
+                    [
                         'projects_member_added',
                         $subject_active,
                         $message,
                         $from,
-                        array($member->userid),
+                        [$member->userid],
                         $this->_option
-                    )
+                    ]
                 );
             } elseif ($member->invited_email && $member->invited_code) {
                 $eview->uid   = 0;

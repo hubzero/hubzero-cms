@@ -31,7 +31,7 @@ class Csp extends Plugin
      *
      * @var  array
      */
-    protected $policies = array(
+    protected $policies = [
         'base-uri',
         'object-src',
         'child-src',
@@ -43,7 +43,7 @@ class Csp extends Plugin
         'img-src',
         'script-src',
         'style-src'
-    );
+    ];
 
     /**
      * Hook for after app initialization
@@ -80,7 +80,7 @@ class Csp extends Plugin
             $mode == self::ENFORCE
             || $mode == self::ENFORCE_REPORT
         ) {
-            $ps = array();
+            $ps = [];
 
             foreach ($this->policies as $key) {
                 $val = (string)$this->params->get($key);
@@ -106,7 +106,7 @@ class Csp extends Plugin
             $mode == self::REPORT
             || $mode == self::ENFORCE_REPORT
         ) {
-            $ps = array();
+            $ps = [];
 
             foreach ($this->policies as $key) {
                 $val = '';

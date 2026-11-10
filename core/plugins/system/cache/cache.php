@@ -154,10 +154,10 @@ class Cache extends Plugin
             return;
         }
 
-        $paths = array(
+        $paths = [
             $dir . '/site/site.css',
             $dir . '/site/site.less.cache'
-        );
+        ];
 
         foreach ($paths as $path) {
             if (file_exists($path)) {

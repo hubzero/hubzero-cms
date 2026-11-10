@@ -54,7 +54,7 @@ class Archive extends \Hubzero\Base\Obj
      * @param   boolean  $clear    Clear cached data?
      * @return  mixed
      */
-    public function products($rtrn = 'list', $filters = array(), $clear = false)
+    public function products($rtrn = 'list', $filters = [], $clear = false)
     {
         if (!isset($filters['sort'])) {
             $filters['sort'] = 'title';
@@ -82,7 +82,7 @@ class Archive extends \Hubzero\Base\Obj
                 if (!$this->products instanceof \Hubzero\Base\ItemList || $clear) {
                     $warehouse = new Warehouse();
                     if (!$results = $warehouse->getProducts('rows', false, $filters)) {
-                        $results = array();
+                        $results = [];
                     }
                     $this->products = new \Hubzero\Base\ItemList($results);
                     return $this->products;
@@ -125,7 +125,7 @@ class Archive extends \Hubzero\Base\Obj
      * @param   array   $filters  Filters to apply to data retrieval
      * @return  mixed
      */
-    public function skus($rtrn, $pId, $filters = array())
+    public function skus($rtrn, $pId, $filters = [])
     {
         if (!isset($filters['sort'])) {
             $filters['sort'] = 'title';
@@ -147,13 +147,13 @@ class Archive extends \Hubzero\Base\Obj
             case 'results':
             default:
                 if (!$results = $warehouse->getProductSkus($pId, 'rows', false, $filters)) {
-                    $results = array();
+                    $results = [];
                 } else {
                     // Get SKUs info
                     $results = $warehouse->getSkusInfo($results, true, $filters);
 
                     // Strip to just info
-                    $resultsPlain = array();
+                    $resultsPlain = [];
                     foreach ($results as $k => $res) {
                         $resultsPlain[] = $res['info'];
                     }
@@ -238,7 +238,7 @@ class Archive extends \Hubzero\Base\Obj
      * @param   array   $filters  Filters to apply to data retrieval
      * @return  mixed
      */
-    public function options($rtrn, $ogId, $filters = array())
+    public function options($rtrn, $ogId, $filters = [])
     {
         if (!isset($filters['sort'])) {
             $filters['sort'] = 'title';
@@ -259,7 +259,7 @@ class Archive extends \Hubzero\Base\Obj
             case 'results':
             default:
                 if (!$results = $warehouse->getOptionGroupOptions($ogId, 'rows', false, $filters)) {
-                    $results = array();
+                    $results = [];
                 }
 
                 return new \Hubzero\Base\ItemList($results);
@@ -315,7 +315,7 @@ class Archive extends \Hubzero\Base\Obj
      * @param   array   $filters  Filters to apply to data retrieval
      * @return  mixed
      */
-    public function categories($rtrn = 'list', $filters = array())
+    public function categories($rtrn = 'list', $filters = [])
     {
         if (!isset($filters['sort'])) {
             $filters['sort'] = 'title';
@@ -337,7 +337,7 @@ class Archive extends \Hubzero\Base\Obj
             default:
                 $warehouse = new Warehouse();
                 if (!$results = $warehouse->getCategories('rows', $filters)) {
-                    $results = array();
+                    $results = [];
                 }
                 $categories = new \Hubzero\Base\ItemList($results);
                 return $categories;
@@ -352,7 +352,7 @@ class Archive extends \Hubzero\Base\Obj
      * @param   array   $filters  Filters to apply to data retrieval
      * @return  mixed
      */
-    public function collections($rtrn = 'list', $filters = array())
+    public function collections($rtrn = 'list', $filters = [])
     {
         if (!isset($filters['sort'])) {
             $filters['sort'] = 'title';
@@ -374,7 +374,7 @@ class Archive extends \Hubzero\Base\Obj
             default:
                 $warehouse = new Warehouse();
                 if (!$results = $warehouse->getCollections('rows', $filters)) {
-                    $results = array();
+                    $results = [];
                 }
                 $categories = new \Hubzero\Base\ItemList($results);
                 return $categories;
@@ -403,7 +403,7 @@ class Archive extends \Hubzero\Base\Obj
      * @param   array   $filters  Filters to apply to data retrieval
      * @return  mixed
      */
-    public function optionGroups($rtrn = 'list', $filters = array())
+    public function optionGroups($rtrn = 'list', $filters = [])
     {
         if (isset($filters['sort'])) {
             if ($filters['sort'] == 'title') {
@@ -430,7 +430,7 @@ class Archive extends \Hubzero\Base\Obj
             default:
                 $warehouse = new Warehouse();
                 if (!$results = $warehouse->getOptionGroups('rows', $filters)) {
-                    $results = array();
+                    $results = [];
                 }
                 $categories = new \Hubzero\Base\ItemList($results);
                 return $categories;
@@ -482,7 +482,7 @@ class Archive extends \Hubzero\Base\Obj
         $res = $this->_db->loadObjectList();
 
         // reformat it a little
-        $optionGroups = array();
+        $optionGroups = [];
         $og = '';
 
         foreach ($res as $option) {
@@ -491,7 +491,7 @@ class Archive extends \Hubzero\Base\Obj
                 $optionGroups[$og] = new \stdClass();
                 $optionGroups[$og]->ogId = $option->ogId;
                 $optionGroups[$og]->ogName = $option->ogName;
-                $optionGroups[$og]->options = array();
+                $optionGroups[$og]->options = [];
             }
 
             if ($option->oId) {
@@ -502,7 +502,7 @@ class Archive extends \Hubzero\Base\Obj
 
                 $optionGroups[$og]->options[] = $opt;
             } else {
-                $optionGroups[$og]->options = array();
+                $optionGroups[$og]->options = [];
             }
         }
         return $optionGroups;

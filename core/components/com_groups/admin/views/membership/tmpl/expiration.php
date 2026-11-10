@@ -35,7 +35,7 @@ $max = $this->maxDays > 0 ? Date::of('now')->modify('+' . $this->maxDays . ' day
             <p class="warning"><?php echo Lang::txt('COM_GROUPS_MEMBER_TERM_NO_SELECTION'); ?></p>
         <?php } else { ?>
             <?php
-            $names = array();
+            $names = [];
             foreach ($this->users as $uid) {
                 $u     = \Hubzero\User\User::oneOrNew($uid);
                 $label = $u->get('name') ? $u->get('name') : $uid;

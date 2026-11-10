@@ -52,7 +52,7 @@ class Checkbox extends Base
     {
         $label = $element->label ? $element->label : $element->name;
 
-        $values = array();
+        $values = [];
 
         $pattern = "/<\d>(.*?)<\/\d>/i";
         preg_match_all($pattern, $value, $matches);
@@ -65,7 +65,7 @@ class Checkbox extends Base
         }
         $values[] = $value;
 
-        $html = array();
+        $html = [];
         $html[] = '<fieldset>';
 
         $output = '<legend id="' . $control_name . $name . '-lgd"';
@@ -123,7 +123,7 @@ class Checkbox extends Base
      */
     public function fetchOptions($name, $value, &$element, $control_name)
     {
-        $html = array();
+        $html = [];
 
         $k = 0;
 
@@ -164,9 +164,9 @@ class Checkbox extends Base
      */
     public function display($value)
     {
-        $values = array(
+        $values = [
             '<ul>'
-        );
+        ];
 
         $pattern = "/<\d>(.*?)<\/\d>/i";
         preg_match_all($pattern, $value, $matches);
@@ -194,7 +194,7 @@ class Checkbox extends Base
     public function toHtmlTag($tag, $value, $prefix = 'nb:')
     {
         // array to hold date parts
-        $parts = array();
+        $parts = [];
 
         // case value to array (in case object)
         $value = array_filter((array) $value);

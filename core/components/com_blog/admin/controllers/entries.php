@@ -47,7 +47,7 @@ class Entries extends AdminController
      */
     public function displayTask()
     {
-        $filters = array(
+        $filters = [
             'scope' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.scope',
                 'scope',
@@ -87,7 +87,7 @@ class Entries extends AdminController
                 'filter_order_Dir',
                 'ASC'
             )
-        );
+        ];
 
         $entries = Entry::all();
 
@@ -142,7 +142,7 @@ class Entries extends AdminController
 
         if (!is_object($row)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             if (is_array($id) && !empty($id)) {
                 $id = $id[0];
             }
@@ -182,7 +182,7 @@ class Entries extends AdminController
         }
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post', 'none', 2);
+        $fields = Request::getArray('fields', [], 'post', 'none', 2);
 
         if (isset($fields['publish_up']) && $fields['publish_up'] != '') {
             $fields['publish_up']   = Date::of($fields['publish_up'], Config::get('offset'))->toSql();
@@ -201,7 +201,7 @@ class Entries extends AdminController
 
         // Trigger before save event
         $isNew  = $row->isNew();
-        $result = Event::trigger('onBlogBeforeSave', array(&$row, $isNew));
+        $result = Event::trigger('onBlogBeforeSave', [&$row, $isNew]);
 
         if (in_array(false, $result, true)) {
             Notify::error($row->getError());
@@ -218,7 +218,7 @@ class Entries extends AdminController
         $row->tag(trim(Request::getString('tags', '')));
 
         // Trigger after save event
-        Event::trigger('onBlogAfterSave', array(&$row, $isNew));
+        Event::trigger('onBlogAfterSave', [&$row, $isNew]);
 
         // Notify of success
         Notify::success(Lang::txt('COM_BLOG_ENTRY_SAVED'));
@@ -246,8 +246,8 @@ class Entries extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $removed = 0;
 
@@ -261,7 +261,7 @@ class Entries extends AdminController
             }
 
             // Trigger before delete event
-            Event::trigger('onBlogAfterDelete', array($id));
+            Event::trigger('onBlogAfterDelete', [$id]);
 
             $removed++;
         }
@@ -291,8 +291,8 @@ class Entries extends AdminController
         $state = $this->_task == 'publish' ? 1 : 0;
 
         // Incoming
-        $ids = Request::getArray('id', array(0));
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', [0]);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Check for a resource
         if (count($ids) < 1) {
@@ -351,8 +351,8 @@ class Entries extends AdminController
         }
 
         // Incoming
-        $ids = Request::getArray('id', array(0));
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', [0]);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
         $state = Request::getInt('state', 0);
 
         // Check for a resource

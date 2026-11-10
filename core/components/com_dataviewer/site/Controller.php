@@ -16,7 +16,7 @@ class Controller
 {
     public static function dispatch()
     {
-        $db_id = array();
+        $db_id = [];
 
         $db_id['id'] = Request::getString('db', '');
         $db_info = explode(':', $db_id['id']);
@@ -28,7 +28,7 @@ class Controller
 
         // Rebuild the composite id from the sanitized parts (keeping its shape): the
         // views and filter output echo it into URLs and HTML attributes
-        $parts = array($db_id['name']);
+        $parts = [$db_id['name']];
         if (isset($db_info[1])) {
             $parts[] = $db_id['mode'];
         }
@@ -40,7 +40,7 @@ class Controller
         DvConfig::$dv_conf['settings']['db_id'] = $db_id;
 
         // Only the shipped modes exist; anything else names a class that does not
-        if ($db_id['name'] === '' || !in_array($db_id['mode'], array('db', 'ds', 'dsl'), true)) {
+        if ($db_id['name'] === '' || !in_array($db_id['mode'], ['db', 'ds', 'dsl'], true)) {
             App::abort(404, 'Invalid or Missing Dataview', 'Invalid or Missing Dataview');
         }
 

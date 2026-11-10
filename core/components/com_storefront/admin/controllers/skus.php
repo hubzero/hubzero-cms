@@ -37,7 +37,7 @@ class Skus extends AdminController
         // Get product ID
         $pId = Request::getInt('id');
         if (empty($pId)) {
-            $pId = Request::getArray('pId', array(0));
+            $pId = Request::getArray('pId', [0]);
         }
         $this->view->pId = $pId;
 
@@ -46,7 +46,7 @@ class Skus extends AdminController
         $this->view->product = $product;
 
         // Get filters
-        $this->view->filters = array(
+        $this->view->filters = [
             // Get sorting variables
             'sort' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.sort',
@@ -71,7 +71,7 @@ class Skus extends AdminController
                 0,
                 'int'
             )
-        );
+        ];
 
         $obj = new Archive();
 
@@ -125,7 +125,7 @@ class Skus extends AdminController
             $this->view->task = 'edit';
         } else {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
 
             if (is_array($id) && !empty($id)) {
                 $id = $id[0];
@@ -195,7 +195,7 @@ class Skus extends AdminController
         Request::checkToken();
 
         // Incoming
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         if (isset($fields['publish_up']) && $fields['publish_up'] != '') {
             $fields['publish_up'] = Date::of($fields['publish_up'], Config::get('offset'))->toSql();
@@ -258,9 +258,9 @@ class Skus extends AdminController
                 Request::setVar('hidemainmenu', 1);
 
                 // Incoming
-                $id = Request::getArray('id', array(0));
+                $id = Request::getArray('id', [0]);
                 if (!is_array($id) && !empty($id)) {
-                    $id = array($id);
+                    $id = [$id];
                 }
                 $this->view->sId = $id;
 
@@ -362,8 +362,8 @@ class Skus extends AdminController
      */
     public function stateTask($state = 0)
     {
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $pId = Request::getInt('pId', 0);
 
@@ -387,7 +387,7 @@ class Skus extends AdminController
             // Save SKU
             try {
                 $sku = Sku::getInstance($sId);
-                $obj->updateSku($sku, array('state' => $state));
+                $obj->updateSku($sku, ['state' => $state]);
             } catch (\Exception $e) {
                 $error = true;
             }

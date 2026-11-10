@@ -43,7 +43,7 @@ class Migration20120101000006Core extends Base
         $this->addPluginEntry('hubzero', 'wikieditorwykiwyg');
         $this->addPluginEntry('hubzero', 'comments');
         $this->addPluginEntry('hubzero', 'recaptcha');
-        $this->addPluginEntry('system', 'jquery', 1, array(
+        $this->addPluginEntry('system', 'jquery', 1, [
             "jquery"             => "1",
             "jquerycdnpath"      => "\/\/ajax.googleapis.com\/ajax\/libs\/jquery\/1.7.2\/jquery.min.js",
             "jqueryui"           => "1",
@@ -60,7 +60,7 @@ class Migration20120101000006Core extends Base
             "noconflictSite"     => "0",
             "activateAdmin"      => "0",
             "noconflictAdmin"    => "0"
-        ));
+        ]);
         $this->addPluginEntry('authentication', 'hubzero');
         $this->addPluginEntry('authentication', 'facebook');
         $this->addPluginEntry('authentication', 'google');
@@ -68,11 +68,11 @@ class Migration20120101000006Core extends Base
         $this->addPluginEntry('user', 'ldap');
 
         // Modules
-        $this->installModule('search', 'search', false, array(
+        $this->installModule('search', 'search', false, [
             'label' => 'Search',
             'width' => '20',
             'text'  => 'Search'
-        ));
+        ]);
 
         // Deletes
         $this->deleteComponentEntry('userpoints');

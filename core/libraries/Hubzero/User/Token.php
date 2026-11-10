@@ -28,16 +28,16 @@ class Token extends \Hubzero\Database\Relational
      * @var    array
      * @since  2.1.0
      */
-    protected $rules = array(
+    protected $rules = [
         'user_id' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatically fillable fields
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created'
-    );
+    ];
 }

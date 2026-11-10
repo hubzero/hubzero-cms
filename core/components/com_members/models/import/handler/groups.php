@@ -25,10 +25,10 @@ class Groups extends Obj
      */
     public function sample()
     {
-        return array(
+        return [
             'header'  => 'groups',
             'content' => 'groupalias;groupalias;groupalias'
-        );
+        ];
     }
 
     /**
@@ -96,7 +96,7 @@ class Groups extends Obj
 
         // Get all the user's current groups
         $existing = \Hubzero\User\Helper::getGroups($id);
-        $gids = array();
+        $gids = [];
         if ($existing) {
             foreach ($existing as $e) {
                 $gids[] = $e->gidNumber;
@@ -104,7 +104,7 @@ class Groups extends Obj
         }
 
         // Add user to specified groups
-        $added = array();
+        $added = [];
         foreach ($record->groups as $gid) {
             $group = Group::getInstance($gid);
             if (!$group || !$group->get('gidNumber')) {
@@ -120,7 +120,7 @@ class Groups extends Obj
                 continue;
             }
 
-            $group->add('members', array($id));
+            $group->add('members', [$id]);
             $group->update();
         }
 
@@ -135,10 +135,10 @@ class Groups extends Obj
                 continue;
             }
 
-            $group->remove('members', array($id));
-            $group->remove('managers', array($id));
-            $group->remove('invitees', array($id));
-            $group->remove('applicants', array($id));
+            $group->remove('members', [$id]);
+            $group->remove('managers', [$id]);
+            $group->remove('invitees', [$id]);
+            $group->remove('applicants', [$id]);
             $group->update();
         }
 

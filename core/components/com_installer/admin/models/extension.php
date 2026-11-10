@@ -44,9 +44,9 @@ class Extension extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'name' => 'notempty'
-    );
+    ];
 
     /**
      * Delete the existing/current model
@@ -133,13 +133,13 @@ class Extension extends Relational
                 break;
         }
 
-        if (!in_array($this->get('type'), array('language', 'template', 'library'))) {
+        if (!in_array($this->get('type'), ['language', 'template', 'library'])) {
             $this->set('name', Lang::txt($this->get('name')));
         }
 
         //settype($this->description, 'string');
 
-        if (!in_array($this->get('type'), array('language'))) {
+        if (!in_array($this->get('type'), ['language'])) {
             $this->set('description', Lang::txt($this->get('description')));
         }
     }
@@ -229,15 +229,15 @@ class Extension extends Relational
         }
 
         if (isset($appPath)) {
-            $paths = array(
+            $paths = [
                 'app'  => Filesystem::cleanPath(PATH_APP . $appPath),
                 'core' => Filesystem::cleanPath(PATH_CORE . $corePath)
-            );
+            ];
         } else {
-            $paths = array(
+            $paths = [
                 'app'  => Filesystem::cleanPath(PATH_APP . $path),
                 'core' => Filesystem::cleanPath(PATH_CORE . $path)
-            );
+            ];
         }
 
         $xml = null;
@@ -264,7 +264,7 @@ class Extension extends Relational
             return true;
         }
 
-        $data = array();
+        $data = [];
         $data['legacy'] = ($xml->getName() == 'mosinstall' || $xml->getName() == 'install');
         $data['name'] = (string) $xml->name;
 

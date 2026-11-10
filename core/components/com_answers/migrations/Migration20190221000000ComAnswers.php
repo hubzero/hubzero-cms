@@ -20,14 +20,14 @@ class Migration20190221000000ComAnswers extends Base
      *
      * @var  array
      **/
-    public static $tables = array(
-        '#__answers_questions' => array(
+    public static $tables = [
+        '#__answers_questions' => [
             'created'
-        ),
-        '#__answers_responses' => array(
+        ],
+        '#__answers_responses' => [
             'created'
-        )
-    );
+        ]
+    ];
 
     /**
      * Up

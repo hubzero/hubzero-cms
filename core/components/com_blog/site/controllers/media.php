@@ -375,8 +375,8 @@ class Media extends SiteController
         // Build the file path
         $path = $archive->filespace();
 
-        $folders = array();
-        $files   = array();
+        $folders = [];
+        $files   = [];
 
         if (!$this->getError() && is_dir($path)) {
             $files   = Filesystem::files($path);

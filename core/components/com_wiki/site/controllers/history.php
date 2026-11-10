@@ -50,7 +50,7 @@ class History extends SiteController
      * @param      array $config Optional configurations
      * @return     void
      */
-    public function __construct($config = array())
+    public function __construct($config = [])
     {
         $this->_base_path = dirname(__DIR__);
 
@@ -98,7 +98,7 @@ class History extends SiteController
 
         $this->page = $this->book->page();
 
-        if (in_array($this->page->getNamespace(), array('image', 'file'))) {
+        if (in_array($this->page->getNamespace(), ['image', 'file'])) {
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=media&scope=' . $this->page->get('scope') . '&pagename=' . $this->page->get('pagename') . '&task=download')
             );
@@ -298,11 +298,11 @@ class History extends SiteController
         $this->page->log('revision_removed');
 
         // Log activity
-        $recipients = array(
+        $recipients = [
             ['wiki.site', 1],
             ['user', $this->page->get('created_by')],
             ['user', $revision->get('created_by')]
-        );
+        ];
         if ($this->page->get('scope') != 'site') {
             $recipients[]  = [$this->page->get('scope'), $this->page->get('scope_id')];
             $recipients[0] = ['wiki.' . $this->page->get('scope'), $this->page->get('scope_id')];
@@ -314,12 +314,12 @@ class History extends SiteController
                 'scope'       => 'wiki.page.revision',
                 'scope_id'    => $this->page->get('id'),
                 'description' => Lang::txt('COM_WIKI_ACTIVITY_REVISION_DELETED', $revision->get('id'), '<a href="' . Route::url($this->page->link()) . '">' . htmlspecialchars((string) ($this->page->title), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title'    => $this->page->title,
                     'url'      => Route::url($this->page->link()),
                     'name'     => $this->page->get('pagename'),
                     'revision' => $revision->get('id')
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -382,11 +382,11 @@ class History extends SiteController
         $this->page->log('revision_approved');
 
         // Log activity
-        $recipients = array(
+        $recipients = [
             ['wiki.site', 1],
             ['user', $this->page->get('created_by')],
             ['user', $revision->get('created_by')]
-        );
+        ];
         if ($this->page->get('scope') != 'site') {
             $recipients[]  = [$this->page->get('scope'), $this->page->get('scope_id')];
             $recipients[0] = ['wiki.' . $this->page->get('scope'), $this->page->get('scope_id')];
@@ -398,12 +398,12 @@ class History extends SiteController
                 'scope'       => 'wiki.page.revision',
                 'scope_id'    => $this->page->get('id'),
                 'description' => Lang::txt('COM_WIKI_ACTIVITY_REVISION_APPROVED', $revision->get('id'), '<a href="' . Route::url($this->page->link()) . '">' . htmlspecialchars((string) ($this->page->title), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title'    => $this->page->title,
                     'url'      => Route::url($this->page->link()),
                     'name'     => $this->page->get('pagename'),
                     'revision' => $revision->get('id')
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -450,15 +450,15 @@ class History extends SiteController
         }
         $this->page->log('page_version_changed');
 
-        Event::trigger('wiki.onWikiAfterSave', array(&$this->page, false));
+        Event::trigger('wiki.onWikiAfterSave', [&$this->page, false]);
 
         // Log activity
-        $recipients = array(
+        $recipients = [
             ['wiki.site', 1],
             ['user', $this->page->get('created_by')],
             ['user', $this->page->version->get('created_by')],
             ['user', $newversion->get('created_by')]
-        );
+        ];
         if ($this->page->get('scope') != 'site') {
             $recipients[]  = [$this->page->get('scope'), $this->page->get('scope_id')];
             $recipients[0] = ['wiki.' . $this->page->get('scope'), $this->page->get('scope_id')];
@@ -470,13 +470,13 @@ class History extends SiteController
                 'scope'       => 'wiki.page',
                 'scope_id'    => $this->page->get('id'),
                 'description' => Lang::txt('COM_WIKI_ACTIVITY_PAGE_UPDATED', '<a href="' . Route::url($this->page->link()) . '">' . htmlspecialchars((string) ($this->page->title), ENT_QUOTES, 'UTF-8') . '</a>'),
-                'details'     => array(
+                'details'     => [
                     'title'    => $this->page->title,
                     'url'      => Route::url($this->page->link()),
                     'name'     => $this->page->get('pagename'),
                     'oldrevision' => $this->page->version->get('id'),
                     'newrevision' => $this->page->get('version_id')
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);

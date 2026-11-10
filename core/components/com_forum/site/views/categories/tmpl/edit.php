@@ -68,7 +68,7 @@ $this->css();
                     <label for="field-section_id">
                         <?php echo Lang::txt('COM_FORUM_FIELD_SECTION'); ?> <span class="required"><?php echo Lang::txt('COM_FORUM_REQUIRED'); ?></span>
                         <select class="form-control" name="fields[section_id]" id="field-section_id">
-                            <?php foreach ($this->forum->sections(array('state' => 1))->rows() as $section) { ?>
+                            <?php foreach ($this->forum->sections(['state' => 1])->rows() as $section) { ?>
                                 <option value="<?php echo $section->get('id'); ?>"<?php if ($this->category->get('section_id') == $section->get('id')) {
                                     echo ' selected="selected"';
                                                } ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>

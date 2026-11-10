@@ -19,7 +19,7 @@ $this->css()
 $database = App::get('db');
 
 if (!isset($this->reviews) || !$this->reviews) {
-    $this->reviews = array();
+    $this->reviews = [];
 }
 
 foreach ($this->reviews as $k => $review) {

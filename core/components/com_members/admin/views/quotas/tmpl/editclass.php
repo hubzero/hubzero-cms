@@ -99,7 +99,7 @@ $this->js();
                 // Include the component HTML helpers.
                 Html::addIncludePath(Component::path('com_members') . '/admin/helpers/html');
 
-                $groups = array();
+                $groups = [];
                 foreach ($this->row->groups as $g) :
                     $groups[] = $g->get('group_id');
                 endforeach;

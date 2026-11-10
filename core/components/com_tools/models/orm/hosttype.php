@@ -42,11 +42,11 @@ class Hosttype extends Relational
      *
      * @var  array
      **/
-    protected $rules = array(
+    protected $rules = [
         'name'  => 'notempty',
         'value' => 'notempty',
         'description' => 'notempty'
-    );
+    ];
 
     /**
      * Generates automatic owned by field value

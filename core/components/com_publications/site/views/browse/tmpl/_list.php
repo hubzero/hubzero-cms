@@ -32,7 +32,7 @@ endswitch;
 // running a separate query plus ~k Member::oneOrNew() loads per row,
 // which is the N+1 that crashed limit=1000 with OOM.
 $pa = new \Components\Publications\Tables\Author($database);
-$_versionIds = array();
+$_versionIds = [];
 foreach ($this->results as $line) {
     if ($line->version_id) {
         $_versionIds[] = $line->version_id;
@@ -67,7 +67,7 @@ $authorsByVersion = $pa->getAuthorsForVersions($_versionIds);
 
         $authors = isset($authorsByVersion[(int) $line->version_id])
             ? $authorsByVersion[(int) $line->version_id]
-            : array();
+            : [];
 
         // Display List of items
         $this->view('item')

@@ -50,18 +50,18 @@ class Mycourses extends Module
         $db->setQuery($query);
 
         $result = $db->loadObjectList();
-        $rows = array();
+        $rows = [];
 
         if (empty($result)) {
             return $rows;
         }
 
         foreach ($result as $row) {
-            if (is_numeric($row->offering_state) && in_array($row->offering_state, array(0, 2))) {
+            if (is_numeric($row->offering_state) && in_array($row->offering_state, [0, 2])) {
                 continue;
             }
 
-            if (is_numeric($row->section_state) && in_array($row->section_state, array(0, 2))) {
+            if (is_numeric($row->section_state) && in_array($row->section_state, [0, 2])) {
                 continue;
             }
 

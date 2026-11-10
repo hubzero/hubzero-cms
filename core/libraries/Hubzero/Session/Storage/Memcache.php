@@ -44,7 +44,7 @@ class Memcache extends Store
      *
      * @var  array
      */
-    private $servers = array();
+    private $servers = [];
 
     /**
      * Constructor
@@ -52,7 +52,7 @@ class Memcache extends Store
      * @param   array  $options  Optional parameters.
      * @return  void
      */
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         if (!self::isAvailable()) {
             throw new \Exception(\Hubzero\Facades\Lang::txt('JLIB_SESSION_MEMCACHE_EXTENSION_NOT_AVAILABLE'));
@@ -70,13 +70,13 @@ class Memcache extends Store
 
         if (!isset($options['servers']) || empty($options['servers'])) {
             $config = \Hubzero\Facades\App::get('config');
-            $options['servers'] = array(
-                array(
+            $options['servers'] = [
+                [
                     'host'   => $conf->get('memcache_server_host', 'localhost'),
                     'port'   => $conf->get('memcache_server_port', 11211),
                     'weight' => $conf->get('memcache_persist', true)
-                )
-            );
+                ]
+            ];
         }
 
         $this->servers = $options['servers'];
@@ -198,12 +198,12 @@ class Memcache extends Store
      * @param   array  $filters
      * @return  array
      */
-    public function all($filters = array())
+    public function all($filters = [])
     {
         // load all session keys
         $data = $this->engine->getAllKeys();
 
-        $sessions = array();
+        $sessions = [];
 
         // loop through all session keys and get data
         foreach ($data as $key => $value) {

@@ -29,7 +29,7 @@ class Ticketmessage extends Field
      */
     protected function getInput()
     {
-        $html = array();
+        $html = [];
 
         $html[] = '<select name="' . $this->name . '" id="' . $this->id . '">';
 

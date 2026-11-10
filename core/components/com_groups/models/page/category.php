@@ -84,11 +84,11 @@ class Category extends Model
         $tbl = new Tables\Page($this->_db);
 
         // build array of filters
-        $filters = array(
+        $filters = [
             'gidNumber' => $this->get('gidNumber'),
             'category'  => $this->get('id'),
-            'state'     => array(0, 1)
-        );
+            'state'     => [0, 1]
+        ];
 
         switch (strtolower($rtrn)) {
             case 'count':

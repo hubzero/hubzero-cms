@@ -49,7 +49,7 @@ class DurationTest extends Basic
 	 */
 	public function testRefusesWhatIsNotALength()
 	{
-		foreach (array(array('two', 'hours'), array('-1', 'hours'), array('2', 'fortnights')) as $case)
+		foreach ([['two', 'hours'], ['-1', 'hours'], ['2', 'fortnights']] as $case)
 		{
 			try
 			{
@@ -70,10 +70,10 @@ class DurationTest extends Basic
 	 */
 	public function testFromSeconds()
 	{
-		$this->assertSame(array(2, 'days'), Duration::fromSeconds(172800));
-		$this->assertSame(array(2, 'hours'), Duration::fromSeconds(7200));
-		$this->assertSame(array(90, 'minutes'), Duration::fromSeconds(5400));
-		$this->assertSame(array(90, 'seconds'), Duration::fromSeconds(90));
-		$this->assertSame(array('', 'hours'), Duration::fromSeconds(null));
+		$this->assertSame([2, 'days'], Duration::fromSeconds(172800));
+		$this->assertSame([2, 'hours'], Duration::fromSeconds(7200));
+		$this->assertSame([90, 'minutes'], Duration::fromSeconds(5400));
+		$this->assertSame([90, 'seconds'], Duration::fromSeconds(90));
+		$this->assertSame(['', 'hours'], Duration::fromSeconds(null));
 	}
 }

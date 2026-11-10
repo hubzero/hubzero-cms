@@ -64,10 +64,10 @@ $this->css()
                     . '.xml';
             }
 
-            $form = new \Hubzero\Form\Form('connection', array('control' => 'connect'));
+            $form = new \Hubzero\Form\Form('connection', ['control' => 'connect']);
             $form->loadFile($xml, false, '//config');
 
-            $data = array();
+            $data = [];
             if ($data = $this->connection->get('params')) {
                 $data = json_decode($data, true);
             }

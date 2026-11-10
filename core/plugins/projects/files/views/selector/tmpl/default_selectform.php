@@ -35,12 +35,12 @@ defined('_HZEXEC_') or die();
             } else {
                 // Show files
                 $view = new \Hubzero\Plugin\View(
-                    array(
+                    [
                         'folder'  => 'projects',
                         'element' => 'files',
                         'name'    => 'selector',
                         'layout'  => 'selector'
-                    )
+                    ]
                 );
                 $view->option       = $this->option;
                 $view->model        = $this->model;

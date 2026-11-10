@@ -265,9 +265,9 @@ $components = $this->getComponents(true);
 
 // Check if there are any components, otherwise, don't render the menu
 if ($components) {
-    $actives = array();
+    $actives = [];
     foreach ($components as $component) {
-        if (in_array($component->element, array('com_members', 'com_groups', 'com_system'))) {
+        if (in_array($component->element, ['com_members', 'com_groups', 'com_system'])) {
             continue;
         }
         $actives[] = $component->element;
@@ -276,7 +276,7 @@ if ($components) {
     $menu->addChild(new Node(Lang::txt('MOD_MENU_COMPONENTS'), '#', 'class:components', in_array($active, $actives)), true);
 
     foreach ($components as $component) {
-        if (in_array($component->element, array('com_members', 'com_groups', 'com_system'))) {
+        if (in_array($component->element, ['com_members', 'com_groups', 'com_system'])) {
             continue;
         }
         if (!empty($component->submenu)) {

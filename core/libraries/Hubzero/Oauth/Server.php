@@ -34,7 +34,7 @@ class Server
      *
      * @var array
      */
-    private $config = array();
+    private $config = [];
 
     /**
      * Constructor to setup setup server
@@ -43,27 +43,27 @@ class Server
      * @param   array   $config
      * @return  void
      */
-    public function __construct($storage, $options = array())
+    public function __construct($storage, $options = [])
     {
         // create config with defaults allowing overriding via API config
-        $this->config = array_merge(array(
+        $this->config = array_merge([
             'enforce_state'                     => true,
             'access_lifetime'                   => 3600,
             'refresh_token_lifetime'            => 7200,
             'require_exact_redirect_uri'        => true,
             'allow_credentials_in_request_body' => true,
             'always_issue_new_refresh_token'    => true
-        ), $options);
+        ], $options);
 
         // available grant types
-        $grantTypes = array(
+        $grantTypes = [
             new UserCredentialsGrantType($storage, $this->config),
             new RefreshTokenGrantType($storage, $this->config),
             new AuthorizationCodeGrantType($storage, $this->config),
             new ClientCredentialsGrantType($storage, $this->config),
             new SessionTokenGrantType($storage, $this->config),
             new ToolSessionTokenGrantType($storage, $this->config)
-        );
+        ];
 
         // Pass a storage object or array of storage objects to the OAuth2 server class
         $this->server = new OAuth2Server($storage, $this->config, $grantTypes);
@@ -79,7 +79,7 @@ class Server
     public function __call($name, $args)
     {
         // call method on OAuth2 Server
-        $response = call_user_func_array(array($this->server, $name), $args);
+        $response = call_user_func_array([$this->server, $name], $args);
 
         // If its an OAuth2\Response object that means it was used for token fetching or autorization
         // and we can modify it if its an error, otherwise we want to leave the result alone.
@@ -90,13 +90,13 @@ class Server
         ) {
             // rewrite parameters (response body) to a
             // standard error format used throughout the api
-            $response->setParameters(array(
+            $response->setParameters([
                 'message' => $response->getStatusText(),
                 'code'    => $response->getStatusCode(),
-                'errors'  => array(
+                'errors'  => [
                     $response->getParameters()
-                )
-            ));
+                ]
+            ]);
         }
 
         // return response

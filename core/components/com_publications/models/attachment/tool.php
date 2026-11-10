@@ -37,7 +37,7 @@ class Tool extends Base
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_connector  = array('object_name', 'object_instance');
+    protected $_connector  = ['object_name', 'object_instance'];
 
     /**
      * Get configs
@@ -329,7 +329,7 @@ class Tool extends Base
      * @param   array    $toAttach
      * @return  boolean
      */
-    public function save($element, $elementId, $pub, $blockParams, $toAttach = array())
+    public function save($element, $elementId, $pub, $blockParams, $toAttach = [])
     {
         // Incoming selections
         if (empty($toAttach)) {
@@ -533,12 +533,12 @@ class Tool extends Base
     {
         // Output HTML
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => 'attachments',
                 'layout'  => $this->_name
-            )
+            ]
         );
         $view->data   = $data;
         $view->params = $params;

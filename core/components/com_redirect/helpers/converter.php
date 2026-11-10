@@ -19,8 +19,8 @@ class Converter
     public static function convert($html)
     {
         $params = Component::params('com_redirect');
-        $whitelist = isset($params["delay_whitelist"]) ? explode(",", $params["delay_whitelist"]) : array();
-        $blacklist = isset($params["delay_blacklist"]) ? explode(",", $params["delay_blacklist"]) : array();
+        $whitelist = isset($params["delay_whitelist"]) ? explode(",", $params["delay_whitelist"]) : [];
+        $blacklist = isset($params["delay_blacklist"]) ? explode(",", $params["delay_blacklist"]) : [];
 
         return preg_replace_callback(
             '/<a\s+[^>]*href=[\'"]([^\'"]+)[\'"][^>]*>/i',

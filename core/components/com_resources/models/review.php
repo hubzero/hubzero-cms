@@ -64,29 +64,29 @@ class Review extends Relational
      *
      * @var  array
      */
-    protected $rules = array(
+    protected $rules = [
         'comment'     => 'notempty',
         'resource_id' => 'positive|nonzero'
-    );
+    ];
 
     /**
      * Automatic fields to populate every time a row is created
      *
      * @var  array
      */
-    public $initiate = array(
+    public $initiate = [
         'created',
         'user_id'
-    );
+    ];
 
     /**
      * Fields to be parsed
      *
      * @var array
      */
-    protected $parsed = array(
+    protected $parsed = [
         'comment'
-    );
+    ];
 
     /**
      * Base URL
@@ -380,9 +380,9 @@ class Review extends Relational
         // Round to the nearest half
         $newrating = ($newrating > 0) ? round($newrating * 2) / 2 : 0;
 
-        return array(
+        return [
             'rating' => $newrating,
             'times_rated' => $totalcount
-        );
+        ];
     }
 }

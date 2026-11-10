@@ -77,26 +77,26 @@ class Pages extends Base
 
         // get group pages
         $pageArchive = new Page\Archive();
-        $this->view->pages = $pageArchive->pages('tree', array(
+        $this->view->pages = $pageArchive->pages('tree', [
             'gidNumber' => $this->group->get('gidNumber'),
-            'state'     => array(0,1),
+            'state'     => [0,1],
             'orderby'   => 'lft ASC'
-        ));
+        ]);
 
         // get page categories
         $categoryArchive = new Page\Category\Archive();
-        $this->view->categories = $categoryArchive->categories('list', array(
+        $this->view->categories = $categoryArchive->categories('list', [
             'gidNumber' => $this->group->get('gidNumber'),
             'orderby'   => 'title'
-        ));
+        ]);
 
         // get modules archive
         $moduleArchive = new Module\Archive();
-        $this->view->modules = $moduleArchive->modules('list', array(
+        $this->view->modules = $moduleArchive->modules('list', [
             'gidNumber' => $this->group->get('gidNumber'),
-            'state'     => array(0,1),
+            'state'     => [0,1],
             'orderby'   => 'position ASC, ordering ASC'
-        ));
+        ]);
 
         // get request vars
         $this->view->search = Request::getString('search', '');
@@ -113,7 +113,7 @@ class Pages extends Base
 
         // get view notifications
         $this->view->notifications = $this->getNotifications();
-        $this->view->notifications = ($this->view->notifications) ? $this->view->notifications : array();
+        $this->view->notifications = ($this->view->notifications) ? $this->view->notifications : [];
         $this->view->group         = $this->group;
         $this->view->config        = $this->config;
 
@@ -184,24 +184,24 @@ class Pages extends Base
 
         // get a list of all pages for page ordering
         $pageArchive = Page\Archive::getInstance();
-        $this->view->pages = $pageArchive->pages('list', array(
+        $this->view->pages = $pageArchive->pages('list', [
             'gidNumber' => $this->group->get('gidNumber'),
-            'state'     => array(0, 1),
+            'state'     => [0, 1],
             'orderby'   => 'lft'
-        ));
+        ]);
 
         // get page categories
         $categoryArchive = new Page\Category\Archive();
-        $this->view->categories = $categoryArchive->categories('list', array(
+        $this->view->categories = $categoryArchive->categories('list', [
             'gidNumber' => $this->group->get('gidNumber'),
             'orderby'   => 'title'
-        ));
+        ]);
 
         // get stylesheets for editor
         // [!] (zooley) 07/2015
         //     This causes extreme performance issues under certain situations
         //     Bypassing until a better solution can be found.
-        $this->view->stylesheets = array(); //Helpers\View::getPageCss($this->group);
+        $this->view->stylesheets = []; //Helpers\View::getPageCss($this->group);
 
         // get page templates
         $this->view->pageTemplates = Helpers\View::getPageTemplates($this->group);
@@ -214,7 +214,7 @@ class Pages extends Base
 
         // get view notifications
         $this->view->notifications = $this->getNotifications();
-        $this->view->notifications = ($this->view->notifications) ? $this->view->notifications : array();
+        $this->view->notifications = ($this->view->notifications) ? $this->view->notifications : [];
         $this->view->group         = $this->group;
         $this->view->config        = $this->config;
 
@@ -245,8 +245,8 @@ class Pages extends Base
         Request::checkToken();
 
         // Get the page vars being posted
-        $page    = Request::getArray('page', array(), 'post');
-        $version = Request::getArray('pageversion', array(), 'post');
+        $page    = Request::getArray('page', [], 'post');
+        $version = Request::getArray('pageversion', [], 'post');
 
         // are we updating or creating a new page
         $task = ($page['id']) ? 'update' : 'create';
@@ -416,10 +416,10 @@ class Pages extends Base
         }
 
         // Log activity
-        $recipients = array(
+        $recipients = [
             ['group', $this->group->get('gidNumber')],
             ['user', User::get('id')]
-        );
+        ];
         foreach ($this->group->get('managers') as $recipient) {
             $recipients[] = ['user', $recipient];
         }
@@ -434,11 +434,11 @@ class Pages extends Base
                     $this->page->get('title'),
                     '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages') . '">' . $this->group->get('description') . '</a>'
                 ),
-                'details'     => array(
+                'details'     => [
                     'title'     => $this->page->get('title'),
                     'url'       => Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages'),
                     'gidNumber' => $this->group->get('gidNumber')
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -477,7 +477,7 @@ class Pages extends Base
 
         // get view notifications
         $this->view->notifications = $this->getNotifications();
-        $this->view->notifications = ($this->view->notifications) ? $this->view->notifications : array();
+        $this->view->notifications = ($this->view->notifications) ? $this->view->notifications : [];
         $this->view->group         = $this->group;
 
         //display layout
@@ -540,7 +540,7 @@ class Pages extends Base
         }
 
         // make sure state is a valid state
-        if (!in_array($state, array(0, 1, 2))) {
+        if (!in_array($state, [0, 1, 2])) {
             $state = 1;
         }
 
@@ -595,10 +595,10 @@ class Pages extends Base
         }
 
         // Log activity
-        $recipients = array(
+        $recipients = [
             ['group', $this->group->get('gidNumber')],
             ['user', User::get('id')]
-        );
+        ];
         foreach ($this->group->get('managers') as $recipient) {
             $recipients[] = ['user', $recipient];
         }
@@ -613,11 +613,11 @@ class Pages extends Base
                     $page->get('title'),
                     '<a href="' . $url . '">' . $this->group->get('description') . '</a>'
                 ),
-                'details'     => array(
+                'details'     => [
                     'title'     => $page->get('title'),
                     'url'       => $url,
                     'gidNumber' => $this->group->get('gidNumber')
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -640,7 +640,7 @@ class Pages extends Base
         Request::checkToken(['get', 'post']);
 
         //get the request vars
-        $pagesOrder = Request::getArray('order', array(), 'post');
+        $pagesOrder = Request::getArray('order', [], 'post');
 
         // update each page accordingly
         foreach ($pagesOrder as $pageOrder) {
@@ -667,7 +667,7 @@ class Pages extends Base
         }
 
         //we successfully reordered
-        echo json_encode(array('reordered' => true));
+        echo json_encode(['reordered' => true]);
     }
 
     /**
@@ -702,9 +702,9 @@ class Pages extends Base
 
         // remove any current home page
         $pageArchive = Page\Archive::getInstance();
-        $pageArchive->reset('home', 0, array(
+        $pageArchive->reset('home', 0, [
             'gidNumber' => $this->group->get('gidNumber')
-        ));
+        ]);
 
         // toggle home state
         $home = 1;
@@ -849,10 +849,10 @@ class Pages extends Base
         $url = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages&task=versions&pageid=' . $page->get('id'));
 
         // Log activity
-        $recipients = array(
+        $recipients = [
             ['group', $this->group->get('gidNumber')],
             ['user', User::get('id')]
-        );
+        ];
         foreach ($this->group->get('managers') as $recipient) {
             $recipients[] = ['user', $recipient];
         }
@@ -873,11 +873,11 @@ class Pages extends Base
                     $version,
                     '<a href="' . $restoreUrl . '">' . $this->group->get('description') . '</a>'
                 ),
-                'details'     => array(
+                'details'     => [
                     'title'     => $page->get('title'),
                     'url'       => $restoreUrl,
                     'gidNumber' => $this->group->get('gidNumber')
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);

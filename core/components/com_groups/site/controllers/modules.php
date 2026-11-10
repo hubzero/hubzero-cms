@@ -115,20 +115,20 @@ class Modules extends Base
 
         // get a list of all pages for creating module menu
         $pageArchive = Page\Archive::getInstance();
-        $this->view->pages = $pageArchive->pages('list', array(
+        $this->view->pages = $pageArchive->pages('list', [
             'gidNumber' => $this->group->get('gidNumber'),
-            'state'     => array(0,1),
+            'state'     => [0,1],
             'orderby'   => 'lft asc'
-        ));
+        ]);
 
         // get a list of all pages for creating module menu
         $moduleArchive = Module\Archive::getInstance();
-        $this->view->order = $moduleArchive->modules('list', array(
+        $this->view->order = $moduleArchive->modules('list', [
             'gidNumber' => $this->group->get('gidNumber'),
             'position'  => $this->view->module->get('position'),
-            'state'     => array(0,1),
+            'state'     => [0,1],
             'orderby'   => 'ordering'
-        ));
+        ]);
 
         // get stylesheets for editor
         $this->view->stylesheets = Helpers\View::getPageCss($this->group);
@@ -140,7 +140,7 @@ class Modules extends Base
         $this->_buildPathway();
 
         // get view notifications
-        $this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
+        $this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : [];
         $this->view->group = $this->group;
 
         //display layout
@@ -158,8 +158,8 @@ class Modules extends Base
         Request::checkToken();
 
         // get request vars
-        $module = Request::getArray('module', array(), 'post');
-        $menu   = Request::getArray('menu', array(), 'post');
+        $module = Request::getArray('module', [], 'post');
+        $menu   = Request::getArray('menu', [], 'post');
 
         // set gid number
         $module['gidNumber'] = $this->group->get('gidNumber');
@@ -286,10 +286,10 @@ class Modules extends Base
         );
 
         // Log activity
-        $recipients = array(
+        $recipients = [
             ['group', $this->group->get('gidNumber')],
             ['user', User::get('id')]
-        );
+        ];
         foreach ($this->group->get('managers') as $recipient) {
             $recipients[] = ['user', $recipient];
         }
@@ -304,11 +304,11 @@ class Modules extends Base
                     $this->module->get('title'),
                     '<a href="' . $url . '">' . htmlspecialchars((string) $this->group->get('description'), ENT_QUOTES, 'UTF-8') . '</a>'
                 ),
-                'details'     => array(
+                'details'     => [
                     'title'     => $this->module->get('title'),
                     'url'       => $url,
                     'gidNumber' => $this->group->get('gidNumber')
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);
@@ -373,7 +373,7 @@ class Modules extends Base
         }
 
         // make sure state is a valid state
-        if (!in_array($state, array(0, 1, 2))) {
+        if (!in_array($state, [0, 1, 2])) {
             $state = 1;
         }
 
@@ -401,10 +401,10 @@ class Modules extends Base
         }
 
         // Log activity
-        $recipients = array(
+        $recipients = [
             ['group', $this->group->get('gidNumber')],
             ['user', User::get('id')]
-        );
+        ];
         foreach ($this->group->get('managers') as $recipient) {
             $recipients[] = ['user', $recipient];
         }
@@ -420,11 +420,11 @@ class Modules extends Base
                     $module->get('title'),
                     '<a href="' . $url . '">' . htmlspecialchars((string) $this->group->get('description'), ENT_QUOTES, 'UTF-8') . '</a>'
                 ),
-                'details'     => array(
+                'details'     => [
                     'title'     => $module->get('title'),
                     'url'       => $url,
                     'gidNumber' => $this->group->get('gidNumber')
-                )
+                ]
             ],
             'recipients' => $recipients
         ]);

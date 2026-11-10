@@ -19,7 +19,7 @@ $tags        = 0;
 $state       = 'draft';
 
 if ($this->progress == null) {
-    $this->progress = array();
+    $this->progress = [];
     $this->progress['submitted'] = 0;
 }
 

@@ -129,8 +129,8 @@ class Provider extends AbstractService
      *
      * @var array
      */
-    public $ignore = array(
-        'server' => array(
+    public $ignore = [
+        'server' => [
             'HTTP_COOKIE',
             'HTTP_X_FORWARDED_FOR',
             'HTTP_X_FORWARDED_HOST',
@@ -143,16 +143,16 @@ class Provider extends AbstractService
             'SERVER_ADMIN',
             'QUERY_STRING',
             'PHP_SELF'
-        ),
-        'querystring' => array(
+        ],
+        'querystring' => [
             'url',
             'version',
             'apiPort',
             'apiKey',
             'akismetServer',
             'akismetVersion'
-        )
-    );
+        ]
+    ];
 
     /**
      * Constructor

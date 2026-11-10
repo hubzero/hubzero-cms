@@ -32,7 +32,7 @@ class Preferences extends AdminController
     public function displayTask()
     {
         // Incoming
-        $this->view->filters = array(
+        $this->view->filters = [
             'search' => urldecode(Request::getState(
                 $this->_option . '.' . $this->_controller . '.search',
                 'search',
@@ -70,7 +70,7 @@ class Preferences extends AdminController
                 0,
                 'int'
             )
-        );
+        ];
 
         $obj = new Tables\Preferences($this->database);
 
@@ -113,7 +113,7 @@ class Preferences extends AdminController
 
         if (!is_object($row)) {
             // Incoming
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
 
             // Get the single ID we're working with
             if (is_array($id)) {
@@ -185,7 +185,7 @@ class Preferences extends AdminController
         Request::checkToken();
 
         // Incoming fields
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         // Load the profile
         $row = new Tables\Preferences($this->database);
@@ -238,8 +238,8 @@ class Preferences extends AdminController
         Request::checkToken();
 
         // Incoming
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         // Do we have any IDs?
         if (!empty($ids)) {
@@ -251,7 +251,7 @@ class Preferences extends AdminController
                 $row->load($id);
 
                 $class = new Tables\SessionClass($this->database);
-                $class->load(array('alias' => 'default'));
+                $class->load(['alias' => 'default']);
 
                 if (!$class->id) {
                     // Output message and redirect
@@ -296,9 +296,9 @@ class Preferences extends AdminController
         $class = new Tables\SessionClass($this->database);
         $class->load($class_id);
 
-        $return = array(
+        $return = [
             'jobs'  => $class->jobs,
-        );
+        ];
 
         echo json_encode($return);
         exit();

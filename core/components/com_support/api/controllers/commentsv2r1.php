@@ -187,11 +187,11 @@ class Commentsv2r1 extends ApiController
         $total = clone $comments;
 
         $sort = Request::getWord('sort', 'created');
-        if (!in_array($sort, array('id', 'created', 'created_by', 'comment', 'ticket', 'access'))) {
+        if (!in_array($sort, ['id', 'created', 'created_by', 'comment', 'ticket', 'access'])) {
             $sort = 'created';
         }
         $sort_dir = Request::getWord('sort_Dir', 'desc');
-        if (!in_array($sort_dir, array('asc', 'desc'))) {
+        if (!in_array($sort_dir, ['asc', 'desc'])) {
             $sort_dir = 'desc';
         }
 
@@ -204,7 +204,7 @@ class Commentsv2r1 extends ApiController
 
         $response = new stdClass();
         $response->total = $total->total();
-        $response->comments = array();
+        $response->comments = [];
         foreach ($rows as $row) {
             $temp = $row->toArray();
 
@@ -380,8 +380,8 @@ class Commentsv2r1 extends ApiController
             throw new Exception(Lang::txt('Not authorized'), 403);
         }
 
-        $changes = array();
-        $fields = $canUpdate ? ['group_id', 'owner', 'severity', 'status', 'target_date', 'category'] : array();
+        $changes = [];
+        $fields = $canUpdate ? ['group_id', 'owner', 'severity', 'status', 'target_date', 'category'] : [];
         foreach ($fields as $index) {
             // (an `if ($val = ...)` test dropped status 0, so a ticket could never
             // be closed through this call)
@@ -442,7 +442,7 @@ class Commentsv2r1 extends ApiController
                     }
 
                     // the id columns take ints (status=closed would otherwise reach the INT column)
-                    $ticket->set($index, in_array($index, array('status', 'owner', 'group_id')) ? (int) $val : $val);
+                    $ticket->set($index, in_array($index, ['status', 'owner', 'group_id']) ? (int) $val : $val);
 
                     $changes[] = $temp;
                 }
@@ -474,11 +474,11 @@ class Commentsv2r1 extends ApiController
         $comment->changelog()->cced(Request::getString('cc', ''));
 
         // Listeners (Slack), e-mail, the record of who was told, and the activity log
-        Notifier::ticketUpdated($ticket, $comment, $before, array(
+        Notifier::ticketUpdated($ticket, $comment, $before, [
             'email_submitter' => Request::getBool('email_submitter', false),
             'email_owner'     => Request::getBool('email_owner', false),
             'email_terse'     => Request::getBool('email_terse', false),
-        ));
+        ]);
 
         $msg = new stdClass();
         $msg->id = $comment->get('id');

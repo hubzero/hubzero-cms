@@ -57,7 +57,7 @@ class Resume extends Plugin
     public function &onMembersAreas($user, $member)
     {
         // default areas returned to nothing
-        $areas = array();
+        $areas = [];
 
         // if this is the logged in user show them
         if ($user->get('id') == $member->get('id') || $this->isEmployer($user, $member)) {
@@ -159,11 +159,11 @@ class Resume extends Plugin
         }
 
         // The output array we're returning
-        $arr = array(
+        $arr = [
             'html' => '',
-            'metadata' => array(),
+            'metadata' => [],
             'searchresult' => ''
-        );
+        ];
 
         // Do we need to return any data?
         if ($return != 'html' && $return != 'metadata') {
@@ -256,7 +256,7 @@ class Resume extends Plugin
 
             // Never bind the key (uid) or id from the form: the row was loaded for
             // this member and must stay theirs
-            if (!$js->bind($_POST, array('uid', 'id'))) {
+            if (!$js->bind($_POST, ['uid', 'id'])) {
                 App::abort(500, $js->getError());
             }
             $js->uid = $member->get('id');
@@ -451,7 +451,7 @@ class Resume extends Plugin
         Request::checkToken(['get', 'post']);
 
         // Incoming file
-        $file = Request::getArray('uploadres', array(), 'files');
+        $file = Request::getArray('uploadres', [], 'files');
 
         if (empty($file) || !$file['name']) {
             $this->setError(Lang::txt('PLG_MEMBERS_RESUME_SUPPORT_NO_FILE'));
@@ -586,7 +586,7 @@ class Resume extends Plugin
                 // Do not include profile in search without a resume
                 $js = new \Components\Jobs\Tables\Seeker($database);
                 $js->loadSeeker($member->get('id'));
-                $js->bind(array('active' => 0));
+                $js->bind(['active' => 0]);
                 if (!$js->store()) {
                     $this->setError($js->getError());
                 }
@@ -689,8 +689,8 @@ class Resume extends Plugin
             return 'No date provided';
         }
 
-        $periods = array('second', 'minute', 'hour', 'day', 'week', 'month', 'year', 'decade');
-        $lengths = array('60', '60', '24', '7', '4.35', '12', '10');
+        $periods = ['second', 'minute', 'hour', 'day', 'week', 'month', 'year', 'decade'];
+        $lengths = ['60', '60', '24', '7', '4.35', '12', '10'];
 
         $now = strtotime(Date::getRoot());
         $unix_date = strtotime($date);

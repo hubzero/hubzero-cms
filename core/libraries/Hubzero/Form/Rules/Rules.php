@@ -57,7 +57,7 @@ class Rules extends Rule
     protected function getValueActions($value)
     {
         // Initialise variables.
-        $actions = array();
+        $actions = [];
 
         // Iterate over the asset actions and add to the actions.
         foreach ((array) $value as $name => $rules) {
@@ -76,7 +76,7 @@ class Rules extends Rule
     protected function getFieldActions($element)
     {
         // Initialise variables.
-        $actions = array();
+        $actions = [];
 
         // Initialise some field attributes.
         $section   = $element['section']   ? (string) $element['section']   : '';

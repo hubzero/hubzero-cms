@@ -43,7 +43,7 @@ class Folderlist extends Element
         $exclude = (string) $node['exclude'];
         $folders = App::get('filesystem')->folders($path, $filter);
 
-        $options = array();
+        $options = [];
         foreach ($folders as $folder) {
             if ($exclude) {
                 if (preg_match(chr(1) . $exclude . chr(1), $folder)) {
@@ -64,7 +64,7 @@ class Folderlist extends Element
         return Builder\Select::genericlist(
             $options,
             $control_name . '[' . $name . ']',
-            array('id' => 'param' . $name, 'list.attr' => 'class="inputbox"', 'list.select' => $value)
+            ['id' => 'param' . $name, 'list.attr' => 'class="inputbox"', 'list.select' => $value]
         );
     }
 }

@@ -567,7 +567,7 @@ class Version extends Table
         $this->_db->setQuery($query);
         $checker = $this->_db->loadResult();
 
-        if ($checker or (in_array($tool['toolname'], array('test','shortname','hub','tool')) && !$id)) {
+        if ($checker or (in_array($tool['toolname'], ['test','shortname','hub','tool']) && !$id)) {
             $err['toolname'] = Lang::txt('ERR_TOOLNAME_EXISTS');
         } elseif (preg_match('#^[a-zA-Z0-9]{3,15}$#', $tool['toolname']) == '' && !$id) {
             $err['toolname'] = Lang::txt('ERR_TOOLNAME');
@@ -618,9 +618,9 @@ class Version extends Table
 
         if ($tool['exec'] == '@GROUP' && $tool['membergroups'] == '') {
             $err['membergroups'] = Lang::txt('ERR_GROUPS_EMPTY');
-            $tool['membergroups'] = array();
+            $tool['membergroups'] = [];
         } elseif ($tool['membergroups'] == '' or $tool['exec'] != '@GROUP') {
-            $tool['membergroups'] = array();
+            $tool['membergroups'] = [];
         } elseif ($tool['exec'] == '@GROUP') {
             $tool['membergroups'] = $tgObj->writeMemberGroups($tool['membergroups'], $id, $this->_db, $error_g);
             if ($error_g) {
@@ -637,7 +637,7 @@ class Version extends Table
         }
 
         if ($tool['developers'] == '') {
-            $tool['developers'] = array();
+            $tool['developers'] = [];
             $err['developers'] =  Lang::txt('ERR_TEAM_EMPTY');
         } else {
             $tool['developers'] = $tgObj->writeTeam($tool['developers'], $id, $this->_db, $error_t);

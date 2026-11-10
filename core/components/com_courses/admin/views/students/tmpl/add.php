@@ -74,15 +74,15 @@ foreach ($roles as $role) {
                 <div class="input-wrap">
                     <label for="acmembers"><?php echo Lang::txt('COM_COURSES_FIELD_USER'); ?></label><br />
                     <?php
-                    $mc = Event::trigger('hubzero.onGetMultiEntry', array(
-                        array(
+                    $mc = Event::trigger('hubzero.onGetMultiEntry', [
+                        [
                             'members',   // The component to call
                             'fields[user_id]',        // Name of the input field
                             'acmembers', // ID of the input field
                             '',          // CSS class(es) for the input field
                             '' // The value of the input field
-                        )
-                    ));
+                        ]
+                    ]);
                     if (count($mc) > 0) {
                         echo $mc[0];
                     } else { ?>
@@ -97,7 +97,7 @@ foreach ($roles as $role) {
                         <?php
                         $model = \Components\Courses\Models\Courses::getInstance();
 
-                        $data = array();
+                        $data = [];
                         if ($model->courses()->total() > 0) {
                             $j = 0;
                             foreach ($model->courses() as $course) {
@@ -106,11 +106,11 @@ foreach ($roles as $role) {
                                 <?php
                                 foreach ($course->offerings() as $i => $offering) {
                                     foreach ($offering->sections() as $section) {
-                                        $data[$j++] = array(
+                                        $data[$j++] = [
                                             $offering->get('id'),
                                             $section->get('id'),
                                             $section->get('title')
-                                        );
+                                        ];
                                     }
                                     $val = $this->escape(stripslashes($offering->get('id')));
                                     $selected = ($offering->get('id') == $this->offering->get('id'))
@@ -153,7 +153,7 @@ foreach ($roles as $role) {
                         'calendar',
                         'fields[enrolled]',
                         $this->row->get('enrolled'),
-                        array('id' => 'enrolled')
+                        ['id' => 'enrolled']
                     ); ?>
                 </div>
             </fieldset>

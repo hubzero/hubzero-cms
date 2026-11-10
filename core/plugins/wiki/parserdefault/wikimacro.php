@@ -29,7 +29,7 @@ class WikiMacro
      *
      * @var  array
      */
-    protected $_data = array();
+    protected $_data = [];
 
     /**
      * Database
@@ -64,14 +64,14 @@ class WikiMacro
      *
      * @var  array
      */
-    public $linkLog = array();
+    public $linkLog = [];
 
     /**
      * Macro instances, keyed by class name
      *
      * @var  array
      */
-    protected static $instances = array();
+    protected static $instances = [];
 
     /**
      * Constructor
@@ -79,7 +79,7 @@ class WikiMacro
      * @param   array  $config  Configuration options
      * @return  void
      */
-    public function __construct($config = array())
+    public function __construct($config = [])
     {
         $this->_db = App::get('db');
 
@@ -140,7 +140,7 @@ class WikiMacro
      * @param   array   $config  Configuration parameters
      * @return  object
      */
-    public static function getInstance($config = array())
+    public static function getInstance($config = [])
     {
         // Keyed by class. A single shared slot combined with static::class
         // meant whichever macro asked first owned the instance for the whole

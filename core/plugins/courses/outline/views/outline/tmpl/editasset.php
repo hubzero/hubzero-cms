@@ -21,12 +21,12 @@ $asset = new \Components\Courses\Models\Asset(Request::getInt('asset_id', null))
 $asset->set('section_id', $this->course->offering()->section()->get('id'));
 
 // Get the asset groups
-$assetgroups = array();
-$assets      = array();
+$assetgroups = [];
+$assets      = [];
 foreach ($this->course->offering()->units() as $unit) :
     foreach ($unit->assetgroups() as $agt) :
         foreach ($agt->children() as $ag) :
-            $assetgroups[] = array('id' => $ag->get('id'), 'title' => $ag->get('title'));
+            $assetgroups[] = ['id' => $ag->get('id'), 'title' => $ag->get('title')];
             foreach ($ag->assets() as $a) :
                 if ($a->isPublished()) :
                     $a->set('longTitle', $unit->get('title') . ' - ' . $ag->get('title') . ' - ' . $a->get('title'));

@@ -29,13 +29,13 @@ $this->addScript(
 
 $browser = new \Hubzero\Browser\Detector();
 
-$cls = array(
+$cls = [
     'nojs',
     $this->direction,
     $theme,
     $browser->name(),
     $browser->name() . $browser->major()
-);
+];
 ?>
 <!DOCTYPE html>
 <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>"

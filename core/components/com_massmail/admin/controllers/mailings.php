@@ -55,12 +55,12 @@ class Mailings extends AdminController
      */
     public function displayTask()
     {
-        $filters = array(
+        $filters = [
             'search' => urldecode(Request::getState($this->_option . '.' . $this->_controller . '.search', 'search', '')),
             'status' => Request::getState($this->_option . '.' . $this->_controller . '.status', 'status', ''),
             'sort'   => Request::getState($this->_option . '.' . $this->_controller . '.sort', 'filter_order', 'created'),
             'sort_Dir' => Request::getState($this->_option . '.' . $this->_controller . '.sortdir', 'filter_order_Dir', 'DESC')
-        );
+        ];
 
         $rows = Mailing::all();
 
@@ -88,7 +88,7 @@ class Mailings extends AdminController
      * @param   object  $row
      * @return  void
      */
-    public function editTask($row = null, $invalid = array())
+    public function editTask($row = null, $invalid = [])
     {
         if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.create', $this->_option)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
@@ -97,7 +97,7 @@ class Mailings extends AdminController
         Request::setVar('hidemainmenu', 1);
 
         if (!is_object($row)) {
-            $id = Request::getArray('id', array(0));
+            $id = Request::getArray('id', [0]);
             $id = (is_array($id) && !empty($id)) ? $id[0] : $id;
             $row = Mailing::oneOrNew($id);
         }
@@ -128,7 +128,7 @@ class Mailings extends AdminController
             $previewHtml = str_replace(Formatter::UNSUBSCRIBE_TOKEN, '#', $html);
         }
 
-        $failures = array();
+        $failures = [];
         if (!$row->isNew()) {
             $failures = Recipient::all()
                 ->whereEquals('mailing_id', $row->get('id'))
@@ -199,12 +199,12 @@ class Mailings extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $posted = Request::getArray('fields', array(), 'post', 'none', 2);
+        $posted = Request::getArray('fields', [], 'post', 'none', 2);
 
         // Only the fields the compose form owns are taken from the request;
         // everything else on the row (status, counters, actor/timestamp
         // columns, From) is set by the server below or elsewhere.
-        $fields = array_intersect_key($posted, array_flip(array('id', 'subject', 'body', 'reply_to')));
+        $fields = array_intersect_key($posted, array_flip(['id', 'subject', 'body', 'reply_to']));
 
         // Reply-to must match what the mail server can send as, so only a Super
         // Administrator may set it; ignore it from anyone else.
@@ -262,14 +262,14 @@ class Mailings extends AdminController
         // so hitting "Send" on an incomplete message never leaves an orphan
         // draft behind in the list after the error.
         if ($this->getTask() == 'review') {
-            $invalid = array();
+            $invalid = [];
             if (!trim((string) $row->get('subject'))) {
                 $invalid[] = 'subject';
             }
             if ($this->isBlankBody($row->get('body'))) {
                 $invalid[] = 'body';
             }
-            $spec = json_decode((string) $row->get('recipient_spec'), true) ?: array();
+            $spec = json_decode((string) $row->get('recipient_spec'), true) ?: [];
             if (Recipients::previewCount($spec, (int) $row->get('ignore_optout') ? true : false) < 1) {
                 $invalid[] = 'recipients';
             }
@@ -278,13 +278,13 @@ class Mailings extends AdminController
                 $hasSelection = !empty($spec['all']) || !empty($spec['groups'])
                     || !empty($spec['users']) || !empty($spec['emails']);
 
-                if ($invalid === array('recipients') && $hasSelection) {
+                if ($invalid === ['recipients'] && $hasSelection) {
                     // Recipients were chosen but none can be mailed -- explain why
                     // rather than just calling the field "required".
                     Notify::error(Lang::txt('COM_MASSMAIL_NO_RECIPIENTS'));
                 } else {
                     // Name every missing piece so nothing is a surprise.
-                    $names = array();
+                    $names = [];
                     if (in_array('subject', $invalid)) {
                         $names[] = Lang::txt('COM_MASSMAIL_FIELD_SUBJECT');
                     }
@@ -310,7 +310,7 @@ class Mailings extends AdminController
         // "Send" saves the draft, then routes to the review/verification page
         // rather than dispatching straight away.
         if ($this->getTask() == 'review') {
-            Request::setVar('id', array($row->get('id')));
+            Request::setVar('id', [$row->get('id')]);
             return $this->verifyTask($row);
         }
 
@@ -388,7 +388,7 @@ class Mailings extends AdminController
         }
 
         // Content + audience must be valid before we let anyone confirm a send.
-        $spec    = json_decode((string) $row->get('recipient_spec'), true) ?: array();
+        $spec    = json_decode((string) $row->get('recipient_spec'), true) ?: [];
         $ignore  = (int) $row->get('ignore_optout') ? true : false;
         $preview = Recipients::previewCount($spec, $ignore);
 
@@ -409,13 +409,13 @@ class Mailings extends AdminController
         $text = str_replace(Formatter::UNSUBSCRIBE_TOKEN, '[' . Lang::txt('COM_MASSMAIL_UNSUB_PLACEHOLDER') . ']', $text);
         $html = str_replace(Formatter::UNSUBSCRIBE_TOKEN, '#', $html);
 
-        $disposition = array(
+        $disposition = [
             'needs_general_approval' => $this->requireApproval(),
             'needs_optout_approval'  => $ignore,
             'held'                   => !$this->sendingEnabled(),
             'scheduled'              => $this->isScheduledFuture($row),
             'scheduled_local'        => $this->isScheduledFuture($row) ? $this->scheduledLocal($row) : ''
-        );
+        ];
 
         $this->view
             ->set('row', $row)
@@ -436,11 +436,11 @@ class Mailings extends AdminController
     {
         // Additive recipient list: any combination of everyone, groups, specific
         // users, and raw emails. Overlaps dedupe at expansion.
-        $spec = array('all' => Request::getInt('rcpt_all', 0) ? true : false);
+        $spec = ['all' => Request::getInt('rcpt_all', 0) ? true : false];
 
         // groups arrive as a single comma/space separated text field (groups[]) of
         // group IDs and/or cn aliases; keep the raw tokens (resolved at send time).
-        $groupsRaw = implode(',', (array) Request::getArray('groups', array()));
+        $groupsRaw = implode(',', (array) Request::getArray('groups', []));
         $spec['groups'] = array_values(array_filter(array_map('trim', preg_split('/[\s,]+/', $groupsRaw)), 'strlen'));
 
         // users: comma/space separated list of user IDs and/or usernames
@@ -450,7 +450,7 @@ class Mailings extends AdminController
 
         // emails: one per line
         $emailsRaw = Request::getString('emails', '');
-        $emails = array();
+        $emails = [];
         foreach (preg_split('/[\r\n,;]+/', $emailsRaw) as $e) {
             $e = trim($e);
             if ($e !== '') {
@@ -525,7 +525,7 @@ class Mailings extends AdminController
     public function grouplookupTask()
     {
         $q   = trim(Request::getString('q', ''));
-        $out = array();
+        $out = [];
 
         if (strlen($q) >= 2) {
             $db   = \App::get('db');
@@ -540,7 +540,7 @@ class Mailings extends AdminController
 				 ORDER BY cn ASC LIMIT 15"
             );
             foreach ((array) $db->loadObjectList() as $g) {
-                $out[] = array('cn' => $g->cn, 'id' => (int) $g->gidNumber, 'title' => (string) $g->description);
+                $out[] = ['cn' => $g->cn, 'id' => (int) $g->gidNumber, 'title' => (string) $g->description];
             }
         }
 
@@ -558,7 +558,7 @@ class Mailings extends AdminController
     public function userlookupTask()
     {
         $q   = trim(Request::getString('q', ''));
-        $out = array();
+        $out = [];
 
         if (strlen($q) >= 2) {
             $db   = \App::get('db');
@@ -573,7 +573,7 @@ class Mailings extends AdminController
 				 ORDER BY username ASC LIMIT 15"
             );
             foreach ((array) $db->loadObjectList() as $u) {
-                $out[] = array('cn' => $u->username, 'id' => (int) $u->id, 'title' => (string) $u->name);
+                $out[] = ['cn' => $u->username, 'id' => (int) $u->id, 'title' => (string) $u->name];
             }
         }
 
@@ -592,7 +592,7 @@ class Mailings extends AdminController
     public function recipientlookupTask()
     {
         $q   = trim(Request::getString('q', ''));
-        $out = array();
+        $out = [];
 
         if (strlen($q) >= 2) {
             $db      = \App::get('db');
@@ -602,13 +602,13 @@ class Mailings extends AdminController
             $gw = "cn LIKE $like OR description LIKE $like" . ($numeric ? ' OR gidNumber = ' . (int) $q : '');
             $db->setQuery("SELECT gidNumber, cn, description FROM `#__xgroups` WHERE published = 1 AND ($gw) ORDER BY cn ASC LIMIT 8");
             foreach ((array) $db->loadObjectList() as $g) {
-                $out[] = array('kind' => 'group', 'token' => $g->cn, 'label' => ($g->description ? $g->description : $g->cn), 'sub' => $g->cn);
+                $out[] = ['kind' => 'group', 'token' => $g->cn, 'label' => ($g->description ? $g->description : $g->cn), 'sub' => $g->cn];
             }
 
             $uw = "username LIKE $like OR name LIKE $like" . ($numeric ? ' OR id = ' . (int) $q : '');
             $db->setQuery("SELECT id, username, name FROM `#__users` WHERE block = 0 AND ($uw) ORDER BY username ASC LIMIT 8");
             foreach ((array) $db->loadObjectList() as $u) {
-                $out[] = array('kind' => 'user', 'token' => (int) $u->id, 'label' => ($u->name ? $u->name : $u->username), 'sub' => $u->username);
+                $out[] = ['kind' => 'user', 'token' => (int) $u->id, 'label' => ($u->name ? $u->name : $u->username), 'sub' => $u->username];
             }
         }
 
@@ -630,10 +630,10 @@ class Mailings extends AdminController
         $count  = Recipients::previewCount($spec, $ignore);
 
         header('Content-Type: application/json');
-        echo json_encode(array(
+        echo json_encode([
             'count' => $count,
             'text'  => Lang::txt('COM_MASSMAIL_WILL_REACH', number_format($count))
-        ));
+        ]);
         exit;
     }
 
@@ -645,7 +645,7 @@ class Mailings extends AdminController
      */
     protected function handleUploads($mailing)
     {
-        $files = Request::getArray('attachment', array(), 'files');
+        $files = Request::getArray('attachment', [], 'files');
         if (empty($files) || empty($files['name'])) {
             return;
         }
@@ -693,13 +693,13 @@ class Mailings extends AdminController
                     continue;
                 }
 
-                $att = Attachment::blank()->set(array(
+                $att = Attachment::blank()->set([
                     'mailing_id' => $mailing->get('id'),
                     'filename'   => $clean,
                     'stored_path' => $target,
                     'size'       => (int) $files['size'][$i],
                     'mimetype'   => (string) $files['type'][$i]
-                ));
+                ]);
                 $att->save();
             }
         }
@@ -713,12 +713,12 @@ class Mailings extends AdminController
      */
     protected function hasExecutableExtension($name)
     {
-        $executable = array(
+        $executable = [
             'php', 'php3', 'php4', 'php5', 'php7', 'phtml', 'phar', 'js', 'exe', 'java', 'perl', 'pl',
             'py', 'asp', 'aspx', 'dll', 'go', 'ade', 'adp', 'bat', 'chm', 'cmd', 'com', 'cpl', 'hta',
             'htaccess', 'ins', 'isp', 'jse', 'lib', 'mde', 'msc', 'msi', 'msp', 'mst', 'pif', 'scr',
             'sct', 'sh', 'shb', 'svg', 'sys', 'vb', 'vbe', 'vbs', 'vxd', 'wsc', 'wsf', 'wsh'
-        );
+        ];
 
         foreach (explode('.', strtolower($name)) as $segment) {
             if (in_array($segment, $executable)) {
@@ -749,7 +749,7 @@ class Mailings extends AdminController
         }
         $att->destroy();
 
-        Request::setVar('id', array($mailingId));
+        Request::setVar('id', [$mailingId]);
         return $this->editTask();
     }
 
@@ -776,7 +776,7 @@ class Mailings extends AdminController
         }
 
         // Validate content + audience.
-        $spec = json_decode((string) $row->get('recipient_spec'), true) ?: array();
+        $spec = json_decode((string) $row->get('recipient_spec'), true) ?: [];
         $preview = Recipients::previewCount($spec, (int) $row->get('ignore_optout') ? true : false);
 
         if (!trim((string) $row->get('subject')) || $this->isBlankBody($row->get('body'))) {
@@ -902,7 +902,7 @@ class Mailings extends AdminController
      */
     public function pauseTask()
     {
-        $this->transition(array(Mailing::STATUS_SENDING, Mailing::STATUS_PREPARING), Mailing::STATUS_PAUSED, 'COM_MASSMAIL_PAUSED');
+        $this->transition([Mailing::STATUS_SENDING, Mailing::STATUS_PREPARING], Mailing::STATUS_PAUSED, 'COM_MASSMAIL_PAUSED');
     }
 
     /**
@@ -918,7 +918,7 @@ class Mailings extends AdminController
         $row = Mailing::oneOrNew(Request::getInt('id', 0));
         $to  = (int) $row->get('total_recipients') > 0 ? Mailing::STATUS_SENDING : Mailing::STATUS_PREPARING;
 
-        $this->transition(array(Mailing::STATUS_PAUSED), $to, 'COM_MASSMAIL_RESUMED');
+        $this->transition([Mailing::STATUS_PAUSED], $to, 'COM_MASSMAIL_RESUMED');
     }
 
     /**
@@ -929,14 +929,14 @@ class Mailings extends AdminController
     public function stopTask()
     {
         $this->transition(
-            array(
+            [
                 Mailing::STATUS_SENDING,
                 Mailing::STATUS_PREPARING,
                 Mailing::STATUS_PAUSED,
                 Mailing::STATUS_PENDING_APPROVAL,
                 Mailing::STATUS_HELD,
                 Mailing::STATUS_SCHEDULED
-            ),
+            ],
             Mailing::STATUS_CANCELLED,
             'COM_MASSMAIL_CANCELLED'
         );
@@ -1005,14 +1005,14 @@ class Mailings extends AdminController
                     $message->addAttachment($att->get('stored_path'), $att->get('filename'));
                 }
             }
-            $message->setTo(array(User::get('email')));
+            $message->setTo([User::get('email')]);
             $message->send();
             Notify::success(Lang::txt('COM_MASSMAIL_TEST_SENT', User::get('email')));
         } catch (\Exception $e) {
             Notify::error(Lang::txt('COM_MASSMAIL_TEST_FAILED', $e->getMessage()));
         }
 
-        Request::setVar('id', array($row->get('id')));
+        Request::setVar('id', [$row->get('id')]);
         return $this->editTask();
     }
 
@@ -1033,11 +1033,11 @@ class Mailings extends AdminController
 
         // The list checkboxes (Html::grid) post as cid[]; fall back to id[] for
         // any other caller.
-        $ids = Request::getArray('cid', array());
+        $ids = Request::getArray('cid', []);
         if (empty($ids)) {
-            $ids = Request::getArray('id', array());
+            $ids = Request::getArray('id', []);
         }
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         $removed = 0;
         $skipped = 0;
@@ -1105,7 +1105,7 @@ class Mailings extends AdminController
 
         $id = Request::getInt('id', 0);
         if (!$id) {
-            $fields = Request::getArray('fields', array());
+            $fields = Request::getArray('fields', []);
             $id = isset($fields['id']) ? (int) $fields['id'] : 0;
         }
 

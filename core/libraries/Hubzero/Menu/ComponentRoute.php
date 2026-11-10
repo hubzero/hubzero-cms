@@ -48,11 +48,11 @@ class ComponentRoute
      *
      * @var  array
      */
-    protected static $notPages = array(
+    protected static $notPages = [
         'com_media',
         'com_messages',
         'com_system',
-    );
+    ];
 
     /**
      * Database connection
@@ -131,12 +131,12 @@ class ComponentRoute
             return $found;
         }
 
-        $values = array(
+        $values = [
             'menutype'    => 'components',
             'title'       => 'Components',
             'description' => 'One entry per component, so every component has an address'
                 . ' and a page of its own. Generated; not edited here.',
-        );
+        ];
 
         if ($typed) {
             $values['type'] = 'component';
@@ -314,7 +314,7 @@ class ComponentRoute
 
         $this->db->getQuery()
             ->insert('#__menu')
-            ->values(array(
+            ->values([
                 'menutype'          => $menutype,
                 'title'             => ucfirst($alias),
                 'alias'             => $alias,
@@ -338,7 +338,7 @@ class ComponentRoute
                 'home'              => 0,
                 'language'          => '*',
                 'client_id'         => 0
-            ))
+            ])
             ->execute();
 
         $this->say('Added the site route /' . $alias);
@@ -427,12 +427,12 @@ class ComponentRoute
 
         $this->db->getQuery()
             ->update('#__menu')
-            ->set(array(
+            ->set([
                 'lft'   => (int) $leftId,
                 'rgt'   => (int) $rightId,
                 'level' => (int) $level,
                 'path'  => $path
-            ))
+            ])
             ->whereEquals('id', (int) $parentId)
             ->execute();
 

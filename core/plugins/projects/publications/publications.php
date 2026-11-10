@@ -87,10 +87,10 @@ class Publications extends Plugin
      */
     public function &onProjectAreas($alias = null)
     {
-        $area = array();
+        $area = [];
 
         // Check if plugin is restricted to certain projects
-        $projects = $this->params->get('restricted') ? \Components\Projects\Helpers\Html::getParamArray($this->params->get('restricted')) : array();
+        $projects = $this->params->get('restricted') ? \Components\Projects\Helpers\Html::getParamArray($this->params->get('restricted')) : [];
 
         if (!empty($projects) && $alias) {
             if (!in_array($alias, $projects)) {
@@ -98,13 +98,13 @@ class Publications extends Plugin
             }
         }
 
-        $area = array(
+        $area = [
             'name'    => 'publications',
             'title'   => Lang::txt('COM_PROJECTS_TAB_PUBLICATIONS'),
             'submenu' => null,
             'show'    => true,
             'icon'    => 'f058'
-        );
+        ];
 
         return $area;
     }
@@ -117,7 +117,7 @@ class Publications extends Plugin
      */
     public function &onProjectCount($model)
     {
-        $counts = array('publications' => 0);
+        $counts = ['publications' => 0];
 
         // Get this area details
         $this->_area = $this->onProjectAreas();
@@ -128,7 +128,7 @@ class Publications extends Plugin
             // Instantiate a publication object
             $pub_model = new \Components\Publications\Models\Publication();
 
-            $filters = array();
+            $filters = [];
             $filters['project']       = $model->get('id');
             $filters['ignore_access'] = 1;
             $filters['dev']           = 1;
@@ -151,12 +151,12 @@ class Publications extends Plugin
     {
         $returnhtml = true;
 
-        $arr = array(
+        $arr = [
             'html'     => '',
             'metadata' => '',
             'message'  => '',
             'error'    => ''
-        );
+        ];
 
         // Get this area details
         $this->_area = $this->onProjectAreas();
@@ -197,7 +197,7 @@ class Publications extends Plugin
             // Contribute process outside of projects
             $this->model->set('provisioned', 1);
 
-            $ajax_tasks  = array('showoptions', 'save', 'showitem');
+            $ajax_tasks  = ['showoptions', 'save', 'showitem'];
             $this->_task = $action == 'start' ? 'start' : 'contribute';
             if ($action == 'publication') {
                 $this->_task = 'publication';
@@ -339,22 +339,22 @@ class Publications extends Plugin
         $pub = new \Components\Publications\Models\Publication();
 
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => 'mini'
-            )
+            ]
         );
 
         // Filters for returning results
-        $view->filters = array(
+        $view->filters = [
             'project' => $model->get('id'),
             'limit'   => $model->config()->get('sidebox_limit', 5),
             'start'   => 0,
             'dev'     => 1,
             'sortby'  => 'date_created',
             'sortdir' => 'DESC'
-        );
+        ];
 
         $view->items = $pub->entries('list', $view->filters);
         $view->model = $model;
@@ -380,19 +380,19 @@ class Publications extends Plugin
         $pub = new \Components\Publications\Models\Publication();
 
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => 'publist'
-            )
+            ]
         );
 
         // Filters for returning results
-        $view->filters = array(
+        $view->filters = [
             'project' => $model->get('id'),
             'sortby'  => 'date_published',
             'sortdir' => 'DESC'
-        );
+        ];
 
         $view->items = $pub->entries('list', $view->filters);
         $view->model = $model;
@@ -407,7 +407,7 @@ class Publications extends Plugin
     public function browse()
     {
         // Build query
-        $filters = array();
+        $filters = [];
         $filters['limit']         = Request::getInt('limit', Config::get('list_limit'));
         $filters['start']         = Request::getInt('limitstart', 0);
         $filters['sortby']        = Request::getString('sortby', 'title');
@@ -418,11 +418,11 @@ class Publications extends Plugin
 
         // Output HTML
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => 'browse'
-            )
+            ]
         );
 
         // Instantiate a publication object
@@ -438,7 +438,7 @@ class Publications extends Plugin
         \Hubzero\Document\Assets::addPluginScript('projects', 'files', 'diskspace');
 
         // Need to calculate ALL publications
-        $allRows = $view->pub->entries('list', array('project' => $this->model->get('id'), 'dev' => 1));
+        $allRows = $view->pub->entries('list', ['project' => $this->model->get('id'), 'dev' => 1]);
 
         // Get used space
         $view->dirsize = \Components\Publications\Helpers\Html::getDiskUsage($allRows, false);
@@ -484,11 +484,11 @@ class Publications extends Plugin
         $element = (isset($parts[2]) && is_numeric($parts[2]) && $parts[2] > 0) ? $parts[2] : 0;
 
         // Output HTML
-        $view = new \Hubzero\Component\View(array(
+        $view = new \Hubzero\Component\View([
             'base_path' => Component::path('com_publications') . DS . 'site',
             'name'      => 'handlers',
             'layout'    => 'editor',
-        ));
+        ]);
 
         $view->publication = new \Components\Publications\Models\Publication($pid, null, $vid);
 
@@ -496,11 +496,11 @@ class Publications extends Plugin
             $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_NO_PUBID'));
             // Output error
             $view = new \Hubzero\Plugin\View(
-                array(
+                [
                     'folder'  => 'projects',
                     'element' => 'files',
                     'name'    => 'error'
-                )
+                ]
             );
 
             $view->title  = '';
@@ -572,11 +572,11 @@ class Publications extends Plugin
 
         // Output HTML
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => 'selector'
-            )
+            ]
         );
 
         $view->publication = new \Components\Publications\Models\Publication($pid, null, $vid);
@@ -585,11 +585,11 @@ class Publications extends Plugin
             $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_NO_PUBID'));
             // Output error
             $view = new \Hubzero\Plugin\View(
-                array(
+                [
                     'folder'  => 'projects',
                     'element' => 'files',
                     'name'    => 'error'
-                )
+                ]
             );
 
             $view->title  = '';
@@ -607,11 +607,11 @@ class Publications extends Plugin
         if (!$view->publication->_curationModel->setBlock($block, $blockId)) {
             // Output error
             $view = new \Hubzero\Plugin\View(
-                array(
+                [
                     'folder'  => 'projects',
                     'element' => 'files',
                     'name'    => 'error'
-                )
+                ]
             );
 
             $view->title  = '';
@@ -665,14 +665,14 @@ class Publications extends Plugin
         // Make sure the publication belongs to the project
         if (!$publication->exists() || !$publication->belongsToProject($this->model->get('id'))) {
             $this->setError(Lang::txt('Failed to save a setting'));
-            return json_encode(array('error' => $this->getError(), 'result' => null));
+            return json_encode(['error' => $this->getError(), 'result' => null]);
         }
 
         if ($result = $publication->saveParam($param, $value)) {
-            return json_encode(array('success' => true, 'result' => $result));
+            return json_encode(['success' => true, 'result' => $result]);
         } else {
             $this->setError(Lang::txt('Failed to save a setting'));
-            return json_encode(array('error' => $this->getError(), 'result' => $result));
+            return json_encode(['error' => $this->getError(), 'result' => $result]);
         }
     }
 
@@ -798,7 +798,7 @@ class Publications extends Plugin
         // Get curation
         $pub->setCuration();
 
-        Event::trigger('publications.onBeforeSave', array($pub));
+        Event::trigger('publications.onBeforeSave', [$pub]);
 
         // Make sure block exists, else redirect to status
         if (!$pub->_curationModel->setBlock($block, $blockId)) {
@@ -858,7 +858,7 @@ class Publications extends Plugin
             ? $pub->_curationModel->get('_message')
             : Lang::txt(ucfirst($block) . ' information successfully saved');
 
-        Event::trigger('publications.onAfterSave', array($pub));
+        Event::trigger('publications.onAfterSave', [$pub]);
 
         // Record action, notify team
         $this->onAfterSave($pub);
@@ -866,11 +866,11 @@ class Publications extends Plugin
         // Report only status action
         if ($json) {
             return json_encode(
-                array(
+                [
                     'success' => 1,
                     'error'   => $this->getError(),
                     'message' => $this->_msg
-                )
+                ]
             );
         }
 
@@ -1067,12 +1067,12 @@ class Publications extends Plugin
 
         // Output HTML
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => 'draft',
                 'layout'  => 'start'
-            )
+            ]
         );
 
         // Build pub url
@@ -1355,11 +1355,11 @@ class Publications extends Plugin
 
         // Output HTML
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => $name,
-            )
+            ]
         );
 
         // Output HTML
@@ -1434,11 +1434,11 @@ class Publications extends Plugin
         if ($this->getError()) {
             // Output error
             $view = new \Hubzero\Plugin\View(
-                array(
+                [
                     'folder'  => 'projects',
                     'element' => 'publications',
                     'name'    => 'error'
-                )
+                ]
             );
 
             $view->title  = '';
@@ -1452,12 +1452,12 @@ class Publications extends Plugin
 
         // On success
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => 'edititem',
                 'layout'  => $layout
-            )
+            ]
         );
 
         // Get project path
@@ -1510,11 +1510,11 @@ class Publications extends Plugin
         $version = Request::getString('version', 'default');
 
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => 'stats'
-            )
+            ]
         );
 
         // Get pub stats for each publication
@@ -1642,11 +1642,11 @@ class Publications extends Plugin
             }
         } else {
              $view = new \Hubzero\Plugin\View(
-                 array(
+                 [
                     'folder'  => 'projects',
                     'element' => 'publications',
                     'name'    => 'suggestlicense'
-                 )
+                 ]
              );
 
             // Output HTML
@@ -1793,11 +1793,11 @@ class Publications extends Plugin
         } else {
             // Need to ask for new version label
             $view = new \Hubzero\Plugin\View(
-                array(
+                [
                     'folder'  => 'projects',
                     'element' => 'publications',
                     'name'    => 'newversion'
-                )
+                ]
             );
 
             // Output HTML
@@ -1845,7 +1845,7 @@ class Publications extends Plugin
         $pub_model = new \Components\Publications\Models\Publication();
 
         // Get all publications
-        $rows = $pub_model->entries('list', array('project' => $this->model->get('id'), 'dev' => 1, 'ignore_access' => 1));
+        $rows = $pub_model->entries('list', ['project' => $this->model->get('id'), 'dev' => 1, 'ignore_access' => 1]);
 
         // Get used space
         $dirsize = \Components\Publications\Helpers\Html::getDiskUsage($rows);
@@ -1952,7 +1952,7 @@ class Publications extends Plugin
             $movedFiles = $pub->_curationModel->movedSourceAttachments();
 
             if ($movedFiles) {
-                $movedNames = array();
+                $movedNames = [];
                 foreach ($movedFiles as $movedFile) {
                     $movedNames[] = $movedFile->path;
                 }
@@ -1996,7 +1996,7 @@ class Publications extends Plugin
 
         // Contact info is required for repositories
         if ($pub->config()->get('repository') && $this->_task != 'revert') {
-            $contact = Request::getArray('contact', array(), 'post');
+            $contact = Request::getArray('contact', [], 'post');
 
             if (!$contact || empty($contact)) {
                 $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_INFO_MISSING'));
@@ -2289,7 +2289,7 @@ class Publications extends Plugin
         if ($notify) {
             $admingroup = $this->model->config()->get('admingroup', '');
             $group = \Hubzero\User\Group::getInstance($admingroup);
-            $admins = array();
+            $admins = [];
 
             if ($admingroup && $group) {
                 $members  = $group->get('members');
@@ -2312,11 +2312,11 @@ class Publications extends Plugin
             $curationPubLink = rtrim(Request::base(), DS) . DS . Route::url($pub->link('curate'));
             $curatorMessage = ($pub->version->get('state') == 5) ? $message . "\n" . "\n" . Lang::txt('PLG_PROJECTS_PUBLICATIONS_EMAIL_CURATORS_REVIEW') . ' ' . $curationPubLink : $message;
 
-            $curatorgroups = array($pub->masterType()->curatorgroup);
+            $curatorgroups = [$pub->masterType()->curatorgroup];
             if ($this->_pubconfig->get('curatorgroup', '')) {
                 $curatorgroups[] = $this->_pubconfig->get('curatorgroup', '');
             }
-            $admins = array();
+            $admins = [];
             foreach ($curatorgroups as $curatorgroup) {
                 if (trim($curatorgroup) && $group = \Hubzero\User\Group::getInstance($curatorgroup)) {
                     $members  = $group->get('members');
@@ -2537,7 +2537,7 @@ class Publications extends Plugin
                             ->rows()
                             ->toArray();
 
-                        $logs = array();
+                        $logs = [];
                         foreach ($activities as $activity) {
                             $logs[] = $activity['id'];
                         }
@@ -2565,11 +2565,11 @@ class Publications extends Plugin
             }
         } else {
             $view = new \Hubzero\Plugin\View(
-                array(
+                [
                     'folder'  => 'projects',
                     'element' => 'publications',
                     'name'    => 'cancel'
-                )
+                ]
             );
 
             // Output HTML
@@ -2616,11 +2616,11 @@ class Publications extends Plugin
 
         // Output HTML
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder' => 'projects',
                 'element' => 'publications',
                 'name'   => 'versions'
-            )
+            ]
         );
 
         // Load publication model
@@ -2638,7 +2638,7 @@ class Publications extends Plugin
         );
 
         // Get versions
-        $view->versions = $view->pub->version->getVersions($pid, $filters = array('withdev' => 1));
+        $view->versions = $view->pub->version->getVersions($pid, $filters = ['withdev' => 1]);
 
         // Output HTML
         $view->option    = $this->_option;
@@ -2665,7 +2665,7 @@ class Publications extends Plugin
      */
     public function contribute()
     {
-        $choices = array();
+        $choices = [];
 
         if ($this->_pubconfig->get('contribute', 0)) {
             $mt = new \Components\Publications\Tables\MasterType($this->_database);
@@ -2683,12 +2683,12 @@ class Publications extends Plugin
         }
 
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => 'browse',
                 'layout'  => 'provisioned'
-            )
+            ]
         );
         $view->option   = $this->_option;
         $view->juser    = User::getInstance();
@@ -2766,9 +2766,9 @@ class Publications extends Plugin
                 $file = str_replace($this->model->repo()->get('path') . DS, '', $file);
                 if (is_file($this->model->repo()->get('path') . DS . $file)) {
                     // Checkin into repo
-                    $this->model->repo()->call('checkin', array(
-                        'file' => $this->model->repo()->getMetadata($file, 'file', array())
-                        ));
+                    $this->model->repo()->call('checkin', [
+                        'file' => $this->model->repo()->getMetadata($file, 'file', [])
+                        ]);
                     $checkedin++;
                 }
             }
@@ -2792,11 +2792,11 @@ class Publications extends Plugin
     {
         // Output HTML
         $view = new \Hubzero\Plugin\View(
-            array(
+            [
                 'folder'  => 'projects',
                 'element' => 'publications',
                 'name'    => 'diskspace'
-            )
+            ]
         );
 
         // Include styling and js
@@ -2806,7 +2806,7 @@ class Publications extends Plugin
         $database = App::get('db');
 
         // Build query
-        $filters = array();
+        $filters = [];
         $filters['limit']         = Request::getInt('limit', 25);
         $filters['start']         = Request::getInt('limitstart', 0);
         $filters['sortby']        = Request::getString('t_sortby', 'title');

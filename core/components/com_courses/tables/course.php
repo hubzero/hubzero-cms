@@ -120,7 +120,7 @@ class Course extends Table
 
         // params/blurb/description are NOT NULL TEXT with no default; an unset
         // one is left out of the INSERT and strict SQL refuses the new course
-        foreach (array('params', 'blurb', 'description') as $col) {
+        foreach (['params', 'blurb', 'description'] as $col) {
             if ($this->$col === null) {
                 $this->$col = '';
             }
@@ -175,9 +175,9 @@ class Course extends Table
             return parent::load($keys, $reset);
         }
 
-        return parent::load(array(
+        return parent::load([
             'alias' => $keys
-        ), $reset);
+        ], $reset);
     }
 
     /**
@@ -187,7 +187,7 @@ class Course extends Table
      * @return  string  SQL
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _buildQuery($filters = array())
+    protected function _buildQuery($filters = [])
     {
         if (isset($filters['tag']) && $filters['tag'] != '') {
             $query  = " FROM #__tags_object AS rta";
@@ -197,7 +197,7 @@ class Course extends Table
             $query  = " FROM $this->_tbl AS c";
         }
 
-        $where = array();
+        $where = [];
 
         if (isset($filters['state']) && $filters['state'] >= 0) {
             if (is_array($filters['state'])) {
@@ -266,7 +266,7 @@ class Course extends Table
      * @param   array    $filters  Filters to construct query from
      * @return  integer
      */
-    public function getCount($filters = array())
+    public function getCount($filters = [])
     {
         $filters['limit'] = 0;
 
@@ -284,7 +284,7 @@ class Course extends Table
      * @param   array  $filters  Filters to construct query from
      * @return  array
      */
-    public function getRecords($filters = array())
+    public function getRecords($filters = [])
     {
         $query  = "SELECT c.*, "
             . "(SELECT COUNT(*) FROM `#__courses_members` AS m WHERE m.student=1 AND m.course_id=c.id) AS students";

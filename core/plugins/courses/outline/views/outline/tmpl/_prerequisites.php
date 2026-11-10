@@ -21,7 +21,7 @@ $includeForm = (isset($this->includeForm)) ? $this->includeForm : true;
 
 $prereqs  = new \Components\Courses\Tables\Prerequisites($db);
 $existing = $prereqs->loadAllByScope($this->scope, $this->scope_id, $this->section_id);
-$ids      = array();
+$ids      = [];
 foreach ($existing as $value) {
     $ids[] = $value->requisite_id;
 }

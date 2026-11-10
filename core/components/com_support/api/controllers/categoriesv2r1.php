@@ -177,11 +177,11 @@ class Categoriesv2r1 extends ApiController
         $total = clone $rows;
 
         $sort = Request::getWord('sort', 'id');
-        if (!in_array($sort, array('id', 'created', 'created_by', 'title', 'alias', 'modified', 'modified_by'))) {
+        if (!in_array($sort, ['id', 'created', 'created_by', 'title', 'alias', 'modified', 'modified_by'])) {
             $sort = 'id';
         }
         $sort_dir = Request::getWord('sort_Dir', 'asc');
-        if (!in_array($sort_dir, array('asc', 'desc'))) {
+        if (!in_array($sort_dir, ['asc', 'desc'])) {
             $sort_dir = 'asc';
         }
 
@@ -192,7 +192,7 @@ class Categoriesv2r1 extends ApiController
 
         $response = new stdClass();
         $response->total = $total->total();
-        $response->categories = array();
+        $response->categories = [];
         foreach ($rows as $row) {
             $temp = $row->toArray();
             if ($temp['created'] && $temp['created'] != '0000-00-00 00:00:00') {
@@ -299,7 +299,7 @@ class Categoriesv2r1 extends ApiController
         }
 
         // Trigger after save event
-        Event::trigger('onSupportAfterSaveCategory', array(&$row, $isNew));
+        Event::trigger('onSupportAfterSaveCategory', [&$row, $isNew]);
 
         $response = $row->toObject();
         if ($response->created && $response->created != '0000-00-00 00:00:00') {
@@ -422,7 +422,7 @@ class Categoriesv2r1 extends ApiController
         }
 
         // Trigger after save event
-        Event::trigger('onSupportAfterSaveCategory', array(&$row, $isNew));
+        Event::trigger('onSupportAfterSaveCategory', [&$row, $isNew]);
 
         $response = $row->toObject();
         if ($response->created && $response->created != '0000-00-00 00:00:00') {
@@ -457,8 +457,8 @@ class Categoriesv2r1 extends ApiController
             throw new Exception(Lang::txt('Not authorized'), 403);
         }
 
-        $ids = Request::getArray('id', array());
-        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', []);
+        $ids = (!is_array($ids) ? [$ids] : $ids);
 
         if (count($ids) <= 0) {
             throw new Exception(Lang::txt('No ID provided'), 500);
@@ -472,7 +472,7 @@ class Categoriesv2r1 extends ApiController
             }
 
             // Trigger before delete event
-            Event::trigger('onSupportAfterDeleteCategory', array($id));
+            Event::trigger('onSupportAfterDeleteCategory', [$id]);
         }
 
         $this->send(null, 204);

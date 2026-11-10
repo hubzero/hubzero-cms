@@ -42,7 +42,7 @@ class Prerequisite extends Base
      *
      * @var array
      **/
-    protected $prerequisites = array();
+    protected $prerequisites = [];
 
     /**
      * Unit progress
@@ -83,13 +83,13 @@ class Prerequisite extends Base
         $this->member_id = $member_id;
         $prerequisites   = $this->_tbl->loadAllBySectionId($section_id);
 
-        $this->prerequisites = array();
+        $this->prerequisites = [];
         foreach ($prerequisites as $prerequisite) {
             $key = $prerequisite->item_scope . '.' . $prerequisite->item_id;
-            $this->prerequisites[$key][] = array(
+            $this->prerequisites[$key][] = [
                 'scope'    => $prerequisite->requisite_scope,
                 'scope_id' => $prerequisite->requisite_id
-            );
+            ];
         }
 
         if (!isset($member_id)) {
@@ -98,10 +98,10 @@ class Prerequisite extends Base
 
         $this->progress = $gradebook->progress($member_id);
         $this->views    = $gradebook->views($member_id);
-        $grades         = $gradebook->_tbl->find(array('member_id' => $member_id, 'scope' => 'asset'));
+        $grades         = $gradebook->_tbl->find(['member_id' => $member_id, 'scope' => 'asset']);
 
         if ($grades && count($grades) > 0) {
-            $this->grades = array();
+            $this->grades = [];
             foreach ($grades as $grade) {
                 $this->grades[$grade->scope_id] = (!is_null($grade->override)) ? $grade->override : $grade->score;
             }

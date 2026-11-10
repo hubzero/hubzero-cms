@@ -160,7 +160,7 @@ switch ($this->comment->get('rating')) {
 
                             <label for="comment-<?php echo $this->comment->get('id'); ?>-content">
                                 <span class="label-text"><?php echo Lang::txt('PLG_COURSES_REVIEWS_ENTER_COMMENTS'); ?></span>
-                                <?php echo $this->editor('comment[content]', '', 35, 4, 'comment-' . $this->comment->get('id') . '-content', array('class' => 'minimal no-footer')); ?>
+                                <?php echo $this->editor('comment[content]', '', 35, 4, 'comment-' . $this->comment->get('id') . '-content', ['class' => 'minimal no-footer']); ?>
                             </label>
 
                             <label class="reply-anonymous-label" for="comment-<?php echo $this->comment->get('id'); ?>-anonymous">
@@ -182,10 +182,10 @@ switch ($this->comment->get('rating')) {
             </div><!-- / .comment-content -->
             <?php
             $replies = $this->comment->replies()
-                ->whereIn('state', array(
+                ->whereIn('state', [
                     Components\Courses\Models\Comment::STATE_PUBLISHED,
                     Components\Courses\Models\Comment::STATE_FLAGGED
-                ))
+                ])
                 ->ordered()
                 ->rows();
 
