@@ -1068,7 +1068,8 @@ class Warehouse extends \Hubzero\Base\Obj
         $rawSkusInfo = $this->database->loadObjectList();
 
         /*
-            Parse the result and organize it by SKU (since same SKU can be returned several times, depending on the number of options):
+            Parse the result and organize it by SKU (since same SKU can be returned several times, depending on the
+            number of options):
 
             $skusInfo => Array(
                 [sId] => Array(

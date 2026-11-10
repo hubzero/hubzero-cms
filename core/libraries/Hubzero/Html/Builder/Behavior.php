@@ -514,10 +514,12 @@ class Behavior
         /*$opt['maxTitleChars'] = (isset($params['maxTitleChars']) && ($params['maxTitleChars']))
             ? (int) $params['maxTitleChars'] : 50;
         // offsets needs an array in the format: array('x'=>20, 'y'=>30)
-        $opt['offset']          = (isset($params['offset']) && (is_array($params['offset']))) ? $params['offset'] : null;
+        $opt['offset']          = (isset($params['offset']) && (is_array($params['offset']))) ? $params['offset']
+            : null;
         if (!isset($opt['offset']))
         {
-            $opt['offset']      = (isset($params['offsets']) && (is_array($params['offsets']))) ? $params['offsets'] : null;
+            $opt['offset']      = (isset($params['offsets']) && (is_array($params['offsets']))) ? $params['offsets']
+                : null;
         }
         $opt['showDelay']       = (isset($params['showDelay'])) ? (int) $params['showDelay'] : null;
         $opt['hideDelay']       = (isset($params['hideDelay'])) ? (int) $params['hideDelay'] : null;
@@ -591,14 +593,16 @@ class Behavior
 
         // Setup options object
         /*
-        $opt['ajaxOptions']     = (isset($params['ajaxOptions']) && (is_array($params['ajaxOptions']))) ? $params['ajaxOptions'] : null;
+        $opt['ajaxOptions']     = (isset($params['ajaxOptions']) && (is_array($params['ajaxOptions'])))
+            ? $params['ajaxOptions'] : null;
         $opt['handler']         = (isset($params['handler'])) ? $params['handler'] : null;
         $opt['fullScreen']      = (isset($params['fullScreen'])) ? (bool) $params['fullScreen'] : null;
         $opt['parseSecure']     = (isset($params['parseSecure'])) ? (bool) $params['parseSecure'] : null;
         $opt['closable']        = (isset($params['closable'])) ? (bool) $params['closable'] : null;
         $opt['closeBtn']        = (isset($params['closeBtn'])) ? (bool) $params['closeBtn'] : null;
         $opt['iframePreload']   = (isset($params['iframePreload'])) ? (bool) $params['iframePreload'] : null;
-        $opt['iframeOptions']   = (isset($params['iframeOptions']) && (is_array($params['iframeOptions']))) ? $params['iframeOptions'] : null;
+        $opt['iframeOptions']   = (isset($params['iframeOptions']) && (is_array($params['iframeOptions'])))
+            ? $params['iframeOptions'] : null;
         $opt['size']            = (isset($params['size']) && (is_array($params['size']))) ? $params['size'] : null;
         $opt['shadow']          = (isset($params['shadow'])) ? $params['shadow'] : null;
         $opt['overlay']         = (isset($params['overlay'])) ? $params['overlay'] : null;
@@ -734,7 +738,8 @@ class Behavior
         $opt['div']     = (array_key_exists('div', $params)) ? $params['div'] : $id . '_tree';
         $opt['mode']    = (array_key_exists('mode', $params)) ? $params['mode'] : 'folders';
         $opt['grid']    = (array_key_exists('grid', $params)) ? '\\' . $params['grid'] : true;
-        $opt['theme']   = (array_key_exists('theme', $params)) ? $params['theme'] : Asset::image('assets/mootree.gif', '', array(), true, true);
+        $opt['theme']   = (array_key_exists('theme', $params)) ? $params['theme'] : Asset::image('assets/mootree.gif',
+            '', array(), true, true);
 
         // Event handlers
         $opt['onExpand']    = (array_key_exists('onExpand', $params)) ? '\\' . $params['onExpand'] : null;

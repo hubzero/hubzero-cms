@@ -1016,7 +1016,8 @@ class Questions extends SiteController
                 );
 
                 // Build the message subject
-                $subject = Config::get('sitename') . ' ' . Lang::txt('COM_ANSWERS_ANSWERS') . ', ' . Lang::txt('COM_ANSWERS_QUESTION') . ' #' . $id . ' ' . Lang::txt('COM_ANSWERS_WAS_REMOVED');
+                $subject = Config::get('sitename') . ' ' . Lang::txt('COM_ANSWERS_ANSWERS') . ', '
+                    . Lang::txt('COM_ANSWERS_QUESTION') . ' #' . $id . ' ' . Lang::txt('COM_ANSWERS_WAS_REMOVED');
 
                 $message = array();
 

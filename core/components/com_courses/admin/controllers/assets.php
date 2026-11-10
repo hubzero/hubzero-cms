@@ -360,7 +360,8 @@ class Assets extends AdminController
         /*$file = Request::getArray('upload', '', 'files');
         if ($file['name'])
         {
-            $path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $fields['course_id'] . DS . $row->id;
+            $path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS
+                . $fields['course_id'] . DS . $row->id;
             // Make sure the upload path exist
             if (!is_dir($path))
             {

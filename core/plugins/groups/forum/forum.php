@@ -1423,7 +1423,8 @@ class Forum extends Plugin
             $return = Route::url($this->base . '&scope=' . $sectionAlias . '/' . $category . '/new', false, true);
             if ($id)
             {
-                $return = Route::url($this->base . '&scope=' . $sectionAlias . '/' . $category . '/' . $id . '/edit', false, true);
+                $return = Route::url($this->base . '&scope=' . $sectionAlias . '/' . $category . '/' . $id . '/edit',
+                    false, true);
             }
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
@@ -1512,7 +1513,8 @@ class Forum extends Plugin
         /*if (User::isGuest())
         {
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->base, false, true)))
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->base,
+                    false, true)))
             );
             return;
         }*/
@@ -2441,7 +2443,8 @@ class Forum extends Plugin
         // Login check is handled in the onGroup() method
         /*if (User::isGuest())
         {
-            $return = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $section . '/' . $category . '/' . $thread . '/' . $post . '/' . $file);
+            $return = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn')
+                . '&active=forum&scope=' . $section . '/' . $category . '/' . $thread . '/' . $post . '/' . $file);
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
             );

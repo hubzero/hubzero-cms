@@ -1060,8 +1060,10 @@ class CurrentCart extends Cart
         /*
             Initialize a global SKU/Other object to coupon mapping.
             The coupons are ordered by time applied, so if there is more than one coupon for one SKU,
-            we need to apply the most recently applied only. As we iterate through coupons we only want to record the recent one.
-            Same for non item coupons -- there is only one coupon per object type is allowed (shipping, total order discount, etc...)
+            we need to apply the most recently applied only. As we iterate through coupons we only want to record the
+            recent one.
+            Same for non item coupons -- there is only one coupon per object type is allowed (shipping, total order
+            discount, etc...)
         */
         $couponMappings = [];
 

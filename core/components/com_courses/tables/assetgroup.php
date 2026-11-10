@@ -231,7 +231,8 @@ class AssetGroup extends Table
         }
 
         // Delete sub groups
-        $query = "DELETE FROM #__courses_offering_section_dates WHERE scope_id = " . $this->_db->quote($this->$k) . " ANd scope=" . $this->_db->quote('asset_group');
+        $query = "DELETE FROM #__courses_offering_section_dates WHERE scope_id = " . $this->_db->quote($this->$k)
+            . " ANd scope=" . $this->_db->quote('asset_group');
         $this->_db->setQuery($query);
         if (!$this->_db->query())
         {
