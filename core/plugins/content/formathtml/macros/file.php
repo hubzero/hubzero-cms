@@ -50,37 +50,46 @@ class File extends Macro
         $txt['html'] = '<p>This macro alternately generates a link to a file or embeds the file for display (only '
             . 'valid for CDF files and images). The first argument is the filename.</p>
 			<ul>
-				<li>digits and unit are interpreted as the <code>width</code> attribute (ex. 120, 25%) for the file/image</li>
-				<li><code>right</code>, <code>left</code>, <code>top</code> or <code>bottom</code> are interpreted as the '
+				<li>digits and unit are interpreted as the <code>width</code> attribute (ex. 120, 25%) for the '
+            . 'file/image</li>
+				<li><code>right</code>, <code>left</code>, <code>top</code> or <code>bottom</code> are '
+            . 'interpreted as the '
             . 'alignment for the file (currently, only applies to images)</li>
 				<li><code>link=some Link...</code> replaces the link to the file source by the one specified using '
             . '<code>link</code>. If no value is specified, the link is simply removed.</li>
 				<li><code>nolink</code> means without link to image source (deprecated, use <code>link=</code>)</li>
-				<li><code>key=value</code> style are interpreted as HTML attributes or CSS style indications for the file. Valid '
+				<li><code>key=value</code> style are interpreted as HTML attributes or CSS style indications for '
+            . 'the file. Valid '
             . 'keys are:<br />
 				align, border, width, height, alt, desc, title, longdesc, class, id and usemap</li>
 				<li><code>border</code> can only be a number</li>
 				<li><code>altimage</code> is only valid for CDF files. It is ignored for other file types.</li>
-				<li><code>details</code> indicates wether to display file information (size, etc.). Defaults to: on, Accepts: '
+				<li><code>details</code> indicates wether to display file information (size, etc.). Defaults '
+            . 'to: on, Accepts: '
             . 'false, no, off, hide, hidden, none.<br />
 				The single attribute <code>nodetails</code> is an alternative.</li>
 			</ul>
 			<p>Examples:</p>
 			<ul>
 				<li><code>[[File(mydoc.pdf)]]</code> # simplest</li>
-				<li><code>[[File(mydoc.pdf, alt="My document")]]</code> # ALT text. For images, this is the "alt" attribute. For '
+				<li><code>[[File(mydoc.pdf, alt="My document")]]</code> # ALT text. For images, this is the "alt" '
+            . 'attribute. For '
             . 'files, the "title" attribute.</li>
-				<li><code>[[File(mydoc.pdf, desc="My document")]]</code> # Link text. If none is provided, the filename will be '
+				<li><code>[[File(mydoc.pdf, desc="My document")]]</code> # Link text. If none is provided, the '
+            . 'filename will be '
             . 'used.</li>
-				<li><code>[[File(mydoc.pdf, details="off")]]</code> or <code>[[File(mydoc.pdf, nodetails)]]</code> to link a file '
+				<li><code>[[File(mydoc.pdf, details="off")]]</code> or <code>[[File(mydoc.pdf, nodetails)]]</code> '
+            . 'to link a file '
             . 'and NOT display file metadata.</li>
 			</ul>
 			<p>Examples (CDF):</p>
 			<ul>
 				<li><code>[[File(prog.cdf, width=300, height=500)]]</code> # with embed width and height sizes</li>
-				<li><code>[[File(prog.cdf, width=300, height=500, altimage=prog.png)]]</code> # CDF file with sizes and alternate '
+				<li><code>[[File(prog.cdf, width=300, height=500, altimage=prog.png)]]</code> # CDF file with '
+            . 'sizes and alternate '
             . 'image to show if CDF plugin isn\'t available.</li>
-				<li><code>[[File(prog.cdf, width=300, height=500, alt="A nifty program")]]</code> # CDF file with sizes and '
+				<li><code>[[File(prog.cdf, width=300, height=500, alt="A nifty program")]]</code> # CDF file '
+            . 'with sizes and '
             . 'alternate content to show if CDF plugin isn\'t available.</li>
 			</ul>';
         return $txt['html'];

@@ -134,7 +134,8 @@ class Wiki extends Plugin
 						CASE
 							WHEN w.scope = 'project' THEN concat('index.php?option=com_projects&alias=', xp.alias, "
                 . "'&active=notes&pagename=', w.path, '/', w.pagename)
-							WHEN w.scope = 'group' THEN CONCAT('index.php?option=com_groups&cn=', xg.cn, '&active=wiki&pagename=', w.path, "
+							WHEN w.scope = 'group' THEN CONCAT('index.php?option=com_groups&cn=', xg.cn, "
+                . "'&active=wiki&pagename=', w.path, "
                 . "'/', w.pagename)
 							ELSE CONCAT('index.php?option=com_wiki&pagename=', w.pagename)
 						END AS href,

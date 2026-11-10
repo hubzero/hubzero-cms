@@ -83,7 +83,8 @@ class Groups extends Plugin
         $f_fields = "SELECT a.gidNumber AS id, a.description AS title, a.cn AS alias, NULL AS itext, a.public_desc AS "
             . "ftext, a.type AS state, a.created,
 						a.created_by, NULL AS modified, NULL AS publish_up,
-						NULL AS publish_down, CONCAT('index.php?option=com_groups&cn=', a.cn) AS href, 'groups' AS section, "
+						NULL AS publish_down, CONCAT('index.php?option=com_groups&cn=', a.cn) AS href, "
+            . "'groups' AS section, "
             . "COUNT(DISTINCT t.tagid) AS uniques,
 						a.params, NULL AS rcount, NULL AS data1, NULL AS data2, NULL AS data3 ";
         $f_from = " FROM #__xgroups AS a $from

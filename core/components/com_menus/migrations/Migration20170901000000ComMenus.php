@@ -23,9 +23,11 @@ class Migration20170901000000ComMenus extends Base
         if (!$this->db->tableExists('#__menu')) {
             $query = "CREATE TABLE `#__menu` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
-			  `menutype` varchar(24) NOT NULL COMMENT 'The type of menu this item belongs to. FK to #__menu_types.menutype',
+			  `menutype` varchar(24) NOT NULL COMMENT 'The type of menu this item belongs to. FK to "
+                . "#__menu_types.menutype',
 			  `title` varchar(255) NOT NULL COMMENT 'The display title of the menu item.',
-			  `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'The SEF alias of the menu item.',
+			  `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'The SEF alias of the menu "
+                . "item.',
 			  `note` varchar(255) NOT NULL DEFAULT '',
 			  `path` varchar(1024) NOT NULL COMMENT 'The computed path of the menu item based on the alias field.',
 			  `link` varchar(1024) NOT NULL COMMENT 'The actually link the menu item refers to.',
@@ -44,7 +46,8 @@ class Migration20170901000000ComMenus extends Base
 			  `params` text NOT NULL COMMENT 'JSON encoded data for the menu item.',
 			  `lft` int(11) NOT NULL DEFAULT '0' COMMENT 'Nested set lft.',
 			  `rgt` int(11) NOT NULL DEFAULT '0' COMMENT 'Nested set rgt.',
-			  `home` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT 'Indicates if this menu item is the home or default page.',
+			  `home` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT 'Indicates if this menu item is the home or "
+                . "default page.',
 			  `language` char(7) NOT NULL DEFAULT '',
 			  `client_id` tinyint(4) NOT NULL DEFAULT '0',
 			  PRIMARY KEY (`id`),

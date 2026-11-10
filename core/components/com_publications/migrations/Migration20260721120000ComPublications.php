@@ -45,10 +45,12 @@ class Migration20260721120000ComPublications extends Base
 
         $this->db->setQuery(
             "INSERT INTO `#__cron_jobs`
-				(`title`, `state`, `plugin`, `event`, `recurrence`, `next_run`, `created`, `created_by`, `active`, `ordering`, "
+				(`title`, `state`, `plugin`, `event`, `recurrence`, `next_run`, `created`, `created_by`, "
+                . "`active`, `ordering`, "
                 . "`params`)
 			 VALUES
-				('Build publication bundles (async)', 1, 'publications', 'buildPublicationBundles', '*/5 * * * *', NOW(), NOW(), "
+				('Build publication bundles (async)', 1, 'publications', 'buildPublicationBundles', '*/5 * * * "
+                . "*', NOW(), NOW(), "
                 . "0, 0, 0, '')",
         );
         $this->db->query();

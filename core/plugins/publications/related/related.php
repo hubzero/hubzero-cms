@@ -72,7 +72,8 @@ class Related extends Plugin
         // Build the query that checks topic pages
         $sql1 = "SELECT v.id, v.page_id AS pageid, MAX(v.version) AS version, w.title, w.pagename AS alias, v.pagetext "
             . "AS abstract,
-					NULL AS category, NULL AS published, NULL AS publish_up, w.scope, w.rating, w.times_rated, w.ranking, 'wiki' AS "
+					NULL AS category, NULL AS published, NULL AS publish_up, w.scope, w.rating, w.times_rated, "
+            . "w.ranking, 'wiki' AS "
             . "class, 'Topic' AS section
 				FROM `#__wiki_pages` AS w
 				INNER JOIN `#__wiki_versions` AS v ON w.id=v.page_id

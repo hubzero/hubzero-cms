@@ -153,17 +153,22 @@ class Address extends Field
 							.last()
 							.clone();
 						grp.find('input').each(function(){
-							this.name = this.name.replace(/\\[(\\d+)\\]/,function(str,p1){return '[' + (parseInt(p1,10)+1) + ']';});
-							this.id = this.id.replace(/\\-(\\d+)\\-/,function(str,p1){return '-' + (parseInt(p1,10)+1) + '-';});
+							this.name = this.name.replace(/\\[(\\d+)\\]/,function(str,p1){return '[' + "
+                        . "(parseInt(p1,10)+1) + ']';});
+							this.id = this.id.replace(/\\-(\\d+)\\-/,function(str,p1){return '-' + (parseInt(p1,10)+1) "
+                        . "+ '-';});
 							this.value = '';
 						});
 						grp.find('select').each(function(){
-							this.name = this.name.replace(/\\[(\\d+)\\]/,function(str,p1){return '[' + (parseInt(p1,10)+1) + ']';});
-							this.id = this.id.replace(/\\-(\\d+)\\-/,function(str,p1){return '-' + (parseInt(p1,10)+1) + '-';});
+							this.name = this.name.replace(/\\[(\\d+)\\]/,function(str,p1){return '[' + "
+                        . "(parseInt(p1,10)+1) + ']';});
+							this.id = this.id.replace(/\\-(\\d+)\\-/,function(str,p1){return '-' + (parseInt(p1,10)+1) "
+                        . "+ '-';});
 							this.selectedIndex = 0;
 						});
 						grp.find('label').each(function(){
-							\$(this).attr('for', \$(this).attr('for').replace(/\\-(\\d+)\\-/,function(str,p1){return '-' + "
+							\$(this).attr('for', "
+                        . "\$(this).attr('for').replace(/\\-(\\d+)\\-/,function(str,p1){return '-' + "
                         . "(parseInt(p1,10)+1) + '-';}));
 						});
 						if (!grp.find('.address-remove').length) {

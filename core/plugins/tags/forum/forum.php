@@ -93,13 +93,16 @@ class Forum extends Plugin
         $e_fields = "SELECT e.id, e.title, e.id AS alias, e.comment AS itext, e.comment AS ftext, e.state, e.created, "
             . "e.created_by, e.modified, e.created AS publish_up, NULL AS publish_down,
 					(CASE WHEN e.scope_id > 0 AND e.scope='group' THEN
-						concat('/groups/', g.cn, concat('/forum/', coalesce(concat(s.alias, '/', coalesce(concat(c.alias, '/'), ''))), "
+						concat('/groups/', g.cn, concat('/forum/', coalesce(concat(s.alias, '/', "
+            . "coalesce(concat(c.alias, '/'), ''))), "
             . "CASE WHEN e.parent > 0 THEN e.parent ELSE e.id END))
 					ELSE
-						concat('/forum/', coalesce(concat(s.alias, '/', coalesce(concat(c.alias, '/'), ''))), CASE WHEN e.parent > 0 "
+						concat('/forum/', coalesce(concat(s.alias, '/', coalesce(concat(c.alias, '/'), ''))), CASE "
+            . "WHEN e.parent > 0 "
             . "THEN e.parent ELSE e.id END)
 					END) AS href,
-					'forum' AS section, COUNT(DISTINCT t.tagid) AS uniques, CONCAT(e.thread, ':', e.parent) AS params, e.scope AS "
+					'forum' AS section, COUNT(DISTINCT t.tagid) AS uniques, CONCAT(e.thread, ':', e.parent) AS "
+            . "params, e.scope AS "
             . "rcount, c.alias AS data1, s.alias AS data2, e.scope_id AS data3 ";
         $e_from  = " FROM #__forum_posts AS e
                      LEFT JOIN #__forum_categories c ON c.id = e.category_id

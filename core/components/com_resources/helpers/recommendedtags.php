@@ -69,7 +69,8 @@ class RecommendedTags
 
         $dbh->setQuery('SELECT lower(raw_tag) AS raw_tag, CASE WHEN to1.id IS NULL THEN 0 ELSE 1 END AS is_endorsed
 			FROM #__tags t
-			LEFT JOIN #__tags_object to1 ON to1.tbl = \'tags\' AND to1.objectid = t.id AND to1.label = \'label\' AND to1.tagid '
+			LEFT JOIN #__tags_object to1 ON to1.tbl = \'tags\' AND to1.objectid = t.id AND to1.label = '
+            . '\'label\' AND to1.tagid '
             . '= (SELECT id FROM #__tags WHERE tag = \'endorsed\')');
 
         $tags = [];

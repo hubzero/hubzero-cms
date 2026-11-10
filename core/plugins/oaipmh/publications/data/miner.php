@@ -159,7 +159,8 @@ class Miner extends Obj implements Provider
             }
 
             $query .= " AND (
-				(CASE WHEN pv.`accepted` IS NOT NULL AND pv.`accepted` != '0000-00-00 00:00:00' THEN pv.`accepted` ELSE "
+				(CASE WHEN pv.`accepted` IS NOT NULL AND pv.`accepted` != '0000-00-00 00:00:00' THEN "
+                . "pv.`accepted` ELSE "
                 . "pv.`published_up` END) >= " . $this->database->quote($filters['from']) . "
 			)";
         }
@@ -176,7 +177,8 @@ class Miner extends Obj implements Provider
             }
 
             $query .= " AND (
-				(CASE WHEN pv.`accepted` IS NOT NULL AND pv.`accepted` != '0000-00-00 00:00:00' THEN pv.`accepted` ELSE "
+				(CASE WHEN pv.`accepted` IS NOT NULL AND pv.`accepted` != '0000-00-00 00:00:00' THEN "
+                . "pv.`accepted` ELSE "
                 . "pv.`published_up` END) < " . $this->database->quote($filters['until']) . "
 			)";
         }

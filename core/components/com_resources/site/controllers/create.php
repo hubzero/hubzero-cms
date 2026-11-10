@@ -455,7 +455,8 @@ class Create extends SiteController
                 ? 'SELECT DISTINCT t.raw_tag AS label, t2.id, t2.tag, t2.raw_tag, t2.description
 					FROM `#__tags` t
 					INNER JOIN `#__tags_object` to1 ON to1.tbl = \'tags\' AND to1.tagid = t.id AND to1.label = \'label\'
-					INNER JOIN `#__tags_object` to2 ON to2.tbl = \'tags\' AND to2.label = \'parent\' AND to2.objectid = to1.objectid
+					INNER JOIN `#__tags_object` to2 ON to2.tbl = \'tags\' AND to2.label = \'parent\' AND to2.objectid '
+                    . '= to1.objectid
 						AND to2.tagid = ' . $parent_id . '
 					INNER JOIN `#__tags` t2 ON t2.id = to1.objectid
 					WHERE t.raw_tag = ' . $this->database->quote($parent_label) . '
@@ -469,7 +470,8 @@ class Create extends SiteController
 					WHERE t.tag IN (' . $labels . ') AND (
 						SELECT COUNT(*)
 						FROM `#__tags_object` to2
-						INNER JOIN `#__tags_object` to3 ON to3.tbl = \'tags\' AND to3.label = \'label\' AND to3.objectid = to2.tagid
+						INNER JOIN `#__tags_object` to3 ON to3.tbl = \'tags\' AND to3.label = \'label\' AND '
+            . 'to3.objectid = to2.tagid
 						INNER JOIN `#__tags` t3 ON t3.id = to3.tagid AND t3.tag IN (' . $labels . ')
 						WHERE to2.tbl = \'tags\' AND to2.label = \'parent\' AND to2.objectid = t2.id
 						LIMIT 1
@@ -1045,7 +1047,8 @@ class Create extends SiteController
 			UNION
 			SELECT 1 FROM `#__users` u
 			INNER JOIN `#__user_usergroup_map` cagam ON cagam.user_id = u.id
-			INNER JOIN `#__usergroups` caag ON caag.id = cagam.group_id AND (caag.title = \'Super Administrator\' OR caag.title '
+			INNER JOIN `#__usergroups` caag ON caag.id = cagam.group_id AND (caag.title = \'Super '
+                . 'Administrator\' OR caag.title '
             . '= \'Super Users\' OR caag.title = \'Administrator\')
 			WHERE u.id = ' . User::get('id'),
         );
@@ -1084,7 +1087,8 @@ class Create extends SiteController
                 $this->database->setQuery(
                     'SELECT t2.raw_tag AS fa, t2.id AS label_id, t.id
 					FROM `#__tags` t
-					INNER JOIN `#__tags_object` to1 ON to1.tbl = \'tags\' AND to1.label = \'label\' AND to1.objectid = t.id
+					INNER JOIN `#__tags_object` to1 ON to1.tbl = \'tags\' AND to1.label = \'label\' AND to1.objectid = '
+                        . 't.id
 					INNER JOIN `#__tags` t2 ON t2.id = to1.tagid
 					INNER JOIN `#__focus_areas` fa ON fa.tag_id = to1.tagid
 					WHERE t.tag = ' . $this->database->quote($norm_tag),

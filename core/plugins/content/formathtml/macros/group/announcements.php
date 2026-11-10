@@ -38,7 +38,8 @@ class Announcements extends GroupMacro
         $txt['html'] .= '<p>Examples:</p>
 							<ul>
 								<li><code>[[Group.Announcements()]]</code></li>
-								<li><code>[[Group.Announcements(3)]]</code> - Displays the next 3 group Announcements</li>
+								<li><code>[[Group.Announcements(3)]]</code> - Displays the next 3 group '
+            . 'Announcements</li>
 							</ul>';
 
         return $txt['html'];

@@ -208,7 +208,8 @@ class Behavior
 				},
 				TeX: {
 					extensions: ["autoload-all.js", "mediawiki-texvc.js"],
-					noUndefined: { attributes: { mathcolor: "#8b0000", mathbackground: "#FFEEEE", mathsize: "90%" } }, // [a11y] '
+					noUndefined: { attributes: { mathcolor: "#8b0000", mathbackground: "#FFEEEE", mathsize: "90%" '
+        . '} }, // [a11y] '
         . 'darkred: 8.85:1 on #FFEEEE (was "red" = 3.57:1, fails SC 1.4.3)
 					Macros: { href: "{}" }
 				},
@@ -544,7 +545,8 @@ class Behavior
 
 						if (tipText && tipText.indexOf('::') != -1) {
 							var parts = tipText.split('::');
-							tip.attr('title', '<div class=\"tip-title\">' + parts[0] + '</div><div class=\"tip-text\">' + parts[1] + "
+							tip.attr('title', '<div class=\"tip-title\">' + parts[0] + '</div><div "
+            . "class=\"tip-text\">' + parts[1] + "
             . "'</div>');
 						} else {
 							tip.attr('title', '<div class=\"tip-text\">' + tipText + '</div>');
@@ -827,7 +829,8 @@ class Behavior
 					colorScheme:'dark',
 					onChange:function(hsb, hex, rgb, el, bySetColor) {
 						//$(el).css('border-color','#' + hex);
-						// Fill the text box just if the color was set using the picker, and not the colpickSetColor function.
+						// Fill the text box just if the color was set using the picker, and not the colpickSetColor "
+                    . "function.
 						if (!bySetColor) $(el).val('#' + hex);
 					}
 				}).keyup(function(){

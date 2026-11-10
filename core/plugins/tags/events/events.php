@@ -66,9 +66,11 @@ class Events extends Plugin
         $e_count = "SELECT COUNT(f.id) FROM (SELECT e.id, COUNT(DISTINCT t.tagid) AS uniques";
         $e_fields = "SELECT e.id, e.title, NULL AS alias, NULL AS itext, e.content AS ftext, e.state, e.created, "
             . "e.created_by,
-						NULL AS modified, e.publish_up, e.publish_down, CONCAT('index.php?option=com_events&task=details&id=', e.id) AS "
+						NULL AS modified, e.publish_up, e.publish_down, "
+            . "CONCAT('index.php?option=com_events&task=details&id=', e.id) AS "
             . "href,
-						'events' AS section, COUNT(DISTINCT t.tagid) AS uniques, e.params, NULL AS rcount, NULL AS data1,
+						'events' AS section, COUNT(DISTINCT t.tagid) AS uniques, e.params, NULL AS rcount, NULL AS "
+            . "data1,
 						NULL AS data2, NULL AS data3 ";
         $e_from  = " FROM #__events AS e, #__tags_object AS t";
         $e_where = " WHERE e.state=1 AND t.objectid=e.id AND t.tbl='events' AND t.tagid IN ($ids)";

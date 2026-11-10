@@ -1235,7 +1235,8 @@ abstract class Cart
 
         $sql = "SELECT t.tId
 				FROM `#__cart_transactions` t
-				WHERE t.`tStatus` = 'pending' OR t.`tStatus` = 'released' AND TIMESTAMPDIFF(MINUTE, t.`tLastUpdated`, NOW()) "
+				WHERE t.`tStatus` = 'pending' OR t.`tStatus` = 'released' AND TIMESTAMPDIFF(MINUTE, "
+            . "t.`tLastUpdated`, NOW()) "
             . "> {$transactionTTL}";
 
         $db->setQuery($sql);

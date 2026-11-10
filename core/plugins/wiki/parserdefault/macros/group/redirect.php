@@ -35,7 +35,8 @@ class Redirect extends GroupMacro
 				<p>Examples:</p>
 					<ul>
 						<li><code>[[Group.Redirect(https://google.com)]]</code></li>
-						<li><code>[[Group.Redirect(https://google.com, 5)]]</code> - Wait 5 seconds before redirecting.</li>
+						<li><code>[[Group.Redirect(https://google.com, 5)]]</code> - Wait 5 seconds before '
+            . 'redirecting.</li>
 					</ul>';
     }
 

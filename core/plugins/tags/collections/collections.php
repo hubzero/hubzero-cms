@@ -61,7 +61,8 @@ class Collections extends Plugin
         // Build the query
         $e_count = "SELECT COUNT(f.id) FROM (SELECT p.id, COUNT(DISTINCT t.tagid) AS uniques";
         $e_fields = "SELECT p.id, i.title, c.alias, NULL AS itext,
-					CASE WHEN (p.description!='' AND p.description IS NOT NULL) THEN p.description ELSE i.description END AS ftext,
+					CASE WHEN (p.description!='' AND p.description IS NOT NULL) THEN p.description ELSE i.description "
+            . "END AS ftext,
 					i.state,
 					p.created,
 					p.created_by,

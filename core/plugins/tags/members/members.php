@@ -66,7 +66,8 @@ class Members extends Plugin
         $f_fields = "SELECT a.id, a.name AS title, a.username as alias, NULL AS itext, b.profile_value AS ftext, "
             . "a.activation AS state, a.registerDate AS created,
 					a.id AS created_by, NULL AS modified, a.registerDate AS publish_up, NULL AS publish_down,
-					CONCAT('index.php?option=com_members&id=', a.id) AS href, 'members' AS section, COUNT(DISTINCT t.tagid) AS "
+					CONCAT('index.php?option=com_members&id=', a.id) AS href, 'members' AS section, "
+            . "COUNT(DISTINCT t.tagid) AS "
             . "uniques, a.params, NULL AS rcount,
 					NULL AS data1, NULL AS data2, NULL AS data3 ";
 

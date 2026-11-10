@@ -480,7 +480,8 @@ class Warehouse extends \Hubzero\Base\Obj
         $sql = "SELECT DISTINCT p.*, pt.ptName, i.imgName FROM `#__storefront_products` p
 				LEFT JOIN `#__storefront_product_types` pt ON p.`ptId` = pt.`ptId`
 				LEFT JOIN `#__storefront_product_collections` c ON p.`pId` = c.`pId`
-				LEFT JOIN `#__storefront_images` i ON (p.`pId` = i.`imgObjectId` AND i.`imgObject` = 'product' AND i.`imgPrimary` "
+				LEFT JOIN `#__storefront_images` i ON (p.`pId` = i.`imgObjectId` AND i.`imgObject` = 'product' AND "
+            . "i.`imgPrimary` "
             . "= 1)";
         /*if ($useAccessGroups)
         {
@@ -514,9 +515,11 @@ class Warehouse extends \Hubzero\Base\Obj
                     (ag2.`agId` IS NULL OR ag2.`agId` NOT IN(" . implode(',', $this->accessGroupsScope) . "))
                 )";*/
                 $sql .= " AND (
-					p.`pId` IN (SELECT ag.pId FROM `#__storefront_product_access_groups` ag WHERE ag.`exclude`=0 and ag.agId IN("
+					p.`pId` IN (SELECT ag.pId FROM `#__storefront_product_access_groups` ag WHERE ag.`exclude`=0 "
+                    . "and ag.agId IN("
                     . implode(',', $this->accessGroupsScope) . ")) AND
-					p.`pId` NOT IN (SELECT ag2.pId FROM `#__storefront_product_access_groups` ag2 WHERE ag2.`exclude`=1 and ag2.agId "
+					p.`pId` NOT IN (SELECT ag2.pId FROM `#__storefront_product_access_groups` ag2 WHERE "
+                    . "ag2.`exclude`=1 and ag2.agId "
                 . "IN(" . implode(',', $this->accessGroupsScope) . "))
 				)";
             }
