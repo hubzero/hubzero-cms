@@ -31,8 +31,12 @@ class Macrolist extends WikiMacro
     public function description()
     {
         $txt = [];
-        $txt['wiki'] = 'Displays a list of all installed Wiki macros, including documentation if available. Optionally, the name of a specific macro can be provided as an argument. In that case, only the documentation for that macro will be rendered.';
-        $txt['html'] = '<p>Displays a list of all installed Wiki macros, including documentation if available. Optionally, the name of a specific macro can be provided as an argument. In that case, only the documentation for that macro will be rendered.</p>';
+        $txt['wiki'] = 'Displays a list of all installed Wiki macros, including documentation if available. '
+            . 'Optionally, the name of a specific macro can be provided as an argument. In that case, only the '
+            . 'documentation for that macro will be rendered.';
+        $txt['html'] = '<p>Displays a list of all installed Wiki macros, including documentation if available. '
+            . 'Optionally, the name of a specific macro can be provided as an argument. In that case, only the '
+            . 'documentation for that macro will be rendered.</p>';
         return $txt['html'];
     }
 

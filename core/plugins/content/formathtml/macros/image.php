@@ -160,7 +160,8 @@ Examples:
         // Get non-quoted attribute/value pairs
         // EX: [[Image(myimage.png, width=100)]]
         $argues = preg_replace_callback(
-            '/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=([^"\',]*)(?:[, ]|$)/i',
+            '/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=([^"\',]*)(?:[, '
+                . ']|$)/i',
             [&$this, 'parseAttributeValuePair'],
             $content,
         );

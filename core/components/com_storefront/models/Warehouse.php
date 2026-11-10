@@ -711,12 +711,14 @@ class Warehouse extends \Hubzero\Base\Obj
 
         // check user scope if needed
         if ($this->userScope) {
-            $sql .= " LEFT JOIN #__storefront_permissions pr ON (pr.`scope_id` = s.sId AND pr.scope = 'sku' AND pr.uId = '{$this->userScope}')";
+            $sql .= " LEFT JOIN #__storefront_permissions pr ON (pr.`scope_id` = s.sId AND pr.scope = 'sku' AND pr.uId "
+                . "= '{$this->userScope}')";
         }
 
         $sql .= "	WHERE s.`pId` = {$pId} AND s.`sActive` = 1";
         $sql .= " 	AND (s.`publish_up` IS NULL OR s.`publish_up` <= NOW())";
-        $sql .= " 	AND (s.`publish_down` IS NULL OR s.`publish_down` = '0000-00-00 00:00:00' OR s.`publish_down` > NOW())";
+        $sql .= " 	AND (s.`publish_down` IS NULL OR s.`publish_down` = '0000-00-00 00:00:00' OR s.`publish_down` > "
+            . "NOW())";
         $sql .= "	ORDER BY og.`ogId`, o.`oId`";
 
         $this->database->setQuery($sql);
@@ -1028,10 +1030,12 @@ class Warehouse extends \Hubzero\Base\Obj
 
             // check publish up and down
             $sql .= " AND (p.`publish_up` IS NULL OR p.`publish_up` <= NOW())";
-            $sql .= " AND (p.`publish_down` IS NULL OR p.`publish_down` = '0000-00-00 00:00:00' OR p.`publish_down` > NOW())";
+            $sql .= " AND (p.`publish_down` IS NULL OR p.`publish_down` = '0000-00-00 00:00:00' OR p.`publish_down` > "
+                . "NOW())";
 
             $sql .= " AND (s.`publish_up` IS NULL OR s.`publish_up` <= NOW())";
-            $sql .= " AND (s.`publish_down` IS NULL OR s.`publish_down` = '0000-00-00 00:00:00' OR s.`publish_down` > NOW())";
+            $sql .= " AND (s.`publish_down` IS NULL OR s.`publish_down` = '0000-00-00 00:00:00' OR s.`publish_down` > "
+                . "NOW())";
         }
 
         // Filter by filters

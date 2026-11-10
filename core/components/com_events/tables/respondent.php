@@ -70,14 +70,17 @@ class Respondent extends Table
         $dbh = App::get('db');
         if (is_array($resp_id)) {
             $dbh->setQuery(
-                'SELECT respondent_id, group_concat(concat(race, coalesce(concat(\'(\', tribal_affiliation, \')\'), \'\')) separator \', \') AS identification FROM #__events_respondent_race_rel WHERE respondent_id IN ('
+                'SELECT respondent_id, group_concat(concat(race, coalesce(concat(\'(\', tribal_affiliation, \')\'), '
+                    . '\'\')) separator \', \') AS identification FROM #__events_respondent_race_rel WHERE '
+                    . 'respondent_id IN ('
                     . implode(', ', array_map('intval', $resp_id))
                     . ') GROUP BY respondent_id',
             );
             return $dbh->loadAssocList('respondent_id');
         } else {
             $dbh->setQuery(
-                'SELECT group_concat(concat(race, coalesce(concat(\'(\', tribal_affiliation, \')\'), \'\')) separator \', \') FROM #__events_respondent_race_rel WHERE respondent_id = '
+                'SELECT group_concat(concat(race, coalesce(concat(\'(\', tribal_affiliation, \')\'), \'\')) separator '
+                    . '\', \') FROM #__events_respondent_race_rel WHERE respondent_id = '
                     . intval($resp_id)
                     . ' GROUP BY respondent_id',
             );
@@ -134,7 +137,8 @@ class Respondent extends Table
                     $this->order = ' ORDER BY last_name, first_name';
                 } elseif ($match[1] == 'special') {
                     $this->order_desc = 'special ' . $dir;
-                    $this->order = ' ORDER BY CASE WHEN disability_needs OR dietary_needs IS NOT null THEN 1 WHEN comment IS NOT null THEN 2 ELSE 3 END '
+                    $this->order = ' ORDER BY CASE WHEN disability_needs OR dietary_needs IS NOT null THEN 1 WHEN '
+                        . 'comment IS NOT null THEN 2 ELSE 3 END '
                         . $dir;
                 } else {
                     $this->order_desc = $match[1] . ' ' . $dir;

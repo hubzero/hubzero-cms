@@ -151,7 +151,8 @@ class Assetv1r0 extends Base
 
         if ($assocScope === 'asset_group') {
             $database->setQuery(
-                "SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = "
+                "SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = "
+                    . "ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = "
                     . $assocScopeId,
             );
         } elseif ($assocScope === 'offering') {
@@ -509,7 +510,8 @@ class Assetv1r0 extends Base
 
             if ($assocScope === 'asset_group') {
                 $database->setQuery(
-                    "SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = "
+                    "SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = "
+                        . "ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = "
                         . $assocScopeId,
                 );
             } elseif ($assocScope === 'offering') {
@@ -560,7 +562,8 @@ class Assetv1r0 extends Base
 
                 if ($assocScope === 'asset_group') {
                     $database->setQuery(
-                        "SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = "
+                        "SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id "
+                            . "= ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = "
                             . $assocScopeId,
                     );
                 } elseif ($assocScope === 'offering') {
@@ -669,7 +672,8 @@ class Assetv1r0 extends Base
         }
         if ($scope_id && $scope == 'asset_group') {
             $database->setQuery(
-                "SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = "
+                "SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = "
+                    . "ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = "
                     . (int) $scope_id,
             );
             if ((int) $database->loadResult() !== (int) $this->course_id) {
@@ -829,7 +833,8 @@ class Assetv1r0 extends Base
         if (!Request::getInt('course_id', 0) && Request::getCmd('scope', 'asset_group') == 'asset_group') {
             $db = App::get('db');
             $db->setQuery(
-                "SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = "
+                "SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = "
+                    . "ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = "
                     . (int) Request::getInt('scope_id', 0),
             );
             Request::setVar('course_id', (int) $db->loadResult());
@@ -854,7 +859,8 @@ class Assetv1r0 extends Base
         // (assets/js/build.js).
         if ($scope == 'asset_group') {
             $database->setQuery(
-                "SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = "
+                "SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = "
+                    . "ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = "
                     . (int) $scope_id,
             );
         } elseif ($scope == 'offering') {

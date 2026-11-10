@@ -32,7 +32,8 @@ class Migration20261013000000ComMassmailPostfixUtc extends Base
 
         if ($this->db->tableExists('#__massmail_postfix_state')) {
             $this->db->setQuery(
-                "UPDATE `#__massmail_postfix_state` SET `last_inode` = 0, `last_offset` = 0, `last_sent` = NULL WHERE `id` = 1;",
+                "UPDATE `#__massmail_postfix_state` SET `last_inode` = 0, `last_offset` = 0, `last_sent` = NULL WHERE "
+                    . "`id` = 1;",
             );
             $this->db->query();
         }

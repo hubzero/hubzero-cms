@@ -1139,7 +1139,8 @@ class Profile extends Obj
 
             $property_name = self::auxField($property);
 
-            $query = "SELECT $property_name FROM `#__xprofiles` AS x, `#__xprofiles_$property_name` AS xp WHERE x.uidNumber=xp.uidNumber AND xp.uidNumber="
+            $query = "SELECT $property_name FROM `#__xprofiles` AS x, `#__xprofiles_$property_name` AS xp WHERE "
+                . "x.uidNumber=xp.uidNumber AND xp.uidNumber="
                 . $db->quote($this->get('uidNumber'))
                 . " ORDER BY $property_name ASC;";
 
@@ -1429,7 +1430,8 @@ class Profile extends Obj
     public static function getGroupMemberRoles($uid, $gid)
     {
         $db = App::get('db');
-        $sql = "SELECT r.id, r.name, r.permissions FROM `#__xgroups_roles` as r, `#__xgroups_member_roles` as m WHERE r.id=m.roleid AND m.uidNumber="
+        $sql = "SELECT r.id, r.name, r.permissions FROM `#__xgroups_roles` as r, `#__xgroups_member_roles` as m WHERE "
+            . "r.id=m.roleid AND m.uidNumber="
             . $db->quote($uid)
             . " AND r.gidNumber="
             . $db->quote($gid);

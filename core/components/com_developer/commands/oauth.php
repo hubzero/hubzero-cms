@@ -409,7 +409,8 @@ class Oauth extends Base implements CommandInterface
             ->addArgument(
                 '--name=: Application name',
                 'Required when registering.',
-                'muse developer:oauth register --name="nanoDT" --user=jdoe --redirect-uri=http://127.0.0.1:47813/callback',
+                'muse developer:oauth register --name="nanoDT" --user=jdoe '
+                    . '--redirect-uri=http://127.0.0.1:47813/callback',
             )
             ->addArgument(
                 '--redirect-uri=: Redirect URI(s)',

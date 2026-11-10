@@ -1035,7 +1035,8 @@ class Create extends SiteController
         $id = Request::getInt('id', 0);
 
         $this->database->setQuery(
-            'SELECT 1 FROM `#__author_assoc` WHERE authorid = ' . User::get('id') . ' AND subtable = \'resources\' AND subid = ' . $id . '
+            'SELECT 1 FROM `#__author_assoc` WHERE authorid = ' . User::get('id') . ' AND subtable = \'resources\' AND '
+                . 'subid = ' . $id . '
 			UNION
 			SELECT 1 FROM `#__resources` WHERE id = ' . $id . ' AND (created_by = ' . User::get('id') . ' OR modified_by = ' . User::get('id') . ')
 			UNION

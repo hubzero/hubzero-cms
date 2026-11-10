@@ -107,7 +107,8 @@ class Collections extends Plugin
 
             // Get a list of IDs for posts created by this group
             $database->setQuery(
-                "SELECT i.id FROM `#__collections_items` AS i LEFT JOIN `#__collections_posts` AS p ON p.`item_id`=i.`id` WHERE p.`original`=1 AND p.`collection_id` IN ("
+                "SELECT i.id FROM `#__collections_items` AS i LEFT JOIN `#__collections_posts` AS p ON "
+                    . "p.`item_id`=i.`id` WHERE p.`original`=1 AND p.`collection_id` IN ("
                     . implode(',', $entries)
                     . ")",
             );

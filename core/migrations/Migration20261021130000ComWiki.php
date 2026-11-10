@@ -26,14 +26,20 @@ class Migration20261021130000ComWiki extends Base
      *
      * @var  string
      */
-    private $oldForm = "\t\t\t\t\t<form action=\"/search\" method=\"get\" class=\"search\">\n\t\t\t\t\t\t<fieldset>\n\t\t\t\t\t\t\t<p>\n\t\t\t\t\t\t\t\t<input type=\"text\" name=\"terms\" value=\"\" />\n";
+    private $oldForm = "\t\t\t\t\t<form action=\"/search\" method=\"get\" "
+        . "class=\"search\">\n\t\t\t\t\t\t<fieldset>\n\t\t\t\t\t\t\t<p>\n\t\t\t\t\t\t\t\t<input type=\"text\" "
+        . "name=\"terms\" value=\"\" />\n";
 
     /**
      * The accessible search form on MainPage
      *
      * @var  string
      */
-    private $newForm = "\t\t\t\t\t<form action=\"/search\" method=\"get\" class=\"search\" role=\"search\" aria-label=\"Search wiki articles\">\n\t\t\t\t\t\t<fieldset>\n\t\t\t\t\t\t\t<legend class=\"sr-only\">Search wiki articles</legend>\n\t\t\t\t\t\t\t<p>\n\t\t\t\t\t\t\t\t<label for=\"wiki-search-terms\" class=\"sr-only\">Search terms</label>\n\t\t\t\t\t\t\t\t<input type=\"text\" name=\"terms\" id=\"wiki-search-terms\" value=\"\" />\n";
+    private $newForm = "\t\t\t\t\t<form action=\"/search\" method=\"get\" class=\"search\" role=\"search\" "
+        . "aria-label=\"Search wiki articles\">\n\t\t\t\t\t\t<fieldset>\n\t\t\t\t\t\t\t<legend "
+        . "class=\"sr-only\">Search wiki articles</legend>\n\t\t\t\t\t\t\t<p>\n\t\t\t\t\t\t\t\t<label "
+        . "for=\"wiki-search-terms\" class=\"sr-only\">Search terms</label>\n\t\t\t\t\t\t\t\t<input type=\"text\" "
+        . "name=\"terms\" id=\"wiki-search-terms\" value=\"\" />\n";
 
     /**
      * Up

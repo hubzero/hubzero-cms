@@ -28,8 +28,16 @@ class TitleIndex extends WikiMacro
     public function description()
     {
         $txt = [];
-        $txt['wiki'] = 'Inserts an alphabetic list of all wiki pages into the output. Accepts a prefix string as parameter: if provided, only pages with names that start with the prefix are included in the resulting list. If this parameter is omitted, all pages are listed.';
-        $txt['html'] = '<p>Inserts an alphabetic list of all wiki pages into the output. Accepts a prefix string as parameter: if provided, only pages with names that start with the prefix are included in the resulting list. If this parameter is omitted, all pages are listed.</p><p>The list may have a sorting applied by adding the sort=[title,created(oldest to newest),modified(newest to oldest)] argument. For example, <code>[[TitleIndex(sort=modified)]]</code> will list all pages by their last modified date (most recent to oldest). If you have a page prefix, simply add a comma and the sort parameter <em>after</em>. For example: <code>[[TitleIndex(Help, sort=modified)]]</code></p>';
+        $txt['wiki'] = 'Inserts an alphabetic list of all wiki pages into the output. Accepts a prefix string as '
+            . 'parameter: if provided, only pages with names that start with the prefix are included in the resulting '
+            . 'list. If this parameter is omitted, all pages are listed.';
+        $txt['html'] = '<p>Inserts an alphabetic list of all wiki pages into the output. Accepts a prefix string as '
+            . 'parameter: if provided, only pages with names that start with the prefix are included in the resulting '
+            . 'list. If this parameter is omitted, all pages are listed.</p><p>The list may have a sorting applied by '
+            . 'adding the sort=[title,created(oldest to newest),modified(newest to oldest)] argument. For example, '
+            . '<code>[[TitleIndex(sort=modified)]]</code> will list all pages by their last modified date (most recent '
+            . 'to oldest). If you have a page prefix, simply add a comma and the sort parameter <em>after</em>. For '
+            . 'example: <code>[[TitleIndex(Help, sort=modified)]]</code></p>';
         return $txt['html'];
     }
 

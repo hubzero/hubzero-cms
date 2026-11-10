@@ -480,7 +480,8 @@ class Author extends Table
         }
 
         $query  = "SELECT A.id as owner_id, x.uidNumber as user_id, ";
-        $query .= " COALESCE(A.name , x.name) as name, x.username, x.orcid, COALESCE(A.organization , x.organization) as organization ";
+        $query .= " COALESCE(A.name , x.name) as name, x.username, x.orcid, COALESCE(A.organization , x.organization) "
+            . "as organization ";
         $query .= " FROM #__xprofiles as x  ";
         $query .= " LEFT JOIN $this->tableName as A ON x.uidNumber=A.user_id 
 		            AND A.publication_version_id=" . $this->db->quote($vid);

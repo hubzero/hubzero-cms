@@ -295,7 +295,8 @@ class Comment extends Table
 
         $query  = ($permanent)
             ? "DELETE c FROM $this->tableName as c INNER JOIN `#__project_activity` as a ON a.id=c.activityid "
-            : "UPDATE $this->tableName as c INNER JOIN `#__project_activity` as a ON a.id=c.activityid  SET c.state = 2 ";
+            : "UPDATE $this->tableName as c INNER JOIN `#__project_activity` as a ON a.id=c.activityid  SET c.state = "
+                . "2 ";
         $query .= " WHERE a.projectid=" . $this->db->quote($projectid);
 
         $this->db->setQuery($query);

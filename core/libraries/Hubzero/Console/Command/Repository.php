@@ -564,7 +564,8 @@ class Repository extends Base implements CommandInterface
         if (preg_match("/fatal: Authentication failed.../uis", $lsremote_command_response)) {
             $output = [
                 Lang::txt(
-                    "Authentication failure. Please check the specified Access Token has access to this extension's repository.",
+                    "Authentication failure. Please check the specified Access Token has access to this extension's "
+                        . "repository.",
                 ),
             ];
             $this->output->addLine($output);
@@ -623,7 +624,8 @@ class Repository extends Base implements CommandInterface
         // leaving the extension's local changes stranded in the stash.
         if ($git_branch === '') {
             $this->output->addLine(
-                'Could not determine the branch to check out (no git_branch given and the remote default branch could not be read); leaving '
+                'Could not determine the branch to check out (no git_branch given and the remote default branch could '
+                    . 'not be read); leaving '
                     . $cur_branch
                     . ' checked out.',
             );

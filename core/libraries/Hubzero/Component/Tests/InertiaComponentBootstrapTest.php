@@ -27,7 +27,8 @@ namespace Hubzero\Component\Tests {
         {
             if (!class_exists(AbstractComponent::class)) {
                 $this->markTestSkipped(
-                    'Requires Hubzero\\Component\\AbstractComponent (class-based component refactor); not present on 2.4-main.',
+                    'Requires Hubzero\\Component\\AbstractComponent (class-based component refactor); not present on '
+                        . '2.4-main.',
                 );
             }
             if (is_a('\\App', AppStub::class, true)) {

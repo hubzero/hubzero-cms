@@ -435,7 +435,8 @@ class Registration
         if ($registrationUsername != self::REG_HIDE) {
             $allowNumericFirstCharacter = ($task == 'update') ? true : false;
             if (!empty($login) && !Helpers\Utility::validlogin($login, $allowNumericFirstCharacter)) {
-                $this->invalid['login'] = 'Invalid login name. Please type at least 2 characters and use only lowercase alphanumeric characters.';
+                $this->invalid['login'] = 'Invalid login name. Please type at least 2 characters and use only '
+                    . 'lowercase alphanumeric characters.';
             }
         }
 
@@ -459,7 +460,8 @@ class Registration
             if (!empty($puser) && $uid && $uid != $puser['uid']) {
                 // log error and display error to user
                 Log::error('System username/userid does not match DB username/password for user: ' . $uid);
-                $this->invalid['login'] = 'Username mismatch error, please contact system administrator to fix your account.';
+                $this->invalid['login'] = 'Username mismatch error, please contact system administrator to fix your '
+                    . 'account.';
             }
         }
 
@@ -811,7 +813,8 @@ class Registration
 
         // check the general validity
         if (!Helpers\Utility::validlogin($username)) {
-            $ret['message'] = 'Invalid login name. Please type between 2 and 32 characters and use only lowercase alphanumeric characters.';
+            $ret['message'] = 'Invalid login name. Please type between 2 and 32 characters and use only lowercase '
+                . 'alphanumeric characters.';
             return $ret;
         }
 

@@ -448,7 +448,8 @@ class Owner extends Table
 
         $query   =  "SELECT DISTINCT ";
         if (!$select) {
-            $query .= " o.*, x.name, x.username, x.organization, x.picture, g.cn as groupname, g.description as groupdesc, p.created_by_user ";
+            $query .= " o.*, x.name, x.username, x.organization, x.picture, g.cn as groupname, g.description as "
+                . "groupdesc, p.created_by_user ";
             $query .= ", if (o.userid = 0, o.invited_name, x.name) as fullname ";
             if ($pub) {
                 $query .= " , pa.organization as a_organization, pa.name as a_name, pa.credit ";
@@ -459,7 +460,8 @@ class Owner extends Table
         $query .= " FROM $this->tableName AS o ";
         $query .= " JOIN #__projects as p ON o.projectid=p.id";
         if ($pub) {
-            $query .= " LEFT JOIN #__publication_authors as pa ON o.id=pa.project_owner_id AND pa.publication_version_id="
+            $query .= " LEFT JOIN #__publication_authors as pa ON o.id=pa.project_owner_id AND "
+                . "pa.publication_version_id="
                 . $this->db->quote($pub);
         }
         $query .=  " LEFT JOIN #__xprofiles as x ON o.userid=x.uidNumber ";
@@ -673,7 +675,8 @@ class Owner extends Table
                 $array_members = [];
                 $array_member_groups = [];
                 if (!empty($where_groups)) {
-                    $query  = "SELECT DISTINCT m.uidNumber, m.gidNumber FROM `#__xgroups_members` AS m WHERE m.gidNumber IN ("
+                    $query  = "SELECT DISTINCT m.uidNumber, m.gidNumber FROM `#__xgroups_members` AS m WHERE "
+                        . "m.gidNumber IN ("
                         . implode(',', $where_groups)
                         . ")";
                     $this->db->setQuery($query);
@@ -1040,7 +1043,8 @@ class Owner extends Table
 
             if ($found === null) {
                 // User not in project
-                $query  = "INSERT INTO $this->tableName (`projectid`, `userid`, `groupid`, `added`, `status`, `native`, `role`, `invited_email`) SELECT "
+                $query  = "INSERT INTO $this->tableName (`projectid`, `userid`, `groupid`, `added`, `status`, "
+                    . "`native`, `role`, `invited_email`) SELECT "
                     . (int) $projectid
                     . ", "
                     . (int) $userid
@@ -1111,7 +1115,8 @@ class Owner extends Table
 
                     if ($found === null) {
                         // User not in project
-                        $query  = "INSERT INTO $this->tableName (`projectid`, `userid`, `groupid`, `added`, `status`, `native`, `role`, `invited_email`) SELECT "
+                        $query  = "INSERT INTO $this->tableName (`projectid`, `userid`, `groupid`, `added`, `status`, "
+                            . "`native`, `role`, `invited_email`) SELECT "
                             . (int) $projectid
                             . ", "
                             . (int) $owner

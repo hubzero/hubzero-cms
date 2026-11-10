@@ -585,7 +585,8 @@ class Points extends AdminController
             } else {
                 Notify::warning(
                     Lang::txt(
-                        'This batch transaction was already processed earlier. Use a different identifier if you need to run it again.',
+                        'This batch transaction was already processed earlier. Use a different identifier if you need '
+                            . 'to run it again.',
                     ),
                 );
             }

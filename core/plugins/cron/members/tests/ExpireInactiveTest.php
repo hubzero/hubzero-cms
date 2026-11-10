@@ -124,7 +124,8 @@ class ExpireInactiveTest extends Basic
         ];
 
         $insertUser = $db->prepare(
-            "INSERT INTO jos_users (id, username, block, registerDate, lastvisitDate, params) VALUES (?, ?, ?, ?, ?, '')",
+            "INSERT INTO jos_users (id, username, block, registerDate, lastvisitDate, params) VALUES (?, ?, ?, ?, ?, "
+                . "'')",
         );
         $insertPass = $db->prepare(
             "INSERT INTO jos_users_password (user_id, passhash, shadowLastChange, shadowExpire) VALUES (?, '', ?, ?)",

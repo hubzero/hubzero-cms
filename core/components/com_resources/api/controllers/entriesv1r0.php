@@ -336,7 +336,8 @@ class Entriesv1r0 extends ApiController
             // arbitrary files or run commands; escape the paths as defence in depth.
             $command = 'cd '
                 . escapeshellarg($dir)
-                . '; openin_any=p openout_any=p timeout 20 /usr/bin/latex -no-shell-escape -halt-on-error -interaction=nonstopmode '
+                . '; openin_any=p openout_any=p timeout 20 /usr/bin/latex -no-shell-escape -halt-on-error '
+                . '-interaction=nonstopmode '
                 . escapeshellarg($filename . '.tex')
                 . ' < /dev/null |grep ^!|grep -v Emergency > '
                 . escapeshellarg($dir . DS . $filename . '.error')

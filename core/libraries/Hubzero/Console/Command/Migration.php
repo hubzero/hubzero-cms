@@ -291,7 +291,8 @@ class Migration extends Base implements CommandInterface
                                 }
                                 if (
                                     preg_match(
-                                        '/migration up\(\) in (.*?)(Migration[0-9]{14}[[:alnum:]_]*\.php) has not been run/i',
+                                        '/migration up\(\) in (.*?)(Migration[0-9]{14}[[:alnum:]_]*\.php) has not been '
+                                            . 'run/i',
                                         $log['message'],
                                         $matches,
                                     )

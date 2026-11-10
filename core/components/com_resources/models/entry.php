@@ -281,7 +281,8 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     {
         $db = App::get('db');
 
-        $sql = "SELECT g.cn FROM #__resource_acl_group AS a, #__xgroups AS g WHERE resource_id = ? AND a.group_id = g.gidNumber";
+        $sql = "SELECT g.cn FROM #__resource_acl_group AS a, #__xgroups AS g WHERE resource_id = ? AND a.group_id = "
+            . "g.gidNumber";
         $db->prepare($sql)->bind([ $this->get('id')]);
         $result = $db->loadColumn();
 
@@ -418,8 +419,11 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
                 $contributors = $this->authors()->ordered()->rows();
             } elseif ($this->isTool()) {
                 $db = App::get('db');
-                $sql = "SELECT n.id, t.name AS name, n.name AS xname, NULL AS xorg, n.givenName, n.givenName AS firstname, n.middleName, n.middleName AS middlename, n.surname, n.surname AS lastname, t.organization, t.*, a.role"
-                    . " FROM `#__tool_authors` AS t LEFT JOIN `#__users` AS n ON n.id=t.uid JOIN `#__tool_version` AS v ON v.id=t.version_id"
+                $sql = "SELECT n.id, t.name AS name, n.name AS xname, NULL AS xorg, n.givenName, n.givenName AS "
+                    . "firstname, n.middleName, n.middleName AS middlename, n.surname, n.surname AS lastname, "
+                    . "t.organization, t.*, a.role"
+                    . " FROM `#__tool_authors` AS t LEFT JOIN `#__users` AS n ON n.id=t.uid JOIN `#__tool_version` AS "
+                    . "v ON v.id=t.version_id"
                     . " LEFT JOIN `#__author_assoc` AS a ON a.authorid=t.uid AND a.subtable='resources' AND a.subid="
                     . $db->quote($this->get('id'))
                     . " WHERE t.toolname=" . $db->quote($this->get('alias')) . " AND v.state<>3"
@@ -1648,7 +1652,8 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 
         $db = App::get('db');
 
-        $sql = "SELECT g.cn FROM #__resource_acl_group AS a, #__xgroups AS g WHERE resource_id = ? AND a.group_id = g.gidNumber";
+        $sql = "SELECT g.cn FROM #__resource_acl_group AS a, #__xgroups AS g WHERE resource_id = ? AND a.group_id = "
+            . "g.gidNumber";
         $db->prepare($sql)->bind([ $this->get('id')]);
         $result = $db->loadArray();
 

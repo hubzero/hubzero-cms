@@ -249,9 +249,11 @@ class Rule extends Relational
             ],
             [
                 'class'       => '',
-                'description' => 'Must be different than the previous password (re-use of the same password will not be allowed for one (1) year)',
+                'description' => 'Must be different than the previous password (re-use of the same password will not '
+                    . 'be allowed for one (1) year)',
                 'enabled'     => '0',
-                'failuremsg'  => 'Must be different than the previous password (re-use of the same password will not be allowed for one (1) year)',
+                'failuremsg'  => 'Must be different than the previous password (re-use of the same password will not '
+                    . 'be allowed for one (1) year)',
                 'grp'         => 'hub',
                 'ordering'    => '9',
                 'rule'        => 'notReused',

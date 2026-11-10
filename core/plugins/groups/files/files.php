@@ -318,7 +318,8 @@ class Files extends Plugin
             $childrenHtml = '';
 
             if (isset($treeLevel['children']) && is_array($treeLevel['children'])) {
-                $nodeToggle   = '<a class="tree-folder-toggle" href="javascript:void(0);" aria-label="Toggle folder"></a>';
+                $nodeToggle   = '<a class="tree-folder-toggle" href="javascript:void(0);" aria-label="Toggle '
+                    . 'folder"></a>';
                 $childrenHtml = $this->buildFolderTreeHtml($treeLevel['children']);
             }
 

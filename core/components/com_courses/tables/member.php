@@ -327,7 +327,8 @@ class Member extends Table
      */
     public function find($filters = [])
     {
-        $query  = "SELECT m.*, u.name, u.email, u.username, r.alias AS role_alias, r.title AS role_title, r.permissions AS role_permissions ";
+        $query  = "SELECT m.*, u.name, u.email, u.username, r.alias AS role_alias, r.title AS role_title, "
+            . "r.permissions AS role_permissions ";
         /*if (isset($filters['offering_id']))
         {
             $query .= "(SELECT cm.user_id FROM #__courses_managers AS cm JOIN #__courses_offerings AS co ON cm.course_id=co.course_id WHERE cm.user_id=m.user_id AND co.id=" . $this->_db->quote(intval($filters['offering_id'])) . ")";

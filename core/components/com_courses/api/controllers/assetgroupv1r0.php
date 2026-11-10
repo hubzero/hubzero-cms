@@ -92,7 +92,8 @@ class Assetgroupv1r0 extends Base
         $db = App::get('db');
         if ($id) {
             $db->setQuery(
-                "SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = "
+                "SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = "
+                    . "ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = "
                     . (int) $id,
             );
             if ((int) $db->loadResult() !== (int) $this->course_id) {
@@ -100,7 +101,8 @@ class Assetgroupv1r0 extends Base
             }
         } elseif ($unitId = Request::getInt('unit_id', 0)) {
             $db->setQuery(
-                "SELECT o.course_id FROM `#__courses_units` AS u JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE u.id = "
+                "SELECT o.course_id FROM `#__courses_units` AS u JOIN `#__courses_offerings` AS o ON o.id = "
+                    . "u.offering_id WHERE u.id = "
                     . (int) $unitId,
             );
             if ((int) $db->loadResult() !== (int) $this->course_id) {
@@ -108,7 +110,8 @@ class Assetgroupv1r0 extends Base
             }
         } elseif ($parentId = Request::getInt('parent', 0)) {
             $db->setQuery(
-                "SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = "
+                "SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = "
+                    . "ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = "
                     . (int) $parentId,
             );
             if ((int) $db->loadResult() !== (int) $this->course_id) {
@@ -227,7 +230,8 @@ class Assetgroupv1r0 extends Base
         $courses = [];
         foreach ($groups as $id) {
             $db->setQuery(
-                "SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = "
+                "SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = "
+                    . "ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = "
                     . (int) $id,
             );
             $cid = (int) $db->loadResult();

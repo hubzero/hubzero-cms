@@ -376,7 +376,8 @@ class Ckeditor extends Plugin
             '/<map[^>]*>(.|\n)*<\/map>/ig',
             '/<area([^>]*)\/?>/ig',
         ];
-        $config->extraAllowedContent           = 'img(*)[*]; style(*)[*]; mark(*)[*]; span(*)[*]; map(*)[*]; area(*)[*]; *(*)[*]{*}';
+        $config->extraAllowedContent           = 'img(*)[*]; style(*)[*]; mark(*)[*]; span(*)[*]; map(*)[*]; '
+            . 'area(*)[*]; *(*)[*]{*}';
         $config->specialChars                  = [
             '!',
             '&quot;',

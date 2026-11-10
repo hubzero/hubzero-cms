@@ -612,7 +612,8 @@ class Mailings extends AdminController
 
             $gw = "cn LIKE $like OR description LIKE $like" . ($numeric ? ' OR gidNumber = ' . (int) $q : '');
             $db->setQuery(
-                "SELECT gidNumber, cn, description FROM `#__xgroups` WHERE published = 1 AND ($gw) ORDER BY cn ASC LIMIT 8",
+                "SELECT gidNumber, cn, description FROM `#__xgroups` WHERE published = 1 AND ($gw) ORDER BY cn ASC "
+                    . "LIMIT 8",
             );
             foreach ((array) $db->loadObjectList() as $g) {
                 $out[] = [

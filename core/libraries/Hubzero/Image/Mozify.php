@@ -258,7 +258,8 @@ class Mozify extends Obj
         //build mso hack
         $mosHack  = '<!--[if mso]><style>.'
             . $class
-            . '{ display:none !important }</style><table cellpadding="0" cellspacing="0" style="display:block;float:none;" align=""><tr><td>';
+            . '{ display:none !important }</style><table cellpadding="0" cellspacing="0" '
+            . 'style="display:block;float:none;" align=""><tr><td>';
         $mosHack .= '<img src="'
             . $this->imageUrl
             . '" alt="'

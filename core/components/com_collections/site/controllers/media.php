@@ -617,7 +617,8 @@ class Media extends SiteController
         }
         $db = \App::get('db');
         $db->setQuery(
-            "SELECT c.created_by, c.object_type, c.object_id FROM `#__collections_posts` AS p INNER JOIN `#__collections` AS c ON c.id = p.collection_id WHERE p.original = 1 AND p.item_id = "
+            "SELECT c.created_by, c.object_type, c.object_id FROM `#__collections_posts` AS p INNER JOIN "
+                . "`#__collections` AS c ON c.id = p.collection_id WHERE p.original = 1 AND p.item_id = "
                 . (int) $asset->get('item_id'),
         );
         if ($c = $db->loadObject()) {

@@ -157,7 +157,8 @@ class MetadataTest extends Basic
     {
         $xml = str_replace(
             'Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://sp.example.com/acs"',
-            'Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" Location="https://sp.example.com/acs_artifact"',
+            'Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" '
+                . 'Location="https://sp.example.com/acs_artifact"',
             $this->xml,
         );
 
@@ -209,12 +210,14 @@ class MetadataTest extends Basic
 
         // IdP metadata is not SP metadata
         $this->assertFalse(Metadata::parse(
-            '<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="x"><md:IDPSSODescriptor/></md:EntityDescriptor>',
+            '<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" '
+                . 'entityID="x"><md:IDPSSODescriptor/></md:EntityDescriptor>',
         ));
 
         // An SP descriptor without an ACS is unusable
         $this->assertFalse(Metadata::parse(
-            '<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="x"><md:SPSSODescriptor/></md:EntityDescriptor>',
+            '<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" '
+                . 'entityID="x"><md:SPSSODescriptor/></md:EntityDescriptor>',
         ));
     }
 

@@ -379,7 +379,8 @@ class Answers extends Plugin
 
                         if (isset($asker_id)) {
                             // Remove hold
-                            $sql = "DELETE FROM `#__users_transactions` WHERE category='answers' AND type='hold' AND referenceid="
+                            $sql = "DELETE FROM `#__users_transactions` WHERE category='answers' AND type='hold' AND "
+                                . "referenceid="
                                 . $parentid
                                 . " AND uid='"
                                 . $asker_id

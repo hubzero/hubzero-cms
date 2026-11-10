@@ -152,7 +152,8 @@ class View extends AbstractView
             } else {
                 $db = App::get('db');
                 $db->setQuery(
-                    "SELECT s.`template` FROM `#__template_styles` AS s INNER JOIN `#__extensions` AS e ON e.`element`=s.`template` WHERE s.`client_id`=0 AND s.`home`=1",
+                    "SELECT s.`template` FROM `#__template_styles` AS s INNER JOIN `#__extensions` AS e ON "
+                        . "e.`element`=s.`template` WHERE s.`client_id`=0 AND s.`home`=1",
                 );
                 $tpl = $db->loadResult();
             }

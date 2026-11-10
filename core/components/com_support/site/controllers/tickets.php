@@ -1674,7 +1674,8 @@ class Tickets extends SiteController
             $rowc->set('comment', $comment);
             $this->setError(
                 Lang::txt(
-                    'Changes were made to this ticket in the time since you began commenting/making changes. Please review your changes before submitting.'
+                    'Changes were made to this ticket in the time since you began commenting/making changes. Please '
+                        . 'review your changes before submitting.'
                         . $lastcomment->get('created')
                         . ' > '
                         . $started,

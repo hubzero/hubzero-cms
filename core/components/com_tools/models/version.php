@@ -1183,7 +1183,8 @@ class Version
                 . $db->Quote($this->toolid)
                 . " LIMIT 1";
         } else {
-            $query = "SELECT gidNumber FROM #__xgroups AS xg, #_tool_groups AS tg WHERE tg.cn=xg.cn AND tg.role='1' AND tg.toolid="
+            $query = "SELECT gidNumber FROM #__xgroups AS xg, #_tool_groups AS tg WHERE tg.cn=xg.cn AND tg.role='1' "
+                . "AND tg.toolid="
                 . $db->Quote($this->toolid)
                 . " LIMIT 1";
         }
@@ -1208,7 +1209,8 @@ class Version
         $db = App::get('db');
         // data comes from db
         $query  = "SELECT v.*, d.doi_label as doi ";
-        $query .= "FROM #__tool_version as v LEFT JOIN #__doi_mapping as d ON d.alias = v.toolname AND d.local_revision=v.revision ";
+        $query .= "FROM #__tool_version as v LEFT JOIN #__doi_mapping as d ON d.alias = v.toolname AND "
+            . "d.local_revision=v.revision ";
         if ($id) {
             $query .= "WHERE v.id = " . $db->quote($id) . " ";
         } elseif ($version && $toolname) {

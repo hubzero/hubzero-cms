@@ -56,7 +56,8 @@ class Math extends Plugin
         $html .= '<label for="captcha-answer">' . "\n";
         $html .= Lang::txt('PLG_CAPTCHA_MATH_TROUBLE_MATH', $problem['operand1'], $problem['operand2']);
         $html .= "\t"
-            . '<input type="text" name="captcha_answer" id="captcha-answer" value="" size="3" id="answer" class="option form-control" /> <span class="required">'
+            . '<input type="text" name="captcha_answer" id="captcha-answer" value="" size="3" id="answer" '
+            . 'class="option form-control" /> <span class="required">'
             . Lang::txt('JREQUIRED')
             . '</span>'
             . "\n";

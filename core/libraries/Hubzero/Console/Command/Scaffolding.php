@@ -112,7 +112,8 @@ class Scaffolding extends Base implements CommandInterface
         } else {
             if (empty($this->type)) {
                 $this->output->error(
-                    'Error: Sorry, scaffolding can\'t create nothing/everything. Try telling it what you want to create.',
+                    'Error: Sorry, scaffolding can\'t create nothing/everything. Try telling it what you want to '
+                        . 'create.',
                 );
             } else {
                 $this->output->error('Error: Sorry, scaffolding doesn\'t know how to create a ' . $this->type);

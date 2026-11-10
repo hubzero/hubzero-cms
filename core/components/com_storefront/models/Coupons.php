@@ -195,7 +195,8 @@ class Coupons
      */
     public function apply($cnId)
     {
-        $sql = "UPDATE `#__storefront_coupons` SET `cnUseLimit` = (IF(`cnUseLimit` IS NULL, NULL, `cnUseLimit` - 1)) WHERE `cnId` = "
+        $sql = "UPDATE `#__storefront_coupons` SET `cnUseLimit` = (IF(`cnUseLimit` IS NULL, NULL, `cnUseLimit` - 1)) "
+            . "WHERE `cnId` = "
             . $this->db->quote($cnId);
         $this->db->setQuery($sql);
         $this->db->query();
@@ -211,7 +212,8 @@ class Coupons
      */
     public function recycle($cnId)
     {
-        $sql = "UPDATE `#__storefront_coupons` SET `cnUseLimit` = (IF(`cnUseLimit` IS NULL, NULL, `cnUseLimit` + 1)) WHERE `cnId` = "
+        $sql = "UPDATE `#__storefront_coupons` SET `cnUseLimit` = (IF(`cnUseLimit` IS NULL, NULL, `cnUseLimit` + 1)) "
+            . "WHERE `cnId` = "
             . $this->db->quote($cnId);
         $this->db->setQuery($sql);
         $this->db->query();

@@ -738,7 +738,8 @@ class Ticket extends Relational
             $query = str_replace($matches[0], '', $query);
         }
 
-        $sql = "SELECT DISTINCT f.`id`, f.`summary`, f.`report`, f.`category`, f.`open`, f.`status`, f.`severity`, f.`resolved`, f.`group_id`, f.`owner`, f.`created`, f.`login`, f.`name`, f.`email`, f.`target_date` ";
+        $sql = "SELECT DISTINCT f.`id`, f.`summary`, f.`report`, f.`category`, f.`open`, f.`status`, f.`severity`, "
+            . "f.`resolved`, f.`group_id`, f.`owner`, f.`created`, f.`login`, f.`name`, f.`email`, f.`target_date` ";
         if ($having) {
             $sql .= ", COUNT(DISTINCT t.tag) AS uniques ";
         }

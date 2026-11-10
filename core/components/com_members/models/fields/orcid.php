@@ -103,7 +103,8 @@ class Orcid extends Text
             . '" rel="nofollow external">'
             . '<img src="'
             . Request::root(true)
-            . 'core/components/com_members/site/assets/img/orcid_16x16.png" class="logo" width="20" height="20" alt="" role="presentation"/>'
+            . 'core/components/com_members/site/assets/img/orcid_16x16.png" class="logo" width="20" height="20" alt="" '
+            . 'role="presentation"/>'
             . ' ' . Lang::txt('COM_MEMBERS_PROFILE_ORCID_CREATE_OR_CONNECT') . '</a>';
         }
 
@@ -129,7 +130,8 @@ class Orcid extends Text
             . '" rel="nofollow external">'
             . '<img src="'
             . Request::root(true)
-            . 'core/components/com_members/site/assets/img/orcid_16x16.png" class="logo" width="20" height="20" alt="" role="presentation"/>'
+            . 'core/components/com_members/site/assets/img/orcid_16x16.png" class="logo" width="20" height="20" alt="" '
+            . 'role="presentation"/>'
             . ' ' . Lang::txt('COM_MEMBERS_PROFILE_ORCID_GRANT_PERMISSION') . '</a>';
         }
         $html[] = '	</div>';

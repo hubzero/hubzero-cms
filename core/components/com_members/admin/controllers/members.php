@@ -1148,7 +1148,8 @@ class Members extends AdminController
             $anonUserNameSpace = "AnonFirst Middle Last" . $id;
 
             // Can't rely on any order the plugins run in. Setting the deletion profile key in controller before calling the plugins
-            $insert_UserProfileWithStatus_Query = "INSERT INTO `#__user_profiles` (`user_id`, `profile_key`, `profile_value`) values (?, 'deletion', 'marked')";
+            $insert_UserProfileWithStatus_Query = "INSERT INTO `#__user_profiles` (`user_id`, `profile_key`, "
+                . "`profile_value`) values (?, 'deletion', 'marked')";
             $this->runInsertQuery($insert_UserProfileWithStatus_Query, [$id]);
 
             // Running the plugin with all deletions

@@ -488,7 +488,8 @@ class Project extends Table
      */
     public function getGroupProjects($groupid = 0, $uid = 0, $filters = [], $setup_complete = 3)
     {
-        $query  = "SELECT DISTINCT p.*, IFNULL(o.role, 0) as role, o.id as owner, o.added as since, o.status as confirmed ";
+        $query  = "SELECT DISTINCT p.*, IFNULL(o.role, 0) as role, o.id as owner, o.added as since, o.status as "
+            . "confirmed ";
         $query .= ", x.name as authorname, g.cn as groupcn, g.description as groupname ";
         $query .= ", (SELECT COUNT(*) FROM `#__activity_recipients` AS pa WHERE pa.scope='project' AND pa.scope_id=p.id
 					AND pa.created >= o.lastvisit AND o.lastvisit IS NOT NULL

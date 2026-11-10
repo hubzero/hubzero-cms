@@ -257,7 +257,8 @@ class Debug extends Plugin
 
         if (Config::get('debug_lang')) {
             if ($this->params->get('language_errorfiles', 1)) {
-                $html .= '<a href="#debug-language_files_in_error" class="debug-tab debug-tab-lang-errors"><span class="text">'
+                $html .= '<a href="#debug-language_files_in_error" class="debug-tab debug-tab-lang-errors"><span '
+                    . 'class="text">'
                     . Lang::txt('PLG_DEBUG_LANGUAGE_FILE_ERRORS')
 
 
@@ -274,7 +275,8 @@ class Debug extends Plugin
                 foreach (Lang::getPaths() as $extension => $files) {
                     $total += count($files);
                 }
-                $html .= '<a href="#debug-language_files_loaded" class="debug-tab debug-tab-lang-files"><span class="text">'
+                $html .= '<a href="#debug-language_files_loaded" class="debug-tab debug-tab-lang-files"><span '
+                    . 'class="text">'
                     . Lang::txt('PLG_DEBUG_LANGUAGE_FILES_LOADED')
 
 
@@ -287,7 +289,8 @@ class Debug extends Plugin
             }
 
             if ($this->params->get('language_strings')) {
-                $html .= '<a href="#debug-untranslated_strings" class="debug-tab debug-tab-lang-untranslated"><span class="text">'
+                $html .= '<a href="#debug-untranslated_strings" class="debug-tab debug-tab-lang-untranslated"><span '
+                    . 'class="text">'
                     . Lang::txt('PLG_DEBUG_UNTRANSLATED')
 
 

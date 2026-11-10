@@ -55,7 +55,8 @@ class Migration20260810000000PlgCronGroups extends Base
                 continue;
             }
 
-            $query = "INSERT INTO `#__cron_jobs` (`title`, `state`, `plugin`, `event`, `last_run`, `next_run`, `recurrence`, `created`, `created_by`, `modified`, `modified_by`, `active`, `ordering`, `params`)"
+            $query = "INSERT INTO `#__cron_jobs` (`title`, `state`, `plugin`, `event`, `last_run`, `next_run`, "
+                . "`recurrence`, `created`, `created_by`, `modified`, `modified_by`, `active`, `ordering`, `params`)"
                 . " VALUES (" . $this->db->quote($title) . ", 1, 'groups', " . $this->db->quote($event)
                 . ", NULL, UTC_TIMESTAMP(), " . $this->db->quote($recurrence) . ", NULL, 0, NULL, 0, 0, 0, '');";
 

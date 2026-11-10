@@ -75,7 +75,8 @@ class RateLimitService extends Middleware
         if ($rateLimitData->exceeded_long || $rateLimitData->exceeded_short) {
             // Say who, since the generic handler's log line otherwise doesn't
             throw new \Exception(sprintf(
-                'You have exceeded your rate limit allowance. Please see rate limit headers for details. (application %d, user %d, ip %s)',
+                'You have exceeded your rate limit allowance. Please see rate limit headers for details. (application '
+                    . '%d, user %d, ip %s)',
                 (int) $token['application_id'],
                 (int) $token['uidNumber'],
                 $request->ip(),

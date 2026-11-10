@@ -45,7 +45,8 @@ class File extends Macro
     public function description()
     {
         $txt = [];
-        $txt['wiki'] = 'This macro alternately generates a link to a file or embeds the file for display (only valid for CDF files and images). The first argument is the filename.';
+        $txt['wiki'] = 'This macro alternately generates a link to a file or embeds the file for display (only valid '
+            . 'for CDF files and images). The first argument is the filename.';
         $txt['html'] = '<p>This macro alternately generates a link to a file or embeds the file for display (only valid for CDF files and images). The first argument is the filename.</p>
 			<ul>
 				<li>digits and unit are interpreted as the <code>width</code> attribute (ex. 120, 25%) for the file/image</li>
@@ -534,7 +535,8 @@ class File extends Macro
                     $attr['alt'] .= '<img src="' . $this->link($attr['altimage']) . '" alt="' . htmlentities($attr['desc'], ENT_COMPAT, 'UTF-8') . '" />';
                     $attr['alt'] .= '</a>';
                 } else {
-                    $attr['alt']  = '<a class="missing-plugin" href="http://www.wolfram.com/cdf-player/" title="CDF Web Player. Install now!">';
+                    $attr['alt']  = '<a class="missing-plugin" href="http://www.wolfram.com/cdf-player/" title="CDF '
+                        . 'Web Player. Install now!">';
                     $attr['alt'] .= '<img alt="CDF Web Player. Install now!" src="'
                         . Request::scheme()
                         . '://www.wolfram.com/cdf/images/cdf-player-black.png" width="187" height="41" />';

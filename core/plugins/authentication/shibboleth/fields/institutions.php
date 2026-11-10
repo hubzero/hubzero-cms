@@ -109,13 +109,15 @@ class Institutions extends Field
 
         $html   = [];
         $html[] = '<div class="shibboleth">';
-        $html[] = '<p class="xml-source"><label>Federation metadata XML path: <input type="text" id="shib-xmlpath" value="'
+        $html[] = '<p class="xml-source"><label>Federation metadata XML path: <input type="text" id="shib-xmlpath" '
+            . 'value="'
             . $xmlPathEsc
             . '" /></label></p>';
         $html[] = '<input type="hidden" class="serialized" name="' . $nameEsc . '" value="' . $hiddenJson . '" />';
 
         if (is_array($entities)) {
-            $html[] = '<p><input type="text" id="shib-idp-search" placeholder="Search institutions…" style="width:100%;box-sizing:border-box;margin-bottom:4px" /></p>';
+            $html[] = '<p><input type="text" id="shib-idp-search" placeholder="Search institutions…" '
+                . 'style="width:100%;box-sizing:border-box;margin-bottom:4px" /></p>';
             $html[] = '<div class="idp-list" style="height:400px;overflow-y:scroll;border:1px solid #ccc;padding:4px">';
             foreach ($entities as $entityId => $displayName) {
                 $checked   = isset($activeMap[$entityId]) ? ' checked' : '';

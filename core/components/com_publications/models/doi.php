@@ -582,7 +582,10 @@ class Doi extends Obj
         }
 
         // Start XML
-        $xmlfile  = '<?xml version="1.0" encoding="UTF-8"?><resource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://datacite.org/schema/kernel-4" xsi:schemaLocation="http://datacite.org/schema/kernel-4 https://schema.datacite.org/meta/kernel-4.5/metadata.xsd">';
+        $xmlfile  = '<?xml version="1.0" encoding="UTF-8"?><resource '
+            . 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://datacite.org/schema/kernel-4" '
+            . 'xsi:schemaLocation="http://datacite.org/schema/kernel-4 '
+            . 'https://schema.datacite.org/meta/kernel-4.5/metadata.xsd">';
         $xmlfile .= '<identifier identifierType="DOI">' . $doi . '</identifier>';
         $xmlfile .= '<creators>';
 
@@ -903,7 +906,8 @@ class Doi extends Obj
             foreach ($this->get('regTags') as $regTag) {
                 if (!empty($regTag->description) && preg_match("/^lcsh::/i", trim(strip_tags($regTag->description)))) {
                     $url = substr(trim(strip_tags($regTag->description)), 6);
-                    $xmlfile .= '<subject subjectScheme="Library of Congress Subject Headings (LCSH)" schemeURI="https://id.loc.gov/authorities/" valueURI="'
+                    $xmlfile .= '<subject subjectScheme="Library of Congress Subject Headings (LCSH)" '
+                        . 'schemeURI="https://id.loc.gov/authorities/" valueURI="'
                         . $url
                         . '">'
                         . $this->xmlText($regTag->raw_tag)
@@ -922,7 +926,8 @@ class Doi extends Obj
             if (!empty($valArr) && preg_match("/^fos::/i", trim($valArr[0])) && !empty($valArr[1])) {
                 $classificationCode = substr(trim($valArr[0]), 5);
                 $fosTagVal = trim($valArr[1]);
-                $xmlfile .= '<subject subjectScheme="Fields of Science and Technology (FOS)" schemeURI="https://web-archive.oecd.org/2012-06-15/138575-38235147.pdf" classificationCode="'
+                $xmlfile .= '<subject subjectScheme="Fields of Science and Technology (FOS)" '
+                    . 'schemeURI="https://web-archive.oecd.org/2012-06-15/138575-38235147.pdf" classificationCode="'
                     . $classificationCode
                     . '">'
                     . $this->xmlText($fosTagVal)

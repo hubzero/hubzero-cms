@@ -349,7 +349,8 @@ class License extends Table
             return false;
         }
 
-        $query = "SELECT L.*, v.license_type, v.license_text FROM $this->tableName AS L, `#__publication_versions` AS v ";
+        $query = "SELECT L.*, v.license_type, v.license_text FROM $this->tableName AS L, `#__publication_versions` AS "
+            . "v ";
         $query .= " WHERE v.id=" . $this->db->quote($vid) . " AND v.license_type=L.id";
         $query .= " LIMIT 1";
 

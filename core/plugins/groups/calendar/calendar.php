@@ -300,7 +300,8 @@ class Calendar extends Plugin
         if ($upcoming_events > 0) {
             $title = $this->group->get('description') . " has {$upcoming_events} events this month.";
             $link = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=calendar');
-            $arr['metadata']['alert'] = "<a class=\"alrt\" href=\"{$link}\"><span><h5>Calendar Alert</h5>{$title}</span></a>";
+            $arr['metadata']['alert'] = "<a class=\"alrt\" href=\"{$link}\"><span><h5>Calendar "
+                . "Alert</h5>{$title}</span></a>";
         }
 
         // Return the output
@@ -1721,7 +1722,9 @@ class Calendar extends Plugin
         $registrants = $eventsRespondent->getRecords();
 
         //var to hold output
-        $output = 'First Name,Last Name,Title,Affiliation,Email,Website,Telephone,Fax,City,State,Zip,Country,Current Position,Highest Degree Earned,Gender,Race,Arrival Info,Departure Info,Disability Needs,Dietary Needs,Attending Dinner,Abstract,Comments,Register Date'
+        $output = 'First Name,Last Name,Title,Affiliation,Email,Website,Telephone,Fax,City,State,Zip,Country,Current '
+            . 'Position,Highest Degree Earned,Gender,Race,Arrival Info,Departure Info,Disability Needs,Dietary '
+            . 'Needs,Attending Dinner,Abstract,Comments,Register Date'
             . "\n";
 
         $fields = [

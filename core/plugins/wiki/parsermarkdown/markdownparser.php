@@ -224,7 +224,8 @@ class MarkdownParser
         $this->data['output'] = $text;
 
         if (trim($this->data['input']) && !trim($this->data['output'])) {
-            $this->data['output']  = '<p class="warning">Parsing error resulted in empty content. Displaying raw markup below.</p>';
+            $this->data['output']  = '<p class="warning">Parsing error resulted in empty content. Displaying raw '
+                . 'markup below.</p>';
             $this->data['output'] .= '<pre>' . htmlentities($this->data['input'], ENT_COMPAT, 'UTF-8') . '</pre>';
         }
 

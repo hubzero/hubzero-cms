@@ -184,7 +184,8 @@ class Newsletter extends Plugin
                     $newsletterMailingRecipient->set('date_sent', Date::toSql());
                     $newsletterMailingRecipient->save();
                 } else {
-                    $sql = "SELECT *, max(date) AS maxDate FROM `#__newsletter_mailings` WHERE nid = {$queuedEmail->newsletterid} AND deleted=0;";
+                    $sql = "SELECT *, max(date) AS maxDate FROM `#__newsletter_mailings` WHERE nid "
+                        . "= {$queuedEmail->newsletterid} AND deleted=0;";
                     $database->setQuery($sql);
                     $latestMailing = $database->loadObject();
 
@@ -236,7 +237,8 @@ class Newsletter extends Plugin
                         // make sure we have some values
                         if (count($values) > 0) {
                             // build full query & execute
-                            $sql = "INSERT INTO `#__newsletter_mailing_recipients` (`mid`,`email`,`status`,`date_added`) VALUES "
+                            $sql = "INSERT INTO `#__newsletter_mailing_recipients` "
+                                . "(`mid`,`email`,`status`,`date_added`) VALUES "
                                 . implode(',', $values);
                             $database->setQuery($sql);
                             $database->query();

@@ -242,12 +242,14 @@ class CurrentCart extends Cart
         // Reset all messages
         if (!empty($changes)) {
             // Delete zero inventory items and unavailable SKUs
-            $sql = "DELETE FROM `#__cart_cart_items` WHERE (`crtiQty` = 0  OR `crtiAvailable` = 0) AND `crtId` = {$this->crtId}";
+            $sql = "DELETE FROM `#__cart_cart_items` WHERE (`crtiQty` = 0  OR `crtiAvailable` = 0) AND `crtId` "
+                . "= {$this->crtId}";
             $this->db->setQuery($sql);
             $this->db->query();
 
             // Clear old info since the message has already been displayed
-            $sql = "UPDATE `#__cart_cart_items` SET `crtiOldQty` = NULL, `crtiOldPrice` = NULL WHERE `crtId` = {$this->crtId}";
+            $sql = "UPDATE `#__cart_cart_items` SET `crtiOldQty` = NULL, `crtiOldPrice` = NULL WHERE `crtId` "
+                . "= {$this->crtId}";
             $this->db->setQuery($sql);
             $this->db->query();
 
@@ -357,7 +359,8 @@ class CurrentCart extends Cart
     public function getNextCheckoutStep()
     {
         // Get DB steps for this transaction
-        $sql = "SELECT `tsStep`, `tsMeta` FROM `#__cart_transaction_steps` ts WHERE ts.`tId` = {$this->cart->tId} AND ts.`tsStatus` < 1 ORDER BY tsId ASC";
+        $sql = "SELECT `tsStep`, `tsMeta` FROM `#__cart_transaction_steps` ts WHERE ts.`tId` = {$this->cart->tId} AND "
+            . "ts.`tsStatus` < 1 ORDER BY tsId ASC";
         $this->db->setQuery($sql);
         $nextStep = $this->db->loadObject();
 
@@ -383,7 +386,8 @@ class CurrentCart extends Cart
     private function getCheckoutSteps()
     {
         // Get DB steps for this transaction
-        $sql = "SELECT `tsStep` FROM `#__cart_transaction_steps` ts WHERE ts.`tId` = {$this->cart->tId} ORDER BY tsId DESC";
+        $sql = "SELECT `tsStep` FROM `#__cart_transaction_steps` ts WHERE ts.`tId` = {$this->cart->tId} ORDER BY tsId "
+            . "DESC";
         $this->db->setQuery($sql);
         $steps = $this->db->loadColumn();
 
@@ -683,7 +687,8 @@ class CurrentCart extends Cart
         // If session expired tId will not be saved
         if (empty($this->cart->tId)) {
             // Try to find if there is a pending transaction for this cart in DB and use it
-            $sql = "SELECT `tId` FROM `#__cart_transactions` WHERE `crtId` = {$this->cart->crtId} AND `tStatus` = 'pending'";
+            $sql = "SELECT `tId` FROM `#__cart_transactions` WHERE `crtId` = {$this->cart->crtId} AND `tStatus` = "
+                . "'pending'";
             $this->db->setQuery($sql);
             $tId = $this->db->loadResult();
         } else {
@@ -977,7 +982,8 @@ class CurrentCart extends Cart
      */
     public function getCoupons()
     {
-        $sql = "SELECT cnId FROM `#__cart_coupons` WHERE `crtId` = {$this->crtId} AND crtCnStatus = 'active' ORDER BY `crtCnAdded`";
+        $sql = "SELECT cnId FROM `#__cart_coupons` WHERE `crtId` = {$this->crtId} AND crtCnStatus = 'active' ORDER BY "
+            . "`crtCnAdded`";
         $this->db->setQuery($sql);
         $cnIds = $this->db->loadColumn();
 
@@ -1845,7 +1851,8 @@ class CurrentCart extends Cart
         }
 
         // Create transaction record
-        $sql = "INSERT INTO `#__cart_transactions` SET `crtId` = {$this->crtId}, `tCreated` = NOW(), `tLastUpdated` = NOW(), `tStatus` = 'pending'";
+        $sql = "INSERT INTO `#__cart_transactions` SET `crtId` = {$this->crtId}, `tCreated` = NOW(), `tLastUpdated` = "
+            . "NOW(), `tStatus` = 'pending'";
         $this->db->setQuery($sql);
         $this->db->query();
         $tId = $this->db->insertid();

@@ -61,7 +61,8 @@ class ServiceAccountsMigrationTest extends Basic
 
         // hubzerosolrworker is absent on this hub
         $pdo->exec(
-            "INSERT INTO jos_users (id, username, params) VALUES (1001, 'apps', ''), (1002, 'gridstat', ''), (1003, 'someone', '')",
+            "INSERT INTO jos_users (id, username, params) VALUES (1001, 'apps', ''), (1002, 'gridstat', ''), (1003, "
+                . "'someone', '')",
         );
 
         $before = self::tree($pdo);

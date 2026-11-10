@@ -765,7 +765,8 @@ class Authors extends Base
                 'title'        => 'Publication Authors',
                 'draftHeading' => 'Who are the authors?',
                 'draftTagline' => 'Build the author list',
-                'about'        => '<p>Publication authors get selected from your current project team. Anyone you add as an author will also be added to your team as a project collaborator.</p>',
+                'about'        => '<p>Publication authors get selected from your current project team. Anyone you add '
+                    . 'as an author will also be added to your team as a project collaborator.</p>',
                 'adminTips'    => '',
                 'elements'     => [],
                 'params'       => [

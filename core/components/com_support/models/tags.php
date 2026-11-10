@@ -65,7 +65,8 @@ class Tags extends Cloud
     {
         $db = App::get('db');
 
-        $sql = "SELECT t.tag, t.raw_tag, t.description, t.admin, rt.id, rt.objectid FROM `#__tags_object` AS rt JOIN `#__tags` AS t ON t.id=rt.tagid WHERE ";
+        $sql = "SELECT t.tag, t.raw_tag, t.description, t.admin, rt.id, rt.objectid FROM `#__tags_object` AS rt JOIN "
+            . "`#__tags` AS t ON t.id=rt.tagid WHERE ";
 
         if (is_array($id)) {
             $id = array_map('intval', $id);

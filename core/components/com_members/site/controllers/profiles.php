@@ -1077,7 +1077,8 @@ class Profiles extends SiteController
         } elseif (!empty($msg)) {
             $this->setError(
                 Lang::txt(
-                    'Password does not meet site password requirements. Please choose a password meeting all the requirements listed below.',
+                    'Password does not meet site password requirements. Please choose a password meeting all the '
+                        . 'requirements listed below.',
                 ),
             );
             $this->view->set('validated', $msg);

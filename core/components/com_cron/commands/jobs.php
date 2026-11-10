@@ -184,7 +184,8 @@ class Jobs extends Base implements CommandInterface
 
         if ($base === '') {
             $this->output->error(
-                'live_site is not set in the CMS configuration; set it (e.g. https://your-hub) so the cron tick knows which URL to request.',
+                'live_site is not set in the CMS configuration; set it (e.g. https://your-hub) so the cron tick knows '
+                    . 'which URL to request.',
             );
             return;
         }

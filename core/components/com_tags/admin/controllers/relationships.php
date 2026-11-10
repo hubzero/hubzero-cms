@@ -302,19 +302,23 @@ class Relationships extends AdminController
             $queries = [
                 'labels'   => [
                     'INSERT INTO `#__tags_object` (tbl, label, tagid, objectid) VALUES (\'tags\', \'label\', %d, %d)',
-                    'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'label\' AND tagid = %d AND objectid = %d',
+                    'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'label\' AND tagid = %d AND '
+                        . 'objectid = %d',
                 ],
                 'labeled'  => [
                     'INSERT INTO `#__tags_object` (tbl, label, objectid, tagid) VALUES (\'tags\', \'label\', %d, %d)',
-                    'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'label\' AND objectid = %d AND tagid = %d',
+                    'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'label\' AND objectid = %d AND '
+                        . 'tagid = %d',
                 ],
                 'parents'  => [
                     'INSERT INTO `#__tags_object` (tbl, label, objectid, tagid) VALUES (\'tags\', \'parent\', %d, %d)',
-                    'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'parent\' AND objectid = %d AND tagid = %d',
+                    'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'parent\' AND objectid = %d AND '
+                        . 'tagid = %d',
                 ],
                 'children' => [
                     'INSERT INTO `#__tags_object` (tbl, label, tagid, objectid) VALUES (\'tags\', \'parent\', %d, %d)',
-                    'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'parent\' AND tagid = %d AND objectid = %d',
+                    'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'parent\' AND tagid = %d AND '
+                        . 'objectid = %d',
                 ],
             ];
             foreach ($queries as $type => $sql) {
@@ -488,10 +492,12 @@ class Relationships extends AdminController
     {
         $this->database->setQuery(
             is_int($tag_str)
-                ? 'SELECT DISTINCT t.id, tag, raw_tag, description, COUNT(to1.id) AS count FROM `#__tags` t LEFT JOIN `#__tags_object` to1 ON to1.tagid = t.id WHERE t.id = '
+                ? 'SELECT DISTINCT t.id, tag, raw_tag, description, COUNT(to1.id) AS count FROM `#__tags` t LEFT JOIN '
+                    . '`#__tags_object` to1 ON to1.tagid = t.id WHERE t.id = '
                     . $tag_str
                     . ' GROUP BY t.id, tag, raw_tag, description'
-                : 'SELECT DISTINCT t.id, tag, raw_tag, description, COUNT(to1.id) AS count FROM `#__tags` t LEFT JOIN `#__tags_object` to1 ON to1.tagid = t.id WHERE tag = '
+                : 'SELECT DISTINCT t.id, tag, raw_tag, description, COUNT(to1.id) AS count FROM `#__tags` t LEFT JOIN '
+                    . '`#__tags_object` to1 ON to1.tagid = t.id WHERE tag = '
                     . $this->database->quote($tag_str)
                     . ' OR raw_tag = '
                     . $this->database->quote($tag_str)

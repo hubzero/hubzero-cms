@@ -45,7 +45,8 @@ class Status extends AdminController
 
         // Cron cadence -> per-run pace (mirrors Sender::run()).
         $db->setQuery(
-            "SELECT state, last_run, recurrence FROM `#__cron_jobs` WHERE plugin = 'massmail' AND event = 'processMassmailQueue' LIMIT 1",
+            "SELECT state, last_run, recurrence FROM `#__cron_jobs` WHERE plugin = 'massmail' AND event = "
+                . "'processMassmailQueue' LIMIT 1",
         );
         $cron         = $db->loadObject();
         $ticksPerHour = $cron ? Rate::firingsPerHour($cron->recurrence) : 0;
@@ -97,11 +98,13 @@ class Status extends AdminController
         // --- Queue depth over time (last 24h of cron snapshots) --------------
         // Peak queue depth over each postfix chart's window (for the pill).
         $db->setQuery(
-            "SELECT COALESCE(MAX(depth), 0) FROM `#__massmail_queue_samples` WHERE recorded >= (UTC_TIMESTAMP() - INTERVAL 1 HOUR)",
+            "SELECT COALESCE(MAX(depth), 0) FROM `#__massmail_queue_samples` WHERE recorded >= (UTC_TIMESTAMP() - "
+                . "INTERVAL 1 HOUR)",
         );
         $qPeakLastHour = (int) $db->loadResult();
         $db->setQuery(
-            "SELECT COALESCE(MAX(depth), 0) FROM `#__massmail_queue_samples` WHERE recorded >= (UTC_TIMESTAMP() - INTERVAL 48 HOUR)",
+            "SELECT COALESCE(MAX(depth), 0) FROM `#__massmail_queue_samples` WHERE recorded >= (UTC_TIMESTAMP() - "
+                . "INTERVAL 48 HOUR)",
         );
         $qPeak48h = (int) $db->loadResult();
 
@@ -127,7 +130,8 @@ class Status extends AdminController
         // --- Postfix outbound volume (all senders, from the log collector) ---
         // Buckets are keyed in UTC (see PostfixCollector); look them up the same way.
         $db->setQuery(
-            "SELECT `day`, sent FROM `#__massmail_postfix_daily` WHERE `day` >= (UTC_DATE() - INTERVAL 29 DAY) ORDER BY `day`",
+            "SELECT `day`, sent FROM `#__massmail_postfix_daily` WHERE `day` >= (UTC_DATE() - INTERVAL 29 DAY) ORDER "
+                . "BY `day`",
         );
         $dmap = [];
         foreach ($db->loadObjectList() as $r) {
@@ -140,7 +144,8 @@ class Status extends AdminController
         }
 
         $db->setQuery(
-            "SELECT `hour`, sent FROM `#__massmail_postfix_hourly` WHERE `hour` >= (UTC_TIMESTAMP() - INTERVAL 48 HOUR) ORDER BY `hour`",
+            "SELECT `hour`, sent FROM `#__massmail_postfix_hourly` WHERE `hour` >= (UTC_TIMESTAMP() - INTERVAL 48 "
+                . "HOUR) ORDER BY `hour`",
         );
         $hmap = [];
         foreach ($db->loadObjectList() as $r) {

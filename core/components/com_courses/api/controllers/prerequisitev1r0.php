@@ -127,7 +127,8 @@ class Prerequisitev1r0 extends Base
     {
         $db = App::get('db');
         $db->setQuery(
-            "SELECT o.course_id FROM `#__courses_offering_sections` AS s JOIN `#__courses_offerings` AS o ON o.id = s.offering_id WHERE s.id = "
+            "SELECT o.course_id FROM `#__courses_offering_sections` AS s JOIN `#__courses_offerings` AS o ON o.id = "
+                . "s.offering_id WHERE s.id = "
                 . (int) $sectionId,
         );
         Request::setVar('course_id', (int) $db->loadResult());

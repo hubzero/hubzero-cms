@@ -1845,7 +1845,8 @@ class Discussions extends Plugin
         $threads = $category
             ->threads()
             ->select(
-                "*, (CASE WHEN last_activity IS NOT NULL AND last_activity != '0000-00-00 00:00:00' THEN last_activity ELSE created END)",
+                "*, (CASE WHEN last_activity IS NOT NULL AND last_activity != '0000-00-00 00:00:00' THEN last_activity "
+                    . "ELSE created END)",
                 'activity',
             )
             ->whereEquals('state', $filters['state'])

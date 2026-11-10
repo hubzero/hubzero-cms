@@ -598,14 +598,17 @@ class Hubzero extends Plugin
         // NOTE: moved the insert (pre deletes) and updated (post deletes) profile key SQL statement to controller com_members/admin/controllers/members.php
         $delete_UserProfile_Query = "DELETE from `#__user_profiles` where user_id ="
             . $db->quote($userId)
-            . " AND profile_key !='edulevel' AND profile_key !='gender' AND profile_key !='hispanic' AND profile_key !='organization' AND profile_key !='orgtype' AND profile_key !='race' AND profile_key !='reason'";
+            . " AND profile_key !='edulevel' AND profile_key !='gender' AND profile_key !='hispanic' AND profile_key "
+            . "!='organization' AND profile_key !='orgtype' AND profile_key !='race' AND profile_key !='reason'";
         $this->runUpdateOrDeleteQuery($delete_UserProfile_Query);
 
-        $update_SupportTicketsByEmail_Query = "UPDATE `#__support_tickets` set login='',ip='', email='', hostname='', name='' where email="
+        $update_SupportTicketsByEmail_Query = "UPDATE `#__support_tickets` set login='',ip='', email='', hostname='', "
+            . "name='' where email="
             . $db->quote($userEmail);
         $this->runUpdateOrDeleteQuery($update_SupportTicketsByEmail_Query);
 
-        $update_SupportTicketsByLogin_Query = "UPDATE `#__support_tickets` set login='',ip='', email='', hostname='', name='' where login="
+        $update_SupportTicketsByLogin_Query = "UPDATE `#__support_tickets` set login='',ip='', email='', hostname='', "
+            . "name='' where login="
             . $db->quote($userName);
         ;
         $this->runUpdateOrDeleteQuery($update_SupportTicketsByLogin_Query);
@@ -623,19 +626,23 @@ class Hubzero extends Plugin
             . $db->quote($userId);
         $this->runUpdateOrDeleteQuery($delete_ProfileCompletionAward_Query);
 
-        $update_NewsletterMailingRecipientActions_Query = "UPDATE `#__newsletter_mailing_recipient_actions` set email='',ip='' where email="
+        $update_NewsletterMailingRecipientActions_Query = "UPDATE `#__newsletter_mailing_recipient_actions` set "
+            . "email='',ip='' where email="
             . $db->quote($userEmail);
         $this->runUpdateOrDeleteQuery($update_NewsletterMailingRecipientActions_Query);
 
-        $update_NewsletterMailingRecipients_Query = "UPDATE `#__newsletter_mailing_recipients` set email='' where email="
+        $update_NewsletterMailingRecipients_Query = "UPDATE `#__newsletter_mailing_recipients` set email='' where "
+            . "email="
             . $db->quote($userEmail);
         $this->runUpdateOrDeleteQuery($update_NewsletterMailingRecipients_Query);
 
-        $update_NewsletterMailingListEmails_Query = "UPDATE `#__newsletter_mailinglist_emails` set email='' where email="
+        $update_NewsletterMailingListEmails_Query = "UPDATE `#__newsletter_mailinglist_emails` set email='' where "
+            . "email="
             . $db->quote($userEmail);
         $this->runUpdateOrDeleteQuery($update_NewsletterMailingListEmails_Query);
 
-        $update_NewsletterMailingListUnsubscribes_Query = "UPDATE `#__newsletter_mailinglist_unsubscribes` set email='' where email="
+        $update_NewsletterMailingListUnsubscribes_Query = "UPDATE `#__newsletter_mailinglist_unsubscribes` set "
+            . "email='' where email="
             . $db->quote($userEmail);
         $this->runUpdateOrDeleteQuery($update_NewsletterMailingListUnsubscribes_Query);
 
@@ -662,7 +669,8 @@ class Hubzero extends Plugin
         $delete_Feedback_Query = "DELETE from `#__feedback` where user_id=" . $db->quote($userId);
         $this->runUpdateOrDeleteQuery($delete_Feedback_Query);
 
-        $update_EventRegistration_Query = "UPDATE `#__event_registration` set name='', email='', phone='', address='', city='', zip='', username="
+        $update_EventRegistration_Query = "UPDATE `#__event_registration` set name='', email='', phone='', address='', "
+            . "city='', zip='', username="
             . $db->quote($anonUserName)
             . " where username="
             . $db->quote($userName);
@@ -763,7 +771,8 @@ class Hubzero extends Plugin
             . $db->quote($anonPassword)
             . ", url='', phone='', regHost='', regIP='', givenName="
             . $db->quote($anonUserName)
-            . ", middleName='', surname='anonSurName', picture='', public=0, params='', note='', orcid='', homeDirectory='/home/anonymous', email="
+            . ", middleName='', surname='anonSurName', picture='', public=0, params='', note='', orcid='', "
+            . "homeDirectory='/home/anonymous', email="
             . $db->quote($anonUserName . "@example.com")
             . " where uidNumber ="
             . $db->quote($userId);

@@ -433,7 +433,8 @@ class Wishlists extends SiteController
                 case 'bonus':
                     $entries
                         ->select(
-                            "(SELECT SUM(amount) FROM `#__users_transactions` WHERE category='wish' AND type='hold' AND referenceid="
+                            "(SELECT SUM(amount) FROM `#__users_transactions` WHERE category='wish' AND type='hold' "
+                                . "AND referenceid="
                                 . $entries->getTableName()
                                 . ".id)",
                             'bonus',

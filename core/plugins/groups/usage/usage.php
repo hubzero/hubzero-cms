@@ -558,7 +558,8 @@ class Usage extends Plugin
 
         $database = App::get('db');
 
-        $query = "SELECT count(*) FROM `#__blog_entries` as be, `#__blog_comments` as bc WHERE be.scope='group' AND be.scope_id="
+        $query = "SELECT count(*) FROM `#__blog_entries` as be, `#__blog_comments` as bc WHERE be.scope='group' AND "
+            . "be.scope_id="
             . $database->quote($gid)
             . " AND be.id=bc.entry_id";
         $database->setQuery($query);

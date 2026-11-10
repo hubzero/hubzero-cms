@@ -579,7 +579,9 @@ class Manage extends AdminController
 
             //write db config in super group
             $dbConfigFile     = $uploadPath . DS . 'config' . DS . 'db.php';
-            $dbConfigContents = "<?php\n\treturn array(\n\t\t'host'     => 'localhost',\n\t\t'port'     => '',\n\t\t'user' => '{$username}',\n\t\t'password' => '{$password}',\n\t\t'database' => '{$database}',\n\t\t'prefix'   => ''\n\t);";
+            $dbConfigContents = "<?php\n\treturn array(\n\t\t'host'     => 'localhost',\n\t\t'port'     => "
+                . "'',\n\t\t'user' => '{$username}',\n\t\t'password' => '{$password}',\n\t\t'database' => "
+                . "'{$database}',\n\t\t'prefix'   => ''\n\t);";
 
             // write db config file
             if (!file_exists($dbConfigFile)) {

@@ -85,7 +85,8 @@ class Incremental extends AdminController
             $repeatType  = (isset($_POST['repeat-type']) && (int) $_POST['repeat-type'] === 1) ? 1 : 0;
 
             $this->database->setQuery(
-                'SELECT popover_text, award_per, test_group, repeat_type FROM `#__incremental_registration_options` ORDER BY added DESC LIMIT 1',
+                'SELECT popover_text, award_per, test_group, repeat_type FROM `#__incremental_registration_options` '
+                    . 'ORDER BY added DESC LIMIT 1',
             );
             list($exPopover, $exAward, $exGroup, $exRepeat) = $row = $this->database->loadRow();
 
@@ -96,7 +97,8 @@ class Incremental extends AdminController
                 || $repeatType != (int) $exRepeat
             ) {
                 $this->database->setQuery(
-                    'INSERT INTO `#__incremental_registration_options` (popover_text, award_per, test_group, repeat_type) VALUES ('
+                    'INSERT INTO `#__incremental_registration_options` (popover_text, award_per, test_group, '
+                        . 'repeat_type) VALUES ('
                         . $this->database->quote($popoverText)
                         . ', '
                         . $awardPer

@@ -1267,7 +1267,8 @@ class Register extends SiteController
                     ->set('identifier', $identifier)
                     ->setLayout('resend_request')
                     ->setError(
-                        'Sorry, we could not process that request. Please complete the check below and try again in a few minutes.',
+                        'Sorry, we could not process that request. Please complete the check below and try again in a '
+                            . 'few minutes.',
                     )
                     ->display();
                 return;

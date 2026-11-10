@@ -132,7 +132,8 @@ class Newsletters extends SiteController
                 . $responsive
                 . '<title>'
                 . $title
-                . '</title></head><body><main><h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">'
+                . '</title></head><body><main><h1 '
+                . 'style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">'
                 . $title
                 . '</h1>'
                 . $newsletter

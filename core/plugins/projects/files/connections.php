@@ -496,18 +496,22 @@ class Connections
         if ($this->isRateLimited($error)) {
             $message = $canManage
                 ? Lang::txt(
-                    'GitHub\'s anonymous request limit has been reached. Connect this repository to GitHub to authenticate it, which raises the limit.',
+                    'GitHub\'s anonymous request limit has been reached. Connect this repository to GitHub to '
+                        . 'authenticate it, which raises the limit.',
                 )
                 : Lang::txt(
-                    'This connection is temporarily unavailable because GitHub\'s anonymous request limit was reached. A project manager needs to authenticate it with GitHub.',
+                    'This connection is temporarily unavailable because GitHub\'s anonymous request limit was reached. '
+                        . 'A project manager needs to authenticate it with GitHub.',
                 );
         } elseif ($canManage) {
             $message = Lang::txt(
-                'This connection could not be reached. If it points to a private repository, connect it to GitHub to grant read access.',
+                'This connection could not be reached. If it points to a private repository, connect it to GitHub to '
+                    . 'grant read access.',
             );
         } else {
             $message = Lang::txt(
-                'This connection is not currently available. A project manager needs to authorize it before its files can be shown.',
+                'This connection is not currently available. A project manager needs to authorize it before its files '
+                    . 'can be shown.',
             );
         }
 

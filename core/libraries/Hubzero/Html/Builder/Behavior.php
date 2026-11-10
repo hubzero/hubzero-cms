@@ -640,7 +640,8 @@ class Behavior
             }
             $opt['beforeLoad'] = (isset($params['onOpen']))
                 ? $params['onOpen']
-                : '\\function(){ var atts = $(this.element).attr("data-rel"); if (atts) { atts = jQuery.parseJSON(atts); console.log(atts); }}';
+                : '\\function(){ var atts = $(this.element).attr("data-rel"); if (atts) { atts = '
+                    . 'jQuery.parseJSON(atts); console.log(atts); }}';
             $opt['onCancel']   = (isset($params['onClose'])) ? $params['onClose'] : null;
             $opt['onUpdate']   = (isset($params['onUpdate'])) ? $params['onUpdate'] : null;
             $opt['onMove']     = (isset($params['onMove'])) ? $params['onMove'] : null;

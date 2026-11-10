@@ -28,8 +28,12 @@ class FileIndex extends Macro
     public function description()
     {
         $txt = [];
-        $txt['wiki'] = 'Inserts an alphabetic list of all files and images attached to this page into the output. Accepts a prefix string as parameter: if provided, only files with names that start with the prefix are included in the resulting list. If this parameter is omitted, all files are listed.';
-        $txt['html'] = '<p>Inserts an alphabetic list of all files and images attached to this page into the output. Accepts a prefix string as parameter: if provided, only files with names that start with the prefix are included in the resulting list. If this parameter is omitted, all files are listed.</p>';
+        $txt['wiki'] = 'Inserts an alphabetic list of all files and images attached to this page into the output. '
+            . 'Accepts a prefix string as parameter: if provided, only files with names that start with the prefix are '
+            . 'included in the resulting list. If this parameter is omitted, all files are listed.';
+        $txt['html'] = '<p>Inserts an alphabetic list of all files and images attached to this page into the output. '
+            . 'Accepts a prefix string as parameter: if provided, only files with names that start with the prefix are '
+            . 'included in the resulting list. If this parameter is omitted, all files are listed.</p>';
         return $txt['html'];
     }
 

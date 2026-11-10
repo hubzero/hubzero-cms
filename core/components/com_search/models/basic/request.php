@@ -127,7 +127,8 @@ class Request
         }
         foreach ($this->term_ar['forbidden'] as $forb) {
             $forb = $dbh->escape($forb);
-            $addtl_where[] = "(t.raw_tag NOT LIKE '%$forb%' AND t.tag NOT LIKE '%$forb%' AND t.description NOT LIKE '%$forb%')";
+            $addtl_where[] = "(t.raw_tag NOT LIKE '%$forb%' AND t.tag NOT LIKE '%$forb%' AND t.description NOT LIKE "
+                . "'%$forb%')";
         }
 
         $tags = new Sql(

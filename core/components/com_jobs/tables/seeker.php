@@ -189,7 +189,8 @@ class Seeker extends Table
         $query .= "\n , (SELECT (type + category + keywords)) AS matching ";
 
         // Join with profile & current resume
-        $query .= "FROM #__xprofiles AS x JOIN `#__jobs_seekers` AS s ON s.uid=x.uidNumber JOIN `#__jobs_resumes` AS r ON r.uid=s.uid  ";
+        $query .= "FROM #__xprofiles AS x JOIN `#__jobs_seekers` AS s ON s.uid=x.uidNumber JOIN `#__jobs_resumes` AS r "
+            . "ON r.uid=s.uid  ";
 
         // Get shortlisted only
         $query .= $filters['filterby'] == 'shortlisted'
@@ -278,7 +279,8 @@ class Seeker extends Table
             . " AND s.uid=r.uid AND s.uid = "
             . $this->db->quote(User::get('id'))
             . ") AS mine ";
-        $query .= "FROM #__xprofiles AS x JOIN `#__jobs_seekers` AS s ON s.uid=x.uidNumber JOIN `#__jobs_resumes` AS r ON r.uid=s.uid  ";
+        $query .= "FROM #__xprofiles AS x JOIN `#__jobs_seekers` AS s ON s.uid=x.uidNumber JOIN `#__jobs_resumes` AS r "
+            . "ON r.uid=s.uid  ";
 
         $query .= "WHERE s.active=1 AND r.main=1 AND s.uid=" . $this->db->quote($uid) . " LIMIT 1";
 

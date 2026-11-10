@@ -105,7 +105,8 @@ class WikiParser
      * @var array
      */
     private static $patterns = [
-        'url'  => "(?:https?:|mailto:|ftp:|gopher:|news:|file:)(?:[^ |\\/\"\']*\\/)*[^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]",
+        'url'  => "(?:https?:|mailto:|ftp:|gopher:|news:|file:)(?:[^ |\\/\"\']*\\/)*[^ "
+            . "|\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]",
 
         'hlgn' => "(?:\<(?!>)|(?<!<)\>|\<\>|\=|[()]+(?!))",
         'vlgn' => "[\-^~]",
@@ -419,7 +420,8 @@ class WikiParser
         $this->data['output'] = $text;
 
         if (trim($this->data['input']) && !trim($this->data['output'])) {
-            $this->data['output']  = '<p class="warning">Parsing error resulted in empty content. Displaying raw markup below.</p>';
+            $this->data['output']  = '<p class="warning">Parsing error resulted in empty content. Displaying raw '
+                . 'markup below.</p>';
             $this->data['output'] .= '<pre><code>'
                 . htmlentities($this->data['input'], ENT_COMPAT, 'UTF-8')
                 . '</code></pre>';
@@ -3175,7 +3177,8 @@ class WikiParser
 
         return "\n" . '<li class="toclevel toclevel-' . $level . '">'
                         . '<div class="toc-item">'
-                            . '<button class="toggle-button" aria-expanded="false" aria-label="Toggle subsection"></button>'
+                            . '<button class="toggle-button" aria-expanded="false" aria-label="Toggle '
+                            . 'subsection"></button>'
                             . '<a href="' . Route::url($url) . '#' . $anchor . '">'
                                 . '<span class="tocnumber">' . $tocnumber . ' </span>'
                                 . '<span class="toctext">' . $tocLine . '</span>'

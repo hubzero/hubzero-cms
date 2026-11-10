@@ -50,7 +50,8 @@ class SanitizeTest extends Basic
     public function testTrackIsKept()
     {
         $html = SanitizeWhitelist::purify(
-            '<video controls src="/a.mp4"><track kind="captions" src="/a.vtt" srclang="en" label="English" default></video>',
+            '<video controls src="/a.mp4"><track kind="captions" src="/a.vtt" srclang="en" label="English" '
+                . 'default></video>',
         );
 
         $this->assertStringContainsString(

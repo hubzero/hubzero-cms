@@ -307,7 +307,8 @@ class Captcha extends Plugin
 
                 $html .= "\t" . Lang::txt($question['question'], $problem['operand1'], $problem['operand2']);
                 $html .= "\t"
-                    . '<input type="text" name="captcha[answer]" id="captcha-answer" value="" size="3" class="option" />'
+                    . '<input type="text" name="captcha[answer]" id="captcha-answer" value="" size="3" class="option" '
+                    . '/>'
                     . "\n";
                 break;
 

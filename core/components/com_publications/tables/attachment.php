@@ -665,7 +665,8 @@ class Attachment extends Table
 
         $assoc = [];
 
-        $query  = "SELECT a.path, a.publication_id , v.title, v.version_number, v.version_label FROM $this->tableName as a ";
+        $query  = "SELECT a.path, a.publication_id , v.title, v.version_number, v.version_label FROM $this->tableName "
+            . "as a ";
         $query .= "JOIN #__publication_versions AS v ON v.id=a.publication_version_id ";
         $query .= "JOIN #__publications AS P ON P.id=v.publication_id ";
         $query .= " WHERE P.project_id=" . $this->db->quote($projectid) . " AND a.type=" . $this->db->quote($type);

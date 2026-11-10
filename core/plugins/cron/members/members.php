@@ -265,7 +265,8 @@ class Members extends Plugin
 
         if (!$months) {
             Log::error(
-                'PLG_CRON_MEMBERS expireInactiveAccounts: members_expireinactive_months must be a whole number of months, at least 1; got "'
+                'PLG_CRON_MEMBERS expireInactiveAccounts: members_expireinactive_months must be a whole number of '
+                    . 'months, at least 1; got "'
                     . $value
                     . '". Nothing changed.',
             );

@@ -183,7 +183,8 @@ class Log extends Base implements CommandInterface
                             // h - help info
                         case 104:
                             $this->output->backspace();
-                            $help = "q: quit, h: help, i: input mode, p: pause/play, b: beep on/off, f: fields, r: rerender last 100 lines";
+                            $help = "q: quit, h: help, i: input mode, p: pause/play, b: beep on/off, f: fields, r: "
+                                . "rerender last 100 lines";
                             $this->output->addLine($help);
                             break;
 

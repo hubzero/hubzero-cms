@@ -89,7 +89,8 @@ class User extends Base implements CommandInterface
 
             if ((!$sourceUser || !$destinationUser) && !$this->output->isInteractive()) {
                 $this->output->error(
-                    'Please provide a source and destination user in the format: muse user merge [sourceUserId] into [destUserId]',
+                    'Please provide a source and destination user in the format: muse user merge [sourceUserId] into '
+                        . '[destUserId]',
                 );
             }
         } else {
@@ -102,7 +103,8 @@ class User extends Base implements CommandInterface
                 );
             } else {
                 $this->output->error(
-                    'Please provide a source and destination user in the format: muse user merge [sourceUserId] into [destUserId]',
+                    'Please provide a source and destination user in the format: muse user merge [sourceUserId] into '
+                        . '[destUserId]',
                 );
             }
         }
@@ -213,7 +215,8 @@ class User extends Base implements CommandInterface
                     $dUserName = $duser->get('username');
 
                     // We have a match, now check if there are rows to merge
-                    $query  = "SELECT * FROM `{$table}` WHERE `{$column}` = '{$sourceUser}' OR `{$column}` LIKE '%{$sUserName}%'";
+                    $query  = "SELECT * FROM `{$table}` WHERE `{$column}` = '{$sourceUser}' OR `{$column}` LIKE "
+                        . "'%{$sUserName}%'";
                     $query .= ((isset(
                         $constraints[$table . '.' . $column],
                     )) ? ' ' . $constraints[$table . '.' . $column] : '');
@@ -235,10 +238,12 @@ class User extends Base implements CommandInterface
                                 try {
                                     $numericUpdate = true;
                                     if (is_numeric($row->$column)) {
-                                        $query = "UPDATE `{$table}` SET `{$column}` = '{$destinationUser}' WHERE `{$tablePK}` = '{$row->$tablePK}'";
+                                        $query = "UPDATE `{$table}` SET `{$column}` = '{$destinationUser}' WHERE "
+                                            . "`{$tablePK}` = '{$row->$tablePK}'";
                                     } else {
                                         $numericUpdate = false;
-                                        $query = "UPDATE `{$table}` SET `{$column}` = REPLACE({$column}, '{$sUserName}', '{$dUserName}') WHERE `{$tablePK}` = '{$row->$tablePK}'";
+                                        $query = "UPDATE `{$table}` SET `{$column}` = REPLACE({$column}, "
+                                            . "'{$sUserName}', '{$dUserName}') WHERE `{$tablePK}` = '{$row->$tablePK}'";
                                     }
 
                                     $dbo->setQuery($query);
@@ -311,7 +316,8 @@ class User extends Base implements CommandInterface
 
             if ((!$sourceUser || !$destinationUser) && !$this->output->isInteractive()) {
                 $this->output->error(
-                    'Please provide a source and destination user in the format: muse user unmerge [destUserId] from [sourceUserId]',
+                    'Please provide a source and destination user in the format: muse user unmerge [destUserId] from '
+                        . '[sourceUserId]',
                 );
             }
         } else {
@@ -324,7 +330,8 @@ class User extends Base implements CommandInterface
                 );
             } else {
                 $this->output->error(
-                    'Please provide a source and destination user in the format: muse user unmerge [destUserId] from [sourceUserId]',
+                    'Please provide a source and destination user in the format: muse user unmerge [destUserId] from '
+                        . '[sourceUserId]',
                 );
             }
         }
@@ -360,9 +367,12 @@ class User extends Base implements CommandInterface
                 $counter = 0;
                 foreach ($results as $result) {
                     if (is_numeric($result->source)) {
-                        $query = "UPDATE `{$result->table}` SET `{$result->column}` = '{$result->source}' WHERE `{$result->table_pk}` = '{$result->table_id}'";
+                        $query = "UPDATE `{$result->table}` SET `{$result->column}` = '{$result->source}' WHERE "
+                            . "`{$result->table_pk}` = '{$result->table_id}'";
                     } else {
-                        $query = "UPDATE `{$result->table}` SET `{$result->column}` = REPLACE({$result->column}, '{$result->destination}', '{$result->source}') WHERE `{$result->table_pk}` = '{$result->table_id}'";
+                        $query = "UPDATE `{$result->table}` SET `{$result->column}` = REPLACE({$result->column}, "
+                            . "'{$result->destination}', '{$result->source}') WHERE `{$result->table_pk}` = "
+                            . "'{$result->table_id}'";
                     }
                     $dbo->setQuery($query);
                     if ($dbo->query()) {
@@ -430,7 +440,8 @@ class User extends Base implements CommandInterface
 
         if (!$account || !in_array($account['name'], self::WEB_ACCOUNTS)) {
             $this->output->error(
-                'This command must be run as the web server\'s account, e.g. sudo -u apache php core/bin/muse user create ...',
+                'This command must be run as the web server\'s account, e.g. sudo -u apache php core/bin/muse user '
+                    . 'create ...',
             );
         }
 
@@ -451,7 +462,8 @@ class User extends Base implements CommandInterface
             $this->output->error(
                 '"'
                     . $username
-                    . '" is not a valid username (lowercase letters, digits and underscores, not all digits, not reserved)',
+                    . '" is not a valid username (lowercase letters, digits and underscores, not all digits, not '
+                    . 'reserved)',
             );
         }
         if (\Hubzero\User\User::oneByUsername($username)->get('id')) {

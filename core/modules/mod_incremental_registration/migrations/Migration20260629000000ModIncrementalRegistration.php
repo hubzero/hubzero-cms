@@ -26,7 +26,8 @@ class Migration20260629000000ModIncrementalRegistration extends Base
             $this->db->tableExists('#__incremental_registration_options')
             && !$this->db->tableHasField('#__incremental_registration_options', 'repeat_type')
         ) {
-            $query = "ALTER TABLE `#__incremental_registration_options` ADD COLUMN `repeat_type` TINYINT(1) NOT NULL DEFAULT 0";
+            $query = "ALTER TABLE `#__incremental_registration_options` ADD COLUMN `repeat_type` TINYINT(1) NOT NULL "
+                . "DEFAULT 0";
             $this->db->setQuery($query);
             $this->db->query();
         }

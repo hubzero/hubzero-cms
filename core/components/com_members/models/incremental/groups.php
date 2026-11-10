@@ -97,7 +97,11 @@ class Groups
     {
         $uid = (int) $uid;
         self::$dbh->setQuery(
-            'SELECT irl.* FROM `#__incremental_registration_groups` irg LEFT JOIN `#__incremental_registration_group_label_rel` irglr ON irglr.group_id = irg.id INNER JOIN `#__incremental_registration_labels` irl ON irl.id = irglr.label_id WHERE irg.hours <= (SELECT (unix_timestamp(current_timestamp) - unix_timestamp(registerDate))/60/60 AS hours FROM `#__users` WHERE id = '
+            'SELECT irl.* FROM `#__incremental_registration_groups` irg LEFT JOIN '
+                . '`#__incremental_registration_group_label_rel` irglr ON irglr.group_id = irg.id INNER JOIN '
+                . '`#__incremental_registration_labels` irl ON irl.id = irglr.label_id WHERE irg.hours <= (SELECT '
+                . '(unix_timestamp(current_timestamp) - unix_timestamp(registerDate))/60/60 AS hours FROM `#__users` '
+                . 'WHERE id = '
                 . $uid
                 . ')',
         );
@@ -117,7 +121,8 @@ class Groups
             // the list (no delay defined for idx = times - 1), stop showing the
             // popover entirely instead of repeating with the last delay.
             self::$dbh->setQuery(
-                'SELECT coalesce((SELECT repeat_type FROM `#__incremental_registration_options` ORDER BY added DESC LIMIT 1), 0)',
+                'SELECT coalesce((SELECT repeat_type FROM `#__incremental_registration_options` ORDER BY added DESC '
+                    . 'LIMIT 1), 0)',
             );
             if ((int) self::$dbh->loadResult() === 1) {
                 self::$dbh->setQuery(
@@ -129,9 +134,11 @@ class Groups
             }
 
             self::$dbh->setQuery(
-                'SELECT (unix_timestamp() - unix_timestamp(last_bothered))/60/60 > (SELECT coalesce((SELECT hours FROM `#__incremental_registration_popover_recurrence` WHERE idx = '
+                'SELECT (unix_timestamp() - unix_timestamp(last_bothered))/60/60 > (SELECT coalesce((SELECT hours FROM '
+                    . '`#__incremental_registration_popover_recurrence` WHERE idx = '
                     . ($times - 1)
-                    . '), (SELECT hours FROM `#__incremental_registration_popover_recurrence` ORDER BY idx DESC LIMIT 1))) FROM `#__profile_completion_awards` WHERE user_id = '
+                    . '), (SELECT hours FROM `#__incremental_registration_popover_recurrence` ORDER BY idx DESC LIMIT '
+                    . '1))) FROM `#__profile_completion_awards` WHERE user_id = '
                     . $uid,
             );
             // opt-out period is in effect

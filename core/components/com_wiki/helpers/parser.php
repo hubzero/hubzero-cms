@@ -45,7 +45,8 @@ class Parser extends Obj
         if (!$parser) {
             $database = App::get('db');
             $database->setQuery(
-                "SELECT element FROM `#__extensions` WHERE folder='wiki' AND type='plugin' AND enabled=1 AND element LIKE 'parser%' ORDER BY enabled DESC LIMIT 1",
+                "SELECT element FROM `#__extensions` WHERE folder='wiki' AND type='plugin' AND enabled=1 AND element "
+                    . "LIKE 'parser%' ORDER BY enabled DESC LIMIT 1",
             );
 
             $parser = $database->loadResult();

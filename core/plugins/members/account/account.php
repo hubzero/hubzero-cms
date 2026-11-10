@@ -565,7 +565,8 @@ class Account extends Plugin
         } elseif (!empty($msg)) { // password doesn't meet site requirements
             $this->setError(
                 Lang::txt(
-                    'Password does not meet site password requirements. Please choose a password meeting all the requirements listed.',
+                    'Password does not meet site password requirements. Please choose a password meeting all the '
+                        . 'requirements listed.',
                 ),
             );
             $passrules = true;

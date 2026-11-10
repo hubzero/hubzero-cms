@@ -183,10 +183,12 @@ class Tags extends Cloud
             }
             switch ($sortby) {
                 case 'users':
-                    $query .= ", (SELECT rs.users FROM #__resource_stats AS rs WHERE rs.resid=C.id AND rs.period=14 ORDER BY rs.datetime DESC LIMIT 1) AS users ";
+                    $query .= ", (SELECT rs.users FROM #__resource_stats AS rs WHERE rs.resid=C.id AND rs.period=14 "
+                        . "ORDER BY rs.datetime DESC LIMIT 1) AS users ";
                     break;
                 case 'jobs':
-                    $query .= ", (SELECT rs.jobs FROM #__resource_stats AS rs WHERE rs.resid=C.id AND rs.period=14 ORDER BY rs.datetime DESC LIMIT 1) AS jobs ";
+                    $query .= ", (SELECT rs.jobs FROM #__resource_stats AS rs WHERE rs.resid=C.id AND rs.period=14 "
+                        . "ORDER BY rs.datetime DESC LIMIT 1) AS jobs ";
                     break;
             }
             $query .= "FROM #__resources AS C ";
@@ -209,10 +211,12 @@ class Tags extends Cloud
             }
             switch ($sortby) {
                 case 'users':
-                    $query .= ", (SELECT rs.users FROM #__resource_stats AS rs WHERE rs.resid=C.id AND rs.period=14 ORDER BY rs.datetime DESC LIMIT 1) AS users ";
+                    $query .= ", (SELECT rs.users FROM #__resource_stats AS rs WHERE rs.resid=C.id AND rs.period=14 "
+                        . "ORDER BY rs.datetime DESC LIMIT 1) AS users ";
                     break;
                 case 'jobs':
-                    $query .= ", (SELECT rs.jobs FROM #__resource_stats AS rs WHERE rs.resid=C.id AND rs.period=14 ORDER BY rs.datetime DESC LIMIT 1) AS jobs ";
+                    $query .= ", (SELECT rs.jobs FROM #__resource_stats AS rs WHERE rs.resid=C.id AND rs.period=14 "
+                        . "ORDER BY rs.datetime DESC LIMIT 1) AS jobs ";
                     break;
             }
             $query .= "FROM #__resources AS C ";
@@ -232,7 +236,8 @@ class Tags extends Cloud
             $query .= "AND C.type=" . $this->db->quote($type) . " ";
         }
         if ($type == 7) {
-            $query .= " AND TV.toolname=C.alias AND TV.state=1 AND TV.revision = (SELECT MAX(revision) FROM #__tool_version as TV WHERE TV.toolname=C.alias AND TV.state=1 GROUP BY TV.toolid) ";
+            $query .= " AND TV.toolname=C.alias AND TV.state=1 AND TV.revision = (SELECT MAX(revision) FROM "
+                . "#__tool_version as TV WHERE TV.toolname=C.alias AND TV.state=1 GROUP BY TV.toolid) ";
         }
         if (!empty($filterby) && $type == 7) {
             $fquery = " AND ((";

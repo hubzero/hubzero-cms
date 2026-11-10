@@ -278,7 +278,8 @@ abstract class Cart
             echo '<br>Getting items from DB';
         }
 
-        $sql = "SELECT `sId`, `crtiQty`, `crtiPrice`, `crtiOldPrice` FROM `#__cart_cart_items` crti WHERE crti.`crtId` = {$this->crtId}";
+        $sql = "SELECT `sId`, `crtiQty`, `crtiPrice`, `crtiOldPrice` FROM `#__cart_cart_items` crti WHERE crti.`crtId` "
+            . "= {$this->crtId}";
         $this->db->setQuery($sql);
         // Get all info
         $allSkuInfo = $this->db->loadObjectList('sId');
@@ -490,7 +491,8 @@ abstract class Cart
                     // This is how much they can add: $skuInfo->sInventory - $skuCartInfo->crtiQty
                     //throw new \Exception(Lang::txt('COM_CART_ADD_TOO_MANY_CART'));
                     throw new \Exception(
-                        'You are trying to add too many products to your cart. You already have this product in your cart.',
+                        'You are trying to add too many products to your cart. You already have this product in your '
+                            . 'cart.',
                     );
                 }
             }
@@ -614,7 +616,8 @@ abstract class Cart
     {
         $db = App::get('db');
 
-        $sql = "UPDATE `#__cart_cart_items` SET `crtiQty` = `crtiQty` - {$qty} WHERE `sId` = '{$sId}' AND `crtId` = {$crtId}";
+        $sql = "UPDATE `#__cart_cart_items` SET `crtiQty` = `crtiQty` - {$qty} WHERE `sId` = '{$sId}' AND `crtId` "
+            . "= {$crtId}";
         $db->setQuery($sql);
         $db->query();
     }
@@ -1065,7 +1068,8 @@ abstract class Cart
     {
         $db = App::get('db');
 
-        $sql = "UPDATE `#__cart_transaction_info` SET `tiPayment` = '{$paymentInfo[0]}', `tiPaymentDetails` = '{$paymentInfo[1]}' WHERE `tId` = {$tId}";
+        $sql = "UPDATE `#__cart_transaction_info` SET `tiPayment` = '{$paymentInfo[0]}', `tiPaymentDetails` = "
+            . "'{$paymentInfo[1]}' WHERE `tId` = {$tId}";
         $db->setQuery($sql);
         $db->query();
 

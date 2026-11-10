@@ -324,7 +324,9 @@ class DoiService extends Obj
 
         // Start XML
         $xmlfile  = '<?xml version="1.0" encoding="UTF-8"?>';
-        $xmlfile .= '<resource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://datacite.org/schema/kernel-4" xsi:schemaLocation="http://datacite.org/schema/kernel-4 http://schema.datacite.org/meta/kernel-4/metadata.xsd">';
+        $xmlfile .= '<resource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '
+            . 'xmlns="http://datacite.org/schema/kernel-4" xsi:schemaLocation="http://datacite.org/schema/kernel-4 '
+            . 'http://schema.datacite.org/meta/kernel-4/metadata.xsd">';
         $xmlfile .= '<identifier identifierType="DOI">' . $doi . '</identifier>';
         $xmlfile .= '<creators>';
 

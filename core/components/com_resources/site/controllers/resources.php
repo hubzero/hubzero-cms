@@ -907,7 +907,8 @@ class Resources extends SiteController
                 if (!file_exists($slide_path . DS . $k . '.png') && !file_exists($slide_path . DS . $k . '.jpg')) {
                     $this->setError(
                         Lang::txt(
-                            'Slides containing video must have a still image of the slide for mobile support. Please upload an image with the filename "'
+                            'Slides containing video must have a still image of the slide for mobile support. Please '
+                                . 'upload an image with the filename "'
                                 . $k
                                 . '.png" or "'
                                 . $k

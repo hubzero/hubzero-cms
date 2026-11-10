@@ -25,7 +25,8 @@ class Page extends WikiMacro
     {
         $txt = [];
         $txt['wiki'] = 'This macro will insert a linked title to a wiki page. It can be passed either an ID or alias.';
-        $txt['html'] = '<p>This macro will insert a linked title to a wiki page. It can be passed either an ID or alias.</p>';
+        $txt['html'] = '<p>This macro will insert a linked title to a wiki page. It can be passed either an ID or '
+            . 'alias.</p>';
         return $txt['html'];
     }
 

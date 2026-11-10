@@ -168,7 +168,8 @@ class Publication extends Table
                 }
             }
             // Make sure we get the max version
-            $query .= " AND V.id = (SELECT MAX(wv2.id) FROM `#__publication_versions` AS wv2 WHERE wv2.publication_id = C.id)";
+            $query .= " AND V.id = (SELECT MAX(wv2.id) FROM `#__publication_versions` AS wv2 WHERE wv2.publication_id "
+                . "= C.id)";
         } else {
             if (!isset($filters['all_versions']) || !$filters['all_versions']) {
                 $query .= " AND V.version_number = (SELECT MAX(version_number) FROM #__publication_versions
@@ -227,7 +228,8 @@ class Publication extends Table
             $query .= " AND (V.published_up IS NULL OR V.published_up = '0000-00-00 00:00:00' OR V.published_up <= '"
                 . $now
                 . "') ";
-            $query .= " AND (V.published_down IS NULL OR V.published_down = '0000-00-00 00:00:00' OR V.published_down >= '"
+            $query .= " AND (V.published_down IS NULL OR V.published_down = '0000-00-00 00:00:00' OR V.published_down "
+                . ">= '"
                 . $now
                 . "') ";
         }
@@ -405,13 +407,15 @@ class Publication extends Table
 				t.url_alias as cat_url, PP.alias as project_alias, PP.title as project_title,
 				PP.state as project_status, PP.private as project_private,
 				PP.provisioned as project_provisioned, MT.alias as base, MT.params as type_params";
-        $sql .= ", (SELECT vv.version_label FROM `#__publication_versions` as vv WHERE vv.publication_id=C.id AND vv.state=3 ORDER BY ID DESC LIMIT 1) AS dev_version_label ";
+        $sql .= ", (SELECT vv.version_label FROM `#__publication_versions` as vv WHERE vv.publication_id=C.id AND "
+            . "vv.state=3 ORDER BY ID DESC LIMIT 1) AS dev_version_label ";
         $sql .= ", (SELECT COUNT(*) FROM `#__publication_versions` WHERE publication_id=C.id AND state!=3) AS versions ";
 
         $sortby  = isset($filters['sortby']) ? $filters['sortby'] : 'title';
 
         if ($sortby == 'popularity') {
-            $sql .= ", (SELECT S.users FROM `#__publication_stats` AS S WHERE S.publication_id=C.id AND S.period=14 ORDER BY S.datetime DESC LIMIT 1) as stat ";
+            $sql .= ", (SELECT S.users FROM `#__publication_stats` AS S WHERE S.publication_id=C.id AND S.period=14 "
+                . "ORDER BY S.datetime DESC LIMIT 1) as stat ";
         }
 
         $sql .= (isset($filters['tag']) && $filters['tag'] != '')
@@ -493,7 +497,8 @@ class Publication extends Table
         $sql .= ",(SELECT vv.state FROM #__publication_versions as vv WHERE vv.publication_id=C.id AND vv.main=1 ORDER BY vv.created DESC LIMIT 1)
 				AS default_version_status ";
         $sql .= ",(SELECT COUNT(*) FROM #__publication_versions WHERE publication_id=C.id AND state!=3 ) AS versions ";
-        $sql .= " FROM #__publication_versions as V, #__projects AS PP, #__publication_master_types AS MT, $this->tableName AS C ";
+        $sql .= " FROM #__publication_versions as V, #__projects AS PP, #__publication_master_types AS "
+            . "MT, $this->tableName AS C ";
         $sql .= " JOIN #__publication_categories AS t ON C.category=t.id ";
         $sql .= " WHERE V.publication_id=C.id AND MT.id=C.master_type AND PP.id=C.project_id ";
         if ($version == 'default' or $version == 'current' or $version == 'main') {

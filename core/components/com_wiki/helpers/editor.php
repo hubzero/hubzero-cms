@@ -44,7 +44,8 @@ class Editor extends Obj
         if (!$editor) {
             $database = App::get('db');
             $database->setQuery(
-                "SELECT element FROM `#__extensions` WHERE folder='wiki' AND type='plugin' AND enabled=1 AND element LIKE 'editor%' ORDER BY enabled DESC LIMIT 1",
+                "SELECT element FROM `#__extensions` WHERE folder='wiki' AND type='plugin' AND enabled=1 AND element "
+                    . "LIKE 'editor%' ORDER BY enabled DESC LIMIT 1",
             );
 
             $editor = $database->loadResult();

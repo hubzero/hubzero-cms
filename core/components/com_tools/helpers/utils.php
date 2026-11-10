@@ -391,7 +391,8 @@ class Utils
                     $access->valid = 0;
                     $access->error->message = Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_ACCESS_GROUP');
                     Log::debug(
-                        "mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS DENIED (USER NOT IN ACCESS OR ADMIN GROUPS)",
+                        "mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS DENIED (USER NOT IN ACCESS OR ADMIN "
+                            . "GROUPS)",
                     );
                 } else {
                     if (!$exportAllowed->valid) {

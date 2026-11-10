@@ -47,7 +47,8 @@ class Migration20261012000000ComInstaller extends Base
             && $this->db->tableHasField('#__custom_extensions', 'branch')
             && $this->db->tableHasField('#__custom_extensions', 'git_branch')
         ) {
-            $query = "UPDATE `#__custom_extensions` SET `git_branch`=`branch` WHERE (`git_branch` IS NULL OR `git_branch`='') AND `branch` IS NOT NULL AND `branch`!='';";
+            $query = "UPDATE `#__custom_extensions` SET `git_branch`=`branch` WHERE (`git_branch` IS NULL OR "
+                . "`git_branch`='') AND `branch` IS NOT NULL AND `branch`!='';";
             $this->db->setQuery($query);
             $this->db->query();
         }
