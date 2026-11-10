@@ -409,7 +409,8 @@ class Publication extends Table
 				PP.provisioned as project_provisioned, MT.alias as base, MT.params as type_params";
         $sql .= ", (SELECT vv.version_label FROM `#__publication_versions` as vv WHERE vv.publication_id=C.id AND "
             . "vv.state=3 ORDER BY ID DESC LIMIT 1) AS dev_version_label ";
-        $sql .= ", (SELECT COUNT(*) FROM `#__publication_versions` WHERE publication_id=C.id AND state!=3) AS versions ";
+        $sql .= ", (SELECT COUNT(*) FROM `#__publication_versions` WHERE publication_id=C.id AND "
+            . "state!=3) AS versions ";
 
         $sortby  = isset($filters['sortby']) ? $filters['sortby'] : 'title';
 

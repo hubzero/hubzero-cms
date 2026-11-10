@@ -373,7 +373,8 @@ class Utils
                 $access->valid = 0;
                 $access->error->message = Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_DEV_GROUP');
                 Log::debug(
-                    "mw::_getToolAccess($tool,$login): DEV TOOL ACCESS DENIED (USER NOT IN DEVELOPMENT OR ADMIN GROUPS)",
+                    "mw::_getToolAccess($tool,$login): DEV TOOL ACCESS DENIED (USER NOT IN DEVELOPMENT "
+                        . "OR ADMIN GROUPS)",
                 );
             } else {
                 $access->valid = 1;

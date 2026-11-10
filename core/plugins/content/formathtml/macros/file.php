@@ -556,7 +556,8 @@ class File extends Macro
                     $althref = (array_key_exists('althref', $attr) && $attr['althref'] != '')
                         ? $attr['althref']
                         : $attr['href'];
-                    $attr['alt']  = '<a href="http://www.wolfram.com/cdf-player/" title="CDF Web Player. Install now!">';
+                    $attr['alt']  = '<a href="http://www.wolfram.com/cdf-player/" title="CDF Web '
+                        . 'Player. Install now!">';
                     $attr['alt'] .= '<img src="'
                         . $this->link($attr['altimage'])
                         . '" alt="'

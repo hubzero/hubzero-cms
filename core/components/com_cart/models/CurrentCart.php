@@ -2045,7 +2045,8 @@ class CurrentCart extends Cart
         }
 
         // Get all pending transactions for this cart
-        $sql = "SELECT `tId` FROM `#__cart_transactions` WHERE `crtId` = {$this->cart->crtId} AND `tStatus` = 'pending'";
+        $sql = "SELECT `tId` FROM `#__cart_transactions` WHERE `crtId` = {$this->cart->crtId} AND "
+            . "`tStatus` = 'pending'";
         $this->db->setQuery($sql);
         $tIds = $this->db->loadColumn();
 

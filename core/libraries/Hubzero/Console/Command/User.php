@@ -326,7 +326,8 @@ class User extends Base implements CommandInterface
                     'What is the destination user ID (this is the user that was deleted during the initial merge)?',
                 );
                 $sourceUser      = (int) $this->output->getResponse(
-                    'What is the source user ID (this is the user that was the recipient of the initially merged data)?',
+                    'What is the source user ID (this is the user that was the recipient of the '
+                        . 'initially merged data)?',
                 );
             } else {
                 $this->output->error(

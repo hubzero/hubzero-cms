@@ -80,7 +80,8 @@ class PgsqlDriverTest extends AbstractDriverTestCase
             "INSERT INTO pg_test_categories (name, slug, sort_order) VALUES ('Books', 'books', 2)",
         );
         $driver->exec(
-            "INSERT INTO pg_test_categories (name, slug, sort_order, active) VALUES ('Archived', 'archived', 99, FALSE)",
+            "INSERT INTO pg_test_categories (name, slug, sort_order, active) VALUES ('Archived', "
+                . "'archived', 99, FALSE)",
         );
 
         $driver->exec(

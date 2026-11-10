@@ -90,7 +90,8 @@ class FirebirdDriverTest extends AbstractDriverTestCase
         );
 
         $driver->exec(
-            "INSERT INTO FT_ITEMS (CATEGORY_ID, TITLE, PRICE, STOCK, STATUS) VALUES (1, 'Laptop', 999.99, 10, 'active')",
+            "INSERT INTO FT_ITEMS (CATEGORY_ID, TITLE, PRICE, STOCK, STATUS) VALUES (1, 'Laptop', "
+                . "999.99, 10, 'active')",
         );
         $driver->exec(
             "INSERT INTO FT_ITEMS (CATEGORY_ID, TITLE, PRICE, STOCK, STATUS) VALUES (1, 'Phone', 599.99, 25, 'active')",

@@ -2380,7 +2380,8 @@ class Migration20131112130740ComUsage extends Base
                         'class' => '1',
                         'country' => 'fr',
                         'state' => '',
-                        'name' => 'Centre Informatique Scientifique et Medical de l\\\'Universite Claude Bernard Lyon 1',
+                        'name' => 'Centre Informatique Scientifique et Medical de l\\\'Universite '
+                            . 'Claude Bernard Lyon 1',
                     ],
                     133 => [
                         'domain' => 'cea.fr',

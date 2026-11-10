@@ -35,7 +35,8 @@ class Migration20261012000000ComInstaller extends Base
 
             // Carry over the access token the older table kept in `token`
             if ($this->db->tableHasField('#__custom_extensions', 'token')) {
-                $query = "UPDATE `#__custom_extensions` SET `apikey`=`token` WHERE `token` IS NOT NULL AND `token`!='';";
+                $query = "UPDATE `#__custom_extensions` SET `apikey`=`token` WHERE `token` IS NOT NULL "
+                    . "AND `token`!='';";
                 $this->db->setQuery($query);
                 $this->db->query();
             }

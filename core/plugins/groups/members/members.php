@@ -2195,7 +2195,8 @@ class Members extends Plugin
                     $plain .= stripslashes($reason) . "\r\n\r\n";
                 }
                 $plain .= "If you feel this is in error, you may try to join the group again, \r\n";
-                $plain .= "this time better explaining your credentials and reasons why you should be accepted.\r\n\r\n";
+                $plain .= "this time better explaining your credentials and reasons why you should be "
+                    . "accepted.\r\n\r\n";
                 $plain .= "To join the group go to: \r\n";
                 $plain .= Request::base() . $sef . "\r\n";
                 break;
