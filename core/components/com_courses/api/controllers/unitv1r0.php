@@ -20,7 +20,7 @@ use stdClass;
 /**
  * API controller for the course units
  */
-class Unitv1r0 extends base
+class Unitv1r0 extends Base
 {
     /**
      * Saves a course unit

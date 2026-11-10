@@ -14,7 +14,7 @@ use Components\Cart\Helpers\Download;
 use Hubzero\Facades\User;
 
 // phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class Software_Auditor extends BaseAuditor
+class SoftwareAuditor extends BaseAuditor
 {
     /**
      * Constructor

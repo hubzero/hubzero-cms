@@ -21,7 +21,7 @@ use Exception;
 /**
  * API controller for the course asset groups
  */
-class Assetgroupv1r0 extends base
+class Assetgroupv1r0 extends Base
 {
     /**
      * Saves an asset group

@@ -22,7 +22,7 @@ use Hubzero\Facades\Route;
 /**
  * API controller for the course assets
  */
-class Assetv1r0 extends base
+class Assetv1r0 extends Base
 {
     /**
      * Gets the asset handlers for a given extension

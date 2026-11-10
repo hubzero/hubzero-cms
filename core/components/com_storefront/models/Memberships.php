@@ -85,8 +85,8 @@ class Memberships
      */
     public static function getSubscriptionObject($type, $pId, $uId)
     {
-        $objectClass = str_replace(' ', '_', ucwords(strtolower($type)));
-        $objectClass .= '_Subscription';
+        $objectClass = str_replace(' ', '', ucwords(strtolower($type)));
+        $objectClass .= 'Subscription';
 
         $fqcn = '\Components\\Storefront\\Models\\ProductTypes\\Subscriptions\\' . $objectClass;
 

@@ -16,7 +16,7 @@ use Hubzero\Facades\Config;
 /**
  * API controller for the time component
  */
-class Formv1r0 extends base
+class Formv1r0 extends Base
 {
     /**
      * Gets form images

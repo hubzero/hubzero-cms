@@ -19,7 +19,7 @@ use Hubzero\Facades\Date;
 /**
  * API controller for the time component
  */
-class Unityv1r0 extends base
+class Unityv1r0 extends Base
 {
     protected $db;
 

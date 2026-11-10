@@ -9,7 +9,7 @@
 namespace Components\Storefront\Models\ProductTypes\Subscriptions;
 
 // phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class Access_Group_Membership_Subscription extends BaseSubscription
+class AccessGroupMembershipSubscription extends BaseSubscription
 {
     /**
      * Constructor

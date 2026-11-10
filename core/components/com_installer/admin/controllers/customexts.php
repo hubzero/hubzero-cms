@@ -10,7 +10,7 @@ namespace Components\Installer\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Installer\Admin\Helpers\Cli;
-use Components\Installer\Admin\Models\Custom_extensions;
+use Components\Installer\Admin\Models\CustomExtensions;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Config;
 use Hubzero\Facades\Notify;
@@ -106,7 +106,7 @@ class Customexts extends AdminController
             ),
         ];
 
-        $entries = Custom_extensions::all();
+        $entries = CustomExtensions::all();
 
         $e = $entries->getTableName();
 
@@ -226,7 +226,7 @@ class Customexts extends AdminController
                 $id = $id[0];
             }
 
-            $row = Custom_extensions::oneOrNew($id);
+            $row = CustomExtensions::oneOrNew($id);
         }
 
         // If this is a new record, we'll set the creator data
@@ -288,7 +288,7 @@ class Customexts extends AdminController
         $fields['client_id'] = (int) ($fields['client_id'] ?? 0);
 
         // Initiate extended database class
-        $model = Custom_extensions::oneOrNew($fields['extension_id'])->set($fields);
+        $model = CustomExtensions::oneOrNew($fields['extension_id'])->set($fields);
 
         // Get parameters
         $params = Request::getArray('params', [], 'post');
@@ -384,7 +384,7 @@ class Customexts extends AdminController
             $success = 0;
 
             foreach ($ids as $id) {
-                $model = Custom_extensions::oneOrFail($id);
+                $model = CustomExtensions::oneOrFail($id);
 
                 if ($value) {
                     $pieces = explode("/", $model->path);
@@ -484,7 +484,7 @@ class Customexts extends AdminController
 
         // loop through each extension and pull code from repos
         foreach ($ids as $id) {
-            $extension = Custom_extensions::oneOrNew($id);
+            $extension = CustomExtensions::oneOrNew($id);
 
             // Do we have a git repo?  If not clone the specified repo.
             if (!is_dir($extension->path . DS . '.git')) {
@@ -652,7 +652,7 @@ class Customexts extends AdminController
 
         // loop through each extension and pull code from repos
         foreach ($ids as $id) {
-            $extension = Custom_extensions::oneOrNew($id);
+            $extension = CustomExtensions::oneOrNew($id);
 
             $museCmd = 'update -r=' . escapeshellarg($extension->path) . ' -f --no-colors';
             $result = Cli::callWithStatus($museCmd, $task = 'repository');
@@ -720,7 +720,7 @@ class Customexts extends AdminController
         $success = 0;
 
         foreach ($ids as $id) {
-            $extension = Custom_extensions::oneOrNew($id);
+            $extension = CustomExtensions::oneOrNew($id);
 
             // If enextion is enabled
             if ($extension->enabled == 1) {
@@ -761,7 +761,7 @@ class Customexts extends AdminController
             }
 
             // Load the record
-            $model = Custom_extensions::oneOrFail(intval($id));
+            $model = CustomExtensions::oneOrFail(intval($id));
 
             // Attempt to delete the record
             if (!$model->destroy()) {

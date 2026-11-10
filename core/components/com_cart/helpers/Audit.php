@@ -49,7 +49,7 @@ class Audit
      */
     public static function auditorClass($model)
     {
-        $auditorClass = str_replace(' ', '_', ucwords(strtolower($model))) . '_Auditor';
+        $auditorClass = str_replace(' ', '', ucwords(strtolower($model))) . 'Auditor';
 
         return "\\Components\\Cart\\Lib\\Auditors\\" . $auditorClass;
     }

@@ -15,7 +15,7 @@ use Hubzero\Facades\App;
 /**
  * API controller for the time component
  */
-class Prerequisitev1r0 extends base
+class Prerequisitev1r0 extends Base
 {
     /**
      * Adds a new prerequisite

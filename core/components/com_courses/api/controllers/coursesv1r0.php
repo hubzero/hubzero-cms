@@ -21,7 +21,7 @@ use Hubzero\Facades\User;
 /**
  * API controller for the course units
  */
-class Coursesv1r0 extends base
+class Coursesv1r0 extends Base
 {
     /**
      * Lists course catalog

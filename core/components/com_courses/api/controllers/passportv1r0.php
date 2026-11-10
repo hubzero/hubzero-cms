@@ -18,7 +18,7 @@ use Hubzero\Facades\Date;
 /**
  * API controller for the time component
  */
-class Passportv1r0 extends base
+class Passportv1r0 extends Base
 {
     /**
      * Passport badges. Placeholder for now.

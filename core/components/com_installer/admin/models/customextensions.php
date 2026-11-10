@@ -21,7 +21,7 @@ use Hubzero\Facades\Component;
  * Extension model
  */
 // phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class Custom_extensions extends Relational
+class CustomExtensions extends Relational
 {
     /**
      * The table namespace
