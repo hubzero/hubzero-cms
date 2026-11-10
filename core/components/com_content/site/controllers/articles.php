@@ -507,7 +507,7 @@ class Articles extends SiteController
                 // Check general edit permission first.
                 if (User::authorise('core.edit', $itemAsset)) {
                     $item->params->set('access-edit', true);
-                } elseif (User::get('id') && User::authorise('core.edit.own', $asset)) {
+                } elseif (User::get('id') && User::authorise('core.edit.own', $itemAsset)) {
                     // Now check if edit.own is available.
                     // Check for a valid user and that they are the owner.
                     if (User::get('id') == $item->created_by) {
