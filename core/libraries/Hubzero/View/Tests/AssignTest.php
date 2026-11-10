@@ -78,13 +78,17 @@ class AssignTest extends TestCase
     /**
      * @return  void
      */
-    public function testNamesWithAnUnderscoreAreNotAssigned(): void
+    public function testTheViewsOwnStateIsNotAssigned(): void
     {
         $view = $this->view();
 
-        $view->assign(['_hidden' => true]);
+        $view->assign(['viewName' => 'other', 'layoutName' => 'other', '_hidden' => true]);
+        $view->assign((object) ['viewName' => 'other']);
 
+        $this->assertFalse($view->assign('layoutName', 'other'));
         $this->assertFalse($view->assign('_hidden', true));
+        $this->assertSame('things', $view->getName());
+        $this->assertSame('default', $view->getLayout());
         $this->assertFalse(isset($view->_hidden));
     }
 }

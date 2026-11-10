@@ -252,7 +252,7 @@ class View extends Obj
         if (is_object($arg0)) {
             // Assign public properties
             foreach (get_object_vars($arg0) as $key => $val) {
-                if (substr($key, 0, 1) != '_') {
+                if ($this->isData($key)) {
                     $this->$key = $val;
                 }
             }
@@ -262,7 +262,7 @@ class View extends Obj
         // Assign by associative array
         if (is_array($arg0)) {
             foreach ($arg0 as $key => $val) {
-                if (substr($key, 0, 1) != '_') {
+                if ($this->isData($key)) {
                     $this->$key = $val;
                 }
             }
@@ -273,13 +273,31 @@ class View extends Obj
 
         // We use array_key_exists() instead of isset() because isset()
         // fails if the value is set to null.
-        if (is_string($arg0) && substr($arg0, 0, 1) != '_' && func_num_args() > 1) {
+        if (is_string($arg0) && $this->isData($arg0) && func_num_args() > 1) {
             $this->$arg0 = $arg1;
             return true;
         }
 
         // $arg0 was not object, array, or string.
         return false;
+    }
+
+    /**
+     * Whether a name can be given to the view as data
+     *
+     * Names with an underscore, and properties the view declares protected
+     * or private, are the view's own.
+     *
+     * @param   string  $name
+     * @return  bool
+     */
+    private function isData($name)
+    {
+        if (!is_string($name) || $name === '' || $name[0] === '_') {
+            return false;
+        }
+
+        return !property_exists($this, $name) || (new \ReflectionProperty($this, $name))->isPublic();
     }
 
     /**
