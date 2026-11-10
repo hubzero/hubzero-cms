@@ -19,6 +19,7 @@
         </testsuite>
         <testsuite name="Components">
             <directory suffix="Test.php">core/components/com_courses/tests/helpers/</directory>
+            <file>core/components/com_search/tests/configHelperMacroTest.php</file>
         </testsuite>
         <testsuite name="Plugins">
             <directory suffix="Test.php">core/plugins/</directory>
