@@ -38,7 +38,7 @@ class Inspector extends Obj
      *
      * @var  boolean
      */
-    protected $__state_set = null;
+    protected $stateSet = null;
 
     /**
      * Total items
@@ -80,7 +80,7 @@ class Inspector extends Obj
 
         // Set the internal state marker - used to ignore setting state from the request
         if (!empty($config['ignore_request'])) {
-            $this->__state_set = true;
+            $this->stateSet = true;
         }
     }
 
@@ -93,7 +93,7 @@ class Inspector extends Obj
      */
     public function state($property = null, $default = null)
     {
-        if (!$this->__state_set) {
+        if (!$this->stateSet) {
             $this->state->set('filter.search', Request::getState('com_checkin.filter.search', 'filter_search'));
 
             // Limit
@@ -138,7 +138,7 @@ class Inspector extends Obj
             $this->state->set('list.direction', $value);
 
             // Set the model state set flag to true.
-            $this->__state_set = true;
+            $this->stateSet = true;
         }
 
         return $property === null ? $this->state : $this->state->get($property, $default);

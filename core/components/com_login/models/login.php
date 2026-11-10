@@ -25,7 +25,7 @@ class Login extends Obj
      *
      * @var  boolean
      */
-    protected $__state_set = null;
+    protected $stateSet = null;
 
     /**
      * A state object
@@ -53,7 +53,7 @@ class Login extends Obj
 
         // Set the internal state marker - used to ignore setting state from the request
         if (!empty($config['ignore_request'])) {
-            $this->__state_set = true;
+            $this->stateSet = true;
         }
     }
 
@@ -66,12 +66,12 @@ class Login extends Obj
      */
     public function getState($property = null, $default = null)
     {
-        if (!$this->__state_set) {
+        if (!$this->stateSet) {
             // Protected method to auto-populate the model state.
             $this->populateState();
 
             // Set the model state set flag to true.
-            $this->__state_set = true;
+            $this->stateSet = true;
         }
 
         return $property === null ? $this->state : $this->state->get($property, $default);

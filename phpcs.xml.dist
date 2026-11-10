@@ -20,4 +20,13 @@
     <ini name="memory_limit" value="-1"/>
 
     <rule ref="PSR12"/>
+
+    <!-- PSR-12 MUSTs that phpcs reports only as warnings, which the
+         arguments above hide -->
+    <rule ref="PSR2.Classes.PropertyDeclaration.Underscore">
+        <type>error</type>
+    </rule>
+    <rule ref="PSR12.Properties.ConstantVisibility.NotFound">
+        <type>error</type>
+    </rule>
 </ruleset>

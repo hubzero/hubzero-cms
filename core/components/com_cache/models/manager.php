@@ -37,7 +37,7 @@ class Manager extends Obj
      *
      * @var  boolean
      */
-    protected $__state_set = null;
+    protected $stateSet = null;
 
     /**
      * An array of Cache Items indexed by cache group ID
@@ -86,7 +86,7 @@ class Manager extends Obj
 
         // Set the internal state marker - used to ignore setting state from the request
         if (!empty($config['ignore_request'])) {
-            $this->__state_set = true;
+            $this->stateSet = true;
         }
     }
 
@@ -99,7 +99,7 @@ class Manager extends Obj
      */
     public function state($property = null, $default = null)
     {
-        if (!$this->__state_set) {
+        if (!$this->stateSet) {
             // Client
             $value = Request::getState(
                 'com_cache.filter.client_id',
@@ -154,7 +154,7 @@ class Manager extends Obj
             $this->state->set('list.direction', $value);
 
             // Set the model state set flag to true.
-            $this->__state_set = true;
+            $this->stateSet = true;
         }
 
         return $property === null ? $this->state : $this->state->get($property, $default);
