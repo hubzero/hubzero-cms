@@ -227,7 +227,8 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 			$service = $_SERVER['HTTP_HOST'];
 		}
 
-		$com_user = 'com_users';
+		// In the administrator, com_users is the user manager; logins go through com_login
+		$com_user = App::isAdmin() ? 'com_login' : 'com_users';
 		$task     = (User::isGuest()) ? 'user.login' : 'user.link';
 
 		self::log('getLoginParams', array($service, $com_user, $task));
@@ -292,7 +293,13 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		}
 
 		// Attach style and scripts
-		foreach (array('bootstrap-select.min.js', 'shibboleth.js', 'bootstrap-select.min.css', 'bootstrap-theme.min.css', 'shibboleth.css') as $asset)
+		$assets = array('bootstrap-select.min.js', 'shibboleth.js', 'bootstrap-select.min.css', 'bootstrap-theme.min.css', 'shibboleth.css');
+		if (App::isAdmin())
+		{
+			// The admin template lacks the Bootstrap dropdown CSS that bootstrap-select relies on
+			$assets[] = 'adminlogin.css';
+		}
+		foreach ($assets as $asset)
 		{
 			$mtd = 'addPlugin'.(preg_match('/[.]js$/', $asset) ? 'script': 'stylesheet');
 			\Hubzero\Document\Assets::$mtd('authentication', 'shibboleth', $asset);
@@ -300,12 +307,26 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 
 		list($a, $h) = self::htmlify();
 
+		// In the administrator, a selection must log in through com_login so that the
+		// session it creates is an administrator one. shibboleth.js appends the entityID
+		// to data-login-url; without it, it uses the frontend /login route.
+		$admin = App::isAdmin();
+		$loginAttr = '';
+		if ($admin)
+		{
+			$loginUrl  = Route::url('index.php?option=com_login&task=display&authenticator=shibboleth', false) . '&idp=';
+			$loginAttr = ' data-login-url="' . htmlspecialchars($loginUrl, ENT_QUOTES) . '"';
+		}
+
 		// Make a dropdown/button combo that (hopefully) gets prettied up client-side into a bootstrap dropdown
-		$html = ['<div class="shibboleth account incommon-color" data-placeholder="'.$a($title).'">'];
+		$html = ['<div class="shibboleth account incommon-color" data-placeholder="'.$a($title).'"'.$loginAttr.'>'];
 		$html[] = '<h3>Select Institutional Credentials</h3>';
 		$html[] = '<ol>';
-		$html = array_merge($html, array_map(function($idp) use($h, $a) {
-			return '<li data-entityid="'.$a($idp['entity_id']).'" data-content="'.(isset($idp['logo_data']) ? $a($idp['logo_data']) : '').' '.$h($idp['label']).'"><a href="'.Route::url('index.php?option=com_users&view=login&authenticator=shibboleth&idp='.$a($idp['entity_id'])).'">'.$h($idp['label']).'</a></li>';
+		$html = array_merge($html, array_map(function($idp) use($h, $a, $admin) {
+			$href = $admin
+				? Route::url('index.php?option=com_login&task=display&authenticator=shibboleth&idp='.urlencode($idp['entity_id']))
+				: Route::url('index.php?option=com_users&view=login&authenticator=shibboleth&idp='.$a($idp['entity_id']));
+			return '<li data-entityid="'.$a($idp['entity_id']).'" data-content="'.(isset($idp['logo_data']) ? $a($idp['logo_data']) : '').' '.$h($idp['label']).'"><a href="'.$href.'">'.$h($idp['label']).'</a></li>';
 		}, self::getInstitutions()));
 		$html[] = '</ol></div>';
 		$html[] = '<div class="noorg" ><a href="/support/ticket/new">If your US institution is not listed in the dropdown but is part of InCommon, ask us to add it! Otherwise, use one of the other options below.</a></div>';

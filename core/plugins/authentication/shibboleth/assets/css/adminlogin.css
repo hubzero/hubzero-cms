@@ -1,0 +1,175 @@
+/**
+ * Institution picker on the administrator login page.
+ *
+ * Loaded by onRenderOption() only when App::isAdmin(). bootstrap-select only
+ * generates .btn-group/.dropdown-menu markup and leaves showing, hiding and
+ * positioning the menu to Bootstrap's core CSS. On the frontend that comes from
+ * the hub's site stylesheet (core/assets/css/buttons.css). The administrator
+ * template has none of it, so without this file the full list of institutions is
+ * always drawn and covers the rest of the login form.
+ *
+ * Everything is scoped to .shibboleth.account so the rest of the admin login page
+ * is unaffected.
+ */
+
+/* Layout: heading on its own row, then [InCommon mark] [picker] */
+.auth .shibboleth.account.selectpicked {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	height: auto;
+	max-height: none;
+	overflow: visible;
+	padding: 10px;
+	box-sizing: border-box;
+}
+.shibboleth.account.selectpicked h3 {
+	flex: 0 0 100%;
+	margin: 0 0 8px 0;
+	font-size: 1em;
+	line-height: 1.3;
+	text-align: center;
+}
+.shibboleth.account.selectpicked .default-icon {
+	flex: 0 0 30px;
+	margin: 0 8px 0 0;
+}
+
+/* The picker. The inline <style> in com_login's admin login template pins the
+   button absolutely over the heading; keep it in flow instead. */
+.shibboleth.account .bootstrap-select.btn-group {
+	position: relative;
+	display: block;
+	flex: 1 1 0;
+	min-width: 0;
+	width: auto;
+	height: auto;
+	margin: 0;
+	white-space: normal;
+}
+.shibboleth.account .bootstrap-select .dropdown-toggle {
+	position: relative;
+	top: auto;
+	left: auto;
+	display: flex;
+	align-items: center;
+	width: 100%;
+	height: auto;
+	min-height: 32px;
+	margin: 0;
+	padding: 5px 24px 5px 8px;
+	text-align: left;
+	white-space: normal;
+	line-height: 1.3;
+	cursor: pointer;
+	border: 1px solid rgba(255, 255, 255, 0.55);
+	border-radius: 3px;
+}
+.shibboleth.account .bootstrap-select .filter-option {
+	float: none;
+	flex: 1 1 auto;
+	min-width: 0;
+	margin-top: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.shibboleth.account .bootstrap-select .caret {
+	position: absolute;
+	top: 50%;
+	right: 8px;
+	margin-top: -2px;
+	width: 0;
+	height: 0;
+	border-top: 4px solid #fff;
+	border-right: 4px solid transparent;
+	border-left: 4px solid transparent;
+}
+
+/* The admin template clips the login panel (#main {overflow: hidden}), which
+   would cut the open menu off at the bottom of the panel. */
+#main:has(.shibboleth.account.selectpicked) {
+	overflow: visible;
+}
+
+/* The menu: hidden until the picker is hovered, focused or opened */
+.shibboleth.account .bootstrap-select > .dropdown-menu {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	right: auto;
+	z-index: 1000;
+	display: none;
+	float: none;
+	width: 100%;
+	min-width: 100%;
+	margin: 0;
+	padding: 4px 0;
+	text-align: left;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	border-radius: 0 0 3px 3px;
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+	box-sizing: border-box;
+}
+.shibboleth.account .bootstrap-select:hover > .dropdown-menu,
+.shibboleth.account .bootstrap-select:focus-within > .dropdown-menu,
+.shibboleth.account .bootstrap-select.open > .dropdown-menu {
+	display: block;
+}
+.shibboleth.account .dropdown-menu.inner {
+	display: block;
+	position: static;
+	width: auto;
+	min-width: 0;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	border: 0;
+	box-shadow: none;
+}
+.shibboleth.account .dropdown-menu li {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+/* bootstrap-select hides non-matching institutions with .hide while searching */
+.shibboleth.account .dropdown-menu li.hide {
+	display: none;
+}
+.shibboleth.account .dropdown-menu li a {
+	display: block;
+	padding: 3px 10px;
+	line-height: 1.4;
+	white-space: normal;
+	color: #ddd;
+	text-decoration: none;
+	background: none;
+}
+.shibboleth.account .dropdown-menu li.active a,
+.shibboleth.account .dropdown-menu li a:hover,
+.shibboleth.account .dropdown-menu li a:focus {
+	color: #fff;
+	background: rgba(0, 0, 0, 0.2);
+}
+.shibboleth.account .dropdown-menu li a i.check-mark {
+	display: none;
+}
+
+/* Search box. The admin template gives .input-block-level a min-height of 11.6em. */
+.shibboleth.account .bootstrap-select-searchbox {
+	padding: 4px 8px;
+}
+.shibboleth.account .bootstrap-select-searchbox input {
+	display: block;
+	box-sizing: border-box;
+	width: 100%;
+	max-width: 100%;
+	min-height: 0;
+	height: auto;
+	margin: 0;
+	padding: 4px 6px;
+}
+
+/* The note under the picker no longer needs to tuck under a fixed-height box */
+.auth .shibboleth.account.selectpicked + .noorg {
+	margin-top: 0;
+}

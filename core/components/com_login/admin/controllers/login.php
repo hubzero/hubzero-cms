@@ -99,6 +99,7 @@ class Login extends AdminController
 
 		$credentials = $model->getState('credentials');
 		$return      = $model->getState('return');
+		$options     = array();
 
 		// If a specific authenticator is specified try to call the login method for that plugin
 		if ($authenticator = Request::getString('authenticator', false, 'method'))
@@ -124,7 +125,7 @@ class Login extends AdminController
 
 						$myplugin->login($credentials, $options);
 
-						if (isset($options['return']))
+						if (!empty($options['return']))
 						{
 							$return = $options['return'];
 						}
@@ -137,8 +138,9 @@ class Login extends AdminController
 			}
 		}
 
-		$options = array(
-			'action'        => 'core.login.admin',
+		// Keep what the plugin's login() put in $options (e.g. the shibboleth
+		// attributes that its onUserAuthenticate() needs); these keys take precedence
+		$options = array_merge($options, array(
 			'authenticator' => $authenticator,
 			// The minimum group
 			'group'         => 'Public Backend',
@@ -146,7 +148,7 @@ class Login extends AdminController
 			'autoregister'  => false,
 			// Set the access control action to check.
 			'action'        => 'core.login.admin'
-		);
+		));
 
 		// Set the application login entry point
 		if (!array_key_exists('entry_url', $options))
